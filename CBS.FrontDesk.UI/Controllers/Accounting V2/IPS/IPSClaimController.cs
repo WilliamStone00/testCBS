@@ -620,37 +620,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.IPS
             if (model.TotalAmount <= 0)
                 return Json(new { success = false, message = "Total amount must be greater than 0." });
 
-            // Validate that sums match
-            decimal sourceTotal = model.SourceAccountEntryListing?.Sum(x => x.Amount) ?? 0;
-            decimal memberTotal = model.MemberBalanceDestinationEntries?.Sum(x => x.Amount) ?? 0;
-            decimal branchTotal = model.DestinationBranchEntryListing?.Sum(x => x.Amount) ?? 0;
-            decimal combinedTotal = sourceTotal + memberTotal + branchTotal;
+         
 
-            if (Math.Abs(combinedTotal - model.TotalAmount) > 0.01m)
-            {
-                return Json(new
-                {
-                    success = false,
-                    message = $"Combined total ({combinedTotal:N2}) doesn't match entered total ({model.TotalAmount:N2})"
-                });
-            }
-
-            // Convert to PremiumClaimCashInRequest if needed
-            var request = new PremiumClaimCashIn
-            {
-                ClaimId = model.ClaimId,
-                CustomerId = model.CustomerId,
-                Note = model.Note,
-                TotalAmount = model.TotalAmount,
-                //ExternalApplicationName = model.ExternalApplicationName,
-                //AccountingDate = model.AccountingDate,
-                //ForceRepost = model.ForceRepost,
-                SourceAccountEntryListing = model.SourceAccountEntryListing,
-                MemberBalanceDestinationEntries = model.MemberBalanceDestinationEntries,
-                DestinationBranchEntryListing = model.DestinationBranchEntryListing
-            };
-
-            var result = await _ipsClaimService.PostClaimAsync(request);
+            var result = await _ipsClaimService.PostClaimAsync(model);
 
             return Json(new
             {

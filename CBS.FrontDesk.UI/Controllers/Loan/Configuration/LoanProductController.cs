@@ -2,10 +2,16 @@
 using CBS.BusinessService.Accounting_V2.AffiliateAccounts;
 using CBS.BusinessService.Config;
 using CBS.BusinessService.Config.Localization;
+using CBS.FrontDesk.Data.Entity;
+using CBS.FrontDesk.Data.Entity.Accounting;
 using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.LoanConf;
+using CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure;
+using CBS.FrontDesk.Data.Entity.Overdraft;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Message;
+using CBS.FrontDesk.Data.UserManagement;
+using DocumentFormat.OpenXml.Spreadsheet;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,7 +41,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
         public async Task<ActionResult> Index()
         {
             await GetValues();
-            return View(new LoanProductObject());
+            return View(new PCMFLoanProductManagementObjects());
         }
         public ActionResult ProductListingPolicySet()
         {
@@ -51,6 +57,54 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
             return View(loanProductObject);
 
         }
+        // ✅ ONE POST: create if Id empty, update if Id present
+        [HttpPost]
+        public async Task<ActionResult> CreateOrUpdateSimple(PCMFLoanProductManagementObjects model)
+        {
+            var cmd = model?.CreateOrUpdate;
+
+            if (cmd == null)
+                return Json(new { success = false, status = false, message = "Invalid request payload." });
+
+            // ✅ basic validation (keep it strict + user-friendly)
+            if (string.IsNullOrWhiteSpace(cmd.ProductCode))
+                return Json(new { success = false, status = false, message = "Product Code is required." });
+
+            if (string.IsNullOrWhiteSpace(cmd.ProductName))
+                return Json(new { success = false, status = false, message = "Product Name is required." });
+
+            if (string.IsNullOrWhiteSpace(cmd.LoanTargetId))
+                return Json(new { success = false, status = false, message = "Loan Target is required." });
+
+            if (string.IsNullOrWhiteSpace(cmd.PcmfLoanPurposeId))
+                return Json(new { success = false, status = false, message = "PCMF Loan Purpose is required." });
+
+            // LoanTermId can be empty ONLY for overdraft
+            // If you want to enforce: overdraft => LoanTermId empty
+            // else => required. (Front UI already helps)
+            // if (!isOverdraft && string.IsNullOrWhiteSpace(cmd.LoanTermId)) ...
+
+            try
+            {
+                // ✅ CREATE
+                if (string.IsNullOrWhiteSpace(cmd.Id))
+                {
+                    var data = await _LoanProductServices.CreatePcmfLoanProductSimple(cmd);
+                    return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+                }
+
+                // ✅ UPDATE
+                var update = await _LoanProductServices.UpdatePcmfLoanProductSimple(cmd);
+                return Json(new { success = update.Result, status = update.MessageStatus, message = Messaging.MessageResult(update) });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, status = false, message = ex.Message });
+            }
+        }
+
+
+
         //Policy
         public async Task<ActionResult> LoanAccountMapping()
         {
@@ -173,87 +227,225 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
             }
 
         }
-        public async Task<ActionResult> GetLoanProductAccountMapping()
+
+        [HttpGet]
+        public async Task<ActionResult> GetPurposesByTerm(string termId, string loanFacility = "Classic", string lang = "en")
         {
+            var data = await _LoanProductServices.GetPcmfLoanProductUiCatalogQuery(
+                new GetPcmfLoanProductUiCatalogQuery
+                {
+                    LoanTermId = termId,
+                    LoanFacility = loanFacility,
+                    Lang = lang
+                });
 
-            //List<ProductAccountingChart> AccountProductItems = await _accountingServices.GetProductAccountingBookByproducttype("Loan_Product");
-            return View(/*new LoanProductObject { ProductAccountingCharts = AccountProductItems }*/);
-
-
+            return Json(data?.Purposes ?? new List<UiOptionDto>(), JsonRequestBehavior.AllowGet);
         }
+
+        [HttpGet]
+        public async Task<ActionResult> GetTargetsForSelection(string purposeId, string termId, string loanFacility = "Classic", string lang = "en")
+        {
+            var data = await _LoanProductServices.GetPcmfLoanProductUiCatalogQuery(
+                new GetPcmfLoanProductUiCatalogQuery
+                {
+                    LoanTermId = termId,
+                    PcmfLoanPurposeId = purposeId,
+                    LoanFacility = loanFacility,
+                    Lang = lang
+                });
+
+            return Json(data?.Targets ?? new List<UiOptionDto>(), JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetPcmfPreview(string termId, string purposeId, string targetId, string loanFacility = "Classic", string lang = "en")
+        {
+            var data = await _LoanProductServices.GetPcmfLoanProductUiCatalogQuery(
+                new GetPcmfLoanProductUiCatalogQuery
+                {
+                    LoanTermId = termId,
+                    PcmfLoanPurposeId = purposeId,
+                    LoanTargetId = targetId,
+                    LoanFacility = loanFacility,
+                    Lang = lang
+                });
+
+            return Json(data?.Preview, JsonRequestBehavior.AllowGet);
+        }
+
+
+
+
+
+        // ✅ Used by Index ajax loaders (list / new / edit)
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null)
-      {
-            ViewBag.Key = KEY;
-            if (path == "list")
-            {
+        {
+            partialView = string.IsNullOrWhiteSpace(partialView) ? "_Data" : partialView;
+            path = path?.Trim();
 
-                var data = await _LoanProductServices.GetLoanProducts();
-                return PartialView(partialView, new LoanProductObject { LoanProducts = data.ToList() });
+            // -----------------------------
+            // LIST
+            // -----------------------------
+            if (string.Equals(path, "list", StringComparison.OrdinalIgnoreCase))
+            {
+                var products = await _LoanProductServices.PCMFGetLoanProducts(); // List<PCMFLoanProduct>
+
+                var vm = new PCMFLoanProductManagementObjects
+                {
+                    Products = products?.ToList() ?? new List<PCMFLoanProduct>()
+                };
+
+                return PartialView(partialView, vm);
             }
 
-            else if (path == "new")
+            // -----------------------------
+            // NEW
+            // -----------------------------
+            if (string.Equals(path, "new", StringComparison.OrdinalIgnoreCase))
             {
-                ViewBag.Key = null;
                 await GetValues();
-                return PartialView(partialView, new LoanProductObject());
-            }
-            else
-            {
-                if (path == "set_penalty")
-                {
-                    var productEnumAgregates = await _LoanProductServices.GetLoanProductEnumAggregates();
-                    ViewBag.PenaltyTypes = productEnumAgregates.PenaltyTypes;
-                    ViewBag.CalculateInterestOn = productEnumAgregates.CalculateInterestOn;
-                    var penalty = await _PenaltyServices.GetPenalty(KEY);
 
-                    return PartialView(partialView, penalty);
-                }
-                else if (path == "add_penalty")
+                var vm = new PCMFLoanProductManagementObjects
                 {
-                    var productEnumAgregates = await _LoanProductServices.GetLoanProductEnumAggregates();
-                    ViewBag.CalculateInterestOn = productEnumAgregates.CalculateInterestOn;
-                    ViewBag.PenaltyTypes = productEnumAgregates.PenaltyTypes;
-                    var LoanProduct = await _LoanProductServices.GetLoanProduct(KEY);
-
-                    //LoanProduct.Penalty.LoanProductId = LoanProduct.Id;
-                    return PartialView(partialView, LoanProduct);
-                }
-                else if (path == "account_mapping")
-                {
-                    var chartOfAccounts = await _accountingServices.GetAllAffiliateAccounts();
-                    ViewBag.ChartOfAccounts = chartOfAccounts;
-                    var LoanProduct = await _LoanProductServices.GetLoanProduct(KEY);
-                    var loanProductObject = new LoanProductObject();
-                    loanProductObject.UpdateLoanProductCommand = _LoanProductServices.ProductMappingToUpdateObject(LoanProduct, "N/A", "N/A");
-                    return PartialView(partialView, loanProductObject);
-                }
-                else
-                {
-                    await GetValues();
-                    var LoanProduct = await _LoanProductServices.GetLoanProduct(KEY);
-                    var loanProductObject = new LoanProductObject();
-                    loanProductObject.UpdateLoanProductCommand = _LoanProductServices.ProductMappingToUpdateObject(LoanProduct, "N/A", "N/A");
-                    loanProductObject.AddLoanProductCommand = new AddLoanProductCommand
+                    CreateOrUpdate = new CreateLoanProductCommand
                     {
-                        ActiveStatus = LoanProduct.ActiveStatus,
-                        Description = LoanProduct.Description,
-                        Id = LoanProduct.Id,
-                        ProductCode = LoanProduct.ProductCode,
-                        ProductName = LoanProduct.ProductName,
-                        TargetType = LoanProduct.TargetType,
-                        IsProductWithSavingFacilities = LoanProduct.IsProductWithSavingFacilities,
-                        LoanTermId = LoanProduct.LoanTermId,
-                        LoanProductCategoryId = LoanProduct.LoanProductCategoryId
+                        ActiveStatus = true
+                    }
+                };
 
-                    };
-                    return PartialView(partialView, loanProductObject);
+                return PartialView(partialView, vm);
+            }
+
+            // -----------------------------
+            // SIMPLE EDIT (same form)
+            // -----------------------------
+            if (string.Equals(path, "simple_edit", StringComparison.OrdinalIgnoreCase))
+            {
+                await GetValues();
+
+                if (string.IsNullOrWhiteSpace(KEY))
+                    return Content("Invalid product key.");
+
+                var p = await _LoanProductServices.PcmfGetLoanProduct(KEY);
+                if (p == null) return Content("Product not found.");
+
+                var vm = new PCMFLoanProductManagementObjects
+                {
+                    Product = p,
+                    CreateOrUpdate = _LoanProductServices.MapToCreateCommand(p)
+                };
+
+                return PartialView(partialView, vm);
+            }
+
+            // -----------------------------
+            // MANAGE: requires KEY
+            // -----------------------------
+            if (!string.IsNullOrWhiteSpace(path) &&
+                (string.Equals(path, "preview", StringComparison.OrdinalIgnoreCase) ||
+                 string.Equals(path, "account_mapping", StringComparison.OrdinalIgnoreCase) ||
+                 string.Equals(path, "policy", StringComparison.OrdinalIgnoreCase) ||
+                 string.Equals(path, "penalties", StringComparison.OrdinalIgnoreCase) ||
+                 string.Equals(path, "overdraft", StringComparison.OrdinalIgnoreCase)))
+            {
+                if (string.IsNullOrWhiteSpace(KEY))
+                    return Content("Invalid product key.");
+
+                // Load product (base)
+                var p = await _LoanProductServices.PcmfGetLoanProduct(KEY);
+                if (p == null) return Content("Product not found.");
+
+                var vm = new PCMFLoanProductManagementObjects
+                {
+                    Product = p
+                };
+
+                // ✅ Preview: only product data
+                if (string.Equals(path, "preview", StringComparison.OrdinalIgnoreCase))
+                {
+                    return PartialView(partialView, vm);
                 }
 
+                // ✅ Accounting Mapping
+                if (string.Equals(path, "account_mapping", StringComparison.OrdinalIgnoreCase))
+                {
+                    // Only load what mapping needs
+                    await LoadChartOfAccounts();
+
+                    // Load mapping (create if missing)
+                    vm.AccountingProfile = p.AccountingMapping?? new LoanProductAccountingProfile { LoanProductId = p.Id };
+                    // Snapshot (optional but recommended)
+                    vm.AccountingProfile.PcmfBaseCode = p.PcmfBaseCode.Value;
+                    vm.AccountingProfile.PcmfSection = p.PcmfSection;
+                    vm.AccountingProfile.PcmfGroupCode = p.PcmfGroupCode.Value;
+                    vm.AccountingProfile.PcmfPopulation = p.PcmfPopulation;
+                    return PartialView(partialView, vm);
+                }
+
+                // ✅ Policy
+                if (string.Equals(path, "policy", StringComparison.OrdinalIgnoreCase))
+                {
+                    vm.Policy = p.Policy
+                                ?? new LoanProductPolicy { LoanProductId = p.Id };
+
+                    return PartialView(partialView, vm);
+                }
+
+                // ✅ Penalties (if you have a penalties object in wrapper)
+                if (string.Equals(path, "penalties", StringComparison.OrdinalIgnoreCase))
+                {
+                    // vm.Penalties = await _LoanProductServices.GetLoanProductPenalties(p.Id) ?? new LoanProductPenaltyProfile();
+                    return PartialView(partialView, vm);
+                }
+
+                // ✅ Overdraft Facility (only if OD)
+                if (string.Equals(path, "overdraft", StringComparison.OrdinalIgnoreCase))
+                {
+                    vm.OverdraftFacilityConfig =p.OverdraftFacilityConfig
+                                              ?? new OverdraftFacilityConfig();
+
+                    return PartialView(partialView, vm);
+                }
+            }
+
+            // fallback
+            await GetValues();
+            return PartialView(partialView, new PCMFLoanProductManagementObjects());
+        }
+
+
+        // -----------------------------
+        // Helper: load chart of accounts for select2
+        // -----------------------------
+        private async Task LoadChartOfAccounts()
+        {
+            var profiles = await _accountingServices.GetAllAffiliateAccounts();
+            ViewBag.ChartOfAccounts = profiles;
+        }
+        [HttpPost]
+        public async Task<ActionResult> SaveAccountingMapping(PCMFLoanProductManagementObjects model, string LoanProductId)
+        {
+            try
+            {
+                if (model?.AccountingProfile == null)
+                    return Json(new { success = false, message = "Invalid mapping payload." });
+                model.AccountingProfile.LoanProductId = LoanProductId;
+
+                // TODO: save mapping
+                var data = await _LoanProductServices.UpdateAccountingProfileSimple(model.AccountingProfile);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Failed to save accounting mapping.", error = ex.Message });
             }
         }
 
         public async Task<bool> GetValues()
         {
+
+
+
             var agreggates = await _LoanProductServices.GetAgreggates();
             var productEnumAgregates = await _LoanProductServices.GetLoanProductEnumAggregates();
             var loanProductCategories = await _loanProductCategoryServices.GetLoanProductCategorys();
@@ -280,8 +472,13 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
             ViewBag.PenaltyTypes = productEnumAgregates.PenaltyTypes;
             ViewBag.YesOrNo = productEnumAgregates.YesOrNo;
             ViewBag.LoanCategories = productEnumAgregates.LoanCategories;
-            ViewBag.LoanTargets = productEnumAgregates.LoanTargets;
-            //YesOrNo
+            //ViewBag.LoanTargets = productEnumAgregates.LoanTargets;
+            ViewBag.LoanTargets = agreggates.LoanTargetCatalogs;
+            ViewBag.PcmfLoanPurposes = agreggates.PcmfLoanPurposes;
+            // Accounting Profiles
+            var profiles = await _accountingServices.GetAllAffiliateAccounts();
+            ViewBag.AccountingProfiles = profiles;
+
             return true;
         }
 

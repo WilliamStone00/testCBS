@@ -5,85 +5,86 @@
     ViewBag.Title = "IPS Claims Management";
 }
 
-<div id="datalistingview2">
-    <div class="row">
-        <div class="col-12">
-            <div class="card bg-light mb-2">
-                <div class="card-body text-center">
-                    <h1 class="card-title text-primary">
-                        <i class="mdi mdi-shield-account me-2"></i>IPS Claims Management
-                    </h1>
-                    <p class="card-text">
-                        Browse and filter insurance claims by member, claim type, status, and other criteria.
-                    </p>
-                    <div class="alert alert-info mt-3 py-2">
-                        <i class="mdi mdi-information-outline me-1"></i>
-                        Use the filters below to narrow down the list of IPS claims.
-                    </div>
-                    <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-shield-account me-2"></i>IPS Claims Management
+                </h1>
+                <p class="card-text">
+                    Browse and filter insurance claims by member, claim type, status, and other criteria.
+                </p>
+                <div class="alert alert-info mt-3 py-2">
+                    <i class="mdi mdi-information-outline me-1"></i>
+                    Use the filters below to narrow down the list of IPS claims.
                 </div>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
         </div>
     </div>
+</div>
 
-    <div class="card mb-3">
-        <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-            <span><i class="mdi mdi-information-outline me-2"></i> IPS Claims Tips</span>
-            <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseClaimTips" aria-expanded="false">
-                <i class="mdi mdi-chevron-down"></i>
-            </button>
-        </h6>
-        <div id="collapseClaimTips" class="collapse">
-            <div class="card-body">
-                <ul>
-                    <li>
-                        <i class="mdi mdi-account-clock text-info me-2"></i>
-                        <strong>Member Verification:</strong> Verify member details and eligibility before processing claims.
-                    </li>
-                    <li>
-                        <i class="mdi mdi-file-document-outline text-warning me-2"></i>
-                        <strong>Documentation:</strong> Ensure all required documents are uploaded before approval.
-                    </li>
-                    <li>
-                        <i class="mdi mdi-cash-multiple text-success me-2"></i>
-                        <strong>Amount Verification:</strong> Verify claimed amounts against coverage limits and balances.
-                    </li>
-                    <li>
-                        <i class="mdi mdi-account-group text-primary me-2"></i>
-                        <strong>Beneficiary Info:</strong> Accurate beneficiary information is crucial for claim settlement.
-                    </li>
-                    <li>
-                        <i class="mdi mdi-calendar-check text-danger me-2"></i>
-                        <strong>Event Date:</strong> Ensure event date is within coverage period and valid.
-                    </li>
-                    <li>
-                        <i class="mdi mdi-check-circle-outline text-success me-2"></i>
-                        <strong>Workflow:</strong> Claims follow: Registered → Pending → Approved/Rejected → Posted.
-                    </li>
-                    <li>
-                        <i class="mdi mdi-bank text-info me-2"></i>
-                        <strong>Posting:</strong> After approval, post to accounting for financial settlement.
-                    </li>
-                </ul>
-            </div>
+<div class="card mb-3">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> IPS Claims Tips</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseClaimTips" aria-expanded="false">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseClaimTips" class="collapse">
+        <div class="card-body">
+            <ul>
+                <li>
+                    <i class="mdi mdi-account-clock text-info me-2"></i>
+                    <strong>Member Verification:</strong> Verify member details and eligibility before processing claims.
+                </li>
+                <li>
+                    <i class="mdi mdi-file-document-outline text-warning me-2"></i>
+                    <strong>Documentation:</strong> Ensure all required documents are uploaded before approval.
+                </li>
+                <li>
+                    <i class="mdi mdi-cash-multiple text-success me-2"></i>
+                    <strong>Amount Verification:</strong> Verify claimed amounts against coverage limits and balances.
+                </li>
+                <li>
+                    <i class="mdi mdi-account-group text-primary me-2"></i>
+                    <strong>Beneficiary Info:</strong> Accurate beneficiary information is crucial for claim settlement.
+                </li>
+                <li>
+                    <i class="mdi mdi-calendar-check text-danger me-2"></i>
+                    <strong>Event Date:</strong> Ensure event date is within coverage period and valid.
+                </li>
+                <li>
+                    <i class="mdi mdi-check-circle-outline text-success me-2"></i>
+                    <strong>Workflow:</strong> Claims follow: Registered → Pending → Approved/Rejected → Posted.
+                </li>
+                <li>
+                    <i class="mdi mdi-bank text-info me-2"></i>
+                    <strong>Posting:</strong> After approval, post to accounting for financial settlement.
+                </li>
+            </ul>
         </div>
     </div>
+</div>
 
-    <div class="card mb-1">
-        <div class="card-body d-flex justify-content-end align-items-center">
-            <a href="@Url.Action("List", "IPSClaim")"
-               class="btn btn-label-primary btn-sm me-2"
-               id="btnViewList"
-               data-bs-toggle="tooltip"
-               title="@GlobalShared.ViewList">
-                <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
-            </a>
-            <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_Create','new','IPSConfig')" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="AddNew">
-                <i class="mdi mdi-plus mdi-18px"></i> Add New
-            </a>
-        </div>
+<div class="card mb-1">
+    <div class="card-body d-flex justify-content-end align-items-center">
+        <a href="@Url.Action("List", "IPSClaim")"
+           class="btn btn-label-primary btn-sm me-2"
+           id="btnViewList"
+           data-bs-toggle="tooltip"
+           title="@GlobalShared.ViewList">
+            <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
+        </a>
+        <a type="button" onclick="AddORUpdateGen(null,'datalistingview2','_Create','new','IPSClaim')" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="AddNew">
+            <i class="mdi mdi-plus mdi-18px"></i> Add New
+        </a>
     </div>
+</div>
 
+<div id="datalistingview2">
     <div class="card shadow p-3 mb-1">
         <h5 class="text-primary mb-1">
             <i class="mdi mdi-filter-outline me-1"></i> IPS Claim Filters
@@ -332,8 +333,105 @@
 <div class="modal fade" id="exportModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            @Html.Partial("~/Views/CollectorCommission/_ExportCommission.cshtml")
-            @* or if in Shared folder: @Html.Partial("_ExportCommission", ModelForExport) *@
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card bg-light mb-3">
+                            <div class="card-body text-center">
+                                <h4 class="card-title text-primary">
+                                    <i class="mdi mdi-export me-2"></i>Export Options
+                                </h4>
+                                <div class="alert alert-info mt-3 py-2">
+                                    <i class="mdi mdi-information-outline me-1"></i>
+                                    Export filtered IPS claims data to Excel, CSV, or PDF.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <form id="exportForm">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Export Format</label>
+                            <select class="form-select" id="exportFormat" name="exportFormat">
+                                <option value="excel">Excel (.xlsx)</option>
+                                <option value="csv">CSV (.csv)</option>
+                                <option value="pdf">PDF (.pdf)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Report Type</label>
+                            <select class="form-select" id="reportType" name="reportType">
+                                <option value="full">Full Report</option>
+                                <option value="dateRange">Date Range Report</option>
+                                <option value="summary">Summary Report</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Start Date (Optional)</label>
+                            <input type="date" class="form-control" id="startDate" name="startDate">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">End Date (Optional)</label>
+                            <input type="date" class="form-control" id="endDate" name="endDate">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label class="form-label fw-semibold">File Name</label>
+                            <input type="text" class="form-control" id="fileName" name="fileName"
+                                   value="IPS_Claims_Report" placeholder="Enter file name">
+                            <div class="form-text">Default: IPS_Claims_Report_[current_date]</div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="form-check form-switch mb-2">
+                                <input class="form-check-input" type="checkbox" id="includeSummary" name="includeSummary" checked>
+                                <label class="form-check-label fw-semibold" for="includeSummary">
+                                    <i class="mdi mdi-chart-bar me-1"></i> Include Summary Report
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="includeAllColumns" name="includeAllColumns" checked>
+                                <label class="form-check-label fw-semibold" for="includeAllColumns">
+                                    <i class="mdi mdi-table-column me-1"></i> Include All Columns
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Export Progress -->
+                    <div id="exportProgress" class="mt-3 d-none">
+                        <div class="alert alert-info">
+                            <i class="mdi mdi-sync me-2"></i>
+                            <span id="progressText">Preparing export...</span>
+                        </div>
+                        <div class="progress mb-2">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated"
+                                 role="progressbar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="mdi mdi-close me-1"></i>Cancel
+                </button>
+                <button type="button" class="btn btn-success" id="btnConfirmExport">
+                    <i class="mdi mdi-export me-1"></i>Export
+                </button>
+            </div>
         </div>
     </div>
 </div>
@@ -341,6 +439,7 @@
 <!-- Load Action Modal Partial View -->
 @Html.Partial("_ActionModal")
 
+</div>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 
@@ -377,216 +476,206 @@
     }
 
     // ============================
-    // ENHANCED VALIDATION FUNCTIONS
+    // ENHANCED VALIDATION FUNCTIONS - SIMPLIFIED LOGIC
     // ============================
-        function updateAllTotals() {
-
-            // =========================
-            // ENTERED TOTAL
-            // =========================
-            var enteredTotal = parseFloat($('#totalAmount').val()) || 0;
-
-            // =========================
-            // SOURCE TOTAL (SEPARATE)
-            // =========================
-            var sourceTotal = 0;
-            $('.source-amount').each(function () {
-                sourceTotal += parseFloat($(this).val()) || 0;
-            });
-
-            // =========================
-            // MEMBER TOTAL
-            // =========================
-            var memberTotal = 0;
-            $('.member-amount').each(function () {
-                memberTotal += parseFloat($(this).val()) || 0;
-            });
-
-            // =========================
-            // BRANCH TOTAL
-            // =========================
-            var branchTotal = 0;
-            $('.branch-amount').each(function () {
-                branchTotal += parseFloat($(this).val()) || 0;
-            });
-
-            // =========================
-            // COMBINED TOTALS
-            // =========================
-            var branchMemberTotal = memberTotal + branchTotal;
-            var combinedTotal = sourceTotal + branchMemberTotal;
-
-            // =========================
-            // REMAINING BALANCE
-            // =========================
-            var remainingForMemberBranch = enteredTotal - branchMemberTotal;
-
-            // =========================
-            // DISPLAY TOTALS
-            // =========================
-            $('#sourceTotalAmount').text(formatCurrency(sourceTotal));
-            $('#memberTotalAmount').text(formatCurrency(memberTotal));
-            $('#branchTotalAmount').text(formatCurrency(branchTotal));
-
-            // =========================
-            // VALIDATION TOTALS
-            // =========================
-            $('#validationSourceTotal').text(formatCurrency(sourceTotal));
-            $('#validationMemberTotal').text(formatCurrency(memberTotal));
-            $('#validationBranchTotal').text(formatCurrency(branchTotal));
-            $('#validationBranchMemberTotal').text(formatCurrency(branchMemberTotal));
-            $('#validationCombinedTotal').text(formatCurrency(combinedTotal));
-            $('#validationEnteredTotal').text(formatCurrency(enteredTotal));
-
-            // =========================
-            // TABLE FOOTERS
-            // =========================
-            $('#sourceMaxAmount').text(formatCurrency(enteredTotal));
-            $('#memberAvailableBalance').text(formatCurrency(enteredTotal - branchTotal));
-            $('#branchAvailableBalance').text(formatCurrency(enteredTotal - memberTotal));
-
-            // =========================
-            // TOTAL AMOUNT SECTION
-            // =========================
-            $('#displayTotalAmount').text(formatCurrency(enteredTotal));
-            $('#sourceBalance').text(formatCurrency(enteredTotal - sourceTotal));
-            $('#memberBranchBalance').text(formatCurrency(enteredTotal));
-
-            // =========================
-            // AVAILABLE BALANCES
-            // =========================
-            $('#availableForMemberBranch').text(formatCurrency(enteredTotal));
-            $('#remainingBalance').text(formatCurrency(remainingForMemberBranch));
-
-            // =========================
-            // VALIDATION & LIMITS
-            // =========================
-            updateValidation();
-            updateInputLimits(enteredTotal, sourceTotal, memberTotal, branchTotal);
-        }
-
-
-        function updateInputLimits(enteredTotal, sourceTotal, memberTotal, branchTotal) {
-            // Calculate remaining balances (source doesn't affect these)
-            var remainingForMember = enteredTotal - branchTotal;
-            var remainingForBranch = enteredTotal - memberTotal;
-
-            // Update source amount inputs - can go up to total amount
-            $('.source-amount').each(function () {
-                var $input = $(this);
-                var currentValue = parseFloat($input.val()) || 0;
-                var maxSource = enteredTotal;
-
-                // Set max attribute
-                $input.attr('max', maxSource);
-
-                // Check if value exceeds max
-                if (currentValue > maxSource) {
-                    $input.addClass('is-invalid');
-                    $input.siblings('.invalid-feedback').remove();
-                    $input.after('<div class="invalid-feedback">Exceeds total amount</div>');
-                } else {
-                    $input.removeClass('is-invalid');
-                    $input.siblings('.invalid-feedback').remove();
-                }
-            });
-
-            // Update member amount inputs - affected only by branch, not by source
-            $('.member-amount').each(function () {
-                var $input = $(this);
-                var currentValue = parseFloat($input.val()) || 0;
-                var accountMax = parseFloat($input.data('account-max')) || Infinity;
-                var maxMember = Math.min(accountMax, remainingForMember);
-
-                // Update max attribute
-                $input.attr('max', maxMember);
-
-                // Check if value exceeds max
-                if (currentValue > maxMember) {
-                    $input.addClass('is-invalid');
-                    $input.siblings('.invalid-feedback').remove();
-                    $input.after('<div class="invalid-feedback">Exceeds available balance after branch allocation</div>');
-                } else {
-                    $input.removeClass('is-invalid');
-                    $input.siblings('.invalid-feedback').remove();
-                }
-            });
-
-            // Update branch amount inputs - affected only by member, not by source
-            $('.branch-amount').each(function () {
-                var $input = $(this);
-                var currentValue = parseFloat($input.val()) || 0;
-                var maxBranch = remainingForBranch;
-
-                // Set max attribute
-                $input.attr('max', maxBranch);
-
-                // Check if value exceeds max
-                if (currentValue > maxBranch) {
-                    $input.addClass('is-invalid');
-                    $input.siblings('.invalid-feedback').remove();
-                    $input.after('<div class="invalid-feedback">Exceeds available balance after member allocation</div>');
-                } else {
-                    $input.removeClass('is-invalid');
-                    $input.siblings('.invalid-feedback').remove();
-                }
-            });
-        }
-
-    function updateValidation() {
+    function updateAllTotals() {
+        // =========================
+        // ENTERED TOTAL (Approved Claim Amount)
+        // =========================
         var enteredTotal = parseFloat($('#totalAmount').val()) || 0;
-        var sourceTotal = parseFloat($('#validationSourceTotal').text().replace(/,/g, '')) || 0;
-        var memberTotal = parseFloat($('#validationMemberTotal').text().replace(/,/g, '')) || 0;
-        var branchTotal = parseFloat($('#validationBranchTotal').text().replace(/,/g, '')) || 0;
-        var branchMemberTotal = memberTotal + branchTotal;
-        var combinedTotal = sourceTotal + branchMemberTotal;
+        if (enteredTotal === 0) {
+            resetAllTotals();
+            return;
+        }
+
+        // =========================
+        // INDIVIDUAL TOTALS
+        // =========================
+        var sourceTotal = getSourceTotal();
+        var memberTotal = getMemberTotal();
+        var branchTotal = getBranchTotal();
+
+        // =========================
+        // COMBINED TOTALS
+        // =========================
+        var memberBranchTotal = memberTotal + branchTotal;
+        var combinedTotal = sourceTotal + memberBranchTotal;
+
+        // =========================
+        // AVAILABLE ALLOCATION BALANCES
+        // =========================
+        var remainingTotal = enteredTotal - combinedTotal;
+        var remainingForSource = enteredTotal - sourceTotal;
+        var remainingForMemberBranch = enteredTotal - memberBranchTotal;
+
+        // =========================
+        // DISPLAY TOTALS
+        // =========================
+        $('#sourceTotalAmount').text(formatCurrency(sourceTotal));
+        $('#memberTotalAmount').text(formatCurrency(memberTotal));
+        $('#branchTotalAmount').text(formatCurrency(branchTotal));
+
+        // =========================
+        // TABLE FOOTERS (Available allocation)
+        // =========================
+        $('#sourceMaxAmount').text(formatCurrency(enteredTotal));
+        $('#memberAvailableBalance').text(formatCurrency(enteredTotal - branchTotal));
+        $('#branchAvailableBalance').text(formatCurrency(enteredTotal - memberTotal));
+
+        // =========================
+        // TOTAL AMOUNT SECTION
+        // =========================
+        $('#displayTotalAmount').text(formatCurrency(enteredTotal));
+        $('#sourceBalance').text(formatCurrency(remainingForSource));
+        $('#memberBranchBalance').text(formatCurrency(remainingForMemberBranch));
+
+        // =========================
+        // AVAILABLE BALANCES (for UI)
+        // =========================
+        $('#availableForMemberBranch').text(formatCurrency(enteredTotal));
+        $('#remainingBalance').text(formatCurrency(remainingTotal));
+
+        // =========================
+        // LIVE VALIDATION DISPLAY
+        // =========================
+        updateValidationDisplay(enteredTotal, sourceTotal, memberTotal, branchTotal);
+
+        // =========================
+        // INPUT LIMITS
+        // =========================
+        updateInputLimits(enteredTotal, sourceTotal, memberTotal, branchTotal);
+    }
+
+    function resetAllTotals() {
+        $('[id$="TotalAmount"]').text('0.00');
+        $('[id^="validation"]').text('0.00');
+        $('[id$="Balance"]').text('0.00');
+        $('[id$="AvailableBalance"]').text('0.00');
+        $('#validationStatus').removeClass().addClass('badge bg-warning').text('Enter Amount');
+        $('#validationMessage').text('Please enter total amount first');
+        $('#amountValidation').removeClass().addClass('badge bg-warning').text('Enter Amount');
+    }
+
+    function updateInputLimits(enteredTotal, sourceTotal, memberTotal, branchTotal) {
+        if (enteredTotal === 0) return;
+
+        // SOURCE: Only check against total amount (independent of member/branch)
+        $('.source-amount').each(function () {
+            var $input = $(this);
+            var currentValue = parseFloat($input.val()) || 0;
+            var maxSource = enteredTotal;
+
+            // Set max attribute
+            $input.attr('max', maxSource > 0 ? maxSource : 0);
+
+            // Check if value exceeds available allocation
+            if (currentValue > maxSource) {
+                $input.addClass('is-invalid');
+                $input.siblings('.invalid-feedback').remove();
+                $input.after('<div class="invalid-feedback">Cannot exceed total approved amount</div>');
+            } else {
+                $input.removeClass('is-invalid');
+                $input.siblings('.invalid-feedback').remove();
+            }
+        });
+
+        // MEMBER: Check against total amount minus branch allocation
+        // (Source doesn't affect this) - NO BALANCE CHECK FOR ANY ACCOUNT TYPE
+        $('.member-amount').each(function () {
+            var $input = $(this);
+            var currentValue = parseFloat($input.val()) || 0;
+
+            // Member can use what's left after branch allocation
+            // NO ACCOUNT BALANCE CHECK FOR IPS CLAIMS
+            var maxMember = enteredTotal - branchTotal;
+
+            // Update max attribute
+            $input.attr('max', maxMember > 0 ? maxMember : 0);
+
+            // Check if value exceeds max
+            if (currentValue > maxMember) {
+                $input.addClass('is-invalid');
+                $input.siblings('.invalid-feedback').remove();
+                $input.after('<div class="invalid-feedback">Cannot exceed total approved amount minus branch allocation</div>');
+            } else {
+                $input.removeClass('is-invalid');
+                $input.siblings('.invalid-feedback').remove();
+            }
+        });
+
+        // BRANCH: Check against total amount minus member allocation
+        // (Source doesn't affect this)
+        $('.branch-amount').each(function () {
+            var $input = $(this);
+            var currentValue = parseFloat($input.val()) || 0;
+            var maxBranch = enteredTotal - memberTotal;
+
+            // Set max attribute
+            $input.attr('max', maxBranch > 0 ? maxBranch : 0);
+
+            // Check if value exceeds max
+            if (currentValue > maxBranch) {
+                $input.addClass('is-invalid');
+                $input.siblings('.invalid-feedback').remove();
+                $input.after('<div class="invalid-feedback">Cannot exceed total approved amount minus member allocation</div>');
+            } else {
+                $input.removeClass('is-invalid');
+                $input.siblings('.invalid-feedback').remove();
+            }
+        });
+    }
+
+    function updateValidationDisplay(enteredTotal, sourceTotal, memberTotal, branchTotal) {
+        // Calculate combined totals
+        var memberBranchTotal = memberTotal + branchTotal;
+        var combinedTotal = sourceTotal + memberBranchTotal;
+        var remainingTotal = enteredTotal - combinedTotal;
+
+        // Update validation summary section
+        $('#validationSourceTotal').text(formatCurrency(sourceTotal));
+        $('#validationMemberTotal').text(formatCurrency(memberTotal));
+        $('#validationBranchTotal').text(formatCurrency(branchTotal));
+        $('#validationBranchMemberTotal').text(formatCurrency(memberBranchTotal));
+        $('#validationCombinedTotal').text(formatCurrency(combinedTotal));
+        $('#validationEnteredTotal').text(formatCurrency(enteredTotal));
+
+        // Determine validation status
+        var statusText = '';
+        var statusClass = '';
+        var message = '';
 
         if (enteredTotal === 0) {
-            $('#validationStatus').removeClass().addClass('badge bg-warning').text('Enter Amount');
-            $('#validationMessage').text('Please enter total amount first');
-            $('#amountValidation').removeClass().addClass('badge bg-warning').text('Enter Amount');
-            return false;
+            statusText = 'Enter Amount';
+            statusClass = 'bg-warning';
+            message = 'Please enter total amount first';
+        } else if (sourceTotal > enteredTotal) {
+            statusText = 'Source Exceeds';
+            statusClass = 'bg-danger';
+            message = `Source amount (${formatCurrency(sourceTotal)}) exceeds total approved amount`;
+        } else if (memberBranchTotal > enteredTotal) {
+            statusText = 'Member+Branch Exceeds';
+            statusClass = 'bg-danger';
+            message = `Member+Branch total (${formatCurrency(memberBranchTotal)}) exceeds total approved amount`;
+        } else if (Math.abs(combinedTotal - enteredTotal) < 0.01) {
+            statusText = 'Fully Allocated';
+            statusClass = 'bg-success';
+            message = 'All amount has been allocated';
+        } else {
+            statusText = 'Partially Allocated';
+            statusClass = 'bg-warning';
+            message = `${formatCurrency(remainingTotal)} remaining to allocate`;
         }
 
-        // Rule 1: Source amount should be ≤ Total amount (but doesn't affect member/branch)
-        if (sourceTotal > enteredTotal) {
-            $('#validationStatus').removeClass().addClass('badge bg-danger').text('Source Exceeds');
-            $('#validationMessage').text(`Source amount (${formatCurrency(sourceTotal)}) exceeds total amount`);
-            $('#amountValidation').removeClass().addClass('badge bg-danger').text('Source Exceeds');
-            return false;
-        }
+        // Update validation status display
+        $('#validationStatus').removeClass().addClass('badge ' + statusClass).text(statusText);
+        $('#validationMessage').text(message);
+        $('#amountValidation').removeClass().addClass('badge ' + statusClass).text(statusText);
 
-        // Rule 2: Branch + Member total should be ≤ Total amount (source doesn't reduce this)
-        if (branchMemberTotal > enteredTotal) {
-            $('#validationStatus').removeClass().addClass('badge bg-danger').text('Branch+Member Exceeds');
-            $('#validationMessage').text(`Branch+Member total (${formatCurrency(branchMemberTotal)}) exceeds total amount`);
-            $('#amountValidation').removeClass().addClass('badge bg-danger').text('Branch+Member Exceeds');
-            return false;
-        }
+        // Update remaining balance display
+        $('#remainingBalance').text(formatCurrency(remainingTotal));
+        $('#availableForMemberBranch').text(formatCurrency(enteredTotal));
 
-        // Rule 3: Combined total should = Total amount (source + branch + member = total)
-        if (combinedTotal === enteredTotal) {
-            $('#validationStatus').removeClass().addClass('badge bg-success').text('Valid');
-            $('#validationMessage').text('All amounts match perfectly');
-            $('#amountValidation').removeClass().addClass('badge bg-success').text('Valid');
-            return true;
-        }
-
-        if (combinedTotal > enteredTotal) {
-            $('#validationStatus').removeClass().addClass('badge bg-danger').text('Exceeds Limit');
-            $('#validationMessage').text(`Total entries (${formatCurrency(combinedTotal)}) exceeds entered amount`);
-            $('#amountValidation').removeClass().addClass('badge bg-danger').text('Exceeds Limit');
-            return false;
-        }
-
-        if (combinedTotal < enteredTotal) {
-            $('#validationStatus').removeClass().addClass('badge bg-warning').text('Under Amount');
-            $('#validationMessage').text(`Total entries (${formatCurrency(combinedTotal)}) is less than entered amount`);
-            $('#amountValidation').removeClass().addClass('badge bg-warning').text('Under Amount');
-            return true; // This is acceptable but with warning
-        }
-
-        return false;
+        return Math.abs(combinedTotal - enteredTotal) < 0.01;
     }
 
     function getSourceTotal() {
@@ -614,51 +703,74 @@
     }
 
     // ============================
-    // AMOUNT ENTRY VALIDATION - FIXED
+    // AMOUNT ENTRY VALIDATION - SIMPLIFIED LOGIC
     // ============================
-        function preventOverEntry() {
-            $(document).on('input', '.source-amount', function () {
-                var $input = $(this);
-                var enteredTotal = parseFloat($('#totalAmount').val()) || 0;
-                var currentValue = parseFloat($input.val()) || 0;
+    function preventOverEntry() {
+        $(document).on('input', '.source-amount', function () {
+            var $input = $(this);
+            var enteredTotal = parseFloat($('#totalAmount').val()) || 0;
+            if (enteredTotal === 0) {
+                $input.val('');
+                appalert('Please enter total amount first', 3, 1);
+                return;
+            }
 
-                // Source can go up to total amount, but doesn't affect member/branch
-                if (currentValue > enteredTotal) {
-                    $input.val(enteredTotal);
-                    appalert('Source amount cannot exceed total amount', 3, 1);
-                }
-                updateAllTotals();
-            });
+            var currentValue = parseFloat($input.val()) || 0;
 
-            $(document).on('input', '.member-amount', function () {
-                var $input = $(this);
-                var enteredTotal = parseFloat($('#totalAmount').val()) || 0;
-                var branchTotal = getBranchTotal();
-                var currentValue = parseFloat($input.val()) || 0;
-                var accountMax = parseFloat($input.data('account-max')) || Infinity;
-                var maxForMember = Math.min(enteredTotal - branchTotal, accountMax);
+            // Source can use up to total amount (independent of member/branch)
+            if (currentValue > enteredTotal) {
+                $input.val(enteredTotal > 0 ? enteredTotal : 0);
+                appalert('Source amount cannot exceed total approved amount', 3, 1);
+            }
+            updateAllTotals();
+        });
 
-                if (currentValue > maxForMember) {
-                    $input.val(maxForMember);
-                    appalert('Member amount cannot exceed available balance after branch allocation', 3, 1);
-                }
-                updateAllTotals();
-            });
+        $(document).on('input', '.member-amount', function () {
+            var $input = $(this);
+            var enteredTotal = parseFloat($('#totalAmount').val()) || 0;
+            if (enteredTotal === 0) {
+                $input.val('');
+                appalert('Please enter total amount first', 3, 1);
+                return;
+            }
 
-            $(document).on('input', '.branch-amount', function () {
-                var $input = $(this);
-                var enteredTotal = parseFloat($('#totalAmount').val()) || 0;
-                var memberTotal = getMemberTotal();
-                var currentValue = parseFloat($input.val()) || 0;
-                var maxForBranch = enteredTotal - memberTotal;
+            var currentValue = parseFloat($input.val()) || 0;
+            var branchTotal = getBranchTotal();
 
-                if (currentValue > maxForBranch) {
-                    $input.val(maxForBranch);
-                    appalert('Branch amount cannot exceed available balance after member allocation', 3, 1);
-                }
-                updateAllTotals();
-            });
-        }
+            // Member can use what's left after branch allocation
+            // NO ACCOUNT BALANCE CHECK FOR ANY ACCOUNT TYPE IN IPS CLAIMS
+            var maxMember = enteredTotal - branchTotal;
+
+            if (currentValue > maxMember) {
+                $input.val(maxMember > 0 ? maxMember : 0);
+                appalert('Member amount cannot exceed total approved amount minus branch allocation', 3, 1);
+            }
+            updateAllTotals();
+        });
+
+        $(document).on('input', '.branch-amount', function () {
+            var $input = $(this);
+            var enteredTotal = parseFloat($('#totalAmount').val()) || 0;
+            if (enteredTotal === 0) {
+                $input.val('');
+                appalert('Please enter total amount first', 3, 1);
+                return;
+            }
+
+            var currentValue = parseFloat($input.val()) || 0;
+            var memberTotal = getMemberTotal();
+
+            // Branch can use what's left after member allocation
+            // (Source doesn't affect this)
+            var maxBranch = enteredTotal - memberTotal;
+
+            if (currentValue > maxBranch) {
+                $input.val(maxBranch > 0 ? maxBranch : 0);
+                appalert('Branch amount cannot exceed total approved amount minus member allocation', 3, 1);
+            }
+            updateAllTotals();
+        });
+    }
 
     // ============================
     // INITIALIZATION
@@ -699,18 +811,31 @@
         // Bind table row events globally
         bindTableRowEvents();
 
-        // Bind total amount input
+        // Bind total amount input - RESET ALLOCATIONS WHEN TOTAL CHANGES
         $(document).on('input', '#totalAmount', function() {
             var enteredTotal = parseFloat($(this).val()) || 0;
+            if (enteredTotal === 0) {
+                resetAllTotals();
+                return;
+            }
+
+            // Reset all amounts if total changes
+            $('.source-amount').val('');
+            $('.member-amount').val('');
+            $('.branch-amount').val('');
+
             $('#displayTotalAmount').text(formatCurrency(enteredTotal));
-            $('#sourceBalance').text(formatCurrency(enteredTotal));
-            $('#memberBranchBalance').text(formatCurrency(enteredTotal));
             updateAllTotals();
         });
 
         // Initialize amount validation
         preventOverEntry();
 
+        // Bind the export confirm button click event
+        $(document).on('click', '#btnConfirmExport', function (e) {
+            e.preventDefault();
+            exportData();
+        });
         // REMOVED: Auto-load on page load
         // Data will only load when applyFilterBtn is clicked
     });
@@ -1202,10 +1327,7 @@
         `);
 
         // Reset totals
-        $('[id$="TotalAmount"]').text('0.00');
-        $('[id^="validation"]').text('0.00');
-        $('#validationStatus').removeClass().addClass('badge bg-warning').text('Not Validated');
-        $('#validationMessage').text('Enter total amount first');
+        resetAllTotals();
 
         // Set defaults
         $('#accountingDate').val(new Date().toISOString().split('T')[0]);
@@ -1215,7 +1337,7 @@
     }
 
     // ============================
-    // POSTING DATA FUNCTIONS - COMPLETELY UPDATED
+    // POSTING DATA FUNCTIONS
     // ============================
     function loadPostingData(claimId, memberId, branchId) {
         $('#customerInfoSection').html(`
@@ -1240,18 +1362,17 @@
                 const data = response.data;
 
                 // 1. Capture Data Globally
-                // Check for both PascalCase (MVC default) and camelCase (Json.NET default)
                 var rawAffiliates = data.viewBagData.affiliateAccounts || data.viewBagData.AffiliateAccounts || [];
                 var rawBranches = data.viewBagData.branchAccounts || data.viewBagData.BranchAccounts || [];
 
-                // Normalize data to ensure we have .Value and .Text regardless of server casing
+                // Normalize data
                 affiliateAccounts = rawAffiliates.map(x => ({ Value: x.Value || x.value, Text: x.Text || x.text }));
                 branchAccounts = rawBranches.map(x => ({ Value: x.Value || x.value, Text: x.Text || x.text }));
 
                 // 2. Update UI
                 updatePostingUI(data);
 
-                // 3. Setup Tables (This triggers addRow, which now handles the dropdowns internally)
+                // 3. Setup Tables
                 setupPostingTables(data);
 
                 // 4. Update Totals
@@ -1264,7 +1385,7 @@
     }
 
     function updatePostingUI(data) {
-        // Update customer info section (make it collapsible)
+        // Update customer info section
         if (data.customer) {
             $('#customerInfoSection').html(`
                 <div class="accordion" id="customerAccordion">
@@ -1321,6 +1442,8 @@
         if (data.claim) {
             $('#actionClaimType').text(data.claim.ClaimType === 'LoanProtection' ? 'Loan Protection' : 'Life Savings');
             $('#actionApprovedAmount').text(formatCurrency(data.claim.ApprovedAmount || data.claim.ClaimedAmount || 0));
+            // Set the total amount field to the approved amount
+            $('#totalAmount').val(data.claim.ApprovedAmount || data.claim.ClaimedAmount || 0);
         }
     }
 
@@ -1466,14 +1589,13 @@
         $('#noSourceRows').remove();
         $('#sourceAccountsTableBody').append(rowHtml);
 
-        // 4. Initialize Select2 IMMEDIATELY on this specific row
-        // IMPORTANT: dropdownParent is required for Modals
+        // 4. Initialize Select2
         if ($.fn.select2) {
             $(`#${rowId} .select2-dynamic`).select2({
                 width: '100%',
                 placeholder: 'Select Account',
                 allowClear: true,
-                dropdownParent: $('#actionModal') // <--- THIS FIXES THE "DOESN'T SHOW" ISSUE
+                dropdownParent: $('#actionModal')
             });
         }
     }
@@ -1481,37 +1603,47 @@
     function addMemberAccountRow(account) {
         var rowId = 'memberRow_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
         var maxAmount = account.availableBalance || account.balance || 0;
+        var accountBalance = formatCurrency(maxAmount);
+        var accountType = account.accountType || account.AccountType || 'Saving';
 
         var rowHtml = `
-        <tr id="${rowId}" class="member-account-row">
-            <td>
-                <span class="fw-bold">${account.accountName}</span>
-                <br>
-                <small class="text-muted">${account.accountNumber}</small>
-                <input type="hidden" class="account-id" value="${account.id}">
-                <input type="hidden" class="account-type" value="${account.accountType}">
-            </td>
-            <td>
-                <span class="badge bg-secondary">${account.accountType}</span>
-            </td>
-            <td>
-                <input type="number" class="form-control form-control-sm member-amount"
-                       step="0.01" min="0" max="${maxAmount}"
-                       placeholder="0.00" value="0"
-                       data-account-max="${maxAmount}">
-                <small class="text-muted">Max: ${formatCurrency(maxAmount)}</small>
-            </td>
-            <td>
-                <input type="text" class="form-control form-control-sm member-description"
-                       placeholder="Description" value="IPS Claim Settlement">
-            </td>
-            <td class="text-center">
-                <button type="button" class="btn btn-sm btn-danger delete-member-row-btn">
-                    <i class="mdi mdi-delete"></i>
-                </button>
-            </td>
-        </tr>
-        `;
+    <tr id="${rowId}" class="member-account-row">
+        <td>
+            <span class="fw-bold">${account.accountName}</span>
+            <br>
+            <small class="text-muted">${account.accountNumber}</small>
+            <input type="hidden" class="account-id" value="${account.id}">
+            <input type="hidden" class="account-type" value="${accountType}">
+            <input type="hidden" class="account-balance" value="${maxAmount}">
+        </td>
+        <td>
+            <span class="badge bg-secondary account-type-badge">${accountType}</span>
+        </td>
+        <td class="text-end">
+            <span class="fw-bold">${accountBalance}</span>
+            <br>
+            <small class="text-muted">Current balance</small>
+        </td>
+        <td>
+            <input type="number" class="form-control form-control-sm member-amount"
+                   step="0.01" min="0" placeholder="0.00" value="0"
+                   data-account-type="${accountType}">
+            <div class="mt-1">
+                <small class="text-muted">Current: ${formatCurrency(maxAmount)}</small>
+                <br><small class="text-info"><i class="mdi mdi-information-outline"></i> No balance limit for IPS claim allocation</small>
+            </div>
+        </td>
+        <td>
+            <input type="text" class="form-control form-control-sm member-description"
+                   placeholder="Description" value="IPS Claim Settlement">
+        </td>
+        <td class="text-center">
+            <button type="button" class="btn btn-sm btn-danger delete-member-row-btn">
+                <i class="mdi mdi-delete"></i>
+            </button>
+        </td>
+    </tr>
+    `;
 
         $('#noMemberRows').remove();
         $('#memberAccountsTableBody').append(rowHtml);
@@ -1562,7 +1694,7 @@
                 width: '100%',
                 placeholder: 'Select Branch Account',
                 allowClear: true,
-                dropdownParent: $('#actionModal') // <--- Critical for Modals
+                dropdownParent: $('#actionModal')
             });
         }
     }
@@ -1585,10 +1717,13 @@
         };
 
         // Collect source account entries
-        $('.source-account-row').each(function() {
+        $('.source-account-row').each(function () {
             var $row = $(this);
+            var accountSelect = $row.find('.source-gl-account');
+            var accountText = accountSelect.find('option:selected').text();
             var entry = {
-                SourceGLAccountId: $row.find('.source-gl-account').val(),
+                SourceGLAccountId: accountSelect.val(),
+                SourceGLAccountName: accountText,
                 Amount: parseFloat($row.find('.source-amount').val()) || 0,
                 Description: $row.find('.source-description').val()
             };
@@ -1598,11 +1733,14 @@
         });
 
         // Collect member account entries
-        $('.member-account-row').each(function() {
+        $('.member-account-row').each(function () {
             var $row = $(this);
             var entry = {
                 AccountId: $row.find('.account-id').val(),
+                AccountNumber: $row.find('td:first-child small').text().trim(),
+                AccountName: $row.find('td:first-child .fw-bold').text().trim(),
                 AccountType: $row.find('.account-type').val(),
+                OriginalBalance: parseFloat($row.find('.account-balance').val()) || 0,
                 Amount: parseFloat($row.find('.member-amount').val()) || 0,
                 Description: $row.find('.member-description').val()
             };
@@ -1612,10 +1750,13 @@
         });
 
         // Collect branch account entries
-        $('.branch-account-row').each(function() {
+        $('.branch-account-row').each(function () {
             var $row = $(this);
+            var accountSelect = $row.find('.branch-gl-account');
+            var accountText = accountSelect.find('option:selected').text();
             var entry = {
-                DestinationBranchGLAccountId: $row.find('.branch-gl-account').val(),
+                DestinationBranchGLAccountId: accountSelect.val(),
+                DestinationBranchGLAccountName: accountText,
                 Amount: parseFloat($row.find('.branch-amount').val()) || 0,
                 Description: $row.find('.branch-description').val()
             };
@@ -1636,54 +1777,100 @@
         $('#confirmExternalApp').text(postingData.ExternalApplicationName);
         $('#confirmForceRepost').text(postingData.ForceRepost ? 'Yes' : 'No');
 
-        // Populate entries table
+        // Calculate totals
+        var sourceTotal = postingData.SourceAccountEntryListing.reduce((sum, entry) => sum + entry.Amount, 0);
+        var memberTotal = postingData.MemberBalanceDestinationEntries.reduce((sum, entry) => sum + entry.Amount, 0);
+        var branchTotal = postingData.DestinationBranchEntryListing.reduce((sum, entry) => sum + entry.Amount, 0);
+        var totalEntries = sourceTotal + memberTotal + branchTotal;
+
+        // Populate entries table with detailed information
         var $tbody = $('#confirmSummaryTable tbody');
         $tbody.empty();
 
-        var totalEntries = 0;
+        var rowCounter = 1;
 
         // Add source entries
-        postingData.SourceAccountEntryListing.forEach(function(entry, index) {
-            var account = affiliateAccounts.find(a => a.Value === entry.SourceGLAccountId);
+        postingData.SourceAccountEntryListing.forEach(function (entry, index) {
             $tbody.append(`
-                <tr>
-                    <td><span class="badge bg-info">Source</span></td>
-                    <td>${account ? account.Text : entry.SourceGLAccountId}</td>
-                    <td class="text-end">${formatCurrency(entry.Amount)}</td>
-                    <td>${entry.Description}</td>
-                </tr>
-                            `);
-                            totalEntries += entry.Amount;
-                        });
+            <tr>
+                <td class="text-center">${rowCounter++}</td>
+                <td><span class="badge bg-info">Source Account</span></td>
+                <td>${entry.SourceGLAccountName || entry.SourceGLAccountId}</td>
+                <td class="text-end">${formatCurrency(entry.Amount)}</td>
+                <td>${entry.Description}</td>
+                <td class="text-end">
+                    <span class="badge bg-light text-dark">${entry.SourceGLAccountId}</span>
+                </td>
+            </tr>
+        `);
+        });
 
-                        // Add member entries
-                        postingData.MemberBalanceDestinationEntries.forEach(function(entry, index) {
-                            $tbody.append(`
-                <tr>
-                    <td><span class="badge bg-warning">Member</span></td>
-                    <td>${entry.AccountType}</td>
-                    <td class="text-end">${formatCurrency(entry.Amount)}</td>
-                    <td>${entry.Description}</td>
-                </tr>
-            `);
-            totalEntries += entry.Amount;
+        // Add member entries
+        postingData.MemberBalanceDestinationEntries.forEach(function (entry, index) {
+            $tbody.append(`
+            <tr>
+                <td class="text-center">${rowCounter++}</td>
+                <td><span class="badge bg-warning">Member Account</span></td>
+                <td>
+                    ${entry.AccountName} (${entry.AccountNumber})
+                    <br>
+                    <small class="text-muted">${entry.AccountType}</small>
+                    <br>
+                    <small class="text-info">Current Balance: ${formatCurrency(entry.OriginalBalance)}</small>
+                    <br>
+                    <small class="text-success"><i class="mdi mdi-check-circle-outline"></i> No balance limit for IPS claim</small>
+                </td>
+                <td class="text-end">
+                    ${formatCurrency(entry.Amount)}
+                    <br>
+                    <small class="text-muted">New Balance: ${formatCurrency(entry.OriginalBalance + entry.Amount)}</small>
+                </td>
+                <td>${entry.Description}</td>
+                <td class="text-end">
+                    <span class="badge bg-light text-dark">${entry.AccountId}</span>
+                </td>
+            </tr>
+        `);
         });
 
         // Add branch entries
-        postingData.DestinationBranchEntryListing.forEach(function(entry, index) {
-            var account = branchAccounts.find(a => a.Value === entry.DestinationBranchGLAccountId);
+        postingData.DestinationBranchEntryListing.forEach(function (entry, index) {
             $tbody.append(`
-<tr>
-    <td><span class="badge bg-danger">Branch</span></td>
-    <td>${account ? account.Text : entry.DestinationBranchGLAccountId}</td>
-    <td class="text-end">${formatCurrency(entry.Amount)}</td>
-    <td>${entry.Description}</td>
-</tr>
-            `);
-            totalEntries += entry.Amount;
+            <tr>
+                <td class="text-center">${rowCounter++}</td>
+                <td><span class="badge bg-danger">Branch Account</span></td>
+                <td>${entry.DestinationBranchGLAccountName || entry.DestinationBranchGLAccountId}</td>
+                <td class="text-end">${formatCurrency(entry.Amount)}</td>
+                <td>${entry.Description}</td>
+                <td class="text-end">
+                    <span class="badge bg-light text-dark">${entry.DestinationBranchGLAccountId}</span>
+                </td>
+            </tr>
+        `);
         });
 
+        // Update totals display
         $('#confirmEntriesTotal').text(formatCurrency(totalEntries));
+
+        // Add summary row
+        $tbody.append(`
+        <tr class="table-light">
+            <td colspan="3" class="text-end fw-bold">Category Totals:</td>
+            <td colspan="3">
+                <div class="row">
+                    <div class="col-4">
+                        <span class="badge bg-info">Source: ${formatCurrency(sourceTotal)}</span>
+                    </div>
+                    <div class="col-4">
+                        <span class="badge bg-warning">Member: ${formatCurrency(memberTotal)}</span>
+                    </div>
+                    <div class="col-4">
+                        <span class="badge bg-danger">Branch: ${formatCurrency(branchTotal)}</span>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    `);
 
         // Show modal
         $('#confirmPostModal').modal('show');
@@ -1743,10 +1930,16 @@
                     isValid = false;
                 }
 
-                if (!updateValidation()) {
-                    appalert('Please fix the validation errors before submitting', 3, 1);
-                    isValid = false;
-                }
+                // Check if fully allocated
+                var sourceTotal = getSourceTotal();
+                var memberTotal = getMemberTotal();
+                var branchTotal = getBranchTotal();
+                var combinedTotal = sourceTotal + memberTotal + branchTotal;
+
+                //if (Math.abs(combinedTotal - totalAmount) > 0.01) { // Allow small floating point error
+                //    appalert('Total allocations must equal the total approved amount', 3, 1);
+                //    isValid = false;
+                //}
 
                 // Check if we have at least one entry
                 var hasEntries = $('.source-account-row').length > 0 ||

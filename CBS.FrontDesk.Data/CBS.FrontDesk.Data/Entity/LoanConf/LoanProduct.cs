@@ -1,4 +1,6 @@
-﻿using CBS.FrontDesk.Data.Entity.SavingProducts;
+﻿using CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure;
+using CBS.FrontDesk.Data.Entity.Overdraft;
+using CBS.FrontDesk.Data.Entity.SavingProducts;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -8,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace CBS.FrontDesk.Data.Entity.LoanConf
 {
-
+  
 
     public class LoanProducct
     {
@@ -645,6 +647,8 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public List<FundingLine> FundingLines { get; set; } = new List<FundingLine>();
         public List<InstallmentType> InstallmentTypes { get; set; } = new List<InstallmentType>();
         public List<FeeRange> FeeRanges { get; set; } = new List<FeeRange>();
+        public List<LoanTargetCatalog> LoanTargetCatalogs { get; set; } = new List<LoanTargetCatalog>();
+        public List<PcmfLoanPurpose> PcmfLoanPurposes { get; set; } = new List<PcmfLoanPurpose>();
 
     }
     public class LoanProductEnumAgregates

@@ -151,7 +151,7 @@
                         <!-- Total Amount Section -->
                         <div class="card mb-3">
                             <div class="card-header bg-light text-primary d-flex justify-content-between align-items-center">
-                                <span><i class="mdi mdi-cash-multiple me-1"></i> Total Claim Amount</span>
+                                <span><i class="mdi mdi-cash-multiple me-1"></i> Total Premium Amount</span>
                                 <button type="button" class="btn btn-light btn-sm" data-bs-toggle="collapse"
                                         data-bs-target="#totalAmountCardBody">
                                     <i class="mdi mdi-chevron-up"></i>
@@ -206,9 +206,9 @@
                             <div class="card-header bg-light text-primary d-flex justify-content-between align-items-center">
                                 <span><i class="mdi mdi-bank-transfer me-1"></i> Source Account Entries</span>
                                 <div>
-                                    <button type="button" class="btn btn-primary btn-sm" id="addSourceRowBtn">
+                                    @*<button type="button" class="btn btn-primary btn-sm" id="addSourceRowBtn">
                                         <i class="mdi mdi-plus"></i> Add Row
-                                    </button>
+                                    </button>*@
                                     <button type="button" class="btn btn-light btn-sm" data-bs-toggle="collapse"
                                             data-bs-target="#sourceAccountsCardBody">
                                         <i class="mdi mdi-chevron-up"></i>
@@ -266,10 +266,11 @@
                                         <table class="table table-sm table-hover mb-0" id="memberAccountsTable">
                                             <thead class="table-light">
                                                 <tr>
-                                                    <th width="30%">Account</th>
+                                                    <th width="25%">Account</th>
                                                     <th width="15%">Type</th>
+                                                    <th width="15%">Balance</th>
                                                     <th width="20%">Amount</th>
-                                                    <th width="25%">Description</th>
+                                                    <th width="15%">Description</th>
                                                     <th width="10%" class="text-center">Action</th>
                                                 </tr>
                                             </thead>
@@ -342,7 +343,7 @@
                         </div>
 
                         <!-- Validation Summary -->
-                        <div class="card mb-3">
+                        @*<div class="card mb-3">
                             <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
                                 <span><i class="mdi mdi-check-all me-1"></i> Validation Summary</span>
                                 <button type="button" class="btn btn-light btn-sm" data-bs-toggle="collapse"
@@ -411,7 +412,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div>*@
                     </div>
 
                     <!-- Common Note Section -->
@@ -510,10 +511,12 @@
                             <table class="table table-sm" id="confirmSummaryTable">
                                 <thead>
                                     <tr>
+                                        <th>SN</th>
                                         <th>Type</th>
                                         <th>Account</th>
                                         <th class="text-end">Amount</th>
                                         <th>Description</th>
+                                        <th>Account Reference</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -542,3 +545,5 @@
         </div>
     </div>
 </div>
+
+

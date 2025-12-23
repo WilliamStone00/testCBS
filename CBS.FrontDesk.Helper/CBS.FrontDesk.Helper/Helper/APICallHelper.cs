@@ -610,6 +610,7 @@ namespace CBS.FrontDesk.Helper
         public static string Get_Update_Delete_LoanTerm = "/api/v1/LoanTerm/{0}";
         public static string GetAllLoanTerm = "/api/v1/LoanTerms";
         public static string CreateLoanTerm = "/api/v1/LoanTerm";
+        public static string GetPCMFCatalog = "/api/v1/pcmf-ui-catalog";
 
 
         public static string Get_Update_Delete_InstallmentType = "/api/v1/InstallmentType/{0}";
@@ -625,6 +626,10 @@ namespace CBS.FrontDesk.Helper
         public static string GetLoanProductConfigurationAgregates = "/api/v1/LoanProductConfigurationAgregates";
         public static string GetAllLoanApplicationByCustomerId = "/api/v1/LoanApplication/GetAllLoanApplicationByCustomerId/{0}";
         public static string AttachedDocumentsRemotelyMembers = "/api/v1/uploadCustomerDocuments";
+        public static string LoanProductUpsertPolicy = "/api/v1/LoanProduct/UpsertPolicy";
+        public static string LoanProductAccountingMapping = "/api/v1/LoanProduct/UpsertAccountingMapping";
+        public static string LoanProductUpdateCore = "/api/v1/LoanProduct/UpdateCore";
+
 
         //
 
