@@ -51,9 +51,9 @@
                             </tr>
                             @if (Model.ApprovalDate.HasValue)
                             {
-                                <tr><th>Approval/Rejection Date</th><td>@Model.ApprovalDate?.ToString("f")</td></tr>
+                                <tr><th>Approval/Review/Rejection Date</th><td>@(Model.ApprovalDate.HasValue ? Model.ApprovalDate.Value.ToString("f") : "N/A")</td></tr>
                             }
-                            <tr><th>Approval/Rejection Note</th><td>@Model.ApprovalNote</td></tr>
+                            <tr><th>Approval/Review/Rejection Note</th><td>@Model.ApprovalNote</td></tr>
                         </tbody>
                     </table>
                 </div>

@@ -305,6 +305,7 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public string TicketType { get; set; }
         public decimal InitiatedAmount { get; set; }
         public bool IsInterBranch { get; set; }
+        public string CreatedBy { get; set; }
 
 
     }
@@ -426,11 +427,11 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public string Code { get; set; }
         public string Currency { get; set; }
         public bool IsActive { get; set; }
-        
+
     }
 
-
-
+   
+       
 
 
 }

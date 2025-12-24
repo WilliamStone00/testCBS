@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CBS.FrontDesk.Data.Entity.DataTable;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,30 +10,80 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.SharedMonth
     public class SharedMonthSimulation
     {
         public string BranchId { get; set; }
-       
         public int Year { get; set; }
-        public string IntrestDistributionType { get; set; }
-
-        public string StartPeriodKey { get; set; }  // e.g. "1 Jan"
-        public string EndPeriodKey { get; set; }    // e.g. "1 Feb"
-       
+        public string InterestDistributionType { get; set; }
+        
+        public decimal InterestRate { get; set; }
+        public string Month { get; set; }
+        public string StartPeriodKey { get; set; }
+        public string EndPeriodKey { get; set; }
         public string ProductId { get; set; }
 
-      
-        // Optional: if UI allows the user to choose a rate for this report.
-        public decimal? RateOverride { get; set; }
+
+
+
     }
 
-
-   
-
-    public  class ShareMonthPsiReportLineDto
+    public class ShareMonthPsiReportLineDto
     {
-        public string MemberReference { get; set; } 
-        public string MemberName { get; set; } 
+        public string MemberReference { get; set; }
+        public string MemberName { get; set; }
         public decimal Balance { get; set; }      // opening balance at StartPeriodKey
         public decimal Interest { get; set; }     // computed interest
         public decimal Gross { get; set; }        // here = Interest (before tax)
         public decimal Adjustment { get; set; }   // sum of adjustment-like tx in period
+        public decimal Tax { get; set; }
+
+        
+        
     }
+
+    public class CreateSimulations
+    {
+        public string BranchId { get; set; }
+        public int Year { get; set; }
+        public string IntrestDistributionType { get; set; }
+        public string StartPeriodKey { get; set; }  // e.g. "1 Jan"
+        public string EndPeriodKey { get; set; }    // e.g. "1 Feb"
+        public string ProductId { get; set; }
+        public decimal? RateOverride { get; set; }
+        public List<ShareMonthPsiReportLineDto> ShareMonthPsiReportLineDto { get; set; }
+
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public string SimulatedByUserId { get; set; }
+
+        public DateTime Date { get; set; }
+        public string SimulatedByUserName { get; set; }
+        public string BranchName { get; set; }
+    }
+
+    public class SharedMonthSimulationQuery
+    {
+        public DataTableOptions Options { get; set; }
+        public SharedMonthSimulationQuery() { Options = new DataTableOptions(); }
+
+        public string Name { get; set; }
+
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public string BranchId { get; set; }
+        public decimal InterestRate { get; set; }
+        public string Month { get; set; }
+
+
+
+    }
+
+    public class InstrestCalculation
+    {
+        
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public string BranchId { get; set; } = null;
+        public bool IsForNetwork { get; set; }
+    }
+
+
+
 }

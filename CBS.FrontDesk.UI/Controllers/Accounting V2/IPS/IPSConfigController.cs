@@ -1,4 +1,5 @@
-﻿using CBS.BusinessService.Accounting_V2.BranchAccountService;
+﻿using CBS.BusinessService.Accounting_V2.AffiliateAccounts;
+using CBS.BusinessService.Accounting_V2.BranchAccountService;
 using CBS.BusinessService.Accounting_V2.IPS;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.IPS;
@@ -22,12 +23,14 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.IPS
         private readonly IPSConfigService _ipsConfigService;
         private readonly BranchServices _branchServices;
         private readonly BranchAccountService _BranchAccountService;
+        private readonly AffiliateAccountService _AffiliateAccountService;
 
-        public IPSConfigController(IPSConfigService ipsConfigService, BranchServices branchServices, BranchAccountService branchAccountService)
+        public IPSConfigController(IPSConfigService ipsConfigService, BranchServices branchServices, BranchAccountService branchAccountService, AffiliateAccountService affiliateAccountService)
         {
             _ipsConfigService = ipsConfigService;
             _branchServices = branchServices;
             _BranchAccountService = branchAccountService;
+            _AffiliateAccountService = affiliateAccountService;
         }
 
         public async Task<ActionResult> Index()
@@ -40,7 +43,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.IPS
         {
             var branches = await _branchServices.GetBranches();
             ViewBag.Branches = branches;
-                      
+
+            var affiliateAccounts = await _AffiliateAccountService.GetAllAffiliateAccounts();
+            ViewBag.AffiliateAccounts = affiliateAccounts;
+
             return true;
         }
 
@@ -91,7 +97,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.IPS
             }
             else if (path == "new")
             {
-                return PartialView(partialView, new IPSConfig());
+                var model = new IPSConfig { IsCentralized = false };
+                return PartialView(partialView, model);
             }
             else if (path == "activeyear")
             {

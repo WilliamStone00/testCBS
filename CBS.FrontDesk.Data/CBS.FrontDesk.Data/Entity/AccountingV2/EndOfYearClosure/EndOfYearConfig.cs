@@ -28,7 +28,7 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.EndOfYearClosure
 
     }
 
-
+    
     public class YearEndChecklistStatusQuery
     {
         public DataTableOptions Options { get; set; }

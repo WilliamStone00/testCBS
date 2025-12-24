@@ -43,7 +43,9 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.EndOfYearClosure
         // GET: EndOfYearClosure
         public async Task<ActionResult> Index()
         {
+           
             await loader();
+            
             return View(new EndOfYear());
         }
         public async Task<ActionResult> List()
@@ -76,11 +78,12 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.EndOfYearClosure
             return true;
         }
         [HttpGet]
-        public async Task<ActionResult> GetClosureOpenYearByBranchId(string branchId)
+        public async Task<ActionResult> GetClosureOpenYearByBranchId(string branchId, string init)
         {
             try
             {
-                var years = await _endOfYearClosureService.GetAccountingYearByBranchIdAsync(branchId);
+                
+                var years = await _endOfYearClosureService.GetAccountingYearByBranchIdAsync(branchId,init);
 
                 var firstYear = years.FirstOrDefault();
                 if (firstYear != null)
@@ -235,9 +238,9 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.EndOfYearClosure
                 return Json(new
                 {
 
-                    //draw = data.Options.draw ?? "1",
-                    //recordsTotal = data.Options.recordsTotal,
-                    //recordsFiltered = data.Options.recordsFiltered,
+                    draw = data.Options.draw ?? "1",
+                    recordsTotal = data.Options.recordsTotal,
+                    recordsFiltered = data.Options.recordsFiltered,
                     data = EndChecklist,
                     success = true,
                     message = "Display DataTable for End of Year check  status   successfully"

@@ -318,65 +318,71 @@ $(document).ready(function () {
     // ============================================
     // Approve Button Click Handler
     // ============================================
-    $('#btnApprove').click(function (e) {
-        e.preventDefault();
+$('#btnApprove').on('click', function (e) {
+    e.preventDefault();
 
-        alertify.confirm(
-            "Confirmation",
-            "Are you sure you want to approve this journal entry?",
-            function () {
+    alertify.confirm(
+        "Confirmation",
+        "Are you sure you want to approve this journal entry?",
+        function () {
 
-                const $btn = $('#btnApprove');
-                const $icon = $btn.find('i');
-                const $text = $btn.find('.btn-text');
+            var $btn = $('#btnApprove');
+            var $icon = $btn.find('i');
+            var $text = $btn.find('.btn-text');
 
-                $btn.prop('disabled', true);
-                $icon.removeClass('mdi-check-circle-outline')
-                     .addClass('mdi-loading mdi-spin');
-                $text.text('Approving...');
+            $btn.prop('disabled', true);
+            $icon.removeClass('mdi-check-circle-outline')
+                 .addClass('mdi-loading mdi-spin');
+            $text.text('Approving...');
 
-                const payload = {
-                    Reference: '@Model.Reference',
-                    BranchId: '@Model.BranchId',
-                    Approver: '@User.Identity.Name',
-                    TicketType: '@Model.TicketType'
-                };
+            var payload = {
+                Reference: '@Model.Reference',
+                BranchId: '@Model.BranchId',
+                Approver: '@User.Identity.Name',
+                TicketType: '@Model.TicketType'
+            };
 
-                $.ajax({
-                    url: '@Url.Action("Approve", "JournalHead")',
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify(payload),
-                    success: function (response) {
-                        if (response.success) {
-                            toastr.success(response.message);
+            $.ajax({
+                url: '@Url.Action("Approve", "JournalHead")',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(payload),
+                success: function (response) {
+                    if (response && response.success) {
+                        appalert(response.message || "✅ Approved successfully.", 1, 1);
 
-                            // FINAL – permanently disable both buttons
-                            $('#btnApprove, #btnReject').prop('disabled', true);
+                        // FINAL – permanently disable both buttons
+                        $('#btnApprove, #btnReject').prop('disabled', true);
 
-                            $icon.removeClass('mdi-loading mdi-spin')
-                                 .addClass('mdi-check-circle');
-                            $text.text('Approved');
-                        } else {
-                            toastr.error(response.message);
-                            $btn.prop('disabled', false);
-                            $icon.removeClass('mdi-loading mdi-spin')
-                                 .addClass('mdi-check-circle-outline');
-                            $text.text('Approve');
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        toastr.error("An error occurred: " + error);
+                        $icon.removeClass('mdi-loading mdi-spin')
+                             .addClass('mdi-check-circle');
+                        $text.text('Approved');
+                    } else {
+                        appalert((response && response.message) || "❌ Approval failed.", 2, 1);
+
                         $btn.prop('disabled', false);
                         $icon.removeClass('mdi-loading mdi-spin')
                              .addClass('mdi-check-circle-outline');
                         $text.text('Approve');
                     }
-                });
-            },
-            function () { }
-        ).set('labels', {ok:'Yes', cancel:'No'});
+                },
+                error: function () {
+                    appalert("❌ An error occurred while approving.", 0, 1);
+
+                    $btn.prop('disabled', false);
+                    $icon.removeClass('mdi-loading mdi-spin')
+                         .addClass('mdi-check-circle-outline');
+                    $text.text('Approve');
+                }
+            });
+        },
+        function () {
+            appalert("🚫 Approval cancelled.", 2, 1);
+        }
+    ).set({
+        labels: { ok: 'Yes', cancel: 'No' }
     });
+});
 
 
     // ============================================

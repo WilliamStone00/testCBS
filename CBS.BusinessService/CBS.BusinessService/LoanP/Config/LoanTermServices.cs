@@ -1,7 +1,9 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
+using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.LoanConf;
+using CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
 using System;
@@ -84,6 +86,8 @@ namespace CBS.BusinessService.Config
                 throw ex;
             }
         }
+     
+        //GetPCMFCatalog
         public async Task<ExecutionMessages> Create(LoanTerm model)
         {
             try

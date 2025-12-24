@@ -1,12 +1,6 @@
 ﻿using CBS.FrontDesk.Data.Entity.DataTable;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem
 {
@@ -21,7 +15,8 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem
         public int numberofCheckBooks { get; set; }
         public int validityPeriodInMonths { get; set; } 
         public int issuanceLimitPerCustomerType { get; set; }
-        public bool isActive { get; set; } = false;
+		public decimal? maxTransactionAmount { get; set; }
+		public bool isActive { get; set; } = false;
         public bool isCentralised { get; set; }
         public int? maxIssuancePerYear { get; set; }
         public decimal? renewalFee { get; set; }

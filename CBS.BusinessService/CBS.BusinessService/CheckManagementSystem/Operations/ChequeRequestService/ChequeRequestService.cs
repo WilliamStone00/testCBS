@@ -102,7 +102,7 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeRequestServ
                 string url = string.Format(APICallHelper.ApproveChequeRequest);
                // var payload = new { ApprovalNote = approvalNote, ApprovedBy = GetUserFullName() };
                 var response = await _apiHelper.PostAsync<ServiceResponse<bool>>(url, approval);
-                if (response.IsSuccess && response.ApiResponseData.Data)
+                if (response.IsSuccess)
                 {
                     GetExecutionMessages(null, true, $"Request ID: {approval.id}", MessagesResults.Success,
                         ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, "Request approved successfully.");
@@ -126,7 +126,7 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeRequestServ
                  string url = string.Format(APICallHelper.RejectChequeRequest);
                // var payload = new { ApprovalNote = approvalNote, ApprovedBy = GetUserFullName() };
                 var response = await _apiHelper.PostAsync<ServiceResponse<bool>>(url, approval);
-                if (response.IsSuccess && response.ApiResponseData.Data)
+                if (response.IsSuccess)
                 {
                     GetExecutionMessages(null, true, $"Request ID: {approval.id}", MessagesResults.Success,
                         ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, "Request reject successfully.");
@@ -151,7 +151,7 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeRequestServ
                  string url = string.Format(APICallHelper.ReviewChequeRequest);
                // var payload = new { ApprovalNote = approvalNote, ApprovedBy = GetUserFullName() };
                 var response = await _apiHelper.PostAsync<ServiceResponse<bool>>(url, approval);
-                if (response.IsSuccess && response.ApiResponseData.Data)
+                if (response.IsSuccess)
                 {
                     GetExecutionMessages(null, true, $"Request ID: {approval.id}", MessagesResults.Success,
                         ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, "Request review successfully.");

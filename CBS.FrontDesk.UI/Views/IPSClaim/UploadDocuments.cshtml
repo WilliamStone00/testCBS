@@ -1,0 +1,829 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.IPS.IPSClaimDocument
+@{
+    ViewBag.Title = "Upload Claim Documents";
+    var claimId = ViewBag.ClaimId as string;
+}
+
+<div class="container-fluid px-0">
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card bg-light mb-2">
+                <div class="card-body text-center">
+                    <h2 class="h3 mb-1 text-primary">
+                        <i class="mdi mdi-shield-account-outline me-2"></i>
+                        Upload Claim Documents
+                    </h2>
+                    <p class="card-text">
+                        Upload supporting documents for claim ID : <span class="fw-bold badge bg-white text-primary">@claimId</span>
+                    </p>
+                    <div class="alert alert-info mt-3 py-2">
+                        <i class="mdi mdi-information-outline me-1"></i>
+                        Create, track, and process insurance claims for members.
+                    </div>
+                    <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tips Section - Redesigned -->
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-white border-0 py-3">
+            <h5 class="mb-0 text-primary d-flex align-items-center justify-content-between">
+                <span>
+                    <i class="mdi mdi-information-outline me-2"></i>
+                    Tips
+                </span>
+                <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDocTips" aria-expanded="false">
+                    <i class="mdi mdi-chevron-down"></i>
+                </button>
+            </h5>
+        </div>
+        <div id="collapseDocTips" class="collapse">
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-start">
+                            <div class="me-3">
+                                <span class="badge bg-info rounded-circle p-2">
+                                    <i class="mdi mdi-camera text-white"></i>
+                                </span>
+                            </div>
+                            <div>
+                                <h6 class="mb-1">Image Quality</h6>
+                                <p class="text-muted small mb-0">Upload clear, high-resolution images of all documents</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-start">
+                            <div class="me-3">
+                                <span class="badge bg-danger rounded-circle p-2">
+                                    <i class="mdi mdi-file-pdf text-white"></i>
+                                </span>
+                            </div>
+                            <div>
+                                <h6 class="mb-1">File Format</h6>
+                                <p class="text-muted small mb-0">JPG, PNG, PDF (Max 5MB each)</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-start">
+                            <div class="me-3">
+                                <span class="badge bg-warning rounded-circle p-2">
+                                    <i class="mdi mdi-account-card-details text-white"></i>
+                                </span>
+                            </div>
+                            <div>
+                                <h6 class="mb-1">ID Cards</h6>
+                                <p class="text-muted small mb-0">Upload both front and back sides of valid ID</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-start">
+                            <div class="me-3">
+                                <span class="badge bg-primary rounded-circle p-2">
+                                    <i class="mdi mdi-certificate text-white"></i>
+                                </span>
+                            </div>
+                            <div>
+                                <h6 class="mb-1">Death Certificate</h6>
+                                <p class="text-muted small mb-0">Required for death-related claims</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Requirements Card - Now Collapsable -->
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-white border-0 py-3">
+            <h5 class="mb-0 text-primary d-flex align-items-center justify-content-between">
+                <span class="d-flex align-items-center">
+                    <i class="mdi mdi-clipboard-check-outline me-2"></i>
+                    Document Requirements
+                </span>
+                <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRequirements" aria-expanded="false">
+                    <i class="mdi mdi-chevron-down"></i>
+                </button>
+            </h5>
+        </div>
+        <div id="collapseRequirements" class="collapse">
+            <div class="card-body">
+                <div class="alert alert-info bg-soft-info border-0 mb-0">
+                    <div class="d-flex">
+                        <div class="me-3">
+                            <i class="mdi mdi-information-outline mdi-24px text-info"></i>
+                        </div>
+                        <div>
+                            <h6 class="alert-heading text-info mb-2">Upload Guidelines</h6>
+                            <div class="row">
+                                <div class="col-md-4 mb-2">
+                                    <div class="d-flex align-items-center">
+                                        <i class="mdi mdi-file-document-outline text-primary me-2"></i>
+                                        <div>
+                                            <small class="fw-semibold">File Size</small>
+                                            <div class="text-muted">Max 5MB per file</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <div class="d-flex align-items-center">
+                                        <i class="mdi mdi-format-list-bulleted-type text-success me-2"></i>
+                                        <div>
+                                            <small class="fw-semibold">Supported Formats</small>
+                                            <div class="text-muted">JPG, PNG, PDF</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <div class="d-flex align-items-center">
+                                        <i class="mdi mdi-shield-check text-warning me-2"></i>
+                                        <div>
+                                            <small class="fw-semibold">Security</small>
+                                            <div class="text-muted">Encrypted upload</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Upload Form -->
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white border-0 py-3">
+            <h5 class="mb-0 text-primary d-flex align-items-center">
+                <i class="mdi mdi-upload-outline me-2"></i>
+                Document Upload Form
+                <span class="badge bg-danger ms-2">Required Fields</span>
+            </h5>
+        </div>
+
+        <div class="card-body p-4">
+            @using (Html.BeginForm("UploadDocuments", "IPSClaim", FormMethod.Post, new { enctype = "multipart/form-data", id = "documentForm", @class = "needs-validation", novalidate = "novalidate" }))
+            {
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="Id" id="Id" value="@claimId" />
+                <input type="hidden" name="ClaimId" id="ClaimId" value="@claimId" />
+
+                <!-- Document Information Section - MOVED ABOVE UPLOAD -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="section-header mb-4">
+                            <h5 class="text-primary d-flex align-items-center">
+                                <i class="mdi mdi-information-outline me-2"></i>
+                                Document Information
+                            </h5>
+                            <p class="text-muted mb-0">Provide details about the document you're uploading</p>
+                        </div>
+                    </div>
+
+                    <!-- Document Type -->
+                    <div class="col-md-6 mb-4">
+                        <label class="form-label fw-semibold mb-2 d-flex align-items-center">
+                            <i class="mdi mdi-format-list-bulleted-type text-primary me-2"></i>
+                            Document Type
+                            <span class="text-danger ms-1">*</span>
+                        </label>
+
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text bg-light border-end-0">
+                                <i class="mdi mdi-file-document-outline text-muted"></i>
+                            </span>
+
+                            @Html.DropDownListFor(m => m.DocumentType,
+                                new SelectList(new List<SelectListItem>
+                                {
+                                    new SelectListItem { Value = "DeathCertificate", Text = "📄 Death Certificate", Selected = true },
+                                    new SelectListItem { Value = "IDCardFront", Text = "🆔 ID Card (Front)" },
+                                    new SelectListItem { Value = "IDCardBack", Text = "🆔 ID Card (Back)" },
+                                    new SelectListItem { Value = "Passbook", Text = "📘 Passbook" },
+                                    new SelectListItem { Value = "PoliceReport", Text = "👮 Police Report" },
+                                    new SelectListItem { Value = "MedicalReport", Text = "🏥 Medical Report" },
+                                    new SelectListItem { Value = "BankStatement", Text = "💰 Bank Statement" },
+                                    new SelectListItem { Value = "Other", Text = "📎 Other Supporting Document" }
+                                }, "Value", "Text"),
+                                new
+                                {
+                                    @class = "form-select form-select-lg",
+                                    required = "required",
+                                    id = "DocumentType"
+                                })
+                        </div>
+
+                        <div class="form-text mt-2">
+                            <i class="mdi mdi-information-outline me-1"></i>
+                            Select the type of document you're uploading
+                        </div>
+                    </div>
+
+                    <!-- Document Name (READ-ONLY) -->
+                    <div class="col-md-6 mb-4">
+                        <label class="form-label fw-semibold mb-2 d-flex align-items-center">
+                            <i class="mdi mdi-rename-box text-primary me-2"></i>
+                            Document Name
+                            <span class="text-danger ms-1">*</span>
+                        </label>
+
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text bg-light border-end-0">
+                                <i class="mdi mdi-text-box-outline text-muted"></i>
+                            </span>
+
+                            @Html.TextBoxFor(m => m.DocumentName, new
+                            {
+                                @class = "form-control form-control-lg",
+                                @readonly = "readonly",
+                                id = "DocumentName"
+                            })
+                        </div>
+
+                        <div class="form-text mt-2">
+                            <i class="mdi mdi-lock-outline me-1"></i>
+                            Document name is auto-generated based on the selected document type
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- File Upload and Preview Section -->
+                <div class="row mb-5">
+                    <!-- Upload Area -->
+                    <div class="col-lg-8">
+                        <div class="card border-dashed h-100">
+                            <div class="card-header bg-white border-0 py-3">
+                                <h5 class="mb-0 text-primary d-flex align-items-center">
+                                    <i class="mdi mdi-cloud-upload-outline me-2"></i>
+                                    Upload Document
+                                </h5>
+                            </div>
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <div class="upload-icon mx-auto mb-3">
+                                        <div class="bg-primary bg-opacity-10 rounded-circle p-4 d-inline-block">
+                                            <i class="mdi mdi-cloud-upload-outline mdi-48px text-primary"></i>
+                                        </div>
+                                    </div>
+                                    <h5 class="mb-2">Drag & Drop or Click to Browse</h5>
+                                    <p class="text-muted mb-4">Supported formats: JPG, PNG, PDF (Max 5MB)</p>
+
+                                    <div class="file-input-wrapper position-relative">
+                                        <input type="file"
+                                               class="form-control form-control-lg document-file"
+                                               accept=".jpg,.jpeg,.png,.pdf"
+                                               name="AttachedFiles"
+                                               id="AttachedFiles"
+                                               required>
+                                        <div class="file-drop-area border-2 border-dashed rounded-3 p-5 text-center bg-light">
+                                            <i class="mdi mdi-file-document-outline mdi-48px text-muted mb-3"></i>
+                                            <h6 class="mb-2">Choose a file or drag here</h6>
+                                            <p class="small text-muted mb-3">Click to browse your computer</p>
+                                            <div class="btn btn-primary">
+                                                <i class="mdi mdi-folder-open-outline me-1"></i>
+                                                Browse Files
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-4">
+                                        <div class="progress" style="height: 8px; display: none;" id="uploadProgress">
+                                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div>
+                                        </div>
+                                        <div class="file-info mt-3" id="fileInfo">
+                                            <!-- File info will appear here -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Preview Area -->
+                    <div class="col-lg-4">
+                        <div class="card h-100">
+                            <div class="card-header bg-light border-0 py-3">
+                                <h6 class="mb-0 d-flex align-items-center justify-content-between">
+                                    <span class="d-flex align-items-center">
+                                        <i class="mdi mdi-eye-outline me-2"></i>
+                                        Document Preview
+                                    </span>
+                                    <button type="button" class="btn btn-outline-danger btn-sm d-none" id="cancelPreviewBtn">
+                                        <i class="mdi mdi-close me-1"></i>
+                                        Clear
+                                    </button>
+                                </h6>
+                            </div>
+                            <div class="card-body p-3">
+                                <!-- Active Preview -->
+                                <div class="preview-active w-100 text-center" id="previewActive" style="display: none;">
+                                    <div class="preview-image-container mb-3">
+                                        <!-- Image Preview -->
+                                        <img id="filePreview" class="img-fluid rounded shadow-sm preview-image" style="max-height: 200px;" />
+
+                                        <!-- PDF Preview -->
+                                        <div id="pdfPreview" class="text-center py-4 d-none">
+                                            <div class="mb-3">
+                                                <i class="mdi mdi-file-pdf-box mdi-48px text-danger"></i>
+                                            </div>
+                                            <h6 class="text-danger mb-2">PDF Document</h6>
+                                            <p class="text-muted small mb-0" id="pdfFileName"></p>
+                                        </div>
+                                    </div>
+
+                                    <!-- File Details -->
+                                    <div class="file-details bg-light rounded p-3">
+                                        <div class="row mb-2">
+                                            <div class="col-12">
+                                                <small class="text-muted d-block">File Name</small>
+                                                <span class="fw-semibold text-truncate d-block" id="fileName">-</span>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-12">
+                                                <small class="text-muted d-block">File Size</small>
+                                                <span class="fw-semibold" id="fileSize">-</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <button type="button" class="btn btn-outline-danger btn-sm w-100" id="removeFileBtn">
+                                                    <i class="mdi mdi-delete-outline me-1"></i>
+                                                    Remove File
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Empty State -->
+                                <div class="preview-empty w-100 text-center" id="previewEmpty">
+                                    <div class="empty-state py-5">
+                                        <div class="mb-4">
+                                            <i class="mdi mdi-file-document-outline mdi-48px text-muted opacity-25"></i>
+                                        </div>
+                                        <h6 class="text-muted mb-2">No document selected</h6>
+                                        <p class="text-muted small mb-0">Select a file to preview it here</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Additional Notes Section -->
+                <div class="row mb-5">
+                    <div class="col-12">
+                        <div class="card border-0 bg-light">
+                            <div class="card-body p-3">
+                                <div class="d-flex align-items-start">
+                                    <div class="me-3">
+                                        <i class="mdi mdi-lightbulb-on-outline mdi-24px text-warning"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-2 text-warning">Important Notes</h6>
+                                        <ul class="list-unstyled mb-0">
+                                            <li class="mb-1">
+                                                <i class="mdi mdi-check-circle-outline text-success me-2"></i>
+                                                Ensure all documents are clear and legible
+                                            </li>
+                                            <li class="mb-1">
+                                                <i class="mdi mdi-check-circle-outline text-success me-2"></i>
+                                                Upload multiple documents separately if needed
+                                            </li>
+                                            <li class="mb-0">
+                                                <i class="mdi mdi-check-circle-outline text-success me-2"></i>
+                                                Documents are stored securely and encrypted
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="row mt-5">
+                    <div class="col-12">
+                        <div class="card border-0 bg-light">
+                            <div class="card-body p-4">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <button type="button" class="btn btn-outline-secondary btn-lg" onclick="goBack()">
+                                            <i class="mdi mdi-arrow-left me-2"></i>
+                                            Back to Claims Listing
+                                        </button>
+                                    </div>
+                                    <div class="d-flex">
+                                        <button type="button" class="btn btn-light btn-lg me-3" id="resetFormBtn">
+                                            <i class="mdi mdi-refresh me-2"></i>
+                                            Reset Form
+                                        </button>
+                                        <button type="submit" class="btn btn-primary btn-lg px-5" id="btnUpload">
+                                            <i class="mdi mdi-cloud-upload me-2"></i>
+                                            <span id="btnText">Upload Document</span>
+                                            <span class="spinner-border spinner-border-sm d-none ms-2" id="uploadSpinner"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <style>
+        .bg-primary-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .border-dashed {
+            border: 2px dashed #dee2e6 !important;
+        }
+
+        .file-input-wrapper input[type="file"] {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            z-index: 10;
+        }
+
+        .file-drop-area {
+            transition: all 0.3s ease;
+            min-height: 220px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+            .file-drop-area:hover, .file-drop-area.dragover {
+                border-color: #667eea !important;
+                background-color: rgba(102, 126, 234, 0.05) !important;
+            }
+
+        .preview-container {
+            transition: all 0.3s ease;
+        }
+
+        .section-header {
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f2f5;
+        }
+
+        .form-control-lg, .form-select-lg {
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+        }
+
+        .input-group-lg > .form-control,
+        .input-group-lg > .form-select {
+            padding: 0.75rem 1rem;
+        }
+
+        .input-group-text {
+            background-color: #f8f9fa;
+            border-color: #dee2e6;
+        }
+
+        .upload-icon {
+            transition: transform 0.3s ease;
+        }
+
+            .upload-icon:hover {
+                transform: translateY(-5px);
+            }
+
+        .bg-soft-info {
+            background-color: rgba(13, 110, 253, 0.1) !important;
+            border-color: rgba(13, 110, 253, 0.2) !important;
+        }
+
+        .preview-image {
+            max-width: 100%;
+            object-fit: contain;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .empty-state {
+            opacity: 0.6;
+        }
+
+        .file-info {
+            min-height: 50px;
+        }
+
+        .preview-image-container {
+            min-height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            margin-bottom: 15px;
+        }
+
+        .file-details {
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+        }
+    </style>
+
+    <script>
+        $(document).ready(function() {
+            console.log('Claim ID from ViewBag:', '@claimId');
+
+            // Initialize state
+            let currentFile = null;
+
+            // File upload preview
+            $('#AttachedFiles').on('change', function(e) {
+                handleFileSelection(e.target.files[0]);
+            });
+
+            function handleFileSelection(file) {
+                if (file) {
+                    currentFile = file;
+
+                    // Validate file size (5MB)
+                    if (file.size > 5 * 1024 * 1024) {
+                        appalert('File size exceeds 5MB limit', 3, 1);
+                        resetFileInput();
+                        return;
+                    }
+
+                    // Validate file type
+                    var validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
+                    if (!validTypes.includes(file.type)) {
+                        appalert('Invalid file type. Only JPG, PNG, and PDF files are allowed', 3, 1);
+                        resetFileInput();
+                        return;
+                    }
+
+                    // Show file details in preview
+                    $('#fileName').text(file.name);
+                    $('#fileSize').text(formatFileSize(file.size));
+
+                    // Auto-populate document name with file name (without extension)
+                    var fileName = file.name;
+                    var fileNameWithoutExt = fileName.substring(0, fileName.lastIndexOf('.'));
+                    $('#DocumentName').val(fileNameWithoutExt);
+
+                    // Show preview in the Document Preview section
+                    showPreview(file);
+
+                    // Update file info in upload section
+                    $('#fileInfo').html(`
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="mdi mdi-check-circle-outline me-2"></i>
+                            <strong>File selected:</strong> ${file.name} (${formatFileSize(file.size)})
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    `);
+
+                    // Show preview area and hide empty state
+                    $('#previewActive').show();
+                    $('#previewEmpty').hide();
+                    $('#cancelPreviewBtn').removeClass('d-none');
+                }
+            }
+
+            function showPreview(file) {
+                // Clear previous preview
+                $('#filePreview').attr('src', '').addClass('d-none');
+                $('#pdfPreview').addClass('d-none');
+
+                if (file.type.startsWith('image/')) {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('#filePreview')
+                            .attr('src', e.target.result)
+                            .removeClass('d-none')
+                            .css('display', 'block');
+                        $('#pdfPreview').addClass('d-none');
+                    }
+                    reader.readAsDataURL(file);
+                } else if (file.type === 'application/pdf') {
+                    // For PDF, show placeholder
+                    $('#filePreview').addClass('d-none');
+                    $('#pdfPreview')
+                        .removeClass('d-none')
+                        .css('display', 'block');
+                    $('#pdfFileName').text(file.name);
+                }
+            }
+
+            // Remove file button
+            $('#removeFileBtn').on('click', function() {
+                resetFileInput();
+            });
+
+            // Cancel preview button
+            $('#cancelPreviewBtn').on('click', function() {
+                resetFileInput();
+            });
+
+            function resetFileInput() {
+                // Clear file input
+                $('#AttachedFiles').val('');
+                $('#fileInfo').html('');
+
+                // Reset preview section
+                $('#fileName').text('-');
+                $('#fileSize').text('-');
+                $('#filePreview').attr('src', '').addClass('d-none');
+                $('#pdfPreview').addClass('d-none');
+                $('#previewActive').hide();
+                $('#previewEmpty').show();
+                $('#cancelPreviewBtn').addClass('d-none');
+
+                // Clear current file
+                currentFile = null;
+
+                // Reset file input programmatically
+                var fileInput = $('#AttachedFiles')[0];
+                if (fileInput) {
+                    fileInput.value = '';
+                }
+            }
+
+            // Reset form button
+            $('#resetFormBtn').on('click', function() {
+                resetFileInput();
+                $('#documentForm')[0].reset();
+            });
+
+            // Drag and drop functionality
+            const dropArea = $('.file-drop-area');
+            const fileInput = $('#AttachedFiles')[0];
+
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropArea.on(eventName, preventDefaults);
+            });
+
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropArea.on(eventName, highlight);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropArea.on(eventName, unhighlight);
+            });
+
+            function highlight() {
+                dropArea.addClass('dragover');
+            }
+
+            function unhighlight() {
+                dropArea.removeClass('dragover');
+            }
+
+            dropArea.on('drop', function(e) {
+                const dt = e.originalEvent.dataTransfer;
+                const files = dt.files;
+                if (files.length > 0) {
+                    handleFileSelection(files[0]);
+                    if (fileInput) {
+                        fileInput.files = files;
+                    }
+                }
+            });
+
+            // Form submission
+            $('#documentForm').on('submit', function(e) {
+                e.preventDefault();
+
+                // Validate required fields
+                var claimId = $('#ClaimId').val();
+                if (!claimId) {
+                    appalert('Claim ID is missing. Please go back and try again.', 3, 1);
+                    return false;
+                }
+
+                if (!currentFile) {
+                    appalert('Please select a document to upload.', 3, 1);
+                    return false;
+                }
+
+                if (!$('#DocumentType').val()) {
+                    appalert('Please select a document type.', 3, 1);
+                    return false;
+                }
+
+                if (!$('#DocumentName').val()) {
+                    appalert('Please enter a document name.', 3, 1);
+                    return false;
+                }
+
+                // Show loading state
+                $('#btnUpload').prop('disabled', true);
+                $('#uploadSpinner').removeClass('d-none');
+                $('#btnText').text('Uploading...');
+                $('#uploadProgress').show();
+
+                // Submit form via AJAX
+                var formData = new FormData(this);
+
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    xhr: function() {
+                        var xhr = new XMLHttpRequest();
+                        xhr.upload.addEventListener('progress', function(e) {
+                            if (e.lengthComputable) {
+                                var percent = Math.round((e.loaded / e.total) * 100);
+                                $('#uploadProgress').find('.progress-bar').css('width', percent + '%');
+                            }
+                        });
+                        return xhr;
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            appalert(response.message || 'Document uploaded successfully!', 1, 1);
+
+                            // Clear form for next upload
+                            resetFileInput();
+                            $('#documentForm')[0].reset();
+
+                            // Ask if user wants to upload another document
+                            setTimeout(function() {
+                                alertify.confirm(
+                                    'Upload Successful',
+                                    'Document uploaded successfully! Would you like to upload another document?',
+                                    function() {
+                                        // Continue uploading
+                                        resetUploadButton();
+                                        $('#AttachedFiles').focus();
+                                    },
+                                    function() {
+                                        // Go back to claim list
+                                        window.location.href = '@Url.Action("List", "IPSClaim")';
+                                    }
+                                );
+                            }, 1000);
+                        } else {
+                            appalert(response.message || 'Upload failed. Please try again.', 4, 1);
+                            resetUploadButton();
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        var errorMessage = 'An error occurred during upload. Please try again.';
+                        if (xhr.responseJSON && xhr.responseJSON.message) {
+                            errorMessage = xhr.responseJSON.message;
+                        }
+                        appalert(errorMessage, 4, 1);
+                        resetUploadButton();
+                    }
+                });
+
+                return false;
+            });
+
+            function resetUploadButton() {
+                $('#btnUpload').prop('disabled', false);
+                $('#uploadSpinner').addClass('d-none');
+                $('#btnText').text('Upload Document');
+                $('#uploadProgress').hide().find('.progress-bar').css('width', '0%');
+            }
+
+            function formatFileSize(bytes) {
+                if (bytes === 0) return '0 Bytes';
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+
+            // Back button function
+            window.goBack = function() {
+                window.location.href = '@Url.Action("List", "IPSClaim")';
+            };
+        });
+    </script>
+}

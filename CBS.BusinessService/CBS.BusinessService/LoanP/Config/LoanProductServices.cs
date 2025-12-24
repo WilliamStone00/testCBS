@@ -20,6 +20,7 @@ using System.Web.Mvc;
 using DocumentFormat.OpenXml.EMMA;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using Microsoft.Owin.Logging;
+using CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure;
 
 namespace CBS.BusinessService.Config
 {
@@ -65,7 +66,23 @@ namespace CBS.BusinessService.Config
             }
             return ExecutionMessage;
         }
-
+        // ✅ mapper for edit -> form command
+        public CreateLoanProductCommand MapToCreateCommand(PCMFLoanProduct p)
+        {
+            return new CreateLoanProductCommand
+            {
+                Id = p.Id,
+                ProductCode = p.ProductCode,
+                ProductName = p.ProductName,
+                Description = p.Description,
+                LoanTermId = p.LoanTermId,
+                LoanTargetId = p.LoanTargetId,
+                PcmfLoanPurposeId = p.PcmfLoanPurposeId,
+                ActiveStatus = p.ActiveStatus,
+                AccountingProfileId = p.AccountingProfileId,
+                LoanFacility = p.LoanFacility,
+            };
+        }
         public async Task<IEnumerable<LoanProduct>> GetLoanProducts()
         {
             try
@@ -76,6 +93,24 @@ namespace CBS.BusinessService.Config
                     return couApiResponse.ApiResponseData.Data;
                 }
                 return new List<LoanProduct>();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<PCMFLoanProduct>> PCMFGetLoanProducts()
+        {
+            try
+            {
+                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<PCMFLoanProduct>>>(APICallHelper.GetAllLoanProductLighterVersion);
+                if (couApiResponse.IsSuccess)
+                {
+                    return couApiResponse.ApiResponseData.Data;
+                }
+                return new List<PCMFLoanProduct>();
             }
             catch (Exception ex)
             {
@@ -348,6 +383,65 @@ namespace CBS.BusinessService.Config
                 throw ex;
             }
         }
+
+        public async Task<PCMFLoanProduct> PcmfGetLoanProduct(string id)
+        {
+            try
+            {
+                var cusResponseObject = await _loanConfigApiHelper.GetAsync<ResponseObject<PCMFLoanProduct>>(string.Format(APICallHelper.Get_Update_Delete_LoanProduct, id));
+                if (cusResponseObject.IsSuccess)
+                {
+                    var data = cusResponseObject.ApiResponseData.Data;
+
+                    return data;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
+        }
+        private static PCMFLoanProduct MapToPcmfLoanProduct(LoanProductFullDto dto)
+        {
+            if (dto == null) throw new ArgumentNullException(nameof(dto));
+
+            return new PCMFLoanProduct
+            {
+                // --------------------
+                // Core product
+                // --------------------
+                Id = dto.Id,
+                ProductCode = dto.ProductCode,
+                ProductName = dto.ProductName,
+                Description = dto.Description,
+                ActiveStatus = dto.ActiveStatus,
+                LoanTypeCategory = dto.LoanTypeCategory,
+
+                // --------------------
+                // PCMF classification (derived)
+                // --------------------
+                PcmfSection = dto.PcmfSection,
+                PcmfGroupCode = dto.PcmfGroupCode,
+                PcmfPopulation = dto.PcmfPopulation,
+                PcmfBaseCode = dto.PcmfBaseCode,
+
+                // --------------------
+                // Foreign ids
+                // --------------------
+                LoanTermId = dto.LoanTermId,
+                LoanTargetId = dto.LoanTargetId,
+                PcmfLoanPurposeId = dto.PcmfLoanPurposeId,
+                AccountingProfileId = dto.AccountingProfileId,
+
+                // --------------------
+                // Optional convenience fields
+                // --------------------
+                //RepaymentCycles = dto.RepaymentCycles ?? new List<string>()
+            };
+        }
+
         public async Task<LoanProductConfigurationAgregates> GetAgreggates()
         {
             try
@@ -438,12 +532,122 @@ namespace CBS.BusinessService.Config
                 throw;
             }
         }
+        public async Task<ExecutionMessages> UpdateAccountingProfileSimple(LoanProductAccountingProfile model)
+        {
+            try
+            {
+
+                // Make an API call to create an individual profile
+                var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<bool>>(APICallHelper.LoanProductAccountingMapping, model);
+                if (response.IsSuccess)
+                {
+                    // Successful creation
+                    GetExecutionMessages(response, true, null, MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                    return ExecutionMessage;
+                }
+                else
+                {
+                    // Failed creation
+                    GetExecutionMessages(model, false, null, MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
+        public async Task<PcmfLoanProductUiCatalogResponse> GetPcmfLoanProductUiCatalogQuery(GetPcmfLoanProductUiCatalogQuery resource)
+        {
+            try
+            {
+                var queryString = ToQueryString(resource);
+                var fullUrl = $"{APICallHelper.GetPCMFCatalog}?{queryString}";
+
+                var api = await _loanConfigApiHelper
+                    .GetAsync<ResponseObject<PcmfLoanProductUiCatalogResponse>>(fullUrl);
+
+                if (api != null && api.IsSuccess && api.ApiResponseData?.Data != null)
+                    return api.ApiResponseData.Data;
+
+                return new PcmfLoanProductUiCatalogResponse();
+            }
+            catch
+            {
+                // TODO: log exception
+                return new PcmfLoanProductUiCatalogResponse();
+            }
+        }
+
+        public async Task<ExecutionMessages> UpdatePcmfLoanProductSimple(CreateLoanProductCommand model)
+        {
+            try
+            {
+
+                // Make an API call to create an individual profile
+                var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<bool>>(APICallHelper.LoanProductUpdateCore, model);
+                if (response.IsSuccess)
+                {
+                    // Successful creation
+                    GetExecutionMessages(response, true, $"{model.ProductName}", MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                    return ExecutionMessage;
+                }
+                else
+                {
+                    // Failed creation
+                    GetExecutionMessages(model, false, model.ProductName, MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
+
+        public async Task<ExecutionMessages> CreatePcmfLoanProductSimple(CreateLoanProductCommand model)
+        {
+            try
+            {
+
+                // Make an API call to create an individual profile
+                var response = await _loanConfigApiHelper.PostAsync<ServiceResponse<bool>>(APICallHelper.CreateLoanProduct, model);
+                if (response.IsSuccess)
+                {
+                    // Successful creation
+                    GetExecutionMessages(response, true, $"{model.ProductName}", MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                    return ExecutionMessage;
+                }
+                else
+                {
+                    // Failed creation
+                    GetExecutionMessages(model, false, model.ProductName, MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
 
         public async Task<ExecutionMessages> Create(AddLoanProductCommand model)
         {
             try
             {
-                model.IsProductWithSavingFacilities = model.LoanTypeCategory=="SSF" ? true : false;
+                model.IsProductWithSavingFacilities = model.LoanTypeCategory == "SSF" ? true : false;
 
                 // Make an API call to create an individual profile
                 var response = await _loanConfigApiHelper.PostAsync<ServiceResponse<LoanProduct>>(APICallHelper.CreateLoanProduct, model);
@@ -482,25 +686,25 @@ namespace CBS.BusinessService.Config
                     LoanProductCategoryId = product.LoanProductCategoryId,
                     LoanProductCategory = product.LoanProductCategory ?? new LoanProductCategory { Name = "N/A" },
                     LoanProductId = product.Id,
-                    Co_obligorMustHaveFundToGuranteeLoan=product.Co_obligorMustHaveFundToGuranteeLoan,
-                    NumberOfDaysToStopInterestCalculation=product.NumberOfDaysToStopInterestCalculation,
-                    MinimumPercentageCoverageOfShortee=product.MinimumPercentageCoverageOfShortee,
-                    MinimumPercentageRefundBeforeRefinancing=product.MinimumPercentageRefundBeforeRefinancing,
-                    ShorteeMustHaveFundToGuranteeLoan=product.ShorteeMustHaveFundToGuranteeLoan,
-                    StopInterestCalculationAtLoanMaturityDate=product.StopInterestCalculationAtLoanMaturityDate,
+                    Co_obligorMustHaveFundToGuranteeLoan = product.Co_obligorMustHaveFundToGuranteeLoan,
+                    NumberOfDaysToStopInterestCalculation = product.NumberOfDaysToStopInterestCalculation,
+                    MinimumPercentageCoverageOfShortee = product.MinimumPercentageCoverageOfShortee,
+                    MinimumPercentageRefundBeforeRefinancing = product.MinimumPercentageRefundBeforeRefinancing,
+                    ShorteeMustHaveFundToGuranteeLoan = product.ShorteeMustHaveFundToGuranteeLoan,
+                    StopInterestCalculationAtLoanMaturityDate = product.StopInterestCalculationAtLoanMaturityDate,
                     TargetType = product.TargetType,
                     LoanTermId = product.LoanTermId,
-                    InterestMustBePaidUpFront=product.InterestMustBePaidUpFront,
+                    InterestMustBePaidUpFront = product.InterestMustBePaidUpFront,
                     IsPaidFeeBeforeProcessing = product.IsPaidFeeBeforeProcessing,
                     LoanTerm = product.LoanTerm,
                     LoanMaximumAmount = product.LoanMaximumAmount,
-                    LoanTypeCategory=product.LoanTypeCategory,
+                    LoanTypeCategory = product.LoanTypeCategory,
                     ProductName = product.ProductName,
                     LoanInterestPeriod = product.LoanInterestPeriod,
                     MinimumInterestRate = product.MinimumInterestRate,
                     MaximumInterestRate = product.MaximumInterestRate,
-                    ChartOfAccountIdForFee=product.ChartOfAccountIdForFee,
-                    PenaltyId =product.PenaltyId,
+                    ChartOfAccountIdForFee = product.ChartOfAccountIdForFee,
+                    PenaltyId = product.PenaltyId,
                     LoanDurationPeriod = product.LoanDurationPeriod,
                     MinimumDurationPeriod = product.MinimumDurationPeriod,
                     MaximumDurationPeriod = product.MaximumDurationPeriod,
@@ -533,7 +737,7 @@ namespace CBS.BusinessService.Config
                     BlockSalaryAccount = product.BlockSalaryAccount,
                     BlockShareAccount = product.BlockShareAccount,
                     BlockSavingAccount = product.BlockSavingAccount,
-                    BlockGurantorAccount=product.BlockGurantorAccount,
+                    BlockGurantorAccount = product.BlockGurantorAccount,
                     MinimumSavingAccountBalanceRateForTheRequestAmount = product.MinimumSavingAccountBalanceRateForTheRequestAmount,
                     MinimumSalaryAccountBalanceRateForTheRequestAmount = product.MinimumSalaryAccountBalanceRateForTheRequestAmount,
                     MinimumShareAccountBalanceForTheRequestAmount = product.MinimumShareAccountBalanceForTheRequestAmount,
@@ -601,7 +805,7 @@ namespace CBS.BusinessService.Config
                         LoanProduct.LoanProductCategoryId = model.LoanProductCategoryId;
                         LoanProduct.LoanTermId = model.LoanTermId;
                         LoanProduct.LoanTermId = model.LoanTermId;
-                        LoanProduct.IsProductWithSavingFacilities = model.LoanTypeCategory=="SSF" ? true : false;
+                        LoanProduct.IsProductWithSavingFacilities = model.LoanTypeCategory == "SSF" ? true : false;
                         LoanProduct.LoanTypeCategory = model.LoanTypeCategory;
                         LoanProduct.IsMortgage = model.IsMortgage;
 
@@ -637,9 +841,9 @@ namespace CBS.BusinessService.Config
                         LoanProduct.BlockShareAccount = model.BlockShareAccount;
                         LoanProduct.MinimumSavingAccountBalanceRateForTheRequestAmount =
                             model.MinimumSavingAccountBalanceRateForTheRequestAmount;
-                        LoanProduct.Co_obligorMustHaveFundToGuranteeLoan=model.Co_obligorMustHaveFundToGuranteeLoan;
-                        LoanProduct.ShorteeMustHaveFundToGuranteeLoan=model.ShorteeMustHaveFundToGuranteeLoan;
-                        LoanProduct.MinimumPercentageCoverageOfShortee=model.MinimumPercentageCoverageOfShortee;
+                        LoanProduct.Co_obligorMustHaveFundToGuranteeLoan = model.Co_obligorMustHaveFundToGuranteeLoan;
+                        LoanProduct.ShorteeMustHaveFundToGuranteeLoan = model.ShorteeMustHaveFundToGuranteeLoan;
+                        LoanProduct.MinimumPercentageCoverageOfShortee = model.MinimumPercentageCoverageOfShortee;
 
 
                     }
@@ -655,7 +859,7 @@ namespace CBS.BusinessService.Config
                     else if (model.ServiceOption == "topup")
                     {
                         LoanProduct.HasTopUp = model.HasTopUp;
-                        LoanProduct.MinimumPercentageRefundBeforeRefinancing=model.MinimumPercentageRefundBeforeRefinancing;
+                        LoanProduct.MinimumPercentageRefundBeforeRefinancing = model.MinimumPercentageRefundBeforeRefinancing;
                     }
 
                     else if (model.ServiceOption == "interest")
@@ -668,8 +872,8 @@ namespace CBS.BusinessService.Config
                         LoanProduct.MaximumInterestRate = model.MaximumInterestRate;
                         LoanProduct.StartGeneratingInterestAfterDisbustment = model.StartGeneratingInterestAfterDisbustment;
                         LoanProduct.InterestMustBePaidUpFront = model.InterestMustBePaidUpFront;
-                        LoanProduct.StopInterestCalculationAtLoanMaturityDate=model.StopInterestCalculationAtLoanMaturityDate;
-                        LoanProduct.NumberOfDaysToStopInterestCalculation=model.NumberOfDaysToStopInterestCalculation;
+                        LoanProduct.StopInterestCalculationAtLoanMaturityDate = model.StopInterestCalculationAtLoanMaturityDate;
+                        LoanProduct.NumberOfDaysToStopInterestCalculation = model.NumberOfDaysToStopInterestCalculation;
                     }
                     else if (model.ServiceOption == "duration")
                     {

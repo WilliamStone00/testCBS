@@ -446,23 +446,24 @@ else
                 .removeClass('btn-success');
         }
 
-        $('#btnApproveDestination').click(function (e) {
+        $('#btnApproveDestination').on('click', function (e) {
             e.preventDefault();
 
-            // ✅ Confirmation before approving
             alertify.confirm(
                 "Confirmation",
                 "Are you sure you want to approve this journal entry?",
                 function () {
-                    const $btn = $('#btnApproveDestination');
-                    const $icon = $btn.find('i');
-                    const $text = $btn.find('.btn-text');
+
+                    var $btn = $('#btnApproveDestination');
+                    var $icon = $btn.find('i');
+                    var $text = $btn.find('.btn-text');
 
                     $btn.prop('disabled', true);
-                    $icon.removeClass('mdi-check-circle-outline').addClass('mdi-loading mdi-spin');
+                    $icon.removeClass('mdi-check-circle-outline')
+                         .addClass('mdi-loading mdi-spin');
                     $text.text('Approving...');
 
-                    const payload = {
+                    var payload = {
                         Reference: '@Model.Reference',
                         BranchId: $('#BranchId').val() || '@Model.BranchId',
                         Approver: '@User.Identity.Name',
@@ -471,10 +472,10 @@ else
                     };
 
                     $('#myDataTable tbody tr').each(function () {
-                        const $row = $(this);
-                        const affiliateAccountId = $row.find('.account-id').val();
-                        const debitVal = parseFloat($row.find('.debit-input').val()) || 0;
-                        const creditVal = parseFloat($row.find('.credit-input').val()) || 0;
+                        var $row = $(this);
+                        var affiliateAccountId = $row.find('.account-id').val();
+                        var debitVal = parseFloat($row.find('.debit-input').val()) || 0;
+                        var creditVal = parseFloat($row.find('.credit-input').val()) || 0;
 
                         if (affiliateAccountId && (debitVal > 0 || creditVal > 0)) {
                             payload.Lines.push({
@@ -492,33 +493,40 @@ else
                         contentType: 'application/json',
                         data: JSON.stringify(payload),
                         success: function (response) {
-                            if (response.success) {
-                                toastr.success(response.message);
+                            if (response && response.success) {
+                                appalert(response.message || "✅ Approved successfully.", 1, 1);
+
                                 $btn.prop('disabled', true);
-                                $icon.removeClass('mdi-loading mdi-spin').addClass('mdi-check-circle');
+                                $icon.removeClass('mdi-loading mdi-spin')
+                                     .addClass('mdi-check-circle');
                                 $text.text('Approved');
                             } else {
-                                toastr.error(response.message);
+                                appalert((response && response.message) || "❌ Approval failed.", 2, 1);
+
                                 $btn.prop('disabled', false);
-                                $icon.removeClass('mdi-loading mdi-spin').addClass('mdi-check-circle-outline');
+                                $icon.removeClass('mdi-loading mdi-spin')
+                                     .addClass('mdi-check-circle-outline');
                                 $text.text('Approve');
                             }
                         },
-                        error: function (xhr, status, error) {
-                            toastr.error("An error occurred: " + error);
+                        error: function (xhr) {
+                            appalert("❌ An error occurred while approving.", 0, 1);
+
                             $btn.prop('disabled', false);
-                            $icon.removeClass('mdi-loading mdi-spin').addClass('mdi-check-circle-outline');
+                            $icon.removeClass('mdi-loading mdi-spin')
+                                 .addClass('mdi-check-circle-outline');
                             $text.text('Approve');
                         }
                     });
                 },
                 function () {
-                    // Cancelled
-                    toastr.info("Approval cancelled.");
+                    appalert("🚫 Approval cancelled.", 2, 1);
                 }
             );
         });
     });
+
+
         </script>
     }
     else
