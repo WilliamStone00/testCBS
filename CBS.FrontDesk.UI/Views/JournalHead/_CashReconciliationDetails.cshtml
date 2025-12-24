@@ -301,7 +301,7 @@ $(document).ready(function () {
     // ============================================
     // Approve Button Click Handler
     // ============================================
-    $('#btnApprove').click(function (e) {
+    $('#btnApprove').on('click', function (e) {
         e.preventDefault();
 
         alertify.confirm(
@@ -309,16 +309,16 @@ $(document).ready(function () {
             "Are you sure you want to approve this journal entry?",
             function () {
 
-                const $btn = $('#btnApprove');
-                const $icon = $btn.find('i');
-                const $text = $btn.find('.btn-text');
+                var $btn = $('#btnApprove');
+                var $icon = $btn.find('i');
+                var $text = $btn.find('.btn-text');
 
                 $btn.prop('disabled', true);
                 $icon.removeClass('mdi-check-circle-outline')
                      .addClass('mdi-loading mdi-spin');
                 $text.text('Approving...');
 
-                const payload = {
+                var payload = {
                     Reference: '@Model.Reference',
                     BranchId: '@Model.BranchId',
                     Approver: '@User.Identity.Name',
@@ -331,8 +331,8 @@ $(document).ready(function () {
                     contentType: 'application/json',
                     data: JSON.stringify(payload),
                     success: function (response) {
-                        if (response.success) {
-                            toastr.success(response.message);
+                        if (response && response.success) {
+                            appalert(response.message || "✅ Approved successfully.", 1, 1);
 
                             // FINAL – permanently disable both buttons
                             $('#btnApprove, #btnReject').prop('disabled', true);
@@ -341,15 +341,17 @@ $(document).ready(function () {
                                  .addClass('mdi-check-circle');
                             $text.text('Approved');
                         } else {
-                            toastr.error(response.message);
+                            appalert((response && response.message) || "❌ Approval failed.", 2, 1);
+
                             $btn.prop('disabled', false);
                             $icon.removeClass('mdi-loading mdi-spin')
                                  .addClass('mdi-check-circle-outline');
                             $text.text('Approve');
                         }
                     },
-                    error: function (xhr, status, error) {
-                        toastr.error("An error occurred: " + error);
+                    error: function () {
+                        appalert("❌ An error occurred while approving.", 0, 1);
+
                         $btn.prop('disabled', false);
                         $icon.removeClass('mdi-loading mdi-spin')
                              .addClass('mdi-check-circle-outline');
@@ -357,8 +359,12 @@ $(document).ready(function () {
                     }
                 });
             },
-            function () { }
-        ).set('labels', {ok:'Yes', cancel:'No'});
+            function () {
+                appalert("🚫 Approval cancelled.", 2, 1);
+            }
+        ).set({
+            labels: { ok: 'Yes', cancel: 'No' }
+        });
     });
 
 
