@@ -59,6 +59,8 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
             var savingProduct = await _bulkOperationService.GetSavingProducts();
             var savingOrdinaryProduct = savingProduct.Where(x => x.ProductCategory == "OrdinaryAccount").ToList();
             var Branches = await _branchServices.GetBranches();
+
+            loadSimulationTypes();
             return View(new SimulateBulkOperation()
             {
                 BulkOperationSelectionModel = new BulkOperationSelectionModel()
@@ -68,6 +70,26 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
                 SavingProducts = savingOrdinaryProduct,
                 Branches = Branches.ToList()
             });
+        }
+
+        private void loadSimulationTypes()
+        {
+            ViewBag.SimulationTypes = new List<SelectListItem>
+            {
+                new SelectListItem() { Value = "SalaryPayment", Text = "Salary Payment Bulk" },
+                new SelectListItem() { Value = "BulkCashIn_Deposit", Text = "Bulk Cash-In (Deposit)" },
+                new SelectListItem() { Value = "BulkCashOut_Withdrawal", Text = "Bulk Cash-Out (Withdrawal)" },
+                new SelectListItem() { Value = "DailyCollectorSettlement", Text = "Daily Collector Settlement" },
+                new SelectListItem() { Value = "ReversalCorrection", Text = "Reversal / Correction" },
+                new SelectListItem() { Value = "LoanRecovery", Text = "Loan Recovery / Standing Order" },
+                new SelectListItem() { Value = "FeesCharges", Text = "Fees / Charges Batch" },
+                new SelectListItem() { Value = "CommissionPayment", Text = "Commission Payment" },
+                new SelectListItem() { Value = "InterBranchFunding", Text = "Inter-Branch Funding / Liaison" },
+                new SelectListItem() { Value = "MigrationAdjustment", Text = "Migration / Adjustment Batch" },
+                new SelectListItem() { Value = "ShareMonthSharing", Text = "Share Month Interest Sharing" },
+                new SelectListItem() { Value = "PreferenceShareSharing", Text = "Preference Share Sharing" },
+                new SelectListItem() { Value = "Other", Text = "Other (Specify in Description)" },
+            };
         }
 
 
@@ -84,6 +106,8 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
             var savingOrdinaryProduct = savingProduct.Where(x => x.ProductCategory == "OrdinaryAccount").ToList();
             ViewBag.branches = Branches.ToList();
             ViewBag.savingProducts = savingOrdinaryProduct;
+
+            loadSimulationTypes();
             //var chartOfAccounts = await chartOfAccountServices.GetChartOfAccounts();
             return View(new SimulateCashOutOrCashInBulkOperation() { Branches = Branches.ToList() });
 
