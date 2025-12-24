@@ -122,9 +122,14 @@
                 <td colspan="3">@Html.Raw(Model?.Remarks ?? "")</td>
             </tr>
             <tr>
+                <th class="bg-label">Initiated By</th>
+                <td>@(string.IsNullOrWhiteSpace(Model?.CreatedBy) ? "-" : Model.CreatedBy)</td>
+            </tr>
+            <tr>
                 <th class="bg-label">Approved By</th>
                 <td>@(string.IsNullOrWhiteSpace(Model?.Approveby) ? "-" : Model.Approveby)</td>
             </tr>
+
             <tr>
                 <th class="bg-label">Approved Date</th>
                 <td>@(Model?.ApproveDate != DateTime.MinValue ? Model.ApproveDate.ToString("dd/MM/yyyy HH:mm") : "-")</td>
