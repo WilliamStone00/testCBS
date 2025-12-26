@@ -168,12 +168,13 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure
         /// If not provided, the product can still be created, and mapping can be configured later.
         /// </summary>
         [StringLength(64, ErrorMessage = "Accounting Profile Id must not exceed 64 characters.")]
-        public string AccountingProfileId { get; set; }
 
-        public string LoanProductCategoryId { get; set; }
-        public string TargetType { get; set; }
-        public string LoanTypeCategory { get; set; }
-
+        public string ChartOfAccountIdForPrincipalAmount { get; set; }
+        public string ChartOfAccountIdForTaxiblePrincipalAmount { get; set; }
+        public string ChartOfAccountIdForTaxibleInterestReceived { get; set; }
+        public string ChartOfAccountIdForInterestReceived { get; set; }
+        public string ChartOfAccountIdForTax { get; set; }
+        public string ChartOfAccountIdForPenalty { get; set; }
     }
 
 

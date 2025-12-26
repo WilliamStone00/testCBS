@@ -79,8 +79,13 @@ namespace CBS.BusinessService.Config
                 LoanTargetId = p.LoanTargetId,
                 PcmfLoanPurposeId = p.PcmfLoanPurposeId,
                 ActiveStatus = p.ActiveStatus,
-                AccountingProfileId = p.AccountingProfileId,
-                LoanFacility = p.LoanFacility,
+                LoanFacility = p.LoanFacility, 
+                ChartOfAccountIdForInterestReceived = p.AccountingMapping.ChartOfAccountIdForInterestReceived,
+                ChartOfAccountIdForPenalty = p.AccountingMapping.ChartOfAccountIdForPenalty,
+                ChartOfAccountIdForPrincipalAmount = p.AccountingMapping.ChartOfAccountIdForPrincipalAmount,
+                ChartOfAccountIdForTax = p.AccountingMapping.ChartOfAccountIdForTax,
+                ChartOfAccountIdForTaxibleInterestReceived = p.AccountingMapping.ChartOfAccountIdForTaxibleInterestReceived,
+                ChartOfAccountIdForTaxiblePrincipalAmount = p.AccountingMapping.ChartOfAccountIdForTaxiblePrincipalAmount
             };
         }
         public async Task<IEnumerable<LoanProduct>> GetLoanProducts()
@@ -977,7 +982,7 @@ namespace CBS.BusinessService.Config
         //}
 
 
-        public async Task<ExecutionMessages> Update( LoanProductPolicy policy, string serviceOption, List<string> repaymentCycles = null, LoanProductAccountingProfile accounting = null)
+        public async Task<ExecutionMessages> Update(LoanProductPolicy policy, string serviceOption, List<string> repaymentCycles = null, LoanProductAccountingProfile accounting = null)
         {
             try
             {
@@ -994,11 +999,11 @@ namespace CBS.BusinessService.Config
 
                 // 2. MAP the incoming UI data onto the Fetched Object
                 // We update specific sections of 'fullLoanProduct' based on the serviceOption
-             //  fullLoanProduct.UpdateOption = "N/A"; // Legacy flag from your snippet
+                //  fullLoanProduct.UpdateOption = "N/A"; // Legacy flag from your snippet
 
                 switch (serviceOption)
                 {
-                    
+
                     case "mortgage":
                         // Assuming 'Policy' is a property on PCMFLoanProduct
                         UpdatePolicy.IsMortgage = policy.IsMortgage;
@@ -1014,75 +1019,75 @@ namespace CBS.BusinessService.Config
                     case "gurantee":
                         UpdatePolicy.RequiresGuarantor = policy.RequiresGuarantor;
                         UpdatePolicy.MinimumCollateralPercentage = policy.MinimumCollateralPercentage;
-                      UpdatePolicy.IsRequiredCollateral = policy.IsRequiredCollateral;
-                      UpdatePolicy.IsRequiredSalaryccount = policy.IsRequiredSalaryccount;
-                      UpdatePolicy.IsRequiredSavingAccount = policy.IsRequiredSavingAccount;
-                      UpdatePolicy.IsRequiredShareAccount = policy.IsRequiredShareAccount;
-                      UpdatePolicy.IsRequredIrrivocableSalaryTransfer = policy.IsRequredIrrivocableSalaryTransfer;
-                      UpdatePolicy.IsRequresRegisteredPublicAuthority = policy.IsRequresRegisteredPublicAuthority;
-                      UpdatePolicy.MinimumShareAccountBalanceForTheRequestAmount = policy.MinimumShareAccountBalanceForTheRequestAmount;
-                      UpdatePolicy.MinimumSalaryAccountBalanceRateForTheRequestAmount = policy.MinimumSalaryAccountBalanceRateForTheRequestAmount;
-                      UpdatePolicy.MinimumSavingAccountBalanceRateForTheRequestAmount = policy.MinimumSavingAccountBalanceRateForTheRequestAmount;
-                      UpdatePolicy.BlockSalaryAccount = policy.BlockSalaryAccount;
-                      UpdatePolicy.BlockSavingAccount = policy.BlockSavingAccount;
-                      UpdatePolicy.BlockShareAccount = policy.BlockShareAccount;
+                        UpdatePolicy.IsRequiredCollateral = policy.IsRequiredCollateral;
+                        UpdatePolicy.IsRequiredSalaryccount = policy.IsRequiredSalaryccount;
+                        UpdatePolicy.IsRequiredSavingAccount = policy.IsRequiredSavingAccount;
+                        UpdatePolicy.IsRequiredShareAccount = policy.IsRequiredShareAccount;
+                        UpdatePolicy.IsRequredIrrivocableSalaryTransfer = policy.IsRequredIrrivocableSalaryTransfer;
+                        UpdatePolicy.IsRequresRegisteredPublicAuthority = policy.IsRequresRegisteredPublicAuthority;
+                        UpdatePolicy.MinimumShareAccountBalanceForTheRequestAmount = policy.MinimumShareAccountBalanceForTheRequestAmount;
+                        UpdatePolicy.MinimumSalaryAccountBalanceRateForTheRequestAmount = policy.MinimumSalaryAccountBalanceRateForTheRequestAmount;
+                        UpdatePolicy.MinimumSavingAccountBalanceRateForTheRequestAmount = policy.MinimumSavingAccountBalanceRateForTheRequestAmount;
+                        UpdatePolicy.BlockSalaryAccount = policy.BlockSalaryAccount;
+                        UpdatePolicy.BlockSavingAccount = policy.BlockSavingAccount;
+                        UpdatePolicy.BlockShareAccount = policy.BlockShareAccount;
                         // fullLoanProduct.Policy.BlockGurantorAccount = policy.BlockGurantorAccount; // Uncomment if property exists in DTO
-                      UpdatePolicy.Co_obligorMustHaveFundToGuranteeLoan = policy.Co_obligorMustHaveFundToGuranteeLoan;
-                      UpdatePolicy.ShorteeMustHaveFundToGuranteeLoan = policy.ShorteeMustHaveFundToGuranteeLoan;
-                      UpdatePolicy.MinimumPercentageCoverageOfShortee = policy.MinimumPercentageCoverageOfShortee;
+                        UpdatePolicy.Co_obligorMustHaveFundToGuranteeLoan = policy.Co_obligorMustHaveFundToGuranteeLoan;
+                        UpdatePolicy.ShorteeMustHaveFundToGuranteeLoan = policy.ShorteeMustHaveFundToGuranteeLoan;
+                        UpdatePolicy.MinimumPercentageCoverageOfShortee = policy.MinimumPercentageCoverageOfShortee;
                         break;
 
                     case "loan_range":
-                      UpdatePolicy.LoanMinimumAmount = policy.LoanMinimumAmount;
-                      UpdatePolicy.MinimumDownPaymentPercentage = policy.MinimumDownPaymentPercentage;
-                      UpdatePolicy.LoanMaximumAmount = policy.LoanMaximumAmount;
-                      UpdatePolicy.IsPaidFeeBeforeProcessing = policy.IsPaidFeeBeforeProcessing;
-                                           
+                        UpdatePolicy.LoanMinimumAmount = policy.LoanMinimumAmount;
+                        UpdatePolicy.MinimumDownPaymentPercentage = policy.MinimumDownPaymentPercentage;
+                        UpdatePolicy.LoanMaximumAmount = policy.LoanMaximumAmount;
+                        UpdatePolicy.IsPaidFeeBeforeProcessing = policy.IsPaidFeeBeforeProcessing;
+
                         break;
 
                     case "topup":
-                      UpdatePolicy.HasTopUp = policy.HasTopUp;
-                      UpdatePolicy.MinimumPercentageRefundBeforeRefinancing = policy.MinimumPercentageRefundBeforeRefinancing;
+                        UpdatePolicy.HasTopUp = policy.HasTopUp;
+                        UpdatePolicy.MinimumPercentageRefundBeforeRefinancing = policy.MinimumPercentageRefundBeforeRefinancing;
                         break;
 
                     case "interest":
-                      UpdatePolicy.IsInterestWaiverApplied = policy.IsInterestWaiverApplied;
-                      UpdatePolicy.MinimumInterestWaiver = policy.MinimumInterestWaiver;
-                      UpdatePolicy.MaximumInterestWaiver = policy.MaximumInterestWaiver;
-                      UpdatePolicy.LoanInterestPeriod = policy.LoanInterestPeriod;
-                      UpdatePolicy.MinimumInterestRate = policy.MinimumInterestRate;
-                      UpdatePolicy.MaximumInterestRate = policy.MaximumInterestRate;
-                      UpdatePolicy.StartGeneratingInterestAfterDisbustment = policy.StartGeneratingInterestAfterDisbustment;
-                      UpdatePolicy.InterestMustBePaidUpFront = policy.InterestMustBePaidUpFront;
-                      UpdatePolicy.StopInterestCalculationAtLoanMaturityDate = policy.StopInterestCalculationAtLoanMaturityDate;
-                      UpdatePolicy.NumberOfDaysToStopInterestCalculation = policy.NumberOfDaysToStopInterestCalculation;
+                        UpdatePolicy.IsInterestWaiverApplied = policy.IsInterestWaiverApplied;
+                        UpdatePolicy.MinimumInterestWaiver = policy.MinimumInterestWaiver;
+                        UpdatePolicy.MaximumInterestWaiver = policy.MaximumInterestWaiver;
+                        UpdatePolicy.LoanInterestPeriod = policy.LoanInterestPeriod;
+                        UpdatePolicy.MinimumInterestRate = policy.MinimumInterestRate;
+                        UpdatePolicy.MaximumInterestRate = policy.MaximumInterestRate;
+                        UpdatePolicy.StartGeneratingInterestAfterDisbustment = policy.StartGeneratingInterestAfterDisbustment;
+                        UpdatePolicy.InterestMustBePaidUpFront = policy.InterestMustBePaidUpFront;
+                        UpdatePolicy.StopInterestCalculationAtLoanMaturityDate = policy.StopInterestCalculationAtLoanMaturityDate;
+                        UpdatePolicy.NumberOfDaysToStopInterestCalculation = policy.NumberOfDaysToStopInterestCalculation;
                         break;
 
                     case "duration":
-                      UpdatePolicy.LoanDurationPeriod = policy.LoanDurationPeriod;
-                      UpdatePolicy.MinimumDurationPeriod = policy.MinimumDurationPeriod;
-                      UpdatePolicy.MaximumDurationPeriod = policy.MaximumDurationPeriod;
+                        UpdatePolicy.LoanDurationPeriod = policy.LoanDurationPeriod;
+                        UpdatePolicy.MinimumDurationPeriod = policy.MinimumDurationPeriod;
+                        UpdatePolicy.MaximumDurationPeriod = policy.MaximumDurationPeriod;
                         break;
 
                     case "repayment":
                         fullLoanProduct.RepaymentCycles = repaymentCycles; // Directly assign list
-                      UpdatePolicy.CapitalOrder = policy.CapitalOrder;
-                      UpdatePolicy.InterestOrder = policy.InterestOrder;
-                      UpdatePolicy.FineOrder = policy.FineOrder;
-                      UpdatePolicy.InterestRate = policy.InterestRate;
-                      UpdatePolicy.FineRate = policy.FineRate;
-                      UpdatePolicy.CapitalRate = policy.CapitalRate;
+                        UpdatePolicy.CapitalOrder = policy.CapitalOrder;
+                        UpdatePolicy.InterestOrder = policy.InterestOrder;
+                        UpdatePolicy.FineOrder = policy.FineOrder;
+                        UpdatePolicy.InterestRate = policy.InterestRate;
+                        UpdatePolicy.FineRate = policy.FineRate;
+                        UpdatePolicy.CapitalRate = policy.CapitalRate;
                         break;
 
                     case "charges":
-                      UpdatePolicy.IsChargesApplied = policy.IsChargesApplied;
-                      UpdatePolicy.PenaltyId = policy.PenaltyId;
+                        UpdatePolicy.IsChargesApplied = policy.IsChargesApplied;
+                        UpdatePolicy.PenaltyId = policy.PenaltyId;
                         break;
                 }
 
                 // 3. SEND the single consolidated object to the Single Endpoint
                 // We ignore the individual 'policy' payload and send 'fullLoanProduct'
-                var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<bool>>(APICallHelper.LoanProductUpsertPolicy,UpdatePolicy);
+                var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<bool>>(APICallHelper.LoanProductUpsertPolicy, UpdatePolicy);
 
                 if (response.IsSuccess)
                 {
@@ -1126,7 +1131,7 @@ namespace CBS.BusinessService.Config
             }
             return null;
         }
-               
+
     }
 
 
