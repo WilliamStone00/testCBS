@@ -214,9 +214,9 @@ namespace CBS.BusinessService.Config
 
                 // Return an empty SelectList with a default "No options available" option
                 return new SelectList(new List<SelectListItem>
-        {
-            new SelectListItem { Text = "No options available", Value = string.Empty }
-        }, "Value", "Text");
+                {
+                    new SelectListItem { Text = "No options available", Value = string.Empty }
+                }, "Value", "Text");
             }
             catch (Exception ex)
             {

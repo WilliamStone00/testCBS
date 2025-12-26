@@ -87,7 +87,7 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
                 var downloadInfoLoans = await _LoanServices.GetAllFileDownloadInfoLoanPerUser();
                 var Branches = await _branchServices.GetBranches();
                 ViewBag.Branches = Branches;
-                return View(new Loan { FileDownloadInfos = downloadInfoLoans.ToList() });
+                return View(new CBS.FrontDesk.Data.Entity.LoanConf.Loan { FileDownloadInfos = downloadInfoLoans.ToList() });
             }
 
             try
@@ -120,7 +120,7 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
             var downloadInfoLoans = await _LoanServices.GetAllFileDownloadInfoLoanPerUser();
             var Branches = await _branchServices.GetBranches();
             ViewBag.Branches = Branches;
-            return View(new Loan { FileDownloadInfos= downloadInfoLoans.ToList() });
+            return View(new CBS.FrontDesk.Data.Entity.LoanConf.Loan { FileDownloadInfos= downloadInfoLoans.ToList() });
         }
         [HttpPost]
         public async Task<ActionResult> DownloadFile(InitiateLoanDownloadCommand initiateLoanDownloadCommand)
@@ -132,7 +132,7 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
             var Branches = await _branchServices.GetBranches();
 
             ViewBag.Branches = Branches;
-            return View(new Loan { FileDownloadInfos = downloadInfoLoans.ToList() });
+            return View(new CBS.FrontDesk.Data.Entity.LoanConf.Loan { FileDownloadInfos = downloadInfoLoans.ToList() });
         }
         [HttpGet]
         public async Task<ActionResult> Download(
@@ -203,7 +203,7 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
                 var dataTable = await _LoanServices.GetDataTableAsync(getLoansDataTableQuery);
 
                 // Convert dataTable.data to List<Loan>
-                var loans1 = JsonConvert.DeserializeObject<List<Loan>>(
+                var loans1 = JsonConvert.DeserializeObject<List<CBS.FrontDesk.Data.Entity.LoanConf.Loan>>(
                     JsonConvert.SerializeObject(dataTable.data)
                 );
 
@@ -288,7 +288,7 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
 
                 // 📊 Get data
                 var dataTable = await _LoanServices.GetDataTableAsync(tableQuery);
-                var loanList = JsonConvert.DeserializeObject<List<Loan>>(JsonConvert.SerializeObject(dataTable.data));
+                var loanList = JsonConvert.DeserializeObject<List<CBS.FrontDesk.Data.Entity.LoanConf.Loan>>(JsonConvert.SerializeObject(dataTable.data));
 
                 // 📤 Generate and return Excel
                 string exportedBy = Session["FullName"]?.ToString() ?? "Unknown";
@@ -302,7 +302,7 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
                 string reportTypeStr = !string.IsNullOrWhiteSpace(reportType) ? reportType : "Loan Report";
 
                 // Defensive fallback for null list
-                var safeLoans = loanList ?? new List<Loan>();
+                var safeLoans = loanList ?? new List<CBS.FrontDesk.Data.Entity.LoanConf.Loan>();
 
       
                 var exportFile = LoanExcelGenerator.GenerateLoanExcel(
@@ -329,7 +329,7 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
 
 
                 var dataTable = await _LoanServices.GetDataTableAsync(tableQuery);
-                var loanList = JsonConvert.DeserializeObject<List<Loan>>(JsonConvert.SerializeObject(dataTable.data));
+                var loanList = JsonConvert.DeserializeObject<List<CBS.FrontDesk.Data.Entity.LoanConf.Loan>>(JsonConvert.SerializeObject(dataTable.data));
 
                 return Json(new
                 {
