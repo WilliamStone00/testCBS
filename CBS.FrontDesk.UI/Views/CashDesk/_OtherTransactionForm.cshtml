@@ -131,7 +131,11 @@
                 <div class="col-lg-8">
                     <div class="d-flex flex-wrap align-items-center gap-3">
                         <div class="form-check m-0">
-                            <input type="checkbox" class="form-check-input" id="isInterBranchCheck" onchange="toggleBranchDropdown()" />
+                            <input type="checkbox"
+                                   class="form-check-input"
+                                   id="isInterBranchCheck"
+                                   disabled
+                                   onchange="toggleBranchDropdown()" />
                             <label class="form-check-label fw-semibold" for="isInterBranchCheck" id="interBranchLabel">
                                 🔄 Enable Inter-Branch Transaction
                             </label>
@@ -169,7 +173,7 @@
                     {
                         <div class="mt-3">
                             <div class="form-check">
-                                <input type="checkbox"
+                                <input type="checkbox" disabled
                                        class="form-check-input"
                                        id="IsOtherSource"
                                        onchange="OtherSourceUI.toggle()">

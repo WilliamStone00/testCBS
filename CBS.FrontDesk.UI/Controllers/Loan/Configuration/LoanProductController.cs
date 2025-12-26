@@ -21,7 +21,7 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.Configuration
 {
-    //[CheckSessionTimeOutAttribute]
+    [CheckSessionTimeOutAttribute]
     public class LoanProductController : BaseController
     {
         // GET: LoanProduct
