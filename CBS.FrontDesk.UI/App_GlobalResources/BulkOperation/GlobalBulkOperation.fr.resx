@@ -385,7 +385,7 @@
     <value>Simuler la contribution</value>
   </data>
   <data name="SimulateShareTopUp" xml:space="preserve">
-    <value>Simuler le rechargement de part</value>
+    <value>Simuler Le Rechargement</value>
   </data>
   <data name="SimulationDetails" xml:space="preserve">
     <value>Détails de la simulation</value>
@@ -599,5 +599,11 @@
   </data>
   <data name="Success" xml:space="preserve">
     <value>Succes</value>
+  </data>
+  <data name="BULKRANGEDOPERATIONS" xml:space="preserve">
+    <value>BULK RANGED OPERATIONS</value>
+  </data>
+  <data name="BULKCASHOPERATIONS" xml:space="preserve">
+    <value>BULK CASH OPERATIONS</value>
   </data>
 </root>

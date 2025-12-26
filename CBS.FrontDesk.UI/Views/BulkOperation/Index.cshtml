@@ -1,27 +1,46 @@
-﻿ @model CBS.FrontDesk.Data.Entity.BulkOperation.SimulateBulkOperation
+﻿@model CBS.FrontDesk.Data.Entity.BulkOperation.SimulateBulkOperation
 @using Resources
 
 @{
     ViewBag.Title = @GlobalBulkOperation.SimulateBulkOperation;
+
 }
+
+
+<style>
+    .hint {
+        font-size: .85rem;
+        color: #6c757d;
+    }
+
+    .field-note {
+        margin-top: .25rem;
+    }
+
+    .req-star {
+        color: #dc3545;
+        font-weight: 700;
+    }
+</style>
 
 <div class="row">
     <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
+
         <!-- Header Section -->
         <div class="card bg-light mb-3 shadow-sm">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-account-group-outline me-2"></i> @GlobalBulkOperation.BULKOPERATIONS
+                    <i class="mdi mdi-account-group-outline me-2"></i> @GlobalBulkOperation.BULKRANGEDOPERATIONS
                 </h1>
                 <p class="card-text">
-                    <strong>Bulk Account Management System</strong> - Perform mass operations on multiple accounts simultaneously.
-                    Save time by processing hundreds of accounts with a single operation while maintaining complete audit trails.
+                    <strong>Bulk Account Management System</strong> — Perform mass operations across multiple accounts simultaneously.
+                    Save time by processing hundreds of accounts in a single operation while maintaining complete audit trails and operational control.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
 
                 <div class="alert alert-info mt-3">
                     <i class="mdi mdi-alert-circle-outline me-2"></i>
-                    <strong>Important:</strong> All bulk operations will first run in simulation mode to preview results before actual execution.
+                    <strong>Important:</strong> All bulk operations are executed in simulation mode first to allow full review and validation before actual execution.
                 </div>
             </div>
         </div>
@@ -30,625 +49,635 @@
         <div class="card shadow-sm mb-4">
             <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
                 <span><i class="mdi mdi-information-outline me-2"></i> @GlobalBulkOperation.TIPS</span>
-                <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseUserTips" aria-expanded="false" aria-controls="collapseUserTips">
+                <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseUserTips"
+                        aria-expanded="false" aria-controls="collapseUserTips">
                     <i class="mdi mdi-chevron-down"></i>
                 </button>
             </h6>
+
             <div id="collapseUserTips" class="collapse">
                 <div class="card-body">
-                    <div class="row gy-2">
+                    <div class="row gy-3">
+
                         <div class="col-md-12">
-                            <h5 class="text-primary mb-3"><i class="mdi mdi-playlist-check me-2"></i> How to Execute a Bulk Operation:</h5>
-                            <ol class="list-group list-group-numbered">
-                                <li class="list-group-item d-flex justify-content-between align-items-start">
-                                    <div class="ms-2 me-auto">
-                                        <div class="fw-bold">Define Operation Details</div>
-                                        Set a clear simulation type and description that will help identify this operation in reports and audit logs.
+                            <h5 class="text-primary mb-2">
+                                <i class="mdi mdi-playlist-check me-2"></i> Quick Guide
+                            </h5>
+
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <div class="p-3 border rounded">
+                                        <div class="fw-bold text-dark mb-1">
+                                            <i class="mdi mdi-cog-outline me-1"></i> Simulation Details
+                                        </div>
+                                        <div class="hint">
+                                            Choose a simulation type and write a clear description.
+                                            This is what auditors and reports will use to identify the run.
+                                        </div>
                                     </div>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between align-items-start">
-                                    <div class="ms-2 me-auto">
-                                        <div class="fw-bold">Select Operation Type</div>
-                                        Choose between account top-up (adding funds to multiple accounts) or contribution (collecting funds to a single account).
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="p-3 border rounded">
+                                        <div class="fw-bold text-dark mb-1">
+                                            <i class="mdi mdi-database-outline me-1"></i> Source Accounts
+                                        </div>
+                                        <div class="hint">
+                                            Define which accounts are impacted (type, range, min/max balance).
+                                            Keep ranges tight to avoid unintended selections.
+                                        </div>
                                     </div>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between align-items-start">
-                                    <div class="ms-2 me-auto">
-                                        <div class="fw-bold">Configure Source Accounts</div>
-                                        Define which accounts will be affected by specifying account types, ranges, and balance filters.
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="p-3 border rounded">
+                                        <div class="fw-bold text-dark mb-1">
+                                            <i class="mdi mdi-target-account me-1"></i> Destination
+                                        </div>
+                                        <div class="hint">
+                                            For Top-Up: choose destination account type + target amount.
+                                            For Contribution: choose a single destination GL + contribution amount.
+                                        </div>
                                     </div>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between align-items-start">
-                                    <div class="ms-2 me-auto">
-                                        <div class="fw-bold">Set Destination Parameters</div>
-                                        Configure where funds will go (specific account for contributions) or target balances (for top-ups).
-                                    </div>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between align-items-start">
-                                    <div class="ms-2 me-auto">
-                                        <div class="fw-bold">Run Simulation</div>
-                                        Review the simulation results carefully before executing the actual operation.
-                                    </div>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between align-items-start">
-                                    <div class="ms-2 me-auto">
-                                        <div class="fw-bold">Execute Operation</div>
-                                        After verifying simulation results, proceed with the actual bulk operation.
-                                    </div>
-                                </li>
-                            </ol>
+                                </div>
+                            </div>
+
+                            <div class="alert alert-warning mt-3 mb-0 d-flex align-items-center" role="alert">
+                                <i class="mdi mdi-alert-outline me-2"></i>
+                                Always run simulation and verify the impacted accounts list before execution.
+                            </div>
                         </div>
 
-                        <div class="col-md-6 mt-3">
+                        <div class="col-md-6">
                             <div class="alert alert-primary d-flex align-items-center" role="alert">
                                 <i class="mdi mdi-account-edit-outline me-2"></i>
                                 @GlobalBulkOperation.FillAllRequiredFieldsAccurately.
                             </div>
                         </div>
-                        <div class="col-md-6 mt-3">
-                            <div class="alert alert-warning d-flex align-items-center" role="alert">
-                                <i class="mdi mdi-alert-outline me-2"></i>
-                                Double-check account ranges and amounts - bulk operations cannot be easily undone.
+                        <div class="col-md-6">
+                            <div class="alert alert-danger d-flex align-items-center" role="alert">
+                                <i class="mdi mdi-close-circle-outline me-2"></i>
+                                Avoid wide ranges (Start/End). Bulk runs are hard to reverse and may require manual correction.
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="row mb-1">
-            <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
-                <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
-                    <!-- Bulk Operation Simulation Form -->
-                    <div class="accordion-item active">
-                        <div class="accordion-header text-body d-flex justify-content-between" id="accordionPopoutIconBulk">
-                            <button type="button"
-                                    class="accordion-button"
-                                    data-bs-toggle="collapse"
-                                    data-bs-target="#accordionPopoutIcon-bulk"
-                                    aria-expanded="true"
-                                    aria-controls="accordionPopoutIcon-bulk">
-                                <i class="fas fa-user-plus me-2"></i> @GlobalBulkOperation.BulkOperationSimulation
-                            </button>
+        <!-- Actions -->
+        <div class="row mb-2">
+            <div class="col-md-6 text-md-end mb-1 mb-md-0">
+                <a href="/BulkOperation/BulkCashOperation" class="btn btn-primary btn-sm shadow-sm px-3 w-100 w-md-auto">
+                    <i class="mdi mdi-account-plus-outline me-1"></i> @GlobalBulkOperation.SimulateBulkCashOperation
+                </a>
+            </div>
+            <div class="col-md-6 text-md-start">
+                <a href="/BulkOperation/Listing" class="btn btn-outline-secondary btn-sm shadow-sm px-3 w-100 w-md-auto" data-bs-toggle="tooltip" title="@GlobalBulkOperation.GoToExecutedBulkOperationList">
+                    <i class="mdi mdi-cash me-1"></i> @GlobalBulkOperation.ViewBulkOperations
+                </a>
+            </div>
+        </div>
 
-                            <!-- Added elements between title and view button -->
-                            <div class="d-flex align-items-center">
-                                <div class="me-3"></div>
 
-                                <a href="/BulkOperation/Listing" class="btn btn-sm btn-outline-secondary align-self-center me-3" data-bs-toggle="tooltip" title="@GlobalBulkOperation.GoToExecutedBulkOperationList">
-                                    <i class="mdi mdi-view-list me-1"></i> @GlobalBulkOperation.ViewBulkOperations
-                                </a>
-                            </div>
-                        </div>
-                        <div id="accordionPopoutIcon-bulk"
-                             class="accordion-collapse collapse show"
-                             data-bs-parent="#accordionPopoutIcon">
-                            <div class="accordion-body">
-                                @using (Html.BeginForm("Simulate", "BulkOperation", FormMethod.Post, new { enctype = "multipart/form-data", id = "bulkOperationForm", onsubmit = "return AjaxPostAndUpdateBulkOperation(this);" }))
-                                {
-                                    @Html.HiddenFor(m => m.IsContribution, new { id = "isContribution" })
-                                    <!-- Simulation Type and Description - Now Collapsible -->
-                                    <div class="accordion mb-4" id="simulationTypeAccordion">
-                                        <div class="accordion-item">
-                                            <h2 class="accordion-header" id="headingSimulationType">
-                                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSimulationType" aria-expanded="true" aria-controls="collapseSimulationType">
-                                                    <i class="mdi mdi-cog-outline me-2"></i> @GlobalBulkOperation.SimulationDetails
-                                                </button>
-                                            </h2>
-                                            <div id="collapseSimulationType" class="accordion-collapse collapse show" aria-labelledby="headingSimulationType">
-                                                <div class="accordion-body">
-                                                    <div class="card-body">
-                                                        <div class="row">
-                                                            <div class="col-md-12">
-                                                                <div class="mb-3">
-                                                                    @Html.LabelFor(m => m.SimulationType, @GlobalBulkOperation.SimulationType, new { @class = "form-label" })
-                                                                    @Html.TextBoxFor(m => m.SimulationType, new { @class = "form-control" })
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-12">
-                                                                <div class="mb-3">
-                                                                    @Html.LabelFor(m => m.Description, @GlobalBulkOperation.Description, new { @class = "form-label" })
-                                                                    @Html.TextAreaFor(m => m.Description, new { @class = "form-control", rows = "3", placeholder = @GlobalBulkOperation.EnterADescriptionForThisBulkOperation })
-                                                                </div>
-                                                            </div>
+        <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
+            <div class="accordion-item active">
+                <div class="accordion-header text-body d-flex justify-content-between" id="accordionPopoutIconBulk">
+                    <button type="button" class="accordion-button" data-bs-toggle="collapse"
+                            data-bs-target="#accordionPopoutIcon-bulk" aria-expanded="true" aria-controls="accordionPopoutIcon-bulk">
+                        <i class="fas fa-user-plus me-2"></i> @GlobalBulkOperation.BulkOperationSimulation
+                    </button>
 
-                                                            <div class="col-md-12">
+                    @*  <div class="d-flex align-items-center">
+                            <a href="/BulkOperation/Listing" class="btn btn-sm btn-outline-secondary align-self-center me-3"
+                               data-bs-toggle="tooltip" title="@GlobalBulkOperation.GoToExecutedBulkOperationList">
+                                <i class="mdi mdi-view-list me-1"></i> @GlobalBulkOperation.ViewBulkOperations
+                            </a>
+                        </div>*@
+                </div>
 
-                                                                @Html.LabelFor(m => m.BranchId, @GlobalBulkOperation.SelectBranch, new { @class = "form-label" })
-                                                                @Html.DropDownListFor(m => m.BranchId,  // Bind to Branch.Id
-                                                                    new SelectList(Model.Branches, "Id", "Name"),
-                                                                    "---" + @GlobalBulkOperation.SelectBranch + "---",
-                                                                    new { @class = "form-select select2", id = "branchDropdown", @onchange = "loadBranchAccounts(this.value,1)" })
-                                                                @Html.HiddenFor(m => m.Branches, new { id = "branchObject" })
-                                                            </div>
+                <div id="accordionPopoutIcon-bulk" class="accordion-collapse collapse show" data-bs-parent="#accordionPopoutIcon">
+                    <div class="accordion-body">
 
-                                                        </div>
-                                                    </div>
+                        @using (Html.BeginForm("Simulate", "BulkOperation", FormMethod.Post,
+                            new { enctype = "multipart/form-data", id = "bulkOperationForm", onsubmit = "return AjaxPostAndUpdateBulkOperation(this);" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.HiddenFor(m => m.IsContribution, new { id = "isContribution" })
 
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Operation Type Selection - Now Collapsible -->
-                                    <div class="accordion mb-4" id="operationTypeAccordion">
-                                        <div class="accordion-item">
-                                            <h2 class="accordion-header" id="headingOperationType">
-                                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOperationType" aria-expanded="true" aria-controls="collapseOperationType">
-                                                    <i class="mdi mdi-format-list-bulleted-type me-2"></i> @GlobalBulkOperation.SimulationType
-                                                </button>
-                                            </h2>
-                                            <div id="collapseOperationType" class="accordion-collapse collapse show" aria-labelledby="headingOperationType">
-                                                <div class="accordion-body">
-                                                    <div class="card-body">
-                                                        <div class="form-check form-check-inline">
-                                                            <input class="form-check-input" type="radio" name="operationType" id="specificAccountType"
-                                                                   value="specific" checked="@(Model.BulkOperationSelectionModel.SelectedOperationType == "specific")">
-                                                            <label class="form-check-label" for="specificAccountType">
-                                                                @GlobalBulkOperation.SimulateShareTopUp
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input class="form-check-input" type="radio" name="operationType" id="uniqueAccount"
-                                                                   value="unique" checked="@(Model.BulkOperationSelectionModel.SelectedOperationType == "unique")">
-                                                            <label class="form-check-label" for="uniqueAccount">
-                                                                @GlobalBulkOperation.SimulateContribution
-                                                            </label>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Source Accounts Configuration - Now Collapsible -->
-                                    <div class="accordion mb-4" id="sourceAccountsAccordion">
-                                        <div class="accordion-item">
-                                            <h2 class="accordion-header" id="headingSourceAccounts">
-                                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSourceAccounts" aria-expanded="true" aria-controls="collapseSourceAccounts">
-                                                    <i class="mdi mdi-database-outline me-2"></i> @GlobalBulkOperation.SourceAccountsConfiguration
-                                                </button>
-                                            </h2>
-                                            <div id="collapseSourceAccounts" class="accordion-collapse collapse show" aria-labelledby="headingSourceAccounts">
-                                                <div class="accordion-body">
-                                                    <div class="card-body">
-                                                        <div class="row">
-                                                            <div class="col-md-12">
-                                                                <div class="mb-3">
-                                                                    @Html.LabelFor(m => m.SourceAccountType, @GlobalBulkOperation.SimulationTopupSourceAccountType, new { @class = "form-label" })
-                                                                    @Html.DropDownListFor(m => m.SourceAccountType,
-                                                                        new SelectList(Model.SavingProducts, "Name", "Name"),
-                                                                        "Select Value",
-                                                                        new { @class = "form-select select2" })
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-
-                                                        <div class="row">
-                                                            <div class="col-md-6">
-                                                                <div class="mb-3">
-                                                                    @Html.LabelFor(m => m.StartAccount, @GlobalBulkOperation.SimulationTopupStartMemberAccount, new { @class = "form-label" })
-                                                                    @Html.TextBoxFor(m => m.StartAccount, new { @class = "form-control" })
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <div class="mb-3">
-                                                                    @Html.LabelFor(m => m.EndAccount, @GlobalBulkOperation.SimulationTopupEndMemberAccount, new { @class = "form-label" })
-                                                                    @Html.TextBoxFor(m => m.EndAccount, new { @class = "form-control" })
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="row">
-                                                            <div class="col-md-6">
-                                                                <div class="mb-3">
-                                                                    @Html.LabelFor(m => m.SourceAccountMinAmount, @GlobalBulkOperation.SimulationTopupMinimumAccountBalance, new { @class = "form-label" })
-                                                                    @Html.TextBoxFor(m => m.SourceAccountMinAmount, new { @class = "form-control", type = "number", step = "0.01" })
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <div class="mb-3">
-                                                                    @Html.LabelFor(m => m.SourceAccountMaxAmount, @GlobalBulkOperation.SimulationTopupMaximumAccountBalance, new { @class = "form-label" })
-                                                                    @Html.TextBoxFor(m => m.SourceAccountMaxAmount, new { @class = "form-control", type = "number", step = "0.01" })
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Dynamic Views - Now Collapsible -->
-                                    <div class="accordion mb-4" id="dynamicViewsAccordion">
-                                        <div class="accordion-item">
-                                            <h2 class="accordion-header" id="headingDynamicViews">
-                                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDynamicViews" aria-expanded="true" aria-controls="collapseDynamicViews">
-                                                    <i class="mdi mdi-page-layout-body me-2"></i> @GlobalBulkOperation.DestinationConfiguration
-                                                </button>
-                                            </h2>
-                                            <div id="collapseDynamicViews" class="accordion-collapse collapse show" aria-labelledby="headingDynamicViews">
-                                                <div class="accordion-body">
-                                                    <div id="mainviewChange">
-                                                        <div class="change-group">
-                                                            <div id="mainview1">
-                                                                <div class="card-body">
-                                                                    <div class="row">
-                                                                        <div class="col-md-12">
-                                                                            <div class="mb-3">
-                                                                                @Html.LabelFor(m => m.DestinationAccountType, @GlobalBulkOperation.SimulationTopupDestinationAccountType, new { @class = "form-label" })
-                                                                                @Html.DropDownListFor(m => m.DestinationAccountType,
-                                                                                    new SelectList(Model.SavingProducts, "Name", "Name"),
-                                                                                    @GlobalBulkOperation.SimulationTopupDestinationAccountType,
-                                                                                    new { @class = "form-select select2" })
-                                                                            </div>
-                                                                            <div class="col-md-12">
-                                                                                <div class="mb-3">
-                                                                                    @Html.LabelFor(m => m.TargetAmount, @GlobalBulkOperation.SimulationTopupAmount, new { @class = "form-label" })
-                                                                                    @Html.TextBoxFor(m => m.TargetAmount, new { @class = "form-control", type = "number", step = "0.01" })
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-
-                                                                    </div>
-
-                                                                </div>
-                                                            </div>
-                                                            <div id="mainview2">
-                                                                <div class="card-body">
-                                                                    <div class="row">
-                                                                        <div class="col-md-12">
-                                                                            <div class="mb-3">
-                                                                                @Html.LabelFor(m => m.DestinationAccountId, @GlobalBulkOperation.SimulationContributionDestinationAccountType, new { @class = "form-label" })
-                                                                                @Html.DropDownListFor(m => m.DestinationAccountId,
-                                                                                    new List<SelectListItem> { new SelectListItem { Text = "--- Select Chart Of Account ---", Value = "" } },
-                                                                                    //@GlobalBulkOperation.SelectAccount,
-                                                                                    new { @class = "form-select select2" })
-                                                                            </div>
-                                                                            <div class="col-md-12">
-                                                                                <div class="mb-3">
-                                                                                    @Html.LabelFor(m => m.ContributionAmount, @GlobalBulkOperation.SimulationContributionAmount, new { @class = "form-label" })
-                                                                                    @Html.TextBoxFor(m => m.ContributionAmount, new { @class = "form-control", type = "number", step = "0.01" })
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-
-                                                                    </div>
-
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Form Actions -->
-                                    <div class="mt-4 d-flex justify-content-end">
-                                        <button type="submit" class="btn btn-primary">
-                                            <i class="mdi mdi-play me-1"></i> @GlobalBulkOperation.SimulateBulkOperation
+                            <!-- ============================= -->
+                            <!-- Simulation Details -->
+                            <!-- ============================= -->
+                            <div class="accordion mb-4" id="simulationTypeAccordion">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingSimulationType">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                                data-bs-target="#collapseSimulationType" aria-expanded="true" aria-controls="collapseSimulationType">
+                                            <i class="mdi mdi-cog-outline me-2"></i> @GlobalBulkOperation.SimulationDetails
                                         </button>
+                                    </h2>
+
+                                    <div id="collapseSimulationType" class="accordion-collapse collapse show" aria-labelledby="headingSimulationType">
+                                        <div class="accordion-body">
+                                            <div class="row g-3">
+
+                                                <!-- Simulation Type -->
+                                                <div class="col-md-6">
+                                                    @Html.LabelFor(m => m.SimulationType, @GlobalBulkOperation.SimulationType, new { @class = "form-label" })
+                                                    <span class="req-star">*</span>
+                                                    @Html.DropDownListFor(
+                                                        m => m.SimulationType,
+                                                        new SelectList(ViewBag.SimulationTypes, "Value", "Text"),
+                                                        "--- Select Simulation Type ---",
+                                                        new { @class = "form-select select2", required = "required", id = "SimulationType" }
+                                                    )
+                                                    <div class="hint field-note">
+                                                        Pick a type that matches the business reason. Use <b>Other</b> only when none fits.
+                                                    </div>
+                                                </div>
+
+                                                <!-- Branch -->
+                                                <div class="col-md-6">
+                                                    @Html.LabelFor(m => m.BranchId, @GlobalBulkOperation.SelectBranch, new { @class = "form-label" })
+                                                    <span class="req-star">*</span>
+                                                    @Html.DropDownListFor(m => m.BranchId,
+                                                        new SelectList(Model.Branches, "Id", "Name"),
+                                                        "--- " + GlobalBulkOperation.SelectBranch + " ---",
+                                                        new { @class = "form-select select2", id = "BranchId", onchange = "loadBranchAccounts(this.value, 1)" })
+                                                    <div class="hint field-note">
+                                                        The branch defines the accounting scope and the available branch Chart of Accounts.
+                                                    </div>
+                                                </div>
+
+                                                <!-- Description -->
+                                                <div class="col-md-12">
+                                                    @Html.LabelFor(m => m.Description, @GlobalBulkOperation.Description, new { @class = "form-label" })
+                                                    <span class="req-star">*</span>
+                                                    @Html.TextAreaFor(m => m.Description,
+                                                        new
+                                                             {
+                                                                 @class = "form-control",
+                                                                 rows = "3",
+                                                            placeholder = @GlobalBulkOperation.EnterADescriptionForThisBulkOperation,
+                                                            id = "Description"
+                                                             })
+                                                    <div class="hint field-note">
+                                                        Recommended format: <b>Reason + period + operator</b>. Example:
+                                                        “Share top-up for Dec 2025 – initiated by Teller A”.
+                                                        Required if Simulation Type is <b>Other</b>.
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
                                     </div>
-                                }
+                                </div>
                             </div>
-                        </div>
+
+                            <!-- ============================= -->
+                            <!-- Operation Type -->
+                            <!-- ============================= -->
+                            <div class="accordion mb-4" id="operationTypeAccordion">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingOperationType">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                                data-bs-target="#collapseOperationType" aria-expanded="true" aria-controls="collapseOperationType">
+                                            <i class="mdi mdi-format-list-bulleted-type me-2"></i> Operation Mode
+                                        </button>
+                                    </h2>
+
+                                    <div id="collapseOperationType" class="accordion-collapse collapse show" aria-labelledby="headingOperationType">
+                                        <div class="accordion-body">
+                                            <div class="card-body">
+
+                                                <div class="alert alert-light border mb-3">
+                                                    <i class="mdi mdi-information-outline me-2"></i>
+                                                    <b>Top-Up</b> credits multiple accounts to a target amount.
+                                                    <b>Contribution</b> collects from many accounts into a single destination account (GL).
+                                                </div>
+
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="operationType" id="specificAccountType"
+                                                           value="specific" checked="@(Model.BulkOperationSelectionModel.SelectedOperationType == "specific")">
+                                                    <label class="form-check-label" for="specificAccountType">
+                                                        @GlobalBulkOperation.SimulateShareTopUp
+                                                    </label>
+                                                </div>
+
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="operationType" id="uniqueAccount"
+                                                           value="unique" checked="@(Model.BulkOperationSelectionModel.SelectedOperationType == "unique")">
+                                                    <label class="form-check-label" for="uniqueAccount">
+                                                        @GlobalBulkOperation.SimulateContribution
+                                                    </label>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ============================= -->
+                            <!-- Source Accounts -->
+                            <!-- ============================= -->
+                            <div class="accordion mb-4" id="sourceAccountsAccordion">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingSourceAccounts">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                                data-bs-target="#collapseSourceAccounts" aria-expanded="true" aria-controls="collapseSourceAccounts">
+                                            <i class="mdi mdi-database-outline me-2"></i> @GlobalBulkOperation.SourceAccountsConfiguration
+                                        </button>
+                                    </h2>
+
+                                    <div id="collapseSourceAccounts" class="accordion-collapse collapse show" aria-labelledby="headingSourceAccounts">
+                                        <div class="accordion-body">
+
+                                            <div class="row g-3">
+
+                                                <div class="col-md-12">
+                                                    @Html.LabelFor(m => m.SourceAccountType, @GlobalBulkOperation.SimulationTopupSourceAccountType, new { @class = "form-label" })
+                                                    <span class="req-star">*</span>
+                                                    @Html.DropDownListFor(m => m.SourceAccountType,
+                                                        new SelectList(Model.SavingProducts, "Name", "Name"),
+                                                        "--- Select Account Type ---",
+                                                        new { @class = "form-select select2", id = "SourceAccountType" })
+                                                    <div class="hint field-note">
+                                                        This is the member account type that will be filtered and impacted by the bulk run.
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    @Html.LabelFor(m => m.StartAccount, @GlobalBulkOperation.SimulationTopupStartMemberAccount, new { @class = "form-label" })
+                                                    <span class="req-star">*</span>
+                                                    @Html.TextBoxFor(m => m.StartAccount, new { @class = "form-control", id = "StartAccount", placeholder = "e.g. 0000100" })
+                                                    <div class="hint field-note">
+                                                        Limits selection to accounts starting from this member/account reference.
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    @Html.LabelFor(m => m.EndAccount, @GlobalBulkOperation.SimulationTopupEndMemberAccount, new { @class = "form-label" })
+                                                    <span class="req-star">*</span>
+                                                    @Html.TextBoxFor(m => m.EndAccount, new { @class = "form-control", id = "EndAccount", placeholder = "e.g. 0000999" })
+                                                    <div class="hint field-note">
+                                                        Limits selection to accounts ending at this member/account reference.
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    @Html.LabelFor(m => m.SourceAccountMinAmount, @GlobalBulkOperation.SimulationTopupMinimumAccountBalance, new { @class = "form-label" })
+                                                    <span class="req-star">*</span>
+                                                    @Html.TextBoxFor(m => m.SourceAccountMinAmount, new { @class = "form-control", id = "SourceAccountMinAmount", type = "number", step = "0.01", min = "0", placeholder = "0" })
+                                                    <div class="hint field-note">
+                                                        Only accounts with balance >= this amount are included.
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    @Html.LabelFor(m => m.SourceAccountMaxAmount, @GlobalBulkOperation.SimulationTopupMaximumAccountBalance, new { @class = "form-label" })
+                                                    <span class="req-star">*</span>
+                                                    @Html.TextBoxFor(m => m.SourceAccountMaxAmount, new { @class = "form-control", id = "SourceAccountMaxAmount", type = "number", step = "0.01", min = "0", placeholder = "0 (no limit)" })
+                                                    <div class="hint field-note">
+                                                        Only accounts with balance <= this amount are included.
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ============================= -->
+                            <!-- Destination -->
+                            <!-- ============================= -->
+                            <div class="accordion mb-4" id="dynamicViewsAccordion">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingDynamicViews">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                                data-bs-target="#collapseDynamicViews" aria-expanded="true" aria-controls="collapseDynamicViews">
+                                            <i class="mdi mdi-page-layout-body me-2"></i> @GlobalBulkOperation.DestinationConfiguration
+                                        </button>
+                                    </h2>
+
+                                    <div id="collapseDynamicViews" class="accordion-collapse collapse show" aria-labelledby="headingDynamicViews">
+                                        <div class="accordion-body">
+
+                                            <div id="mainviewChange">
+                                                <div class="change-group">
+
+                                                    <!-- TOP-UP -->
+                                                    <div id="mainview1">
+                                                        <div class="row g-3">
+                                                            <div class="col-md-12">
+                                                                @Html.LabelFor(m => m.DestinationAccountType, @GlobalBulkOperation.SimulationTopupDestinationAccountType, new { @class = "form-label" })
+                                                                <span class="req-star">*</span>
+                                                                @Html.DropDownListFor(m => m.DestinationAccountType,
+                                                                    new SelectList(Model.SavingProducts, "Name", "Name"),
+                                                                    "--- Select Destination Account Type ---",
+                                                                    new { @class = "form-select select2", id = "DestinationAccountType" })
+                                                                <div class="hint field-note">
+                                                                    Target account type to be credited during top-up.
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-12">
+                                                                @Html.LabelFor(m => m.TargetAmount, @GlobalBulkOperation.SimulationTopupAmount, new { @class = "form-label" })
+                                                                <span class="req-star">*</span>
+                                                                @Html.TextBoxFor(m => m.TargetAmount,
+                                                                    new { @class = "form-control", id = "TargetAmount", type = "number", step = "0.01", min = "0", placeholder = "e.g. 5000" })
+                                                                <div class="hint field-note">
+                                                                    The system will credit each eligible account up to this target amount.
+                                                                    Must be greater than 0.
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- CONTRIBUTION -->
+                                                    <div id="mainview2">
+                                                        <div class="row g-3">
+                                                            <div class="col-md-12">
+                                                                @Html.LabelFor(m => m.DestinationAccountId, @GlobalBulkOperation.SimulationContributionDestinationAccountType, new { @class = "form-label" })
+                                                                <span class="req-star">*</span>
+                                                                @Html.DropDownListFor(m => m.DestinationAccountId,
+                                                                    new List<SelectListItem> { new SelectListItem { Text = "--- Select Chart Of Account ---", Value = "" } },
+                                                                    new { @class = "form-select select2", id = "DestinationAccountId" })
+                                                                <div class="hint field-note">
+                                                                    This is the single destination GL that receives the collected contribution amount.
+                                                                    Loaded based on the selected branch.
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-12">
+                                                                @Html.LabelFor(m => m.ContributionAmount, @GlobalBulkOperation.SimulationContributionAmount, new { @class = "form-label" })
+                                                                <span class="req-star">*</span>
+                                                                @Html.TextBoxFor(m => m.ContributionAmount,
+                                                                    new { @class = "form-control", id = "ContributionAmount", type = "number", step = "0.01", min = "0", placeholder = "e.g. 1000" })
+                                                                <div class="hint field-note">
+                                                                    Amount to collect from each eligible account (or per rule, depending on your backend logic).
+                                                                    Must be greater than 0.
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Form Actions -->
+                            <div class="mt-4 d-flex justify-content-end">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="mdi mdi-play me-1"></i> @GlobalBulkOperation.SimulateBulkOperation
+                                </button>
+                            </div>
+                        }
+
                     </div>
                 </div>
             </div>
         </div>
+
     </div>
 </div>
 
 @section Scripts {
-    @*@Scripts.Render("~/bundles/jqueryval")*@
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+    // ✅ FIXED: proper signature loadBranchAccounts(branchId, targetIndex)
+    async function loadBranchAccounts(branchId, targetIndex) {
+        // only one dropdown in this view (DestinationAccountId)
+        const $targetDropdown = $('#DestinationAccountId');
+        if (!$targetDropdown.length) return;
 
+        const textLoading = 'Loading Chart Of Accounts...';
+        const textEmpty = '--- Select Branch Account reference ---';
+        const textNone = 'No branch accounts available';
+        const textError = 'Error loading branch accounts';
 
-<script>
-         async function loadBranchAccounts(branchId, $targetDropdown) {
-             $targetDropdown = $targetDropdown == 2 ? $('#DestinationAccountId') : $('#DestinationAccountId');
+        $targetDropdown.prop('disabled', true).empty().append($('<option>').val('').text(textLoading));
 
+        if (!branchId) {
+            $targetDropdown.prop('disabled', false).empty().append($('<option>').val('').text(textEmpty));
+            if ($.fn.select2) $targetDropdown.trigger('change.select2');
+            return;
+        }
 
-              if (!$targetDropdown || !$targetDropdown.length) return;
+        const url = '@Url.Action("GetBranchAccountsByBranch", "BranchAccount")';
 
-              const textLoading = 'Loading Chart Of Accounts...';
-              const textEmpty = '--- Select Branch Account reference ---';
-              const textNone = 'No branch accounts available';
-              const textError = 'Error loading branch accounts';
+        try {
+            const resp = await fetch(url + '?branchId=' + encodeURIComponent(branchId), {
+                method: 'GET',
+                credentials: 'same-origin',
+                cache: 'no-cache',
+                headers: { 'Accept': 'application/json' }
+            });
 
-              $targetDropdown.prop('disabled', true).empty().append($('<option>').val('').text(textLoading));
+            if (!resp.ok) {
+                const body = await resp.text().catch(() => '');
+                console.error('Fetch failed', resp.status, resp.statusText, body);
+                $targetDropdown.empty().prop('disabled', false).append($('<option>').val('').text(textError));
+                if ($.fn.select2) $targetDropdown.trigger('change.select2');
+                return;
+            }
 
-              if (!branchId) {
-                  $targetDropdown.prop('disabled', false).empty().append($('<option>').val('').text(textEmpty));
-                  if ($.fn.select2) $targetDropdown.trigger('change.select2');
-                  return;
-              }
+            const payload = await resp.json().catch(() => null);
+            let items = [];
+            if (Array.isArray(payload)) items = payload;
+            else if (payload && Array.isArray(payload.items)) items = payload.items;
+            else if (payload && Array.isArray(payload.data)) items = payload.data;
 
-              const url = '@Url.Action("GetBranchAccountsByBranch", "BranchAccount")';
+            $targetDropdown.empty().prop('disabled', false);
 
-              try {
-                  const resp = await fetch(url + '?branchId=' + encodeURIComponent(branchId), {
-                      method: 'GET',
-                      credentials: 'same-origin',
-                      cache: 'no-cache',
-                      headers: { 'Accept': 'application/json' }
-                  });
+            if (items && items.length) {
+                $targetDropdown.append($('<option>').val('').text(textEmpty));
+                items.forEach(acc => {
+                    const id = acc.id ?? acc.Id ?? acc.Value ?? acc.value ?? '';
+                    const name = acc.text ?? acc.Text ?? acc.Name ?? acc.name ?? acc.Description ?? id;
+                    $targetDropdown.append($('<option>').val(id).text(name));
+                });
+            } else {
+                $targetDropdown.append($('<option>').val('').text(textNone));
+            }
 
-                  if (!resp.ok) {
-                      const body = await resp.text().catch(() => '');
-                      console.error('Fetch failed', resp.status, resp.statusText, body);
-                      $targetDropdown.empty().prop('disabled', false)
-                          .append($('<option>').val('').text(textError));
-                      if ($.fn.select2) $targetDropdown.trigger('change.select2');
-                      return;
-                  }
+            if ($.fn.select2) $targetDropdown.trigger('change.select2');
+        } catch (e) {
+            console.error('Error loading branch accounts:', e);
+            $targetDropdown.empty().prop('disabled', false).append($('<option>').val('').text(textError));
+            if ($.fn.select2) $targetDropdown.trigger('change.select2');
+        }
+    }
+    </script>
 
-                  const payload = await resp.json().catch(() => null);
-                  let items = [];
-                  if (Array.isArray(payload)) items = payload;
-                  else if (payload && Array.isArray(payload.items)) items = payload.items;
-                  else if (payload && Array.isArray(payload.data)) items = payload.data;
+    <script>
+        $(document).ready(function () {
 
-                  $targetDropdown.empty().prop('disabled', false);
+            // Tooltips
+            $('[data-bs-toggle="tooltip"]').tooltip();
 
-                  if (items && items.length) {
-                      $targetDropdown.append($('<option>').val('').text(textEmpty));
-                      items.forEach(acc => {
-                          const id = acc.id ?? acc.Id ?? acc.Value ?? acc.value ?? '';
-                          const name = acc.text ?? acc.Text ?? acc.Name ?? acc.name ?? acc.Description ?? id;
-                          $targetDropdown.append($('<option>').val(id).text(name));
-                      });
-                  } else {
-                      $targetDropdown.append($('<option>').val('').text(textNone));
-                  }
+            // Select2
+            if ($.fn.select2) {
+                try { $('.select2').select2({ width: '100%' }); } catch (e) { console.warn('select2 failed', e); }
+            }
 
-                  if ($.fn.select2) $targetDropdown.trigger('change.select2');
-              } catch (e) {
-                  console.error('Error loading branch accounts:', e);
-                  $targetDropdown.empty().prop('disabled', false)
-                      .append($('<option>').val('').text(textError));
-                  if ($.fn.select2) $targetDropdown.trigger('change.select2');
-              }
-          }
-</script>
-<script>
-       $(document).ready(function () {
-           // Initialize tooltips
-           $('[data-bs-toggle="tooltip"]').tooltip();
+            // Initial state
+            updateOperationViews();
 
-           // Initialize form state
-           updateOperationViews();
+            // Listen for changes
+            $('input[name="operationType"]').change(function () {
+                updateOperationViews();
+            });
 
-           // Listen for changes on the radio buttons
-           $('input[name="operationType"]').change(function () {
-               updateOperationViews();
-           });
+            function updateOperationViews() {
+                const isContribution = $('input[name="operationType"]:checked').val() === "unique";
 
-           // Form reset handler
-           $('#bulkOperationForm').on('reset', function () {
-               setTimeout(updateOperationViews, 10);
-           });
+                // ✅ keep hidden in sync for server if needed
+                $("#isContribution").val(isContribution.toString());
 
-           function updateOperationViews() {
-               const isContribution = $('input[name="operationType"]:checked').val() === "unique";
-               /*               $("#isContribution").val(isContribution.toString());*/
+                if (isContribution) {
+                    $('label[for="SourceAccountType"]').text('@GlobalBulkOperation.SimulationContributionSourceAccountType');
+                    $('#StartAccount').prev('label').text('@GlobalBulkOperation.SimulationContributionStartMemberAccount');
+                    $('#EndAccount').prev('label').text('@GlobalBulkOperation.SimulationContributionEndMemberAccount');
+                    $('#SourceAccountMinAmount').prev('label').text('@GlobalBulkOperation.SimulationContributionMinimumAccountBalance');
+                    $('#SourceAccountMaxAmount').prev('label').text('@GlobalBulkOperation.SimulationContributionMaximumAccountBalance');
 
-               if (isContribution) {
-                   $('label[for="SourceAccountType"]').text('@GlobalBulkOperation.SimulationContributionSourceAccountType');
-                   $('#StartAccount').prev('label').text('@GlobalBulkOperation.SimulationContributionStartMemberAccount');
-                   $('#EndAccount').prev('label').text('@GlobalBulkOperation.SimulationContributionEndMemberAccount');
-                   $('#SourceAccountMinAmount').prev('label').text('@GlobalBulkOperation.SimulationContributionMinimumAccountBalance');
-                   $('#SourceAccountMaxAmount').prev('label').text('@GlobalBulkOperation.SimulationContributionMaximumAccountBalance');
-                   $("#mainview1").hide();
-                   $("#mainview2").show();
-               } else {
-                   $('label[for="SourceAccountType"]').text('@GlobalBulkOperation.SimulationTopupSourceAccountType');
-                   $('#StartAccount').prev('label').text('@GlobalBulkOperation.SimulationTopupStartMemberAccount');
-                   $('#EndAccount').prev('label').text('@GlobalBulkOperation.SimulationTopupEndMemberAccount');
-                   $('#SourceAccountMinAmount').prev('label').text('@GlobalBulkOperation.SimulationTopupMinimumAccountBalance');
-                   $('#SourceAccountMaxAmount').prev('label').text('@GlobalBulkOperation.SimulationTopupMaximumAccountBalance');
-                   $("#mainview1").show();
-                   $("#mainview2").hide();
-               }
-           }
-       });
+                    $("#mainview1").hide();
+                    $("#mainview2").show();
+                } else {
+                    $('label[for="SourceAccountType"]').text('@GlobalBulkOperation.SimulationTopupSourceAccountType');
+                    $('#StartAccount').prev('label').text('@GlobalBulkOperation.SimulationTopupStartMemberAccount');
+                    $('#EndAccount').prev('label').text('@GlobalBulkOperation.SimulationTopupEndMemberAccount');
+                    $('#SourceAccountMinAmount').prev('label').text('@GlobalBulkOperation.SimulationTopupMinimumAccountBalance');
+                    $('#SourceAccountMaxAmount').prev('label').text('@GlobalBulkOperation.SimulationTopupMaximumAccountBalance');
 
-       function AjaxPostAndUpdateBulkOperation(form) {
-           console.log("Form Action:", form.action);
+                    $("#mainview1").show();
+                    $("#mainview2").hide();
+                }
+            }
+        });
 
-           const today = new Date();
-           const todayOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    function AjaxPostAndUpdateBulkOperation(form) {
 
-           let isValid = true;
-           let firstInvalid = null;
+        let isValid = true;
+        let firstInvalid = null;
 
-           function markInvalid(field, message) {
-               field.addClass('is-invalid');
-               if (!firstInvalid) firstInvalid = field;
-               isValid = false;
-               if (message) appalert(message, 2, 1);
-           }
+        function markInvalid(field, message) {
+            field.addClass('is-invalid');
+            if (!firstInvalid) firstInvalid = field;
+            isValid = false;
+            if (message) appalert(message, 2, 1);
+        }
 
-           function clearValidation(formElement) {
-               $(formElement).find('.is-invalid').removeClass('is-invalid');
-           }
+        function clearValidation(formElement) {
+            $(formElement).find('.is-invalid').removeClass('is-invalid');
+        }
 
-           // --- Validate Simulation Details Section ---
-           function validateSimulationDetails(formElement) {
-               console.log("🔍 Validating Simulation Details...");
+        clearValidation(form);
 
-               const simulationType = $(formElement).find('[name="SimulationType"]');
-               const description = $(formElement).find('[name="Description"]');
+        // ===============================
+        // Simulation Details Validation
+        // ===============================
+        const simulationType = $(form).find('[name="SimulationType"]');
+        const description = $(form).find('[name="Description"]');
+        const branchId = $(form).find('[name="BranchId"]');
 
-               if (!simulationType.val()) {
-                   markInvalid(simulationType, "❌ Please select a simulation type.");
-               }
+        if (!simulationType.val()) markInvalid(simulationType, "❌ Please select a simulation type.");
+        if (!branchId.val()) markInvalid(branchId, "❌ Please select a branch.");
 
-               if ($.trim(description.val()) === "") {
-                   markInvalid(description, "❌ Description is required.");
-               }
-           }
+        const descTrim = $.trim(description.val() || "");
+        if (!descTrim) markInvalid(description, "❌ Description is required.");
+        if (simulationType.val() === "Other" && descTrim.length < 5) {
+            markInvalid(description, "❌ Please provide a detailed description when Simulation Type is Other.");
+        }
 
-           // --- Validate Source Accounts Section ---
-           function validateSourceAccounts(formElement) {
-               console.log("🔍 Validating Source Accounts...");
+        // ===============================
+        // Source Accounts Validation
+        // ===============================
+        const sourceType = $(form).find('[name="SourceAccountType"]');
+        if (!$.trim(sourceType.val() || "")) markInvalid(sourceType, "❌ Please select a source account type.");
 
-               const requiredFields = [
-                   "SourceAccountType", "Branch"
-               ];
+        const minAmount = parseFloat($(form).find('[name="SourceAccountMinAmount"]').val()) || 0;
+        const maxAmount = parseFloat($(form).find('[name="SourceAccountMaxAmount"]').val()) || 0;
 
-               requiredFields.forEach(function (fieldName) {
-                   const field = $(formElement).find(`[name="${fieldName}"]`);
-                   if (field.length && ($.trim(field.val()) === "" || field.val() == null)) {
-                       markInvalid(field);
-                   }
-               });
+        if (minAmount < 0) markInvalid($(form).find('[name="SourceAccountMinAmount"]'), "❌ Minimum amount must be 0 or greater.");
+        if (maxAmount < 0) markInvalid($(form).find('[name="SourceAccountMaxAmount"]'), "❌ Maximum amount must be 0 or greater.");
+        if (maxAmount > 0 && minAmount > maxAmount) {
+            markInvalid($(form).find('[name="SourceAccountMinAmount"]'), "❌ Minimum amount cannot be greater than maximum amount.");
+        }
 
-               const isContribution = $('input[name="operationType"]:checked').val() === "unique";
+        // ===============================
+        // Destination Validation
+        // ===============================
+        const isContribution = $(form).find('input[name="operationType"]:checked').val() === 'unique';
 
-               if (isContribution) {
-                   const contributionAmount = parseFloat($(formElement).find('[name="ContributionAmount"]').val()) || 0;
-                   if (isNaN(contributionAmount) || contributionAmount < 0) {
-                       markInvalid($(formElement).find('[name="ContributionAmount"]'),
-                           "❌ contribution  amount must be 0 or greater.");
-                   }
-               } else {
-                   const topupAmount = parseFloat($(formElement).find('[name="TargetAmount"]').val()) || 0;
-                   if (isNaN(topupAmount) || topupAmount < 0) {
-                       markInvalid($(formElement).find('[name="TargetAmount"]'),
-                           "❌ topup target amount must be 0 or greater.");
-                   }
-               }
+        if (isContribution) {
+            const destAccountId = $(form).find('[name="DestinationAccountId"]');
+            const amount = parseFloat($(form).find('[name="ContributionAmount"]').val()) || 0;
 
-               const minAmount = parseFloat($(formElement).find('[name="SourceAccountMinAmount"]').val()) || 0;
-               const maxAmount = parseFloat($(formElement).find('[name="SourceAccountMaxAmount"]').val()) || 0;
+            if (!$.trim(destAccountId.val() || "")) markInvalid(destAccountId, "❌ Destination GL is required for Contribution.");
+            if (amount <= 0) markInvalid($(form).find('[name="ContributionAmount"]'), "❌ Contribution amount must be greater than 0.");
+        } else {
+            const destType = $(form).find('[name="DestinationAccountType"]');
+            const amount = parseFloat($(form).find('[name="TargetAmount"]').val()) || 0;
 
-               if (isNaN(minAmount) || minAmount < 0) {
-                   markInvalid($(formElement).find('[name="SourceAccountMinAmount"]'),
-                       "❌ Minimum amount must be 0 or greater.");
-               }
+            if (!$.trim(destType.val() || "")) markInvalid(destType, "❌ Destination account type is required for Top-Up.");
+            if (amount <= 0) markInvalid($(form).find('[name="TargetAmount"]'), "❌ Target amount must be greater than 0.");
+        }
 
-               if (isNaN(maxAmount) || maxAmount < 0) {
-                   markInvalid($(formElement).find('[name="SourceAccountMaxAmount"]'),
-                       "❌ Maximum amount must be 0 or greater.");
-               }
+        if (!isValid) {
+            if (firstInvalid) firstInvalid.focus();
+            if (!$(".appalert:visible").length) {
+                appalert("❌ Please correct the highlighted fields before submitting.", 2, 1);
+            }
+            return false;
+        }
 
-               if (maxAmount > 0 && minAmount > maxAmount) {
-                   markInvalid($(formElement).find('[name="SourceAccountMinAmount"]'),
-                       "❌ Minimum amount cannot be greater than maximum amount.");
-               }
-           }
+        // Confirm + submit
+        alertify.confirm("Confirmation", "Are you sure you want to simulate this bulk operation?",
+            function () {
 
-           // --- Validate Destination Configuration ---
-           function validateDestination(formElement) {
-               console.log("🔍 Validating Destination Configuration...");
+                const ajaxConfig = {
+                    type: 'POST',
+                    url: form.action,
+                    data: new FormData(form),
+                    success: function (response) {
+                        if (response.success) {
+                            appalert(response.message || "✅ Simulation completed.", 1, 1);
+                            setTimeout(() => {
+                                if (response.redirectUrl) window.location.href = response.redirectUrl;
+                                else location.reload();
+                            }, 1200);
+                        } else {
+                            appalert(response.message || "❌ Simulation failed.", 2, 1);
+                        }
+                    },
+                    error: function (err) {
+                        if (err.status === 401) window.location.href = '/Authentication/Login';
+                        else appalert(err.statusText || "❌ An error occurred during simulation.", 0, 1);
+                    }
+                };
 
-               const isUniqueAccount = $(formElement).find('input[name = "operationType"]:checked').val() === 'unique';
+                ajaxConfig.contentType = false;
+                ajaxConfig.processData = false;
 
-               console.log("Verify Contribution : ", isUniqueAccount);
+                $.ajax(ajaxConfig);
+            },
+            function () {
+                appalert('Simulation cancelled.', 3, 1);
+            }
+        );
 
+        return false;
+    }
+    </script>
 
-               if (isUniqueAccount) {
-                 /*  $(formElement).find($('#isContribution').val($(this).val() === 'unique'));*/
-                   const destAccountId = $(formElement).find('[name="DestinationAccountId"]');
-                   if ($.trim(destAccountId.val()) === "") {
-                       markInvalid(destAccountId, "❌ Destination account ID is required.");
-                   }
-
-                   const targetAmount = parseFloat($(formElement).find('[name="ContributionAmount"]').val()) || 0;
-                   console.log("ContributionAmount ", targetAmount);
-                   if (isNaN(targetAmount) || targetAmount <= 0) {
-                       markInvalid($(formElement).find('[name="ContributionAmount"]'),
-                           "❌ amount to contribute must be greater than 0.");
-                   }
-               } else {
-                   const destAccountType = $(formElement).find('[name="DestinationAccountType"]');
-                   if (!destAccountType.val()) {
-                       markInvalid(destAccountType, "❌ Destination account type is required.");
-                   }
-
-                   const targetAmount = parseFloat($(formElement).find('[name="TargetAmount"]').val()) || 0;
-                   console.log("TargetAmount ", targetAmount);
-                   if (isNaN(targetAmount) || targetAmount <= 0) {
-                       markInvalid($(formElement).find('[name="TargetAmount"]'),
-                           "❌ Target amount must be greater than 0.");
-                   }
-               }
-           }
-
-           // --- Clear all previous validations first
-           clearValidation(form);
-
-           // --- Validate All Sections
-           validateSimulationDetails(form);
-           validateSourceAccounts(form);
-           validateDestination(form);
-
-           if (!isValid) {
-               if (firstInvalid) firstInvalid.focus();
-               if (!$(".appalert:visible").length) {
-                   appalert("❌ Please correct the highlighted fields before submitting.", 2, 1);
-               }
-               return false;
-           }
-
-           // --- Standard jQuery Unobtrusive
-           /* $.validator.unobtrusive.parse(form);
-            if (!$(form).valid()) {
-                appalert("❌ Please correct validation errors before submitting.", 2, 1);
-                return false;
-            }*/
-
-           console.log("Form Action ", form.action);
-
-           // --- Confirmation and Submit
-           alertify.confirm("Confirmation", "Are you sure you want to simulate this bulk operation?",
-               function () {
-                   const ajaxConfig = {
-                       type: 'POST',
-                       url: form.action,
-                       data: new FormData(form),
-                       success: function (response) {
-                           console.log("Response:", response);
-                           if (response.success) {
-                               appalert(response.message, 1, 1);
-                               setTimeout(() => {
-                                   if (response.redirectUrl) {
-                                       window.location.href = response.redirectUrl;
-                                   } else {
-                                       location.reload();
-                                   }
-                               }, 1500);
-                           } else {
-                               appalert(response.message || "❌ Simulation failed.", 2, 1);
-                           }
-                       },
-                       error: function (err) {
-                           console.log("Error:", err);
-                           if (err.status === 401) {
-                               window.location.href = '/Authentication/Login';
-                           } else {
-                               appalert(err.statusText || "❌ An error occurred during simulation.", 0, 1);
-                           }
-                       }
-                   };
-
-                   if ($(form).attr('enctype') === "multipart/form-data") {
-                       ajaxConfig.contentType = false;
-                       ajaxConfig.processData = false;
-                   }
-
-                   $.ajax(ajaxConfig);
-               },
-               function () {
-                   appalert('Simulation cancelled.', 3, 1);
-               }
-           );
-
-           return false;
-       }
-</script>
-    @*<script src="~/Scripts/Js/Crud/BulkOperation/Simulation.js"></script>*@
 }
+
