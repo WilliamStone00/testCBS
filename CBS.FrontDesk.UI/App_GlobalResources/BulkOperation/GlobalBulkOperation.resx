@@ -385,7 +385,7 @@
     <value>Simulate contribution</value>
   </data>
   <data name="SimulateShareTopUp" xml:space="preserve">
-    <value>Simulate share top up</value>
+    <value>Simulate Top-Up</value>
   </data>
   <data name="SimulationDetails" xml:space="preserve">
     <value>Simulation details</value>
@@ -599,5 +599,11 @@
   </data>
   <data name="Success" xml:space="preserve">
     <value>Success</value>
+  </data>
+  <data name="BULKRANGEDOPERATIONS" xml:space="preserve">
+    <value>BULK RANGED OPERATIONS</value>
+  </data>
+  <data name="BULKCASHOPERATIONS" xml:space="preserve">
+    <value>BULK CASH OPERATIONS</value>
   </data>
 </root>

@@ -23,7 +23,7 @@ using PcmfPurposeKey = CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure.PcmfPurp
 
 namespace CBS.FrontDesk.UI.Controllers.Configuration
 {
-    //[CheckSessionTimeOutAttribute]
+    [CheckSessionTimeOutAttribute]
     public class LoanProductController : BaseController
     {
         // GET: LoanProduct
