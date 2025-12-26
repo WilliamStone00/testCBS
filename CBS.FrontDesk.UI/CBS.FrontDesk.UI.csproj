@@ -2201,6 +2201,7 @@
     <Compile Include="Controllers\DailyCollectorManagement\TransactionDetailsController.cs" />
     <Compile Include="Controllers\DailySaverManagementP\DailySaverManagementController.cs" />
     <Compile Include="Controllers\LiaisonMappingV2\LiaisonMappingConfigController.cs" />
+    <Compile Include="Controllers\Loan\Configuration\LoanTargetCatalogController.cs" />
     <Compile Include="Controllers\Loan\LoanAdjustmentP\LoanAdjustmentConsoleController.cs" />
     <Compile Include="Controllers\MemberAdjustmentConsole\MemberAdjustmentConsoleController.cs" />
     <Compile Include="Controllers\MemberReceiptsP\MemberReceiptController.cs" />
@@ -11169,6 +11170,10 @@
     <Content Include="Views\ReconciledLine\_Details.cshtml" />
     <Content Include="Views\SharedMonthSimulation\_intrestgeneration.cshtml" />
     <Content Include="Views\ReconciledLine\_ExportTableReconciled.cshtml" />
+    <Content Include="Views\LoanTargetCatalog\Index.cshtml" />
+    <Content Include="Views\LoanTargetCatalog\_CreateEditLoanTargetCatalog.cshtml" />
+    <Content Include="Views\LoanTargetCatalog\_LoanTargetCatalogDataTable.cshtml" />
+    <Content Include="Views\LoanTargetCatalog\_LoanTargetCatalogDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

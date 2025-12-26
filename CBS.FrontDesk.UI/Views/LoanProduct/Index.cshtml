@@ -82,9 +82,9 @@
         <div class="modal-content">
 
             <div class="modal-header">
-                <h6 class="modal-title" id="loanProductModalTitle">
+                @*<h6 class="modal-title" id="loanProductModalTitle">
                     <i class="mdi mdi-briefcase-check-outline me-1"></i> Loan Product
-                </h6>
+                </h6>*@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
 
@@ -121,7 +121,7 @@
     // CREATE
     // ==========================
     function openLoanProductCreateModal() {
-        $("#loanProductModalTitle").html('<i class="mdi mdi-plus me-1"></i> New Loan Product');
+        $("#loanProductModalTitle").html();
 
         $("#loanProductModalBody").load(
             "@Url.Action("InitializeData","LoanProduct")?path=new&partialView=_LoanProductSimpleForm",

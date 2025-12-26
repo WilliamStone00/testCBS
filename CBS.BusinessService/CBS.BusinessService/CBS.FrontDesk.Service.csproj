@@ -448,6 +448,7 @@
     <Compile Include="DailyCollectionServices\ManualDailyCollection Service\ManualDailyCollectionService.cs" />
     <Compile Include="DailyCollectionServices\ZoneServices.cs" />
     <Compile Include="LoanP\Config\LoanProductCategoryServices.cs" />
+    <Compile Include="LoanP\Config\LoanTargetCatalogService.cs" />
     <Compile Include="LoanP\LoanAdjustmentP\LoanAdjustmentService.cs" />
     <Compile Include="LoanP\LoanportFolioFlattener\LoanDelinquencyFlattener.cs" />
     <Compile Include="LoanP\Overdraft\OverdraftActivationServices.cs" />
