@@ -331,7 +331,7 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
                     {
                         ViewBag.PaymentModes = productEnumAgregates.PaymentModes;
                         var loan = await _loanservices.GetLoan(KEY);
-                        var loanList = new List<Loan>(); // Replace Loan with the actual type of the loan object
+                        var loanList = new List<CBS.FrontDesk.Data.Entity.LoanConf.Loan>(); // Replace Loan with the actual type of the loan object
                         loanList.Add(loan);
                         var loanApplication = await _loanApplicationServices.GetLoanApplication(loan.LoanApplicationId);
                         var loanAmortizations = await _loanAmortizationServices.GetLoanAmortizationByLoanID(loan.Id);
