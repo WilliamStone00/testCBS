@@ -36,7 +36,7 @@ namespace CBS.BusinessService.AccountingV2.SharedMonth
             model.ProductId = "0000";
             model.StartPeriodKey = "jan";
             model.EndPeriodKey = "feb";
-            
+
             var apiResponse =
                 await _apiCallerHelper.PostAsync<ResponseObject<List<ShareMonthPsiReportLineDto>>>(
                     APICallHelper.InterestDistributionSimulation1,

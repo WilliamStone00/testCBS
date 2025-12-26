@@ -376,7 +376,7 @@
     <value>Shows the most current transfer status</value>
   </data>
   <data name="SimulateARangeBulkOperation" xml:space="preserve">
-    <value>Simulate A Range Bulk Operation</value>
+    <value>Simulate A Ranged Topup/Contribution Operation</value>
   </data>
   <data name="SimulateBulkOperation" xml:space="preserve">
     <value>Simulate bulk operation</value>
@@ -535,13 +535,13 @@
     <value>Select An Accounting Date</value>
   </data>
   <data name="BulkOperationCashOutOrCashInAccountTransferCashIn" xml:space="preserve">
-    <value>Credit</value>
+    <value>To Be Credited</value>
   </data>
   <data name="BulkOperationCashOutOrCashInAccountTransferCashOut" xml:space="preserve">
-    <value>Debit</value>
+    <value>To Be Debited</value>
   </data>
   <data name="SimulateBulkCashOperation" xml:space="preserve">
-    <value>Simulate A Bulk Cash Operation</value>
+    <value>Simulate A Bulk Member CashIn/CashOut</value>
   </data>
   <data name="ApprovedFilter" xml:space="preserve">
     <value>Approved</value>

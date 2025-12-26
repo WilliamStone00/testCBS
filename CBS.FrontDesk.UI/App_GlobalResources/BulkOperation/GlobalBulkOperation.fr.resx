@@ -376,7 +376,7 @@
     <value>Affiche le statut le plus actuel du transfert</value>
   </data>
   <data name="SimulateARangeBulkOperation" xml:space="preserve">
-    <value>Simuler une opération groupée sur une plage</value>
+    <value>Simuler une opération de recharge/contribution  sur une plage</value>
   </data>
   <data name="SimulateBulkOperation" xml:space="preserve">
     <value>Simuler l'opération en masse</value>
@@ -535,13 +535,13 @@
     <value>Sélectionnez une date comptable</value>
   </data>
   <data name="BulkOperationCashOutOrCashInAccountTransferCashIn" xml:space="preserve">
-    <value>Crédit</value>
+    <value>À créditer</value>
   </data>
   <data name="BulkOperationCashOutOrCashInAccountTransferCashOut" xml:space="preserve">
-    <value>Débit</value>
+    <value>À débiter</value>
   </data>
   <data name="SimulateBulkCashOperation" xml:space="preserve">
-    <value>Simuler une opération de paiement en espèces en vrac</value>
+    <value>Simuler un dépôt/retrait groupé de membres</value>
   </data>
   <data name="ApprovedFilter" xml:space="preserve">
     <value>Approuvé</value>
