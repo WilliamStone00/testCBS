@@ -90,8 +90,8 @@
         <div class="accordion" id="collapsibleSection">
             <div class="card accordion-item mb-3">
                 @if (Model.Policy.LoanMinimumAmount <= 0 ||
-Model.Policy.LoanMaximumAmount <= 0 ||
-Model.Policy.LoanMinimumAmount > Model.Policy.LoanMaximumAmount)
+                    Model.Policy.LoanMaximumAmount <= 0 ||
+                    Model.Policy.LoanMinimumAmount > Model.Policy.LoanMaximumAmount)
                 {
                     <div class="alert alert-danger" role="alert">
                         <strong>@GlobalLoanProduct.ValidationError:</strong>
@@ -121,10 +121,10 @@ Model.Policy.LoanMinimumAmount > Model.Policy.LoanMaximumAmount)
                             aria-controls="collapseDeliveryAddress">
                         @GlobalLoanProduct.MinimumAndDownPaymentSettings
                         <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="@GlobalLoanProduct.LoanRangeSetTheMinimumDefaultAndMaximumLoanAmounts.
-@GlobalLoanProduct.KeyPoints:
-1. @GlobalLoanProduct.MinimumLoanAmountDetermineAReasonableMinimumLoanAmount.
-2. @GlobalLoanProduct.DefaultLoanAmountSetBasedOnMarketDemandAndHistoricalData.
-3. @GlobalLoanProduct.MaximumLoanAmountDefineToLimitRiskExposure."></i>
+                            @GlobalLoanProduct.KeyPoints:
+                            1. @GlobalLoanProduct.MinimumLoanAmountDetermineAReasonableMinimumLoanAmount.
+                            2. @GlobalLoanProduct.DefaultLoanAmountSetBasedOnMarketDemandAndHistoricalData.
+                            3. @GlobalLoanProduct.MaximumLoanAmountDefineToLimitRiskExposure."></i>
                     </button>
                 </h2>
                 <div id="collapseDeliveryAddress"
@@ -202,7 +202,8 @@ Model.Policy.LoanMinimumAmount > Model.Policy.LoanMaximumAmount)
                                 </div>
                                 <div class="mt-4">
                                     <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
-                                    @Html.HiddenFor(m => m.Product.Id)
+                                    @Html.HiddenFor(m => m.Policy.LoanProductId)
+                                    @Html.HiddenFor(m => m.Policy.TermId)
                                     <input type="hidden" name="ServiceOption" value="loan_range" id="ServiceOption" />
                                 </div>
                             </fieldset>
@@ -821,11 +822,13 @@ Model.Policy.LoanMinimumAmount > Model.Policy.LoanMaximumAmount)
                                 aria-controls="collapsePaymentMethod5">
                             @GlobalLoanProduct.TopupOption
                             <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="@GlobalLoanProduct.LoanTopUpLimitsDefineTheLimitsAndCriteria.
-@GlobalLoanProduct.KeyPoints:
-1. @GlobalLoanProduct.HasTopUpDetermineIfTheProductOffersRefinancing.
-2. @GlobalLoanProduct.MinimumTopUpAmountSpecifyTheMinimumAmountAllowed.
-3. @GlobalLoanProduct.DefaultTopUpAmountSetTheDefaultAmountForRefinancing.
-4. @GlobalLoanProduct.MaximumTopUpAmountDefineTheMaximumAmountAllowed."></i>
+                                    @GlobalLoanProduct.KeyPoints:
+                                    1. @GlobalLoanProduct.HasTopUpDetermineIfTheProductOffersRefinancing.
+                                    2. @GlobalLoanProduct.MinimumTopUpAmountSpecifyTheMinimumAmountAllowed.
+                                    3. @GlobalLoanProduct.DefaultTopUpAmountSetTheDefaultAmountForRefinancing.
+                                    4. @GlobalLoanProduct.MaximumTopUpAmountDefineTheMaximumAmountAllowed.">
+
+                            </i>
 
                         </button>
                     </h2>

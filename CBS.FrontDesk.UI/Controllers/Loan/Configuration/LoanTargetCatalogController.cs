@@ -22,19 +22,15 @@ namespace CBS.FrontDesk.UI.Controllers.Loan.Configuration
 
             public ActionResult Index()
             {
+                loader();
                 return View();
             }
-
-            public ActionResult List()
-            {
-                return View();
-            }
-
-            
+                   
 
             public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null,
                 string path = null, string serviceOption = null)
             {
+                 loader();
                 if (path == "details")
                 {
                     var data = await _loanTargetCatalogService.GetByIdAsync(KEY);
@@ -42,19 +38,7 @@ namespace CBS.FrontDesk.UI.Controllers.Loan.Configuration
                 }
                 else if (path == "edit")
                 {
-                    var data = await _loanTargetCatalogService.GetByIdAsync(KEY);
-                    if (data != null)
-                    {
-                        var updateModel = new UpdateLoanTargetCatalogRequest
-                        {
-                            Id = data.Id,
-                            NameEn = data.NameEn,
-                            NameFr = data.NameFr,
-                            PcmfPopulation = data.PcmfPopulation,
-                            IsActive = data.IsActive
-                        };
-                        return PartialView(partialView, updateModel);
-                    }
+                    var data = await _loanTargetCatalogService.GetByIdAsync(KEY);                   
                     return PartialView(partialView, new UpdateLoanTargetCatalogRequest());
                 }
                 else if (path == "delete")
@@ -64,22 +48,48 @@ namespace CBS.FrontDesk.UI.Controllers.Loan.Configuration
                 }
                 else // create
                 {
-                    return PartialView(partialView, new CreateLoanTargetCatalogRequest());
+                    return PartialView(partialView, new UpdateLoanTargetCatalogRequest());
                 }
             }
 
-            [HttpPost]
-            [ValidateAntiForgeryToken]
-            public async Task<ActionResult> Create(CreateLoanTargetCatalogRequest model)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> CreateOrUpdate(UpdateLoanTargetCatalogRequest model)
+        {
+            if (!ModelState.IsValid)
             {
-                if (!ModelState.IsValid)
-                    return Json(new { success = false, message = "Validation failed.", errors = ModelState.Values.SelectMany(v => v.Errors.Select(e => e.ErrorMessage)) });
-
-                var result = await _loanTargetCatalogService.CreateAsync(model);
-                return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
+                return Json(new
+                {
+                    success = false,
+                    message = "Validation failed.",
+                    errors = ModelState.Values
+                        .SelectMany(v => v.Errors)
+                        .Select(e => e.ErrorMessage)
+                });
             }
 
-            [HttpPost]
+            // Determine whether this request is for creating a new Loan Target
+            // If Id is null, empty, or contains only whitespace, it means the record does not exist yet
+            var isCreate = string.IsNullOrWhiteSpace(model.Id);
+
+            // Based on the operation type:
+            // - If creating, call the CreateAsync service method
+            // - If updating, call the UpdateAsync service method
+            // The ternary operator helps avoid duplicated if/else logic
+            var result = isCreate
+                ? await _loanTargetCatalogService.CreateAsync(model)
+                : await _loanTargetCatalogService.UpdateAsync(model);
+
+
+            return Json(new
+            {
+                success = result.Result,
+                message = Messaging.MessageResult(result)
+            });
+        }
+
+
+        [HttpPost]
             [ValidateAntiForgeryToken]
             public async Task<ActionResult> Update(UpdateLoanTargetCatalogRequest model)
             {
@@ -90,36 +100,50 @@ namespace CBS.FrontDesk.UI.Controllers.Loan.Configuration
                 return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
             }
 
-            [HttpPost]
-            [ValidateAntiForgeryToken]
-            public async Task<ActionResult> Delete(string id)
+            [HttpGet]
+             public async Task<ActionResult> Delete(string KEY)
             {
-                if (string.IsNullOrEmpty(id))
+                if (string.IsNullOrEmpty(KEY))
                     return Json(new { success = false, message = "ID is required." });
 
-                var result = await _loanTargetCatalogService.DeleteAsync(id);
+                var result = await _loanTargetCatalogService.DeleteAsync(KEY);
                 return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
             }
 
             [HttpGet]
             public async Task<JsonResult> GetAll()
-            {
+              {
                 var data = await _loanTargetCatalogService.GetAllAsync();
                 return Json(new { success = true, data = data }, JsonRequestBehavior.AllowGet);
-            }
+              }
 
-            [HttpGet]
-            public async Task<JsonResult> GetById(string id)
+        [HttpGet]
+        public async Task<JsonResult> GetById(string id)
+        {
+            loader();
+            if (string.IsNullOrWhiteSpace(id))
             {
-                if (string.IsNullOrWhiteSpace(id))
-                {
-                    return Json(new { success = false, message = "ID is required" },
-                        JsonRequestBehavior.AllowGet);
-                }
-
-                var data = await _loanTargetCatalogService.GetByIdAsync(id);
-                return Json(new { success = data != null, data = data }, JsonRequestBehavior.AllowGet);
+                return Json(new { success = false, message = "ID is required" },
+                    JsonRequestBehavior.AllowGet);
             }
+
+            var data = await _loanTargetCatalogService.GetByIdAsync(id);
+            return Json(new { success = data != null, data = data }, JsonRequestBehavior.AllowGet);
+        }
+        private bool loader()
+        {
+            // Load LoanTermKind enum values
+            var population = Enum.GetValues(typeof(PcmfPopulation))
+                .Cast<PcmfPopulation>()
+                .Select(e => new SelectListItem
+                {
+                    Value = ((int)e).ToString(),
+                    Text = e.ToString()
+                })
+                .ToList();
+            ViewBag.population = population;
+            return true;
         }
     }
+}
 

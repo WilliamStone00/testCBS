@@ -1856,8 +1856,14 @@ namespace CBS.FrontDesk.Helper
             public const string LoanTargetCatalogGet = "/api/v1/LoanTargetCatalog/Get";
             public const string LoanTargetCatalogGetAll = "/api/v1/LoanTargetCatalog/GetAll";
             public const string LoanTargetCatalogUpdate = "/api/v1/LoanTargetCatalog/Update";
-            public const string LoanTargetCatalogDelete = "/api/v1/LoanTargetCatalog/Delete";
-      
+        public const string LoanTargetCatalogDelete = "/api/v1/LoanTargetCatalog/Delete";
 
-    }
+        //----------------  PCMF LOAN PURPOSE ENDPOINTS --------------------------------
+        public const string PcmfLoanPurposeCreate = "/api/v1/PcmfLoanPurpose";
+        public const string PcmfLoanPurposeGetAll = "/api/v1/PcmfLoanPurposes";
+        public const string PcmfLoanPurposeGetById = "/api/v1/PcmfLoanPurpose/{0}";
+        public const string PcmfLoanPurposeUpdate = "/api/v1/PcmfLoanPurpose/{0}";
+        public const string PcmfLoanPurposeDelete = "/api/v1/PcmfLoanPurpose/{0}";
+    
+}
 }

@@ -453,6 +453,7 @@
     <Compile Include="LoanP\LoanportFolioFlattener\LoanDelinquencyFlattener.cs" />
     <Compile Include="LoanP\Overdraft\OverdraftActivationServices.cs" />
     <Compile Include="LoanP\Overdraft\OverdraftFacilityConfigServices.cs" />
+    <Compile Include="LoanP\PcmfLoanPurposeService.cs" />
     <Compile Include="LoanP\Repayment\RefundServices.cs" />
     <Compile Include="LocalizationService\LocalizationService.cs" />
     <Compile Include="MemberAdjustment\MemberAdjustmentService.cs" />

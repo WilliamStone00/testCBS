@@ -1,7 +1,6 @@
 ﻿@model CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure.PCMFLoanProductManagementObjects
 @using CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure
 
-
 <div class="card shadow-sm">
     <div class="card-header d-flex justify-content-between align-items-center">
         <div>
@@ -22,7 +21,6 @@
     </div>
 
     <div class="card-body">
-
         @if (Model?.Products == null || !Model.Products.Any())
         {
             <div class="alert alert-info mb-0">
@@ -39,9 +37,6 @@
                             <th style="min-width:120px;">Code</th>
                             <th style="min-width:240px;">Product Name</th>
                             <th style="min-width:160px;">Facility</th>
-                            <th style="min-width:160px;">Term</th>
-                            <th style="min-width:160px;">Target</th>
-                            <th style="min-width:220px;">PCMF Purpose</th>
                             <th style="min-width:140px;">PCMF Codes</th>
                             <th style="min-width:110px;">Status</th>
                             <th style="min-width:120px;" class="text-end">Actions</th>
@@ -64,7 +59,7 @@
                                     }
                                 </td>
 
-                                <!-- ✅ Loan Facility -->
+                                <!-- Loan Facility -->
                                 <td>
                                     @switch (p.LoanFacility)
                                     {
@@ -86,56 +81,17 @@
                                     }
                                 </td>
 
-                                <!-- ✅ Loan Term (only meaningful for Classic / SSF) -->
+                                <!-- PCMF Codes -->
                                 <td>
-                                    @if (p.LoanFacility == LoanFacilityType.Classic || p.LoanFacility == LoanFacilityType.SSF)
-                                    {
-                                        if (p.Term != null)
-                                        {
-                                            <span class="badge bg-label-primary">@p.Term.NameEn</span>
-                                        }
-                                        else
-                                        {
-                                            <span class="text-muted">—</span>
-                                        }
-                                    }
-                                    else
-                                    {
-                                        <span class="text-muted">N/A</span>
-                                    }
+                                    <span class="badge bg-label-secondary" title="PCMF Base Code">
+                                        @p.PcmfBaseCode
+                                    </span>
+                                    <span class="badge bg-label-dark" title="PCMF Group Code">
+                                        @p.PcmfGroupCode
+                                    </span>
                                 </td>
 
-                                <td>
-                                    @if (p.Target != null)
-                                    {
-                                        <span class="badge bg-label-info">@p.Target.NameEn</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="text-muted">N/A</span>
-                                    }
-                                </td>
-
-                                <td>
-                                    @if (p.Purpose != null)
-                                    {
-                                        <span class="fw-semibold">@p.Purpose.NameEn</span>
-                                        if (!string.IsNullOrWhiteSpace(p.Purpose.DescriptionEn))
-                                        {
-                                            <div><small class="text-muted">@p.Purpose.DescriptionEn</small></div>
-                                        }
-                                    }
-                                    else
-                                    {
-                                        <span class="text-muted">N/A</span>
-                                    }
-                                </td>
-
-                                <td>
-                                    <span class="badge bg-label-secondary" title="PCMF Base Code">@p.PcmfBaseCode</span>
-                                    <span class="badge bg-label-dark" title="PCMF Group Code">@p.PcmfGroupCode</span>
-                                </td>
-
+                                <!-- Status -->
                                 <td>
                                     @if (p.ActiveStatus)
                                     {
@@ -147,6 +103,7 @@
                                     }
                                 </td>
 
+                                <!-- Actions -->
                                 <td class="text-end">
                                     <div class="btn-group">
                                         <button type="button"
@@ -156,7 +113,6 @@
                                         </button>
 
                                         <ul class="dropdown-menu dropdown-menu-end">
-
                                             <li>
                                                 <a class="dropdown-item"
                                                    onclick="openLoanProductEditModal('@p.Id')">
@@ -194,8 +150,8 @@
                                                 </a>
                                             </li>
 
-                                            <!-- ✅ OD / LOC Facility -->
-                                            @if (p.LoanFacility == LoanFacilityType.Overdraft || p.LoanFacility == LoanFacilityType.LineOfCredit)
+                                            @if (p.LoanFacility == LoanFacilityType.Overdraft ||
+                                                 p.LoanFacility == LoanFacilityType.LineOfCredit)
                                             {
                                                 <li>
                                                     <a class="dropdown-item"
@@ -213,7 +169,6 @@
                                                     <i class="mdi mdi-delete-outline me-2"></i> Delete
                                                 </a>
                                             </li>
-
                                         </ul>
                                     </div>
                                 </td>

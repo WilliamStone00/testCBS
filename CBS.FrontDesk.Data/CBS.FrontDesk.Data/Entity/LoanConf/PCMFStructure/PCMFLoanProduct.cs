@@ -393,7 +393,9 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure
         /// </summary>
         public string LoanProductId { get; set; }
 
-        // --------------------------------------------------------------------
+        public string TermId { get; set; }
+
+          // --------------------------------------------------------------------
         // POLICY: Amount limits
         // --------------------------------------------------------------------
 

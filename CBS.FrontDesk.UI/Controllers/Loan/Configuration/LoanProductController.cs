@@ -18,6 +18,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using PcmfPopulation = CBS.FrontDesk.Data.Entity.LoanConf.PcmfPopulation;
+using PcmfPurposeKey = CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure.PcmfPurposeKey;
 
 namespace CBS.FrontDesk.UI.Controllers.Configuration
 {
@@ -113,7 +115,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
             return View();
         }
         [HttpPost]
-        public async Task<ActionResult> Create(LoanProductObject model)
+        public async Task<ActionResult> Create(LoanProductObject model, PCMFLoanProductManagementObjects model2)
         {
             if (model.ServiceOption == "insert")
             {
@@ -139,93 +141,213 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
             }
             else
             {
-                return await Update(model);
+                return await Update(model2);
             }
         }
+
+        //[HttpPost]
+        //public async Task<ActionResult> Update(LoanProductObject model)
+        //{
+
+
+
+        //    if (model.ServiceOption == "set_penalty")
+        //    {
+        //        var data = await _PenaltyServices.Create(model.Penalty);
+        //        return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+
+        //    }
+        //    else
+        //    {
+        //        model.UpdateLoanProductCommand.ServiceOption = model.ServiceOption;
+        //        if (model.ServiceOption == "product")
+        //        {
+        //            model.UpdateLoanProductCommand.ProductCode = model.AddLoanProductCommand.ProductCode;
+        //            model.UpdateLoanProductCommand.TargetType = model.AddLoanProductCommand.TargetType;
+        //            model.UpdateLoanProductCommand.ProductName = model.AddLoanProductCommand.ProductName;
+        //            model.UpdateLoanProductCommand.Id = model.AddLoanProductCommand.Id;
+        //            model.UpdateLoanProductCommand.Description = model.AddLoanProductCommand.Description;
+        //            model.UpdateLoanProductCommand.ActiveStatus = model.AddLoanProductCommand.ActiveStatus;
+        //            model.UpdateLoanProductCommand.ServiceOption = model.ServiceOption;
+        //            model.UpdateLoanProductCommand.LoanTermId = model.AddLoanProductCommand.LoanTermId;
+        //            model.UpdateLoanProductCommand.LoanProductCategoryId = model.AddLoanProductCommand.LoanProductCategoryId;
+        //            model.UpdateLoanProductCommand.IsProductWithSavingFacilities = model.AddLoanProductCommand.IsProductWithSavingFacilities;
+        //            model.UpdateLoanProductCommand.IsMortgage = model.AddLoanProductCommand.IsMortgage;
+
+        //        }
+        //        else if (model.ServiceOption == "duration")
+        //        {
+        //            var selectedLoanTerm = await _loanTermServices.GetLoanTerm(model.UpdateLoanProductCommand.LoanTermId); // Fetch LoanTerm details
+        //            if (selectedLoanTerm == null)
+        //            {
+        //                return Json(new
+        //                {
+        //                    success = false,
+        //                    status = false,
+        //                    message = "The selected loan term is invalid. Please select a valid loan term and try again Or Set the loan term."
+        //                });
+        //            }
+
+        //            // Validate the minimum duration period
+        //            if (model.UpdateLoanProductCommand.MinimumDurationPeriod < selectedLoanTerm.MinInMonth ||
+        //                model.UpdateLoanProductCommand.MinimumDurationPeriod > selectedLoanTerm.MaxInMonth)
+        //            {
+        //                return Json(new
+        //                {
+        //                    success = false,
+        //                    status = false,
+        //                    message = $"The provided Minimum Duration Period of {model.UpdateLoanProductCommand.MinimumDurationPeriod} months does not fall within the allowable range of {selectedLoanTerm.MinInMonth} to {selectedLoanTerm.MaxInMonth} months for the selected loan term '{selectedLoanTerm.Name}'. Please review and adjust accordingly."
+        //                });
+        //            }
+
+        //            // Validate the maximum duration period
+        //            if (model.UpdateLoanProductCommand.MaximumDurationPeriod < selectedLoanTerm.MinInMonth ||
+        //                model.UpdateLoanProductCommand.MaximumDurationPeriod > selectedLoanTerm.MaxInMonth)
+        //            {
+        //                return Json(new
+        //                {
+        //                    success = false,
+        //                    status = false,
+        //                    message = $"The provided Maximum Duration Period of {model.UpdateLoanProductCommand.MaximumDurationPeriod} months exceeds the permissible range of {selectedLoanTerm.MinInMonth} to {selectedLoanTerm.MaxInMonth} months for the selected loan term '{selectedLoanTerm.Name}'. Please review and adjust your input."
+        //                });
+        //            }
+
+        //            // Validate that minimum is not greater than maximum   ML Commercial Real Estate Loan E
+        //            if (model.UpdateLoanProductCommand.MinimumDurationPeriod > model.UpdateLoanProductCommand.MaximumDurationPeriod)
+        //            {
+        //                return Json(new
+        //                {
+        //                    success = false,
+        //                    status = false,
+        //                    message = $"The Minimum Duration Period ({model.UpdateLoanProductCommand.MinimumDurationPeriod} months) cannot be greater than the Maximum Duration Period ({model.UpdateLoanProductCommand.MaximumDurationPeriod} months) for the selected loan term '{selectedLoanTerm.Name}'. Please ensure the values are entered correctly."
+        //                });
+        //            }
+        //        }
+
+
+        //        var data = await _LoanProductServices.Update(model.UpdateLoanProductCommand);
+        //        return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+
+        //    }
+
+        //}
+
         [HttpPost]
-        public async Task<ActionResult> Update(LoanProductObject model)
+        public async Task<ActionResult> Update(PCMFLoanProductManagementObjects model)
         {
+            var policy = model.Policy;
 
-           
-
-            if (model.ServiceOption == "set_penalty")
+            //if (model.ServiceOption == "set_penalty")
+            //{
+            //    // Standalone penalty creation logic (from original snippet)
+            //    var data = await _PenaltyServices.Create(model.Product.Policy.PenaltyId); // Adjusted to match likely structure
+            //    return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+            //}
+            //else
+            //{
+            // Handle specific validations and mappings based on the Accordion/Section submitted
+            switch (model.ServiceOption)
             {
-                var data = await _PenaltyServices.Create(model.Penalty);
-                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
 
+
+                case "loan_range":
+                    // Validation: Min vs Max
+                    if (policy.LoanMinimumAmount > policy.LoanMaximumAmount)
+                    {
+                        return Json(new { success = false, status = false, message = "Minimum Loan Amount cannot be greater than Maximum Loan Amount." });
+                    }
+
+                    // Map Policy values to Command (or Service uses Policy object directly)
+                    // Assuming Command has these properties or Service accepts the Policy object
+                    // For this example, we assume we need to hydrate the Command or a specific DTO property
+                    break;
+
+                case "interest":
+                    // Validation: Min vs Max Interest
+                    if (policy.MinimumInterestRate > policy.MaximumInterestRate)
+                    {
+                        return Json(new { success = false, status = false, message = "Minimum Interest Rate cannot be greater than Maximum Interest Rate." });
+                    }
+
+                    // Validation: Waiver
+                    if (policy.IsInterestWaiverApplied && (policy.MinimumInterestWaiver > policy.MaximumInterestWaiver))
+                    {
+                        return Json(new { success = false, status = false, message = "Minimum Interest Waiver cannot be greater than Maximum Interest Waiver." });
+                    }
+                    break;
+
+                case "repayment":
+                    // Handle Repayment Cycles (ListBox)
+                    if (model.Product.RepaymentCycles == null || !model.Product.RepaymentCycles.Any())
+                    {
+                        // Optional: Validation if at least one cycle is required
+                        // return Json(new { success = false, message = "Please select at least one repayment cycle." });
+                    }
+                    // Map list to command if needed
+                    break;
+
+                case "charges": // Corresponds to Defaulted Loan Settings
+                                // Logic for "IsChargesApplied" and penalties is handled here
+                    break;
+
+                case "gurantee": // Corresponds to Collateral Check List
+                                 // Logic for collateral requirements, guarantors, etc.
+                    if (policy.ShorteeMustHaveFundToGuranteeLoan && policy.MinimumPercentageCoverageOfShortee <= 0)
+                    {
+                        return Json(new { success = false, status = false, message = "Please specify a valid Minimum Percentage Coverage for the Shortee." });
+                    }
+                    break;
+
+                case "mortgage":
+                    // Mortgage specific logic
+                    if (policy.IsMortgage && policy.MaxLoanToValueRatio > 1.0M)
+                    {
+                        return Json(new { success = false, status = false, message = "LTV Ratio is usually expressed as a decimal (e.g., 0.80). Values > 1 imply > 100%." });
+                    }
+                    break;
+
+                case "duration":
+
+                    if (!string.IsNullOrEmpty(policy.TermId))
+                    {
+                        var selectedLoanTerm = await _loanTermServices.GetLoanTerm(policy.TermId);
+                        if (selectedLoanTerm == null)
+                        {
+                            return Json(new { success = false, status = false, message = "Invalid loan term selected." });
+                        }
+
+                        // Validate ranges against the Term Configuration
+                        if (policy.MinimumDurationPeriod < selectedLoanTerm.MinInMonth || policy.MinimumDurationPeriod > selectedLoanTerm.MaxInMonth)
+                        {
+                            return Json(new { success = false, status = false, message = $"Minimum Duration ({policy.MinimumDurationPeriod}) is outside the allowable range ({selectedLoanTerm.MinInMonth}-{selectedLoanTerm.MaxInMonth})." });
+                        }
+
+                        if (policy.MaximumDurationPeriod < selectedLoanTerm.MinInMonth || policy.MaximumDurationPeriod > selectedLoanTerm.MaxInMonth)
+                        {
+                            return Json(new { success = false, status = false, message = $"Maximum Duration ({policy.MaximumDurationPeriod}) is outside the allowable range ({selectedLoanTerm.MinInMonth}-{selectedLoanTerm.MaxInMonth})." });
+                        }
+
+                        if (policy.MinimumDurationPeriod > policy.MaximumDurationPeriod)
+                        {
+                            return Json(new { success = false, status = false, message = "Minimum Duration cannot be greater than Maximum Duration." });
+                        }
+                    }
+                    break;
             }
-            else
-            {
-                model.UpdateLoanProductCommand.ServiceOption = model.ServiceOption;
-                if (model.ServiceOption == "product")
-                {
-                    model.UpdateLoanProductCommand.ProductCode = model.AddLoanProductCommand.ProductCode;
-                    model.UpdateLoanProductCommand.TargetType = model.AddLoanProductCommand.TargetType;
-                    model.UpdateLoanProductCommand.ProductName = model.AddLoanProductCommand.ProductName;
-                    model.UpdateLoanProductCommand.Id = model.AddLoanProductCommand.Id;
-                    model.UpdateLoanProductCommand.Description = model.AddLoanProductCommand.Description;
-                    model.UpdateLoanProductCommand.ActiveStatus = model.AddLoanProductCommand.ActiveStatus;
-                    model.UpdateLoanProductCommand.ServiceOption = model.ServiceOption;
-                    model.UpdateLoanProductCommand.LoanTermId = model.AddLoanProductCommand.LoanTermId;
-                    model.UpdateLoanProductCommand.LoanProductCategoryId = model.AddLoanProductCommand.LoanProductCategoryId;
-                    model.UpdateLoanProductCommand.IsProductWithSavingFacilities = model.AddLoanProductCommand.IsProductWithSavingFacilities;
-                    model.UpdateLoanProductCommand.IsMortgage = model.AddLoanProductCommand.IsMortgage;
-
-    }
-                else if (model.ServiceOption == "duration")
-                {
-                    var selectedLoanTerm = await _loanTermServices.GetLoanTerm(model.UpdateLoanProductCommand.LoanTermId); // Fetch LoanTerm details
-                    if (selectedLoanTerm == null)
-                    {
-                        return Json(new
-                        {
-                            success = false,
-                            status = false,
-                            message = "The selected loan term is invalid. Please select a valid loan term and try again Or Set the loan term."
-                        });
-                    }
-
-                    // Validate the minimum duration period
-                    if (model.UpdateLoanProductCommand.MinimumDurationPeriod < selectedLoanTerm.MinInMonth ||
-                        model.UpdateLoanProductCommand.MinimumDurationPeriod > selectedLoanTerm.MaxInMonth)
-                    {
-                        return Json(new
-                        {
-                            success = false,
-                            status = false,
-                            message = $"The provided Minimum Duration Period of {model.UpdateLoanProductCommand.MinimumDurationPeriod} months does not fall within the allowable range of {selectedLoanTerm.MinInMonth} to {selectedLoanTerm.MaxInMonth} months for the selected loan term '{selectedLoanTerm.Name}'. Please review and adjust accordingly."
-                        });
-                    }
-
-                    // Validate the maximum duration period
-                    if (model.UpdateLoanProductCommand.MaximumDurationPeriod < selectedLoanTerm.MinInMonth ||
-                        model.UpdateLoanProductCommand.MaximumDurationPeriod > selectedLoanTerm.MaxInMonth)
-                    {
-                        return Json(new
-                        {
-                            success = false,
-                            status = false,
-                            message = $"The provided Maximum Duration Period of {model.UpdateLoanProductCommand.MaximumDurationPeriod} months exceeds the permissible range of {selectedLoanTerm.MinInMonth} to {selectedLoanTerm.MaxInMonth} months for the selected loan term '{selectedLoanTerm.Name}'. Please review and adjust your input."
-                        });
-                    }
-
-                    // Validate that minimum is not greater than maximum   ML Commercial Real Estate Loan E
-                    if (model.UpdateLoanProductCommand.MinimumDurationPeriod > model.UpdateLoanProductCommand.MaximumDurationPeriod)
-                    {
-                        return Json(new
-                        {
-                            success = false,
-                            status = false,
-                            message = $"The Minimum Duration Period ({model.UpdateLoanProductCommand.MinimumDurationPeriod} months) cannot be greater than the Maximum Duration Period ({model.UpdateLoanProductCommand.MaximumDurationPeriod} months) for the selected loan term '{selectedLoanTerm.Name}'. Please ensure the values are entered correctly."
-                        });
-                    }
-                }
 
 
-                var data = await _LoanProductServices.Update(model.UpdateLoanProductCommand);
-                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+            // 3. Execute Update
+            // We pass the ServiceOption so the generic Update method knows which fields specifically to update 
+            // (This avoids overwriting other sections with nulls if partial updates are performed).
+            // Note: We are passing 'model.Policy' as well, assuming the Service signature accepts the policy 
+            // or the Command object has been extended to include Policy properties.
 
-            }
+            // If your service only accepts 'command', make sure to map 'policy' fields to 'command' fields above.
+            // Assuming signature: Update(CreateLoanProductCommand command, LoanProductPolicy policy = null, string serviceOption = "")
+
+            var data = await _LoanProductServices.Update(model.Policy, model.ServiceOption);
+
+            return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
 
         }
 
@@ -280,7 +402,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
 
         // ✅ Used by Index ajax loaders (list / new / edit)
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null)
-        {
+         {
             await GetValues();
             partialView = string.IsNullOrWhiteSpace(partialView) ? "_Data" : partialView;
             path = path?.Trim();
@@ -305,7 +427,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
             // -----------------------------
             if (string.Equals(path, "new", StringComparison.OrdinalIgnoreCase))
             {
-               
+
                 var vm = new PCMFLoanProductManagementObjects
                 {
                     CreateOrUpdate = new CreateLoanProductCommand
@@ -374,7 +496,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
                     await LoadChartOfAccounts();
 
                     // Load mapping (create if missing)
-                    vm.AccountingProfile = p.AccountingMapping?? new LoanProductAccountingProfile { LoanProductId = p.Id };
+                    vm.AccountingProfile = p.AccountingMapping ?? new LoanProductAccountingProfile { LoanProductId = p.Id };
                     // Snapshot (optional but recommended)
                     vm.AccountingProfile.PcmfBaseCode = p.PcmfBaseCode.Value;
                     vm.AccountingProfile.PcmfSection = p.PcmfSection;
@@ -386,9 +508,8 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
                 // ✅ Policy
                 if (string.Equals(path, "policy", StringComparison.OrdinalIgnoreCase))
                 {
-                    vm.Policy = p.Policy
-                                ?? new LoanProductPolicy { LoanProductId = p.Id };
-
+                    vm.Policy = p.Policy ?? new LoanProductPolicy { LoanProductId = p.Id, TermId = p.LoanTermId };
+                    vm.Policy.LoanProductId = p.Id;
                     return PartialView(partialView, vm);
                 }
 
@@ -402,7 +523,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
                 // ✅ Overdraft Facility (only if OD)
                 if (string.Equals(path, "overdraft", StringComparison.OrdinalIgnoreCase))
                 {
-                    vm.OverdraftFacilityConfig =p.OverdraftFacilityConfig
+                    vm.OverdraftFacilityConfig = p.OverdraftFacilityConfig
                                               ?? new OverdraftFacilityConfig();
 
                     return PartialView(partialView, vm);
@@ -444,9 +565,6 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
 
         public async Task<bool> GetValues()
         {
-
-
-
             var agreggates = await _LoanProductServices.GetAgreggates();
             var productEnumAgregates = await _LoanProductServices.GetLoanProductEnumAggregates();
             var loanProductCategories = await _loanProductCategoryServices.GetLoanProductCategorys();

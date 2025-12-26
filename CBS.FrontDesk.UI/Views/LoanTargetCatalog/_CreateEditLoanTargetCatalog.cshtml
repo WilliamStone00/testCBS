@@ -1,203 +1,128 @@
-﻿
-@model CBS.FrontDesk.Data.Entity.LoanConf.UpdateLoanTargetCatalogRequest
+﻿@model CBS.FrontDesk.Data.Entity.LoanConf.UpdateLoanTargetCatalogRequest
 @using Resources
 
-<fieldset class="fieldset-custom">
-    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-
-    <!-- Header Card -->
-    <div class="card bg-light mb-4 shadow-sm">
-        <div class="card-body text-center">
-            <h1 class="card-title text-primary fw-bold mb-2">
-                <i class="mdi mdi-target-account me-2"></i>
-                @(string.IsNullOrEmpty(Model.Id) ? "Create New Loan Target" : "Edit Loan Target")
-            </h1>
-            <p class="card-text text-muted mb-1">
-                @(string.IsNullOrEmpty(Model.Id)
-                    ? "Add a new loan target category to the catalog"
-                    : "Modify existing loan target category details")
-            </p>
-        </div>
-    </div>
-
-    <!-- Form -->
-    <form id="loanTargetForm" autocomplete="off" novalidate>
+<div class="modal-body">
+    @using (Html.BeginForm("CreateOrUpdate","LoanTargetCatalog",FormMethod.Post, new { id = "loanTargetForm", enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+    {
         @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.Id)
 
-        @if (!string.IsNullOrEmpty(Model.Id))
-        {
-            @Html.HiddenFor(m => m.Id)
-        }
+    <div class="mt-2">
+        <div class="row">
+            <div class="col-12">
+                <div class="card bg-light mb-2">
+                    <div class="card-body text-center">
+                        <h1 class="card-title text-primary">
+                            <i class="mdi mdi-target-account me-2"></i>
+                            @(string.IsNullOrWhiteSpace(Model?.Id)
+                                         ? "Create Loan Target"
+                                         : "Update Loan Target")
+                        </h1>
 
-        <div class="card mb-3">
-            <div class="card-body">
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold">Name (English) *</label>
-                        @Html.TextBoxFor(m => m.NameEn, new
-                        {
-                            @class = "form-control",
-                            placeholder = "Enter English name",
-                            required = "required",
-                            maxlength = "200"
-                        })
-                        <span class="text-danger small field-validation-valid" data-valmsg-for="NameEn" data-valmsg-replace="true"></span>
-                    </div>
+                        @*<p class="card-text">
+                            Configure and manage Insurance Premium System settings for different years and branches.
+                        </p>
+                        <div class="alert alert-info mt-3 py-2">
+                            <i class="mdi mdi-information-outline me-1"></i>
+                            Set coverage limits, premium rates, and eligibility criteria for loan and savings insurance products.
+                        </div>*@
 
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold">Name (French) *</label>
-                        @Html.TextBoxFor(m => m.NameFr, new
-                        {
-                            @class = "form-control",
-                            placeholder = "Enter French name",
-                            required = "required",
-                            maxlength = "200"
-                        })
-                        <span class="text-danger small field-validation-valid" data-valmsg-for="NameFr" data-valmsg-replace="true"></span>
-                    </div>
-
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold">PCMF Population</label>
-                        @Html.TextBoxFor(m => m.PcmfPopulation, new
-                        {
-                            @class = "form-control",
-                            type = "number",
-                            min = "0",
-                            placeholder = "Enter population count"
-                        })
-                        <span class="text-danger small field-validation-valid" data-valmsg-for="PcmfPopulation" data-valmsg-replace="true"></span>
-                    </div>
-
-                    <div class="col-md-6 d-flex align-items-center">
-                        <div class="form-check form-switch mt-4">
-                            @Html.CheckBoxFor(m => m.IsActive, new { @class = "form-check-input" })
-                            <label class="form-check-label fw-bold" for="IsActive">
-                                Active Status
-                            </label>
-                        </div>
+                        <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="d-flex justify-content-end">
-            <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">
-                <i class="mdi mdi-close me-1"></i> Cancel
-            </button>
-            <button type="submit" id="saveBtn" class="btn btn-primary">
-                <i class="mdi mdi-content-save me-1"></i>
-                @(string.IsNullOrEmpty(Model.Id) ? "Create" : "Update")
-            </button>
+        <div class="col-12">
+            <div class="card shadow-sm">
+
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="row g-3">
+
+                        <!-- Name EN -->
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                @Html.TextBoxFor(m => m.NameEn, new
+                                {
+                                    @class = "form-control",
+                                    placeholder = "Name (English)",
+                                    maxlength = "200"
+                                })
+                                <label>Name (English)</label>
+                                @Html.ValidationMessageFor(m => m.NameEn, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <!-- Name FR -->
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                @Html.TextBoxFor(m => m.NameFr, new
+                                {
+                                    @class = "form-control",
+                                    placeholder = "Name (French)",
+                                    maxlength = "200"
+                                })
+                                <label>Name (French)</label>
+                                @Html.ValidationMessageFor(m => m.NameFr, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <!-- PCMF Population -->
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                @Html.DropDownListFor(
+                                    m => m.PcmfPopulation,
+                                    (IEnumerable<SelectListItem>)ViewBag.population,
+                                    "Select PCMF Population",
+                                    new { @class = "form-control select2" }
+                                )
+                                <label>PCMF Population</label>
+                                @Html.ValidationMessageFor(m => m.PcmfPopulation, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <!-- Active Status -->
+                        <div class="col-md-6 d-flex align-items-center">
+                            <div class="form-check mt-2">
+                                @Html.CheckBoxFor(m => m.IsActive, new { @class = "form-check-input", id = "isActive" })
+                                <label class="form-check-label fw-bold ms-2" for="isActive">
+                                    Active Status
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="text-end">
+                        @if (string.IsNullOrWhiteSpace(Model?.Id))
+                        {
+                            <button type="submit" class="btn btn-primary me-2">
+                                <i class="mdi mdi-content-save me-1"></i> @GlobalShared.Save
+                            </button>
+                            <button type="reset" class="btn btn-outline-secondary">
+                                @GlobalShared.Reset
+                            </button>
+                        }
+                        else
+                        {
+                            <button type="submit" class="btn btn-primary me-2">
+                                <i class="mdi mdi-refresh me-1"></i> @GlobalBank.Update
+                            </button>
+                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+                                Close
+                            </button>
+                        }
+                    </div>
+                </div>
+
+            </div>
         </div>
-    </form>
-</fieldset>
 
-@section Scripts {
-    <script>
-        $(document).ready(function () {
-            var $form = $('#loanTargetForm');
-            var $saveBtn = $('#saveBtn');
-            var isEdit = '@(!string.IsNullOrEmpty(Model.Id))' === 'True';
 
-            // Initialize validation
-            $form.validate({
-                rules: {
-                    NameEn: {
-                        required: true,
-                        maxlength: 200
-                    },
-                    NameFr: {
-                        required: true,
-                        maxlength: 200
-                    },
-                    PcmfPopulation: {
-                        number: true,
-                        min: 0
-                    }
-                },
-                messages: {
-                    NameEn: {
-                        required: "English name is required",
-                        maxlength: "English name cannot exceed 200 characters"
-                    },
-                    NameFr: {
-                        required: "French name is required",
-                        maxlength: "French name cannot exceed 200 characters"
-                    }
-                },
-                errorClass: "is-invalid",
-                validClass: "is-valid",
-                errorElement: "div",
-                errorPlacement: function(error, element) {
-                    error.addClass('text-danger small');
-                    error.insertAfter(element);
-                },
-                submitHandler: function(form) {
-                    saveLoanTarget();
-                    return false;
-                }
-            });
 
-            function saveLoanTarget() {
-                var formData = new FormData();
-                var $antiForgeryToken = $('input[name="__RequestVerificationToken"]');
-                formData.append('__RequestVerificationToken', $antiForgeryToken.val());
-
-                // Serialize form data
-                $form.serializeArray().forEach(function(item) {
-                    if (item.name === 'IsActive') {
-                        formData.append(item.name, $('input[name="IsActive"]').is(':checked'));
-                    } else {
-                        formData.append(item.name, item.value);
-                    }
-                });
-
-                var originalHtml = $saveBtn.html();
-                $saveBtn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-2" role="status"></span>Saving...');
-
-                var url = isEdit ? '/LoanTargetCatalog/Update' : '/LoanTargetCatalog/Create';
-                var method = 'POST';
-
-                $.ajax({
-                    url: url,
-                    type: method,
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    success: function (response) {
-                        if (response && response.success) {
-                            appalert(response.message, 1, 1);
-                            $('#genericModal').modal('hide');
-
-                            // Reload DataTable
-                            if (typeof loanTargetTable !== 'undefined' && loanTargetTable) {
-                                loanTargetTable.ajax.reload(null, false);
-                            }
-                        } else {
-                            var msg = (response && response.message) ? response.message : 'Operation failed';
-                            if (response && response.errors) {
-                                msg += ': ' + response.errors.join(', ');
-                            }
-                            appalert(msg, 0, 1);
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        var errorMsg = 'Failed to save. Please try again.';
-                        try {
-                            var parsedResponse = JSON.parse(xhr.responseText);
-                            if (parsedResponse && parsedResponse.message) {
-                                errorMsg = parsedResponse.message;
-                            }
-                        } catch (e) {
-                            // Use default error message
-                        }
-                        appalert(errorMsg, 0, 1);
-                    },
-                    complete: function () {
-                        $saveBtn.prop('disabled', false).html(originalHtml);
-                    }
-                });
-            }
-        });
-    </script>
-}
+    
+    </div>
+        }
+    </div>
