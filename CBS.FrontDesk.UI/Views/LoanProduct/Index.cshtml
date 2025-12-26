@@ -137,6 +137,11 @@
                 }
             }
         );
+        $("#loanProductAccordion")
+            .off("shown.bs.collapse.lpSelect2")
+            .on("shown.bs.collapse.lpSelect2", ".accordion-collapse", function () {
+                initSelect2InModal("#loanProductModal");
+            });
     }
 
     // ==========================
@@ -159,6 +164,12 @@
                 }
             }
         );
+        // Re-init select2 when any accordion section is opened
+        $("#loanProductAccordion")
+            .off("shown.bs.collapse.lpSelect2")
+            .on("shown.bs.collapse.lpSelect2", ".accordion-collapse", function () {
+                initSelect2InModal("#loanProductModal");
+            });
     }
 
     // ==========================

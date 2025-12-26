@@ -403,7 +403,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
         // ✅ Used by Index ajax loaders (list / new / edit)
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null)
          {
-            await GetValues();
+            //await GetValues();
             partialView = string.IsNullOrWhiteSpace(partialView) ? "_Data" : partialView;
             path = path?.Trim();
 
@@ -597,6 +597,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
             // Accounting Profiles
             var profiles = await _accountingServices.GetAllAffiliateAccounts();
             ViewBag.AccountingProfiles = profiles;
+            ViewBag.ChartOfAccounts = profiles;
 
             return true;
         }
