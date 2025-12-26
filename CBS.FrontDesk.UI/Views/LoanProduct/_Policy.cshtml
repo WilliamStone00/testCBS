@@ -1,7 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure.PCMFLoanProductManagementObjects
 @using Resources
 <div class="col">
-
+  
     <div class="row">
         <div class="col-12">
             <div class="card bg-light mb-2">
@@ -131,7 +131,7 @@
                      class="accordion-collapse collapse show"
                      data-bs-parent="#collapsibleSection">
                     <div class="accordion-body">
-                        @using (Html.BeginForm("Update", "LoanProduct", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                        @using (Html.BeginForm("Update", "LoanProduct", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdateWithButtonState(this);" }))
                         {
                             <fieldset class="fieldset-custom">
                                 <legend>Minimum-Payment Settings</legend>
@@ -242,18 +242,18 @@
                          aria-labelledby="headingDeliveryOptions"
                          data-bs-parent="#collapsibleSection">
                         <div class="accordion-body">
-                            @using (Html.BeginForm("Update", "LoanProduct", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                            @using (Html.BeginForm("Update", "LoanProduct", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdateWithButtonState(this);" }))
                             {
                                 <fieldset class="fieldset-custom">
                                     <legend>@GlobalLoanProduct.InterestSettings</legend>
                                     <div class="row g-4">
                                         <div class="col-md-12">
-                                                <div class="form-floating form-floating-outline">
-                                                    @Html.DropDownListFor(m => m.Policy.LoanInterestPeriod, new SelectList(ViewBag.LoanInterestPeriods, "Value", "Text"), "---Select interest periods---", new { @class = "form-control select2", @search = "true" })
-                                                    @Html.ValidationMessageFor(m => m.Policy.LoanInterestPeriod, "", new { @class = "text-danger " })
-                                                    <label>Interest period</label>
-                                                </div>
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(m => m.Policy.LoanInterestPeriod, new SelectList(ViewBag.LoanInterestPeriods, "Value", "Text"), "---Select interest periods---", new { @class = "form-control select2", @search = "true" })
+                                                @Html.ValidationMessageFor(m => m.Policy.LoanInterestPeriod, "", new { @class = "text-danger " })
+                                                <label>Interest period</label>
                                             </div>
+                                        </div>
                                         <div class="col-md-6">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.TextBoxFor(m => m.Policy.MinimumInterestRate, new { @class = "form-control" })
@@ -317,7 +317,8 @@
                                     </div>
                                     <div class="mt-4">
                                         <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
-                                        @Html.HiddenFor(m => m.Product.Id)
+                                        @Html.HiddenFor(m => m.Policy.LoanProductId)
+                                        @Html.HiddenFor(m => m.Policy.TermId)
                                         <input type="hidden" name="ServiceOption" value="interest" id="ServiceOption" />
                                     </div>
                                 </fieldset>
@@ -372,7 +373,7 @@
                          aria-labelledby="headingPaymentMethod"
                          data-bs-parent="#collapsibleSection">
                         <div class="accordion-body">
-                            @using (Html.BeginForm("Update", "LoanProduct", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                            @using (Html.BeginForm("Update", "LoanProduct", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdateWithButtonState(this);" }))
                             {
                                 <fieldset class="fieldset-custom">
                                     <legend>@GlobalLoanProduct.LoanDuration</legend>
@@ -429,7 +430,7 @@
                          data-bs-parent="#collapsibleSection">
 
                         <div class="accordion-body">
-                            @using (Html.BeginForm("Update", "LoanProduct", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                            @using (Html.BeginForm("Update", "LoanProduct", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdateWithButtonState(this);" }))
                             {
                                 <fieldset class="fieldset-custom">
                                     <legend>@GlobalLoanProduct.RepaymentPeriods</legend>
@@ -499,7 +500,8 @@
                                     </div>
                                     <div class="mt-4">
                                         <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
-                                        @Html.HiddenFor(m => m.Product.Id)
+                                        @Html.HiddenFor(m => m.Policy.LoanProductId)
+                                        @Html.HiddenFor(m => m.Policy.TermId)
                                         <input type="hidden" name="ServiceOption" value="repayment" id="ServiceOption" />
                                     </div>
                                 </fieldset>
@@ -536,7 +538,7 @@
                          aria-labelledby="headingPaymentMethod1"
                          data-bs-parent="#collapsibleSection">
                         <div class="accordion-body">
-                            @using (Html.BeginForm("Update", "LoanProduct", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                            @using (Html.BeginForm("Update", "LoanProduct", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdateWithButtonState(this);" }))
                             {
                                 <fieldset class="fieldset-custom">
                                     <legend>@GlobalLoanProduct.DefaultedLoans</legend>
@@ -562,7 +564,8 @@
                                     </div>
                                     <div class="mt-4">
                                         <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
-                                        @Html.HiddenFor(m => m.Product.Id)
+                                        @Html.HiddenFor(m => m.Policy.LoanProductId)
+                                        @Html.HiddenFor(m => m.Policy.TermId)
                                         <input type="hidden" name="ServiceOption" value="charges" id="ServiceOption" />
                                     </div>
                                 </fieldset>
@@ -600,7 +603,7 @@
                          aria-labelledby="headingPaymentMethod3"
                          data-bs-parent="#collapsibleSection">
                         <div class="accordion-body">
-                            @using (Html.BeginForm("Update", "LoanProduct", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                            @using (Html.BeginForm("Update", "LoanProduct", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdateWithButtonState(this);" }))
                             {
                                 <fieldset class="fieldset-custom">
                                     <legend>Collateral check-list</legend>
@@ -720,7 +723,9 @@
                                     </div>
                                     <div class="mt-4">
                                         <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
-                                        @Html.HiddenFor(m => m.Product.Id)
+                                        @Html.HiddenFor(m => m.Policy.LoanProductId)
+                                        @Html.HiddenFor(m => m.Policy.TermId)
+
                                         <input type="hidden" name="ServiceOption" value="gurantee" id="ServiceOption" />
                                     </div>
                                 </fieldset>
@@ -746,7 +751,7 @@
                          aria-labelledby="headingMortgage"
                          data-bs-parent="#collapsibleSection">
                         <div class="accordion-body">
-                            @using (Html.BeginForm("Update", "LoanProduct", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                            @using (Html.BeginForm("Update", "LoanProduct", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdateWithButtonState(this);" }))
                             {
                                 <fieldset class="fieldset-custom">
                                     <legend>Mortgage Rules</legend>
@@ -802,7 +807,8 @@
                                     </div>
                                     <div class="mt-4">
                                         <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
-                                        @Html.HiddenFor(m => m.Product.Id)
+                                        @Html.HiddenFor(m => m.Policy.LoanProductId)
+                                        @Html.HiddenFor(m => m.Policy.TermId)
                                         <input type="hidden" name="ServiceOption" value="mortgage" id="ServiceOption" />
                                     </div>
                                 </fieldset>
@@ -837,7 +843,7 @@
                          aria-labelledby="headingPaymentMethod5"
                          data-bs-parent="#collapsibleSection">
                         <div class="accordion-body">
-                            @using (Html.BeginForm("Update", "LoanProduct", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                            @using (Html.BeginForm("Update", "LoanProduct", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdateWithButtonState(this);" }))
                             {
                                 <fieldset class="fieldset-custom">
                                     <legend>@GlobalLoanProduct.LoanTopUpSettings</legend>
@@ -857,7 +863,8 @@
                                     </div>
                                     <div class="mt-4">
                                         <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
-                                        @Html.HiddenFor(m => m.Product.Id)
+                                        @Html.HiddenFor(m => m.Policy.LoanProductId)
+                                        @Html.HiddenFor(m => m.Policy.TermId)
                                         <input type="hidden" name="ServiceOption" value="topup" id="ServiceOption" />
                                     </div>
                                 </fieldset>
@@ -894,7 +901,7 @@
                          aria-labelledby="headingDeliveryOptions"
                          data-bs-parent="#collapsibleSection">
                         <div class="accordion-body">
-                            @using (Html.BeginForm("Update", "LoanProduct", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                            @using (Html.BeginForm("Update", "LoanProduct", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdateWithButtonState(this);" }))
                             {
                                 <fieldset class="fieldset-custom">
                                     <legend>@GlobalLoanProduct.InterestSettings</legend>
@@ -957,7 +964,8 @@
                                     </div>
                                     <div class="mt-4">
                                         <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
-                                        @Html.HiddenFor(m => m.Product.Id)
+                                        @Html.HiddenFor(m => m.Policy.LoanProductId)
+                                        @Html.HiddenFor(m => m.Policy.TermId)
                                         <input type="hidden" name="ServiceOption" value="interest" id="ServiceOption" />
                                     </div>
                                 </fieldset>
@@ -1013,7 +1021,7 @@
                          aria-labelledby="headingPaymentMethod"
                          data-bs-parent="#collapsibleSection">
                         <div class="accordion-body">
-                            @using (Html.BeginForm("Update", "LoanProduct", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                            @using (Html.BeginForm("Update", "LoanProduct", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdateWithButtonState(this);" }))
                             {
                                 <fieldset class="fieldset-custom">
                                     <legend>@GlobalLoanProduct.LoanDuration</legend>
@@ -1068,7 +1076,7 @@
                          data-bs-parent="#collapsibleSection">
 
                         <div class="accordion-body">
-                            @using (Html.BeginForm("Update", "LoanProduct", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                            @using (Html.BeginForm("Update", "LoanProduct", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdateWithButtonState(this);" }))
                             {
                                 <fieldset class="fieldset-custom">
                                     <legend>@GlobalLoanProduct.RepaymentPeriods</legend>
@@ -1138,7 +1146,8 @@
                                     </div>
                                     <div class="mt-4">
                                         <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
-                                        @Html.HiddenFor(m => m.Product.Id)
+                                        @Html.HiddenFor(m => m.Policy.LoanProductId)
+                                        @Html.HiddenFor(m => m.Policy.TermId)
                                         <input type="hidden" name="ServiceOption" value="repayment" id="ServiceOption" />
                                     </div>
                                 </fieldset>
@@ -1176,7 +1185,7 @@
                          aria-labelledby="headingPaymentMethod1"
                          data-bs-parent="#collapsibleSection">
                         <div class="accordion-body">
-                            @using (Html.BeginForm("Update", "LoanProduct", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                            @using (Html.BeginForm("Update", "LoanProduct", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdateWithButtonState(this);" }))
                             {
                                 <fieldset class="fieldset-custom">
                                     <legend>@GlobalLoanProduct.DefaultedLoans</legend>
@@ -1201,7 +1210,8 @@
                                     </div>
                                     <div class="mt-4">
                                         <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
-                                        @Html.HiddenFor(m => m.Product.Id)
+                                        @Html.HiddenFor(m => m.Policy.LoanProductId)
+                                        @Html.HiddenFor(m => m.Policy.TermId)
                                         <input type="hidden" name="ServiceOption" value="charges" id="ServiceOption" />
                                     </div>
                                 </fieldset>
@@ -1228,6 +1238,41 @@
         }
     }
 
+    // Wrapper function that adds button state handling
+function AjaxPostAndUpdateWithButtonState(form) {
+    // Save reference to original function
+    const originalAjaxPostAndUpdate = window.originalAjaxPostAndUpdate || AjaxPostAndUpdate;
+    
+    // Find the submit button
+    const submitButton = $(form).find('button[type="submit"]');
+    const originalText = submitButton.html();
+    
+    // Disable button and show updating
+    submitButton.prop('disabled', true);
+    submitButton.html('<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Updating...');
+    
+    // Call original function
+    const result = originalAjaxPostAndUpdate(form);
+    
+    // Re-enable button after a timeout (in case the AJAX call doesn't handle it)
+    setTimeout(function() {
+        submitButton.prop('disabled', false);
+        submitButton.html(originalText);
+    }, 5000); // 5 second timeout as fallback
+    
+    return result;
+}
+
+// Update your forms to use the new function
+document.addEventListener("DOMContentLoaded", function() {
+    // Change all form onsubmit handlers
+    $('form').each(function() {
+        const currentOnSubmit = $(this).attr('onsubmit');
+        if (currentOnSubmit && currentOnSubmit.includes('AjaxPostAndUpdate')) {
+            $(this).attr('onsubmit', currentOnSubmit.replace('AjaxPostAndUpdate', 'AjaxPostAndUpdateWithButtonState'));
+        }
+    });
+});
 
     document.addEventListener("DOMContentLoaded", function () {
         // ✅ Setup Shortee Fund checkbox logic (your other use-case)

@@ -10281,7 +10281,7 @@
     <Content Include="Views\LoanProduct\_LoanProductAccountingMapping.cshtml" />
     <Content Include="Views\LoanProduct\_LoanProduct.cshtml" />
     <Content Include="Views\LoanProduct\_SetPenalty.cshtml" />
-    <Content Include="Views\LoanProduct\_Update.cshtml" />
+    <Content Include="Views\LoanProduct\_Policy.cshtml" />
     <Content Include="Views\LoanPurpose\Index.cshtml" />
     <Content Include="Views\LoanPurpose\_Create.cshtml" />
     <Content Include="Views\LoanPurpose\_Data.cshtml" />
