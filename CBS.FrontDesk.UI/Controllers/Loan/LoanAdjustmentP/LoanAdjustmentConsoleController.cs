@@ -145,7 +145,7 @@ namespace CBS.FrontDesk.UI.Controllers.LoanAdjustmentP
         {
             query.DataTableOptions.sortColumnName = "LoanDate";
             var dataTable = await _LoanServices.GetDataTableAsync(query);
-            var loanList = JsonConvert.DeserializeObject<List<Loan>>(JsonConvert.SerializeObject(dataTable.data));
+            var loanList = JsonConvert.DeserializeObject<List<CBS.FrontDesk.Data.Entity.LoanConf.Loan>>(JsonConvert.SerializeObject(dataTable.data));
 
             return Json(new
             {

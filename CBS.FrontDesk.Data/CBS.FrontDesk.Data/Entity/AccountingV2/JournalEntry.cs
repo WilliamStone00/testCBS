@@ -305,6 +305,7 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public string TicketType { get; set; }
         public decimal InitiatedAmount { get; set; }
         public bool IsInterBranch { get; set; }
+        public string CreatedBy { get; set; }
 
 
     }
@@ -430,48 +431,7 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
     }
 
    
-        public class TillCloseModel
-        {
-
-                public string Id { get; set; }
-                public string Reference { get; set; }
-                public string OperationCode { get; set; }
-                public string BranchId { get; set; }
-                public bool IsCashOperation { get; set; }
-                public DateTime AccountingDate { get; set; }
-                public string PostMode { get; set; }
-                public string CorrelationId { get; set; }
-                public string Narration { get; set; }
-                public string MemberReference { get; set; }
-                public string AuxiliaryReference { get; set; }
-                public string HeadOfficeBranchId { get; set; }
-                public string ExternalApplicationName { get; set; }
-                public string TillName { get; set; }
-                public string CashierName { get; set; }
-                public string Memo { get; set; }
-                public List<object> Lines { get; set; } = new List<object>();
-                public Payload Payload { get; set; }
-                public Meta Meta { get; set; }
-        }
-
-            public class Payload
-            {
-                public decimal CountedAmount { get; set; }
-            }
-
-            public class Meta
-            {
-                public string TriggeredBy { get; set; }
-                public string Scenario { get; set; }
-                public string CashierId { get; set; }
-                public string BranchId { get; set; }
-                public string TillName { get; set; }
-                public DateTime AccountingDate { get; set; }
-                public string Reference { get; set; }
-                public string CountedAmount { get; set; }
-            }
-
-
+       
 
 
 }

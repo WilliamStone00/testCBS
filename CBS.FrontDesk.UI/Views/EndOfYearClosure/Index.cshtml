@@ -136,6 +136,8 @@
 </div>
 <div id="view-initiation" class="workflow-view">
     <h3 class="text-primary">Initiation of End of year  Closure </h3>
+    
+
 
     @Html.Partial("_Initiation")
 </div>
@@ -368,10 +370,13 @@
        /* ==========================================================
    2️⃣ Load Accounting Year When Branch Changes
    ========================================================== */
-        $(document).ready(function () {
-    $("#BranchId").change(function () {
-        const branchId = $(this).val();
+    $(document).ready(function () {
 
+    // Keep track of selected branch
+    let selectedBranchId = $('#BranchId').val();
+
+    // Function to load Accounting Year for a branch
+    function loadAccountingYear(branchId, initStatus) {
         if (!branchId) {
             $("#AccountingYearId").val('');
             $("#TaskAccountingYearId").val('');
@@ -381,7 +386,7 @@
         $.ajax({
             url: '@Url.Action("GetClosureOpenYearByBranchId", "EndOfYearClosure")',
             type: "GET",
-            data: { branchId: branchId },
+            data: { branchId: branchId, init: initStatus }, // pass init here
             success: function (data) {
                 console.log("years returned:", data); // debug
                 if (data && data.length > 0) {
@@ -392,27 +397,47 @@
                     $("#AccountingYearId").val(year);
                     $("#TaskAccountingYearId").val(id);
 
-
                     appalert("Accounting Year loaded successfully", 1, 1);
                 } else {
                     $("#AccountingYearId").val('');
                     $("#TaskAccountingYearId").val('');
-
-
                     appalert("No Accounting Year found for this branch", 2, 1);
                 }
             },
             error: function () {
                 $("#AccountingYearId").val('');
                 $("#TaskAccountingYearId").val('');
-
                 appalert("Failed to load Accounting Year", 2, 1);
             }
         });
+    }
+
+    // Initial load if branch already selected (treat as Pending)
+    if (selectedBranchId) {
+        loadAccountingYear(selectedBranchId, "pending");
+    }
+
+    // When branch changes (Pending)
+    $('#BranchId').change(function () {
+        selectedBranchId = $(this).val();
+        loadAccountingYear(selectedBranchId, "pending");
+        console.log("Selected Branch ID:", selectedBranchId);
     });
+
+    // Refresh button logic (InProgress)
+    $('#btnRefresh').click(function () {
+        if (!selectedBranchId) {
+            appalert("⚠️ Please select a branch first.", 3, 1);
+            return;
+        }
+
+        console.log("Refreshing Accounting Year for Branch ID:", selectedBranchId);
+
+        // Load with InProgress status
+        loadAccountingYear(selectedBranchId, "inprogress");
+    });
+
 });
-
-
 
         /* ==========================================================
            3️⃣ Workflow Tabs Navigation
@@ -425,7 +450,7 @@
             $("#" + target).removeClass("d-none");
         });
 
-         
+
 
 
         /* ==========================================================

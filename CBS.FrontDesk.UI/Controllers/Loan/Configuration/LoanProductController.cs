@@ -57,6 +57,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
             return View(loanProductObject);
 
         }
+
         // ✅ ONE POST: create if Id empty, update if Id present
         [HttpPost]
         public async Task<ActionResult> CreateOrUpdateSimple(PCMFLoanProductManagementObjects model)
@@ -280,6 +281,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
         // ✅ Used by Index ajax loaders (list / new / edit)
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null)
         {
+            await GetValues();
             partialView = string.IsNullOrWhiteSpace(partialView) ? "_Data" : partialView;
             path = path?.Trim();
 
@@ -303,8 +305,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
             // -----------------------------
             if (string.Equals(path, "new", StringComparison.OrdinalIgnoreCase))
             {
-                await GetValues();
-
+               
                 var vm = new PCMFLoanProductManagementObjects
                 {
                     CreateOrUpdate = new CreateLoanProductCommand

@@ -169,6 +169,11 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure
         /// </summary>
         [StringLength(64, ErrorMessage = "Accounting Profile Id must not exceed 64 characters.")]
         public string AccountingProfileId { get; set; }
+
+        public string LoanProductCategoryId { get; set; }
+        public string TargetType { get; set; }
+        public string LoanTypeCategory { get; set; }
+
     }
 
 

@@ -249,15 +249,31 @@ namespace CBS.BusinessService.AccountingV2.GLSystemReconciliation
                 throw new Exception($"Reconciliation service unavailable: {ex.Message}", ex);
             }
         }
-        public async Task<ApiResponse<bool>> UpdateTillClosePayloadAsync(TillCloseModel model)
+        public async Task<ApiResponse<bool>> UpdateTillClosePayloadAsync(
+    string trackerId,
+    string payloadJson)
         {
-            if (model == null)
-                throw new ArgumentNullException(nameof(model));
+            if (string.IsNullOrWhiteSpace(trackerId))
+                throw new ArgumentNullException(nameof(trackerId));
+
+            if (string.IsNullOrWhiteSpace(payloadJson))
+                throw new ArgumentNullException(nameof(payloadJson));
 
             try
             {
-                // Send full model to API
-                var apiResponse = await _systemReconciliationapiCallerHelper.PostAsync<ApiResponse<bool>>(APICallHelper.UpdateTillClosePayload,new {trackerId = model.Id,payload = model } );
+                var request = new
+                {
+                    command = "PushJournalExecutionWithModifyCommand",
+                    trackerId = trackerId,
+                    payload = payloadJson // ✅ STRING, not object
+                };
+
+                var apiResponse =
+                    await _systemReconciliationapiCallerHelper
+                        .PostAsync<ApiResponse<bool>>(
+                            APICallHelper.UpdateTillClosePayload,
+                            request
+                        );
 
                 return apiResponse.ApiResponseData;
             }
@@ -266,6 +282,7 @@ namespace CBS.BusinessService.AccountingV2.GLSystemReconciliation
                 throw new Exception($"API call failed: {ex.Message}", ex);
             }
         }
+
 
 
 

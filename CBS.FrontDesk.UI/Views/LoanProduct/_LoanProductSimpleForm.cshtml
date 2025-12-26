@@ -27,24 +27,26 @@
 <div class="card-body">
 
     @using (Html.BeginForm("CreateOrUpdateSimple", "LoanProduct", FormMethod.Post,
-        new { enctype = "multipart/form-data", onsubmit = "return loanProductOnSubmit(this);" }))
+        new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
     {
         @Html.AntiForgeryToken()
-        @Html.HiddenFor(m => m.CreateOrUpdate.Id)
+        @Html.HiddenFor(m => m.CreateOrUpdate.Id)       
 
-        <!-- HEADER / CONTEXT -->
-        <div class="alert alert-light border d-flex align-items-center mb-3">
-            <i class="mdi mdi-information-outline me-2 text-primary" style="font-size:20px;"></i>
-            <div class="flex-grow-1">
-                <div class="fw-semibold">@formTitle</div>
-                <small class="text-muted">
-                    Fill the minimum fields for PCMF/COBAC classification. Configure advanced policy/accounting later via Manage actions.
-                </small>
+        <div class="row">
+            <div class="col-12">
+                <div class="card bg-light mb-2">
+                    <div class="card-body text-center">
+                        <h1 class="card-title text-primary">
+                            <i class="mdi mdi-bank me-2"></i>@formTitle
+                        </h1>                       
+                        <div class="alert alert-info mt-3 py-2">
+                            <i class="mdi mdi-information-outline me-1"></i>
+                            Fill the minimum fields for PCMF/COBAC classification. Configure advanced policy/accounting later via Manage actions.                           
+                        </div>
+                        <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+                    </div>
+                </div>
             </div>
-            @if (isEdit)
-            {<span class="badge bg-label-primary">Editing</span> }
-            else
-            { <span class="badge bg-label-success">New</span>}
         </div>
 
         <!-- ===================================================== -->
@@ -226,7 +228,7 @@
             <div class="card-body">
                 <div class="row g-3">
 
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="form-floating form-floating-outline">
                             @Html.TextBoxFor(m => m.CreateOrUpdate.ProductCode, new { @class = "form-control", required = "required" })
                             @Html.ValidationMessageFor(m => m.CreateOrUpdate.ProductCode, "", new { @class = "text-danger" })
@@ -235,11 +237,32 @@
                         <small class="text-muted">Unique code used in reporting/integrations.</small>
                     </div>
 
-                    <div class="col-md-8">
+                    <div class="col-md-6">
                         <div class="form-floating form-floating-outline">
                             @Html.TextBoxFor(m => m.CreateOrUpdate.ProductName, new { @class = "form-control", required = "required" })
                             @Html.ValidationMessageFor(m => m.CreateOrUpdate.ProductName, "", new { @class = "text-danger" })
                             <label>Product Name</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.CreateOrUpdate.LoanProductCategoryId, new { @class = "form-control", required = "required" })
+                            @Html.ValidationMessageFor(m => m.CreateOrUpdate.LoanProductCategoryId, "", new { @class = "text-danger" })
+                            <label>Loan Product Category Reference</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.CreateOrUpdate.TargetType, new { @class = "form-control", required = "required" })
+                            @Html.ValidationMessageFor(m => m.CreateOrUpdate.TargetType, "", new { @class = "text-danger" })
+                            <label>Target Type</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.CreateOrUpdate.LoanTypeCategory, new { @class = "form-control", required = "required" })
+                            @Html.ValidationMessageFor(m => m.CreateOrUpdate.LoanTypeCategory, "", new { @class = "text-danger" })
+                            <label>Loan Type Category</label>
                         </div>
                     </div>
 
@@ -602,50 +625,242 @@
         }
     };
 
-    // ==========================
-    // Submit blocking
-    // ==========================
+     //==========================
+     //Submit blocking
+     //==========================
+    //window.loanProductOnSubmit = function (form) {
+    //    var $form = $(form);
+
+    //    if ($form.data("busy")) return false;
+
+    //    // ensure hidden is synced
+    //    var selected = $("#loanProductModal input.lpFacility:checked").val() || "Classic";
+    //    setLoanFacility(selected);
+
+    //    // ✅ if term is required, do not submit without it
+    //    var facility = getLoanFacility();
+    //    var term = document.getElementById("LoanTermId");
+    //    var termId = term ? term.value : "";
+
+    //    if (isTermRequiredByFacility(facility) && !termId) {
+    //        // keep UI simple: just focus term and stop
+    //        if (term) term.focus();
+    //        return false;
+    //    }
+
+    //    // MVC won't post disabled select => enable term before post
+    //    if (term && term.hasAttribute("disabled")) term.removeAttribute("disabled");
+
+    //    setFormBusy($form, true, "Saving...");
+
+    //    var req = AjaxPostAndUpdate(form);
+
+    //    if (req && typeof req.always === "function") {
+    //        req.always(function () {
+    //            setFormBusy($form, false);
+    //            applyFacilityRules();
+    //        });
+    //    } else {
+    //        setTimeout(function () {
+    //            setFormBusy($form, false);
+    //            applyFacilityRules();
+    //        }, 4000);
+    //    }
+
+    //    return false;
+    //};
+
     window.loanProductOnSubmit = function (form) {
+
+        console.log("========== LOAN PRODUCT SUBMIT (DEBUG) ==========");
+
         var $form = $(form);
 
-        if ($form.data("busy")) return false;
+        // -------------------------------------------------
+        // Prevent double submit
+        // -------------------------------------------------
+        if ($form.data("busy")) {
+            console.warn("❌ Form is busy. Submission blocked.");
+            return false;
+        }
 
-        // ensure hidden is synced
+        // -------------------------------------------------
+        // Sync Loan Facility (radio → hidden)
+        // -------------------------------------------------
         var selected = $("#loanProductModal input.lpFacility:checked").val() || "Classic";
         setLoanFacility(selected);
 
-        // ✅ if term is required, do not submit without it
+        console.log("Loan Facility (radio):", selected);
+        console.log("Loan Facility (hidden):", $("#LoanFacility").val());
+
+        // -------------------------------------------------
+        // Term validation
+        // -------------------------------------------------
         var facility = getLoanFacility();
         var term = document.getElementById("LoanTermId");
         var termId = term ? term.value : "";
 
+        console.log("Loan Facility used:", facility);
+        console.log("Loan Term ID:", termId);
+        console.log("Loan Term disabled:", term ? term.hasAttribute("disabled") : "N/A");
+        console.log("Is Term Required:", isTermRequiredByFacility(facility));
+
         if (isTermRequiredByFacility(facility) && !termId) {
-            // keep UI simple: just focus term and stop
+            console.warn("❌ Term required but missing. Submission blocked.");
             if (term) term.focus();
             return false;
         }
 
-        // MVC won't post disabled select => enable term before post
-        if (term && term.hasAttribute("disabled")) term.removeAttribute("disabled");
+        // MVC does not post disabled fields
+        if (term && term.hasAttribute("disabled")) {
+            console.log("⚠️ Enabling LoanTermId before submit");
+            term.removeAttribute("disabled");
+        }
 
+        // -------------------------------------------------
+        // DEBUG: full payload
+        // -------------------------------------------------
+        console.log("📨 SERIALIZED FORM DATA:");
+        console.log($form.serialize());
+        console.log("========== END DEBUG ==========");
+
+        // -------------------------------------------------
+        // Unobtrusive validation
+        // -------------------------------------------------
+        $.validator.unobtrusive.parse(form);
+
+        if (!$form.valid()) {
+            console.warn("❌ Client validation failed.");
+            return false;
+        }
+
+        // -------------------------------------------------
+        // BUSY STATE (LOCK)
+        // -------------------------------------------------
         setFormBusy($form, true, "Saving...");
+        $form.data("busy", true);
 
-        var req = AjaxPostAndUpdate(form);
+        // -------------------------------------------------
+        // CONFIRMATION
+        // -------------------------------------------------
+        alertify.confirm(
+            "Confirmation",
+            "Are you sure you want to perform this action?",
+            function () {
 
-        if (req && typeof req.always === "function") {
-            req.always(function () {
-                setFormBusy($form, false);
-                applyFacilityRules();
-            });
-        } else {
-            setTimeout(function () {
-                setFormBusy($form, false);
-                applyFacilityRules();
-            }, 4000);
+                // -------------------------------------------------
+                // Build AJAX config
+                // -------------------------------------------------
+                var ajaxConfig = {
+                    type: "POST",
+                    url: form.action,
+                    data: new FormData(form),
+
+                    success: function (response) {
+                        console.log("Response:", response);
+
+                        if (response.success) {
+
+                            if (response.status === "Exist") {
+                                appalert(response.message, 3, 1);
+                            }
+                            else if (response.status === "Failed") {
+                                appalert(response.message, 2, 1);
+                            }
+                            else {
+                                appalert(response.message, 1, 1);
+                            }
+
+                            if (response.option === "Update" && response.reloadDataView === "Yes") {
+                                LoadDataMain(
+                                    response.controllerName,
+                                    response.option,
+                                    response.divLoaderList,
+                                    response.tableName,
+                                    response.dataLoaderActionName,
+                                    "KEY",
+                                    "List"
+                                );
+                            }
+                            else if (response.optype === "Insert" && response.reloadDataView === "Yes") {
+                                EditResetMain(
+                                    "KEY",
+                                    response.option,
+                                    response.divLoaderCreator,
+                                    response.controllerName,
+                                    response.reinitializedActionName,
+                                    response.groupID
+                                );
+                            }
+                            else if (response.reloadDataView === "Yes") {
+                                LoadDataMain(
+                                    response.controllerName,
+                                    response.option,
+                                    response.divLoaderList,
+                                    response.tableName,
+                                    response.dataLoaderActionName,
+                                    "KEY",
+                                    "List"
+                                );
+                            }
+
+                        } else {
+                            if (response.Status === "Exist") {
+                                appalert(response.message, 3, 1);
+                            } else {
+                                appalert(response.message, 2, 1);
+                            }
+                        }
+
+                        unlock();
+                    },
+
+                    error: function (err) {
+                        console.log("Error:", err);
+
+                        if (err.status === 401) {
+                            window.location.href = "/Authentication/Login";
+                        } else {
+                            appalert(err.statusText, 0, 1);
+                        }
+
+                        unlock();
+                    }
+                };
+
+                // -------------------------------------------------
+                // Multipart handling
+                // -------------------------------------------------
+                if ($form.attr("enctype") === "multipart/form-data") {
+                    ajaxConfig.contentType = false;
+                    ajaxConfig.processData = false;
+                }
+
+                console.log("AJAX Config:", ajaxConfig);
+                $.ajax(ajaxConfig);
+            },
+            function () {
+                appalert("Transaction cancelled", 3, 1);
+                unlock();
+            }
+        );
+
+        // -------------------------------------------------
+        // Unlock helper
+        // -------------------------------------------------
+        function unlock() {
+            console.log("✅ Unlocking form");
+            setFormBusy($form, false);
+            $form.data("busy", false);
+            applyFacilityRules();
         }
 
         return false;
     };
 
+
+
+
+  
 })();
 </script>
