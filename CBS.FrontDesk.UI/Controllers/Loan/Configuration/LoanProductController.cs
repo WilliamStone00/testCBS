@@ -480,9 +480,13 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
 
                 var vm = new PCMFLoanProductManagementObjects
                 {
+                    // Ensure Product is never null
                     Product = p,
-                     CreateOrUpdate = _LoanProductServices.MapToCreateCommand(p)
+                    // Ensure CreateOrUpdate is always initialized
+                    CreateOrUpdate = _LoanProductServices.MapToCreateCommand(p)
+                      ?? new CreateLoanProductCommand()
                 };
+
 
                 // ✅ Preview: only product data
                 if (string.Equals(path, "preview", StringComparison.OrdinalIgnoreCase))
