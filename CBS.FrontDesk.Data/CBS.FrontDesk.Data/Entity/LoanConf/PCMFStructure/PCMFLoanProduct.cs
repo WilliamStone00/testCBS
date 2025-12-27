@@ -72,7 +72,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure
         public List<LoanProductRepaymentCycle> LoanProductRepaymentCycles { get; set; }
         public List<LoanApplicationCollateral> LoanProductCollaterals { get; set; }
 
-        public OverdraftFacilityConfig OverdraftFacilityConfig { get; set; } = new OverdraftFacilityConfig();
+ 
     }
 
     // ✅ Optional lightweight accounting profile for dropdowns
