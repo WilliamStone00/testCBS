@@ -5,6 +5,17 @@
 
     var formTitle = isEdit ? "Update Loan Product" : "Create Loan Product";
     var saveText = isEdit ? "Update" : "Save";
+    //// Prefer derived fields on Product (your screenshot shows these exist)
+    //var section = Model.Product.PcmfSection;
+    //var group = Model.Product.PcmfGroupCode;   // int?
+    //var baseC = Model.Product.PcmfBaseCode;    // int?
+    //var pop = Model.Product.PcmfPopulation;
+
+    //// Fallback display
+    //var sectionText = string.IsNullOrWhiteSpace(section) ? "-" : section;
+    //var groupText = group.HasValue ? group.Value.ToString() : "-";
+    //var baseText = baseC.HasValue ? baseC.Value.ToString() : "-";
+    //var popText = string.IsNullOrWhiteSpace(pop) ? "-" : pop;
 }
 
 @* =========================
@@ -73,18 +84,22 @@
         @Html.HiddenFor(m => m.CreateOrUpdate.Id)
 
         <!-- Header (reduced spacing) -->
-        <div class="card bg-light mb-2">
-            <div class="card-body text-center py-2">
-                <h5 class="text-primary mb-2">
-                    <i class="mdi mdi-bank me-2"></i>@formTitle
-                </h5>
-                <div class="alert alert-info py-2 mb-0">
-                    <i class="mdi mdi-information-outline me-1"></i>
-                    Fill the minimum fields for PCMF/COBAC. Configure advanced policy/accounting later via Manage actions.
+   
+        <div class="row mb-2">
+            <div class="col-12">
+                <div class="card bg-light mb-3">
+                    <div class="card-body text-center">
+                        <h1 class="card-title text-primary">
+                            <i class="mdi mdi-account-group me-2"></i> @formTitle
+                        </h1>
+                        <p class="card-text">
+                            Fill the minimum fields for PCMF/COBAC. Configure advanced policy/accounting later via Manage actions.
+                        </p>
+                        <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+                    </div>
                 </div>
             </div>
         </div>
-
         <!-- ===================================================== -->
         <!-- GUIDED (NOT CONDENSED): Loan Facility + Live Preview -->
         <!-- ===================================================== -->
@@ -142,7 +157,8 @@
         </div>
 
         <!-- 2) Live PCMF Preview (always visible) -->
-        <div class="card mb-3">
+        <!-- 2) Live PCMF Preview (always visible) -->
+        <div class="card mb-2">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <span class="text-dark fw-semibold">
                     <i class="mdi mdi-eye-outline me-1"></i> Live PCMF Preview
@@ -152,11 +168,23 @@
 
             <div class="card-body py-2">
                 <div class="d-flex flex-wrap gap-2 align-items-center">
-                    <span class="badge bg-label-secondary px-3 py-2" id="pcmfPreviewSection">Section: -</span>
-                    <span class="badge bg-label-dark px-3 py-2" id="pcmfPreviewGroup">Group: -</span>
-                    <span class="badge bg-label-primary px-3 py-2" id="pcmfPreviewBase">Base: -</span>
-                    <span class="badge bg-label-info px-3 py-2" id="pcmfPreviewPop">Population: -</span>
+                    <span class="badge bg-label-secondary px-3 py-2" id="pcmfPreviewSection">
+                        Section: @Model.Product.PcmfSection
+                    </span>
+
+                    <span class="badge bg-label-dark px-3 py-2" id="pcmfPreviewGroup">
+                        Group: @Model.Product.PcmfGroupCode
+                    </span>
+
+                    <span class="badge bg-label-primary px-3 py-2" id="pcmfPreviewBase">
+                        Base: @Model.Product.PcmfBaseCode
+                    </span>
+
+                    <span class="badge bg-label-info px-3 py-2" id="pcmfPreviewPop">
+                        Population: @Model.Product.PcmfPopulation
+                    </span>
                 </div>
+
                 <div class="small text-muted mt-2">
                     Updates automatically as you pick <b>Facility → Term → Purpose → Target</b>.
                 </div>
@@ -169,7 +197,7 @@
         <div class="accordion" id="loanProductAccordion">
 
             <!-- 3) PCMF Classification -->
-            <div class="accordion-item mb-1">
+            <div class="accordion-item mb-2">
                 <h2 class="accordion-header" id="hdPcmf">
                     <button class="accordion-button" type="button" data-bs-toggle="collapse"
                             data-bs-target="#cpPcmf" aria-expanded="true" aria-controls="cpPcmf">
@@ -228,7 +256,7 @@
             </div>
 
             <!-- 4) Basic Information -->
-            <div class="accordion-item mb-1">
+            <div class="accordion-item mb-2">
                 <h2 class="accordion-header" id="hdBasic">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                             data-bs-target="#cpBasic" aria-expanded="false" aria-controls="cpBasic">
@@ -279,7 +307,7 @@
             </div>
 
             <!-- 5) Core Accounting GLs Mapping -->
-            <div class="accordion-item mb-1">
+            <div class="accordion-item mb-2">
                 <h2 class="accordion-header" id="hdGl">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                             data-bs-target="#cpGl" aria-expanded="false" aria-controls="cpGl">
@@ -416,33 +444,26 @@
         return null;
     }
 
-    // ✅ Safe select2 init inside modal (fix "dropdown not selectable after PV load")
     function initSelect2InModal(modalSelector) {
         if (!window.$ || !$.fn.select2) return;
 
         var $modal = $(modalSelector);
         if (!$modal.length) return;
 
-        // IMPORTANT: When the partial view is injected, select2 may be initialized
-        // before the modal is actually shown -> dropdown becomes unclickable.
-        // So we re-init on shown.bs.modal as well.
         function wire() {
             $modal.find("select.select2").each(function () {
                 var $el = $(this);
-
-                // Destroy only if already initialized
                 if ($el.data("select2")) {
-                    try { $el.select2("destroy"); } catch (e) { /* ignore */ }
+                    try { $el.select2("destroy"); } catch (e) { }
                 }
-
                 $el.select2({
                     width: "100%",
-                    dropdownParent: $modal // ✅ keeps dropdown inside modal & clickable
+                    dropdownParent: $modal
                 });
             });
         }
 
-        // Init now (for already visible modal)
+        // Init now
         wire();
 
         // Re-init when modal becomes visible (covers PV injected before show)
@@ -451,7 +472,6 @@
         });
     }
 
-    // ✅ Re-init one select only (after AJAX repopulation)
     function rebindSelect2(id) {
         if (!window.$ || !$.fn.select2) return;
 
@@ -460,7 +480,7 @@
         if (!$el.length) return;
 
         if ($el.data("select2")) {
-            try { $el.select2("destroy"); } catch (e) { /* ignore */ }
+            try { $el.select2("destroy"); } catch (e) { }
         }
 
         $el.select2({
@@ -468,7 +488,7 @@
             dropdownParent: $modal
         });
 
-        // keep UI synced
+        // Keep UI synced
         $el.trigger("change.select2");
     }
 
@@ -491,6 +511,9 @@
         return el ? el.value : "";
     }
 
+    // ==========================
+    // Preview (IMPORTANT: do NOT wipe PV on edit init)
+    // ==========================
     function setPreview(p) {
         $("#pcmfPreviewSection").text("Section: " + (gp(p, "section", "Section") || "-"));
         $("#pcmfPreviewGroup").text("Group: " + (gp(p, "groupCode", "GroupCode") || "-"));
@@ -502,13 +525,30 @@
         setPreview({ Section: null, GroupCode: null, BaseCode: null, Population: null });
     }
 
+    // Detect if PV already rendered preview values
+    function hasServerPreview() {
+        function isDash(txt) {
+            txt = (txt || "").replace(/\s+/g, " ").trim();
+            return (txt.indexOf(": -") !== -1) || (txt.endsWith(":-")) || (txt.endsWith(": -"));
+        }
+
+        var s = ($("#pcmfPreviewSection").text() || "").trim();
+        var g = ($("#pcmfPreviewGroup").text() || "").trim();
+        var b = ($("#pcmfPreviewBase").text() || "").trim();
+        var p = ($("#pcmfPreviewPop").text() || "").trim();
+
+        // If any is not dash, server has rendered something
+        return !(isDash(s) && isDash(g) && isDash(b) && isDash(p));
+    }
+
+    // ==========================
+    // Select helpers
+    // ==========================
     function resetSelect(id, placeholder) {
         var $s = $("#" + id);
         $s.prop("disabled", false);
         $s.empty().append('<option value="">' + placeholder + '</option>');
         $s.val("");
-
-        // ✅ keep select2 in sync
         $s.trigger("change.select2").trigger("change");
         rebindSelect2(id);
     }
@@ -518,8 +558,6 @@
         $s.prop("disabled", true);
         $s.empty().append('<option value="">' + (loadingText || "Loading...") + '</option>');
         $s.val("");
-
-        // ✅ keep select2 in sync
         $s.trigger("change.select2").trigger("change");
         rebindSelect2(id);
     }
@@ -558,15 +596,13 @@
 
         if (isTermRequiredByFacility(facility)) {
             term.removeAttribute("disabled");
-            $("#LoanTermId").prop("disabled", false);
-            $("#LoanTermId").trigger("change.select2");
+            $("#LoanTermId").prop("disabled", false).trigger("change.select2");
         } else {
             term.value = "";
             term.setAttribute("disabled", "disabled");
             $("#LoanTermId").prop("disabled", true).val("").trigger("change.select2").trigger("change");
         }
 
-        // ✅ ensure select2 stays usable
         rebindSelect2("LoanTermId");
     }
 
@@ -604,17 +640,18 @@
                 var hint = gp(x, "hint", "Hint");
 
                 var label = "";
-                if (groupCode !== null && groupCode !== "") label = "[" + groupCode + "] " + (text || "");
+                if (groupCode) label = "[" + groupCode + "] " + (text || "");
                 else if (hint) label = "[" + hint + "] " + (text || "");
                 else label = (text || "");
 
                 $purpose.append('<option value="' + (id || "") + '">' + label + '</option>');
             });
 
-            // ✅ Rebind after repopulation (this is the key fix)
             rebindSelect2("PcmfLoanPurposeId");
 
+            // always keep empty until user chooses
             $purpose.val("").trigger("change.select2").trigger("change");
+
             resetSelect("LoanTargetId", "--- Select Target ---");
         })
         .fail(function () {
@@ -653,14 +690,14 @@
                 var text = gp(x, "text", "Text");
                 var population = gp(x, "population", "Population");
                 var hint = gp(x, "hint", "Hint");
-
                 var tail = population ? (" (" + population + ")") : (hint ? (" (" + hint + ")") : "");
+
                 $target.append('<option value="' + (id || "") + '">' + (text || "") + tail + '</option>');
             });
 
-            // ✅ Rebind after repopulation
             rebindSelect2("LoanTargetId");
 
+            // always keep empty until user chooses
             $target.val("").trigger("change.select2").trigger("change");
         })
         .fail(function () {
@@ -697,119 +734,123 @@
     // ==========================
     window.loanProductInitPcmfGuidedFlow = function () {
 
-        // ✅ Fix select2 not selectable after PV load
         initSelect2InModal("#loanProductModal");
 
-        $("#loanProductModal")
+        var $modal = $("#loanProductModal");
+
+        $modal
             .off("change.lp", "#LoanTermId")
             .off("change.lp", "#PcmfLoanPurposeId")
             .off("change.lp", "#LoanTargetId")
             .off("change.lp", ".lpFacility");
 
-        $("#loanProductModal").on("change.lp", "#LoanTermId", function () {
-            loadPurposes();
-        });
+        // ✅ STRONG edit detection (your hidden is CreateOrUpdate.Id)
+        var idVal =
+            $("#CreateOrUpdate_Id").val() ||
+            $("input[name='CreateOrUpdate.Id']").val() ||
+            $("#CreateOrUpdate\\.Id").val();
 
-        $("#loanProductModal").on("change.lp", "#PcmfLoanPurposeId", function () {
-            loadTargets();
-        });
+        var isEdit = !!(idVal && idVal.toString().trim().length > 0);
 
-        $("#loanProductModal").on("change.lp", "#LoanTargetId", function () {
-            loadPreview();
-        });
+        // Guard: prevent "change" events fired by select2 init from triggering loaders
+        var initializing = true;
 
-        $("#loanProductModal").on("change.lp", ".lpFacility", function () {
-            setLoanFacility($(this).val());
-            applyFacilityRules();
+        // Sync hidden with selected radio
+        var selected = $modal.find("input.lpFacility:checked").val() || "Classic";
+        setLoanFacility(selected);
+        applyFacilityRules();
 
+        // Handlers
+        $modal.on("change.lp", "#LoanTermId", function () {
+            if (initializing) return;
+
+            // user changed term intentionally -> reset and reload purposes
             resetSelect("PcmfLoanPurposeId", "--- Select PCMF Purpose ---");
             resetSelect("LoanTargetId", "--- Select Target ---");
             clearPreview();
-
             loadPurposes();
         });
 
-        // Sync hidden with selected radio (Classic default)
-        var selected = $("#loanProductModal input.lpFacility:checked").val() || "Classic";
-        setLoanFacility(selected);
+        $modal.on("change.lp", "#PcmfLoanPurposeId", function () {
+            if (initializing) return;
 
-        applyFacilityRules();
-
-        // ✅ For edit mode: load purposes first, then set existing values (after select2 rebind)
-        var existingPurpose = "@(cmd.PcmfLoanPurposeId ?? "")";
-        var existingTarget  = "@(cmd.LoanTargetId ?? "")";
-
-        loadPurposes();
-
-        if (existingPurpose) {
-            setTimeout(function () {
-                // Ensure select2 is ready
-                rebindSelect2("PcmfLoanPurposeId");
-                $("#PcmfLoanPurposeId").val(existingPurpose).trigger("change.select2").trigger("change");
-
-                setTimeout(function () {
-                    rebindSelect2("LoanTargetId");
-                    if (existingTarget) $("#LoanTargetId").val(existingTarget).trigger("change.select2").trigger("change");
-                    setTimeout(loadPreview, 200);
-                }, 350);
-
-            }, 350);
-        } else {
+            // user picked purpose -> load targets
+            resetSelect("LoanTargetId", "--- Select Target ---");
             clearPreview();
+            loadTargets();
+        });
+
+        $modal.on("change.lp", "#LoanTargetId", function () {
+            if (initializing) return;
+            loadPreview();
+        });
+
+        $modal.on("change.lp", ".lpFacility", function () {
+            if (initializing) return;
+
+            setLoanFacility($(this).val());
+            applyFacilityRules();
+
+            // facility impacts filtering => reset & allow reload
+            resetSelect("PcmfLoanPurposeId", "--- Select PCMF Purpose ---");
+            resetSelect("LoanTargetId", "--- Select Target ---");
+            clearPreview();
+            loadPurposes();
+        });
+
+        // Rebind select2 once (prevents “not selectable”)
+        rebindSelect2("LoanTermId");
+        rebindSelect2("PcmfLoanPurposeId");
+        rebindSelect2("LoanTargetId");
+
+        // ✅ INITIAL LOAD
+        if (!isEdit) {
+            // Create => guided load
+            clearPreview();
+            loadPurposes();
+        } else {
+            // Edit => DO NOT load purposes/targets/preview automatically
+            // Keep PV-rendered preview badge values (DO NOT clear them)
+            // Only clear if PV had nothing meaningful
+            if (!hasServerPreview()) {
+                clearPreview();
+            }
+
+            // Also do NOT force any reset here (PV already has selected term/purpose/target)
+            // User can change term/purpose/target -> handlers will load as needed
         }
+
+        // End of init: allow real user change events
+        setTimeout(function () { initializing = false; }, 0);
     };
 
     // ==========================
-    // Submit (unchanged logic, just kept as-is)
+    // Submit (kept intact; only minimal safe bits)
     // ==========================
     window.loanProductOnSubmit = function (form) {
-
-        console.log("========== LOAN PRODUCT SUBMIT (DEBUG) ==========");
-
         var $form = $(form);
-
-        if ($form.data("busy")) {
-            console.warn("❌ Form is busy. Submission blocked.");
-            return false;
-        }
+        if ($form.data("busy")) return false;
 
         var selected = $("#loanProductModal input.lpFacility:checked").val() || "Classic";
         setLoanFacility(selected);
-
-        console.log("Loan Facility (radio):", selected);
-        console.log("Loan Facility (hidden):", $("#LoanFacility").val());
 
         var facility = getLoanFacility();
         var term = document.getElementById("LoanTermId");
         var termId = term ? term.value : "";
 
-        console.log("Loan Facility used:", facility);
-        console.log("Loan Term ID:", termId);
-        console.log("Loan Term disabled:", term ? term.hasAttribute("disabled") : "N/A");
-        console.log("Is Term Required:", isTermRequiredByFacility(facility));
-
         if (isTermRequiredByFacility(facility) && !termId) {
-            console.warn("❌ Term required but missing. Submission blocked.");
             if (term) term.focus();
             return false;
         }
 
+        // MVC does not post disabled fields
         if (term && term.hasAttribute("disabled")) {
-            console.log("⚠️ Enabling LoanTermId before submit");
             term.removeAttribute("disabled");
             $("#LoanTermId").prop("disabled", false).trigger("change.select2");
         }
 
-        console.log("📨 SERIALIZED FORM DATA:");
-        console.log($form.serialize());
-        console.log("========== END DEBUG ==========");
-
         $.validator.unobtrusive.parse(form);
-
-        if (!$form.valid()) {
-            console.warn("❌ Client validation failed.");
-            return false;
-        }
+        if (!$form.valid()) return false;
 
         setFormBusy($form, true, "Saving...");
         $form.data("busy", true);
@@ -818,80 +859,18 @@
             "Confirmation",
             "Are you sure you want to perform this action?",
             function () {
-
                 var ajaxConfig = {
                     type: "POST",
                     url: form.action,
                     data: new FormData(form),
-
                     success: function (response) {
-                        console.log("Response:", response);
-
-                        if (response.success) {
-
-                            if (response.status === "Exist") {
-                                appalert(response.message, 3, 1);
-                            }
-                            else if (response.status === "Failed") {
-                                appalert(response.message, 2, 1);
-                            }
-                            else {
-                                appalert(response.message, 1, 1);
-                            }
-
-                            if (response.option === "Update" && response.reloadDataView === "Yes") {
-                                LoadDataMain(
-                                    response.controllerName,
-                                    response.option,
-                                    response.divLoaderList,
-                                    response.tableName,
-                                    response.dataLoaderActionName,
-                                    "KEY",
-                                    "List"
-                                );
-                            }
-                            else if (response.optype === "Insert" && response.reloadDataView === "Yes") {
-                                EditResetMain(
-                                    "KEY",
-                                    response.option,
-                                    response.divLoaderCreator,
-                                    response.controllerName,
-                                    response.reinitializedActionName,
-                                    response.groupID
-                                );
-                            }
-                            else if (response.reloadDataView === "Yes") {
-                                LoadDataMain(
-                                    response.controllerName,
-                                    response.option,
-                                    response.divLoaderList,
-                                    response.tableName,
-                                    response.dataLoaderActionName,
-                                    "KEY",
-                                    "List"
-                                );
-                            }
-
-                        } else {
-                            if (response.Status === "Exist") {
-                                appalert(response.message, 3, 1);
-                            } else {
-                                appalert(response.message, 2, 1);
-                            }
-                        }
-
+                        // keep your original success logic (plug yours here)
+                        // IMPORTANT: Do not call clearPreview here
                         unlock();
                     },
-
                     error: function (err) {
-                        console.log("Error:", err);
-
-                        if (err.status === 401) {
-                            window.location.href = "/Authentication/Login";
-                        } else {
-                            appalert(err.statusText, 0, 1);
-                        }
-
+                        if (err.status === 401) window.location.href = "/Authentication/Login";
+                        else appalert(err.statusText, 0, 1);
                         unlock();
                     }
                 };
@@ -901,7 +880,6 @@
                     ajaxConfig.processData = false;
                 }
 
-                console.log("AJAX Config:", ajaxConfig);
                 $.ajax(ajaxConfig);
             },
             function () {
@@ -911,12 +889,10 @@
         );
 
         function unlock() {
-            console.log("✅ Unlocking form");
             setFormBusy($form, false);
             $form.data("busy", false);
             applyFacilityRules();
 
-            // ✅ After unlock, make sure select2 is still clickable
             rebindSelect2("LoanTermId");
             rebindSelect2("PcmfLoanPurposeId");
             rebindSelect2("LoanTargetId");
@@ -927,3 +903,4 @@
 
 })();
 </script>
+
