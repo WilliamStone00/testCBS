@@ -403,7 +403,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
         // ✅ Used by Index ajax loaders (list / new / edit)
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null)
          {
-            //await GetValues();
+            await GetValues();
             partialView = string.IsNullOrWhiteSpace(partialView) ? "_Data" : partialView;
             path = path?.Trim();
 
@@ -444,7 +444,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
             // -----------------------------
             if (string.Equals(path, "simple_edit", StringComparison.OrdinalIgnoreCase))
             {
-                await GetValues();
+                //await GetValues();
 
                 if (string.IsNullOrWhiteSpace(KEY))
                     return Content("Invalid product key.");
@@ -491,13 +491,14 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
                 // ✅ Preview: only product data
                 if (string.Equals(path, "preview", StringComparison.OrdinalIgnoreCase))
                 {
-                    await GetValues();
+                    //await GetValues();
                     return PartialView(partialView, vm);
                 }
 
                 // ✅ Accounting Mapping
                 if (string.Equals(path, "account_mapping", StringComparison.OrdinalIgnoreCase))
                 {
+                    //await GetValues();
                     // Only load what mapping needs
                     await LoadChartOfAccounts();
 
@@ -514,7 +515,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
                 // ✅ Policy
                 if (string.Equals(path, "policy", StringComparison.OrdinalIgnoreCase))
                 {
-                    await GetValues();
+                   // await GetValues();
                     vm.Policy = p.Policy ?? new LoanProductPolicy { LoanProductId = p.Id, TermId = p.LoanTermId };
                     vm.Policy.LoanProductId = p.Id;
                     return PartialView(partialView, vm);
@@ -538,7 +539,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
             }
 
             // fallback
-            await GetValues();
+           // await GetValues();
             return PartialView(partialView, new PCMFLoanProductManagementObjects());
         }
 
