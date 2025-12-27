@@ -173,6 +173,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure
         public string ChartOfAccountIdForInterestReceived { get; set; }
         public string ChartOfAccountIdForTax { get; set; }
         public string ChartOfAccountIdForPenalty { get; set; }
+        public string ChartOfAccountIdForLoanTransition { get; set; }
     }
 
     public static class LoanFacilityType
