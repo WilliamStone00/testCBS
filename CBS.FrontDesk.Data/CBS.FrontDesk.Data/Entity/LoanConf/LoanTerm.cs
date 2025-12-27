@@ -45,7 +45,15 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
             return ValidationResult.Success;
         }
 
+        public DateTime? CreatedDate { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public string ModifiedBy { get; set; }
+        public DateTime? DeletedDate { get; set; }
+        public string DeletedBy { get; set; }
+        public int ObjectState { get; set; }
+        public bool IsDeleted { get; set; }
     }
 
-}
+    }
 // public virtual ICollection<LoanProduct> LoanProducts { get; set; }

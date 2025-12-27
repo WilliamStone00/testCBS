@@ -1,6 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure.PCMFLoanProductManagementObjects
 @using Resources
 @{
+    var cmd = Model.CreateOrUpdate ?? new CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure.CreateLoanProductCommand();
     var product = Model.Product;
     var policy = Model.Policy;
     var accounting = Model.AccountingProfile;
@@ -11,13 +12,13 @@
     <!-- Header Section -->
     <div class="row">
         <div class="col-12">
-            <div class="card bg-light mb-2">
+            <div class="card bg-light mb-3">
                 <div class="card-body text-center">
                     <h1 class="card-title text-primary">
                         <i class="mdi mdi-account-group me-2"></i> Loan Product Management Details
                     </h1>
                     <p class="card-text">
-                        Here we have the details for the Loan Product Management details
+                        Detailed view of loan product configuration and settings
                     </p>
                     <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
                 </div>
@@ -27,12 +28,93 @@
 
     <!-- Collapsible Sections Accordion -->
     <div class="accordion" id="loanProductAccordion">
-        
-        <!-- 1. Basic Information -->
+
         <div class="card mb-3">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span class="text-primary fw-semibold">
+                    <i class="mdi mdi-eye-outline me-1"></i> Live PCMF Preview
+                </span>
+                <small class="text-muted">Live</small>
+            </div>
+
+            <div class="card-body py-2">
+                <div class="d-flex flex-wrap gap-2 align-items-center">
+                    <span class="badge bg-label-secondary px-3 py-2" id="pcmfPreviewSection">Section:  @product.PcmfSection </span>
+                    <span class="badge bg-label-dark px-3 py-2" id="pcmfPreviewGroup">Group:  @product.PcmfGroupCode</span>
+                    <span class="badge bg-label-primary px-3 py-2" id="pcmfPreviewBase">Base:  @product.PcmfPopulation</span>
+                    <span class="badge bg-label-info px-3 py-2" id="pcmfPreviewPop">Population:  @product.PcmfBaseCode</span>
+                </div>
+                <div class="small text-muted mt-2">
+                    Updates automatically as you pick <b>Facility → Term → Purpose → Target</b>.
+                </div>
+            </div>
+        </div>
+
+
+        <div class="accordion-item mb-1">
+            <h2 class="accordion-header" id="hdPcmf">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#cpPcmf" aria-expanded="true" aria-controls="cpPcmf">
+                    <i class="mdi mdi-tag-outline me-2 text-primary"></i>
+                    <span class="fw-semibold text-primary">PCMF Classification</span>
+                </button>
+            </h2>
+
+            <div id="cpPcmf" class="accordion-collapse collapse show"
+                 aria-labelledby="hdPcmf" data-bs-parent="#loanProductAccordion">
+                <div class="accordion-body py-3">
+                    <div class="row g-3">
+
+                        <div class="col-md-12">
+                            <div class="form-floating form-floating-outline">
+                                @Html.DropDownListFor(m => m.Product.LoanTermId,
+                                    new SelectList(ViewBag.LoanTerms, "Id", "NameEn"),
+                                    "--- Select Loan Term ---",
+                                    new { @class = "form-control select2", id = "LoanTermId", disabled = "disabled" })
+                                @Html.ValidationMessageFor(m => m.CreateOrUpdate.LoanTermId, "", new { @class = "text-danger" })
+                                <label>Loan Term</label>
+                            </div>
+                            <div class="small text-muted">
+                                Required for <b>Classic / SSF / LOC</b>. Only <b>Overdraft</b> can be empty.
+                            </div>
+                        </div>
+
+                        <div class="col-md-7">
+                            <div class="form-floating form-floating-outline">
+                                @Html.DropDownListFor(m => m.Product.PcmfLoanPurposeId,
+                                    new SelectList(ViewBag.PcmfLoanPurposes, "Id", "NameEn"),
+                                    "--- Select PCMF Purpose ---",
+                                    new { @class = "form-control select2", required = "required", disabled = "disabled", id = "PcmfLoanPurposeId" })
+                                @Html.ValidationMessageFor(m => m.CreateOrUpdate.PcmfLoanPurposeId, "", new { @class = "text-danger" })
+                                <label>PCMF Loan Purpose</label>
+                            </div>
+                            <div class="small text-muted">Filtered by term/section.</div>
+                        </div>
+
+                        <div class="col-md-5">
+                            <div class="form-floating form-floating-outline">
+                                @Html.DropDownListFor(m => m.Product.LoanTargetId,
+                                    new SelectList(ViewBag.LoanTargets, "Id", "NameEn"),
+                                    "--- Select Target ---",
+                                    new { @class = "form-control select2", required = "required", disabled = "disabled", id = "LoanTargetId" })
+                                @Html.ValidationMessageFor(m => m.CreateOrUpdate.LoanTargetId, "", new { @class = "text-danger" })
+                                <label>Loan Target</label>
+                            </div>
+                            <div class="small text-muted">Enabled after purpose.</div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- 1. Basic Information -->
+        <div class="card mb-1">
             <div class="card-header" id="headingBasicInfo">
                 <h5 class="mb-0">
-                    <button class="btn btn-link text-decoration-none w-100 text-start d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBasicInfo" aria-expanded="true" aria-controls="collapseBasicInfo">
+                    <button class="btn btn-link text-decoration-none w-100 text-primary d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBasicInfo" aria-expanded="true" aria-controls="collapseBasicInfo">
                         <span><i class="mdi mdi-information-outline me-2"></i> Basic Information</span>
                         <i class="mdi mdi-chevron-down"></i>
                     </button>
@@ -40,16 +122,20 @@
             </div>
             <div id="collapseBasicInfo" class="collapse show" aria-labelledby="headingBasicInfo" data-bs-parent="#loanProductAccordion">
                 <div class="card-body">
-                    <div class="row mb-3">
+                    <!-- Product Header -->
+                    <div class="row mb-4">
                         <div class="col-md-8">
-                            <h4 class="text-dark">@product.ProductName</h4>
+                            <h4 class="text-dark mb-2">@product.ProductName</h4>
                             <p class="text-muted mb-3">@product.Description</p>
                             <div class="d-flex flex-wrap gap-2">
                                 <span class="badge bg-light text-dark border">@product.ProductCode</span>
                                 <span class="badge @(product.ActiveStatus ? "bg-success" : "bg-secondary")">
                                     @(product.ActiveStatus ? "Active" : "Inactive")
                                 </span>
-                                <span class="badge bg-light text-dark border">@product.LoanFacility</span>
+                                @if (!string.IsNullOrEmpty(product.LoanFacility))
+                                {
+                                    <span class="badge bg-primary">@product.LoanFacility</span>
+                                }
                                 @if (!string.IsNullOrEmpty(product.LoanTypeCategory))
                                 {
                                     <span class="badge bg-light text-dark border">@product.LoanTypeCategory</span>
@@ -58,27 +144,43 @@
                         </div>
                         <div class="col-md-4">
                             <div class="text-center">
-                                <div class="h4 mb-1">@product.PcmfSection-@product.PcmfGroupCode</div>
-                                <small class="text-muted">PCMF Classification</small>
-                                <div class="mt-2">
-                                    <span class="badge bg-light text-dark border">@product.PcmfPopulation</span>
-                                </div>
+                                @if (!string.IsNullOrEmpty(product.PcmfSection) && product.PcmfGroupCode > 0)
+                                {
+                                    <div class="h4 mb-1">@product.PcmfSection-@product.PcmfGroupCode</div>
+                                    <small class="text-muted">PCMF Classification</small>
+                                    <div class="mt-2">
+                                        @if (!string.IsNullOrEmpty(product.PcmfPopulation))
+                                        {
+                                            <span class="badge bg-info">@product.PcmfPopulation</span>
+                                        }
+                                        @if (product.PcmfBaseCode > 0)
+                                        {
+                                            <span class="badge bg-light text-dark border ms-1">Base: @product.PcmfBaseCode</span>
+                                        }
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="text-muted">PCMF Classification</div>
+                                    <span class="badge bg-warning">Not Configured</span>
+                                }
                             </div>
                         </div>
                     </div>
-                    
+
+                    <!-- Product Details -->
                     <div class="row">
                         <div class="col-md-6">
                             <table class="table table-sm table-borderless">
                                 <tr>
-                                    <td class="fw-bold text-muted" style="width: 40%;">Product ID:</td>
+                                    <td class="fw-bold text-muted" style="width: 45%;">Product ID:</td>
                                     <td><code>@product.Id</code></td>
                                 </tr>
-                                @if (!string.IsNullOrEmpty(product.LoanTermId) && product.Term != null)
+                                @if (product.Term != null)
                                 {
                                     <tr>
                                         <td class="fw-bold text-muted">Loan Term:</td>
-                                        <td>@product.Term.Name</td>
+                                        <td>@product.Term.NameEn</td>
                                     </tr>
                                     <tr>
                                         <td class="fw-bold text-muted">Term Range:</td>
@@ -99,8 +201,15 @@
                                 @if (product.Target != null)
                                 {
                                     <tr>
-                                        <td class="fw-bold text-muted" style="width: 40%;">Target Population:</td>
+                                        <td class="fw-bold text-muted" style="width: 45%;">Target Population:</td>
                                         <td>@product.Target.NameEn</td>
+                                    </tr>
+                                }
+                                else if (!string.IsNullOrEmpty(product.LoanTargetId))
+                                {
+                                    <tr>
+                                        <td class="fw-bold text-muted">Target ID:</td>
+                                        <td>@product.LoanTargetId</td>
                                     </tr>
                                 }
                                 @if (product.Purpose != null)
@@ -110,6 +219,13 @@
                                         <td>@product.Purpose.NameEn</td>
                                     </tr>
                                 }
+                                else if (!string.IsNullOrEmpty(product.PcmfLoanPurposeId))
+                                {
+                                    <tr>
+                                        <td class="fw-bold text-muted">Purpose ID:</td>
+                                        <td>@product.PcmfLoanPurposeId</td>
+                                    </tr>
+                                }
                                 @if (product.RepaymentCycles != null && product.RepaymentCycles.Any())
                                 {
                                     <tr>
@@ -117,7 +233,7 @@
                                         <td>
                                             @foreach (var cycle in product.RepaymentCycles)
                                             {
-                                                <span class="badge bg-light text-dark me-1">@cycle</span>
+                                                <span class="badge bg-light text-dark me-1 mb-1">@cycle</span>
                                             }
                                         </td>
                                     </tr>
@@ -132,639 +248,577 @@
                             </table>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- 2. Financial Limits -->
-        <div class="card mb-3">
-            <div class="card-header" id="headingFinancialLimits">
-                <h5 class="mb-0">
-                    <button class="btn btn-link text-decoration-none w-100 text-start d-flex justify-content-between align-items-center collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFinancialLimits" aria-expanded="false" aria-controls="collapseFinancialLimits">
-                        <span><i class="mdi mdi-cash-multiple me-2"></i> Financial Limits & Settings</span>
-                        <i class="mdi mdi-chevron-down"></i>
-                    </button>
-                </h5>
-            </div>
-            <div id="collapseFinancialLimits" class="collapse" aria-labelledby="headingFinancialLimits" data-bs-parent="#loanProductAccordion">
-                <div class="card-body">
-                    <div class="row mb-4">
-                        <div class="col-md-4">
-                            <div class="card h-100">
-                                <div class="card-body">
-                                    <h6 class="text-muted">Loan Amount Range</h6>
-                                    <h4 class="fw-bold">@policy.LoanMinimumAmount.ToString("C") - @policy.LoanMaximumAmount.ToString("C")</h4>
-                                    @if (policy.MinimumDownPaymentPercentage > 0)
-                                    {
-                                        <div class="mt-2">
-                                            <small class="text-muted">Down Payment: </small>
-                                            <span class="fw-bold">@policy.MinimumDownPaymentPercentage%</span>
-                                        </div>
-                                    }
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card h-100">
-                                <div class="card-body">
-                                    <h6 class="text-muted">Interest Rate Range</h6>
-                                    <h4 class="fw-bold">@policy.MinimumInterestRate% - @policy.MaximumInterestRate%</h4>
-                                    @if (!string.IsNullOrEmpty(policy.LoanInterestPeriod))
-                                    {
-                                        <div class="mt-2">
-                                            <small class="text-muted">Period: </small>
-                                            <span>@policy.LoanInterestPeriod</span>
-                                        </div>
-                                    }
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card h-100">
-                                <div class="card-body">
-                                    <h6 class="text-muted">Loan Term</h6>
-                                    @if (product.Term != null)
-                                    {
-                                        <h4 class="fw-bold">@product.Term.MinInMonth - @product.Term.MaxInMonth months</h4>
-                                    }
-                                    else
-                                    {
-                                        <h4 class="fw-bold text-muted">Not configured</h4>
-                                    }
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h6 class="text-muted mb-3">Interest Settings</h6>
-                            <ul class="list-unstyled">
-                                <li class="mb-2">
-                                    <span class="me-2">Interest Payment:</span>
-                                    <span class="badge @(policy.InterestMustBePaidUpFront ? "bg-warning" : "bg-light text-dark")">
-                                        @(policy.InterestMustBePaidUpFront ? "Paid Upfront" : "Standard")
-                                    </span>
-                                </li>
-                                <li class="mb-2">
-                                    <span class="me-2">Interest Start:</span>
-                                    <span class="badge @(policy.StartGeneratingInterestAfterDisbustment ? "bg-info" : "bg-light text-dark")">
-                                        @(policy.StartGeneratingInterestAfterDisbustment ? "Post-Disbursement" : "Immediate")
-                                    </span>
-                                </li>
-                                @if (policy.StopInterestCalculationAtLoanMaturityDate)
-                                {
-                                    <li class="mb-2">
-                                        <span class="me-2">Interest Stop:</span>
-                                        <span>At maturity @if (policy.NumberOfDaysToStopInterestCalculation > 0)
+                    <!-- Audit Information -->
+                    @if (!string.IsNullOrEmpty(product.CreatedBy) || !string.IsNullOrEmpty(product.ModifiedBy))
+                    {
+                        <div class="row mt-4 pt-3 border-top">
+                            <div class="col-12">
+                                <h6 class="text-muted mb-3">Audit Information</h6>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <table class="table table-sm table-borderless">
+                                            @if (product.CreatedDate != DateTime.MinValue)
                                             {
-                                                <text>(after @policy.NumberOfDaysToStopInterestCalculation days)</text>
+                                                <tr>
+                                                    <td class="fw-bold text-muted" style="width: 45%;">Created Date:</td>
+                                                    <td>@product.CreatedDate.ToString()</td>
+                                                </tr>
                                             }
-                                        </span>
-                                    </li>
-                                }
-                                @if (policy.IsInterestWaiverApplied)
-                                {
-                                    <li class="mb-2">
-                                        <span class="me-2">Interest Waiver:</span>
-                                        <span>@policy.MinimumInterestWaiver% - @policy.MaximumInterestWaiver%</span>
-                                    </li>
-                                }
-                            </ul>
+                                            @if (!string.IsNullOrEmpty(product.CreatedBy))
+                                            {
+                                                <tr>
+                                                    <td class="fw-bold text-muted">Created By:</td>
+                                                    <td>@product.CreatedBy</td>
+                                                </tr>
+                                            }
+                                        </table>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <table class="table table-sm table-borderless">
+                                            @if (product.ModifiedDate != DateTime.MinValue && product.ModifiedDate != product.CreatedDate)
+                                            {
+                                                <tr>
+                                                    <td class="fw-bold text-muted" style="width: 45%;">Modified Date:</td>
+                                                    <td>@product.ModifiedDate.ToString()</td>
+                                                </tr>
+                                            }
+                                            @if (!string.IsNullOrEmpty(product.ModifiedBy))
+                                            {
+                                                <tr>
+                                                    <td class="fw-bold text-muted">Modified By:</td>
+                                                    <td>@product.ModifiedBy</td>
+                                                </tr>
+                                            }
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Accounting Configuration -->
+
+        <div class="accordion-item mb-1">
+            <h2 class="accordion-header " id="hdGl">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#cpGl" aria-expanded="false" aria-controls="cpGl">
+                    <i class="mdi mdi-bank-outline me-2 text-primary"></i>
+                    <span class="fw-semibold text-primary">Core Accounting GLs Mapping</span>
+                 </button>
+            </h2>
+
+            <div id="cpGl" class="accordion-collapse collapse"
+                 aria-labelledby="hdGl" data-bs-parent="#loanProductAccordion">
+                <div class="accordion-body py-3">
+                    <div class="small text-muted mb-2">
+                        Configure later via <b>Manage → Accounting Mapping</b>. If provided, ensure consistency across taxable/non-taxable.
+                    </div>
+
+                    <div class="row g-3">
+
+                        <div class="col-12">
+                            <div class="fw-semibold mb-1">
+                                <i class="mdi mdi-checkbox-blank-circle-outline me-1"></i> Non-Taxable
+                            </div>
+                        </div>
+
                         <div class="col-md-6">
-                            <h6 class="text-muted mb-3">Duration Settings</h6>
-                            <ul class="list-unstyled">
-                                @if (!string.IsNullOrEmpty(policy.LoanDurationPeriod))
-                                {
-                                    <li class="mb-2">
-                                        <span class="me-2">Duration Period:</span>
-                                        <span>@policy.LoanDurationPeriod</span>
-                                    </li>
-                                }
-                                @if (policy.MinimumDurationPeriod > 0)
-                                {
-                                    <li class="mb-2">
-                                        <span class="me-2">Minimum Duration:</span>
-                                        <span>@policy.MinimumDurationPeriod @policy.LoanDurationPeriod</span>
-                                    </li>
-                                }
-                                @if (policy.MaximumDurationPeriod > 0)
-                                {
-                                    <li class="mb-2">
-                                        <span class="me-2">Maximum Duration:</span>
-                                        <span>@policy.MaximumDurationPeriod @policy.LoanDurationPeriod</span>
-                                    </li>
-                                }
-                                @if (policy.MinimumNumberOfRepayment > 0)
-                                {
-                                    <li class="mb-2">
-                                        <span class="me-2">Minimum Repayments:</span>
-                                        <span>@policy.MinimumNumberOfRepayment</span>
-                                    </li>
-                                }
-                            </ul>
+                            <div class="form-floating form-floating-outline">
+                                @Html.DropDownListFor(m => m.CreateOrUpdate.ChartOfAccountIdForPrincipalAmount,
+                                    new SelectList(ViewBag.ChartOfAccounts, "Value", "Text", cmd.ChartOfAccountIdForPrincipalAmount),
+                                    "--- Principal GL (Non-Taxable) ---",
+                                    new { @class = "form-control select2", id = "ChartOfAccountIdForPrincipalAmount" })
+                                @Html.ValidationMessageFor(m => m.CreateOrUpdate.ChartOfAccountIdForPrincipalAmount, "", new { @class = "text-danger" })
+                                <label>Principal GL (Non-Taxable)</label>
+                            </div>
                         </div>
+
+                        <div class="col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                @Html.DropDownListFor(m => m.CreateOrUpdate.ChartOfAccountIdForInterestReceived,
+                                    new SelectList(ViewBag.ChartOfAccounts, "Value", "Text", cmd.ChartOfAccountIdForInterestReceived),
+                                    "--- Interest GL (Non-Taxable) ---",
+                                    new { @class = "form-control select2", id = "ChartOfAccountIdForInterestReceived" })
+                                @Html.ValidationMessageFor(m => m.CreateOrUpdate.ChartOfAccountIdForInterestReceived, "", new { @class = "text-danger" })
+                                <label>Interest GL (Non-Taxable)</label>
+                            </div>
+                        </div>
+
+                        <div class="col-12 mt-2">
+                            <div class="fw-semibold mb-1">
+                                <i class="mdi mdi-cash-check me-1"></i> Taxable
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                @Html.DropDownListFor(m => m.CreateOrUpdate.ChartOfAccountIdForTaxiblePrincipalAmount,
+                                    new SelectList(ViewBag.ChartOfAccounts, "Value", "Text", cmd.ChartOfAccountIdForTaxiblePrincipalAmount),
+                                    "--- Principal GL (Taxable) ---",
+                                    new { @class = "form-control select2", id = "ChartOfAccountIdForTaxiblePrincipalAmount" })
+                                @Html.ValidationMessageFor(m => m.CreateOrUpdate.ChartOfAccountIdForTaxiblePrincipalAmount, "", new { @class = "text-danger" })
+                                <label>Principal GL (Taxable)</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                @Html.DropDownListFor(m => m.CreateOrUpdate.ChartOfAccountIdForTaxibleInterestReceived,
+                                    new SelectList(ViewBag.ChartOfAccounts, "Value", "Text", cmd.ChartOfAccountIdForTaxibleInterestReceived),
+                                    "--- Interest GL (Taxable) ---",
+                                    new { @class = "form-control select2", id = "ChartOfAccountIdForTaxibleInterestReceived" })
+                                @Html.ValidationMessageFor(m => m.CreateOrUpdate.ChartOfAccountIdForTaxibleInterestReceived, "", new { @class = "text-danger" })
+                                <label>Interest GL (Taxable)</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-floating form-floating-outline">
+                                @Html.DropDownListFor(m => m.CreateOrUpdate.ChartOfAccountIdForTax,
+                                    new SelectList(ViewBag.ChartOfAccounts, "Value", "Text", cmd.ChartOfAccountIdForTax),
+                                    "--- Tax / VAT GL ---",
+                                    new { @class = "form-control select2", id = "ChartOfAccountIdForTax" })
+                                @Html.ValidationMessageFor(m => m.CreateOrUpdate.ChartOfAccountIdForTax, "", new { @class = "text-danger" })
+                                <label>Tax / VAT GL</label>
+                            </div>
+                        </div>
+
+                        <div class="col-12 mt-2">
+                            <div class="fw-semibold mb-1">
+                                <i class="mdi mdi-alert-outline me-1"></i> Penalty
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-floating form-floating-outline">
+                                @Html.DropDownListFor(m => m.CreateOrUpdate.ChartOfAccountIdForPenalty,
+                                    new SelectList(ViewBag.ChartOfAccounts, "Value", "Text", cmd.ChartOfAccountIdForPenalty),
+                                    "--- Penalty GL ---",
+                                    new { @class = "form-control select2", id = "ChartOfAccountIdForPenalty" })
+                                @Html.ValidationMessageFor(m => m.CreateOrUpdate.ChartOfAccountIdForPenalty, "", new { @class = "text-danger" })
+                                <label>Penalty GL</label>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- 3. Security & Requirements -->
-        <div class="card mb-3">
-            <div class="card-header" id="headingSecurity">
+
+        <!-- 3. Policy Configuration -->
+        <div class="card mb-1">
+            <div class="card-header" id="headingPolicy">
                 <h5 class="mb-0">
-                    <button class="btn btn-link text-decoration-none w-100 text-start d-flex justify-content-between align-items-center collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSecurity" aria-expanded="false" aria-controls="collapseSecurity">
-                        <span><i class="mdi mdi-shield-account me-2"></i> Security & Requirements</span>
+                    <button class="btn btn-link text-decoration-none w-100 text-primary d-flex justify-content-between align-items-center collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePolicy" aria-expanded="false" aria-controls="collapsePolicy">
+                        <span><i class="mdi mdi-shield-check-outline me-2"></i> Policy Configuration</span>
+                        @if (policy != null && !string.IsNullOrEmpty(policy.Id))
+                        {
+                            <span class="badge bg-success">Configured</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-warning">Not Configured</span>
+                        }
                         <i class="mdi mdi-chevron-down"></i>
                     </button>
                 </h5>
             </div>
-            <div id="collapseSecurity" class="collapse" aria-labelledby="headingSecurity" data-bs-parent="#loanProductAccordion">
+            <div id="collapsePolicy" class="collapse" aria-labelledby="headingPolicy" data-bs-parent="#loanProductAccordion">
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h6 class="text-muted mb-3">Collateral & Guarantee</h6>
-                            <ul class="list-unstyled">
-                                <li class="mb-2">
-                                    <span class="me-2">Collateral Required:</span>
+                    @if (policy != null && !string.IsNullOrEmpty(policy.Id))
+                    {
+                        <div class="row mb-4">
+                            <div class="col-md-4">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h6 class="text-muted">Loan Amount Range</h6>
+                                        @if (policy.LoanMinimumAmount > 0 || policy.LoanMaximumAmount > 0)
+                                        {
+                                            <h4 class="fw-bold">@policy.LoanMinimumAmount.ToString("C") - @policy.LoanMaximumAmount.ToString("C")</h4>
+                                        }
+                                        else
+                                        {
+                                            <h4 class="fw-bold text-muted">Not Set</h4>
+                                        }
+                                        @if (policy.MinimumDownPaymentPercentage > 0)
+                                        {
+                                            <div class="mt-2">
+                                                <small class="text-muted">Down Payment: </small>
+                                                <span class="fw-bold">@policy.MinimumDownPaymentPercentage%</span>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h6 class="text-muted">Interest Rate Range</h6>
+                                        @if (policy.MinimumInterestRate > 0 || policy.MaximumInterestRate > 0)
+                                        {
+                                            <h4 class="fw-bold">@policy.MinimumInterestRate% - @policy.MaximumInterestRate%</h4>
+                                        }
+                                        else
+                                        {
+                                            <h4 class="fw-bold text-muted">Not Set</h4>
+                                        }
+                                        @if (!string.IsNullOrEmpty(policy.LoanInterestPeriod))
+                                        {
+                                            <div class="mt-2">
+                                                <small class="text-muted">Period: </small>
+                                                <span>@policy.LoanInterestPeriod</span>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h6 class="text-muted">Duration Settings</h6>
+                                        @if (policy.MinimumDurationPeriod > 0 || policy.MaximumDurationPeriod > 0)
+                                        {
+                                            <h4 class="fw-bold">@policy.MinimumDurationPeriod - @policy.MaximumDurationPeriod @policy.LoanDurationPeriod</h4>
+                                        }
+                                        else
+                                        {
+                                            <h4 class="fw-bold text-muted">Not Set</h4>
+                                        }
+                                        @if (policy.MinimumNumberOfRepayment > 0)
+                                        {
+                                            <div class="mt-2">
+                                                <small class="text-muted">Min Repayments: </small>
+                                                <span>@policy.MinimumNumberOfRepayment</span>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Policy Details -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6 class="text-muted mb-3">Interest Settings</h6>
+                                <table class="table table-sm">
+                                    <tr>
+                                        <td class="fw-bold text-muted" style="width: 65%;">Interest Paid Upfront:</td>
+                                        <td>@(policy.InterestMustBePaidUpFront ? "Yes" : "No")</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold text-muted">Interest Start:</td>
+                                        <td>@(policy.StartGeneratingInterestAfterDisbustment ? "After Disbursement" : "Immediate")</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold text-muted">Stop Interest at Maturity:</td>
+                                        <td>@(policy.StopInterestCalculationAtLoanMaturityDate ? "Yes" : "No")</td>
+                                    </tr>
+                                    @if (policy.StopInterestCalculationAtLoanMaturityDate && policy.NumberOfDaysToStopInterestCalculation > 0)
+                                    {
+                                        <tr>
+                                            <td class="fw-bold text-muted">Stop After Days:</td>
+                                            <td>@policy.NumberOfDaysToStopInterestCalculation</td>
+                                        </tr>
+                                    }
+                                    <tr>
+                                        <td class="fw-bold text-muted">Interest Waiver Allowed:</td>
+                                        <td>@(policy.IsInterestWaiverApplied ? "Yes" : "No")</td>
+                                    </tr>
+                                    @if (policy.IsInterestWaiverApplied)
+                                    {
+                                        <tr>
+                                            <td class="fw-bold text-muted">Waiver Range:</td>
+                                            <td>@policy.MinimumInterestWaiver% - @policy.MaximumInterestWaiver%</td>
+                                        </tr>
+                                    }
+                                </table>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="text-muted mb-3">Charges & Penalties</h6>
+                                <table class="table table-sm">
+                                    <tr>
+                                        <td class="fw-bold text-muted" style="width: 65%;">Charges Applied:</td>
+                                        <td>@(policy.IsChargesApplied ? "Yes" : "No")</td>
+                                    </tr>
+                                    @if (policy.IsChargesApplied)
+                                    {
+                                        <tr>
+                                            <td class="fw-bold text-muted">Charge Range:</td>
+                                            <td>@policy.MinimumChargesToAppliedInPercentage% - @policy.MaximumChargesToAppliedPercentage%</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-bold text-muted">Default Charge:</td>
+                                            <td>@policy.DefaultChargeToAppliedPercentage%</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-bold text-muted">Applied To:</td>
+                                            <td>@policy.ChargesAreAppliedToInterestOrBalance</td>
+                                        </tr>
+                                        if (policy.ChargesStopAfterHowManyDaysFromStart > 0)
+                                        {
+                                            <tr>
+                                                <td class="fw-bold text-muted">Charges Stop After:</td>
+                                                <td>@policy.ChargesStopAfterHowManyDaysFromStart days</td>
+                                            </tr>
+                                        }
+                                    }
+                                    <tr>
+                                        <td class="fw-bold text-muted">Fee Paid Before Processing:</td>
+                                        <td>@(policy.IsPaidFeeBeforeProcessing ? "Yes" : "No")</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Security Requirements -->
+                        <div class="row mt-4">
+                            <div class="col-md-6">
+                                <h6 class="text-muted mb-3">Security Requirements</h6>
+                                <table class="table table-sm">
+                                    <tr>
+                                        <td class="fw-bold text-muted" style="width: 65%;">Collateral Required:</td>
+                                        <td>@(policy.IsRequiredCollateral ? "Yes" : "No")</td>
+                                    </tr>
                                     @if (policy.IsRequiredCollateral)
                                     {
-                                        <span class="badge bg-danger">Yes</span>
-                                        <span class="ms-2">Min: @policy.MinimumCollateralPercentage%</span>
+                                        <tr>
+                                            <td class="fw-bold text-muted">Min Collateral:</td>
+                                            <td>@policy.MinimumCollateralPercentage%</td>
+                                        </tr>
                                     }
-                                    else
-                                    {
-                                        <span class="badge bg-success">No</span>
-                                    }
-                                </li>
-                                <li class="mb-2">
-                                    <span class="me-2">Guarantor Required:</span>
+                                    <tr>
+                                        <td class="fw-bold text-muted">Guarantor Required:</td>
+                                        <td>@(policy.RequiresGuarantor ? "Yes" : "No")</td>
+                                    </tr>
                                     @if (policy.RequiresGuarantor)
                                     {
-                                        <span class="badge bg-info">Yes</span>
-                                        if (policy.Co_obligorMustHaveFundToGuranteeLoan)
+                                        <tr>
+                                            <td class="fw-bold text-muted">Co-obligor Must Have Funds:</td>
+                                            <td>@(policy.Co_obligorMustHaveFundToGuranteeLoan ? "Yes" : "No")</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-bold text-muted">Shortee Must Have Funds:</td>
+                                            <td>@(policy.ShorteeMustHaveFundToGuranteeLoan ? "Yes" : "No")</td>
+                                        </tr>
+                                        if (policy.ShorteeMustHaveFundToGuranteeLoan)
                                         {
-                                            <span class="ms-2">(Co-obligor must have funds)</span>
+                                            <tr>
+                                                <td class="fw-bold text-muted">Shortee Coverage:</td>
+                                                <td>@policy.MinimumPercentageCoverageOfShortee%</td>
+                                            </tr>
                                         }
                                     }
-                                    else
-                                    {
-                                        <span class="badge bg-light text-dark">No</span>
-                                    }
-                                </li>
-                                @if (policy.RequiresGuarantor && policy.ShorteeMustHaveFundToGuranteeLoan)
-                                {
-                                    <li class="mb-2">
-                                        <span class="me-2">Shortee Coverage:</span>
-                                        <span>@policy.MinimumPercentageCoverageOfShortee%</span>
-                                    </li>
-                                }
-                            </ul>
-                        </div>
-                        <div class="col-md-6">
-                            <h6 class="text-muted mb-3">Account Requirements</h6>
-                            <ul class="list-unstyled">
-                                <li class="mb-2">
-                                    <i class="mdi @(policy.IsRequiredShareAccount ? "mdi-check-circle text-success" : "mdi-close-circle text-muted") me-1"></i>
-                                    Share Account: @(policy.IsRequiredShareAccount ? "Required" : "Not Required")
+                                </table>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="text-muted mb-3">Account Requirements</h6>
+                                <table class="table table-sm">
+                                    <tr>
+                                        <td class="fw-bold text-muted" style="width: 65%;">Share Account Required:</td>
+                                        <td>@(policy.IsRequiredShareAccount ? "Yes" : "No")</td>
+                                    </tr>
                                     @if (policy.IsRequiredShareAccount && policy.MinimumShareAccountBalanceForTheRequestAmount > 0)
                                     {
-                                        <small class="text-muted d-block ms-4">Min: @policy.MinimumShareAccountBalanceForTheRequestAmount%</small>
+                                        <tr>
+                                            <td class="fw-bold text-muted">Min Share Balance:</td>
+                                            <td>@policy.MinimumShareAccountBalanceForTheRequestAmount%</td>
+                                        </tr>
                                     }
-                                </li>
-                                <li class="mb-2">
-                                    <i class="mdi @(policy.IsRequiredSalaryccount ? "mdi-check-circle text-success" : "mdi-close-circle text-muted") me-1"></i>
-                                    Salary Account: @(policy.IsRequiredSalaryccount ? "Required" : "Not Required")
+                                    <tr>
+                                        <td class="fw-bold text-muted">Salary Account Required:</td>
+                                        <td>@(policy.IsRequiredSalaryccount ? "Yes" : "No")</td>
+                                    </tr>
                                     @if (policy.IsRequiredSalaryccount && policy.MinimumSalaryAccountBalanceRateForTheRequestAmount > 0)
                                     {
-                                        <small class="text-muted d-block ms-4">Min: @policy.MinimumSalaryAccountBalanceRateForTheRequestAmount%</small>
+                                        <tr>
+                                            <td class="fw-bold text-muted">Min Salary Balance:</td>
+                                            <td>@policy.MinimumSalaryAccountBalanceRateForTheRequestAmount%</td>
+                                        </tr>
                                     }
-                                </li>
-                                <li class="mb-2">
-                                    <i class="mdi @(policy.IsRequiredSavingAccount ? "mdi-check-circle text-success" : "mdi-close-circle text-muted") me-1"></i>
-                                    Savings Account: @(policy.IsRequiredSavingAccount ? "Required" : "Not Required")
+                                    <tr>
+                                        <td class="fw-bold text-muted">Saving Account Required:</td>
+                                        <td>@(policy.IsRequiredSavingAccount ? "Yes" : "No")</td>
+                                    </tr>
                                     @if (policy.IsRequiredSavingAccount && policy.MinimumSavingAccountBalanceRateForTheRequestAmount > 0)
                                     {
-                                        <small class="text-muted d-block ms-4">Min: @policy.MinimumSavingAccountBalanceRateForTheRequestAmount%</small>
+                                        <tr>
+                                            <td class="fw-bold text-muted">Min Saving Balance:</td>
+                                            <td>@policy.MinimumSavingAccountBalanceRateForTheRequestAmount%</td>
+                                        </tr>
                                     }
-                                </li>
-                            </ul>
+                                </table>
+                            </div>
                         </div>
-                    </div>
-                    
-                    <div class="row mt-3">
-                        <div class="col-md-6">
-                            <h6 class="text-muted mb-3">Blocking Behavior</h6>
-                            <ul class="list-unstyled">
-                                <li class="mb-2">
-                                    <i class="mdi @(policy.BlockShareAccount ? "mdi-lock text-danger" : "mdi-lock-open text-muted") me-1"></i>
-                                    Block Share Account: @(policy.BlockShareAccount ? "Yes" : "No")
-                                </li>
-                                <li class="mb-2">
-                                    <i class="mdi @(policy.BlockSavingAccount ? "mdi-lock text-danger" : "mdi-lock-open text-muted") me-1"></i>
-                                    Block Savings Account: @(policy.BlockSavingAccount ? "Yes" : "No")
-                                </li>
-                                <li class="mb-2">
-                                    <i class="mdi @(policy.BlockSalaryAccount ? "mdi-lock text-danger" : "mdi-lock-open text-muted") me-1"></i>
-                                    Block Salary Account: @(policy.BlockSalaryAccount ? "Yes" : "No")
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="col-md-6">
-                            <h6 class="text-muted mb-3">Other Requirements</h6>
-                            <ul class="list-unstyled">
-                                @if (policy.IsRequredIrrivocableSalaryTransfer)
-                                {
-                                    <li class="mb-2">
-                                        <i class="mdi mdi-check-circle text-warning me-1"></i>
-                                        Irrevocable Salary Transfer Required
-                                    </li>
-                                }
-                                @if (policy.IsRequresRegisteredPublicAuthority)
-                                {
-                                    <li class="mb-2">
-                                        <i class="mdi mdi-check-circle text-warning me-1"></i>
-                                        Registered Public Authority Required
-                                    </li>
-                                }
-                                @if (policy.IsPaidFeeBeforeProcessing)
-                                {
-                                    <li class="mb-2">
-                                        <i class="mdi mdi-cash-check text-warning me-1"></i>
-                                        Fee Paid Before Processing
-                                    </li>
-                                }
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- 4. Charges & Penalties -->
-        <div class="card mb-3">
-            <div class="card-header" id="headingCharges">
-                <h5 class="mb-0">
-                    <button class="btn btn-link text-decoration-none w-100 text-start d-flex justify-content-between align-items-center collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCharges" aria-expanded="false" aria-controls="collapseCharges">
-                        <span><i class="mdi mdi-cash-alert me-2"></i> Charges & Penalties</span>
-                        <i class="mdi mdi-chevron-down"></i>
-                    </button>
-                </h5>
-            </div>
-            <div id="collapseCharges" class="collapse" aria-labelledby="headingCharges" data-bs-parent="#loanProductAccordion">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h6 class="text-muted mb-3">Charge Settings</h6>
-                            @if (policy.IsChargesApplied)
-                            {
-                                <ul class="list-unstyled">
-                                    <li class="mb-2">
-                                        <span class="me-2">Status:</span>
-                                        <span class="badge bg-warning">Charges Applied</span>
-                                    </li>
-                                    @if (policy.MinimumChargesToAppliedInPercentage > 0)
-                                    {
-                                        <li class="mb-2">
-                                            <span class="me-2">Minimum Charge:</span>
-                                            <span>@policy.MinimumChargesToAppliedInPercentage%</span>
-                                        </li>
-                                    }
-                                    @if (policy.MaximumChargesToAppliedPercentage > 0)
-                                    {
-                                        <li class="mb-2">
-                                            <span class="me-2">Maximum Charge:</span>
-                                            <span>@policy.MaximumChargesToAppliedPercentage%</span>
-                                        </li>
-                                    }
-                                    @if (policy.DefaultChargeToAppliedPercentage > 0)
-                                    {
-                                        <li class="mb-2">
-                                            <span class="me-2">Default Charge:</span>
-                                            <span>@policy.DefaultChargeToAppliedPercentage%</span>
-                                        </li>
-                                    }
-                                    @if (!string.IsNullOrEmpty(policy.ChargesAreAppliedToInterestOrBalance))
-                                    {
-                                        <li class="mb-2">
-                                            <span class="me-2">Applied to:</span>
-                                            <span>@policy.ChargesAreAppliedToInterestOrBalance</span>
-                                        </li>
-                                    }
-                                    @if (policy.ChargesStopAfterHowManyDaysFromStart > 0)
-                                    {
-                                        <li class="mb-2">
-                                            <span class="me-2">Stops after:</span>
-                                            <span>@policy.ChargesStopAfterHowManyDaysFromStart days</span>
-                                        </li>
-                                    }
-                                </ul>
-                            }
-                            else
-                            {
-                                <p class="text-muted">No charges are applied to this product.</p>
-                            }
-                        </div>
-                        <div class="col-md-6">
-                            <h6 class="text-muted mb-3">Repayment Settings</h6>
-                            <ul class="list-unstyled">
-                                @if (!string.IsNullOrEmpty(policy.RepaymentTypeName))
-                                {
-                                    <li class="mb-2">
-                                        <span class="me-2">Repayment Type:</span>
-                                        <span>@policy.RepaymentTypeName</span>
-                                    </li>
-                                }
-                                @if (!string.IsNullOrEmpty(policy.LoanDeliquencyPeriod))
-                                {
-                                    <li class="mb-2">
-                                        <span class="me-2">Delinquency Period:</span>
-                                        <span>@policy.LoanDeliquencyPeriod</span>
-                                    </li>
-                                }
-                                @if (!string.IsNullOrEmpty(policy.PenaltyId))
-                                {
-                                    <li class="mb-2">
-                                        <span class="me-2">Penalty Configuration:</span>
-                                        <span>@policy.PenaltyId</span>
-                                    </li>
-                                }
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 5. Product Features -->
-        <div class="card mb-3">
-            <div class="card-header" id="headingFeatures">
-                <h5 class="mb-0">
-                    <button class="btn btn-link text-decoration-none w-100 text-start d-flex justify-content-between align-items-center collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFeatures" aria-expanded="false" aria-controls="collapseFeatures">
-                        <span><i class="mdi mdi-feature-search-outline me-2"></i> Product Features</span>
-                        <i class="mdi mdi-chevron-down"></i>
-                    </button>
-                </h5>
-            </div>
-            <div id="collapseFeatures" class="collapse" aria-labelledby="headingFeatures" data-bs-parent="#loanProductAccordion">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h6 class="text-muted mb-3">Main Features</h6>
-                            <ul class="list-unstyled">
-                                <li class="mb-2">
-                                    <span class="me-2">Top-up Allowed:</span>
+                        <!-- Blocking Behavior & Features -->
+                        <div class="row mt-4">
+                            <div class="col-md-6">
+                                <h6 class="text-muted mb-3">Blocking Behavior</h6>
+                                <table class="table table-sm">
+                                    <tr>
+                                        <td class="fw-bold text-muted" style="width: 65%;">Block Share Account:</td>
+                                        <td>@(policy.BlockShareAccount ? "Yes" : "No")</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold text-muted">Block Saving Account:</td>
+                                        <td>@(policy.BlockSavingAccount ? "Yes" : "No")</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold text-muted">Block Salary Account:</td>
+                                        <td>@(policy.BlockSalaryAccount ? "Yes" : "No")</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="text-muted mb-3">Product Features</h6>
+                                <table class="table table-sm">
+                                    <tr>
+                                        <td class="fw-bold text-muted" style="width: 65%;">Top-up Allowed:</td>
+                                        <td>@(policy.HasTopUp ? "Yes" : "No")</td>
+                                    </tr>
                                     @if (policy.HasTopUp)
                                     {
-                                        <span class="badge bg-success">Yes</span>
-                                        if (policy.MinimumPercentageRefundBeforeRefinancing > 0)
-                                        {
-                                            <span class="ms-2">(Min refund: @policy.MinimumPercentageRefundBeforeRefinancing%)</span>
-                                        }
+                                        <tr>
+                                            <td class="fw-bold text-muted">Min Refund for Top-up:</td>
+                                            <td>@policy.MinimumPercentageRefundBeforeRefinancing%</td>
+                                        </tr>
                                     }
-                                    else
-                                    {
-                                        <span class="badge bg-light text-dark">No</span>
-                                    }
-                                </li>
-                                <li class="mb-2">
-                                    <span class="me-2">Mortgage Product:</span>
-                                    @if (policy.IsMortgage)
-                                    {
-                                        <span class="badge bg-danger">Yes</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="badge bg-light text-dark">No</span>
-                                    }
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="col-md-6">
-                            <h6 class="text-muted mb-3">Allocation Order</h6>
-                            <div class="row">
-                                @if (policy.InterestOrder > 0)
-                                {
-                                    <div class="col-4 text-center">
-                                        <div class="card bg-light">
-                                            <div class="card-body py-2">
-                                                <small class="text-muted">Interest</small>
-                                                <div class="h5 fw-bold">#@policy.InterestOrder</div>
-                                                <small>@policy.InterestRate%</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                }
-                                @if (policy.CapitalOrder > 0)
-                                {
-                                    <div class="col-4 text-center">
-                                        <div class="card bg-light">
-                                            <div class="card-body py-2">
-                                                <small class="text-muted">Capital</small>
-                                                <div class="h5 fw-bold">#@policy.CapitalOrder</div>
-                                                <small>@policy.CapitalRate%</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                }
-                                @if (policy.FineOrder > 0)
-                                {
-                                    <div class="col-4 text-center">
-                                        <div class="card bg-light">
-                                            <div class="card-body py-2">
-                                                <small class="text-muted">Fine</small>
-                                                <div class="h5 fw-bold">#@policy.FineOrder</div>
-                                                <small>@policy.FineRate%</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                }
+                                    <tr>
+                                        <td class="fw-bold text-muted">Mortgage Product:</td>
+                                        <td>@(policy.IsMortgage ? "Yes" : "No")</td>
+                                    </tr>
+                                </table>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- 6. Mortgage Configuration (Conditional) -->
-        @if (policy != null && policy.IsMortgage)
-        {
-            <div class="card mb-3">
-                <div class="card-header" id="headingMortgage">
-                    <h5 class="mb-0">
-                        <button class="btn btn-link text-decoration-none w-100 text-start d-flex justify-content-between align-items-center collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMortgage" aria-expanded="false" aria-controls="collapseMortgage">
-                            <span><i class="mdi mdi-home-account me-2"></i> Mortgage Configuration</span>
-                            <i class="mdi mdi-chevron-down"></i>
-                        </button>
-                    </h5>
-                </div>
-                <div id="collapseMortgage" class="collapse" aria-labelledby="headingMortgage" data-bs-parent="#loanProductAccordion">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <table class="table table-sm">
-                                    <tr>
-                                        <td class="fw-bold text-muted">LTV Ratio:</td>
-                                        <td>@(policy.MaxLoanToValueRatio * 100)%</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="fw-bold text-muted">Collateral Coverage:</td>
-                                        <td>@(policy.MinCollateralCoveragePercent * 100)%</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="fw-bold text-muted">Grace Period:</td>
-                                        <td>@policy.GracePeriodMonths months</td>
-                                    </tr>
-                                </table>
-                            </div>
-                            <div class="col-md-6">
-                                <table class="table table-sm">
-                                    <tr>
-                                        <td class="fw-bold text-muted">Insurance Required:</td>
-                                        <td>@(policy.RequireInsurance ? "Yes" : "No")</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="fw-bold text-muted">Title Registration:</td>
-                                        <td>@(policy.RequireTitleRegistration ? "Required" : "Not Required")</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="fw-bold text-muted">Phased Disbursement:</td>
-                                        <td>@(policy.EnablePhasedDisbursement ? "Enabled" : "Disabled")</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="fw-bold text-muted">Third-party Ownership:</td>
-                                        <td>@(policy.AllowThirdPartyOwnership ? "Allowed" : "Not Allowed")</td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        }
-
-        <!-- 7. Accounting Configuration (Conditional) -->
-        @if (accounting != null && !string.IsNullOrEmpty(accounting.Id))
-        {
-            <div class="card mb-3">
-                <div class="card-header" id="headingAccounting">
-                    <h5 class="mb-0">
-                        <button class="btn btn-link text-decoration-none w-100 text-start d-flex justify-content-between align-items-center collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAccounting" aria-expanded="false" aria-controls="collapseAccounting">
-                            <span><i class="mdi mdi-ledger me-2"></i> Accounting Configuration</span>
-                            <i class="mdi mdi-chevron-down"></i>
-                        </button>
-                    </h5>
-                </div>
-                <div id="collapseAccounting" class="collapse" aria-labelledby="headingAccounting" data-bs-parent="#loanProductAccordion">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h6 class="text-muted mb-3">Primary Accounts</h6>
-                                <table class="table table-sm">
-                                    @if (!string.IsNullOrEmpty(accounting.PrincipalAccountNumber))
-                                    {
-                                        <tr>
-                                            <td class="fw-bold text-muted">Principal Account:</td>
-                                            <td>@accounting.PrincipalAccountNumber<br/><small>@accounting.PrincipalAccountName</small></td>
-                                        </tr>
-                                    }
-                                    @if (!string.IsNullOrEmpty(accounting.ChartOfAccountIdForPrincipalAmount))
-                                    {
-                                        <tr>
-                                            <td class="fw-bold text-muted">Principal GL:</td>
-                                            <td>@accounting.ChartOfAccountIdForPrincipalAmount</td>
-                                        </tr>
-                                    }
-                                    @if (!string.IsNullOrEmpty(accounting.ChartOfAccountIdForInterestReceived))
-                                    {
-                                        <tr>
-                                            <td class="fw-bold text-muted">Interest GL:</td>
-                                            <td>@accounting.ChartOfAccountIdForInterestReceived</td>
-                                        </tr>
-                                    }
-                                </table>
-                            </div>
-                            <div class="col-md-6">
-                                <h6 class="text-muted mb-3">Tax Accounts</h6>
-                                <table class="table table-sm">
-                                    @if (!string.IsNullOrEmpty(accounting.TaxablePrincipalAccountNumber))
-                                    {
-                                        <tr>
-                                            <td class="fw-bold text-muted">Taxable Principal:</td>
-                                            <td>@accounting.TaxablePrincipalAccountNumber<br/><small>@accounting.TaxablePrincipalAccountName</small></td>
-                                        </tr>
-                                    }
-                                    @if (!string.IsNullOrEmpty(accounting.ChartOfAccountIdForTaxibleInterestReceived))
-                                    {
-                                        <tr>
-                                            <td class="fw-bold text-muted">Taxable Interest GL:</td>
-                                            <td>@accounting.ChartOfAccountIdForTaxibleInterestReceived</td>
-                                        </tr>
-                                    }
-                                </table>
-                            </div>
-                        </div>
-                        
-                        <!-- Provision Accounts -->
-                        @if (!string.IsNullOrEmpty(accounting.ChartOfAccountIdForProvisionMoreThanOneYear) ||
-                             !string.IsNullOrEmpty(accounting.ChartOfAccountIdForProvisionMoreThanTwoYear) ||
-                             !string.IsNullOrEmpty(accounting.ChartOfAccountIdForProvisionMoreThanThreeYear) ||
-                             !string.IsNullOrEmpty(accounting.ChartOfAccountIdForProvisionMoreThanFourYear))
+                        <!-- Policy Audit Info -->
+                        if (policy.CreatedDate != DateTime.MinValue || !string.IsNullOrEmpty(policy.CreatedBy))
                         {
-                            <div class="mt-4">
-                                <h6 class="text-muted mb-3">Provision Accounts</h6>
-                                <div class="row">
-                                    @if (!string.IsNullOrEmpty(accounting.ChartOfAccountIdForProvisionMoreThanOneYear))
-                                    {
-                                        <div class="col-md-3">
-                                            <div class="card bg-light">
-                                                <div class="card-body text-center py-2">
-                                                    <small class="text-muted">> 1 Year</small>
-                                                    <div><code class="small">@accounting.ChartOfAccountIdForProvisionMoreThanOneYear</code></div>
-                                                </div>
-                                            </div>
+                            <div class="row mt-4 pt-3 border-top">
+                                <div class="col-12">
+                                    <h6 class="text-muted mb-3">Policy Audit Information</h6>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            @if (policy.CreatedDate != DateTime.MinValue)
+                                            {
+                                                <small class="text-muted">Created: @policy.CreatedDate.ToString()</small>
+                                            }
                                         </div>
-                                    }
-                                    @if (!string.IsNullOrEmpty(accounting.ChartOfAccountIdForProvisionMoreThanTwoYear))
-                                    {
-                                        <div class="col-md-3">
-                                            <div class="card bg-light">
-                                                <div class="card-body text-center py-2">
-                                                    <small class="text-muted">> 2 Years</small>
-                                                    <div><code class="small">@accounting.ChartOfAccountIdForProvisionMoreThanTwoYear</code></div>
-                                                </div>
-                                            </div>
+                                        <div class="col-md-6">
+                                            @if (!string.IsNullOrEmpty(policy.CreatedBy))
+                                            {
+                                                <small class="text-muted">By: @policy.CreatedBy</small>
+                                            }
                                         </div>
-                                    }
-                                    @if (!string.IsNullOrEmpty(accounting.ChartOfAccountIdForProvisionMoreThanThreeYear))
-                                    {
-                                        <div class="col-md-3">
-                                            <div class="card bg-light">
-                                                <div class="card-body text-center py-2">
-                                                    <small class="text-muted">> 3 Years</small>
-                                                    <div><code class="small">@accounting.ChartOfAccountIdForProvisionMoreThanThreeYear</code></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    }
-                                    @if (!string.IsNullOrEmpty(accounting.ChartOfAccountIdForProvisionMoreThanFourYear))
-                                    {
-                                        <div class="col-md-3">
-                                            <div class="card bg-light">
-                                                <div class="card-body text-center py-2">
-                                                    <small class="text-muted">> 4 Years</small>
-                                                    <div><code class="small">@accounting.ChartOfAccountIdForProvisionMoreThanFourYear</code></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    }
+                                    </div>
                                 </div>
                             </div>
                         }
+                    }
+                    else
+                    {
+                        <div class="text-center py-4">
+                            <i class="mdi mdi-shield-off-outline fs-1 text-muted mb-3"></i>
+                            <h5 class="text-muted">No Policy Configured</h5>
+                            <p class="text-muted">This loan product does not have a policy configuration yet.</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. Term Information -->
+        @if (product.Term != null)
+        {
+            <div class="card mb-1">
+                <div class="card-header" id="headingTerm">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link text-decoration-none w-100 text-primary d-flex justify-content-between align-items-center collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTerm" aria-expanded="false" aria-controls="collapseTerm">
+                            <span><i class="mdi mdi-calendar-clock me-2"></i> Term Information</span>
+                            <i class="mdi mdi-chevron-down"></i>
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapseTerm" class="collapse" aria-labelledby="headingTerm" data-bs-parent="#loanProductAccordion">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <table class="table table-sm">
+                                    <tr>
+                                        <td class="fw-bold text-muted" style="width: 45%;">Term ID:</td>
+                                        <td><code>@product.Term.Id</code></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold text-muted">Name (EN):</td>
+                                        <td>@product.Term.NameEn</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold text-muted">Name (FR):</td>
+                                        <td>@product.Term.NameFr</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold text-muted">Status:</td>
+                                        <td><span class="badge @(product.Term.IsActive ? "bg-success" : "bg-secondary")">@(product.Term.IsActive ? "Active" : "Inactive")</span></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-md-6">
+                                <table class="table table-sm">
+                                    <tr>
+                                        <td class="fw-bold text-muted" style="width: 45%;">Term Range:</td>
+                                        <td>@product.Term.MinInMonth - @product.Term.MaxInMonth months</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold text-muted">Term Kind:</td>
+                                        <td>@product.Term.TermKind</td>
+                                    </tr>
+                                    @if (product.Term.CreatedDate != DateTime.MinValue)
+                                    {
+                                        <tr>
+                                            <td class="fw-bold text-muted">Created Date:</td>
+                                            <td>@product.Term.CreatedDate.ToString()</td>
+                                        </tr>
+                                    }
+                                    @if (!string.IsNullOrEmpty(product.Term.CreatedBy))
+                                    {
+                                        <tr>
+                                            <td class="fw-bold text-muted">Created By:</td>
+                                            <td>@product.Term.CreatedBy</td>
+                                        </tr>
+                                    }
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         }
     </div>
 </div>
+
+<style>
+    .accordion-button:not(.collapsed) {
+        background-color: #f8f9fa;
+        color: #0d6efd;
+    }
+
+    .accordion-button:focus {
+        box-shadow: none;
+        border-color: rgba(0,0,0,.125);
+    }
+
+    .card {
+        border: 1px solid rgba(0,0,0,.125);
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .card-header {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid rgba(0,0,0,.125);
+    }
+</style>

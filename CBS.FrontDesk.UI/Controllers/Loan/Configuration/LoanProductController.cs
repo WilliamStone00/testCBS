@@ -480,12 +480,14 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
 
                 var vm = new PCMFLoanProductManagementObjects
                 {
-                    Product = p
+                    Product = p,
+                     CreateOrUpdate = _LoanProductServices.MapToCreateCommand(p)
                 };
 
                 // ✅ Preview: only product data
                 if (string.Equals(path, "preview", StringComparison.OrdinalIgnoreCase))
                 {
+                    await GetValues();
                     return PartialView(partialView, vm);
                 }
 
