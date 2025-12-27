@@ -1,7 +1,11 @@
 ﻿@model CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure.PCMFLoanProductManagementObjects
 @using Resources
+@{
+    var product = Model.Product;
+}
+
 <div class="col">
-  
+
     <div class="row">
         <div class="col-12">
             <div class="card bg-light mb-2">
@@ -86,6 +90,88 @@
         </div>
     </div>
 
+
+    <div class="card mb-3">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <span class="text-primary fw-semibold">
+                <i class="mdi mdi-eye-outline me-1"></i> Live PCMF Preview
+            </span>
+            <small class="text-muted">Live</small>
+        </div>
+
+        <div class="card-body py-2">
+            <div class="d-flex flex-wrap gap-2 align-items-center">
+                <span class="badge bg-label-secondary px-3 py-2" id="pcmfPreviewSection">Section:  @product.PcmfSection </span>
+                <span class="badge bg-label-dark px-3 py-2" id="pcmfPreviewGroup">Group:  @product.PcmfGroupCode</span>
+                <span class="badge bg-label-primary px-3 py-2" id="pcmfPreviewBase">Base:  @product.PcmfPopulation</span>
+                <span class="badge bg-label-info px-3 py-2" id="pcmfPreviewPop">Population:  @product.PcmfBaseCode</span>
+            </div>
+            <div class="small text-muted mt-2">
+                Updates automatically as you pick <b>Facility → Term → Purpose → Target</b>.
+            </div>
+        </div>
+    </div>
+
+
+    <div class="accordion-item mb-1">
+        <h2 class="accordion-header" id="hdPcmf">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#cpPcmf" aria-expanded="true" aria-controls="cpPcmf">
+                <i class="mdi mdi-tag-outline me-2 text-primary"></i>
+                <span class="fw-semibold text-primary">PCMF Classification</span>
+            </button>
+        </h2>
+
+        <div id="cpPcmf" class="accordion-collapse collapse show"
+             aria-labelledby="hdPcmf" data-bs-parent="#loanProductAccordion">
+            <div class="accordion-body py-3">
+                <div class="row g-3">
+
+                    <div class="col-md-12">
+                        <div class="form-floating form-floating-outline">
+                            @Html.DropDownListFor(m => m.Product.LoanTermId,
+                                new SelectList(ViewBag.LoanTerms, "Id", "NameEn"),
+                                "--- Select Loan Term ---",
+                                new { @class = "form-control select2", id = "LoanTermId", disabled = "disabled" })
+                            @Html.ValidationMessageFor(m => m.CreateOrUpdate.LoanTermId, "", new { @class = "text-danger" })
+                            <label>Loan Term</label>
+                        </div>
+                        <div class="small text-muted">
+                            Required for <b>Classic / SSF / LOC</b>. Only <b>Overdraft</b> can be empty.
+                        </div>
+                    </div>
+
+                    <div class="col-md-7">
+                        <div class="form-floating form-floating-outline">
+                            @Html.DropDownListFor(m => m.Product.PcmfLoanPurposeId,
+                                new SelectList(ViewBag.PcmfLoanPurposes, "Id", "NameEn"),
+                                "--- Select PCMF Purpose ---",
+                                new { @class = "form-control select2", required = "required", disabled = "disabled", id = "PcmfLoanPurposeId" })
+                            @Html.ValidationMessageFor(m => m.CreateOrUpdate.PcmfLoanPurposeId, "", new { @class = "text-danger" })
+                            <label>PCMF Loan Purpose</label>
+                        </div>
+                        <div class="small text-muted">Filtered by term/section.</div>
+                    </div>
+
+                    <div class="col-md-5">
+                        <div class="form-floating form-floating-outline">
+                            @Html.DropDownListFor(m => m.Product.LoanTargetId,
+                                new SelectList(ViewBag.LoanTargets, "Id", "NameEn"),
+                                "--- Select Target ---",
+                                new { @class = "form-control select2", required = "required", disabled = "disabled", id = "LoanTargetId" })
+                            @Html.ValidationMessageFor(m => m.CreateOrUpdate.LoanTargetId, "", new { @class = "text-danger" })
+                            <label>Loan Target</label>
+                        </div>
+                        <div class="small text-muted">Enabled after purpose.</div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
     <div class="row my-4">
         <div class="accordion" id="collapsibleSection">
             <div class="card accordion-item mb-3">
@@ -136,20 +222,7 @@
                             <fieldset class="fieldset-custom">
                                 <legend>Minimum-Payment Settings</legend>
                                 <div class="row g-4">
-                                    <div class="col-md-12">
-                                        <div class="form-floating form-floating-outline">
-                                            @Html.DropDownListFor(
-                                                m => m.CreateOrUpdate.LoanTargetId,
-                                                new SelectList(Model.LoanTargets, "Id", "NameEn"),
-                                                "---" + @GlobalLoanProduct.Select + "---",
-                                                new { @class = "form-control select2", @search = "true", disabled = "disabled" }
-                                            )
-                                            @Html.ValidationMessageFor(m => m.CreateOrUpdate.LoanTargetId, "", new { @class = "text-danger " })
-                                            <label>@GlobalLoanProduct.Target</label>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-3">
+                                         <div class="col-md-3">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.Product.ProductCode, new { @class = "form-control", @readonly = true })
                                             @Html.ValidationMessageFor(m => m.Product.ProductCode, "", new { @class = "text-danger" })
@@ -1239,40 +1312,40 @@
     }
 
     // Wrapper function that adds button state handling
-function AjaxPostAndUpdateWithButtonState(form) {
-    // Save reference to original function
-    const originalAjaxPostAndUpdate = window.originalAjaxPostAndUpdate || AjaxPostAndUpdate;
-    
-    // Find the submit button
-    const submitButton = $(form).find('button[type="submit"]');
-    const originalText = submitButton.html();
-    
-    // Disable button and show updating
-    submitButton.prop('disabled', true);
-    submitButton.html('<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Updating...');
-    
-    // Call original function
-    const result = originalAjaxPostAndUpdate(form);
-    
-    // Re-enable button after a timeout (in case the AJAX call doesn't handle it)
-    setTimeout(function() {
-        submitButton.prop('disabled', false);
-        submitButton.html(originalText);
-    }, 5000); // 5 second timeout as fallback
-    
-    return result;
-}
+    function AjaxPostAndUpdateWithButtonState(form) {
+        // Save reference to original function
+        const originalAjaxPostAndUpdate = window.originalAjaxPostAndUpdate || AjaxPostAndUpdate;
 
-// Update your forms to use the new function
-document.addEventListener("DOMContentLoaded", function() {
-    // Change all form onsubmit handlers
-    $('form').each(function() {
-        const currentOnSubmit = $(this).attr('onsubmit');
-        if (currentOnSubmit && currentOnSubmit.includes('AjaxPostAndUpdate')) {
-            $(this).attr('onsubmit', currentOnSubmit.replace('AjaxPostAndUpdate', 'AjaxPostAndUpdateWithButtonState'));
-        }
+        // Find the submit button
+        const submitButton = $(form).find('button[type="submit"]');
+        const originalText = submitButton.html();
+
+        // Disable button and show updating
+        submitButton.prop('disabled', true);
+        submitButton.html('<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Updating...');
+
+        // Call original function
+        const result = originalAjaxPostAndUpdate(form);
+
+        // Re-enable button after a timeout (in case the AJAX call doesn't handle it)
+        setTimeout(function () {
+            submitButton.prop('disabled', false);
+            submitButton.html(originalText);
+        }, 5000); // 5 second timeout as fallback
+
+        return result;
+    }
+
+    // Update your forms to use the new function
+    document.addEventListener("DOMContentLoaded", function () {
+        // Change all form onsubmit handlers
+        $('form').each(function () {
+            const currentOnSubmit = $(this).attr('onsubmit');
+            if (currentOnSubmit && currentOnSubmit.includes('AjaxPostAndUpdate')) {
+                $(this).attr('onsubmit', currentOnSubmit.replace('AjaxPostAndUpdate', 'AjaxPostAndUpdateWithButtonState'));
+            }
+        });
     });
-});
 
     document.addEventListener("DOMContentLoaded", function () {
         // ✅ Setup Shortee Fund checkbox logic (your other use-case)
