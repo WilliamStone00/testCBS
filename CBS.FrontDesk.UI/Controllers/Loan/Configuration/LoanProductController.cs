@@ -508,6 +508,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
                 // ✅ Policy
                 if (string.Equals(path, "policy", StringComparison.OrdinalIgnoreCase))
                 {
+                    await GetValues();
                     vm.Policy = p.Policy ?? new LoanProductPolicy { LoanProductId = p.Id, TermId = p.LoanTermId };
                     vm.Policy.LoanProductId = p.Id;
                     return PartialView(partialView, vm);

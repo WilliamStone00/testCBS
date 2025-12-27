@@ -69,6 +69,9 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure
             ?? PcmfLoanPurposes?.Find(x => x.Id == CreateOrUpdate?.PcmfLoanPurposeId)?.NameEn;
 
         public OverdraftFacilityConfig OverdraftFacilityConfig { get; set; }=new OverdraftFacilityConfig();
+        public List<LoanProductRepaymentCycle> LoanProductRepaymentCycles { get; set; }
+        public List<LoanApplicationCollateral> LoanProductCollaterals { get; set; }
+
     }
 
     // ✅ Optional lightweight accounting profile for dropdowns
