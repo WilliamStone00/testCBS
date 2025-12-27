@@ -69,25 +69,45 @@ namespace CBS.BusinessService.Config
         // ✅ mapper for edit -> form command
         public CreateLoanProductCommand MapToCreateCommand(PCMFLoanProduct p)
         {
+            if (p == null)
+                return new CreateLoanProductCommand();
+
             return new CreateLoanProductCommand
             {
                 Id = p.Id,
                 ProductCode = p.ProductCode,
                 ProductName = p.ProductName,
                 Description = p.Description,
+
+                // Nullable / optional mappings
                 LoanTermId = p.LoanTermId,
                 LoanTargetId = p.LoanTargetId,
                 PcmfLoanPurposeId = p.PcmfLoanPurposeId,
+
                 ActiveStatus = p.ActiveStatus,
-                LoanFacility = p.LoanFacility, 
-                ChartOfAccountIdForInterestReceived = p.AccountingMapping.ChartOfAccountIdForInterestReceived,
-                ChartOfAccountIdForPenalty = p.AccountingMapping.ChartOfAccountIdForPenalty,
-                ChartOfAccountIdForPrincipalAmount = p.AccountingMapping.ChartOfAccountIdForPrincipalAmount,
-                ChartOfAccountIdForTax = p.AccountingMapping.ChartOfAccountIdForTax,
-                ChartOfAccountIdForTaxibleInterestReceived = p.AccountingMapping.ChartOfAccountIdForTaxibleInterestReceived,
-                ChartOfAccountIdForTaxiblePrincipalAmount = p.AccountingMapping.ChartOfAccountIdForTaxiblePrincipalAmount
+                LoanFacility = p.LoanFacility,
+
+                // 🔐 SAFE nested mapping
+                ChartOfAccountIdForInterestReceived =
+                    p.AccountingMapping?.ChartOfAccountIdForInterestReceived,
+
+                ChartOfAccountIdForPenalty =
+                    p.AccountingMapping?.ChartOfAccountIdForPenalty,
+
+                ChartOfAccountIdForPrincipalAmount =
+                    p.AccountingMapping?.ChartOfAccountIdForPrincipalAmount,
+
+                ChartOfAccountIdForTax =
+                    p.AccountingMapping?.ChartOfAccountIdForTax,
+
+                ChartOfAccountIdForTaxibleInterestReceived =
+                    p.AccountingMapping?.ChartOfAccountIdForTaxibleInterestReceived,
+
+                ChartOfAccountIdForTaxiblePrincipalAmount =
+                    p.AccountingMapping?.ChartOfAccountIdForTaxiblePrincipalAmount
             };
         }
+
         public async Task<IEnumerable<LoanProduct>> GetLoanProducts()
         {
             try
