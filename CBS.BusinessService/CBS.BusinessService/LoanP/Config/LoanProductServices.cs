@@ -69,20 +69,45 @@ namespace CBS.BusinessService.Config
         // ✅ mapper for edit -> form command
         public CreateLoanProductCommand MapToCreateCommand(PCMFLoanProduct p)
         {
+            if (p == null)
+                return new CreateLoanProductCommand();
+
             return new CreateLoanProductCommand
             {
                 Id = p.Id,
                 ProductCode = p.ProductCode,
                 ProductName = p.ProductName,
                 Description = p.Description,
+
+                // Nullable / optional mappings
                 LoanTermId = p.LoanTermId,
                 LoanTargetId = p.LoanTargetId,
                 PcmfLoanPurposeId = p.PcmfLoanPurposeId,
+
                 ActiveStatus = p.ActiveStatus,
-                AccountingProfileId = p.AccountingProfileId,
                 LoanFacility = p.LoanFacility,
+
+                // 🔐 SAFE nested mapping
+                ChartOfAccountIdForInterestReceived =
+                    p.AccountingMapping?.ChartOfAccountIdForInterestReceived,
+
+                ChartOfAccountIdForPenalty =
+                    p.AccountingMapping?.ChartOfAccountIdForPenalty,
+
+                ChartOfAccountIdForPrincipalAmount =
+                    p.AccountingMapping?.ChartOfAccountIdForPrincipalAmount,
+
+                ChartOfAccountIdForTax =
+                    p.AccountingMapping?.ChartOfAccountIdForTax,
+
+                ChartOfAccountIdForTaxibleInterestReceived =
+                    p.AccountingMapping?.ChartOfAccountIdForTaxibleInterestReceived,
+
+                ChartOfAccountIdForTaxiblePrincipalAmount =
+                    p.AccountingMapping?.ChartOfAccountIdForTaxiblePrincipalAmount
             };
         }
+
         public async Task<IEnumerable<LoanProduct>> GetLoanProducts()
         {
             try
@@ -214,9 +239,9 @@ namespace CBS.BusinessService.Config
 
                 // Return an empty SelectList with a default "No options available" option
                 return new SelectList(new List<SelectListItem>
-        {
-            new SelectListItem { Text = "No options available", Value = string.Empty }
-        }, "Value", "Text");
+                {
+                    new SelectListItem { Text = "No options available", Value = string.Empty }
+                }, "Value", "Text");
             }
             catch (Exception ex)
             {
@@ -369,6 +394,7 @@ namespace CBS.BusinessService.Config
             try
             {
                 var cusResponseObject = await _loanConfigApiHelper.GetAsync<ResponseObject<LoanProduct>>(string.Format(APICallHelper.Get_Update_Delete_LoanProduct, id));
+
                 if (cusResponseObject.IsSuccess)
                 {
                     var data = cusResponseObject.ApiResponseData.Data;
@@ -786,195 +812,347 @@ namespace CBS.BusinessService.Config
             }
         }
 
-        public async Task<ExecutionMessages> Update(UpdateLoanProductCommand model)
+        //public async Task<ExecutionMessages> Update(UpdateLoanProductCommand model)
+        //{
+        //    try
+        //    {
+
+        //        var LoanProduct = await GetLoanProduct(model.Id);
+        //        LoanProduct.UpdateOption = "N/A";
+        //        if (LoanProduct != null)
+        //        {
+        //            if (model.ServiceOption == "product")
+        //            {
+        //                LoanProduct.ProductCode = model.ProductCode;
+        //                LoanProduct.ProductName = model.ProductName;
+        //                LoanProduct.ActiveStatus = model.ActiveStatus;
+        //                LoanProduct.Description = model.Description;
+        //                LoanProduct.TargetType = model.TargetType;
+        //                LoanProduct.LoanProductCategoryId = model.LoanProductCategoryId;
+        //                LoanProduct.LoanTermId = model.LoanTermId;
+        //                LoanProduct.LoanTermId = model.LoanTermId;
+        //                LoanProduct.IsProductWithSavingFacilities = model.LoanTypeCategory == "SSF" ? true : false;
+        //                LoanProduct.LoanTypeCategory = model.LoanTypeCategory;
+        //                LoanProduct.IsMortgage = model.IsMortgage;
+
+        //                //
+        //            }
+        //            else if (model.ServiceOption == "mortgage")
+        //            {
+        //                LoanProduct.IsMortgage = model.IsMortgage;
+        //                LoanProduct.RequireInsurance = model.RequireInsurance;
+        //                LoanProduct.RequireTitleRegistration = model.RequireTitleRegistration;
+        //                LoanProduct.GracePeriodMonths = model.GracePeriodMonths;
+        //                LoanProduct.MaxLoanToValueRatio = model.MaxLoanToValueRatio;
+        //                LoanProduct.MinCollateralCoveragePercent = model.MinCollateralCoveragePercent;
+        //                LoanProduct.EnablePhasedDisbursement = model.EnablePhasedDisbursement;
+        //                LoanProduct.AllowThirdPartyOwnership = model.AllowThirdPartyOwnership;
+        //            }
+
+        //            else if (model.ServiceOption == "gurantee")
+        //            {
+        //                LoanProduct.RequiresGuarantor = model.RequiresGuarantor;
+        //                LoanProduct.MinimumCollateralPercentage = model.MinimumCollateralPercentage;
+        //                LoanProduct.IsRequiredCollateral = model.IsRequiredCollateral;
+        //                LoanProduct.IsRequiredSalaryccount = model.IsRequiredSalaryccount;
+        //                LoanProduct.IsRequiredSavingAccount = model.IsRequiredSavingAccount;
+        //                LoanProduct.IsRequiredShareAccount = model.IsRequiredShareAccount;
+        //                LoanProduct.IsRequredIrrivocableSalaryTransfer = model.IsRequredIrrivocableSalaryTransfer;
+        //                LoanProduct.IsRequresRegisteredPublicAuthority = model.IsRequresRegisteredPublicAuthority;
+        //                LoanProduct.MinimumShareAccountBalanceForTheRequestAmount = model.MinimumShareAccountBalanceForTheRequestAmount;
+        //                LoanProduct.MinimumSalaryAccountBalanceRateForTheRequestAmount = model.MinimumSalaryAccountBalanceRateForTheRequestAmount;
+        //                LoanProduct.BlockGurantorAccount = model.BlockGurantorAccount;
+        //                LoanProduct.BlockSalaryAccount = model.BlockSalaryAccount;
+        //                LoanProduct.BlockSavingAccount = model.BlockSavingAccount;
+        //                LoanProduct.BlockShareAccount = model.BlockShareAccount;
+        //                LoanProduct.MinimumSavingAccountBalanceRateForTheRequestAmount =
+        //                    model.MinimumSavingAccountBalanceRateForTheRequestAmount;
+        //                LoanProduct.Co_obligorMustHaveFundToGuranteeLoan = model.Co_obligorMustHaveFundToGuranteeLoan;
+        //                LoanProduct.ShorteeMustHaveFundToGuranteeLoan = model.ShorteeMustHaveFundToGuranteeLoan;
+        //                LoanProduct.MinimumPercentageCoverageOfShortee = model.MinimumPercentageCoverageOfShortee;
+
+
+        //            }
+        //            else if (model.ServiceOption == "loan_range")
+        //            {
+        //                LoanProduct.LoanMinimumAmount = model.LoanMinimumAmount;
+        //                LoanProduct.MinimumDownPaymentPercentage = model.MinimumDownPaymentPercentage;
+        //                LoanProduct.LoanMaximumAmount = model.LoanMaximumAmount;
+        //                //LoanProduct.TargetType = model.TargetType;
+        //                LoanProduct.IsPaidFeeBeforeProcessing = model.IsPaidFeeBeforeProcessing;
+
+        //            }
+        //            else if (model.ServiceOption == "topup")
+        //            {
+        //                LoanProduct.HasTopUp = model.HasTopUp;
+        //                LoanProduct.MinimumPercentageRefundBeforeRefinancing = model.MinimumPercentageRefundBeforeRefinancing;
+        //            }
+
+        //            else if (model.ServiceOption == "interest")
+        //            {
+        //                LoanProduct.IsInterestWaiverApplied = model.IsInterestWaiverApplied;
+        //                LoanProduct.MinimumInterestWaiver = model.MinimumInterestWaiver;
+        //                LoanProduct.MaximumInterestWaiver = model.MaximumInterestWaiver;
+        //                LoanProduct.LoanInterestPeriod = model.LoanInterestPeriod;
+        //                LoanProduct.MinimumInterestRate = model.MinimumInterestRate;
+        //                LoanProduct.MaximumInterestRate = model.MaximumInterestRate;
+        //                LoanProduct.StartGeneratingInterestAfterDisbustment = model.StartGeneratingInterestAfterDisbustment;
+        //                LoanProduct.InterestMustBePaidUpFront = model.InterestMustBePaidUpFront;
+        //                LoanProduct.StopInterestCalculationAtLoanMaturityDate = model.StopInterestCalculationAtLoanMaturityDate;
+        //                LoanProduct.NumberOfDaysToStopInterestCalculation = model.NumberOfDaysToStopInterestCalculation;
+        //            }
+        //            else if (model.ServiceOption == "duration")
+        //            {
+        //                LoanProduct.LoanDurationPeriod = model.LoanDurationPeriod;
+        //                LoanProduct.MinimumDurationPeriod = model.MinimumDurationPeriod;
+        //                LoanProduct.MaximumDurationPeriod = model.MaximumDurationPeriod;
+
+        //            }
+        //            else if (model.ServiceOption == "repayment")
+        //            {
+        //                LoanProduct.RepaymentCycles = model.RepaymentCycles;
+        //                LoanProduct.CapitalOrder = model.CapitalOrder;
+        //                LoanProduct.InterestOrder = model.InterestOrder;
+        //                LoanProduct.FineOrder = model.FineOrder;
+        //                LoanProduct.InterestRate = model.InterestRate;
+        //                LoanProduct.FineRate = model.FineRate;
+        //                LoanProduct.CapitalRate = model.CapitalRate;
+        //            }
+        //            else if (model.ServiceOption == "fee")
+        //            {
+
+        //                //LoanProduct.IsEarlyPartialRepaymentFeeRate = model.IsEarlyPartialRepaymentFeeRate;
+        //                //LoanProduct.EarlyPartialRepaymentFee = model.EarlyPartialRepaymentFee;
+        //                //LoanProduct.IsEarlyTotalRepaymentFeeRate = model.IsEarlyTotalRepaymentFeeRate;
+        //                //LoanProduct.EarlyTotalRepaymentFee = model.EarlyTotalRepaymentFee;
+        //                //LoanProduct.MinimumProcessingFeeRate = model.MinimumProcessingFeeRate;
+        //                //LoanProduct.DefaultProcessingFeeRate = model.DefaultProcessingFeeRate;
+        //                //LoanProduct.MaximumProcessingFeeRate = model.MaximumProcessingFeeRate;
+        //                //LoanProduct.MinimumInspectionFeeRate = model.MinimumInspectionFeeRate;
+        //                //LoanProduct.MaximumInspectionFeeRate = model.MaximumInspectionFeeRate;
+        //                //LoanProduct.DefaultInspectionFeeRate = model.DefaultInspectionFeeRate;
+        //            }
+        //            else if (model.ServiceOption == "advancedsettings")
+        //            {
+        //                //LoanProduct.FirstRepaymentAmount = model.FirstRepaymentAmount;
+        //                //LoanProduct.HowShoudInterestBeCahrgedInLoanSchedule = model.HowShoudInterestBeCahrgedInLoanSchedule;
+        //                //LoanProduct.HowShoudPrincipalBeCahrgedInLoanSchedule = model.HowShoudPrincipalBeCahrgedInLoanSchedule;
+        //                //LoanProduct.CalculateInterestOnEachRepaymentOnProRatabase = model.CalculateInterestOnEachRepaymentOnProRatabase;
+        //                //LoanProduct.LoanScheduleDescription = model.LoanScheduleDescription;
+
+        //            }
+        //            else if (model.ServiceOption == "accounting")
+        //            {
+        //                LoanProduct.ChartOfAccountIdForPrincipalAmount = model.ChartOfAccountIdForPrincipalAmount;
+        //                LoanProduct.ChartOfAccountIdForInterestReceived = model.ChartOfAccountIdForInterestReceived;
+        //                LoanProduct.ChartOfAccountIdForPenalty = model.ChartOfAccountIdForPenalty;
+        //                LoanProduct.ChartOfAccountIdForTax = model.ChartOfAccountIdForTax;
+        //                LoanProduct.ChartOfAccountIdForLoanTransition = model.ChartOfAccountIdForLoanTransition;
+        //                LoanProduct.ChartOfAccountIdForWriteOffPrincipal = model.ChartOfAccountIdForWriteOffPrincipal;
+        //                LoanProduct.ChartOfAccountIdForProvisionMoreThanOneYear = model.ChartOfAccountIdForProvisionMoreThanOneYear;
+        //                LoanProduct.ChartOfAccountIdForProvisionMoreThanTwoYear = model.ChartOfAccountIdForProvisionMoreThanTwoYear;
+        //                LoanProduct.ChartOfAccountIdForProvisionMoreThanThreeYear = model.ChartOfAccountIdForProvisionMoreThanThreeYear;
+        //                LoanProduct.ChartOfAccountIdForProvisionMoreThanFourYear = model.ChartOfAccountIdForProvisionMoreThanFourYear;
+        //                LoanProduct.ChartOfAccountIdForTaxiblePrincipalAmount = model.ChartOfAccountIdForTaxiblePrincipalAmount;
+        //                LoanProduct.ChartOfAccountIdForTaxibleInterestReceived = model.ChartOfAccountIdForTaxibleInterestReceived;
+        //                LoanProduct.UpdateOption = "assign_account_chart";
+        //                LoanProduct.ChartOfAccountIdForFee = model.ChartOfAccountIdForFee;
+
+        //            }
+        //            //ChartOfAccountIdForFee
+        //            else if (model.ServiceOption == "charges")
+        //            {
+        //                LoanProduct.IsChargesApplied = model.IsChargesApplied;
+        //                LoanProduct.PenaltyId = model.PenaltyId;
+        //                //LoanProduct.MinimumChargesToAppliedInPercentage = model.MinimumChargesToAppliedInPercentage;
+        //                //LoanProduct.MaximumChargesToAppliedPercentage = model.MaximumChargesToAppliedPercentage;
+        //                //LoanProduct.ChargesAreAppliedToInterestOrBalance = model.ChargesAreAppliedToInterestOrBalance;
+        //                //LoanProduct.ChargesStopAfterHowManyDaysFromStart = model.ChargesStopAfterHowManyDaysFromStart;
+        //                //LoanProduct.DefaultChargeToAppliedPercentage = model.DefaultChargeToAppliedPercentage;
+        //                //LoanProduct.MinimumChargesStartDayAfterLoanDueDate = model.MinimumChargesStartDayAfterLoanDueDate;
+        //                //LoanProduct.MaximumChargesStartDayAfterLoanDueDate = model.MaximumChargesStartDayAfterLoanDueDate;
+        //                //LoanProduct.DefaulChargesStartDayAfterLoanDueDate = model.DefaulChargesStartDayAfterLoanDueDate;
+
+        //            }
+        //            var dataobject = ProductMappingToUpdateObject(LoanProduct, model.ServiceOption, LoanProduct.UpdateOption);
+        //            var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<LoanProduct>>(string.Format(APICallHelper.Get_Update_Delete_LoanProduct, model.Id), dataobject);
+        //            if (response.IsSuccess)
+        //            {
+        //                // Successful creation
+        //                GetExecutionMessages(response, true, $"{model.ServiceOption.ToUpper()}", MessagesResults.Success,
+        //                    ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+        //                return ExecutionMessage;
+        //            }
+        //            else
+        //            {
+        //                // Failed creation
+        //                GetExecutionMessages(model, false, model.ServiceOption.ToUpper(), MessagesResults.Failed,
+        //                    ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+        //            }
+        //        }
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log and handle exception
+        //        GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+        //            SystemMessageStatus.Failed.ToString(), ex);
+        //    }
+        //    return ExecutionMessage;
+        //}
+
+
+        public async Task<ExecutionMessages> Update(LoanProductPolicy policy, string serviceOption, List<string> repaymentCycles = null, LoanProductAccountingProfile accounting = null)
         {
             try
             {
-
-                var LoanProduct = await GetLoanProduct(model.Id);
-                LoanProduct.UpdateOption = "N/A";
-                if (LoanProduct != null)
+                // 1. FETCH existing data first (The "Monolithic" approach)
+                var fullLoanProduct = await GetLoanProduct2(policy.LoanProductId);
+                var UpdatePolicy = fullLoanProduct.Policy;
+                UpdatePolicy.LoanProductId = fullLoanProduct.Id;
+                if (fullLoanProduct == null)
                 {
-                    if (model.ServiceOption == "product")
-                    {
-                        LoanProduct.ProductCode = model.ProductCode;
-                        LoanProduct.ProductName = model.ProductName;
-                        LoanProduct.ActiveStatus = model.ActiveStatus;
-                        LoanProduct.Description = model.Description;
-                        LoanProduct.TargetType = model.TargetType;
-                        LoanProduct.LoanProductCategoryId = model.LoanProductCategoryId;
-                        LoanProduct.LoanTermId = model.LoanTermId;
-                        LoanProduct.LoanTermId = model.LoanTermId;
-                        LoanProduct.IsProductWithSavingFacilities = model.LoanTypeCategory == "SSF" ? true : false;
-                        LoanProduct.LoanTypeCategory = model.LoanTypeCategory;
-                        LoanProduct.IsMortgage = model.IsMortgage;
-
-                        //
-                    }
-                    else if (model.ServiceOption == "mortgage")
-                    {
-                        LoanProduct.IsMortgage = model.IsMortgage;
-                        LoanProduct.RequireInsurance = model.RequireInsurance;
-                        LoanProduct.RequireTitleRegistration = model.RequireTitleRegistration;
-                        LoanProduct.GracePeriodMonths = model.GracePeriodMonths;
-                        LoanProduct.MaxLoanToValueRatio = model.MaxLoanToValueRatio;
-                        LoanProduct.MinCollateralCoveragePercent = model.MinCollateralCoveragePercent;
-                        LoanProduct.EnablePhasedDisbursement = model.EnablePhasedDisbursement;
-                        LoanProduct.AllowThirdPartyOwnership = model.AllowThirdPartyOwnership;
-                    }
-
-                    else if (model.ServiceOption == "gurantee")
-                    {
-                        LoanProduct.RequiresGuarantor = model.RequiresGuarantor;
-                        LoanProduct.MinimumCollateralPercentage = model.MinimumCollateralPercentage;
-                        LoanProduct.IsRequiredCollateral = model.IsRequiredCollateral;
-                        LoanProduct.IsRequiredSalaryccount = model.IsRequiredSalaryccount;
-                        LoanProduct.IsRequiredSavingAccount = model.IsRequiredSavingAccount;
-                        LoanProduct.IsRequiredShareAccount = model.IsRequiredShareAccount;
-                        LoanProduct.IsRequredIrrivocableSalaryTransfer = model.IsRequredIrrivocableSalaryTransfer;
-                        LoanProduct.IsRequresRegisteredPublicAuthority = model.IsRequresRegisteredPublicAuthority;
-                        LoanProduct.MinimumShareAccountBalanceForTheRequestAmount = model.MinimumShareAccountBalanceForTheRequestAmount;
-                        LoanProduct.MinimumSalaryAccountBalanceRateForTheRequestAmount = model.MinimumSalaryAccountBalanceRateForTheRequestAmount;
-                        LoanProduct.BlockGurantorAccount = model.BlockGurantorAccount;
-                        LoanProduct.BlockSalaryAccount = model.BlockSalaryAccount;
-                        LoanProduct.BlockSavingAccount = model.BlockSavingAccount;
-                        LoanProduct.BlockShareAccount = model.BlockShareAccount;
-                        LoanProduct.MinimumSavingAccountBalanceRateForTheRequestAmount =
-                            model.MinimumSavingAccountBalanceRateForTheRequestAmount;
-                        LoanProduct.Co_obligorMustHaveFundToGuranteeLoan = model.Co_obligorMustHaveFundToGuranteeLoan;
-                        LoanProduct.ShorteeMustHaveFundToGuranteeLoan = model.ShorteeMustHaveFundToGuranteeLoan;
-                        LoanProduct.MinimumPercentageCoverageOfShortee = model.MinimumPercentageCoverageOfShortee;
-
-
-                    }
-                    else if (model.ServiceOption == "loan_range")
-                    {
-                        LoanProduct.LoanMinimumAmount = model.LoanMinimumAmount;
-                        LoanProduct.MinimumDownPaymentPercentage = model.MinimumDownPaymentPercentage;
-                        LoanProduct.LoanMaximumAmount = model.LoanMaximumAmount;
-                        //LoanProduct.TargetType = model.TargetType;
-                        LoanProduct.IsPaidFeeBeforeProcessing = model.IsPaidFeeBeforeProcessing;
-
-                    }
-                    else if (model.ServiceOption == "topup")
-                    {
-                        LoanProduct.HasTopUp = model.HasTopUp;
-                        LoanProduct.MinimumPercentageRefundBeforeRefinancing = model.MinimumPercentageRefundBeforeRefinancing;
-                    }
-
-                    else if (model.ServiceOption == "interest")
-                    {
-                        LoanProduct.IsInterestWaiverApplied = model.IsInterestWaiverApplied;
-                        LoanProduct.MinimumInterestWaiver = model.MinimumInterestWaiver;
-                        LoanProduct.MaximumInterestWaiver = model.MaximumInterestWaiver;
-                        LoanProduct.LoanInterestPeriod = model.LoanInterestPeriod;
-                        LoanProduct.MinimumInterestRate = model.MinimumInterestRate;
-                        LoanProduct.MaximumInterestRate = model.MaximumInterestRate;
-                        LoanProduct.StartGeneratingInterestAfterDisbustment = model.StartGeneratingInterestAfterDisbustment;
-                        LoanProduct.InterestMustBePaidUpFront = model.InterestMustBePaidUpFront;
-                        LoanProduct.StopInterestCalculationAtLoanMaturityDate = model.StopInterestCalculationAtLoanMaturityDate;
-                        LoanProduct.NumberOfDaysToStopInterestCalculation = model.NumberOfDaysToStopInterestCalculation;
-                    }
-                    else if (model.ServiceOption == "duration")
-                    {
-                        LoanProduct.LoanDurationPeriod = model.LoanDurationPeriod;
-                        LoanProduct.MinimumDurationPeriod = model.MinimumDurationPeriod;
-                        LoanProduct.MaximumDurationPeriod = model.MaximumDurationPeriod;
-
-                    }
-                    else if (model.ServiceOption == "repayment")
-                    {
-                        LoanProduct.RepaymentCycles = model.RepaymentCycles;
-                        LoanProduct.CapitalOrder = model.CapitalOrder;
-                        LoanProduct.InterestOrder = model.InterestOrder;
-                        LoanProduct.FineOrder = model.FineOrder;
-                        LoanProduct.InterestRate = model.InterestRate;
-                        LoanProduct.FineRate = model.FineRate;
-                        LoanProduct.CapitalRate = model.CapitalRate;
-                    }
-                    else if (model.ServiceOption == "fee")
-                    {
-
-                        //LoanProduct.IsEarlyPartialRepaymentFeeRate = model.IsEarlyPartialRepaymentFeeRate;
-                        //LoanProduct.EarlyPartialRepaymentFee = model.EarlyPartialRepaymentFee;
-                        //LoanProduct.IsEarlyTotalRepaymentFeeRate = model.IsEarlyTotalRepaymentFeeRate;
-                        //LoanProduct.EarlyTotalRepaymentFee = model.EarlyTotalRepaymentFee;
-                        //LoanProduct.MinimumProcessingFeeRate = model.MinimumProcessingFeeRate;
-                        //LoanProduct.DefaultProcessingFeeRate = model.DefaultProcessingFeeRate;
-                        //LoanProduct.MaximumProcessingFeeRate = model.MaximumProcessingFeeRate;
-                        //LoanProduct.MinimumInspectionFeeRate = model.MinimumInspectionFeeRate;
-                        //LoanProduct.MaximumInspectionFeeRate = model.MaximumInspectionFeeRate;
-                        //LoanProduct.DefaultInspectionFeeRate = model.DefaultInspectionFeeRate;
-                    }
-                    else if (model.ServiceOption == "advancedsettings")
-                    {
-                        //LoanProduct.FirstRepaymentAmount = model.FirstRepaymentAmount;
-                        //LoanProduct.HowShoudInterestBeCahrgedInLoanSchedule = model.HowShoudInterestBeCahrgedInLoanSchedule;
-                        //LoanProduct.HowShoudPrincipalBeCahrgedInLoanSchedule = model.HowShoudPrincipalBeCahrgedInLoanSchedule;
-                        //LoanProduct.CalculateInterestOnEachRepaymentOnProRatabase = model.CalculateInterestOnEachRepaymentOnProRatabase;
-                        //LoanProduct.LoanScheduleDescription = model.LoanScheduleDescription;
-
-                    }
-                    else if (model.ServiceOption == "accounting")
-                    {
-                        LoanProduct.ChartOfAccountIdForPrincipalAmount = model.ChartOfAccountIdForPrincipalAmount;
-                        LoanProduct.ChartOfAccountIdForInterestReceived = model.ChartOfAccountIdForInterestReceived;
-                        LoanProduct.ChartOfAccountIdForPenalty = model.ChartOfAccountIdForPenalty;
-                        LoanProduct.ChartOfAccountIdForTax = model.ChartOfAccountIdForTax;
-                        LoanProduct.ChartOfAccountIdForLoanTransition = model.ChartOfAccountIdForLoanTransition;
-                        LoanProduct.ChartOfAccountIdForWriteOffPrincipal = model.ChartOfAccountIdForWriteOffPrincipal;
-                        LoanProduct.ChartOfAccountIdForProvisionMoreThanOneYear = model.ChartOfAccountIdForProvisionMoreThanOneYear;
-                        LoanProduct.ChartOfAccountIdForProvisionMoreThanTwoYear = model.ChartOfAccountIdForProvisionMoreThanTwoYear;
-                        LoanProduct.ChartOfAccountIdForProvisionMoreThanThreeYear = model.ChartOfAccountIdForProvisionMoreThanThreeYear;
-                        LoanProduct.ChartOfAccountIdForProvisionMoreThanFourYear = model.ChartOfAccountIdForProvisionMoreThanFourYear;
-                        LoanProduct.ChartOfAccountIdForTaxiblePrincipalAmount = model.ChartOfAccountIdForTaxiblePrincipalAmount;
-                        LoanProduct.ChartOfAccountIdForTaxibleInterestReceived = model.ChartOfAccountIdForTaxibleInterestReceived;
-                        LoanProduct.UpdateOption = "assign_account_chart";
-                        LoanProduct.ChartOfAccountIdForFee = model.ChartOfAccountIdForFee;
-
-                    }
-                    //ChartOfAccountIdForFee
-                    else if (model.ServiceOption == "charges")
-                    {
-                        LoanProduct.IsChargesApplied = model.IsChargesApplied;
-                        LoanProduct.PenaltyId = model.PenaltyId;
-                        //LoanProduct.MinimumChargesToAppliedInPercentage = model.MinimumChargesToAppliedInPercentage;
-                        //LoanProduct.MaximumChargesToAppliedPercentage = model.MaximumChargesToAppliedPercentage;
-                        //LoanProduct.ChargesAreAppliedToInterestOrBalance = model.ChargesAreAppliedToInterestOrBalance;
-                        //LoanProduct.ChargesStopAfterHowManyDaysFromStart = model.ChargesStopAfterHowManyDaysFromStart;
-                        //LoanProduct.DefaultChargeToAppliedPercentage = model.DefaultChargeToAppliedPercentage;
-                        //LoanProduct.MinimumChargesStartDayAfterLoanDueDate = model.MinimumChargesStartDayAfterLoanDueDate;
-                        //LoanProduct.MaximumChargesStartDayAfterLoanDueDate = model.MaximumChargesStartDayAfterLoanDueDate;
-                        //LoanProduct.DefaulChargesStartDayAfterLoanDueDate = model.DefaulChargesStartDayAfterLoanDueDate;
-
-                    }
-                    var dataobject = ProductMappingToUpdateObject(LoanProduct, model.ServiceOption, LoanProduct.UpdateOption);
-                    var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<LoanProduct>>(string.Format(APICallHelper.Get_Update_Delete_LoanProduct, model.Id), dataobject);
-                    if (response.IsSuccess)
-                    {
-                        // Successful creation
-                        GetExecutionMessages(response, true, $"{model.ServiceOption.ToUpper()}", MessagesResults.Success,
-                            ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
-                        return ExecutionMessage;
-                    }
-                    else
-                    {
-                        // Failed creation
-                        GetExecutionMessages(model, false, model.ServiceOption.ToUpper(), MessagesResults.Failed,
-                            ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
-                    }
+                    GetExecutionMessages(policy, false, null, MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, "Loan Product not found in database.");
+                    return ExecutionMessage;
                 }
 
+                // 2. MAP the incoming UI data onto the Fetched Object
+                // We update specific sections of 'fullLoanProduct' based on the serviceOption
+                //  fullLoanProduct.UpdateOption = "N/A"; // Legacy flag from your snippet
+
+                switch (serviceOption)
+                {
+
+                    case "mortgage":
+                        // Assuming 'Policy' is a property on PCMFLoanProduct
+                        UpdatePolicy.IsMortgage = policy.IsMortgage;
+                        UpdatePolicy.RequireInsurance = policy.RequireInsurance;
+                        UpdatePolicy.RequireTitleRegistration = policy.RequireTitleRegistration;
+                        UpdatePolicy.GracePeriodMonths = policy.GracePeriodMonths;
+                        UpdatePolicy.MaxLoanToValueRatio = policy.MaxLoanToValueRatio;
+                        UpdatePolicy.MinCollateralCoveragePercent = policy.MinCollateralCoveragePercent;
+                        UpdatePolicy.EnablePhasedDisbursement = policy.EnablePhasedDisbursement;
+                        UpdatePolicy.AllowThirdPartyOwnership = policy.AllowThirdPartyOwnership;
+                        break;
+
+                    case "gurantee":
+                        UpdatePolicy.RequiresGuarantor = policy.RequiresGuarantor;
+                        UpdatePolicy.MinimumCollateralPercentage = policy.MinimumCollateralPercentage;
+                        UpdatePolicy.IsRequiredCollateral = policy.IsRequiredCollateral;
+                        UpdatePolicy.IsRequiredSalaryccount = policy.IsRequiredSalaryccount;
+                        UpdatePolicy.IsRequiredSavingAccount = policy.IsRequiredSavingAccount;
+                        UpdatePolicy.IsRequiredShareAccount = policy.IsRequiredShareAccount;
+                        UpdatePolicy.IsRequredIrrivocableSalaryTransfer = policy.IsRequredIrrivocableSalaryTransfer;
+                        UpdatePolicy.IsRequresRegisteredPublicAuthority = policy.IsRequresRegisteredPublicAuthority;
+                        UpdatePolicy.MinimumShareAccountBalanceForTheRequestAmount = policy.MinimumShareAccountBalanceForTheRequestAmount;
+                        UpdatePolicy.MinimumSalaryAccountBalanceRateForTheRequestAmount = policy.MinimumSalaryAccountBalanceRateForTheRequestAmount;
+                        UpdatePolicy.MinimumSavingAccountBalanceRateForTheRequestAmount = policy.MinimumSavingAccountBalanceRateForTheRequestAmount;
+                        UpdatePolicy.BlockSalaryAccount = policy.BlockSalaryAccount;
+                        UpdatePolicy.BlockSavingAccount = policy.BlockSavingAccount;
+                        UpdatePolicy.BlockShareAccount = policy.BlockShareAccount;
+                        // fullLoanProduct.Policy.BlockGurantorAccount = policy.BlockGurantorAccount; // Uncomment if property exists in DTO
+                        UpdatePolicy.Co_obligorMustHaveFundToGuranteeLoan = policy.Co_obligorMustHaveFundToGuranteeLoan;
+                        UpdatePolicy.ShorteeMustHaveFundToGuranteeLoan = policy.ShorteeMustHaveFundToGuranteeLoan;
+                        UpdatePolicy.MinimumPercentageCoverageOfShortee = policy.MinimumPercentageCoverageOfShortee;
+                        break;
+
+                    case "loan_range":
+                        UpdatePolicy.LoanMinimumAmount = policy.LoanMinimumAmount;
+                        UpdatePolicy.MinimumDownPaymentPercentage = policy.MinimumDownPaymentPercentage;
+                        UpdatePolicy.LoanMaximumAmount = policy.LoanMaximumAmount;
+                        UpdatePolicy.IsPaidFeeBeforeProcessing = policy.IsPaidFeeBeforeProcessing;
+
+                        break;
+
+                    case "topup":
+                        UpdatePolicy.HasTopUp = policy.HasTopUp;
+                        UpdatePolicy.MinimumPercentageRefundBeforeRefinancing = policy.MinimumPercentageRefundBeforeRefinancing;
+                        break;
+
+                    case "interest":
+                        UpdatePolicy.IsInterestWaiverApplied = policy.IsInterestWaiverApplied;
+                        UpdatePolicy.MinimumInterestWaiver = policy.MinimumInterestWaiver;
+                        UpdatePolicy.MaximumInterestWaiver = policy.MaximumInterestWaiver;
+                        UpdatePolicy.LoanInterestPeriod = policy.LoanInterestPeriod;
+                        UpdatePolicy.MinimumInterestRate = policy.MinimumInterestRate;
+                        UpdatePolicy.MaximumInterestRate = policy.MaximumInterestRate;
+                        UpdatePolicy.StartGeneratingInterestAfterDisbustment = policy.StartGeneratingInterestAfterDisbustment;
+                        UpdatePolicy.InterestMustBePaidUpFront = policy.InterestMustBePaidUpFront;
+                        UpdatePolicy.StopInterestCalculationAtLoanMaturityDate = policy.StopInterestCalculationAtLoanMaturityDate;
+                        UpdatePolicy.NumberOfDaysToStopInterestCalculation = policy.NumberOfDaysToStopInterestCalculation;
+                        break;
+
+                    case "duration":
+                        UpdatePolicy.LoanDurationPeriod = policy.LoanDurationPeriod;
+                        UpdatePolicy.MinimumDurationPeriod = policy.MinimumDurationPeriod;
+                        UpdatePolicy.MaximumDurationPeriod = policy.MaximumDurationPeriod;
+                        break;
+
+                    case "repayment":
+                        fullLoanProduct.RepaymentCycles = repaymentCycles; // Directly assign list
+                        UpdatePolicy.CapitalOrder = policy.CapitalOrder;
+                        UpdatePolicy.InterestOrder = policy.InterestOrder;
+                        UpdatePolicy.FineOrder = policy.FineOrder;
+                        UpdatePolicy.InterestRate = policy.InterestRate;
+                        UpdatePolicy.FineRate = policy.FineRate;
+                        UpdatePolicy.CapitalRate = policy.CapitalRate;
+                        break;
+
+                    case "charges":
+                        UpdatePolicy.IsChargesApplied = policy.IsChargesApplied;
+                        UpdatePolicy.PenaltyId = policy.PenaltyId;
+                        break;
+                }
+
+                // 3. SEND the single consolidated object to the Single Endpoint
+                // We ignore the individual 'policy' payload and send 'fullLoanProduct'
+                var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<bool>>(APICallHelper.LoanProductUpsertPolicy, UpdatePolicy);
+
+                if (response.IsSuccess)
+                {
+                    GetExecutionMessages(response, true, $"{serviceOption.ToUpper()}", MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                    return ExecutionMessage;
+                }
+                else
+                {
+                    GetExecutionMessages(policy, false, serviceOption.ToUpper(), MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
             }
             catch (Exception ex)
             {
-                // Log and handle exception
                 GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
                     SystemMessageStatus.Failed.ToString(), ex);
             }
             return ExecutionMessage;
         }
 
+        // ----------------------------------------------------------------------------------
+        // HELPER METHOD: To fetch the product by ID (Essential for this approach)
+        // ----------------------------------------------------------------------------------
+        private async Task<PCMFLoanProduct> GetLoanProduct2(string id)
+        {
+            try
+            {
+                var response = await _loanConfigApiHelper.GetAsync<ServiceResponse<PCMFLoanProduct>>(string.Format(APICallHelper.Get_Update_Delete_LoanProduct, id));
+                if (response.IsSuccess)
+                {
+                    var data = response.ApiResponseData.Data;
+
+                    return data;
+                }
+                return null;
+            }
+            catch (Exception)
+            {
+                // Fail silently here, main method handles null check
+            }
+            return null;
+        }
+
     }
+
 
 }

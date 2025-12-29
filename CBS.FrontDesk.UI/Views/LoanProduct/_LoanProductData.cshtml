@@ -1,7 +1,6 @@
 ﻿@model CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure.PCMFLoanProductManagementObjects
 @using CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure
 
-
 <div class="card shadow-sm">
     <div class="card-header d-flex justify-content-between align-items-center">
         <div>
@@ -22,7 +21,6 @@
     </div>
 
     <div class="card-body">
-
         @if (Model?.Products == null || !Model.Products.Any())
         {
             <div class="alert alert-info mb-0">
@@ -39,9 +37,6 @@
                             <th style="min-width:120px;">Code</th>
                             <th style="min-width:240px;">Product Name</th>
                             <th style="min-width:160px;">Facility</th>
-                            <th style="min-width:160px;">Term</th>
-                            <th style="min-width:160px;">Target</th>
-                            <th style="min-width:220px;">PCMF Purpose</th>
                             <th style="min-width:140px;">PCMF Codes</th>
                             <th style="min-width:110px;">Status</th>
                             <th style="min-width:120px;" class="text-end">Actions</th>
@@ -64,7 +59,7 @@
                                     }
                                 </td>
 
-                                <!-- ✅ Loan Facility -->
+                                <!-- Loan Facility -->
                                 <td>
                                     @switch (p.LoanFacility)
                                     {
@@ -81,61 +76,22 @@
                                             <span class="badge bg-label-dark">Line of Credit</span>
                                             break;
                                         default:
-                                            <span class="badge bg-secondary">Unknown</span>
+                                            <span class="badge bg-secondary">Not Mapped</span>
                                             break;
                                     }
                                 </td>
 
-                                <!-- ✅ Loan Term (only meaningful for Classic / SSF) -->
+                                <!-- PCMF Codes -->
                                 <td>
-                                    @if (p.LoanFacility == LoanFacilityType.Classic || p.LoanFacility == LoanFacilityType.SSF)
-                                    {
-                                        if (p.Term != null)
-                                        {
-                                            <span class="badge bg-label-primary">@p.Term.NameEn</span>
-                                        }
-                                        else
-                                        {
-                                            <span class="text-muted">—</span>
-                                        }
-                                    }
-                                    else
-                                    {
-                                        <span class="text-muted">N/A</span>
-                                    }
+                                    <span class="badge bg-label-secondary" title="PCMF Base Code">
+                                        @p.PcmfBaseCode
+                                    </span>
+                                    <span class="badge bg-label-dark" title="PCMF Group Code">
+                                        @p.PcmfGroupCode
+                                    </span>
                                 </td>
 
-                                <td>
-                                    @if (p.Target != null)
-                                    {
-                                        <span class="badge bg-label-info">@p.Target.NameEn</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="text-muted">N/A</span>
-                                    }
-                                </td>
-
-                                <td>
-                                    @if (p.Purpose != null)
-                                    {
-                                        <span class="fw-semibold">@p.Purpose.NameEn</span>
-                                        if (!string.IsNullOrWhiteSpace(p.Purpose.DescriptionEn))
-                                        {
-                                            <div><small class="text-muted">@p.Purpose.DescriptionEn</small></div>
-                                        }
-                                    }
-                                    else
-                                    {
-                                        <span class="text-muted">N/A</span>
-                                    }
-                                </td>
-
-                                <td>
-                                    <span class="badge bg-label-secondary" title="PCMF Base Code">@p.PcmfBaseCode</span>
-                                    <span class="badge bg-label-dark" title="PCMF Group Code">@p.PcmfGroupCode</span>
-                                </td>
-
+                                <!-- Status -->
                                 <td>
                                     @if (p.ActiveStatus)
                                     {
@@ -147,68 +103,76 @@
                                     }
                                 </td>
 
+                                <!-- Actions -->
                                 <td class="text-end">
                                     <div class="btn-group">
+                                        <!-- Main Trigger Button -->
                                         <button type="button"
                                                 class="btn btn-outline-primary btn-sm dropdown-toggle"
                                                 data-bs-toggle="dropdown">
                                             <i class="mdi mdi-cog-outline me-1"></i> Manage
                                         </button>
 
-                                        <ul class="dropdown-menu dropdown-menu-end">
+                                        <ul class="dropdown-menu dropdown-menu-end p-2" style="min-width: 230px;">
 
-                                            <li>
-                                                <a class="dropdown-item"
+                                            <!-- Edit -->
+                                            <li class="mb-1">
+                                                <a class="btn btn-outline-primary btn-sm w-100 text-primary"
                                                    onclick="openLoanProductEditModal('@p.Id')">
                                                     <i class="mdi mdi-pencil-outline me-2"></i> Edit (Simple)
                                                 </a>
                                             </li>
 
-                                            <li>
-                                                <a class="dropdown-item"
+                                            <!-- Preview / Details -->
+                                            <li class="mb-1">
+                                                <a class="btn btn-outline-info btn-sm w-100 text-info"
                                                    onclick="openLoanProductManageModal('@p.Id','preview','_LoanProductPreview')">
-                                                    <i class="mdi mdi-eye-outline me-2"></i> Preview
+                                                    <i class="mdi mdi-eye-outline me-2"></i> Details
                                                 </a>
                                             </li>
 
-                                            <li><hr class="dropdown-divider" /></li>
+                                            <li><hr class="dropdown-divider"></li>
 
-                                            <li>
-                                                <a class="dropdown-item"
-                                                   onclick="openLoanProductManageModal('@p.Id','policy','_LoanProductPolicy')">
+                                            <!-- Policy -->
+                                            <li class="mb-1">
+                                                <a class="btn btn-outline-warning btn-sm w-100 text-warning"
+                                                   onclick="openLoanProductManageModal('@p.Id','policy','_Policy')">
                                                     <i class="mdi mdi-shield-check-outline me-2"></i> Policy
                                                 </a>
                                             </li>
 
-                                            <li>
-                                                <a class="dropdown-item"
+                                            <!-- Accounting Mapping -->
+                                            <li class="mb-1">
+                                                <a class="btn btn-outline-success btn-sm w-100 text-success"
                                                    onclick="openLoanProductManageModal('@p.Id','account_mapping','_LoanProductAccountingMapping')">
                                                     <i class="mdi mdi-bank-outline me-2"></i> Accounting Mapping
                                                 </a>
                                             </li>
 
-                                            <li>
-                                                <a class="dropdown-item"
+                                            <!-- Penalties -->
+                                            <li class="mb-1">
+                                                <a class="btn btn-outline-warning btn-sm w-100 text-warning"
                                                    onclick="openLoanProductManageModal('@p.Id','penalties','_LoanProductPenalties')">
                                                     <i class="mdi mdi-alert-outline me-2"></i> Penalties
                                                 </a>
                                             </li>
 
-                                            <!-- ✅ OD / LOC Facility -->
-                                            @if (p.LoanFacility == LoanFacilityType.Overdraft || p.LoanFacility == LoanFacilityType.LineOfCredit)
+                                            @if (p.LoanFacility == LoanFacilityType.Overdraft ||
+                                                 p.LoanFacility == LoanFacilityType.LineOfCredit)
                                             {
-                                                <li>
-                                                    <a class="dropdown-item"
+                                                <li class="mb-1">
+                                                    <a class="btn btn-outline-secondary btn-sm w-100 text-warning"
                                                        onclick="openLoanProductManageModal('@p.Id','overdraft','_OverdraftFacilityConfig')">
                                                         <i class="mdi mdi-credit-card-outline me-2"></i> Facility Config
                                                     </a>
                                                 </li>
                                             }
 
-                                            <li><hr class="dropdown-divider" /></li>
+                                            <li><hr class="dropdown-divider"></li>
 
+                                            <!-- Delete -->
                                             <li>
-                                                <a class="dropdown-item text-danger"
+                                                <a class="btn btn-outline-danger btn-sm w-100 text-danger"
                                                    onclick="deleteLoanProduct('@p.Id')">
                                                     <i class="mdi mdi-delete-outline me-2"></i> Delete
                                                 </a>
@@ -217,6 +181,7 @@
                                         </ul>
                                     </div>
                                 </td>
+
                             </tr>
                         }
                     </tbody>

@@ -260,6 +260,8 @@
     <Compile Include="Entity\GeneralStatisticReport\GeneralStatisticsReportRPT.cs" />
     <Compile Include="Entity\GeneralStatisticReport\GeneralStatisticsReportDtoMapper.cs" />
     <Compile Include="Entity\LoanAdjustmentP\LoanAdjustment.cs" />
+    <Compile Include="Entity\LoanConf\LoanTargetCatalog.cs" />
+    <Compile Include="Entity\LoanConf\PcmfLoanPurpose.cs" />
     <Compile Include="Entity\LoanConf\PCMFStructure\PCMFLoanProduct.cs" />
     <Compile Include="Entity\ManualDailycollection\CollectorDto.cs" />
     <Compile Include="Entity\ManualDailycollection\FileDetailsResponse.cs" />

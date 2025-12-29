@@ -2201,6 +2201,8 @@
     <Compile Include="Controllers\DailyCollectorManagement\TransactionDetailsController.cs" />
     <Compile Include="Controllers\DailySaverManagementP\DailySaverManagementController.cs" />
     <Compile Include="Controllers\LiaisonMappingV2\LiaisonMappingConfigController.cs" />
+    <Compile Include="Controllers\Loan\Configuration\LoanTargetCatalogController.cs" />
+    <Compile Include="Controllers\Loan\Configuration\PcmfLoanPurposeController.cs" />
     <Compile Include="Controllers\Loan\LoanAdjustmentP\LoanAdjustmentConsoleController.cs" />
     <Compile Include="Controllers\MemberAdjustmentConsole\MemberAdjustmentConsoleController.cs" />
     <Compile Include="Controllers\MemberReceiptsP\MemberReceiptController.cs" />
@@ -8146,12 +8148,13 @@
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\CamCCULAdmin_TB.pubxml" />
     <None Include="Properties\PublishProfiles\Cpcmc_TB.pubxml" />
-    <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\PB.pubxml" />
     <None Include="Properties\PublishProfiles\PROD.pubxml" />
+    <None Include="Properties\PublishProfiles\Production Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\TB.pubxml" />
     <None Include="Properties\PublishProfiles\TBED.pubxml" />
+    <None Include="Properties\PublishProfiles\Testbed Deploy.pubxml" />
     <None Include="Resources\TextFile1.txt" />
     <Content Include="DataSet\Transaction\TransactionDS.xsc">
       <DependentUpon>TransactionDS.xsd</DependentUpon>
@@ -10278,7 +10281,7 @@
     <Content Include="Views\LoanProduct\_LoanProductAccountingMapping.cshtml" />
     <Content Include="Views\LoanProduct\_LoanProduct.cshtml" />
     <Content Include="Views\LoanProduct\_SetPenalty.cshtml" />
-    <Content Include="Views\LoanProduct\_Update.cshtml" />
+    <Content Include="Views\LoanProduct\_Policy.cshtml" />
     <Content Include="Views\LoanPurpose\Index.cshtml" />
     <Content Include="Views\LoanPurpose\_Create.cshtml" />
     <Content Include="Views\LoanPurpose\_Data.cshtml" />
@@ -11169,6 +11172,13 @@
     <Content Include="Views\ReconciledLine\_Details.cshtml" />
     <Content Include="Views\SharedMonthSimulation\_intrestgeneration.cshtml" />
     <Content Include="Views\ReconciledLine\_ExportTableReconciled.cshtml" />
+    <Content Include="Views\LoanTargetCatalog\Index.cshtml" />
+    <Content Include="Views\LoanTargetCatalog\_CreateEditLoanTargetCatalog.cshtml" />
+    <Content Include="Views\LoanTargetCatalog\_LoanTargetCatalogDataTable.cshtml" />
+    <Content Include="Views\LoanTargetCatalog\_LoanTargetCatalogDetails.cshtml" />
+    <Content Include="Views\PcmfLoanPurpose\Index.cshtml" />
+    <Content Include="Views\PcmfLoanPurpose\_CreateEditPcmfLoanPurpose.cshtml" />
+    <Content Include="Views\PcmfLoanPurpose\_PcmfLoanPurposeDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

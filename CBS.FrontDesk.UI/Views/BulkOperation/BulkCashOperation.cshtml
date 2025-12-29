@@ -1,8 +1,9 @@
 ﻿@using Resources
-@using Newtonsoft;
+@using Newtonsoft.Json
 @model CBS.FrontDesk.Data.Entity.BulkOperation.SimulateCashOutOrCashInBulkOperation
+
 @{
-    ViewBag.Title = @GlobalBulkOperation.SimulateBulkOperation;
+    ViewBag.Title = GlobalBulkOperation.SimulateBulkOperation;
 }
 
 <style>
@@ -26,171 +27,208 @@
         position: relative;
         top: -1px;
     }
+
+    .help-hint {
+        font-size: .85rem;
+    }
 </style>
 
 <div class="row">
     <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
-        <!-- Header Section -->
+
+        <!-- ====================== -->
+        <!-- HEADER -->
+        <!-- ====================== -->
         <div class="card bg-light mb-4 shadow-sm">
             <div class="card-body text-center">
-                <h1 class="card-title text-primary">
-                    <i class="mdi mdi-cash-multiple me-2"></i> @GlobalBulkOperation.BULKOPERATIONS
+                <h1 class="card-title text-success fw-bold mb-2">
+                    <i class="mdi mdi-cash-multiple me-2"></i> @GlobalBulkOperation.BULKCASHOPERATIONS
                 </h1>
-                <p class="card-text">
-                    <strong>Bulk Cash Management System</strong> - Perform mass cash in/out operations on multiple accounts simultaneously.
-                    Efficiently process cash movements while maintaining complete audit trails.
-                </p>
-                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
 
-                <div class="alert alert-info mt-3">
-                    <i class="mdi mdi-alert-circle-outline me-2"></i>
-                    <strong>Important:</strong> All bulk cash operations will first run in simulation mode to preview results before actual execution.
+                <p class="card-text text-muted mb-2">
+                    <strong>Bulk Cash Management Console</strong> — Simulate and validate Cash-In/Cash-Out batches before execution.
+                    <br />
+                    Process multiple account cash movements in one operation while maintaining complete audit trails and operational control.
+                </p>
+
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.35);" />
+
+                <div class="alert alert-info mt-3 d-flex align-items-center justify-content-center">
+                    <i class="mdi mdi-information-outline me-2"></i>
+                    <strong>Important:</strong>&nbsp;All bulk cash operations run in <b>SIMULATION</b> mode first for review and validation before execution.
                 </div>
             </div>
         </div>
 
-        <!-- Added button as requested -->
-        <div class="mb-3 text-end">
-            <a href="/BulkOperation/Listing" class="btn btn-sm btn-outline-secondary align-self-center me-3" data-bs-toggle="tooltip" title="@GlobalBulkOperation.GoToExecutedBulkOperationList">
-                <i class="mdi mdi-view-list me-1"></i> @GlobalBulkOperation.ViewBulkOperations
-            </a>
+        <!-- ====================== -->
+        <!-- QUICK ACTIONS -->
+        <!-- ====================== -->
+        <div class="row mb-2">
+            <div class="col-md-6 text-md-end mb-1 mb-md-0">
+                <a href="/BulkOperation" class="btn btn-primary btn-sm shadow-sm px-3 w-100 w-md-auto">
+                    <i class="mdi mdi-account-plus-outline me-1"></i> @GlobalBulkOperation.SimulateARangeBulkOperation
+                </a>
+            </div>
+            <div class="col-md-6 text-md-start">
+                <a href="/BulkOperation/Listing" class="btn btn-outline-secondary btn-sm shadow-sm px-3 w-100 w-md-auto"
+                   data-bs-toggle="tooltip" title="@GlobalBulkOperation.GoToExecutedBulkOperationList">
+                    <i class="mdi mdi-view-list me-1"></i> @GlobalBulkOperation.ViewBulkOperations
+                </a>
+            </div>
         </div>
 
-        <!-- Main Accordion Container -->
+        <!-- ====================== -->
+        <!-- MAIN ACCORDION -->
+        <!-- ====================== -->
         <div class="accordion mb-2" id="bulkOperationAccordion">
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingMethodSelection">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMethodSelection" aria-expanded="true" aria-controls="collapseMethodSelection">
-                        <i class="mdi mdi-format-list-bulleted-type me-2"></i> @GlobalBulkOperation.BulkCashSimulationMethod
+                    <button class="accordion-button" type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseMethodSelection"
+                            aria-expanded="true" aria-controls="collapseMethodSelection">
+                        <i class="mdi mdi-format-list-bulleted-type me-2"></i>
+                        @GlobalBulkOperation.BulkCashSimulationMethod
+                        <span class="badge bg-success ms-2">Simulation</span>
                     </button>
                 </h2>
+
                 <div id="collapseMethodSelection" class="accordion-collapse collapse show" aria-labelledby="headingMethodSelection">
                     <div class="accordion-body">
+
+                        <!-- =============================== -->
+                        <!-- INPUT METHOD -->
+                        <!-- =============================== -->
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="form-group">
-                                    <div class="btn-group btn-group-toggle w-100" data-toggle="buttons">
-                                        <label class="btn btn-outline-primary active">
-                                            @Html.RadioButtonFor(m => m.InputMethod, "manual", new { @checked = "checked", id = "manualInput" })
+                                <div class="mb-2">
+                                    <label class="form-label fw-semibold">
+                                        Input Method
+                                        <i class="mdi mdi-help-circle-outline text-muted"
+                                           data-bs-toggle="tooltip"
+                                           title="Choose how you will provide account data: manual entry or file upload."></i>
+                                    </label>
+
+                                    <div class="btn-group w-100" role="group" aria-label="Input method">
+                                        <input type="radio" class="btn-check" name="InputMethod" id="manualInput" value="manual" checked />
+                                        <label class="btn btn-outline-primary" for="manualInput">
                                             <i class="mdi mdi-keyboard-outline me-2"></i> Manual Entry
                                         </label>
-                                        <label class="btn btn-outline-primary">
-                                            @Html.RadioButtonFor(m => m.InputMethod, "file", new { id = "fileInput" })
+
+                                        <input type="radio" class="btn-check" name="InputMethod" id="fileInput" value="file" />
+                                        <label class="btn btn-outline-primary" for="fileInput">
                                             <i class="mdi mdi-file-import-outline me-2"></i> File Upload
                                         </label>
                                     </div>
+
+                                    <small class="text-muted d-block help-hint mt-1">
+                                        <i class="mdi mdi-information-outline me-1"></i>
+                                        Manual mode is best for small batches; File mode is recommended for large batches.
+                                    </small>
                                 </div>
                             </div>
                         </div>
 
-
-
-                        <!-- Manual Input Section -->
+                        <!-- =============================== -->
+                        <!-- MANUAL INPUT SECTION -->
+                        <!-- =============================== -->
                         <div id="manualInputSection" class="mt-3">
-                            @using (Html.BeginForm("SimulateCashOutOrCashInBulkOperation", "BulkOperation", FormMethod.Post, new { id = "manualForm", enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdateManualEntryingBulkCashOperation(this);" }))
+
+                            @using (Html.BeginForm("SimulateCashOutOrCashInBulkOperation", "BulkOperation", FormMethod.Post,
+                                new { id = "manualForm", enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdateManualEntryingBulkCashOperation(this);" }))
                             {
                                 @Html.AntiForgeryToken()
-                                <!-- Tips Section -->
-                                <div class="card shadow-sm mb-1">
+
+                                <!-- TIPS -->
+                                <div class="card shadow-sm mb-2">
                                     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-                                        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalBulkOperation.TIPS</span>
-                                        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseUserTips" aria-expanded="false" aria-controls="collapseUserTips">
+                                        <span><i class="mdi mdi-information-outline me-2"></i> Tips & Rules (Manual Entry)</span>
+                                        <button class="btn btn-light btn-sm" type="button"
+                                                data-bs-toggle="collapse"
+                                                data-bs-target="#collapseUserTipsManual"
+                                                aria-expanded="false"
+                                                aria-controls="collapseUserTipsManual">
                                             <i class="mdi mdi-chevron-down"></i>
                                         </button>
                                     </h6>
-                                    <div id="collapseUserTips" class="collapse">
-                                        <div class="card-body">
-                                            <div class="row gy-2">
-                                                <div class="col-md-12">
-                                                    <h5 class="text-primary mb-3"><i class="mdi mdi-playlist-check me-2"></i> How to Execute a Bulk Cash Operation:</h5>
-                                                    <ol class="list-group list-group-numbered">
-                                                        <li class="list-group-item d-flex justify-content-between align-items-start">
-                                                            <div class="ms-2 me-auto">
-                                                                <div class="fw-bold">Define Operation Type</div>
-                                                                Select whether this is a bulk cash in (deposit) or cash out (withdrawal) operation.
-                                                            </div>
-                                                        </li>
-                                                        <li class="list-group-item d-flex justify-content-between align-items-start">
-                                                            <div class="ms-2 me-auto">
-                                                                <div class="fw-bold">Set Destination Account</div>
-                                                                Specify the central account that will receive funds (for cash in) or distribute funds (for cash out).
-                                                            </div>
-                                                        </li>
-                                                        <li class="list-group-item d-flex justify-content-between align-items-start">
-                                                            <div class="ms-2 me-auto">
-                                                                <div class="fw-bold">Add Member Accounts</div>
-                                                                Add all member accounts that will participate in this bulk operation with their respective amounts.
-                                                            </div>
-                                                        </li>
-                                                        <li class="list-group-item d-flex justify-content-between align-items-start">
-                                                            <div class="ms-2 me-auto">
-                                                                <div class="fw-bold">Run Simulation</div>
-                                                                Review the simulation results carefully before executing the actual operation.
-                                                            </div>
-                                                        </li>
-                                                        <li class="list-group-item d-flex justify-content-between align-items-start">
-                                                            <div class="ms-2 me-auto">
-                                                                <div class="fw-bold">Execute Operation</div>
-                                                                After verifying simulation results, proceed with the actual bulk cash operation.
-                                                            </div>
-                                                        </li>
-                                                    </ol>
-                                                </div>
 
-                                                <div class="col-md-6 mt-3">
-                                                    <div class="alert alert-primary d-flex align-items-center" role="alert">
-                                                        <i class="mdi mdi-cash-check me-2"></i>
-                                                        Ensure all account numbers and amounts are accurate before submission.
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6 mt-3">
-                                                    <div class="alert alert-warning d-flex align-items-center" role="alert">
-                                                        <i class="mdi mdi-alert-outline me-2"></i>
-                                                        Cash operations are immediate and cannot be easily reversed.
-                                                    </div>
-                                                </div>
-                                            </div>
+                                    <div id="collapseUserTipsManual" class="collapse">
+                                        <div class="card-body">
+                                            <ol class="list-group list-group-numbered">
+                                                <li class="list-group-item">
+                                                    <div class="fw-bold">Choose Operation Scope</div>
+                                                    “Internal” usually means same-branch processing. “External/Inter-Branch” allows per-row branch selection.
+                                                </li>
+                                                <li class="list-group-item">
+                                                    <div class="fw-bold">Select Cash Direction</div>
+                                                    Choose Cash-In (deposit) or Cash-Out (withdrawal) for correct accounting routing.
+                                                </li>
+                                                <li class="list-group-item">
+                                                    <div class="fw-bold">Use Simulation Type</div>
+                                                    Simulation Type is mandatory for audit classification. If type is “Other”, provide a clear description.
+                                                </li>
+                                                <li class="list-group-item">
+                                                    <div class="fw-bold">Validate Accounts and Amounts</div>
+                                                    Amount must be greater than 0. Verify references carefully—cash operations may require formal reversals.
+                                                </li>
+                                            </ol>
                                         </div>
                                     </div>
                                 </div>
 
-
-                                <!-- Operation Type Radio Buttons -->
+                                <!-- ====================== -->
+                                <!-- OPERATION SCOPE -->
+                                <!-- ====================== -->
                                 <div class="card mb-3">
                                     <div class="card-body">
-                                        <div class="row">
+                                        <div class="row g-2">
+
                                             <div class="col-md-12">
-                                                <div class="col-md-12">
-                                                    @Html.LabelFor(m => m.OperationScope, @GlobalBulkOperation.SelectOperationType, new { @class = "form-label" })
-                                                    @Html.DropDownListFor(m => m.OperationScope,
-                                                        new SelectList(ViewBag.operationScope, "Text", "Value"),
-                                                        @GlobalBulkOperation.SelectOperationType,
-                                                        new { @class = "form-select select2", required = "required" })
-                                                    <div class="invalid-feedback">Please select an operation scope</div>
-                                                </div>
+                                                @Html.LabelFor(m => m.OperationScope, @GlobalBulkOperation.SelectOperationType, new { @class = "form-label fw-semibold" })
+                                                @Html.DropDownListFor(m => m.OperationScope,
+                                                    new SelectList(ViewBag.operationScope, "Value", "Text"),
+                                                    "--- Select Operation Scope ---",
+                                                    new { @class = "form-select select2", required = "required", id = "OperationScope" })
+
+                                                <small class="text-muted d-block help-hint mt-1">
+                                                    <i class="mdi mdi-information-outline me-1"></i>
+                                                    Defines whether accounts are processed within a single branch or across multiple branches.
+                                                </small>
+
+                                                <div class="invalid-feedback">Please select an operation scope.</div>
                                             </div>
+
                                         </div>
                                     </div>
                                 </div>
 
-
-                                <!-- Branch Dropdown -->
-                                <div class="col-md-12 mb-2">
-                                    @Html.LabelFor(m => m.BranchId, @GlobalBulkOperation.SelectBranch, new { @class = "form-label" })
+                                <!-- ====================== -->
+                                <!-- BRANCH -->
+                                <!-- ====================== -->
+                                <div class="mb-3">
+                                    @Html.LabelFor(m => m.BranchId, @GlobalBulkOperation.SelectBranch, new { @class = "form-label fw-semibold" })
                                     @Html.DropDownListFor(m => m.BranchId,
                                         new SelectList(ViewBag.branches, "Id", "Name"),
-                                        @GlobalBulkOperation.Branch,
-                                        new { @class = "form-select select2", required = "required", @onchange = "loadBranchAccounts(this.value,1)" })
-                                    <div class="invalid-feedback">Please select a branch</div>
+                                        "--- Select Branch ---",
+                                        new { @class = "form-select select2", required = "required", id = "BranchId", onchange = "loadBranchAccounts(this.value, 1)" })
+
+                                    <small class="text-muted d-block help-hint mt-1">
+                                        <i class="mdi mdi-information-outline me-1"></i>
+                                        Used to load branch Chart of Accounts for cash source/destination routing.
+                                    </small>
+                                    <div class="invalid-feedback">Please select a branch.</div>
                                 </div>
 
-
-                                <!-- Account List Section -->
+                                <!-- ====================== -->
+                                <!-- ACCOUNT LIST -->
+                                <!-- ====================== -->
                                 <div class="accordion mb-2" id="accountListAccordion">
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="headingAccountList">
-                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAccountList" aria-expanded="true" aria-controls="collapseAccountList">
+                                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                                    data-bs-target="#collapseAccountList" aria-expanded="true" aria-controls="collapseAccountList">
                                                 <i class="mdi mdi-account-details me-2"></i> @GlobalBulkOperation.BulkCashAccountList
+                                                <span class="badge bg-primary ms-2">Required</span>
                                             </button>
                                         </h2>
                                         <div id="collapseAccountList" class="accordion-collapse collapse show" aria-labelledby="headingAccountList">
@@ -203,22 +241,22 @@
                                                                 <th>Branch</th>
                                                                 <th>Member Reference</th>
                                                                 <th>Account Type</th>
-                                                                <th>Amount</th>
-                                                                <th>Actions</th>
+                                                                <th class="text-end">Amount</th>
+                                                                <th class="text-end">Actions</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
                                                             <tr class="empty-row">
-                                                                <td colspan="4" class="text-center text-muted py-4">
+                                                                <td colspan="5" class="text-center text-muted py-4">
                                                                     <i class="mdi mdi-database-remove fs-3 d-block mb-2"></i>
-                                                                    No accounts added yet. Click "Add Account" to begin.
+                                                                    No accounts added yet. Click <b>“Add Account”</b> to begin.
                                                                 </td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
                                                 </div>
 
-                                                <div class="d-flex justify-content-between align-items-center mt-2 mb-3">
+                                                <div class="d-flex justify-content-between align-items-center mt-2 mb-2">
                                                     <button type="button" class="btn btn-sm btn-outline-danger" id="resetAccountsBtn">
                                                         <i class="mdi mdi-delete-sweep-outline me-1"></i> Clear All
                                                     </button>
@@ -227,111 +265,118 @@
                                                     </button>
                                                 </div>
 
+                                                <small class="text-muted">
+                                                    <i class="mdi mdi-information-outline me-1"></i>
+                                                    Each row represents one member account entry in the batch.
+                                                </small>
 
-                                                <div class="mt-2">
-                                                    <small class="text-muted">
-                                                        <i class="mdi mdi-information-outline me-1"></i>
-                                                        You can add multiple accounts to process in this batch
-                                                    </small>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
-
-
-                                <!-- Operation Parameters Section -->
-
-                                <div class="accordion mb-4" id="operationParamsAccordion">
+                                <!-- ====================== -->
+                                <!-- OPERATION PARAMETERS -->
+                                <!-- ====================== -->
+                                <div class="accordion mb-4" id="operationParamsAccordionManual">
                                     <div class="accordion-item">
-                                        <h2 class="accordion-header" id="headingOperationParams">
-                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOperationParams" aria-expanded="true" aria-controls="collapseOperationParams">
-                                                <i class="mdi mdi-cog-outline me-2"></i> @GlobalBulkOperation.BulkCashOperationParameters
+                                        <h2 class="accordion-header" id="headingOperationParamsManual">
+                                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                                    data-bs-target="#collapseOperationParamsManual" aria-expanded="true" aria-controls="collapseOperationParamsManual">
+                                                <i class="mdi mdi-cog-outline me-2"></i>
+                                                Operation Parameters
+                                                <span class="badge bg-secondary ms-2">Audit + Accounting</span>
                                             </button>
                                         </h2>
-                                        <div id="collapseOperationParams" class="accordion-collapse collapse show" aria-labelledby="headingOperationParams">
+                                        <div id="collapseOperationParamsManual" class="accordion-collapse collapse show" aria-labelledby="headingOperationParamsManual">
                                             <div class="accordion-body">
                                                 <div class="row g-3">
 
+                                                    <!-- Transfer Type -->
                                                     <div class="col-md-6">
-                                                        @Html.LabelFor(m => m.TransferType, @GlobalBulkOperation.SelectOperationType, new { @class = "form-label" })
+                                                        @Html.LabelFor(m => m.TransferType, "Cash Direction", new { @class = "form-label fw-semibold" })
                                                         @Html.DropDownListFor(m => m.TransferType,
-                                                            new SelectList(ViewBag.transferType, "Text", "Value"),
-                                                            @GlobalBulkOperation.SelectOperationType,
-                                                            new { @class = "form-select select2", required = "required" })
-                                                        <div class="invalid-feedback">Please select an operation type</div>
+                                                            new SelectList(ViewBag.transferType, "Value", "Text"),
+                                                            "--- Select Cash Direction ---",
+                                                            new { @class = "form-select select2", required = "required", id = "TransferType" })
+
+                                                        <small class="text-muted d-block help-hint mt-1">
+                                                            <i class="mdi mdi-information-outline me-1"></i>
+                                                            Cash-In = deposit to member accounts. Cash-Out = withdrawal from member accounts.
+                                                        </small>
+                                                        <div class="invalid-feedback">Please select a cash direction.</div>
                                                     </div>
 
+                                                    <!-- Accounting Date -->
                                                     <div class="col-md-6">
-                                                        @*  <div class="form-floating form-floating-outline position-relative">*@
-                                                        @Html.LabelFor(m => m.AccountDate, @GlobalBulkOperation.SelectAccountingDate, new { @class = "form-label" })
-                                                        @Html.TextBoxFor(
-                                                          m => m.AccountDate,
-                                                          Model.AccountDate == default(DateTime)
-                                                            ? DateTime.Today.ToString("yyyy-MM-dd")
-                                                            : "{0:yyyy-MM-dd}",
-                                                          new
-                                                              {
-                                                            @class = "form-control accounting-date",
-                                                            type = "date",
-                                                            data_date_default = "today",   // auto-fill today if empty/MinValue
-                                                            data_date_max = "today"        // prevent future dates (remove if not needed)
-                                                            // data_date_min = "today"     // uncomment to only allow today & after
-                                                          })
-                                                        <div class="invalid-feedback">Please select a valid accounting date</div>
-                                                        @*   @Html.ValidationMessageFor(m => m.AccountDate, "", new { @class = "text-danger" })*@
-                                                        @*   <label>@(Member_Global_LoanApplication.AccountingDate ?? "Accounting Date")</label>*@
-                                                        @* </div>*@
-                                                        @* <small class="text-muted">
-                                                                This date will be used as the accounting date for posting and audit.
-                                                                Choose a past date to backdate (if permitted).
-                                                            </small>*@
+                                                        @Html.LabelFor(m => m.AccountDate, "Accounting Date", new { @class = "form-label fw-semibold" })
+                                                        @Html.TextBoxFor(m => m.AccountDate,
+                                                            Model.AccountDate == default(DateTime) ? DateTime.Today.ToString("yyyy-MM-dd") : "{0:yyyy-MM-dd}",
+                                                            new { @class = "form-control accounting-date", type = "date", id = "AccountDate" })
+
+                                                        <small class="text-muted d-block help-hint mt-1">
+                                                            <i class="mdi mdi-information-outline me-1"></i>
+                                                            Must match an open accounting day for the selected branch.
+                                                        </small>
+                                                        <div class="invalid-feedback">Please select a valid accounting date.</div>
                                                     </div>
 
-                                                    <!-- Title Field -->
+                                                    <!-- Simulation Type -->
                                                     <div class="col-md-12">
-                                                        @Html.LabelFor(m => m.OperationTitle, "Operation Title", new { @class = "form-label" })
-                                                        @Html.TextBoxFor(m => m.OperationTitle,
-                                                            new
-                                                                 {
-                                                                     @class = "form-control",
-                                                                  required = "required",
-                                                                  placeholder = "Enter operation title"
-                                                                 })
-                                                        <div class="invalid-feedback">Please enter a title for the operation</div>
+                                                        @Html.LabelFor(m => m.SimulationType, "Simulation Type", new { @class = "form-label fw-semibold" })
+                                                        @Html.DropDownListFor(m => m.SimulationType,
+                                                            new SelectList(ViewBag.SimulationTypes, "Value", "Text"),
+                                                            "--- Select Simulation Type ---",
+                                                            new { @class = "form-select select2", required = "required", id = "SimulationType" })
+
+                                                        <small class="text-muted d-block help-hint mt-1">
+                                                            <i class="mdi mdi-information-outline me-1"></i>
+                                                            Categorizes the batch for audit and reporting (fees, salary, correction, etc.).
+                                                        </small>
+                                                        <div class="invalid-feedback">Please select a simulation type.</div>
                                                     </div>
 
                                                     <!-- Simulation Description -->
                                                     <div class="col-12">
-                                                        @Html.LabelFor(m => m.SimulationDescription, "Simulation Description", new { @class = "form-label" })
+                                                        @Html.LabelFor(m => m.SimulationDescription, "Simulation Description", new { @class = "form-label fw-semibold" })
                                                         @Html.TextAreaFor(m => m.SimulationDescription,
                                                             new
-                                                                 {
-                                                                     @class = "form-control",
-                                                                  rows = "3",
-                                                                  placeholder = "Enter simulation details or notes"
-                                                                 })
+                                                            {
+                                                                @class = "form-control",
+                                                                rows = "3",
+                                                                placeholder = "Provide justification / context (required if Simulation Type is Other).",
+                                                                id = "SimulationDescription"
+                                                            })
+                                                        <small class="text-muted d-block help-hint mt-1">
+                                                            <i class="mdi mdi-information-outline me-1"></i>
+                                                            Recommended: include ticket number, approval reference, or business reason.
+                                                        </small>
                                                     </div>
 
+                                                    <!-- Destination COA -->
                                                     <div class="col-md-12">
-                                                        @Html.LabelFor(m => m.AccountCartId,
-                                                            @GlobalBulkOperation.BulkOperationCashOutOrCashInAccount +
-                                                            $" ({(Model.TransferType == "CashIn" ? @GlobalBulkOperation.BulkOperationCashOutOrCashInAccountTransferCashIn : @GlobalBulkOperation.BulkOperationCashOutOrCashInAccountTransferCashOut)})",
-                                                        new { @class = "form-label", id = "AccountCartLabel" })
+                                                        <label class="form-label fw-semibold" id="AccountCartLabel">
+                                                            Cash Source / Destination Account (COA)
+                                                        </label>
+
                                                         @Html.DropDownListFor(m => m.AccountCartId,
-                                                            new List<SelectListItem> { new SelectListItem { Text = "--- Select Chart Of  Account ---", Value = "" } },
-                                                            //@GlobalBulkOperation.SelectAccount,
-                                                            new { @class = "form-select select2", required = "required" })
-                                                        <div class="invalid-feedback">Please select a destination account</div>
+                                                            new List<SelectListItem> { new SelectListItem { Text = "--- Select Chart Of Account ---", Value = "" } },
+                                                            new { @class = "form-select select2", required = "required", id = "AccountCartId" })
+
+                                                        <small class="text-muted d-block help-hint mt-1">
+                                                            <i class="mdi mdi-information-outline me-1"></i>
+                                                            Select the branch GL account used to route this cash batch (e.g., Till, Vault, Cash Control).
+                                                        </small>
+                                                        <div class="invalid-feedback">Please select a chart of account.</div>
                                                     </div>
+
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
-
+                                <!-- SUBMIT -->
                                 <div class="row mt-3">
                                     <div class="col-md-12 text-end">
                                         <button type="submit" class="btn btn-primary">
@@ -342,149 +387,111 @@
                             }
                         </div>
 
+                        <!-- =============================== -->
+                        <!-- FILE INPUT SECTION -->
+                        <!-- =============================== -->
+                        <div id="fileInputSection" class="mt-3" style="display:none;">
 
-                        <!-- File Input Section -->
-                        <div id="fileInputSection" class="mt-3" style="display: none;">
-                            @using (Html.BeginForm("UploadBulkCashOperationFile", "BulkOperation", FormMethod.Post, new { id = "fileForm", enctype = "multipart/form-data", onsubmit = "return AjaxPostBulkCashFileUploadOperation(this);" }))
+                            @using (Html.BeginForm("UploadBulkCashOperationFile", "BulkOperation", FormMethod.Post,
+                                new { id = "fileForm", enctype = "multipart/form-data", onsubmit = "return AjaxPostBulkCashFileUploadOperation(this);" }))
                             {
                                 @Html.AntiForgeryToken()
-                                <!-- Tips Section -->
-                                <div class="card shadow-sm mb-4">
+
+                                <div class="card shadow-sm mb-3">
                                     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-                                        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalBulkOperation.TIPS</span>
-                                        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseUserTips" aria-expanded="false" aria-controls="collapseUserTips">
+                                        <span><i class="mdi mdi-information-outline me-2"></i> Tips & Rules (File Upload)</span>
+                                        <button class="btn btn-light btn-sm" type="button"
+                                                data-bs-toggle="collapse"
+                                                data-bs-target="#collapseUserTipsFile"
+                                                aria-expanded="false"
+                                                aria-controls="collapseUserTipsFile">
                                             <i class="mdi mdi-chevron-down"></i>
                                         </button>
                                     </h6>
-                                    <div id="collapseUserTips" class="collapse">
+                                    <div id="collapseUserTipsFile" class="collapse">
                                         <div class="card-body">
-                                            <div class="row gy-2">
-                                                <div class="col-md-12">
-                                                    <h5 class="text-primary mb-3"><i class="mdi mdi-playlist-check me-2"></i> How to Execute a Bulk Cash Operation:</h5>
-                                                    <ol class="list-group list-group-numbered">
-                                                        <li class="list-group-item d-flex justify-content-between align-items-start">
-                                                            <div class="ms-2 me-auto">
-                                                                <div class="fw-bold">Define Operation Type</div>
-                                                                Select whether this is a bulk cash in (deposit) or cash out (withdrawal) operation.
-                                                            </div>
-                                                        </li>
-                                                        <li class="list-group-item d-flex justify-content-between align-items-start">
-                                                            <div class="ms-2 me-auto">
-                                                                <div class="fw-bold">Set Destination Account</div>
-                                                                Specify the central account that will receive funds (for cash in) or distribute funds (for cash out).
-                                                            </div>
-                                                        </li>
-                                                        <li class="list-group-item d-flex justify-content-between align-items-start">
-                                                            <div class="ms-2 me-auto">
-                                                                <div class="fw-bold">Add Member Accounts</div>
-                                                                Add all member accounts that will participate in this bulk operation with their respective amounts.
-                                                            </div>
-                                                        </li>
-                                                        <li class="list-group-item d-flex justify-content-between align-items-start">
-                                                            <div class="ms-2 me-auto">
-                                                                <div class="fw-bold">Run Simulation</div>
-                                                                Review the simulation results carefully before executing the actual operation.
-                                                            </div>
-                                                        </li>
-                                                        <li class="list-group-item d-flex justify-content-between align-items-start">
-                                                            <div class="ms-2 me-auto">
-                                                                <div class="fw-bold">Execute Operation</div>
-                                                                After verifying simulation results, proceed with the actual bulk cash operation.
-                                                            </div>
-                                                        </li>
-                                                    </ol>
-                                                </div>
-
-                                                <div class="col-md-6 mt-3">
-                                                    <div class="alert alert-primary d-flex align-items-center" role="alert">
-                                                        <i class="mdi mdi-cash-check me-2"></i>
-                                                        Ensure all account numbers and amounts are accurate before submission.
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6 mt-3">
-                                                    <div class="alert alert-warning d-flex align-items-center" role="alert">
-                                                        <i class="mdi mdi-alert-outline me-2"></i>
-                                                        Cash operations are immediate and cannot be easily reversed.
-                                                    </div>
-                                                </div>
+                                            <div class="alert alert-warning small mb-0">
+                                                <i class="mdi mdi-alert-outline me-2"></i>
+                                                Use the template. Upload → preview → confirm parameters → run simulation.
+                                                If Simulation Type is <b>Other</b>, description is required.
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <!-- Operation Parameters Section -->
-
-
                                 <div class="accordion mb-4" id="fileUploadAccordion">
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="headingFileUpload">
-                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFileUpload" aria-expanded="true" aria-controls="collapseFileUpload">
+                                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                                    data-bs-target="#collapseFileUpload" aria-expanded="true" aria-controls="collapseFileUpload">
                                                 <i class="mdi mdi-cloud-upload-outline me-2"></i> Bulk Operation File Upload
                                                 <span class="badge bg-primary ms-2">Required</span>
                                             </button>
                                         </h2>
                                         <div id="collapseFileUpload" class="accordion-collapse collapse show" aria-labelledby="headingFileUpload">
                                             <div class="accordion-body">
-                                                <div class="alert alert-info mb-4">
+
+                                                <div class="alert alert-info mb-3">
                                                     <i class="mdi mdi-information-outline me-2"></i>
-                                                    Upload a properly formatted CSV or Excel file containing the bulk operation details. Maximum file size: 10MB.
+                                                    Upload a CSV/Excel containing accounts and amounts. Max size: 10MB.
                                                 </div>
 
                                                 <div class="row g-3 align-items-end">
                                                     <div class="col-lg-8">
                                                         <div class="file-upload-wrapper">
-                                                            <label for="bulkOperationFile" class="form-label">Select operation file</label>
+                                                            <label for="bulkOperationFile" class="form-label fw-semibold">
+                                                                Select Operation File
+                                                            </label>
+
                                                             <div class="input-group has-validation">
-                                                                <input type="file"
-                                                                       name="file"
-                                                                       class="form-control"
-                                                                       id="bulkOperationFile"
-                                                                       accept=".csv,.xlsx,.xls"
-                                                                       required
-                                                                       data-max-size="10485760">
+                                                                <input type="file" name="file" class="form-control"
+                                                                       id="bulkOperationFile" accept=".csv,.xlsx,.xls"
+                                                                       required data-max-size="10485760" />
+
                                                                 <button class="btn btn-primary px-4" type="submit" id="uploadButton">
-                                                                    <span class="upload-text">Upload File</span>
+                                                                    <span class="upload-text">Upload</span>
                                                                     <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
                                                                     <i class="mdi mdi-cloud-upload-outline ms-1"></i>
                                                                 </button>
-                                                                <div class="invalid-feedback">
-                                                                    Please select a valid Excel file (max 10MB).
-                                                                </div>
+
+                                                                <div class="invalid-feedback">Please select a valid file (max 10MB).</div>
                                                             </div>
-                                                            <div class="form-text">Supported formats: .csv, .xlsx, .xls (Template available below)</div>
+
+                                                            <div class="form-text">
+                                                                Supported: .csv, .xlsx, .xls
+                                                            </div>
                                                         </div>
                                                     </div>
+
                                                     <div class="col-lg-4 text-lg-end">
-                                                        <a href="/BulkOperation/DownloadBulkOperationFileTemplate" class="btn btn-outline-primary d-inline-flex align-items-center">
+                                                        <a href="/BulkOperation/DownloadBulkOperationFileTemplate"
+                                                           class="btn btn-outline-primary d-inline-flex align-items-center">
                                                             <i class="mdi mdi-file-download-outline me-2"></i>
                                                             <span>Download Template</span>
                                                         </a>
                                                     </div>
                                                 </div>
 
-                                                <!-- Upload Progress -->
-                                                <div class="upload-feedback mt-4">
+                                                <div class="upload-feedback mt-3">
                                                     <div class="progress mb-2" style="height: 8px; display: none;" id="uploadProgress">
                                                         <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
-                                                             role="progressbar"
-                                                             style="width: 0%"
-                                                             aria-valuenow="0"
-                                                             aria-valuemin="0"
-                                                             aria-valuemax="100"></div>
+                                                             role="progressbar" style="width: 0%"
+                                                             aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                                                     </div>
-
                                                     <div id="uploadStatus" class="alert d-none"></div>
                                                 </div>
+
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
-
                                 <div class="accordion mb-4" id="fileContentAccordion">
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="headingFileContent">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFileContent" aria-expanded="false" aria-controls="collapseFileContent">
+                                            <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#collapseFileContent"
+                                                    aria-expanded="false" aria-controls="collapseFileContent">
                                                 <i class="mdi mdi-file-document-outline me-2"></i> File Content Preview
                                             </button>
                                         </h2>
@@ -498,137 +505,106 @@
                                                                 <th>Member Reference</th>
                                                                 <th>Account Type</th>
                                                                 <th>Member Name</th>
-                                                                <th>Amount</th>
+                                                                <th class="text-end">Amount</th>
                                                             </tr>
                                                         </thead>
                                                     </table>
+                                                    <small class="text-muted">
+                                                        <i class="mdi mdi-information-outline me-1"></i>
+                                                        Validate the preview before running simulation.
+                                                    </small>
                                                 </div>
-
-                                                @*       <div class="row mt-3">
-                                                        <div class="col-md-6">
-                                                            <div class="alert alert-warning">
-                                                                <i class="mdi mdi-alert-outline me-2"></i>
-                                                                <strong>Note:</strong> This is a simulation preview. No changes have been made to accounts yet.
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-6 text-end">
-                                                            <button class="btn btn-success me-2" id="confirmOperationBtn" disabled>
-                                                                <i class="mdi mdi-check-circle-outline me-1"></i> Confirm & Execute
-                                                            </button>
-                                                            <button class="btn btn-danger" id="cancelOperationBtn">
-                                                                <i class="mdi mdi-cancel me-1"></i> Cancel
-                                                            </button>
-                                                        </div>
-                                                    </div>*@
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
-
-
                             }
-                            @using (Html.BeginForm("SimulateCashOutOrCashInBulkFileOperation", "BulkOperation", FormMethod.Post, new { id = "filePosting", enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdateBulkCashOperation(this);" }))
+
+                            <!-- FILE POSTING -->
+                            @using (Html.BeginForm("SimulateCashOutOrCashInBulkFileOperation", "BulkOperation", FormMethod.Post,
+                                new { id = "filePosting", enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdateBulkCashOperation(this);" }))
                             {
                                 @Html.AntiForgeryToken()
-                                <div class="accordion mb-4" id="operationParamsAccordion">
+
+                                <div class="accordion mb-4" id="operationParamsAccordionFile">
                                     <div class="accordion-item">
-                                        <h2 class="accordion-header" id="headingOperationParams">
-                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOperationParams" aria-expanded="true" aria-controls="collapseOperationParams">
-                                                <i class="mdi mdi-cog-outline me-2"></i> @GlobalBulkOperation.BulkCashOperationParameters
+                                        <h2 class="accordion-header" id="headingOperationParamsFile">
+                                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                                    data-bs-target="#collapseOperationParamsFile" aria-expanded="true" aria-controls="collapseOperationParamsFile">
+                                                <i class="mdi mdi-cog-outline me-2"></i> Operation Parameters (File)
                                             </button>
                                         </h2>
-                                        <div id="collapseOperationParams" class="accordion-collapse collapse show" aria-labelledby="headingOperationParams">
+                                        <div id="collapseOperationParamsFile" class="accordion-collapse collapse show" aria-labelledby="headingOperationParamsFile">
                                             <div class="accordion-body">
                                                 <div class="row g-3">
-                                                    <!-- Branch Dropdown -->
+
                                                     <div class="col-md-12">
-                                                        @Html.LabelFor(m => m.BranchId2, @GlobalBulkOperation.SelectBranch, new { @class = "form-label" })
+                                                        @Html.LabelFor(m => m.BranchId2, @GlobalBulkOperation.SelectBranch, new { @class = "form-label fw-semibold" })
                                                         @Html.DropDownListFor(m => m.BranchId2,
                                                             new SelectList(ViewBag.branches, "Id", "Name"),
-                                                            @GlobalBulkOperation.Branch,
-                                                            new { @class = "form-select select2", required = "required", @onchange = "loadBranchAccounts(this.value,2)" })
-                                                        <div class="invalid-feedback">Please select a branch</div>
+                                                            "--- Select Branch ---",
+                                                            new { @class = "form-select select2", required = "required", id = "BranchId2", onchange = "loadBranchAccounts(this.value, 2)" })
+
+                                                        <small class="text-muted d-block help-hint mt-1">
+                                                            <i class="mdi mdi-information-outline me-1"></i>
+                                                            Loads branch COA used for cash routing during simulation.
+                                                        </small>
+                                                        <div class="invalid-feedback">Please select a branch.</div>
                                                     </div>
 
-
-
                                                     <div class="col-md-6">
-                                                        @Html.LabelFor(m => m.TransferType2, @GlobalBulkOperation.SelectOperationType, new { @class = "form-label" })
+                                                        @Html.LabelFor(m => m.TransferType2, "Cash Direction", new { @class = "form-label fw-semibold" })
+
+                                                        @* ✅ FIXED: Value/Text mapping was reversed in your code *@
                                                         @Html.DropDownListFor(m => m.TransferType2,
-                                                            new SelectList(ViewBag.transferType, "Text", "Value"),
-                                                            @GlobalBulkOperation.SelectOperationType,
-                                                            new { @class = "form-select select2", required = "required" })
-                                                        <div class="invalid-feedback">Please select an operation type</div>
+                                                            new SelectList(ViewBag.transferType, "Value", "Text"),
+                                                            "--- Select Cash Direction ---",
+                                                            new { @class = "form-select select2", required = "required", id = "TransferType2" })
+
+                                                        <div class="invalid-feedback">Please select a cash direction.</div>
                                                     </div>
 
                                                     <div class="col-md-6">
-                                                        @*<div class="form-floating form-floating-outline position-relative">*@
-                                                        @Html.LabelFor(m => m.AccountDate2, @GlobalBulkOperation.SelectAccountingDate, new { @class = "form-label" })
-                                                        @Html.TextBoxFor(
-                                                          m => m.AccountDate2,
-                                                          Model.AccountDate2 == default(DateTime)
-                                                            ? DateTime.Today.ToString("yyyy-MM-dd")
-                                                            : "{0:yyyy-MM-dd}",
-                                                          new
-                                                              {
-                                                            @class = "form-control accounting-date",
-                                                            type = "date",
-                                                            data_date_default = "today",   // auto-fill today if empty/MinValue
-                                                            data_date_max = "today"        // prevent future dates (remove if not needed)
-                                                            // data_date_min = "today"     // uncomment to only allow today & after
-                                                          })
-                                                        <div class="invalid-feedback">Please select a valid accounting date</div>
-                                                        @* @Html.ValidationMessageFor(m => m.AccountDate2, "", new { @class = "text-danger" })*@
-                                                        @*  <label>@(Member_Global_LoanApplication.AccountingDate ?? "Accounting Date")</label>*@
-                                                        @*  </div>*@
-                                                        @*  <small class="text-muted">
-                                                                This date will be used as the accounting date for posting and audit.
-                                                                Choose a past date to backdate (if permitted).
-                                                            </small>*@
+                                                        @Html.LabelFor(m => m.AccountDate2, "Accounting Date", new { @class = "form-label fw-semibold" })
+                                                        @Html.TextBoxFor(m => m.AccountDate2,
+                                                            Model.AccountDate2 == default(DateTime) ? DateTime.Today.ToString("yyyy-MM-dd") : "{0:yyyy-MM-dd}",
+                                                            new { @class = "form-control accounting-date", type = "date", id = "AccountDate2" })
+
+                                                        <div class="invalid-feedback">Please select a valid accounting date.</div>
                                                     </div>
 
-                                                    <!-- Title Field -->
                                                     <div class="col-md-12">
-                                                        @Html.LabelFor(m => m.OperationTitle2, "Operation Title", new { @class = "form-label" })
-                                                        @Html.TextBoxFor(m => m.OperationTitle2,
-                                                            new
-                                                                 {
-                                                                     @class = "form-control",
-                                                                  required = "required",
-                                                                  placeholder = "Enter operation title"
-                                                                 })
-                                                        <div class="invalid-feedback">Please enter a title for the operation</div>
+                                                        @Html.LabelFor(m => m.SimulationType2, "Simulation Type", new { @class = "form-label fw-semibold" })
+                                                        @Html.DropDownListFor(m => m.SimulationType2,
+                                                            new SelectList(ViewBag.SimulationTypes, "Value", "Text"),
+                                                            "--- Select Simulation Type ---",
+                                                            new { @class = "form-select select2", required = "required", id = "SimulationType2" })
+
+                                                        <div class="invalid-feedback">Please select a simulation type.</div>
                                                     </div>
 
-                                                    <!-- Simulation Description -->
                                                     <div class="col-12">
-                                                        @Html.LabelFor(m => m.SimulationDescription2, "Simulation Description", new { @class = "form-label" })
+                                                        @Html.LabelFor(m => m.SimulationDescription2, "Simulation Description", new { @class = "form-label fw-semibold" })
                                                         @Html.TextAreaFor(m => m.SimulationDescription2,
-                                                            new
-                                                                 {
-                                                                     @class = "form-control",
-                                                                  rows = "3",
-                                                                  placeholder = "Enter simulation details or notes"
-                                                                 })
+                                                            new { @class = "form-control", rows = "3", placeholder = "Provide justification (required if Simulation Type is Other).", id = "SimulationDescription2" })
                                                     </div>
 
                                                     <div class="col-md-12">
-                                                        @Html.LabelFor(m => m.AccountCartId2,
-                                                            @GlobalBulkOperation.BulkOperationCashOutOrCashInAccount +
-                                                            $" ({(Model.TransferType2 == "CashIn" ? @GlobalBulkOperation.BulkOperationCashOutOrCashInAccountTransferCashIn : @GlobalBulkOperation.BulkOperationCashOutOrCashInAccountTransferCashOut)})",
-                                                        new { @class = "form-label", id = "AccountCartLabel2" })
+                                                        <label class="form-label fw-semibold" id="AccountCartLabel2">Cash Source / Destination Account (COA)</label>
+
                                                         @Html.DropDownListFor(m => m.AccountCartId2,
-                                                             new List<SelectListItem> { new SelectListItem { Text = "--- Select Chart Of Account ---", Value = "" } },
-                                                            //@GlobalBulkOperation.SelectAccount,
-                                                            new { @class = "form-select select2", required = "required" })
-                                                        <div class="invalid-feedback">Please select a destination account</div>
+                                                            new List<SelectListItem> { new SelectListItem { Text = "--- Select Chart Of Account ---", Value = "" } },
+                                                            new { @class = "form-select select2", required = "required", id = "AccountCartId2" })
+
+                                                        <div class="invalid-feedback">Please select a chart of account.</div>
                                                     </div>
+
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="row mt-2">
                                     <div class="col-md-12 text-end">
                                         <button type="submit" class="btn btn-primary">
@@ -638,89 +614,88 @@
                                 </div>
                             }
                         </div>
+                        <!-- end file section -->
 
                     </div>
                 </div>
             </div>
         </div>
+
     </div>
 </div>
-
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 
-<script>
-         async function loadBranchAccounts(branchId, $targetDropdown) {
-             $targetDropdown = $targetDropdown == 2 ? $('#AccountCartId2') : $('#AccountCartId');
+    <script>
+        // ✅ FIXED: correct target dropdown based on index
+        async function loadBranchAccounts(branchId, targetIndex) {
+            const $targetDropdown = (targetIndex == 2) ? $('#AccountCartId2') : $('#AccountCartId');
+            if (!$targetDropdown || !$targetDropdown.length) return;
 
-             
-              if (!$targetDropdown || !$targetDropdown.length) return;
+            const textLoading = 'Loading Chart Of Accounts...';
+            const textEmpty = '--- Select Chart Of Account ---';
+            const textNone = 'No chart of accounts available';
+            const textError = 'Error loading chart of accounts';
 
-              const textLoading = 'Loading Chart Of Accounts...';
-              const textEmpty = '--- Select Branch Account reference ---';
-              const textNone = 'No branch accounts available';
-              const textError = 'Error loading branch accounts';
+            $targetDropdown.prop('disabled', true).empty().append($('<option>').val('').text(textLoading));
 
-              $targetDropdown.prop('disabled', true).empty().append($('<option>').val('').text(textLoading));
+            if (!branchId) {
+                $targetDropdown.prop('disabled', false).empty().append($('<option>').val('').text(textEmpty));
+                if ($.fn.select2) $targetDropdown.trigger('change.select2');
+                return;
+            }
 
-              if (!branchId) {
-                  $targetDropdown.prop('disabled', false).empty().append($('<option>').val('').text(textEmpty));
-                  if ($.fn.select2) $targetDropdown.trigger('change.select2');
-                  return;
-              }
+            const url = '@Url.Action("GetBranchAccountsByBranch", "BranchAccount")';
 
-              const url = '@Url.Action("GetBranchAccountsByBranch", "BranchAccount")';
+            try {
+                const resp = await fetch(url + '?branchId=' + encodeURIComponent(branchId), {
+                    method: 'GET',
+                    credentials: 'same-origin',
+                    cache: 'no-cache',
+                    headers: { 'Accept': 'application/json' }
+                });
 
-              try {
-                  const resp = await fetch(url + '?branchId=' + encodeURIComponent(branchId), {
-                      method: 'GET',
-                      credentials: 'same-origin',
-                      cache: 'no-cache',
-                      headers: { 'Accept': 'application/json' }
-                  });
+                if (!resp.ok) {
+                    const body = await resp.text().catch(() => '');
+                    console.error('Fetch failed', resp.status, resp.statusText, body);
+                    $targetDropdown.empty().prop('disabled', false).append($('<option>').val('').text(textError));
+                    if ($.fn.select2) $targetDropdown.trigger('change.select2');
+                    return;
+                }
 
-                  if (!resp.ok) {
-                      const body = await resp.text().catch(() => '');
-                      console.error('Fetch failed', resp.status, resp.statusText, body);
-                      $targetDropdown.empty().prop('disabled', false)
-                          .append($('<option>').val('').text(textError));
-                      if ($.fn.select2) $targetDropdown.trigger('change.select2');
-                      return;
-                  }
+                const payload = await resp.json().catch(() => null);
+                let items = [];
+                if (Array.isArray(payload)) items = payload;
+                else if (payload && Array.isArray(payload.items)) items = payload.items;
+                else if (payload && Array.isArray(payload.data)) items = payload.data;
 
-                  const payload = await resp.json().catch(() => null);
-                  let items = [];
-                  if (Array.isArray(payload)) items = payload;
-                  else if (payload && Array.isArray(payload.items)) items = payload.items;
-                  else if (payload && Array.isArray(payload.data)) items = payload.data;
+                $targetDropdown.empty().prop('disabled', false);
 
-                  $targetDropdown.empty().prop('disabled', false);
+                if (items && items.length) {
+                    $targetDropdown.append($('<option>').val('').text(textEmpty));
+                    items.forEach(acc => {
+                        const id = acc.id ?? acc.Id ?? acc.Value ?? acc.value ?? '';
+                        const name = acc.text ?? acc.Text ?? acc.Name ?? acc.name ?? acc.Description ?? id;
+                        $targetDropdown.append($('<option>').val(id).text(name));
+                    });
+                } else {
+                    $targetDropdown.append($('<option>').val('').text(textNone));
+                }
 
-                  if (items && items.length) {
-                      $targetDropdown.append($('<option>').val('').text(textEmpty));
-                      items.forEach(acc => {
-                          const id = acc.id ?? acc.Id ?? acc.Value ?? acc.value ?? '';
-                          const name = acc.text ?? acc.Text ?? acc.Name ?? acc.name ?? acc.Description ?? id;
-                          $targetDropdown.append($('<option>').val(id).text(name));
-                      });
-                  } else {
-                      $targetDropdown.append($('<option>').val('').text(textNone));
-                  }
-
-                  if ($.fn.select2) $targetDropdown.trigger('change.select2');
-              } catch (e) {
-                  console.error('Error loading branch accounts:', e);
-                  $targetDropdown.empty().prop('disabled', false)
-                      .append($('<option>').val('').text(textError));
-                  if ($.fn.select2) $targetDropdown.trigger('change.select2');
-              }
-          }
-</script>
+                if ($.fn.select2) $targetDropdown.trigger('change.select2');
+            } catch (e) {
+                console.error('Error loading branch accounts:', e);
+                $targetDropdown.empty().prop('disabled', false).append($('<option>').val('').text(textError));
+                if ($.fn.select2) $targetDropdown.trigger('change.select2');
+            }
+        }
+    </script>
 
     <script>
         $(document).ready(function () {
-            // Toggle between manual and file input
+
+            // ✅ Toggle between manual & file input
             $('input[name="InputMethod"]').change(function () {
                 if ($(this).val() === 'manual') {
                     $('#manualInputSection').show();
@@ -731,257 +706,207 @@
                 }
             });
 
-            // Initialize tooltips
+            // Tooltips
             $('[data-bs-toggle="tooltip"]').tooltip();
 
-            /*  if (!Modernizr.inputtypes.date) {
-                  $('.datepicker').datepicker({
-                      dateFormat: 'yy-mm-dd',
-                      minDate: 0,
-                      maxDate: 30
-                  });
-              }*/
-
-            $('#TransferType').change(function() {
-                var selectedType = $(this).val();
-                var labelText = '@GlobalBulkOperation.BulkOperationCashOutOrCashInAccount' + ' (';
-                if (selectedType === 'CashIn') {
-                    labelText += '@GlobalBulkOperation.BulkOperationCashOutOrCashInAccountTransferCashIn';
-                } else {
-                    labelText += '@GlobalBulkOperation.BulkOperationCashOutOrCashInAccountTransferCashOut';
+            // Select2
+            if ($.fn.select2) {
+                try {
+                    $('.select2').select2({ width: '100%' });
+                } catch (e) {
+                    console.warn('select2 init failed', e);
                 }
-                labelText += ')';
+            }
 
-                // Update the label text
-                $('#AccountCartLabel').text(labelText);
-            });
+            // ✅ Update label text for COA (manual)
+            $('#TransferType').on('change', function () {
+                const selectedType = $(this).val();
+                const suffix = (selectedType === 'CashIn') ? 'Cash-In Routing (Source GL)' : 'Cash-Out Routing (Destination GL)';
+                $('#AccountCartLabel').text('Cash Source / Destination Account (COA) - ' + suffix);
+            }).trigger('change');
 
-            $('#TransferType2').change(function () {
-                var selectedType = $(this).val();
-                var labelText = '@GlobalBulkOperation.BulkOperationCashOutOrCashInAccount' + ' (';
-                if (selectedType === 'CashIn') {
-                    labelText += '@GlobalBulkOperation.BulkOperationCashOutOrCashInAccountTransferCashIn';
-                } else {
-                    labelText += '@GlobalBulkOperation.BulkOperationCashOutOrCashInAccountTransferCashOut';
-                }
-                labelText += ')';
-
-                // Update the label text
-                $('#AccountCartLabel2').text(labelText);
-            });
-
+            // ✅ Update label text for COA (file)
+            $('#TransferType2').on('change', function () {
+                const selectedType = $(this).val();
+                const suffix = (selectedType === 'CashIn') ? 'Cash-In Routing (Source GL)' : 'Cash-Out Routing (Destination GL)';
+                $('#AccountCartLabel2').text('Cash Source / Destination Account (COA) - ' + suffix);
+            }).trigger('change');
         });
     </script>
-    @*Manual Bulk Batch Operation*@
-    <script>
 
+    <!-- ======================== -->
+    <!-- Manual bulk accounts JS -->
+    <!-- ======================== -->
+    <script>
         $(document).ready(function () {
             let accountCounter = 0;
 
-            // Initialize tooltips
-            $('[data-bs-toggle="tooltip"]').tooltip();
-
-            // Add Account button click handler
             $('#addAccountBtn').on('click', function () {
                 addAccountRow();
             });
 
-
-            // Function to add a new account row
-          function addAccountRow() {
+            function addAccountRow() {
                 accountCounter++;
-
-                // Remove empty row if it exists
                 $('.empty-row').remove();
 
-                // Get the current branch ID (in case it changed)
-              const currentBranchId = $('#BranchId').val();
-              const operationScope = $('#OperationScope').val();
-              console.log('operationScope :', operationScope);
-             /* var operationScope = currentOperationScope==null ? "Internal" :currentOperationScope;
-              console.log('operationScope :', operationScope);*/
-              const isInterbranch = operationScope === "Internal";
+                const operationScope = $('#OperationScope').val();
+                const isSingleBranchScope = operationScope === "Internal"; // ✅ your rule: internal = lock to selected branch
 
-                // Create branch options HTML
+                // Branch options
                 let branchOptions = '';
-                if (isInterbranch) {
-                    // For interbranch, use only the selected branch
+                if (isSingleBranchScope) {
                     const branchId = $('#BranchId').val();
                     const branchName = $('#BranchId option:selected').text();
                     branchOptions = `<option value="${branchId}">${branchName}</option>`;
                 } else {
-                    // For non-interbranch, show all branches
-                    @foreach (var item in Model.Branches) {
-                        @:branchOptions += `<option value="@item.Id">@item.Name</option>`;
+                    @if (Model.Branches != null)
+                    {
+                        foreach (var item in Model.Branches)
+                        {
+                            @:branchOptions += `<option value="@item.Id">@item.Name</option>`;
+                        }
                     }
                 }
 
-                // Create saving product options HTML
+                // Saving product options
                 let savingProductOptions = '';
-                @foreach (var item in ViewBag.SavingProducts) {
-                    @:savingProductOptions += `<option value="@item.Id">@item.Name</option>`;
+                @if (ViewBag.SavingProducts != null)
+                {
+                    foreach (var item in ViewBag.SavingProducts)
+                    {
+                        @:savingProductOptions += `<option value="@item.Id">@item.Name</option>`;
+                    }
                 }
 
-                // Create new row
                 const newRow = $(`
                     <tr data-account-id="${accountCounter}">
                         <td>
-                            <select class="form-control form-control-sm form-select select3 branch-name"
-                                    name="Accounts[${accountCounter}].BranchName" required>
+                            <select class="form-select form-select-sm select3 branch-name"
+                                    name="Accounts[${accountCounter}].BranchId" required
+                                    data-bs-toggle="tooltip" title="Branch where the member account belongs.">
                                 ${branchOptions}
                             </select>
-                            <div class="invalid-feedback">Branch Name required</div>
+                            <div class="invalid-feedback">Branch is required</div>
                         </td>
 
                         <td>
                             <input type="text" class="form-control form-control-sm member-reference"
-                                    name="Accounts[${accountCounter}].MemberReference"
-                                    placeholder="e.g. 5467" required>
+                                   name="Accounts[${accountCounter}].MemberReference"
+                                   placeholder="e.g. 5467" required
+                                   data-bs-toggle="tooltip" title="Member unique reference / matricule." />
                             <div class="invalid-feedback">Member reference required</div>
                         </td>
 
                         <td>
-                            <select class="form-control form-control-sm form-select select2 account-type"
-                                    name="Accounts[${accountCounter}].AccountType" required>
+                            <select class="form-select form-select-sm select2 account-type"
+                                    name="Accounts[${accountCounter}].AccountTypeId" required
+                                    data-bs-toggle="tooltip" title="Account/Product type to target (Saving, Share, etc.).">
                                 ${savingProductOptions}
                             </select>
                             <div class="invalid-feedback">Account Type required</div>
                         </td>
 
                         <td>
-                            <div class="input-group input-group-sm">
-                                <input type="number" class="form-control amount"
-                                        name="Accounts[${accountCounter}].Amount"
-                                        placeholder="0" step="0.01" min="0" required>
-                                <div class="invalid-feedback">Valid amount required</div>
-                            </div>
+                            <input type="number" class="form-control form-control-sm amount text-end"
+                                   name="Accounts[${accountCounter}].Amount"
+                                   placeholder="0" step="0.01" min="0.01" required
+                                   data-bs-toggle="tooltip" title="Amount for this member account entry. Must be > 0." />
+                            <div class="invalid-feedback">Valid amount required</div>
                         </td>
 
                         <td class="text-end">
-                            <button type="button" class="btn btn-sm btn-outline-danger remove-account">
+                            <button type="button" class="btn btn-sm btn-outline-danger remove-account" data-bs-toggle="tooltip" title="Remove row">
                                 <i class="mdi mdi-delete-outline"></i>
                             </button>
                         </td>
                     </tr>
                 `);
 
-                // Add row to table
                 $('#myDataTable tbody').append(newRow);
 
-                // Initialize select2 if needed
                 if ($.fn.select2) {
-                    newRow.find('.select2').select2({
-                        width: '100%',
-                        dropdownParent: newRow
-                    });
-
-                    newRow.find('.select3').select2({
-                        width: '100%',
-                        dropdownParent: newRow
-                    });
+                    newRow.find('.select2').select2({ width: '100%' });
+                    newRow.find('.select3').select2({ width: '100%' });
                 }
 
-                // Enable submit button if we have at least one account
-                $('#submitBtn').prop('disabled', false);
-
-                // Focus on the first input of the new row
+                $('[data-bs-toggle="tooltip"]').tooltip();
                 newRow.find('.member-reference').focus();
-
-                // Add click handler for remove button
-                newRow.find('.remove-account').click(function () {
-                    $(this).closest('tr').remove();
-                    // Disable submit button if no accounts left
-                    if ($('#myDataTable tbody tr').not('.empty-row').length === 0) {
-                        $('#submitBtn').prop('disabled', true);
-                        // Add empty row back if needed
-                        $('#myDataTable tbody').append('<tr class="empty-row"><td colspan="5" class="text-center text-muted py-3">No accounts added yet</td></tr>');
-                    }
-                });
             }
 
-            // Remove account row (moved outside the function)
             $(document).on('click', '.remove-account', function () {
                 $(this).closest('tr').remove();
 
-                // Show empty message if no accounts left
                 if ($('#myDataTable tbody tr').length === 0) {
                     $('#myDataTable tbody').append(`
-                    <tr class="empty-row">
-                        <td colspan="5" class="text-center text-muted py-4">
-                            <i class="mdi mdi-database-remove fs-3 d-block mb-2"></i>
-                            No accounts added yet. Click "Add Account" to begin.
-                        </td>
-                    </tr>
+                        <tr class="empty-row">
+                            <td colspan="5" class="text-center text-muted py-4">
+                                <i class="mdi mdi-database-remove fs-3 d-block mb-2"></i>
+                                No accounts added yet. Click <b>“Add Account”</b> to begin.
+                            </td>
+                        </tr>
                     `);
-                    $('#submitBtn').prop('disabled', true);
                 }
             });
 
-            // Reset form (moved outside the function)
             $('#resetAccountsBtn').on('click', function () {
-                //$('#myDataTable')[0].reset();
-                //$('#myDataTable').removeClass('was-validated');
                 $('#myDataTable tbody').empty().append(`
                     <tr class="empty-row">
                         <td colspan="5" class="text-center text-muted py-4">
                             <i class="mdi mdi-database-remove fs-3 d-block mb-2"></i>
-                            No accounts added yet. Click "Add Account" to begin.
+                            No accounts added yet. Click <b>“Add Account”</b> to begin.
                         </td>
                     </tr>
                 `);
-                $('#submitBtn').prop('disabled', true);
                 accountCounter = 0;
-                $('.alert').alert('close');
-            });
-
-            // Preview button click handler (moved outside the function)
-            $('#previewBtn').on('click', function () {
-                $('#bulkCashOperationForm').trigger('submit');
             });
         });
 
-
         function AjaxPostAndUpdateManualEntryingBulkCashOperation(form) {
             $.validator.unobtrusive.parse(form);
+
+            // ✅ Require at least 1 account row
+            const rowCount = $('#myDataTable tbody tr').not('.empty-row').length;
+            if (rowCount <= 0) {
+                appalert('Please add at least one account entry before running simulation.', 2, 1);
+                return false;
+            }
+
+            // ✅ Extra rule: if SimulationType == Other, require description
+            const simType = $('#SimulationType').val();
+            const desc = ($('#SimulationDescription').val() || '').trim();
+            if (simType === 'Other' && desc.length < 5) {
+                appalert('Please provide Simulation Description when Simulation Type is Other.', 2, 1);
+                return false;
+            }
+
             if ($(form).valid()) {
-                alertify.confirm("Confirmation", "Are you sure you want to perform this action?",
+                alertify.confirm("Confirmation", "Are you sure you want to run this cash simulation?",
                     function () {
-                        // Collect all account data
+
                         const accounts = [];
                         $('#myDataTable tbody tr').not('.empty-row').each(function () {
                             const row = $(this);
                             accounts.push({
-                                BranchName: row.find('.branch-name').val(),
+                                BranchId: row.find('.branch-name').val(),
                                 MemberReference: row.find('.member-reference').val(),
-                                AccountType: row.find('.account-type').val(),
+                                AccountTypeId: row.find('.account-type').val(),
                                 Amount: parseFloat(row.find('.amount').val()) || 0
                             });
                         });
 
-                        // Get Branches data from hidden field
-                       // const branches = JSON.parse($('#branchObject').val() || '[]');
-
-                        // Get SavingProducts data (assuming they're in a similar hidden field)
-                       // const savingProducts = JSON.parse($('#savingProductsObject').val() || '[]');
-
-                        // Prepare complete request data
                         const requestData = {
-                            // Form fields
+                            OperationScope: $('#OperationScope').val(),
                             BranchId: $('#BranchId').val(),
                             TransferType: $('#TransferType').val(),
                             AccountCartId: $('#AccountCartId').val(),
                             AccountDate: $('#AccountDate').val(),
-                            OperationTitle: $('#OperationTitle').val(),
+
+                            SimulationType: $('#SimulationType').val(),
                             SimulationDescription: $('#SimulationDescription').val(),
-                            TargetAmount: parseFloat($('#TargetAmount').val()) || 0,
-                            BulkCashStrategy:'ManualEntrying',
-                            // Collections
-                            //Branches: branches,
-                            //SavingProducts: savingProducts,
+
+                            BulkCashStrategy: 'ManualEntrying',
                             Accounts: accounts
                         };
-
-                        console.log("Submitting data:", requestData);
 
                         $.ajax({
                             type: 'POST',
@@ -990,300 +915,157 @@
                             contentType: 'application/json',
                             success: function (response) {
                                 if (response.success) {
-                                    alertify.success(response.message || 'Operation completed successfully');
-                                    appalert(response.message || 'Operation completed successfully', 2, 1);
-                                    // Reset the form after successful operation
-                                    window.location.href = '/BulkOperation/Listing'
+                                    appalert(response.message || 'Simulation completed successfully', 1, 1);
+                                    window.location.href = '/BulkOperation/Listing';
                                 } else {
-                                    //alertify.error(response.message || 'Error during operation');
-                                    appalert(response.message || 'Error during operation', 2, 1);
+                                    appalert(response.message || 'Simulation failed', 2, 1);
                                 }
-
                             },
                             error: function (err) {
                                 console.error("Error:", err);
-                                if (err.status === 401) {
-                                    window.location.href = '/Authentication/Login';
-                                } else {
-                                   // alertify.error(err.responseJSON?.message || err.statusText || 'An error occurred');
-                                    appalert(err.responseJSON?.message || err.statusText || 'An error occurred', 3, 1);
-                                }
+                                if (err.status === 401) window.location.href = '/Authentication/Login';
+                                else appalert(err.responseJSON?.message || err.statusText || 'An error occurred', 2, 1);
                             }
                         });
                     },
-                    function () {
-                        //alertify.message('Operation cancelled');
-                        appalert('Operation cancelled', 3, 1);
-                    }
+                    function () { appalert('Simulation cancelled', 3, 1); }
                 );
             }
             return false;
         }
     </script>
 
-    @*File Submitting*@
+    <!-- ======================== -->
+    <!-- File submit JS -->
+    <!-- ======================== -->
     <script>
-
         function AjaxPostBulkCashFileUploadOperation(form) {
-            console.log("Form Action:", form.action);
-            console.log("Form Method:", form.method);
-
-            /*var formData = new FormData(form);
-            for (var pair of formData.entries()) {
-                console.log(pair[0] + ', ' + pair[1]);
-            }*/
-
             $.validator.unobtrusive.parse(form);
             if ($(form).valid()) {
-                alertify.confirm("Confirmation", "Are you sure you want to perform this action? ",
+                alertify.confirm("Confirmation", "Upload file for preview?",
                     function () {
                         var ajaxConfig = {
                             type: 'POST',
                             url: form.action,
                             data: new FormData(form),
                             success: function (response) {
-                                console.log("Response:", response);
                                 if (response.success) {
                                     showUploadStatus(response.message || 'File uploaded successfully', 'success');
                                     displayFileContent(response.data);
-                                    // Reset the form after successful operation
                                     form.reset();
                                 } else {
-                                    showUploadStatus(response.message || 'File uploaded Failed', 'danger');
+                                    showUploadStatus(response.message || 'File upload failed', 'danger');
                                 }
                             },
                             error: function (err) {
-                                console.log("Error:", err);
-
-                                if (err.status === 401) { // Unauthorized
-                                    // Session has expired, redirect to the login page
-                                    window.location.href = '/Authentication/Login'; // Adjust the URL as needed
-                                } else {
-                                    appalert(err.statusText, 0, 1);
-                                }
+                                if (err.status === 401) window.location.href = '/Authentication/Login';
+                                else appalert(err.statusText || 'Upload failed', 2, 1);
                             }
                         };
-
-                        if ($(form).attr('enctype') === "multipart/form-data") {
-                            ajaxConfig.contentType = false;
-                            ajaxConfig.processData = false;
-                        }
-
-                        console.log("AJAX Config:", ajaxConfig);
+                        ajaxConfig.contentType = false;
+                        ajaxConfig.processData = false;
                         $.ajax(ajaxConfig);
                     },
-                    function () {
-                        appalert('Transaction cancelled', 3, 1);
-                    }
+                    function () { appalert('Upload cancelled', 3, 1); }
                 );
             }
             return false;
         }
-
-
 
         function AjaxPostAndUpdateBulkCashOperation(form) {
             $.validator.unobtrusive.parse(form);
+
+            // ✅ Extra rule: if SimulationType2 == Other, require description
+            const simType2 = $('#SimulationType2').val();
+            const desc2 = ($('#SimulationDescription2').val() || '').trim(); // ✅ FIXED: broken line in your code
+            if (simType2 === 'Other' && desc2.length < 5) {
+                appalert('Please provide Simulation Description when Simulation Type is Other.', 2, 1);
+                return false;
+            }
+
+            // ✅ Ensure file preview table has data
+            if (!$.fn.DataTable.isDataTable('#myDataTable2') || $('#myDataTable2').DataTable().rows().count() === 0) {
+                appalert('Please upload and preview a valid file before running simulation.', 2, 1);
+                return false;
+            }
+
             if ($(form).valid()) {
-                alertify.confirm("Confirmation", "Are you sure you want to perform this action?", function () {
-                 /*   console.log("Form Action:", form.action);
-                    console.log("Form Method:", form.method);
-*/
-
-
-                    const accountIIs = [];
-                    const table = $('#myDataTable2').DataTable();
-                    table.rows().every(function () {
-                        const rowData = this.data();
-                        accountIIs.push({
-                            BranchCode: rowData.BranchCode,
-                            MemberReference: rowData.MemberReference,
-                            AccountType: rowData.AccountType,
-                            Amount: parseFloat(rowData.Amount) || 0
-                        });
-                    });
-                    console.log("Request Table Data : ", JSON.stringify(accountIIs));
-
-                    const requestData = {
-                        // Form fields
-                        BranchId: $('#BranchId2').val(),
-                        TransferType: $('#TransferType2').val(),
-                        AccountCartId: $('#AccountCartId2').val(),
-                        AccountDate: $('#AccountDate2').val(),
-                        OperationTitle: $('#OperationTitle2').val(),
-                        SimulationDescription: $('#SimulationDescription2').val(),
-                        BulkCashStrategy: 'FileUpload',
-                        // Collections
-                        //Branches: branches,
-                        //SavingProducts: savingProducts,
-                        AccountIIs: accountIIs
-                    };
-
-                 /*   console.log("Request Data : ", JSON.stringify(requestData));
-                    console.log("Form Action : ", form.action);
-
-                    console.log("Submitting data:", requestData);*/
-
-                    $.ajax({
-                        type: 'POST',
-                        url: form.action,
-                        data: JSON.stringify(requestData),
-                        contentType: 'application/json',
-                        success: function (response) {
-                            if (response.success) {
-                                // alertify.success(response.message || 'Operation completed successfully');
-                                //appalert(response.message || 'Operation completed successfully', 1, 1);
-                                // Reset the form after successful operation
-                                window.location.href = '/BulkOperation/Listing'
-                            } else {
-                                // alertify.error(response.message || 'Error during operation');
-                                appalert(response.message || 'Error during operation', 2, 1);
-                            }
-                        },
-                        error: function (err) {
-                            console.error("Error:", err);
-                            if (err.status === 401) {
-                                window.location.href = '/Authentication/Login';
-                            } else {
-                                //alertify.error(err.responseJSON?.message || err.statusText || 'An error occurred');
-                                appalert(err.responseJSON?.message || err.statusText || 'An error occurred', 3, 1);
-                            }
-                        }
-                    });
-                },
+                alertify.confirm("Confirmation", "Run simulation using uploaded file entries?",
                     function () {
-                        //alertify.message('Operation cancelled');
-                        appalert('Operation cancelled', 3, 1);
-                    }
+
+                        const accountIIs = [];
+                        const table = $('#myDataTable2').DataTable();
+                        table.rows().every(function () {
+                            const rowData = this.data();
+                            accountIIs.push({
+                                BranchCode: rowData.BranchCode,
+                                MemberReference: rowData.MemberReference,
+                                AccountType: rowData.AccountType,
+                                Amount: parseFloat(rowData.Amount) || 0
+                            });
+                        });
+
+                        const requestData = {
+                            BranchId: $('#BranchId2').val(),
+                            TransferType: $('#TransferType2').val(),
+                            AccountCartId: $('#AccountCartId2').val(),
+                            AccountDate: $('#AccountDate2').val(),
+
+                            SimulationType2: $('#SimulationType2').val(),
+                            SimulationDescription2: $('#SimulationDescription2').val(),
+
+                            BulkCashStrategy: 'FileUpload',
+                            AccountIIs: accountIIs
+                        };
+
+                        $.ajax({
+                            type: 'POST',
+                            url: form.action,
+                            data: JSON.stringify(requestData),
+                            contentType: 'application/json',
+                            success: function (response) {
+                                if (response.success) {
+                                    appalert(response.message || 'Simulation completed successfully', 1, 1);
+                                    window.location.href = '/BulkOperation/Listing';
+                                } else {
+                                    appalert(response.message || 'Simulation failed', 2, 1);
+                                }
+                            },
+                            error: function (err) {
+                                console.error("Error:", err);
+                                if (err.status === 401) window.location.href = '/Authentication/Login';
+                                else appalert(err.responseJSON?.message || err.statusText || 'An error occurred', 2, 1);
+                            }
+                        });
+                    },
+                    function () { appalert('Simulation cancelled', 3, 1); }
                 );
             }
             return false;
         }
 
-
-
-        const $bulkUploadForm = $('#bulkUploadForm');
-        const $fileInput = $('#bulkOperationFile');
-        const $uploadButton = $('#uploadButton');
-        const $uploadStatus = $('#uploadStatus');
-        const $progressBar = $('.progress-bar');
-        const maxFileSize = parseInt($fileInput.data('max-size')) || 10 * 1024 * 1024; // Default 10MB
-
-        // Display file content in DataTable
         function displayFileContent(data) {
-
             if ($.fn.DataTable.isDataTable('#myDataTable2')) {
                 $('#myDataTable2').DataTable().destroy();
             }
 
-            $('#fileContentCard').show();
-            const $table = $('#myDataTable2');
-            console.log('Table : ' + $table)
-
-            $table.DataTable({
+            $('#myDataTable2').DataTable({
                 data: data || [],
                 columns: [
-                    {
-                        data: "BranchCode",
-                        title: "Branch Code",
-                        render: $.fn.dataTable.render.text() // Sanitize output
-                    },
-                    {
-                        data: "MemberReference",
-                        title: "Member Reference",
-                        render: $.fn.dataTable.render.text() // Sanitize output
-                    },
-                    {
-                        data: "AccountType",
-                        title: "Account Type",
-                        render: $.fn.dataTable.render.text()
-                    },
-                    {
-                        data: "MemberName",
-                        title: "Member Name",
-                        render: $.fn.dataTable.render.text()
-                    },
+                    { data: "BranchCode", title: "Branch Code", render: $.fn.dataTable.render.text() },
+                    { data: "MemberReference", title: "Member Reference", render: $.fn.dataTable.render.text() },
+                    { data: "AccountType", title: "Account Type", render: $.fn.dataTable.render.text() },
+                    { data: "MemberName", title: "Member Name", render: $.fn.dataTable.render.text() },
                     {
                         data: "Amount",
                         title: "Amount",
                         className: "text-end",
-                        render: function (data) {
-                            return data ? formatCurrency(data) : '0';
-                        }
+                        render: function (data) { return data ? formatCurrency(data) : '0'; }
                     }
                 ],
-                language: {
-                    emptyTable: "No data available in table",
-                    info: "Showing _START_ to _END_ of _TOTAL_ entries",
-                    infoEmpty: "Showing 0 to 0 of 0 entries",
-                    infoFiltered: "(filtered from _MAX_ total entries)",
-                    lengthMenu: "Show _MENU_ entries",
-                    search: "Search:",
-                    zeroRecords: "No matching records found"
-                },
                 responsive: true,
-                lengthMenu: [[5, 10, 25, 50, 100, 500, 1000], [5, 10, 25, 50, 100, 500, 1000]],
                 pageLength: 5,
-                order: [[0, 'desc']], // Disable initial sorting
-                /* dom: '<"top"f>rt<"bottom"lip><"clear">',*/
-                initComplete: function () {
-                    $table.removeClass('d-none');
-                }
-            });
-        }
-
-
-        // Enhanced display function to handle both file content and simulation results
-        function displayFileContent2(data) {
-            $('#fileContentCard').show();
-            const $table = $('#myDataTable2');
-
-            // Clear existing DataTable if it exists
-            if ($.fn.DataTable.isDataTable($table)) {
-                $table.DataTable().destroy();
-                $table.empty();
-            }
-
-            // Create table structure
-            const tableHtml = `
-                                                <thead>
-                                                    <tr>
-                                                        <th>Branch Code</th>
-                                                        <th>Member Reference</th>
-                                                        <th>Account Type</th>
-                                                        <th>Member Name</th>
-                                                        <th class="text-end">Amount</th>
-                                                        <th>Status</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody></tbody>
-                                            `;
-            $table.html(tableHtml);
-
-            // Initialize DataTable with enhanced options
-            const dataTable = $table.DataTable({
-                data: data,
-                columns: [
-                    { data: "BranchCode", render: $.fn.dataTable.render.text() },
-                    { data: "MemberReference", render: $.fn.dataTable.render.text() },
-                    { data: "AccountType", render: $.fn.dataTable.render.text() },
-                    { data: "MemberName", render: $.fn.dataTable.render.text() },
-                    {
-                        data: "Amount",
-                        className: "text-end",
-                        render: function (data) {
-                            return data ? formatCurrency(data) : '0';
-                        }
-                    },
-                    {
-                        data: "Status",
-                        render: function (data, type, row) {
-                            if (!data) return '';
-                            const statusClass = data === 'Valid' ? 'badge bg-success' : 'badge bg-danger';
-                            return `<span class="${statusClass}">${data}</span>`;
-                        }
-                    }
-                ],
+                order: [],
                 language: {
                     emptyTable: "No data available in table",
                     info: "Showing _START_ to _END_ of _TOTAL_ entries",
@@ -1292,116 +1074,25 @@
                     lengthMenu: "Show _MENU_ entries",
                     search: "Search:",
                     zeroRecords: "No matching records found"
-                },
-                responsive: true,
-                lengthMenu: [[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, "All"]],
-                pageLength: 10,
-                order: [[0, 'asc']],
-                dom: '<"top"lf>rt<"bottom"ip><"clear">',
-                initComplete: function () {
-                    $table.removeClass('d-none');
                 }
             });
 
-            // Add export buttons if needed
-            new $.fn.dataTable.Buttons(dataTable, {
-                buttons: [
-                    'copy', 'csv', 'excel', 'pdf', 'print'
-                ]
-            });
-            dataTable.buttons().container().appendTo($('#exportButtons'));
-        }
-
-        // Display simulation results (similar to previous example)
-        function displaySimulationResult2(data) {
-            const modal = $('#simulationResultsModal');
-            const modalBody = modal.find('.modal-body');
-
-            modalBody.empty();
-
-            if (data && data.length > 0) {
-                const table = $('<table class="table table-striped"></table>');
-                const thead = $('<thead><tr><th>Account</th><th>Current Balance</th><th>New Balance</th><th>Status</th></tr></thead>');
-                const tbody = $('<tbody></tbody>');
-
-                data.forEach(item => {
-                    const row = $('<tr></tr>');
-                    row.append($('<td></td>').text(item.accountNumber));
-                    row.append($('<td class="text-end"></td>').text(formatCurrency(item.currentBalance)));
-                    row.append($('<td class="text-end"></td>').text(formatCurrency(item.newBalance)));
-
-                    const statusCell = $('<td></td>');
-                    const statusClass = item.status === 'Success' ? 'badge bg-success' : 'badge bg-danger';
-                    statusCell.append($(`<span class="${statusClass}">${item.status}</span>`));
-                    row.append(statusCell);
-
-                    tbody.append(row);
-                });
-
-                table.append(thead).append(tbody);
-                modalBody.append(table);
-            } else {
-                modalBody.append('<p>No simulation results available.</p>');
+            // Auto-open preview accordion
+            const preview = document.getElementById('collapseFileContent');
+            if (preview && !preview.classList.contains('show')) {
+                new bootstrap.Collapse(preview, { toggle: true });
             }
-
-            modal.modal('show');
         }
 
-        // Helper function to show status messages
         function showUploadStatus(message, type) {
             const $uploadStatus = $('#uploadStatus');
             $uploadStatus.removeClass('d-none alert-danger alert-success alert-info')
-                .addClass(`alert-${type}`)
+                .addClass(`alert alert-${type}`)
                 .html(`<i class="mdi mdi-${type === 'success' ? 'check' : 'alert'}-circle-outline me-2"></i>${message}`);
         }
 
         function formatCurrency(amount) {
-            return new Intl.NumberFormat('en-NG', {
-                minimumFractionDigits: 1,
-                maximumFractionDigits: 1
-            }).format(amount);
+            return new Intl.NumberFormat('en-NG', { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(amount);
         }
-
-        function formatBytes(bytes, decimals = 2) {
-            if (bytes === 0) return '0 Bytes';
-            const k = 1024;
-            const dm = decimals < 0 ? 0 : decimals;
-            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-            const i = Math.floor(Math.log(bytes) / Math.log(k));
-            return parseFloat((bytes / Math.pow(k, i)).toFixed(dm) + ' ' + sizes[i]);
-        }
-
-        function setUploadState(isUploading) {
-            $uploadButton.prop('disabled', isUploading);
-            $uploadButton.find('.upload-text').text(isUploading ? 'Uploading...' : 'Upload File');
-            $uploadButton.find('.spinner-border').toggleClass('d-none', !isUploading);
-            $('#uploadProgress').toggle(isUploading);
-        }
-
-        function updateProgressBar(loaded, total) {
-            const percent = Math.round((loaded / total) * 100);
-            $progressBar.css('width', percent + '%')
-                .attr('aria-valuenow', percent)
-                .text(percent + '%');
-        }
-
-        function resetProgressBar() {
-            $progressBar.css('width', '0%')
-                .attr('aria-valuenow', 0)
-                .text('0%')
-                .removeClass('bg-success bg-danger')
-                .addClass('bg-primary progress-bar-animated');
-        }
-
-        function resetUploadUI() {
-            $uploadStatus.addClass('d-none');
-            $bulkUploadForm.removeClass('was-validated');
-            resetProgressBar();
-        }
-
     </script>
 }
-
-
-
-

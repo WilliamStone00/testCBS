@@ -1,0 +1,517 @@
+﻿<!-- Alternative: Index_Ajax.cshtml -->
+<div id="datalistingview">
+    <div class="row">
+        <div class="col-12">
+            <div class="card bg-light mb-2 shadow-sm">
+                <div class="card-body text-center">
+                    <h1 class="card-title text-primary fw-bold">
+                        <i class="mdi mdi-target-account me-2"></i> PCMF Targeted Population Category
+                    </h1>
+                    <p class="card-text">
+                        Manage loan target categories for PCMF population classification
+                    </p>
+                    <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-2">
+        <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+            <span><i class="mdi mdi-information-outline me-2"></i>  Tips</span>
+            <button class="btn btn-light btn-sm" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#collapseTargetTips"
+                    aria-expanded="false" aria-controls="collapseTargetTips">
+                <i class="mdi mdi-chevron-down"></i>
+            </button>
+        </h6>
+        <div id="collapseTargetTips" class="collapse">
+            <div class="card-body">
+                <p class="mb-3">
+                    The Loan Target Catalog defines <strong>borrower segmentation</strong> for inclusive finance reporting.
+                    Each target category helps classify loans by customer type, supporting PCMF compliance and strategic lending.
+                </p>
+
+                <div class="row">
+                    <!-- Naming Guidelines -->
+                    <div class="col-md-6 mb-3">
+                        <h6 class="text-primary mb-2">
+                            <i class="mdi mdi-format-letter-case me-1"></i> Naming Guidelines
+                        </h6>
+                        <ul class="small mb-0">
+                            <li class="mb-2">
+                                <strong class="text-success">✓ English Name:</strong> Use clear, descriptive names (e.g., "Micro-Entrepreneurs", "Smallholder Farmers")
+                            </li>
+                            <li class="mb-2">
+                                <strong class="text-success">✓ French Name:</strong> Provide accurate French translations for bilingual reporting
+                            </li>
+                            <li class="mb-2">
+                                <strong class="text-warning">⚠ Consistency:</strong> Maintain consistent naming across all loan products
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Population Management -->
+                    <div class="col-md-6 mb-3">
+                        <h6 class="text-primary mb-2">
+                            <i class="mdi mdi-account-group me-1"></i> PCMF Population
+                        </h6>
+                        <ul class="small mb-0">
+                            <li class="mb-2">
+                                <strong class="text-success">✓ Actual Counts:</strong> Enter current population numbers for accurate reporting
+                            </li>
+                            <li class="mb-2">
+                                <strong class="text-success">✓ Zero Values:</strong> Use 0 for targets without current population data
+                            </li>
+                            <li class="mb-2">
+                                <strong class="text-info">🔄 Updates:</strong> Update population counts quarterly for accurate PCMF reporting
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Status Management -->
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <h6 class="text-primary mb-2">
+                            <i class="mdi mdi-toggle-switch me-1"></i> Status Management
+                        </h6>
+                        <div class="row small">
+                            <div class="col-md-4 mb-2">
+                                <span class="badge bg-success me-1">Active</span>
+                                <strong>Active Targets:</strong> Available for new loan product creation
+                            </div>
+                            <div class="col-md-4 mb-2">
+                                <span class="badge bg-secondary me-1">Inactive</span>
+                                <strong>Inactive Targets:</strong> Hidden from new loans, existing loans unaffected
+                            </div>
+                            <div class="col-md-4 mb-2">
+                                <span class="badge bg-warning me-1">Archived</span>
+                                <strong>System Note:</strong> Cannot delete targets used in existing loans
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Regulatory Compliance -->
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <h6 class="text-primary mb-2">
+                            <i class="mdi mdi-shield-check-outline me-1"></i> Regulatory Importance
+                        </h6>
+                        <p class="small mb-2">
+                            Proper loan target classification is essential for:
+                        </p>
+                        <ul class="small mb-0">
+                            <li class="mb-1">
+                                <i class="mdi mdi-chart-line text-primary me-1"></i>
+                                <strong>PCMF Reporting:</strong> Accurate segmentation in financial inclusion reports
+                            </li>
+                            <li class="mb-1">
+                                <i class="mdi mdi-scale-balance text-info me-1"></i>
+                                <strong>COBAC Compliance:</strong> Proper risk categorization and provisioning
+                            </li>
+                            <li class="mb-1">
+                                <i class="mdi mdi-finance text-success me-1"></i>
+                                <strong>SESAME Integration:</strong> Correct mapping to banking supervision systems
+                            </li>
+                            <li class="mb-1">
+                                <i class="mdi mdi-chart-pie text-warning me-1"></i>
+                                <strong>Strategic Analysis:</strong> Portfolio analysis by customer segment
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Best Practices -->
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <h6 class="text-primary mb-2">
+                            <i class="mdi mdi-best-fit me-1"></i> Best Practices
+                        </h6>
+                        <div class="row small">
+                            <div class="col-md-6">
+                                <div class="d-flex mb-2">
+                                    <i class="mdi mdi-check-circle text-success me-2 mt-1"></i>
+                                    <div>
+                                        <strong>Review Existing Targets:</strong> Before creating new ones, check if similar targets exist
+                                    </div>
+                                </div>
+                                <div class="d-flex mb-2">
+                                    <i class="mdi mdi-check-circle text-success me-2 mt-1"></i>
+                                    <div>
+                                        <strong>Regular Updates:</strong> Update population data at least quarterly
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-flex mb-2">
+                                    <i class="mdi mdi-alert-circle text-warning me-2 mt-1"></i>
+                                    <div>
+                                        <strong>Avoid Deactivation:</strong> Only deactivate targets no longer relevant
+                                    </div>
+                                </div>
+                                <div class="d-flex mb-2">
+                                    <i class="mdi mdi-alert-circle text-warning me-2 mt-1"></i>
+                                    <div>
+                                        <strong>Document Changes:</strong> Note reasons for status changes in comments
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Common Target Examples -->
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <h6 class="text-primary mb-2">
+                            <i class="mdi mdi-format-list-bulleted me-1"></i> Common Loan Target Examples
+                        </h6>
+                        <div class="row small">
+                            <div class="col-md-4 mb-2">
+                                <span class="badge bg-light text-dark me-1">•</span>
+                                Micro-Entrepreneurs
+                            </div>
+                            <div class="col-md-4 mb-2">
+                                <span class="badge bg-light text-dark me-1">•</span>
+                                Smallholder Farmers
+                            </div>
+                            <div class="col-md-4 mb-2">
+                                <span class="badge bg-light text-dark me-1">•</span>
+                                Women Entrepreneurs
+                            </div>
+                            <div class="col-md-4 mb-2">
+                                <span class="badge bg-light text-dark me-1">•</span>
+                                Youth Entrepreneurs
+                            </div>
+                            <div class="col-md-4 mb-2">
+                                <span class="badge bg-light text-dark me-1">•</span>
+                                Informal Sector Workers
+                            </div>
+                            <div class="col-md-4 mb-2">
+                                <span class="badge bg-light text-dark me-1">•</span>
+                                Rural Population
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="my-3">
+
+                <!-- Quick Actions Guide -->
+                <div class="row">
+                    <div class="col-12">
+                        <h6 class="text-primary mb-2">
+                            <i class="mdi mdi-lightning-bolt me-1"></i> Quick Actions Guide
+                        </h6>
+                        <div class="row small">
+                            <div class="col-md-3 mb-2">
+                                <i class="mdi mdi-plus text-primary me-1"></i>
+                                <strong>Add:</strong> Create new target categories
+                            </div>
+                            <div class="col-md-3 mb-2">
+                                <i class="mdi mdi-pencil text-warning me-1"></i>
+                                <strong>Edit:</strong> Modify existing target details
+                            </div>
+                            <div class="col-md-3 mb-2">
+                                <i class="mdi mdi-eye text-info me-1"></i>
+                                <strong>View:</strong> See complete target information
+                            </div>
+                            <div class="col-md-3 mb-2">
+                                <i class="mdi mdi-delete text-danger me-1"></i>
+                                <strong>Delete:</strong> Remove unused targets (if no loans attached)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="text-muted mt-3 mb-0 small">
+                    <i class="mdi mdi-information-outline me-1"></i>
+                    Note: Changes to loan targets affect all loan products using that target category.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="card mb-1">
+        <div class="card-body d-flex justify-content-end align-items-center">
+            <button type="button"
+                    onclick="showCreateModal()"
+                    class="btn btn-label-primary btn-primary me-2">
+                <i class="mdi mdi-plus mdi-18px"></i> Add New
+            </button>
+            <button type="button"
+                    onclick="refreshTable()"
+                    class="btn btn-label-secondary btn-info">
+                <i class="mdi mdi-refresh mdi-18px"></i> Refresh
+            </button>
+        </div>
+    </div>
+
+    <!-- DataTable -->
+    <div class="card p-3 shadow mb-4">
+        <h5 class="text-primary mb-3">
+            <i class="mdi mdi-table"></i> Loan Target Catalog
+            <small class="text-muted ms-2">
+                <span id="recordCount" class="badge bg-info">Loading...</span>
+            </small>
+        </h5>
+        <div class="table-responsive">
+            <table id="loanTargetDataTable" class="table table-bordered table-striped">
+                <thead class="table-light">
+                    <tr>
+                        <th>Name (English)</th>
+                        <th>Name (French)</th>
+                        <th>PCMF Population</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data will be loaded via AJAX -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Container -->
+<div class="modal fade" id="genericModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content"></div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        var dataTable = null;
+
+        function showCreateModal() {
+            ShowModal(null, '_CreateEditLoanTargetCatalog', 'LoanTargetCatalog', 'create');
+        }
+
+        function ShowModal(key, partialView, controller, path) {
+            var url = '/' + controller + '/InitializeData?KEY=' + encodeURIComponent(key || '') +
+                '&partialView=' + encodeURIComponent(partialView) +
+                '&path=' + encodeURIComponent(path);
+
+            $.get(url).done(function (html) {
+                $('#genericModal .modal-content').html(html);
+                var modal = new bootstrap.Modal(document.getElementById('genericModal'));
+                modal.show();
+            }).fail(function () {
+                appalert('Failed to load content', 0, 1);
+            });
+        }
+
+        function loadData() {
+            // Show loading state
+            var tbody = $('#loanTargetDataTable tbody');
+            tbody.html();
+
+            $.ajax({
+                url: '/LoanTargetCatalog/GetAll',
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    if (response.success && response.data) {
+                        renderTable(response.data);
+                    } else {
+                        tbody.html(`
+                                <tr>
+                                    <td colspan="5" class="text-center text-danger py-4">
+                                        <i class="mdi mdi-alert-circle me-1"></i>
+                                        Failed to load data
+                                    </td>
+                                </tr>
+                            `);
+                        $('#recordCount').text('Error');
+                    }
+                },
+                error: function () {
+                    tbody.html(`
+                            <tr>
+                                <td colspan="5" class="text-center text-danger py-4">
+                                    <i class="mdi mdi-alert-circle me-1"></i>
+                                    Error loading data. Please try again.
+                                </td>
+                            </tr>
+                        `);
+                    $('#recordCount').text('Error');
+                }
+            });
+        }
+
+        function renderTable(data) {
+            var tbody = $('#loanTargetDataTable tbody');
+
+            // Clear any existing DataTable instance
+            if (dataTable) {
+                dataTable.destroy();
+                dataTable = null;
+            }
+
+            tbody.empty();
+
+            if (!data || data.length === 0) {
+                tbody.html(`
+                        <tr>
+                            <td colspan="5" class="text-center text-muted py-4">
+                                <i class="mdi mdi-information-outline me-1"></i>
+                                No loan target records found
+                            </td>
+                        </tr>
+                    `);
+                $('#recordCount').text('0 records');
+
+                // Initialize DataTable with empty data
+                initializeDataTable();
+                return;
+            }
+
+            $('#recordCount').text(data.length + ' records');
+
+            // Render table rows
+            data.forEach(function (item) {
+                var row = `
+                        <tr>
+                            <td class="fw-semibold">${escapeHtml(item.NameEn)}</td>
+                            <td>${escapeHtml(item.NameFr)}</td>
+                            <td>${escapeHtml(item.PcmfPopulationLabel)}</td>
+                            
+                            <td>
+                                ${item.IsActive ?
+                        '<span class="badge bg-success">Active</span>' :
+                        '<span class="badge bg-secondary">Inactive</span>'}
+                            </td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-info dropdown-toggle text-white"
+                                            type="button"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="mdi mdi-cog-outline"></i> Actions
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <button class="dropdown-item btn-details" data-id="${item.Id}">
+                                                <i class="mdi mdi-eye me-1 text-primary"></i> Details
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button class="dropdown-item btn-edit" data-id="${item.Id}">
+                                                <i class="mdi mdi-pencil me-1 text-warning"></i> Edit
+                                            </button>
+                                        </li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li>
+                                            <button class="dropdown-item btn-delete text-danger" data-id="${item.Id}">
+                                                <i class="mdi mdi-delete me-1"></i> Delete
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                tbody.append(row);
+            });
+
+            // Initialize DataTable
+            initializeDataTable();
+        }
+
+        function initializeDataTable() {
+            // Initialize DataTable only if it exists and we have data
+            if ($.fn.DataTable) {
+                dataTable = $('#loanTargetDataTable').DataTable({
+                    searching: true,
+                    responsive: true,
+                    order: [[0, 'asc']],
+                    language: {
+                        emptyTable: 'No records found',
+                        info: 'Showing _START_ to _END_ of _TOTAL_ entries',
+                        infoEmpty: 'Showing 0 to 0 of 0 entries',
+                        lengthMenu: 'Show _MENU_ entries',
+                        search: 'Search:',
+                        zeroRecords: 'No matching records found'
+                    },
+                    lengthMenu: [10, 25, 50, 100],
+                    pageLength: 10,
+                    columnDefs: [
+                        { orderable: false, targets: 4 } // Actions column (0-based index)
+                    ],
+                    drawCallback: function () {
+                        // Ensure dropdowns work after DataTable redraw
+                        $('.dropdown-toggle').dropdown();
+                    },
+                    // Important: This ensures DataTable doesn't try to re-render the entire table
+                    destroy: true,
+                    retrieve: true
+                });
+            }
+        }
+
+        function refreshTable() {
+            loadData();
+            appalert('Data refreshed', 3, 1);
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return '-';
+            var date = new Date(dateString);
+            return date.toLocaleDateString('en-GB'); // DD/MM/YYYY format
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            var map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.toString().replace(/[&<>"']/g, function (m) { return map[m]; });
+        }
+
+        $(document).ready(function () {
+            // Load data on page load
+            loadData();
+
+            // Action handlers (using event delegation for dynamic content)
+            $(document).on('click', '.btn-details', function () {
+                var id = $(this).data('id');
+                ShowModal(id, '_LoanTargetCatalogDetails', 'LoanTargetCatalog', 'details');
+            });
+
+            $(document).on('click', '.btn-edit', function () {
+                var id = $(this).data('id');
+                ShowModal(id, '_CreateEditLoanTargetCatalog', 'LoanTargetCatalog', 'edit');
+            });
+                        
+            $(document).off('click', '.btn-delete').on('click', '.btn-delete', function (e) {
+                e.preventDefault();
+
+                var raw = $(this).data('id');
+                var KEY = raw ? decodeURIComponent(raw) : null;
+
+
+
+                if (!KEY) {
+                    appalert('Missing id for delete', 0, 1);
+                    return;
+                }
+                DeleteRecordDataTable('LoanTargetCatalog', KEY,'myDataTable','delete',0,null,null,null);
+            });
+
+
+            // Handle modal close to refresh data
+            $('#genericModal').on('hidden.bs.modal', function () {
+                loadData(); // Refresh table after modal close
+            });
+        });
+    </script>
+}
