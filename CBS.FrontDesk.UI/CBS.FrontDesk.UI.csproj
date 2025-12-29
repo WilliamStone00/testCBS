@@ -2201,6 +2201,7 @@
     <Compile Include="Controllers\DailyCollectorManagement\TransactionDetailsController.cs" />
     <Compile Include="Controllers\DailySaverManagementP\DailySaverManagementController.cs" />
     <Compile Include="Controllers\LiaisonMappingV2\LiaisonMappingConfigController.cs" />
+    <Compile Include="Controllers\LoanManagementP\LoanManagementController.cs" />
     <Compile Include="Controllers\Loan\Configuration\LoanTargetCatalogController.cs" />
     <Compile Include="Controllers\Loan\Configuration\PcmfLoanPurposeController.cs" />
     <Compile Include="Controllers\Loan\LoanAdjustmentP\LoanAdjustmentConsoleController.cs" />
@@ -11179,6 +11180,7 @@
     <Content Include="Views\PcmfLoanPurpose\Index.cshtml" />
     <Content Include="Views\PcmfLoanPurpose\_CreateEditPcmfLoanPurpose.cshtml" />
     <Content Include="Views\PcmfLoanPurpose\_PcmfLoanPurposeDetails.cshtml" />
+    <Content Include="Views\LoanManagement\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
@@ -11203,6 +11205,7 @@
     <Folder Include="bin\zh-TW\" />
     <Folder Include="bin\zh\" />
     <Folder Include="Controllers\DailyCollectionManagement\" />
+    <Folder Include="Controllers\LoanManagementP\ApplicationP\" />
     <Folder Include="Hub\" />
     <Folder Include="Views\AccountingV2\" />
     <Folder Include="Views\BulkOperation\Contribution\" />
