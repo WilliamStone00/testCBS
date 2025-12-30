@@ -20,7 +20,7 @@
     <div class="card mb-1">
         <div class="card-body d-flex justify-content-end align-items-center">
             <button type="button"
-                    onclick="showCreateModal()"
+                    onclick="return false;"
                     class="btn btn-label-primary btn-sm me-2">
                 <i class="mdi mdi-plus mdi-18px"></i> Add New
             </button>
@@ -44,7 +44,7 @@
             <table id="pcmfLoanPurposeDataTable" class="table table-bordered table-striped">
                 <thead class="table-light">
                     <tr>
-                        <th>Key</th>
+                        <th>Pcmf PurposeKey</th>
                         <th>Name (English)</th>
                         <th>Name (French)</th>
                         <th>LT Group</th>
@@ -98,10 +98,7 @@
             tbody.html(`
                     <tr>
                         <td colspan="9" class="text-center py-4">
-                            <div class="spinner-border text-primary" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
-                            <p class="mt-2 mb-0 text-muted">Loading PCMF loan purpose data...</p>
+                                <p class="mt-2 mb-0 text-muted">Loading PCMF loan purpose data...</p>
                         </td>
                     </tr>
                 `);
@@ -168,7 +165,7 @@
             data.forEach(function (item) {
                 var row = `
                         <tr>
-                            <td>${escapeHtml(item.PcmfPurposeKey.toString())}</td>
+                            <td>${escapeHtml(item.Keys.toString())}</td>
                             <td class="fw-semibold">${escapeHtml(item.NameEn)}</td>
                             <td>${escapeHtml(item.NameFr)}</td>
                             <td>${item.LtGroupCode ? item.LtGroupCode : '0'}</td>
@@ -273,10 +270,28 @@
                 ShowModal(id, '_CreateEditPcmfLoanPurpose', 'PcmfLoanPurpose', 'edit');
             });
 
-            $(document).on('click', '.btn-delete', function () {
-                var id = $(this).data('id');
-                ShowModal(id, '_DeletePcmfLoanPurpose', 'PcmfLoanPurpose', 'delete');
+            //$(document).on('click', '.btn-delete', function () {
+            //    var id = $(this).data('id');
+            //    ShowModal(id, '_DeletePcmfLoanPurpose', 'PcmfLoanPurpose', 'delete');
+            //});
+
+            $(document).off('click', '.btn-delete').on('click', '.btn-delete', function (e) {
+                e.preventDefault();
+
+                var raw = $(this).data('id');
+                var KEY = raw ? decodeURIComponent(raw) : null;
+
+
+
+                if (!KEY) {
+                    appalert('Missing id for delete', 0, 1);
+                    return;
+                }
+                DeleteRecordDataTable('PcmfLoanPurpose', KEY, 'myDataTable', 'delete', 0, null, null, null);
             });
+
+
+
 
             $('#genericModal').on('hidden.bs.modal', function () {
                 loadData();

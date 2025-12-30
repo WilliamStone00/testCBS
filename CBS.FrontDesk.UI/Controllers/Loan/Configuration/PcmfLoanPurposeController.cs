@@ -20,12 +20,14 @@ namespace CBS.FrontDesk.UI.Controllers.Loan.Configuration
 
         public ActionResult Index()
         {
+            loader();
             return View();
         }
     
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null,
             string path = null, string serviceOption = null)
         {
+            loader();
             if (path == "details")
             {
                 var data = await _pcmfLoanPurposeService.GetByIdAsync(KEY);
@@ -43,13 +45,13 @@ namespace CBS.FrontDesk.UI.Controllers.Loan.Configuration
             }
             else // create
             {
-                return PartialView(partialView, new UpdatePcmfLoanPurposeRequest());
+                return PartialView(partialView, new PcmfLoanPurpose());
             }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CreateOrUpdate(UpdatePcmfLoanPurposeRequest model)
+        public async Task<ActionResult> CreateOrUpdate(PcmfLoanPurpose model)
         {
             if (!ModelState.IsValid)
             {
@@ -88,7 +90,7 @@ namespace CBS.FrontDesk.UI.Controllers.Loan.Configuration
 
         [HttpGet]
         public async Task<JsonResult> GetAll()
-        {
+         {
             var data = await _pcmfLoanPurposeService.GetAllAsync();
             return Json(new { success = true, data = data }, JsonRequestBehavior.AllowGet);
         }
@@ -104,6 +106,20 @@ namespace CBS.FrontDesk.UI.Controllers.Loan.Configuration
 
             var data = await _pcmfLoanPurposeService.GetByIdAsync(id);
             return Json(new { success = data != null, data = data }, JsonRequestBehavior.AllowGet);
+        }
+        private bool loader()
+        {
+            // Load LoanTermKind enum values
+            var LtGroupOptions = Enum.GetValues(typeof(PcmfPurposeKey))
+                .Cast<PcmfPurposeKey>()
+                .Select(e => new SelectListItem
+                {
+                    Value = e.ToString(),
+                    Text = e.ToString()
+                })
+                .ToList();
+            ViewBag.LtGroupOptions = LtGroupOptions;
+            return true;
         }
     }
 }
