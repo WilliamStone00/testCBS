@@ -49,36 +49,79 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.Counter
 
 
         [HttpGet]
-        public async Task<ActionResult> Search(string CustomerId, string BranchId)
+        public async Task<ActionResult> Search(string customerId)
         {
-            if (string.IsNullOrEmpty(CustomerId) || string.IsNullOrEmpty(BranchId))
-                return new HttpStatusCodeResult(400, "CustomerId and BranchId are required");
+			if (string.IsNullOrEmpty(customerId))
+				return new HttpStatusCodeResult(400, "ChequeBookId is required");
 
-            List<CounterCheques> entries;
+			try
+			{
+				var entry = await _counterChequeService.GetCustomerChequeBooks(customerId);
+				if (entry == null)
+					return HttpNotFound("customerId details not found");
 
-            try
-            {
-                entries = await _counterChequeService.GetChequeDetails(CustomerId, BranchId);
+				return PartialView("_CustomerCheckBookCarousel", entry);
+			}
+			catch (Exception ex)
+			{
+				return new HttpStatusCodeResult(500, ex.Message);
+			}
+		}
 
-                if (entries == null || !entries.Any())
-                    return new HttpStatusCodeResult(404, "No cheque books found");
+		[HttpGet]
+		public async Task<ActionResult> GetChequeLeaves(string chequeBookId, string viewType)
+		{
+			if (string.IsNullOrEmpty(chequeBookId))
+				return new HttpStatusCodeResult(400, "ChequeBookId is required");
 
-                // Return only id and name for dropdown
-                var result = entries.Select(x => new { chequebookid = x.ChequeBookId, name = x.Name }).ToList();
+			try
+			{
+				var leaves = await _counterChequeService.GetChequeBookWithLeaves(chequeBookId);
+				if (leaves == null)
+					return HttpNotFound("Cheque book details not found");
 
-                return Json(result, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception ex)
-            {
-                return new HttpStatusCodeResult(404, ex.Message);
-            }
-        }
+				switch (viewType?.ToLower())
+				{
+					case "grid":
+						return PartialView("_ChequeLeavesGrid", leaves);
+
+					case "list":
+						return PartialView("_ChequeLeavesDataTable", leaves);
+
+					default:
+						return new HttpStatusCodeResult(400, "Invalid view type");
+				}
+			}
+			catch (Exception ex)
+			{
+				return new HttpStatusCodeResult(500, ex.Message);
+			}
+		}
 
 
+		[HttpGet]
+		public async Task<ActionResult> GetChequeLeafDetails(string leafId)
+		{
+			if (string.IsNullOrEmpty(leafId))
+				return new HttpStatusCodeResult(400, "LeafId is required");
 
-        /// <summary>
+			try
+			{
+				var leaf = await _counterChequeService.GetChequeLeafDetails(leafId);
 
-        public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null)
+				if (leaf == null)
+					return HttpNotFound("Cheque leaf not found");
+
+				return PartialView("_ChequeLeafDetails", leaf);
+			}
+			catch (Exception ex)
+			{
+				return new HttpStatusCodeResult(500, ex.Message);
+			}
+		}
+
+		/// <summary
+		public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null)
         {
             await Loader();
             if (path == "list")
