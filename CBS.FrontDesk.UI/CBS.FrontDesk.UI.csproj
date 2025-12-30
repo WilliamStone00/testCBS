@@ -2203,6 +2203,7 @@
     <Compile Include="Controllers\LiaisonMappingV2\LiaisonMappingConfigController.cs" />
     <Compile Include="Controllers\LoanManagementP\LoanManagementController.cs" />
     <Compile Include="Controllers\Loan\Configuration\LoanTargetCatalogController.cs" />
+    <Compile Include="Controllers\Loan\Configuration\LoanTypeController.cs" />
     <Compile Include="Controllers\Loan\Configuration\PcmfLoanPurposeController.cs" />
     <Compile Include="Controllers\Loan\LoanAdjustmentP\LoanAdjustmentConsoleController.cs" />
     <Compile Include="Controllers\MemberAdjustmentConsole\MemberAdjustmentConsoleController.cs" />
@@ -11181,6 +11182,9 @@
     <Content Include="Views\PcmfLoanPurpose\_CreateEditPcmfLoanPurpose.cshtml" />
     <Content Include="Views\PcmfLoanPurpose\_PcmfLoanPurposeDetails.cshtml" />
     <Content Include="Views\LoanManagement\Index.cshtml" />
+    <Content Include="Views\LoanType\Index.cshtml" />
+    <Content Include="Views\LoanType\_CreateEditLoanType.cshtml" />
+    <Content Include="Views\LoanType\_LoanTypeDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

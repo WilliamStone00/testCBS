@@ -451,6 +451,7 @@
     <Compile Include="LoanP\Config\LoanTargetCatalogService.cs" />
     <Compile Include="LoanP\LoanAdjustmentP\LoanAdjustmentService.cs" />
     <Compile Include="LoanP\LoanportFolioFlattener\LoanDelinquencyFlattener.cs" />
+    <Compile Include="LoanP\LoanTypeService.cs" />
     <Compile Include="LoanP\Overdraft\OverdraftActivationServices.cs" />
     <Compile Include="LoanP\Overdraft\OverdraftFacilityConfigServices.cs" />
     <Compile Include="LoanP\PcmfLoanPurposeService.cs" />

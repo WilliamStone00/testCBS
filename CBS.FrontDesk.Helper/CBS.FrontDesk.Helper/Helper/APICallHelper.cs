@@ -1853,9 +1853,9 @@ namespace CBS.FrontDesk.Helper
 
         //------------------------- LoanTargetCatalog ----------------
         public const string LoanTargetCatalogCreate = "/api/v1/LoanTargetCatalog/Create";
-            public const string LoanTargetCatalogGet = "/api/v1/LoanTargetCatalog/Get";
-            public const string LoanTargetCatalogGetAll = "/api/v1/LoanTargetCatalog/GetAll";
-            public const string LoanTargetCatalogUpdate = "/api/v1/LoanTargetCatalog/Update";
+        public const string LoanTargetCatalogGet = "/api/v1/LoanTargetCatalog/Get";
+        public const string LoanTargetCatalogGetAll = "/api/v1/LoanTargetCatalog/GetAll";
+        public const string LoanTargetCatalogUpdate = "/api/v1/LoanTargetCatalog/Update";
         public const string LoanTargetCatalogDelete = "/api/v1/LoanTargetCatalog/Delete";
 
         //----------------  PCMF LOAN PURPOSE ENDPOINTS --------------------------------
@@ -1864,6 +1864,13 @@ namespace CBS.FrontDesk.Helper
         public const string PcmfLoanPurposeGetById = "/api/v1/PcmfLoanPurpose/{0}";
         public const string PcmfLoanPurposeUpdate = "/api/v1/PcmfLoanPurpose/{0}";
         public const string PcmfLoanPurposeDelete = "/api/v1/PcmfLoanPurpose/{0}";
-    
-}
+
+        //---------------- LoanType API endpoints --------------------------------
+        public const string LoanTypeCreate = "/api/v1/LoanType";
+        public const string LoanTypeGetAll = "/api/v1/LoanTypes";
+        public const string LoanTypeGetById = "/api/v1/LoanType/{0}";
+        public const string LoanTypeUpdate = "/api/v1/LoanType/{0}";
+        public const string LoanTypeDelete = "/api/v1/LoanType/{0}";
+
+    }
 }

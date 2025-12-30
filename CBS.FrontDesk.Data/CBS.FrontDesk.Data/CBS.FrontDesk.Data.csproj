@@ -261,6 +261,7 @@
     <Compile Include="Entity\GeneralStatisticReport\GeneralStatisticsReportDtoMapper.cs" />
     <Compile Include="Entity\LoanAdjustmentP\LoanAdjustment.cs" />
     <Compile Include="Entity\LoanConf\LoanTargetCatalog.cs" />
+    <Compile Include="Entity\LoanConf\LoanType.cs" />
     <Compile Include="Entity\LoanConf\PcmfLoanPurpose.cs" />
     <Compile Include="Entity\LoanConf\PCMFStructure\PCMFLoanProduct.cs" />
     <Compile Include="Entity\LoanManagementP\FileName.cs" />
