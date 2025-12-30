@@ -1,86 +1,416 @@
-﻿
-@using Resources
+﻿@using Resources
 @{
     ViewBag.Title = "Loan Term Settings";
 }
 
-
 <div class="row">
-
-    <div class="row">
-        <div class="col-12">
-            <div class="card bg-light mb-2 shadow-sm">
-                <div class="card-body text-center">
-                    <h1 class="card-title text-primary fw-bold">
-                        <i class="mdi mdi-bank-transfer me-2"></i> @GlobalLoanTerm.header
-                    </h1>
-                    <p class="card-text">
-                        Manage loan terms configurations here 
-                    </p>
-                    <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
-                </div>
+    <div class="col-12">
+        <div class="card bg-light mb-2 shadow-sm">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary fw-bold">
+                    <i class="mdi mdi-bank-transfer me-2"></i> @GlobalLoanTerm.header
+                </h1>
+                <p class="card-text">
+                    Manage loan terms configurations here
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
         </div>
     </div>
 
-    <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
-        <div class="card">
-
-            <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
-
-                <div class="accordion-item active">
-                    <h2 class="accordion-header text-body d-flex justify-content-between"
-                        id="accordionPopoutIconThree">
-                        <button type="button"
-                                class="accordion-button"
-                                data-bs-toggle="collapse"
-                                data-bs-target="#accordionPopoutIcon-3"
-                                aria-expanded="true"
-                                aria-controls="accordionPopoutIcon-3">
-                            <i class="mdi mdi-plus-box me-2"></i>
-                            @GlobalLoanTerm.Loan_Term_Settings
-                        </button>
-                    </h2>
-                    <div id="accordionPopoutIcon-3"
-                         class="accordion-collapse collapse show"
-                         data-bs-parent="#accordionPopoutIcon">
-                        <div class="accordion-body">
-                            <div id="mainviewChange">
-                                <div class="change-group">
-                                    <div class="card mb-4">
-                                        <div class="card-body d-sm-flex d-block">
-                                            <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
-                                                <div class="demo-inline-spacing text-end">
-
-                                                    <a type="button" onclick="LoadDataGen('LoanTerm','myDataTable','_Data',0,'datalistingview')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
-                                                        <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
-                                                    </a>
-                                                    <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_Create','new','LoanTerm')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.AddNew">
-                                                        <span class="tf-icons mdi mdi-plus mdi-18px"></span>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div id="datalistingview">
-                                        @Html.Partial("_Create")
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <div class="card mb-1">
+        <div class="card-body d-flex justify-content-end align-items-center">
+            <button type="button" onclick="showCreateModal()" class="btn btn-label-primary btn-primary me-2">
+                <i class="mdi mdi-plus mdi-18px"></i> @GlobalShared.AddNew
+            </button>
+            <button type="button" onclick="refreshTable()" class="btn btn-label-secondary btn-info">
+                <i class="mdi mdi-refresh mdi-18px"></i>Refresh
+            </button>
         </div>
     </div>
 
+    <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout mb-1">
+        <div class="accordion-item active mb-1">
+            <h2 class="accordion-header text-body d-flex justify-content-between"
+                id="accordionPopoutIconThree">
+            </h2>
 
+            <!-- DataTable -->
+            <div class="card p-3 shadow mb-1">
+                <h5 class="text-primary mb-3">
+                    <i class="mdi mdi-table"></i> @GlobalLoanTerm.Loan_Term_Settings
+                    <small class="text-muted ms-2">
+                        <span id="recordCount" class="badge bg-info">@GlobalShared.Loading</span>
+                    </small>
+                </h5>
+                <div class="table-responsive">
+                    <table id="loanTermDataTable" class="table table-bordered table-striped">
+                        <thead class="table-light">
+                            <tr>
+                                <th>@GlobalLoanTerm.Name En</th>
+                                <th>@GlobalLoanTerm.Name FR</th>
+                                <th>@GlobalLoanTerm.TermKind</th>
+                                <th>@GlobalLoanTerm.Min_Max</th>
+                                <th>@GlobalShared.Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Data will be loaded via AJAX -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
 </div>
 
 
 
+<!-- Modal Container -->
+<div class="modal fade" id="genericModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content"></div>
+    </div>
+</div>
 
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
 
-@section Scripts {@Scripts.Render("~/bundles/jqueryval")}
+<script>
+        var dataTable = null;
 
+        function initSelect2(container) {
+            $(container).find('.select2').each(function () {
+                const $select = $(this);
 
+                // Destroy if already initialized (important for AJAX reloads)
+                if ($select.hasClass('select2-hidden-accessible')) {
+                    $select.select2('destroy');
+                }
+
+                $select.select2({
+                    width: '100%',
+                    dropdownParent: $(container), // 🔥 REQUIRED for modals
+                    placeholder: $select.attr('data-placeholder') || 'Select an option',
+                    allowClear: true
+                });
+            });
+        }
+
+        function showCreateModal() {
+            ShowModal(null, '_Create', 'LoanTerm', 'new');
+        }
+
+        function ShowModal(key, partialView, controller, path) {
+            var url = '/' + controller + '/InitializeData?KEY=' + encodeURIComponent(key || '') +
+                '&partialView=' + encodeURIComponent(partialView) +
+                '&path=' + encodeURIComponent(path);
+
+            $.get(url).done(function (html) {
+                const modalEl = document.getElementById('genericModal');
+                const modalBody = modalEl.querySelector('.modal-content');
+
+                modalBody.innerHTML = html;
+
+                const modal = new bootstrap.Modal(modalEl);
+
+                // 🔥 Initialize Select2 AFTER HTML injection, BEFORE show
+                initSelect2(modalEl);
+
+                modal.show();
+
+            }).fail(function () {
+                appalert('Failed to load content', 0, 1);
+            });
+        }
+
+        function loadData() {
+            var tbody = $('#loanTermDataTable tbody');
+            tbody.html(`
+                <tr>
+                    <td colspan="5" class="text-center py-4">
+                        <p class="mt-2 mb-0 text-muted">Loading Data...</p>
+                    </td>
+                </tr>
+            `);
+
+            $.ajax({
+                url: '/LoanTerm/GetAll',
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    if (response.success && response.data) {
+                        renderTable(response.data);
+                    } else {
+                        tbody.html(`
+                            <tr>
+                                <td colspan="5" class="text-center text-danger py-4">
+                                    <i class="mdi mdi-alert-circle me-1"></i>
+                                    Failed Load Data
+                                </td>
+                            </tr>
+                        `);
+                        $('#recordCount').text('Error');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log('AJAX Error:', error);
+                    tbody.html(`
+                        <tr>
+                            <td colspan="5" class="text-center text-danger py-4">
+                                <i class="mdi mdi-alert-circle me-1"></i>
+                               Error Load Data
+                            </td>
+                        </tr>
+                    `);
+                    $('#recordCount').text('Error');
+                }
+            });
+        }
+
+        function renderTable(data) {
+            var tbody = $('#loanTermDataTable tbody');
+
+            // Always destroy existing DataTable instance
+            if (dataTable) {
+                try {
+                    dataTable.destroy();
+                } catch (e) {
+                    console.log('Error destroying DataTable:', e);
+                }
+                dataTable = null;
+                tbody.empty();
+            } else {
+                tbody.empty();
+            }
+
+            if (!data || !Array.isArray(data) || data.length === 0) {
+                tbody.html(`
+                    <tr>
+                        <td colspan="5" class="text-center text-muted py-4">
+                            <i class="mdi mdi-information-outline me-1"></i>
+                            NoRecords Found
+                        </td>
+                    </tr>
+                `);
+                $('#recordCount').text('0 records');
+                initializeDataTable();
+                return;
+            }
+
+            $('#recordCount').text(data.length + ' records');
+
+            data.forEach(function (item, index) {
+                var nameEn = escapeHtml(item.NameEn || 'N/A');
+                var nameFr = escapeHtml(item.NameFr || 'N/A');
+                var termKind = escapeHtml(item.TermKind || 'N/A');
+                var minValue = item.MinInMonth || 0;
+                var maxValue = item.MaxInMonth || 0;
+                var id = item.Id || '';
+
+                var row = `
+                    <tr>
+                        <td style="width:30%">${nameEn}</td>
+                        <td style="width:30%">${nameFr}</td>
+                        <td style="width:10%">${termKind}</td>
+                        <td style="width:20%">${minValue} : ${maxValue} Month(s)</td>
+                        <td style="width:10%">
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-info dropdown-toggle text-white"
+                                        type="button"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="mdi mdi-cog-outline"></i> Action
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <button class="dropdown-item btn-edit" onclick="ShowModal('${escapeHtml(id)}', '_Create', 'LoanTerm', 'edit')">
+                                            <i class="mdi mdi-pencil me-1 text-warning"></i> @GlobalShared.Edit
+                                        </button>
+                                    </li>
+                                     <li>
+                                      <button class="dropdown-item btn-delete text-danger"
+                                              data-id="${escapeHtml(id)}" >
+                                          <i class="mdi mdi-delete me-1"></i> Delete
+                                      </button>
+                                  </li>
+                             </ul>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+
+                tbody.append(row);
+            });
+
+            // Wait a moment before initializing DataTable
+            setTimeout(function () {
+                initializeDataTable();
+            }, 100);
+        }
+
+        function initializeDataTable() {
+            var $table = $('#loanTermDataTable');
+
+            // Check if table exists and has correct structure
+            if (!$table.length) {
+                console.error('Table not found');
+                return;
+            }
+
+            // Check column count
+            var thCount = $table.find('thead th').length;
+            var firstRowTdCount = $table.find('tbody tr:first td').length;
+            console.log(`Table header columns: ${thCount}, First row columns: ${firstRowTdCount}`);
+
+            if (thCount !== firstRowTdCount) {
+                console.error(`Column mismatch! Header: ${thCount}, Body: ${firstRowTdCount}`);
+
+                // Show error in table
+                $table.find('tbody').html(`
+                    <tr>
+                        <td colspan="${thCount}" class="text-center text-danger py-4">
+                            <i class="mdi mdi-alert-circle me-1"></i>
+                            Data Structure Error
+                        </td>
+                    </tr>
+                `);
+                return;
+            }
+
+            if ($.fn.DataTable.isDataTable('#loanTermDataTable')) {
+                console.log('DataTable already initialized, destroying...');
+                dataTable.clear().destroy();
+                $table.empty();
+            }
+
+            try {
+                dataTable = $table.DataTable({
+                    searching: true,
+                    responsive: true,
+                    order: [[0, 'asc']],
+                    language: {
+                        emptyTable: 'NoRecordsFound',
+                        info: 'Showing _START_ to _END_ of _TOTAL_ entries',
+                        infoEmpty: 'Showing 0 to 0 of 0 entries',
+                        lengthMenu: 'Show _MENU_ entries',
+                        search: 'Search:',
+                        zeroRecords: 'NoMatchingRecords'
+                    },
+                    lengthMenu: [10, 25, 50, 100],
+                    pageLength: 10,
+                    columnDefs: [
+                        { orderable: false, targets: 4 } // Actions column
+                    ],
+                    drawCallback: function () {
+                        // Initialize Bootstrap dropdowns
+                        $('.dropdown-toggle').dropdown();
+                    },
+                    initComplete: function () {
+                        console.log('DataTable initialized successfully');
+                    },
+                    error: function (settings, techNote, message) {
+                        console.error('DataTables error:', message);
+                    }
+                });
+
+                console.log('DataTable initialized');
+            } catch (e) {
+                console.error('Error initializing DataTable:', e);
+            }
+        }
+
+        function refreshTable() {
+            loadData();
+            appalert('DataRefreshed', 3, 1);
+        }
+
+        $(document).off('click', '.btn-delete').on('click', '.btn-delete', function (e) {
+            e.preventDefault();
+            var raw = $(this).data('id');
+            var KEY = raw ? decodeURIComponent(raw) : null;
+            if (!KEY) {
+                appalert('Missing id for delete', 0, 1);
+                return;
+            }
+            DeleteRecordDataTable('LoanTerm', KEY, 'myDataTable', 'delete', 0, null, null, null);
+        });
+
+        //function deleteLoanTerm(id) {
+        //    if (confirm('ConfirmDeleteRecord')) {
+        //        $.ajax({
+        //            url: '/LoanTerm/Delete',
+        //            type: 'POST',
+        //            data: { id: id },
+        //            headers: {
+        //                'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+        //            },
+        //            beforeSend: function() {
+        //                // Show loading if needed
+        //            },
+        //            success: function(response) {
+        //                if (response.success) {
+        //                    appalert(response.message, 3, 1);
+        //                    loadData();
+        //                } else {
+        //                    appalert(response.message, 0, 1);
+        //                }
+        //            },
+        //            error: function() {
+        //                appalert('ErrorOccurred', 0, 1);
+        //            }
+        //        });
+        //    }
+        //}
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            var map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.toString().replace(/[&<>"']/g, function (m) { return map[m]; });
+        }
+
+        $(document).ready(function () {
+            loadData();
+
+            // Store original button text
+            $(document).on('shown.bs.modal', '#genericModal', function () {
+                var $submitBtn = $(this).find('button[type="submit"]');
+                if ($submitBtn.length && !$submitBtn.data('original-text')) {
+                    $submitBtn.data('original-text', $submitBtn.html());
+                }
+            });
+
+            // Handle form validation initialization
+            $(document).on('shown.bs.modal', '#genericModal', function () {
+                // Re-initialize form validation if needed
+                if ($.fn.validate) {
+                    $('form', this).each(function() {
+                        if (!$(this).data('validator')) {
+                            $(this).validate({
+                                errorClass: 'text-danger',
+                                errorElement: 'span',
+                                highlight: function(element) {
+                                    $(element).addClass('is-invalid').removeClass('is-valid');
+                                },
+                                unhighlight: function(element) {
+                                    $(element).removeClass('is-invalid').addClass('is-valid');
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+
+            $('#genericModal').on('hidden.bs.modal', function () {
+                $(this).find('.modal-content').empty();
+            });
+        });
+</script>
+}

@@ -1,11 +1,16 @@
 ﻿
+
+@{
+    ViewBag.Title = "Loan Type Settings";
+}
+
 <div id="datalistingview">
     <div class="row">
         <div class="col-12">
             <div class="card bg-light mb-2 shadow-sm">
                 <div class="card-body text-center">
                     <h1 class="card-title text-primary fw-bold">
-                        <i class="mdi mdi-bank me-2"></i> Loan Types
+                        <i class="mdi mdi-bank me-2"></i> Institution Loan Types
                     </h1>
                     <p class="card-text">
                         Manage different types of loans offered by the bank
@@ -121,8 +126,28 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+
     <script>
         var dataTable = null;
+
+        function initSelect2(container) {
+            $(container).find('.select2').each(function () {
+                const $select = $(this);
+
+                // Destroy if already initialized (important for AJAX reloads)
+                if ($select.hasClass('select2-hidden-accessible')) {
+                    $select.select2('destroy');
+                }
+
+                $select.select2({
+                    width: '100%',
+                    dropdownParent: $(container), // 🔥 REQUIRED for modals
+                    placeholder: $select.attr('data-placeholder') || 'Select an option',
+                    allowClear: true
+                });
+            });
+        }
+
 
         function showCreateModal() {
             ShowModal(null, '_CreateEditLoanType', 'LoanType', 'create');
@@ -134,54 +159,65 @@
                 '&path=' + encodeURIComponent(path);
 
             $.get(url).done(function (html) {
-                $('#genericModal .modal-content').html(html);
-                var modal = new bootstrap.Modal(document.getElementById('genericModal'));
+
+                const modalEl = document.getElementById('genericModal');
+                const modalBody = modalEl.querySelector('.modal-content');
+
+                modalBody.innerHTML = html;
+
+                const modal = new bootstrap.Modal(modalEl);
+
+                // 🔥 Initialize Select2 AFTER HTML injection, BEFORE show
+                initSelect2(modalEl);
+
                 modal.show();
+
             }).fail(function () {
                 appalert('Failed to load content', 0, 1);
             });
         }
 
+
         function loadData() {
             var tbody = $('#loanTypeDataTable tbody');
             tbody.html(`
-                <tr>
-                    <td colspan="6" class="text-center py-4">                       
-                        <p class="mt-2 mb-0 text-muted">Loading loan types data...</p>
-                    </td>
-                </tr>
-                        `);
+                            <tr>
+                                <td colspan="6" class="text-center py-4">
+                                    <p class="mt-2 mb-0 text-muted">Loading loan types data...</p>
+                                </td>
+                            </tr>
+                                    `);
 
             $.ajax({
                 url: '/LoanType/GetAll',
                 type: 'GET',
                 dataType: 'json',
                 success: function (response) {
-                  
+
                     if (response.success && response.data) {
-                           renderTable(response.data);
+                        renderTable(response.data);
                     } else {
-                                       tbody.html(`
-                    <tr>
-                        <td colspan="6" class="text-center text-danger py-4">
-                            <i class="mdi mdi-alert-circle me-1"></i>
-                            Failed to load data
-                        </td>
-                    </tr>
-                `);
+                        tbody.html(`
+                                <tr>
+                                    <td colspan="6" class="text-center text-danger py-4">
+                                        <i class="mdi mdi-alert-circle me-1"></i>
+                                        Failed to load data
+                                    </td>
+                                </tr>
+                            `);
                         $('#recordCount').text('Error');
                     }
                 },
                 error: function (xhr, status, error) {
                     console.log('AJAX Error:', error); // Debug log
                     tbody.html(`
-                <tr>
-                    <td colspan="6" class="text-center text-danger py-4">
-                        <i class="mdi mdi-alert-circle me-1"></i>
-                        Error loading data. Please try again.
-                    </td>
-                </tr>
-            `);
+                            <tr>
+                                <td colspan="6" class="text-center text-danger py-4">
+                                    <i class="mdi mdi-alert-circle me-1"></i>
+                                    Error loading data. Please try again.
+                                </td>
+                            </tr>
+                        `);
                     $('#recordCount').text('Error');
                 }
             });
@@ -206,13 +242,13 @@
             if (!data || !Array.isArray(data) || data.length === 0) {
                 console.log('No valid data array received'); // Debug log
                 tbody.html(`
-            <tr>
-                <td colspan="6" class="text-center text-muted py-4">
-                    <i class="mdi mdi-information-outline me-1"></i>
-                    No loan type records found
-                </td>
-            </tr>
-        `);
+                        <tr>
+                            <td colspan="6" class="text-center text-muted py-4">
+                                <i class="mdi mdi-information-outline me-1"></i>
+                                No loan type records found
+                            </td>
+                        </tr>
+                    `);
                 $('#recordCount').text('0 records');
                 initializeDataTable();
                 return;
@@ -238,46 +274,46 @@
                 var id = item.Id || '';
 
                 var row = `
-            <tr>
-                <td><span class="fw-bold text-primary">${code}</span></td>
-                <td class="fw-semibold">${name}</td>
-                <td>${description}</td>
-                <td><span class="badge bg-info">${displayOrder}</span></td>
-                <td>
-                    ${isActive ?
+                        <tr>
+                            <td><span class="fw-bold text-primary">${code}</span></td>
+                            <td class="fw-semibold">${name}</td>
+                            <td>${description}</td>
+                            <td><span class="badge bg-info">${displayOrder}</span></td>
+                            <td>
+                                ${isActive ?
                         '<span class="badge bg-success">Active</span>' :
                         '<span class="badge bg-secondary">Inactive</span>'}
-                </td>
-                <td>
-                    <div class="dropdown">
-                        <button class="btn btn-sm btn-info dropdown-toggle text-white"
-                                type="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="mdi mdi-cog-outline"></i> Actions
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <button class="dropdown-item btn-details" data-id="${escapeHtml(id)}">
-                                    <i class="mdi mdi-eye me-1 text-primary"></i> Details
-                                </button>
-                            </li>
-                            <li>
-                                <button class="dropdown-item btn-edit" data-id="${escapeHtml(id)}">
-                                    <i class="mdi mdi-pencil me-1 text-warning"></i> Edit
-                                </button>
-                            </li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li>
-                                    <button class="dropdown-item btn-delete text-danger"
-                                            data-id="${escapeHtml(id)}" disabled>
-                                        <i class="mdi mdi-delete me-1"></i> Delete
+                            </td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-info dropdown-toggle text-white"
+                                            type="button"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="mdi mdi-cog-outline"></i> Actions
                                     </button>
-                                </li>
-                        </ul>
-                    </div>
-                </td>
-            </tr>
-        `;
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <button class="dropdown-item btn-details" data-id="${escapeHtml(id)}">
+                                                <i class="mdi mdi-eye me-1 text-primary"></i> Details
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button class="dropdown-item btn-edit" data-id="${escapeHtml(id)}">
+                                                <i class="mdi mdi-pencil me-1 text-warning"></i> Edit
+                                            </button>
+                                        </li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li>
+                                                <button class="dropdown-item btn-delete text-danger"
+                                                        data-id="${escapeHtml(id)}" disabled>
+                                                    <i class="mdi mdi-delete me-1"></i> Delete
+                                                </button>
+                                            </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
 
                 // Debug: Count columns in row
                 var tempRow = $(row);
@@ -312,13 +348,13 @@
 
                 // Show error in table
                 $table.find('tbody').html(`
-                                        <tr>
-                                            <td colspan="${thCount}" class="text-center text-danger py-4">
-                                                <i class="mdi mdi-alert-circle me-1"></i>
-                                                Data structure error (Column mismatch: ${thCount} vs ${firstRowTdCount})
-                                            </td>
-                                        </tr>
-                                    `);
+                                                    <tr>
+                                                        <td colspan="${thCount}" class="text-center text-danger py-4">
+                                                            <i class="mdi mdi-alert-circle me-1"></i>
+                                                            Data structure error (Column mismatch: ${thCount} vs ${firstRowTdCount})
+                                                        </td>
+                                                    </tr>
+                                                `);
                 return;
             }
 
@@ -381,78 +417,6 @@
             return text.toString().replace(/[&<>"']/g, function (m) { return map[m]; });
         }
 
-        // AJAX form submission
-        function AjaxPostAndUpdate(form) {
-            var $form = $(form);
-            var $submitBtn = $form.find('button[type="submit"]');
-
-            var originalText = $submitBtn.html();
-
-            // 🔔 Confirmation message (can be customized per form)
-            var confirmMessage = $form.data('confirm')
-                || 'Are you sure you want to proceed with this action?';
-
-            // 🔴 SHOW CONFIRMATION FIRST
-            alertify.confirm(
-                'Confirm Action',
-                confirmMessage,
-
-                // ✅ USER CONFIRMS
-                function () {
-
-                    $.ajax({
-                        url: $form.attr('action'),
-                        type: 'POST',
-                        data: $form.serialize(),
-                        dataType: 'json',
-
-                        beforeSend: function () {
-                            $submitBtn
-                                .prop('disabled', true)
-                                .html('<i class="mdi mdi-loading mdi-spin me-1"></i> Processing...');
-                        },
-
-                        success: function (response) {
-                            if (response.success) {
-                                appalert(response.message, 1, 1);
-                                $('#genericModal').modal('hide');
-                                loadData();
-                            } else {
-                                if (response.errors) {
-                                    var errorHtml = '<ul>';
-                                    $.each(response.errors, function (_, error) {
-                                        errorHtml += '<li>' + error + '</li>';
-                                    });
-                                    errorHtml += '</ul>';
-                                    appalert(errorHtml, 0, 1);
-                                } else {
-                                    appalert(response.message, 0, 1);
-                                }
-                            }
-                        },
-
-                        error: function () {
-                            appalert('An error occurred while processing your request.', 0, 1);
-                        },
-
-                        complete: function () {
-                            $submitBtn
-                                .prop('disabled', false)
-                                .html(originalText);
-                        }
-                    });
-
-                },
-
-                // ❌ USER CANCELS
-                function () {
-                    appalert('Action cancelled', 3, 1);
-                }
-            );
-
-            return false;
-        }
-
 
         $(document).ready(function () {
             loadData();
@@ -467,18 +431,7 @@
                 ShowModal(id, '_CreateEditLoanType', 'LoanType', 'edit');
             });
 
-            //$(document).off('click', '.btn-delete').on('click', '.btn-delete', function (e) {
-            //    e.preventDefault();
-
-            //    var id = $(this).data('id');
-            //    if (!id) {
-            //        appalert('Missing id for delete', 0, 1);
-            //        return;
-            //    }
-
-            //    ShowModal(id, '_DeleteLoanType', 'LoanType', 'delete');
-            //});
-
+            
             $(document).off('click', '.btn-delete').on('click', '.btn-delete', function (e) {
                 e.preventDefault();
 

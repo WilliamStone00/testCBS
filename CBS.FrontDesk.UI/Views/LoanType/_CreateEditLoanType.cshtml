@@ -27,20 +27,46 @@
             </div>
 
             <div class="row g-2">
-                <!-- Code -->
-                <div class="col-md-6">
-                    <div class="form-floating">
-                        @Html.TextBoxFor(m => m.Code, new
-                        {
-                            @class = "form-control",
-                            placeholder = "Enter code",
-                            maxlength = "50",
-                            @required = "required"
-                        })
-                        <label>Code *</label>
-                        @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })
+
+                @if (string.IsNullOrWhiteSpace(Model?.Id))
+                {
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            @Html.DropDownListFor(
+                                m => m.Code,
+                                Enumerable.Range(1, 100)
+                                    .Select(i => new SelectListItem
+                                    {
+                                        Value = i.ToString("D3"),
+                                        Text = i.ToString("D3")
+                                    }),
+                                "-- Select Code --",
+                                new { @class = "form-select select2", @required = "required" }
+                            )
+                            <label>Code</label>
+                            @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })
+                        </div>
                     </div>
-                </div>
+
+                }
+                else
+                {
+                    <!-- Code -->
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            @Html.TextBoxFor(m => m.Code, new
+                            {
+                                @class = "form-control",
+                                placeholder = "Enter code",
+                                maxlength = "50",
+                                @required = "required",
+                                @readonly = "readonly"
+                            })
+                            <label>Code </label>
+                            @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                }
 
                 <!-- Name -->
                 <div class="col-md-6">
@@ -52,7 +78,7 @@
                             maxlength = "200",
                             @required = "required"
                         })
-                        <label>Name *</label>
+                        <label>Name </label>
                         @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -74,11 +100,20 @@
                 </div>
 
                 <!-- Status -->
-                <div class="col-md-6 mt-2">
+                <div class="col-md-3 mt-2">
                     <div class="form-check form-switch">
                         @Html.CheckBoxFor(m => m.IsActive, new { @class = "form-check-input", id = "isActive" })
                         <label class="form-check-label fw-bold ms-2" for="isActive">
                             Active
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-md-3 mt-2">
+                    <div class="form-check form-switch">
+                        @Html.CheckBoxFor(m => m.IsSSF, new { @class = "form-check-input", id = "IsSSF" })
+                        <label class="form-check-label fw-bold ms-2" for="IsSSF">
+                            Check if Loan type is SSF
                         </label>
                     </div>
                 </div>

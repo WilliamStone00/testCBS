@@ -108,7 +108,7 @@ namespace CBS.BusinessService.LoanP
                     var encodedId = Uri.EscapeDataString(model.Id);
                     var url = string.Format(APICallHelper.LoanTypeUpdate, encodedId);
 
-                    var response = await _apiCallerHelper.PostAsync<ServiceResponse<LoanType>>(url, model);
+                    var response = await _apiCallerHelper.PutAsync<ServiceResponse<LoanType>>(url, model);
 
                     if (response.IsSuccess)
                     {
