@@ -41,12 +41,12 @@ namespace CBS.BusinessService.AccountingV2.InterestProductConfig
             try
             {
                 model.ProductType = "Savings";
-                model.ProductName = "Loan";
-                model.AccountingYearId = "00000000000000";
-                model.Command = "Create";
+                //model.ProductName = "Loan";
+                //model.AccountingYearId = "00000000000000";
+                //model.Command = "Create";
                 if (model.BranchId == null)
                 {
-                    model.BranchId = "Global Configuration"; // Assuming BranchId is a string. If int?, handle differently.
+                    model.BranchId = "Global"; // Assuming BranchId is a string. If int?, handle differently.
                 }
                 var response = await _apiCallerHelper.PostAsync<ServiceResponse<ProductCalculationConfig>>(APICallHelper.SaveInterestProductConfig, model);
 

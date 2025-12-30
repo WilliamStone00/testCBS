@@ -84,7 +84,7 @@
         @Html.HiddenFor(m => m.CreateOrUpdate.Id)
 
         <!-- Header (reduced spacing) -->
-   
+
         <div class="row mb-2">
             <div class="col-12">
                 <div class="card bg-light mb-3">
@@ -194,228 +194,250 @@
         <!-- ===================================================== -->
         <!-- ACCORDION (CONDENSED): the rest -->
         <!-- ===================================================== -->
-        <div class="accordion" id="loanProductAccordion">
+<div class="accordion" id="loanProductAccordion">
 
-            <!-- 3) PCMF Classification -->
-            <div class="accordion-item mb-2">
-                <h2 class="accordion-header" id="hdPcmf">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#cpPcmf" aria-expanded="true" aria-controls="cpPcmf">
-                        <i class="mdi mdi-tag-outline me-2"></i>
-                        <span class="fw-semibold">PCMF Classification</span>
-                        <span class="ms-2 text-muted small">(Required)</span>
-                    </button>
-                </h2>
+    <!-- 3) PCMF Classification -->
+    <div class="accordion-item mb-2">
+        <h2 class="accordion-header" id="hdPcmf">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#cpPcmf" aria-expanded="true" aria-controls="cpPcmf">
+                <i class="mdi mdi-tag-outline me-2"></i>
+                <span class="fw-semibold">PCMF Classification</span>
+                <span class="ms-2 text-muted small">(Required)</span>
+            </button>
+        </h2>
 
-                <div id="cpPcmf" class="accordion-collapse collapse show"
-                     aria-labelledby="hdPcmf" data-bs-parent="#loanProductAccordion">
-                    <div class="accordion-body py-3">
-                        <div class="row g-3">
+        <div id="cpPcmf" class="accordion-collapse collapse show"
+             aria-labelledby="hdPcmf" data-bs-parent="#loanProductAccordion">
+            <div class="accordion-body py-3">
+                <div class="row g-3">
 
-                            <div class="col-md-12">
-                                <div class="form-floating form-floating-outline">
-                                    @Html.DropDownListFor(m => m.CreateOrUpdate.LoanTermId,
-                                        new SelectList(ViewBag.LoanTerms, "Id", "NameEn", cmd.LoanTermId),
-                                        "--- Select Loan Term ---",
-                                        new { @class = "form-control select2", id = "LoanTermId" })
-                                    @Html.ValidationMessageFor(m => m.CreateOrUpdate.LoanTermId, "", new { @class = "text-danger" })
-                                    <label>Loan Term</label>
-                                </div>
-                                <div class="small text-muted">
-                                    Required for <b>Classic / SSF / LOC</b>. Only <b>Overdraft</b> can be empty.
-                                </div>
-                            </div>
-
-                            <div class="col-md-7">
-                                <div class="form-floating form-floating-outline">
-                                    @Html.DropDownListFor(m => m.CreateOrUpdate.PcmfLoanPurposeId,
-                                        new SelectList(ViewBag.PcmfLoanPurposes, "Id", "NameEn", cmd.PcmfLoanPurposeId),
-                                        "--- Select PCMF Purpose ---",
-                                        new { @class = "form-control select2", required = "required", id = "PcmfLoanPurposeId" })
-                                    @Html.ValidationMessageFor(m => m.CreateOrUpdate.PcmfLoanPurposeId, "", new { @class = "text-danger" })
-                                    <label>PCMF Loan Purpose</label>
-                                </div>
-                                <div class="small text-muted">Filtered by term/section.</div>
-                            </div>
-
-                            <div class="col-md-5">
-                                <div class="form-floating form-floating-outline">
-                                    @Html.DropDownListFor(m => m.CreateOrUpdate.LoanTargetId,
-                                        new SelectList(ViewBag.LoanTargets, "Id", "NameEn", cmd.LoanTargetId),
-                                        "--- Select Target ---",
-                                        new { @class = "form-control select2", required = "required", id = "LoanTargetId" })
-                                    @Html.ValidationMessageFor(m => m.CreateOrUpdate.LoanTargetId, "", new { @class = "text-danger" })
-                                    <label>Loan Target</label>
-                                </div>
-                                <div class="small text-muted">Enabled after purpose.</div>
-                            </div>
-
+                    <div class="col-md-12">
+                        <div class="form-floating form-floating-outline">
+                            @Html.DropDownListFor(m => m.CreateOrUpdate.LoanTermId,
+                                new SelectList(ViewBag.LoanTerms, "Id", "NameEn", cmd.LoanTermId),
+                                "--- Select Loan Term ---",
+                                new { @class = "form-control select2", id = "LoanTermId" })
+                            @Html.ValidationMessageFor(m => m.CreateOrUpdate.LoanTermId, "", new { @class = "text-danger" })
+                            <label>Loan Term</label>
+                        </div>
+                        <div class="small text-muted">
+                            Required for <b>Classic / SSF / LOC</b>. Only <b>Overdraft</b> can be empty.
                         </div>
                     </div>
-                </div>
-            </div>
 
-            <!-- 4) Basic Information -->
-            <div class="accordion-item mb-2">
-                <h2 class="accordion-header" id="hdBasic">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#cpBasic" aria-expanded="false" aria-controls="cpBasic">
-                        <i class="mdi mdi-file-document-outline me-2"></i>
-                        <span class="fw-semibold">Basic Information</span>
-                        <span class="ms-2 text-muted small">(Required)</span>
-                    </button>
-                </h2>
-
-                <div id="cpBasic" class="accordion-collapse collapse"
-                     aria-labelledby="hdBasic" data-bs-parent="#loanProductAccordion">
-                    <div class="accordion-body py-3">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <div class="form-floating form-floating-outline">
-                                    @Html.TextBoxFor(m => m.CreateOrUpdate.ProductCode, new { @class = "form-control", required = "required" })
-                                    @Html.ValidationMessageFor(m => m.CreateOrUpdate.ProductCode, "", new { @class = "text-danger" })
-                                    <label>Product Code</label>
-                                </div>
-                                <div class="small text-muted">Unique for reporting/integrations.</div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-floating form-floating-outline">
-                                    @Html.TextBoxFor(m => m.CreateOrUpdate.ProductName, new { @class = "form-control", required = "required" })
-                                    @Html.ValidationMessageFor(m => m.CreateOrUpdate.ProductName, "", new { @class = "text-danger" })
-                                    <label>Product Name</label>
-                                </div>
-                            </div>
-
-                            <div class="col-md-12">
-                                <div class="form-floating form-floating-outline">
-                                    @Html.TextAreaFor(m => m.CreateOrUpdate.Description, 3, 10, new { @class = "form-control", placeholder = "Short description..." })
-                                    @Html.ValidationMessageFor(m => m.CreateOrUpdate.Description, "", new { @class = "text-danger" })
-                                    <label>Description</label>
-                                </div>
-                            </div>
-
-                            <div class="col-md-12">
-                                <div class="form-check mt-1">
-                                    @Html.CheckBoxFor(m => m.CreateOrUpdate.ActiveStatus, new { @class = "form-check-input", id = "ActiveStatus" })
-                                    <label class="form-check-label" for="ActiveStatus">Active</label>
-                                </div>
-                            </div>
+                    <div class="col-md-7">
+                        <div class="form-floating form-floating-outline">
+                            @Html.DropDownListFor(m => m.CreateOrUpdate.PcmfLoanPurposeId,
+                                new SelectList(ViewBag.PcmfLoanPurposes, "Id", "NameEn", cmd.PcmfLoanPurposeId),
+                                "--- Select PCMF Purpose ---",
+                                new { @class = "form-control select2", required = "required", id = "PcmfLoanPurposeId" })
+                            @Html.ValidationMessageFor(m => m.CreateOrUpdate.PcmfLoanPurposeId, "", new { @class = "text-danger" })
+                            <label>PCMF Loan Purpose</label>
                         </div>
+                        <div class="small text-muted">Filtered by term/section.</div>
                     </div>
-                </div>
-            </div>
 
-            <!-- 5) Core Accounting GLs Mapping -->
-            <div class="accordion-item mb-2">
-                <h2 class="accordion-header" id="hdGl">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#cpGl" aria-expanded="false" aria-controls="cpGl">
-                        <i class="mdi mdi-bank-outline me-2"></i>
-                        <span class="fw-semibold">Core Accounting GLs Mapping</span>
-                        <span class="ms-2 text-muted small">(Optional)</span>
-                    </button>
-                </h2>
-
-                <div id="cpGl" class="accordion-collapse collapse"
-                     aria-labelledby="hdGl" data-bs-parent="#loanProductAccordion">
-                    <div class="accordion-body py-3">
-                        <div class="small text-muted mb-2">
-                            Configure later via <b>Manage → Accounting Mapping</b>. If provided, ensure consistency across taxable/non-taxable.
+                    <div class="col-md-5">
+                        <div class="form-floating form-floating-outline">
+                            @Html.DropDownListFor(m => m.CreateOrUpdate.LoanTargetId,
+                                new SelectList(ViewBag.LoanTargets, "Id", "NameEn", cmd.LoanTargetId),
+                                "--- Select Target ---",
+                                new { @class = "form-control select2", required = "required", id = "LoanTargetId" })
+                            @Html.ValidationMessageFor(m => m.CreateOrUpdate.LoanTargetId, "", new { @class = "text-danger" })
+                            <label>Loan Target</label>
                         </div>
-
-                        <div class="row g-3">
-
-                            <div class="col-12">
-                                <div class="fw-semibold mb-1">
-                                    <i class="mdi mdi-checkbox-blank-circle-outline me-1"></i> Non-Taxable
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-floating form-floating-outline">
-                                    @Html.DropDownListFor(m => m.CreateOrUpdate.ChartOfAccountIdForPrincipalAmount,
-                                        new SelectList(ViewBag.ChartOfAccounts, "Value", "Text", cmd.ChartOfAccountIdForPrincipalAmount),
-                                        "--- Principal GL (Non-Taxable) ---",
-                                        new { @class = "form-control select2", id = "ChartOfAccountIdForPrincipalAmount" })
-                                    @Html.ValidationMessageFor(m => m.CreateOrUpdate.ChartOfAccountIdForPrincipalAmount, "", new { @class = "text-danger" })
-                                    <label>Principal GL (Non-Taxable)</label>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-floating form-floating-outline">
-                                    @Html.DropDownListFor(m => m.CreateOrUpdate.ChartOfAccountIdForInterestReceived,
-                                        new SelectList(ViewBag.ChartOfAccounts, "Value", "Text", cmd.ChartOfAccountIdForInterestReceived),
-                                        "--- Interest GL (Non-Taxable) ---",
-                                        new { @class = "form-control select2", id = "ChartOfAccountIdForInterestReceived" })
-                                    @Html.ValidationMessageFor(m => m.CreateOrUpdate.ChartOfAccountIdForInterestReceived, "", new { @class = "text-danger" })
-                                    <label>Interest GL (Non-Taxable)</label>
-                                </div>
-                            </div>
-
-                            <div class="col-12 mt-2">
-                                <div class="fw-semibold mb-1">
-                                    <i class="mdi mdi-cash-check me-1"></i> Taxable
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-floating form-floating-outline">
-                                    @Html.DropDownListFor(m => m.CreateOrUpdate.ChartOfAccountIdForTaxiblePrincipalAmount,
-                                        new SelectList(ViewBag.ChartOfAccounts, "Value", "Text", cmd.ChartOfAccountIdForTaxiblePrincipalAmount),
-                                        "--- Principal GL (Taxable) ---",
-                                        new { @class = "form-control select2", id = "ChartOfAccountIdForTaxiblePrincipalAmount" })
-                                    @Html.ValidationMessageFor(m => m.CreateOrUpdate.ChartOfAccountIdForTaxiblePrincipalAmount, "", new { @class = "text-danger" })
-                                    <label>Principal GL (Taxable)</label>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-floating form-floating-outline">
-                                    @Html.DropDownListFor(m => m.CreateOrUpdate.ChartOfAccountIdForTaxibleInterestReceived,
-                                        new SelectList(ViewBag.ChartOfAccounts, "Value", "Text", cmd.ChartOfAccountIdForTaxibleInterestReceived),
-                                        "--- Interest GL (Taxable) ---",
-                                        new { @class = "form-control select2", id = "ChartOfAccountIdForTaxibleInterestReceived" })
-                                    @Html.ValidationMessageFor(m => m.CreateOrUpdate.ChartOfAccountIdForTaxibleInterestReceived, "", new { @class = "text-danger" })
-                                    <label>Interest GL (Taxable)</label>
-                                </div>
-                            </div>
-
-                            <div class="col-md-12">
-                                <div class="form-floating form-floating-outline">
-                                    @Html.DropDownListFor(m => m.CreateOrUpdate.ChartOfAccountIdForTax,
-                                        new SelectList(ViewBag.ChartOfAccounts, "Value", "Text", cmd.ChartOfAccountIdForTax),
-                                        "--- Tax / VAT GL ---",
-                                        new { @class = "form-control select2", id = "ChartOfAccountIdForTax" })
-                                    @Html.ValidationMessageFor(m => m.CreateOrUpdate.ChartOfAccountIdForTax, "", new { @class = "text-danger" })
-                                    <label>Tax / VAT GL</label>
-                                </div>
-                            </div>
-
-                            <div class="col-12 mt-2">
-                                <div class="fw-semibold mb-1">
-                                    <i class="mdi mdi-alert-outline me-1"></i> Penalty
-                                </div>
-                            </div>
-
-                            <div class="col-md-12">
-                                <div class="form-floating form-floating-outline">
-                                    @Html.DropDownListFor(m => m.CreateOrUpdate.ChartOfAccountIdForPenalty,
-                                        new SelectList(ViewBag.ChartOfAccounts, "Value", "Text", cmd.ChartOfAccountIdForPenalty),
-                                        "--- Penalty GL ---",
-                                        new { @class = "form-control select2", id = "ChartOfAccountIdForPenalty" })
-                                    @Html.ValidationMessageFor(m => m.CreateOrUpdate.ChartOfAccountIdForPenalty, "", new { @class = "text-danger" })
-                                    <label>Penalty GL</label>
-                                </div>
-                            </div>
-
-                        </div>
+                        <div class="small text-muted">Enabled after purpose.</div>
                     </div>
+
                 </div>
             </div>
-
         </div>
+    </div>
+
+    <!-- 4) Basic Information -->
+    <div class="accordion-item mb-2">
+        <h2 class="accordion-header" id="hdBasic">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#cpBasic" aria-expanded="false" aria-controls="cpBasic">
+                <i class="mdi mdi-file-document-outline me-2"></i>
+                <span class="fw-semibold">Basic Information</span>
+                <span class="ms-2 text-muted small">(Required)</span>
+            </button>
+        </h2>
+
+        <div id="cpBasic" class="accordion-collapse collapse"
+             aria-labelledby="hdBasic" data-bs-parent="#loanProductAccordion">
+            <div class="accordion-body py-3">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.CreateOrUpdate.ProductCode, new { @class = "form-control", required = "required" })
+                            @Html.ValidationMessageFor(m => m.CreateOrUpdate.ProductCode, "", new { @class = "text-danger" })
+                            <label>Product Code</label>
+                        </div>
+                        <div class="small text-muted">Unique for reporting/integrations.</div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.CreateOrUpdate.ProductName, new { @class = "form-control", required = "required" })
+                            @Html.ValidationMessageFor(m => m.CreateOrUpdate.ProductName, "", new { @class = "text-danger" })
+                            <label>Product Name</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextAreaFor(m => m.CreateOrUpdate.Description, 3, 10, new { @class = "form-control", placeholder = "Short description..." })
+                            @Html.ValidationMessageFor(m => m.CreateOrUpdate.Description, "", new { @class = "text-danger" })
+                            <label>Description</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-check mt-1">
+                            @Html.CheckBoxFor(m => m.CreateOrUpdate.ActiveStatus, new { @class = "form-check-input", id = "ActiveStatus" })
+                            <label class="form-check-label" for="ActiveStatus">Active</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5) Core Accounting GLs Mapping -->
+    <!-- 5) Core Accounting GLs Mapping -->
+    <div class="accordion-item mb-2">
+        <h2 class="accordion-header" id="hdGl">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#cpGl" aria-expanded="false" aria-controls="cpGl">
+                <i class="mdi mdi-bank-outline me-2"></i>
+                <span class="fw-semibold">Core Accounting GLs Mapping</span>
+                <span class="ms-2 text-muted small">(Optional)</span>
+            </button>
+        </h2>
+
+        <div id="cpGl" class="accordion-collapse collapse"
+             aria-labelledby="hdGl" data-bs-parent="#loanProductAccordion">
+            <div class="accordion-body py-3">
+                <div class="small text-muted mb-2">
+                    Configure later via <b>Manage → Accounting Mapping</b>. If provided, ensure consistency across taxable/non-taxable.
+                </div>
+
+                <div class="row g-3">
+
+                    <div class="col-12">
+                        <div class="fw-semibold mb-1">
+                            <i class="mdi mdi-checkbox-blank-circle-outline me-1"></i> Non-Taxable
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            @Html.DropDownListFor(m => m.CreateOrUpdate.ChartOfAccountIdForPrincipalAmount,
+                                new SelectList(ViewBag.ChartOfAccounts, "Value", "Text", cmd.ChartOfAccountIdForPrincipalAmount),
+                                "--- Principal GL (Non-Taxable) ---",
+                                new { @class = "form-control select2", id = "ChartOfAccountIdForPrincipalAmount" })
+                            @Html.ValidationMessageFor(m => m.CreateOrUpdate.ChartOfAccountIdForPrincipalAmount, "", new { @class = "text-danger" })
+                            <label>Principal GL (Non-Taxable)</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            @Html.DropDownListFor(m => m.CreateOrUpdate.ChartOfAccountIdForInterestReceived,
+                                new SelectList(ViewBag.ChartOfAccounts, "Value", "Text", cmd.ChartOfAccountIdForInterestReceived),
+                                "--- Interest GL (Non-Taxable) ---",
+                                new { @class = "form-control select2", id = "ChartOfAccountIdForInterestReceived" })
+                            @Html.ValidationMessageFor(m => m.CreateOrUpdate.ChartOfAccountIdForInterestReceived, "", new { @class = "text-danger" })
+                            <label>Interest GL (Non-Taxable)</label>
+                        </div>
+                    </div>
+
+                    <!-- ✅ NEW: Disbursement / Transition -->
+                    <div class="col-12 mt-2">
+                        <div class="fw-semibold mb-1">
+                            <i class="mdi mdi-timer-sand me-1"></i> Disbursement / Transition
+                        </div>
+                        <div class="small text-muted">
+                            Used as a <b>waiting/transit GL</b> for loans that are approved but not yet disbursed.
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-floating form-floating-outline">
+                            @Html.DropDownListFor(m => m.CreateOrUpdate.ChartOfAccountIdForLoanTransition,
+                                new SelectList(ViewBag.ChartOfAccounts, "Value", "Text", cmd.ChartOfAccountIdForLoanTransition),
+                                "--- Transit / Waiting GL (Approved → Pending Disbursement) ---",
+                                new { @class = "form-control select2", id = "ChartOfAccountIdForLoanTransition" })
+                            @Html.ValidationMessageFor(m => m.CreateOrUpdate.ChartOfAccountIdForLoanTransition, "", new { @class = "text-danger" })
+                            <label>Transit / Waiting GL (Approved → Pending Disbursement)</label>
+                        </div>
+                    </div>
+
+                    <div class="col-12 mt-2">
+                        <div class="fw-semibold mb-1">
+                            <i class="mdi mdi-cash-check me-1"></i> Taxable
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            @Html.DropDownListFor(m => m.CreateOrUpdate.ChartOfAccountIdForTaxiblePrincipalAmount,
+                                new SelectList(ViewBag.ChartOfAccounts, "Value", "Text", cmd.ChartOfAccountIdForTaxiblePrincipalAmount),
+                                "--- Principal GL (Taxable) ---",
+                                new { @class = "form-control select2", id = "ChartOfAccountIdForTaxiblePrincipalAmount" })
+                            @Html.ValidationMessageFor(m => m.CreateOrUpdate.ChartOfAccountIdForTaxiblePrincipalAmount, "", new { @class = "text-danger" })
+                            <label>Principal GL (Taxable)</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            @Html.DropDownListFor(m => m.CreateOrUpdate.ChartOfAccountIdForTaxibleInterestReceived,
+                                new SelectList(ViewBag.ChartOfAccounts, "Value", "Text", cmd.ChartOfAccountIdForTaxibleInterestReceived),
+                                "--- Interest GL (Taxable) ---",
+                                new { @class = "form-control select2", id = "ChartOfAccountIdForTaxibleInterestReceived" })
+                            @Html.ValidationMessageFor(m => m.CreateOrUpdate.ChartOfAccountIdForTaxibleInterestReceived, "", new { @class = "text-danger" })
+                            <label>Interest GL (Taxable)</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-floating form-floating-outline">
+                            @Html.DropDownListFor(m => m.CreateOrUpdate.ChartOfAccountIdForTax,
+                                new SelectList(ViewBag.ChartOfAccounts, "Value", "Text", cmd.ChartOfAccountIdForTax),
+                                "--- Tax / VAT GL ---",
+                                new { @class = "form-control select2", id = "ChartOfAccountIdForTax" })
+                            @Html.ValidationMessageFor(m => m.CreateOrUpdate.ChartOfAccountIdForTax, "", new { @class = "text-danger" })
+                            <label>Tax / VAT GL</label>
+                        </div>
+                    </div>
+
+                    <div class="col-12 mt-2">
+                        <div class="fw-semibold mb-1">
+                            <i class="mdi mdi-alert-outline me-1"></i> Penalty
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-floating form-floating-outline">
+                            @Html.DropDownListFor(m => m.CreateOrUpdate.ChartOfAccountIdForPenalty,
+                                new SelectList(ViewBag.ChartOfAccounts, "Value", "Text", cmd.ChartOfAccountIdForPenalty),
+                                "--- Penalty GL ---",
+                                new { @class = "form-control select2", id = "ChartOfAccountIdForPenalty" })
+                            @Html.ValidationMessageFor(m => m.CreateOrUpdate.ChartOfAccountIdForPenalty, "", new { @class = "text-danger" })
+                            <label>Penalty GL</label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
 
         <!-- ✅ FIXED FOOTER BUTTONS (align right, proper spacing, will show PLEASE WAIT...) -->
         <div class="loanproduct-footer d-flex gap-2 justify-content-end">
@@ -456,17 +478,11 @@
                 if ($el.data("select2")) {
                     try { $el.select2("destroy"); } catch (e) { }
                 }
-                $el.select2({
-                    width: "100%",
-                    dropdownParent: $modal
-                });
+                $el.select2({ width: "100%", dropdownParent: $modal });
             });
         }
 
-        // Init now
         wire();
-
-        // Re-init when modal becomes visible (covers PV injected before show)
         $modal.off("shown.bs.modal.lpSelect2").on("shown.bs.modal.lpSelect2", function () {
             wire();
         });
@@ -483,12 +499,7 @@
             try { $el.select2("destroy"); } catch (e) { }
         }
 
-        $el.select2({
-            width: "100%",
-            dropdownParent: $modal
-        });
-
-        // Keep UI synced
+        $el.select2({ width: "100%", dropdownParent: $modal });
         $el.trigger("change.select2");
     }
 
@@ -501,7 +512,6 @@
         $("#LoanFacility").val(v || "Classic");
     }
 
-    // ✅ ONLY Overdraft does NOT require term
     function isTermRequiredByFacility(facility) {
         return (facility || getLoanFacility()) !== "Overdraft";
     }
@@ -512,7 +522,7 @@
     }
 
     // ==========================
-    // Preview (IMPORTANT: do NOT wipe PV on edit init)
+    // Preview
     // ==========================
     function setPreview(p) {
         $("#pcmfPreviewSection").text("Section: " + (gp(p, "section", "Section") || "-"));
@@ -525,19 +535,15 @@
         setPreview({ Section: null, GroupCode: null, BaseCode: null, Population: null });
     }
 
-    // Detect if PV already rendered preview values
     function hasServerPreview() {
         function isDash(txt) {
             txt = (txt || "").replace(/\s+/g, " ").trim();
             return (txt.indexOf(": -") !== -1) || (txt.endsWith(":-")) || (txt.endsWith(": -"));
         }
-
         var s = ($("#pcmfPreviewSection").text() || "").trim();
         var g = ($("#pcmfPreviewGroup").text() || "").trim();
         var b = ($("#pcmfPreviewBase").text() || "").trim();
         var p = ($("#pcmfPreviewPop").text() || "").trim();
-
-        // If any is not dash, server has rendered something
         return !(isDash(s) && isDash(g) && isDash(b) && isDash(p));
     }
 
@@ -562,18 +568,18 @@
         rebindSelect2(id);
     }
 
+    // ✅ IMPORTANT: Busy state should NOT disable all fields before FormData is built.
+    // We will use this only AFTER capturing the FormData.
     function setFormBusy($form, busy, message) {
         if (!$form || !$form.length) return;
 
         $form.data("busy", busy === true);
 
-        // disable everything
-        $form.find("input,select,textarea,button").prop("disabled", busy === true);
+        // Disable ONLY submit buttons to avoid empty FormData
+        var $btns = $form.find("button[type='submit'], input[type='submit']");
+        $btns.prop("disabled", busy === true);
 
-        // keep Close button working
-        $form.closest(".modal-content").find("[data-bs-dismiss='modal']").prop("disabled", false);
-
-        var $btn = $form.find("button[type='submit'], input[type='submit']").first();
+        var $btn = $btns.first();
         if (!$btn.length) return;
 
         if (busy) {
@@ -624,41 +630,36 @@
         setSelectLoading("LoanTargetId", "Select purpose first...");
         clearPreview();
 
-        $.get("@Url.Action("GetPurposesByTerm","LoanProduct")", {
-            termId: termId,
-            loanFacility: facility
-        })
-        .done(function (list) {
-            var $purpose = $("#PcmfLoanPurposeId");
-            $purpose.prop("disabled", false);
-            $purpose.empty().append('<option value="">--- Select PCMF Purpose ---</option>');
+        $.get("@Url.Action("GetPurposesByTerm","LoanProduct")", { termId: termId, loanFacility: facility })
+            .done(function (list) {
+                var $purpose = $("#PcmfLoanPurposeId");
+                $purpose.prop("disabled", false);
+                $purpose.empty().append('<option value="">--- Select PCMF Purpose ---</option>');
 
-            (list || []).forEach(function (x) {
-                var id = gp(x, "id", "Id");
-                var text = gp(x, "text", "Text");
-                var groupCode = gp(x, "groupCode", "GroupCode");
-                var hint = gp(x, "hint", "Hint");
+                (list || []).forEach(function (x) {
+                    var id = gp(x, "id", "Id");
+                    var text = gp(x, "text", "Text");
+                    var groupCode = gp(x, "groupCode", "GroupCode");
+                    var hint = gp(x, "hint", "Hint");
 
-                var label = "";
-                if (groupCode) label = "[" + groupCode + "] " + (text || "");
-                else if (hint) label = "[" + hint + "] " + (text || "");
-                else label = (text || "");
+                    var label = "";
+                    if (groupCode) label = "[" + groupCode + "] " + (text || "");
+                    else if (hint) label = "[" + hint + "] " + (text || "");
+                    else label = (text || "");
 
-                $purpose.append('<option value="' + (id || "") + '">' + label + '</option>');
+                    $purpose.append('<option value="' + (id || "") + '">' + label + '</option>');
+                });
+
+                rebindSelect2("PcmfLoanPurposeId");
+                $purpose.val("").trigger("change.select2").trigger("change");
+
+                resetSelect("LoanTargetId", "--- Select Target ---");
+            })
+            .fail(function () {
+                resetSelect("PcmfLoanPurposeId", "--- Select PCMF Purpose ---");
+                resetSelect("LoanTargetId", "--- Select Target ---");
+                clearPreview();
             });
-
-            rebindSelect2("PcmfLoanPurposeId");
-
-            // always keep empty until user chooses
-            $purpose.val("").trigger("change.select2").trigger("change");
-
-            resetSelect("LoanTargetId", "--- Select Target ---");
-        })
-        .fail(function () {
-            resetSelect("PcmfLoanPurposeId", "--- Select PCMF Purpose ---");
-            resetSelect("LoanTargetId", "--- Select Target ---");
-            clearPreview();
-        });
     }
 
     function loadTargets() {
@@ -675,35 +676,28 @@
         setSelectLoading("LoanTargetId", "Loading targets...");
         clearPreview();
 
-        $.get("@Url.Action("GetTargetsForSelection","LoanProduct")", {
-            purposeId: purposeId,
-            termId: termId,
-            loanFacility: facility
-        })
-        .done(function (list) {
-            var $target = $("#LoanTargetId");
-            $target.prop("disabled", false);
-            $target.empty().append('<option value="">--- Select Target ---</option>');
+        $.get("@Url.Action("GetTargetsForSelection","LoanProduct")", { purposeId: purposeId, termId: termId, loanFacility: facility })
+            .done(function (list) {
+                var $target = $("#LoanTargetId");
+                $target.prop("disabled", false);
+                $target.empty().append('<option value="">--- Select Target ---</option>');
 
-            (list || []).forEach(function (x) {
-                var id = gp(x, "id", "Id");
-                var text = gp(x, "text", "Text");
-                var population = gp(x, "population", "Population");
-                var hint = gp(x, "hint", "Hint");
-                var tail = population ? (" (" + population + ")") : (hint ? (" (" + hint + ")") : "");
+                (list || []).forEach(function (x) {
+                    var id = gp(x, "id", "Id");
+                    var text = gp(x, "text", "Text");
+                    var population = gp(x, "population", "Population");
+                    var hint = gp(x, "hint", "Hint");
+                    var tail = population ? (" (" + population + ")") : (hint ? (" (" + hint + ")") : "");
+                    $target.append('<option value="' + (id || "") + '">' + (text || "") + tail + '</option>');
+                });
 
-                $target.append('<option value="' + (id || "") + '">' + (text || "") + tail + '</option>');
+                rebindSelect2("LoanTargetId");
+                $target.val("").trigger("change.select2").trigger("change");
+            })
+            .fail(function () {
+                resetSelect("LoanTargetId", "--- Select Target ---");
+                clearPreview();
             });
-
-            rebindSelect2("LoanTargetId");
-
-            // always keep empty until user chooses
-            $target.val("").trigger("change.select2").trigger("change");
-        })
-        .fail(function () {
-            resetSelect("LoanTargetId", "--- Select Target ---");
-            clearPreview();
-        });
     }
 
     function loadPreview() {
@@ -719,14 +713,9 @@
 
         setPreview({ section: "Loading...", groupCode: "-", baseCode: "-", population: "-" });
 
-        $.get("@Url.Action("GetPcmfPreview","LoanProduct")", {
-            termId: termId,
-            purposeId: purposeId,
-            targetId: targetId,
-            loanFacility: facility
-        })
-        .done(function (p) { setPreview(p || {}); })
-        .fail(function () { clearPreview(); });
+        $.get("@Url.Action("GetPcmfPreview","LoanProduct")", { termId: termId, purposeId: purposeId, targetId: targetId, loanFacility: facility })
+            .done(function (p) { setPreview(p || {}); })
+            .fail(function () { clearPreview(); });
     }
 
     // ==========================
@@ -744,27 +733,21 @@
             .off("change.lp", "#LoanTargetId")
             .off("change.lp", ".lpFacility");
 
-        // ✅ STRONG edit detection (your hidden is CreateOrUpdate.Id)
         var idVal =
             $("#CreateOrUpdate_Id").val() ||
             $("input[name='CreateOrUpdate.Id']").val() ||
             $("#CreateOrUpdate\\.Id").val();
 
         var isEdit = !!(idVal && idVal.toString().trim().length > 0);
-
-        // Guard: prevent "change" events fired by select2 init from triggering loaders
         var initializing = true;
 
-        // Sync hidden with selected radio
         var selected = $modal.find("input.lpFacility:checked").val() || "Classic";
         setLoanFacility(selected);
         applyFacilityRules();
 
-        // Handlers
         $modal.on("change.lp", "#LoanTermId", function () {
             if (initializing) return;
 
-            // user changed term intentionally -> reset and reload purposes
             resetSelect("PcmfLoanPurposeId", "--- Select PCMF Purpose ---");
             resetSelect("LoanTargetId", "--- Select Target ---");
             clearPreview();
@@ -774,7 +757,6 @@
         $modal.on("change.lp", "#PcmfLoanPurposeId", function () {
             if (initializing) return;
 
-            // user picked purpose -> load targets
             resetSelect("LoanTargetId", "--- Select Target ---");
             clearPreview();
             loadTargets();
@@ -791,49 +773,42 @@
             setLoanFacility($(this).val());
             applyFacilityRules();
 
-            // facility impacts filtering => reset & allow reload
             resetSelect("PcmfLoanPurposeId", "--- Select PCMF Purpose ---");
             resetSelect("LoanTargetId", "--- Select Target ---");
             clearPreview();
             loadPurposes();
         });
 
-        // Rebind select2 once (prevents “not selectable”)
         rebindSelect2("LoanTermId");
         rebindSelect2("PcmfLoanPurposeId");
         rebindSelect2("LoanTargetId");
 
-        // ✅ INITIAL LOAD
         if (!isEdit) {
-            // Create => guided load
             clearPreview();
             loadPurposes();
         } else {
-            // Edit => DO NOT load purposes/targets/preview automatically
-            // Keep PV-rendered preview badge values (DO NOT clear them)
-            // Only clear if PV had nothing meaningful
+            // DO NOT override PV preview
             if (!hasServerPreview()) {
                 clearPreview();
             }
-
-            // Also do NOT force any reset here (PV already has selected term/purpose/target)
-            // User can change term/purpose/target -> handlers will load as needed
         }
 
-        // End of init: allow real user change events
         setTimeout(function () { initializing = false; }, 0);
     };
 
     // ==========================
-    // Submit (kept intact; only minimal safe bits)
+    // Submit (FIXED: FormData BEFORE busy/disable)
     // ==========================
     window.loanProductOnSubmit = function (form) {
+
         var $form = $(form);
         if ($form.data("busy")) return false;
 
+        // Sync facility hidden
         var selected = $("#loanProductModal input.lpFacility:checked").val() || "Classic";
         setLoanFacility(selected);
 
+        // Term validation
         var facility = getLoanFacility();
         var term = document.getElementById("LoanTermId");
         var termId = term ? term.value : "";
@@ -843,7 +818,7 @@
             return false;
         }
 
-        // MVC does not post disabled fields
+        // MVC won't post disabled fields => enable term BEFORE building FormData
         if (term && term.hasAttribute("disabled")) {
             term.removeAttribute("disabled");
             $("#LoanTermId").prop("disabled", false).trigger("change.select2");
@@ -852,33 +827,46 @@
         $.validator.unobtrusive.parse(form);
         if (!$form.valid()) return false;
 
-        setFormBusy($form, true, "Saving...");
-        $form.data("busy", true);
+        // ✅ CAPTURE DATA NOW (while fields are still enabled)
+        var formData = new FormData(form);
 
         alertify.confirm(
             "Confirmation",
             "Are you sure you want to perform this action?",
             function () {
+
+                // ✅ Now lock UI (submit button only)
+                setFormBusy($form, true, "Saving...");
+                $form.data("busy", true);
+
                 var ajaxConfig = {
                     type: "POST",
                     url: form.action,
-                    data: new FormData(form),
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+
                     success: function (response) {
-                        // keep your original success logic (plug yours here)
-                        // IMPORTANT: Do not call clearPreview here
+                        // Controller returns: { success: data.Result, status: data.MessageStatus, message: ... }
+                        if (response && response.success) {
+                            // If MessageStatus is "Exist"/"Failed" etc, keep your old behavior
+                            var st = (response.status !== undefined && response.status !== null) ? response.status.toString() : "";
+                            if (/Exist/i.test(st)) appalert(response.message, 3, 1);
+                            else if (/Fail/i.test(st)) appalert(response.message, 2, 1);
+                            else appalert(response.message, 1, 1);
+                        } else {
+                            appalert((response && response.message) || "Operation failed", 2, 1);
+                        }
+
                         unlock();
                     },
+
                     error: function (err) {
                         if (err.status === 401) window.location.href = "/Authentication/Login";
-                        else appalert(err.statusText, 0, 1);
+                        else appalert(err.statusText || "Request failed", 0, 1);
                         unlock();
                     }
                 };
-
-                if ($form.attr("enctype") === "multipart/form-data") {
-                    ajaxConfig.contentType = false;
-                    ajaxConfig.processData = false;
-                }
 
                 $.ajax(ajaxConfig);
             },
