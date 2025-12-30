@@ -51,12 +51,12 @@
                                 <div class="col-md-6 mb-3">
                                     @Html.LabelFor(m => m.NewStatus, "New Status (Active / Inactive)", new { @class = "form-label" })
                                     @Html.DropDownListFor(m => m.NewStatus,
-             new List<SelectListItem>
-             {
+                                        new List<SelectListItem>
+                                        {
                                             new SelectListItem { Text = "Active", Value = "true" },
                                             new SelectListItem { Text = "Inactive", Value = "false" }
-             },
-             new { @class = "form-select", required = "required" })
+                                        },
+                                       new { @class = "form-select", required = "required" })
                                     <div class="invalid-feedback">Please select a new status</div>
                                     @Html.ValidationMessageFor(m => m.NewStatus, "", new { @class = "text-danger small" })
                                 </div>
@@ -67,7 +67,8 @@
                                 <div class="col-md-12 mb-3">
                                     @Html.LabelFor(m => m.Reason, "Reason for Status Change", new { @class = "form-label" })
                                     @Html.TextAreaFor(m => m.Reason,
-             new { @class = "form-control", rows = "3", required = "required", placeholder = "Please provide a reason for this status change" })
+                                    new { 
+                                        @class = "form-control", rows = "3", required = "required", placeholder = "Please provide a reason for this status change" })
                                     <div class="invalid-feedback">Please provide a reason</div>
                                     @Html.ValidationMessageFor(m => m.Reason, "", new { @class = "text-danger small" })
                                 </div>
