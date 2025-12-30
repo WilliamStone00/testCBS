@@ -61,6 +61,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Loan Term Management.
+        /// </summary>
+        internal static string header {
+            get {
+                return ResourceManager.GetString("header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Loan Term Settings.
         /// </summary>
         internal static string Loan_Term_Settings {
@@ -102,6 +111,15 @@ namespace Resources {
         internal static string Name {
             get {
                 return ResourceManager.GetString("Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Term Kind.
+        /// </summary>
+        internal static string TermKind {
+            get {
+                return ResourceManager.GetString("TermKind", resourceCulture);
             }
         }
     }

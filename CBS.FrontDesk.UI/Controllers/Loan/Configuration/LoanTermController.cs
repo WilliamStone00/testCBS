@@ -23,15 +23,17 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
         {
             _LoanTermServices = PeriodServices;
         }
-      
+
         public async Task<ActionResult> Index()
         {
+            loader();
             ViewBag.Key = null;
             return View();
         }
         [HttpPost]
         public async Task<ActionResult> Create(LoanTerm model)
         {
+            loader();
             if (model.Id == null)
             {
                 if (ModelState.IsValid)
@@ -72,10 +74,11 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
 
             return Json(new { success = false, status = false, message = "Fill the required fields." });
         }
-        
-        public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path=null)
-        {
-            if (path=="list")
+
+        public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null)
+         {
+            loader();
+            if (path == "list")
             {
                 var data = await _LoanTermServices.GetLoanTerms();
                 return PartialView(partialView, data);
@@ -89,7 +92,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
             {
                 var Period = await _LoanTermServices.GetLoanTerm(KEY);
                 return PartialView(partialView, Period);
-                
+
             }
         }
 
@@ -97,6 +100,21 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
         {
             var data = await _LoanTermServices.Delete(KEY);
             return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
+        }
+
+        private bool loader()
+        {
+            // Load LoanTermKind enum values
+            var LtGroupOptions = Enum.GetValues(typeof(LoanTermKind))
+                .Cast<LoanTermKind >()
+                .Select(e => new SelectListItem
+                {
+                    Value = ((int)e).ToString(),
+                    Text = e.ToString()
+                })
+                .ToList();
+            ViewBag.TermKind = LtGroupOptions;
+            return true;
         }
     }
 }

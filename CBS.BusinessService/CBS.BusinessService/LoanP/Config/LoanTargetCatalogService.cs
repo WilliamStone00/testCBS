@@ -19,7 +19,7 @@ namespace CBS.BusinessService.LoanP.Config
 
             public LoanTargetCatalogService()
             {
-                string baseUrl = ConfigurationManager.AppSettings["IdentityServerBaseUrl"];
+                string baseUrl = ConfigurationManager.AppSettings["LoanBaseUrl"];
                 if (string.IsNullOrEmpty(baseUrl))
                 {
                     throw new ConfigurationErrorsException("The 'IdentityServerBaseUrl' appSetting is missing or empty in Web.config.");
@@ -27,7 +27,7 @@ namespace CBS.BusinessService.LoanP.Config
                 _apiCallerHelper = new ApiCallerHelper(baseUrl);
             }
 
-            public async Task<ExecutionMessages> CreateAsync(CreateLoanTargetCatalogRequest model)
+            public async Task<ExecutionMessages> CreateAsync(UpdateLoanTargetCatalogRequest model)
             {
                 try
                 {
@@ -64,7 +64,7 @@ namespace CBS.BusinessService.LoanP.Config
                         throw new ArgumentException("id is required", nameof(id));
 
                     var encodedId = Uri.EscapeDataString(id);
-                    string formattedUrl = string.Format(APICallHelper.LoanTargetCatalogGet + "?id={0}", encodedId);
+                    string formattedUrl = string.Format(APICallHelper.LoanTargetCatalogGet , encodedId);
 
                     var response = await _apiCallerHelper.GetAsync<ServiceResponse<LoanTargetCatalog>>(formattedUrl);
 

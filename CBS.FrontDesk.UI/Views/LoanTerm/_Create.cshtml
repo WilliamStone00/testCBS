@@ -6,14 +6,35 @@
         @Html.HiddenFor(model => model.Id)
         <div class="row mt-3 gy-4">
             <fieldset class="fieldset-custom">
-                <!-- Name Field -->
-                <div class="col-md-12 mb-3">
-                    <div class="form-floating form-floating-outline">
-                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
-                        <label>@GlobalLoanTerm.Name</label>
+                <div class="col-md-12 mb-2">
+                    <div class="form-floating">
+                        @Html.DropDownListFor(m => m.TermKind,
+                            (IEnumerable<SelectListItem>)ViewBag.TermKind,
+                            "Select Term Kind",
+                            new { @class = "form-control select2" })
+                        <label>Pcmf Purpose Key</label>
+                        @Html.ValidationMessageFor(m => m.TermKind, "", new { @class = "text-danger" })
                     </div>
                 </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-2">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.NameEn, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.NameEn, "", new { @class = "text-danger" })
+                            <label>@GlobalLoanTerm.Name En</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 mb-2">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.NameFr, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.NameFr, "", new { @class = "text-danger" })
+                            <label>@GlobalLoanTerm.Name Fr</label>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Min and Max Fields in the Same Row -->
                 <div class="row">
                     <div class="col-md-6 mb-3">

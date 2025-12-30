@@ -116,7 +116,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.InterestProductConfig
                 .Select(p => new SelectListItem
                 {
                     Value = p.Id,                       // ProductId posted
-                    Text = $"{p.Code} {p.Name}"         // [Code] [Name] shown
+                    Text = $" {p.Name}"         // [Code] [Name] shown
                 })
                 .OrderBy(x => x.Text)
                 .ToList()

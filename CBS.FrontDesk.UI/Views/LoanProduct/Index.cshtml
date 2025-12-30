@@ -27,45 +27,6 @@
     @Html.AntiForgeryToken()
 </div>
 
-<!-- 🧠 Why the Structure Matters -->
-<div class="card mb-2">
-    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-shield-check-outline me-2"></i> Why This Structure Is Important</span>
-        <button class="btn btn-light btn-sm" type="button"
-                data-bs-toggle="collapse" data-bs-target="#collapseWhyStructure"
-                aria-expanded="false" aria-controls="collapseWhyStructure">
-            <i class="mdi mdi-chevron-down"></i>
-        </button>
-    </h6>
-    <div id="collapseWhyStructure" class="collapse">
-        <div class="card-body">
-            <p class="mb-3">
-                This loan product configuration follows the standards defined by <strong>COBAC</strong> and <strong>PCMF</strong>.
-                Respecting this structure ensures compliance, consistency, and SESAME reporting readiness.
-            </p>
-
-            <ul class="mb-3">
-                <li><i class="mdi mdi-clock-outline text-primary me-2"></i><strong>Loan Term:</strong> Aligns with COBAC duration-based risk analysis.</li>
-                <li><i class="mdi mdi-target text-info me-2"></i><strong>Loan Target:</strong> Classifies borrowers by segment for inclusive finance.</li>
-                <li><i class="mdi mdi-format-list-bulleted-type text-success me-2"></i><strong>PCMF Loan Purpose:</strong> Maps the loan to PCMF reporting lines.</li>
-                <li><i class="mdi mdi-repeat-variant text-warning me-2"></i><strong>Loan Type Category:</strong> Describes operational model for reporting and accounting.</li>
-            </ul>
-
-            <p class="mb-2">A well-structured loan product:</p>
-            <ul>
-                <li><i class="mdi mdi-check-bold text-success me-2"></i> Appears correctly in SESAME / COBAC reports</li>
-                <li><i class="mdi mdi-check-bold text-success me-2"></i> Supports accurate provisioning and risk scoring</li>
-                <li><i class="mdi mdi-check-bold text-success me-2"></i> Simplifies audit trails and monitoring</li>
-                <li><i class="mdi mdi-check-bold text-success me-2"></i> Prevents network reporting inconsistencies</li>
-            </ul>
-
-            <p class="text-muted mb-0">
-                This structure is not optional — it’s critical for regulatory compliance and system scalability.
-            </p>
-        </div>
-    </div>
-</div>
-
 <!-- 💡 Tips Accordion -->
 @Html.Partial("_LoanProductTip")
 
@@ -137,6 +98,11 @@
                 }
             }
         );
+        $("#loanProductAccordion")
+            .off("shown.bs.collapse.lpSelect2")
+            .on("shown.bs.collapse.lpSelect2", ".accordion-collapse", function () {
+                initSelect2InModal("#loanProductModal");
+            });
     }
 
     // ==========================
@@ -159,6 +125,12 @@
                 }
             }
         );
+        // Re-init select2 when any accordion section is opened
+        $("#loanProductAccordion")
+            .off("shown.bs.collapse.lpSelect2")
+            .on("shown.bs.collapse.lpSelect2", ".accordion-collapse", function () {
+                initSelect2InModal("#loanProductModal");
+            });
     }
 
     // ==========================
@@ -286,7 +258,7 @@
         }
 
         $(tableId).DataTable({
-            pageLength: 25,
+            pageLength: 10,
             responsive: true,
             order: [[0, "asc"]]
         });

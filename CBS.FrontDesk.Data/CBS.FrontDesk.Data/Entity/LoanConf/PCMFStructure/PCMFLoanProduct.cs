@@ -21,13 +21,13 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure
         // ============================
         // ✅ Main entity
         // ============================
-        public PCMFLoanProduct Product { get; set; }= new PCMFLoanProduct();
+        public PCMFLoanProduct Product { get; set; } = new PCMFLoanProduct();
 
         // ============================
         // ✅ Lookups / Catalogs (needed by UI dropdowns)
         // ============================
         public List<LoanTargetCatalog> LoanTargets { get; set; } = new List<LoanTargetCatalog>();
-        public List<PcmfLoanPurpose> PcmfLoanPurposes { get; set; }= new List<PcmfLoanPurpose>();
+        public List<PcmfLoanPurpose> PcmfLoanPurposes { get; set; } = new List<PcmfLoanPurpose>();
 
         // (Optional but recommended for UI)
         public List<LoanTerm> LoanTerms { get; set; } = new List<LoanTerm>();
@@ -69,19 +69,20 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure
             ?? PcmfLoanPurposes?.Find(x => x.Id == CreateOrUpdate?.PcmfLoanPurposeId)?.NameEn;
 
         public OverdraftFacilityConfig OverdraftFacilityConfig { get; set; }=new OverdraftFacilityConfig();
+        public List<LoanProductRepaymentCycle> LoanProductRepaymentCycles { get; set; }
+        public List<LoanApplicationCollateral> LoanProductCollaterals { get; set; }
+
+ 
     }
 
     // ✅ Optional lightweight accounting profile for dropdowns
     public sealed class AccountingProfileLight
     {
-        public string Id { get; set; } 
+        public string Id { get; set; }
         public string Name { get; set; }
     }
 
-
-
-
-[AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
     public sealed class RequiredWhenAttribute : ValidationAttribute
     {
         private readonly string _dependentProperty;
@@ -158,9 +159,6 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure
         [Required(ErrorMessage = "Loan Target is required.")]
         public string LoanTargetId { get; set; }
 
-        // If you want a message when ActiveStatus isn't supplied in UI, use nullable bool:
-        // public bool? ActiveStatus { get; set; }
-        // [Required(ErrorMessage="Active Status is required.")]
         public bool ActiveStatus { get; set; }
 
         /// <summary>
@@ -168,14 +166,15 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure
         /// If not provided, the product can still be created, and mapping can be configured later.
         /// </summary>
         [StringLength(64, ErrorMessage = "Accounting Profile Id must not exceed 64 characters.")]
-        public string AccountingProfileId { get; set; }
 
-        public string LoanProductCategoryId { get; set; }
-        public string TargetType { get; set; }
-        public string LoanTypeCategory { get; set; }
-
+        public string ChartOfAccountIdForPrincipalAmount { get; set; }
+        public string ChartOfAccountIdForTaxiblePrincipalAmount { get; set; }
+        public string ChartOfAccountIdForTaxibleInterestReceived { get; set; }
+        public string ChartOfAccountIdForInterestReceived { get; set; }
+        public string ChartOfAccountIdForTax { get; set; }
+        public string ChartOfAccountIdForPenalty { get; set; }
+        public string ChartOfAccountIdForLoanTransition { get; set; }
     }
-
 
     public static class LoanFacilityType
     {
@@ -205,7 +204,20 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure
 
         public bool IsActive { get; set; } = true;
         public string Description { get; set; }
+
+        // Audit fields
+        public DateTime? CreatedDate { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public string ModifiedBy { get; set; }
+        public DateTime? DeletedDate { get; set; }
+        public string DeletedBy { get; set; }
+        public int ObjectState { get; set; }
+        public bool IsDeleted { get; set; }
     }
+
+   
+
     public sealed class PcmfLoanPurpose
     {
         public string Id { get; set; }
@@ -250,7 +262,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure
         public int? LtGroupCode { get; set; }  // 301..309
 
         /// <summary>PCMF group code for Medium-Term loans (311..319).</summary>
-        public  int?   MtGroupCode { get; set; }  // 311..319
+        public int? MtGroupCode { get; set; }  // 311..319
 
         /// <summary>PCMF group code for Short-Term loans (320..329).</summary>
         public int? CtGroupCode { get; set; }  // 320..329
@@ -262,32 +274,33 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure
         /// <summary>PCMF group code for Overdraft products (371..378).</summary>
         public int? OdGroupCode { get; set; }  // 371..378
     }
+
     public sealed class LoanProductFullDto
     {
         // --------------------
         // Core product
         // --------------------
-        public string Id { get; set; } 
-        public string ProductCode { get; set; } 
-        public string ProductName { get; set; } 
-        public string Description { get; set; } 
+        public string Id { get; set; }
+        public string ProductCode { get; set; }
+        public string ProductName { get; set; }
+        public string Description { get; set; }
         public bool ActiveStatus { get; set; }
-        public string LoanTypeCategory { get; set; } 
+        public string LoanTypeCategory { get; set; }
 
         // --------------------
         // PCMF classification (derived)
         // --------------------
         public string PcmfSection { get; set; }  // LT/MT/CT/OD (string for API friendliness)
         public int PcmfGroupCode { get; set; }
-        public string PcmfPopulation { get; set; } 
+        public string PcmfPopulation { get; set; }
         public int PcmfBaseCode { get; set; }
 
         // --------------------
         // Foreign ids
         // --------------------
         public string LoanTermId { get; set; }
-        public string LoanTargetId { get; set; } 
-        public string PcmfLoanPurposeId { get; set; } 
+        public string LoanTargetId { get; set; }
+        public string PcmfLoanPurposeId { get; set; }
         public string AccountingProfileId { get; set; }
 
         // --------------------
@@ -302,7 +315,21 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure
 
         // Optional convenience fields
         public List<string> RepaymentCycles { get; set; }
+
+        // Additional fields from response
+        public string LoanFacility { get; set; }
+
+        // Audit fields
+        public DateTime? CreatedDate { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public string ModifiedBy { get; set; }
+        public DateTime? DeletedDate { get; set; }
+        public string DeletedBy { get; set; }
+        public int ObjectState { get; set; }
+        public bool IsDeleted { get; set; }
     }
+
     public class PCMFLoanProduct
     {
         public string Id { get; set; }
@@ -332,7 +359,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure
         public string AccountingProfileId { get; set; }
 
         // Policies (Option A: stored in Loan MS)
-        public virtual LoanProductPolicy Policy { get; set; }=new LoanProductPolicy();
+        public virtual LoanProductPolicy Policy { get; set; } = new LoanProductPolicy();
 
         // Accounting mappings (Option A: stored in Loan MS)
         public virtual LoanProductAccountingProfile AccountingMapping { get; set; }
@@ -341,7 +368,19 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure
         public virtual OverdraftFacilityConfig OverdraftFacilityConfig { get; set; }
         public virtual ICollection<LoanProductRepaymentCycle> LoanProductRepaymentCycles { get; set; }
         public virtual ICollection<LoanApplicationCollateral> LoanProductCollaterals { get; set; }
+
+        // New fields from response
+        public string LoanTargetRef { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public string ModifiedBy { get; set; }
+        public DateTime? DeletedDate { get; set; }
+        public string DeletedBy { get; set; }
+        public int ObjectState { get; set; }
+        public bool IsDeleted { get; set; }
     }
+
     public sealed class LoanProductAccountingProfile
     {
         public string Id { get; set; }
@@ -382,7 +421,15 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure
         public string NoneTaxibleAccountNumber { get; set; }
         public string AccountNumber { get; set; }
 
-        // (Repeat for other account snapshots if you want)
+        // Audit fields
+        public DateTime? CreatedDate { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public string ModifiedBy { get; set; }
+        public DateTime? DeletedDate { get; set; }
+        public string DeletedBy { get; set; }
+        public int ObjectState { get; set; }
+        public bool IsDeleted { get; set; }
     }
 
     public sealed class LoanProductPolicy
@@ -392,6 +439,8 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure
         /// Target LoanProduct Id.
         /// </summary>
         public string LoanProductId { get; set; }
+
+        public string TermId { get; set; }
 
         // --------------------------------------------------------------------
         // POLICY: Amount limits
@@ -562,6 +611,16 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure
 
         /// <summary>Penalty configuration id used by this product.</summary>
         public string PenaltyId { get; set; }
+
+        // Audit fields
+        public DateTime? CreatedDate { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public string ModifiedBy { get; set; }
+        public DateTime? DeletedDate { get; set; }
+        public string DeletedBy { get; set; }
+        public int ObjectState { get; set; }
+        public bool IsDeleted { get; set; }
     }
 
     public sealed class LoanTargetPcmfPopulationMap
@@ -580,7 +639,20 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure
         public PcmfPopulation PcmfPopulation { get; set; }
 
         public string Note { get; set; }
+
+        // Audit fields
+        public DateTime? CreatedDate { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public string ModifiedBy { get; set; }
+        public DateTime? DeletedDate { get; set; }
+        public string DeletedBy { get; set; }
+        public int ObjectState { get; set; }
+        public bool IsDeleted { get; set; }
     }
+
+    // Note: Added LoanTerm class definition above
+
     public enum LoanTargets
     {
         Elected_Staff,
@@ -591,6 +663,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure
         Public_Sectors,
         CamCCUL_Staff
     }
+
     public enum LoanTermKind
     {
         ShortTerm = 1,
@@ -612,6 +685,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure
         CT = 3,
         OD = 4
     }
+
     public enum LoanAccountingProfileStatus
     {
         Draft = 0,
@@ -620,6 +694,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure
         Stale = 3,
         Disabled = 4
     }
+
     /// <summary>
     /// PCMF target population (beneficiary category).
     /// </summary>
@@ -692,6 +767,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure
         // Optional: "en" / "fr"
         public string Lang { get; set; } = "en";
     }
+
     public sealed class PcmfLoanProductUiCatalogResponse
     {
         // Master lists (for dropdowns)

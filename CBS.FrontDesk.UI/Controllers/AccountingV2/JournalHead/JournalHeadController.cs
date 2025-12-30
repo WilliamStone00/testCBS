@@ -406,6 +406,8 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
 
                 var Branch = await _branchServices.GetBranch(entry.BranchId);
                 entry.BranchName = Branch?.Name ?? "—";
+
+                
             }
             catch (Exception ex)
             {

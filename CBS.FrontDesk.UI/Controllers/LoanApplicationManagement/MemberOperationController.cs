@@ -1,28 +1,27 @@
-﻿using CBS.BusinessService.CustomerManagement;
+﻿using CBS.BusinessService;
+using CBS.BusinessService.Accounting;
+using CBS.BusinessService.Application;
+using CBS.BusinessService.Config;
+using CBS.BusinessService.CustomerManagement;
+using CBS.BusinessService.LoanCommitee;
+using CBS.FrontDesk.Data.Entity;
+using CBS.FrontDesk.Data.Entity.CashCeilingManagement;
 using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.CustomerManagement;
-using CBS.FrontDesk.Data.Entity;
+using CBS.FrontDesk.Data.Entity.LoanConf;
+using CBS.FrontDesk.Data.Entity.MemberOperation;
 using CBS.FrontDesk.Data.Message;
+using DocumentFormat.OpenXml.Bibliography;
+using DocumentFormat.OpenXml.Office2010.Excel;
+using Microsoft.Owin.Logging;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-
-using CBS.FrontDesk.Data.Entity.MemberOperation;
-using CBS.BusinessService.Accounting;
-using CBS.FrontDesk.Data.Entity.LoanConf;
-using CBS.BusinessService.Config;
-using CBS.BusinessService.Application;
-using CBS.BusinessService;
-using CBS.BusinessService.LoanCommitee;
-using System.IO;
-using DocumentFormat.OpenXml.Bibliography;
-using Microsoft.Owin.Logging;
-using System.Net;
-using DocumentFormat.OpenXml.Office2010.Excel;
-using CBS.FrontDesk.Data.Entity.CashCeilingManagement;
 
 namespace CBS.FrontDesk.UI.Controllers.MemberOperation
 {
@@ -534,6 +533,8 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
 
             }
         }
+
+  
 
         private async Task<IndividualCustomerProfile> InitializeCustomerData(string KEY)
         {

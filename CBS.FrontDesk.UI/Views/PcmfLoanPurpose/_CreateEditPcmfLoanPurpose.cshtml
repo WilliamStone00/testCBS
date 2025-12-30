@@ -1,0 +1,174 @@
+﻿@model CBS.FrontDesk.Data.Entity.LoanConf.PcmfLoanPurpose
+@using Resources
+@using System.Web.Mvc
+
+<div class="modal-body">
+    @using (Html.BeginForm(
+        "CreateOrUpdate",
+        "PcmfLoanPurpose",
+        FormMethod.Post,
+        new { id = "pcmfLoanPurposeForm", onsubmit = "return AjaxPostAndUpdate(this);" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.Id)
+
+        <div class="mt-2">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card bg-light mb-2">
+                        <div class="card-body text-center">
+                            <h1 class="card-title text-primary">
+                                <i class="mdi mdi-bank-transfer me-2"></i>
+                                @(string.IsNullOrWhiteSpace(Model?.Id) ? "Create PCMF Loan Purpose" : "Update PCMF Loan Purpose")
+                            </h1>
+                            <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-2">
+                <!-- Key -->
+                <div class="col-md-12">
+                    <div class="form-floating">
+                        @Html.DropDownListFor(m => m.PcmfPurposeKey,
+                            (IEnumerable<SelectListItem>)ViewBag.LtGroupOptions,
+                            "Select Pcmf Purpose Key",
+                            new { @class = "form-control select2" })
+                        <label>Pcmf Purpose Key</label>
+                        @Html.ValidationMessageFor(m => m.PcmfPurposeKey, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                
+                <!-- Name EN -->
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        @Html.TextBoxFor(m => m.NameEn, new
+                        {
+                            @class = "form-control",
+                            placeholder = "Name (English)",
+                            maxlength = "200",
+                            @required = "required"
+                        })
+                        <label>Name (English)</label>
+                        @Html.ValidationMessageFor(m => m.NameEn, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <!-- Name FR -->
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        @Html.TextBoxFor(m => m.NameFr, new
+                        { 
+                            @class = "form-control",
+                            placeholder = "Name (French)",
+                            maxlength = "200",
+                            @required = "required"
+                        })
+                        <label>Name (French)</label>
+                        @Html.ValidationMessageFor(m => m.NameFr, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        @Html.TextBoxFor(m => m.LtGroupCode, new
+                   {
+                       @class = "form-control",
+                       type = "number",
+                       min = "0",
+                       placeholder = "Lt Group Code",
+                       @required = "required",
+                       @readonly = "readonly"
+                   })
+                        <label>Pcmf PurposeKey</label>
+                        @Html.ValidationMessageFor(m => m.LtGroupCode, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        @Html.TextBoxFor(m => m.MtGroupCode, new
+                   {
+                       @class = "form-control",
+                       type = "number",
+                       min = "0",
+                       placeholder = "Mt Group Code",
+                       @required = "required",
+                       @readonly = "readonly"
+                   })
+                        <label>Pcmf PurposeKey</label>
+                        @Html.ValidationMessageFor(m => m.MtGroupCode, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        @Html.TextBoxFor(m => m.CtGroupCode, new
+                   {
+                       @class = "form-control",
+                       type = "number",
+                       min = "0",
+                       placeholder = "Ct Group Code",
+                       @required = "required",
+                       @readonly = "readonly"
+                   })
+                        <label>Pcmf PurposeKey</label>
+                        @Html.ValidationMessageFor(m => m.CtGroupCode, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        @Html.TextBoxFor(m => m.OdGroupCode, new
+                     {
+                       @class = "form-control",
+                       type = "number",
+                       min = "0",
+                       placeholder = "Od Group Code",
+                       @required = "required",
+                       @readonly = "readonly"
+                     })
+                        <label>Pcmf PurposeKey</label>
+                        @Html.ValidationMessageFor(m => m.OdGroupCode, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <hr />
+                <!-- Status -->
+                <div class="row mb-3">
+                    <div class="col-md-6 d-flex align-items-center">
+                        <div class="form-check">
+                            @Html.CheckBoxFor(m => m.IsActive, new { @class = "form-check-input", id = "isActive" })
+                            <label class="form-check-label fw-bold ms-2" for="isActive">
+                                Active Status
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="text-end mt-3">
+                @if (string.IsNullOrWhiteSpace(Model?.Id))
+                {
+                    <button type="submit" class="btn btn-primary me-2">
+                        <i class="mdi mdi-content-save me-1"></i> @GlobalShared.Save
+                    </button>
+                    <button type="reset" class="btn btn-outline-secondary">
+                        @GlobalShared.Reset
+                    </button>
+                }
+                else
+                {
+                    <button type="submit" class="btn btn-primary me-2">
+                        <i class="mdi mdi-refresh me-1"></i> @GlobalBank.Update
+                    </button>
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+                        Close
+                    </button>
+                }
+            </div>
+        </div>
+    }
+</div>
