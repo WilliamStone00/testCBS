@@ -1,0 +1,894 @@
+﻿@model CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure.PCMFLoanProductManagementObjects
+@{
+    var cmd = Model.CreateOrUpdate ?? new CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure.CreateLoanProductCommand();
+    var isEdit = !string.IsNullOrWhiteSpace(cmd.Id);
+
+    var formTitle = isEdit ? "Update Loan Product" : "Create Loan Product";
+    var saveText = isEdit ? "Update" : "Save";
+    //// Prefer derived fields on Product (your screenshot shows these exist)
+    //var section = Model.Product.PcmfSection;
+    //var group = Model.Product.PcmfGroupCode;   // int?
+    //var baseC = Model.Product.PcmfBaseCode;    // int?
+    //var pop = Model.Product.PcmfPopulation;
+
+    //// Fallback display
+    //var sectionText = string.IsNullOrWhiteSpace(section) ? "-" : section;
+    //var groupText = group.HasValue ? group.Value.ToString() : "-";
+    //var baseText = baseC.HasValue ? baseC.Value.ToString() : "-";
+    //var popText = string.IsNullOrWhiteSpace(pop) ? "-" : pop;
+}
+
+@* =========================
+    Loan Product (Modal Body)
+    - Loan Facility + Live Preview ALWAYS visible (not in accordion)
+    - Accordion sections spaced with mb-1
+    - Reduced top whitespace (modal-body + header spacing)
+    - Fixed footer buttons (proper modal-footer + sticky, aligned right)
+    - Select2 dropdowns selectable inside modal (z-index + dropdownParent + re-init hook)
+    ========================= *@
+
+<style>
+    /* ✅ Reduce the “red” whitespace at the top of the modal */
+    #loanProductModal .modal-body {
+        padding-top: .5rem !important;
+        padding-bottom: .25rem !important;
+    }
+
+    #loanProductModal .modal-dialog {
+        margin-top: .5rem !important;
+    }
+
+    #loanProductModal .modal-content {
+        border-radius: 12px;
+    }
+
+    /* ✅ Make Select2 clickable/visible inside modal */
+    #loanProductModal .select2-container {
+        width: 100% !important;
+    }
+
+    #loanProductModal .select2-container--open {
+        z-index: 1060 !important;
+    }
+    /* bootstrap modal is 1055 */
+
+    /* ✅ Footer look + sticky feel */
+    #loanProductModal .loanproduct-footer {
+        position: sticky;
+        bottom: 0;
+        background: #fff;
+        border-top: 1px solid rgba(0,0,0,.08);
+        padding: .75rem 1rem;
+        margin-top: .75rem;
+        z-index: 2;
+    }
+
+    /* Small spacing tuning */
+    #loanProductModal .card-header {
+        padding-top: .6rem;
+        padding-bottom: .6rem;
+    }
+
+    #loanProductModal .accordion-item {
+        border-radius: 10px;
+        overflow: hidden;
+    }
+</style>
+
+<div class="card-body p-2">
+
+    @using (Html.BeginForm("CreateOrUpdateSimple", "LoanProduct", FormMethod.Post,
+        new { enctype = "multipart/form-data", onsubmit = "return loanProductOnSubmit(this);" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.CreateOrUpdate.Id)
+
+        <!-- Header (reduced spacing) -->
+
+        <div class="row mb-2">
+            <div class="col-12">
+                <div class="card bg-light mb-3">
+                    <div class="card-body text-center">
+                        <h1 class="card-title text-primary">
+                            <i class="mdi mdi-account-group me-2"></i> @formTitle
+                        </h1>
+                        <p class="card-text">
+                            Fill the minimum fields for PCMF/COBAC. Configure advanced policy/accounting later via Manage actions.
+                        </p>
+                        <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ===================================================== -->
+        <!-- GUIDED (NOT CONDENSED): Loan Facility + Live Preview -->
+        <!-- ===================================================== -->
+
+        <!-- 1) Loan Facility (always visible) -->
+        <div class="card mb-2">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span class="text-dark fw-semibold">
+                    <i class="mdi mdi-shape-outline me-1"></i> Loan Facility
+                </span>
+                <small class="text-muted">Required</small>
+            </div>
+
+            <div class="card-body py-2">
+                @Html.HiddenFor(m => m.CreateOrUpdate.LoanFacility, new { id = "LoanFacility" })
+
+                <div class="d-flex flex-wrap gap-4">
+                    <div class="form-check">
+                        <input class="form-check-input lpFacility" type="radio" name="LoanFacilityRadio"
+                               id="LoanFacilityClassic" value="Classic"
+                               @(string.IsNullOrWhiteSpace(cmd.LoanFacility) || cmd.LoanFacility == "Classic" ? "checked" : "") />
+                        <label class="form-check-label fw-semibold" for="LoanFacilityClassic">Classic</label>
+                        <div class="small text-muted">Term required</div>
+                    </div>
+
+                    <div class="form-check">
+                        <input class="form-check-input lpFacility" type="radio" name="LoanFacilityRadio"
+                               id="LoanFacilitySSF" value="SSF"
+                               @(cmd.LoanFacility == "SSF" ? "checked" : "") />
+                        <label class="form-check-label fw-semibold" for="LoanFacilitySSF">SSF</label>
+                        <div class="small text-muted">Term required</div>
+                    </div>
+
+                    <div class="form-check">
+                        <input class="form-check-input lpFacility" type="radio" name="LoanFacilityRadio"
+                               id="LoanFacilityOverdraft" value="Overdraft"
+                               @(cmd.LoanFacility == "Overdraft" ? "checked" : "") />
+                        <label class="form-check-label fw-semibold" for="LoanFacilityOverdraft">Overdraft</label>
+                        <div class="small text-muted">No term</div>
+                    </div>
+
+                    <div class="form-check">
+                        <input class="form-check-input lpFacility" type="radio" name="LoanFacilityRadio"
+                               id="LoanFacilityLOC" value="LineOfCredit"
+                               @(cmd.LoanFacility == "LineOfCredit" ? "checked" : "") />
+                        <label class="form-check-label fw-semibold" for="LoanFacilityLOC">Line of Credit</label>
+                        <div class="small text-muted">Term required</div>
+                    </div>
+                </div>
+
+                <div class="mt-2 small text-muted">
+                    Facility controls whether <b>Loan Term</b> is required and how PCMF choices are filtered.
+                </div>
+            </div>
+        </div>
+
+        <!-- 2) Live PCMF Preview (always visible) -->
+        <!-- 2) Live PCMF Preview (always visible) -->
+        <div class="card mb-2">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span class="text-dark fw-semibold">
+                    <i class="mdi mdi-eye-outline me-1"></i> Live PCMF Preview
+                </span>
+                <small class="text-muted">Live</small>
+            </div>
+
+            <div class="card-body py-2">
+                <div class="d-flex flex-wrap gap-2 align-items-center">
+                    <span class="badge bg-label-secondary px-3 py-2" id="pcmfPreviewSection">
+                        Section: @Model.Product.PcmfSection
+                    </span>
+
+                    <span class="badge bg-label-dark px-3 py-2" id="pcmfPreviewGroup">
+                        Group: @Model.Product.PcmfGroupCode
+                    </span>
+
+                    <span class="badge bg-label-primary px-3 py-2" id="pcmfPreviewBase">
+                        Base: @Model.Product.PcmfBaseCode
+                    </span>
+
+                    <span class="badge bg-label-info px-3 py-2" id="pcmfPreviewPop">
+                        Population: @Model.Product.PcmfPopulation
+                    </span>
+                </div>
+
+                <div class="small text-muted mt-2">
+                    Updates automatically as you pick <b>Facility → Term → Purpose → Target</b>.
+                </div>
+            </div>
+        </div>
+
+        <!-- ===================================================== -->
+        <!-- ACCORDION (CONDENSED): the rest -->
+        <!-- ===================================================== -->
+<div class="accordion" id="loanProductAccordion">
+
+    <!-- 3) PCMF Classification -->
+    <div class="accordion-item mb-2">
+        <h2 class="accordion-header" id="hdPcmf">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#cpPcmf" aria-expanded="true" aria-controls="cpPcmf">
+                <i class="mdi mdi-tag-outline me-2"></i>
+                <span class="fw-semibold">PCMF Classification</span>
+                <span class="ms-2 text-muted small">(Required)</span>
+            </button>
+        </h2>
+
+        <div id="cpPcmf" class="accordion-collapse collapse show"
+             aria-labelledby="hdPcmf" data-bs-parent="#loanProductAccordion">
+            <div class="accordion-body py-3">
+                <div class="row g-3">
+
+                    <div class="col-md-12">
+                        <div class="form-floating form-floating-outline">
+                            @Html.DropDownListFor(m => m.CreateOrUpdate.LoanTermId,
+                                new SelectList(ViewBag.LoanTerms, "Id", "NameEn", cmd.LoanTermId),
+                                "--- Select Loan Term ---",
+                                new { @class = "form-control select2", id = "LoanTermId" })
+                            @Html.ValidationMessageFor(m => m.CreateOrUpdate.LoanTermId, "", new { @class = "text-danger" })
+                            <label>Loan Term</label>
+                        </div>
+                        <div class="small text-muted">
+                            Required for <b>Classic / SSF / LOC</b>. Only <b>Overdraft</b> can be empty.
+                        </div>
+                    </div>
+
+                    <div class="col-md-7">
+                        <div class="form-floating form-floating-outline">
+                            @Html.DropDownListFor(m => m.CreateOrUpdate.PcmfLoanPurposeId,
+                                new SelectList(ViewBag.PcmfLoanPurposes, "Id", "NameEn", cmd.PcmfLoanPurposeId),
+                                "--- Select PCMF Purpose ---",
+                                new { @class = "form-control select2", required = "required", id = "PcmfLoanPurposeId" })
+                            @Html.ValidationMessageFor(m => m.CreateOrUpdate.PcmfLoanPurposeId, "", new { @class = "text-danger" })
+                            <label>PCMF Loan Purpose</label>
+                        </div>
+                        <div class="small text-muted">Filtered by term/section.</div>
+                    </div>
+
+                    <div class="col-md-5">
+                        <div class="form-floating form-floating-outline">
+                            @Html.DropDownListFor(m => m.CreateOrUpdate.LoanTargetId,
+                                new SelectList(ViewBag.LoanTargets, "Id", "NameEn", cmd.LoanTargetId),
+                                "--- Select Target ---",
+                                new { @class = "form-control select2", required = "required", id = "LoanTargetId" })
+                            @Html.ValidationMessageFor(m => m.CreateOrUpdate.LoanTargetId, "", new { @class = "text-danger" })
+                            <label>Loan Target</label>
+                        </div>
+                        <div class="small text-muted">Enabled after purpose.</div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4) Basic Information -->
+    <div class="accordion-item mb-2">
+        <h2 class="accordion-header" id="hdBasic">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#cpBasic" aria-expanded="false" aria-controls="cpBasic">
+                <i class="mdi mdi-file-document-outline me-2"></i>
+                <span class="fw-semibold">Basic Information</span>
+                <span class="ms-2 text-muted small">(Required)</span>
+            </button>
+        </h2>
+
+        <div id="cpBasic" class="accordion-collapse collapse"
+             aria-labelledby="hdBasic" data-bs-parent="#loanProductAccordion">
+            <div class="accordion-body py-3">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.CreateOrUpdate.ProductCode, new { @class = "form-control", required = "required" })
+                            @Html.ValidationMessageFor(m => m.CreateOrUpdate.ProductCode, "", new { @class = "text-danger" })
+                            <label>Product Code</label>
+                        </div>
+                        <div class="small text-muted">Unique for reporting/integrations.</div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.CreateOrUpdate.ProductName, new { @class = "form-control", required = "required" })
+                            @Html.ValidationMessageFor(m => m.CreateOrUpdate.ProductName, "", new { @class = "text-danger" })
+                            <label>Product Name</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextAreaFor(m => m.CreateOrUpdate.Description, 3, 10, new { @class = "form-control", placeholder = "Short description..." })
+                            @Html.ValidationMessageFor(m => m.CreateOrUpdate.Description, "", new { @class = "text-danger" })
+                            <label>Description</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-check mt-1">
+                            @Html.CheckBoxFor(m => m.CreateOrUpdate.ActiveStatus, new { @class = "form-check-input", id = "ActiveStatus" })
+                            <label class="form-check-label" for="ActiveStatus">Active</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5) Core Accounting GLs Mapping -->
+    <!-- 5) Core Accounting GLs Mapping -->
+    <div class="accordion-item mb-2">
+        <h2 class="accordion-header" id="hdGl">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#cpGl" aria-expanded="false" aria-controls="cpGl">
+                <i class="mdi mdi-bank-outline me-2"></i>
+                <span class="fw-semibold">Core Accounting GLs Mapping</span>
+                <span class="ms-2 text-muted small">(Optional)</span>
+            </button>
+        </h2>
+
+        <div id="cpGl" class="accordion-collapse collapse"
+             aria-labelledby="hdGl" data-bs-parent="#loanProductAccordion">
+            <div class="accordion-body py-3">
+                <div class="small text-muted mb-2">
+                    Configure later via <b>Manage → Accounting Mapping</b>. If provided, ensure consistency across taxable/non-taxable.
+                </div>
+
+                <div class="row g-3">
+
+                    <div class="col-12">
+                        <div class="fw-semibold mb-1">
+                            <i class="mdi mdi-checkbox-blank-circle-outline me-1"></i> Non-Taxable
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            @Html.DropDownListFor(m => m.CreateOrUpdate.ChartOfAccountIdForPrincipalAmount,
+                                new SelectList(ViewBag.ChartOfAccounts, "Value", "Text", cmd.ChartOfAccountIdForPrincipalAmount),
+                                "--- Principal GL (Non-Taxable) ---",
+                                new { @class = "form-control select2", id = "ChartOfAccountIdForPrincipalAmount" })
+                            @Html.ValidationMessageFor(m => m.CreateOrUpdate.ChartOfAccountIdForPrincipalAmount, "", new { @class = "text-danger" })
+                            <label>Principal GL (Non-Taxable)</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            @Html.DropDownListFor(m => m.CreateOrUpdate.ChartOfAccountIdForInterestReceived,
+                                new SelectList(ViewBag.ChartOfAccounts, "Value", "Text", cmd.ChartOfAccountIdForInterestReceived),
+                                "--- Interest GL (Non-Taxable) ---",
+                                new { @class = "form-control select2", id = "ChartOfAccountIdForInterestReceived" })
+                            @Html.ValidationMessageFor(m => m.CreateOrUpdate.ChartOfAccountIdForInterestReceived, "", new { @class = "text-danger" })
+                            <label>Interest GL (Non-Taxable)</label>
+                        </div>
+                    </div>
+
+                    <!-- ✅ NEW: Disbursement / Transition -->
+                    <div class="col-12 mt-2">
+                        <div class="fw-semibold mb-1">
+                            <i class="mdi mdi-timer-sand me-1"></i> Disbursement / Transition
+                        </div>
+                        <div class="small text-muted">
+                            Used as a <b>waiting/transit GL</b> for loans that are approved but not yet disbursed.
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-floating form-floating-outline">
+                            @Html.DropDownListFor(m => m.CreateOrUpdate.ChartOfAccountIdForLoanTransition,
+                                new SelectList(ViewBag.ChartOfAccounts, "Value", "Text", cmd.ChartOfAccountIdForLoanTransition),
+                                "--- Transit / Waiting GL (Approved → Pending Disbursement) ---",
+                                new { @class = "form-control select2", id = "ChartOfAccountIdForLoanTransition" })
+                            @Html.ValidationMessageFor(m => m.CreateOrUpdate.ChartOfAccountIdForLoanTransition, "", new { @class = "text-danger" })
+                            <label>Transit / Waiting GL (Approved → Pending Disbursement)</label>
+                        </div>
+                    </div>
+
+                    <div class="col-12 mt-2">
+                        <div class="fw-semibold mb-1">
+                            <i class="mdi mdi-cash-check me-1"></i> Taxable
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            @Html.DropDownListFor(m => m.CreateOrUpdate.ChartOfAccountIdForTaxiblePrincipalAmount,
+                                new SelectList(ViewBag.ChartOfAccounts, "Value", "Text", cmd.ChartOfAccountIdForTaxiblePrincipalAmount),
+                                "--- Principal GL (Taxable) ---",
+                                new { @class = "form-control select2", id = "ChartOfAccountIdForTaxiblePrincipalAmount" })
+                            @Html.ValidationMessageFor(m => m.CreateOrUpdate.ChartOfAccountIdForTaxiblePrincipalAmount, "", new { @class = "text-danger" })
+                            <label>Principal GL (Taxable)</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            @Html.DropDownListFor(m => m.CreateOrUpdate.ChartOfAccountIdForTaxibleInterestReceived,
+                                new SelectList(ViewBag.ChartOfAccounts, "Value", "Text", cmd.ChartOfAccountIdForTaxibleInterestReceived),
+                                "--- Interest GL (Taxable) ---",
+                                new { @class = "form-control select2", id = "ChartOfAccountIdForTaxibleInterestReceived" })
+                            @Html.ValidationMessageFor(m => m.CreateOrUpdate.ChartOfAccountIdForTaxibleInterestReceived, "", new { @class = "text-danger" })
+                            <label>Interest GL (Taxable)</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-floating form-floating-outline">
+                            @Html.DropDownListFor(m => m.CreateOrUpdate.ChartOfAccountIdForTax,
+                                new SelectList(ViewBag.ChartOfAccounts, "Value", "Text", cmd.ChartOfAccountIdForTax),
+                                "--- Tax / VAT GL ---",
+                                new { @class = "form-control select2", id = "ChartOfAccountIdForTax" })
+                            @Html.ValidationMessageFor(m => m.CreateOrUpdate.ChartOfAccountIdForTax, "", new { @class = "text-danger" })
+                            <label>Tax / VAT GL</label>
+                        </div>
+                    </div>
+
+                    <div class="col-12 mt-2">
+                        <div class="fw-semibold mb-1">
+                            <i class="mdi mdi-alert-outline me-1"></i> Penalty
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-floating form-floating-outline">
+                            @Html.DropDownListFor(m => m.CreateOrUpdate.ChartOfAccountIdForPenalty,
+                                new SelectList(ViewBag.ChartOfAccounts, "Value", "Text", cmd.ChartOfAccountIdForPenalty),
+                                "--- Penalty GL ---",
+                                new { @class = "form-control select2", id = "ChartOfAccountIdForPenalty" })
+                            @Html.ValidationMessageFor(m => m.CreateOrUpdate.ChartOfAccountIdForPenalty, "", new { @class = "text-danger" })
+                            <label>Penalty GL</label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+        <!-- ✅ FIXED FOOTER BUTTONS (align right, proper spacing, will show PLEASE WAIT...) -->
+        <div class="loanproduct-footer d-flex gap-2 justify-content-end">
+            <button id="btnLoanProductSave" type="submit" class="btn btn-success">
+                <i class="mdi mdi-content-save-outline me-1"></i> @saveText
+            </button>
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                Close
+            </button>
+        </div>
+    }
+</div>
+
+<script>
+(function () {
+
+    // ==========================
+    // Helpers
+    // ==========================
+    function gp(o, camel, pascal) {
+        if (!o) return null;
+        var v = o[camel];
+        if (v !== undefined && v !== null) return v;
+        v = o[pascal];
+        if (v !== undefined && v !== null) return v;
+        return null;
+    }
+
+    function initSelect2InModal(modalSelector) {
+        if (!window.$ || !$.fn.select2) return;
+
+        var $modal = $(modalSelector);
+        if (!$modal.length) return;
+
+        function wire() {
+            $modal.find("select.select2").each(function () {
+                var $el = $(this);
+                if ($el.data("select2")) {
+                    try { $el.select2("destroy"); } catch (e) { }
+                }
+                $el.select2({ width: "100%", dropdownParent: $modal });
+            });
+        }
+
+        wire();
+        $modal.off("shown.bs.modal.lpSelect2").on("shown.bs.modal.lpSelect2", function () {
+            wire();
+        });
+    }
+
+    function rebindSelect2(id) {
+        if (!window.$ || !$.fn.select2) return;
+
+        var $modal = $("#loanProductModal");
+        var $el = $("#" + id);
+        if (!$el.length) return;
+
+        if ($el.data("select2")) {
+            try { $el.select2("destroy"); } catch (e) { }
+        }
+
+        $el.select2({ width: "100%", dropdownParent: $modal });
+        $el.trigger("change.select2");
+    }
+
+    function getLoanFacility() {
+        var v = $("#LoanFacility").val();
+        return v || "Classic";
+    }
+
+    function setLoanFacility(v) {
+        $("#LoanFacility").val(v || "Classic");
+    }
+
+    function isTermRequiredByFacility(facility) {
+        return (facility || getLoanFacility()) !== "Overdraft";
+    }
+
+    function getVal(id) {
+        var el = document.getElementById(id);
+        return el ? el.value : "";
+    }
+
+    // ==========================
+    // Preview
+    // ==========================
+    function setPreview(p) {
+        $("#pcmfPreviewSection").text("Section: " + (gp(p, "section", "Section") || "-"));
+        $("#pcmfPreviewGroup").text("Group: " + (gp(p, "groupCode", "GroupCode") || "-"));
+        $("#pcmfPreviewBase").text("Base: " + (gp(p, "baseCode", "BaseCode") || "-"));
+        $("#pcmfPreviewPop").text("Population: " + (gp(p, "population", "Population") || "-"));
+    }
+
+    function clearPreview() {
+        setPreview({ Section: null, GroupCode: null, BaseCode: null, Population: null });
+    }
+
+    function hasServerPreview() {
+        function isDash(txt) {
+            txt = (txt || "").replace(/\s+/g, " ").trim();
+            return (txt.indexOf(": -") !== -1) || (txt.endsWith(":-")) || (txt.endsWith(": -"));
+        }
+        var s = ($("#pcmfPreviewSection").text() || "").trim();
+        var g = ($("#pcmfPreviewGroup").text() || "").trim();
+        var b = ($("#pcmfPreviewBase").text() || "").trim();
+        var p = ($("#pcmfPreviewPop").text() || "").trim();
+        return !(isDash(s) && isDash(g) && isDash(b) && isDash(p));
+    }
+
+    // ==========================
+    // Select helpers
+    // ==========================
+    function resetSelect(id, placeholder) {
+        var $s = $("#" + id);
+        $s.prop("disabled", false);
+        $s.empty().append('<option value="">' + placeholder + '</option>');
+        $s.val("");
+        $s.trigger("change.select2").trigger("change");
+        rebindSelect2(id);
+    }
+
+    function setSelectLoading(id, loadingText) {
+        var $s = $("#" + id);
+        $s.prop("disabled", true);
+        $s.empty().append('<option value="">' + (loadingText || "Loading...") + '</option>');
+        $s.val("");
+        $s.trigger("change.select2").trigger("change");
+        rebindSelect2(id);
+    }
+
+    // ✅ IMPORTANT: Busy state should NOT disable all fields before FormData is built.
+    // We will use this only AFTER capturing the FormData.
+    function setFormBusy($form, busy, message) {
+        if (!$form || !$form.length) return;
+
+        $form.data("busy", busy === true);
+
+        // Disable ONLY submit buttons to avoid empty FormData
+        var $btns = $form.find("button[type='submit'], input[type='submit']");
+        $btns.prop("disabled", busy === true);
+
+        var $btn = $btns.first();
+        if (!$btn.length) return;
+
+        if (busy) {
+            if (!$btn.data("origHtml")) $btn.data("origHtml", $btn.html());
+            var txt = message || "Saving...";
+            $btn.html('<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>' + txt);
+        } else {
+            var orig = $btn.data("origHtml");
+            if (orig) $btn.html(orig);
+        }
+    }
+
+    // ==========================
+    // Facility -> Term rule
+    // ==========================
+    function applyFacilityRules() {
+        var facility = getLoanFacility();
+        var term = document.getElementById("LoanTermId");
+        if (!term) return;
+
+        if (isTermRequiredByFacility(facility)) {
+            term.removeAttribute("disabled");
+            $("#LoanTermId").prop("disabled", false).trigger("change.select2");
+        } else {
+            term.value = "";
+            term.setAttribute("disabled", "disabled");
+            $("#LoanTermId").prop("disabled", true).val("").trigger("change.select2").trigger("change");
+        }
+
+        rebindSelect2("LoanTermId");
+    }
+
+    // ==========================
+    // Data loaders
+    // ==========================
+    function loadPurposes() {
+        var facility = getLoanFacility();
+        var termId = getVal("LoanTermId");
+
+        if (isTermRequiredByFacility(facility) && !termId) {
+            resetSelect("PcmfLoanPurposeId", "--- Select PCMF Purpose ---");
+            resetSelect("LoanTargetId", "--- Select Target ---");
+            clearPreview();
+            return;
+        }
+
+        setSelectLoading("PcmfLoanPurposeId", "Loading purposes...");
+        setSelectLoading("LoanTargetId", "Select purpose first...");
+        clearPreview();
+
+        $.get("@Url.Action("GetPurposesByTerm","LoanProduct")", { termId: termId, loanFacility: facility })
+            .done(function (list) {
+                var $purpose = $("#PcmfLoanPurposeId");
+                $purpose.prop("disabled", false);
+                $purpose.empty().append('<option value="">--- Select PCMF Purpose ---</option>');
+
+                (list || []).forEach(function (x) {
+                    var id = gp(x, "id", "Id");
+                    var text = gp(x, "text", "Text");
+                    var groupCode = gp(x, "groupCode", "GroupCode");
+                    var hint = gp(x, "hint", "Hint");
+
+                    var label = "";
+                    if (groupCode) label = "[" + groupCode + "] " + (text || "");
+                    else if (hint) label = "[" + hint + "] " + (text || "");
+                    else label = (text || "");
+
+                    $purpose.append('<option value="' + (id || "") + '">' + label + '</option>');
+                });
+
+                rebindSelect2("PcmfLoanPurposeId");
+                $purpose.val("").trigger("change.select2").trigger("change");
+
+                resetSelect("LoanTargetId", "--- Select Target ---");
+            })
+            .fail(function () {
+                resetSelect("PcmfLoanPurposeId", "--- Select PCMF Purpose ---");
+                resetSelect("LoanTargetId", "--- Select Target ---");
+                clearPreview();
+            });
+    }
+
+    function loadTargets() {
+        var facility = getLoanFacility();
+        var termId = getVal("LoanTermId");
+        var purposeId = getVal("PcmfLoanPurposeId");
+
+        if (!purposeId) {
+            resetSelect("LoanTargetId", "--- Select Target ---");
+            clearPreview();
+            return;
+        }
+
+        setSelectLoading("LoanTargetId", "Loading targets...");
+        clearPreview();
+
+        $.get("@Url.Action("GetTargetsForSelection","LoanProduct")", { purposeId: purposeId, termId: termId, loanFacility: facility })
+            .done(function (list) {
+                var $target = $("#LoanTargetId");
+                $target.prop("disabled", false);
+                $target.empty().append('<option value="">--- Select Target ---</option>');
+
+                (list || []).forEach(function (x) {
+                    var id = gp(x, "id", "Id");
+                    var text = gp(x, "text", "Text");
+                    var population = gp(x, "population", "Population");
+                    var hint = gp(x, "hint", "Hint");
+                    var tail = population ? (" (" + population + ")") : (hint ? (" (" + hint + ")") : "");
+                    $target.append('<option value="' + (id || "") + '">' + (text || "") + tail + '</option>');
+                });
+
+                rebindSelect2("LoanTargetId");
+                $target.val("").trigger("change.select2").trigger("change");
+            })
+            .fail(function () {
+                resetSelect("LoanTargetId", "--- Select Target ---");
+                clearPreview();
+            });
+    }
+
+    function loadPreview() {
+        var facility = getLoanFacility();
+        var termId = getVal("LoanTermId");
+        var purposeId = getVal("PcmfLoanPurposeId");
+        var targetId = getVal("LoanTargetId");
+
+        if (!purposeId || !targetId || (isTermRequiredByFacility(facility) && !termId)) {
+            clearPreview();
+            return;
+        }
+
+        setPreview({ section: "Loading...", groupCode: "-", baseCode: "-", population: "-" });
+
+        $.get("@Url.Action("GetPcmfPreview","LoanProduct")", { termId: termId, purposeId: purposeId, targetId: targetId, loanFacility: facility })
+            .done(function (p) { setPreview(p || {}); })
+            .fail(function () { clearPreview(); });
+    }
+
+    // ==========================
+    // Exposed init
+    // ==========================
+    window.loanProductInitPcmfGuidedFlow = function () {
+
+        initSelect2InModal("#loanProductModal");
+
+        var $modal = $("#loanProductModal");
+
+        $modal
+            .off("change.lp", "#LoanTermId")
+            .off("change.lp", "#PcmfLoanPurposeId")
+            .off("change.lp", "#LoanTargetId")
+            .off("change.lp", ".lpFacility");
+
+        var idVal =
+            $("#CreateOrUpdate_Id").val() ||
+            $("input[name='CreateOrUpdate.Id']").val() ||
+            $("#CreateOrUpdate\\.Id").val();
+
+        var isEdit = !!(idVal && idVal.toString().trim().length > 0);
+        var initializing = true;
+
+        var selected = $modal.find("input.lpFacility:checked").val() || "Classic";
+        setLoanFacility(selected);
+        applyFacilityRules();
+
+        $modal.on("change.lp", "#LoanTermId", function () {
+            if (initializing) return;
+
+            resetSelect("PcmfLoanPurposeId", "--- Select PCMF Purpose ---");
+            resetSelect("LoanTargetId", "--- Select Target ---");
+            clearPreview();
+            loadPurposes();
+        });
+
+        $modal.on("change.lp", "#PcmfLoanPurposeId", function () {
+            if (initializing) return;
+
+            resetSelect("LoanTargetId", "--- Select Target ---");
+            clearPreview();
+            loadTargets();
+        });
+
+        $modal.on("change.lp", "#LoanTargetId", function () {
+            if (initializing) return;
+            loadPreview();
+        });
+
+        $modal.on("change.lp", ".lpFacility", function () {
+            if (initializing) return;
+
+            setLoanFacility($(this).val());
+            applyFacilityRules();
+
+            resetSelect("PcmfLoanPurposeId", "--- Select PCMF Purpose ---");
+            resetSelect("LoanTargetId", "--- Select Target ---");
+            clearPreview();
+            loadPurposes();
+        });
+
+        rebindSelect2("LoanTermId");
+        rebindSelect2("PcmfLoanPurposeId");
+        rebindSelect2("LoanTargetId");
+
+        if (!isEdit) {
+            clearPreview();
+            loadPurposes();
+        } else {
+            // DO NOT override PV preview
+            if (!hasServerPreview()) {
+                clearPreview();
+            }
+        }
+
+        setTimeout(function () { initializing = false; }, 0);
+    };
+
+    // ==========================
+    // Submit (FIXED: FormData BEFORE busy/disable)
+    // ==========================
+    window.loanProductOnSubmit = function (form) {
+
+        var $form = $(form);
+        if ($form.data("busy")) return false;
+
+        // Sync facility hidden
+        var selected = $("#loanProductModal input.lpFacility:checked").val() || "Classic";
+        setLoanFacility(selected);
+
+        // Term validation
+        var facility = getLoanFacility();
+        var term = document.getElementById("LoanTermId");
+        var termId = term ? term.value : "";
+
+        if (isTermRequiredByFacility(facility) && !termId) {
+            if (term) term.focus();
+            return false;
+        }
+
+        // MVC won't post disabled fields => enable term BEFORE building FormData
+        if (term && term.hasAttribute("disabled")) {
+            term.removeAttribute("disabled");
+            $("#LoanTermId").prop("disabled", false).trigger("change.select2");
+        }
+
+        $.validator.unobtrusive.parse(form);
+        if (!$form.valid()) return false;
+
+        // ✅ CAPTURE DATA NOW (while fields are still enabled)
+        var formData = new FormData(form);
+
+        alertify.confirm(
+            "Confirmation",
+            "Are you sure you want to perform this action?",
+            function () {
+
+                // ✅ Now lock UI (submit button only)
+                setFormBusy($form, true, "Saving...");
+                $form.data("busy", true);
+
+                var ajaxConfig = {
+                    type: "POST",
+                    url: form.action,
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+
+                    success: function (response) {
+                        // Controller returns: { success: data.Result, status: data.MessageStatus, message: ... }
+                        if (response && response.success) {
+                            // If MessageStatus is "Exist"/"Failed" etc, keep your old behavior
+                            var st = (response.status !== undefined && response.status !== null) ? response.status.toString() : "";
+                            if (/Exist/i.test(st)) appalert(response.message, 3, 1);
+                            else if (/Fail/i.test(st)) appalert(response.message, 2, 1);
+                            else appalert(response.message, 1, 1);
+                        } else {
+                            appalert((response && response.message) || "Operation failed", 2, 1);
+                        }
+
+                        unlock();
+                    },
+
+                    error: function (err) {
+                        if (err.status === 401) window.location.href = "/Authentication/Login";
+                        else appalert(err.statusText || "Request failed", 0, 1);
+                        unlock();
+                    }
+                };
+
+                $.ajax(ajaxConfig);
+            },
+            function () {
+                appalert("Transaction cancelled", 3, 1);
+                unlock();
+            }
+        );
+
+        function unlock() {
+            setFormBusy($form, false);
+            $form.data("busy", false);
+            applyFacilityRules();
+
+            rebindSelect2("LoanTermId");
+            rebindSelect2("PcmfLoanPurposeId");
+            rebindSelect2("LoanTargetId");
+        }
+
+        return false;
+    };
+
+})();
+</script>
+

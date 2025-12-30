@@ -322,6 +322,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to BULK CASH OPERATIONS.
+        /// </summary>
+        internal static string BULKCASHOPERATIONS {
+            get {
+                return ResourceManager.GetString("BULKCASHOPERATIONS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bulk Cash Operation Simulation.
         /// </summary>
         internal static string BulkCashOperationSimulation {
@@ -349,7 +358,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Credit.
+        ///   Looks up a localized string similar to To Be Credited.
         /// </summary>
         internal static string BulkOperationCashOutOrCashInAccountTransferCashIn {
             get {
@@ -358,7 +367,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Debit.
+        ///   Looks up a localized string similar to To Be Debited.
         /// </summary>
         internal static string BulkOperationCashOutOrCashInAccountTransferCashOut {
             get {
@@ -426,6 +435,15 @@ namespace Resources {
         internal static string BulkProcessInitiatedFilter {
             get {
                 return ResourceManager.GetString("BulkProcessInitiatedFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BULK RANGED OPERATIONS.
+        /// </summary>
+        internal static string BULKRANGEDOPERATIONS {
+            get {
+                return ResourceManager.GetString("BULKRANGEDOPERATIONS", resourceCulture);
             }
         }
         
@@ -1078,7 +1096,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Simulate A Range Bulk Operation.
+        ///   Looks up a localized string similar to Simulate A Ranged Topup/Contribution Operation.
         /// </summary>
         internal static string SimulateARangeBulkOperation {
             get {
@@ -1087,7 +1105,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Simulate A Bulk Cash Operation.
+        ///   Looks up a localized string similar to Simulate A Bulk Member CashIn/CashOut.
         /// </summary>
         internal static string SimulateBulkCashOperation {
             get {
@@ -1114,7 +1132,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Simulate share top up.
+        ///   Looks up a localized string similar to Simulate Top-Up.
         /// </summary>
         internal static string SimulateShareTopUp {
             get {

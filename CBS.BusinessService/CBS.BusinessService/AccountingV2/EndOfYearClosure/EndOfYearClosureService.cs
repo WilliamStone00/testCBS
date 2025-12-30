@@ -30,17 +30,18 @@ namespace CBS.BusinessService.AccountingV2.EndOfYearClosure
 
         }
 
-        public async Task<List<accountingyear>> GetAccountingYearByBranchIdAsync(string branchId)
+        public async Task<List<accountingyear>> GetAccountingYearByBranchIdAsync(string branchId , string init)
         {
             try
             {
+                
                 if (string.IsNullOrWhiteSpace(branchId))
                     throw new ArgumentException("Branch ID cannot be null or empty.", nameof(branchId));
 
 
                 // ✅ Make API call
-                var response = await _apiCallerHelper.GetAsync<ResponseObject<accountingyear>>(string.Format(APICallHelper.GetAccoutingYearByBranchId, branchId));
-
+                var url = string.Format(APICallHelper.GetAccoutingYearByBranchId, branchId, init);
+                var response = await _apiCallerHelper.GetAsync<ResponseObject<accountingyear>>(url);
                 // ✅ Validate response
                 if (!response.IsSuccess)
                     throw new Exception($"API call failed: {response.Message}");

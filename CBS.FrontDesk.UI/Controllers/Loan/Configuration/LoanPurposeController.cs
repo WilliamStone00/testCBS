@@ -25,9 +25,45 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
         }
         public async Task<ActionResult> Index()
         {
+            await loader();
             ViewBag.Categories = await _loanProductCategoryServices.GetLoanProductCategorys();
             return View();
         }
+
+        private async Task<bool> loader()
+        {
+            // Load LoanTermKind enum values
+            var loanTermKinds = Enum.GetValues(typeof(LoanTermKind))
+                .Cast<LoanTermKind>()
+                .Select(e => new SelectListItem
+                {
+                    Value = ((int)e).ToString(),
+                    Text = e.ToString()
+                })
+                .ToList();
+
+            ViewBag.LoanTermKinds = loanTermKinds;
+            ViewBag.LtGroupOptions = loanTermKinds;
+            ViewBag.MtGroupOptions = loanTermKinds;
+
+            // Load PcmfPurposeKey enum values
+            var pcmfPurposeKeys = Enum.GetValues(typeof(PcmfPurposeKey))
+                .Cast<PcmfPurposeKey>()
+                .Select(e => new SelectListItem
+                {
+                    Value = ((int)e).ToString(),
+                    Text = e.ToString()
+                })
+                .ToList();
+
+            ViewBag.PcmfPurposeKeys = pcmfPurposeKeys;
+            ViewBag.CtGroupOptions = pcmfPurposeKeys;
+            ViewBag.OdGroupOptions = pcmfPurposeKeys;
+
+            return true;
+        }
+
+
         [HttpPost]
         public async Task<ActionResult> Create(LoanPurpose model)
         {
@@ -53,6 +89,8 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
 
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null)
         {
+            await loader();
+
             if (path == "list")
             {
                 var data = await _LoanPurposeServices.GetLoanPurposes();

@@ -65,5 +65,29 @@ namespace CBS.BusinessService.AccountingV2.ReconciledLine
                 throw new Exception($" {ex.Message}", ex);
             }
         }
+
+
+        public async Task<List<Reconciled>> GetReconciledLinesByJournalHeaderId(string referenceNumber)
+        {
+            try
+            {
+                var url = string.Format(APICallHelper.GetReconciledLines, referenceNumber);
+
+                var response = await _apiCallerHelper
+                    .GetAsync<ResponseObject<List<Reconciled>>>(url);
+
+                if (response?.ApiResponseData != null)
+                {
+                    return response.ApiResponseData.Data;
+                }
+
+                return new List<Reconciled>();
+            }
+            catch (Exception ex)
+            {
+                // TODO: log error
+                throw;
+            }
+        }
     }
 }

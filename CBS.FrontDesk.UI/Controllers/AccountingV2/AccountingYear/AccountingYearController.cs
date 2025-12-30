@@ -57,9 +57,11 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.AccountingYear
             };
         }
 
-        private List<StringValues> getNext5Years()
+        private List<StringValues> getAccountingYears()
         {
-            return Enumerable.Range(DateTime.Now.Year, 5)
+            int currentYear = DateTime.Now.Year;
+
+            return Enumerable.Range(currentYear - 3, 5)
                 .Select(y => new StringValues
                 {
                     Value = y.ToString(),
@@ -73,7 +75,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.AccountingYear
             var branches = await _branchServices.GetBranches();
             ViewBag.Branches = branches;
             ViewBag.Status = getAllYearStatus();
-            ViewBag.Year = getNext5Years();
+            ViewBag.Year = getAccountingYears();
             return true;
 
         }

@@ -170,7 +170,7 @@
 
             <div class="col-md-6">
 
-                <div class="form-check form-switch mb-2">
+                @*<div class="form-check form-switch mb-2">
                     @Html.CheckBoxFor(m => m.SubscriptionAmount, new { @class = "form-check-input", id = "SubscriptionAmount" })
                     <label class="form-check-label fw-medium" for="SubscriptionAmount">Subscription Amount Required</label>
                     @Html.ValidationMessageFor(m => m.SubscriptionAmount, "", new { @class = "text-danger" })
@@ -185,14 +185,14 @@
                 <div class="form-check form-switch mb-2">
                     @Html.CheckBoxFor(m => m.IsRecurringSubscription, new { @class = "form-check-input", id = "IsRecurringSubscription" })
                     <label class="form-check-label fw-medium" for="IsRecurringSubscription">Recurring Subscription</label>
-                </div>
+                </div>*@
                 <div class="form-check form-switch mb-0">
                     @Html.CheckBoxFor(m => m.AutomaticRenewal, new { @class = "form-check-input", id = "AutomaticRenewalSmall" })
                     <label class="form-check-label fw-medium" for="AutomaticRenewalSmall">Automatic Renewal</label>
                 </div>
 
                 <!-- Recurring Amount (hidden by default) -->
-                <div class="mt-2 d-none" id="recurringAmountContainer">
+                <!--<div class="mt-2 d-none" id="recurringAmountContainer">
                     <label class="form-label fw-bold">Automatic Renewal</label>
                     @Html.TextBoxFor(m => m.RecurringAmount, new
                     {
@@ -202,7 +202,7 @@
                         placeholder = "Optional"
                     })
                     @Html.ValidationMessageFor(m => m.RecurringAmount, "", new { @class = "text-danger" })
-                </div>
+                </div>-->
 
             </div>
         </div>
@@ -230,7 +230,7 @@
     }
 </div>
 
-<script>
+@*<script>
     // Delegated event => works even if the form is loaded dynamically
     $(document).on('change', '#AutomaticRenewalSmall', function () {
         if ($(this).is(':checked')) {
@@ -247,5 +247,5 @@
             $('#recurringAmountContainer').removeClass('d-none');
         }
     });
-</script>
+</script>*@
 

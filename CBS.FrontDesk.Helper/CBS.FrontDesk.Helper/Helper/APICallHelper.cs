@@ -610,6 +610,7 @@ namespace CBS.FrontDesk.Helper
         public static string Get_Update_Delete_LoanTerm = "/api/v1/LoanTerm/{0}";
         public static string GetAllLoanTerm = "/api/v1/LoanTerms";
         public static string CreateLoanTerm = "/api/v1/LoanTerm";
+        public static string GetPCMFCatalog = "/api/v1/pcmf-ui-catalog";
 
 
         public static string Get_Update_Delete_InstallmentType = "/api/v1/InstallmentType/{0}";
@@ -625,6 +626,11 @@ namespace CBS.FrontDesk.Helper
         public static string GetLoanProductConfigurationAgregates = "/api/v1/LoanProductConfigurationAgregates";
         public static string GetAllLoanApplicationByCustomerId = "/api/v1/LoanApplication/GetAllLoanApplicationByCustomerId/{0}";
         public static string AttachedDocumentsRemotelyMembers = "/api/v1/uploadCustomerDocuments";
+
+        public static string LoanProductUpsertPolicy = "/api/v1/LoanProduct/UpsertPolicy";
+        public static string LoanProductAccountingMapping = "/api/v1/LoanProduct/UpsertAccountingMapping";
+        public static string LoanProductUpdateCore = "/api/v1/LoanProduct/UpdateCore";
+
 
         //
 
@@ -1357,21 +1363,21 @@ namespace CBS.FrontDesk.Helper
         public const string ChequebookDetail = "/api/v1/checkbook/{0}";
 
 
-		//---------------------- Global Configuration ----------------------------
-		public const string GetAllGlobalConfig = "/api/v1/GlobalConfigs";
-		public const string GetGlobalConfigById = "/api/v1/GlobalConfig/{0}";
-		public const string CreateGlobalConfig = "/api/v1/GlobalConfig/branch";
-		public const string UpdateGlobalConfig = "/api/v1/GlobalConfig/branch{0}";
-		public const string DeleteGlobalConfig = "/api/v1/GlobalConfig/{0}";
+        //---------------------- Global Configuration ----------------------------
+        public const string GetAllGlobalConfig = "/api/v1/GlobalConfigs";
+        public const string GetGlobalConfigById = "/api/v1/GlobalConfig/{0}";
+        public const string CreateGlobalConfig = "/api/v1/GlobalConfig/branch";
+        public const string UpdateGlobalConfig = "/api/v1/GlobalConfig/branch{0}";
+        public const string DeleteGlobalConfig = "/api/v1/GlobalConfig/{0}";
 
 
-		//************************** END CHEQUE BOOK *******************************
+        //************************** END CHEQUE BOOK *******************************
 
-		//*************************** MANUAL DAILLY COLLECTIONS ************************ 
+        //*************************** MANUAL DAILLY COLLECTIONS ************************ 
 
-		// ---------------- MANUAL ENTRY & FILES ----------------
-		//uploadfile
-		public static string ManualEntryUpload = "/api/v1/ManualEntryCollectorUpload";
+        // ---------------- MANUAL ENTRY & FILES ----------------
+        //uploadfile
+        public static string ManualEntryUpload = "/api/v1/ManualEntryCollectorUpload";
         //getfile
         public static string GetFileById = "/api/v1/ManualEntryCollector/ViewFileByFileUploadId/{FileUploadId}";
         //getallfiles
@@ -1510,40 +1516,40 @@ namespace CBS.FrontDesk.Helper
         public static string GetMobileMoneyByIdV2 = "/api/v1/MobileMoney/{0}";
 
 
-		//****************** REPORT DEFINITION **********************************//
+        //****************** REPORT DEFINITION **********************************//
 
-		public static string DeleteReportDefinition = "/api/v1/ReportDefinitions/{0}";
-		public static string CreateReportDefinition = "/api/v1/ReportDefinitions";
-		public static string UpdateReportDefinition = "/api/v1/ReportDefinitions/{0}";
-		public static string GetAllReportDefinition = "/api/v1/ReportDefinitions";
-		public static string GetReportDefinitionById = "/api/v1/ReportDefinitions/{0}";
-
-
-		//****************** REPORT LINE MAPPING **********************************//
-
-		public static string DeleteReportLineMapping = "/api/v1/ReportLineMappings/{0}";
-		public static string CreateReportLineMapping = "/api/v1/ReportLineMappings";
-		public static string UpdateReportLineMapping = "/api/v1/ReportLineMappings/{0}";
-		public static string GetAllReportLineMapping = "/api/v1/ReportLineMappings";
-		public static string GetReportLineMappingById = "/api/v1/ReportLineMappings/{0}";
+        public static string DeleteReportDefinition = "/api/v1/ReportDefinitions/{0}";
+        public static string CreateReportDefinition = "/api/v1/ReportDefinitions";
+        public static string UpdateReportDefinition = "/api/v1/ReportDefinitions/{0}";
+        public static string GetAllReportDefinition = "/api/v1/ReportDefinitions";
+        public static string GetReportDefinitionById = "/api/v1/ReportDefinitions/{0}";
 
 
-		//****************** REPORT LINE **********************************//
+        //****************** REPORT LINE MAPPING **********************************//
 
-		public static string DeleteReportLine = "/api/v1/ReportLines/{0}";
-		public static string CreateReportLine = "/api/v1/ReportLines";
-		public static string UpdateReportLine = "/api/v1/ReportLines/{0}";
-		public static string GetAllReportLine = "/api/v1/ReportLines";
-		public static string GetReportLineById = "/api/v1/ReportLines/{0}";
+        public static string DeleteReportLineMapping = "/api/v1/ReportLineMappings/{0}";
+        public static string CreateReportLineMapping = "/api/v1/ReportLineMappings";
+        public static string UpdateReportLineMapping = "/api/v1/ReportLineMappings/{0}";
+        public static string GetAllReportLineMapping = "/api/v1/ReportLineMappings";
+        public static string GetReportLineMappingById = "/api/v1/ReportLineMappings/{0}";
 
 
-		//****************** REPORT SECTION **********************************//
+        //****************** REPORT LINE **********************************//
 
-		public static string DeleteReportSection = "/api/v1/ReportSections/{0}";
-		public static string CreateReportSection = "/api/v1/ReportSections";
-		public static string UpdateReportSection = "/api/v1/ReportSections/{0}";
-		public static string GetAllReportSection = "/api/v1/ReportSections";
-		public static string GetReportSectionById = "/api/v1/ReportSections/{0}";
+        public static string DeleteReportLine = "/api/v1/ReportLines/{0}";
+        public static string CreateReportLine = "/api/v1/ReportLines";
+        public static string UpdateReportLine = "/api/v1/ReportLines/{0}";
+        public static string GetAllReportLine = "/api/v1/ReportLines";
+        public static string GetReportLineById = "/api/v1/ReportLines/{0}";
+
+
+        //****************** REPORT SECTION **********************************//
+
+        public static string DeleteReportSection = "/api/v1/ReportSections/{0}";
+        public static string CreateReportSection = "/api/v1/ReportSections";
+        public static string UpdateReportSection = "/api/v1/ReportSections/{0}";
+        public static string GetAllReportSection = "/api/v1/ReportSections";
+        public static string GetReportSectionById = "/api/v1/ReportSections/{0}";
 
 
 
@@ -1680,21 +1686,21 @@ namespace CBS.FrontDesk.Helper
         public static string DaillyCollectorGetbyId = "not yet Availlable";
 
         //--------------------------- API KEY MANAGEMENT ----------------------------------------  
-            public const string GetAllApiKeys = "/api/apikeys";
-            public const string GetApiKeyById = "/api/apikeys/{0}";
-            public const string GetApiKeysByUserName = "/api/apikeys/user/{0}";
-            public const string ApiKeysDataTable = "/api/apikeys/datatable";
-            public const string CreateApiKey = "/api/apikeys/generate";
-            public const string RenewApiKey = "/api/apikeys/renew";
-            public const string RevokeApiKey = "/api/apikeys/revoke";
-            public const string ChangeApiKeyStatus = "/api/apikeys/change-status";
+        public const string GetAllApiKeys = "/api/apikeys";
+        public const string GetApiKeyById = "/api/apikeys/{0}";
+        public const string GetApiKeysByUserName = "/api/apikeys/user/{0}";
+        public const string ApiKeysDataTable = "/api/apikeys/datatable";
+        public const string CreateApiKey = "/api/apikeys/generate";
+        public const string RenewApiKey = "/api/apikeys/renew";
+        public const string RevokeApiKey = "/api/apikeys/revoke";
+        public const string ChangeApiKeyStatus = "/api/apikeys/change-status";
         public const string DeleteApiKey = "/api/apikeys/{0}";
 
         //--------------------------- Collector Device MANAGEMENT ----------------------------------------  
-            public const string GetAllCollectorDevice = "/api/v1/CollectorDevice/all";
-            public const string DeactivateCollectorDevice = "/api/v1/CollectorDevice/{0}";
-            public const string UpdateCollectorDevice = "/api/v1/CollectorDevice/{0}";
-            public const string CreateCollectorDevice = "/api/v1/CollectorDevice/register";
+        public const string GetAllCollectorDevice = "/api/v1/CollectorDevice/all";
+        public const string DeactivateCollectorDevice = "/api/v1/CollectorDevice/{0}";
+        public const string UpdateCollectorDevice = "/api/v1/CollectorDevice/{0}";
+        public const string CreateCollectorDevice = "/api/v1/CollectorDevice/register";
         public const string GetCollectorDeviceById = "/api/v1/CollectorDevice/{0}";
 
         //------------------------ Reconciliation Fall back ----------------------------------------
@@ -1737,9 +1743,21 @@ namespace CBS.FrontDesk.Helper
         public const string CreateIPSConfig = "/api/v1/IPSConfig";
         public const string UpdateIPSConfig = "/api/v1/IPSConfig/{0}";
         public const string DeleteIPSConfig = "/api/v1/IPSConfig/{0}";
-        public const string GetIPSConfigByActiveYear ="/api/v1/IPSConfig/active/{0}?branchId={1}";
+        public const string GetIPSConfigByActiveYear = "/api/v1/IPSConfig/active/{0}?branchId={1}";
         public const string GetIPSConfigsByYear = "/api/v1/IPSConfig/year/{0}";
         public const string IPSConfigDataTable = "/api/v1/IPSConfig/datatable";
+
+        //----------------------------- IPS Claim ---------------------------
+
+        public const string CreateIPSClaim = "/api/v1/IPSClaim";
+        public const string GetIPSClaimById = "/api/v1/IPSClaim/{0}";
+        public const string ApproveIPSClaim = "/api/v1/IPSClaim/{0}/approve";
+        public const string RejectIPSClaim = "/api/v1/IPSClaim/{0}/reject";
+        public const string DeleteIPSClaim = "/api/v1/IPSClaim/{0}";
+        public const string PostIPSClaim = "/api/v1/IPSClaim/{0}/post";
+        public const string UploadIPSClaimDocument = "/api/v1/IPSClaim/{0}/document";
+        public const string IPSClaimDataTable = "/api/v1/IPSClaim/datatable";
+        public const string Clientdata = "/api/v1/IPS/CustomerMetaData/{0}";
 
         //*************************** End of Accounting V2 **************************************
 
@@ -1771,7 +1789,7 @@ namespace CBS.FrontDesk.Helper
 
         public static string GetAllLiaisonMapping = "/api/v1/LiaisonMapping";
         public static string Update_SavingProduct_AccountingV2Mapping = "/api/v1/SavingProduct/AccountingV2Mapping/{0}";
-        
+
         public static string GetLiaisonMappingById = "/api/v1/LiaisonMapping/{0}";
         public static string LiaisonMappingDatatable = "/api/v1/LiaisonMapping/datatable";
 
@@ -1792,16 +1810,17 @@ namespace CBS.FrontDesk.Helper
         public static string PushRecordReconciliation = "/api/v1/AccountingOperationTrack/PushJournalExecution";
         public static string SubmitCloseOfDay = "/api/DailyReconciliationStatus/add";
         public static string GetReconciliationDetails = "/api/v1/AccountingOperationTrack/GetOperationJournalDataTableQuery";
+        public static string UpdateTillClosePayload = "/api/v1/AccountingOperationTrack/PushJournalExecutionWithModifyCommand";
 
 
         //----------------------------  EndOfYearClosure -----------------------------
         public static string InitiateClosure = "/api/v1/YearEndClosure/start";
         public static string GetAllEndOfYearTask = "/api/v1/YearEndChecklistDefinition/all";
-        public static string GetAccoutingYearByBranchId = "/api/v1/AccountingYear/GetAccountingYearByYear/{0}";
+        public static string GetAccoutingYearByBranchId = "/api/v1/AccountingYear/GetAccountingYearByYear/{0}/{1}";
         public static string ReviewClosure = "/api/v1/YearEndChecklistStatus/set";
 
 
-      
+
         public static string GetCheckListStatusDataTable = "/api/v1/YearEndChecklistStatus/datatable";
         public static string PostJournalAdjustment = "/api/v1/ops/generic";
         public static string CloseYear = "/api/v1/ops/EndOfYearCarryForward";
@@ -1818,6 +1837,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllProducts = "/api/v1/SavingProduct";
         //----------------------- Reconciled Line --------------------------------------
         public static string GetReconciledLineDataTable = "/api/v1/ledger/reconciled/datatable";
+        public static string GetReconciledLines = "/api/v1/ledger/reconciled/fetchbyref/{0}";
 
         //----------------------------  Interest Product  Config ---------------------------------
 
@@ -1827,9 +1847,23 @@ namespace CBS.FrontDesk.Helper
         public static string GetByIdInterestProductConfig = "/api/v1/InterestProductConfig/GetById";
 
         //-------------------------  Interest Distribution Simulation ----------------------------
-        public static string InterestDistributionSimulation = "/api/v1/InterestDistributionSimulationMock/generate/GenerateInterestDistributionSampleDataQuery";
+        public static string InterestDistributionSimulation1 = "/api/v1/InterestDistributionSimulationMock/generate/GenerateInterestDistributionSampleDataQuery";
+        public static string InterestDistributionSimulation = "/api/v1/ProcessSnapshotInterestSimulation/GenerateInterestSimulation";
+        public static string CreateShareMonthSimulation = "/api/v1/ProcessSnapshotInterestSimulation/Create";
 
+        //------------------------- LoanTargetCatalog ----------------
+        public const string LoanTargetCatalogCreate = "/api/v1/LoanTargetCatalog/Create";
+            public const string LoanTargetCatalogGet = "/api/v1/LoanTargetCatalog/Get";
+            public const string LoanTargetCatalogGetAll = "/api/v1/LoanTargetCatalog/GetAll";
+            public const string LoanTargetCatalogUpdate = "/api/v1/LoanTargetCatalog/Update";
+        public const string LoanTargetCatalogDelete = "/api/v1/LoanTargetCatalog/Delete";
 
-
-    }
+        //----------------  PCMF LOAN PURPOSE ENDPOINTS --------------------------------
+        public const string PcmfLoanPurposeCreate = "/api/v1/PcmfLoanPurpose";
+        public const string PcmfLoanPurposeGetAll = "/api/v1/PcmfLoanPurposes";
+        public const string PcmfLoanPurposeGetById = "/api/v1/PcmfLoanPurpose/{0}";
+        public const string PcmfLoanPurposeUpdate = "/api/v1/PcmfLoanPurpose/{0}";
+        public const string PcmfLoanPurposeDelete = "/api/v1/PcmfLoanPurpose/{0}";
+    
+}
 }

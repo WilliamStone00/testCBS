@@ -100,11 +100,11 @@
             <div id="dateFilters" class="d-none">
                 <div class="row mb-1">
                     @*<div class="col-md-6 mb-1">
-                        <label class="form-label fw-bold">Start Accounting Date</label>
-                        <input type="date" id="startaccountingDate" name="StartAccountingDate" class="form-control mb-1" />
+                            <label class="form-label fw-bold">Start Accounting Date</label>
+                            <input type="date" id="startaccountingDate" name="StartAccountingDate" class="form-control mb-1" />
 
-                    </div>*@
-                        @*<div class="col-md-6 mb-1">
+                        </div>*@
+                    @*<div class="col-md-6 mb-1">
                             <label class="form-label fw-bold">End Accounting Date</label>
                             <input type="date" id="endaccountingDate" name="EndAccountingDate" class="form-control mb-1" />
                         </div>*@
@@ -115,9 +115,9 @@
                     </div>
 
                     @*<div class="col-md-6 mb-1">
-                        <label class="form-label fw-bold" for="endDate">End Date</label>
-                        <input type="datetime-local" id="endDate" name="EndDate" class="form-control mb-1" />
-                    </div>*@
+                            <label class="form-label fw-bold" for="endDate">End Date</label>
+                            <input type="datetime-local" id="endDate" name="EndDate" class="form-control mb-1" />
+                        </div>*@
 
 
                 </div>
@@ -195,6 +195,53 @@
     </div>
 </div>
 
+<div class="modal fade" id="payloadModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+
+            <div class="modal-body">
+
+                <!-- ================= Header Card ================= -->
+                <div class="card bg-light mb-3">
+                    <div class="card-body text-center">
+                        <h1 class="card-title text-primary">
+                            <i class="mdi mdi-file-document-outline me-2"></i> Request Payload (Editable)
+                        </h1>
+                        <p class="card-text">
+                            Use this page to modify the payload (Request Json).
+                        </p>
+                        <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+                    </div>
+                </div>
+
+                <label class="form-label fw-bold">Request JSON</label>
+
+                <textarea id="formattedJson"
+                          class="form-control font-monospace"
+                          rows="20"
+                          style="resize: vertical;"></textarea>
+
+                <small class="text-muted">
+                    Edit the JSON payload carefully. Invalid JSON will not be accepted.
+                </small>
+
+                <div id="jsonError" class="text-danger mt-2 d-none"></div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-success btn-sm" id="btnSavePayload">
+                    <i class="mdi mdi-content-save-outline me-1"></i> Post
+                </button>
+
+                <button class="btn btn-secondary btn-sm"
+                        data-bs-dismiss="modal">
+                    <i class="mdi mdi-close-circle-outline me-1"></i> Close
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
 
 
 
@@ -214,7 +261,7 @@
                             StartDate: $('#startDate').val(),
                             EndDate: $('#endDate').val(),
                             StartAccountingDate: $('#startaccountingDate').val()
-                             
+
                         };
                     }
 
@@ -360,8 +407,8 @@
                     $('#systemReconciliationFilterForm').trigger('reset');
                     $('.select2').val('').trigger('change');
 
-                    loadSummary();
-                    loadReconciliationData();
+                    //loadSummary();
+                    //loadReconciliationData();
 
                     appalert('🧹 Filters reset.', 1, 1);
                 }
@@ -414,31 +461,76 @@
                     // ==============================
                     // PUSH RECORD ACTION
                     // ==============================
-                    $(document).on("click", ".push-details", function () {
+                   $(document).on("click", ".push-details", function () {
 
-                        let payload = {
-                            trackerId: $(this).data("id"),
-                            pusherName: "@User.Identity.Name",
-                            branchId: $(this).data("branchid"),
-                            branchName: $(this).data("branchname"),
-                            branchCode: $(this).data("branchcode")
-                        };
+                        let btn = this;
 
-                        console.log("Send payload:", payload);
+                        // OPTIONAL: if this action depends on a form, reference it here
+                        let form = $("#pushForm"); // change if needed
 
-                        $.ajax({
-                            url: '/GLSystemReconciliation/PushRecord',
-                            type: 'POST',
-                            data: JSON.stringify(payload),
-                            contentType: "application/json",
-                            success: function (res) {
-                                toastr.success("Record pushed successfully!");
-                            },
-                            error: function (err) {
-                                toastr.error("Push failed.");
-                            }
-                        });
+                        if (!form.length || form.valid()) {
+
+                            alertify.confirm(
+                                "Confirmation",
+                                "Are you sure you want to perform this action?",
+                                function () {
+
+                                    let payload = {
+                                        trackerId: $(btn).data("id"),
+                                        pusherName: "@User.Identity.Name",
+                                        branchId: $(btn).data("branchid"),
+                                        branchName: $(btn).data("branchname"),
+                                        branchCode: $(btn).data("branchcode")
+                                    };
+
+                                    console.log("Send payload:", payload);
+
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: '/GLSystemReconciliation/PushRecord',
+                                        data: JSON.stringify(payload),
+                                        contentType: "application/json",
+                                        success: function (response) {
+
+                                            console.log("Response:", response);
+
+                                            if (response.success) {
+
+                                                if (response.status === "Exist") {
+                                                    appalert(response.message, 3, 1);
+                                                }
+                                                else if (response.status === "Failed") {
+                                                    appalert(response.message, 2, 1);
+                                                }
+                                                else {
+                                                    appalert(response.message || "✅ Record pushed successfully!", 1, 1);
+                                                }
+
+                                            } else {
+                                                appalert(response.message || "⚠️ Push completed with warnings.", 3, 1);
+                                            }
+                                        },
+                                        error: function (err) {
+
+                                            console.log("Error:", err);
+
+                                            if (err.status === 401) {
+                                                // Session expired
+                                                window.location.href = '/Authentication/Login';
+                                            } else {
+                                                appalert(err.statusText || "❌ Push failed.", 0, 1);
+                                            }
+                                        }
+                                    });
+                                },
+                                function () {
+                                    // Cancel action
+                                    console.log("Push cancelled by user");
+                                }
+                            );
+                        }
                     });
+
 
 
 
@@ -556,7 +648,7 @@
     });
 
 
-    
+
 
     $(document).on('click', '.view-detail', function () {
         const params = {
@@ -569,9 +661,8 @@
         window.open('/GLSystemReconciliation/LoadOperationDetailsData?' + $.param(params), '_blank');
     });
 
-    
 
-  
+
 
 </script>
 }

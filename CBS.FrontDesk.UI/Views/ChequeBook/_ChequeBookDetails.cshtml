@@ -303,7 +303,7 @@
             <ul>
                 <li>
                     <i class="mdi mdi-identifier text-success me-2"></i>
-                    <strong>Cheque Book ID:</strong> Unique identifier for this cheque book <code>@Model?.Id</code>
+                    <strong>Cheque Book ID:</strong> Unique identifier for this cheque book
                 </li>
                 <li>
                     <i class="mdi mdi-account text-info me-2"></i>
@@ -362,11 +362,11 @@
                     </div>
                     <div>
                         <div class="info-label">Serial Range</div>
-                        <div class="info-value">@Model.StartSerialNumber - @Model.EndSerialNumber</div>
+                        <div class="info-value">@Model.StartSerialNumber.ToString("D3") - @Model.EndSerialNumber</div>
                     </div>
                     <div>
                         <div class="info-label">Current Serial</div>
-                        <div class="info-value">@Model.CurrentSerialNumber</div>
+                        <div class="info-value">@Model.CurrentSerialNumber.ToString("D3")</div>
                     </div>
                 </div>
             </div>
@@ -387,7 +387,7 @@
                         </div>
                         <div>
                             <div class="info-label">Customer Name</div>
-                            <div class="info-value">@Model.CustomerName</div>
+                            <div class="info-value">@Model.customerName</div>
                         </div>
                         <div>
                             <div class="info-label">Account Number</div>
@@ -397,11 +397,11 @@
                     <div class="info-row">
                         <div>
                             <div class="info-label">Account ID</div>
-                            <div class="info-value">@Model.AccountId</div>
+                            <div class="info-value">@Model.accountId</div>
                         </div>
                         <div>
                             <div class="info-label">Category</div>
-                            <div class="info-value">@Model.CheckBookCategoryName</div>
+                            <div class="info-value">@Model.categoryName</div>
                         </div>
                     </div>
                 </div>
@@ -427,7 +427,7 @@
                         </div>
                         <div>
                             <div class="info-label">Branch Name</div>
-                            <div class="info-value">@Model.BranchName</div>
+                            <div class="info-value">@Model.branchName</div>
                         </div>
                     </div>
                 </div>
@@ -575,7 +575,7 @@
     <div class="info-card">
         <h5 class="text-primary d-flex justify-content-between align-items-center"><i class="mdi mdi-file-document-outline me-2"></i>Category Information</h5>
         <div class="text-center py-3">
-            <div class="h4 fw-bold text-primary">@Model.CheckBookCategoryName</div>
+            <div class="h4 fw-bold text-primary">@Model.CategoryName</div>
             <div class="text-muted small">Category</div>
         </div>
         <div class="mt-3">

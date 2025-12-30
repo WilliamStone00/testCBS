@@ -220,18 +220,17 @@
         window.cashReconciliationSubmitAjax = function (form) {
             if (!$(form).valid()) return false;
 
-            const branchText = $('#BranchId option:selected').text();
-            const srcText = $('#SourceGlId option:selected').text();
-            const dstText = $('#DestinationGlId option:selected').text();
-            const superGLText = $('#SuperGLAccountNumber option:selected').text();
-            let till = $('#TillName').val().trim();
-            let cashier = $('#NameOfCashier').val().trim();
-            const amount = $('#Amount').val();
-            const balance = $('#Balance').val();
-            const cashDiff = $('#CashDiff').val();
-            const memo = $('#Memo').val();
+            var branchText = $('#BranchId option:selected').text();
+            var srcText = $('#SourceGlId option:selected').text();
+            var dstText = $('#DestinationGlId option:selected').text();
+            var superGLText = $('#SuperGLAccountNumber option:selected').text();
+            var till = $.trim($('#TillName').val());
+            var cashier = $.trim($('#NameOfCashier').val());
+            var amount = $('#Amount').val();
+            var balance = $('#Balance').val();
+            var cashDiff = $('#CashDiff').val();
+            var memo = $('#Memo').val();
 
-            // Guard required selects
             if (!$('#BranchId').val()) { appalert("Select a branch.", 3, 1); return false; }
             if (!$('#SourceGlId').val()) { appalert("Select a Cash GL.", 3, 1); return false; }
             if (!$('#DestinationGlId').val()) { appalert("Select a Difference GL.", 3, 1); return false; }
@@ -241,49 +240,50 @@
             }
             if (parseNumber(amount) <= 0) { appalert("Enter a valid Amount.", 3, 1); return false; }
 
-            // Set Till/Cashier based on type
             if ($('#ReconciliationType').val() === "OTHER GL") {
                 if (!till) till = "N/A";
                 if (!cashier) cashier = "N/A";
             } else if ($('#ReconciliationType').val() === "CASH RECONCILIATION") {
-                // Fields already required; leave as-is
+                // keep as-is
             } else {
                 till = "";
                 cashier = "";
             }
 
-            const title = "Confirm Cash Reconciliation";
-            const message = `
-                <p>Please review the details below before confirming:</p>
-                <table class="table table-sm table-bordered">
-                    <tbody>
-                        <tr><th>Branch</th><td>${branchText}</td></tr>
-                        <tr><th>Cash GL (Source)</th><td>${srcText}</td></tr>
-                        <tr><th>Difference GL (Destination)</th><td>${dstText}</td></tr>
-                        ${$('#EnableSuperGL').is(':checked') ? `<tr><th>Super GL</th><td>${superGLText}</td></tr>` : ''}
-                        <tr><th>Amount</th><td>${amount}</td></tr>
-                        <tr><th>Balance</th><td>${balance}</td></tr>
-                        <tr><th>Cash Diff</th><td>${cashDiff}</td></tr>
-                        ${($('#ReconciliationType').val() === "OTHER GL" || $('#ReconciliationType').val() === "CASH RECONCILIATION") ? `<tr><th>Till Name</th><td>${till}</td></tr><tr><th>Cashier</th><td>${cashier}</td></tr>` : ''}
-                        <tr><th>Note</th><td>${memo}</td></tr>
-                    </tbody>
-                </table>
-                <div class="form-check mt-3">
-                    <input type="checkbox" class="form-check-input" id="alertifyConfirmCheckbox">
-                    <label for="alertifyConfirmCheckbox" class="form-check-label">
-                        I confirm that the above reconciliation details are correct.
-                    </label>
-                </div>
-            `;
+            var message =
+                '<p>Please review the details below before confirming:</p>' +
+                '<table class="table table-sm table-bordered"><tbody>' +
+                '<tr><th>Branch</th><td>' + branchText + '</td></tr>' +
+                '<tr><th>Cash GL (Source)</th><td>' + srcText + '</td></tr>' +
+                '<tr><th>Difference GL (Destination)</th><td>' + dstText + '</td></tr>' +
+                ($('#EnableSuperGL').is(':checked')
+                    ? '<tr><th>Super GL</th><td>' + superGLText + '</td></tr>'
+                    : '') +
+                '<tr><th>Amount</th><td>' + amount + '</td></tr>' +
+                '<tr><th>Balance</th><td>' + balance + '</td></tr>' +
+                '<tr><th>Cash Diff</th><td>' + cashDiff + '</td></tr>' +
+                (($('#ReconciliationType').val() === "OTHER GL" || $('#ReconciliationType').val() === "CASH RECONCILIATION")
+                    ? '<tr><th>Till Name</th><td>' + till + '</td></tr>' +
+                    '<tr><th>Cashier</th><td>' + cashier + '</td></tr>'
+                    : '') +
+                '<tr><th>Note</th><td>' + memo + '</td></tr>' +
+                '</tbody></table>' +
+                '<div class="form-check mt-3">' +
+                '<input type="checkbox" class="form-check-input" id="alertifyConfirmCheckbox">' +
+                '<label class="form-check-label" for="alertifyConfirmCheckbox">' +
+                'I confirm that the above reconciliation details are correct.' +
+                '</label></div>';
 
-            alertify.confirm(title, message,
+            alertify.confirm(
+                "Confirm Cash Reconciliation",
+                message,
                 function () {
                     if (!$('#alertifyConfirmCheckbox').is(':checked')) {
                         appalert("❗ Please confirm by checking the box before proceeding.", 3, 1);
                         return false;
                     }
 
-                    const token = $('input[name="__RequestVerificationToken"]').val();
+                    var token = $('input[name="__RequestVerificationToken"]').val();
 
                     $.ajax({
                         type: 'POST',
@@ -293,13 +293,15 @@
                         contentType: false,
                         headers: token ? { 'RequestVerificationToken': token } : {},
                         beforeSend: function () {
-                            $('.alertify .ajs-ok').prop('disabled', true)
+                            $('.alertify .ajs-ok')
+                                .prop('disabled', true)
                                 .html('<span class="spinner-border spinner-border-sm"></span> Processing...');
                         },
                         success: function (response) {
                             if (response && response.success) {
                                 appalert(response.message || "✅ Saved successfully!", 1, 1);
                                 alertify.dismissAll();
+
                                 if (String(response.reloadDataView).toLowerCase() === "yes") {
                                     form.reset();
                                     $('.select2').val(null).trigger('change');
@@ -308,11 +310,11 @@
                                     $('#TillCashierContainer').hide();
                                 }
                             } else {
-                                appalert(response?.message || "❌ Failed to save cash reconciliation.", 2, 1);
+                                appalert((response && response.message) || "❌ Failed to save cash reconciliation.", 2, 1);
                             }
                         },
                         error: function (xhr) {
-                            appalert("❌ Error: " + (xhr?.statusText || "Request failed"), 0, 1);
+                            appalert("❌ Error: " + (xhr && xhr.statusText ? xhr.statusText : "Request failed"), 0, 1);
                         },
                         complete: function () {
                             $('.alertify .ajs-ok').prop('disabled', false).html('Yes, Continue');
@@ -325,11 +327,13 @@
             ).set({
                 labels: { ok: 'Yes, Continue', cancel: 'Cancel' },
                 onshow: function () {
-                    const okBtn = $('.alertify .ajs-ok');
+                    var okBtn = $('.alertify .ajs-ok');
                     okBtn.prop('disabled', true);
-                    $('#alertifyConfirmCheckbox').off('change').on('change', function () {
-                        okBtn.prop('disabled', !this.checked);
-                    });
+                    $('#alertifyConfirmCheckbox')
+                        .off('change')
+                        .on('change', function () {
+                            okBtn.prop('disabled', !this.checked);
+                        });
                 }
             });
 

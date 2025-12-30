@@ -1,0 +1,63 @@
+﻿@model CBS.FrontDesk.Data.Entity.LoanConf.PcmfLoanPurpose
+@using Resources
+
+<fieldset class="fieldset-custom">
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+    <!-- Header Card -->
+    <div class="card bg-light mb-4 shadow-sm">
+        <div class="card-body text-center">
+            <h1 class="card-title text-primary fw-bold mb-2">
+                <i class="mdi mdi-bank-transfer me-2"></i> PCMF Loan Purpose Details
+            </h1>
+            <p class="card-text text-muted mb-1">
+                Detailed view of PCMF loan purpose entry
+            </p>
+        </div>
+    </div>
+
+    <!-- Details Card -->
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="row">
+                <!-- Basic Information -->
+                <div class="col-md-6">
+                    <h6 class="text-primary"><i class="mdi mdi-information-outline me-2"></i> Basic Information</h6>
+                    <table class="table table-sm table-bordered mb-0">
+                        <tr><td class="fw-bold">ID</td><td>@Model.Id</td></tr>
+                        <tr><td class="fw-bold">Key</td><td>@Model.PcmfPurposeKey</td></tr>
+                        <tr><td class="fw-bold">Name (English)</td><td>@Model.NameEn</td></tr>
+                        <tr><td class="fw-bold">Name (French)</td><td>@Model.NameFr</td></tr>
+                        <tr><td class="fw-bold">LT Group Code</td><td>@Model.LtGroupCode</td></tr>
+                        <tr><td class="fw-bold">MT Group Code</td><td>@Model.MtGroupCode</td></tr>
+                        <tr><td class="fw-bold">CT Group Code</td><td>@Model.CtGroupCode</td></tr>
+                        <tr><td class="fw-bold">OD Group Code</td><td>@Model.OdGroupCode</td></tr>
+                        <tr>
+                            <td class="fw-bold">Status</td>
+                            <td>
+                                @if (Model.IsActive)
+                                {
+                                    <span class="badge bg-success">Active</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Inactive</span>
+                                }
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-end">
+        <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">
+            <i class="mdi mdi-close me-1"></i> Close
+        </button>
+        <button type="button" class="btn btn-primary"
+                onclick="ShowModal('@Model.Id', '_CreateEditPcmfLoanPurpose', 'PcmfLoanPurpose', 'edit')">
+            <i class="mdi mdi-pencil me-1"></i> Edit
+        </button>
+    </div>
+</fieldset>

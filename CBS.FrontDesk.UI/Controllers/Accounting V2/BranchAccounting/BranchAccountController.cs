@@ -144,22 +144,38 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.BranchAccounting
 
         /// <summary>AJAX: Return branch accounts for a given branch.</summary>
         [HttpGet]
-        public async Task<ActionResult> GetBranchAccountsByBranch(string branchId)
+        public async Task<JsonResult> GetBranchAccountsByBranch(string branchId)
         {
+            if (string.IsNullOrWhiteSpace(branchId))
+            {
+                Response.StatusCode = (int)System.Net.HttpStatusCode.BadRequest;
+                return Json(new { success = false, message = "branchId is required" }, JsonRequestBehavior.AllowGet);
+            }
+
             try
             {
-                var branchAccounts = await _branchAccountService.GetAllBranchAccountsFromDataTableAsync(branchId);
-                var resultList = branchAccounts.Select(a => new
-                {
-                    Id = a.Id,
-                    Name = string.IsNullOrWhiteSpace(a.Name) ? a.Id : $"{a.Name}"
-                });
+                var branchAccounts = await _branchAccountService
+                    .GetAllBranchAccountsFromDataTableAsync(branchId);
+
+                var resultList = (branchAccounts ?? Enumerable.Empty<dynamic>())
+                    .Select(a => new
+                    {
+                        Id = a.Id,
+                        // Prefer: "CODE - Name" (clearer in dropdowns). If no name, show code.
+                        Name = string.IsNullOrWhiteSpace(a.Name)
+                            ? (a.Code ?? string.Empty)
+                            : $"{a.Name}"
+                    })
+                    .ToList();
 
                 return Json(resultList, JsonRequestBehavior.AllowGet);
             }
-            catch
+            catch (Exception ex)
             {
-                Response.StatusCode = 500;
+                // If you have a logger, use it. Example:
+                // _logger.Error(ex, "Failed to load branch accounts for branchId={BranchId}", branchId);
+
+                Response.StatusCode = (int)System.Net.HttpStatusCode.InternalServerError;
                 return Json(new { success = false, message = "Failed to load branch accounts" }, JsonRequestBehavior.AllowGet);
             }
         }

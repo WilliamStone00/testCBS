@@ -742,4 +742,7 @@ Sélectionnez un nombre de pages pour chaque catégorie (25, 50, 100, etc.)</val
   <data name="chequerequesttext1" xml:space="preserve">
     <value>Créer de nouvelles demandes de chéquier au nom des clients et gérer leur cycle de vie de la demande en attente jusqu'à la livraison.</value>
   </data>
+  <data name="MaxTransactionAmount" xml:space="preserve">
+    <value>Montant maximal de la transaction</value>
+  </data>
 </root>
