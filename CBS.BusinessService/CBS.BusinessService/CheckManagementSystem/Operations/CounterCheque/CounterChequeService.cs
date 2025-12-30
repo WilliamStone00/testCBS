@@ -1,8 +1,7 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
-using CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation;
+using CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeBookListing;
-using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeRequest;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheque;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
@@ -10,9 +9,6 @@ using CBS.FrontDesk.Helper;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Security.Policy;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CBS.BusinessService.CheckManagementSystem.Operations.CounterCheque
@@ -28,10 +24,6 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.CounterCheque
             _apiHelper = new ApiCallerHelper(baseUrl);
         }
 
-
-
-
-
         public async Task<List<CounterCheques>> GetChequeDetails(string CustomerId, string BranchId)
         {
             try
@@ -42,8 +34,6 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.CounterCheque
                 // Call the API with only 1 argument
                 var response = await _apiHelper.GetAsync<ResponseObject<List<CounterCheques>>>(url);
 
-
-
                 return response.ApiResponseData?.Data ?? new List<CounterCheques>();
             }
             catch (Exception)
@@ -51,8 +41,6 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.CounterCheque
                 throw;
             }
         }
-
-
 
         public async Task<ExecutionMessages> IssueCounterChequeAsync(CounterCheques model)
         {
@@ -106,8 +94,6 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.CounterCheque
                 throw new Exception($"Unable to retrieve counter cheque details: {ex.Message}", ex);
             }
         }
-
-
 
         public async Task<CustomDataTable> GetCounterChequesForDataTableAsync(CounterChequeQuery query)
         {
@@ -178,9 +164,7 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.CounterCheque
             return ExecutionMessage;
         }
 
-
-
-        public async Task<CustomerCheckBookDisplayDto> GetfullChequeDetails(string chequeBookId)
+        public async Task<CustomerData> GetfullChequeDetails(string chequeBookId)
         {
             if (string.IsNullOrEmpty(chequeBookId))
                 throw new ArgumentException("ChequeBookId is required.");
@@ -188,7 +172,7 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.CounterCheque
             try
             {
                 var url = string.Format(APICallHelper.GetCustomerChequeBook, chequeBookId);
-                var response = await _apiHelper.GetAsync<ResponseObject<CustomerCheckBookDisplayDto>>(url);
+                var response = await _apiHelper.GetAsync<ResponseObject<CustomerData>>(url);
 
                 if (response?.ApiResponseData?.Data == null)
                     return null;
@@ -204,7 +188,51 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.CounterCheque
             }
         }
 
+        public async Task<CustomerData> GetCustomerChequeBooks(string customerId)
+        {
+            if (string.IsNullOrEmpty(customerId))
+                throw new ArgumentException("customerId is required.");
 
+            try
+            {
+                var url = string.Format(APICallHelper.GetCustomerChequeBooks, customerId);
+                var response = await _apiHelper.GetAsync<ResponseObject<CustomerData>>(url);
 
-    }
+                if (response?.ApiResponseData?.Data == null)
+                    return null;
+
+                // Since your DTO already represents a single checkbook, just return it
+                var checkBook = response.ApiResponseData.Data;
+
+                return checkBook;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+		public async Task<List<CheckBookLeaf>> GetChequeBookWithLeaves(string chequeBookId)
+		{
+			if (string.IsNullOrEmpty(chequeBookId))
+				throw new ArgumentException("chequeBookId is required.");
+
+			var url = string.Format(APICallHelper.GetChequeBookWithLeaves, chequeBookId);
+			var response = await _apiHelper.GetAsync<ResponseObject<List<CheckBookLeaf>>>(url);
+
+			return response.ApiResponseData.Data ?? new List<CheckBookLeaf>();
+		}
+
+		public async Task<CheckBookLeaf> GetChequeLeafDetails(string leafId)
+		{
+			if (string.IsNullOrEmpty(leafId))
+				throw new ArgumentException("leafId is required");
+
+			var url = string.Format(APICallHelper.GetChequeLeafDetails, leafId);
+			var response = await _apiHelper.GetAsync<ResponseObject<CheckBookLeaf>>(url);
+
+			return response.ApiResponseData.Data;
+		}
+
+	}
 }

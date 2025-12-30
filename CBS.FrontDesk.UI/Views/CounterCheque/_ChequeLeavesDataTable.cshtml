@@ -1,0 +1,89 @@
+﻿@model IEnumerable<CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheque.CheckBookLeaf>
+
+<div class="card mt-3 shadow-sm">
+    <div class="card-header bg-light text-primary fw-bold">
+        <i class="mdi mdi-table me-1"></i> Cheque Leaves
+    </div>
+
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered align-middle text-nowrap"
+                   id="myDataTable_chequeLeaves">
+                <thead class="table-light">
+                    <tr>
+                        <th>Leaf #</th>
+                        <th>Status</th>
+                        <th>Issued Date</th>
+                        <th>Issued To</th>
+                        <th>CheckBook ID</th>
+                        <th style="width:15%">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var leaf in Model)
+                    {
+                        var isAvailable = leaf.Status == "Available";
+                        var isIssued = leaf.Status == "Issued";
+
+                        <tr class="@(isIssued ? "table-warning" : "")">
+                            <td class="fw-bold text-primary">
+                                @leaf.SerialNumber.ToString("D3")
+                            </td>
+
+                            <td>
+                                <span class="badge @(isAvailable ? "bg-success" : isIssued ? "bg-warning" : "bg-secondary")">
+                                    @leaf.Status
+                                </span>
+                            </td>
+
+                            <td>
+                                @(leaf.IssuedDate.HasValue
+                                    ? leaf.IssuedDate.Value.ToString("dd/MM/yyyy")
+                                    : "-")
+                            </td>
+
+                            <td>
+                                @(string.IsNullOrEmpty(leaf.IssuedTo) ? "-" : leaf.IssuedTo)
+                            </td>
+
+                            <td>@leaf.CheckBookId</td>
+
+                            <td>
+                                @if (isAvailable)
+                                {
+                                    <button class="btn btn-sm btn-outline-success select-leaf-btn"
+                                            data-leaf-id="@leaf.Id"
+                                            data-serial="@leaf.SerialNumber">
+                                        <i class="mdi mdi-check"></i> Select
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-sm btn-outline-info view-leaf-btn"
+                                            data-leaf-id="@leaf.Id">
+                                        <i class="mdi mdi-eye"></i> View
+                                    </button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#myDataTable_chequeLeaves').DataTable({
+            pageLength: 10,
+            ordering: true,
+            searching: true,
+            responsive: true,
+            destroy: true,
+            language: {
+                emptyTable: "No cheque leaves available"
+            }
+        });
+    });
+</script>

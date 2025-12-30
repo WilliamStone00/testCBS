@@ -1,11 +1,7 @@
 ﻿using CBS.FrontDesk.Data.Entity.DataTable;
-using CBS.FrontDesk.Data.Entity.ManualDailycollection;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheque
 {
@@ -62,7 +58,6 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheq
         
     }
 
-
     public class ChequeRequestDto
     {
         public string Id { get; set; }              
@@ -76,121 +71,163 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheq
         public string IssuedBy { get; set; }        
     }
 
+	public class CustomerData
+	{
+		public CustomerDto CustomerDto { get; set; }
+		public List<CheckBookData> CheckBooks { get; set; }
+	}
 
-    public class CustomerCheckBookDisplayDto
-    {
-        public string Id { get; set; }                 // checkbookId
-        public string CustomerId { get; set; }
-        public string AccountId { get; set; }
-        public string CustomerName { get; set; }
-        public string AccountNumber { get; set; }
-        public string BranchId { get; set; }
-        public decimal Balance { get; set; }
-        public string BranchName { get; set; }
+	public class CustomerDto
+	{
+		public string CustomerId { get; set; }
+		public string FirstName { get; set; }
+		public string LastName { get; set; }
+		public string LegalForm { get; set; }
+		public string CustomerType { get; set; }
+		public DateTime DateOfBirth { get; set; }
+		public string PlaceOfBirth { get; set; }
+		public string Email { get; set; }
+		public string Phone { get; set; }
+		public string Gender { get; set; }
+		public bool Active { get; set; }
+	}
 
+	public class CheckBookData
+	{
+		public CheckBook CheckBook { get; set; }
+		public Account Account { get; set; }
+		public List<CheckBookLeaf> CheckBookLeaves { get; set; }
+	}
 
-        public int NumberOfLeaves { get; set; }
-        public int RemainingLeaves { get; set; }
-        public int UsedLeaves { get; set; }
+	public class CheckBook
+	{
+		public string Id { get; set; }
+		public string CustomerId { get; set; }
+		public string AccountId { get; set; }
+		public string CustomerName { get; set; }
+		public string AccountNumber { get; set; }
+		public string BranchId { get; set; }
+		public string BankId { get; set; }
+		public string BranchName { get; set; }
+		public string BranchCode { get; set; }
+		public int NumberOfLeaves { get; set; }
+		public int RemainingLeaves { get; set; }
+		public int UsedLeaves { get; set; }
+		public decimal Balance { get; set; }
+		public int StartSerialNumber { get; set; }
+		public int EndSerialNumber { get; set; }
+		public int CurrentSerialNumber { get; set; }
+		public int Current { get; set; }
+		public string Status { get; set; }
+		public DateTime CreatedDate { get; set; }
+		public DateTime? IssuedDate { get; set; }
+		public string IssuedBy { get; set; }
+		public DateTime LastUpdatedDate { get; set; }
+		public DateTime? ExpiratryDate { get; set; }
+		public string LastUpdatedBy { get; set; }
+		public string BlockedBy { get; set; }
+		public bool IsBlocked { get; set; }
+		public string ApproveBy { get; set; }
+		public string BlockReasons { get; set; }
+		public DateTime? BlockedDate { get; set; }
+		public string CheckBookCategoryId { get; set; }
+		public string CategoryName { get; set; }
+		public CheckBookCategory CheckBookCategory { get; set; }
+		public bool IsReissued { get; set; }
+		public string ReplacementCheckBookId { get; set; }
+		public bool NotifyOnClearance { get; set; }
+		public bool NotifyOnPayment { get; set; }
+		public bool NotifyOnAnyTransaction { get; set; }
+		public bool IsPrinted { get; set; }
+		public bool IsIssued { get; set; }
+		public bool IsActive { get; set; }
+		public string StatusDescription { get; set; }
+		public List<CheckBookLeaf> Leaves { get; set; }
+	}
 
-        public int StartSerialNumber { get; set; }
-        public int EndSerialNumber { get; set; }
-        public int CurrentSerialNumber { get; set; }
+	public class CheckBookCategory
+	{
+		public string Id { get; set; }
+		public string BankId { get; set; }
+		public string BranchId { get; set; }
+		public string CheckBookId { get; set; }
+		public string Name { get; set; }
+		public bool IsCentralised { get; set; }
+		public int NumberOfCheckBooks { get; set; }
+		public int NumberOfPages { get; set; }
+		public int ValidityPeriodInMonths { get; set; }
+		public int IssuanceLimitPerCustomerType { get; set; }
+		public int? MaxIssuancePerYear { get; set; }
+		public decimal BasePrice { get; set; }
+		public decimal IssuanceFee { get; set; }
+		public decimal? RenewalFee { get; set; }
+		public decimal? MaxTransactionAmount { get; set; }
+		public bool IsActive { get; set; }
+		public DateTime CreatedDate { get; set; }
+		public string CreatedBy { get; set; }
+		public DateTime ModifiedDate { get; set; }
+		public string ModifiedBy { get; set; }
+		public bool IsDeleted { get; set; }
+		public DateTime DeletedDate { get; set; }
+		public string DeletedBy { get; set; }
+	}
 
+	public class CheckBookLeaf
+	{
+		public string Id { get; set; }
+		public string CheckBookId { get; set; }
+		public string CounterCheckId { get; set; }
+		public int SerialNumber { get; set; }
+		public string Status { get; set; }
+		public DateTime? IssuedDate { get; set; }
+		public string IssuedTo { get; set; }
+		public string TransactionId { get; set; }
+		public DateTime? ClearedDate { get; set; }
+		public DateTime? CancelledDate { get; set; }
+		public string CancelledReason { get; set; }
+		public DateTime CreatedDate { get; set; }
+		public DateTime? LastUpdatedDate { get; set; }
+		public string LastUpdatedBy { get; set; }
+		public string Transaction { get; set; }
+	}
 
-
-
-        public DateTime CreatedDate { get; set; }
-
-        public string CheckBookCategoryId { get; set; }
-        public CheckBookCategoryDto CheckBookCategory { get; set; }
-
-        public List<CheckLeafDto> Leaves { get; set; }
-
-        // Nested DTOs included here
-        public class CheckBookCategoryDto
-        {
-            public string Id { get; set; }
-            
-          
-            public string Name { get; set; }
-
-            public int NumberOfCheckBooks { get; set; }
-            public int NumberOfPages { get; set; }
-
-
-            
-            public string CreatedBy { get; set; }
-
-        }
-
-        public class CheckLeafDto
-        {
-            public string Id { get; set; }
-            public string CheckBookId { get; set; }
-            public string CounterCheckId { get; set; }
-            public int SerialNumber { get; set; }
-            public string Status { get; set; }
-
-
-
-
-        }
-    }
-
-
-
-
-
-
-    public class FullCustomerChequeBookResponse
-    {
-        public CustomerDto customerDto { get; set; }
-        public List<AccountDto> accountDtos { get; set; }
-        public List<CheckBookEntry> checkBooks { get; set; }
-    }
-
-    public class CustomerDto
-    {
-        public string customerId { get; set; }
-        public string firstName { get; set; }
-        public string lastName { get; set; }
-        // Add more fields as needed
-    }
-
-    public class AccountDto
-    {
-        public string id { get; set; }
-        public string customerName { get; set; }
-        public string accountNumber { get; set; }
-        public decimal balance { get; set; }
-        // Add more fields as needed
-    }
-
-    public class CheckBookEntry
-    {
-        public CheckBook checkBook { get; set; }
-        public AccountDto account { get; set; }
-    }
-
-    public class CheckBook
-    {
-        public string id { get; set; }
-        public string accountId { get; set; }
-        public string accountNumber { get; set; }
-        public string checkBookCategoryId { get; set; }
-        public CheckBookCategory checkBookCategory { get; set; }
-        public int numberOfLeaves { get; set; }
-        public int usedLeaves { get; set; }
-        public int remainingLeaves { get; set; }
-    }
-
-    public class CheckBookCategory
-    {
-        public string id { get; set; }
-        public string name { get; set; }
-    }
-
-
+	public class Account
+	{
+		public string Id { get; set; }
+		public string ProductId { get; set; }
+		public string CustomerId { get; set; }
+		public string CustomerName { get; set; }
+		public string AccountId { get; set; }
+		public bool IsRemoveAccount { get; set; }
+		public string AccountNumber { get; set; }
+		public decimal Balance { get; set; }
+		public decimal PreviousBalance { get; set; }
+		public string Status { get; set; }
+		public string TellerId { get; set; }
+		public string BranchCode { get; set; }
+		public string EncryptedBalance { get; set; }
+		public decimal InterestGenerated { get; set; }
+		public decimal LastInterestPosted { get; set; }
+		public decimal BlockedAmount { get; set; }
+		public string BlockedId { get; set; }
+		public string ProfileType { get; set; }
+		public DateTime DateBlocked { get; set; }
+		public DateTime DateReleased { get; set; }
+		public string ReasonOfBlocked { get; set; }
+		public DateTime DateOfLastOperation { get; set; }
+		public DateTime LastInterestCalculatedDate { get; set; }
+		public string AccountName { get; set; }
+		public string LastOperation { get; set; }
+		public string AccountType { get; set; }
+		public bool IsTellerAccount { get; set; }
+		public string OpenningOfDayStatus { get; set; }
+		public DateTime OpenningOfDayDate { get; set; }
+		public string OpenningOfDayReference { get; set; }
+		public decimal OpeningBalance { get; set; }
+		public DateTime DateOfOpeningBalance { get; set; }
+		public decimal LastOperationAmount { get; set; }
+		public string BankId { get; set; }
+		public string BranchId { get; set; }
+	}
 
 }

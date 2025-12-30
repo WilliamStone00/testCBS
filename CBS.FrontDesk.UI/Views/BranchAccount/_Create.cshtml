@@ -10,6 +10,8 @@
     bool needsOldNameEn = utUpper == "NAMEEN" || utUpper == "NAMES" || utUpper == "CODEANDNAMES";
     bool needsOldNameFr = utUpper == "NAMEFR" || utUpper == "NAMES" || utUpper == "CODEANDNAMES";
 
+    bool needsNewCode = utUpper == "CODE" || utUpper == "CODEANDNAMES";
+
     var isUpdate = !string.IsNullOrWhiteSpace(Model?.UpdateReference) || !string.IsNullOrWhiteSpace(updateType);
     var isCreate = !isUpdate; // explicit create flag for clarity
 }
@@ -71,7 +73,6 @@
             <div class="mt-1">
                 @Html.ValidationSummary(true, "", new { @class = "text-danger mb-2" })
 
-                @* ---------- Create-mode requirements banner ---------- *@
                 @if (isCreate)
                 {
                     <div class="alert alert-warning py-2 mb-2">
@@ -83,7 +84,6 @@
                         </ul>
                     </div>
 
-                    @* If user mistakenly set an update kind during create, show a direct inline error *@
                     if (!string.IsNullOrWhiteSpace(Model?.AccountUpdateKind))
                     {
                         <div class="text-danger mb-2 small">
@@ -115,127 +115,129 @@
                         @Html.ValidationMessageFor(m => m.AffiliateAccountId, "", new { @class = "text-danger" })
                     </div>
 
-                    <div class="col-md-6 mb-2">
-                        @Html.LabelFor(m => m.Code, "Account Number", new { @class = "form-label fw-semibold mb-1" })
-                        @Html.TextBoxFor(
-                            m => m.Code,
-                            new
-                            {
-                                @class = "form-control form-control-sm",
-                                placeholder = "Enter the account number (digits only, min 12)",
-                                minlength = "12",
-                                maxlength = "20",
-                                pattern = "\\d+",
-                                title = "Digits only. Minimum length 12."
-                            })
-                        @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })
-                    </div>
+                    @* ✅ Code textbox ONLY on Create *@
+                    @if (isCreate)
+                    {
+                        <div class="col-md-6 mb-2">
+                            @Html.LabelFor(m => m.Code, "Account Number", new { @class = "form-label fw-semibold mb-1" })
+                            @Html.TextBoxFor(
+                                m => m.Code,
+                                new
+                                {
+                                    @class = "form-control form-control-sm",
+                                    placeholder = "Enter the account number (digits only, min 12)",
+                                    minlength = "12",
+                                    maxlength = "20",
+                                    pattern = "\\d+",
+                                    title = "Digits only. Minimum length 12."
+                                })
+                            @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })
+                        </div>
+                    }
                 </div>
+
                 @if (isUpdate)
                 {
-                    <!-- ===== UPDATE SECTION (AccountUpdateType + Old Values) ===== -->
+                    <!-- ===== UPDATE SECTION (Old Values ReadOnly) ===== -->
                     <div class="border rounded p-2 my-2">
                         <div class="row g-1">
                             <!-- Update Type -->
                             <div class="col-md-4 mb-2">
-                                @Html.LabelFor(m => m.AccountUpdateKind, "Update Type", new { @class = "form-label fw-semibold mb-1" + (isUpdate ? " required" : "") })
+                                @Html.LabelFor(m => m.AccountUpdateKind, "Update Type", new { @class = "form-label fw-semibold mb-1 required" })
                                 @Html.DropDownListFor(
-                                 m => m.AccountUpdateKind,
-                                 new SelectList(new[]
-                                 {
+                                    m => m.AccountUpdateKind,
+                                    new SelectList(new[]
+                                    {
                                         new { Value = "Code",         Text = "Code only" },
                                         new { Value = "NameEn",       Text = "Name (English) only" },
                                         new { Value = "NameFr",       Text = "Name (French) only" },
                                         new { Value = "Names",        Text = "Names (English & French)" },
                                         new { Value = "CodeAndNames", Text = "Code + Names" }
-                                 }, "Value", "Text", updateType), "--- Select update type ---",
-                                 new { @class = "form-select form-select-sm select2" })
+                                    }, "Value", "Text", updateType),
+                                    "--- Select update type ---",
+                                    new { @class = "form-select form-select-sm select2" })
                                 <div class="form-text small">
-                                    @if (isCreate)
-                                    {
-                                        @:Leave this empty for create requests.
-                                    }
-                                    else
-                                    {
-                                        @:Choose what is changing for this update request.
-                                    }
+                                    Choose what is changing for this update request.
                                 </div>
                                 @Html.ValidationMessageFor(m => m.AccountUpdateKind, "", new { @class = "text-danger" })
                             </div>
 
-                            <!-- Old Account Number -->
+                            <!-- ✅ Old Account Number (READONLY) -->
                             <div class="col-md-4 mb-2">
                                 @Html.LabelFor(m => m.CodeOld, "Old Account Number", new { @class = "form-label fw-semibold mb-1" + (needsOldCode ? " required" : "") })
                                 @Html.TextBoxFor(
-                                 m => m.CodeOld,
-                                 new
-                                 {
-                                     @class = "form-control form-control-sm",
-                                     placeholder = "Previous account number (≥12 digits)",
-                                     inputmode = "numeric",
-                                     pattern = "\\d{12,}",
-                                     autocomplete = "off"
-                                 })
+                                    m => m.CodeOld,
+                                    new
+                                    {
+                                        @class = "form-control form-control-sm",
+                                        @readonly = "readonly"
+                                    })
                                 <div class="form-text small">
-                                    @if (isCreate)
-                                    {
-                                        @:Ignored on create.
-                                    }
-                                    else
-                                    {
-                                        @:Required only if Update Type includes <strong>Code</strong>.
-                                    }
+                                    Auto-filled from the existing account (read-only).
                                 </div>
                                 @Html.ValidationMessageFor(m => m.CodeOld, "", new { @class = "text-danger" })
                             </div>
 
-                            <!-- Old Name (English) -->
+                            <!-- New Account Number (Code Update) -->
+                            <div class="col-md-4 mb-2">
+                                @Html.LabelFor(m => m.Code, "New Account Number (Code Update)", new { @class = "form-label fw-semibold mb-1" + (needsNewCode ? " required" : "") })
+                                @Html.TextBoxFor(
+                                    m => m.Code,
+                                    new
+                                    {
+                                        @class = "form-control form-control-sm",
+                                        placeholder = "New account number (≥12 digits)",
+                                        minlength = "12",
+                                        maxlength = "20",
+                                        inputmode = "numeric",
+                                        pattern = "\\d{12,}",
+                                        autocomplete = "off"
+                                    })
+                                <div class="form-text small">
+                                    Required only if Update Type includes <strong>Code</strong>.
+                                </div>
+                                @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })
+                            </div>
+
+                            <!-- ✅ Old Name (English) READONLY -->
                             <div class="col-md-4 mb-2">
                                 @Html.LabelFor(m => m.NameEnOld, "Old Name (English)", new { @class = "form-label fw-semibold mb-1" + (needsOldNameEn ? " required" : "") })
                                 @Html.TextBoxFor(
-                                 m => m.NameEnOld,
-                                 new { @class = "form-control form-control-sm", placeholder = "Previous English name", maxlength = "150" })
+                                    m => m.NameEnOld,
+                                    new
+                                    {
+                                        @class = "form-control form-control-sm",
+                                        @readonly = "readonly"
+                                    })
                                 <div class="form-text small">
-                                    @if (isCreate)
-                                    {
-                                        @:Ignored on create.
-                                    }
-                                    else
-                                    {
-                                        @:Required if Update Type is <strong>NameEn</strong>, <strong>Names</strong>, or <strong>CodeAndNames</strong>.
-                                    }
+                                   Auto-filled from the existing account (read-only).
                                 </div>
                                 @Html.ValidationMessageFor(m => m.NameEnOld, "", new { @class = "text-danger" })
                             </div>
 
-                            <!-- Old Name (French) -->
+                            <!-- ✅ Old Name (French) READONLY -->
                             <div class="col-md-4 mb-2">
                                 @Html.LabelFor(m => m.NameFrOld, "Old Name (French)", new { @class = "form-label fw-semibold mb-1" + (needsOldNameFr ? " required" : "") })
                                 @Html.TextBoxFor(
-                                 m => m.NameFrOld,
-                                 new { @class = "form-control form-control-sm", placeholder = "Ancien nom en français", maxlength = "150" })
+                                    m => m.NameFrOld,
+                                    new
+                                    {
+                                        @class = "form-control form-control-sm",
+                                        @readonly = "readonly"
+                                    })
                                 <div class="form-text small">
-                                    @if (isCreate)
-                                    {
-                                        @:Ignored on create.
-                                    }
-                                    else
-                                    {
-                                        @:Required if Update Type is <strong>NameFr</strong>, <strong>Names</strong>, or <strong>CodeAndNames</strong>.
-                                    }
+                                    Auto-filled from the existing account (read-only).
                                 </div>
                                 @Html.ValidationMessageFor(m => m.NameFrOld, "", new { @class = "text-danger" })
                             </div>
                         </div>
 
                         <div class="small text-muted mt-1">
-                            <strong>Note:</strong> For update requests, provide the previous values for each field you’re changing.
-                            Server-side validation will enforce requirements based on the selected Update Type.
+                            <strong>Note:</strong> Old values are locked to prevent accidental edits.
+                            Only enter the new values you want to apply.
                         </div>
                     </div>
-                }
-
-                <!-- ===== /UPDATE SECTION ===== -->
+                                    }
 
                 <div class="row g-1">
                     <div class="col-md-6 mb-2">
@@ -261,17 +263,17 @@
 
                 <div class="text-end">
                     @if (isCreate)
-                    {
+                     {
                         <button type="submit" class="btn btn-primary btn-sm me-2" data-bs-dismiss="modal"><i class="fas fa-save me-1"></i> Save</button>
-                        <button type="reset" class="btn btn-outline-secondary btn-sm" >Reset</button>
+                        <button type="reset" class="btn btn-outline-secondary btn-sm">Reset</button>
                     }
                     else
                     {
                         <button type="submit" class="btn btn-primary btn-sm me-2" data-bs-dismiss="modal"><i class="mdi mdi-refresh"></i> Update</button>
                         <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">Close</button>
-                    }
+                     }
                 </div>
             </div>
-        }
+                    }
     </div>
 </div>

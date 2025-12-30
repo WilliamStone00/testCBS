@@ -1302,6 +1302,9 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllCounterChequeByBranch = "/api/v1/counter-checks/by-branch/{branchId}";
         public static string GetCustormerchequebook = "/api/v1/checkbook/categories";
         public static string GetCustomerChequeBook = "/api/v1/checkbook/{0}";
+        public static string GetCustomerChequeBooks = "/api/v1/checkbook/customer/{0}";
+        public static string GetChequeBookWithLeaves = "/api/v1/leaves/{0}"; 
+        public static string GetChequeLeafDetails = "/api/v1/checkbook-leave/{0}"; 
 
 
         //--------------------------------------TEST--------------------------------------//

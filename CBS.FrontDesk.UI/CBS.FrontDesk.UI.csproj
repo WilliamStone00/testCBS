@@ -10923,7 +10923,6 @@
     <Content Include="Views\CounterCheque\Index.cshtml" />
     <Content Include="Views\CounterCheque\_Create.cshtml" />
     <Content Include="Views\CounterCheque\_DataTable.cshtml" />
-    <Content Include="Views\CounterCheque\_ActionForm.cshtml" />
     <Content Include="Views\FeeConfig\_FeeConfigList.cshtml" />
     <Content Include="Views\ChequeBook\_ChequeBookDetails.cshtml" />
     <Content Include="Views\ChequeCancellation\Index.cshtml" />
@@ -11131,7 +11130,6 @@
     <Content Include="Views\EndOfYearClosure\_DataTable.cshtml" />
     <Content Include="Views\EndOfYearClosure\_Confirm.cshtml" />
     <Content Include="Views\EndOfYearClosure\_ClosingForm.cshtml" />
-    <Content Include="Views\CounterCheque\_Detailscountercheque.cshtml" />
     <Content Include="Views\LoanProduct\_LoanProductSimpleForm.cshtml" />
     <Content Include="Views\AccountTypeGroup\Index.cshtml" />
     <Content Include="Views\AccountTypeGroup\_AccountTypeGroupForm.cshtml" />
@@ -11168,6 +11166,10 @@
     <Content Include="Views\GlobalConfig\_Data.cshtml" />
     <Content Include="Views\GlobalConfig\_GlobalConfigDetailsPartial.cshtml" />
     <Content Include="Views\GlobalConfig\Index.cshtml" />
+    <Content Include="Views\CounterCheque\_CustomerCheckBookCarousel.cshtml" />
+    <Content Include="Views\CounterCheque\_ChequeLeavesGrid.cshtml" />
+    <Content Include="Views\CounterCheque\_ChequeLeavesDataTable.cshtml" />
+    <Content Include="Views\CounterCheque\_ChequeLeafDetails.cshtml" />
     <Content Include="Views\LoanProduct\_LoanProductData.cshtml" />
     <Content Include="Views\SharedMonthSimulation\List.cshtml" />
     <Content Include="Views\SharedMonthSimulation\_Datatable.cshtml" />
