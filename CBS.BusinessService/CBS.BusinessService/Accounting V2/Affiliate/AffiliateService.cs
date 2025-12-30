@@ -208,9 +208,7 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
                 {
                     var defaultAffiliate = new Affiliateresponse
                     {
-                        Id = "All",
-                        Name = "All Affiliates",
-                        Code = "ALL",
+                        
                         IsActive = true
                     };
                     affiliates.Insert(0, defaultAffiliate);

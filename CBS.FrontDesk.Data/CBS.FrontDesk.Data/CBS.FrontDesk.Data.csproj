@@ -126,6 +126,7 @@
     <Compile Include="Entity\Accounting V2\Base\BranchInfo.cs" />
     <Compile Include="Entity\Accounting V2\DaillyCollectorLicense\DaillyCollectorLicense.cs" />
     <Compile Include="Entity\Accounting V2\FallBack\FallbackReconciliation.cs" />
+    <Compile Include="Entity\Accounting V2\IPS\IPSClaim.cs" />
     <Compile Include="Entity\Accounting V2\IPS\IPSConfig.cs" />
     <Compile Include="Entity\Accounting V2\Queries\AccountingV2ReportsFilter.cs" />
     <Compile Include="Entity\Accounting V2\API\APiKey.cs" />
@@ -259,6 +260,10 @@
     <Compile Include="Entity\GeneralStatisticReport\GeneralStatisticsReportRPT.cs" />
     <Compile Include="Entity\GeneralStatisticReport\GeneralStatisticsReportDtoMapper.cs" />
     <Compile Include="Entity\LoanAdjustmentP\LoanAdjustment.cs" />
+    <Compile Include="Entity\LoanConf\LoanTargetCatalog.cs" />
+    <Compile Include="Entity\LoanConf\PcmfLoanPurpose.cs" />
+    <Compile Include="Entity\LoanConf\PCMFStructure\PCMFLoanProduct.cs" />
+    <Compile Include="Entity\LoanManagementP\FileName.cs" />
     <Compile Include="Entity\ManualDailycollection\CollectorDto.cs" />
     <Compile Include="Entity\ManualDailycollection\FileDetailsResponse.cs" />
     <Compile Include="Entity\ManualDailycollection\FileUploadResponse.cs" />

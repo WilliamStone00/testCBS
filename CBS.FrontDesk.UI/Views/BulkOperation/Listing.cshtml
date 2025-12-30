@@ -30,6 +30,12 @@
     .compact .row.g-1 > [class^="col-"] {
         margin-bottom: .5rem;
     }
+
+    .badge-soft {
+        background: rgba(13,110,253,.08);
+        border: 1px solid rgba(13,110,253,.2);
+        color: #0d6efd;
+    }
 </style>
 
 <div class="compact">
@@ -42,12 +48,15 @@
                     <h5 class="card-title text-primary mb-1">
                         <i class="mdi mdi-database-export me-2"></i> @GlobalBulkOperation.BulkOperationManagement
                     </h5>
+
                     <p class="card-text small mb-1">
-                        Execute batch actions across multiple users accounts with precision and control.
+                        Run bulk simulations and approvals safely — filter, preview, then execute.
                     </p>
-                    <div class="alert alert-light border-primary mb-0 mt-2 small">
-                        <i class="mdi mdi-alert-circle-outline text-primary me-2"></i>
-                        <strong>Pro Tip:</strong> @GlobalBulkOperation.UseFiltersToRefineSelectionsBeforeApplyingBulkChanges
+
+                    <div class="alert alert-light border-primary mb-0 mt-2 small text-start">
+                        <i class="mdi mdi-shield-check-outline text-primary me-2"></i>
+                        <strong>Pro Tip:</strong>
+                        Use <b>Branch</b> + <b>Status</b> + <b>Date Range</b> together to narrow results before opening details or approvals.
                     </div>
                 </div>
             </div>
@@ -60,7 +69,9 @@
             <h6 class="mb-0 small">
                 <i class="mdi mdi-road-variant text-primary me-1"></i> Bulk Operation Workflow
             </h6>
-            <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#workflowSteps" aria-expanded="true">
+            <button class="btn btn-light btn-sm" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#workflowSteps"
+                    aria-expanded="true" aria-controls="workflowSteps">
                 <i class="mdi mdi-chevron-down"></i>
             </button>
         </div>
@@ -70,22 +81,22 @@
                     <div class="col">
                         <div class="fw-bold text-primary">1</div>
                         <div>Simulate</div>
-                        <small class="text-muted">Simulate an operation</small>
+                        <small class="text-muted">Create a simulation batch</small>
                     </div>
                     <div class="col">
                         <div class="fw-bold text-primary">2</div>
-                        <div>Filter &amp; Select</div>
-                        <small class="text-muted">Use filters below</small>
+                        <div>Filter</div>
+                        <small class="text-muted">Apply Branch / Status / Date</small>
                     </div>
                     <div class="col">
                         <div class="fw-bold text-primary">3</div>
-                        <div>Preview</div>
-                        <small class="text-muted">Review selected records</small>
+                        <div>Review</div>
+                        <small class="text-muted">Open details and verify totals</small>
                     </div>
                     <div class="col">
                         <div class="fw-bold text-primary">4</div>
-                        <div>Execute</div>
-                        <small class="text-muted">Complete bulk operation</small>
+                        <div>Approve / Execute</div>
+                        <small class="text-muted">Finalize the bulk action</small>
                     </div>
                 </div>
             </div>
@@ -96,9 +107,11 @@
     <div class="card mb-2">
         <div class="card-header bg-light d-flex justify-content-between align-items-center">
             <h6 class="mb-0 small">
-                <i class="mdi mdi-filter-outline text-primary me-1"></i> @GlobalBulkOperation.TIPSFORBulkOPERATIONSFILTERING
+                <i class="mdi mdi-information-outline text-primary me-1"></i> @GlobalBulkOperation.TIPSFORBulkOPERATIONSFILTERING
             </h6>
-            <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#filterTips" aria-expanded="true">
+            <button class="btn btn-light btn-sm" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#filterTips"
+                    aria-expanded="true" aria-controls="filterTips">
                 <i class="mdi mdi-chevron-down"></i>
             </button>
         </div>
@@ -109,30 +122,46 @@
                         <div class="alert alert-light border small mb-1">
                             <i class="mdi mdi-office-building text-primary me-2"></i>
                             <strong>@GlobalBulkOperation.Branch:</strong>
-                            <span class="small">@GlobalBulkOperation.FilterUsersByOrganizationalBranchOrLocation</span>
+                            <span class="small">
+                                Filter operations initiated from a specific branch (best for audits and follow-up approvals).
+                            </span>
                         </div>
                     </div>
+
                     <div class="col-md-6">
                         <div class="alert alert-light border small mb-1">
                             <i class="mdi mdi-toggle-switch text-warning me-2"></i>
                             <strong>@GlobalBulkOperation.Status:</strong>
-                            <span class="small">@GlobalBulkOperation.FilterByActiveInactiveCompletedOrSuspendedAccounts</span>
+                            <span class="small">
+                                Use status to quickly identify what needs action (Pending / ProcessingApproval / Failed).
+                            </span>
                         </div>
                     </div>
+
                     <div class="col-md-6">
                         <div class="alert alert-light border small mb-1">
                             <i class="mdi mdi-calendar-range text-info me-2"></i>
                             <strong>Date Range:</strong>
-                            <span class="small">@GlobalBulkOperation.SetTheStartDateRangeForUserRegistrationActivity</span>
+                            <span class="small">
+                                Narrow by creation date to isolate today’s / last week’s simulations and reduce noise.
+                            </span>
                         </div>
                     </div>
+
                     <div class="col-md-6">
                         <div class="alert alert-light border small mb-0">
                             <i class="mdi mdi-filter-plus text-success me-2"></i>
-                            <strong>Combined Filters:</strong>
-                            <span class="small">@GlobalBulkOperation.CombineFilters</span>
+                            <strong>Best Practice:</strong>
+                            <span class="small">
+                                Combine filters then sort by <b>Date</b> descending to see most recent work first.
+                            </span>
                         </div>
                     </div>
+                </div>
+
+                <div class="alert alert-warning small mt-2 mb-0">
+                    <i class="mdi mdi-alert-outline me-2"></i>
+                    Always open <b>Details</b> before approval to confirm totals, member count, and simulation type.
                 </div>
             </div>
         </div>
@@ -140,13 +169,13 @@
 
     <!-- Actions -->
     <div class="row mb-2">
-        <div class="col-md-6 text-end mb-1 mb-md-0">
-            <a href="/BulkOperation" class="btn btn-primary btn-sm shadow-sm px-3">
+        <div class="col-md-6 text-md-end mb-1 mb-md-0">
+            <a href="/BulkOperation" class="btn btn-primary btn-sm shadow-sm px-3 w-100 w-md-auto">
                 <i class="mdi mdi-account-plus-outline me-1"></i> @GlobalBulkOperation.SimulateARangeBulkOperation
             </a>
         </div>
-        <div class="col-md-6 text-start">
-            <a href="/BulkOperation/BulkCashOperation" class="btn btn-primary btn-sm shadow-sm px-3">
+        <div class="col-md-6 text-md-start">
+            <a href="/BulkOperation/BulkCashOperation" class="btn btn-primary btn-sm shadow-sm px-3 w-100 w-md-auto">
                 <i class="mdi mdi-cash me-1"></i> @GlobalBulkOperation.SimulateBulkCashOperation
             </a>
         </div>
@@ -158,7 +187,9 @@
             <h6 class="mb-0 small">
                 <i class="mdi mdi-filter-outline text-primary me-1"></i> @GlobalBulkOperation.AdvancedUserFilters
             </h6>
-            <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#advancedFilters" aria-expanded="true">
+            <button class="btn btn-light btn-sm" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#advancedFilters"
+                    aria-expanded="true" aria-controls="advancedFilters">
                 <i class="mdi mdi-chevron-down"></i>
             </button>
         </div>
@@ -167,19 +198,26 @@
             <div class="card-body py-2">
 
                 <!-- Toggles -->
-                <div class="mb-2">
+                <div class="mb-2 d-flex flex-wrap gap-3 align-items-center">
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" id="byBranch" checked />
                         <label class="form-check-label small" for="byBranch">@GlobalBulkOperation.Branch</label>
                     </div>
+
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" id="byStatus" />
                         <label class="form-check-label small" for="byStatus">@GlobalBulkOperation.Status</label>
                     </div>
+
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" id="byDate" />
                         <label class="form-check-label small" for="byDate">@GlobalBulkOperation.FilterByBetweenDates</label>
                     </div>
+
+                    <!-- Active filter preview -->
+                    <span class="badge badge-soft small" id="activeFiltersBadge" style="display:none;">
+                        <i class="mdi mdi-filter-variant me-1"></i> Active filters applied
+                    </span>
                 </div>
 
                 @using (Html.BeginForm(null, null, FormMethod.Get, new { id = "bulkFilterForm", autocomplete = "off" }))
@@ -187,7 +225,7 @@
                     <div class="row g-1">
 
                         <!-- Branch -->
-                        <div class="col-md-4" id="branchFilterSection">
+                        <div class="col-md-6" id="branchFilterSection">
                             @Html.LabelFor(m => m.BranchId, GlobalBulkOperation.SelectBranch, new { @class = "form-label small fw-bold" })
                             @Html.DropDownListFor(
                                 m => m.BranchId,
@@ -196,43 +234,37 @@
                                 new { @class = "form-select form-select-sm select2", id = "BranchId" })
                         </div>
 
-                        <!-- Status (BulkOperationStatus) -->
-                        <div class="col-md-4 d-none" id="statusFilterSection">
+                        <!-- Status -->
+                        <div class="col-md-6 d-none" id="statusFilterSection">
                             @Html.LabelFor(m => m.Status, GlobalBulkOperation.SelectStatus, new { @class = "form-label small fw-bold" })
                             @Html.DropDownListFor(
                                 m => m.Status,
                                 new List<SelectListItem>
                                 {
                                     new SelectListItem { Value = "", Text = "--- " + GlobalBulkOperation.AllStatuses + " ---" },
-                                    new SelectListItem { Value = "Pending",             Text = GlobalBulkOperation.PendingFilter },
-                                    new SelectListItem { Value = "Accepted",            Text = GlobalBulkOperation.AcceptedFilter },
-                                    new SelectListItem { Value = "Rejected",            Text = GlobalBulkOperation.RejectedFilter },
-                                    new SelectListItem { Value = "NoValidAccounts",     Text = GlobalBulkOperation.NoValidAccountsFilter },
-                                    new SelectListItem { Value = "BulkProcessInitiated",Text = GlobalBulkOperation.BulkProcessInitiatedFilter },
-                                    new SelectListItem { Value = "Executed",            Text = GlobalBulkOperation.ExecutedFilter },
-                                    new SelectListItem { Value = "Failed",              Text = GlobalBulkOperation.FailedFilter },
-                                    new SelectListItem { Value = "ProcessingApproval",  Text = GlobalBulkOperation.ProcessingApprovalFilter },
-                                    new SelectListItem { Value = "Approved",            Text = GlobalBulkOperation.ApprovedFilter }
+                                    new SelectListItem { Value = "Pending",              Text = GlobalBulkOperation.PendingFilter },
+                                    new SelectListItem { Value = "Accepted",             Text = GlobalBulkOperation.AcceptedFilter },
+                                    new SelectListItem { Value = "Rejected",             Text = GlobalBulkOperation.RejectedFilter },
+                                    new SelectListItem { Value = "NoValidAccounts",      Text = GlobalBulkOperation.NoValidAccountsFilter },
+                                    new SelectListItem { Value = "BulkProcessInitiated", Text = GlobalBulkOperation.BulkProcessInitiatedFilter },
+                                    new SelectListItem { Value = "Executed",             Text = GlobalBulkOperation.ExecutedFilter },
+                                    new SelectListItem { Value = "Failed",               Text = GlobalBulkOperation.FailedFilter },
+                                    new SelectListItem { Value = "ProcessingApproval",   Text = GlobalBulkOperation.ProcessingApprovalFilter },
+                                    new SelectListItem { Value = "Approved",             Text = GlobalBulkOperation.ApprovedFilter }
                                 },
                                 new { @class = "form-select form-select-sm select2", id = "Status" })
                         </div>
+                    </div>
 
-                        <!-- Date Range -->
-                        <div class="col-md-4 d-none" id="dateRangeSection">
-                            <div class="row g-1">
-                                <div class="col-6">
-                                    @Html.LabelFor(m => m.StartDate, GlobalBulkOperation.FromDate, new { @class = "form-label small fw-bold" })
-                                    @Html.TextBoxFor(
-                                        m => m.StartDate,
-                                        new { @class = "form-control form-control-sm", type = "date", id = "StartDate" })
-                                </div>
-                                <div class="col-6">
-                                    @Html.LabelFor(m => m.EndDate, GlobalBulkOperation.ToDate, new { @class = "form-label small fw-bold" })
-                                    @Html.TextBoxFor(
-                                        m => m.EndDate,
-                                        new { @class = "form-control form-control-sm", type = "date", id = "EndDate" })
-                                </div>
-                            </div>
+                    <!-- Date Range (SINGLE, NO DUPLICATE IDs) -->
+                    <div class="row g-1 mt-1 d-none" id="dateRangeSection">
+                        <div class="col-md-6">
+                            @Html.LabelFor(m => m.StartDate, GlobalBulkOperation.FromDate, new { @class = "form-label small fw-bold" })
+                            @Html.TextBoxFor(m => m.StartDate, new { @class = "form-control form-control-sm", type = "date", id = "StartDate" })
+                        </div>
+                        <div class="col-md-6">
+                            @Html.LabelFor(m => m.EndDate, GlobalBulkOperation.ToDate, new { @class = "form-label small fw-bold" })
+                            @Html.TextBoxFor(m => m.EndDate, new { @class = "form-control form-control-sm", type = "date", id = "EndDate" })
                         </div>
                     </div>
 
@@ -247,7 +279,6 @@
                         </div>
                     </div>
                 }
-
             </div>
         </div>
     </div>
@@ -258,13 +289,17 @@
             <h6 class="mb-0 small">
                 <i class="mdi mdi-table text-primary me-1"></i> @GlobalBulkOperation.FilteredResults
             </h6>
-            <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#resultsTable" aria-expanded="true">
+            <button class="btn btn-light btn-sm" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#resultsTable"
+                    aria-expanded="true" aria-controls="resultsTable">
                 <i class="mdi mdi-chevron-down"></i>
             </button>
         </div>
+
         <div id="resultsTable" class="collapse show">
             <div class="card-body py-2">
                 @Html.Partial("_model")
+
                 <div id="userTableView">
                     @Html.Partial("_SimulationDataTable")
                 </div>
@@ -282,17 +317,32 @@
 
             let table = null;
 
+            function setActiveFiltersBadge() {
+                const byBranch = $('#byBranch').is(':checked') && ($('#BranchId').val() || '').length > 0;
+                const byStatus = $('#byStatus').is(':checked') && ($('#Status').val() || '').length > 0;
+                const byDate = $('#byDate').is(':checked') && (($('#StartDate').val() || '').length > 0 || ($('#EndDate').val() || '').length > 0);
+
+                const any = byBranch || byStatus || byDate;
+                $('#activeFiltersBadge').toggle(any);
+            }
+
             function resetFilterForm() {
+                // values
                 $('#StartDate, #EndDate').val('');
                 $('#BranchId').val('').trigger('change');
                 $('#Status').val('').trigger('change');
 
+                // toggles default state
                 $('#byBranch').prop('checked', true);
                 $('#byStatus').prop('checked', false);
                 $('#byDate').prop('checked', false);
 
+                // sections visibility
                 $('#branchFilterSection').removeClass('d-none');
-                $('#statusFilterSection, #dateRangeSection').addClass('d-none');
+                $('#statusFilterSection').addClass('d-none');
+                $('#dateRangeSection').addClass('d-none');
+
+                setActiveFiltersBadge();
             }
 
             function initFilterToggles() {
@@ -300,19 +350,25 @@
                     const isChecked = $(this).is(':checked');
                     $('#branchFilterSection').toggleClass('d-none', !isChecked);
                     if (!isChecked) $('#BranchId').val('').trigger('change');
+                    setActiveFiltersBadge();
                 });
 
                 $('#byStatus').on('change', function () {
                     const isChecked = $(this).is(':checked');
                     $('#statusFilterSection').toggleClass('d-none', !isChecked);
                     if (!isChecked) $('#Status').val('').trigger('change');
+                    setActiveFiltersBadge();
                 });
 
                 $('#byDate').on('change', function () {
                     const isChecked = $(this).is(':checked');
                     $('#dateRangeSection').toggleClass('d-none', !isChecked);
                     if (!isChecked) $('#StartDate, #EndDate').val('');
+                    setActiveFiltersBadge();
                 });
+
+                // also update badge when filters change
+                $('#BranchId, #Status, #StartDate, #EndDate').on('change', setActiveFiltersBadge);
             }
 
             function collectBulkFilters(d) {
@@ -332,6 +388,7 @@
                     const order = d.order[0];
                     const colIdx = order.column;
                     sortColumnDirection = order.dir;
+
                     if (d.columns && d.columns[colIdx]) {
                         sortColumnName = d.columns[colIdx].data || '';
                     }
@@ -356,16 +413,17 @@
             }
 
             function initOrReloadTable() {
-                // Destroy existing table instance if it exists
+
+                // If already created, just reload with current filters
                 if (table && $.fn.DataTable.isDataTable('#myDataTable')) {
-                    table.destroy();
-                    $('#myDataTable').empty(); // Clear the table content
+                    table.ajax.reload(null, true);
+                    return;
                 }
 
                 table = $('#myDataTable').DataTable({
+                    processing: false,
                     serverSide: true,
                     responsive: true,
-                    destroy: true,
                     ajax: {
                         url: '/BulkOperation/LoadBulkOperationData',
                         type: 'POST',
@@ -391,41 +449,31 @@
                             data: 'InitiatorBranchName',
                             name: 'InitiatorBranchName',
                             title: '@GlobalBulkOperation.BranchName',
-                            render: function (data) {
-                                return data || 'N/A';
-                            }
+                            render: function (data) { return data || 'N/A'; }
                         },
-                        {
+                  @*      {
                             data: 'TransactionReference',
                             name: 'TransactionReference',
                             title: '@GlobalBulkOperation.TransactionReference',
-                            render: function (data) {
-                                return data || 'N/A';
-                            }
-                        },
+                            render: function (data) { return data || 'N/A'; }
+                        },*@
                         {
                             data: 'SimulationType',
                             name: 'SimulationType',
                             title: '@GlobalBulkOperation.SimulationType',
-                            render: function (data) {
-                                return data || 'N/A';
-                            }
+                            render: function (data) { return data || 'N/A'; }
                         },
                         {
                             data: 'BulkType',
                             name: 'BulkType',
                             title: '@GlobalBulkOperation.BulkType',
-                            render: function (data) {
-                                return data || 'N/A';
-                            }
+                            render: function (data) { return data || 'N/A'; }
                         },
                         {
                             data: 'TotalMembers',
                             name: 'TotalMembers',
                             title: '@GlobalBulkOperation.TotalAccounts',
-                            render: function (data) {
-                                return data ?? 0;
-                            }
+                            render: function (data) { return data ?? 0; }
                         },
                         {
                             data: 'TotalVolume',
@@ -433,10 +481,7 @@
                             title: '@GlobalBulkOperation.SimulationVolume',
                             render: function (data) {
                                 if (data == null) return '0.0';
-                                return new Intl.NumberFormat('en-NG', {
-                                    minimumFractionDigits: 1,
-                                    maximumFractionDigits: 1
-                                }).format(data);
+                                return new Intl.NumberFormat('en-NG', { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(data);
                             }
                         },
                         {
@@ -447,59 +492,26 @@
                                 if (!data) return '';
 
                                 const map = {
-                                    Pending: {
-                                        class: 'bg-warning text-dark',
-                                        label: 'Pending'
-                                    },
-                                    Accepted: {
-                                        class: 'bg-primary text-white',
-                                        label: 'Accepted'
-                                    },
-                                    Rejected: {
-                                        class: 'bg-danger text-white',
-                                        label: 'Rejected'
-                                    },
-                                    NoValidAccounts: {
-                                        class: 'bg-dark text-white',
-                                        label: 'No valid accounts'
-                                    },
-                                    BulkProcessInitiated: {
-                                        class: 'bg-info text-white',
-                                        label: 'Bulk process initiated'
-                                    },
-                                    Executed: {
-                                        class: 'bg-success text-white',
-                                        label: 'Executed'
-                                    },
-                                    Failed: {
-                                        class: 'bg-danger text-white',
-                                        label: 'Failed'
-                                    },
-                                    ProcessingApproval: {
-                                        class: 'bg-secondary text-white',
-                                        label: 'Processing approval'
-                                    },
-                                    Approved: {
-                                        class: 'bg-success text-white',
-                                        label: 'Approved'
-                                    }
+                                    Pending: { class: 'bg-warning text-dark', label: 'Pending' },
+                                    Accepted: { class: 'bg-primary text-white', label: 'Accepted' },
+                                    Rejected: { class: 'bg-danger text-white', label: 'Rejected' },
+                                    NoValidAccounts: { class: 'bg-dark text-white', label: 'No valid accounts' },
+                                    BulkProcessInitiated: { class: 'bg-info text-white', label: 'Bulk process initiated' },
+                                    Executed: { class: 'bg-success text-white', label: 'Executed' },
+                                    Failed: { class: 'bg-danger text-white', label: 'Failed' },
+                                    ProcessingApproval: { class: 'bg-secondary text-white', label: 'Processing approval' },
+                                    Approved: { class: 'bg-success text-white', label: 'Approved' }
                                 };
 
-                                const item = map[data] || {
-                                    class: 'bg-secondary text-white',
-                                    label: data.replace(/([a-z])([A-Z])/g, '$1 $2')
-                                };
-
+                                const item = map[data] || { class: 'bg-secondary text-white', label: data.replace(/([a-z])([A-Z])/g, '$1 $2') };
                                 return `<span class="badge ${item.class}">${item.label}</span>`;
                             }
                         },
-                        {
+                       @* {
                             data: 'ApprovalBy',
                             name: 'ApprovalBy',
                             title: '@GlobalBulkOperation.ApprovalBy',
-                            render: function (data) {
-                                return data || 'N/A';
-                            }
+                            render: function (data) { return data || 'N/A'; }
                         },
                         {
                             data: 'ApprovalValidationDate',
@@ -507,12 +519,13 @@
                             title: '@GlobalBulkOperation.ApprovalDate',
                             render: function (data) {
                                 if (!data) return 'N/A';
-                                const minDate = new Date('0001-01-01T00:00:00');
                                 const d = new Date(data);
+                                if (isNaN(d.getTime())) return 'N/A';
+                                const minDate = new Date('0001-01-01T00:00:00');
                                 if (d.getTime() <= minDate.getTime()) return 'N/A';
                                 return window.moment ? moment(data).format('DD/MM/YYYY HH:mm:ss') : data;
                             }
-                        },
+                        },*@
                         {
                             data: 'Id',
                             orderable: false,
@@ -544,6 +557,7 @@
             function bindFilterActions() {
                 $('#applyFilterBtn').on('click', function (e) {
                     e.preventDefault();
+                    setActiveFiltersBadge();
                     initOrReloadTable();
                 });
 
@@ -556,6 +570,7 @@
                 $('#bulkFilterForm').on('keypress', 'input,select', function (e) {
                     if (e.which === 13) {
                         e.preventDefault();
+                        setActiveFiltersBadge();
                         initOrReloadTable();
                     }
                 });
@@ -573,7 +588,10 @@
 
                 initFilterToggles();
                 bindFilterActions();
-               // initOrReloadTable();
+                setActiveFiltersBadge();
+
+                // ✅ Load table on page load (recommended)
+                //initOrReloadTable();
             });
 
         })(jQuery);

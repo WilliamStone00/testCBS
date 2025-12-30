@@ -358,6 +358,9 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
         }
 
 
+
+
+
         [HttpPost]
         public async Task<ActionResult> LoadFilterDependencies(GetFirlterData model)
         {
@@ -403,6 +406,8 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
 
                 var Branch = await _branchServices.GetBranch(entry.BranchId);
                 entry.BranchName = Branch?.Name ?? "—";
+
+                
             }
             catch (Exception ex)
             {
@@ -513,8 +518,6 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
 
 
         [HttpPost]
-
-
 
         public async Task<ActionResult> ExportJournalData(ExportJournalRequest request)
         {

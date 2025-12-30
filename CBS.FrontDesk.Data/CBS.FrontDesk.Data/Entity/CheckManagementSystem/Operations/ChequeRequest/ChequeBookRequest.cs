@@ -14,6 +14,7 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeReque
     {
         public string CustomerId { get; set; }
         public string BranchId { get; set; }
+        public string PlaceOfBirth { get; set; }
         public string BranchName { get; set; }
         public string CustomerName { get; set; } = string.Empty;
         public string BankId { get; set; }

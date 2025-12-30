@@ -1,0 +1,301 @@
+﻿<!-- Index.cshtml -->
+<div id="datalistingview">
+    <div class="row">
+        <div class="col-12">
+            <div class="card bg-light mb-2 shadow-sm">
+                <div class="card-body text-center">
+                    <h1 class="card-title text-primary fw-bold">
+                        <i class="mdi mdi-bank-transfer me-2"></i> PCMF Loan Purpose
+                    </h1>
+                    <p class="card-text">
+                        Manage PCMF loan purpose categories for different loan term groups
+                    </p>
+                    <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="card mb-1">
+        <div class="card-body d-flex justify-content-end align-items-center">
+            <button type="button"
+                    onclick="return false;"
+                    class="btn btn-label-primary btn-sm me-2">
+                <i class="mdi mdi-plus mdi-18px"></i> Add New
+            </button>
+            <button type="button"
+                    onclick="refreshTable()"
+                    class="btn btn-label-secondary btn-sm">
+                <i class="mdi mdi-refresh mdi-18px"></i> Refresh
+            </button>
+        </div>
+    </div>
+
+    <!-- DataTable -->
+    <div class="card p-3 shadow mb-4">
+        <h5 class="text-primary mb-3">
+            <i class="mdi mdi-table"></i> PCMF Loan Purpose Catalog
+            <small class="text-muted ms-2">
+                <span id="recordCount" class="badge bg-info">Loading...</span>
+            </small>
+        </h5>
+        <div class="table-responsive">
+            <table id="pcmfLoanPurposeDataTable" class="table table-bordered table-striped">
+                <thead class="table-light">
+                    <tr>
+                        <th>Pcmf PurposeKey</th>
+                        <th>Name (English)</th>
+                        <th>Name (French)</th>
+                        <th>LT Group</th>
+                        <th>MT Group</th>
+                        <th>CT Group</th>
+                        <th>OD Group</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data will be loaded via AJAX -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Container -->
+<div class="modal fade" id="genericModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content"></div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        var dataTable = null;
+
+        function showCreateModal() {
+            ShowModal(null, '_CreateEditPcmfLoanPurpose', 'PcmfLoanPurpose', 'create');
+        }
+
+        function ShowModal(key, partialView, controller, path) {
+            var url = '/' + controller + '/InitializeData?KEY=' + encodeURIComponent(key || '') +
+                '&partialView=' + encodeURIComponent(partialView) +
+                '&path=' + encodeURIComponent(path);
+
+            $.get(url).done(function (html) {
+                $('#genericModal .modal-content').html(html);
+                var modal = new bootstrap.Modal(document.getElementById('genericModal'));
+                modal.show();
+            }).fail(function () {
+                appalert('Failed to load content', 0, 1);
+            });
+        }
+
+        function loadData() {
+            var tbody = $('#pcmfLoanPurposeDataTable tbody');
+            tbody.html(`
+                    <tr>
+                        <td colspan="9" class="text-center py-4">
+                                <p class="mt-2 mb-0 text-muted">Loading PCMF loan purpose data...</p>
+                        </td>
+                    </tr>
+                `);
+
+            $.ajax({
+                url: '/PcmfLoanPurpose/GetAll',
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    if (response.success && response.data) {
+                        renderTable(response.data);
+                    } else {
+                        tbody.html(`
+                                <tr>
+                                    <td colspan="9" class="text-center text-danger py-4">
+                                        <i class="mdi mdi-alert-circle me-1"></i>
+                                        Failed to load data
+                                    </td>
+                                </tr>
+                            `);
+                        $('#recordCount').text('Error');
+                    }
+                },
+                error: function () {
+                    tbody.html(`
+                            <tr>
+                                <td colspan="9" class="text-center text-danger py-4">
+                                    <i class="mdi mdi-alert-circle me-1"></i>
+                                    Error loading data. Please try again.
+                                </td>
+                            </tr>
+                        `);
+                    $('#recordCount').text('Error');
+                }
+            });
+        }
+
+        function renderTable(data) {
+            var tbody = $('#pcmfLoanPurposeDataTable tbody');
+
+            if (dataTable) {
+                dataTable.destroy();
+                dataTable = null;
+            }
+
+            tbody.empty();
+
+            if (!data || data.length === 0) {
+                tbody.html(`
+                        <tr>
+                            <td colspan="9" class="text-center text-muted py-4">
+                                <i class="mdi mdi-information-outline me-1"></i>
+                                No PCMF loan purpose records found
+                            </td>
+                        </tr>
+                    `);
+                $('#recordCount').text('0 records');
+                initializeDataTable();
+                return;
+            }
+
+            $('#recordCount').text(data.length + ' records');
+
+            data.forEach(function (item) {
+                var row = `
+                        <tr>
+                            <td>${escapeHtml(item.Keys.toString())}</td>
+                            <td class="fw-semibold">${escapeHtml(item.NameEn)}</td>
+                            <td>${escapeHtml(item.NameFr)}</td>
+                            <td>${item.LtGroupCode ? item.LtGroupCode : '0'}</td>
+                            <td>${item.MtGroupCode ? item.MtGroupCode : '0'}</td>
+                            <td>${item.CtGroupCode ? item.CtGroupCode : '0'}</td>
+                            <td>${item.OdGroupCode ? item.OdGroupCode : '0'}</td>
+                            <td>
+                                ${item.IsActive ?
+                        '<span class="badge bg-success">Active</span>' :
+                        '<span class="badge bg-secondary">Inactive</span>'}
+                            </td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-info dropdown-toggle text-white"
+                                            type="button"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="mdi mdi-cog-outline"></i> Actions
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <button class="dropdown-item btn-details" data-id="${item.Id}">
+                                                <i class="mdi mdi-eye me-1 text-primary"></i> Details
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button class="dropdown-item btn-edit" data-id="${item.Id}">
+                                                <i class="mdi mdi-pencil me-1 text-warning"></i> Edit
+                                            </button>
+                                        </li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li>
+                                            <button class="dropdown-item btn-delete text-danger" data-id="${item.Id}">
+                                                <i class="mdi mdi-delete me-1"></i> Delete
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                tbody.append(row);
+            });
+
+            initializeDataTable();
+        }
+
+        function initializeDataTable() {
+            if ($.fn.DataTable) {
+                dataTable = $('#pcmfLoanPurposeDataTable').DataTable({
+                    searching: true,
+                    responsive: true,
+                    order: [[0, 'asc']],
+                    language: {
+                        emptyTable: 'No records found',
+                        info: 'Showing _START_ to _END_ of _TOTAL_ entries',
+                        infoEmpty: 'Showing 0 to 0 of 0 entries',
+                        lengthMenu: 'Show _MENU_ entries',
+                        search: 'Search:',
+                        zeroRecords: 'No matching records found'
+                    },
+                    lengthMenu: [10, 25, 50, 100],
+                    pageLength: 10,
+                    columnDefs: [
+                        { orderable: false, targets: 8 } // Actions column
+                    ],
+                    drawCallback: function () {
+                        $('.dropdown-toggle').dropdown();
+                    },
+                    destroy: true,
+                    retrieve: true
+                });
+            }
+        }
+
+        function refreshTable() {
+            loadData();
+            appalert('Data refreshed', 3, 1);
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            var map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.toString().replace(/[&<>"']/g, function (m) { return map[m]; });
+        }
+
+        $(document).ready(function () {
+            loadData();
+
+            $(document).on('click', '.btn-details', function () {
+                var id = $(this).data('id');
+                ShowModal(id, '_PcmfLoanPurposeDetails', 'PcmfLoanPurpose', 'details');
+            });
+
+            $(document).on('click', '.btn-edit', function () {
+                var id = $(this).data('id');
+                ShowModal(id, '_CreateEditPcmfLoanPurpose', 'PcmfLoanPurpose', 'edit');
+            });
+
+            //$(document).on('click', '.btn-delete', function () {
+            //    var id = $(this).data('id');
+            //    ShowModal(id, '_DeletePcmfLoanPurpose', 'PcmfLoanPurpose', 'delete');
+            //});
+
+            $(document).off('click', '.btn-delete').on('click', '.btn-delete', function (e) {
+                e.preventDefault();
+
+                var raw = $(this).data('id');
+                var KEY = raw ? decodeURIComponent(raw) : null;
+
+
+
+                if (!KEY) {
+                    appalert('Missing id for delete', 0, 1);
+                    return;
+                }
+                DeleteRecordDataTable('PcmfLoanPurpose', KEY, 'myDataTable', 'delete', 0, null, null, null);
+            });
+
+
+
+
+            $('#genericModal').on('hidden.bs.modal', function () {
+                loadData();
+            });
+        });
+    </script>
+}

@@ -30,6 +30,17 @@
             </div>
         </div>
 
+
+        <div class="card mb-1">
+            <div class="card-body d-flex justify-content-end align-items-center">
+
+                <a href="/SharedMonthSimulation/List" target="_blank" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="ViewList">
+                    <i class="mdi mdi-view-list mdi-18px"></i> interest Calculation
+                </a>
+
+            </div>
+        </div>
+
         @using (Html.BeginForm("LoadSimulationData", "SharedMonthSimulation", FormMethod.Post, new { id = "sharedMonthForm", onsubmit = "return AjaxPostSharedMonth(this);" }))
 
         {
@@ -56,21 +67,9 @@
                             <div class="invalid-feedback">Please select a branch</div>
                         </div>
 
-                        <div class="col-md-4  mb-1">
+                       
 
-                            @Html.LabelFor(m => m.ProductId, "Product",
-                                new { @class = "form-label fw-bold" })
-
-                            @Html.DropDownListFor(
-                                m => m.ProductId,
-                                ViewBag.Products as List<SelectListItem>,
-                                "-- Select Product --",
-                                new { @class = "form-select select2" }
-                            )
-                            @*@Html.HiddenFor(m => m.ProductName)*@
-                        </div>
-
-                        <div class="col-md-4  mb-1">
+                        <div class="col-md-6  mb-1">
                             <label class="form-label fw-bold">Year</label>
                             @Html.DropDownList(
                                 "Year",
@@ -80,41 +79,33 @@
                             <div class="invalid-feedback">Please select a year</div>
                         </div>
 
-                        <div class="col-md-4 mb-1">
-                            @Html.LabelFor(m => m.RateOverride, "Rate Override",
+                        <div class="col-md-6 mb-1">
+                            @Html.LabelFor(m => m.InterestRate, "Interest Rate",
                                 new { @class = "form-label fw-bold" })
-                            @Html.TextBoxFor(m => m.RateOverride,
+                            @Html.TextBoxFor(m => m.InterestRate,
                                 new { @class = "form-control", type = "number" })
                         </div>
                         <!-- Period -->
-                        <div class="col-md-4  mb-1">
-                            <label class="form-label fw-bold">Start Period Key</label>
-                            @Html.DropDownList(
-                                "StartPeriodKey",
-                                new SelectList(ViewBag.Period, "Value", "Text"),
-                                "--- Select Period ---",
-                                new { @class = "form-select select2", required = "required" })
-                            <div class="invalid-feedback">Please select a period</div>
-                        </div>
+                       
 
-                        <div class="col-md-4  mb-1">
-                            <label class="form-label fw-bold">End Period Key</label>
+                        <div class="col-md-6  mb-1">
+                            <label class="form-label fw-bold">Month</label>
                             @Html.DropDownList(
-                                "EndPeriodKey",
-                                new SelectList(ViewBag.Period, "Value", "Text"),
+                                "Month",
+                                new SelectList(ViewBag.Month, "Value", "Text"),
                                 "--- Select Period ---",
                                 new { @class = "form-select select2", required = "required" })
-                            <div class="invalid-feedback">Please select a period</div>
+                            <div class="invalid-feedback">Please select a Month</div>
                         </div>
-                        <!-- Year -->
+                        
                         <!-- Interest Distribution Type -->
-                        <div class="col-md-4  mb-1">
+                        <div class="col-md-6  mb-1">
                             <label class="form-label fw-bold">Interest Distribution Type</label>
                             @Html.DropDownList(
-                                "IntrestDistributionType ",
-                                new SelectList(ViewBag.IntrestDistributionType, "Value", "Text"),
-                                "--- Select Distribution Type ---",
-                                new { @class = "form-select select2", required = "required" })
+                            "InterestDistributionType",
+                            new SelectList(ViewBag.IntrestDistributionType, "Value", "Text"),
+                            "--- Select Distribution Type ---",
+                            new { @class = "form-select select2", required = "required" })                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
                             <div class="invalid-feedback">Please select distribution type</div>
                         </div>
 
@@ -157,6 +148,53 @@
     </div>
 </div>
 
+
+
+
+
+<!-- Save Simulation Modal -->
+<div class="modal fade" id="saveSimulationModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Save Share Month Simulation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Name</label>
+                    <input type="text" id="SimulationName" class="form-control"
+                           placeholder="Enter simulation name" />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Description</label>
+                    <textarea id="SimulationDescription" class="form-control"
+                              rows="3"
+                              placeholder="Enter description"></textarea>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">
+                    Cancel
+                </button>
+                <button type="button" id="btnConfirmSaveSimulation"
+                        class="btn btn-success btn-sm">
+                    <i class="mdi mdi-content-save-outline me-1"></i> Save
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
 @section Scripts {
 
 
@@ -188,56 +226,63 @@
                 order: [[0, 'asc']],
 
                 columns: [
-                    {
-                        data: 'MemberReference',
-                        name: 'MemberReference'
-                    },
-                    {
-                        data: 'MemberName',
-                        name: 'MemberName'
-                    },
-                    {
-                        data: 'Gross',
-                        name: 'Gross',
-                        className: 'text-end',
-                        render: data => Number(data).toFixed(2)
-                    },
-                    {
-                        data: 'Interest',
-                        name: 'Interest',
-                        className: 'text-end',
-                        render: data => Number(data).toFixed(2)
-                    },
-                    {
-                        data: 'Adjustment',
-                        name: 'Adjustment',
-                        orderable: false,
-                        render: function (data, type, row) {
-                            return `
-                                <input type="number"
-                                       class="form-control form-control-sm adjustment-input text-end"
-                                       value="${Number(data || 0).toFixed(2)}"
-                                       step="0.01"
-                                       min="0"
-                                       data-member-ref="${row.MemberReference}" />
-                            `;
-                        }
-                    },
-                    {
-                        data: null,
-                        orderable: false,
-                        searchable: false,
-                        className: 'text-end',
-                        render: function () {
-                            return `
-                                <button type="button"
-                                        class="btn btn-sm btn-outline-danger remove-account">
-                                    <i class="mdi mdi-delete-outline"></i>
-                                </button>
-                            `;
-                        }
-                    }
-                ],
+            {
+                data: 'MemberReference',
+                name: 'MemberReference'
+            },
+            {
+                data: 'MemberName',
+                name: 'MemberName'
+            },
+            {
+                data: 'Gross',
+                name: 'Gross',
+                className: 'text-end',
+                render: data => Number(data).toFixed(2)
+            },
+            {
+                data: 'Tax',                     // ✅ NEW
+                name: 'Tax',
+                className: 'text-end',
+                render: data => Number(data || 0).toFixed(2)
+            },
+            {
+                data: 'Interest',
+                name: 'Interest',
+                className: 'text-end',
+                render: data => Number(data).toFixed(2)
+            },
+            {
+                data: 'Adjustment',
+                name: 'Adjustment',
+                orderable: false,
+                render: function (data, type, row) {
+                    return `
+                        <input type="number"
+                               class="form-control form-control-sm adjustment-input text-end"
+                               value="${Number(data || 0).toFixed(2)}"
+                               step="0.01"
+                               min="0"
+                               data-member-ref="${row.MemberReference}" />
+                    `;
+                }
+            },
+            {
+                data: null,
+                orderable: false,
+                searchable: false,
+                className: 'text-end',
+                render: function () {
+                    return `
+                        <button type="button"
+                                class="btn btn-sm btn-outline-danger remove-account">
+                            <i class="mdi mdi-delete-outline"></i>
+                        </button>
+                    `;
+                }
+            }
+        ],
+ 
 
                 language: {
                     emptyTable: "No simulation data available",
@@ -332,5 +377,86 @@
 
             return adjustments;
         }
+
+        // ===============================
+        // Show Save Simulation Modal ✅
+        // ===============================
+        $(document).on('click', '#btnSaveSimulation', function () {
+            const modal = new bootstrap.Modal(
+                document.getElementById('saveSimulationModal')
+            );
+            modal.show();
+        });
+
+
+        function collectModalData() {
+            return {
+                Name: $('#SimulationName').val(),
+                Description: $('#SimulationDescription').val()
+            };
+        }
+        function collectSimulationParameters() {
+            return {
+                BranchId: $('#BranchId').val(),
+                Year: parseInt($('#Year').val()),
+                IntrestDistributionType: $('#InterestDistributionType').val(),
+                Month: $('#Month').val(),
+                InterestRate: parseFloat($('#InterestRate').val()) || null
+            };
+        }
+        function collectTableData() {
+            const data = [];
+
+            sharedMonthTable.rows().every(function () {
+                const row = this.data();
+                const adjustmentInput = $(this.node()).find('.adjustment-input');
+
+                data.push({
+                    MemberReference: row.MemberReference,
+                    MemberName: row.MemberName,
+                    Balance: row.Balance || 0,
+                    Gross: row.Gross || 0,
+                    Tax: row.Tax || 0,
+                    Interest: row.Interest || 0,
+                    Adjustment: parseFloat(adjustmentInput.val()) || 0
+                });
+            });
+
+            return data;
+        }
+
+        $(document).on('click', '#btnConfirmSaveSimulation', function () {
+
+    const payload = {
+        ...collectSimulationParameters(),
+        ...collectModalData(),
+        ShareMonthPsiReportLineDto: collectTableData()
+    };
+
+    $.ajax({
+        url: '/SharedMonthSimulation/SaveSimulation',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(payload),
+
+        success: function (res) {
+            if (!res.success) {
+                appalert(res.message || 'Save failed', 3, 1);
+                return;
+            }
+
+            $('#saveSimulationModal').modal('hide');
+            appalert('✅ Simulation saved successfully', 1, 1);
+        },
+
+        error: function (err) {
+            appalert(err.responseJSON?.message || 'Server error', 3, 1);
+        }
+    });
+});
+
+
+
+
     </script>
 }

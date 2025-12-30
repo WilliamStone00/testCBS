@@ -8,82 +8,89 @@
     @Html.AntiForgeryToken()
 
     <!-- Main Filters Card -->
-<div class="card p-3 mb-2 ">
+    <div class="card p-3 mb-2 ">
 
-    @Html.HiddenFor(m => m.AccountingYear, new { id = "AccountingYear" })
-    @Html.HiddenFor(m => m.HOBranchId, new { id = "HOBranchId" })
-    <!-- 🔹 Branch & Date Toggles -->
-    <div class="col-md-6 mb-2 text-end">
-        @Html.LabelFor(m => m.AccountingDate, new { @class = "form-label fw-semibold me-2" })
+        @Html.HiddenFor(m => m.AccountingYear, new { id = "AccountingYear" })
+        @Html.HiddenFor(m => m.HOBranchId, new { id = "HOBranchId" })
+       
+        
+           
+                <div class="card-body d-flex justify-content-end align-items-center">
 
-        @Html.TextBoxFor(m => m.AccountingDate,
-            new
-                {
-                @class = "form-control form-control-sm d-inline-block accounting-date",
-                style = "width: 180px",
-                type = "date",
-                id = "AccountingDates"
-            })
-    </div>
+                    <div class="col-md-6 mb-2 text-end">
+                        @Html.LabelFor(m => m.AccountingDate, new { @class = "form-label fw-semibold me-2" })
 
+                        @Html.TextBoxFor(m => m.AccountingDate,
+                            new
+                                {
+                                @class = "form-control form-control-sm d-inline-block accounting-date",
+                                style = "width: 180px",
+                                type = "date",
+                                id = "AccountingDates"
+                            })
+                    </div>
 
-    <div class="row mb-1">
-        <div class="col-md-6 mb-2">
-            @Html.Label("BranchId", "Branch", new { @class = "form-label fw-bold", @for = "BranchId" })
-            @Html.DropDownList(
-                "BranchId",
-                new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
-                "--- Select Branch ---",
-                new { @class = "form-control select2 mb-2", id = "BranchIdcl", disabled = "disabled" }
-            )
-        </div>
-
-        <div class="col-md-6 mb-2">
-            @Html.Label("BranchLiaisonGlId", "Branch Liaison GL", new { @class = "form-label fw-semibold", @for = "BranchLiaisonGlId" })
-            @Html.DropDownList(
-                "BranchLiaisonGlId",
-                new List<SelectListItem> { new SelectListItem { Text = "--- Select Head office GL ---", Value = "" } },
-                new { @class = "form-control select2 mb-2", id = "BranchLiaisonGlId", required = "required" }
-            )
-        </div>
-
-    </div>
+                </div>
+            
 
 
-    <div class="row mb-1">
-
-        <div class="col-md-6 mb-2">
-            @Html.Label("HoLiaisonGlId", "Head office GL", new { @class = "form-label fw-semibold" })
-            @Html.DropDownList("HoLiaisonGlId",
-                new List<SelectListItem> { new SelectListItem { Text = "--- Select Branch GL ---", Value = "" } },
-                new { @class = "form-control select2 mb-2", id = "HoLiaisonGlId", required = "required" })
-        </div>
-
-        <div class="col-md-6 mb-2">
-            @Html.Label("HoResultGlId", "Head office Result GL", new { @class = "form-label fw-semibold" })
-            @Html.DropDownList("HoResultGlId",
-                new List<SelectListItem> { new SelectListItem { Text = "--- Select office Result GL ---", Value = "" } },
-                new { @class = "form-control select2 mb-2", id = "HoResultGlId", required = "required" })
-        </div>
-
-    </div>
-
-
-
-    <div class="row mb-1">
-
-        <!-- Save Button -->
-        <div class="row mb-2">
-            <div class="col-md-12 text-end">
-                <button type="submit" class="btn btn-primary">
-                    Reset Income and Expense
-                </button>
-
+        <div class="row mb-1">
+            <div class="col-md-6 mb-2">
+                @Html.Label("BranchId", "Branch", new { @class = "form-label fw-bold", @for = "BranchId" })
+                @Html.DropDownList(
+                    "BranchId",
+                    new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
+                    "--- Select Branch ---",
+                    new { @class = "form-control select2 mb-2", id = "BranchIdcl", disabled = "disabled" }
+                )
             </div>
+
+            <div class="col-md-6 mb-2">
+                @Html.Label("BranchLiaisonGlId", "Branch Liaison GL", new { @class = "form-label fw-semibold", @for = "BranchLiaisonGlId" })
+                @Html.DropDownList(
+                    "BranchLiaisonGlId",
+                    new List<SelectListItem> { new SelectListItem { Text = "--- Select Head office GL ---", Value = "" } },
+                    new { @class = "form-control select2 mb-2", id = "BranchLiaisonGlId", required = "required" }
+                )
+            </div>
+
         </div>
 
+
+        <div class="row mb-1">
+
+            <div class="col-md-6 mb-2">
+                @Html.Label("HoLiaisonGlId", "Head office GL", new { @class = "form-label fw-semibold" })
+                @Html.DropDownList("HoLiaisonGlId",
+                    new List<SelectListItem> { new SelectListItem { Text = "--- Select Branch GL ---", Value = "" } },
+                    new { @class = "form-control select2 mb-2", id = "HoLiaisonGlId", required = "required" })
+            </div>
+
+            <div class="col-md-6 mb-2">
+                @Html.Label("HoResultGlId", "Head office Result GL", new { @class = "form-label fw-semibold" })
+                @Html.DropDownList("HoResultGlId",
+                    new List<SelectListItem> { new SelectListItem { Text = "--- Select office Result GL ---", Value = "" } },
+                    new { @class = "form-control select2 mb-2", id = "HoResultGlId", required = "required" })
+            </div>
+
+        </div>
+
+
+
+        <div class="row mb-1">
+
+            <!-- Save Button -->
+            <div class="row mb-2">
+                <div class="col-md-12 text-end">
+                    <button type="submit" class="btn btn-primary">
+                        Reset Income and Expense
+                    </button>
+
+                </div>
+            </div>
+
+        </div>
     </div>
-</div>
 
 
     }

@@ -865,12 +865,11 @@ namespace CBS.API.Helper
 
 
 
-        public async Task UploadFileToApi(
-HttpPostedFileBase uploadedFile,
-string fileFormFieldName,
-string apiEndpointUrl,
-Dictionary<string, string> additionalFields = null)
-        {
+         public async Task UploadFileToApi(HttpPostedFileBase uploadedFile,
+            string fileFormFieldName,
+            string apiEndpointUrl,
+            Dictionary<string, string> additionalFields = null)
+                    {
             try
             {
 

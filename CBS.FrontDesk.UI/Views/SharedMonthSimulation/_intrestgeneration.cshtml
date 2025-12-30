@@ -1,0 +1,50 @@
+﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.SharedMonth.InstrestCalculation
+
+<div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
+
+
+
+        <div class="col-md-12 mb-1">
+            <label class="form-label fw-bold">Branch</label>
+            @Html.DropDownListFor(
+                m => m.BranchId,
+                new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
+                "--- Select Branch ---",
+                new { @class = "form-select select2" })
+            <div class="invalid-feedback">Please select a branch</div>
+        </div>
+
+        <div class="col-md-6 mb-1">
+            @Html.LabelFor(m => m.StartDate, "Start Date",
+                new { @class = "form-label fw-bold" })
+            @Html.TextBoxFor(
+                m => m.StartDate,
+                new { @class = "form-control", type = "date", required = "required" })
+            <div class="invalid-feedback">Please select a start date</div>
+        </div>
+
+        <div class="col-md-6 mb-1">
+            @Html.LabelFor(m => m.EndDate, "End Date",
+                new { @class = "form-label fw-bold" })
+            @Html.TextBoxFor(
+                m => m.EndDate,
+                new { @class = "form-control", type = "date", required = "required" })
+            <div class="invalid-feedback">Please select an end date</div>
+        </div>
+
+        <div class="col-md-6 mb-1">
+            <div class="form-check mt-4">
+                @Html.CheckBoxFor(m => m.IsForNetwork,
+                    new { @class = "form-check-input", id = "IsForNetwork" })
+                <label class="form-check-label fw-bold" for="IsForNetwork">
+                    Apply for Entire Network
+                </label>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+

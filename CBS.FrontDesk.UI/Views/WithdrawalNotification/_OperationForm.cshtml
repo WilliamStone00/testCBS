@@ -60,7 +60,7 @@
                             <div class="col-md-4 mb-3">
                                 <div class="form-floating form-floating-outline">
                                     @Html.DropDownListFor(m => m.WithdrawalNotification.DateOfIntendedWithdrawalYear,
-                                                          Enumerable.Range(DateTime.Now.Year - 0, 1).Reverse().Select(y => new SelectListItem { Value = y.ToString(), Text = y.ToString() }),
+                                                          Enumerable.Range(DateTime.Now.Year - 0, 2).Reverse().Select(y => new SelectListItem { Value = y.ToString(), Text = y.ToString() }),
                                                           @GlobalWithdrawalNotification.IntendedYear,
                                                           new { @class = "form-control select2", @search = "true", @id = "DateOfIntendedWithdrawalYear" })
                                     @Html.ValidationMessageFor(m => m.WithdrawalNotification.DateOfIntendedWithdrawalYear, "", new { @class = "text-danger" })

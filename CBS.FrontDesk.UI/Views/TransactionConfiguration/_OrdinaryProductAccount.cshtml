@@ -46,8 +46,8 @@ else
                             <td style="width:20%">
                                 @if (!d.IsUsedForTellerProvisioning)
                                 {
-                                    <a href="/TransactionConfiguration/PolicyandSharing?Key=@d.Id" class="mr-2" target="_blank" data-toggle="tooltip" data-placement="top" title="@string.Format(Globals_OrdinaryProductAccount.ConfigureOperationPolicies, @d.Name)">@Globals_OrdinaryProductAccount.Policies</a> |
-                                    <a href="/TransactionConfiguration/AccountMapping?Key=@d.Id" class="mr-2" target="_blank" data-toggle="tooltip" data-placement="top" title="@string.Format(Globals_OrdinaryProductAccount.ConfigureAccountMapping, @d.Name)">@Globals_OrdinaryProductAccount.Mappings</a> |
+                                    <a href="/TransactionConfiguration/PolicyandSharing?Key=@d.Id" class="mr-2" target="_blank" data-toggle="tooltip" data-placement="top" title="@string.Format(Globals_OrdinaryProductAccount.ConfigureOperationPolicies, @d.Name)">@Globals_OrdinaryProductAccount.Policies</a> 
+                                    <a href="/TransactionConfiguration/AccountMapping?Key=@d.Id" class="mr-2" target="_blank" data-toggle="tooltip" data-placement="top" title="@string.Format(Globals_OrdinaryProductAccount.ConfigureAccountMapping, @d.Name)">@Globals_OrdinaryProductAccount.Mappings</a> 
                                     <a href="/TransactionConfiguration/AccountMappingInfo?Key=@d.Id" class="mr-2" target="_blank" data-toggle="tooltip" data-placement="top" title="@string.Format(Globals_OrdinaryProductAccount.ConfigureAccountMapping, @d.Name)">@Globals_OrdinaryProductAccount.Simulation</a>
 
 }

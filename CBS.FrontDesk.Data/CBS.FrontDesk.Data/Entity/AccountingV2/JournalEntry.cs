@@ -298,13 +298,16 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         //public string CounterpartyBranchId { get; set; }
         public string Approveby { get; set; }
         public string Rejectedby { get; set; }
-        public DateTime ApproveDate { get; set; }
-        public DateTime RejectedDate { get; set; }
+        public DateTime? ApproveDate { get; set; }
+        public DateTime? RejectedDate { get; set; }
         public decimal TotalCredit { get; set; }
         public decimal TotalDebit { get; set; }
         public string TicketType { get; set; }
         public decimal InitiatedAmount { get; set; }
         public bool IsInterBranch { get; set; }
+        public string CreatedBy { get; set; }
+
+       
 
 
     }
@@ -426,11 +429,11 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public string Code { get; set; }
         public string Currency { get; set; }
         public bool IsActive { get; set; }
-        
+
     }
 
-
-
+   
+       
 
 
 }

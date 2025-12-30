@@ -44,6 +44,11 @@ namespace CBS.FrontDesk.Data.Entity.BulkOperation
         public string IsContribution { get; set; }
 
         public string SimulationType { get; set; }
+        public string SimulationType2 { get; set; }
+        public string SimulationDescription { get; set; }
+        public string SimulationDescription2 { get; set; }
+
+
         public string BranchId { get; set; }
 
       /*  public string BankCode { get; set; }

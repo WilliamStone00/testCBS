@@ -22,7 +22,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.IPS
         public int MaxDelinquencyDays { get; set; }
         public bool IsActive { get; set; }
 
-        public string BranchId { get; set; }
+        public string BranchId { get; set; } = null;
+        public bool IsCentralized { get; set; }
         public string BranchName { get; set; }
         public string BranchCode { get; set; }
 
@@ -47,7 +48,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.IPS
 
         public string BranchId { get; set; }
         public int? Year { get; set; }
-        public bool IsActive { get; set; }
+        public bool? IsActive { get; set; }
         public int? AgeLimitFrom { get; set; }
         public int? AgeLimitTo { get; set; }
         public int? MaxDelinquencyDaysFrom { get; set; }
