@@ -11129,7 +11129,6 @@
     <Content Include="Views\EndOfYearClosure\_DataTable.cshtml" />
     <Content Include="Views\EndOfYearClosure\_Confirm.cshtml" />
     <Content Include="Views\EndOfYearClosure\_ClosingForm.cshtml" />
-    <Content Include="Views\LoanProduct\_Create.cshtml" />
     <Content Include="Views\CounterCheque\_Detailscountercheque.cshtml" />
     <Content Include="Views\LoanProduct\_LoanProductSimpleForm.cshtml" />
     <Content Include="Views\AccountTypeGroup\Index.cshtml" />
