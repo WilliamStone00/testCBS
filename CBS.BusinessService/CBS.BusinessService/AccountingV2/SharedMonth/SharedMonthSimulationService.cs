@@ -28,6 +28,30 @@ namespace CBS.BusinessService.AccountingV2.SharedMonth
 
         }
 
+
+        public async Task<bool> ActivateSimulationAsync(InstrestCalculation model)
+        {
+            if (model == null)
+                throw new ArgumentNullException(nameof(model));
+
+            try
+            {
+                var apiResponse = await _apiCallerHelperT.PostAsync<ResponseObject<InstrestCalculation>>(
+                    APICallHelper.ActivateShareMonthSimulation,
+                    model
+                );
+
+                // Return true if API response is not null and indicates success
+                return apiResponse != null && apiResponse.IsSuccess; // Assuming ApiResponse has IsSuccess property
+            }
+            catch (Exception ex)
+            {
+                // Optional: log the error
+                return false; // Return false if there was an exception
+            }
+        }
+
+
         public async Task<List<ShareMonthPsiReportLineDto>> GetSimulationData(SharedMonthSimulation model)
         {
 
@@ -44,6 +68,29 @@ namespace CBS.BusinessService.AccountingV2.SharedMonth
                 );
 
             return apiResponse?.ApiResponseData?.Data ?? new List<ShareMonthPsiReportLineDto>();
+        }
+        public async Task<JobRequestListResponse> GetRequestDataAsync(SimulationFilterRequest model)
+        {
+            if (model == null)
+                throw new ArgumentNullException(nameof(model));
+
+            model.SimulatedByUserId = GetUserID();
+            model.Name = "string";
+
+            var apiResponse =
+                await _apiCallerHelperT.PostAsync<ResponseObject<JobRequestListResponse>>(
+                    APICallHelper.DataTableForRequestSimulation,
+                    model
+                );
+
+            // 🔥 SAFE deserialization
+            if (apiResponse?.ApiResponseData?.Data == null)
+                return new JobRequestListResponse
+                {
+                    Items = new List<JobRequestItem>()
+                };
+
+            return apiResponse.ApiResponseData.Data;
         }
 
         public async Task<ApiResponse<ResponseObject<CreateSimulations>>> CreateShareMonthSimulationAsync(CreateSimulations model)
@@ -70,6 +117,52 @@ namespace CBS.BusinessService.AccountingV2.SharedMonth
             }
         }
 
+        public async Task<ApiResponse<ServiceResponse<SharedMonthFileReponse>>> SharedMonthUpload(SharedMonthFileupload model)
+        {
+            try
+            {
+                if (model.file == null)
+                {
+                    return new ApiResponse<ServiceResponse<SharedMonthFileReponse>>
+                    {
+                        IsSuccess = false,
+                        ApiResponseData = null,
+                        Message = "❌ No file provided."
+                    };
+                }
+
+                if (string.IsNullOrWhiteSpace(model.BranchId))
+                {
+                    return new ApiResponse<ServiceResponse<SharedMonthFileReponse>>
+                    {
+                        IsSuccess = false,
+                        ApiResponseData = null,
+                        Message = "❌ Branch is required."
+                    };
+                }
+
+                var endpoint = $"{APICallHelper.SharedMonthUpload}";
+
+                var result = await _apiCallerHelper.UploadSharedMonthFileAsync<ServiceResponse<SharedMonthFileReponse>>(
+                    model.file,
+                    model.BranchId,
+                    model.Month,
+                    model.FileType,
+                    endpoint
+                );
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<ServiceResponse<SharedMonthFileReponse>>
+                {
+                    IsSuccess = false,
+                    ApiResponseData = null,
+                    Message = $"❌ Error while uploading shared month file: {ex.Message}"
+                };
+            }
+        }
 
 
     }

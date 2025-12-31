@@ -1,50 +1,108 @@
 ﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.SharedMonth.InstrestCalculation
 
-<div class="row">
-    <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <div class="row g-3">
+            @using (Html.BeginForm("GenerateSimulationData", "SharedMonthSimulation", FormMethod.Post, new { id = "GenerationForm", onsubmit = "return AjaxPostGeneration(this);" }))
+
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="col-md-12 mb-1" id="branchWrapper">
+
+                    <div class="col-md-12 mb-1">
+                        <label class="form-label fw-bold">Branch</label>
+                        @Html.DropDownList(
+                     "BranchId1",
+                     new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
+                     "--- Select Branch ---",
+                     new { @class = "form-select select2", required = "required" })
+                        <div class="invalid-feedback">Please select a branch</div>
+                    </div>
+                </div>
+
+                <div class="row mb-1">
+
+                    <div class="col-md-6 mb-1">
+                        @Html.LabelFor(m => m.StartDate, "Start Date",
+                             new { @class = "form-label fw-bold" })
+                        @Html.TextBoxFor(
+                             m => m.StartDate,
+                             new { @class = "form-control", type = "date", required = "required" })
+                        <div class="invalid-feedback">Please select a start date</div>
+                    </div>
+
+                    <div class="col-md-6 mb-1">
+                        @Html.LabelFor(m => m.EndDate, "End Date",
+                             new { @class = "form-label fw-bold" })
+                        @Html.TextBoxFor(
+                             m => m.EndDate,
+                             new { @class = "form-control", type = "date", required = "required" })
+                        <div class="invalid-feedback">Please select an end date</div>
+                    </div>
+
+                </div>
+
+                <div class="col-md-6 mb-1">
+                    <div class="form-check mt-4">
+                        @Html.CheckBoxFor(m => m.IsForNetwork,
+                         new { @class = "form-check-input", id = "IsForNetwork" })
+                        <label class="form-check-label fw-bold" for="IsForNetwork">
+                            Apply for Entire Network
+                        </label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 text-end">
+                        <button type="button" class="btn btn-primary">
+                            <i class="mdi mdi-cog-sync me-2"></i> Process Data
+                        </button>
+
+                    </div>
+                </div>
+            }
 
 
 
-        <div class="col-md-12 mb-1">
-            <label class="form-label fw-bold">Branch</label>
-            @Html.DropDownListFor(
-                m => m.BranchId,
-                new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
-                "--- Select Branch ---",
-                new { @class = "form-select select2" })
-            <div class="invalid-feedback">Please select a branch</div>
-        </div>
+            <div id="simulationdetailsCard" class="mt-3" style="display: none;">
+                <div class="card bg-light">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-end align-items-center">
+                            <button type="button" class="btn btn-success btn-sm" id="proceedToRequestBtn">
+                                <i class="mdi mdi-arrow-right"></i> Proceed to Request
+                            </button>
+                        </div>
 
-        <div class="col-md-6 mb-1">
-            @Html.LabelFor(m => m.StartDate, "Start Date",
-                new { @class = "form-label fw-bold" })
-            @Html.TextBoxFor(
-                m => m.StartDate,
-                new { @class = "form-control", type = "date", required = "required" })
-            <div class="invalid-feedback">Please select a start date</div>
-        </div>
+                    </div>
+                </div>
 
-        <div class="col-md-6 mb-1">
-            @Html.LabelFor(m => m.EndDate, "End Date",
-                new { @class = "form-label fw-bold" })
-            @Html.TextBoxFor(
-                m => m.EndDate,
-                new { @class = "form-control", type = "date", required = "required" })
-            <div class="invalid-feedback">Please select an end date</div>
-        </div>
 
-        <div class="col-md-6 mb-1">
-            <div class="form-check mt-4">
-                @Html.CheckBoxFor(m => m.IsForNetwork,
-                    new { @class = "form-check-input", id = "IsForNetwork" })
-                <label class="form-check-label fw-bold" for="IsForNetwork">
-                    Apply for Entire Network
-                </label>
+               
+                        <div class="card p-3 shadow mb-2">
+                            
+                                <table id="requestHistoryTable" class="table table-bordered table-striped align-middle">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>start Date</th>
+                                            <th>End Date </th>
+                                            <th>Branch Name </th>
+                                            <th>Created At</th>
+                                           
+                                            <th>Last Error</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                               
+                        </div>
             </div>
+
         </div>
-
-
 
     </div>
+
 </div>
+
 

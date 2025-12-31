@@ -134,11 +134,11 @@
                 }
                 @if (Model.AccountingDate != default(DateTime))
                 {
-                    <tr><th class="bg-label">Accounting Date</th><td>@Model.AccountingDate.ToString("yyyy-MM-dd HH:mm")</td></tr>
+                    <tr><th class="bg-label">Accounting Date</th><td>@Model.AccountingDate.ToString("dd-MM-yyyy HH:mm")</td></tr>
                 }
                 @if (Model.CreatedAt != default(DateTime))
                 {
-                    <tr><th class="bg-label">Date Created</th><td>@Model.CreatedAt.ToString("yyyy-MM-dd HH:mm")</td></tr>
+                    <tr><th class="bg-label">Date Created</th><td>@Model.CreatedAt.ToString("dd-MM-yyyy HH:mm")</td></tr>
                 }
                 @if (!string.IsNullOrWhiteSpace(Model.OperationCode))
                 {

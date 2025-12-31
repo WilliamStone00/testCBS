@@ -166,6 +166,7 @@
     <Compile Include="Entity\Accounting V2\HoPcmfAccount\BranchAccountTreeDto.cs" />
     <Compile Include="Entity\Accounting V2\HoPcmfAccount\HoPcmfAccountDto.cs" />
     <Compile Include="Entity\AccountingV2\CashReconciliation\CashAndVaultInit.cs" />
+    <Compile Include="Entity\AccountingV2\SharedMonth\SharedMonthFileupload.cs" />
     <Compile Include="Entity\AccountingV2\SharedMonth\SharedMonthSimulation.cs" />
     <Compile Include="Entity\Accounting\Acknowledge.cs" />
     <Compile Include="Entity\Accounting\BlacklistAccount.cs" />
