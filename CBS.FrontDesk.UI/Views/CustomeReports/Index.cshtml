@@ -373,8 +373,18 @@
 <div class="card p-3 shadow-sm mt-4" id="reportTableContainer">
 
     <div class="table-responsive">
-        <h5 class="text-primary mb-3"><i class="mdi mdi-table"></i>Donwload Reports In Excel / PDF</h5>
-        <table style="width: 100%" id="myDataTable" class="table table-hover table-bordered mb-0 custom-report-table">
+        <div class="d-flex justify-content-between align-items-center">
+            <h5 class="text-primary mb-3"><i class="mdi mdi-table"></i>Donwload Reports In Excel / PDF</h5>
+
+            <div>
+                <button type="button" class="btn btn-danger">
+                    Clear Generated Reports
+                </button>
+            </div>
+        </div>
+
+
+        <table style="width: 100%" id="myDataTable" class="table table-hover table-bordered mt-3 mb-0 custom-report-table">
             <thead>
                 <tr>
                     <th class="report-name-column">NAME</th>
