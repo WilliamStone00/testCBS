@@ -296,6 +296,10 @@
             });
         }
 
+
+       
+
+
         // ==========================
         // Generic post function
         // ==========================
@@ -444,7 +448,16 @@
                 },
                 success: function (html) {
                     $("#accountingYearModal .modal-content").html(html);
-                    bootstrap.Modal.getOrCreateInstance(document.getElementById('accountingYearModal')).show();
+
+                    // ✅ Initialize Select2 INSIDE the modal
+                    $('#accountingYearModal .select2').select2({
+                        dropdownParent: $('#accountingYearModal'),
+                        width: '100%'
+                    });
+
+                    bootstrap.Modal
+                        .getOrCreateInstance(document.getElementById('accountingYearModal'))
+                        .show();
                 },
                 error: function (xhr, status, error) {
                     appalert("Failed to load Add view: " + error, 1, 4);
@@ -469,7 +482,16 @@
                 },
                 success: function (html) {
                     $("#accountingYearModal .modal-content").html(html);
-                    bootstrap.Modal.getOrCreateInstance(document.getElementById('accountingYearModal')).show();
+
+                    // ✅ Initialize Select2 INSIDE the modal
+                    $('#accountingYearModal .select2').select2({
+                        dropdownParent: $('#accountingYearModal'),
+                        width: '100%'
+                    });
+
+                    bootstrap.Modal
+                        .getOrCreateInstance(document.getElementById('accountingYearModal'))
+                        .show();
                 },
                 error: function (xhr, status, error) {
                     appalert("Failed to load Update view: " + error, 1, 4);

@@ -7823,6 +7823,9 @@
     <Content Include="AppFiles\Accountingv2Reporting\DataSets\AccountingV2DS.xss">
       <DependentUpon>AccountingV2DS.xsd</DependentUpon>
     </Content>
+    <Content Include="AppFiles\ShareMonthUpload\Anual data.xlsx" />
+    <Content Include="AppFiles\ShareMonthUpload\Processed Data.xlsx" />
+    <Content Include="AppFiles\ShareMonthUpload\Unprocessed data.xlsx" />
     <None Include="DataSet\Loan\DeliquentLoanSummaryDataSet.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>

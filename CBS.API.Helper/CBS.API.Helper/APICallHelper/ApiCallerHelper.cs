@@ -4563,6 +4563,69 @@ Dictionary<string, string> additionalFields = null)
             }
         }
 
+
+        public async Task<ApiResponse<T>> UploadSharedMonthFileAsync<T>( HttpPostedFileBase file, string branchId, int month,string fileType, string apiUrl)
+        {
+            if (file == null)
+                throw new ArgumentNullException(nameof(file));
+
+            try
+            {
+                apiUrl = RemoveDuplicateSlashes($"{GetEndpoint(_newbaseURL)}{apiUrl}");
+
+                using (var formData = new MultipartFormDataContent())
+                {
+                    // Reset stream
+                    if (file.InputStream.CanSeek)
+                        file.InputStream.Position = 0;
+
+                    // File content
+                    var fileContent = new StreamContent(file.InputStream);
+                    fileContent.Headers.ContentType =
+                        new MediaTypeHeaderValue(file.ContentType ?? "application/octet-stream");
+
+                    var fileName = Path.GetFileName(file.FileName ?? "upload.bin");
+                    formData.Add(fileContent, "file", fileName);
+
+                    // BranchId
+                    formData.Add(
+                        new StringContent(branchId ?? string.Empty, Encoding.UTF8),
+                        "branchId"
+                    );
+
+                    // Month
+                    formData.Add(
+                        new StringContent(month.ToString(), Encoding.UTF8),
+                        "month"
+                    );
+
+                    // FileType (optional)
+                    if (!string.IsNullOrWhiteSpace(fileType))
+                    {
+                        formData.Add(
+                            new StringContent(fileType, Encoding.UTF8),
+                            "fileType"
+                        );
+                    }
+
+                    // Auth
+                    AddAuthorizationHeader(_httpClient);
+
+                    var response = await _httpClient.PostAsync(apiUrl, formData)
+                                                     .ConfigureAwait(false);
+
+                    return await HandleResponse<T>(response)
+                                 .ConfigureAwait(false);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"SharedMonth upload error: {ex}");
+                throw;
+            }
+        }
+
+
         // Usage Examples:
 
         // 1. Fire-and-forget with callback

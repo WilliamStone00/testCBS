@@ -43,7 +43,7 @@ new { id = "ProductCalculationConfigForm", enctype = "multipart/form-data", onsu
                             m => m.ProductId,
                             ViewBag.Products as List<SelectListItem>,
                             "-- Select Product --",
-                            new { @class = "form-control" }
+                            new { @class = "form-control  select2" }
                         )
                         @Html.HiddenFor(m => m.ProductName)
                     </div>
