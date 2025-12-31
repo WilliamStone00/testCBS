@@ -69,7 +69,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.BranchAccount
         public string AffiliateAccountName { get; set; }
         public string ParentId { get; set; }
         public string Path { get; set; }
-        public string  Language { get; set; }
+        public string Language { get; set; }
         public int? Depth { get; set; }
         public bool PostingAllowed { get; set; }
         public bool RequiresMapping { get; set; }
@@ -87,7 +87,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.BranchAccount
         public string BranchId { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
-        public string Class { get; set; }              
+        public string Class { get; set; }
         public string AffiliateAccountId { get; set; }
         public string ParentId { get; set; }
         public string PathContains { get; set; }
@@ -98,5 +98,15 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.BranchAccount
         public DateTime? CreatedToUtc { get; set; }
         public bool IncludeDeleted { get; set; } = false;
 
+    }
+
+    public class UpdateAccountNegativityRequest
+    {
+        public string BranchId { get; set; }
+        public bool AllowNegative { get; set; }
+        public bool ApplyToClass { get; set; }
+        public bool ApplyToSpecificAccount { get; set; }
+        public string ClassId { get; set; }
+        public string BranchAccountId { get; set; }
     }
 }

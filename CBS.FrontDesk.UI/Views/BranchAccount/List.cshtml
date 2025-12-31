@@ -29,6 +29,36 @@
     .compact .row.g-1 > [class^="col-"] {
         margin-bottom: .5rem;
     }
+
+    /* Negativity Modal Styles */
+    #manageNegativityModal .modal-header {
+        background-color: #fff3cd;
+        border-bottom: 1px solid #ffeaa7;
+    }
+
+    #manageNegativityModal .modal-title {
+        color: #856404;
+    }
+
+    #manageNegativityModal .form-check-input:checked {
+        background-color: #ffc107;
+        border-color: #ffc107;
+    }
+
+    #manageNegativityModal .form-switch .form-check-input {
+        width: 3em;
+        height: 1.5em;
+    }
+
+    #negativitySummary {
+        background-color: #e7f3ff;
+        border-color: #b6d4fe;
+        color: #0c5460;
+    }
+
+        #negativitySummary i {
+            color: #0d6efd;
+        }
 </style>
 
 <div class="compact">
@@ -139,11 +169,17 @@
         </form>
     </div>
 
-    <!-- Global actions -->
-    <div class="d-flex justify-content-end gap-2 mb-2">
-        <button id="btnAddRootBranch" type="button" class="btn btn-success btn-sm">
-            <i class="mdi mdi-bank-plus me-1"></i> Add Management Account
-        </button>
+    <div class="row">
+        <!-- Global actions -->
+        <div class="d-flex justify-content-end gap-2 mb-2">
+            <button id="btnManageAccountNeg" type="button" class="btn btn-warning btn-sm">
+                <i class="mdi mdi-bank-plus me-1"></i> Management Account Negativity
+            </button>
+
+            <button id="btnAddRootBranch" type="button" class="btn btn-success btn-sm">
+                <i class="mdi mdi-bank-plus me-1"></i> Add Management Account
+            </button>
+        </div>
     </div>
 
 </div>
@@ -180,14 +216,549 @@
     </div>
 </div>
 
+<!-- Placeholder for negativity modal (will be loaded via AJAX) -->
+<div id="negativityModalContainer"></div>
+
+<!-- MANAGEMENT ACCOUNT NEGATIVITY Modal -->
+<!--<div class="modal fade" id="manageNegativityModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-warning">
+                    <i class="mdi mdi-bank-plus me-1"></i> Manage Account Negativity
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label class="form-label">Branch</label>
+                        @Html.DropDownList("NegBranchId",
+                            new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name"),
+                            "--- Select Branch ---",
+                            new { @class = "form-select form-select-sm select2", id = "NegBranchId" })
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <div class="d-flex gap-3 mb-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="negativityMode"
+                                       id="negModeClass" value="class" checked>
+                                <label class="form-check-label" for="negModeClass">
+                                    By Account Class
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="negativityMode"
+                                       id="negModeSpecific" value="specific">
+                                <label class="form-check-label" for="negModeSpecific">
+                                    By Specific Account
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>-->
+<!-- CLASS Section (Default) -->
+<!--<div id="classSection" class="row mb-3">
+    <div class="col-md-12">
+        <label class="form-label">Account Class</label>
+        @Html.DropDownList("NegClassId",
+            new SelectList(ViewBag.Classes ?? new List<SelectListItem>(), "Value", "Text"),
+            "--- Select Class ---",
+            new
+                 {
+                @class = "form-select form-select-sm select2",
+                id = "NegClassId",
+
+            })
+    </div>
+</div>-->
+<!-- SPECIFIC ACCOUNT Section (Hidden initially) -->
+<!--<div id="specificAccountSection" class="row mb-3" style="display: none;">
+    <div class="col-md-12">
+        <label class="form-label">Branch Account</label>
+        <select id="NegBranchAccountId" class="form-select form-select-sm select2"
+                disabled>
+            <option value="">--- First select Branch ---</option>
+        </select>
+    </div>
+</div>-->
+<!-- Negativity Option -->
+<!--<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox"
+                   id="AllowNegativeBalance" checked>
+            <label class="form-check-label" for="AllowNegativeBalance">
+                Allow Negative Balance
+            </label>
+        </div>
+        <small class="text-muted">
+            When enabled, accounts can have negative balances. When disabled, all balances must be positive.
+        </small>
+    </div>
+</div>-->
+<!-- Summary Section -->
+<!--<div id="negativitySummary" class="alert alert-info" style="display: none;">
+                    <div class="d-flex align-items-center">
+                        <i class="mdi mdi-information-outline me-2"></i>
+                        <div>
+                            <strong>Summary:</strong>
+                            <div id="summaryText" class="small"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-warning btn-sm" id="btnApplyNegativity">
+                    <i class="mdi mdi-check-circle me-1"></i> Apply Changes
+                </button>
+            </div>
+        </div>
+    </div>
+</div>-->
 
 @section Scripts{
     @Scripts.Render("~/bundles/jqueryval")
-    <script>
+<script>
   (function ($) {
     'use strict';
 
     let table = null;
+
+    //-------------------------- Negativity Management ----------------------------
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Management Account Negativity - Loads modal via AJAX
+// ─────────────────────────────────────────────────────────────────────────────
+
+$(document).on('click', '#btnManageAccountNeg', function (e) {
+    e.preventDefault();
+    loadNegativityModal();
+});
+
+function loadNegativityModal() {
+    const $container = $('#negativityModalContainer');
+
+    // Show loading indicator
+    $container.html(`
+        <div class="modal fade" id="manageNegativityModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-body text-center py-5">
+                        <div class="spinner-border text-warning" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="mt-2">Loading negativity management...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `);
+
+    // Show the loading modal immediately
+    const loadingModal = new bootstrap.Modal($('#manageNegativityModal')[0], { backdrop: 'static' });
+    loadingModal.show();
+
+    // Load the actual modal content
+    $.ajax({
+        url: '@Url.Action("GetNegativityModal", "BranchAccount")',
+        type: 'GET',
+        success: function(html) {
+            // Replace container with loaded content
+            $container.html(html);
+
+            // Initialize the modal after it's loaded
+            initializeNegativityModal();
+
+            // Show the actual modal
+            const modal = new bootstrap.Modal($('#manageNegativityModal')[0], { backdrop: 'static' });
+            modal.show();
+        },
+        error: function(xhr) {
+            console.error('Error loading negativity modal:', xhr);
+            $container.html(`
+                <div class="modal fade" id="manageNegativityModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title text-danger">
+                                    <i class="mdi mdi-alert-circle me-1"></i> Error
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="alert alert-danger">
+                                    <i class="mdi mdi-alert-circle-outline me-2"></i>
+                                    Failed to load negativity management modal. Please try again.
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `);
+
+            // Show error modal
+            const errorModal = new bootstrap.Modal($('#manageNegativityModal')[0]);
+            errorModal.show();
+        }
+    });
+}
+
+function initializeNegativityModal() {
+    const $modal = $('#manageNegativityModal');
+
+    // Initialize Select2 in modal
+    try {
+        $modal.find('.select2').each(function () {
+            const $s = $(this);
+            if (!$s.data('select2')) {
+                $s.select2({ dropdownParent: $modal });
+            }
+        });
+    } catch (e) {
+        console.warn('Select2 init failed in negativity modal', e);
+    }
+
+    // Reset form
+    $('#NegBranchId').val(null).trigger('change');
+    $('#NegClassId').val(null).trigger('change');
+    $('#NegBranchAccountId').val(null).trigger('change').prop('disabled', true);
+    $('#AllowNegativeBalance').prop('checked', true);
+    $('#negModeClass').prop('checked', true);
+    $('#classSection').show();
+    $('#specificAccountSection').hide();
+    $('#negativitySummary').hide();
+
+    // Attach event handlers
+    attachNegativityModalEvents();
+}
+
+function attachNegativityModalEvents() {
+    // Handle mode switching
+    $('#manageNegativityModal').on('change', 'input[name="negativityMode"]', function() {
+        const mode = $(this).val();
+
+        if (mode === 'class') {
+            $('#classSection').show();
+            $('#specificAccountSection').hide();
+            $('#NegClassId').prop('disabled', false);
+            $('#NegBranchAccountId').prop('disabled', true);
+        } else {
+            $('#classSection').hide();
+            $('#specificAccountSection').show();
+            $('#NegClassId').prop('disabled', true);
+
+            // Enable branch account dropdown if branch is selected
+            const branchId = $('#NegBranchId').val();
+            if (branchId) {
+                $('#NegBranchAccountId').prop('disabled', false);
+                loadBranchAccountsForNegativity(branchId);
+            }
+        }
+
+        updateNegativitySummary();
+    });
+
+    // Handle branch change
+    $('#manageNegativityModal').on('change', '#NegBranchId', function() {
+        const branchId = $(this).val();
+
+        // Clear dependent fields
+        $('#NegClassId').val(null).trigger('change');
+        $('#NegBranchAccountId').val(null).trigger('change');
+
+        if (branchId) {
+            // If in specific account mode, load branch accounts
+            if ($('#negModeSpecific').is(':checked')) {
+                $('#NegBranchAccountId').prop('disabled', false);
+                loadBranchAccountsForNegativity(branchId);
+            }
+        } else {
+            $('#NegBranchAccountId').prop('disabled', true);
+        }
+
+        updateNegativitySummary();
+    });
+
+    // Handle class change
+    $('#manageNegativityModal').on('change', '#NegClassId', function() {
+        updateNegativitySummary();
+    });
+
+    // Handle branch account change
+    $('#manageNegativityModal').on('change', '#NegBranchAccountId', function() {
+        updateNegativitySummary();
+    });
+
+    // Handle negativity checkbox change
+    $('#manageNegativityModal').on('change', '#AllowNegativeBalance', function() {
+        updateNegativitySummary();
+    });
+
+    // Apply negativity settings
+    $('#manageNegativityModal').on('click', '#btnApplyNegativity', function() {
+        const branchId = $('#NegBranchId').val();
+        const mode = $('input[name="negativityMode"]:checked').val();
+        const allowNegative = $('#AllowNegativeBalance').is(':checked');
+
+        if (!branchId) {
+            appalert('Please select a branch first.', 3, 1);
+            return;
+        }
+
+        // Prepare data based on mode
+        const requestData = {
+            BranchId: branchId,
+            AllowNegative: allowNegative,
+            ApplyToClass: (mode === 'class'),
+            ApplyToSpecificAccount: (mode === 'specific')
+        };
+
+        if (mode === 'class') {
+            const classId = $('#NegClassId').val();
+            if (!classId) {
+                appalert('Please select an account class.', 3, 1);
+                return;
+            }
+            requestData.ClassId = classId;
+            requestData.BranchAccountId = null;
+        } else {
+            const accountId = $('#NegBranchAccountId').val();
+            if (!accountId) {
+                appalert('Please select a branch account.', 3, 1);
+                return;
+            }
+            requestData.BranchAccountId = accountId;
+            requestData.ClassId = null;
+        }
+
+        // Show confirmation
+        const action = allowNegative ? 'allow' : 'disallow';
+        const target = mode === 'class' ?
+            `all accounts of class "${$('#NegClassId option:selected').text()}"` :
+            `account "${$('#NegBranchAccountId option:selected').text()}"`;
+
+        alertify.confirm(
+            "Confirm Account Negativity Update",
+            `Are you sure you want to ${action} negative balance for ${target}?`,
+            function() {
+                // Submit the request
+                applyNegativitySettings(requestData);
+            },
+            function() {
+                appalert('Operation cancelled.', 3, 1);
+            }
+        );
+    });
+}
+
+// Load branch accounts for negativity management
+function loadBranchAccountsForNegativity(branchId) {
+    const $dropdown = $('#NegBranchAccountId');
+    if (!branchId) {
+        $dropdown.html('<option value="">--- Select Branch first ---</option>');
+        return;
+    }
+
+    $dropdown.html('<option value="">Loading accounts...</option>').prop('disabled', true);
+
+    $.ajax({
+        url: '@Url.Action("GetBranchAccountsByBranch", "BranchAccount")',
+        type: 'GET',
+        data: { branchId: branchId },
+        success: function(response) {
+            $dropdown.empty().prop('disabled', false);
+
+            if (!response || response.length === 0) {
+                $dropdown.append('<option value="">No accounts found</option>');
+                return;
+            }
+
+            $dropdown.append('<option value="">--- Select Branch Account ---</option>');
+
+            // Handle different response formats
+            let items = [];
+            if (Array.isArray(response)) {
+                items = response;
+            } else if (response.data && Array.isArray(response.data)) {
+                items = response.data;
+            }
+
+            items.forEach(function(account) {
+                const id = account.Id || account.Value || account.id || '';
+                const text = account.Name || account.Text || account.name || '';
+                const code = account.Code || account.code || '';
+                const displayText = code ? `${code} - ${text}` : text;
+
+                if (id && displayText) {
+                    $dropdown.append(new Option(displayText, id));
+                }
+            });
+
+            // Reinitialize Select2
+            try {
+                $dropdown.trigger('change.select2');
+            } catch (e) {
+                console.warn('Select2 refresh failed', e);
+            }
+        },
+        error: function(xhr) {
+            console.error('Error loading branch accounts:', xhr);
+            $dropdown.html('<option value="">Error loading accounts</option>').prop('disabled', false);
+        }
+    });
+}
+
+// Update summary text
+function updateNegativitySummary() {
+    const $summary = $('#negativitySummary');
+    const $summaryText = $('#summaryText');
+
+    const branchId = $('#NegBranchId').val();
+    const mode = $('input[name="negativityMode"]:checked').val();
+    const allowNegative = $('#AllowNegativeBalance').is(':checked');
+    const branchText = $('#NegBranchId option:selected').text();
+
+    if (!branchId) {
+        $summary.hide();
+        return;
+    }
+
+    let summary = `<strong>Branch:</strong> ${branchText}<br>`;
+    summary += `<strong>Mode:</strong> ${mode === 'class' ? 'By Account Class' : 'By Specific Account'}<br>`;
+
+    if (mode === 'class') {
+        const classId = $('#NegClassId').val();
+        const classText = $('#NegClassId option:selected').text();
+
+        if (classId) {
+            summary += `<strong>Class:</strong> ${classText}<br>`;
+            summary += `<strong>Action:</strong> ${allowNegative ? 'Allow' : 'Disallow'} negative balance for all accounts of this class`;
+        } else {
+            summary += `<strong>Class:</strong> Not selected yet`;
+        }
+    } else {
+        const accountId = $('#NegBranchAccountId').val();
+        const accountText = $('#NegBranchAccountId option:selected').text();
+
+        if (accountId) {
+            summary += `<strong>Account:</strong> ${accountText}<br>`;
+            summary += `<strong>Action:</strong> ${allowNegative ? 'Allow' : 'Disallow'} negative balance for this specific account`;
+        } else {
+            summary += `<strong>Account:</strong> Not selected yet`;
+        }
+    }
+
+    $summaryText.html(summary);
+    $summary.show();
+}
+
+// Submit negativity settings to server
+// Submit negativity settings to server - Modal stays open version
+function applyNegativitySettings(data) {
+    const $btn = $('#btnApplyNegativity');
+    const $modal = $('#manageNegativityModal');
+    const originalText = $btn.html();
+
+    $btn.prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin me-1"></i> Processing...');
+
+    $.ajax({
+        url: '@Url.Action("UpdateAccountNegativity", "BranchAccount")',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(data),
+        success: function(response) {
+            // Reset button state
+            $btn.prop('disabled', false).html(originalText);
+
+            if (response && response.success) {
+                // Show success message WITH option to close
+                const successHtml = `
+                    <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
+                        <div class="d-flex align-items-center">
+                            <i class="mdi mdi-check-circle-outline me-2" style="font-size: 1.25rem;"></i>
+                            <div class="flex-grow-1">
+                                <strong class="me-2">Success!</strong>
+                                ${response.message || 'Account negativity settings updated successfully!'}
+                            </div>
+                            <button type="button" class="btn btn-success btn-sm" onclick="closeNegativityModal()">
+                                <i class="mdi mdi-check me-1"></i> Close
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                // Remove any existing alerts and add new success message
+                $modal.find('.alert').remove();
+                $modal.find('.modal-body').prepend(successHtml);
+
+                // Optional: Reset form or keep values
+                // $('#NegBranchId').val(null).trigger('change');
+                // updateNegativitySummary();
+
+                // Reload table in background
+                if (table) {
+                    table.ajax.reload(null, false);
+                }
+            } else {
+                // Show error message
+                const errorHtml = `
+                    <div class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
+                        <i class="mdi mdi-alert-circle-outline me-2"></i>
+                        <strong>Error!</strong> ${response?.message || 'Failed to update negativity settings.'}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                `;
+
+                $modal.find('.alert').remove();
+                $modal.find('.modal-body').prepend(errorHtml);
+            }
+        },
+        error: function(xhr) {
+            console.error('Error updating negativity:', xhr);
+
+            // Reset button state
+            $btn.prop('disabled', false).html(originalText);
+
+            // Show error
+            const errorHtml = `
+                <div class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
+                    <i class="mdi mdi-alert-circle-outline me-2"></i>
+                    <strong>Server Error!</strong> An error occurred. Please try again.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            `;
+
+            $modal.find('.alert').remove();
+            $modal.find('.modal-body').prepend(errorHtml);
+        }
+    });
+}
+
+// Helper function to close the modal
+function closeNegativityModal() {
+    const modal = bootstrap.Modal.getInstance($('#manageNegativityModal')[0]);
+    if (modal) {
+        modal.hide();
+        // Optional: Reset form when closing
+        setTimeout(() => {
+            $('#NegBranchId').val(null).trigger('change');
+            $('#NegClassId').val(null).trigger('change');
+            $('#AllowNegativeBalance').prop('checked', true);
+            $('#manageNegativityModal .alert').remove();
+        }, 300);
+    }
+}
+
+//--------------------------------- End of negativity management -------------------------
 
     // ─────────────────────────────────────────────────────────────────────────────
     // Delegated change: fire when Class changes INSIDE the edit modal (AJAX-loaded)
@@ -549,7 +1120,7 @@
     });
 
   })(jQuery);
-    </script>
+</script>
 }
 
 
