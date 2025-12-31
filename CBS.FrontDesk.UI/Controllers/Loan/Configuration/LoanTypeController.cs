@@ -1,74 +1,68 @@
 ﻿using CBS.BusinessService.LoanP;
-using CBS.BusinessService.LoanP.Config;
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Message;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.Loan.Configuration
 {
-    public class PcmfLoanPurposeController : Controller
+    public class LoanTypeController : Controller
     {
-        private readonly PcmfLoanPurposeService _pcmfLoanPurposeService;
+        private readonly LoanTypeService _loanTypeService;
 
-        public PcmfLoanPurposeController(PcmfLoanPurposeService pcmfLoanPurposeService)
+        public LoanTypeController(LoanTypeService loanTypeService)
         {
-            _pcmfLoanPurposeService = pcmfLoanPurposeService;
+            _loanTypeService = loanTypeService;
         }
 
         public ActionResult Index()
         {
-            loader();
             return View();
         }
-    
+
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null,
             string path = null, string serviceOption = null)
         {
-            loader();
             if (path == "details")
             {
-                var data = await _pcmfLoanPurposeService.GetByIdAsync(KEY);
+                var data = await _loanTypeService.GetByIdAsync(KEY);
                 return PartialView(partialView, data);
             }
             else if (path == "edit")
             {
-                var data = await _pcmfLoanPurposeService.GetByIdAsync(KEY);
-               return PartialView(partialView, data);
+                var data = await _loanTypeService.GetByIdAsync(KEY);
+                return PartialView(partialView, data);
             }
             else if (path == "delete")
             {
-                var data = await _pcmfLoanPurposeService.GetByIdAsync(KEY);
+                var data = await _loanTypeService.GetByIdAsync(KEY);
                 return PartialView(partialView, data);
             }
             else // create
             {
-                return PartialView(partialView, new PcmfLoanPurpose());
+                return PartialView(partialView, new LoanType());
             }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CreateOrUpdate(PcmfLoanPurpose model)
+        public async Task<ActionResult> CreateOrUpdate(LoanType model)
         {
             if (!ModelState.IsValid)
             {
                 return Json(new
                 {
-                    success = false,
-                    message = "Validation failed.",
-                    errors = ModelState.Values
-                        .SelectMany(v => v.Errors)
-                        .Select(e => e.ErrorMessage)
+                    success = false, message = "Enter all values .", errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
                 });
             }
 
             var isCreate = string.IsNullOrWhiteSpace(model.Id);
             var result = isCreate
-                ? await _pcmfLoanPurposeService.CreateAsync(model)
-                : await _pcmfLoanPurposeService.UpdateAsync(model);
+                ? await _loanTypeService.CreateAsync(model)
+                : await _loanTypeService.UpdateAsync(model);
 
             return Json(new
             {
@@ -84,15 +78,33 @@ namespace CBS.FrontDesk.UI.Controllers.Loan.Configuration
             if (string.IsNullOrEmpty(id))
                 return Json(new { success = false, message = "ID is required." });
 
-            var result = await _pcmfLoanPurposeService.DeleteAsync(id);
+            var result = await _loanTypeService.DeleteAsync(id);
             return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
         }
 
         [HttpGet]
         public async Task<JsonResult> GetAll()
-         {
-            var data = await _pcmfLoanPurposeService.GetAllAsync();
-            return Json(new { success = true, data = data }, JsonRequestBehavior.AllowGet);
+        {
+            try
+            {
+                var data = await _loanTypeService.GetAllAsync();               
+
+                return Json(new
+                {
+                    success = true,
+                    data = data,
+                    count = data?.Count() ?? 0
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = ex.Message,
+                    data = new List<LoanType>()
+                }, JsonRequestBehavior.AllowGet);
+            }
         }
 
         [HttpGet]
@@ -104,22 +116,8 @@ namespace CBS.FrontDesk.UI.Controllers.Loan.Configuration
                     JsonRequestBehavior.AllowGet);
             }
 
-            var data = await _pcmfLoanPurposeService.GetByIdAsync(id);
+            var data = await _loanTypeService.GetByIdAsync(id);
             return Json(new { success = data != null, data = data }, JsonRequestBehavior.AllowGet);
-        }
-        private bool loader()
-        {
-            // Load LoanTermKind enum values
-            var LtGroupOptions = Enum.GetValues(typeof(PcmfPurposeKey))
-                .Cast<PcmfPurposeKey>()
-                .Select(e => new SelectListItem
-                {
-                    Value = e.ToString(),
-                    Text = e.ToString()
-                })
-                .ToList();
-            ViewBag.LtGroupOptions = LtGroupOptions;
-            return true;
         }
     }
 }

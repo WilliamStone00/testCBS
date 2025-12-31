@@ -79,6 +79,9 @@ namespace CBS.FrontDesk.Data.Entity.MemberOperation
             SelectLoans = new List<Loan>();
         }
     }
+
+ 
+
     public class UpdateLoanApplicationCommand
     {
         public string Id { get; set; }

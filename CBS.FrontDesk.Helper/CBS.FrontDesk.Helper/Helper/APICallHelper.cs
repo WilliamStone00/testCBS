@@ -1302,6 +1302,9 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllCounterChequeByBranch = "/api/v1/counter-checks/by-branch/{branchId}";
         public static string GetCustormerchequebook = "/api/v1/checkbook/categories";
         public static string GetCustomerChequeBook = "/api/v1/checkbook/{0}";
+        public static string GetCustomerChequeBooks = "/api/v1/checkbook/customer/{0}";
+        public static string GetChequeBookWithLeaves = "/api/v1/leaves/{0}"; 
+        public static string GetChequeLeafDetails = "/api/v1/checkbook-leave/{0}"; 
 
 
         //--------------------------------------TEST--------------------------------------//
@@ -1855,9 +1858,9 @@ namespace CBS.FrontDesk.Helper
         public static string SharedMonthUpload = "/api/v1/ProcessesExternalShareMonth/ShareMonthFile";
         //------------------------- LoanTargetCatalog ----------------
         public const string LoanTargetCatalogCreate = "/api/v1/LoanTargetCatalog/Create";
-            public const string LoanTargetCatalogGet = "/api/v1/LoanTargetCatalog/Get";
-            public const string LoanTargetCatalogGetAll = "/api/v1/LoanTargetCatalog/GetAll";
-            public const string LoanTargetCatalogUpdate = "/api/v1/LoanTargetCatalog/Update";
+        public const string LoanTargetCatalogGet = "/api/v1/LoanTargetCatalog/Get";
+        public const string LoanTargetCatalogGetAll = "/api/v1/LoanTargetCatalog/GetAll";
+        public const string LoanTargetCatalogUpdate = "/api/v1/LoanTargetCatalog/Update";
         public const string LoanTargetCatalogDelete = "/api/v1/LoanTargetCatalog/Delete";
 
         //----------------  PCMF LOAN PURPOSE ENDPOINTS --------------------------------
@@ -1866,6 +1869,13 @@ namespace CBS.FrontDesk.Helper
         public const string PcmfLoanPurposeGetById = "/api/v1/PcmfLoanPurpose/{0}";
         public const string PcmfLoanPurposeUpdate = "/api/v1/PcmfLoanPurpose/{0}";
         public const string PcmfLoanPurposeDelete = "/api/v1/PcmfLoanPurpose/{0}";
-    
-}
+
+        //---------------- LoanType API endpoints --------------------------------
+        public const string LoanTypeCreate = "/api/v1/LoanType";
+        public const string LoanTypeGetAll = "/api/v1/LoanTypes";
+        public const string LoanTypeGetById = "/api/v1/LoanType/{0}";
+        public const string LoanTypeUpdate = "/api/v1/LoanType/{0}";
+        public const string LoanTypeDelete = "/api/v1/LoanType/{0}";
+
+    }
 }

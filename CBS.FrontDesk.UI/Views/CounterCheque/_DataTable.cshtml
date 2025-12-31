@@ -1,372 +1,170 @@
-﻿@using Resources
+﻿<table id="chequeRequestTable" class="table table-bordered table-striped w-100">
+    <thead class="table-light">
+        <tr>
+            <th>Customer Name</th>
+            <th>Category</th>
+            <th>Branch</th>
+            <th class="text-center">Status</th>
+            <th class="text-center">Actions</th>
+        </tr>
+    </thead>
+</table>
 
-<fieldset class="fieldset-custom">
-    <div class="card p-3 mb-3 bg-light border">
-        <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-2"></i> Filter & Sort Counter Cheques</h5>
-
-        <form id="counterChequeFilterForm" autocomplete="off">
-            <div class="row g-3">
-                <div class="col-md-3">
-                    <label class="form-label fw-bold" for="CustomerId">Client Name / ID</label>
-                    <input type="text" id="CustomerId" name="CustomerId" class="form-control" placeholder="Search client...">
-                </div>
-
-                <div class="col-md-3">
-                    <label class="form-label fw-bold" for="BranchId">Branch</label>
-                    @* Adjust ViewBag.Branches source as needed *@
-                    @Html.DropDownList("BranchId", new SelectList(ViewBag.Branches, "Id", "Name"), "--- All Branches ---", new { @class = "form-control select2", id = "BranchId" })
-                </div>
-
-                <div class="col-md-3">
-                    <label class="form-label fw-bold" for="AccountNumber">Account Number</label>
-                    <input type="text" id="AccountNumber" name="AccountNumber" class="form-control" placeholder="Account number...">
-                </div>
-
-                <div class="col-md-3">
-                    <label class="form-label fw-bold" for="CheckLeafId">Check Leaf ID</label>
-                    <input type="text" id="CheckLeafId" name="CheckLeafId" class="form-control" placeholder="Leaf id...">
-                </div>
-
-                <div class="col-md-3">
-                    <label class="form-label fw-bold" for="CheckNumber">Check Number</label>
-                    <input type="text" id="CheckNumber" name="CheckNumber" class="form-control" placeholder="Check number...">
-                </div>
-
-                <div class="col-md-3">
-                    <label class="form-label fw-bold" for="IssuedBy">Issued By</label>
-                    <input type="text" id="IssuedBy" name="IssuedBy" class="form-control" placeholder="Issuer name or id...">
-                </div>
-
-                <div class="col-md-3">
-                    <label class="form-label fw-bold" for="Amount">Amount</label>
-                    <input type="number" step="0.01" id="Amount" name="Amount" class="form-control" placeholder="Exact amount...">
-                </div>
-
-                <div class="col-md-3">
-                    <label class="form-label fw-bold" for="IssuedOn">Issued On</label>
-                    <input type="datetime-local" id="IssuedOn" name="IssuedOn" class="form-control">
-                </div>
-
-                <div class="col-md-3">
-                    <label class="form-label fw-bold" for="StartDate">Validity Start</label>
-                    <input type="datetime-local" id="StartDate" name="StartDate" class="form-control">
-                </div>
-
-                <div class="col-md-3">
-                    <label class="form-label fw-bold" for="EndDate">Validity End</label>
-                    <input type="datetime-local" id="EndDate" name="EndDate" class="form-control">
-                </div>
-
-                <div class="col-md-3">
-                    <label class="form-label fw-bold" for="Id">Record ID</label>
-                    <input type="text" id="Id" name="Id" class="form-control" placeholder="Exact record id...">
-                </div>
-            </div>
-
-            <div class="row mt-3">
-                <div class="col-md-6">
-                    <button id="applyCounterChequeFilterBtn" type="button" class="btn btn-primary w-100">
-                        <i class="mdi mdi-magnify me-1"></i> Apply Filter
-                    </button>
-                </div>
-
-                <div class="col-md-6">
-                    <button id="resetFilterBtn" type="button" class="btn btn-secondary w-100">
-                        <i class="mdi mdi-refresh me-1"></i> Reset
-                    </button>
-                </div>
-            </div>
-        </form>
-    </div>
-
-
-    <!-- =================================================
-         DATATABLE
-    ================================================== -->
-    <div class="table-responsive">
-        <table id="myDataTable" class="table table-hover" style="width:100%;">
-            <colgroup>
-                <col style="width:20%;"> <!-- Cheque Number -->
-                <col style="width:20%;"> <!-- Client Name -->
-                <col style="width:15%;"> <!-- Branch -->
-                <col style="width:10%;"> <!-- Amount -->
-                <col style="width:15%;"> <!-- Issued On -->
-                <col style="width:10%;"> <!-- Status -->
-                <col style="width:10%;"> <!-- Actions -->
-            </colgroup>
-
-            <thead class="table-light">
-                <tr>
-                    <th>Cheque Number</th>
-                    <th>Client Name</th>
-                    <th>Branch</th>
-                    <th class="text-end">Amount</th>
-                    <th>Issued On</th>
-                    <th class="text-center">Status</th>
-                    <th class="text-center">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Data is loaded by server-side AJAX -->
-            </tbody>
-        </table>
-    </div>
-
-</fieldset>
 
 <script>
-$(document).ready(function () {
+(function ($) {
     'use strict';
 
-    // --- Helper: parse decimal safely ---
-    function parseDecimalOrNull(v) {
-        if (!v) return null;
-        var n = parseFloat(v);
-        return isNaN(n) ? null : n;
-    }
+    let chequeTable;
 
-    // --- Collect filter params to match server-side model ---
-    function collectCounterChequeFilterParams() {
+    /* =========================
+       Collect Filters
+    ========================= */
+    function collectChequeFilters() {
         return {
-            options: {},
+            CustomerId: $('#CustomerId').val() || null,
+            CategoryId: $('#CategoryId').val() || null,
+            Status: $('#Status').val() || null,
+            BranchId: $('#BranchId').val() || null,
+            ApprovalDate: $('#ApprovalDate').val() || null,
+            StartDate: $('#StartDate').val() || null,
+            EndDate: $('#EndDate').val() || null,
 
-            // Map form inputs with proper null handling
-            Id: $('#Id').val() || '',
-            CustomerId: $('#CustomerId').val() || '',
-            amount: $('#Amount').val() ? parseInt($('#Amount').val(), 10) : 0,
-            AccountNumber: $('#AccountNumber').val() || '',
-            BranchId: $('#BranchId').val() || '',
-            //CheckLeafId: $('#CheckLeafId').val() || '',
-            //CheckNumber: $('#CheckNumber').val() || '',
-            //IssuedOn: $('#IssuedOn').val() || '',
-            //IssuedBy: $('#IssuedBy').val() || '',
-            //StartDate: $('#StartDate').val() || '',
-            //EndDate: $('#EndDate').val() || ''
+            NotifyOnApproval: $('#NotifyOnApproval').is(':checked'),
+            NotifyOnClearance: $('#NotifyOnClearance').is(':checked'),
+            NotifyOnRejection: $('#NotifyOnRejection').is(':checked'),
+            NotifyOnPayment: $('#NotifyOnPayment').is(':checked'),
+            NotifyOnAnyTransaction: $('#NotifyOnAnyTransaction').is(':checked'),
+            AutomaticRenewal: $('#AutomaticRenewal').is(':checked'),
+
+            DataTableOptions: {}
         };
     }
 
-    // --- Single resetFilters (consolidated) ---
-    function resetFilters() {
-        // text inputs
-        $('#Id, #CustomerId, #AccountNumber, #CheckLeafId, #CheckNumber, #IssuedBy, #IssuedOn').each(function () { $(this).val(''); });
+    /* =========================
+       Init DataTable
+    ========================= */
+    function initChequeRequestTable() {
 
-        // amount range
-        $('#AmountMin, #AmountMax').each(function () { $(this).val(''); });
-
-        // date ranges
-        $('#StartDate, #EndDate').each(function () { $(this).val(''); });
-
-        // selects
-        if ($('#BranchId').length) { $('#BranchId').val('').trigger('change'); }
-        if ($('#statusFilter').length) { $('#statusFilter').val('').trigger('change'); }
-
-        // reload datatable
-        if ($.fn.DataTable.isDataTable('#myDataTable')) {
-            $('#myDataTable').DataTable().ajax.reload();
-        }
-    }
-
-    // --- Init select2 on the correct IDs ---
-    if ($('#BranchId').length) $('#BranchId').select2({ width: '100%' });
-    if ($('#statusFilter').length) $('#statusFilter').select2({ width: '100%' });
-
-    // --- DataTable ---
-    var myDataTable = null;
-    function loadCounterCheques() {
-        if ($.fn.DataTable.isDataTable('#myDataTable')) {
-            $('#myDataTable').DataTable().destroy();
-            $('#myDataTable tbody').empty();
-        }
-
-        myDataTable = $('#myDataTable').DataTable({
+        chequeTable = $('#chequeRequestTable').DataTable({
+            processing: true,
             serverSide: true,
-            searching: false,
+            searching: true,
             destroy: true,
-            order: [[4, 'desc']],
-            columnDefs: [
-                { targets: 0, width: '15%' }, // Cheque Number
-                { targets: 1, width: '20%' }, // Client Name
-                { targets: 2, width: '15%' }, // Branch
-                { targets: 3, width: '10%', className: 'text-end' }, // Amount
-                { targets: 4, width: '15%' }, // Issued On
-                { targets: 5, width: '10%', className: 'text-center' }, // Status
-                { targets: 6, width: '15%', className: 'text-center' } // Actions
-            ],
+            order: [[0, 'desc']],
+
             ajax: {
-                url: '@Url.Action("LoadCounterCheques", "CounterCheque")',
+                url: '@Url.Action("LoadChequeBooksData", "ChequeRequest")',
                 type: 'POST',
                 contentType: 'application/json',
                 data: function (d) {
-                    var filters = collectCounterChequeFilterParams();
-                    // fill datatable options expected by server
-                    filters.options = filters.options || {};
-                    filters.options.draw = d.draw;
-                    filters.options.start = d.start;
-                    filters.options.length = d.length;
-                    filters.options.skip = d.start;
-                    filters.options.pageSize = d.length;
-                    // sort column name (use column.name to map to server property)
-                    if (d.order && d.order.length) {
-                        var ord = d.order[0];
-                        var col = (d.columns && d.columns[ord.column]) ? d.columns[ord.column].name : null;
-                        filters.options.sortColumnName = col;
-                        filters.options.sortColumnDirection = ord.dir;
-                    }
+                    let filters = collectChequeFilters();
+                    filters.DataTableOptions = {
+                        draw: d.draw,
+                        start: d.start,
+                        length: d.length,
+                        searchValue: d.search?.value || '',
+                        sortColumnName: d.columns[d.order[0].column].data,
+                        sortColumnDirection: d.order[0].dir
+                    };
                     return JSON.stringify(filters);
                 }
             },
+
             columns: [
-                { data: "CheckNumber", name: "CheckNumber" },
-                { data: "ClientName", name: "ClientName" },
-                { data: "BranchName", name: "BranchName" },
-                { data: "Amount", name: "Amount", className: "text-end", render: $.fn.dataTable.render.number(',', '.', 2, '') },
-                { data: "IssuedOn", name: "IssuedOn", render: function (d) { return d ? new Date(d).toLocaleString() : ''; } },
-                { data: "Status", name: "Status", orderable: false, className: "text-center", render: function (s) { return getStatusBadge(s); } },
+                { data: 'CustomerName', name: 'CustomerName' },
+                { data: 'CheckBookCategoryName', name: 'CategoryName' },
                 {
-                    data: null, orderable: false, className: "text-center",
-                    render: function (data, type, row) {
-                        // Use data-* attrs to avoid JS string-escaping issues
-                        var detailsBtn = `<button type="button" class="btn btn-sm btn-outline-secondary me-1 btn-details" data-id="${encodeURIComponent(row.Id)}">Details</button>`;
-                        var actionBtnss = `<button type="button" class="btn btn-sm btn-outline-success btn-action ms-1" data-action="Validate" data-id="${encodeURIComponent(row.Id)}" data-client="${encodeURIComponent(row.ClientName || '')}">Validate</button>`;
-                        var actionBtns = '';
-                        var status = (row.Status || '').toLowerCase();
-                        if (status === 'pending') {
-                            actionBtns += `<button type="button" class="btn btn-sm btn-outline-primary btn-action ms-1" data-action="Review" data-id="${encodeURIComponent(row.Id)}" data-client="${encodeURIComponent(row.ClientName || '')}">Review</button>`;
-                            actionBtns += `<button type="button" class="btn btn-sm btn-outline-success btn-action ms-1" data-action="Validate" data-id="${encodeURIComponent(row.Id)}" data-client="${encodeURIComponent(row.ClientName || '')}">Validate</button>`;
-                        } else if (status === 'reviewed') {
-                            actionBtns += `<button type="button" class="btn btn-sm btn-outline-success btn-action ms-1" data-action="Validate" data-id="${encodeURIComponent(row.Id)}" data-client="${encodeURIComponent(row.ClientName || '')}">Validate</button>`;
-                            actionBtns += `<button type="button" class="btn btn-sm btn-outline-danger btn-action ms-1" data-action="Reject" data-id="${encodeURIComponent(row.Id)}" data-client="${encodeURIComponent(row.ClientName || '')}">Reject</button>`;
-                        }
-                        return `<div class="btn-group">${detailsBtn}${actionBtns}${actionBtnss}</div>`;
-                    }
+                    data: 'BranchName',
+                    name: 'BranchName',
+                    render: d => d || '—'
+                },
+                {
+                    data: 'Status',
+                    orderable: false,
+                    className: 'text-center',
+                    render: s => renderStatusBadge(s)
+                },
+                {
+                    data: null,
+                    orderable: false,
+                    className: 'text-center',
+                    render: (_, __, row) => renderActionMenu(row)
                 }
             ]
         });
     }
 
-    // --- Status badge helper ---
-    function getStatusBadge(status) {
-        if (!status) return '';
-        var s = (status || '').toLowerCase();
-        var cls = 'bg-secondary';
-        if (s === 'pending') cls = 'bg-warning text-dark';
-        if (s === 'reviewed') cls = 'bg-info';
-        if (s === 'validated') cls = 'bg-success';
-        if (s === 'rejected') cls = 'bg-danger';
-        return `<span class="badge ${cls}">${status}</span>`;
+    /* =========================
+       Helpers
+    ========================= */
+    function renderStatusBadge(status) {
+        const map = {
+            pending: 'bg-warning text-dark',
+            approved: 'bg-success',
+            rejected: 'bg-danger',
+            delivered: 'bg-info',
+            reviewed: 'bg-primary'
+        };
+        let cls = map[(status || '').toLowerCase()] || 'bg-secondary';
+        return `<span class="badge ${cls}">${status || '—'}</span>`;
     }
 
-    $(document).on('click', '#myDataTable .btn-details', function (e) {
+    function renderActionMenu(row) {
+        const id = row.Id;
+        const status = (row.Status || '').toLowerCase();
+        const name = (row.CustomerName || '').replace(/'/g, "\\'");
+        const customerId = row.CustomerId || '';
+
+        let actions = `
+            <li>
+                <button class="dropdown-item"
+                        onclick="viewDetails('${id}')">
+                    <i class="mdi mdi-eye-outline me-2 text-primary"></i> Details
+                </button>
+            </li>`;
+
+        if (status === 'pending') {
+            actions += `
+            <li><button class="dropdown-item" onclick="showActionModal('review','${id}','${name}','${customerId}','${status}')">Review</button></li>
+            <li><button class="dropdown-item" onclick="showActionModal('approve','${id}','${name}','${customerId}','${status}')">Approve</button></li>
+            <li><button class="dropdown-item" onclick="showActionModal('reject','${id}','${name}','${customerId}','${status}')">Reject</button></li>`;
+        }
+
+        if (status === 'reviewed') {
+            actions += `
+            <li><button class="dropdown-item" onclick="showActionModal('approve','${id}','${name}','${customerId}','${status}')">Approve</button></li>
+            <li><button class="dropdown-item" onclick="showActionModal('reject','${id}','${name}','${customerId}','${status}')">Reject</button></li>`;
+        }
+
+        return `
+        <div class="dropdown">
+            <button class="btn btn-sm btn-info dropdown-toggle" data-bs-toggle="dropdown">
+                <i class="mdi mdi-cog"></i> Actions
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+                ${actions}
+            </ul>
+        </div>`;
+    }
+
+    /* =========================
+       Events
+    ========================= */
+    $('#applyFilterBtn').on('click', function (e) {
         e.preventDefault();
-        var id = decodeURIComponent($(this).data('id') || '');
-        if (!id) { appalert('Missing record id', 0, 1); return; }
-        viewCounterCheque(id);    // ⬅ loads modal + data
+        if (!chequeTable) initChequeRequestTable();
+        else chequeTable.ajax.reload();
     });
 
-    // Action buttons (Review/Validate/Reject)
-    $(document).on('click', '#myDataTable .btn-action', function (e) {
+    $('#resetFilterBtn').on('click', function (e) {
         e.preventDefault();
-        var $btn = $(this);
-        var action = $btn.data('action');
-        var id = decodeURIComponent($btn.data('id'));
-        var client = decodeURIComponent($btn.data('client') || '');
-        if (!id || !action) { appalert('Missing action or id', 0, 1); return; }
-        // open modal and load partial
-        showActionModal(action, id, client);
+        $('#chequeRequestFilterForm')[0].reset();
+        $('.form-check-input').prop('checked', false);
+        $('[id$="FilterSection"]').hide();
+
+        if (chequeTable) chequeTable.clear().draw();
     });
 
-  // Robust function to load and show details partial
-     window.viewCounterCheque = function (id, opts) {
-            opts = opts || {};
-            var modalSelector = opts.modalSelector || '#viewReceiptModal';
-            var containerSelector = opts.containerSelector || '#receiptModalContainer';
-            var url = '@Url.Action("GetCounterChequeDetails", "CounterCheque")';
-
-            if (!id) { appalert('Missing id', 0, 1); return; }
-
-            // quick safety checks
-            if ($(modalSelector).length === 0) {
-                console.error('Modal shell not found:', modalSelector);
-                appalert('Unable to show details: modal container missing.', 0, 1);
-                return;
-            }
-            if ($(containerSelector).length === 0) {
-                console.error('Modal content container not found:', containerSelector);
-                appalert('Unable to show details: modal content container missing.', 0, 1);
-                return;
-            }
-
-           
-            // show modal shell
-            $(modalSelector).modal('show');
-
-            // request partial
-            $.get(url, { id: id })
-                .done(function (html, status, xhr) {
-                    // If server returned a full layout (e.g. login page), detect it quickly:
-                    var looksLikeFullPage = /<!doctype|<html[\s>]/i.test(html);
-                    if (looksLikeFullPage) {
-                        // show brief error and dump full content to console for debugging
-                        $(containerSelector).html(
-                            '<div class="p-4"><div class="alert alert-danger">Failed to load details. Server returned an unexpected response.</div></div>'
-                        );
-                        console.error('Expected partial HTML but received full page. Response length:', html.length, xhr.status, xhr.getAllResponseHeaders());
-                        return;
-                    }
-
-                    // Replace container with partial
-                    $(containerSelector).html(html);
-
-                    // Optional: update modal title if the partial includes a data attribute or element
-                    // If your partial exposes <div id="partialTitle" data-title="..."></div>, use that:
-                    var newTitle = $(containerSelector).find('[data-partial-title]').data('partial-title');
-                    if (newTitle) {
-                        $(modalSelector).find('.modal-title').text(newTitle);
-                    }
-
-                    // Re-init any controls inside the partial, e.g. select2, tooltips, validation
-                    if (typeof initControls === 'function') initControls();
-                    try {
-                        // re-parse unobtrusive validation if needed
-                        if (typeof $.validator !== 'undefined' && $.validator.unobtrusive) {
-                            $.validator.unobtrusive.parse($(containerSelector));
-                        }
-                    } catch (ex) { /* ignore */ }
-                })
-                .fail(function (xhr, status, err) {
-                    var msg = 'Failed to load details.';
-                    if (xhr.status === 401 || xhr.status === 403) msg = 'Authentication required.';
-                    else if (xhr.status >= 500) msg = 'Server error while loading details.';
-                    $(containerSelector).html('<div class="p-4"><div class="alert alert-danger">' + msg + '</div></div>');
-                    console.error('Error loading details:', xhr.status, status, err, xhr.responseText);
-                });
-        };
-
-
-    // --- Hook buttons ---
-    $('#applyCounterChequeFilterBtn').off('click').on('click', function () {
-        if (myDataTable) myDataTable.ajax.reload();
-        else loadCounterCheques();
-    });
-
-    $('#resetFilterBtn').off('click').on('click', function () {
-        resetFilters();
-    });
-
-    // export button(s) if present
-    $('#exportBtn, #exportCounterChequeBtn').off('click').on('click', function () {
-        // build URL using current filter values
-        var params = $.param({
-            branchId: $('#BranchId').length ? $('#BranchId').val() : '',
-            customerId: $('#CustomerId').length ? $('#CustomerId').val() : '',
-            status: $('#statusFilter').length ? $('#statusFilter').val() : '',
-            startDate: $('#StartDate').length ? $('#StartDate').val() : '',
-            endDate: $('#EndDate').length ? $('#EndDate').val() : ''
-        });
-        window.location = '@Url.Action("Download", "CounterCheque")' + '?' + params;
-    });
-
-    // --- Initialize on first load ---
-    //loadCounterCheques();
-});
+})(jQuery);
 </script>

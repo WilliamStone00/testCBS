@@ -29,7 +29,7 @@ namespace CBS.BusinessService.LoanP
         }
 
         /* ========================= CREATE ========================= */
-        public async Task<ExecutionMessages> CreateAsync(UpdatePcmfLoanPurposeRequest model)
+        public async Task<ExecutionMessages> CreateAsync(PcmfLoanPurpose model)
         {
             try
             {
@@ -102,7 +102,7 @@ namespace CBS.BusinessService.LoanP
         }
 
         /* ========================= UPDATE ========================= */
-        public async Task<ExecutionMessages> UpdateAsync(UpdatePcmfLoanPurposeRequest model)
+        public async Task<ExecutionMessages> UpdateAsync(PcmfLoanPurpose model)
         {
             try
             {
