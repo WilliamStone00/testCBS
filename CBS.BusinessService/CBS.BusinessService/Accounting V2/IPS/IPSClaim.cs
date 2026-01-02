@@ -218,7 +218,7 @@ namespace CBS.BusinessService.Accounting_V2.IPS
         {
             try
             {
-             
+
                 string url = string.Format(APICallHelper.PostIPSClaim, model.ClaimId);
                 var response = await _apiHelper.PostAsync<ServiceResponse<object>>(url, model);
 
@@ -410,25 +410,42 @@ namespace CBS.BusinessService.Accounting_V2.IPS
 
         public async Task<CustomerMetaDataResponse> GetinfoAsync(string id)
         {
+            var result = new CustomerMetaDataResponse();
+
             try
             {
                 if (string.IsNullOrWhiteSpace(id))
-                    throw new ArgumentException("id is required", nameof(id));
+                {
+                    result.success = false;
+                    result.statusMessage = "Member reference is required.";
+                    return result;
+                }
 
                 var encodedId = Uri.EscapeDataString(id);
                 string formattedUrl = string.Format(APICallHelper.Clientdata, encodedId);
 
-                var response = await _apiCallerHelper.GetAsync<ServiceResponse<CustomerMetaDataResponse>>(formattedUrl);
+                var response = await _apiCallerHelper
+                    .GetAsync<ServiceResponse<CustomerMetaDataResponse>>(formattedUrl);
 
-                if (response?.ApiResponseData?.Data != null && response.IsSuccess)
+                if (!response.IsSuccess || response.ApiResponseData?.Data == null)
                 {
-                    return response.ApiResponseData?.Data;
-                }
-                return null;
+                    result.success = false;
+                    result.statusMessage = response.Message;
+                    return result;
+                }               
+
+                // 🟢 SUCCESS
+                result = response.ApiResponseData.Data;
+                result.success = true;
+                result.statusMessage = response.Message; 
+
+                return result;
             }
             catch (Exception ex)
             {
-                throw;
+                result.success = false;
+                result.statusMessage = ex.Message;
+                return result;
             }
         }
     }

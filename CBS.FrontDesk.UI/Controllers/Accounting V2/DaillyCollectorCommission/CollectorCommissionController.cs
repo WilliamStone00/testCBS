@@ -1,6 +1,7 @@
 ﻿using CBS.BusinessService.Accounting_V2;
 using CBS.BusinessService.Accounting_V2.Affiliate;
 using CBS.BusinessService.Accounting_V2.BranchAccountService;
+using CBS.BusinessService.Accounting_V2.IPS;
 using CBS.BusinessService.Config;
 using CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Service;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission;
@@ -28,12 +29,13 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
         private readonly ChartOfAccountsV2Service _chartOfAccountsV;
         private readonly BranchAccountService _branchAccountService;
         private readonly CommissionExcelExportGenerator _commissionExcelExportGenerator;
+        private readonly IPSClaimService _ipsClaimService;
 
         /// <summary>
         /// Injects the required CollectorCommissionController via dependency injection.
         /// </summary>
         /// <param name="CategoryConfigService">The service for cheque admin operations.</param>
-        public CollectorCommissionController(CommissionExcelExportGenerator commissionExcelExportGenerator, ChartOfAccountsV2Service chartOfAccountsV2Service1, ManualDailyCollectionService manualDailyCollectionService, ChartOfAccountsV2Service chartOfAccountsV2Service, CollectorCommissionService collectorCommissionService, BranchServices branchServices, BranchAccountService branchAccountService)
+        public CollectorCommissionController(IPSClaimService iPSClaimService ,CommissionExcelExportGenerator commissionExcelExportGenerator, ChartOfAccountsV2Service chartOfAccountsV2Service1, ManualDailyCollectionService manualDailyCollectionService, ChartOfAccountsV2Service chartOfAccountsV2Service, CollectorCommissionService collectorCommissionService, BranchServices branchServices, BranchAccountService branchAccountService)
         {
             _collectorCommissionService = collectorCommissionService;
             _chartOfAccountsV = chartOfAccountsV2Service;
@@ -41,6 +43,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
             _manualService = manualDailyCollectionService;
             _branchAccountService = branchAccountService;
             _commissionExcelExportGenerator = commissionExcelExportGenerator;
+            _ipsClaimService = iPSClaimService;
         }
 
         public async Task<ActionResult> Index()
@@ -180,7 +183,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
         {
             try
             {
-                var customerData = await _collectorCommissionService.GetCustomerAccountDropdownAsync(customerId);
+                 var customerData = await _collectorCommissionService.GetCustomerAccountDropdownAsync(customerId);
+               // var customerData = await _ipsClaimService.GetinfoAsync(customerId);
 
                 return Json(new
                 {
