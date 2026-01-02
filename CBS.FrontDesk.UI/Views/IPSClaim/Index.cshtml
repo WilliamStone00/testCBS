@@ -480,8 +480,6 @@
                 return false;
             }
 
-            // Get all required data for confirmation
-            const customer = memberData.customer;
             const claimData = {
                 MemberName: $('#FirstName').val() + ' ' + $('#LastName').val(),
                 MemberId: $('#MemberId').val(),
@@ -494,38 +492,14 @@
                 NetClaimableAmount: memberBalances.netClaimableAmount,
                 BeneficiaryName: $('#BeneficiaryName').val(),
                 BeneficiaryContact: $('#BeneficiaryContact').val(),
-                AccountsCount: memberData.accounts?.length || 0,
-                LoansCount: memberData.loans?.length || 0,
                 Cause: $('#Cause option:selected').text()
             };
 
-            // Check if claim amount exceeds net claimable amount
-            if (ClaimedAmount > memberBalances.netClaimableAmount) {
-                const confirmMsg = `
-                    Claim amount (${formatCurrency(ClaimedAmount)}) exceeds net claimable amount (${formatCurrency(memberBalances.netClaimableAmount)}).
-                    <br><br>
-                    <strong>Do you want to continue?</strong>
-                `;
-
-                alertify.confirm(
-                    'Amount Exceeds Limit',
-                    confirmMsg,
-                    function() {
-                        // User confirmed, show full verification
-                        showClaimVerificationAlert(claimData);
-                    },
-                    function() {
-                        appalert('Please adjust the claimed amount', 3, 1);
-                        $('#ClaimedAmount').focus().select();
-                    }
-                ).set({ 'labels': {ok: 'Continue Anyway', cancel: 'Adjust Amount'} });
-                return false;
-            }
-
-            // Show verification alert
+            // ❗ NO BALANCE BLOCKING ❗
             showClaimVerificationAlert(claimData);
             return false;
         }
+
 
         /* ============================
            CUSTOM ALERT FOR CLAIM VERIFICATION - FIXED
@@ -639,20 +613,19 @@
                 'Confirm Claim Submission',
                 alertHtml,
                 function () {
-                    // User confirmed - proceed with form submission
                     submitFormWithConfirmation();
                 },
                 function () {
-                    // User cancelled
                     appalert('Claim submission cancelled. You can modify the details.', 2, 1);
                 }
             ).set({
-                'labels': { ok: 'Confirm & Submit', cancel: 'Cancel' },
-                'padding': false,
-                'closable': false,
-                'transition': 'zoom',
-                'maximizable': true
+                labels: { ok: 'Confirm & Submit', cancel: 'Cancel' },
+                padding: false,
+                closable: false,
+                transition: 'zoom',
+                maximizable: true
             });
+
         }
 
         /* ============================

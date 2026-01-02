@@ -84,6 +84,11 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.IPS
 
         public bool IsDeleted { get; set; }
 
+        public string BankName { get; set; }
+        public string BankId { get; set; }
+        public string BranchCode { get; set; }
+        public string PrintedBy { get; set; }
+
         public List<IpsClaimDocument> Documents { get; set; } = new List<IpsClaimDocument>();
     }
 

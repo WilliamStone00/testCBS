@@ -108,10 +108,27 @@ namespace CBS.BusinessService.Accounting_V2.IPS
         public async Task<IPSClaim> GetClaimByIdAsync(string claimId)
         {
             try
-            {
-                string url = string.Format(APICallHelper.GetIPSClaimById, claimId);
-                var response = await _apiHelper.GetAsync<ResponseObject<IPSClaim>>(url);
-                return response?.ApiResponseData?.Data;
+            {                
+                    string url = string.Format(APICallHelper.GetIPSClaimById, claimId);
+
+                    var response = await _apiHelper
+                        .GetAsync<ResponseObject<IPSClaim>>(url);
+
+                    var claim = response?.ApiResponseData?.Data;
+
+                    if (claim == null)
+                        return null;
+
+                    // Enrich claim with context data
+                    claim.BankId = GetBankID();
+                    claim.BankName = GetBankName();
+                    claim.BranchCode = GetBranchCode();
+                    claim.BranchName = GetBranchName();
+                    claim.BranchId = GetBranchID();
+                    claim.PrintedBy = GetUserFullName();
+
+                    return claim;
+                             
             }
             catch (Exception)
             {
