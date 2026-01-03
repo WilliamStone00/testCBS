@@ -299,9 +299,11 @@ $(function () {
             $("#ProductConfigurationModalContent").html(html);
 
             // ✅ Initialize Select2 INSIDE ProductConfiguration modal
-            $('#ProductConfigurationModal .select2').select2({
-                dropdownParent: $('#ProductConfigurationModal'),
-                width: '100%'
+            $('#ProductConfigurationModal .select2').each(function () {
+                $(this).select2({
+                    dropdownParent: $(this).closest('.position-relative'),
+                    width: '100%'
+                });
             });
 
             bootstrap.Modal
@@ -330,9 +332,12 @@ $(function () {
             $("#ProductConfigurationModalContent").html(html);
 
             // ✅ Initialize Select2 INSIDE ProductConfiguration modal
-            $('#ProductConfigurationModal .select2').select2({
-                dropdownParent: $('#ProductConfigurationModal'),
-                width: '100%'
+            
+            $('#ProductConfigurationModal .select2').each(function () {
+                $(this).select2({
+                    dropdownParent: $(this).closest('.position-relative'),
+                    width: '100%'
+                });
             });
 
             bootstrap.Modal

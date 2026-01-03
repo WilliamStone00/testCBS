@@ -1,4 +1,5 @@
-﻿using CBS.BusinessService.AccountingV2.EndOfYearClosure;
+﻿using BusinessServices;
+using CBS.BusinessService.AccountingV2.EndOfYearClosure;
 using CBS.BusinessService.AccountingV2.InterestProductConfig;
 using CBS.BusinessService.AccountingV2.JournalHead;
 using CBS.BusinessService.AccountingV2.SharedMonth;
@@ -6,6 +7,7 @@ using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.AccountingV2;
 using CBS.FrontDesk.Data.Entity.AccountingV2.SharedMonth;
+using ClosedXML.Excel;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
@@ -25,6 +27,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.SharedMonth
         private readonly SharedMonthSimulationService _sharedMonthSimulationService;
         private readonly BranchServices _branchServices;
         private readonly InterestProductConfigService _interestProductConfigService;
+        
         private readonly string _appFilesRoot;
 
         // Allowed extensions for these templates (adjust if needed)
@@ -35,6 +38,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.SharedMonth
             _sharedMonthSimulationService = sharedMonthSimulationService;
             _branchServices = branchServices;
             _interestProductConfigService = interestProductConfigService;
+             
 
             _appFilesRoot = Path.Combine(AppDomain.CurrentDomain.BaseDirectory ?? string.Empty, "AppFiles");
         }
@@ -69,7 +73,12 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.SharedMonth
                         new SelectListItem { Value = "PreferenceShare", Text = "Preference Share" }
                     };
 
-
+            ViewBag.AccountType = new List<SelectListItem>
+                    {
+                        new SelectListItem { Value = "OrdinaryShare", Text = " Ordinary Share" },
+                        new SelectListItem { Value = "PreferenceShare", Text = "Preference Share" },
+                        new SelectListItem { Value = "Savings", Text = "Savings " }
+                    };
 
             ViewBag.Month = new List<SelectListItem>
             {
@@ -410,12 +419,14 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.SharedMonth
                 return Json(new
                 {
                     success = false,
-                    message = "Unexpected error occurred while uploading file.",
+                    message = ex.Message,
                     error = ex.Message
                 });
             }
         }
 
+
+        
 
     }
 }
