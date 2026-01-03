@@ -1,0 +1,801 @@
+    <script>
+(function () {
+
+    // -----------------------------
+    // Config
+    // -----------------------------
+    var searchUrl = '@Url.Action("SearchMembers", "LoanManagement")';
+    var loansUrl  = '@Url.Action("GetMemberLoans", "LoanManagement")';
+
+    var debounceMs = 350;
+    var minLen = 10;
+
+    var timer = null;
+    var lastQuery = "";
+
+    // ✅ IMPORTANT: keep wizardState GLOBAL so Step 3 script can read it
+    window.wizardState = window.wizardState || {
+        memberId: null,
+        member: null,
+        facility: null,            // CLASSIC | SSF | OVERDRAFT | LOC
+        restructureMode: null,     // null | REFINANCE | RESCHEDULE
+        oldLoanId: null,
+            // ✅ new (from selected old loan row)
+        oldLoanProductId: null,
+        oldLoanAmount: 0,
+        oldLoanBalance: 0
+    };
+
+    // Keep local alias (so your code below remains the same)
+    var wizardState = window.wizardState;
+
+    // -----------------------------
+    // UI Helpers
+    // -----------------------------
+    function setLoading(isLoading) { $("#searchStatus").toggle(isLoading); }
+    function setEmpty(show) { $("#memberEmpty").toggle(show); }
+
+    function escapeHtml(s){
+        return (s || "").replace(/[&<>"']/g, function(c){
+            return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]);
+        });
+    }
+
+    function gp(o, camel, pascal) {
+        if (!o) return null;
+        var v = o[camel];
+        if (v !== undefined && v !== null) return v;
+        v = o[pascal];
+        if (v !== undefined && v !== null) return v;
+        return null;
+    }
+
+    // -----------------------------
+    // Step 1: Search (Member Reference length = 10)
+    // -----------------------------
+    var REF_LEN = 10;
+    var debounceMs = 350;
+
+    var timer = null;
+    var lastQuery = "";
+
+    // ✅ IMPORTANT: keep wizardState GLOBAL so Step 3 script can read it
+    window.wizardState = window.wizardState || {
+        memberId: null,
+        member: null,
+        facility: null,            // CLASSIC | SSF | OVERDRAFT | LOC
+        restructureMode: null,     // null | REFINANCE | RESCHEDULE
+        oldLoanId: null
+    };
+
+    // Keep local alias (so your code below remains the same)
+    var wizardState = window.wizardState;
+
+    // -----------------------------
+    // UI Helpers
+    // -----------------------------
+    function setLoading(isLoading) { $("#searchStatus").toggle(!!isLoading); }
+    function setEmpty(show) { $("#memberEmpty").toggle(!!show); }
+
+    function escapeHtml(s) {
+        return (s || "").replace(/[&<>"']/g, function (c) {
+            return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]);
+        });
+    }
+
+    function gp(o, camel, pascal) {
+        if (!o) return null;
+        var v = o[camel];
+        if (v !== undefined && v !== null) return v;
+        v = o[pascal];
+        if (v !== undefined && v !== null) return v;
+        return null;
+    }
+
+    function normalizeQuery(q) {
+        q = (q || "").trim();
+        q = q.replace(/\s+/g, ""); // remove spaces
+        return q;
+    }
+
+    function isValidMemberRef(q) {
+        // change to /^\d{10}$/ if reference is always numeric
+        return /^[A-Za-z0-9]{10}$/.test(q);
+    }
+
+    // -----------------------------
+    // Step 1: Render Members ✅ MUST exist before doSearch uses it
+    // -----------------------------
+    function renderMembers(items) {
+        var $wrap = $("#memberResults");
+        $wrap.empty();
+
+        if (!items || !items.length) {
+            setEmpty(lastQuery.length >= minLen);
+            return;
+        }
+
+        setEmpty(false);
+
+        function val(v) {
+            return (v !== null && v !== undefined && String(v).trim() !== "")
+                ? String(v).trim()
+                : "";
+        }
+
+        items.forEach(function (m) {
+
+            // Normalize (supports camelCase + PascalCase)
+            var id = gp(m, "id", "Id") || gp(m, "memberId", "MemberId") || gp(m, "customerId", "CustomerId");
+            var name = val(gp(m, "name", "Name"));
+            var code = val(gp(m, "code", "Code"));
+
+            var phone = val(gp(m, "phoneNumber", "PhoneNumber"));
+            var branchName = val(gp(m, "branchName", "BranchName"));
+            var branchCode = val(gp(m, "branchCode", "BranchCode"));
+
+            var balance = Number(gp(m, "balance", "Balance") || 0);
+            var currency = val(gp(m, "currency", "Currency")) || "FCFA";
+
+            // ✅ store full info for selection step
+            var payload = {
+                id: id,
+                name: name,
+                code: code,
+                phoneNumber: phone,
+                branchName: branchName,
+                branchCode: branchCode,
+                balance: balance,
+                currency: currency
+            };
+
+            var phoneText = phone ? phone : "Phone not available";
+            var branchText = branchName
+                ? (branchName + (branchCode ? (" (" + branchCode + ")") : ""))
+                : "Branch not available";
+
+            var card = `
+            <div class="member-card" data-member="${escapeHtml(JSON.stringify(payload))}">
+                <div class="member-left">
+                    <div class="avatar"><i class="mdi mdi-account-outline"></i></div>
+
+                    <div style="min-width:0;">
+                        <p class="member-name mb-1">${escapeHtml(name)}</p>
+
+                        <div class="member-meta d-flex flex-wrap gap-3">
+                            <span><i class="mdi mdi-identifier text-muted me-1"></i>${escapeHtml(code)}</span>
+                            <span><i class="mdi mdi-phone-outline text-muted me-1"></i>${escapeHtml(phoneText)}</span>
+                        </div>
+
+                        <div class="member-meta mt-1">
+                            <span><i class="mdi mdi-bank-outline text-muted me-1"></i>${escapeHtml(branchText)}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="balance-box">
+                    <div class="balance-label">Balance</div>
+                    <div class="balance-value">${balance.toLocaleString()} ${escapeHtml(currency)}</div>
+                </div>
+            </div>
+        `;
+
+            $wrap.append(card);
+        });
+    }
+
+    // -----------------------------
+    // Search (ONLY when 10 chars)
+    // -----------------------------
+    function doSearch(q) {
+        lastQuery = q || "";
+        $("#memberResults").empty();
+        setEmpty(false);
+
+        if (!q || q.length !== REF_LEN) return;
+
+        if (!isValidMemberRef(q)) {
+            setEmpty(true);
+            return;
+        }
+
+        setLoading(true);
+
+        $.ajax({
+            url: searchUrl,
+            method: "GET",
+            data: { q: q }
+        })
+            .done(function (res) {
+                // support various shapes: {success,data}, {Data}, array, etc.
+                var items =
+                    (res && res.data) ||
+                    (res && res.Data) ||
+                    (Array.isArray(res) ? res : []);
+
+                renderMembers(items);
+            })
+            .fail(function () {
+                renderMembers([]);
+            })
+            .always(function () {
+                setLoading(false);
+            });
+    }
+
+    // -----------------------------
+    // Events
+    // -----------------------------
+    $("#txtMemberSearch").off("input.memberSearch").on("input.memberSearch", function () {
+        var q = normalizeQuery($(this).val());
+        $(this).val(q);
+
+        clearTimeout(timer);
+        timer = setTimeout(function () {
+            doSearch(q);
+        }, debounceMs);
+    });
+
+    // Optional: search button (if you added it)
+    $("#btnMemberSearch").off("click.memberSearch").on("click.memberSearch", function () {
+        var q = normalizeQuery($("#txtMemberSearch").val());
+        $("#txtMemberSearch").val(q);
+        doSearch(q);
+    });
+
+    // Select member
+    $("#memberResults").off("click.memberPick", ".member-card").on("click.memberPick", ".member-card", function () {
+        var raw = $(this).attr("data-member");
+        if (!raw) return;
+
+        var m = null;
+        try { m = JSON.parse(raw); } catch (e) { m = null; }
+        if (!m || !m.id) return;
+
+        wizardState.memberId = m.id;
+        wizardState.member = m;
+
+        // move to next step (your existing flow can run here)
+        // Example:
+        // $("#panelSearch").hide();
+        // $("#panelFacility").show();
+
+        // If you already have a function to load loans:
+        // loadMemberLoans(m.id);
+
+    });
+
+    // -----------------------------
+    // Step Navigation
+    // -----------------------------
+    function goBackToSearch(){
+        $("#stepFacility").removeClass("active");
+        $("#stepSearch").removeClass("done").addClass("active");
+
+        $("#panelFacility").hide();
+        $("#panelSearch").show();
+    }
+
+    function goToFacility(member) {
+
+        if (!member || !member.id) {
+            console.error("goToFacility called without member.id", member);
+            return;
+        }
+
+        // Set wizard state
+        wizardState.member = member;
+        wizardState.memberId = member.id;
+        wizardState.facility = null;
+        wizardState.restructureMode = null;
+        wizardState.oldLoanId = null;
+
+        console.log("goToFacility -> wizardState:", wizardState);
+
+        // Stepper
+        $("#stepSearch").removeClass("active").addClass("done");
+        $("#stepFacility").addClass("active");
+
+        // Panels
+        $("#panelSearch").hide();
+        $("#panelFacility").show();
+
+        // Reset selections
+        $("#btnProceedToApplication").prop("disabled", true);
+        $(".facility-tile").removeClass("selected");
+
+        // ✅ normalize fields (support camelCase / PascalCase)
+        var name = gp(member, "name", "Name") || "";
+        var code = gp(member, "code", "Code") || "";
+        var phone = gp(member, "phoneNumber", "PhoneNumber") || gp(member, "phone", "Phone") || "";
+        var branchName = gp(member, "branchName", "BranchName") || "";
+        var branchCode = gp(member, "branchCode", "BranchCode") || "";
+        var balance = gp(member, "balance", "Balance");
+        var currency = gp(member, "currency", "Currency") || "FCFA";
+
+        var phoneText = phone ? phone : "Phone not available";
+        var branchText = branchName
+            ? (branchName + (branchCode ? (" (" + branchCode + ")") : ""))
+            : "Branch not available";
+
+        var balText = (balance !== null && balance !== undefined && !isNaN(Number(balance)))
+            ? (Number(balance).toLocaleString() + " " + currency)
+            : ("0 " + currency);
+
+        // ✅ Member header (beautiful + richer info)
+        $("#selectedMemberHeader").html(`
+        <div class="card border-0 shadow-sm" style="border-radius:14px;">
+            <div class="card-body py-3">
+                <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="avatar" style="width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#eef3ff;">
+                            <i class="mdi mdi-account text-primary" style="font-size:22px;"></i>
+                        </div>
+
+                        <div style="min-width:0;">
+                            <div class="fw-bold" style="font-size:18px; color: var(--tsc-text);">
+                                ${escapeHtml(name)}
+                            </div>
+
+                            <div class="text-muted small d-flex flex-wrap gap-3 mt-1">
+                                <span><i class="mdi mdi-identifier text-muted me-1"></i>${escapeHtml(code)}</span>
+                                <span><i class="mdi mdi-phone-outline text-muted me-1"></i>${escapeHtml(phoneText)}</span>
+                                <span><i class="mdi mdi-bank-outline text-muted me-1"></i>${escapeHtml(branchText)}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-end">
+                        <div class="text-muted small">Balance</div>
+                        <div class="fw-bold" style="font-size:16px;">
+                            ${escapeHtml(balText)}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    `);
+
+        // Prepare existing loan area
+        $("#existingLoansHint").text("Loading member loans…");
+        $("#existingLoansEmpty").hide();
+        $("#existingLoansWrap").empty();
+
+        // Auto-load existing loans
+        loadExistingLoans(member.id);
+    }
+
+    // -----------------------------
+    // Existing Loans (Step 2)
+    // -----------------------------
+    $("#btnLoadExistingLoans").on("click", function () {
+        var id = wizardState.memberId;
+        if (id === null || id === undefined || id === "") {
+            $("#existingLoansHint").text("Select a member first.");
+            return;
+        }
+        loadExistingLoans(id);
+    });
+
+    function loadExistingLoans(memberId) {
+
+        if (!memberId) {
+            console.warn("loadExistingLoans called with empty memberId");
+            $("#existingLoansHint").text("No member selected.");
+            return;
+        }
+
+        if (!loansUrl) {
+            console.error("loansUrl is empty. #loanUiRoutes missing OR route not rendered.");
+            $("#existingLoansHint").text("Routes not loaded. Refresh or check layout.");
+            return;
+        }
+
+        console.log("Calling GetMemberLoans:", loansUrl, "memberId:", memberId);
+
+        $("#existingLoansHint").text("Loading member loans…");
+        $("#existingLoansEmpty").hide();
+
+        // ✅ ensure grid class is applied (2 cards per row)
+        $("#existingLoansWrap")
+            .addClass("loan-grid-wrap")
+            .html(`
+            <div class="tsc-empty" style="grid-column: 1 / -1;">
+                <span class="tsc-spinner me-2"></span> Loading loans...
+            </div>
+        `);
+
+        $.ajax({
+            url: loansUrl,
+            method: "GET",
+            data: { memberId: memberId },
+            cache: false
+        })
+            .done(function (res) {
+                console.log("GetMemberLoans raw response:", res);
+
+                var items =
+                    (res && (res.data || res.Data || res.items || res.Items || res.result || res.Result)) ||
+                    (Array.isArray(res) ? res : []);
+
+                // ✅ newest first (support multiple possible date fields)
+                items = (items || []).slice().sort(function (a, b) {
+                    function getDate(x) {
+                        var v =
+                            x.createdOn ?? x.CreatedOn ??
+                            x.disbursementDate ?? x.DisbursementDate ??
+                            x.startDate ?? x.StartDate ??
+                            x.applicationDate ?? x.ApplicationDate ??
+                            x.updatedOn ?? x.UpdatedOn ??
+                            null;
+
+                        if (!v) return 0;
+                        var t = new Date(v).getTime();
+                        return isNaN(t) ? 0 : t;
+                    }
+                    return getDate(b) - getDate(a);
+                });
+
+                console.log("Parsed loans items:", items, "count:", items.length);
+
+                renderLoans(items);
+                $("#existingLoansHint").text(items.length ? "Select refinance/reschedule if needed." : "No active loans.");
+            })
+            .fail(function (xhr) {
+                console.error("GetMemberLoans FAILED:", xhr.status, xhr.responseText);
+                $("#existingLoansWrap").empty().addClass("loan-grid-wrap");
+                $("#existingLoansHint").text("Failed to load. Click 'Load Existing Loans'.");
+                $("#existingLoansEmpty").show();
+            });
+    }
+
+    function fmtMoney(v, currency) {
+        var n = Number(v || 0);
+        return n.toLocaleString() + " " + (currency || "FCFA");
+    }
+    function fmtNum(v) {
+        return Number(v || 0).toLocaleString();
+    }
+
+    function renderLoans(items) {
+        var $wrap = $("#existingLoansWrap");
+        $wrap.empty().addClass("loan-grid-wrap"); // ✅ ensures 2-per-row grid
+
+        // ✅ ensure lookup exists for Step 3
+        wizardState.loansById = wizardState.loansById || {};
+        // optional: reset each time you render
+        wizardState.loansById = {};
+
+        if (!items || !items.length) {
+            $("#existingLoansEmpty").show();
+            return;
+        }
+        $("#existingLoansEmpty").hide();
+
+        function pick(l, camel, pascal, fallback) {
+            var v = (l && l[camel] !== undefined && l[camel] !== null) ? l[camel] : null;
+            if (v !== null) return v;
+            v = (l && l[pascal] !== undefined && l[pascal] !== null) ? l[pascal] : null;
+            if (v !== null) return v;
+            return fallback;
+        }
+
+        items.forEach(function (l) {
+
+            // -----------------------------
+            // Base fields
+            // -----------------------------
+            var id = pick(l, "id", "Id", "");
+            var name = pick(l, "name", "Name", "Loan");
+            var code = pick(l, "code", "Code", pick(l, "loanId", "LoanId", ""));
+            var status = pick(l, "status", "Status", "Active");
+
+            var currency = pick(l, "currency", "Currency", "FCFA");
+            var amount = pick(l, "amount", "Amount", 0);
+            var balance = pick(l, "balance", "Balance", 0);
+
+            // -----------------------------
+            // Extra fields
+            // -----------------------------
+            var accrualInterest = pick(l, "accrualInterest", "AccrualInterest", 0);
+            var vat = pick(l, "vat", "VAT", pick(l, "Vat", "Vat", 0));
+            var penalty = pick(l, "penalty", "Penalty", 0);
+
+            var delinquentInterest = pick(l, "delinquentInterest", "DelinquentInterest", 0);
+            var delinquentAmount = pick(l, "delinquentAmount", "DelinquentAmount", 0);
+            var delinquentDays = pick(l, "delinquentDays", "DelinquentDays", 0);
+
+            var totalDue = pick(l, "totalDueAmount", "TotalDueAmount", 0);
+
+            // -----------------------------
+            // Optional date for "most recent" display
+            // -----------------------------
+            var rawDate =
+                (pick(l, "createdOn", "CreatedOn", null) ?? null) ??
+                (pick(l, "disbursementDate", "DisbursementDate", null) ?? null) ??
+                (pick(l, "startDate", "StartDate", null) ?? null) ??
+                (pick(l, "applicationDate", "ApplicationDate", null) ?? null);
+
+            var dateText = "";
+            if (rawDate) {
+                var dt = new Date(rawDate);
+                if (!isNaN(dt.getTime())) dateText = dt.toLocaleDateString();
+            }
+
+            // -----------------------------
+            // ✅ loanObj (normalized) for Step 3
+            // -----------------------------
+            var loanObj = {
+                id: id,
+                name: name,
+                code: code,
+                status: status,
+
+                currency: currency,
+                amount: amount,
+                balance: balance,
+
+                accrualInterest: accrualInterest,
+                vat: vat,
+                penalty: penalty,
+
+                delinquentInterest: delinquentInterest,
+                delinquentAmount: delinquentAmount,
+                delinquentDays: delinquentDays,
+
+                totalDueAmount: totalDue,
+                rawDate: rawDate,
+                dateText: dateText,
+
+                raw: l
+            };
+
+            // ✅ store in lookup
+            wizardState.loansById[String(id)] = loanObj;
+            setOldLoanSelection(loanObj)
+            // -----------------------------
+            // Status pill class
+            // -----------------------------
+            var pillClass = "active";
+            var s = (status || "").toLowerCase();
+            if (s.includes("delinq")) pillClass = "delinquent";
+            if (s.includes("close")) pillClass = "closed";
+
+            // Friendly delinquency note
+            var delinquencyNote = "";
+            if ((delinquentDays || 0) > 0 || (delinquentAmount || 0) > 0) {
+                delinquencyNote = `
+                <div class="small mt-2" style="color: rgba(180,83,9,1);">
+                    <i class="mdi mdi-alert-circle-outline me-1"></i>
+                    Delinquency detected (${Number(delinquentDays || 0).toLocaleString()} days)
+                </div>`;
+            }
+
+            $wrap.append(`
+            <div class="loan-card" data-loanid="${escapeHtml(String(id))}">
+                <div class="loan-header">
+                    <div style="min-width:0;">
+                        <p class="loan-title">${escapeHtml(String(name))}</p>
+                        <div class="loan-sub">
+                            <span><strong>Loan ID:</strong> ${escapeHtml(String(code))}</span>
+                            ${dateText ? `<span class="dot">•</span><span><strong>Date:</strong> ${escapeHtml(dateText)}</span>` : ``}
+                        </div>
+                    </div>
+                    <span class="status-pill ${pillClass}">${escapeHtml(String(status))}</span>
+                </div>
+
+                <div class="loan-metrics">
+                    <div class="metric"><div class="k">Loan Amount</div><div class="v">${fmtMoney(amount, currency)}</div></div>
+                    <div class="metric"><div class="k">Outstanding Balance</div><div class="v">${fmtMoney(balance, currency)}</div></div>
+                    <div class="metric"><div class="k">Accrual Interest</div><div class="v">${fmtMoney(accrualInterest, currency)}</div></div>
+                    <div class="metric"><div class="k">VAT</div><div class="v">${fmtMoney(vat, currency)}</div></div>
+                    <div class="metric"><div class="k">Penalty</div><div class="v">${fmtMoney(penalty, currency)}</div></div>
+                    <div class="metric"><div class="k">Delinquent Interest</div><div class="v">${fmtMoney(delinquentInterest, currency)}</div></div>
+                    <div class="metric"><div class="k">Delinquent Amount</div><div class="v">${fmtMoney(delinquentAmount, currency)}</div></div>
+                    <div class="metric"><div class="k">Delinquent Days</div><div class="v">${Number(delinquentDays || 0).toLocaleString()} days</div></div>
+
+                    <div class="metric due"
+                         title="Balance + Accrual Interest + VAT + Penalty + Delinquent Interest + Delinquent Amount">
+                        <div class="k">Total Due Amount</div>
+                        <div class="v">${fmtMoney(totalDue, currency)}</div>
+                    </div>
+                </div>
+
+                ${delinquencyNote}
+
+                <div class="loan-footer">
+                    <div class="loan-actions" data-loanid="${escapeHtml(String(id))}">
+                        <button type="button"
+                                class="btn btn-soft btn-soft-primary btnRefinance"
+                                data-loanid="${escapeHtml(String(id))}"
+                                data-mode="REFINANCE"
+                                aria-pressed="false">
+                            Refinance
+                        </button>
+
+                        <button type="button"
+                                class="btn btn-soft btn-soft-warn btnReschedule"
+                                data-loanid="${escapeHtml(String(id))}"
+                                data-mode="RESCHEDULE"
+                                aria-pressed="false">
+                            Reschedule
+                        </button>
+                    </div>
+
+                    ${dateText ? `<div class="loan-date">Most recent: ${escapeHtml(dateText)}</div>` : `<div class="loan-date"></div>`}
+                </div>
+            </div>
+        `);
+        });
+    }
+    function setOldLoanSelection(loan) {
+        wizardState.oldLoanId = loan.Id || loan.id;
+        wizardState.oldLoanProductId = loan.LoanProductId || loan.loanProductId;
+        wizardState.oldLoanAmount = Number(loan.Amount || loan.amount || 0);
+        wizardState.oldLoanBalance = Number(loan.Balance || loan.balance || 0);
+
+        // facility can be AUTO (from old loan)
+        wizardState.facility = (loan.Facility || loan.facility || wizardState.facility || "").toUpperCase();
+    }
+
+    // -----------------------------
+    // Step 2 Actions
+    // -----------------------------
+    $("#panelFacility").on("click", ".facility-tile", function () {
+        wizardState.facility = $(this).data("facility");
+        wizardState.restructureMode = null;
+        wizardState.oldLoanId = null;
+
+        $(".facility-tile").removeClass("selected");
+        $(this).addClass("selected");
+
+        $("#btnProceedToApplication").prop("disabled", false);
+    });
+
+    $("#panelFacility").on("click", ".btnRefinance, .btnReschedule", function () {
+        var loanId = String($(this).data("loanid") || "");
+
+        wizardState.oldLoanId = loanId;
+        wizardState.restructureMode = $(this).hasClass("btnRefinance") ? "REFINANCE" : "RESCHEDULE";
+
+        // ✅ NEW: attach the full loan object
+        wizardState.oldLoan = (wizardState.loansById && wizardState.loansById[loanId])
+            ? wizardState.loansById[loanId]
+            : null;
+
+        // You are restructuring, so facility tile must be cleared
+        wizardState.facility = null;
+        $(".facility-tile").removeClass("selected");
+
+        $("#btnProceedToApplication").prop("disabled", false);
+
+        // Highlight card
+        $(".loan-card")
+            .css("border-color", "var(--tsc-border)")
+            .css("background", "#fff");
+
+        $(this).closest(".loan-card")
+            .css("border-color", "rgba(37,99,235,.35)")
+            .css("background", "rgba(37,99,235,.05)");
+
+        // ✅ OPTIONAL: if Step 3 script is already loaded, update it live
+        if (window.tscLoan && typeof window.tscLoan.setOldLoan === "function" && wizardState.oldLoan) {
+            window.tscLoan.setOldLoan(wizardState.oldLoan);
+        }
+    });
+
+
+
+    // ✅ Step 3 wiring without breaking Step 1/2
+    $("#btnProceedToApplication").on("click", function () {
+
+        // Guards (same logic as before, but safer)
+        if (!wizardState.memberId) {
+            alert("Select a member first.");
+            return;
+        }
+        if (!wizardState.restructureMode && !wizardState.facility) {
+            alert("Select a facility (Classic / SSF / Overdraft / LOC) OR choose refinance/reschedule on a loan.");
+            return;
+        }
+
+        // Stepper
+        $("#stepFacility").removeClass("active").addClass("done");
+        $("#stepApplication").addClass("active");
+
+        // Panels
+        $("#panelFacility").hide();
+        $("#panelApplication").show();
+
+        // 🔗 Wire Step 3 init (your Step 3 script must be loaded on the page)
+        // Option A: if you used my Step 3 module: window.tscLoanApp.show()
+        if (window.tscLoanApp && typeof window.tscLoanApp.init === "function") {
+            window.tscLoanApp.init(); // init only (panel already shown)
+            return;
+        }
+        if (window.tscLoanApp && typeof window.tscLoanApp.show === "function") {
+            window.tscLoanApp.show(); // it will show panel + init
+            return;
+        }
+
+        // Option B: if you exposed initApplicationUi() globally in your Step 3 script
+        if (typeof window.initApplicationUi === "function") {
+            window.initApplicationUi();
+            return;
+        }
+
+        // Fallback: do not break the flow
+        console.warn("Step 3 init function not found. Ensure Step 3 application script is loaded after this script.");
+        $("#appModeHint").text("Step 3 script not loaded. Please include the Application script file after this one.");
+    });
+
+    // -----------------------------
+    // Events (Search)
+    // -----------------------------
+    $("#btnBackToSearch").on("click", goBackToSearch);
+
+    $("#memberResults").on("click", ".member-card", function () {
+        try {
+            var raw = $(this).attr("data-member");
+            var m = JSON.parse(raw);
+
+            // m is already normalized from renderMembers
+            if (!m || !m.id) {
+                console.error("Selected member missing id:", m);
+                return;
+            }
+
+            goToFacility(m);
+        } catch (e) {
+            console.error("Member selection parse error:", e);
+        }
+    });
+
+    $("#txtMemberSearch").on("input", function () {
+        var q = ($(this).val() || "").trim();
+
+        if (q.length < minLen) {
+            lastQuery = q;
+            setLoading(false);
+            setEmpty(false);
+            $("#searchHint").text("Start typing to see results.");
+            $("#memberResults").empty();
+            return;
+        }
+
+        $("#searchHint").text("Showing matches for: " + q);
+
+        clearTimeout(timer);
+        timer = setTimeout(function () {
+            lastQuery = q;
+            searchMembers(q);
+        }, debounceMs);
+    });
+
+    function searchMembers(q) {
+        setLoading(true);
+
+        $.ajax({
+            url: searchUrl,
+            method: "GET",
+            data: { q: q },
+            cache: false
+        })
+        .done(function (res) {
+            var items = (res && (res.data || res.Data)) ? (res.data || res.Data) : [];
+            renderMembers(items);
+        })
+        .fail(function () {
+            renderMembers([]);
+            setEmpty(true);
+        })
+        .always(function () {
+            setLoading(false);
+        });
+    }
+
+})();
+
+    </script>

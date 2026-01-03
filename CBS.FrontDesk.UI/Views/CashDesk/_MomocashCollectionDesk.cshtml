@@ -1,15 +1,78 @@
-﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+﻿<style>
+    .momo-op-btn.active {
+        box-shadow: 0 0 0 .18rem rgba(13,110,253,.15);
+        border-color: rgba(0,0,0,.15) !important;
+        transform: translateY(-1px);
+    }
+    .momo-summary {
+        border: 1px solid rgba(0,0,0,.10);
+        background: #f8fafc;
+        border-radius: .6rem;
+        padding: .6rem .75rem;
+    }
 
-<div class="row g-4">
-    <div class="card mb-1 border-2">
-        @Html.Partial("_MomocashCollectionTabs")
+        .momo-summary strong {
+            color: #111827;
+        }
+
+    .momo-legend {
+        font-weight: 700;
+        letter-spacing: .2px;
+    }
+
+    .momo-pill {
+        border: 1px solid rgba(0,0,0,.10);
+        padding: .35rem .6rem;
+        border-radius: 999px;
+        background: #fff;
+        cursor: pointer;
+    }
+
+        .momo-pill input {
+            margin-right: .35rem;
+        }
+
+</style>
+<div class="row g-3">
+
+    <!-- Tabs / Operation selector -->
+    <div class="col-12">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body py-2">
+                @Html.Partial("_MomocashCollectionTabs")
+            </div>
+        </div>
     </div>
-    <div class="col-md-12">
-        <div class="mb-1 border-2">
-            <div id="datalistingview_inner">
-                @Html.Partial("_MomocashCollectionForm")
+
+    <!-- Form area -->
+    <div class="col-12">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-2 p-md-3">
+                <div id="datalistingview_inner">
+                    @Html.Partial("_MomocashCollectionForm")
+                </div>
             </div>
         </div>
     </div>
 
 </div>
+
+<script>
+    // ✅ After search render: keep operation selection consistent + tab highlight
+    (function () {
+        // If hidden exists, use it; else fallback to ViewBag.Operation
+        var $op = $('#currentselectedOperation');
+        var op = ($op.length ? ($op.val() || '') : '');
+
+        // ViewBag.Operation -> normalize to your operation keys
+        if (!op) {
+            var serverOp = '@(ViewBag.Operation ?? "")';
+            if (serverOp === 'cashin_momokash_collection') op = 'cashin_momokash_collection';
+            if (serverOp === 'repayment_momokash_collection') op = 'repayment_momokash_collection';
+        }
+
+        if (op && typeof window.setMomoOperation === "function") {
+            window.setMomoOperation(op);
+        }
+    })();
+</script>

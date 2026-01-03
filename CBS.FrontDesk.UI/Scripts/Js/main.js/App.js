@@ -1890,62 +1890,115 @@ function AjaxPostAndUpdate(form) {
     }
     return false;
 }
+var __appAlertTimerSuccess = null;
+var __appAlertTimerDanger = null;
 
+function appError(message) { appalert(message, 0, 1); }
+function appSuccess(message) { appalert(message, 1, 1); }
+
+
+
+// Single timer for any alert (prevents double display)
+var __appAlertTimer = null;
+
+function hideAppAlert(sel) {
+    if (__appAlertTimer) {
+        clearTimeout(__appAlertTimer);
+        __appAlertTimer = null;
+    }
+    $(sel).addClass("d-none");
+}
+
+// Helper: set bootstrap alert-* class cleanly
+function __setAlertType($div, type) {
+    $div.removeClass("alert-success alert-danger alert-warning alert-info")
+        .addClass("alert-" + type);
+}
+
+// Helper: show div + auto close
+function __showAlert(divSelector, autoCloseMs) {
+    $(divSelector).removeClass("d-none");
+
+    if (__appAlertTimer) clearTimeout(__appAlertTimer);
+    __appAlertTimer = setTimeout(function () {
+        hideAppAlert(divSelector);
+    }, autoCloseMs || 20000); // ✅ default 20 seconds
+}
+
+/**
+ * state:
+ *  1 = success
+ *  2 = warning
+ *  3 = info
+ *  else = error
+ *
+ * alertType:
+ *  1 = Bootstrap page alert ONLY
+ *  2 = alertify
+ */
 function appalert(message, state, alertType) {
 
+    var text = (message === null || message === undefined) ? "" : String(message);
+
+    var $successDiv = $("#message_div_success");
+    var $dangerDiv = $("#message_div_danger");
+
+    // Always hide both before showing one
+    $successDiv.addClass("d-none");
+    $dangerDiv.addClass("d-none");
+
+    // ✅ alertType 1 => ONLY page alert (no toastr, no duplicates)
     if (alertType === 1) {
-        if (state === 1) {
-            $("#message_div_success").show();
-            $("#message_div_danger").hide();
-            $("#message_div_warning").hide();
-            $("#message_div_info").hide();
-            $("#messagesuccess").html(message);
-            toastr.success(message)
-            // $.alert(message, "success");
-        }
-        else if (state === 2) {
-            $("#message_div_success").hide();
-            $("#message_div_danger").hide();
-            $("#message_div_warning").show();
-            $("#message_div_info").hide();
-            $("#messagewarning").html(message);
-            toastr.warning(message)
-        }
-        else if (state === 3) {
-            $("#message_div_success").hide();
-            $("#message_div_danger").hide();
-            $("#message_div_warning").hide();
-            $("#message_div_info").show();
-            $("#messageinfo").html(message);
-            toastr.info(message)
-            //toastr.success('This is a success notification from toastr.')  
-            //$.alert(message, "info");
-        }
-        else {
-            $("#message_div_success").hide();
-            $("#message_div_danger").show();
-            $("#message_div_warning").hide();
-            $("#message_div_info").hide();
-            $("#messagedanger").html(message);
-            toastr.error(message)
 
-            //$.alert(message, "error");
-        }
-    }
-    else if (alertType === 2) {
+        // SUCCESS
         if (state === 1) {
-            alertify.alert(message, function () { alertify.message('OK'); });
-        }
-        else if (state === 2) {
-            alertify.confirm("Delete", message, function () { alertify.success('Ok'); },
-                function () {
-                    alertify.error('Transaction cancelled');
-                });
+            __setAlertType($successDiv, "success");
+            $("#messagesuccess").text(text);
+            __showAlert("#message_div_success", 20000);
+            return;
         }
 
+        // WARNING
+        if (state === 2) {
+            __setAlertType($dangerDiv, "warning");
+            $("#messagedanger").text(text);
+            __showAlert("#message_div_danger", 20000);
+            return;
+        }
+
+        // INFO
+        if (state === 3) {
+            __setAlertType($successDiv, "info");
+            $("#messagesuccess").text(text);
+            __showAlert("#message_div_success", 20000);
+            return;
+        }
+
+        // ERROR (default)
+        __setAlertType($dangerDiv, "danger");
+        $("#messagedanger").text(text);
+        __showAlert("#message_div_danger", 20000);
+        return;
     }
 
+    // ✅ alertType 2 => alertify (unchanged behavior)
+    if (alertType === 2) {
+        if (state === 1) alertify.alert(text, function () { alertify.message('OK'); });
+        else if (state === 2) alertify.confirm("Delete", text,
+            function () { alertify.success('Ok'); },
+            function () { alertify.error('Transaction cancelled'); }
+        );
+        else if (state === 3) alertify.message(text);
+        else alertify.error(text);
+        return;
+    }
+
+    // fallback => error
+    __setAlertType($dangerDiv, "danger");
+    $("#messagedanger").text(text);
+    __showAlert("#message_div_danger", 20000);
 }
+
 
 function LoadDataNoSelect(controller, option, divLoader, tableID, action, KEY, ReadOptions, path, group, datefrom, dateto) {
     console.log(dateto);

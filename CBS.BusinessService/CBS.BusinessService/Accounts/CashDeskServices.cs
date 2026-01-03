@@ -774,7 +774,7 @@ namespace CBS.BusinessService.Accounts
                 // 650207592 Courage.
                 else if (bulkDeposits.FirstOrDefault().OperationType == "LoanRepaymentMomocashCollection")
                 {
-                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, DepositType = "LoanRepaymentMomocashCollection", IsCashOperation = false, OperationType = "Deposit", AccountingDate = bulkDeposits.FirstOrDefault().AccountingDate };
+                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, DepositType = "LoanRepaymentMomocashCollection", IsCashOperation = false, OperationType = "Deposit", AccountingDate = bulkDeposits.FirstOrDefault().AccountingDate, LedgerChartOfAccountId= bulkDeposits.FirstOrDefault().ChartOfAccountId,  };
 
                     var response = await _transactionApiHelper.PostAsync<ServiceResponse<PaymentReceipt>>(APICallHelper.BulkDeposit, BulkOperation);
                     if (response.ApiResponseData != null)
@@ -1237,6 +1237,7 @@ namespace CBS.BusinessService.Accounts
                 if (customer == null)
                     return null;
 
+          
 
                 var accounts = await GetCustomerAccounts(customerId);
                 if (accounts == null || !accounts.Any())
@@ -1276,6 +1277,13 @@ namespace CBS.BusinessService.Accounts
                         break;
 
                     case "repayment":
+                        loans = (await _loanServices.GetLoanByCustomerID(new GetAllLoanByCustomerIdQuery
+                        {
+                            CustomerId = customerId,
+                            QueryParameter = "Open"
+                        }))?.ToList() ?? new List<Loan>();
+                        break;
+                    case "repayment_momokash_collection":
                         loans = (await _loanServices.GetLoanByCustomerID(new GetAllLoanByCustomerIdQuery
                         {
                             CustomerId = customerId,
