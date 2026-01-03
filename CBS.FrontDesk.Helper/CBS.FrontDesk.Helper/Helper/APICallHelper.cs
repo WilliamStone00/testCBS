@@ -1619,6 +1619,9 @@ namespace CBS.FrontDesk.Helper
         public static string BranchAccountdatatable = "/api/v1/BranchAccount/datatable";
         public static string GetAllBranchAccount = "/api/v1/BranchAccount/{0}";
 
+        //Account negativity management endpoint
+        public static string Accountnegman = "Not yet provided";
+
         //-------------------------- FileUpload ------------------------------------------
         public static string AffiliateUpload = "/api/v1/FileUploads/affiliates/{0}";
         public static string BranchUpload = "/api/v1/FileUploads/trial-balance";

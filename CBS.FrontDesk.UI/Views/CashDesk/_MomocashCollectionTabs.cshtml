@@ -1,55 +1,105 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
 @using Resources
 
-<div class="card-body d-sm-flex d-block">
-    <div class="d-flex align-items-center flex-wrap lh-1 gap-2 mb-2 mb-sm-0">
+<div class="card border-0 shadow-sm mb-2">
+    <div class="card-body py-2">
 
-        @* Optional: customer details button – keep commented if not used now
-            <a href="#"
-               onclick="SearchByCustomerNumber('_CustomerCard','datalistingview')"
-               class="btn btn-outline-secondary btn-sm d-flex align-items-center"
-               data-bs-toggle="tooltip"
-               title="View customer details">
-                <i class="fas fa-user me-1"></i>
-                <span class="d-none d-md-inline">Customer</span>
-            </a>
-        *@
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
 
-        <!-- Cash-in button -->
-        <a href="#"
-           class="btn btn-success btn-sm d-flex align-items-center momo-op-btn active"
-           data-operation="cashin_momokash_collection"
-           data-bs-toggle="tooltip"
-           title="@CashDesk_MomocashCollectionTabs.PerformCashinOperation"
-           onclick="setMomoOperation('cashin_momokash_collection'); GetMemberData('@Model.CustomerId','_MomocashCollectionDesk','datalistingview','cashin_momokash_collection'); return false;">
-            <i class="fas fa-money-check me-1"></i>
-            <span>Cash-in</span>
-        </a>
+            <div class="d-flex align-items-center flex-wrap gap-2">
+                <div class="fw-semibold">
+                    <i class="mdi mdi-toggle-switch-outline me-1"></i>
+                    Operation
+                </div>
 
-        <!-- Loan repayment button -->
-        <a href="#"
-           class="btn btn-dark btn-sm d-flex align-items-center momo-op-btn"
-           data-operation="repayment_momokash_collection"
-           data-bs-toggle="tooltip"
-           title="@CashDesk_MomocashCollectionTabs.PerformLoanRepaymentOperation"
-           onclick="setMomoOperation('repayment_momokash_collection'); GetMemberData('@Model.CustomerId','_MomocashCollectionDesk','datalistingview','repayment_momokash_collection'); return false;">
-            <i class="fas fa-hand-holding-usd me-1"></i>
-            <span>Loan repayment</span>
-        </a>
+                <span class="badge rounded-pill bg-light text-dark border d-none d-md-inline">
+                    Cash-In &amp; Loan Repayments (Charges Supported)
+                </span>
+            </div>
 
+            <div class="btn-group btn-group-sm" role="group" aria-label="Momocash operations">
+
+                <!-- Cash-in button -->
+                <a href="#"
+                   class="btn btn-success d-flex align-items-center gap-1 momo-op-btn active"
+                   data-operation="cashin_momokash_collection"
+                   data-customer-id="@Model.CustomerId"
+                   data-target-partial="_MomocashCollectionDesk"
+                   data-target-container="datalistingview"
+                   data-bs-toggle="tooltip"
+                   title="@CashDesk_MomocashCollectionTabs.PerformCashinOperation">
+                    <i class="mdi mdi-cash-plus"></i>
+                    <span>Cash-In</span>
+                </a>
+
+                <!-- Loan repayment button -->
+                <a href="#"
+                   class="btn btn-dark d-flex align-items-center gap-1 momo-op-btn"
+                   data-operation="repayment_momokash_collection"
+                   data-customer-id="@Model.CustomerId"
+                   data-target-partial="_MomocashCollectionDesk"
+                   data-target-container="datalistingview"
+                   data-bs-toggle="tooltip"
+                   title="@CashDesk_MomocashCollectionTabs.PerformLoanRepaymentOperation">
+                    <i class="mdi mdi-hand-coin"></i>
+                    <span>Loan Repayment</span>
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="small text-muted mt-1">
+            Select an operation type. Member data will refresh automatically for the selected operation.
+        </div>
     </div>
 </div>
 <script>
-    function setMomoOperation(op) {
-        // update hidden field
-        var $opInput = $('#currentselectedOperation');
-        if ($opInput.length) {
-            $opInput.val(op);
+    (function () {
+
+        // Prevent duplicate binding if partial is re-rendered after search
+        if (window.__tscMomoTabsBound) return;
+        window.__tscMomoTabsBound = true;
+
+        function setMomoOperation(op) {
+            // update hidden field (must exist in search box partial)
+            var $opInput = $('#currentselectedOperation');
+            if ($opInput.length) $opInput.val(op);
+
+            // toggle active UI state
+            $('.momo-op-btn').removeClass('active');
+            $('.momo-op-btn[data-operation="' + op + '"]').addClass('active');
         }
 
-        // toggle active state on buttons
-        $('.momo-op-btn').removeClass('active');
-        $('.momo-op-btn[data-operation="' + op + '"]').addClass('active');
-    }
+        // ✅ Event delegation: works even after AJAX re-rendering
+        $(document).on('click', '.momo-op-btn', function (e) {
+            e.preventDefault();
 
+            var $btn = $(this);
+            var op = $btn.data('operation');
+            var customerId = $btn.data('customer-id');
+            var partial = $btn.data('target-partial') || '_MomocashCollectionDesk';
+            var container = $btn.data('target-container') || 'datalistingview';
+
+            // Guard: ensure operation exists
+            if (!op) return;
+
+            setMomoOperation(op);
+
+            // ✅ If member is not yet loaded, just set operation and wait.
+            // (This avoids errors when user clicks tabs before searching.)
+            if (!customerId) return;
+
+            // call your existing method
+            if (typeof window.GetMemberData === "function") {
+                window.GetMemberData(customerId, partial, container, op);
+            } else if (typeof GetMemberData === "function") {
+                GetMemberData(customerId, partial, container, op);
+            }
+        });
+
+        // Expose setter if you need it elsewhere
+        window.setMomoOperation = setMomoOperation;
+
+    })();
 </script>

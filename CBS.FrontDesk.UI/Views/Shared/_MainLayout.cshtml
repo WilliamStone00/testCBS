@@ -1182,6 +1182,50 @@
             color: #007bff;
             text-decoration: none;
         }
+        /* Keeps alerts directly under navbar and aligned with container width */
+        .tsc-page-alerts-wrap {
+            padding: 10px 0 0 0;
+        }
+
+        /* Clean spacing so it doesn’t create a big empty gap */
+        .tsc-page-alerts {
+            margin: 0;
+        }
+
+        /* Alert styling (professional) */
+        .tsc-alert {
+            border-radius: 12px;
+            box-shadow: 0 10px 26px rgba(0,0,0,.10);
+            margin: 0 0 10px 0;
+        }
+        /* 1) Alerts should not create big vertical space */
+        .tsc-page-alerts-wrap {
+            padding: 0 !important; /* remove wrapper padding */
+            margin: 0 !important;
+        }
+
+        .tsc-page-alerts {
+            margin: 0 !important;
+        }
+
+        .tsc-alert {
+            margin: 0 0 .35rem 0 !important; /* small gap under alert */
+            border-radius: 12px;
+            box-shadow: 0 10px 26px rgba(0,0,0,.10);
+        }
+
+        /* 2) Align body content closer to nav (reduce default template padding) */
+        .content-wrapper .container-xxl.container-p-y {
+            padding-top: .5rem !important; /* default is usually too large */
+            padding-bottom: .75rem !important;
+        }
+
+        /* 3) If your first card/banner still leaves space, remove its top margin */
+        .tsc-wrap > .row:first-child {
+            margin-top: 0 !important;
+        }
+
+
     </style>
 
 </head>
@@ -1197,33 +1241,51 @@
             <div class="layout-page">
                 <!-- Navbar -->
                 @Html.Partial("_NavBar")
-
                 <!-- / Navbar -->
+                <!-- ✅ PAGE ALERTS (under navbar, same width as content) -->
+                <div class="tsc-page-alerts-wrap">
+                    <div class="container-xxl">
+                        <div class="tsc-page-alerts">
+
+                            <!-- SUCCESS / INFO -->
+                            <div id="message_div_success"
+                                 class="alert alert-success alert-dismissible fade show d-none tsc-alert"
+                                 role="alert">
+                                <span id="messagesuccess"></span>
+                                <button type="button"
+                                        class="btn-close"
+                                        aria-label="Close"
+                                        onclick="hideAppAlert('#message_div_success')"></button>
+                            </div>
+
+                            <!-- ERROR / WARNING -->
+                            <div id="message_div_danger"
+                                 class="alert alert-danger alert-dismissible fade show d-none tsc-alert"
+                                 role="alert">
+                                <span id="messagedanger"></span>
+                                <button type="button"
+                                        class="btn-close"
+                                        aria-label="Close"
+                                        onclick="hideAppAlert('#message_div_danger')"></button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- ✅ END PAGE ALERTS -->
                 <!-- Content wrapper -->
                 <div class="content-wrapper" style="padding-top: 1px; padding-bottom: 1px; padding-left: 1px; padding-right: 1px;">
                     <!-- Content -->
                     <div class="container-xxl flex-grow-1 container-p-y">
-                        @*<div class="col-12">
-                                <div class="card mb-4">
-                                    <div class="card-body d-sm-flex d-block">
-                                        <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
-                                            @Html.MvcSiteMap().SiteMapPath()
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>*@
+
                         <div id="connectionModal" style="display:none; background-color: red; color: white; padding: 20px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; text-align: center; font-size: 36px;">
                             <span id="connectionMessage"></span>
                         </div>
-                        <!-- #endregion -->
-
 
                         @RenderBody()
 
-
-
-
                     </div>
+
                     @Html.Partial("_AjaxSpinner")
                     @Html.Partial("_Footer")
                     <div class="content-backdrop fade"></div>

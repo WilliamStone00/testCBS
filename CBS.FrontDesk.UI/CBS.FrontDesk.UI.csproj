@@ -11190,6 +11190,7 @@
     <Content Include="Views\LoanType\Index.cshtml" />
     <Content Include="Views\LoanType\_CreateEditLoanType.cshtml" />
     <Content Include="Views\LoanType\_LoanTypeDetails.cshtml" />
+    <Content Include="Views\BranchAccount\_NegativityModal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

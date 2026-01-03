@@ -7,7 +7,10 @@
     @using (Html.BeginForm("CreateOrUpdate", "IPSClaim", FormMethod.Post,
         new { id = "claimForm", onsubmit = "return validateForm(this);" }))
     {
-        @Html.AntiForgeryToken()
+
+        @*@using (Html.BeginForm("CreateOrUpdate", "IPSClaim", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+        {*@ 
+            @Html.AntiForgeryToken()
         @Html.HiddenFor(m => m.Id)
         @Html.HiddenFor(m => m.MemberId)
 
@@ -38,7 +41,7 @@
                 </div>
                 <div class="form-text">Enter member reference number and click Load</div>
             </div>
-            
+
         </div>
 
         <!-- MEMBER DETAILS ALERT -->

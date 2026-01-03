@@ -1,4 +1,87 @@
-﻿$(document).ready(function () {
+﻿(function () {
+
+    function todayStr() {
+        const d = new Date();
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, "0");
+        const day = String(d.getDate()).padStart(2, "0");
+        return `${y}-${m}-${day}`;
+    }
+
+    function toDate(v) {
+        if (!v) return null;
+        const d = new Date(v + "T00:00:00");
+        return isNaN(d.getTime()) ? null : d;
+    }
+
+    function maxStr(a, b) {
+        // a/b are "yyyy-MM-dd"
+        return (a && b) ? (a > b ? a : b) : (a || b || "");
+    }
+
+    function syncIssueExpiryRules(showAlert) {
+        const $issue = $("#DepositorIDIssueDate");
+        const $exp = $("#DepositorIDExpiryDate");
+        if (!$issue.length || !$exp.length) return;
+
+        const t = todayStr();
+
+        const issueVal = ($issue.val() || "").trim();
+        const expVal = ($exp.val() || "").trim();
+
+        // expiry must be >= today AND > issueDate (not equal)
+        // => min = max(today, issue+1day) when issue exists, else min=today
+        let minExp = t;
+
+        if (issueVal) {
+            const issueD = toDate(issueVal);
+            if (issueD) {
+                const nextDay = new Date(issueD);
+                nextDay.setDate(nextDay.getDate() + 1);
+
+                const y = nextDay.getFullYear();
+                const m = String(nextDay.getMonth() + 1).padStart(2, "0");
+                const d = String(nextDay.getDate()).padStart(2, "0");
+                const issuePlusOne = `${y}-${m}-${d}`;
+
+                minExp = maxStr(t, issuePlusOne);
+            }
+        }
+
+        $exp.attr("min", minExp);
+
+        // If expiry already set but invalid => clear it
+        if (expVal) {
+            const expD = toDate(expVal);
+            const minD = toDate(minExp);
+
+            if (expD && minD && expD < minD) {
+                $exp.val("");
+                if (showAlert) {
+                    appalert("Expiry date must be at least tomorrow after issue date and not less than today.", 3, 1);
+                }
+            }
+        }
+    }
+
+    $(document).ready(function () {
+        syncIssueExpiryRules(false);
+
+        $(document).on("change input", "#DepositorIDIssueDate", function () {
+            syncIssueExpiryRules(true);
+        });
+
+        $(document).on("change input", "#DepositorIDExpiryDate", function () {
+            syncIssueExpiryRules(true);
+        });
+    });
+
+})();
+
+
+
+
+$(document).ready(function () {
     // Event delegation for handling button clicks
     $(document).on("click", ".btn", function () {
         // Remove underline and blue color from all buttons
@@ -164,47 +247,105 @@ function handleVatToggle(loanId) {
     }
 }
 function calculateTableTotal() {
-    var total = 0; // Total of all rows
-    var totalVat = 0; // Total VAT for all rows
+    var total = 0;     // total of all entered rows (and charge if enabled)
+    var totalVat = 0;  // keep your VAT logic (currently 0)
 
-    // Iterate over each row in the table
+    // helper
+    var n = function (v) {
+        var x = parseFloat(v);
+        return Number.isFinite(x) ? x : 0;
+    };
+
+    // -------------------------------
+    // 1) Sum row totals
+    // -------------------------------
     $('#myDataTableT tbody tr').each(function () {
-        // Extract values for Capital, Interest, and Penalty
-        var capital = parseFloat($(this).find('.amount-input').val()) || 0;
-        var interest = parseFloat($(this).find('.interest-input').val()) || 0;
-        var penalty = parseFloat($(this).find('.penalty-input').val()) || 0;
-        var fee = parseFloat($(this).find('.fee-input').val()) || 0;
-         //Calculate VAT (interest × vatRate)
-        //var vatRate = parseFloat($(this).find('.interest-input').data('vat-rate')) || 0; // Get VAT rate from data attribute
-        //var vat = interest * (vatRate / 100);
+        var $row = $(this);
 
-        // Row total
+        var capital = n($row.find('.amount-input').val());
+        var interest = n($row.find('.interest-input').val());
+        var penalty = n($row.find('.penalty-input').val());
+
+        // loan repayment rows may not have .fee-input (defensive)
+        var fee = n($row.find('.fee-input').val());
+
         var rowTotal = capital + interest + penalty + fee;
 
-        // Update row total and VAT display in the row (optional)
-        $(this).find('.total-span').text(rowTotal);
+        // update row total span (format optional)
+        $row.find('.total-span').text(rowTotal);
 
-        // Accumulate totals
         total += rowTotal;
-        //totalVat += vat;
     });
 
-    // Update footer totals
-    $('#tableTotal').text(total.toLocaleString('en-US', { style: 'currency', currency: 'XAF' }));
-    $('#calculatedVat').text(totalVat.toLocaleString('en-US', { minimumFractionDigits: 1 })); // Update VAT in the footer
+    // -------------------------------
+    // 2) Add repayment collection charge (NEW)
+    // -------------------------------
+    var chargeApply = $("#repaymentChargeApply").is(":checked") === true;
+    var chargeMode = ($("#repaymentChargeMode").val() || "ADD_TO_TOTAL").toString().trim().toUpperCase();
+    var chargeAmount = n($("#repaymentCollectionCharge").val());
 
-    // Update balance (if applicable)
-    var totalNotes = parseFloat($("#totalNoteAmount").val()) || 0; // Assuming total funds are available
+    var chargeAdded = 0;
+    if (chargeApply && chargeAmount > 0 && chargeMode === "ADD_TO_TOTAL") {
+        total += chargeAmount;
+        chargeAdded = chargeAmount;
+    }
+
+    // keep hidden mirrors synced (safe for posting + other JS)
+    $("#hRepaymentChargeAmount").val(chargeAmount);
+    $("#hRepaymentChargeApply").val(chargeApply ? "1" : "0");
+    $("#hRepaymentChargeMode").val(chargeMode);
+
+    // -------------------------------
+    // 3) Update footer totals
+    // -------------------------------
+    $('#tableTotal').text(total.toLocaleString('en-US', { style: 'currency', currency: 'XAF' }));
+    $('#calculatedVat').text(totalVat.toLocaleString('en-US', { minimumFractionDigits: 1 }));
+
+    // -------------------------------
+    // 4) Update balance (if applicable)
+    // -------------------------------
+    var totalNotes = n($("#totalNoteAmount").val()); // if not present => 0
     var balance = totalNotes - total;
     $('#tableBalance').text(balance.toLocaleString('en-US', { style: 'currency', currency: 'XAF' }));
+
+    // -------------------------------
+    // 5) Optional: show included charge hint (if element exists)
+    // -------------------------------
+    // if ($('#includedChargeHint').length) {
+    //     $('#includedChargeHint').text(chargeAdded > 0 ? chargeAdded.toLocaleString('en-US', { style: 'currency', currency: 'XAF' }) : '');
+    // }
 }
+function getRepaymentCollectionCharge() {
+    var apply = $("#repaymentChargeApply").is(":checked");
+    var mode = ($("#repaymentChargeMode").val() || "").toUpperCase();
+    var amt = parseFloat($("#repaymentCollectionCharge").val()) || 0;
+
+    if (!apply || amt <= 0) return 0;
+    if (mode && mode !== "ADD_TO_TOTAL") return 0; // only add when mode is ADD_TO_TOTAL
+    return amt;
+}
+
 // Bind event listeners to the input fields
-$(document).ready(function () {
-    // Recalculate totals whenever inputs change
-    $('#myDataTableT').on('input', '.amount-input, .interest-input, .penalty-input', function () {
+// Always recompute when repayment charge changes (delegated binding)
+$(document).on('input change',
+    '#repaymentCollectionCharge, #repaymentChargeApply, #repaymentChargeMode',
+    function () {
         calculateTableTotal();
-    });
-});
+    }
+);
+
+// Also recompute on row input
+$(document).on('input',
+    '#myDataTableT .amount-input, #myDataTableT .interest-input, #myDataTableT .penalty-input, #myDataTableT .fee-input',
+    function () {
+        calculateTableTotal();
+    }
+);
+
+// Run once on load (important)
+$(function () { calculateTableTotal(); });
+
+
 
 // Optional: Single VAT calculation function for real-time updates
 // VAT calculation function
@@ -336,82 +477,189 @@ function applyPayment() {
     var paymentModal = bootstrap.Modal.getInstance(document.getElementById('paymentModal'));
     paymentModal.hide();
 }
+function firstNonEmptyValue(selectors) {
+    // selectors: "#a, #b, #c"
+    var parts = selectors.split(",").map(s => s.trim()).filter(Boolean);
+    for (var i = 0; i < parts.length; i++) {
+        var $el = $(parts[i]);
+        if (!$el.length) continue;
+        var v = $el.val();
+        v = (v === undefined || v === null) ? "" : String(v).trim();
+        if (v) return v;
+    }
+    // fallback: return empty string (not null) so binder keeps it
+    return "";
+}
+function parseNumber(v) {
+    var x = parseFloat(v);
+    return Number.isFinite(x) ? x : 0;
+}
+
+// reads numeric from a td (handles commas)
+function tdNumber($row, index) {
+    var t = ($row.find('td:eq(' + index + ')').text() || "").replace(/,/g, '').trim();
+    return parseNumber(t);
+}
+
+// Try to read VAT total from footer (#calculatedVat).
+// If footer is "0.0" or not currency, still ok.
+function readVatFooter() {
+    if (!$("#calculatedVat").length) return 0;
+    var t = ($("#calculatedVat").text() || "").replace(/[^0-9.\-]/g, '').trim();
+    return parseNumber(t);
+}
+
 function collectDeposits() {
     const deposits = [];
 
-    // helpers
     const n = v => {
         const x = parseFloat(v);
         return Number.isFinite(x) ? x : 0;
     };
-    const tv = sel => {
-        const $el = $(sel);
-        if (!$el.length) return null;
-        const v = $el.val();
-        return (v === undefined || v === null) ? null : String(v).trim();
-    };
 
-    // one-time values
+    const operationType = $('#OperationType').val();
     const accountingDate = $('#BulkDeposit_AccountingDate').val();
 
-    // NEW: branch + GL + source type
     const branchId = $('#branchInput').val();
-    const branchName = $('#branchInput option:selected').text().trim();
+    const branchName = ($('#branchInput option:selected').text() || "").trim();
     const chartOfAccountId = $('#account_number').val();
-    const chartOfAccountName = $('#account_number option:selected').text().trim();
-    const sourceType = $("input[name='BulkDeposit.SourceType']:checked").val();
+    const chartOfAccountName = ($('#account_number option:selected').text() || "").trim();
 
-    // read depositor fields with fallback for old IDs (typos)
-    const depositorName = tv('#DepositorName');
-    const depositorPhoneNumber = tv('#DepositorTelephone, #DepositerTelephone'); // fallback
-    const depositorIDNumber = tv('#DepositorIDNumber');
-    const depositorIssueDate = tv('#DepositorIDIssueDate');
-    const depositorExpiryDate = tv('#DepositorIDExpiryDate');
-    const depositorNumberPlaceOfIssue = tv('#DepositorIDNumberPlaceOfIssue');
-    const depositorNote = tv('#DepositorNote, #DepositerNote'); // fallback
+    // operator source type (support both names safely)
+    const $sourceInput =
+        $("input[name='BulkDeposit.SourceType']:checked")
+            .add("input[name='AddOtherTransactionMobileMoneyCommand.SourceType']:checked");
+
+    const sourceType = $sourceInput.val() || null;
+    const operatorLabel = ($sourceInput.closest('label').text() || "").trim() || sourceType;
+
+    // Representative (Depositor) fields (FIRST NON EMPTY)
+    const depositorName = firstNonEmptyValue('#DepositorName');
+    const depositorPhoneNumber = firstNonEmptyValue('#DepositorTelephone, #DepositerTelephone');
+    const depositorIDNumber = firstNonEmptyValue('#DepositorIDNumber');
+    const depositorIssueDate = firstNonEmptyValue('#DepositorIDIssueDate');
+    const depositorExpiryDate = firstNonEmptyValue('#DepositorIDExpiryDate');
+    const depositorNumberPlaceOfIssue = firstNonEmptyValue('#DepositorIDNumberPlaceOfIssue');
+    const depositorNote = firstNonEmptyValue('#DepositorNote, #DepositerNote');
+
+    // Collection charge (operation-level)
+    const chargeApply = $("#repaymentChargeApply").length ? $("#repaymentChargeApply").is(":checked") : false;
+    const chargeMode = ($("#repaymentChargeMode").val() || "ADD_TO_TOTAL").toUpperCase();
+    const chargeAmount = n($("#repaymentCollectionCharge").val());
+    const repaymentCharge = (chargeApply && chargeAmount > 0 && chargeMode === "ADD_TO_TOTAL") ? chargeAmount : 0;
 
     $('#myDataTableT tbody tr').each(function () {
         const $row = $(this);
-        const rowChecked = $row.find('.form-check-input').first().prop('checked');
+
+        // ✅ CONF checkbox (first checkbox in row)
+        const rowChecked = $row.find('td .form-check-input').first().prop('checked');
         if (!rowChecked) return;
 
         const deposit = {
-            // table/operation data
-            AccountNumber: $row.find('td:eq(0)').text().trim(),
-            Amount: n($row.find('.amount-input').val()),
-            Fee: n($row.find('.fee-input').val()),
-            Penalty: n($row.find('.penalty-input').val()),
-            Interest: n($row.find('.interest-input').val()),
-            Total: n($row.find('.total-span').text()),
-            AccountType: $row.find('td:eq(1)').text().trim(),
-            isDepositDoneByAccountOwner: rowChecked,
-            IsChargesInclussive: $row.find('.check-inclussive').prop('checked') === true,
-            OperationType: $('#OperationType').val(),
-            CheckName: tv('#CheckName'),
-            CheckNumber: tv('#CheckNumber'),
-            IsSWS: true,
+            OperationType: operationType,
             CustomerId: $('#customerId').val(),
+            AccountingDate: accountingDate,
 
-            // NEW: momocash / bulk-deposit context
-            SourceType: sourceType,
             BranchId: branchId,
             BranchName: branchName,
             ChartOfAccountId: chartOfAccountId,
             ChartOfAccountName: chartOfAccountName,
 
-            LoanApplicationId: $row.find('.loan-application-id').val(),
-            Period: $row.find('.period').val(),
-            AccountingDate: accountingDate,
+            SourceType: sourceType,
+            SourceTypeLabel: operatorLabel,
 
-            // depositor fields — use EXACT C# property names
+            // keep your flag naming
+            isDepositDoneByAccountOwner: rowChecked,
+
+            // ✅ IMPORTANT: send both flat AND nested object for model binding
             DepositorName: depositorName,
-            DepositorPhoneNumber: depositorPhoneNumber,
+            DepositorTelephone: depositorPhoneNumber,
+            DepositorNote: depositorNote,
             DepositorIDNumber: depositorIDNumber,
-            DepositorIssueDate: depositorIssueDate,
-            DepositorExpiryDate: depositorExpiryDate,
-            DepositorNumberPlaceOfIssue: depositorNumberPlaceOfIssue,
-            DepositorNote: depositorNote
+            DepositorIDIssueDate: depositorIssueDate,
+            DepositorIDExpiryDate: depositorExpiryDate,
+            DepositorIDNumberPlaceOfIssue: depositorNumberPlaceOfIssue,
+
+            Depositer: { // <-- This is what your C# screenshot is binding to
+                DepositorName: depositorName,
+                DepositorTelephone: depositorPhoneNumber,
+                DepositorNote: depositorNote,
+                DepositorIDNumber: depositorIDNumber,
+                DepositorIDIssueDate: depositorIssueDate,
+                DepositorIDExpiryDate: depositorExpiryDate,
+                DepositorIDNumberPlaceOfIssue: depositorNumberPlaceOfIssue
+            }
         };
+
+        // ✅ LOAN REPAYMENT
+        if (operationType === "LoanRepaymentMomocashCollection") {
+            const loanId = ($row.find('td:eq(0)').text() || "").trim();
+
+            const capital = n($row.find('.amount-input').val());
+            const interest = n($row.find('.interest-input').val());
+            const penalty = n($row.find('.penalty-input').val());
+
+            const vatExclusive = $row.find('.vat-exclusive-check').prop('checked') === true;
+
+            // Hidden VAT rate column in your table:
+            // <td style="display:none;">@d.VatRate</td>
+            // Based on your header order, VatRate is td:eq(5) (0=LoanId,1=Date,2=Amount(hidden),3=Balance,4=Int,5=VRate,6=DueA)
+            const vatRate = tdNumber($row, 5); // e.g. 19.25
+
+            // loan table has no fee-input; keep defensive anyway
+            const rowFee = n($row.find('.fee-input').val());
+
+            // ✅ VAT amount rule:
+            // - If VAT is Exclusive => VAT is added on top of interest (typical)
+            // - If VAT is Inclusive => VAT is included in interest => VAT amount can be derived if you want,
+            //   but safest is 0 (meaning "already included") unless your backend expects the extracted VAT portion.
+            let vatAmount = 0;
+
+            if (vatExclusive && vatRate > 0 && interest > 0) {
+                vatAmount = interest * (vatRate / 100);
+            }
+
+            // ✅ Fee includes repayment charge (since one loan per operation)
+            deposit.Fee = rowFee + repaymentCharge;
+
+            // ✅ Total includes VAT (if exclusive) + charge
+            // If VAT is inclusive, do NOT add VAT again.
+            deposit.Total = (capital + interest + penalty + rowFee) + repaymentCharge + vatAmount;
+
+            deposit.LoanId = loanId;
+
+            // Your server naming:
+            deposit.Principal = capital;   // you renamed capital -> Principal
+            deposit.Interest = interest;
+            deposit.Penalty = penalty;
+            deposit.Amount = capital;
+            deposit.Capital = capital;
+            
+            // VAT fields
+            deposit.VatRate = vatRate;
+            deposit.IsVatExclusive = vatExclusive;
+            deposit.VatAmount = vatAmount;           // ✅ per-loan VAT
+            deposit.VAT = vatAmount;           // ✅ per-loan VAT
+            deposit.Tax = vatAmount;           // ✅ per-loan VAT
+            deposit.TotalVatAmount = readVatFooter(); // ✅ operation VAT (optional but helpful)
+
+            // Optional: charge separately too
+            deposit.CollectionCharge = repaymentCharge;
+
+            deposits.push(deposit);
+            return;
+        }
+
+
+        // ✅ other operations unchanged
+        deposit.AccountNumber = ($row.find('td:eq(0)').text() || "").trim();
+        deposit.AccountType = ($row.find('td:eq(1)').text() || "").trim();
+        deposit.Amount = n($row.find('.amount-input').val());
+        deposit.Fee = n($row.find('.fee-input').val());
+        deposit.Penalty = n($row.find('.penalty-input').val());
+        deposit.Interest = n($row.find('.interest-input').val());
+        deposit.Total = n($row.find('.total-span').text());
+        deposit.IsChargesInclussive = $row.find('.check-inclussive').prop('checked') === true;
 
         deposits.push(deposit);
     });
@@ -419,53 +667,110 @@ function collectDeposits() {
     return deposits;
 }
 
-
 //function collectDeposits() {
-//    var deposits = [];
-//    // Get the accounting date value once
-//    var accountingDate = $('#BulkDeposit_AccountingDate').val();
-//    $('#myDataTableT tbody tr').each(function () {
-//        if ($(this).find('.form-check-input').prop('checked')) {
-//            var deposit = {};
-//            deposit.AccountNumber = $(this).find('td:eq(0)').text();
-//            deposit.Amount = parseFloat($(this).find('.amount-input').val());
-//            deposit.Fee = parseFloat($(this).find('.fee-input').val());
-//            deposit.Penalty = parseFloat($(this).find('.penalty-input').val());
-//            deposit.Interest = parseFloat($(this).find('.interest-input').val());
-//            deposit.Total = parseFloat($(this).find('.total-span').text());
-//            deposit.AccountType = $(this).find('td:eq(1)').text();
-//            deposit.Note = $('#Note').val();
-//            deposit.isDepositDoneByAccountOwner = $(this).find('.form-check-input').prop('checked');
-//            deposit.IsChargesInclussive = $(this).find('.check-inclussive').prop('checked');
-//            deposit.OperationType = $('#OperationType').val();
-//            deposit.CheckName = $('#CheckName').val();
-//            deposit.CheckNumber = $('#CheckNumber').val();
-//            deposit.IsSWS = true;
-//            deposit.CustomerId = $('#customerId').val();
-//            deposit.SourceType = $("input[name='AddOtherTransactionMobileMoneyCommand.SourceType']:checked").val();
-//            deposit.LoanApplicationId = $(this).find('.loan-application-id').val();
-//            deposit.Period = $(this).find('.period').val();
-//            // ✅ Add accounting date
-//            deposit.AccountingDate = accountingDate;
-//            deposits.push(deposit);
-//        }
-//    });
+//    const deposits = [];
 
+//    // helpers
+//    const n = v => {
+//        const x = parseFloat(v);
+//        return Number.isFinite(x) ? x : 0;
+//    };
+//    const tv = sel => {
+//        const $el = $(sel);
+//        if (!$el.length) return null;
+//        const v = $el.val();
+//        return (v === undefined || v === null) ? null : String(v).trim();
+//    };
+
+//    // one-time values
+//    const accountingDate = $('#BulkDeposit_AccountingDate').val();
+
+//    // NEW: branch + GL + source type
+//    const branchId = $('#branchInput').val();
+//    const branchName = $('#branchInput option:selected').text().trim();
+//    const chartOfAccountId = $('#account_number').val();
+//    const chartOfAccountName = $('#account_number option:selected').text().trim();
+//    const sourceType = $("input[name='BulkDeposit.SourceType']:checked").val();
+
+//    // read depositor fields with fallback for old IDs (typos)
+//    const depositorName = tv('#DepositorName');
+//    const depositorPhoneNumber = tv('#DepositorTelephone, #DepositerTelephone'); // fallback
+//    const depositorIDNumber = tv('#DepositorIDNumber');
+//    const depositorIssueDate = tv('#DepositorIDIssueDate');
+//    const depositorExpiryDate = tv('#DepositorIDExpiryDate');
+//    const depositorNumberPlaceOfIssue = tv('#DepositorIDNumberPlaceOfIssue');
+//    const depositorNote = tv('#DepositorNote, #DepositerNote'); // fallback
+
+//    $('#myDataTableT tbody tr').each(function () {
+//        const $row = $(this);
+//        const rowChecked = $row.find('.form-check-input').first().prop('checked');
+//        if (!rowChecked) return;
+
+//        const deposit = {
+//            // table/operation data
+//            AccountNumber: $row.find('td:eq(0)').text().trim(),
+//            Amount: n($row.find('.amount-input').val()),
+//            Fee: n($row.find('.fee-input').val()),
+//            Penalty: n($row.find('.penalty-input').val()),
+//            Interest: n($row.find('.interest-input').val()),
+//            Total: n($row.find('.total-span').text()),
+//            AccountType: $row.find('td:eq(1)').text().trim(),
+//            isDepositDoneByAccountOwner: rowChecked,
+//            IsChargesInclussive: $row.find('.check-inclussive').prop('checked') === true,
+//            OperationType: $('#OperationType').val(),
+//            CheckName: tv('#CheckName'),
+//            CheckNumber: tv('#CheckNumber'),
+//            IsSWS: true,
+//            CustomerId: $('#customerId').val(),
+
+//            // NEW: momocash / bulk-deposit context
+//            SourceType: sourceType,
+//            BranchId: branchId,
+//            BranchName: branchName,
+//            ChartOfAccountId: chartOfAccountId,
+//            ChartOfAccountName: chartOfAccountName,
+
+//            LoanApplicationId: $row.find('.loan-application-id').val(),
+//            Period: $row.find('.period').val(),
+//            AccountingDate: accountingDate,
+
+//            // depositor fields — use EXACT C# property names
+//            DepositorName: depositorName,
+//            DepositorPhoneNumber: depositorPhoneNumber,
+//            DepositorIDNumber: depositorIDNumber,
+//            DepositorIssueDate: depositorIssueDate,
+//            DepositorExpiryDate: depositorExpiryDate,
+//            DepositorNumberPlaceOfIssue: depositorNumberPlaceOfIssue,
+//            DepositorNote: depositorNote
+//        };
+
+//        deposits.push(deposit);
+//    });
 
 //    return deposits;
 //}
 
+
+
 function collectDepositorInfo() {
+    const tv = (sel) => {
+        const $el = $(sel);
+        if (!$el.length) return null;
+        const v = $el.val();
+        return (v === undefined || v === null) ? null : String(v).trim();
+    };
+
     return {
-        DepositorName: $('#DepositorName').val(),
-        DepositerTelephone: $('#DepositerTelephone').val(),
-        DepositorIDNumber: $('#DepositorIDNumber').val(),
-        DepositorIDIssueDate: $('#DepositorIDIssueDate').val(),
-        DepositorIDExpiryDate: $('#DepositorIDExpiryDate').val(),
-        DepositorIDNumberPlaceOfIssue: $('#DepositorIDNumberPlaceOfIssue').val(),
-        DepositerNote: $('#DepositerNote').val()
+        DepositorName: tv('#DepositorName'),
+        DepositorPhoneNumber: tv('#DepositorTelephone, #DepositerTelephone'),
+        DepositorIDNumber: tv('#DepositorIDNumber'),
+        DepositorIssueDate: tv('#DepositorIDIssueDate'),
+        DepositorExpiryDate: tv('#DepositorIDExpiryDate'),
+        DepositorNumberPlaceOfIssue: tv('#DepositorIDNumberPlaceOfIssue'),
+        DepositorNote: tv('#DepositorNote, #DepositerNote')
     };
 }
+
 function resetDepositorForm() {
     $('#DepositorName').val('');
     $('#DepositerTelephone').val('');
@@ -613,7 +918,7 @@ function PostCashIn() {
 
     // 4) Attach currency notes & depositor
     deposits[0].currencyNotes = collectCurrencyNotes();
-    deposits[0].Depositer = collectDepositorInfo();
+    //deposits[0].Depositer = collectDepositorInfo();
 
     // 5) Attach branch + GL to payload
     deposits[0].BranchId = branchId;
@@ -715,57 +1020,150 @@ function PostCashIn() {
         'CashInMomocashCollection'
     );
 }
+function collectRepaymentChargeInfo() {
+    var amount = parseFloat($("#repaymentCollectionCharge").val()) || 0;
+    var apply = $("#repaymentChargeApply").is(":checked");
+    var mode = $("#repaymentChargeMode").val() || "ADD_TO_TOTAL";
+    var note = ($("#repaymentChargeNote").val() || "").trim();
+
+    return {
+        Apply: apply,
+        Amount: amount,
+        Mode: mode,       // ADD_TO_TOTAL | SEPARATE
+        Note: note
+    };
+}
 
 function PostLoanRepayment() {
-    //if (!checkTotalNotes()) return false;
-
-    //var totalNotes = parseFloat($("#totalNoteAmount").val());
-    var totalInfo = calculateTotalAmount();
-
-    //if (!validateTotalAmount(totalInfo, totalNotes)) return;
-
     var deposits = collectDeposits();
-    if (deposits.length !== 1) {
-        appalert("Only one loan can be paid at an instant. Please deselect other accounts.", 3, 1);
-        return;
-    }
-    // Check if one of the radio buttons is selected
-    var sourceType = $("input[name='AddOtherTransactionMobileMoneyCommand.SourceType']:checked").val();
-    if (!sourceType) {
-        appalert("Please select operator type, Either Mobile Money MTN OR Mobile Money Orange", 3, 1);
-        return;
-    }
-    deposits[0].currencyNotes = collectCurrencyNotes();
-    deposits[0].Depositer = collectDepositorInfo();
 
-    var message = "";
-    message += "Are you sure you want to perform loan repayment of " + totalInfo.total + "?";
-    confirmTransaction('Confirm Loan Repayment Operation', message, '/CashDesk/PostRequestCash', deposits, 'LoanRepaymentMomocashCollection');
+    if (deposits.length !== 1) {
+        appalert("Only one loan can be paid at an instant. Please select exactly one loan line.", 3, 1);
+        return;
+    }
+
+    // 1) Require Branch selection
+    var branchId = $('#branchInput').val();
+    var branchName = $('#branchInput option:selected').text().trim() || "-";
+    if (!branchId) {
+        appalert("Please select the branch for this Momocash loan repayment collection.", 3, 1);
+        return;
+    }
+
+    // 2) Require collection GL
+    var momoCollectionAccountId = $('#account_number').val();
+    var momoCollectionAccountName = $('#account_number option:selected').text().trim() || "-";
+    if (!momoCollectionAccountId) {
+        appalert("Please select the Momocash collection GL account.", 3, 1);
+        return;
+    }
+
+    // 3) Require operator type
+    var $sourceInput =
+        $("input[name='BulkDeposit.SourceType']:checked")
+            .add("input[name='AddOtherTransactionMobileMoneyCommand.SourceType']:checked");
+
+    var sourceType = $sourceInput.val();
+    if (!sourceType) {
+        appalert("Please select operator type: either MTN Mobile Money or Orange Money.", 3, 1);
+        return;
+    }
+    var operatorLabel = $sourceInput.closest('label').text().trim() || sourceType;
+
+    // 4) totals from your footer
+    var totalInfo = calculateTotalAmount(); // must return { total: number, ... }
+    var tableTotal = parseFloat($("#tableTotal").text().replace(/[^\d.-]/g, "")) || totalInfo.total || 0;
+
+    // 5) Loan repayment breakdown from selected row (the single deposit object)
+    var d = deposits[0];
+    var capital = parseFloat(d.Amount) || 0;
+    var interest = parseFloat(d.Interest) || 0;
+    var penalty = parseFloat(d.Penalty) || 0;
+    var vatMode = d.IsVatExclusive ? "EXCLUSIVE" : "INCLUSIVE";
+    var vatValue = parseFloat($("#calculatedVat").text().replace(/[^\d.-]/g, "")) || 0;
+
+    if ((capital + interest + penalty) <= 0) {
+        appalert("Please enter at least one value (capital / interest / penalty).", 3, 1);
+        return;
+    }
+
+    // 6) Attach currency + depositor + charge info
+    d.currencyNotes = collectCurrencyNotes();
+    //d.Depositer = collectDepositorInfo(); // your existing function
+    d.CollectionCharge = collectRepaymentChargeInfo();
+
+    // 7) Attach branch + GL + operator to payload (top-level)
+    d.BranchId = branchId;
+    d.BranchName = branchName;
+    d.ChartOfAccountId = momoCollectionAccountId;
+    d.ChartOfAccountName = momoCollectionAccountName;
+
+    d.SourceType = sourceType;
+    d.SourceTypeLabel = operatorLabel;
+
+    // 8) Confirmation context
+    var accountingDate = $('#BulkDeposit_AccountingDate').val() || "-";
+    var memberName = ($('#memberName').val() || "").trim() || "@Model.Customer.name";
+
+    // 9) Build confirm HTML
+    var chargeLine = "";
+    if (d.CollectionCharge && d.CollectionCharge.Apply && (parseFloat(d.CollectionCharge.Amount) || 0) > 0) {
+        chargeLine =
+            '<tr>' +
+            '<td><strong>Collection Charge</strong></td>' +
+            '<td class="text-end">' + formatAmount(d.CollectionCharge.Amount) + '</td>' +
+            '</tr>';
+    }
+
+    var depositorBlock = "";
+    if (d.Depositer && (d.Depositer.DepositorName || d.Depositer.DepositorTelephone)) {
+        depositorBlock =
+            '<p class="mb-1"><strong>Representative:</strong> ' + escapeHtml(d.Depositer.DepositorName || "-") + '</p>' +
+            '<p class="mb-2"><strong>Phone:</strong> ' + escapeHtml(d.Depositer.DepositorTelephone || "-") + '</p>';
+    }
+
+    var html =
+        '<div class="momo-confirm">' +
+        '<p class="mb-2"><strong>Member:</strong> ' + escapeHtml(memberName) + '</p>' +
+        depositorBlock +
+        '<p>You\'re about to perform a <strong>LOAN REPAYMENT of ' + formatAmount(tableTotal) + '.</strong></p>' +
+        '<p class="mb-2">' +
+        '<strong>Branch:</strong> ' + escapeHtml(branchName) + '<br />' +
+        '<strong>Operator:</strong> ' + escapeHtml(operatorLabel) + '<br />' +
+        '<strong>Collection GL:</strong> ' + escapeHtml(momoCollectionAccountName) + '<br />' +
+        '<strong>Accounting Date:</strong> ' + escapeHtml(accountingDate) +
+        '</p>' +
+
+        '<h6 class="text-success mt-3 mb-2">Repayment Breakdown</h6>' +
+        '<table class="table table-sm table-bordered mb-2">' +
+        '<tbody>' +
+        '<tr><td><strong>Capital</strong></td><td class="text-end">' + formatAmount(capital) + '</td></tr>' +
+        '<tr><td><strong>Interest</strong></td><td class="text-end">' + formatAmount(interest) + '</td></tr>' +
+        '<tr><td><strong>Penalty</strong></td><td class="text-end">' + formatAmount(penalty) + '</td></tr>' +
+        '<tr><td><strong>VAT Mode</strong></td><td class="text-end">' + escapeHtml(vatMode) + '</td></tr>' +
+        '<tr><td><strong>Calculated VAT</strong></td><td class="text-end">' + formatAmount(vatValue) + '</td></tr>' +
+        chargeLine +
+        '<tr class="fw-bold bg-light">' +
+        '<td><strong>Grand Total</strong></td>' +
+        '<td class="text-end">' + formatAmount(tableTotal) + '</td>' +
+        '</tr>' +
+        '</tbody>' +
+        '</table>' +
+        '</div>';
+
+    // 10) Confirm and post
+    confirmTransaction(
+        '✅ CONFIRM LOAN REPAYMENT OPERATION',
+        html,
+        '/CashDesk/PostRequestCash',
+        deposits,
+        'LoanRepaymentMomocashCollection'
+    );
 }
 
 
 
-//function PostLoanRepayment() {
-//    if (!checkTotalNotes()) return false;
 
-//    var totalNotes = parseFloat($("#totalNoteAmount").val());
-//    var totalInfo = calculateTotalAmount();
-
-//    if (!validateTotalAmount(totalInfo, totalNotes)) return;
-
-//    var deposits = collectDeposits();
-//    if (deposits.length !== 1) {
-//        appalert("Only one loan can be paid at an instant. Please deselect other accounts.", 3, 1);
-//        return;
-//    }
-
-//    deposits[0].currencyNotes = collectCurrencyNotes();
-//    deposits[0].Depositer = collectDepositorInfo();
-
-//    var message = "";
-//    message += "Are you sure you want to perform loan repayment of " + totalInfo.total + "?";
-//    confirmTransaction('Confirm Loan Repayment Operation', message, '/CashDesk/PostRequestCash', deposits, 'LoanRepayment');
-//}
 
 function getSelectedAccountNumbers() {
     var selectedAccountNumbers = [];

@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.WebControls.Expressions;
+using ZXing;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.BranchAccounting
 {
@@ -66,11 +67,11 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.BranchAccounting
             var branches = await _branchServices.GetBranches();
             ViewBag.Branches = branches;
 
-          /*  var affiliate = await _affiliateAccountMockService.GetAffiliatesFromMockAsync();
-            ViewBag.Affiliates = affiliate;
+            /*  var affiliate = await _affiliateAccountMockService.GetAffiliatesFromMockAsync();
+              ViewBag.Affiliates = affiliate;
 
-            var Chartofaccount = await _affiliateAccountMockService.GetAffiliatesFromMockAsync();
-            ViewBag.HoPcmfAccountId = Chartofaccount;*/
+              var Chartofaccount = await _affiliateAccountMockService.GetAffiliatesFromMockAsync();
+              ViewBag.HoPcmfAccountId = Chartofaccount;*/
 
             var affiliateAccounts = await _AffiliateAccountService.GetAllAffiliateAccounts();
             ViewBag.AffiliateAccounts = affiliateAccounts;
@@ -100,7 +101,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.BranchAccounting
                     query.BranchId = _branchAccountService.GetBranchID();
                 }
                 var data = await _branchAccountService.GetDataTableAsync(query);
-              
+
                 var branchAccounts = JsonConvert.DeserializeObject<List<Data.Entity.Accounting_V2.BranchAccount.BranchAccountResponse>>(JsonConvert.SerializeObject(data.data));
 
                 var tasks = branchAccounts.Select(async x =>
@@ -217,22 +218,22 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.BranchAccounting
                         model.Class = parentData?.Class;
                         model.AffiliateAccountId = parentData?.AffiliateAccountId;
                         model.ParentAccountNumber = parentData?.Code;
-                        model.Code = AccountManagementPositionCalculator.ComposeChildCode(parentData?.Code,"");
+                        model.Code = AccountManagementPositionCalculator.ComposeChildCode(parentData?.Code, "");
                         model.BranchId = parentData?.BranchId;
 
 
                     }
 
-                  
+
                 }
-                 
+
                 return PartialView(partialView, model);
             }
             else
             {
                 var data = await _branchAccountService.GetByIdAsync(KEY);
 
-                var model= new PendingAccountRequest(data);
+                var model = new PendingAccountRequest(data);
                 if (!string.IsNullOrWhiteSpace(data?.ParentId))
                 {
                     // set ParentId so the view receives it in the hidden field
@@ -251,28 +252,28 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.BranchAccounting
 
         public async Task<ActionResult> InitializeData2(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
         {
-                 var data = await _branchAccountService.GetByIdfordetailsAsync(KEY);
-                return PartialView(partialView, data);
-                      
+            var data = await _branchAccountService.GetByIdfordetailsAsync(KEY);
+            return PartialView(partialView, data);
+
         }
 
         [HttpPost]
         public async Task<ActionResult> CreateOrUpdate(PendingAccountRequest model)
         {
             // Use IsNullOrWhiteSpace so empty string Ids don't behave like null
-          /*  if (string.IsNullOrWhiteSpace(model.Id))
-            {*/
-                if (!ModelState.IsValid)
-                    return Json(new { success = false, message = "Validation failed." });
-                 model.AccountUpdateKind = model.ChangeType== "CreateRequest" ? "None" : model.AccountUpdateKind;
-                var result = await _pendingAccountsService.CreateAsync(model);
-                return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
-           /* }
-            else
-            {
-                // IMPORTANT: return the ActionResult from Update
-                return await Update(model);
-            }*/
+            /*  if (string.IsNullOrWhiteSpace(model.Id))
+              {*/
+            if (!ModelState.IsValid)
+                return Json(new { success = false, message = "Validation failed." });
+            model.AccountUpdateKind = model.ChangeType == "CreateRequest" ? "None" : model.AccountUpdateKind;
+            var result = await _pendingAccountsService.CreateAsync(model);
+            return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
+            /* }
+             else
+             {
+                 // IMPORTANT: return the ActionResult from Update
+                 return await Update(model);
+             }*/
 
             // unreachable now but keep for safety (or remove)
             // return Json(new { success = false, status = false, message = "Fillsss the required fields." });
@@ -305,5 +306,50 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.BranchAccounting
             return Json(new { success = success, message = message }, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        public async Task<JsonResult> UpdateAccountNegativity(UpdateAccountNegativityRequest request)
+        {
+            try
+            {
+                // Validate request
+                if (request.BranchId == null)
+                    return Json(new { success = false, message = "Invalid branch selection." });
+
+                if (request.ApplyToClass && string.IsNullOrEmpty(request.ClassId))
+                    return Json(new { success = false, message = "Class selection is required." });
+
+                if (request.ApplyToSpecificAccount && (request.BranchAccountId == null || request.BranchAccountId == null))
+                    return Json(new { success = false, message = "Account selection is required." });
+
+                   var result = await _branchAccountService.UpdateNegativityByClassAsync(request);
+                    return Json(new
+                    {   success = true,
+                        message = Messaging.MessageResult(result)
+                    });            
+                               
+            }
+            catch (Exception ex)
+            {
+                // Log error
+                return Json(new { success = false, message = $"Error: {ex.Message}" });
+            }
+
+
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetNegativityModal()
+        {
+            await loader();
+            
+            if (ViewBag.Classes == null)
+            {
+                // Load classes from your service/repository
+                var classes = _chartOfAccountsV.GetAllClass2();
+                ViewBag.Classes = classes;
+            }
+
+            return PartialView("_NegativityModal");
+        }
     }
 }
