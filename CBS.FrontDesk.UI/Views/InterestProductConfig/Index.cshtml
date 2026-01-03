@@ -297,9 +297,16 @@ $(function () {
     $('#btnAddproductConfig').on('click', function () {
         $.get(addUrl, function (html) {
             $("#ProductConfigurationModalContent").html(html);
-            bootstrap.Modal.getOrCreateInstance(
-                document.getElementById('ProductConfigurationModal')
-            ).show();
+
+            // ✅ Initialize Select2 INSIDE ProductConfiguration modal
+            $('#ProductConfigurationModal .select2').select2({
+                dropdownParent: $('#ProductConfigurationModal'),
+                width: '100%'
+            });
+
+            bootstrap.Modal
+                .getOrCreateInstance(document.getElementById('ProductConfigurationModal'))
+                .show();
 
             initFrequencyLogic();
             initComputationModeLogic();
@@ -309,6 +316,7 @@ $(function () {
             initGlobalConfigLogic();
         });
     });
+
 
     // ================================
     // EDIT CONFIG
@@ -320,9 +328,16 @@ $(function () {
 
         $.get(updateUrl, { id }, function (html) {
             $("#ProductConfigurationModalContent").html(html);
-            bootstrap.Modal.getOrCreateInstance(
-                document.getElementById('ProductConfigurationModal')
-            ).show();
+
+            // ✅ Initialize Select2 INSIDE ProductConfiguration modal
+            $('#ProductConfigurationModal .select2').select2({
+                dropdownParent: $('#ProductConfigurationModal'),
+                width: '100%'
+            });
+
+            bootstrap.Modal
+                .getOrCreateInstance(document.getElementById('ProductConfigurationModal'))
+                .show();
 
             initFrequencyLogic();
             initComputationModeLogic();

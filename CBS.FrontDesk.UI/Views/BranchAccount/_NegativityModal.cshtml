@@ -1,0 +1,180 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.BranchAccount.UpdateAccountNegativityRequest
+@using Resources;
+
+
+<div class="modal fade" id="manageNegativityModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-header bg-light">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card bg-light mb-2">
+                        <div class="card-body text-center">
+                            <h1 class="card-title text-primary">
+                                <i class="mdi mdi-bank-off me-2"></i>Account Negativity Management
+                            </h1>
+                            <p class="card-text">
+                                Configure negative balance allowances for branch accounts by class or specific account.
+                            </p>
+                            <div class="alert alert-info mt-3 py-2">
+                                <i class="mdi mdi-alert-outline me-1"></i>
+                                Use this tool to manage whether accounts can have negative balances. Disabling negativity prevents overdrafts.
+                            </div>
+                              <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-3">
+                <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+                    <span><i class="mdi mdi-information-outline me-2"></i>  Tips</span>
+                    <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseNegativityTips" aria-expanded="false">
+                        <i class="mdi mdi-chevron-down"></i>
+                    </button>
+                </h6>
+                <div id="collapseNegativityTips" class="collapse">
+                    <div class="card-body">
+                        <ul>
+                            <li>
+                                <i class="mdi mdi-filter-outline text-success me-2"></i>
+                                <strong>Branch Selection:</strong> Start by selecting a branch to view and manage its account negativity settings.
+                            </li>
+                            <li>
+                                <i class="mdi mdi-account-group text-primary me-2"></i>
+                                <strong>Account Class:</strong> Apply settings to all accounts within a specific class (e.g., Asset, Liability, Equity).
+                            </li>
+                            <li>
+                                <i class="mdi mdi-bank text-info me-2"></i>
+                                <strong>Specific Account:</strong> Target individual branch accounts for precise negativity control.
+                            </li>
+                            <li>
+                                <i class="mdi mdi-check-circle text-success me-2"></i>
+                                <strong>Allow Negative:</strong> When enabled, accounts can have negative balances (useful for overdraft facilities).
+                            </li>
+                            <li>
+                                <i class="mdi mdi-close-circle text-danger me-2"></i>
+                                <strong>Disallow Negative:</strong> When disabled, accounts must maintain positive balances at all times.
+                            </li>
+                            <li>
+                                <i class="mdi mdi-alert-box text-warning me-2"></i>
+                                <strong>Important:</strong> Disabling negativity for active accounts may block transactions that would create overdrafts.
+                            </li>
+                            <li>
+                                <i class="mdi mdi-backup-restore text-secondary me-2"></i>
+                                <strong>Bulk Operations:</strong> Use "By Account Class" to apply changes to multiple accounts simultaneously.
+                            </li>
+                            <li>
+                                <i class="mdi mdi-shield-check text-success me-2"></i>
+                                <strong>Risk Management:</strong> Regularly review negativity settings to prevent unauthorized overdrafts.
+                            </li>
+                            <li>
+                                <i class="mdi mdi-history text-info me-2"></i>
+                                <strong>Audit Trail:</strong> All negativity changes are logged with user, timestamp, and previous settings.
+                            </li>
+                            <li>
+                                <i class="mdi mdi-currency-usd-off text-danger me-2"></i>
+                                <strong>Compliance:</strong> Certain account types (like reserve accounts) may legally require positive balances.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-body">
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        @Html.LabelFor(m => m.BranchId, GlobalUserManagement.Branch, new { @class = "form-label small" })
+                        @Html.DropDownListFor(
+                            m => m.BranchId,
+                            new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name"),
+                            "--- " + @GlobalUserManagement.SelectBranch + " ---",
+                            new { @class = "form-select form-select-sm select2", id = "NegBranchId" })
+                        @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger small" })
+                    </div>
+
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <div class="d-flex gap-3 mb-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="negativityMode"
+                                       id="negModeClass" value="class" checked>
+                                <label class="form-check-label" for="negModeClass">
+                                    By Account Class
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="negativityMode"
+                                       id="negModeSpecific" value="specific">
+                                <label class="form-check-label" for="negModeSpecific">
+                                    By Specific Account
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CLASS Section (Default) -->
+                <div id="classSection" class="row mb-3">
+                    <div class="col-md-12">
+                        <label class="form-label">Account Class</label>
+                        @Html.DropDownList("NegClassId",
+                            new SelectList(ViewBag.classes, "Value", "Text"),
+                            "--- Select Class ---",
+                            new { @class = "form-select form-select-sm select2", id = "NegClassId" })
+
+                    </div>
+                </div>
+
+                <!-- SPECIFIC ACCOUNT Section (Hidden initially) -->
+                <div id="specificAccountSection" class="row mb-3" style="display: none;">
+                    <div class="col-md-12">
+                        <label class="form-label">Branch Account</label>
+                        <select id="NegBranchAccountId" class="form-select form-select-sm select2"
+                                disabled>
+                            <option value="">--- First select Branch ---</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Negativity Option -->
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox"
+                                   id="AllowNegativeBalance" checked>
+                            <label class="form-check-label" for="AllowNegativeBalance">
+                                Allow Negative Balance
+                            </label>
+                        </div>
+                        <small class="text-muted">
+                            When enabled, accounts can have negative balances. When disabled, all balances must be positive.
+                        </small>
+                    </div>
+                </div>
+
+                <!-- Summary Section -->
+                <div id="negativitySummary" class="alert alert-info" style="display: none;">
+                    <div class="d-flex align-items-center">
+                        <i class="mdi mdi-information-outline me-2"></i>
+                        <div>
+                            <strong>Summary:</strong>
+                            <div id="summaryText" class="small"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary btn-sm" id="btnApplyNegativity">
+                    <i class="mdi mdi-check-circle me-1"></i> Apply Changes
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -133,7 +133,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.IPS
                     return Json(new
                     {
                         success = false,
-                        message = "Member not found."
+                        message = customerData.statusMessage
                     }, JsonRequestBehavior.AllowGet);
                 }
 

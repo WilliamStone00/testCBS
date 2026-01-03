@@ -2650,3 +2650,46 @@ function AjaxPostAndUpdateChangePassword(form) {
 //    // 🚀 Start logic
 //    fetchIdleTimeout();
 //})();
+
+function ShowModal(key, partialView, controller, path) {
+    var url = '/' + controller + '/InitializeData?KEY=' + encodeURIComponent(key || '') +
+        '&partialView=' + encodeURIComponent(partialView) +
+        '&path=' + encodeURIComponent(path);
+
+    $.get(url).done(function (html) {
+
+        const modalEl = document.getElementById('genericModal');
+        const modalBody = modalEl.querySelector('.modal-content');
+
+        modalBody.innerHTML = html;
+
+        const modal = new bootstrap.Modal(modalEl);
+
+        // 🔥 Initialize Select2 AFTER HTML injection, BEFORE show
+        initSelect2(modalEl);
+
+        modal.show();
+
+    }).fail(function () {
+        appalert('Failed to load content', 0, 1);
+    });
+}
+
+function initSelect2(container) {
+    $(container).find('.select2').each(function () {
+        const $select = $(this);
+
+        // Destroy if already initialized (important for AJAX reloads)
+        if ($select.hasClass('select2-hidden-accessible')) {
+            $select.select2('destroy');
+        }
+
+        $select.select2({
+            width: '100%',
+            dropdownParent: $(container), // 🔥 REQUIRED for modals
+            placeholder: $select.attr('data-placeholder') || 'Select an option',
+            allowClear: true
+        });
+    });
+}
+

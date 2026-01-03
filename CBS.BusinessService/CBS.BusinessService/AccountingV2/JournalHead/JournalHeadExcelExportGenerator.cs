@@ -804,7 +804,10 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
                 // ===== SHEET 1: SUMMARY & OVERVIEW =====
                 CreateSummarySheet(package, journalData, bank, branchcode, branchid, branchname, exportedBy, exportOptions);
 
-                // ===== SHEET 2: JOURNAL ENTRIES DETAILS =====
+                // ===== SHEET 2: BRANCH SUMMARY (NEW) =====
+                CreateBranchSummarySheet(package, journalData, exportedBy, exportOptions);
+
+                // ===== SHEET 3: JOURNAL ENTRIES DETAILS =====
                 CreateJournalDetailsSheet(package, journalData, exportedBy, exportOptions);
 
                 // ===== SHEETS FOR EACH BRANCH: Create individual sheets for each branch =====
@@ -832,7 +835,6 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
                 Console.WriteLine($"File saved to: {filePath}");
             }
         }
-
         private void CreateSummarySheet(ExcelPackage package, List<CBS.FrontDesk.Data.Entity.AccountingV2.JournalHead> journalData, string bank, string branchcode, string branchid, string branchname, string exportedBy, ExportOptions exportOptions)
         {
             var worksheet = package.Workbook.Worksheets.Add("Summary & Overview");
@@ -999,6 +1001,156 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
 
             // Format percentages
             worksheet.Cells[$"C{currentRow - StatusSummary.Count}:C{currentRow - 1}"].Style.Numberformat.Format = "0.0%";
+
+            // Auto-fit columns
+            worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+        }
+
+        private void CreateBranchSummarySheet(ExcelPackage package, List<CBS.FrontDesk.Data.Entity.AccountingV2.JournalHead> journalData, string exportedBy, ExportOptions exportOptions)
+        {
+            var worksheet = package.Workbook.Worksheets.Add("Branch Summary");
+
+            // Set font
+            var fontName = "Bahnschrift SemiCondensed";
+            worksheet.Cells.Style.Font.Name = fontName;
+
+            // ===== HEADER SECTION =====
+            int headerColumns = 7; // Branch ID, Branch Name, Records, Resolved, Pending, Total Amount, Avg Amount
+            string headerEndColumn = GetColumnLetter(headerColumns);
+            int currentRow = CreateHeaderSection(worksheet, GetBankName(), GetBranchCode(), GetBranchID(), GetBranchName(), exportedBy, exportOptions, "BRANCH SUMMARY REPORT", headerEndColumn);
+
+            // ===== BRANCH SUMMARY SECTION =====
+            worksheet.Cells[$"A{currentRow}:G{currentRow}"].Merge = true;
+            worksheet.Cells[$"A{currentRow}"].Value = "BRANCH SUMMARY";
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Bold = true;
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Size = 14;
+            worksheet.Cells[$"A{currentRow}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            worksheet.Cells[$"A{currentRow}"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells[$"A{currentRow}"].Style.Fill.BackgroundColor.SetColor(Color.LightCoral);
+            currentRow += 2;
+
+            // Branch summary headers
+            var branchHeaders = new[] { "Branch ID", "Branch Name", "Records", "Resolved", "Pending", "Total Amount", "Avg Amount" };
+            for (int i = 0; i < branchHeaders.Length; i++)
+            {
+                worksheet.Cells[currentRow, 1 + i].Value = branchHeaders[i];
+                worksheet.Cells[currentRow, 1 + i].Style.Font.Bold = true;
+                worksheet.Cells[currentRow, 1 + i].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells[currentRow, 1 + i].Style.Fill.BackgroundColor.SetColor(Color.LightGreen);
+                worksheet.Cells[currentRow, 1 + i].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+            }
+            currentRow++;
+
+            // Branch summary data - aggregated from journalData
+            var branchSummary = journalData.GroupBy(x => new { x.BranchId, x.BranchName })
+                                        .Select(g => new
+                                        {
+                                            BranchId = g.Key.BranchId,
+                                            BranchName = g.Key.BranchName,
+                                            Records = g.Count(),
+                                            Resolved = g.Count(x => x.Status == "COMPLETED" || x.Status == "RECONCILED"),
+                                            Pending = g.Count(x => x.Status != "COMPLETED" && x.Status != "RECONCILED"),
+                                            TotalAmount = g.Sum(x => x.TotalDebit), // Using TotalDebit as transaction amount
+                                            AvgAmount = g.Average(x => x.TotalDebit)
+                                        })
+                                        .OrderByDescending(x => x.TotalAmount)
+                                        .ToList();
+
+            foreach (var branch in branchSummary)
+            {
+                worksheet.Cells[currentRow, 1].Value = branch.BranchId;
+                worksheet.Cells[currentRow, 2].Value = branch.BranchName;
+                worksheet.Cells[currentRow, 3].Value = branch.Records;
+                worksheet.Cells[currentRow, 4].Value = branch.Resolved;
+                worksheet.Cells[currentRow, 5].Value = branch.Pending;
+                worksheet.Cells[currentRow, 6].Value = branch.TotalAmount;
+                worksheet.Cells[currentRow, 7].Value = branch.AvgAmount;
+
+                for (int col = 1; col <= 7; col++)
+                {
+                    worksheet.Cells[currentRow, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                }
+                currentRow++;
+            }
+
+            // Format numbers
+            if (branchSummary.Any())
+            {
+                worksheet.Cells[$"F{currentRow - branchSummary.Count}:G{currentRow - 1}"].Style.Numberformat.Format = "#,##0.00";
+            }
+
+            // Add totals row
+            if (branchSummary.Any())
+            {
+                worksheet.Cells[currentRow, 1].Value = "TOTALS:";
+                worksheet.Cells[currentRow, 1].Style.Font.Bold = true;
+                worksheet.Cells[currentRow, 3].Value = branchSummary.Sum(x => x.Records);
+                worksheet.Cells[currentRow, 4].Value = branchSummary.Sum(x => x.Resolved);
+                worksheet.Cells[currentRow, 5].Value = branchSummary.Sum(x => x.Pending);
+                worksheet.Cells[currentRow, 6].Value = branchSummary.Sum(x => x.TotalAmount);
+                worksheet.Cells[currentRow, 7].Value = branchSummary.Average(x => x.AvgAmount);
+
+                for (int col = 1; col <= 7; col++)
+                {
+                    worksheet.Cells[currentRow, col].Style.Font.Bold = true;
+                    worksheet.Cells[currentRow, col].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    worksheet.Cells[currentRow, col].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
+                    worksheet.Cells[currentRow, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                }
+            }
+
+            currentRow += 2;
+
+            // ===== ADDITIONAL BRANCH STATISTICS =====
+            worksheet.Cells[$"A{currentRow}:G{currentRow}"].Merge = true;
+            worksheet.Cells[$"A{currentRow}"].Value = "BRANCH PERFORMANCE METRICS";
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Bold = true;
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Size = 14;
+            worksheet.Cells[$"A{currentRow}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            worksheet.Cells[$"A{currentRow}"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells[$"A{currentRow}"].Style.Fill.BackgroundColor.SetColor(Color.LightBlue);
+            currentRow += 2;
+
+            // Performance metrics headers
+            var metricHeaders = new[] { "Metric", "Value", "Branch" };
+            for (int i = 0; i < metricHeaders.Length; i++)
+            {
+                worksheet.Cells[currentRow, 1 + i].Value = metricHeaders[i];
+                worksheet.Cells[currentRow, 1 + i].Style.Font.Bold = true;
+                worksheet.Cells[currentRow, 1 + i].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells[currentRow, 1 + i].Style.Fill.BackgroundColor.SetColor(Color.LightGreen);
+                worksheet.Cells[currentRow, 1 + i].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+            }
+            currentRow++;
+
+            // Calculate performance metrics
+            var highestVolume = branchSummary.OrderByDescending(x => x.TotalAmount).FirstOrDefault();
+            var highestTransactions = branchSummary.OrderByDescending(x => x.Records).FirstOrDefault();
+            var highestPending = branchSummary.OrderByDescending(x => x.Pending).FirstOrDefault();
+            var highestResolution = branchSummary.OrderByDescending(x => x.Resolved).FirstOrDefault();
+
+            var metricsData = new[]
+            {
+        new { Metric = "Highest Transaction Volume", Value = highestVolume?.TotalAmount.ToString("N2"), Branch = highestVolume?.BranchName },
+        new { Metric = "Most Transactions", Value = highestTransactions?.Records.ToString(), Branch = highestTransactions?.BranchName },
+        new { Metric = "Highest Pending Count", Value = highestPending?.Pending.ToString(), Branch = highestPending?.BranchName },
+        new { Metric = "Highest Resolved Count", Value = highestResolution?.Resolved.ToString(), Branch = highestResolution?.BranchName },
+        new { Metric = "Average Transactions per Branch", Value = branchSummary.Average(x => x.Records).ToString("N2"), Branch = "All Branches" },
+        new { Metric = "Total Active Branches", Value = branchSummary.Count.ToString(), Branch = "All Branches" }
+    };
+
+            foreach (var metric in metricsData)
+            {
+                worksheet.Cells[currentRow, 1].Value = metric.Metric;
+                worksheet.Cells[currentRow, 2].Value = metric.Value;
+                worksheet.Cells[currentRow, 3].Value = metric.Branch;
+
+                for (int col = 1; col <= 3; col++)
+                {
+                    worksheet.Cells[currentRow, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                }
+                currentRow++;
+            }
 
             // Auto-fit columns
             worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();

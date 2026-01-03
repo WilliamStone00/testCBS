@@ -1,5 +1,8 @@
-﻿using CBS.BusinessService.Config.Localization;
+﻿using CBS.BusinessService.Config;
+using CBS.BusinessService.Config.Localization;
+using CBS.BusinessService.LoanP;
 using CBS.FrontDesk.Data.Entity.Config;
+using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Message;
 using System;
 using System.Collections.Generic;
@@ -8,12 +11,9 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
-using CBS.FrontDesk.Data.Entity.LoanConf;
-using CBS.BusinessService.Config;
-
 namespace CBS.FrontDesk.UI.Controllers.Configuration
 {
-    [CheckSessionTimeOutAttribute]
+   // [CheckSessionTimeOutAttribute]
 
     public class LoanTermController : BaseController
     {
@@ -23,15 +23,17 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
         {
             _LoanTermServices = PeriodServices;
         }
-      
+
         public async Task<ActionResult> Index()
         {
+            loader();
             ViewBag.Key = null;
             return View();
         }
         [HttpPost]
         public async Task<ActionResult> Create(LoanTerm model)
         {
+           
             if (model.Id == null)
             {
                 if (ModelState.IsValid)
@@ -72,10 +74,11 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
 
             return Json(new { success = false, status = false, message = "Fill the required fields." });
         }
-        
-        public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path=null)
-        {
-            if (path=="list")
+
+        public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null)
+         {
+            loader();
+            if (path == "list")
             {
                 var data = await _LoanTermServices.GetLoanTerms();
                 return PartialView(partialView, data);
@@ -89,14 +92,37 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
             {
                 var Period = await _LoanTermServices.GetLoanTerm(KEY);
                 return PartialView(partialView, Period);
-                
+
             }
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> GetAll()
+        {
+            loader();
+            var data = await _LoanTermServices.GetLoanTerms();
+            return Json(new { success = true, data = data }, JsonRequestBehavior.AllowGet);
         }
 
         public async Task<ActionResult> Delete(string KEY)
         {
             var data = await _LoanTermServices.Delete(KEY);
             return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
+        }
+
+        private bool loader()
+        {
+            // Load LoanTermKind enum values
+            var LtGroupOptions = Enum.GetValues(typeof(LoanTermKind))
+                .Cast<LoanTermKind >()
+                .Select(e => new SelectListItem
+                {
+                    Value = e.ToString(),
+                    Text = e.ToString()
+                })
+                .ToList();
+            ViewBag.TermKind = LtGroupOptions;
+            return true;
         }
     }
 }

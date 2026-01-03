@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.LoanConf.UpdatePcmfLoanPurposeRequest
+﻿@model CBS.FrontDesk.Data.Entity.LoanConf.PcmfLoanPurpose
 @using Resources
 @using System.Web.Mvc
 
@@ -29,21 +29,17 @@
 
             <div class="row g-2">
                 <!-- Key -->
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <div class="form-floating">
-                        @Html.TextBoxFor(m => m.Key, new
-                        {
-                            @class = "form-control",
-                            type = "number",
-                            min = "0",
-                            placeholder = "Key",
-                            @required = "required"
-                        })
-                        <label>Key</label>
-                        @Html.ValidationMessageFor(m => m.Key, "", new { @class = "text-danger" })
+                        @Html.DropDownListFor(m => m.PcmfPurposeKey,
+                            (IEnumerable<SelectListItem>)ViewBag.LtGroupOptions,
+                            "Select Pcmf Purpose Key",
+                            new { @class = "form-control select2" })
+                        <label>Pcmf Purpose Key</label>
+                        @Html.ValidationMessageFor(m => m.PcmfPurposeKey, "", new { @class = "text-danger" })
                     </div>
                 </div>
-
+                
                 <!-- Name EN -->
                 <div class="col-md-6">
                     <div class="form-floating">
@@ -63,7 +59,7 @@
                 <div class="col-md-6">
                     <div class="form-floating">
                         @Html.TextBoxFor(m => m.NameFr, new
-                        {
+                        { 
                             @class = "form-control",
                             placeholder = "Name (French)",
                             maxlength = "200",
@@ -74,54 +70,71 @@
                     </div>
                 </div>
 
-                <!-- LT Group -->
                 <div class="col-md-6">
                     <div class="form-floating">
-                        @Html.DropDownListFor(m => m.LtGroupCode,
-                            (IEnumerable<SelectListItem>)ViewBag.LtGroupOptions,
-                            "Select LT Group",
-                            new { @class = "form-control" })
-                        <label>Long Term Group</label>
+                        @Html.TextBoxFor(m => m.LtGroupCode, new
+                   {
+                       @class = "form-control",
+                       type = "number",
+                       min = "0",
+                       placeholder = "Lt Group Code",
+                       @required = "required",
+                       @readonly = "readonly"
+                   })
+                        <label>Pcmf PurposeKey</label>
                         @Html.ValidationMessageFor(m => m.LtGroupCode, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
-                <!-- MT Group -->
                 <div class="col-md-6">
                     <div class="form-floating">
-                        @Html.DropDownListFor(m => m.MtGroupCode,
-                            (IEnumerable<SelectListItem>)ViewBag.MtGroupOptions,
-                            "Select MT Group",
-                            new { @class = "form-control" })
-                        <label>Medium Term Group</label>
+                        @Html.TextBoxFor(m => m.MtGroupCode, new
+                   {
+                       @class = "form-control",
+                       type = "number",
+                       min = "0",
+                       placeholder = "Mt Group Code",
+                       @required = "required",
+                       @readonly = "readonly"
+                   })
+                        <label>Pcmf PurposeKey</label>
                         @Html.ValidationMessageFor(m => m.MtGroupCode, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
-                <!-- CT Group -->
                 <div class="col-md-6">
                     <div class="form-floating">
-                        @Html.DropDownListFor(m => m.CtGroupCode,
-                            (IEnumerable<SelectListItem>)ViewBag.CtGroupOptions,
-                            "Select CT Group",
-                            new { @class = "form-control" })
-                        <label>CT Group</label>
+                        @Html.TextBoxFor(m => m.CtGroupCode, new
+                   {
+                       @class = "form-control",
+                       type = "number",
+                       min = "0",
+                       placeholder = "Ct Group Code",
+                       @required = "required",
+                       @readonly = "readonly"
+                   })
+                        <label>Pcmf PurposeKey</label>
                         @Html.ValidationMessageFor(m => m.CtGroupCode, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
-                <!-- OD Group -->
                 <div class="col-md-6">
                     <div class="form-floating">
-                        @Html.DropDownListFor(m => m.OdGroupCode,
-                            (IEnumerable<SelectListItem>)ViewBag.OdGroupOptions,
-                            "Select OD Group",
-                            new { @class = "form-control" })
-                        <label>OD Group</label>
+                        @Html.TextBoxFor(m => m.OdGroupCode, new
+                     {
+                       @class = "form-control",
+                       type = "number",
+                       min = "0",
+                       placeholder = "Od Group Code",
+                       @required = "required",
+                       @readonly = "readonly"
+                     })
+                        <label>Pcmf PurposeKey</label>
                         @Html.ValidationMessageFor(m => m.OdGroupCode, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
+                <hr />
                 <!-- Status -->
                 <div class="row mb-3">
                     <div class="col-md-6 d-flex align-items-center">

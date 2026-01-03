@@ -166,6 +166,7 @@
     <Compile Include="Entity\Accounting V2\HoPcmfAccount\BranchAccountTreeDto.cs" />
     <Compile Include="Entity\Accounting V2\HoPcmfAccount\HoPcmfAccountDto.cs" />
     <Compile Include="Entity\AccountingV2\CashReconciliation\CashAndVaultInit.cs" />
+    <Compile Include="Entity\AccountingV2\SharedMonth\SharedMonthFileupload.cs" />
     <Compile Include="Entity\AccountingV2\SharedMonth\SharedMonthSimulation.cs" />
     <Compile Include="Entity\Accounting\Acknowledge.cs" />
     <Compile Include="Entity\Accounting\BlacklistAccount.cs" />
@@ -261,6 +262,7 @@
     <Compile Include="Entity\GeneralStatisticReport\GeneralStatisticsReportDtoMapper.cs" />
     <Compile Include="Entity\LoanAdjustmentP\LoanAdjustment.cs" />
     <Compile Include="Entity\LoanConf\LoanTargetCatalog.cs" />
+    <Compile Include="Entity\LoanConf\LoanType.cs" />
     <Compile Include="Entity\LoanConf\PcmfLoanPurpose.cs" />
     <Compile Include="Entity\LoanConf\PCMFStructure\PCMFLoanProduct.cs" />
     <Compile Include="Entity\LoanManagementP\LoanManagementObject.cs" />

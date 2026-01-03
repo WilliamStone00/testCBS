@@ -41,7 +41,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
             _loanTermServices = loanTermServices;
         }
         public async Task<ActionResult> Index()
-        {
+         {
             await GetValues();
             return View(new PCMFLoanProductManagementObjects());
         }

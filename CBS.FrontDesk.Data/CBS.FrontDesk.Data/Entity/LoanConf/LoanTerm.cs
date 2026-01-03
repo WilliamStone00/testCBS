@@ -13,8 +13,13 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
     public class LoanTerm
     {
         public string Id { get; set; }
+        [Required(ErrorMessage = "Name in English is required.")]
+        [StringLength(100, ErrorMessage = "Name must not exceed 100 characters.")]
         public string NameEn { get; set; }
+        [Required(ErrorMessage = "Name in French is required.")]
+        [StringLength(100, ErrorMessage = "Name must not exceed 100 characters.")]
         public string NameFr { get; set; }
+
         public bool IsActive { get; set; } = true;
         // ✅ NEW
         public LoanTermKind TermKind { get; set; }
