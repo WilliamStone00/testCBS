@@ -17,8 +17,8 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
     {
         // GET: LoanPurpose
         private readonly LoanPurposeServices _LoanPurposeServices;
-        private readonly LoanProductCategoryServices _loanProductCategoryServices;
-        public LoanPurposeController(LoanPurposeServices LoanPurposeServices, LoanProductCategoryServices loanProductCategoryServices)
+        private readonly LoanProductServices _loanProductCategoryServices;
+        public LoanPurposeController(LoanPurposeServices LoanPurposeServices, LoanProductServices loanProductCategoryServices)
         {
             _LoanPurposeServices = LoanPurposeServices;
             _loanProductCategoryServices = loanProductCategoryServices;
@@ -26,7 +26,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
         public async Task<ActionResult> Index()
         {
             await loader();
-            ViewBag.Categories = await _loanProductCategoryServices.GetLoanProductCategorys();
+            ViewBag.Categories = await _loanProductCategoryServices.GetProductCategoryFromConfiguredProduct();
             return View();
         }
 
@@ -98,12 +98,12 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
             }
             else if (path == "new")
             {
-                ViewBag.Categories = await _loanProductCategoryServices.GetLoanProductCategorys();
+                ViewBag.Categories = await _loanProductCategoryServices.GetProductCategoryFromConfiguredProduct();
                 return PartialView(partialView, new LoanPurpose());
             }
             else
             {
-                ViewBag.Categories = await _loanProductCategoryServices.GetLoanProductCategorys();
+                ViewBag.Categories = await _loanProductCategoryServices.GetProductCategoryFromConfiguredProduct();
                 var LoanPurpose = await _LoanPurposeServices.GetLoanPurpose(KEY);
                 return PartialView(partialView, LoanPurpose);
             }

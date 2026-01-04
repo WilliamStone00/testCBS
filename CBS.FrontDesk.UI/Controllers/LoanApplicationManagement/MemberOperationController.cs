@@ -553,6 +553,7 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
             var productEnumAgregates = await _loanProductServices.GetLoanProductEnumAggregates();
             var loanTerms = await _loanProductServices.GetProductTermOrDurationFromConfiguredProduct();
             var categories = await _loanProductServices.GetProductCategoryFromConfiguredProduct();
+
             ViewBag.LoanTypes = productEnumAgregates.LoanTypes;
 
             ViewBag.EconomicActivities = await _economicActivityServices.GetEconomicActivities();

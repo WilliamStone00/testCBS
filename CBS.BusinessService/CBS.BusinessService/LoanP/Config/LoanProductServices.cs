@@ -1,42 +1,46 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
 using CBS.BusinessService.Config;
+using CBS.BusinessService.LoanP;
+using CBS.FrontDesk.Data.Entity;
+using CBS.FrontDesk.Data.Entity.Accounting;
+using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.LoanConf;
+using CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure;
+using CBS.FrontDesk.Data.Entity.SavingProducts;
+using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
+using DocumentFormat.OpenXml.EMMA;
+using DocumentFormat.OpenXml.Office2010.Excel;
+using Microsoft.Owin.Logging;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CBS.FrontDesk.Data.Entity.Config;
-using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
-using CBS.FrontDesk.Data.Entity.SavingProducts;
-using CBS.FrontDesk.Data.Entity;
-using CBS.FrontDesk.Data.Entity.Accounting;
 using System.Web.Mvc;
-using DocumentFormat.OpenXml.EMMA;
-using DocumentFormat.OpenXml.Office2010.Excel;
-using Microsoft.Owin.Logging;
-using CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure;
+using PcmfLoanPurpose = CBS.FrontDesk.Data.Entity.LoanConf.PcmfLoanPurpose;
 
 namespace CBS.BusinessService.Config
 {
     public class LoanProductServices : BaseService
     {
         private readonly ApiCallerHelper _loanConfigApiHelper;
+        private readonly PcmfLoanPurposeService _pcmfLoanPurposeService;
         private readonly ApiCallerHelper _BankConfigApiHelper;
         private readonly LoanProductCategoryServices _loanProductCategoryServices;
         private readonly LoanTermServices _loanTermServices;
 
-        public LoanProductServices(LoanProductCategoryServices loanProductCategoryServices = null, LoanTermServices loanTermServices = null)
+        public LoanProductServices(LoanProductCategoryServices loanProductCategoryServices = null, LoanTermServices loanTermServices = null, PcmfLoanPurposeService pcmfLoanPurposeService = null)
         {
             _BankConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["BankConfigurationBaseUrl"].ToString());
             _loanConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["LoanBaseUrl"].ToString());
             _loanProductCategoryServices = loanProductCategoryServices;
             _loanTermServices = loanTermServices;
+            _pcmfLoanPurposeService = pcmfLoanPurposeService;
         }
 
         public async Task<ExecutionMessages> Delete(string id)
@@ -144,6 +148,7 @@ namespace CBS.BusinessService.Config
             }
         }
 
+        
         public async Task<IEnumerable<StringValues>> GetStringValuesAsync()
         {
             try
@@ -298,7 +303,7 @@ namespace CBS.BusinessService.Config
             }
         }
         //GetProductTermOrDurationFromConfiguredProduct
-        public async Task<List<LoanProductCategory>> GetProductCategoryFromConfiguredProduct()
+        public async Task<List<PcmfLoanPurpose>> GetProductCategoryFromConfiguredProduct()
         {
             try
             {
@@ -308,18 +313,18 @@ namespace CBS.BusinessService.Config
                 // Return an empty list if the API response is unsuccessful or data is null
                 if (!(couApiResponse?.IsSuccess == true && couApiResponse.ApiResponseData?.Data != null))
                 {
-                    return new List<LoanProductCategory>();
+                    return new List<PcmfLoanPurpose>();
                 }
 
                 // Extract loan products
                 var loanProducts = couApiResponse.ApiResponseData.Data;
 
                 // Fetch loan product categories
-                var productsCats = await _loanProductCategoryServices.GetLoanProductCategorys();
-
+                //var productsCatsx = await _loanProductCategoryServices.GetLoanProductCategorys();
+                var productsCats = await _pcmfLoanPurposeService.GetAllAsync();
                 // Perform join to filter categories based on loan products
                 var productCategories = productsCats
-                    .Where(pc => loanProducts.Any(lp => lp.LoanProductCategoryId == pc.Id && lp.ActiveStatus))
+                    .Where(pc => loanProducts.Any(lp => lp.PcmfLoanPurposeId == pc.Id && lp.ActiveStatus))
                     .ToList();
 
                 return productCategories;

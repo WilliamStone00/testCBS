@@ -1356,11 +1356,6 @@
                                     This is the remaining capital that will be rescheduled (interest/VAT/penalty excluded).
                                 </div>
                             </div>
-                            @*<div class="col-12 col-md-4" id="rescheduleAmountWrap" style="display:none;">
-                                    <label class="form-label">Amount to Reschedule</label>
-                                    <input type="number" class="form-control" id="txtRescheduleAmount" readonly />
-                                    <div class="form-text">This is the balance being rescheduled (read-only).</div>
-                                </div>*@
 
                             <div class="col-12 col-md-4" id="interestCol">
                                 <label class="form-label">Interest Rate (%)</label>
@@ -1868,25 +1863,6 @@
                                 <label class="form-label">LOC Notes</label>
                                 <textarea class="form-control" id="txtLocNote" rows="2"></textarea>
                             </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Manager Decision (Auto-filled from selected accounts) -->
-                <div class="card tsc-card-soft mb-3" id="managerRecoveryDecisionWrap" style="display:none;">
-                    <div class="card-body">
-                        <h5 class="tsc-section-title mb-2">
-                            <i class="mdi mdi-account-check-outline me-1"></i> Manager Recovery Decision
-                        </h5>
-
-                        <div class="small text-muted mb-2">
-                            Accounts selected by the officer appear below. The manager decides whether each account should be blocked.
-                        </div>
-
-                        <div id="managerRecoveryList" class="vstack gap-2"></div>
-
-                        <div class="form-text mt-2">
-                            Note: Blocking will only be executed after approval.
                         </div>
                     </div>
                 </div>
@@ -8868,8 +8844,8 @@ window.toNum = window.toNum || function (v) {
 
 
     </script>
-    
-    
+
+
     <script>
         (function () {
 
@@ -9181,34 +9157,34 @@ window.toNum = window.toNum || function (v) {
                     var current = (recoveryBlocks[a.id] !== undefined) ? recoveryBlocks[a.id] : "";
 
                     var row = `
-                                        <div class="card border-0 bg-light">
-                                            <div class="card-body py-2">
-                                                <div class="row g-2 align-items-center">
-                                                    <div class="col-12 col-md-7">
-                                                        <div class="fw-semibold">${escapeHtml(a.text)}</div>
-                                                        <div class="small text-muted">
-                                                            Available Balance: <span class="fw-bold">${Number(a.balance || 0).toLocaleString()}</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12 col-md-5">
-                                                        <label class="form-label mb-1 small">Amount to block</label>
-                                                        <input type="number"
-                                                               class="form-control form-control-sm recovery-block-amount"
-                                                               data-account-id="${escapeHtml(a.id)}"
-                                                               data-balance="${a.balance}"
-                                                               min="0"
-                                                               max="${a.balance}"
-                                                               step="0.01"
-                                                               value="${current}"
-                                                               placeholder="0.00">
-                                                        <div class="invalid-feedback">
-                                                            Block amount cannot exceed available balance (${Number(a.balance || 0).toLocaleString()}).
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    `;
+                                                                <div class="card border-0 bg-light">
+                                                                    <div class="card-body py-2">
+                                                                        <div class="row g-2 align-items-center">
+                                                                            <div class="col-12 col-md-7">
+                                                                                <div class="fw-semibold">${escapeHtml(a.text)}</div>
+                                                                                <div class="small text-muted">
+                                                                                    Available Balance: <span class="fw-bold">${Number(a.balance || 0).toLocaleString()}</span>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-12 col-md-5">
+                                                                                <label class="form-label mb-1 small">Amount to block</label>
+                                                                                <input type="number"
+                                                                                       class="form-control form-control-sm recovery-block-amount"
+                                                                                       data-account-id="${escapeHtml(a.id)}"
+                                                                                       data-balance="${a.balance}"
+                                                                                       min="0"
+                                                                                       max="${a.balance}"
+                                                                                       step="0.01"
+                                                                                       value="${current}"
+                                                                                       placeholder="0.00">
+                                                                                <div class="invalid-feedback">
+                                                                                    Block amount cannot exceed available balance (${Number(a.balance || 0).toLocaleString()}).
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            `;
                     $list.append(row);
                 });
 
@@ -9365,7 +9341,6 @@ window.toNum = window.toNum || function (v) {
     </script>
 
     <script>
-
         (function () {
             "use strict";
 
@@ -9388,9 +9363,25 @@ window.toNum = window.toNum || function (v) {
                 var n = Number(raw || 0);
                 return isNaN(n) ? 0 : n;
             }
-            function money(v) { return num(v).toLocaleString() + " FCFA"; }
+            function toNum(v) { return num(v); }
 
+            function money(v) { return num(v).toLocaleString() + " FCFA"; }
             function isTruthy(v) { return v !== null && v !== undefined && (v + "").trim() !== ""; }
+
+            // ✅ helpers
+            function normUpper(x) { return (x || "").toString().trim().toUpperCase(); }
+
+            // Try to extract account number from label text
+            function parseAccountNumberFromLabel(label) {
+                var t = (label || "").toString().trim();
+                if (!t) return "";
+
+                var m =
+                    t.match(/\b([A-Z]{2,6}-\d{1,12})\b/i) ||
+                    t.match(/\(([A-Z]{2,6}-\d{1,12})\)/i);
+
+                return (m && m[1]) ? m[1].toString().trim() : "";
+            }
 
             // =========================
             // Validation UI helpers
@@ -9402,12 +9393,380 @@ window.toNum = window.toNum || function (v) {
                 return $fb;
             }
 
+            // =========================
+            // ✅ DEBUG / PAYLOAD LOGGING
+            // =========================
+            function prettyJson(obj) {
+                try { return JSON.stringify(obj, null, 2); } catch (e) { return String(obj); }
+            }
+            function dumpToDebugBox(title, obj) {
+                var $box = $("#dbgPayload");
+                if (!$box.length) return;
+                var text = "===== " + title + " =====\n" + prettyJson(obj) + "\n\n";
+                $box.val(text + ($box.val() || ""));
+            }
+            function logGroup(title, fn) {
+                try { console.groupCollapsed(title); fn && fn(); }
+                finally { console.groupEnd(); }
+            }
+
+            // =========================
+            // ✅ RECOVERY CLASSIFICATION (Savings / Shares / Others)
+            // =========================
+            function classifyRecoveryAccount(r, labelMap) {
+                var accNo = normUpper(r.AccountNumber || r.Number || r.accountNumber || "");
+                var accName = normUpper(r.AccountName || r.Name || "");
+                var type = normUpper(r.AccountType || r.Type || r.AccountTypeName || "");
+                var label = normUpper((r._Label || (labelMap && labelMap[r.AccountId]) || ""));
+
+                var hay = [accNo, accName, type, label].join(" ");
+
+                if (hay.includes("ORDINARY") && hay.includes("SHARE")) return "ORDINARY_SHARES";
+                if (accNo.startsWith("SHR-")) return "ORDINARY_SHARES";
+
+                if (hay.includes("PREFERENCE") && hay.includes("SHARE")) return "PREFERENCE_SHARES";
+                if (accNo.startsWith("PSH-")) return "PREFERENCE_SHARES";
+
+                if (hay.includes("DAILYSAVINGS") || accNo.startsWith("DSV-")) return "OTHERS";
+
+                if (hay.includes("SAVING") || hay.includes("SAVINGS") || accNo.startsWith("SAV-")) return "SAVINGS";
+
+                return "OTHERS";
+            }
+
+            // =========================
+            // ✅ FIXED IDS
+            // =========================
+            var IDS = {
+                ChargesJson: "#hidSelectedChargesJson",
+                RecoveryJson: "#hidRecoverySelectionJson",
+                GuarantorsJson: "#hidGuarantorsJson",
+                CollateralsJson: "#hidCollateralJson",
+                DocumentsJson: "#hidDocumentsMetaJson"
+            };
+
+            // =========================
+            // Safe helpers
+            // =========================
+            function safeJsonParse(str, fallback) { try { return str ? JSON.parse(str) : fallback; } catch (e) { return fallback; } }
+            function safeVal(sel) { return (($(sel).val() || "") + "").trim(); }
+            function safeText(sel) { return (($(sel).find(":selected").text() || "") + "").trim(); }
+            function asList(x) { return Array.isArray(x) ? x : (x ? [x] : []); }
+
+            // =========================
+            // ✅ IMPORTANT: use STEP-3 builders if available
+            // These are the functions your attached Step 3 script uses to create the hidden JSON.
+            // If they exist -> call them. Otherwise fallback to legacy extraction.
+            // =========================
+            function callIfFn(fnName) {
+                try {
+                    var fn = window[fnName];
+                    if (typeof fn === "function") fn();
+                } catch (e) { }
+            }
+
+            // =========================
+            // ✅ SYNC RECOVERY: UI -> Hidden JSON
+            // PERFECT SOURCE: Step3 builder -> #hidRecoverySelectionJson
+            // =========================
+            function syncRecoveryHiddenFromUI() {
+                // ✅ Step3 official builder (best)
+                callIfFn("buildRecoverySubmissionJson");
+
+                // If Step3 builder filled it, stop.
+                if ($(IDS.RecoveryJson).length && safeVal(IDS.RecoveryJson)) return;
+
+                // ✅ Legacy state-based fallback (your existing tscRecovery)
+                if (window.tscRecovery && typeof window.tscRecovery.getBlocks === "function") {
+                    // Build label map from select
+                    var labelMap = {};
+                    $("#ddlRecoveryAccounts option").each(function () {
+                        labelMap[this.value] = (this.text || "").toString().trim();
+                    });
+
+                    var blocks = window.tscRecovery.getBlocks() || [];
+                    var normalized = blocks.map(function (b) {
+                        var accountId = String(b.AccountId || b.accountId || b.Id || b.id || "");
+
+                        var label = (b.Label || b.label || b.AccountLabel || b.accountLabel || "").toString().trim();
+                        if (!label && accountId && labelMap[accountId]) label = labelMap[accountId];
+
+                        var accNo = (b.AccountNumber || b.accountNumber || "").toString().trim();
+                        if (!accNo && label) accNo = parseAccountNumberFromLabel(label);
+
+                        var accName = (b.AccountName || b.accountName || "").toString().trim();
+                        if (!accName && label) accName = label;
+
+                        return {
+                            AccountId: accountId,
+                            AccountNumber: accNo,
+                            AccountType: (b.AccountType || b.accountType || "").toString(),
+                            AccountName: accName,
+                            Decision: (b.Decision || b.BlockedStatus || "Blocked").toString(),
+                            BlockAmount: num(b.BlockAmount || b.Amount || 0),
+                            _Label: label
+                        };
+                    }).filter(function (x) { return x.AccountId; });
+
+                    if (normalized.length) {
+                        $(IDS.RecoveryJson).val(JSON.stringify(normalized));
+                        return;
+                    }
+                }
+
+                // ✅ DOM fallback (CRITICAL): read directly from the “Selected Recovery Accounts” cards
+                if (!$(IDS.RecoveryJson).length) return;
+
+                // build lookup from ddlRecoveryAccounts option text -> id
+                var optionRows = [];
+                $("#ddlRecoveryAccounts option").each(function () {
+                    optionRows.push({ id: this.value, text: (this.text || "").toString() });
+                });
+
+                function findAccountIdByAccountNo(accNo) {
+                    accNo = (accNo || "").toUpperCase().trim();
+                    if (!accNo) return "";
+                    for (var i = 0; i < optionRows.length; i++) {
+                        if ((optionRows[i].text || "").toUpperCase().indexOf(accNo) >= 0) return optionRows[i].id;
+                    }
+                    return "";
+                }
+
+                var domBlocks = [];
+
+                // we key off your own class you already use: .recovery-block-amount
+                $(".recovery-block-amount:visible").each(function () {
+                    var $amt = $(this);
+                    var $card = $amt.closest(".card, .border, .shadow-sm, .shadow, .tsc-card, .tsc-card-soft").first();
+
+                    // try locate label text in the card
+                    var labelText =
+                        ($card.find(".fw-semibold,.fw-bold,.card-title,.title").first().text() || "").trim() ||
+                        ($card.text() || "").trim();
+
+                    var accountNo = parseAccountNumberFromLabel(labelText);
+                    var accountId =
+                        ($card.attr("data-account-id") || $card.data("accountId") || $card.data("account-id") || "").toString().trim();
+
+                    if (!accountId && accountNo) accountId = findAccountIdByAccountNo(accountNo);
+
+                    // decision select inside same card
+                    var decision =
+                        ($card.find("select:visible").filter(function () {
+                            // choose the select that contains Blocked/Required etc
+                            var t = ($(this).text() || "").toUpperCase();
+                            return t.indexOf("BLOCK") >= 0 || t.indexOf("REQUIRED") >= 0;
+                        }).first().val() || "Blocked");
+
+                    domBlocks.push({
+                        AccountId: accountId,
+                        AccountNumber: accountNo,
+                        AccountName: labelText,
+                        Decision: decision,
+                        BlockAmount: num($amt.val() || 0),
+                        _Label: labelText
+                    });
+                });
+
+                domBlocks = domBlocks.filter(function (x) { return !!x.AccountId; });
+
+                if (domBlocks.length) {
+                    $(IDS.RecoveryJson).val(JSON.stringify(domBlocks));
+                }
+            }
+
+            // =========================
+            // ✅ SYNC CHARGES: UI -> Hidden JSON
+            // PERFECT SOURCE: Step3 builder -> #hidSelectedChargesJson
+            // =========================
+            function syncChargesHiddenFromUI() {
+                callIfFn("buildChargesSubmissionJson");
+            }
+
+            // =========================
+            // ✅ SYNC GUARANTORS: UI -> Hidden JSON
+            // PERFECT SOURCE: Step3 builder -> #hidGuarantorsJson
+            // =========================
+            function boolVal(v) {
+                return (v === true || v === "true" || v === 1 || v === "1");
+            }
+
+            function syncGuarantorsHiddenFromUI() {
+                // Step3 official builder first
+                callIfFn("buildGuarantorsSubmissionJson");
+                if ($(IDS.GuarantorsJson).length && safeVal(IDS.GuarantorsJson)) return;
+
+                if (!$(IDS.GuarantorsJson).length) return;
+
+                // ✅ find the dynamic guarantor container (support multiple ids/classes)
+                var $wrap =
+                    $("#guarantorList, #guarantorsList, #guarantorEntries, #guarantorContainer, .guarantor-list, .tsc-guarantor-list").first();
+
+                if (!$wrap.length) $wrap = $(document);
+
+                // ✅ find each guarantor “card”
+                var $cards = $wrap.find("[data-gid], [data-guarantor-id], .guarantor-card, .tsc-guarantor-card, .guarantor-entry").filter(":visible");
+                if (!$cards.length) $cards = $wrap.find("fieldset, .card, .border").filter(function () {
+                    // heuristic: contains a guarantor type select / member ref input
+                    var t = ($(this).text() || "").toUpperCase();
+                    return t.indexOf("GUARANTOR") >= 0 && (t.indexOf("REFERENCE") >= 0 || t.indexOf("ID CARD") >= 0);
+                });
+
+                var list = [];
+
+                $cards.each(function () {
+                    var $c = $(this);
+
+                    function v(sel) { return ($c.find(sel).first().val() || "").toString().trim(); }
+                    function t(sel) { return ($c.find(sel).first().text() || "").toString().trim(); }
+
+                    var type =
+                        normUpper(
+                            v(".ddlGuarantorType") ||
+                            v("[name*='GuarantorType']") ||
+                            $c.data("type") ||
+                            ""
+                        );
+
+                    var guaranteeAmount =
+                        num(
+                            v(".txtGuaranteeAmount") ||
+                            v("[name*='GuaranteeAmount']") ||
+                            v(".txtAmount") ||
+                            v(".guarantee-amount") ||
+                            0
+                        );
+
+                    var memberName =
+                        v(".txtMemberName,.txtName,.txtNameCompany") ||
+                        v("[name*='MemerberName']") ||
+                        v("[name*='MemberName']") ||
+                        "";
+
+                    var memberRef =
+                        v(".txtMemberRef,.txtMemberReference") ||
+                        v("[name*='MemerberReference']") ||
+                        v("[name*='MemberReference']") ||
+                        "";
+
+                    // account to block
+                    var accountId =
+                        v(".ddlAccount") ||
+                        v("[name*='AccountId']") ||
+                        "";
+
+                    var accountNumber =
+                        (t(".ddlAccount option:selected") || v(".txtAccountNumber") || "").toString().trim();
+
+                    var blockAmount =
+                        num(
+                            v(".txtBlockAmount,.recovery-block-amount") ||
+                            v("[name*='BlockAmount']") ||
+                            v("[name*='Amount']") ||
+                            0
+                        );
+
+                    var blockAccount =
+                        boolVal(
+                            v(".ddlBlockFlag") ||
+                            v("[name*='BlockAccount']") ||
+                            v("[name*='Blockccount']") ||
+                            ""
+                        );
+
+                    // ✅ capture “Release Order Required” (your highlighted section)
+                    var releaseOrder =
+                        v(".ddlReleaseOrder") ||
+                        v("[name*='ReleaseOrder']") ||
+                        v("[name*='ReleaseOrderRequired']") ||
+                        "";
+
+                    list.push({
+                        GuarantorType: type,
+
+                        MemerberName: memberName,
+                        MemerberReference: memberRef,
+                        CompanyOrGroupName: (v(".txtCompanyName,.txtNameCompany") || ""),
+
+                        IdCardNumber: v(".txtIdCardNumber,[name*='IdCard']"),
+                        IssueDate: v(".txtIssueDate,[name*='IssueDate']"),
+                        ExpireDate: v(".txtExpireDate,[name*='ExpireDate']"),
+                        Relationship: v(".ddlRelationship,[name*='Relationship']"),
+                        Address: v(".txtAddress,[name*='Address']"),
+                        PhoneNumber: v(".txtPhone,.txtPhoneNumber,[name*='Phone']"),
+                        Email: v(".txtEmail,[name*='Email']"),
+
+                        GuaranteeAmount: guaranteeAmount,
+
+                        AccountNumber: accountNumber,
+                        AccountId: accountId,
+
+                        Amount: blockAmount,
+                        BlockAccount: blockAccount,
+
+                        // ✅ extra field for preview (won’t break preview)
+                        ReleaseOrder: releaseOrder
+                    });
+                });
+
+                // remove empty cards
+                list = list.filter(function (x) {
+                    return isTruthy(x.MemerberName) || isTruthy(x.MemerberReference) || (num(x.GuaranteeAmount) > 0) || isTruthy(x.CompanyOrGroupName);
+                });
+
+                $(IDS.GuarantorsJson).val(JSON.stringify(list));
+            }
+
+            // =========================
+            // ✅ SYNC COLLATERALS: UI -> Hidden JSON
+            // PERFECT SOURCE: Step3 builder -> #hidCollateralJson
+            // =========================
+            function syncCollateralsHiddenFromUI() {
+                callIfFn("buildCollateralSubmissionJson");
+                if ($(IDS.CollateralsJson).length && safeVal(IDS.CollateralsJson)) return;
+
+                if (!$(IDS.CollateralsJson).length) return;
+
+                var $wrap =
+                    $("#collateralList, #collateralsList, #collateralEntries, #collateralContainer, .collateral-list, .tsc-collateral-list").first();
+
+                if (!$wrap.length) $wrap = $(document);
+
+                var $cards = $wrap.find("[data-cid], [data-collateral-id], .collateral-card, .tsc-collateral-card, .collateral-entry").filter(":visible");
+                if (!$cards.length) return;
+
+                var list = [];
+
+                $cards.each(function () {
+                    var $c = $(this);
+
+                    function v(sel) { return ($c.find(sel).first().val() || "").toString().trim(); }
+
+                    list.push({
+                        Name: v(".colName,.txtCollateralName,[name*='CollateralName'],[name*='Name']"),
+                        CollateraTypeId: v(".ddlCollateralType,[name*='CollateralTypeId'],[name*='CollateraTypeId']"),
+                        Amount: num(v(".colAmount,.txtCollateralAmount,[name*='Amount']")),
+                        Location: v(".colLocation,.txtCollateralLocation,[name*='Location']"),
+                        Address: v(".colAddress,.txtCollateralAddress,[name*='Address']"),
+                        ReferenceNumber: v(".colRef,.txtCollateralRef,[name*='Reference'],[name*='ReferenceNumber']")
+                    });
+                });
+
+                list = list.filter(function (x) {
+                    return isTruthy(x.Name) || isTruthy(x.CollateraTypeId) || num(x.Amount) > 0 || isTruthy(x.ReferenceNumber);
+                });
+
+                $(IDS.CollateralsJson).val(JSON.stringify(list));
+            }
+
+            // =========================
+            // Validation helpers
+            // =========================
             function markInvalid($el, msg) {
                 $el.addClass("is-invalid");
                 var $fb = ensureInvalidFeedback($el);
                 $fb.text(msg || "This field is required.").show();
             }
-
             function clearInvalid($el) {
                 $el.removeClass("is-invalid");
 
@@ -9420,12 +9779,10 @@ window.toNum = window.toNum || function (v) {
                     if ($fb2.length) $fb2.hide().text("");
                 }
             }
-
             function scrollToFirstInvalid() {
                 var $first = $(".is-invalid").first();
                 if ($first.length) $("html, body").animate({ scrollTop: $first.offset().top - 120 }, 250);
             }
-
             function setAppHintRed(msg) {
                 var $hint = $("#appModeHint");
                 if (!$hint.length) return;
@@ -9436,69 +9793,26 @@ window.toNum = window.toNum || function (v) {
                 $hint.removeClass("text-muted").addClass("text-danger fw-bold").text(msg);
             }
 
-            // ✅ FIX: only validate "policy" if it's real/active (visible + enabled + has options)
             function isPolicyActive($policy) {
                 if (!$policy || !$policy.length) return false;
                 if ($policy.is(":disabled")) return false;
                 if (!$policy.is(":visible")) return false;
-
-                // if it has no meaningful options, skip
                 var optCount = $policy.find("option").length;
                 if (optCount <= 1) return false;
-
                 return true;
             }
 
-            // ✅ FIX: only validate blocks when PARTIAL_BLOCK (or block inputs are visible)
             function shouldValidateBlocks() {
                 var $policy = $("#ddlRecoveryPolicy");
                 var policyMode = ($policy.length ? ($policy.val() || "") : "").toString().toUpperCase();
-
                 if (policyMode === "PARTIAL_BLOCK") return true;
-
-                // If UI shows block amount fields, validate them
                 var $visibleBlocks = $(".recovery-block-amount:visible");
                 return $visibleBlocks.length > 0;
-            }
-            function setFieldInvalid($el, isInvalid, msg) {
-                if (!$el || !$el.length) return;
-
-                var id = $el.attr("id") || ("fld_" + Math.random().toString(16).slice(2));
-
-                // detect select2 container (select is hidden, so styling must be applied to .select2-selection)
-                var $s2 = $el.next(".select2");
-                var $targetForMsg = $s2.length ? $s2 : $el;
-
-                var $msg = $("#err_" + id);
-                if (!$msg.length) {
-                    $msg = $('<div id="err_' + id + '" class="invalid-feedback d-block"></div>');
-                    $targetForMsg.after($msg);
-                }
-
-                if (isInvalid) {
-                    $el.addClass("is-invalid");
-                    if ($s2.length) $s2.find(".select2-selection").addClass("is-invalid");
-                    $msg.text(msg || "Invalid value.").show();
-                } else {
-                    $el.removeClass("is-invalid");
-                    if ($s2.length) $s2.find(".select2-selection").removeClass("is-invalid");
-                    $msg.text("").hide();
-                }
-            }
-            function validateStep3Terms() {
-                var ok =
-                    validateAmountLive() &&
-                    validateInterestLive() &&
-                    validateRepaymentPeriodLive() &&
-                    validateGracePeriodLive();
-
-                return ok;
             }
 
             function setInvalid($el, isInvalid, message) {
                 if (!$el || !$el.length) return;
 
-                // select2 support: select is hidden, so style + message must attach to the select2 container
                 var $s2 = $el.next(".select2");
                 var $targetForMsg = $s2.length ? $s2 : $el;
 
@@ -9518,10 +9832,10 @@ window.toNum = window.toNum || function (v) {
                     $msg.text("").hide();
                 }
             }
+
             // =========================
             // Step 3 validation Grace periods
             // =========================
-
             function validateGracePeriodLive() {
                 var policy = window.productPolicy || {};
                 var minG = Number(policy.minGracePeriodMonths || 0);
@@ -9531,36 +9845,16 @@ window.toNum = window.toNum || function (v) {
                 var raw = ($g.val() || "").trim();
                 var v = parseInt(raw, 10);
 
-                // empty is allowed (submit-required rules can handle it)
-                if (!raw) {
-                    setInvalid($g, false);
-                    return true;
-                }
-
-                // if max is 0 (policy not loaded), don’t block user typing
-                // (optional safety)
-                if (maxG <= 0 && minG <= 0) {
-                    setInvalid($g, false);
-                    return true;
-                }
+                if (!raw) { setInvalid($g, false); return true; }
+                if (maxG <= 0 && minG <= 0) { setInvalid($g, false); return true; }
 
                 var ok = !isNaN(v) && v >= minG && v <= maxG;
 
-                setInvalid(
-                    $g,
-                    !ok,
-                    "Grace period must be within policy range (" + minG + " - " + maxG + " months)."
-                );
-
+                setInvalid($g, !ok, "Grace period must be within policy range (" + minG + " - " + maxG + " months).");
                 return ok;
             }
 
-            // bind live like your other fields
-            $("#txtGracePeriod")
-                .off(".graceLive")
-                .on("input.graceLive blur.graceLive", validateGracePeriodLive);
-
-
+            $("#txtGracePeriod").off(".graceLive").on("input.graceLive blur.graceLive", validateGracePeriodLive);
 
             // =========================
             // Step 3 validation (when preview / submit is attempted)
@@ -9568,7 +9862,6 @@ window.toNum = window.toNum || function (v) {
             function validateStep3BeforeReview() {
                 var ok = true;
 
-                // Required fields
                 var $loanType = $("#ddlInstitutionLoanType");
                 var $product = $("#ddlLoanProduct");
                 var $amount = $("#txtAmount");
@@ -9592,18 +9885,17 @@ window.toNum = window.toNum || function (v) {
                 if (!$repType.val()) { markInvalid($repType, "Please select a repayment type."); ok = false; }
                 if (!$disbType.val()) { markInvalid($disbType, "Please select a disbursement type."); ok = false; }
 
-                // Recovery mechanism additional required rule
                 if ($("#chkRecoveryMechanism").is(":checked")) {
-                    var $recAcc = $("#ddlRecoveryAccounts");
-                    clearInvalid($recAcc);
+                    // ✅ determine selection from hidden JSON (Step3 truth) first
+                    syncRecoveryHiddenFromUI();
+                    var recRaw = safeJsonParse($(IDS.RecoveryJson).val(), []);
+                    var hasRecoverySelection = Array.isArray(recRaw) && recRaw.length > 0;
 
-                    var selected = $recAcc.val() || [];
-                    if (!selected.length) {
-                        markInvalid($recAcc, "Select at least one recovery account.");
+                    if (!hasRecoverySelection) {
+                        setAppHintRed("Select at least one recovery account.");
                         ok = false;
                     }
 
-                    // ✅ FIX: policy validation only when actually used
                     var $policy = $("#ddlRecoveryPolicy");
                     if (isPolicyActive($policy)) {
                         clearInvalid($policy);
@@ -9613,15 +9905,13 @@ window.toNum = window.toNum || function (v) {
                         }
                     }
 
-                    // ✅ FIX: only validate blocks when needed (prevents blocking review unnecessarily)
                     if (ok && window.tscRecovery && typeof window.tscRecovery.validateBlocks === "function") {
                         if (shouldValidateBlocks()) {
                             if (!window.tscRecovery.validateBlocks()) ok = false;
                         }
                     }
+
                 } else {
-                    // If recovery not enabled, make sure recovery-related fields are not marked invalid
-                    clearInvalid($("#ddlRecoveryAccounts"));
                     clearInvalid($("#ddlRecoveryPolicy"));
                 }
 
@@ -9635,11 +9925,11 @@ window.toNum = window.toNum || function (v) {
                 return ok;
             }
 
-            // On change, clear invalid live
-            $(document).off("change.step4 input.step4", "#ddlInstitutionLoanType,#ddlLoanProduct,#txtAmount,#txtInterest,#ddlRepaymentPeriod,#ddlRepaymentType,#ddlDisbursementType,#ddlRecoveryAccounts,#ddlRecoveryPolicy")
-                .on("change.step4 input.step4", "#ddlInstitutionLoanType,#ddlLoanProduct,#txtAmount,#txtInterest,#ddlRepaymentPeriod,#ddlRepaymentType,#ddlDisbursementType,#ddlRecoveryAccounts,#ddlRecoveryPolicy", function () {
-                    clearInvalid($(this));
-                });
+            $(document).off("change.step4 input.step4",
+                "#ddlInstitutionLoanType,#ddlLoanProduct,#txtAmount,#txtInterest,#ddlRepaymentPeriod,#ddlRepaymentType,#ddlDisbursementType,#ddlRecoveryPolicy")
+                .on("change.step4 input.step4",
+                    "#ddlInstitutionLoanType,#ddlLoanProduct,#txtAmount,#txtInterest,#ddlRepaymentPeriod,#ddlRepaymentType,#ddlDisbursementType,#ddlRecoveryPolicy",
+                    function () { clearInvalid($(this)); });
 
             // =========================
             // Step navigation
@@ -9653,204 +9943,448 @@ window.toNum = window.toNum || function (v) {
             });
 
             // =========================
-            // Build payload from inputs
+            // Payload Builder
             // =========================
-            function buildPayloadForSave() {
-                // NOTE: This function is used BOTH for:
-                //  1) Building the preview payload (Review step)
-                //  2) Building the final save payload (Submit)
-                // Keep it resilient: rely on the hidden JSON fields already maintained by the UI.
+            function buildCharges() {
+                // ✅ ensure Step3 generated fresh charges json
+                syncChargesHiddenFromUI();
 
-                function safeJsonParse(str, fallback) {
-                    try {
-                        if (!str) return fallback;
-                        return JSON.parse(str);
-                    } catch (e) { return fallback; }
+                var raw = safeJsonParse($(IDS.ChargesJson).val(), []);
+                return (Array.isArray(raw) ? raw : []).map(function (c) {
+                    return {
+                        ChargeId: (c.ChargeId || c.chargeId || c.FeeId || c.Id || c.id || "").toString(),
+                        ChargeName: (c.ChargeName || c.chargeName || c.Name || c.FeeName || c.Label || "").toString(),
+                        Amount: num(c.Amount || c.UserCharge || c.userCharge || c.amount || 0)
+                    };
+                });
+            }
+
+            // =========================
+            // ✅ Recovery blocks (PERFECT SOURCE = hidden json created in Step3)
+            // =========================
+            function normalizeDecision(d) {
+                var x = (d || "").toString().trim();
+                if (!x) return "Blocked";
+                return x;
+            }
+
+            function getRecoveryBlocksFromUI() {
+                // ✅ Always refresh hidden json first (Step3 truth)
+                syncRecoveryHiddenFromUI();
+
+                var raw = safeJsonParse($(IDS.RecoveryJson).val(), []);
+                raw = Array.isArray(raw) ? raw : [];
+
+                // Normalize to one shape
+                return raw.map(function (r) {
+                    var accId = String(r.AccountId || r.accountId || "");
+                    var accNo = (r.AccountNumber || "").toString().trim();
+                    var accName = (r.AccountName || r._Label || r.Label || "").toString().trim();
+
+                    // Step3 uses Decision; legacy uses BlockedStatus
+                    var decision = normalizeDecision(r.Decision || r.BlockedStatus || "Blocked");
+
+                    if (!accNo && accName) accNo = parseAccountNumberFromLabel(accName);
+
+                    return {
+                        AccountId: accId,
+                        AccountNumber: accNo,
+                        AccountType: (r.AccountType || "").toString(),
+                        AccountName: accName,
+                        BlockAmount: num(r.BlockAmount || 0),
+                        BlockedStatus: decision,  // keep for preview/legacy renderers
+                        Decision: decision,       // keep for backend if it expects Decision
+                        _Label: (r._Label || r.Label || accName || "").toString()
+                    };
+                }).filter(function (x) { return !!x.AccountId; });
+            }
+
+            function buildRecoveryAmountsSummary() {
+                syncRecoveryHiddenFromUI();
+
+                var raw = safeJsonParse($(IDS.RecoveryJson).val(), []);
+                if (!Array.isArray(raw)) raw = [];
+
+                var labelMap = {};
+                $("#ddlRecoveryAccounts option").each(function () { labelMap[this.value] = $(this).text() || ""; });
+
+                var savings = 0;
+                var ordinaryShares = 0;
+                var preferenceShares = 0;
+                var others = 0;
+
+                for (var i = 0; i < raw.length; i++) {
+                    var r = raw[i] || {};
+                    var amt = num(r.BlockAmount || r.Amount || r.amount || 0);
+                    var kind = classifyRecoveryAccount(r, labelMap);
+
+                    if (kind === "SAVINGS") savings += amt;
+                    else if (kind === "ORDINARY_SHARES") ordinaryShares += amt;
+                    else if (kind === "PREFERENCE_SHARES") preferenceShares += amt;
+                    else others += amt;
                 }
 
-                function safeVal(sel) { return (($(sel).val() || "") + "").trim(); }
-                function safeText(sel) { return (($(sel).find(":selected").text() || "") + "").trim(); }
+                var totalExclOrdShares = savings + preferenceShares + others;
 
-                // -----------------------------
-                // ✅ Core fields
-                // -----------------------------
-                var facility = safeVal("#txtFacility") || (wizardState.facility || "");
-                var applicationMode = safeVal("#txtAppMode") || (wizardState.restructureMode || wizardState.applicationMode || "");
-
-                var institutionLoanTypeId = safeVal("#ddlInstitutionLoanType");
-                var loanProductId = safeVal("#ddlLoanProduct");
-
-                var requestedAmount = toNum($("#txtAmount").val());
-                var interestRate = toNum($("#txtInterest").val());
-                var repaymentPeriod = safeVal("#ddlRepaymentPeriod");
-                var repaymentType = safeVal("#ddlRepaymentType");
-                var gracePeriodDays = toNum($("#txtGracePeriod").val());
-                var disbursementType = safeVal("#ddlDisbursementType");
-
-                // -----------------------------
-                // ✅ Charges (from hidden JSON)
-                // -----------------------------
-                var chargesDetailed = safeJsonParse($("#hidSelectedChargesJson").val(), []);
-                var chargesSummary = {
-                    Before: toNum($("#sumBefore").text()),
-                    After: toNum($("#sumAfter").text()),
-                    Upfront: toNum($("#sumUpfront").text()),
-                    Total: toNum($("#sumTotalCharges").text())
+                return {
+                    SavingsCoverageAmount: savings,
+                    OrdinarySharesAmountProvided: ordinaryShares,
+                    TotalDownpaymentAmountProvided: totalExclOrdShares,
+                    _dbg: {
+                        Savings: savings,
+                        OrdinaryShares: ordinaryShares,
+                        PreferenceShares: preferenceShares,
+                        Others: others,
+                        TotalAll: (savings + ordinaryShares + preferenceShares + others),
+                        TotalExclOrdShares: totalExclOrdShares
+                    }
                 };
+            }
 
-                // -----------------------------
-                // ✅ Recovery mechanism (from hidden JSON)
-                // -----------------------------
-                var recoveryEnabled = $("#chkRecoveryMechanism").is(":checked");
-                var recoverySelectionDetailed = safeJsonParse($("#hidRecoverySelectionJson").val(), []);
-                var recoveryNote = safeVal("#txtRecoveryComment");
+            function buildSelectedScorings() {
+                return asList($("#ddlScoreAssessments").val() || []);
+            }
 
-                // -----------------------------
-                // ✅ Risk mitigation (checkboxes + hidden JSON)
-                // -----------------------------
-                var riskFlags = {
-                    DownPaymentRequired: $("#chkDownPayment").is(":checked"),
-                    GuarantorRequired: $("#chkGuarantor").is(":checked"),
-                    CollateralRequired: $("#chkCollateral").is(":checked"),
-                    LoanDocsRequired: $("#chkLoanDocs").is(":checked")
+            function buildScoringSummaryDto() {
+                return {
+                    ScoringId: safeVal("#ddlScoringModel") || safeVal("#hidScoringId"),
+                    StatusCaption: ($("#scoreBadge").text() || "").trim() || safeVal("#hidScoreStatusCaption"),
+                    ProposedAmount: num($("#scoreProposedAmount").text() || safeVal("#hidScoreProposedAmount")),
+                    StatusCode: ($("#scoreStatusCode").text() || "").trim() || safeVal("#hidScoreStatusCode") || "UNKNOWN",
+                    Score: parseInt($("#scoreValue").text() || safeVal("#hidScoreValue") || "0", 10) || 0,
+                    Required: parseInt($("#scoreRequired").text() || safeVal("#hidScoreRequired") || "0", 10) || 0,
+                    Delta: parseInt($("#scoreDelta").text() || safeVal("#hidScoreDelta") || "0", 10) || 0,
+                    Insight: ($("#scoreInsight").text() || $("#scoreAdvice").text() || "").trim() || safeVal("#hidScoreInsight"),
+                    TotalSelectedPoints: parseInt($("#scoreSelectedPoints").text() || safeVal("#hidScoreSelectedPoints") || "0", 10) || 0
                 };
+            }
 
-                // Downpayment snapshot (values already rendered in the UI)
-                var downPaymentSnapshot = {
-                    RequestedAmount: toNum($("#dpRequestedAmt").text()) || requestedAmount,
-                    Rate: toNum($("#dpRate").text()),
-                    RequiredAmount: toNum($("#dpRequiredAmt").text()),
-                    ProvidedAmount: toNum($("#dpProvidedAmt").text()),
-                    RemainingAmount: toNum($("#dpRemainingAmt").text()),
-                    CoverageBadge: ($("#dpCoverageBadge").text() || "").trim(),
-                    Note: safeVal("#txtDownPaymentNote"),
-                    Raw: safeJsonParse($("#hidDownPaymentJson").val(), {})
-                };
+            function buildDocumentsMeta() {
+                var fromHidden = safeJsonParse($(IDS.DocumentsJson).val(), null);
+                if (Array.isArray(fromHidden) && fromHidden.length) {
+                    return fromHidden.map(function (d) {
+                        return {
+                            FileName: (d.FileName || d.name || "").toString(),
+                            ContentType: (d.ContentType || d.type || "").toString(),
+                            Size: Number(d.Size || d.size || 0) || 0,
+                            TempToken: (d.TempToken || d.token || "").toString(),
+                            PreviewUrl: (d.PreviewUrl || d.url || "").toString()
+                        };
+                    });
+                }
 
-                var guarantorsDetailed = safeJsonParse($("#hidGuarantorsJson").val(), []);
-                var collateralDetailed = safeJsonParse($("#hidCollateralJson").val(), []);
-
-                // Documents
-                var docNotes = safeVal("#txtLoanDocsNote");
                 var docs = [];
                 var f = $("#fileLoanDocs")[0];
                 if (f && f.files && f.files.length) {
                     for (var i = 0; i < f.files.length; i++) {
-                        docs.push({ Name: f.files[i].name, Size: f.files[i].size, Type: f.files[i].type });
+                        docs.push({
+                            FileName: f.files[i].name,
+                            ContentType: f.files[i].type || "",
+                            Size: f.files[i].size || 0,
+                            TempToken: "",
+                            PreviewUrl: ""
+                        });
                     }
                 }
+                return docs;
+            }
 
-                // -----------------------------
-                // ✅ Credit scoring snapshot
-                // -----------------------------
-                var scoreSelected = $("#ddlScoreAssessments").val() || [];
-                var scoreSnapshot = {
-                    SelectedIds: scoreSelected,
-                    Score: toNum($("#scoreValue").text()),
-                    Required: toNum($("#scoreRequired").text()),
-                    Delta: ($("#scoreDelta").text() || "").trim(),
-                    Status: ($("#scoreBadge").text() || "").trim(),
-                    AdviceHtml: ($("#scoreAdvice").html() || "").trim(),
-                    SuggestedHtml: ($("#scoreSuggestedAmount").html() || "").trim()
-                };
+            // =========================
+            // ✅ GUARANTORS BUILDERS (split from #hidGuarantorsJson by type)
+            // =========================
+            function readAllGuarantors() {
+                syncGuarantorsHiddenFromUI();
+                var raw = safeJsonParse($(IDS.GuarantorsJson).val(), []);
+                return Array.isArray(raw) ? raw : [];
+            }
 
-                // -----------------------------
-                // ✅ Old loan / reschedule / OD-LOC extras (optional)
-                // -----------------------------
-                var mode = String(applicationMode || "").toUpperCase();
-                var extra = {
-                    Mode: mode,
-                    OldLoan: {
-                        OldLoanId: safeVal("#txtOldLoanId"),
-                        OldLoanAmount: toNum($("#txtOldLoanAmount").val()),
-                        RemainingPrincipal: toNum($("#txtOldRemainingPrincipal").val()),
-                        AccruedInterest: toNum($("#txtOldAccruedInterest").val()),
-                        Penalty: toNum($("#txtOldPenalty").val()),
-                        Vat: toNum($("#txtOldVat").val()),
-                        Reason: safeVal("#txtRestructureReason")
-                    },
-                    Reschedule: {
-                        RemainingCapitalBalance: toNum($("#txtRemainingCapitalBalance").val()),
-                        NewNumberOfRepayments: toNum($("#txtNewNumberOfRepayments").val()),
-                        RepaymentCircle: safeVal("#ddlRepaymentCircle"),
-                        RepaymentType: safeVal("#ddlRescheduleRepaymentType"),
-                        Reason: safeVal("#txtRescheduleReason"),
-                        RescheduleAmount: toNum($("#txtRescheduleAmount").val()) || toNum($("#hidRescheduleAmount").val())
-                    },
-                    OdLoc: {
-                        TargetAccountId: safeVal("#ddlOdLocAccount"),
-                        Purpose: safeVal("#txtOdLocPurpose"),
-                        InterestRate: toNum($("#txtOdLocInterestRate").val()),
-                        OverdraftLimit: toNum($("#txtOverdraftLimit").val()),
-                        OverdraftDurationDays: toNum($("#txtOverdraftDurationDays").val()),
-                        LocApprovedLimit: toNum($("#txtLocApprovedLimit").val()),
-                        LocTenorMonths: toNum($("#txtLocTenorMonths").val())
-                    }
-                };
+            function buildMoralGuarantors() {
+                var all = readAllGuarantors();
 
-                // Manager decision payload (if present)
-                var managerDecision = [];
-                $("#managerRecoveryList .tsc-mgr-dec-row").each(function () {
-                    var $r = $(this);
-                    managerDecision.push({
-                        AccountId: String($r.data("id") || ""),
-                        Decision: String($r.find(".tsc-mgr-decision").val() || "")
+                return all
+                    .filter(function (g) { return (normUpper(g.GuarantorType) === "MORAL_GUARANTOR"); })
+                    .map(function (g) {
+                        return {
+                            CompanyOrGroupName: (g.CompanyOrGroupName || g.MemerberName || g.Name || "").toString(),
+                            IdCardNumber: (g.IdCardNumber || "").toString(),
+                            ExpireDate: (g.ExpireDate || "").toString(),
+                            IssueDate: (g.IssueDate || "").toString(),
+                            Relationship: (g.Relationship || "").toString(),
+                            Address: (g.Address || "").toString(),
+                            PhoneNumber: (g.PhoneNumber || "").toString(),
+                            Email: (g.Email || "").toString(),
+                            GuaranteeAmount: num(g.GuaranteeAmount || g.Amount || 0)
+                        };
                     });
+            }
+
+            function _buildMemberGuarantorCommon(g) {
+                return {
+                    MemerberName: (g.MemerberName || g.MemberName || "").toString(),
+                    MemerberReference: (g.MemerberReference || g.MemberReference || "").toString(),
+                    IdCardNumber: (g.IdCardNumber || "").toString(),
+                    ExpireDate: (g.ExpireDate || "").toString(),
+                    IssueDate: (g.IssueDate || "").toString(),
+                    Relationship: (g.Relationship || "").toString(),
+                    Address: (g.Address || "").toString(),
+                    PhoneNumber: (g.PhoneNumber || "").toString(),
+                    Email: (g.Email || "").toString(),
+                    GuaranteeAmount: num(g.GuaranteeAmount || 0),
+                    AccountNumber: (g.AccountNumber || "").toString(),
+                    Amount: num(g.Amount || 0),
+                    BlockAccount: boolVal(g.BlockAccount),
+                    AccountId: (g.AccountId || "").toString(),
+
+                    // ✅ NEW: keep what you already capture from UI
+                    ReleaseOrder: (g.ReleaseOrder || "").toString()
+                };
+            }
+            function buildReleaseOrders() {
+                var all = readAllGuarantors();
+                var map = {}; // MemberReference -> order (take smallest)
+
+                function parseOrder(raw) {
+                    if (raw === null || raw === undefined) return null;
+                    var s = (raw + "").trim();
+                    if (!s) return null;
+
+                    // allow "1", "01", "Order 1", etc.
+                    var m = s.match(/\d+/);
+                    if (!m) return null;
+
+                    var n = parseInt(m[0], 10);
+                    return isNaN(n) ? null : n;
+                }
+
+                all.forEach(function (g) {
+                    var memberRef = (g.MemerberReference || g.MemberReference || "").toString().trim();
+                    if (!memberRef) return;
+
+                    var ord = parseOrder(g.ReleaseOrder);
+                    if (ord === null) return;
+
+                    // keep smallest order if duplicated
+                    if (map[memberRef] === undefined || ord < map[memberRef]) {
+                        map[memberRef] = ord;
+                    }
                 });
 
+                var list = Object.keys(map).map(function (k) {
+                    return { MemberReference: k, Order: map[k] };
+                });
+
+                // sort by order
+                list.sort(function (a, b) { return (a.Order || 0) - (b.Order || 0); });
+
+                return list;
+            }
+
+
+            function buildCoobligors() {
+                var all = readAllGuarantors();
+                return all
+                    .filter(function (g) { return (normUpper(g.GuarantorType) === "COOBLIGOR"); })
+                    .map(_buildMemberGuarantorCommon);
+            }
+
+            function buildShotees() {
+                var all = readAllGuarantors();
+                return all
+                    .filter(function (g) { return (normUpper(g.GuarantorType) === "SHOTEE"); })
+                    .map(_buildMemberGuarantorCommon);
+            }
+
+            function buildInterCooperations() {
+                var all = readAllGuarantors();
+                return all
+                    .filter(function (g) { return (normUpper(g.GuarantorType) === "INTER_COOPERATION"); })
+                    .map(function (g) {
+                        var x = _buildMemberGuarantorCommon(g);
+                        x.AffiliateOrInstitutionName = (g.AffiliateOrInstitutionName || "").toString();
+                        x.Blockccount = boolVal(g.Blockccount);
+                        return x;
+                    });
+            }
+
+            // =========================
+            // ✅ COLLATERALS BUILDER
+            // =========================
+            function buildCollaterals() {
+                syncCollateralsHiddenFromUI();
+
+                var raw = safeJsonParse($(IDS.CollateralsJson).val(), []);
+                if (!Array.isArray(raw)) raw = [];
+
+                return raw.map(function (c) {
+                    return {
+                        Name: (c.Name || "").toString(),
+                        CollateraTypeId: (c.CollateraTypeId || c.CollateralTypeId || "").toString(),
+                        Amount: num(c.Amount || 0),
+                        Location: (c.Location || "").toString(),
+                        Address: (c.Address || "").toString(),
+                        ReferenceNumber: (c.ReferenceNumber || "").toString()
+                    };
+                });
+            }
+
+            // =========================
+            // Request builders
+            // =========================
+            function buildNewLoanApplicationRequest() {
+                // ✅ CRITICAL: Step3 -> hidden refresh BEFORE reading anything
+                syncRecoveryHiddenFromUI();
+                syncChargesHiddenFromUI();
+                syncGuarantorsHiddenFromUI();
+                syncCollateralsHiddenFromUI();
+
+                var recoveryBlocks = $("#chkRecoveryMechanism").is(":checked") ? getRecoveryBlocksFromUI() : [];
+                var recSummary = buildRecoveryAmountsSummary();
+
                 return {
-                    // IDs
-                    MemberId: wizardState.memberId || "",
-                    Facility: facility,
-                    ApplicationMode: applicationMode,
+                    MemberId: (wizardState.memberId || safeVal("#hidMemberId") || ""),
+                    Facility: safeVal("#txtFacility") || (wizardState.facility || ""),
+                    Mode: "NEW",
 
-                    InstitutionLoanTypeId: institutionLoanTypeId,
-                    InstitutionLoanTypeText: safeText("#ddlInstitutionLoanType"),
+                    InstitutionLoanTypeId: safeVal("#ddlInstitutionLoanType"),
+                    LoanProductId: safeVal("#ddlLoanProduct"),
 
-                    LoanProductId: loanProductId,
-                    LoanProductText: safeText("#ddlLoanProduct"),
+                    RequestedAmount: num($("#txtAmount").val()),
+                    InterestRate: num($("#txtInterest").val()),
+                    ReleaseOrders: buildReleaseOrders(),
 
-                    // Amount & Terms
-                    RequestedAmount: requestedAmount,
-                    InterestRate: interestRate,
-                    RepaymentPeriod: repaymentPeriod,
-                    RepaymentPeriodText: safeText("#ddlRepaymentPeriod"),
-                    RepaymentType: repaymentType,
-                    GracePeriodDays: gracePeriodDays,
-                    DisbursementType: disbursementType,
+                    RepaymentPeriod: safeVal("#ddlRepaymentPeriod"),
+                    RepaymentType: safeVal("#ddlRepaymentType"),
+                    GracePeriodDays: parseInt(safeVal("#txtGracePeriod") || "0", 10) || 0,
+                    DisbursementType: safeVal("#ddlDisbursementType"),
 
-                    // Charges
-                    Charges: chargesDetailed,               // detailed list
-                    ChargesSummary: chargesSummary,         // totals from UI
+                    SelectedScorings: buildSelectedScorings(),
+                    Charges: buildCharges(),
+                    Scoring: buildScoringSummaryDto(),
 
-                    // Recovery mechanism
-                    RecoveryEnabled: recoveryEnabled,
-                    RecoveryAccounts: recoverySelectionDetailed,
-                    RecoveryComment: recoveryNote,
+                    RequiresDownPayment: $("#chkDownPayment").is(":checked"),
+                    HasGuarantor: $("#chkGuarantor").is(":checked"),
+                    HasCollateral: $("#chkCollateral").is(":checked"),
+                    RequiresDocuments: $("#chkLoanDocs").is(":checked"),
 
-                    // Risk mitigation
-                    RiskFlags: riskFlags,
-                    DownPayment: downPaymentSnapshot,
-                    Guarantors: guarantorsDetailed,
-                    Collaterals: collateralDetailed,
-                    LoanDocuments: docs,
-                    LoanDocumentNotes: docNotes,
+                    SavingsCoverageAmount: recSummary.SavingsCoverageAmount,
+                    OrdinarySharesAmountProvided: recSummary.OrdinarySharesAmountProvided,
+                    TotalDownpaymentAmountProvided: recSummary.TotalDownpaymentAmountProvided,
 
-                    // Scoring
-                    Scoring: scoreSnapshot,
+                    DocumentNotes: safeVal("#txtLoanDocsNote"),
 
-                    // Extras
-                    Extra: extra,
-                    ManagerRecoveryDecision: managerDecision
+                    HasRecoveryMechanism: $("#chkRecoveryMechanism").is(":checked"),
+
+                    // ✅ PERFECT: send backend what it expects (AccountId, Decision, BlockAmount)
+                    // ✅ PLUS: include display fields for preview
+                    RecoveryBlocks: (recoveryBlocks || []).map(function (x) {
+                        var decision = normalizeDecision(x.Decision || x.BlockedStatus || "Blocked");
+                        return {
+                            AccountId: x.AccountId,
+                            Decision: decision,
+                            BlockAmount: num(x.BlockAmount || 0),
+
+                            // display helpers (won’t break backend)
+                            AccountNumber: (x.AccountNumber || ""),
+                            AccountName: (x.AccountName || x._Label || ""),
+                            AccountType: (x.AccountType || ""),
+                            Label: (x._Label || x.Label || "")
+                        };
+                    }),
+
+                    Documents: buildDocumentsMeta(),
+
+                    MoralGuarantors: buildMoralGuarantors(),
+                    Coobligors: buildCoobligors(),
+                    Shotees: buildShotees(),
+                    InterCooperations: buildInterCooperations(),
+                    Collaterals: buildCollaterals()
                 };
             }
 
-            // =========================
-            // Helpers to show all selected items in review
-            // =========================
-            function selectedTexts($sel) {
-                return $sel.find("option:selected").map(function () { return $(this).text(); }).get();
+            function buildRefinanceLoanApplicationRequest() {
+                return {
+                    AddLoanApplicationCommand: buildNewLoanApplicationRequest(),
+                    OldLoanId: safeVal("#txtOldLoanId") || safeVal("#hidOldLoanId"),
+                    Reason: safeVal("#txtRestructureReason") || safeVal("#txtRefinanceReason") || ""
+                };
             }
+
+            function buildRescheduleLoanApplicationRequest() {
+                return {
+                    RescheduleCommand: {
+                        OldLoanId: safeVal("#txtOldLoanId") || safeVal("#hidOldLoanId"),
+                        RemainingCapitalBalance: num($("#txtOldRemainingPrincipal").val() || $("#txtRemainingCapitalBalance").val() || $("#txtRemainingCapital").val()),
+                        NewNumberOfRepayments: parseInt(safeVal("#txtNewNumberOfRepayments") || safeVal("#ddlNewNumberOfRepayments") || "0", 10) || 0,
+                        RepaymentCircle: safeVal("#ddlRepaymentCircle") || safeVal("#ddlRepaymentPeriod"),
+                        RepaymentType: safeVal("#ddlRescheduleRepaymentType") || safeVal("#ddlRepaymentType"),
+                        Reason: safeVal("#txtRescheduleReason") || safeVal("#txtRestructureReason") || ""
+                    }
+                };
+            }
+
+            function buildOverdraftApplicationRequest() {
+                return {
+                    AddOverdraftCommand: {
+                        MemberId: (wizardState.memberId || safeVal("#hidMemberId") || ""),
+                        OverdraftAccount: {
+                            AccountNumber: safeVal("#txtOdAccountNumber") || safeVal("#txtOdLocAccountNumber"),
+                            AccountId: safeVal("#ddlOdLocAccount") || safeVal("#hidOdAccountId"),
+                            AvilableBalance: num($("#txtOdAvailableBalance").val() || $("#lblOdAvailableBalance").text()),
+                            Consummed: num($("#txtOdConsumed").val() || $("#lblOdConsumed").text()),
+                            AccountLimit: num($("#txtOdAccountLimit").val() || $("#lblOdAccountLimit").text())
+                        },
+                        OverdraftLimit: num($("#txtOverdraftLimit").val()),
+                        InterestRate: num($("#txtOdLocInterestRate").val() || $("#txtOverdraftInterest").val()),
+                        DurationDays: parseInt(safeVal("#txtOverdraftDurationDays") || "0", 10) || 0,
+                        Purpose: safeVal("#txtOdLocPurpose") || safeVal("#txtOverdraftPurpose"),
+                        Scoring: buildScoringSummaryDto()
+                    }
+                };
+            }
+
+            function buildLineOfCreditApplicationRequest() {
+                return {
+                    AddLineOfCreditCommand: {
+                        MemberId: (wizardState.memberId || safeVal("#hidMemberId") || ""),
+                        OverdraftAccount: {
+                            AccountNumber: safeVal("#txtLocAccountNumber") || safeVal("#txtOdLocAccountNumber"),
+                            AccountId: safeVal("#ddlOdLocAccount") || safeVal("#hidLocAccountId"),
+                            AvilableBalance: num($("#txtLocAvailableBalance").val() || $("#lblLocAvailableBalance").text()),
+                            Consummed: num($("#txtLocConsumed").val() || $("#lblLocConsumed").text()),
+                            AccountLimit: num($("#txtLocAccountLimit").val() || $("#lblLocAccountLimit").text())
+                        },
+                        ApprovedLimit: num($("#txtLocApprovedLimit").val() || $("#txtLocLimit").val()),
+                        InterestRate: num($("#txtOdLocInterestRate").val() || $("#txtLocInterest").val()),
+                        TenorMonths: parseInt(safeVal("#txtLocTenorMonths") || "0", 10) || 0,
+                        Purpose: safeVal("#txtOdLocPurpose") || safeVal("#txtLocPurpose"),
+                        Scoring: buildScoringSummaryDto()
+                    }
+                };
+            }
+
+            function getFacility() {
+                return (safeVal("#txtFacility") || safeVal("#ddlFacility") || wizardState.facility || "").toString().toUpperCase();
+            }
+            function getMode() {
+                return (safeVal("#txtAppMode") || wizardState.restructureMode || wizardState.applicationMode || "NEW").toString().toUpperCase();
+            }
+
+            function buildPayloadForSave() {
+                var mode = getMode();
+                var facility = getFacility();
+
+                if (mode === "RESCHEDULE") return buildRescheduleLoanApplicationRequest();
+                if (mode === "REFINANCE") return buildRefinanceLoanApplicationRequest();
+
+                if (facility === "OVERDRAFT") return buildOverdraftApplicationRequest();
+                if (facility === "LINEOFCREDIT" || facility === "LINE_OF_CREDIT") return buildLineOfCreditApplicationRequest();
+
+                return buildNewLoanApplicationRequest();
+            }
+
+            // =========================
+            // Preview helpers (unchanged)
+            // =========================
             function selectedObjects($sel) {
                 return $sel.find("option:selected").map(function () {
                     var $o = $(this);
@@ -9867,636 +10401,34 @@ window.toNum = window.toNum || function (v) {
                 if (!items || !items.length) return '<div class="text-muted small">None selected</div>';
                 return '<ul class="mb-0 small ps-3">' + items.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>";
             }
-
-            // =========================
-            // Documents preview helper (file input -> blob url)
-            // =========================
-            var _docUrlCache = {}; // name|size|lastModified -> blob url
-
-            function getLoanDocFiles() {
-                // Try common IDs (update this if your input has a different id)
-                var $inp = $("#loanDocuments, #LoanDocuments, #fuLoanDocs, #fileLoanDocs, #txtLoanDocs, #LoanDocs, #loanDocs, #uploadLoanDocs").first();
-                if (!$inp.length) {
-                    // last resort: any file input inside Risk Mitigation section
-                    $inp = $('input[type="file"]').first();
-                }
-                if (!$inp.length) return { input: null, files: [] };
-
-                var el = $inp.get(0);
-                var files = (el && el.files) ? Array.prototype.slice.call(el.files) : [];
-                return { input: el, files: files };
+            function kv(label, valueHtml) {
+                return '<div class="d-flex justify-content-between"><span class="text-muted">' + esc(label) + '</span><span class="fw-bold">' + (valueHtml || "") + '</span></div>';
             }
-
-            function fileKey(f) {
-                return [f.name, f.size, f.lastModified].join("|");
-            }
-
-            function blobUrlForFile(f) {
-                var k = fileKey(f);
-                if (_docUrlCache[k]) return _docUrlCache[k];
-                var url = URL.createObjectURL(f);
-                _docUrlCache[k] = url;
-                return url;
-            }
-
-            function renderDocsReview() {
-                // Put docs into #reviewDocuments if present; otherwise append to #reviewRisk
-                var $host = $("#reviewDocuments");
-                var fallbackToRisk = false;
-                if (!$host.length) {
-                    $host = $("#reviewRisk");
-                    fallbackToRisk = true;
-                }
-
-                var info = getLoanDocFiles();
-                var files = info.files || [];
-
-                var html = '<div class="fw-bold mb-1">Uploaded Documents</div>';
-
-                if (!files.length) {
-                    html += '<div class="text-muted small">No documents uploaded.</div>';
-                    if (fallbackToRisk) html = '<div class="tsc-divider my-3"></div>' + html;
-                    if (fallbackToRisk) $host.append(html); else $host.html(html);
-                    return;
-                }
-
-                html += '<div class="list-group">';
-                files.forEach(function (f) {
-                    var url = blobUrlForFile(f);
-                    var name = esc(f.name);
-                    var sizeKb = Math.round((f.size || 0) / 1024);
-
-                    var isImg = /^image\//i.test(f.type || "");
-                    var thumb = "";
-                    if (isImg) {
-                        thumb = '<img src="' + esc(url) + '" alt="' + name + '" style="width:46px;height:46px;object-fit:cover;border-radius:8px;border:1px solid rgba(0,0,0,.08);" />';
-                    } else {
-                        thumb = '<div style="width:46px;height:46px;border-radius:8px;border:1px solid rgba(0,0,0,.08);display:flex;align-items:center;justify-content:center;background:#f8f9fa;font-size:12px;" class="text-muted">DOC</div>';
-                    }
-
-                    html += ''
-                        + '<a class="list-group-item list-group-item-action d-flex align-items-center gap-2" '
-                        + 'href="' + esc(url) + '" target="_blank" rel="noopener">'
-                        + thumb
-                        + '<div class="flex-grow-1">'
-                        + '<div class="fw-semibold">' + name + '</div>'
-                        + '<div class="small text-muted">' + esc((f.type || "file").toString()) + ' • ' + sizeKb + ' KB • Click to preview</div>'
-                        + '</div>'
-                        + '<div class="small text-primary fw-semibold">Open</div>'
-                        + '</a>';
-                });
-                html += '</div>';
-
-                if (fallbackToRisk) {
-                    $host.append('<div class="tsc-divider my-3"></div>' + html);
-                } else {
-                    $host.html(html);
-                }
-            }
-
-            // =========================
-            // Scoring status + insight (read from UI)
-            // =========================
-            function txt($el) { return ($el && $el.length) ? ($el.text() || "").trim() : ""; }
-
-            function renderScoringReview() {
-                var $host = $("#reviewScoring");
-                var fallbackToRisk = false;
-                if (!$host.length) {
-                    $host = $("#reviewRisk");
-                    fallbackToRisk = true;
-                }
-
-                // Try known IDs first (if you have them in your Step3 scoring widget)
-                var scoreVal = txt($("#scoreValue, #scorePoints, #lblScore, #scoreComputed"));
-                var requiredVal = txt($("#scoreRequired, #requiredScore, #lblRequiredScore"));
-                var deltaVal = txt($("#scoreDelta, #deltaScore, #lblDeltaScore"));
-                var badgeVal = txt($("#scoreBadge, #scoreStatusBadge, #lblScoreBadge"));
-                var recVal = txt($("#scoreRecommendation, #scoreAdvice, #lblScoreRecommendation"));
-
-                // If IDs not found, try extracting from the "Status" panel in the scoring section
-                if (!scoreVal && !requiredVal && !deltaVal && !recVal) {
-                    var $status = $("#creditScoring, #panelCreditScoring, #sectionCreditScoring").find(".status, .Status, .card-body").last();
-
-                    var allText = ($status.length ? $status.text() : "").replace(/\s+/g, " ").trim();
-
-                    // Best-effort regex extraction
-                    // e.g. "Score: 480 Required: 75 Delta: +405 pts Recommendation: Proceed..."
-                    var mScore = allText.match(/Score\s*:\s*([0-9]+(?:\.[0-9]+)?)/i);
-                    var mReq = allText.match(/Required\s*:\s*([0-9]+(?:\.[0-9]+)?)/i);
-                    var mDelta = allText.match(/Delta\s*:\s*([+\-]?[0-9]+(?:\.[0-9]+)?)/i);
-                    var mRec = allText.match(/Recommendation\s*:\s*([^]+)$/i);
-
-                    if (mScore) scoreVal = mScore[1];
-                    if (mReq) requiredVal = mReq[1];
-                    if (mDelta) deltaVal = mDelta[1];
-                    if (mRec) recVal = (mRec[1] || "").trim();
-                }
-
-                // Badge often exists as a green pill/button; try locate within scoring section
-                if (!badgeVal) {
-                    var $badge = $("#creditScoring, #panelCreditScoring, #sectionCreditScoring").find(".badge, .btn, .pill, .rounded-pill").filter(function () {
-                        var t = ($(this).text() || "").trim();
-                        return t && t.length <= 40; // likely status label
-                    }).first();
-                    badgeVal = txt($badge);
-                }
-
-                var html = '<div class="fw-bold mb-1">Credit Scoring Status</div>';
-
-                if (!scoreVal && !badgeVal && !recVal) {
-                    html += '<div class="text-muted small">No scoring status captured.</div>';
-                    if (fallbackToRisk) $host.append('<div class="tsc-divider my-3"></div>' + html);
-                    else $host.html(html);
-                    return;
-                }
-
-                html += '<div class="card border-0 bg-light"><div class="card-body py-2">';
-                if (badgeVal) {
-                    html += '<div class="mb-2"><span class="badge rounded-pill bg-success">' + esc(badgeVal) + '</span></div>';
-                }
-                html += '<div class="small">';
-                if (scoreVal) html += '<div class="d-flex justify-content-between"><span class="text-muted">Score</span><span class="fw-bold">' + esc(scoreVal) + '</span></div>';
-                if (requiredVal) html += '<div class="d-flex justify-content-between"><span class="text-muted">Required</span><span class="fw-bold">' + esc(requiredVal) + '</span></div>';
-                if (deltaVal) html += '<div class="d-flex justify-content-between"><span class="text-muted">Delta</span><span class="fw-bold">' + esc(deltaVal) + '</span></div>';
-                html += '</div>';
-
-                if (recVal) {
-                    html += '<div class="mt-2"><div class="text-muted small">Insight</div><div class="fw-semibold">' + esc(recVal) + '</div></div>';
-                }
-
-                html += '</div></div>';
-
-                if (fallbackToRisk) $host.append('<div class="tsc-divider my-3"></div>' + html);
-                else $host.html(html);
-            }
-
-            // =========================
-            // Preview rendering
-            // =========================
-            function renderPreview(payload) {
-
-                var productText = $("#ddlLoanProduct option:selected").text() || "";
-                var loanTypeText = $("#ddlInstitutionLoanType option:selected").text() || "";
-
-                var mode = ((payload && payload.Extra && payload.Extra.Mode) || payload.ApplicationMode || payload.Mode || "").toString().toUpperCase();
-                var facility = payload.Facility || "AUTO";
-
-                // -----------------------------
-                // Member mini helper
-                // -----------------------------
-                var mem = (window.wizardState && window.wizardState.member) ? window.wizardState.member : {};
-                var memberName = mem.name || "";
-                var memberCode = mem.code || "";
-
-                // -----------------------------
-                // Helpers
-                // -----------------------------
-                function pickOldLoanFromState() {
-                    var ws = window.wizardState || {};
-                    var id = ws.oldLoanId || payload.OldLoanId || null;
-                    if (!id) return null;
-
-                    var key = String(id);
-                    var map = ws.loansById || {};
-                    return map[key] || null;
-                }
-
-                function moneyWithCurrency(v, ccy) {
-                    return num(v).toLocaleString() + " " + esc(ccy || "FCFA");
-                }
-
-                // ✅ For reschedule: the value is BALANCE (Remaining Capital), not "amount".
-                // Try to read the reschedule amount input if it exists, else fallback to old balance.
-                function getRescheduleCapital(oldBalance) {
-                    var $res = $("#txtRescheduleAmount, #txtAmountToReschedule, #txtRemainingCapital").first();
-                    if ($res.length) {
-                        var v = num($res.val());
-                        if (v > 0) return v;
-                    }
-                    // fallback
-                    return num(oldBalance);
-                }
-
-                // -----------------------------
-                // RESCHEDULE PREVIEW (special)
-                // -----------------------------
-                if (mode === "RESCHEDULE") {
-
-                    // ✅ Title change
-                    if ($("#reviewRightTitle").length) {
-                        $("#reviewRightTitle").html('<i class="mdi mdi-refresh me-1"></i> Loan Reschedule Summary');
-                    }
-
-                    // ✅ pull from lookup where you stored it
-                    var oldLoan = pickOldLoanFromState();
-
-                    var oldId = oldLoan ? (oldLoan.id || "") : (payload.OldLoanId || (window.wizardState && window.wizardState.oldLoanId) || "");
-                    var oldStatus = oldLoan ? (oldLoan.status || "") : "";
-                    var oldCurrency = oldLoan ? (oldLoan.currency || "FCFA") : "FCFA";
-
-                    var oldAmount = oldLoan ? num(oldLoan.amount) : 0;
-                    var oldBalance = oldLoan ? num(oldLoan.balance) : 0;
-
-                    var oldAccrualInterest = oldLoan ? num(oldLoan.accrualInterest) : 0;
-                    var oldVat = oldLoan ? num(oldLoan.vat) : 0;
-                    var oldPenalty = oldLoan ? num(oldLoan.penalty) : 0;
-
-                    var oldDelInterest = oldLoan ? num(oldLoan.delinquentInterest) : 0;
-                    var oldDelAmount = oldLoan ? num(oldLoan.delinquentAmount) : 0;
-                    var oldDelDays = oldLoan ? num(oldLoan.delinquentDays) : 0;
-
-                    var oldTotalDue = oldLoan ? num(oldLoan.totalDueAmount) : 0;
-                    var oldDateText = oldLoan ? (oldLoan.dateText || "") : "";
-
-                    // ✅ Remaining capital (reschedule amount)
-                    var remainingCapital = getRescheduleCapital(oldBalance);
-
-                    // -----------------------------
-                    // Helpers (units + status pill)
-                    // -----------------------------
-                    function monthsLabel(v) {
-                        var n = num(v);
-                        if (!n || n <= 0) return "0 months";
-                        return n + " month" + (n > 1 ? "s" : "");
-                    }
-
-                    // You requested "Grace Period in Month"
-                    // NOTE: payload.GracePeriodDays is used elsewhere, but for RESCHEDULE preview we treat it as months.
-                    var graceMonths = num(payload.GracePeriodDays || 0);
-
-                    function isDelinquentStatus(s) {
-                        s = (s || "").toString().toUpperCase();
-                        return s.indexOf("DELINQUENT") >= 0 || s.indexOf("ARREAR") >= 0 || s.indexOf("LATE") >= 0;
-                    }
-
-                    function statusBadgeHtml(s) {
-                        var t = (s || "").toString().trim();
-                        if (!t) return "";
-                        var cls = isDelinquentStatus(t) ? "bg-danger" : "bg-secondary";
-                        return '<span class="badge rounded-pill ' + cls + '">' + esc(t) + '</span>';
-                    }
-
-                    // -----------------------------
-                    // LEFT: Summary (keep clean)
-                    // -----------------------------
-                    // -----------------------------
-                    // Application Summary Card (Review)
-                    // -----------------------------
-                    var rf = payload.RiskFlags || payload.RiskFlags || {};
-                    var recoveryEnabled = (payload.RecoveryEnabled === true || payload.RecoveryEnabled === "true" || (payload.Recovery && payload.Recovery.Enabled));
-                    var recAccounts = payload.RecoveryAccounts || (payload.Recovery && payload.Recovery.Accounts) || [];
-                    var chargesSum = payload.ChargesSummary || (payload.Charges && payload.ChargesSummary) || {};
-                    var docs = payload.LoanDocuments || payload.Documents || [];
-                    var scoring = payload.Scoring || payload.Score || {};
-
-                    var reqAmt = num(payload.RequestedAmount || payload.Amount || 0);
-                    var intRate = (payload.InterestRate || payload.Interest || 0);
-                    var repPeriodText = payload.RepaymentPeriodText || payload.RepaymentPeriod || "";
-                    var repType = payload.RepaymentType || "";
-                    var graceDays = (payload.GracePeriodDays || payload.GracePeriod || 0);
-                    var disbType = payload.DisbursementType || "";
-
-                    var recBlockedTotal = 0;
-                    for (var _ri = 0; _ri < recAccounts.length; _ri++) {
-                        recBlockedTotal += num(recAccounts[_ri].BlockAmount || recAccounts[_ri].Amount || 0);
-                    }
-
-                    $("#reviewSummary").html(
-                        '<div class="card border-0 shadow-sm" style="background:#ffffff;">' +
-                        '<div class="card-body p-2">' +
-                        '<div class="d-flex justify-content-between align-items-start gap-2">' +
-                        '<div class="min-w-0">' +
-                        '<div class="fw-bold text-dark"><i class="mdi mdi-clipboard-text-outline me-1"></i> Application Summary</div>' +
-                        '<div class="text-muted small">Quick recap of the application before submission.</div>' +
-                        '</div>' +
-                        '<span class="badge rounded-pill bg-light text-dark border">Review</span>' +
-                        '</div>' +
-
-                        '<div class="tsc-divider my-2"></div>' +
-
-                        // Member
-                        '<div class="small">' +
-                        '<div class="fw-semibold text-muted mb-1"><i class="mdi mdi-account-outline me-1"></i> Member</div>' +
-                        '<div class="d-flex justify-content-between align-items-center"><span class="text-muted">Name</span><span class="fw-bold text-dark">' + esc(memberName) + '</span></div>' +
-                        '<div class="d-flex justify-content-between align-items-center"><span class="text-muted">Code</span><span class="fw-bold text-dark">' + esc(memberCode) + '</span></div>' +
-                        '</div>' +
-
-                        '<div class="tsc-divider my-2"></div>' +
-
-                        // Product
-                        '<div class="small">' +
-                        '<div class="fw-semibold text-muted mb-1"><i class="mdi mdi-cube-outline me-1"></i> Product</div>' +
-                        '<div class="d-flex justify-content-between align-items-center"><span class="text-muted">Facility</span><span class="fw-bold text-dark">' + esc(facility) + '</span></div>' +
-                        '<div class="d-flex justify-content-between align-items-center"><span class="text-muted">Mode</span><span class="fw-bold ' + (isReschedule ? 'text-success' : (isRefinance ? 'text-warning' : 'text-primary')) + '">' + esc(mode || '') + '</span></div>' +
-                        '<div class="d-flex justify-content-between align-items-center"><span class="text-muted">Institution Loan Type</span><span class="fw-bold text-dark">' + esc(loanTypeText) + '</span></div>' +
-                        '<div class="d-flex justify-content-between align-items-center"><span class="text-muted">Loan Product</span><span class="fw-bold text-dark">' + esc(productText) + '</span></div>' +
-                        (oldId ? ('<div class="d-flex justify-content-between align-items-center"><span class="text-muted">Old Loan</span><span class="fw-bold text-dark">' + esc(oldId) + '</span></div>') : '') +
-                        '</div>' +
-
-                        '<div class="tsc-divider my-2"></div>' +
-
-                        // Amount & Terms
-                        '<div class="small">' +
-                        '<div class="fw-semibold text-muted mb-1"><i class="mdi mdi-tune-variant me-1"></i> Amount &amp; Terms</div>' +
-                        '<div class="d-flex justify-content-between align-items-center"><span class="text-muted">Requested Amount</span><span class="fw-bold text-dark">' + moneyWithCurrency(reqAmt, (payload.Currency || "FCFA")) + '</span></div>' +
-                        '<div class="d-flex justify-content-between align-items-center"><span class="text-muted">Interest (%)</span><span class="fw-bold text-dark">' + esc(intRate) + '</span></div>' +
-                        '<div class="d-flex justify-content-between align-items-center"><span class="text-muted">Repayment Period</span><span class="fw-bold text-dark">' + esc(repPeriodText) + '</span></div>' +
-                        '<div class="d-flex justify-content-between align-items-center"><span class="text-muted">Repayment Type</span><span class="fw-bold text-dark">' + esc(repType) + '</span></div>' +
-                        '<div class="d-flex justify-content-between align-items-center"><span class="text-muted">Grace (days)</span><span class="fw-bold text-dark">' + esc(graceDays) + '</span></div>' +
-                        '<div class="d-flex justify-content-between align-items-center"><span class="text-muted">Disbursement</span><span class="fw-bold text-dark">' + esc(disbType) + '</span></div>' +
-                        '</div>' +
-
-                        '<div class="tsc-divider my-2"></div>' +
-
-                        // Charges
-                        '<div class="small">' +
-                        '<div class="fw-semibold text-muted mb-1"><i class="mdi mdi-cash-multiple me-1"></i> Charges</div>' +
-                        '<div class="d-flex justify-content-between align-items-center"><span class="text-muted">Before Appraisal</span><span class="fw-bold text-warning">' + num(chargesSum.Before || 0).toLocaleString() + '</span></div>' +
-                        '<div class="d-flex justify-content-between align-items-center"><span class="text-muted">After Disbursement</span><span class="fw-bold text-success">' + num(chargesSum.After || 0).toLocaleString() + '</span></div>' +
-                        '<div class="d-flex justify-content-between align-items-center"><span class="text-muted">Required Upfront</span><span class="fw-bold text-primary">' + num(chargesSum.Upfront || 0).toLocaleString() + '</span></div>' +
-                        '<div class="d-flex justify-content-between align-items-center"><span class="text-muted">Total (All)</span><span class="fw-bold text-dark">' + num(chargesSum.Total || 0).toLocaleString() + '</span></div>' +
-                        '</div>' +
-
-                        '<div class="tsc-divider my-2"></div>' +
-
-                        // Risk & Recovery
-                        '<div class="small">' +
-                        '<div class="fw-semibold text-muted mb-1"><i class="mdi mdi-shield-check-outline me-1"></i> Risk &amp; Recovery</div>' +
-                        '<div class="d-flex justify-content-between align-items-center"><span class="text-muted">Recovery Enabled</span><span class="fw-bold text-dark">' + (recoveryEnabled ? 'Yes' : 'No') + '</span></div>' +
-                        '<div class="d-flex justify-content-between align-items-center"><span class="text-muted">Recovery Accounts</span><span class="fw-bold text-dark">' + (recAccounts ? recAccounts.length : 0) + '</span></div>' +
-                        '<div class="d-flex justify-content-between align-items-center"><span class="text-muted">Total Blocked (Recovery)</span><span class="fw-bold text-dark">' + num(recBlockedTotal).toLocaleString() + '</span></div>' +
-                        '<div class="mt-2 d-flex flex-wrap gap-1">' +
-                        (rf.DownPaymentRequired ? '<span class="badge bg-light text-dark border"><i class="mdi mdi-cash-check me-1"></i>Downpayment</span>' : '') +
-                        (rf.GuarantorRequired ? '<span class="badge bg-light text-dark border"><i class="mdi mdi-account-multiple-check-outline me-1"></i>Guarantors</span>' : '') +
-                        (rf.CollateralRequired ? '<span class="badge bg-light text-dark border"><i class="mdi mdi-home-city-outline me-1"></i>Collateral</span>' : '') +
-                        (rf.LoanDocsRequired ? '<span class="badge bg-light text-dark border"><i class="mdi mdi-file-document-outline me-1"></i>Documents</span>' : '') +
-                        '</div>' +
-                        '</div>' +
-
-                        '<div class="tsc-divider my-2"></div>' +
-
-                        // Score & Attachments
-                        '<div class="small">' +
-                        '<div class="fw-semibold text-muted mb-1"><i class="mdi mdi-chart-donut-variant me-1"></i> Scoring &amp; Attachments</div>' +
-                        '<div class="d-flex justify-content-between align-items-center"><span class="text-muted">Attachments</span><span class="fw-bold text-dark">' + (docs ? docs.length : 0) + '</span></div>' +
-                        '<div class="d-flex justify-content-between align-items-center"><span class="text-muted">Score Status</span><span class="fw-bold text-dark">' + esc(scoring.Status || '') + '</span></div>' +
-                        '<div class="d-flex justify-content-between align-items-center"><span class="text-muted">Score</span><span class="fw-bold text-dark">' + num(scoring.Score || 0) + '</span></div>' +
-                        '</div>' +
-
-                        '</div>' +
-                        '</div>'
-                    );
-
-                    // -----------------------------
-                    // RIGHT: Old loan details + New schedule terms (ONLY 3 fields + units)
-                    // -----------------------------
-                    var oldBlock = (oldLoan)
-                        ? (
-                            '<div class="card border-0 mb-2" style="background:#f3f4f6;">' +
-                            '<div class="card-body py-2">' +
-                            '<div class="fw-bold mb-2 text-dark"><i class="mdi mdi-history me-1"></i> Old Loan Details</div>' +
-
-                            (oldId ? '<div class="d-flex justify-content-between"><span class="text-muted">Loan Id</span><span class="fw-semibold text-dark">' + esc(oldId) + '</span></div>' : '') +
-
-                            // ✅ Delinquent status as danger pill (balloon)
-                            (oldStatus
-                                ? '<div class="d-flex justify-content-between align-items-center"><span class="text-muted">Status</span>'
-                                + '<span>' + statusBadgeHtml(oldStatus) + '</span></div>'
-                                : '') +
-
-                            (oldDateText ? '<div class="d-flex justify-content-between"><span class="text-muted">Loan Date</span><span class="fw-semibold text-dark">' + esc(oldDateText) + '</span></div>' : '') +
-
-                            '<div class="tsc-divider my-2"></div>' +
-
-                            '<div class="d-flex justify-content-between"><span class="text-muted">Original Amount</span><span class="fw-bold text-dark">' + moneyWithCurrency(oldAmount, oldCurrency) + '</span></div>' +
-                            '<div class="d-flex justify-content-between"><span class="text-muted">Current Balance (Remaining Capital)</span><span class="fw-bold text-dark">' + moneyWithCurrency(oldBalance, oldCurrency) + '</span></div>' +
-
-                            '<div class="tsc-divider my-2"></div>' +
-
-                            '<div class="d-flex justify-content-between"><span class="text-muted">Accrual Interest</span><span class="fw-semibold text-dark">' + moneyWithCurrency(oldAccrualInterest, oldCurrency) + '</span></div>' +
-                            '<div class="d-flex justify-content-between"><span class="text-muted">VAT</span><span class="fw-semibold text-dark">' + moneyWithCurrency(oldVat, oldCurrency) + '</span></div>' +
-                            '<div class="d-flex justify-content-between"><span class="text-muted">Penalty</span><span class="fw-semibold text-dark">' + moneyWithCurrency(oldPenalty, oldCurrency) + '</span></div>' +
-
-                            '<div class="tsc-divider my-2"></div>' +
-
-                            '<div class="d-flex justify-content-between"><span class="text-muted">Delinquent Interest</span><span class="fw-semibold text-dark">' + moneyWithCurrency(oldDelInterest, oldCurrency) + '</span></div>' +
-                            '<div class="d-flex justify-content-between"><span class="text-muted">Delinquent Amount</span><span class="fw-semibold text-dark">' + moneyWithCurrency(oldDelAmount, oldCurrency) + '</span></div>' +
-                            '<div class="d-flex justify-content-between"><span class="text-muted">Delinquent Days</span><span class="fw-semibold text-dark">' + esc(oldDelDays) + '</span></div>' +
-
-                            '<div class="tsc-divider my-2"></div>' +
-
-                            '<div class="d-flex justify-content-between"><span class="text-muted">Total Due</span><span class="fw-bold text-danger">' + moneyWithCurrency(oldTotalDue, oldCurrency) + '</span></div>' +
-                            '</div>' +
-                            '</div>'
-                        )
-                        : (
-                            '<div class="alert alert-warning py-2 mb-2">' +
-                            '<i class="mdi mdi-alert-outline me-1"></i>' +
-                            'Old loan details were not found in <b>wizardState.loansById</b>. Ensure you store it before preview.' +
-                            '</div>'
-                        );
-
-                    // ✅ ONLY schedule fields (3 lines) + units + amount in primary green
-                    var newBlock =
-                        '<div class="card border-0" style="background:#f3f4f6;">' +
-                        '<div class="card-body py-2">' +
-                        '<div class="fw-bold mb-2 text-dark"><i class="mdi mdi-calendar-sync me-1"></i> New Reschedule Terms</div>' +
-
-                        '<div class="d-flex justify-content-between">' +
-                        '<span class="text-muted">Amount to be Rescheduled (Remaining Capital)</span>' +
-                        '<span class="fw-bold text-success">' + moneyWithCurrency(remainingCapital, oldCurrency) + '</span>' +
-                        '</div>' +
-
-                        '<div class="d-flex justify-content-between">' +
-                        '<span class="text-muted">Repayment Period</span>' +
-                        '<span class="fw-semibold text-dark">' + esc(monthsLabel(payload.RepaymentPeriod)) + '</span>' +
-                        '</div>' +
-
-                        '<div class="d-flex justify-content-between">' +
-                        '<span class="text-muted">Grace Period</span>' +
-                        '<span class="fw-semibold text-dark">' + esc(monthsLabel(graceMonths)) + '</span>' +
-                        '</div>' +
-
-                        '</div>' +
-                        '</div>';
-
-                    $("#reviewRisk").html(oldBlock + newBlock);
-
-                    // Keep docs preview if needed
-                    renderDocsReview();
-
-                    // Recovery section note
-                    $("#reviewRecovery").html('<div class="text-muted small">Recovery preview is not required for reschedule.</div>');
-
-                    return;
-                }
-
-                // ✅ restore default title when NOT reschedule
-                if ($("#reviewRightTitle").length) {
-                    $("#reviewRightTitle").html('<i class="mdi mdi-shield-check-outline me-1"></i> Risk & Recovery Summary');
-                }
-
-                // -----------------------------
-                // DEFAULT PREVIEW (NEW / REFINANCE)
-                // -----------------------------
-                $("#reviewSummary").html(
-                    '<div class="d-flex justify-content-between"><span class="text-muted">Member</span><span class="fw-bold">' + esc(memberName) + '</span></div>' +
-                    '<div class="d-flex justify-content-between"><span class="text-muted">Member Code</span><span class="fw-bold">' + esc(memberCode) + '</span></div>' +
-                    '<div class="tsc-divider my-2"></div>' +
-
-                    '<div class="d-flex justify-content-between"><span class="text-muted">Facility</span><span class="fw-bold">' + esc(facility) + '</span></div>' +
-                    '<div class="d-flex justify-content-between"><span class="text-muted">Mode</span><span class="fw-bold">' + esc(payload.Mode) + '</span></div>' +
-                    (payload.OldLoanId ? ('<div class="d-flex justify-content-between"><span class="text-muted">Old Loan</span><span class="fw-bold">' + esc(payload.OldLoanId) + '</span></div>') : '') +
-
-                    '<div class="tsc-divider my-2"></div>' +
-
-                    '<div class="d-flex justify-content-between"><span class="text-muted">Institution Loan Type</span><span class="fw-bold">' + esc(loanTypeText) + '</span></div>' +
-                    '<div class="d-flex justify-content-between"><span class="text-muted">Loan Product</span><span class="fw-bold">' + esc(productText) + '</span></div>' +
-
-                    '<div class="tsc-divider my-2"></div>' +
-
-                    '<div class="d-flex justify-content-between"><span class="text-muted">Amount</span><span class="fw-bold text-primary">' + money(payload.Amount) + '</span></div>' +
-                    '<div class="d-flex justify-content-between"><span class="text-muted">Interest</span><span class="fw-bold">' + esc(payload.InterestRate) + '%</span></div>' +
-                    '<div class="d-flex justify-content-between"><span class="text-muted">Repayment Period</span><span class="fw-bold">' + esc(payload.RepaymentPeriod || "") + '</span></div>' +
-                    '<div class="d-flex justify-content-between"><span class="text-muted">Repayment Type</span><span class="fw-bold">' + esc(payload.RepaymentType || "") + '</span></div>' +
-                    '<div class="d-flex justify-content-between"><span class="text-muted">Grace Days</span><span class="fw-bold">' + esc(payload.GracePeriodDays) + '</span></div>' +
-                    '<div class="d-flex justify-content-between"><span class="text-muted">Disbursement</span><span class="fw-bold">' + esc(payload.DisbursementType || "") + '</span></div>'
-                );
-
-                var chargeItems = (payload && payload.Charges) ? payload.Charges : (function () { try { return JSON.parse($("#hidSelectedChargesJson").val() || "[]"); } catch (e) { return []; } })();
-                var scoreItems = selectedObjects($("#ddlScoreAssessments")); // hidden select still exists
-                var recoveryItems = (payload && payload.RecoveryAccounts) ? payload.RecoveryAccounts : (function () { try { return JSON.parse($("#hidRecoverySelectionJson").val() || "[]"); } catch (e) { return []; } })();
-                var recoveryAccTexts = recoveryItems.map(function (r) {
-                    var t = (r.AccountType || "").toString();
-                    var n = (r.AccountNumber || "").toString();
-                    var nm = (r.AccountName || "").toString();
-                    var dec = (r.Decision || "Blocked").toString();
-                    var amt = toNum(r.BlockAmount || 0);
-                    var label = (t ? (t + " - ") : "") + (n || "") + (nm ? (" • " + nm) : "");
-                    return label + " • " + dec + " • " + amt.toLocaleString() + " FCFA";
-                });
-
-                var chargeLines = (chargeItems || []).map(function (c) {
-                    var id = (c.FeeId || c.Id || c.id || "").toString();
-                    var rule = null;
-                    if (window.chargeRulesCache && window.chargeRulesCache.length && id) {
-                        for (var i = 0; i < window.chargeRulesCache.length; i++) {
-                            var rr = window.chargeRulesCache[i];
-                            var rid = (rr.FeeId || rr.Id || rr.id || "").toString();
-                            if (rid === id) { rule = rr; break; }
-                        }
-                    }
-                    var name = (rule && (rule.Name || rule.FeeName || rule.Title || rule.Label)) ? (rule.Name || rule.FeeName || rule.Title || rule.Label) : ("Charge " + id);
-                    var mode = (c.Mode || c.mode || "").toString().replaceAll("_", " ");
-                    var sys = toNum(c.SystemCharge || c.systemCharge || 0);
-                    var usr = toNum(c.UserCharge || c.userCharge || 0);
-                    return name + (mode ? (" • " + mode) : "") + " • " + usr.toLocaleString() + " FCFA (System " + sys.toLocaleString() + ")";
-                });
-                var scoreLines = scoreItems.map(function (s) { return s.text; });
-
-                $("#reviewRisk").html(
-                    '<div class="fw-bold mb-1">Charges</div>' + listHtml(chargeLines) +
-                    '<div class="tsc-divider my-3"></div>' +
-                    '<div class="fw-bold mb-1">Scoring Assessments</div>' + listHtml(scoreLines) +
-                    '<div class="tsc-divider my-3"></div>' +
-
-                    '<div class="d-flex justify-content-between"><span class="text-muted">Down Payment</span><span class="fw-bold">' + ((payload.RiskFlags && payload.RiskFlags.DownPaymentRequired) ? "Yes" : "No") + '</span></div>' +
-                    '<div class="d-flex justify-content-between"><span class="text-muted">Guarantor</span><span class="fw-bold">' + ((payload.RiskFlags && payload.RiskFlags.GuarantorRequired) ? "Yes" : "No") + '</span></div>' +
-                    '<div class="d-flex justify-content-between"><span class="text-muted">Collateral</span><span class="fw-bold">' + ((payload.RiskFlags && payload.RiskFlags.CollateralRequired) ? "Yes" : "No") + '</span></div>' +
-                    '<div class="d-flex justify-content-between"><span class="text-muted">Loan Documents Required</span><span class="fw-bold">' + (payload.RequiresDocuments ? "Yes" : "No") + '</span></div>' +
-
-                    '<div class="tsc-divider my-2"></div>' +
-
-                    '<div class="d-flex justify-content-between"><span class="text-muted">Savings Coverage Amount</span><span class="fw-bold">' + money(payload.SavingsCoverageAmount) + '</span></div>' +
-                    '<div class="d-flex justify-content-between"><span class="text-muted">Share required amount</span><span class="fw-bold">' + money(payload.SavingsCoverageRate) + '</span></div>' +
-
-                    (payload.DocumentNotes ? ('<div class="mt-2"><div class="text-muted small">Document Notes</div><div class="fw-semibold">' + esc(payload.DocumentNotes) + '</div></div>') : '') +
-
-                    '<div class="tsc-divider my-3"></div>' +
-                    '<div class="fw-bold mb-1">Recovery Accounts</div>' + listHtml(recoveryAccTexts)
-                );
-
-                renderDocsReview();
-                renderScoringReview();
-
-                var $rec = $("#reviewRecovery");
-                $rec.empty();
-
-                if (!payload.HasRecoveryMechanism || !payload.RecoveryAccounts.length) {
-                    $rec.html('<div class="text-muted small">No recovery mechanism selected.</div>');
-                    return;
-                }
-
-                var labelMap = {};
-                $("#ddlRecoveryAccounts option").each(function () { labelMap[this.value] = $(this).text(); });
-
-                var mgrMap = {};
-                (payload.ManagerRecoveryDecision || []).forEach(function (x) { mgrMap[x.AccountId] = x; });
-
-                (payload.RecoveryBlocks || []).forEach(function (b) {
-                    var label = labelMap[b.AccountId] || b.AccountId;
-                    var mgr = mgrMap[b.AccountId];
-
-                    var decision = mgr ? mgr.Decision : "PENDING";
-                    var managerAmt = mgr ? mgr.ManagerAmount : b.BlockAmount;
-
-                    $rec.append(
-                        '<div class="card border-0 bg-light mb-2">' +
-                        '<div class="card-body py-2">' +
-                        '<div class="fw-semibold">' + esc(label) + '</div>' +
-                        '<div class="small text-muted d-flex justify-content-between"><span>Proposed Block</span><span class="fw-bold">' + money(b.BlockAmount) + '</span></div>' +
-                        '<div class="small text-muted d-flex justify-content-between"><span>Manager Amount</span><span class="fw-bold">' + money(managerAmt) + '</span></div>' +
-                        '<div class="small text-muted d-flex justify-content-between"><span>Decision</span><span class="fw-bold">' + esc(decision) + '</span></div>' +
-                        '</div>' +
-                        '</div>'
-                    );
-                });
-            }
-
 
             function getAppMode() {
-                // NEW | REFINANCE | RESCHEDULE
                 var m = (window.wizardState && window.wizardState.restructureMode) ? window.wizardState.restructureMode : "NEW";
                 return (m || "NEW").toString().toUpperCase();
             }
+            function isRescheduleMode() { return getAppMode() === "RESCHEDULE"; }
 
-            function isRescheduleMode() {
-                return getAppMode() === "RESCHEDULE";
-            }
             function validateRescheduleBeforeReview() {
                 var ok = true;
 
-                var $amount = $("#txtAmount");
                 var $period = $("#ddlRepaymentPeriod");
                 var $repType = $("#ddlRepaymentType");
                 var $g = $("#txtGracePeriod");
 
-                [$amount, $period, $repType, $g].forEach(clearInvalid);
+                [$period, $repType, $g].forEach(clearInvalid);
 
-                // old loan must exist
-                if (!window.wizardState.oldLoanId) {
+                if (!window.wizardState.oldLoanId && !safeVal("#txtOldLoanId")) {
                     alert("No loan selected for reschedule.");
                     return false;
                 }
 
-                // amount (optional: if your reschedule allows amount change, keep this; else remove)
-                var amt = num($amount.val());
-                if (!amt || amt <= 0) { markInvalid($amount, "Enter a valid amount."); ok = false; }
-
                 if (!$period.val()) { markInvalid($period, "Please select a repayment period."); ok = false; }
                 if (!$repType.val()) { markInvalid($repType, "Please select a repayment type."); ok = false; }
 
-                // Grace period check (uses your policy rule)
                 if (!validateGracePeriodLive()) ok = false;
-
-                if (!ok) {
-                    setAppHintRed("Please complete the required fields highlighted in red before you can review.");
-                    scrollToFirstInvalid();
-                } else {
-                    setAppHintRed("");
-                }
-
                 return ok;
             }
 
@@ -10505,7 +10437,6 @@ window.toNum = window.toNum || function (v) {
             // =========================
             $("#btnGeneratePreview").off("click.step4").on("click.step4", function () {
 
-                // ✅ If RESCHEDULE: skip the full NEW-loan validations
                 var ok = isRescheduleMode()
                     ? validateRescheduleBeforeReview()
                     : validateStep3BeforeReview();
@@ -10518,14 +10449,66 @@ window.toNum = window.toNum || function (v) {
                     return;
                 }
 
+                // ✅ ALWAYS refresh Step3 -> hidden JSON before build (perfect payload)
+                syncRecoveryHiddenFromUI();
+                syncChargesHiddenFromUI();
+                syncGuarantorsHiddenFromUI();
+                syncCollateralsHiddenFromUI();
+
                 var payload = buildPayloadForSave();
 
-                // ✅ optional: force mode for safety
-                payload.Mode = isRescheduleMode() ? "RESCHEDULE" : (payload.Mode || "NEW");
+                // ✅ keep last payload accessible
+                window.__loanAppLastPayload = payload;
 
-                renderPreview(payload);
+                // ✅ log recovery breakdown + payload
+                logGroup("✅ Loan Application Preview Payload", function () {
+                    var recSummary = (function () {
+                        try { return buildRecoveryAmountsSummary(); } catch (e) { return { error: e.message || String(e) }; }
+                    })();
 
-                // ✅ switch to review (only when valid)
+                    console.log("Recovery Summary (Savings/OrdShares/TotalExclOrdShares):", recSummary);
+                    if (recSummary && recSummary._dbg) console.table(recSummary._dbg);
+
+                    try {
+                        var recRaw = safeJsonParse($(IDS.RecoveryJson).val(), []);
+                        console.log("Recovery Accounts (raw hidden json):", recRaw);
+
+                        if (Array.isArray(recRaw)) {
+                            var labelMap = {};
+                            $("#ddlRecoveryAccounts option").each(function () { labelMap[this.value] = $(this).text() || ""; });
+
+                            var rows = recRaw.map(function (r) {
+                                var kind = classifyRecoveryAccount(r, labelMap);
+                                return {
+                                    AccountId: r.AccountId,
+                                    Label: (r._Label || labelMap[r.AccountId] || r.AccountName || ""),
+                                    Kind: kind,
+                                    Amount: num(r.BlockAmount || 0),
+                                    Decision: (r.Decision || r.BlockedStatus || "")
+                                };
+                            });
+                            console.table(rows);
+                        }
+                    } catch (e2) {
+                        console.warn("Recovery log error:", e2);
+                    }
+
+                    console.log("FULL PAYLOAD:", payload);
+                });
+
+                dumpToDebugBox("Preview Payload", payload);
+
+                try {
+                    renderPreview(payload);
+                } catch (ex) {
+                    console.error("Preview render failed:", ex);
+                    $("#reviewSummary").html('<div class="text-danger fw-bold">Preview failed</div><div class="small text-muted">' + esc(ex.message || ex) + '</div>');
+                    $("#reviewRisk").html('<div class="text-muted small">Unable to render preview. Check console for details.</div>');
+                    $("#reviewRecovery").empty();
+                    $("#reviewScoring").empty();
+                    $("#reviewDocuments").empty();
+                }
+
                 $("#panelApplication").hide();
                 $("#panelReview").show();
                 $("#stepApplication").removeClass("active").addClass("done");
@@ -10539,12 +10522,586 @@ window.toNum = window.toNum || function (v) {
                 $("#chkConfirmReview").prop("checked", false);
             });
 
-            // Confirm checkbox unlocks save
             $("#chkConfirmReview").off("change.step4").on("change.step4", function () {
                 $("#btnSaveLoan").prop("disabled", !$(this).is(":checked"));
             });
+            // =========================
+            // Documents preview helper (file input -> blob url)
+            // =========================
+            var _docUrlCache = {}; // name|size|lastModified -> blob url
+
+            function getLoanDocFiles() {
+                var $inp = $("#loanDocuments, #LoanDocuments, #fuLoanDocs, #fileLoanDocs, #txtLoanDocs, #LoanDocs, #loanDocs, #uploadLoanDocs").first();
+                if (!$inp.length) $inp = $('input[type="file"]').first();
+                if (!$inp.length) return { input: null, files: [] };
+
+                var el = $inp.get(0);
+                var files = (el && el.files) ? Array.prototype.slice.call(el.files) : [];
+                return { input: el, files: files };
+            }
+            function fileKey(f) { return [f.name, f.size, f.lastModified].join("|"); }
+            function blobUrlForFile(f) {
+                var k = fileKey(f);
+                if (_docUrlCache[k]) return _docUrlCache[k];
+                var url = URL.createObjectURL(f);
+                _docUrlCache[k] = url;
+                return url;
+            }
+
+            function renderDocsReviewFromDto(docDtos) {
+                var $host = $("#reviewDocuments");
+                var fallbackToRisk = false;
+                if (!$host.length) { $host = $("#reviewRisk"); fallbackToRisk = true; }
+
+                var docs = Array.isArray(docDtos) ? docDtos : [];
+
+                var html = '<div class="fw-bold mb-1">Uploaded Documents</div>';
+
+                if (!docs.length) {
+                    html += '<div class="text-muted small">No documents uploaded.</div>';
+                    if (fallbackToRisk) $host.append('<div class="tsc-divider my-3"></div>' + html);
+                    else $host.html(html);
+                    return;
+                }
+
+                html += '<div class="list-group">';
+                docs.forEach(function (d) {
+                    var name = esc(d.FileName || "");
+                    var type = esc(d.ContentType || "file");
+                    var sizeKb = Math.round((Number(d.Size || 0) || 0) / 1024);
+
+                    var url = (d.PreviewUrl || "").toString().trim();
+                    if (!url) {
+                        var info = getLoanDocFiles();
+                        var match = (info.files || []).filter(function (f) { return f.name === (d.FileName || "") && (f.size || 0) === (d.Size || 0); })[0];
+                        if (match) url = blobUrlForFile(match);
+                    }
+                    if (!url) url = "#";
+
+                    var isImg = /^image\//i.test(d.ContentType || "");
+                    var thumb = "";
+                    if (isImg && url !== "#") {
+                        thumb = '<img src="' + esc(url) + '" alt="' + name + '" style="width:46px;height:46px;object-fit:cover;border-radius:8px;border:1px solid rgba(0,0,0,.08);" />';
+                    } else {
+                        thumb = '<div style="width:46px;height:46px;border-radius:8px;border:1px solid rgba(0,0,0,.08);display:flex;align-items:center;justify-content:center;background:#f8f9fa;font-size:12px;" class="text-muted">DOC</div>';
+                    }
+
+                    var openAttr = (url === "#") ? '' : 'href="' + esc(url) + '" target="_blank" rel="noopener"';
+                    html += ''
+                        + '<a class="list-group-item list-group-item-action d-flex align-items-center gap-2" ' + openAttr + '>'
+                        + thumb
+                        + '<div class="flex-grow-1">'
+                        + '<div class="fw-semibold">' + name + '</div>'
+                        + '<div class="small text-muted">' + type + ' • ' + sizeKb + ' KB</div>'
+                        + '</div>'
+                        + (url === "#" ? '<div class="small text-muted fw-semibold">No Preview</div>' : '<div class="small text-primary fw-semibold">Open</div>')
+                        + '</a>';
+                });
+                html += '</div>';
+
+                if (fallbackToRisk) $host.append('<div class="tsc-divider my-3"></div>' + html);
+                else $host.html(html);
+            }            // =========================
+            // Preview rendering (UPDATED: show ALL user-entered payload)
+            // =========================
+            function renderPreview(payload) {
+
+                var productText = safeText("#ddlLoanProduct") || "";
+                var loanTypeText = safeText("#ddlInstitutionLoanType") || "";
+
+                var ws = window.wizardState || {};
+                var mem = ws.member || {};
+                var memberName = mem.name || "";
+                var memberCode = mem.code || "";
+
+                function moneyWithCurrency(v, ccy) {
+                    return num(v).toLocaleString() + " " + esc(ccy || "FCFA");
+                }
+
+                // --------------------------
+                // ✅ HTML helpers
+                // --------------------------
+                function badge(text, cls) {
+                    return '<span class="badge rounded-pill ' + (cls || 'bg-light text-dark border') + '">' + esc(text || "") + '</span>';
+                }
+
+                function emptyBox(msg) {
+                    return '<div class="text-muted small">' + esc(msg || "None") + '</div>';
+                }
+
+                function dlRow(label, valueHtml) {
+                    return '<div class="d-flex justify-content-between align-items-start gap-2">' +
+                        '<span class="text-muted small">' + esc(label) + '</span>' +
+                        '<span class="fw-bold text-dark text-end" style="max-width:60%;">' + (valueHtml || "") + '</span>' +
+                        '</div>';
+                }
+
+                function sectionTitle(icon, title, sub) {
+                    return '<div class="d-flex justify-content-between align-items-start gap-2">' +
+                        '<div class="min-w-0">' +
+                        '<div class="fw-bold text-dark"><i class="' + esc(icon) + ' me-1"></i> ' + esc(title) + '</div>' +
+                        (sub ? '<div class="text-muted small">' + esc(sub) + '</div>' : '') +
+                        '</div>' +
+                        '</div>';
+                }
+
+                function divider() { return '<div class="tsc-divider my-2"></div>'; }
+
+                function safeArr(x) { return Array.isArray(x) ? x : []; }
+
+                function normalizeDecisionText(b) {
+                    // payload may have Decision or BlockedStatus
+                    return (b && (b.Decision || b.BlockedStatus) ? (b.Decision || b.BlockedStatus) : "");
+                }
+
+                function renderTable(headers, rowsHtml) {
+                    if (!rowsHtml || !rowsHtml.length) return emptyBox("None");
+                    var thead = '<thead><tr>' + headers.map(function (h) { return '<th class="small text-muted fw-semibold">' + esc(h) + '</th>'; }).join("") + '</tr></thead>';
+                    var tbody = '<tbody>' + rowsHtml.join("") + '</tbody>';
+                    return '<div class="table-responsive">' +
+                        '<table class="table table-sm align-middle mb-0">' +
+                        thead + tbody +
+                        '</table>' +
+                        '</div>';
+                }
+
+                function cell(v) { return '<td class="small">' + (v === null || v === undefined || v === "" ? '<span class="text-muted">—</span>' : esc(v)) + '</td>'; }
+                function cellMoney(v) { return '<td class="small fw-semibold text-end">' + esc(num(v || 0).toLocaleString()) + ' FCFA</td>'; }
+                function cellBool(v) { return '<td class="small">' + (v ? badge("YES", "bg-success") : badge("NO", "bg-secondary")) + '</td>'; }
+
+                // --------------------------
+                // Detect mode/facility from payload shape
+                // --------------------------
+                var isReschedule = !!payload.RescheduleCommand;
+                var isRefinance = !!payload.AddLoanApplicationCommand;
+                var isOverdraft = !!payload.AddOverdraftCommand;
+                var isLoc = !!payload.AddLineOfCreditCommand;
+
+                var mode = isReschedule ? "RESCHEDULE" : (isRefinance ? "REFINANCE" : (isOverdraft ? "OVERDRAFT" : (isLoc ? "LINEOFCREDIT" : "NEW")));
+                var facility = (function () {
+                    if (isOverdraft) return "OVERDRAFT";
+                    if (isLoc) return "LINEOFCREDIT";
+                    if (isReschedule) return (ws.facility || safeVal("#txtFacility") || "CLASSIC");
+                    if (isRefinance) return (payload.AddLoanApplicationCommand && payload.AddLoanApplicationCommand.Facility) || (ws.facility || safeVal("#txtFacility") || "CLASSIC");
+                    return (payload.Facility || ws.facility || safeVal("#txtFacility") || "CLASSIC");
+                })();
+
+                // -------------------------------------------------
+                // RESCHEDULE PREVIEW (show full payload for reschedule)
+                // -------------------------------------------------
+                if (isReschedule) {
+                    var cmd = payload.RescheduleCommand || {};
+                    if ($("#reviewRightTitle").length) {
+                        $("#reviewRightTitle").html('<i class="mdi mdi-refresh me-1"></i> Loan Reschedule Summary');
+                    }
+
+                    var oldId = cmd.OldLoanId || ws.oldLoanId || "";
+                    var remaining = num(cmd.RemainingCapitalBalance || 0);
+                    var newN = num(cmd.NewNumberOfRepayments || 0);
+                    var circle = cmd.RepaymentCircle || "";
+                    var repType = cmd.RepaymentType || "";
+                    var reason = cmd.Reason || "";
+
+                    $("#reviewSummary").html(
+                        '<div class="card border-0 shadow-sm" style="background:#ffffff;">' +
+                        '<div class="card-body p-2">' +
+                        sectionTitle("mdi mdi-clipboard-text-outline", "Application Summary", "Reschedule request preview (all entered fields).") +
+                        divider() +
+                        '<div class="small">' +
+                        dlRow("Member", '<span class="fw-bold">' + esc(memberName) + '</span>') +
+                        dlRow("Member Code", '<span class="fw-bold">' + esc(memberCode) + '</span>') +
+                        dlRow("Mode", badge("RESCHEDULE", "bg-success")) +
+                        dlRow("Old Loan", '<span class="fw-bold">' + esc(oldId) + '</span>') +
+                        '</div>' +
+                        '</div>' +
+                        '</div>'
+                    );
+
+                    $("#reviewRisk").html(
+                        '<div class="card border-0" style="background:#f3f4f6;">' +
+                        '<div class="card-body py-2">' +
+                        sectionTitle("mdi mdi-calendar-sync", "New Reschedule Terms") +
+                        divider() +
+                        dlRow("Remaining Capital Balance", '<span class="fw-bold text-success">' + moneyWithCurrency(remaining, "FCFA") + '</span>') +
+                        dlRow("New Repayments", '<span class="fw-semibold">' + esc(newN) + '</span>') +
+                        dlRow("Repayment Circle", '<span class="fw-semibold">' + esc(circle) + '</span>') +
+                        dlRow("Repayment Type", '<span class="fw-semibold">' + esc(repType) + '</span>') +
+                        (reason ? ('<div class="mt-2"><div class="text-muted small">Reason</div><div class="fw-semibold">' + esc(reason) + '</div></div>') : '') +
+                        '</div>' +
+                        '</div>'
+                    );
+
+                    // show full raw payload JSON in debug box if available
+                    dumpToDebugBox("RESCHEDULE Payload", payload);
+
+                    $("#reviewRecovery").html(emptyBox("Recovery preview is not required for reschedule."));
+                    $("#reviewScoring").html(emptyBox("Scoring preview is not required for reschedule."));
+                    $("#reviewDocuments").html(emptyBox("Documents preview is not required for reschedule."));
+                    return;
+                }
+
+                // -------------------------------------------------
+                // OD / LOC PREVIEW (show ALL entered)
+                // -------------------------------------------------
+                if (isOverdraft || isLoc) {
+                    var cmd2 = isOverdraft ? payload.AddOverdraftCommand : payload.AddLineOfCreditCommand;
+                    cmd2 = cmd2 || {};
+                    var acc = cmd2.OverdraftAccount || {};
+                    var limit = isOverdraft ? num(cmd2.OverdraftLimit || 0) : num(cmd2.ApprovedLimit || 0);
+
+                    if ($("#reviewRightTitle").length) {
+                        $("#reviewRightTitle").html('<i class="mdi mdi-shield-check-outline me-1"></i> Facility Summary');
+                    }
+
+                    $("#reviewSummary").html(
+                        '<div class="card border-0 shadow-sm" style="background:#ffffff;">' +
+                        '<div class="card-body p-2">' +
+                        sectionTitle("mdi mdi-shield-check-outline", "Facility Summary", "All fields entered by the user.") +
+                        divider() +
+                        '<div class="small">' +
+                        dlRow("Member", '<span class="fw-bold">' + esc(memberName) + '</span>') +
+                        dlRow("Member Code", '<span class="fw-bold">' + esc(memberCode) + '</span>') +
+                        divider() +
+                        dlRow("Facility", '<span class="fw-bold">' + esc(facility) + '</span>') +
+                        dlRow("Mode", '<span class="fw-bold">' + esc(mode) + '</span>') +
+                        divider() +
+                        dlRow("Target Account", '<span class="fw-bold">' + esc(acc.AccountNumber || acc.AccountId || "") + '</span>') +
+                        dlRow("Limit", '<span class="fw-bold text-primary">' + moneyWithCurrency(limit, "FCFA") + '</span>') +
+                        dlRow("Interest Rate", '<span class="fw-bold">' + esc(cmd2.InterestRate || 0) + '%</span>') +
+                        (isOverdraft
+                            ? dlRow("Duration (days)", '<span class="fw-bold">' + esc(cmd2.DurationDays || 0) + '</span>')
+                            : dlRow("Tenor (months)", '<span class="fw-bold">' + esc(cmd2.TenorMonths || 0) + '</span>')) +
+                        (cmd2.Purpose ? '<div class="mt-2"><div class="text-muted small">Purpose</div><div class="fw-semibold">' + esc(cmd2.Purpose) + '</div></div>' : '') +
+                        '</div>' +
+                        '</div>' +
+                        '</div>'
+                    );
+
+                    var sc = cmd2.Scoring || {};
+                    $("#reviewRisk").html(
+                        '<div class="card border-0 bg-light">' +
+                        '<div class="card-body py-2">' +
+                        sectionTitle("mdi mdi-chart-line", "Scoring Summary") +
+                        divider() +
+                        dlRow("Status", '<span class="fw-bold">' + esc(sc.StatusCaption || sc.StatusCode || "") + '</span>') +
+                        dlRow("Score", '<span class="fw-bold">' + esc(sc.Score || 0) + '</span>') +
+                        (sc.Insight ? '<div class="mt-2"><div class="text-muted small">Insight</div><div class="fw-semibold">' + esc(sc.Insight) + '</div></div>' : '') +
+                        '</div></div>'
+                    );
+
+                    dumpToDebugBox("FACILITY Payload", payload);
+
+                    $("#reviewRecovery").html(emptyBox("Recovery does not apply here."));
+                    $("#reviewDocuments").html(emptyBox("Documents do not apply here."));
+                    $("#reviewScoring").html(""); // already shown in Risk
+                    return;
+                }
+
+                // -------------------------------------------------
+                // NEW / REFINANCE (NewLoanApplicationRequest shape)
+                // -------------------------------------------------
+                var req = isRefinance ? (payload.AddLoanApplicationCommand || {}) : payload;
+
+                if ($("#reviewRightTitle").length) {
+                    $("#reviewRightTitle").html('<i class="mdi mdi-shield-check-outline me-1"></i> Risk & Recovery Summary');
+                }
+
+                // --------------------------
+                // SUMMARY (header)
+                // --------------------------
+                $("#reviewSummary").html(
+                    '<div class="card border-0 shadow-sm" style="background:#ffffff;">' +
+                    '<div class="card-body p-2">' +
+                    sectionTitle("mdi mdi-clipboard-text-outline", "Application Summary", "All values below come from the payload you will submit.") +
+                    divider() +
+                    '<div class="small">' +
+                    dlRow("Member", '<span class="fw-bold">' + esc(memberName) + '</span>') +
+                    dlRow("Member Code", '<span class="fw-bold">' + esc(memberCode) + '</span>') +
+                    divider() +
+                    dlRow("Facility", '<span class="fw-bold">' + esc(req.Facility || facility) + '</span>') +
+                    dlRow("Mode", badge(isRefinance ? "REFINANCE" : (req.Mode || "NEW"), "bg-primary")) +
+                    (isRefinance && payload.OldLoanId ? dlRow("Old Loan", '<span class="fw-bold">' + esc(payload.OldLoanId) + '</span>') : '') +
+                    divider() +
+                    dlRow("Institution Loan Type", '<span class="fw-bold">' + esc(loanTypeText) + '</span>') +
+                    dlRow("Loan Product", '<span class="fw-bold">' + esc(productText) + '</span>') +
+                    divider() +
+                    dlRow("Requested Amount", '<span class="fw-bold text-primary">' + money(req.RequestedAmount) + '</span>') +
+                    dlRow("Interest", '<span class="fw-bold">' + esc(req.InterestRate || 0) + '%</span>') +
+                    dlRow("Repayment Period", '<span class="fw-bold">' + esc(req.RepaymentPeriod || "") + '</span>') +
+                    dlRow("Repayment Type", '<span class="fw-bold">' + esc(req.RepaymentType || "") + '</span>') +
+                    dlRow("Grace Days", '<span class="fw-bold">' + esc(req.GracePeriodDays || 0) + '</span>') +
+                    dlRow("Disbursement", '<span class="fw-bold">' + esc(req.DisbursementType || "") + '</span>') +
+                    '</div>' +
+                    '</div>' +
+                    '</div>'
+                );
+
+                // --------------------------
+                // CHARGES + SCORINGS + FLAGS + SECURITY COUNTS + RECOVERY SUMMARY
+                // --------------------------
+                var chargeItems = safeArr(req.Charges);
+                var chargesTotal = 0;
+                var chargeRows = chargeItems.map(function (c) {
+                    var amt = num(c.Amount || 0);
+                    chargesTotal += amt;
+                    return "<tr>" +
+                        cell(c.ChargeName || c.ChargeId || "") +
+                        cellMoney(amt) +
+                        "</tr>";
+                });
+
+                // scoring items from UI list (what user selected)
+                var scoreItems = selectedObjects($("#ddlScoreAssessments"));
+                var scoreRows = (scoreItems || []).map(function (s) {
+                    return "<tr>" +
+                        cell(s.text || "") +
+                        cellMoney(num(s.amount || 0)) +
+                        '<td class="small text-muted text-end">' + esc(num(s.points || 0)) + '</td>' +
+                        "</tr>";
+                });
+
+                var mg = safeArr(req.MoralGuarantors);
+                var co = safeArr(req.Coobligors);
+                var sh = safeArr(req.Shotees);
+                var ic = safeArr(req.InterCooperations);
+                var col = safeArr(req.Collaterals);
+
+                var blocks = safeArr(req.RecoveryBlocks);
+                var recEnabled = !!req.HasRecoveryMechanism;
+
+                var blockedTotal = 0;
+                blocks.forEach(function (b) { blockedTotal += num(b.BlockAmount || 0); });
+
+                $("#reviewRisk").html(
+                    '<div class="card border-0 bg-light"><div class="card-body py-2">' +
+
+                    sectionTitle("mdi mdi-cash-multiple", "Charges") +
+                    divider() +
+                    (chargeRows.length ? (
+                        renderTable(["Charge", "Amount"], chargeRows) +
+                        '<div class="mt-2">' + dlRow("Total Charges", '<span class="fw-bold text-primary">' + money(chargesTotal) + '</span>') + '</div>'
+                    ) : emptyBox("No charges selected.")) +
+
+                    '<div class="tsc-divider my-3"></div>' +
+
+                    sectionTitle("mdi mdi-format-list-checks", "Scoring Assessments (Selected)") +
+                    divider() +
+                    (scoreRows.length ? renderTable(["Assessment", "Amount", "Points"], scoreRows) : emptyBox("No scoring assessments selected.")) +
+
+                    '<div class="tsc-divider my-3"></div>' +
+
+                    sectionTitle("mdi mdi-shield-account", "Flags") +
+                    divider() +
+                    dlRow("Down Payment", (req.RequiresDownPayment ? badge("YES", "bg-success") : badge("NO", "bg-secondary"))) +
+                    dlRow("Guarantor", (req.HasGuarantor ? badge("YES", "bg-success") : badge("NO", "bg-secondary"))) +
+                    dlRow("Collateral", (req.HasCollateral ? badge("YES", "bg-success") : badge("NO", "bg-secondary"))) +
+                    dlRow("Loan Documents Required", (req.RequiresDocuments ? badge("YES", "bg-success") : badge("NO", "bg-secondary"))) +
+
+                    '<div class="tsc-divider my-3"></div>' +
+
+                    sectionTitle("mdi mdi-bank", "Recovery Summary") +
+                    divider() +
+                    dlRow("Savings Coverage Amount", '<span class="fw-bold">' + money(req.SavingsCoverageAmount || 0) + '</span>') +
+                    dlRow("Ordinary Shares Provided", '<span class="fw-bold">' + money(req.OrdinarySharesAmountProvided || 0) + '</span>') +
+                    dlRow("Total Downpayment Provided", '<span class="fw-bold">' + money(req.TotalDownpaymentAmountProvided || 0) + '</span>') +
+                    (req.DocumentNotes ? ('<div class="mt-2"><div class="text-muted small">Document Notes</div><div class="fw-semibold">' + esc(req.DocumentNotes) + '</div></div>') : '') +
+
+                    '<div class="tsc-divider my-3"></div>' +
+
+                    sectionTitle("mdi mdi-account-group-outline", "Security Parties (Counts)") +
+                    divider() +
+                    '<div class="small text-muted">Moral Guarantors: <b>' + mg.length +
+                    '</b> • Coobligors: <b>' + co.length +
+                    '</b> • Shotees: <b>' + sh.length +
+                    '</b> • Inter-Cooperations: <b>' + ic.length +
+                    '</b> • Collaterals: <b>' + col.length + '</b></div>' +
+
+                    '<div class="tsc-divider my-3"></div>' +
+
+                    sectionTitle("mdi mdi-lock-outline", "Recovery Blocks (Summary)") +
+                    divider() +
+                    dlRow("Enabled", recEnabled ? badge("YES", "bg-success") : badge("NO", "bg-secondary")) +
+                    dlRow("Accounts", '<span class="fw-bold">' + blocks.length + '</span>') +
+                    dlRow("Total Blocked", '<span class="fw-bold">' + money(blockedTotal) + '</span>') +
+
+                    '</div></div>'
+                );
+
+                // --------------------------
+                // DOCUMENTS PREVIEW (already uses DTO)
+                // --------------------------
+                renderDocsReviewFromDto(req.Documents || []);
+
+                // --------------------------
+                // SCORING DTO PREVIEW (status + insight)
+                // --------------------------
+                var sc2 = req.Scoring || {};
+                $("#reviewScoring").html(
+                    '<div class="fw-bold mb-1">Credit Scoring Status</div>' +
+                    '<div class="card border-0 bg-light"><div class="card-body py-2">' +
+                    dlRow("Status", '<span class="fw-bold">' + esc(sc2.StatusCaption || sc2.StatusCode || "") + '</span>') +
+                    dlRow("Score", '<span class="fw-bold">' + esc(sc2.Score || 0) + '</span>') +
+                    dlRow("Required", '<span class="fw-bold">' + esc(sc2.Required || 0) + '</span>') +
+                    dlRow("Delta", '<span class="fw-bold">' + esc(sc2.Delta || 0) + '</span>') +
+                    (sc2.Insight ? '<div class="mt-2"><div class="text-muted small">Insight</div><div class="fw-semibold">' + esc(sc2.Insight) + '</div></div>' : '') +
+                    '</div></div>'
+                );
+
+                // --------------------------
+                // ✅ DETAILED RECOVERY LIST (AccountNumber/Name/Decision/Amount)
+                // --------------------------
+                var $rec = $("#reviewRecovery");
+                $rec.empty();
+
+                if (!req.HasRecoveryMechanism || !blocks.length) {
+                    $rec.html(emptyBox("No recovery mechanism selected."));
+                } else {
+                    var labelMap = {};
+                    $("#ddlRecoveryAccounts option").each(function () { labelMap[this.value] = $(this).text(); });
+
+                    var recRows = blocks.map(function (b) {
+                        var label = (b.Label || b._Label || labelMap[b.AccountId] || "");
+                        var name = (b.AccountName || "").toString().trim();
+                        var accNo = (b.AccountNumber || "").toString().trim();
+                        var decision = normalizeDecisionText(b);
+                        return "<tr>" +
+                            cell(label || name || b.AccountId) +
+                            cell(accNo) +
+                            cell(decision) +
+                            cellMoney(b.BlockAmount || 0) +
+                            "</tr>";
+                    });
+
+                    $rec.html(
+                        '<div class="card border-0 bg-light">' +
+                        '<div class="card-body py-2">' +
+                        sectionTitle("mdi mdi-lock-outline", "Recovery Accounts (Details)") +
+                        divider() +
+                        renderTable(["Account (Label/Name)", "Account No", "Decision", "Block Amount"], recRows) +
+                        '</div>' +
+                        '</div>'
+                    );
+                }
+
+                // --------------------------
+                // ✅ DETAILED SECURITY PARTIES (ALL user-entered fields)
+                // --------------------------
+                function renderMoralGuarantors(list) {
+                    list = safeArr(list);
+                    if (!list.length) return emptyBox("No moral guarantors.");
+                    var rows = list.map(function (g) {
+                        return "<tr>" +
+                            cell(g.CompanyOrGroupName || "") +
+                            cell(g.IdCardNumber || "") +
+                            cell(g.IssueDate || "") +
+                            cell(g.ExpireDate || "") +
+                            cell(g.Relationship || "") +
+                            cell(g.PhoneNumber || "") +
+                            cellMoney(g.GuaranteeAmount || 0) +
+                            "</tr>";
+                    });
+                    return renderTable(["Company/Group", "ID Card", "Issue", "Expire", "Relationship", "Phone", "Guarantee"], rows);
+                }
+
+                function renderMemberGuarantors(list, title) {
+                    list = safeArr(list);
+                    if (!list.length) return emptyBox("None.");
+
+                    var rows = list.map(function (g) {
+                        return "<tr>" +
+                            cell(g.MemerberName || "") +
+                            cell(g.MemerberReference || "") +
+                            cell(g.Relationship || "") +
+                            cell(g.PhoneNumber || "") +
+
+                            // ✅ ReleaseOrder now correctly displayed
+                            cell(g.ReleaseOrder || "") +
+
+                            cell(g.AccountNumber || g.AccountId || "") +
+                            cellBool(!!g.BlockAccount) +
+                            cellMoney(g.Amount || 0) +
+                            cellMoney(g.GuaranteeAmount || 0) +
+                            "</tr>";
+                    });
+
+                    // ✅ FIXED: header now has 9 columns (matches rows)
+                    return renderTable(
+                        ["Member", "Ref", "Relationship", "Phone", "Release Order", "Account", "Block", "Block Amt", "Guarantee"],
+                        rows
+                    );
+                }
 
 
+                function renderInterCooperations(list) {
+                    list = safeArr(list);
+                    if (!list.length) return emptyBox("None.");
+                    var rows = list.map(function (g) {
+                        return "<tr>" +
+                            cell(g.MemerberName || "") +
+                            cell(g.MemerberReference || "") +
+                            cell(g.AffiliateOrInstitutionName || "") +
+                            cell(g.PhoneNumber || "") +
+                            cell(g.AccountNumber || g.AccountId || "") +
+                            cellBool(!!g.BlockAccount) +
+                            cellMoney(g.Amount || 0) +
+                            cellMoney(g.GuaranteeAmount || 0) +
+                            "</tr>";
+                    });
+                    return renderTable(["Member", "Ref", "Institution", "Phone", "Account", "Block", "Block Amt", "Guarantee"], rows);
+                }
+
+                function renderCollaterals(list) {
+                    list = safeArr(list);
+                    if (!list.length) return emptyBox("No collaterals.");
+                    var rows = list.map(function (c) {
+                        return "<tr>" +
+                            cell(c.Name || "") +
+                            cell(c.CollateraTypeId || "") +
+                            cell(c.Location || "") +
+                            cell(c.ReferenceNumber || "") +
+                            cellMoney(c.Amount || 0) +
+                            "</tr>";
+                    });
+                    return renderTable(["Name", "Type", "Location", "Reference", "Amount"], rows);
+                }
+
+                // Put detailed security parties under #reviewDocuments if you prefer,
+                // but you asked "all payload preview here" -> we keep it in #reviewRecovery AFTER recovery list
+                // so everything is visible without changing layout.
+                var securityHtml =
+                    '<div class="card border-0 shadow-sm mt-2">' +
+                    '<div class="card-body py-2">' +
+                    sectionTitle("mdi mdi-account-group", "Security Parties (Details)", "Everything the user entered for guarantors & collaterals.") +
+                    divider() +
+
+                    '<div class="fw-bold mb-1">Moral Guarantors</div>' +
+                    renderMoralGuarantors(mg) +
+
+                    '<div class="tsc-divider my-3"></div>' +
+                    '<div class="fw-bold mb-1">Coobligors</div>' +
+                    renderMemberGuarantors(co) +
+
+                    '<div class="tsc-divider my-3"></div>' +
+                    '<div class="fw-bold mb-1">Shotees</div>' +
+                    renderMemberGuarantors(sh) +
+
+                    '<div class="tsc-divider my-3"></div>' +
+                    '<div class="fw-bold mb-1">Inter-Cooperations</div>' +
+                    renderInterCooperations(ic) +
+
+                    '<div class="tsc-divider my-3"></div>' +
+                    '<div class="fw-bold mb-1">Collaterals</div>' +
+                    renderCollaterals(col) +
+
+                    '</div>' +
+                    '</div>';
+
+                // append under recovery panel (keeps existing layout, no new containers needed)
+                $("#reviewRecovery").append(securityHtml);
+
+                // Finally dump full payload to debug box (optional but very useful)
+                dumpToDebugBox("FULL Payload (NEW/REFINANCE)", payload);
+            }
 
         })();
     </script>
