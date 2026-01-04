@@ -376,28 +376,31 @@ $(document).ready(function () {
                             ? accountingMoment.format('DD/MM/YYYY')
                             : '-';
 
-                        // Only the Accounting DATE gets colored
+                        // ✅ Accounting DATE is green when CreatedAt date == AccountingDate date
                         const accountingClass =
-                            accountingMoment && accountingMoment.isSame(today, 'day')
+                            accountingMoment &&
+                                row.CreatedAt &&
+                                accountingMoment.isSame(moment(row.CreatedAt), 'day')
                                 ? 'text-success'
                                 : 'text-danger';
 
                         return `
+            <div>
                 <div>
-                    <div>
-                        <small class="text-muted fw-bold">Entry:</small>
-                        <span class="text-info fw-semibold">${createdAt}</span>
-                    </div>
-                    <div>
-                        <small class="text-muted fw-bold">Accounting:</small>
-                        <span class="${accountingClass}">
-                            ${accountingDate}
-                        </span>
-                    </div>
+                    <small class="text-muted fw-bold">Entry:</small>
+                    <span class="text-info fw-semibold">${createdAt}</span>
                 </div>
-            `;
+                <div>
+                    <small class="text-muted fw-bold">Accounting:</small>
+                    <span class="${accountingClass}">
+                        ${accountingDate}
+                    </span>
+                </div>
+            </div>
+        `;
                     }
                 },
+
                 { data: 'Memo', name: 'Memo' },
                 { data: 'InitiatedByTrim', name: 'InitiatedByTrim' },
                 { data: 'ApprovedByTrim', name: 'ApprovedByTrim' },

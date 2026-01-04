@@ -141,37 +141,51 @@ else
                 <th class="bg-label">Remarks</th>
                 <td colspan="3">@Html.Raw(Model?.Remarks ?? "")</td>
             </tr>
-
             <tr>
                 <th class="bg-label">Initiated By</th>
-                <td>@(string.IsNullOrWhiteSpace(Model?.TempJournalHeader.InitiatedBy) ? "-" : Model.TempJournalHeader.InitiatedBy)</td>
+                <td>
+                    @(string.IsNullOrWhiteSpace(Model?.TempJournalHeader?.InitiatedBy)
+? "-"
+: Model.TempJournalHeader.InitiatedBy)
+                </td>
             </tr>
+
             <tr>
                 <th class="bg-label">Initiated Date</th>
                 <td>
-                    @(Model?.TempJournalHeader.InitiationDate?.ToString("dd/MM/yyyy HH:mm") ?? "-")
+                    @(Model?.TempJournalHeader?.InitiationDate?.ToString("dd/MM/yyyy HH:mm") ?? "-")
                 </td>
             </tr>
+
             <tr>
                 <th class="bg-label">Approved By</th>
-                <td>@(string.IsNullOrWhiteSpace(Model?.TempJournalHeader.ApprovedBy) ? "-" : Model.TempJournalHeader.ApprovedBy)</td>
+                <td>
+                    @(string.IsNullOrWhiteSpace(Model?.TempJournalHeader?.ApprovedBy)
+? "-"
+: Model.TempJournalHeader.ApprovedBy)
+                </td>
             </tr>
+
             <tr>
                 <th class="bg-label">Approved Date</th>
                 <td>
-                    @(Model?.TempJournalHeader.ApprovalDate.HasValue == true
-            ? Model.TempJournalHeader.ApprovalDate.Value.ToString("dd/MM/yyyy HH:mm")
-            : "-")
+                    @(Model?.TempJournalHeader?.ApprovalDate?.ToString("dd/MM/yyyy HH:mm") ?? "-")
                 </td>
             </tr>
+
             <tr>
                 <th class="bg-label">Rejected By</th>
-                <td>@(string.IsNullOrWhiteSpace(Model?.TempJournalHeader.RejectedBy) ? "-" : Model.TempJournalHeader.RejectedBy)</td>
+                <td>
+                    @(string.IsNullOrWhiteSpace(Model?.TempJournalHeader?.RejectedBy)
+? "-"
+: Model.TempJournalHeader.RejectedBy)
+                </td>
             </tr>
+
             <tr>
                 <th class="bg-label">Rejected Date</th>
                 <td>
-                    @(Model?.TempJournalHeader.RejectedDate?.ToString("dd/MM/yyyy HH:mm") ?? "-")
+                    @(Model?.TempJournalHeader?.RejectedDate?.ToString("dd/MM/yyyy HH:mm") ?? "-")
                 </td>
             </tr>
 
@@ -611,34 +625,49 @@ else
                     </tr>
                     <tr>
                         <th class="bg-label">Initiated By</th>
-                        <td>@(string.IsNullOrWhiteSpace(Model?.TempJournalHeader.InitiatedBy) ? "-" : Model.TempJournalHeader.InitiatedBy)</td>
+                        <td>
+                            @(string.IsNullOrWhiteSpace(Model?.TempJournalHeader?.InitiatedBy)
+? "-"
+: Model.TempJournalHeader.InitiatedBy)
+                        </td>
                     </tr>
+
                     <tr>
                         <th class="bg-label">Initiated Date</th>
                         <td>
-                            @(Model?.TempJournalHeader.InitiationDate?.ToString("dd/MM/yyyy HH:mm") ?? "-")
+                            @(Model?.TempJournalHeader?.InitiationDate?.ToString("dd/MM/yyyy HH:mm") ?? "-")
                         </td>
                     </tr>
+
                     <tr>
                         <th class="bg-label">Approved By</th>
-                        <td>@(string.IsNullOrWhiteSpace(Model?.TempJournalHeader.ApprovedBy) ? "-" : Model.TempJournalHeader.ApprovedBy)</td>
+                        <td>
+                            @(string.IsNullOrWhiteSpace(Model?.TempJournalHeader?.ApprovedBy)
+? "-"
+: Model.TempJournalHeader.ApprovedBy)
+                        </td>
                     </tr>
+
                     <tr>
                         <th class="bg-label">Approved Date</th>
                         <td>
-                            @(Model?.TempJournalHeader.ApprovalDate.HasValue == true
-            ? Model.TempJournalHeader.ApprovalDate.Value.ToString("dd/MM/yyyy HH:mm")
-            : "-")
+                            @(Model?.TempJournalHeader?.ApprovalDate?.ToString("dd/MM/yyyy HH:mm") ?? "-")
                         </td>
                     </tr>
+
                     <tr>
                         <th class="bg-label">Rejected By</th>
-                        <td>@(string.IsNullOrWhiteSpace(Model?.TempJournalHeader.RejectedBy) ? "-" : Model.TempJournalHeader.RejectedBy)</td>
+                        <td>
+                            @(string.IsNullOrWhiteSpace(Model?.TempJournalHeader?.RejectedBy)
+? "-"
+: Model.TempJournalHeader.RejectedBy)
+                        </td>
                     </tr>
+
                     <tr>
                         <th class="bg-label">Rejected Date</th>
                         <td>
-                            @(Model?.TempJournalHeader.RejectedDate?.ToString("dd/MM/yyyy HH:mm") ?? "-")
+                            @(Model?.TempJournalHeader?.RejectedDate?.ToString("dd/MM/yyyy HH:mm") ?? "-")
                         </td>
                     </tr>
                     <tr><th class="bg-label">Initiated Amount</th><td>@Math.Abs(Model.InitiatedAmount).ToString("N0")</td></tr>
