@@ -99,7 +99,7 @@ namespace CBS.BusinessService.Config
                 var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<LoanPurpose>>>(APICallHelper.GetAllLoanPurpose);
                 if (couApiResponse != null)
                 {
-                    var values = couApiResponse.ApiResponseData.Data.Where(x=>x.LoanProductCategoryId==categoryid).Select(a => new StringValues
+                    var values = couApiResponse.ApiResponseData.Data.Where(x=>x.PcmfLoanPurposeId==categoryid).Select(a => new StringValues
                     {
                         Text = $"{a.purposeName}",
                         Value = a.id
@@ -170,7 +170,7 @@ namespace CBS.BusinessService.Config
                 if (LoanPurpose != null)
                 {
                     LoanPurpose.purposeName = model.purposeName;
-                    LoanPurpose.LoanProductCategoryId = model.LoanProductCategoryId;
+                    LoanPurpose.PcmfLoanPurposeId = model.PcmfLoanPurposeId;
                     var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<LoanPurpose>>(string.Format(APICallHelper.Get_Update_Delete_LoanPurpose, model.id), LoanPurpose);
                     if (response.IsSuccess)
                     {

@@ -1890,6 +1890,40 @@ function AjaxPostAndUpdate(form) {
     }
     return false;
 }
+// ✅ HARD DISABLE POPUP NOTIFICATIONS (toastr / alertify)
+// Keeps ONLY the in-page Bootstrap alerts visible.
+
+(function () {
+    try {
+        // Disable toastr popups globally
+        if (window.toastr) {
+            toastr.clear();
+            toastr.options = toastr.options || {};
+            toastr.options.timeOut = 0;
+            toastr.options.extendedTimeOut = 0;
+            toastr.options.tapToDismiss = true;
+            toastr.options.closeButton = false;
+            toastr.options.preventDuplicates = true;
+
+            // Override methods so they never show popups
+            toastr.success = function () { };
+            toastr.error = function () { };
+            toastr.warning = function () { };
+            toastr.info = function () { };
+        }
+
+        // Disable alertify popups globally
+        if (window.alertify) {
+            alertify.alert = function () { };
+            alertify.confirm = function () { };
+            alertify.success = function () { };
+            alertify.error = function () { };
+            alertify.message = function () { };
+            alertify.notify = function () { };
+        }
+    } catch (e) { /* ignore */ }
+})();
+
 var __appAlertTimerSuccess = null;
 var __appAlertTimerDanger = null;
 
