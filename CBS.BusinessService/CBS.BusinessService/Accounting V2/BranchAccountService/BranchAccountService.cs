@@ -625,7 +625,7 @@ namespace CBS.BusinessService.Accounting_V2.BranchAccountService
         {
             try
             {
-                var response = await _apiCallerHelper.PostAsync<ServiceResponse<UpdateAccountNegativityRequest>>(APICallHelper.Accountnegman, model);
+                var response = await _apiCallerHelper.PutAsync<ServiceResponse<UpdateAccountNegativityRequest>>(APICallHelper.Accountnegman, model);
 
                 if (response.IsSuccess)
                 {
