@@ -172,12 +172,13 @@
                                 <div class="col-md-12" id="LoanCategorySelect">
                                     <div class="form-floating form-floating-outline">
                                         @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanProductCategoryId,
-                                            new SelectList(ViewBag.Categories, "Id", "Name"),
+                                            new SelectList(ViewBag.Categories, "Id", "NameEn"),
                                             @Member_Global_LoanApplication.SelectLoanProductCategory,
                                             new { @class = "form-control select2", @search = "true", @id = "LoanCategoryId", @onchange = "GetLoanPurposes(this.value,'purposeId')" })
                                         <label>@Member_Global_LoanApplication.SelectLoanProductCategory</label>
                                     </div>
                                 </div>
+
                                 @*<div class="col-md-12">
             <div class="form-floating form-floating-outline">
                 @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanProductCategoryId, new SelectList(ViewBag.Categories, "Id", "Name"), @Member_Global_LoanApplication.SelectLoanProductCategory, new { @class = "form-control select2", @search = "true", @id = "LoanCategoryId", @onchange = "GetLoanPurposes(this.value,'purposeId')" })

@@ -8,7 +8,7 @@
                 <!-- Loan Product Category Field -->
                 <div class="col-md-12 mb-3" id="selectFeild">
                     <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(m => m.LoanProductCategoryId, new SelectList(ViewBag.Categories, "Id", "Name"), "---"+ @GlobalLoanPurpose.SelectCategory+"---", new { @class = "form-control select2", @search = "true" })
+                        @Html.DropDownListFor(m => m.LoanProductCategoryId, new SelectList(ViewBag.Categories, "Id", "NameEn"), "---"+ @GlobalLoanPurpose.SelectCategory+"---", new { @class = "form-control select2", @search = "true" })
                         @Html.ValidationMessageFor(m => m.LoanProductCategoryId, "", new { @class = "text-danger" })
                         <label>@GlobalLoanPurpose.SelectLoanProductCategory</label>
                     </div>

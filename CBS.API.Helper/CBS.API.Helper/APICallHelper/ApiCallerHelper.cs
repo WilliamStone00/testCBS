@@ -4563,7 +4563,7 @@ namespace CBS.API.Helper
         }
 
 
-        public async Task<ApiResponse<T>> UploadSharedMonthFileAsync<T>( HttpPostedFileBase file, string branchId, int month,string fileType, string apiUrl)
+        public async Task<ApiResponse<T>> UploadSharedMonthFileAsync<T>( HttpPostedFileBase file, string branchId, string month,string fileType, string apiUrl,string accountType, decimal interestRate)
         {
             if (file == null)
                 throw new ArgumentNullException(nameof(file));
@@ -4593,11 +4593,13 @@ namespace CBS.API.Helper
                     );
 
                     // Month
-                    formData.Add(
-                        new StringContent(month.ToString(), Encoding.UTF8),
-                        "month"
-                    );
-
+                    if (!string.IsNullOrWhiteSpace(month))
+                    {
+                        formData.Add(
+                            new StringContent(month, Encoding.UTF8),
+                            "month"
+                        );
+                    }
                     // FileType (optional)
                     if (!string.IsNullOrWhiteSpace(fileType))
                     {
@@ -4606,6 +4608,22 @@ namespace CBS.API.Helper
                             "fileType"
                         );
                     }
+                    // Account Type
+                    if (!string.IsNullOrWhiteSpace(accountType))
+                    {
+                        formData.Add(
+                            new StringContent(accountType, Encoding.UTF8),
+                            "accountType"
+                        );
+                    }
+
+                    // Interest Rate
+                    formData.Add(
+                        new StringContent(
+                            interestRate.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                            Encoding.UTF8),
+                        "interestRate"
+                    );
 
                     // Auth
                     AddAuthorizationHeader(_httpClient);

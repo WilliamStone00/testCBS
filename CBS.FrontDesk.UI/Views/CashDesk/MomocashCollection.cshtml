@@ -5,33 +5,65 @@
 }
 <link href="https://cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css" rel="stylesheet">
 
-<div class="row">
-    <div class="col">
-        <div class="row mt-3">
-            <div class="accordion" id="collapsibleSection">
-                <div class="accordion-item card mb-2">
-                    <h2 class="accordion-header" id="headingMomocash">
-                        <button type="button"
-                                class="accordion-button py-2"
-                                data-bs-toggle="collapse"
-                                data-bs-target="#collapseMomocash"
-                                aria-expanded="true"
-                                aria-controls="collapseMomocash">
-                            <i class="mdi mdi-bank me-2"></i>
-                            <span id="cashDeskOperations">
-                                @MomocashCollection.MomocashCollectionNoneCashOperation
-                            </span>
-                        </button>
-                    </h2>
+<div class="container tsc-wrap">
 
-                    <div id="collapseMomocash"
-                         class="accordion-collapse collapse show"
-                         aria-labelledby="headingMomocash"
-                         data-bs-parent="#collapsibleSection">
-                        <div class="accordion-body py-1">
-                            @Html.Partial("_MomocashCollectionSearchBox")
-                            <div id="datalistingview">
-                                @* member search results will load here *@
+    <!-- ✅ TSC Header Banner (Momocash Collection Back Office) -->
+    <div class="row mt-3">
+        <div class="col-12">
+            <div class="card bg-light mb-3 border-0 shadow-sm">
+                <div class="card-body text-center py-3">
+
+                    <h3 class="mb-1 text-primary fw-bold">
+                        <i class="mdi mdi-cellphone-check me-2"></i>
+                        Momocash Collection
+                    </h3>
+
+                    <div class="text-muted">
+                        This feature is only for <b>Cash-In</b> and <b>Loan Repayments</b> — both operations support <b>charges</b>.
+                    </div>
+
+                    <hr class="my-3" style="border: 2px solid rgba(128,128,128,0.35);" />
+
+                    <div class="small text-muted">
+                        Tip: Verify the member, select the correct operation type, and review charges before confirming.
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Existing content -->
+    <div class="row">
+        <div class="col">
+            <div class="row mt-1">
+                <div class="accordion" id="collapsibleSection">
+                    <div class="accordion-item card mb-2">
+                        <h2 class="accordion-header" id="headingMomocash">
+                            <button type="button"
+                                    class="accordion-button py-2"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#collapseMomocash"
+                                    aria-expanded="true"
+                                    aria-controls="collapseMomocash">
+                                <i class="mdi mdi-bank me-2"></i>
+                                <span id="cashDeskOperations">
+                                    @MomocashCollection.MomocashCollectionNoneCashOperation
+                                </span>
+                            </button>
+                        </h2>
+
+                        <div id="collapseMomocash"
+                             class="accordion-collapse collapse show"
+                             aria-labelledby="headingMomocash"
+                             data-bs-parent="#collapsibleSection">
+                            <div class="accordion-body py-1">
+                                @Html.Partial("_MomocashCollectionSearchBox")
+                                <div id="datalistingview">
+                                    @* member search results will load here *@
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -39,14 +71,97 @@
             </div>
         </div>
     </div>
+
 </div>
-
-
-
 
 <!-- Modal to display customer information -->
 @Html.Partial("_model")
 
-@section Scripts {@Scripts.Render("~/bundles/jqueryval")
-<script src="~/Scripts/Js/Crud/CashDesk/MomocashCollection.js"></script>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+<script>
+    // ------------------------------------------------------------
+    // ✅ Momocash Collection - Member Reference (10 digits) control
+    //    - Digits only
+    //    - Max length = 10
+    //    - Auto-search when length reaches 10
+    //    - Does NOT break manual Search button / Enter behavior
+    // ------------------------------------------------------------
+    (function () {
+        var $input = $("#manualSearchInput");
+        if (!$input.length) return;
+
+        var $err = $("#manualSearchInputError");
+        function showErr(msg) {
+            if (!$err.length) return;
+            $err.text(msg || "Member reference is required.").removeClass("d-none");
+        }
+        function hideErr() {
+            if (!$err.length) return;
+            $err.addClass("d-none");
+        }
+
+        function digitsOnlyMax10(val) {
+            val = (val || "").toString().replace(/\D/g, "");
+            if (val.length > 10) val = val.substring(0, 10);
+            return val;
+        }
+
+        // Wrap your GetMember safely (do not change your existing function body)
+        window.TSC_TrySearchMember = function () {
+            var raw = ($input.val() || "").trim();
+
+            if (!raw) {
+                showErr("Member reference is required.");
+                $input.focus();
+                return false;
+            }
+
+            var v = digitsOnlyMax10(raw);
+            $input.val(v);
+
+            if (v.length !== 10) {
+                showErr("Member reference must be exactly 10 digits.");
+                $input.focus();
+                return false;
+            }
+
+            hideErr();
+
+            // call your existing search
+            if (typeof window.GetMember === "function") window.GetMember();
+            else if (typeof GetMember === "function") GetMember();
+
+            return true;
+        };
+
+        // Ensure UX: typing clears error
+        $input.off(".tscReq10")
+            .on("input.tscReq10", function () {
+                var v = digitsOnlyMax10($input.val());
+                if ($input.val() !== v) $input.val(v);
+                if (v.length > 0) hideErr();
+                // Auto-search when reaches 10 digits
+                if (v.length === 10) window.TSC_TrySearchMember();
+            })
+            .on("keydown.tscReq10", function (e) {
+                if (e.key === "Enter") {
+                    e.preventDefault();
+                    window.TSC_TrySearchMember();
+                }
+            });
+
+        // Button click: prevent empty/invalid searches even if onclick exists
+        $("#btnSearchMember").off(".tscReq10").on("click.tscReq10", function (e) {
+            // stop the inline onclick from running if invalid
+            if (!window.TSC_TrySearchMember()) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+            }
+        });
+
+    })();
+
+    </script>
+    <script src="~/Scripts/Js/Crud/CashDesk/MomocashCollection.js"></script>
 }

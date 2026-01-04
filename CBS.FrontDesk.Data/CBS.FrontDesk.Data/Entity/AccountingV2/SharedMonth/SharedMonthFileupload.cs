@@ -12,7 +12,9 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.SharedMonth
         public string BranchId { get; set; }
         public HttpPostedFileBase file { get; set; }
         public string  FileType { get; set; }
-        public int Month { get; set; }
+        public string Month { get; set; }
+        public string AccountType { get; set; }
+        public decimal InterestRate { get; set; }
     }
     public class SharedMonthFileReponse
     {
