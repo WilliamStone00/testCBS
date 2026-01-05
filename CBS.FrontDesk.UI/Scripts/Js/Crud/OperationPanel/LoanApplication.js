@@ -393,6 +393,138 @@
     // ✅ PCMF version of GetLoanApplication (works with your new /MemberOperation/GetLoanProduct controller)
     // Expects PCMFLoanProduct returned by PcmfGetLoanProduct(id)
     function GetLoanApplication(KEY) {
+
+        // =========================
+        // Helpers (shared)
+        // =========================
+        function num(v) {
+            if (v === null || v === undefined) return 0;
+            var s = (v + "").replace(/,/g, "").trim();
+            var n = Number(s || 0);
+            return isNaN(n) ? 0 : n;
+        }
+
+        function fcfa(v) {
+            var n = num(v);
+            return n.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + " FCFA";
+        }
+
+        function normalizeRange(min, max) {
+            min = num(min);
+            max = num(max);
+            if (max <= 0 && min > 0) max = min;
+            if (max < min) { var t = max; max = min; min = t; }
+            return { min: min, max: max };
+        }
+
+        function pcmfTagHtml(p) {
+            var section = (p.PcmfSection || p.pcmfSection || "").toString();
+            var group = (p.PcmfGroupCode ?? p.pcmfGroupCode);
+            var baseCode = (p.PcmfBaseCode ?? p.pcmfBaseCode);
+            var pop = (p.PcmfPopulation || p.pcmfPopulation || "").toString();
+
+            var parts = [];
+            if (baseCode != null) parts.push("Base: " + baseCode);
+            if (section || group != null) parts.push((section || "N/A") + "-" + (group != null ? group : "N/A"));
+            if (pop) parts.push("Pop: " + pop);
+
+            return parts.length
+                ? "<span class='badge bg-success'>PCMF: " + parts.join(" | ") + "</span>"
+                : "";
+        }
+
+        function $byName(name) { return $('[name="' + name + '"]'); }
+        function getVal(name) { var $el = $byName(name); return $el.length ? num($el.val()) : 0; }
+        function setVal(name, value) { var $el = $byName(name); if ($el.length) $el.val(value); }
+        function isChecked(name) { var $el = $byName(name); return $el.length ? ($el.prop("checked") === true) : false; }
+        function setChecked(name, v) { var $el = $byName(name); if ($el.length) $el.prop("checked", v === true); }
+
+        // Feedback line under input (no green borders; only tick icon)
+        function markLimit($input, ok, msg) {
+            if (!$input || !$input.length) return;
+
+            $input.toggleClass("is-invalid", !ok);
+
+            var id = $input.attr("id") || ($input.attr("name") || "").replace(/[\[\]\.]/g, "_");
+            var fbId = "fb_" + id;
+
+            var $fb = $("#" + fbId);
+            if (!$fb.length) {
+                $fb = $('<div class="tsc-limit-feedback"></div>').attr("id", fbId);
+                $input.closest(".form-floating").append($fb);
+            }
+
+            if (!msg) { $fb.text(""); return; }
+
+            if (ok) {
+                $fb.removeClass("tsc-bad")
+                    .html('<span class="tsc-tick">✔</span> ' + msg);
+            } else {
+                $fb.addClass("tsc-bad")
+                    .html('<span class="tsc-tick">✖</span> ' + msg);
+            }
+        }
+
+        function validateRange(v, min, max, label, fmt) {
+            v = num(v);
+            min = num(min);
+            max = num(max);
+
+            if (min === 0 && max === 0) return { ok: true, msg: "" };
+            if (max <= 0 && min > 0) max = min;
+            if (max < min) { var t = max; max = min; min = t; }
+
+            var ok = (v >= min && v <= max);
+            var showV = fmt ? fmt(v) : v;
+            var showMin = fmt ? fmt(min) : min;
+            var showMax = fmt ? fmt(max) : max;
+
+            return {
+                ok: ok,
+                msg: ok
+                    ? (label + " OK (" + showV + ")")
+                    : (label + " out of range. Allowed: " + showMin + " - " + showMax)
+            };
+        }
+
+        // =========================
+        // Reset on loan product change
+        // =========================
+        function resetControls() {
+            $(".tsc-limit-feedback").remove();
+            $(".is-invalid").removeClass("is-invalid");
+
+            // Safe if box doesn't exist
+            $("#pcmfCoverageBox").hide();
+            $("#pcmfTagInline").html("");
+
+            // Reset main editable fields
+            setVal('AddLoanApplicationCommand.Amount', "");
+            setVal('AddLoanApplicationCommand.LoanDuration', "");
+            setVal('AddLoanApplicationCommand.InterestRate', "");
+
+            // Reset computed/locked fields (will be refilled)
+            setVal('AddLoanApplicationCommand.ShareAccountCoverageAmount', "");
+            setVal('AddLoanApplicationCommand.SavingAccountCoverageRate', "");
+
+            // Reset option toggles
+            setChecked('AddLoanApplicationCommand.IsPreferenceShareAccountCoverageAmount', false);
+            setChecked('AddLoanApplicationCommand.IsDepositAccountCoverageAmount', false);
+            setChecked('AddLoanApplicationCommand.IsSalryAccount', false);
+
+            setVal('AddLoanApplicationCommand.PreferenceShareAccountCoverageAmount', "");
+            setVal('AddLoanApplicationCommand.DepositAccountCoverageAmount', "");
+            setVal('AddLoanApplicationCommand.SalaryAccountCoverageRate', "");
+
+            // Hide optional amount inputs
+            $byName('AddLoanApplicationCommand.PreferenceShareAccountCoverageAmount').closest(".form-floating").hide();
+            $byName('AddLoanApplicationCommand.DepositAccountCoverageAmount').closest(".form-floating").hide();
+            $byName('AddLoanApplicationCommand.SalaryAccountCoverageRate').closest(".form-floating").hide();
+
+            // Remove contribution lines if any
+            $('[id^="dp_"]').remove();
+        }
+
         if (!KEY) return;
 
         $.ajax({
@@ -401,176 +533,294 @@
             success: function (data) {
                 if (!data) return;
 
-                // ----------------------------
-                // Helpers
-                // ----------------------------
-                function formatCurrency(amount) {
-                    var n = Number(amount || 0);
-                    return n.toLocaleString('en-US', { style: 'currency', currency: 'XAF', minimumFractionDigits: 0 });
-                }
+                resetControls();
 
-                function fmtMonthRange(term) {
-                    if (!term) return "";
-                    var min = term.MinInMonth || term.minInMonth || 0;
-                    var max = term.MaxInMonth || term.maxInMonth || 0;
-                    if (!min && !max) return "";
-                    return min + " - " + max + " Month(s)";
-                }
-
-                function pcmfTag(p) {
-                    // Your PCMFLoanProduct has:
-                    // PcmfSection, PcmfGroupCode, PcmfPopulation, PcmfBaseCode
-                    var section = (p.PcmfSection || p.pcmfSection || "").toString();
-                    var group = (p.PcmfGroupCode ?? p.pcmfGroupCode);
-                    var baseCode = (p.PcmfBaseCode ?? p.pcmfBaseCode);
-                    var pop = (p.PcmfPopulation || p.pcmfPopulation || "").toString();
-
-                    var parts = [];
-                    if (section || group) parts.push((section || "N/A") + "-" + (group != null ? group : "N/A"));
-                    if (baseCode != null) parts.push("Base: " + baseCode);
-                    if (pop) parts.push("Pop: " + pop);
-
-                    return parts.length ? ("[PCMF: " + parts.join(" / ") + "]") : "";
-                }
-
-                // ----------------------------
-                // UI updates (keep your existing ids)
-                // ----------------------------
                 var policy = data.Policy || data.policy || {};
+                var term = data.Term || data.term || {};
 
-                // ✅ These fields exist on policy (per your class)
-                $('#amount').html(
-                    "Enter amount from: " + formatCurrency(policy.LoanMinimumAmount) +
-                    " to " + formatCurrency(policy.LoanMaximumAmount) + " " + pcmfTag(data)
+                // =========================
+                // Limits from policy/term
+                // =========================
+                var loanAmtR = normalizeRange(policy.LoanMinimumAmount, policy.LoanMaximumAmount);
+
+                var termMin = num(term.MinInMonth || term.minInMonth);
+                var termMax = num(term.MaxInMonth || term.maxInMonth);
+                var termR = normalizeRange(termMin, termMax);
+
+                var shareR = normalizeRange(
+                    policy.MinimumShareAccountBalanceForTheRequestAmount,
+                    policy.MaximumShareAccountBalanceForTheRequestAmount
                 );
 
-                // Duration: take from Term if present, else fallback to policy duration fields if you have them
-                var term = data.Term || data.term;
-                var termRange = fmtMonthRange(term);
+                var savMinRate = num(policy.MinimumSavingAccountBalanceRateForTheRequestAmount);
+                var savMaxRate = num(policy.MaximumSavingAccountBalanceRateForTheRequestAmount);
+                if (savMaxRate <= 0 && savMinRate > 0) savMaxRate = savMinRate;
+                if (savMaxRate < savMinRate) { var x = savMaxRate; savMaxRate = savMinRate; savMinRate = x; }
+                var savRateR = { min: savMinRate, max: savMaxRate };
 
-                if (termRange) {
-                    $('#loanduration').html("Loan duration is: " + termRange);
-                } else if (policy.MinimumDurationPeriod != null || policy.MaximumDurationPeriod != null) {
-                    $('#loanduration').html("Loan duration is between: " + (policy.MinimumDurationPeriod || 0) +
-                        " to " + (policy.MaximumDurationPeriod || 0) + " Months");
-                } else {
-                    $('#loanduration').html("");
+                var intR = normalizeRange(policy.MinimumInterestRate, policy.MaximumInterestRate);
+
+                var dpRate = num(policy.MinimumDownPaymentPercentage);
+
+                // =========================
+                // 1) Labels + PCMF
+                // =========================
+                $("#amount").html("Enter amount from: " + fcfa(loanAmtR.min) + " to " + fcfa(loanAmtR.max) + " " + pcmfTagHtml(data));
+
+                if (termR.min || termR.max) {
+                    $("#loanduration").html("Loan duration is between: " + termR.min + " to " + termR.max + " Month(s)");
                 }
 
-                // Interest / VAT (if your policy returns these)
-                if (policy.MinimumInterestRate != null || policy.MaximumInterestRate != null) {
-                    $('#interest').html("Enter interest between: " + (policy.MinimumInterestRate || 0) +
-                        "% and " + (policy.MaximumInterestRate || 0) + "%.");
-                } else {
-                    $('#interest').html("");
+                if (intR.min || intR.max) {
+                    $("#interest").html("Enter interest between: " + intR.min + "% and " + intR.max + "%.");
                 }
 
-                // Repayment cycles (PCMFLoanProduct has RepaymentCycles list)
-                var cycles = data.RepaymentCycles || data.repaymentCycles || [];
-                if (cycles && cycles.length) {
-                    $('#installment').html("Repayment cycles: " + cycles.join(", "));
-                } else if (policy.MinimumNumberOfRepayment != null || policy.MaximumNumberOfRepayment != null) {
-                    $('#installment').html("Minimum repayment installment is: " + (policy.MinimumNumberOfRepayment || 0) +
-                        " and Maximum is " + (policy.MaximumNumberOfRepayment || 0));
-                } else {
-                    $('#installment').html("");
+                $("#share").html("Enter required share amount between: " + fcfa(shareR.min) + " and " + fcfa(shareR.max));
+                $("#saving").html("Enter balance saving rate between: " + savRateR.min + "% and " + savRateR.max + "%");
+
+                $("#downpaymentrate").html("Does this application require down payment? Minimum rate is [" + dpRate + "%].");
+                $("#downPaymentCheckbox").prop("checked", dpRate > 0).prop("disabled", true);
+
+                // =========================
+                // 2) Auto-fill + lock share/savings
+                // =========================
+                var shareField = 'AddLoanApplicationCommand.ShareAccountCoverageAmount';
+                var savingRateField = 'AddLoanApplicationCommand.SavingAccountCoverageRate';
+
+                if (shareR.min > 0) setVal(shareField, shareR.min);
+                if (savRateR.min > 0) setVal(savingRateField, savRateR.min);
+
+                $byName(shareField).prop("readonly", true);
+                $byName(savingRateField).prop("readonly", true);
+
+                // =========================
+                // 3) Computations (define FIRST, before usage)
+                // =========================
+                function principal() { return getVal('AddLoanApplicationCommand.Amount'); }
+                function savingRate() { return getVal(savingRateField); }
+
+                function requiredSavingsAmount() {
+                    var p = principal();
+                    var r = savingRate();
+                    if (p <= 0 || r <= 0) return 0;
+                    return (p * r) / 100.0;
                 }
 
-                // These depend on whether your policy contains them (keeping your original ids)
-                if (policy.MinimumSavingAccountBalanceRateForTheRequestAmount != null || policy.MaximumSavingAccountBalanceRateForTheRequestAmount != null) {
-                    $('#saving').html("Enter balance saving rate between: " +
-                        (policy.MinimumSavingAccountBalanceRateForTheRequestAmount || 0) + "% and " +
-                        (policy.MaximumSavingAccountBalanceRateForTheRequestAmount || 0) + "%");
-                } else {
-                    $('#saving').html("");
+                function requiredDownPaymentAmount() {
+                    var p = principal();
+                    if (p <= 0 || dpRate <= 0) return 0;
+                    return (p * dpRate) / 100.0;
                 }
 
-                if (policy.MinimumShareAccountBalanceForTheRequestAmount != null || policy.MaximumShareAccountBalanceForTheRequestAmount != null) {
-                    $('#share').html("Enter required share amount between: " +
-                        formatCurrency(policy.MinimumShareAccountBalanceForTheRequestAmount) + " and " +
-                        formatCurrency(policy.MaximumShareAccountBalanceForTheRequestAmount));
-                } else {
-                    $('#share').html("");
+                function coverageTotalExcludingShares() {
+                    var total = 0;
+
+                    total += requiredSavingsAmount();
+
+                    if (isChecked('AddLoanApplicationCommand.IsDepositAccountCoverageAmount'))
+                        total += getVal('AddLoanApplicationCommand.DepositAccountCoverageAmount');
+
+                    if (isChecked('AddLoanApplicationCommand.IsPreferenceShareAccountCoverageAmount'))
+                        total += getVal('AddLoanApplicationCommand.PreferenceShareAccountCoverageAmount');
+
+                    // ✅ salary excluded
+                    return total;
                 }
 
-                if (policy.MinimumSalaryAccountBalanceRateForTheRequestAmount != null || policy.MaximumMaximumSalaryAccountBalanceRateForTheRequestAmount != null) {
-                    $('#salary').html("Enter Salary rate between: " +
-                        (policy.MinimumSalaryAccountBalanceRateForTheRequestAmount || 0) + "% and " +
-                        (policy.MaximumMaximumSalaryAccountBalanceRateForTheRequestAmount || 0) + "%");
-                } else {
-                    $('#salary').html("");
+                function ensureUnderInputLine($input, key) {
+                    if (!$input || !$input.length) return null;
+
+                    var id = $input.attr("id") || ($input.attr("name") || "").replace(/[\[\]\.]/g, "_");
+                    var lineId = "dp_" + key + "_" + id;
+
+                    var $line = $("#" + lineId);
+                    if (!$line.length) {
+                        $line = $('<div class="small text-muted mt-1"></div>').attr("id", lineId);
+                        $input.closest(".form-floating").append($line);
+                    }
+                    return $line;
                 }
 
-                if (policy.MinimumProcessingFeeRate != null || policy.MaximumProcessingFeeRate != null) {
-                    $('#fee').html("Enter processing fee rate between: " +
-                        (policy.MinimumProcessingFeeRate || 0) + "% and " +
-                        (policy.MaximumProcessingFeeRate || 0) + "%.");
-                } else {
-                    $('#fee').html("");
+                function renderContributionLines() {
+                    var total = coverageTotalExcludingShares();
+
+                    // savings contribution
+                    var reqSav = requiredSavingsAmount();
+                    var $sav = $byName(savingRateField);
+                    var $savLine = ensureUnderInputLine($sav, "sav");
+                    if ($savLine) {
+                        $savLine.html("Added to Down Payment (Savings): <strong>" + fcfa(reqSav) + "</strong> &nbsp; | &nbsp; Total Coverage: <strong>" + fcfa(total) + "</strong>");
+                    }
+
+                    // deposit contribution
+                    var depToggle = 'AddLoanApplicationCommand.IsDepositAccountCoverageAmount';
+                    var depAmount = 'AddLoanApplicationCommand.DepositAccountCoverageAmount';
+                    var depVal = isChecked(depToggle) ? getVal(depAmount) : 0;
+
+                    var $dep = $byName(depAmount);
+                    var $depLine = ensureUnderInputLine($dep, "dep");
+                    if ($depLine) {
+                        $depLine.html(isChecked(depToggle)
+                            ? ("Added to Down Payment (Deposit): <strong>" + fcfa(depVal) + "</strong> &nbsp; | &nbsp; Total Coverage: <strong>" + fcfa(total) + "</strong>")
+                            : "");
+                    }
+
+                    // preference contribution
+                    var prefToggle = 'AddLoanApplicationCommand.IsPreferenceShareAccountCoverageAmount';
+                    var prefAmount = 'AddLoanApplicationCommand.PreferenceShareAccountCoverageAmount';
+                    var prefVal = isChecked(prefToggle) ? getVal(prefAmount) : 0;
+
+                    var $pref = $byName(prefAmount);
+                    var $prefLine = ensureUnderInputLine($pref, "pref");
+                    if ($prefLine) {
+                        $prefLine.html(isChecked(prefToggle)
+                            ? ("Added to Down Payment (Preference): <strong>" + fcfa(prefVal) + "</strong> &nbsp; | &nbsp; Total Coverage: <strong>" + fcfa(total) + "</strong>")
+                            : "");
+                    }
                 }
 
-                if (policy.MinimumInspectionFeeRate != null || policy.MaximumInspectionFeeRate != null) {
-                    $('#inspectionfee').html("Enter inspection fee between: " +
-                        (policy.MinimumInspectionFeeRate || 0) + "% and " +
-                        (policy.MaximumInspectionFeeRate || 0) + "%.");
-                } else {
-                    $('#inspectionfee').html("");
+                function renderCalculator() {
+                    var p = principal();
+                    var sr = savingRate();
+                    var rs = requiredSavingsAmount();
+                    var rd = requiredDownPaymentAmount();
+                    var cov = coverageTotalExcludingShares();
+
+                    var show = (p > 0) || (dpRate > 0);
+                    $("#pcmfCoverageBox").toggle(show);
+
+                    $("#pcmfTagInline").html(pcmfTagHtml(data));
+                    $("#pcmfPrincipalText").text(p > 0 ? fcfa(p) : "-");
+                    $("#pcmfSavingRateText").text(sr > 0 ? (sr + "%") : "-");
+                    $("#pcmfSavingRequiredText").text(rs > 0 ? fcfa(rs) : fcfa(0));
+                    $("#pcmfDownRateText").text(dpRate > 0 ? (dpRate + "%") : "0%");
+                    $("#pcmfDownRequiredText").text(rd > 0 ? fcfa(rd) : fcfa(0));
+                    $("#pcmfCoverageTotalText").text(cov > 0 ? fcfa(cov) : fcfa(0));
+
+                    var ok = cov >= rd;
+
+                    $("#pcmfCoverageStatus")
+                        .removeClass("text-success text-danger")
+                        .addClass(ok ? "text-success" : "text-danger")
+                        .html(ok
+                            ? ('<span class="tsc-tick">✔</span> Down payment covered (excluding shares): <strong>' + fcfa(cov) + "</strong> / " + fcfa(rd))
+                            : ('<span class="tsc-tick">✖</span> Down payment NOT covered (excluding shares): <strong>' + fcfa(cov) + "</strong> / " + fcfa(rd))
+                        );
                 }
 
-                if (policy.MinimumChargesToAppliedInPercentage != null || policy.MaximumChargesToAppliedPercentage != null) {
-                    $('#chargeparcentages').html("Enter charge percentage between: " +
-                        (policy.MinimumChargesToAppliedInPercentage || 0) + " % and " +
-                        (policy.MaximumChargesToAppliedPercentage || 0) + "%");
-                } else {
-                    $('#chargeparcentages').html("");
+                // =========================
+                // 4) Live Limit Validation
+                // =========================
+                function validateAll() {
+                    var $amt = $byName('AddLoanApplicationCommand.Amount');
+                    markLimit($amt, validateRange($amt.val(), loanAmtR.min, loanAmtR.max, "Requested Amount", fcfa).ok,
+                        validateRange($amt.val(), loanAmtR.min, loanAmtR.max, "Requested Amount", fcfa).msg);
+
+                    var $dur = $byName('AddLoanApplicationCommand.LoanDuration');
+                    if (termR.min || termR.max) {
+                        var vDur = validateRange($dur.val(), termR.min, termR.max, "Loan Duration", function (x) { return num(x) + " Month(s)"; });
+                        markLimit($dur, vDur.ok, vDur.msg);
+                    }
+
+                    var $int = $byName('AddLoanApplicationCommand.InterestRate');
+                    if (intR.min || intR.max) {
+                        var vInt = validateRange($int.val(), intR.min, intR.max, "Interest Rate", function (x) { return num(x) + "%"; });
+                        markLimit($int, vInt.ok, vInt.msg);
+                    }
+
+                    var $share = $byName(shareField);
+                    var vShare = validateRange($share.val(), shareR.min, shareR.max, "Share Coverage Amount", fcfa);
+                    markLimit($share, vShare.ok, vShare.msg);
+
+                    var $sav = $byName(savingRateField);
+                    var vSav = validateRange($sav.val(), savRateR.min, savRateR.max, "Saving Coverage Rate", function (x) { return num(x) + "%"; });
+                    markLimit($sav, vSav.ok, vSav.msg);
                 }
 
-                if (policy.MinimumChargesStartDayAfterLoanDueDate != null || policy.MaximumChargesStartDayAfterLoanDueDate != null) {
-                    $('#chargedayranges').html("Enter in days when charges start between: " +
-                        (policy.MinimumChargesStartDayAfterLoanDueDate || 0) + " to " +
-                        (policy.MaximumChargesStartDayAfterLoanDueDate || 0) + " days");
-                } else {
-                    $('#chargedayranges').html("");
+                // =========================
+                // 5) Toggle behaviors
+                // =========================
+                function bindToggle(toggleName, amountName) {
+                    var $t = $byName(toggleName);
+                    var $wrap = $byName(amountName).closest(".form-floating");
+                    if (!$t.length) return;
+
+                    $wrap.toggle($t.prop("checked") === true);
+
+                    $t.off("change.pcmfToggle").on("change.pcmfToggle", function () {
+                        $wrap.toggle(this.checked === true);
+                        renderCalculator();
+                        renderContributionLines();
+                    });
                 }
 
-                if (policy.MinimumInterestWaiver != null || policy.MaximumInterestWaiver != null) {
-                    $('#waiverranges').html("Enter in percentage interest to waive between: " +
-                        (policy.MinimumInterestWaiver || 0) + "% and " +
-                        (policy.MaximumInterestWaiver || 0) + "%.");
-                } else {
-                    $('#waiverranges').html("");
-                }
+                // Disable salary fully (remove from UI + calc)
+                (function disableSalaryCoverage() {
+                    var salToggle = 'AddLoanApplicationCommand.IsSalryAccount';
+                    var salAmount = 'AddLoanApplicationCommand.SalaryAccountCoverageRate';
 
-                // Down payment rule
-                if (policy.MinimumDownPaymentPercentage != null) {
-                    $('#downpaymentrate').html("Does this application require down payment? Minimum rate is [" +
-                        (policy.MinimumDownPaymentPercentage || 0) + "%].");
+                    var $t = $byName(salToggle);
+                    if ($t.length) $t.prop("checked", false).prop("disabled", true);
 
-                    var requiredDownPayment = (policy.MinimumDownPaymentPercentage || 0) > 0;
-                    var $downPaymentCheckbox = $('input[name="AddLoanApplicationCommand.RequiredDownPaymentCoverageRate"]');
-                    $downPaymentCheckbox.prop('checked', requiredDownPayment);
-                    $downPaymentCheckbox.prop('disabled', true);
-                } else {
-                    $('#downpaymentrate').html("");
-                }
+                    var $wrap = $byName(salAmount).closest(".form-floating");
+                    if ($wrap.length) {
+                        $byName(salAmount).val("");
+                        $wrap.hide();
+                    }
+                })();
 
-                // Paid fee before processing (if present in policy; keep your original behavior)
+                bindToggle('AddLoanApplicationCommand.IsPreferenceShareAccountCoverageAmount', 'AddLoanApplicationCommand.PreferenceShareAccountCoverageAmount');
+                bindToggle('AddLoanApplicationCommand.IsDepositAccountCoverageAmount', 'AddLoanApplicationCommand.DepositAccountCoverageAmount');
+                // ✅ DO NOT bind salary
+
+                // =========================
+                // 6) Watch inputs (live)
+                // =========================
+                var watch = [
+                    'AddLoanApplicationCommand.Amount',
+                    'AddLoanApplicationCommand.LoanDuration',
+                    'AddLoanApplicationCommand.InterestRate',
+
+                    'AddLoanApplicationCommand.PreferenceShareAccountCoverageAmount',
+                    'AddLoanApplicationCommand.DepositAccountCoverageAmount',
+
+                    'AddLoanApplicationCommand.IsPreferenceShareAccountCoverageAmount',
+                    'AddLoanApplicationCommand.IsDepositAccountCoverageAmount'
+                ];
+
+                watch.forEach(function (name) {
+                    var $el = $byName(name);
+                    if (!$el.length) return;
+
+                    $el.off("input.pcmf change.pcmf")
+                        .on("input.pcmf change.pcmf", function () {
+                            validateAll();
+                            renderCalculator();
+                            renderContributionLines();
+                        });
+                });
+
+                // initial
+                validateAll();
+                renderCalculator();
+                renderContributionLines();
+
+                // =========================
+                // 7) Fee before processing behaviour (keep yours)
+                // =========================
                 var isPaidFeeBeforeProcessing = policy.IsPaidFeeBeforeProcessing === true;
-                var $paidFeeCheckbox = $('input[name="AddLoanApplicationCommand.IsPaidFeeBeforeProcessing"]');
+                var $paidFeeCheckbox = $byName("AddLoanApplicationCommand.IsPaidFeeBeforeProcessing");
                 var $processingLabel = $('label[for="FeePaidBeforeProcessing"]');
                 var loanProductName = data.ProductName || data.ProductCode || "this loan product";
 
                 if (policy.IsPaidFeeBeforeProcessing != null) {
                     if (isPaidFeeBeforeProcessing) {
-                        $paidFeeCheckbox.prop('checked', true);
-                        $paidFeeCheckbox.prop('disabled', true);
+                        $paidFeeCheckbox.prop('checked', true).prop('disabled', true);
                         $processingLabel.html("A partial fee must be paid at the cash desk before the loan (" + loanProductName + ") can be processed.");
                         $('#beforeProcessingDiv').show();
                     } else {
-                        $paidFeeCheckbox.prop('checked', false);
-                        $paidFeeCheckbox.prop('disabled', false);
+                        $paidFeeCheckbox.prop('checked', false).prop('disabled', false);
                         $processingLabel.html("(" + loanProductName + ") is not configured for partial fee payment before processing.");
-                        // keep your decision whether to hide div or not
                     }
                 }
             },
@@ -580,8 +830,549 @@
         });
     }
 
+  
+    //function GetLoanApplication(KEY) {
+    //    if (!KEY) return;
+
+    //    // =========================
+    //    // Small utils (GLOBAL inside this function)
+    //    // =========================
+    //    function num(v) {
+    //        if (v === null || v === undefined) return 0;
+    //        var s = (v + "").replace(/,/g, "").trim();
+    //        var n = Number(s || 0);
+    //        return isNaN(n) ? 0 : n;
+    //    }
+
+    //    function money(v) {
+    //        return num(v).toLocaleString('en-US', {
+    //            style: 'currency',
+    //            currency: 'XAF',
+    //            minimumFractionDigits: 0
+    //        });
+    //    }
+
+    //    function normalizeRange(min, max) {
+    //        min = num(min);
+    //        max = num(max);
+
+    //        // ✅ max missing => show min-min
+    //        if (max <= 0 && min > 0) max = min;
+
+    //        // ✅ swapped
+    //        if (max < min) { var t = max; max = min; min = t; }
+
+    //        return { min: min, max: max };
+    //    }
+
+    //    function closestFeedbackHost($input) {
+    //        // Works for textboxes in form-floating or any container
+    //        return $input.closest(".form-floating, .form-floating-outline, .input-group, .mb-3, .col-md-12, .col-md-6, .col-md-3, .col-12").first();
+    //    }
+
+    //    function markLimit($input, ok, msg) {
+    //        if (!$input || !$input.length) return;
+
+    //        // Reset classes
+    //        $input.removeClass("is-valid is-invalid tsc-ok-input");
+
+    //        if (ok === true) {
+    //            // ✅ do NOT use bootstrap is-valid (neon). Use our subtle class.
+    //            $input.addClass("tsc-ok-input");
+    //        } else if (ok === false) {
+    //            $input.addClass("is-invalid");
+    //        }
+
+    //        // feedback block
+    //        var id = $input.attr("id") || ($input.attr("name") || "").replace(/[\[\]\.]/g, "_");
+    //        var fbId = "fb_" + id;
+
+    //        var $fb = $("#" + fbId);
+    //        if (!$fb.length) {
+    //            $fb = $('<div class="d-block small mt-1"></div>').attr("id", fbId);
+
+    //            // attach under closest container
+    //            $input.closest(".form-floating, .form-floating-outline, .mb-3, .col-md-12, .col-md-6, .col-md-3, .col-12")
+    //                .first()
+    //                .append($fb);
+    //        }
+
+    //        $fb.removeClass("tsc-ok-text tsc-bad-text");
+    //        $fb.addClass(ok ? "tsc-ok-text" : "tsc-bad-text");
+    //        $fb.text(msg || "");
+    //    }
+
+
+    //    function validateNumberRange(value, range, label, unitSuffix) {
+    //        var v = num(value);
+    //        var min = num(range.min);
+    //        var max = num(range.max);
+
+    //        // no constraint at all
+    //        if (min === 0 && max === 0) return { ok: true, msg: "" };
+
+    //        // max missing => treat as min only
+    //        if (max <= 0 && min > 0) max = min;
+
+    //        // swapped
+    //        if (max < min) { var t = max; max = min; min = t; }
+
+    //        var ok = (v >= min && v <= max);
+    //        var msg = ok
+    //            ? ("✅ " + label + " OK (" + v + (unitSuffix || "") + ")")
+    //            : ("❌ " + label + " out of range. Allowed: " + min + " - " + max + (unitSuffix || ""));
+
+    //        return { ok: ok, msg: msg };
+    //    }
+
+    //    function pcmfTag(p) {
+    //        var section = (p.PcmfSection || p.pcmfSection || "").toString();
+    //        var group = (p.PcmfGroupCode ?? p.pcmfGroupCode);
+    //        var baseCode = (p.PcmfBaseCode ?? p.pcmfBaseCode);
+    //        var pop = (p.PcmfPopulation || p.pcmfPopulation || "").toString();
+
+    //        var parts = [];
+    //        if (baseCode != null) parts.push("Base: " + baseCode);
+    //        if (section || group != null) parts.push((section || "N/A") + "-" + (group != null ? group : "N/A"));
+    //        if (pop) parts.push("Pop: " + pop);
+
+    //        return parts.length
+    //            ? "<span class='badge bg-primary ms-1'>PCMF: " + parts.join(" | ") + "</span>"
+    //            : "";
+    //    }
+
+    //    function setValByName(name, value) {
+    //        var $el = $('[name="' + name + '"]');
+    //        if (!$el.length) return;
+    //        $el.val(value).trigger("change");
+    //    }
+
+    //    function getValByName(name) {
+    //        var $el = $('[name="' + name + '"]');
+    //        if (!$el.length) return 0;
+    //        return num($el.val());
+    //    }
+
+    //    function isCheckedByName(name) {
+    //        var $el = $('[name="' + name + '"]');
+    //        return $el.length ? ($el.prop("checked") === true) : false;
+    //    }
+
+    //    // =========================
+    //    // Ensure computation panel exists (inject once)
+    //    // Put it under RiskMitigationDiv to be visible to user.
+    //    // =========================
+    //    function ensurePcmfCoverageBox() {
+    //        if ($("#pcmfCoverageBox").length) return;
+
+    //        // inject just before the first <hr> inside RiskMitigationDiv body (fallback append)
+    //        var $riskBody = $("#RiskMitigationDiv .accordion-body .row.g-4").first();
+    //        if (!$riskBody.length) return;
+
+    //        var html =
+    //            '<div class="col-12" id="pcmfCoverageBox" style="display:none;">' +
+    //            '  <div class="card border shadow-sm">' +
+    //            '    <div class="card-header d-flex align-items-center justify-content-between">' +
+    //            '      <div class="fw-semibold">Down Payment Coverage Calculator</div>' +
+    //            '      <div id="pcmfTagInline"></div>' +
+    //            '    </div>' +
+    //            '    <div class="card-body">' +
+    //            '      <div class="row g-3">' +
+    //            '        <div class="col-md-6"><div class="small text-muted">Principal (Requested)</div><div id="pcmfPrincipalText" class="fw-semibold">-</div></div>' +
+    //            '        <div class="col-md-6"><div class="small text-muted">Saving Coverage Rate</div><div id="pcmfSavingRateText" class="fw-semibold">-</div></div>' +
+    //            '        <div class="col-md-6"><div class="small text-muted">Required Savings (Principal × Saving %)</div><div id="pcmfSavingRequiredText" class="fw-semibold">-</div></div>' +
+    //            '        <div class="col-md-6"><div class="small text-muted">Down Payment Rate</div><div id="pcmfDownRateText" class="fw-semibold">-</div></div>' +
+    //            '        <div class="col-md-6"><div class="small text-muted">Required Down Payment (Principal × DP %)</div><div id="pcmfDownRequiredText" class="fw-semibold">-</div></div>' +
+    //            '        <div class="col-md-6"><div class="small text-muted">Coverage Total (excluding shares)</div><div id="pcmfCoverageTotalText" class="fw-semibold">-</div></div>' +
+    //            '        <div class="col-12"><div id="pcmfCoverageStatus" class="fw-semibold mt-2"></div></div>' +
+    //            '      </div>' +
+    //            '      <div class="text-muted small mt-2">Note: Shares are validated but excluded from down payment coverage computation.</div>' +
+    //            '    </div>' +
+    //            '  </div>' +
+    //            '</div>';
+
+    //        // place it near top of Risk Mitigation section
+    //        $riskBody.prepend(html);
+    //    }
+
+    //    // =========================
+    //    // Ajax load product
+    //    // =========================
+    //    $.ajax({
+    //        type: "GET",
+    //        url: '/MemberOperation/GetLoanProduct?Key=' + encodeURIComponent(KEY),
+    //        success: function (data) {
+    //            if (!data) return;
+
+    //            ensurePcmfCoverageBox();
+
+    //            // ----------------------------
+    //            // Extract policy/term safely
+    //            // ----------------------------
+    //            var policy = data.Policy || data.policy || {};
+    //            var term = data.Term || data.term || {};
+
+    //            // ----------------------------
+    //            // Labels (Loan Product) + PCMF
+    //            // ----------------------------
+    //            var loanAmtRange = normalizeRange(policy.LoanMinimumAmount, policy.LoanMaximumAmount);
+    //            $("#amount").html(
+    //                "Enter amount from: " + money(loanAmtRange.min) +
+    //                " to " + money(loanAmtRange.max) +
+    //                " " + pcmfTag(data)
+    //            );
+
+    //            // Duration label
+    //            var termMin = num(term.MinInMonth || term.minInMonth);
+    //            var termMax = num(term.MaxInMonth || term.maxInMonth);
+    //            if (termMax <= 0 && termMin > 0) termMax = termMin;
+    //            if (termMax < termMin) { var tm = termMax; termMax = termMin; termMin = tm; }
+    //            if (termMin || termMax) {
+    //                $("#loanduration").html("Loan duration is between: " + (termMin || 0) + " to " + (termMax || 0) + " Month(s)");
+    //            }
+
+    //            // Interest label
+    //            if (policy.MinimumInterestRate != null || policy.MaximumInterestRate != null) {
+    //                $("#interest").html(
+    //                    "Enter interest between: " + (num(policy.MinimumInterestRate) || 0) +
+    //                    "% and " + (num(policy.MaximumInterestRate) || 0) + "%."
+    //                );
+    //            }
+
+    //            // ----------------------------
+    //            // Risk mitigation labels
+    //            // ----------------------------
+    //            var shareR = normalizeRange(policy.MinimumShareAccountBalanceForTheRequestAmount, policy.MaximumShareAccountBalanceForTheRequestAmount);
+    //            $("#share").html("Enter required share amount between: " + money(shareR.min) + " and " + money(shareR.max));
+
+    //            var savMinRate = num(policy.MinimumSavingAccountBalanceRateForTheRequestAmount);
+    //            var savMaxRate = num(policy.MaximumSavingAccountBalanceRateForTheRequestAmount);
+    //            if (savMaxRate <= 0 && savMinRate > 0) savMaxRate = savMinRate;
+    //            if (savMaxRate < savMinRate) { var x = savMaxRate; savMaxRate = savMinRate; savMinRate = x; }
+    //            $("#saving").html("Enter balance saving rate between: " + savMinRate + "% and " + savMaxRate + "%");
+
+    //            // Salary label (optional)
+    //            if (policy.MinimumSalaryAccountBalanceRateForTheRequestAmount != null || policy.MaximumMaximumSalaryAccountBalanceRateForTheRequestAmount != null) {
+    //                $("#salary").html("Enter Salary rate between: " +
+    //                    (num(policy.MinimumSalaryAccountBalanceRateForTheRequestAmount) || 0) + "% and " +
+    //                    (num(policy.MaximumMaximumSalaryAccountBalanceRateForTheRequestAmount) || 0) + "%");
+    //            }
+
+    //            // ----------------------------
+    //            // Down payment label + checkbox lock
+    //            // ----------------------------
+    //            var dpRate = num(policy.MinimumDownPaymentPercentage);
+    //            $("#downpaymentrate").html("Does this application require down payment? Minimum rate is [" + dpRate + "%].");
+
+    //            var requiredDownPayment = dpRate > 0;
+    //            $("#downPaymentCheckbox").prop("checked", requiredDownPayment).prop("disabled", true);
+
+    //            // ----------------------------
+    //            // Field names from your Razor
+    //            // ----------------------------
+    //            var principalField = 'AddLoanApplicationCommand.Amount';
+    //            var durationField = 'AddLoanApplicationCommand.LoanDuration';
+    //            var interestField = 'AddLoanApplicationCommand.InterestRate';
+
+    //            var shareField = 'AddLoanApplicationCommand.ShareAccountCoverageAmount';
+    //            var savingRateField = 'AddLoanApplicationCommand.SavingAccountCoverageRate';
+
+    //            var prefToggle = 'AddLoanApplicationCommand.IsPreferenceShareAccountCoverageAmount';
+    //            var prefAmount = 'AddLoanApplicationCommand.PreferenceShareAccountCoverageAmount';
+
+    //            var depToggle = 'AddLoanApplicationCommand.IsDepositAccountCoverageAmount';
+    //            var depAmount = 'AddLoanApplicationCommand.DepositAccountCoverageAmount';
+
+    //            var salToggle = 'AddLoanApplicationCommand.IsSalryAccount';
+    //            // ⚠️ In your form it is SalaryAccountCoverageRate (but user enters it as amount/standing order)
+    //            var salAmount = 'AddLoanApplicationCommand.SalaryAccountCoverageRate';
+
+    //            // ----------------------------
+    //            // Auto-fill (baseline) when empty/0
+    //            // ----------------------------
+    //            if (getValByName(shareField) <= 0 && shareR.min > 0) setValByName(shareField, shareR.min);
+    //            if (getValByName(savingRateField) <= 0 && savMinRate > 0) setValByName(savingRateField, savMinRate);
+
+    //            // ----------------------------
+    //            // Ranges for validation
+    //            // ----------------------------
+    //            var amountRange = loanAmtRange;
+    //            var durationRange = { min: termMin, max: termMax };
+
+    //            var intMin = num(policy.MinimumInterestRate);
+    //            var intMax = num(policy.MaximumInterestRate);
+    //            if (intMax <= 0 && intMin > 0) intMax = intMin;
+    //            if (intMax < intMin) { var it = intMax; intMax = intMin; intMin = it; }
+    //            var interestRange = { min: intMin, max: intMax };
+
+    //            var savingRange = { min: savMinRate, max: savMaxRate };
+    //            var shareRange = shareR;
+
+    //            // ----------------------------
+    //            // Computations (EXCLUDE shares)
+    //            // ----------------------------
+    //            function readPrincipal() { return getValByName(principalField); }
+    //            function readSavingRate() { return getValByName(savingRateField); }
+
+    //            function computedRequiredSavingsAmount() {
+    //                var p = readPrincipal();
+    //                var r = readSavingRate();
+    //                if (p <= 0 || r <= 0) return 0;
+    //                return (p * r) / 100.0;
+    //            }
+
+    //            function requiredDownPaymentAmount() {
+    //                var p = readPrincipal();
+    //                if (p <= 0 || dpRate <= 0) return 0;
+    //                return (p * dpRate) / 100.0;
+    //            }
+
+    //            function coverageTotalExcludingShares() {
+    //                var total = 0;
+
+    //                // ✅ Savings required amount (computed)
+    //                total += computedRequiredSavingsAmount();
+
+    //                // ✅ Optional coverage amounts ONLY when toggled
+    //                if (isCheckedByName(depToggle)) total += getValByName(depAmount);
+    //                if (isCheckedByName(salToggle)) total += getValByName(salAmount);
+    //                if (isCheckedByName(prefToggle)) total += getValByName(prefAmount);
+
+    //                // ❌ Shares excluded
+    //                return total;
+    //            }
+
+    //            // ----------------------------
+    //            // Validation + render
+    //            // ----------------------------
+    //            function validateAllLimits() {
+    //                var $principal = $('[name="' + principalField + '"]');
+    //                var $duration = $('[name="' + durationField + '"]');
+    //                var $interest = $('[name="' + interestField + '"]');
+
+    //                var $savingRate = $('[name="' + savingRateField + '"]');
+    //                var $shareAmt = $('[name="' + shareField + '"]');
+
+    //                // Requested amount
+    //                if ($principal.length) {
+    //                    var r1 = validateNumberRange($principal.val(), amountRange, "Requested Amount", " FCFA");
+    //                    markLimit($principal, r1.ok, r1.msg);
+    //                }
+
+    //                // Duration (months)
+    //                if ($duration.length && (durationRange.min || durationRange.max)) {
+    //                    var r2 = validateNumberRange($duration.val(), durationRange, "Loan Duration", " Month(s)");
+    //                    markLimit($duration, r2.ok, r2.msg);
+    //                }
+
+    //                // Interest (%)
+    //                if ($interest.length && (interestRange.min || interestRange.max)) {
+    //                    var r3 = validateNumberRange($interest.val(), interestRange, "Interest Rate", "%");
+    //                    markLimit($interest, r3.ok, r3.msg);
+    //                }
+
+    //                // Saving % (rate)
+    //                if ($savingRate.length && (savingRange.min || savingRange.max)) {
+    //                    var r4 = validateNumberRange($savingRate.val(), savingRange, "Saving Coverage Rate", "%");
+    //                    markLimit($savingRate, r4.ok, r4.msg);
+    //                }
+
+    //                // Shares amount (validated, but excluded from computation)
+    //                if ($shareAmt.length && (shareRange.min || shareRange.max)) {
+    //                    var r5 = validateNumberRange($shareAmt.val(), shareRange, "Share Coverage Amount", " FCFA");
+    //                    markLimit($shareAmt, r5.ok, r5.msg);
+    //                }
+    //            }
+
+    //            function renderComputation() {
+    //                var p = readPrincipal();
+    //                var savingRate = readSavingRate();
+
+    //                var reqSavings = computedRequiredSavingsAmount();
+    //                var reqDown = requiredDownPaymentAmount();
+    //                var cov = coverageTotalExcludingShares();
+
+    //                var showBox = (p > 0) || (dpRate > 0);
+    //                $("#pcmfCoverageBox").toggle(showBox);
+
+    //                $("#pcmfTagInline").html(pcmfTag(data));
+    //                $("#pcmfPrincipalText").text(p > 0 ? money(p) : "-");
+    //                $("#pcmfSavingRateText").text(savingRate > 0 ? (savingRate + "%") : "-");
+    //                $("#pcmfSavingRequiredText").text(reqSavings > 0 ? money(reqSavings) : money(0));
+    //                $("#pcmfDownRateText").text(dpRate > 0 ? (dpRate + "%") : "0%");
+    //                $("#pcmfDownRequiredText").text(reqDown > 0 ? money(reqDown) : money(0));
+    //                $("#pcmfCoverageTotalText").text(cov > 0 ? money(cov) : money(0));
+
+    //                // if dpRate is 0 => always OK
+    //                var ok = (dpRate <= 0) ? true : (cov >= reqDown);
+
+    //                $("#pcmfCoverageStatus")
+    //                    .removeClass("text-success text-danger")
+    //                    .addClass(ok ? "text-success" : "text-danger")
+    //                    .html(ok
+    //                        ? ("✅ Down payment covered (excluding shares): " + money(cov) + " / " + money(reqDown))
+    //                        : ("❌ Down payment NOT covered (excluding shares): " + money(cov) + " / " + money(reqDown))
+    //                    );
+    //            }
+
+    //            function refreshAll() {
+    //                validateAllLimits();
+    //                renderComputation();
+    //            }
+
+    //            // ----------------------------
+    //            // Live updates (include amount, duration, interest, saving, share, toggles & amounts)
+    //            // ----------------------------
+    //            var watchNames = [
+    //                principalField,
+    //                durationField,
+    //                interestField,
+
+    //                shareField,
+    //                savingRateField,
+
+    //                depAmount,
+    //                salAmount,
+    //                prefAmount,
+
+    //                depToggle,
+    //                salToggle,
+    //                prefToggle
+    //            ];
+
+    //            watchNames.forEach(function (name) {
+    //                var $el = $('[name="' + name + '"]');
+    //                if (!$el.length) return;
+
+    //                $el.off("input.pcmfcalc change.pcmfcalc")
+    //                    .on("input.pcmfcalc change.pcmfcalc", function () {
+    //                        refreshAll();
+    //                    });
+    //            });
+
+    //            // Initial run
+    //            refreshAll();
+
+    //            // ----------------------------
+    //            // Fee before processing (keep your logic)
+    //            // ----------------------------
+    //            var isPaidFeeBeforeProcessing = policy.IsPaidFeeBeforeProcessing === true;
+    //            var $paidFeeCheckbox = $('[name="AddLoanApplicationCommand.IsPaidFeeBeforeProcessing"]');
+    //            var $processingLabel = $('label[for="FeePaidBeforeProcessing"]');
+    //            var loanProductName = data.ProductName || data.ProductCode || "this loan product";
+
+    //            if (policy.IsPaidFeeBeforeProcessing != null) {
+    //                if (isPaidFeeBeforeProcessing) {
+    //                    $paidFeeCheckbox.prop('checked', true).prop('disabled', true);
+    //                    $processingLabel.html("A partial fee must be paid at the cash desk before the loan (" + loanProductName + ") can be processed.");
+    //                    $('#beforeProcessingDiv').show();
+    //                } else {
+    //                    $paidFeeCheckbox.prop('checked', false).prop('disabled', false);
+    //                    $processingLabel.html("(" + loanProductName + ") is not configured for partial fee payment before processing.");
+    //                }
+    //            }
+    //        },
+    //        error: function (err) {
+    //            appalert(err.statusText, 1, 3);
+    //        }
+    //    });
+    //}
+
     // --- keep populateLoanModal, styleLoanStatus, formatXAF, formatDate, etc exactly as you had ---
     // (No changes below this point to avoid breaking existing behaviors)
+
+
+    function toggleInputFields() {
+        var loanApplicationType = document.getElementById('LoanApplicationType').value;
+        var isReschedule = loanApplicationType === "Reschedule";
+        var isRefinancing = loanApplicationType === "Refinancing";
+
+        // Toggle readonly on specific inputs for Reschedule only
+        var inputFields = ["NewBalance"];
+        inputFields.forEach(function (fieldId) {
+            var field = document.getElementById(fieldId);
+            if (isReschedule) {
+                field.setAttribute('readonly', 'readonly');
+            } else {
+                field.removeAttribute('readonly');
+            }
+        });
+
+        // Update panel title
+        var panelTitle = document.getElementById('panelTitle');
+        switch (loanApplicationType) {
+            case "Reschedule":
+                panelTitle.innerHTML = "RESCHEDULELING LOAN APPLICATION FORM";
+                break;
+            case "Refinancing":
+                panelTitle.innerHTML = "REFINANCING LOAN APPLICATION FORM";
+                break;
+            case "Restructure":
+                panelTitle.innerHTML = "RESTRUCTURING LOAN APPLICATION FORM";
+                break;
+            default:
+                panelTitle.innerHTML = "NEW LOAN APPLICATION FORM";
+                break;
+        }
+
+        // Update icon
+        var iconElement = document.querySelector('#accordionPopoutIconThree i');
+        switch (loanApplicationType) {
+            case "Reschedule":
+                iconElement.className = "mdi mdi-calendar-refresh me-2";
+                break;
+            case "Refinancing":
+                iconElement.className = "mdi mdi-cash-refund me-2";
+                break;
+            case "Restructure":
+                iconElement.className = "mdi mdi-account-cog me-2";
+                break;
+            default:
+                iconElement.className = "mdi mdi-file me-2";
+                break;
+        }
+
+        // Common divs to toggle (already present)
+        var divsToToggle = [
+            "RiskMitigationDiv",
+            "RAmountDiv",
+            "loanTypeDiv",
+            "loanProductDiv",
+            "TargetPopulationDiv",
+            "LoanCategoryDive",
+            "RepaymentDiv",
+            "purposeAndActivitiesDiv"
+        ];
+
+        divsToToggle.forEach(function (divId) {
+            var divElement = document.getElementById(divId);
+            if (isReschedule) {
+                divElement.style.display = "none";
+            } else {
+                divElement.style.display = "block";
+            }
+        });
+
+        // ✅ Additional logic for Refinancing: hide product selection-related fields
+        var refinancingFields = [
+            //"LoanCategorySelect",       // dropdown for Loan Product Category
+            //"LoanTermSelect",           // dropdown for Loan Term
+            "LoanCategoryDive",     // radio buttons
+            //"TargetPopulationDiv",  // dropdown for target
+            //"loanProductDiv",       // dropdown for loan product
+            "loanTypeDiv"           // dropdown for loan type
+        ];
+
+        refinancingFields.forEach(function (id) {
+            var element = document.getElementById(id);
+            if (element) {
+                element.style.display = isRefinancing ? "none" : "block";
+            }
+        });
+    }
+
+
+
 
 })();
 

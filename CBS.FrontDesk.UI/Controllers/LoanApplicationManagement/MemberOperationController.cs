@@ -477,6 +477,9 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
                     model.AddLoanApplicationCommand.LoanTarget = loan.LoanApplication.LoanTarget;
                     model.AddLoanApplicationCommand.LoanType = loan.LoanApplication.LoanType;
                     model.AddLoanApplicationCommand.LoanId = loan.Id;
+                    model.AddLoanApplicationCommand.LoanTermId = loan.LoanApplication.LoanTermId;
+                    model.AddLoanApplicationCommand.PcmfLoanPurposeId = loan.LoanApplication.PcmfLoanPurposeId;
+                    model.AddLoanApplicationCommand.LoanTargetId = loan.LoanApplication.PcmfLoanPurposeId;
                     model.AddLoanApplicationCommand.Amount = loan.Balance;
                     model.AddLoanApplicationCommand.OldLoanPayment = model.AddLoanApplicationCommand.OldLoanPayment = new OldLoanPayment
                     {
@@ -511,11 +514,11 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
                 }
                 else
                 {
-                    if (!ModelState.IsValid)
-                    {
-                        return JsonValidationErrorResponse();
+                    //if (!ModelState.IsValid)
+                    //{
+                    //    return JsonValidationErrorResponse();
 
-                    }
+                    //}
                     if (model.AddLoanApplicationCommand.LoanApplicationType=="Normal")
                     {
                         model.AddLoanApplicationCommand.LoanId="N/A";

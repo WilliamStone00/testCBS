@@ -320,7 +320,7 @@ namespace CBS.BusinessService.Config
             try
             {
                 // Fetch loan products using the API helper
-                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<LoanProduct>>>(APICallHelper.GetAllLoanProductLighterVersion);
+                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<PCMFLoanProduct>>>(APICallHelper.GetAllLoanProductLighterVersion);
 
                 // Return an empty list if the API response is unsuccessful or data is null
                 if (!(couApiResponse?.IsSuccess == true && couApiResponse.ApiResponseData?.Data != null))
@@ -335,9 +335,7 @@ namespace CBS.BusinessService.Config
                 //var productsCatsx = await _loanProductCategoryServices.GetLoanProductCategorys();
                 var productsCats = await _pcmfLoanPurposeService.GetAllAsync();
                 // Perform join to filter categories based on loan products
-                var productCategories = productsCats
-                    .Where(pc => loanProducts.Any(lp => lp.PcmfLoanPurposeId == pc.Id && lp.ActiveStatus))
-                    .ToList();
+                var productCategories = productsCats.Where(pc => loanProducts.Any(lp => lp.PcmfLoanPurposeId == pc.Id && lp.ActiveStatus)).ToList();
 
                 return productCategories;
             }
