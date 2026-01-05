@@ -179,26 +179,20 @@
                                     </div>
                                 </div>
 
-                                @*<div class="col-md-12">
-            <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanProductCategoryId, new SelectList(ViewBag.Categories, "Id", "Name"), @Member_Global_LoanApplication.SelectLoanProductCategory, new { @class = "form-control select2", @search = "true", @id = "LoanCategoryId", @onchange = "GetLoanPurposes(this.value,'purposeId')" })
-                <label>@Member_Global_LoanApplication.SelectLoanProductCategory</label>
-            </div>
-        </div>*@
-                                @*<div class="col-md-12">
-            <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanTermId, new SelectList(ViewBag.LoanTerms, "Id", "Name"), "---" + @Member_Global_LoanApplication.SelectLoanTerm + "---", new { @class = "form-control select2", @search = "true", @id = "LoanTermId", @onchange = "GetConfiuredTargets(this.value,'TargetId')" })
-                <label>@Member_Global_LoanApplication.SelectLoanTerm</label>
-            </div>
-        </div>*@
+                               
                                 <!-- ✅ Loan Term -->
                                 <div class="col-md-12" id="LoanTermSelect">
                                     <div class="form-floating form-floating-outline">
                                         @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanTermId,
                                             new SelectList(ViewBag.LoanTerms, "Id", "Name"),
                                             "---" + @Member_Global_LoanApplication.SelectLoanTerm + "---",
-                                            new { @class = "form-control select2", @search = "true", @id = "LoanTermId", @onchange = "GetConfiuredTargets(this.value,'TargetId')" })
-                                        <label>@Member_Global_LoanApplication.SelectLoanTerm</label>
+                                            new
+                                            {
+                                                @class = "form-control select2",
+                                                @search = "true",
+                                                @id = "LoanTermId",
+                                                @onchange = "LoadTargetsByTermAndPurpose()" // ✅ same loader
+                                            })
                                     </div>
                                 </div>
                                 <div class="col-12" id="LoanCategoryDive">
@@ -213,10 +207,17 @@
                                 </div>
                                 <div class="col-md-12" id="TargetPopulationDiv">
                                     <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanTarget, new SelectList(ViewBag.LoanTargets, "Value", "Text"), @Member_Global_LoanApplication.SelectLoanCategory, new { @class = "form-control select2", @search = "true", @onchange = "GetProductByTarget(this.value,'loan_productid')", @id = "TargetId" })
-                                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.LoanTarget, "", new { @class = "text-danger " })
-                                        <label>@Member_Global_LoanApplication.TargetedPopulation</label>
-                                    </div>
+                                        @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanTarget,
+                                            new SelectList(ViewBag.LoanTargets, "Value", "Text"),
+                                            @Member_Global_LoanApplication.SelectLoanCategory,
+                                            new
+                                            {
+                                                @class = "form-control select2",
+                                                @search = "true",
+                                                @onchange = "GetProductByTarget(this.value,'loan_productid')",
+                                                @id = "TargetId"
+                                            })                                        <label>@Member_Global_LoanApplication.TargetedPopulation</label>
+                                        </div>
                                 </div>
                                 <!-- Adjusted row -->
                                 

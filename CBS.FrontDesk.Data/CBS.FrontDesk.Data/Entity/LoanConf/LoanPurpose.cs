@@ -13,7 +13,8 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         [Required]
         public string purposeName { get; set; }
         [Required]
-        public string LoanProductCategoryId { get; set; }
-        public LoanProductCategory LoanProductCategory { get; set; }
+        public string PcmfLoanPurposeId { get; set; }
+        public PcmfLoanPurpose PcmfLoanPurpose { get; set; }
+
     }
 }
