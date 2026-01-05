@@ -1880,5 +1880,12 @@ namespace CBS.FrontDesk.Helper
         public const string LoanTypeUpdate = "/api/v1/LoanType/{0}";
         public const string LoanTypeDelete = "/api/v1/LoanType/{0}";
 
+        //------------------- Year ---------------------------------------------
+
+        public const string AddYear = "/api/v1/Year/add";
+        public const string UpdateYear = "/api/v1/Year/update";
+        public const string GetDataTable = "/api/v1/Year/datatable";
+        public const string GetyearById = "/api/v1/Year/{0}";
+        public const string GetAllYear = "/api/v1/Year/all";
     }
 }

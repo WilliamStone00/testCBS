@@ -67,14 +67,21 @@
 
             <!-- Accounting Year -->
             <div class="mb-3">
-                @Html.LabelFor(m => m.YearB, "Accounting Year", new { @class = "form-label" })
+               
+
+
+                @Html.LabelFor(m => m.YearB, "Year",
+                    new { @class = "form-label fw-bold" })
+
                 @Html.DropDownListFor(
                     m => m.YearB,
-                    new SelectList(ViewBag.Year ?? new List<SelectListItem>(), "Value", "Text", Model.YearB),
-                    "--- Select Accounting Year ---",
+                    ViewBag.YearB as List<SelectListItem>,
+                    "-- Select Account Type --",
                     new { @class = "form-control select2", required = "required", id = "YearB" }
                 )
             </div>
+
+            
 
             <!-- Status -->
             <div class="mb-3">
@@ -115,6 +122,6 @@
                     </button>
                 </div>
             </div>
-    </div>
+        </div>
         </div>
 }

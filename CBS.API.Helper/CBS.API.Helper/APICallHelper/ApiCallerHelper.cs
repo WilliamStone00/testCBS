@@ -4563,7 +4563,7 @@ namespace CBS.API.Helper
         }
 
 
-        public async Task<ApiResponse<T>> UploadSharedMonthFileAsync<T>( HttpPostedFileBase file, string branchId, string month,string fileType, string apiUrl,string accountType, decimal interestRate)
+        public async Task<ApiResponse<T>> UploadSharedMonthFileAsync<T>( HttpPostedFileBase file, string branchId, string month,string fileType, string apiUrl,string productId, decimal interestRate, string accountingYearId)
         {
             if (file == null)
                 throw new ArgumentNullException(nameof(file));
@@ -4592,6 +4592,14 @@ namespace CBS.API.Helper
                         "branchId"
                     );
 
+                    // Accounting Year Id ✅
+                    if (!string.IsNullOrWhiteSpace(accountingYearId))
+                    {
+                        formData.Add(
+                            new StringContent(accountingYearId, Encoding.UTF8),
+                            "accountingYearId"
+                        );
+                    }
                     // Month
                     if (!string.IsNullOrWhiteSpace(month))
                     {
@@ -4609,10 +4617,10 @@ namespace CBS.API.Helper
                         );
                     }
                     // Account Type
-                    if (!string.IsNullOrWhiteSpace(accountType))
+                    if (!string.IsNullOrWhiteSpace(productId))
                     {
                         formData.Add(
-                            new StringContent(accountType, Encoding.UTF8),
+                            new StringContent(productId, Encoding.UTF8),
                             "accountType"
                         );
                     }

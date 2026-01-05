@@ -11191,6 +11191,9 @@
     <Content Include="Views\LoanType\_CreateEditLoanType.cshtml" />
     <Content Include="Views\LoanType\_LoanTypeDetails.cshtml" />
     <Content Include="Views\BranchAccount\_NegativityModal.cshtml" />
+    <Content Include="Views\AccountingYear\List.cshtml" />
+    <Content Include="Views\AccountingYear\_Create.cshtml" />
+    <Content Include="Views\AccountingYear\_DataTableYear.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
