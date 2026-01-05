@@ -338,31 +338,35 @@
                 return;
             }
 
-            // Check column count
-            var thCount = $table.find('thead th').length;
-            var firstRowTdCount = $table.find('tbody tr:first td').length;
-            console.log(`Table header columns: ${thCount}, First row columns: ${firstRowTdCount}`);
+            //// Check column count
+            //var thCount = $table.find('thead th').length;
+            //var firstRowTdCount = $table.find('tbody tr:first td').length;
+            //console.log(`Table header columns: ${thCount}, First row columns: ${firstRowTdCount}`);
 
-            if (thCount !== firstRowTdCount) {
-                console.error(`Column mismatch! Header: ${thCount}, Body: ${firstRowTdCount}`);
+            //if (thCount !== firstRowTdCount) {
+            //    console.error(`Column mismatch! Header: ${thCount}, Body: ${firstRowTdCount}`);
 
-                // Show error in table
-                $table.find('tbody').html(`
-                                                    <tr>
-                                                        <td colspan="${thCount}" class="text-center text-danger py-4">
-                                                            <i class="mdi mdi-alert-circle me-1"></i>
-                                                            Data structure error (Column mismatch: ${thCount} vs ${firstRowTdCount})
-                                                        </td>
-                                                    </tr>
-                                                `);
-                return;
-            }
+            //    // Show error in table
+            //    $table.find('tbody').html(`
+            //                                        <tr>
+            //                                            <td colspan="${thCount}" class="text-center text-danger py-4">
+            //                                                <i class="mdi mdi-alert-circle me-1"></i>
+            //                                                Data structure error (Column mismatch: ${thCount} vs ${firstRowTdCount})
+            //                                            </td>
+            //                                        </tr>
+            //                                    `);
+            //    return;
+            //}
 
-            if ($.fn.DataTable.isDataTable('#loanTypeDataTable')) {
-                console.log('DataTable already initialized, destroying...');
-                dataTable.clear().destroy();
-                $table.empty();
-            }
+                if ($.fn.DataTable.isDataTable('#loanTypeDataTable')) {
+                    console.log('DataTable already initialized, destroying...');
+                    dataTable.clear().destroy();
+                    dataTable = null;
+                }
+
+                // ONLY clear tbody — keep thead intact
+                $('#loanTypeDataTable tbody').empty();
+
 
             try {
                 dataTable = $table.DataTable({

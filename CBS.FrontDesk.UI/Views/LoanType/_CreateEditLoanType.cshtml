@@ -6,7 +6,7 @@
         "CreateOrUpdate",
         "LoanType",
         FormMethod.Post,
-        new { id = "loanTypeForm", onsubmit = "return AjaxPostAndUpdate(this);" }))
+        new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
     {
         @Html.AntiForgeryToken()
         @Html.HiddenFor(m => m.Id)
@@ -100,7 +100,7 @@
                 </div>
 
                 <!-- Status -->
-                <div class="col-md-3 mt-2">
+                <div class="col-md-6 mt-2">
                     <div class="form-check form-switch">
                         @Html.CheckBoxFor(m => m.IsActive, new { @class = "form-check-input", id = "isActive" })
                         <label class="form-check-label fw-bold ms-2" for="isActive">
@@ -109,7 +109,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-3 mt-2">
+                <div class="col-md-12 mt-2">
                     <div class="form-check form-switch">
                         @Html.CheckBoxFor(m => m.IsSSF, new { @class = "form-check-input", id = "IsSSF" })
                         <label class="form-check-label fw-bold ms-2" for="IsSSF">
