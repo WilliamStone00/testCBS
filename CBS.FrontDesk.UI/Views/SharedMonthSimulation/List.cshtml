@@ -1,142 +1,272 @@
 ﻿
-@model CBS.FrontDesk.Data.Entity.AccountingV2.SharedMonth.SharedMonthSimulation
+@model CBS.FrontDesk.Data.Entity.AccountingV2.SharedMonth.SharedMonthFileupload
 @{
-    ViewBag.Title = "List Simulation";
+    ViewBag.Title = "Shared Month File Upload";
 }
 
-<div class="card bg-light mb-3">
-    <div class="card-body text-center">
-        <h1 class="card-title text-primary">
-            <i class="mdi mdi-cog-outline me-2"></i> Simulation Data
-        </h1>
+@using Resources
 
-        <div class="alert alert-info mt-3 py-2">
-            <i class="mdi mdi-information-outline me-1"></i>
-            Use the filters below to search and Simulated efficiently.
+
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary fw-bold mb-2">
+                    <i class="mdi mdi-calendar-month me-2"></i> shared Month File Upload
+                </h1>
+
+                <p class="card-text text-info fw-semibold">
+                    <i class="mdi mdi-alert-circle-outline me-1"></i> Always select branch and file type . Select Month where neccesary
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
         </div>
     </div>
 </div>
 
-
-
-
-
-<div class="card shadow p-3 mb-2">
-    <h5 class="text-primary mb-2">
-        <i class="mdi mdi-filter-outline me-1"></i> ADVANCE FILTERS
-    </h5>
-
-    <form id="journalHeaderFilterForm" autocomplete="off" method="post">
-        @Html.AntiForgeryToken()
-
-        <!-- DataTable hidden options -->
-        <input type="hidden" name="Options.Page" value="1" />
-        <input type="hidden" name="Options.PageSize" value="10" />
-        <input type="hidden" name="Options.Sort" value="" />
-
-        <!-- Main Filters Card -->
-        <div class="card p-3 mb-2 bg-light">
-
-            <!-- 🔹 Branch & Date Toggles -->
-            <div class="row mb-2 align-items-center">
-                <div class="col-md-6 mb-1">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="toggleBranch"
-                               onclick="document.getElementById('branchFilter').classList.toggle('d-none')" />
-                        <label class="form-check-label fw-bold" for="toggleBranch">
-                            Show Branch Filter
-                        </label>
-                    </div>
-                </div>
-                <div class="col-md-6 mb-1">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="toggleDateFilters"
-                               onclick="document.getElementById('dateFilters').classList.toggle('d-none')" />
-                        <label class="form-check-label fw-bold" for="toggleDateFilters">
-                            Show Accounting / Created Date Filters
-                        </label>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 🔹 Hidden Branch Dropdown -->
-            <div id="branchFilter" class="d-none">
-                <div class="row mb-1">
-                    <div class="col-md-12 mb-1">
-                        <label class="form-label fw-bold" for="branchId">Branch</label>
-                        @Html.DropDownList("BranchId",
-                            new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
-                            "--- Select Branch ---",
-                            new { @class = "form-control select2 mb-1", @id = "branchId" })
-                    </div>
-                </div>
-            </div>
-
-            <!-- 🔹 Hidden Date Filters -->
-            <div id="dateFilters" class="d-none">
-                <div class="row mb-1">
-                   
-                    <div class="col-md-6 mb-1">
-                        <label class="form-label fw-bold">Start Date</label>
-                        <input type="date" id="startDate" name="StartDate" class="form-control mb-1" />
-                    </div>
-                    <div class="col-md-6 mb-1">
-                        <label class="form-label fw-bold">End Date</label>
-                        <input type="date" id="endDate" name="EndDate" class="form-control mb-1" />
-                    </div>
-                </div>
-            </div>
-
-            @*<hr class="my-3" />*@
-
-            <!-- 🔹 Reference, Operation Type & Work Ticket (always visible) -->
-            <div class="row mb-1">
-                <div class="col-md-4 mb-1">
-                    <label class="form-label fw-bold">Simulation Name</label>
-                    <input type="text" id="name" name="Name" class="form-control mb-1" placeholder="Enter Name" />
-                </div>
-                <div class="col-md-4 mb-1">
-                    <label class="form-label fw-bold">Interest Rate</label>
-                    <input type="number" id="InterestRate" name="InterestRate" class="form-control mb-1" placeholder="Enter Interest Rate" />
-                </div>
-
-                <div class="col-md-4  mb-1">
-                    <label class="form-label fw-bold">Month</label>
-                    @Html.DropDownList(
-                        "Month",
-                        new SelectList(ViewBag.Month, "Value", "Text"),
-                        "--- Select MonTh ---",
-                        new { @class = "form-select select2", required = "required" })
-                    <div class="invalid-feedback">Please select a Month</div>
-                </div>
-            </div>
-           
-
-        </div>     <!-- Action Buttons -->
-
-        <div class="row g-2 mt-2">
-            <div class="col-12 col-md-4">
-                <button id="applyFilterBtn" type="submit" class="btn btn-primary btn-sm w-100">
-                    <i class="mdi mdi-magnify me-1"></i> Apply Filters
-                </button>
-            </div>
-
-            <div class="col-12 col-md-4">
-                <button id="resetFilterBtn" type="button" class="btn btn-secondary btn-sm w-100">
-                    <i class="mdi mdi-refresh me-1"></i> Reset Filters
-                </button>
-            </div>
-
-            <div class="col-12 col-md-4">
-                <button type="button" id="btntExport" class="btn btn-success btn-sm w-100">
-                    <i class="mdi mdi-export me-1"></i> Export
-                </button>
-            </div>
-        </div>
-    </form>
+<!-- Tips -->
+<div class="card mb-2 shadow-sm">
+    <h6 class="card-header d-flex justify-content-between align-items-center bg-light text-primary">
+        <span><i class="mdi mdi-lightbulb-outline me-2"></i> @AccountingV2.Tips</span>
+        <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLoanTips" aria-expanded="false" aria-controls="collapseLoanTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
 </div>
 
+<!-- Main Workspace Card -->
+<div class="card shadow-sm border-0 mb-4">
+    <div id="mainWorkspace">
+        @using (Html.BeginForm("UploadSharedMonth","SharedMonthSimulation", FormMethod.Post,new { enctype = "multipart/form-data", onsubmit = "return fileupload(this);" }))
+         {
 
-<div id="datalistingview">
-    @Html.Partial("_Datatable")
+            <div class="card-body">
+                <div class="row g-3">
+
+
+                    <!-- BRANCH DROPDOWN -->
+                    <div class="col-12 branch-dropdown">
+                        <label for="BranchId" class="form-label fw-semibold">🏢 Select Branch</label>
+                        @Html.DropDownList(
+                         "BranchId",
+                         new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
+                         "--- Select Branch ---",
+                         new { @class = "form-select select2", required = "required" })
+                        @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-6 mb-1">
+                        @Html.LabelFor(m => m.InterestRate, "Interest Rate",
+                            new { @class = "form-label fw-bold" })
+                        @Html.TextBoxFor(m => m.InterestRate,
+                            new { @class = "form-control", type = "number" })
+                    </div>
+                    <div class="col-md-6 mb-1">
+                        <label class="form-label fw-bold">Account Type</label>
+                        @Html.DropDownList(
+                            "AccountType",
+                            new SelectList(ViewBag.AccountType, "Value", "Text"),
+                            "--- Select Account Type ---",
+                            new { @class = "form-select select2", required = "required" })
+                        <small class="text-muted">
+                            Destinaion Account for interest 
+                        </small>
+                        <div class="invalid-feedback">Please select File type</div>
+                    </div>
+                    <div class="col-md-12 mb-1" id="FileTypeDiv">
+                        <label class="form-label fw-bold">File Type</label>
+                        @Html.DropDownList(
+                            "FileType",
+                            new SelectList(ViewBag.FileType, "Value", "Text"),
+                            "--- Select File Type ---",
+                            new { @class = "form-select select2", required = "required" })
+                        <div class="invalid-feedback">Please select File type</div>
+                    </div>
+
+                    <div class="col-md-6 mb-1" id="MonthDiv">
+                        <label class="form-label fw-bold">Month</label>
+                        @Html.DropDownList(
+                            "Month",
+                            new SelectList(ViewBag.Month, "Value", "Text"),
+                            "--- Select Period ---",
+                            new { @class = "form-select select2",  id = "Month" })
+                        <div class="invalid-feedback">Please select a Month</div>
+                    </div>
+
+
+
+                    <div class="mb-3">
+
+                        <div class="input-group">
+                            <input type="file" name="file" id="file" class="form-control" required />
+                            <button type="submit" class="btn btn-primary" id="btnSubmitUpload">
+                                <i class="mdi mdi-cloud-upload-outline me-1"></i> @ChequeManagements.UploadFile
+                            </button>
+                        </div>
+                    </div>
+
+
+
+                    <div class="col-12 text-end mt-3">
+                        <div class="d-flex justify-content-end gap-2">
+
+                            <a id="MonthlyUnprocessDataLink" href="@Url.Action("MonthlyUnprocessData", "SharedMonthSimulation")" class="btn btn-outline-primary">
+                                <i class="mdi mdi-file-download-outline me-1"></i> Download MFI Template (Monthly Unprocess Data)
+                            </a>
+
+                            <a id="MonthlyprocessDataLink" href="@Url.Action("MonthlyprocessData", "SharedMonthSimulation")" class="btn btn-outline-primary d-none">
+                                <i class="mdi mdi-file-download-outline me-1"></i> Download MFI Template (Monthly process Data)
+                            </a>
+
+                            <a id="AnnualprocessDataLink" href="@Url.Action("AnnualprocessData", "SharedMonthSimulation")" class="btn btn-outline-primary d-none">
+                                <i class="mdi mdi-file-download-outline me-1"></i> Download MFI Template (Annual process Data)
+                            </a>
+
+
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+        }  <!-- using block closed -->
+    </div>
+
+
 </div>
+
+@section Scripts {
+
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function () {
+
+            function toggleMonthAndLinks() {
+                var fileType = $("#FileType").val();
+
+                // Divs
+                var monthDiv = $("#MonthDiv");
+                var fileTypeDiv = $("#FileTypeDiv");
+
+                // Download links
+                var monthlyUnprocessLink = $("#MonthlyUnprocessDataLink");
+                var monthlyProcessLink = $("#MonthlyprocessDataLink");
+                var annualProcessLink = $("#AnnualprocessDataLink");
+
+                // Hide all links initially
+                monthlyUnprocessLink.addClass("d-none");
+                monthlyProcessLink.addClass("d-none");
+                annualProcessLink.addClass("d-none");
+
+                if (fileType === "MonthlyUnprocessData" || fileType === "MonthlyprocessData") {
+                    monthDiv.show();
+                    fileTypeDiv.removeClass("col-md-12").addClass("col-md-6");
+                    monthDiv.removeClass("col-12").addClass("col-md-6");
+
+                    if (fileType === "MonthlyUnprocessData") {
+                        monthlyUnprocessLink.removeClass("d-none");
+                    } else {
+                        monthlyProcessLink.removeClass("d-none");
+                    }
+                }
+                else if (fileType === "AnnualprocessData") {
+                    monthDiv.hide();
+                    fileTypeDiv.removeClass("col-md-6").addClass("col-md-12");
+                    annualProcessLink.removeClass("d-none");
+                }
+                else {
+                    monthDiv.hide();
+                    fileTypeDiv.removeClass("col-md-6").addClass("col-md-12");
+                }
+            }
+
+            // Hide month dropdown by default
+            $("#MonthDiv").hide();
+
+            // Trigger on dropdown change
+            $("#FileType").change(function () {
+                toggleMonthAndLinks();
+            });
+        });
+
+
+
+        function fileupload(form) {
+            try {
+                var $form = $(form);
+
+                // Re-parse MVC validation
+                if ($.validator && $.validator.unobtrusive) {
+                    $.validator.unobtrusive.parse($form);
+                }
+
+                if ($.validator && !$form.valid()) {
+                    appalert("❌ Please fill all required fields correctly.", 2, 1);
+                    return false;
+                }
+
+                // Confirmation using alertify
+                alertify.confirm(
+                    "Confirm Upload",
+                    "Are you sure you want to upload this file?",
+                    function () {
+                        // User confirmed, proceed with AJAX upload
+                        var formData = new FormData(form);
+
+                        // Anti-forgery token
+                        var token = $form.find('input[name="__RequestVerificationToken"]').val();
+                        if (token && !formData.has('__RequestVerificationToken')) {
+                            formData.append('__RequestVerificationToken', token);
+                        }
+
+                        var $btn = $("#btnSubmitUpload");
+                        $btn.prop("disabled", true);
+
+                        $.ajax({
+                            url: $form.attr("action"),
+                            type: "POST",
+                            data: formData,
+                            contentType: false,
+                            processData: false,
+
+                            success: function (response) {
+                                if (response && response.success) {
+                                    appalert(response.message || "✅ Upload successful", 1, 1);
+
+                                    // Optional refresh / redirect
+                                    setTimeout(function () {
+                                        window.location.reload();
+                                    }, 1500);
+                                } else {
+                                    appalert(response.message || "❌ Upload failed", 2, 1);
+                                }
+                            },
+
+                            error: function (xhr) {
+                                if (xhr.status === 401) {
+                                    window.location.href = "/Authentication/Login";
+                                    return;
+                                }
+                                appalert("❌ Server error occurred", 0, 1);
+                            },
+
+                            complete: function () {
+                                $btn.prop("disabled", false);
+                            }
+                        });
+                    },
+                    function () {
+                        // User cancelled
+                        appalert("⚠ Upload cancelled", 3, 1);
+                    }
+                );
+
+            } catch (ex) {
+                console.error(ex);
+                appalert("❌ Unexpected error: " + ex.message, 0, 1);
+            }
+
+            return false; // stop normal submit
+        }
+    </script>
+}

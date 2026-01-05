@@ -1,40 +1,77 @@
-﻿
+﻿@using Resources
 
-@using Resources
+<div class="card border-0 shadow-sm mb-3">
+    <div class="card-body p-2 p-md-3">
 
-<div class="row g-2 align-items-center mb-2">
-    <div class="col-md-7 col-lg-6">
+        <!-- Header -->
+        <div class="d-flex align-items-start justify-content-between gap-2 mb-2">
+            <div class="min-w-0">
+                <div class="fw-semibold">
+                    <i class="mdi mdi-account-search-outline me-1"></i>
+                    @CashDesk_MomocashCollectionSearchBox.EnterMemberReferenceNumber
+                </div>
+                <div class="small text-muted">
+                    Search by member reference number to load member details for Cash-In / Loan Repayment.
+                </div>
+            </div>
+
+            <div class="text-end d-none d-md-block">
+                <span class="badge rounded-pill bg-light text-dark border">
+                    <i class="mdi mdi-information-outline me-1"></i>
+                    Cash-In &amp; Loan Repayments (Charges Supported)
+                </span>
+            </div>
+        </div>
+
+        <!-- Hidden current operation (DO NOT CHANGE) -->
         <input type="hidden"
                class="form-control shadow-box"
                value="cashin_momokash_collection"
                id="currentselectedOperation" />
 
-        <label for="manualSearchInput" class="form-label small mb-1">
-            @CashDesk_MomocashCollectionSearchBox.EnterMemberReferenceNumber
-        </label>
+        <!-- Input row -->
+        <div class="row g-2 align-items-center">
+            <div class="col-lg-8">
 
-        <div class="input-group input-group-sm">
-            <span class="input-group-text">
-                <i class="bi bi-search"></i>
-            </span>
-            <input type="text"
-                   id="manualSearchInput"
-                   class="form-control shadow-box"
-                   placeholder="@CashDesk_MomocashCollectionSearchBox.EnterMemberReferenceNumber" />
-            <button type="button"
-                    class="btn btn-primary"
-                    id="btnSearchMember"
-                    onclick="GetMember()">
-                @CashDesk_MomocashCollectionSearchBox.Search
-            </button>
+                <div class="input-group input-group-sm">
+                    <span class="input-group-text bg-white">
+                        <i class="mdi mdi-magnify"></i>
+                    </span>
+
+                    <!-- DO NOT CHANGE id -->
+                    <input type="text"
+                           id="manualSearchInput"
+                           class="form-control shadow-box"
+                           placeholder="@CashDesk_MomocashCollectionSearchBox.EnterMemberReferenceNumber"
+                           autocomplete="off"
+                           inputmode="numeric" />
+                    <small id="manualSearchInputError" class="text-danger d-none">
+                        Member reference is required.
+                    </small>
+
+                    <!-- DO NOT CHANGE id + onclick -->
+                    <button type="button"
+                            class="btn btn-primary"
+                            id="btnSearchMember"
+                            onclick="GetMember()">
+                        <i class="mdi mdi-magnify me-1"></i>
+                        @CashDesk_MomocashCollectionSearchBox.Search
+                    </button>
+                </div>
+
+                <div class="form-text mt-1">
+                    <i class="mdi mdi-keyboard-return me-1"></i>
+                    Press <strong>Enter</strong> or click <strong>Search</strong>.
+                </div>
+            </div>
+
+            <div class="col-lg-4 text-lg-end d-none d-lg-block">
+                <div class="small text-muted">
+                    <i class="mdi mdi-shield-check-outline me-1"></i>
+                    Ensure the reference is correct before proceeding.
+                </div>
+            </div>
         </div>
-    </div>
 
-    <div class="col-md-5 col-lg-6 text-md-end d-none d-md-block">
-        <small class="text-muted">
-            Press <strong>Enter</strong> or click <strong>Search</strong>.
-        </small>
     </div>
 </div>
-
-

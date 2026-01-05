@@ -1891,61 +1891,104 @@ function AjaxPostAndUpdate(form) {
     return false;
 }
 
+// ✅ One timer for top page alert
+var __appAlertTimer = null;
+var __APP_ALERT_MS = 20000; // 20 sec
+
+function hideAppAlert(sel) {
+    if (__appAlertTimer) {
+        clearTimeout(__appAlertTimer);
+        __appAlertTimer = null;
+    }
+    $(sel).addClass("d-none");
+}
+
+function __setAlertType($div, type) {
+    $div.removeClass("alert-success alert-danger alert-warning alert-info")
+        .addClass("alert-" + type);
+}
+
+function __showAlert(divSelector, autoCloseMs) {
+    $(divSelector).removeClass("d-none");
+
+    if (__appAlertTimer) clearTimeout(__appAlertTimer);
+    __appAlertTimer = setTimeout(function () {
+        hideAppAlert(divSelector);
+    }, autoCloseMs || __APP_ALERT_MS);
+}
+
+// ✅ quick helpers
+function appSuccess(message) { appalert(message, 1, 1); }
+function appWarning(message) { appalert(message, 2, 1); }
+function appInfo(message) { appalert(message, 3, 1); }
+function appError(message) { appalert(message, 0, 1); }
+
+/**
+ * state:
+ *  1 = success
+ *  2 = warning
+ *  3 = info
+ *  else = error
+ *
+ * alertType is accepted for backward compatibility,
+ * BUT we ALWAYS show: page alert + toastr.
+ */
 function appalert(message, state, alertType) {
 
-    if (alertType === 1) {
-        if (state === 1) {
-            $("#message_div_success").show();
-            $("#message_div_danger").hide();
-            $("#message_div_warning").hide();
-            $("#message_div_info").hide();
-            $("#messagesuccess").html(message);
-            toastr.success(message)
-            // $.alert(message, "success");
-        }
-        else if (state === 2) {
-            $("#message_div_success").hide();
-            $("#message_div_danger").hide();
-            $("#message_div_warning").show();
-            $("#message_div_info").hide();
-            $("#messagewarning").html(message);
-            toastr.warning(message)
-        }
-        else if (state === 3) {
-            $("#message_div_success").hide();
-            $("#message_div_danger").hide();
-            $("#message_div_warning").hide();
-            $("#message_div_info").show();
-            $("#messageinfo").html(message);
-            toastr.info(message)
-            //toastr.success('This is a success notification from toastr.')  
-            //$.alert(message, "info");
-        }
-        else {
-            $("#message_div_success").hide();
-            $("#message_div_danger").show();
-            $("#message_div_warning").hide();
-            $("#message_div_info").hide();
-            $("#messagedanger").html(message);
-            toastr.error(message)
+    var text = (message === null || message === undefined) ? "" : String(message);
 
-            //$.alert(message, "error");
-        }
+    var $successDiv = $("#message_div_success");
+    var $dangerDiv = $("#message_div_danger");
+
+    // ✅ Always hide both first so only ONE page alert is visible
+    $successDiv.addClass("d-none");
+    $dangerDiv.addClass("d-none");
+
+    // -----------------------------
+    // 1) TOP PAGE ALERT (20 seconds)
+    // -----------------------------
+    if (state === 1) {
+        __setAlertType($successDiv, "success");
+        $("#messagesuccess").text(text);
+        __showAlert("#message_div_success", __APP_ALERT_MS);
     }
-    else if (alertType === 2) {
-        if (state === 1) {
-            alertify.alert(message, function () { alertify.message('OK'); });
-        }
-        else if (state === 2) {
-            alertify.confirm("Delete", message, function () { alertify.success('Ok'); },
-                function () {
-                    alertify.error('Transaction cancelled');
-                });
-        }
-
+    else if (state === 3) {
+        __setAlertType($successDiv, "info");
+        $("#messagesuccess").text(text);
+        __showAlert("#message_div_success", __APP_ALERT_MS);
+    }
+    else if (state === 2) {
+        __setAlertType($dangerDiv, "warning");
+        $("#messagedanger").text(text);
+        __showAlert("#message_div_danger", __APP_ALERT_MS);
+    }
+    else {
+        __setAlertType($dangerDiv, "danger");
+        $("#messagedanger").text(text);
+        __showAlert("#message_div_danger", __APP_ALERT_MS);
     }
 
+    // -----------------------------
+    // 2) TOAST POPUP (above modals)
+    // -----------------------------
+    if (window.toastr) {
+        toastr.options = toastr.options || {};
+        toastr.options.closeButton = true;
+        toastr.options.newestOnTop = true;
+        toastr.options.preventDuplicates = true;
+        toastr.options.progressBar = true;
+        toastr.options.escapeHtml = true;  // ✅ safe
+        // ✅ increase display time
+        toastr.options.timeOut = 20000;         // 20 seconds visible
+        toastr.options.extendedTimeOut = 5000;  // stays longer on hover
+
+        if (state === 1) toastr.success(text);
+        else if (state === 2) toastr.warning(text);
+        else if (state === 3) toastr.info(text);
+        else toastr.error(text);
+    }
 }
+
 
 function LoadDataNoSelect(controller, option, divLoader, tableID, action, KEY, ReadOptions, path, group, datefrom, dateto) {
     console.log(dateto);
@@ -2597,3 +2640,46 @@ function AjaxPostAndUpdateChangePassword(form) {
 //    // 🚀 Start logic
 //    fetchIdleTimeout();
 //})();
+
+function ShowModal(key, partialView, controller, path) {
+    var url = '/' + controller + '/InitializeData?KEY=' + encodeURIComponent(key || '') +
+        '&partialView=' + encodeURIComponent(partialView) +
+        '&path=' + encodeURIComponent(path);
+
+    $.get(url).done(function (html) {
+
+        const modalEl = document.getElementById('genericModal');
+        const modalBody = modalEl.querySelector('.modal-content');
+
+        modalBody.innerHTML = html;
+
+        const modal = new bootstrap.Modal(modalEl);
+
+        // 🔥 Initialize Select2 AFTER HTML injection, BEFORE show
+        initSelect2(modalEl);
+
+        modal.show();
+
+    }).fail(function () {
+        appalert('Failed to load content', 0, 1);
+    });
+}
+
+function initSelect2(container) {
+    $(container).find('.select2').each(function () {
+        const $select = $(this);
+
+        // Destroy if already initialized (important for AJAX reloads)
+        if ($select.hasClass('select2-hidden-accessible')) {
+            $select.select2('destroy');
+        }
+
+        $select.select2({
+            width: '100%',
+            dropdownParent: $(container), // 🔥 REQUIRED for modals
+            placeholder: $select.attr('data-placeholder') || 'Select an option',
+            allowClear: true
+        });
+    });
+}
+

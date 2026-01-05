@@ -621,6 +621,31 @@ namespace CBS.BusinessService.Accounting_V2.BranchAccountService
             return ExecutionMessage;
         }
 
+        public async Task<ExecutionMessages> UpdateNegativityByClassAsync(UpdateAccountNegativityRequest model)
+        {
+            try
+            {
+                var response = await _apiCallerHelper.PutAsync<ServiceResponse<UpdateAccountNegativityRequest>>(APICallHelper.Accountnegman, model);
+
+                if (response.IsSuccess)
+                {
+                    GetExecutionMessages(response.ApiResponseData.Data, true, null, MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData.Message);
+                }
+                else
+                {
+                    GetExecutionMessages(model, false,null, MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.ApiResponseData?.Message ?? response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                GetExecutionMessages(model, false,null, MessagesResults.Error,
+                    ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message);
+            }
+            return ExecutionMessage;
+        }
+
         public async Task<ExecutionMessages> UpdateAsync(BranchAccountCommand model)
         {
             try
@@ -646,7 +671,7 @@ namespace CBS.BusinessService.Accounting_V2.BranchAccountService
                     ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message);
             }
             return ExecutionMessage;
-        }
+        }       
 
         public async Task<ExecutionMessages> DeleteAsync(string categoryId)
         {

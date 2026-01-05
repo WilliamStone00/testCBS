@@ -1,70 +1,112 @@
 ﻿@model CBS.FrontDesk.Data.Entity.LoanConf.LoanTerm
-    @using Resources
-<div class="card-body">
-    @using (Html.BeginForm("Create", "LoanTerm", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
-    {
-        @Html.HiddenFor(model => model.Id)
-        <div class="row mt-3 gy-4">
-            <fieldset class="fieldset-custom">
-                <div class="col-md-12 mb-2">
+@using Resources
+
+@{
+    var isEdit = !string.IsNullOrWhiteSpace(Model.Id);
+    var action = isEdit ? "Update" : "Create";
+    var controller = "LoanTerm";
+    var formId = isEdit ? "loanTermEditForm" : "loanTermCreateForm";
+}
+
+<div class="modal-header">
+  
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<div class="col-12">
+    <div class="card bg-light mb-2 shadow-sm">
+        <div class="card-body text-center">
+            <h5 class="modal-title text-primary">
+                <i class="mdi mdi-bank-transfer me-2"></i>
+                @(isEdit ? GlobalShared.Edit : GlobalShared.AddNew) Loan Term
+            </h5>
+               <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+        </div>
+    </div>
+</div>
+
+<div class="modal-body">
+        @using (Html.BeginForm("Create", "LoanTerm", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+        {
+
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.Id)
+
+            <div class="row gy-3">
+                <div class="col-md-12">
                     <div class="form-floating">
                         @Html.DropDownListFor(m => m.TermKind,
                             (IEnumerable<SelectListItem>)ViewBag.TermKind,
                             "Select Term Kind",
-                            new { @class = "form-control select2" })
-                        <label>Pcmf Purpose Key</label>
-                        @Html.ValidationMessageFor(m => m.TermKind, "", new { @class = "text-danger" })
+                            new { @class = "form-control select2", required = "required" })
+                        <label class="form-label">@GlobalLoanTerm.TermKind</label>
+                        @Html.ValidationMessageFor(m => m.TermKind, "", new { @class = "text-danger small" })
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-md-6 mb-2">
-                        <div class="form-floating form-floating-outline">
-                            @Html.TextBoxFor(m => m.NameEn, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.NameEn, "", new { @class = "text-danger" })
-                            <label>@GlobalLoanTerm.Name En</label>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 mb-2">
-                        <div class="form-floating form-floating-outline">
-                            @Html.TextBoxFor(m => m.NameFr, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.NameFr, "", new { @class = "text-danger" })
-                            <label>@GlobalLoanTerm.Name Fr</label>
-                        </div>
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        @Html.TextBoxFor(m => m.NameEn,
+                            new { @class = "form-control", placeholder = "English Name", required = "required", maxlength = "200" })
+                        <label >@GlobalLoanTerm.Name En</label>
+                        @Html.ValidationMessageFor(m => m.NameEn, "", new { @class = "text-danger small" })
                     </div>
                 </div>
 
-                <!-- Min and Max Fields in the Same Row -->
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <div class="form-floating form-floating-outline">
-                            @Html.TextBoxFor(m => m.MinInMonth, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.MinInMonth, "", new { @class = "text-danger" })
-                            <label>@GlobalLoanTerm.Minimum_value_in_months</label>
-                        </div>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <div class="form-floating form-floating-outline">
-                            @Html.TextBoxFor(m => m.MaxInMonth, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.MaxInMonth, "", new { @class = "text-danger" })
-                            <label>@GlobalLoanTerm.Maximum_value_in_months</label>
-                        </div>
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        @Html.TextBoxFor(m => m.NameFr,
+                            new { @class = "form-control", placeholder = "French Name", required = "required", maxlength = "200" })
+                        <label >@GlobalLoanTerm.Name Fr</label>
+                        @Html.ValidationMessageFor(m => m.NameFr, "", new { @class = "text-danger small" })
                     </div>
                 </div>
-            </fieldset>
-        </div>
-        <!-- Buttons -->
-        <div class="mt-4 text-end">
-            @if (ViewBag.Key != null)
-            {
-                <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
-            }
-            else
-            {
-        <button type="submit" class="btn btn-primary me-2">@GlobalShared.Save</button>
-        <button type="reset" class="btn btn-outline-secondary">@GlobalShared.Reset</button>
-            }
-        </div>
-    }
-</div>
+
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        @Html.TextBoxFor(m => m.MinInMonth,
+                            new { @class = "form-control", type = "number", min = "0", placeholder = "Minimum", required = "required" })
+                        <label >@GlobalLoanTerm.Minimum_value_in_months </label>
+                        @Html.ValidationMessageFor(m => m.MinInMonth, "", new { @class = "text-danger small" })
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        @Html.TextBoxFor(m => m.MaxInMonth,
+                            new { @class = "form-control", type = "number", min = "0", placeholder = "Maximum", required = "required" })
+                        <label >@GlobalLoanTerm.Maximum_value_in_months </label>
+                        @Html.ValidationMessageFor(m => m.MaxInMonth, "", new { @class = "text-danger small" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer mt-4">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="mdi mdi-close me-1"></i> @GlobalShared.Cancel
+                </button>
+                <button type="submit" class="btn btn-primary">
+                    @if (isEdit)
+                    {
+                        <i class="mdi mdi-content-save me-1"></i> @GlobalShared.Update
+                    }
+                    else
+                    {
+                        <i class="mdi mdi-check me-1"></i> @GlobalShared.Save
+                    }
+                </button>
+            </div>
+        }
+    </div>
+
+<script>
+    $(document).ready(function () {
+        // Initialize Select2 if available
+        if ($.fn.select2) {
+            $('.select2').select2({
+                width: '100%',
+                dropdownParent: $('#loanTermModal')
+            });
+        }
+    });
+</script>

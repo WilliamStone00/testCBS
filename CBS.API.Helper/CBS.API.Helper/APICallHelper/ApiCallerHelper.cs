@@ -4562,6 +4562,87 @@ namespace CBS.API.Helper
             }
         }
 
+
+        public async Task<ApiResponse<T>> UploadSharedMonthFileAsync<T>( HttpPostedFileBase file, string branchId, string month,string fileType, string apiUrl,string accountType, decimal interestRate)
+        {
+            if (file == null)
+                throw new ArgumentNullException(nameof(file));
+
+            try
+            {
+                apiUrl = RemoveDuplicateSlashes($"{GetEndpoint(_newbaseURL)}{apiUrl}");
+
+                using (var formData = new MultipartFormDataContent())
+                {
+                    // Reset stream
+                    if (file.InputStream.CanSeek)
+                        file.InputStream.Position = 0;
+
+                    // File content
+                    var fileContent = new StreamContent(file.InputStream);
+                    fileContent.Headers.ContentType =
+                        new MediaTypeHeaderValue(file.ContentType ?? "application/octet-stream");
+
+                    var fileName = Path.GetFileName(file.FileName ?? "upload.bin");
+                    formData.Add(fileContent, "file", fileName);
+
+                    // BranchId
+                    formData.Add(
+                        new StringContent(branchId ?? string.Empty, Encoding.UTF8),
+                        "branchId"
+                    );
+
+                    // Month
+                    if (!string.IsNullOrWhiteSpace(month))
+                    {
+                        formData.Add(
+                            new StringContent(month, Encoding.UTF8),
+                            "month"
+                        );
+                    }
+                    // FileType (optional)
+                    if (!string.IsNullOrWhiteSpace(fileType))
+                    {
+                        formData.Add(
+                            new StringContent(fileType, Encoding.UTF8),
+                            "fileType"
+                        );
+                    }
+                    // Account Type
+                    if (!string.IsNullOrWhiteSpace(accountType))
+                    {
+                        formData.Add(
+                            new StringContent(accountType, Encoding.UTF8),
+                            "accountType"
+                        );
+                    }
+
+                    // Interest Rate
+                    formData.Add(
+                        new StringContent(
+                            interestRate.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                            Encoding.UTF8),
+                        "interestRate"
+                    );
+
+                    // Auth
+                    AddAuthorizationHeader(_httpClient);
+
+                    var response = await _httpClient.PostAsync(apiUrl, formData)
+                                                     .ConfigureAwait(false);
+
+                    return await HandleResponse<T>(response)
+                                 .ConfigureAwait(false);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"SharedMonth upload error: {ex}");
+                throw;
+            }
+        }
+
+
         // Usage Examples:
 
         // 1. Fire-and-forget with callback
