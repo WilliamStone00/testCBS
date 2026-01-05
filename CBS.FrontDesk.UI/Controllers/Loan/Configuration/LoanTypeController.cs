@@ -84,7 +84,7 @@ namespace CBS.FrontDesk.UI.Controllers.Loan.Configuration
 
         [HttpGet]
         public async Task<JsonResult> GetAll()
-        {
+         {
             try
             {
                 var data = await _loanTypeService.GetAllAsync();               
