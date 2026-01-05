@@ -9,10 +9,12 @@ using CBS.FrontDesk.Data.Entity.CashCeilingManagement;
 using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.CustomerManagement;
 using CBS.FrontDesk.Data.Entity.LoanConf;
+using CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure;
 using CBS.FrontDesk.Data.Entity.MemberOperation;
 using CBS.FrontDesk.Data.Message;
 using DocumentFormat.OpenXml.Bibliography;
 using DocumentFormat.OpenXml.Office2010.Excel;
+using Microsoft.AspNet.SignalR.Infrastructure;
 using Microsoft.Owin.Logging;
 using System;
 using System.Collections.Generic;
@@ -475,6 +477,9 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
                     model.AddLoanApplicationCommand.LoanTarget = loan.LoanApplication.LoanTarget;
                     model.AddLoanApplicationCommand.LoanType = loan.LoanApplication.LoanType;
                     model.AddLoanApplicationCommand.LoanId = loan.Id;
+                    model.AddLoanApplicationCommand.LoanTermId = loan.LoanApplication.LoanTermId;
+                    model.AddLoanApplicationCommand.PcmfLoanPurposeId = loan.LoanApplication.PcmfLoanPurposeId;
+                    model.AddLoanApplicationCommand.LoanTargetId = loan.LoanApplication.PcmfLoanPurposeId;
                     model.AddLoanApplicationCommand.Amount = loan.Balance;
                     model.AddLoanApplicationCommand.OldLoanPayment = model.AddLoanApplicationCommand.OldLoanPayment = new OldLoanPayment
                     {
@@ -509,11 +514,11 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
                 }
                 else
                 {
-                    if (!ModelState.IsValid)
-                    {
-                        return JsonValidationErrorResponse();
+                    //if (!ModelState.IsValid)
+                    //{
+                    //    return JsonValidationErrorResponse();
 
-                    }
+                    //}
                     if (model.AddLoanApplicationCommand.LoanApplicationType=="Normal")
                     {
                         model.AddLoanApplicationCommand.LoanId="N/A";
@@ -553,6 +558,7 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
             var productEnumAgregates = await _loanProductServices.GetLoanProductEnumAggregates();
             var loanTerms = await _loanProductServices.GetProductTermOrDurationFromConfiguredProduct();
             var categories = await _loanProductServices.GetProductCategoryFromConfiguredProduct();
+
             ViewBag.LoanTypes = productEnumAgregates.LoanTypes;
 
             ViewBag.EconomicActivities = await _economicActivityServices.GetEconomicActivities();
@@ -623,11 +629,33 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
                     return Json(listing, JsonRequestBehavior.AllowGet);
 
                 }
-                else if (path == "get_configurated_target")
+                else if (path == "load_loan_term_by_pcmfpurpose")
                 {
-                    var listing = await _loanProductServices.GetTargetsConfiguredForProductByTermOrDuration(Key, loanCategoryid, isSSF);
+                    var listing = await _loanProductServices.GetTermByPcmfPurpose(Key);
                     return Json(listing, JsonRequestBehavior.AllowGet);
 
+                }
+                else if (path == "get_configurated_target")
+                {
+                    // Key = purposeId
+                    var purposeId = Key;
+                    var termId = loanTermId; // ✅ comes from querystring param
+
+                    // optional: if you want these, add them to method params:
+                    // string loanFacility, string lang
+                    //var loanFacility =null; // or parse from request if passed
+                    var lang = "en"; // or parse
+
+                    var data = await _loanProductServices.GetPcmfLoanProductUiCatalogQuery(
+                       new GetPcmfLoanProductUiCatalogQuery
+                       {
+                           LoanTermId = termId,
+                           PcmfLoanPurposeId = purposeId,
+                           LoanFacility = null,
+                           Lang = lang
+                       });
+
+                    return Json(data?.Targets ?? new List<UiOptionDto>(), JsonRequestBehavior.AllowGet);
                 }
 
                 else if (path == "get_puposes")
@@ -650,7 +678,7 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
         }
         public async Task<ActionResult> GetLoanProduct(string Key)
         {
-            var data = await _loanProductServices.GetLoanProduct(Key);
+            var data = await _loanProductServices.PcmfGetLoanProduct(Key);
             return Json(data, JsonRequestBehavior.AllowGet);
         }
         public async Task<ActionResult> GetLoan(string Key)

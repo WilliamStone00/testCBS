@@ -235,63 +235,50 @@
 // Management Account Negativity - Loads modal via AJAX
 // ─────────────────────────────────────────────────────────────────────────────
 
-$(document).on('click', '#btnManageAccountNeg', function (e) {
+ $(document).on('click', '#btnManageAccountNeg', function (e) {
     e.preventDefault();
     loadNegativityModal();
 });
 
-function loadNegativityModal() {
+ function loadNegativityModal() {
     const $container = $('#negativityModalContainer');
 
-    // Clean up any existing modal first
+    // Clean up any existing modal
     cleanupExistingModal();
 
-    // Show loading indicator
+    // Show loading placeholder (NOT a modal)
     $container.html(`
-        <div class="modal fade" id="manageNegativityModal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-body text-center py-5">
-                        <div class="spinner-border text-warning" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
-                        <p class="mt-2">Loading negativity management...</p>
-                    </div>
-                </div>
+        <div class="d-flex justify-content-center align-items-center py-5">
+            <div class="text-center">
+                <div class="spinner-border text-warning mb-2" role="status"></div>
+                <div>Loading negativity management...</div>
             </div>
         </div>
     `);
 
-    // Show the loading modal
-    const loadingModal = new bootstrap.Modal($('#manageNegativityModal')[0], { backdrop: 'static' });
-    loadingModal.show();
-
-    // Store reference to loading modal for cleanup
-    window.loadingNegativityModal = loadingModal;
-
-    // Load the actual modal content
+    // Load modal content
     $.ajax({
         url: '@Url.Action("GetNegativityModal", "BranchAccount")',
         type: 'GET',
-        success: function(html) {
-            // Clean up loading modal first
-            cleanupExistingModal();
+        success: function (html) {
 
-            // Replace container with loaded content
+            // Replace container with actual modal HTML
             $container.html(html);
 
-            // Initialize the modal after it's loaded
+            // Initialize modal logic (events, validation, etc.)
             initializeNegativityModal();
 
-            // Show the actual modal
-            const modal = new bootstrap.Modal($('#manageNegativityModal')[0], { backdrop: 'static' });
-            modal.show();
-        },
-        error: function(xhr) {
-            console.error('Error loading negativity modal:', xhr);
+            // Show modal ONLY after everything is ready
+            const modalElement = document.getElementById('manageNegativityModal');
+            const modalInstance = new bootstrap.Modal(modalElement, {
+                backdrop: 'static',
+                keyboard: false
+            });
 
-            // Clean up loading modal first
-            cleanupExistingModal();
+            modalInstance.show();
+        },
+        error: function (xhr) {
+            console.error('Error loading negativity modal:', xhr);
 
             $container.html(`
                 <div class="modal fade" id="manageNegativityModal" tabindex="-1" aria-hidden="true">
@@ -301,16 +288,18 @@ function loadNegativityModal() {
                                 <h5 class="modal-title text-danger">
                                     <i class="mdi mdi-alert-circle me-1"></i> Error
                                 </h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                             </div>
                             <div class="modal-body">
                                 <div class="alert alert-danger">
-                                    <i class="mdi mdi-alert-circle-outline me-2"></i>
-                                    Failed to load negativity management modal. Please try again.
+                                    Failed to load negativity management modal.
+                                    Please try again.
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">
+                                    Close
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -318,14 +307,17 @@ function loadNegativityModal() {
             `);
 
             // Show error modal
-            const errorModal = new bootstrap.Modal($('#manageNegativityModal')[0]);
+            const errorModal = new bootstrap.Modal(
+                document.getElementById('manageNegativityModal')
+            );
             errorModal.show();
         }
     });
 }
 
-// Clean up any existing modal instances
-function cleanupExistingModal() {
+
+    // Clean up any existing modal instances
+    function cleanupExistingModal() {
     // Remove any existing modal backdrop
     $('.modal-backdrop').remove();
 
@@ -361,7 +353,7 @@ function cleanupExistingModal() {
     }
 }
 
-function initializeNegativityModal() {
+    function initializeNegativityModal() {
     const $modal = $('#manageNegativityModal');
 
     // Initialize Select2 in modal
@@ -390,7 +382,7 @@ function initializeNegativityModal() {
     attachNegativityModalEvents();
 }
 
-function attachNegativityModalEvents() {
+    function attachNegativityModalEvents() {
     const $modal = $('#manageNegativityModal');
 
     // Clear any existing alerts when modal is shown
@@ -552,8 +544,8 @@ function attachNegativityModalEvents() {
     });
 }
 
-// Load branch accounts for negativity management
-function loadBranchAccountsForNegativity(branchId) {
+       // Load branch accounts for negativity management
+       function loadBranchAccountsForNegativity(branchId) {
     const $dropdown = $('#NegBranchAccountId');
     if (!branchId) {
         $dropdown.html('<option value="">--- Select Branch first ---</option>');
@@ -609,8 +601,8 @@ function loadBranchAccountsForNegativity(branchId) {
     });
 }
 
-// Update summary text
-function updateNegativitySummary() {
+        // Update summary text
+    function updateNegativitySummary() {
     const $summary = $('#negativitySummary');
     const $summaryText = $('#summaryText');
 
@@ -653,8 +645,8 @@ function updateNegativitySummary() {
     $summary.show();
 }
 
-// Bootstrap confirmation modal function
-function showBootstrapConfirmation(action, target, requestData) {
+    // Bootstrap confirmation modal function
+    function showBootstrapConfirmation(action, target, requestData) {
     // First clean up any existing confirmation modal
     cleanupConfirmationModal();
 
@@ -706,8 +698,8 @@ function showBootstrapConfirmation(action, target, requestData) {
     });
 }
 
-// Clean up confirmation modal
-function cleanupConfirmationModal() {
+    // Clean up confirmation modal
+    function cleanupConfirmationModal() {
     const confirmationModalEl = document.getElementById('confirmationModal');
     if (confirmationModalEl) {
         const confirmationModal = bootstrap.Modal.getInstance(confirmationModalEl);
@@ -721,59 +713,78 @@ function cleanupConfirmationModal() {
     $('.modal-backdrop').not('.show').remove();
 }
 
-// Submit negativity settings to server - Modal stays open version
-function applyNegativitySettings(data) {
-    const $btn = $('#btnApplyNegativity');
-    const $modal = $('#manageNegativityModal');
-    const originalText = $btn.html();
+    // Submit negativity settings to server - Modal stays open version
+    function applyNegativitySettings(data) {
+        const $btn = $('#btnApplyNegativity');
+        const $modal = $('#manageNegativityModal');
+        const originalText = $btn.html();
 
-    $btn.prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin me-1"></i> Processing...');
+        $btn.prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin me-1"></i> Processing...');
 
-    $.ajax({
-        url: '@Url.Action("UpdateAccountNegativity", "BranchAccount")',
-        type: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify(data),
-        success: function(response) {
-            // Reset button state
-            $btn.prop('disabled', false).html(originalText);
+        $.ajax({
+            url: '@Url.Action("UpdateAccountNegativity", "BranchAccount")',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: function(response) {
+                // Reset button state
+                $btn.prop('disabled', false).html(originalText);
 
-            if (response && response.success) {
-                // Show success message
-                const successHtml = `
-                    <div class="alert alert-success alert-dismissible fade show mb-3" role="alert" id="successAlert">
-                        <div class="d-flex align-items-center">
-                            <i class="mdi mdi-check-circle-outline me-2" style="font-size: 1.25rem;"></i>
-                            <div class="flex-grow-1">
-                                <strong class="me-2">Success!</strong>
-                                ${response.message || 'Account negativity settings updated successfully!'}
+                if (response && response.success) {
+                    // Show success message
+                    const successHtml = `
+                        <div class="alert alert-success alert-dismissible fade show mb-3" role="alert" id="successAlert">
+                            <div class="d-flex align-items-center">
+                                <i class="mdi mdi-check-circle-outline me-2" style="font-size: 1.25rem;"></i>
+                                <div class="flex-grow-1">
+                                    <strong class="me-2">Success!</strong>
+                                    ${response.message || 'Account negativity settings updated successfully!'}
+                                </div>
+                                <button type="button" class="btn btn-success btn-sm" id="btnCloseAfterSuccess">
+                                    <i class="mdi mdi-check me-1"></i> Done
+                                </button>
                             </div>
-                            <button type="button" class="btn btn-success btn-sm" id="btnCloseAfterSuccess">
-                                <i class="mdi mdi-check me-1"></i> Done
-                            </button>
                         </div>
-                    </div>
-                `;
+                    `;
 
-                // Remove any existing alerts and add new success message
-                $modal.find('.alert').remove();
-                $modal.find('.modal-body').prepend(successHtml);
+                    // Remove any existing alerts and add new success message
+                    $modal.find('.alert').remove();
+                    $modal.find('.modal-body').prepend(successHtml);
 
-                // Add click handler for the "Done" button
-                $modal.off('click', '#btnCloseAfterSuccess').on('click', '#btnCloseAfterSuccess', function() {
-                    closeNegativityModal();
-                });
+                    // Add click handler for the "Done" button
+                    $modal.off('click', '#btnCloseAfterSuccess').on('click', '#btnCloseAfterSuccess', function() {
+                        closeNegativityModal();
+                    });
 
-                // Reload table in background
-                if (table) {
-                    table.ajax.reload(null, false);
+                    // Reload table in background
+                    if (table) {
+                        table.ajax.reload(null, false);
+                    }
+                } else {
+                    // Show error message
+                    const errorHtml = `
+                        <div class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
+                            <i class="mdi mdi-alert-circle-outline me-2"></i>
+                            <strong>Error!</strong> ${response?.message || 'Failed to update negativity settings.'}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    `;
+
+                    $modal.find('.alert').remove();
+                    $modal.find('.modal-body').prepend(errorHtml);
                 }
-            } else {
-                // Show error message
+            },
+            error: function(xhr) {
+                console.error('Error updating negativity:', xhr);
+
+                // Reset button state
+                $btn.prop('disabled', false).html(originalText);
+
+                // Show error
                 const errorHtml = `
                     <div class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
                         <i class="mdi mdi-alert-circle-outline me-2"></i>
-                        <strong>Error!</strong> ${response?.message || 'Failed to update negativity settings.'}
+                        <strong>Server Error!</strong> An error occurred. Please try again.
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 `;
@@ -781,30 +792,11 @@ function applyNegativitySettings(data) {
                 $modal.find('.alert').remove();
                 $modal.find('.modal-body').prepend(errorHtml);
             }
-        },
-        error: function(xhr) {
-            console.error('Error updating negativity:', xhr);
+        });
+    }
 
-            // Reset button state
-            $btn.prop('disabled', false).html(originalText);
-
-            // Show error
-            const errorHtml = `
-                <div class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
-                    <i class="mdi mdi-alert-circle-outline me-2"></i>
-                    <strong>Server Error!</strong> An error occurred. Please try again.
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            `;
-
-            $modal.find('.alert').remove();
-            $modal.find('.modal-body').prepend(errorHtml);
-        }
-    });
-}
-
-// Helper function to close the modal
-function closeNegativityModal() {
+       // Helper function to close the modal
+       function closeNegativityModal() {
     const modalEl = document.getElementById('manageNegativityModal');
     if (!modalEl) return;
 
@@ -820,10 +812,11 @@ function closeNegativityModal() {
     }, 300);
 }
 
-// Global function for onclick attribute (if needed)
-window.closeNegativityModalGlobal = closeNegativityModal;
+    // Global function for onclick attribute (if needed)
+    window.closeNegativityModalGlobal = closeNegativityModal;
 
 //--------------------------------- End of negativity management -------------------------
+
 
     // ─────────────────────────────────────────────────────────────────────────────
     // Delegated change: fire when Class changes INSIDE the edit modal (AJAX-loaded)

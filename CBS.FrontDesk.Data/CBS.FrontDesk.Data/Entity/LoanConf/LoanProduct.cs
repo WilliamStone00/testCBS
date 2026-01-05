@@ -355,7 +355,34 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public string AccountTypeDefinitionId { get; set; } 
         public virtual AccountTypeDefinition AccountTypeDefinition { get; set; }
         public string ChartOfAccountIdForFee { get; set; }
+
+       
+
+        public string LoanTargetId { get; set; }
+        public virtual LoanTargetCatalog LoanTargetRef { get; set; }
+
+        public string PcmfLoanPurposeId { get; set; }
+        public virtual PcmfLoanPurpose PcmfLoanPurpose { get; set; }
+
+        // Stored classification (derived)
+        public PcmfSection? PcmfSection { get; set; }        // LT/MT/CT/OD
+        public int PcmfGroupCode { get; set; }              // 301/311/320...
+        public PcmfPopulation? PcmfPopulation { get; set; }  // derived from target
+        public int PcmfBaseCode { get; set; }// derived (ex: 301, 3201, 3711) - your rule
+
+        // Optional accounting template link (if you keep it)
+        public string AccountingProfileId { get; set; }
+
+        // Policies (Option A: stored in Loan MS)
+        public virtual LoanProductPolicy Policy { get; set; }
+
+        // Accounting mappings (Option A: stored in Loan MS)
+        public LoanProductAccountingProfile AccountingMapping { get; set; }
+        public string OverdraftFacilityConfigId { get; set; }
+        public OverdraftFacilityConfig OverdraftFacilityConfig { get; set; }
+        public string LoanFacility { get; set; }
     }
+
     public class AccountTypeGroup
     {
         public string Id { get; set; }                 // GUID/string key

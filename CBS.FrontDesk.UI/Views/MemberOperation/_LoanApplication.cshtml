@@ -22,6 +22,180 @@
     }
     /* space so text isn't under badge */
 </style>
+<!-- ✅ Put this CSS in your page (or site stylesheet) -->
+<style>
+    /* =========================
+     TSC-aligned (soft) palette
+     ========================= */
+    :root {
+        --tsc-accent: #29b36a; /* your TSC green accent (keep subtle) */
+        --tsc-ok: #1e88a8; /* ✅ use tick-like calm teal/blue-green */
+        --tsc-bad: #c0392b; /* error */
+        --tsc-muted: #6b7280;
+        --tsc-border: rgba(0,0,0,.10);
+        --tsc-bg: #ffffff;
+        --tsc-soft: #f6f8fb;
+    }
+
+    /* =========================
+     Coverage calculator card
+     ========================= */
+    #pcmfCoverageBox .card {
+        border: 1px solid var(--tsc-border);
+        border-radius: 12px;
+        overflow: hidden;
+        background: var(--tsc-bg);
+    }
+
+    /* ✅ Remove thick blue. Use soft light header with subtle accent line */
+    #pcmfCoverageBox .card-header {
+        background: var(--tsc-soft);
+        color: #111827;
+        padding: 10px 14px;
+        border-bottom: 1px solid var(--tsc-border);
+        position: relative;
+    }
+
+        #pcmfCoverageBox .card-header:before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--tsc-accent); /* subtle TSC green accent */
+        }
+
+        #pcmfCoverageBox .card-header .fw-semibold {
+            font-size: .95rem;
+            font-weight: 700;
+        }
+
+    /* PCMF pill: keep green but softer and consistent */
+    #pcmfTagInline .badge {
+        background: rgba(41,179,106,.12) !important;
+        color: #1f7a3a !important;
+        border: 1px solid rgba(41,179,106,.25);
+        border-radius: 999px;
+        padding: 6px 10px;
+        font-weight: 700;
+    }
+
+    #pcmfCoverageBox .card-body {
+        padding: 14px 16px;
+    }
+
+    /* ✅ Status line uses tick color (not green neon) */
+    #pcmfCoverageStatus.text-success {
+        color: var(--tsc-ok) !important;
+        font-weight: 700;
+    }
+
+    #pcmfCoverageStatus.text-danger {
+        color: var(--tsc-bad) !important;
+        font-weight: 700;
+    }
+
+    /* =========================
+     Inputs: remove neon green
+     ========================= */
+
+    /* stop bootstrap bright green outlines */
+    .is-valid {
+        border-color: var(--tsc-border) !important;
+        box-shadow: none !important;
+    }
+
+    /* ✅ Add our own subtle "ok" ring using tick color */
+    .tsc-ok-input {
+        border-color: rgba(30,136,168,.45) !important;
+        box-shadow: 0 0 0 .12rem rgba(30,136,168,.12) !important;
+    }
+
+    .is-invalid {
+        border-color: rgba(192,57,43,.55) !important;
+        box-shadow: 0 0 0 .12rem rgba(192,57,43,.10) !important;
+    }
+
+    /* Feedback text */
+    .tsc-ok-text {
+        color: var(--tsc-ok) !important; /* ✅ tick color */
+        font-weight: 600;
+    }
+
+    .tsc-bad-text {
+        color: var(--tsc-bad) !important;
+        font-weight: 600;
+    }
+
+    /* Make the "between..." label line less aggressive */
+    .form-floating label,
+    .form-floating-outline label {
+        color: #374151;
+    }
+    /* PCMF calculator card - TSC friendly */
+    .tsc-pcmf-box {
+        border: 1px solid #e6e8ef;
+        border-radius: 10px;
+        overflow: hidden;
+        background: #fff;
+    }
+
+    .tsc-pcmf-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: .65rem .9rem;
+        background: #f6f7fb; /* neutral, matches TSC vibe */
+        border-bottom: 1px solid #e6e8ef;
+    }
+
+    .tsc-pcmf-title {
+        font-weight: 600;
+        color: #2b2f3a;
+    }
+
+    .tsc-pcmf-tag .badge {
+        font-weight: 600;
+        border-radius: 999px;
+    }
+
+    /* Feedback lines: NO green text; only the tick stays green */
+    .tsc-limit-feedback {
+        display: block;
+        margin-top: .35rem;
+        font-size: .85rem;
+        color: #4a4f5c;
+    }
+
+        .tsc-limit-feedback .tsc-tick {
+            color: #2fb344; /* tick green only */
+            margin-right: .35rem;
+        }
+
+        .tsc-limit-feedback.tsc-bad {
+            color: #dc3545;
+        }
+
+            .tsc-limit-feedback.tsc-bad .tsc-tick {
+                color: #dc3545;
+            }
+
+    /* Keep default input borders; only highlight invalid */
+    .form-control.is-invalid {
+        border-color: #dc3545 !important;
+        box-shadow: none !important;
+    }
+
+    /* Do NOT force green borders on valid */
+    .form-control.is-valid {
+        border-color: inherit !important;
+        background-image: none !important;
+        box-shadow: none !important;
+    }
+
+</style>
+
 <div class="card mb-1">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
         <span><i class="mdi mdi-information-outline me-2"></i> @Member_Global_LoanApplication.LoanApplicationTips</span>
@@ -128,7 +302,7 @@
                                             m => m.AddLoanApplicationCommand.BranchId,
                                             new SelectList(ViewBag.Branches, "Id", "Name"),
                                             "---" + @GlobalLoanApplication.SelectAll + "---",
-                                            new { @class = "form-control shadow-sm select2"})
+                                            new { @class = "form-control shadow-sm select2" })
                                         @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.BranchId, "", new { @class = "text-danger" })
                                         <label for="LoanBranchId">@GlobalLoanRepaymentBackOffice.BranchName</label>
                                     </div>
@@ -172,32 +346,27 @@
                                 <div class="col-md-12" id="LoanCategorySelect">
                                     <div class="form-floating form-floating-outline">
                                         @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanProductCategoryId,
-                                            new SelectList(ViewBag.Categories, "Id", "Name"),
+                                            new SelectList(ViewBag.Categories, "Id", "NameEn"),
                                             @Member_Global_LoanApplication.SelectLoanProductCategory,
                                             new { @class = "form-control select2", @search = "true", @id = "LoanCategoryId", @onchange = "GetLoanPurposes(this.value,'purposeId')" })
                                         <label>@Member_Global_LoanApplication.SelectLoanProductCategory</label>
                                     </div>
                                 </div>
-                                @*<div class="col-md-12">
-            <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanProductCategoryId, new SelectList(ViewBag.Categories, "Id", "Name"), @Member_Global_LoanApplication.SelectLoanProductCategory, new { @class = "form-control select2", @search = "true", @id = "LoanCategoryId", @onchange = "GetLoanPurposes(this.value,'purposeId')" })
-                <label>@Member_Global_LoanApplication.SelectLoanProductCategory</label>
-            </div>
-        </div>*@
-                                @*<div class="col-md-12">
-            <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanTermId, new SelectList(ViewBag.LoanTerms, "Id", "Name"), "---" + @Member_Global_LoanApplication.SelectLoanTerm + "---", new { @class = "form-control select2", @search = "true", @id = "LoanTermId", @onchange = "GetConfiuredTargets(this.value,'TargetId')" })
-                <label>@Member_Global_LoanApplication.SelectLoanTerm</label>
-            </div>
-        </div>*@
+
+
                                 <!-- ✅ Loan Term -->
                                 <div class="col-md-12" id="LoanTermSelect">
                                     <div class="form-floating form-floating-outline">
                                         @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanTermId,
                                             new SelectList(ViewBag.LoanTerms, "Id", "Name"),
                                             "---" + @Member_Global_LoanApplication.SelectLoanTerm + "---",
-                                            new { @class = "form-control select2", @search = "true", @id = "LoanTermId", @onchange = "GetConfiuredTargets(this.value,'TargetId')" })
-                                        <label>@Member_Global_LoanApplication.SelectLoanTerm</label>
+                                            new
+                                            {
+                                                @class = "form-control select2",
+                                                @search = "true",
+                                                @id = "LoanTermId",
+                                                @onchange = "LoadTargetsByTermAndPurpose()" // ✅ same loader
+                                            })
                                     </div>
                                 </div>
                                 <div class="col-12" id="LoanCategoryDive">
@@ -212,939 +381,1012 @@
                                 </div>
                                 <div class="col-md-12" id="TargetPopulationDiv">
                                     <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanTarget, new SelectList(ViewBag.LoanTargets, "Value", "Text"), @Member_Global_LoanApplication.SelectLoanCategory, new { @class = "form-control select2", @search = "true", @onchange = "GetProductByTarget(this.value,'loan_productid')", @id = "TargetId" })
-                                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.LoanTarget, "", new { @class = "text-danger " })
-                                        <label>@Member_Global_LoanApplication.TargetedPopulation</label>
-                                    </div>
-                                </div>
-                                <!-- Adjusted row -->
-                                
-                                <div id="loandiv" style="display:none;">
-                                    <!-- Dynamic Header -->
-                                    <h4 id="repaymentHeader" class="mb-3"></h4>
-
-                                    <!-- ===================== -->
-                                    <!-- 🟦 REFINANCING GUIDELINES -->
-                                    <!-- ===================== -->
-                                    <div class="card mb-4" id="refinancingGuidelines" style="display:none;">
-                                        <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-                                            <span>
-                                                <i class="mdi mdi-information-outline me-2"></i>
-                                                Loan Refinancing – Important Guidelines (TSC)
-                                            </span>
-                                            <button class="btn btn-light btn-sm" type="button"
-                                                    data-bs-toggle="collapse"
-                                                    data-bs-target="#collapseRefinancingTips"
-                                                    aria-expanded="false"
-                                                    aria-controls="collapseRefinancingTips">
-                                                <i class="mdi mdi-chevron-down"></i>
-                                            </button>
-                                        </h6>
-
-                                        <div id="collapseRefinancingTips" class="collapse">
-                                            <div class="card-body">
-
-                                                <p class="text-muted mb-2">
-                                                    In TSC, loan refinancing is treated as a <strong>normal loan application</strong> where a new loan is created
-                                                    to settle an existing loan and provide the member with an additional <strong>requested (top-up) amount</strong>.
-                                                </p>
-
-                                                <ul>
-                                                    <li>
-                                                        <i class="mdi mdi-check-circle-outline text-success me-2"></i>
-                                                        Refinancing follows the <strong>standard loan workflow</strong>:
-                                                        <ul class="mt-1">
-                                                            <li>✔ Loan application</li>
-                                                            <li>✔ Fee payment (if applicable)</li>
-                                                            <li>✔ Validation and appraisal</li>
-                                                            <li>✔ Approval</li>
-                                                            <li>✔ Disbursement</li>
-                                                        </ul>
-                                                    </li>
-
-                                                    <li>
-                                                        <i class="mdi mdi-check-circle-outline text-success me-2"></i>
-                                                        Select the <strong>loan to be refinanced</strong> from the dropdown list.
-                                                        This loan will be settled automatically during disbursement.
-                                                    </li>
-
-                                                    <li>
-                                                        <i class="mdi mdi-check-circle-outline text-success me-2"></i>
-                                                        Enter the <strong>new amount requested by the member</strong> (top-up).
-                                                        The system computes the refinancing base by combining:
-                                                        <ul class="mt-1">
-                                                            <li>✔ Outstanding loan balance (capital)</li>
-                                                            <li>✔ Accrued interest</li>
-                                                            <li>✔ VAT</li>
-                                                            <li>✔ Penalties (if any)</li>
-                                                            <li>✔ Plus the new requested/top-up amount</li>
-                                                        </ul>
-                                                    </li>
-
-                                                    <li>
-                                                        <i class="mdi mdi-check-circle-outline text-success me-2"></i>
-                                                        At disbursement, TSC will <strong>automatically repay the old loan in full</strong>
-                                                        from the refinancing proceeds (no manual repayment required).
-                                                    </li>
-
-                                                    <li>
-                                                        <i class="mdi mdi-check-circle-outline text-success me-2"></i>
-                                                        The member receives only the <strong>net requested/top-up amount</strong>
-                                                        (excluding old-loan settlement). This net amount is credited to the member’s
-                                                        <strong>deposit account</strong>. Any applicable fees are deducted from the deposit account.
-                                                    </li>
-
-                                                    <li>
-                                                        <i class="mdi mdi-alert-circle-outline text-warning me-2"></i>
-                                                        Use <strong>"Override Balance"</strong> and <strong>"Stop further interest calculations"</strong>
-                                                        only when explicitly authorized and properly documented.
-                                                    </li>
-
-                                                    <li>
-                                                        <i class="mdi mdi-alert-circle-outline text-warning me-2"></i>
-                                                        Any changes to balance, interest, VAT, penalty, or fees must be <strong>justified and approved</strong>.
-                                                    </li>
-                                                </ul>
-
-                                                <p class="text-muted mt-3">Additional Notes:</p>
-
-                                                <ul>
-                                                    <li>
-                                                        <i class="mdi mdi-information-outline text-primary me-2"></i>
-                                                        The refinanced loan is a <strong>new loan</strong> with a new reference, new schedule,
-                                                        and a complete accounting lifecycle.
-                                                    </li>
-
-                                                    <li>
-                                                        <i class="mdi mdi-information-outline text-primary me-2"></i>
-                                                        The old loan is <strong>closed/settled</strong> as part of the refinancing process.
-                                                    </li>
-
-                                                    <li>
-                                                        <i class="mdi mdi-information-outline text-primary me-2"></i>
-                                                        Refinancing is used when the member needs <strong>additional funding</strong>
-                                                        while keeping the process under full credit workflow control.
-                                                    </li>
-
-                                                    <li>
-                                                        <i class="mdi mdi-alert-circle-outline text-warning me-2"></i>
-                                                        If the goal is only to change repayment dates/installments (without new money),
-                                                        use <strong>loan rescheduling</strong> instead.
-                                                    </li>
-                                                </ul>
-
-                                            </div>
+                                        @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanTarget,
+                                            new SelectList(ViewBag.LoanTargets, "Value", "Text"),
+                                            @Member_Global_LoanApplication.SelectLoanCategory,
+                                            new
+                                            {
+                                                @class = "form-control select2",
+                                                @search = "true",
+                                                @onchange = "GetProductByTarget(this.value,'loan_productid')",
+                                                @id = "TargetId"
+                                            })                                        <label>@Member_Global_LoanApplication.TargetedPopulation</label>
                                         </div>
                                     </div>
+                                    <!-- Adjusted row -->
 
-                                    <!-- ===================== -->
-                                    <!-- 🟣 RESCHEDULING GUIDELINES -->
-                                    <!-- ===================== -->
-                                    <div class="card mb-4" id="reschedulingGuidelines" style="display:none;">
-                                        <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-                                            <span>
-                                                <i class="mdi mdi-information-outline me-2"></i>
-                                                Loan Rescheduling – Important Guidelines (TSC)
-                                            </span>
-                                            <button class="btn btn-light btn-sm" type="button"
-                                                    data-bs-toggle="collapse"
-                                                    data-bs-target="#collapseReschedulingTips"
-                                                    aria-expanded="false"
-                                                    aria-controls="collapseReschedulingTips">
-                                                <i class="mdi mdi-chevron-down"></i>
-                                            </button>
-                                        </h6>
+                                    <div id="loandiv" style="display:none;">
+                                        <!-- Dynamic Header -->
+                                        <h4 id="repaymentHeader" class="mb-3"></h4>
 
-                                        <div id="collapseReschedulingTips" class="collapse">
-                                            <div class="card-body">
+                                        <!-- ===================== -->
+                                        <!-- 🟦 REFINANCING GUIDELINES -->
+                                        <!-- ===================== -->
+                                        <div class="card mb-4" id="refinancingGuidelines" style="display:none;">
+                                            <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+                                                <span>
+                                                    <i class="mdi mdi-information-outline me-2"></i>
+                                                    Loan Refinancing – Important Guidelines (TSC)
+                                                </span>
+                                                <button class="btn btn-light btn-sm" type="button"
+                                                        data-bs-toggle="collapse"
+                                                        data-bs-target="#collapseRefinancingTips"
+                                                        aria-expanded="false"
+                                                        aria-controls="collapseRefinancingTips">
+                                                    <i class="mdi mdi-chevron-down"></i>
+                                                </button>
+                                            </h6>
 
-                                                <p class="text-muted mb-2">
-                                                    In TSC, <strong>loan rescheduling</strong> is a controlled loan re-creation process.
-                                                    The system creates a <strong>new loan</strong> primarily from the
-                                                    <strong>remaining balance</strong> of an existing active loan,
-                                                    while preserving the original loan product rules, tax behavior, and accounting configuration.
-                                                </p>
+                                            <div id="collapseRefinancingTips" class="collapse">
+                                                <div class="card-body">
 
-                                                <!-- ✅ Key Alert -->
-                                                <div class="alert alert-warning d-flex align-items-start mb-3" role="alert">
-                                                    <i class="mdi mdi-alert-outline me-2 mt-1"></i>
-                                                    <div>
-                                                        <div class="fw-semibold">Important advisory before rescheduling</div>
-                                                        <div class="small">
-                                                            It is strongly recommended to <strong>clear accrued interest, VAT, and penalties</strong>
-                                                            before rescheduling. If not cleared, these amounts will be
-                                                            <strong>carried forward</strong> and included in the rescheduled loan computation.
-                                                        </div>
-                                                    </div>
+                                                    <p class="text-muted mb-2">
+                                                        In TSC, loan refinancing is treated as a <strong>normal loan application</strong> where a new loan is created
+                                                        to settle an existing loan and provide the member with an additional <strong>requested (top-up) amount</strong>.
+                                                    </p>
+
+                                                    <ul>
+                                                        <li>
+                                                            <i class="mdi mdi-check-circle-outline text-success me-2"></i>
+                                                            Refinancing follows the <strong>standard loan workflow</strong>:
+                                                            <ul class="mt-1">
+                                                                <li>✔ Loan application</li>
+                                                                <li>✔ Fee payment (if applicable)</li>
+                                                                <li>✔ Validation and appraisal</li>
+                                                                <li>✔ Approval</li>
+                                                                <li>✔ Disbursement</li>
+                                                            </ul>
+                                                        </li>
+
+                                                        <li>
+                                                            <i class="mdi mdi-check-circle-outline text-success me-2"></i>
+                                                            Select the <strong>loan to be refinanced</strong> from the dropdown list.
+                                                            This loan will be settled automatically during disbursement.
+                                                        </li>
+
+                                                        <li>
+                                                            <i class="mdi mdi-check-circle-outline text-success me-2"></i>
+                                                            Enter the <strong>new amount requested by the member</strong> (top-up).
+                                                            The system computes the refinancing base by combining:
+                                                            <ul class="mt-1">
+                                                                <li>✔ Outstanding loan balance (capital)</li>
+                                                                <li>✔ Accrued interest</li>
+                                                                <li>✔ VAT</li>
+                                                                <li>✔ Penalties (if any)</li>
+                                                                <li>✔ Plus the new requested/top-up amount</li>
+                                                            </ul>
+                                                        </li>
+
+                                                        <li>
+                                                            <i class="mdi mdi-check-circle-outline text-success me-2"></i>
+                                                            At disbursement, TSC will <strong>automatically repay the old loan in full</strong>
+                                                            from the refinancing proceeds (no manual repayment required).
+                                                        </li>
+
+                                                        <li>
+                                                            <i class="mdi mdi-check-circle-outline text-success me-2"></i>
+                                                            The member receives only the <strong>net requested/top-up amount</strong>
+                                                            (excluding old-loan settlement). This net amount is credited to the member’s
+                                                            <strong>deposit account</strong>. Any applicable fees are deducted from the deposit account.
+                                                        </li>
+
+                                                        <li>
+                                                            <i class="mdi mdi-alert-circle-outline text-warning me-2"></i>
+                                                            Use <strong>"Override Balance"</strong> and <strong>"Stop further interest calculations"</strong>
+                                                            only when explicitly authorized and properly documented.
+                                                        </li>
+
+                                                        <li>
+                                                            <i class="mdi mdi-alert-circle-outline text-warning me-2"></i>
+                                                            Any changes to balance, interest, VAT, penalty, or fees must be <strong>justified and approved</strong>.
+                                                        </li>
+                                                    </ul>
+
+                                                    <p class="text-muted mt-3">Additional Notes:</p>
+
+                                                    <ul>
+                                                        <li>
+                                                            <i class="mdi mdi-information-outline text-primary me-2"></i>
+                                                            The refinanced loan is a <strong>new loan</strong> with a new reference, new schedule,
+                                                            and a complete accounting lifecycle.
+                                                        </li>
+
+                                                        <li>
+                                                            <i class="mdi mdi-information-outline text-primary me-2"></i>
+                                                            The old loan is <strong>closed/settled</strong> as part of the refinancing process.
+                                                        </li>
+
+                                                        <li>
+                                                            <i class="mdi mdi-information-outline text-primary me-2"></i>
+                                                            Refinancing is used when the member needs <strong>additional funding</strong>
+                                                            while keeping the process under full credit workflow control.
+                                                        </li>
+
+                                                        <li>
+                                                            <i class="mdi mdi-alert-circle-outline text-warning me-2"></i>
+                                                            If the goal is only to change repayment dates/installments (without new money),
+                                                            use <strong>loan rescheduling</strong> instead.
+                                                        </li>
+                                                    </ul>
+
                                                 </div>
-
-                                                <ul class="mb-3">
-                                                    <li class="mb-2">
-                                                        <i class="mdi mdi-check-circle-outline text-success me-2"></i>
-                                                        Select the <strong>existing active loan</strong> to be rescheduled.
-                                                        This loan becomes the reference for policy and behavior inheritance.
-                                                    </li>
-
-                                                    <li class="mb-2">
-                                                        <i class="mdi mdi-check-circle-outline text-success me-2"></i>
-                                                        The new loan is created from the <strong>remaining balance (capital)</strong>
-                                                        of the old loan and follows the standard workflow:
-                                                        <ul class="mt-1">
-                                                            <li>✔ Loan application</li>
-                                                            <li>✔ Fees (only those marked <strong>Before Processing</strong>, if applicable)</li>
-                                                            <li>✔ Validation and approval</li>
-                                                            <li>✖ <strong>No disbursement is performed</strong> (rescheduling does not release new cash)</li>
-                                                        </ul>
-                                                    </li>
-
-                                                    <li class="mb-2">
-                                                        <i class="mdi mdi-check-circle-outline text-success me-2"></i>
-                                                        The rescheduled loan <strong>inherits the original loan’s behavior</strong>,
-                                                        including interest rules, VAT treatment (taxable or non-taxable),
-                                                        penalty rules, repayment logic, and accounting configuration.
-                                                    </li>
-
-                                                    <li class="mb-2">
-                                                        <i class="mdi mdi-check-circle-outline text-success me-2"></i>
-                                                        Rescheduling may transition a loan from
-                                                        <strong>short-term</strong> to <strong>medium-term</strong> or <strong>long-term</strong>,
-                                                        by increasing the number of installments and extending the maturity period
-                                                        (subject to approval).
-                                                    </li>
-
-                                                    <li class="mb-2">
-                                                        <i class="mdi mdi-alert-circle-outline text-warning me-2"></i>
-                                                        If not cleared before rescheduling, the following are <strong>carried forward</strong>:
-                                                        <ul class="mt-1">
-                                                            <li>⚠️ <strong>Accrued interest</strong> — existing accrued interest remains, and new daily interest is added to it</li>
-                                                            <li>⚠️ <strong>VAT</strong> — remains applicable if the loan is taxable</li>
-                                                            <li>⚠️ <strong>Penalty</strong> — remains attached if unpaid</li>
-                                                        </ul>
-                                                        <div class="text-muted small mt-1">
-                                                            Best practice: clear interest, VAT, and penalties before rescheduling
-                                                            to keep the new repayment schedule clean and predictable.
-                                                        </div>
-                                                    </li>
-
-                                                    <li class="mb-2">
-                                                        <i class="mdi mdi-check-circle-outline text-success me-2"></i>
-                                                        Only <strong>approved rescheduling parameters</strong> may be modified:
-                                                        <ul class="mt-1">
-                                                            <li>✔ Repayment dates</li>
-                                                            <li>✔ Number of installments (must be greater than the original schedule)</li>
-                                                            <li>✔ Installment amounts</li>
-                                                            <li>✔ Loan duration / maturity date</li>
-                                                            <li>✔ Grace period (if approved)</li>
-                                                        </ul>
-                                                    </li>
-
-                                                    <li class="mb-2">
-                                                        <i class="mdi mdi-alert-circle-outline text-warning me-2"></i>
-                                                        The following elements are <strong>not negotiable</strong> during rescheduling:
-                                                        <ul class="mt-1">
-                                                            <li>✖ Loan product core behavior</li>
-                                                            <li>✖ Interest, VAT, and penalty policy inherited from the original loan</li>
-                                                            <li>✖ Risk configuration and accounting rules</li>
-                                                            <li>✖ Product-linked accounting mappings</li>
-                                                        </ul>
-                                                    </li>
-
-                                                    <li class="mb-2">
-                                                        <i class="mdi mdi-check-circle-outline text-success me-2"></i>
-                                                        Use <strong>"Override Balance"</strong> and
-                                                        <strong>"Stop further interest calculations"</strong>
-                                                        only when explicitly approved and fully documented.
-                                                    </li>
-
-                                                    <li class="mb-2">
-                                                        <i class="mdi mdi-alert-circle-outline text-warning me-2"></i>
-                                                        Any change affecting balances, accrued interest, VAT, penalties, or delinquency status
-                                                        must be <strong>clearly justified and formally authorized</strong>.
-                                                    </li>
-                                                </ul>
-
-                                                <p class="text-muted mt-3 mb-2 fw-semibold">Additional Notes</p>
-                                                <ul class="mb-0">
-                                                    <li class="mb-2">
-                                                        <i class="mdi mdi-information-outline text-primary me-2"></i>
-                                                        The original loan is closed or frozen for audit and history,
-                                                        while the rescheduled loan becomes the active repayment instrument.
-                                                    </li>
-
-                                                    <li class="mb-2">
-                                                        <i class="mdi mdi-information-outline text-primary me-2"></i>
-                                                        All historical repayments and accounting postings on the original loan
-                                                        remain intact, traceable, and auditable.
-                                                    </li>
-
-                                                    <li class="mb-2">
-                                                        <i class="mdi mdi-alert-circle-outline text-warning me-2"></i>
-                                                        Rescheduling is intended for <strong>temporary repayment difficulty</strong>.
-                                                        If loan exposure or product structure must change fundamentally,
-                                                        consider <strong>loan restructuring</strong> or <strong>refinancing</strong>.
-                                                    </li>
-
-                                                    <li class="mb-2">
-                                                        <i class="mdi mdi-alert-circle-outline text-warning me-2"></i>
-                                                        When in doubt, consult the Loan Manager or Credit Committee before submission.
-                                                    </li>
-                                                </ul>
-
                                             </div>
                                         </div>
-                                    </div>
 
+                                        <!-- ===================== -->
+                                        <!-- 🟣 RESCHEDULING GUIDELINES -->
+                                        <!-- ===================== -->
+                                        <div class="card mb-4" id="reschedulingGuidelines" style="display:none;">
+                                            <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+                                                <span>
+                                                    <i class="mdi mdi-information-outline me-2"></i>
+                                                    Loan Rescheduling – Important Guidelines (TSC)
+                                                </span>
+                                                <button class="btn btn-light btn-sm" type="button"
+                                                        data-bs-toggle="collapse"
+                                                        data-bs-target="#collapseReschedulingTips"
+                                                        aria-expanded="false"
+                                                        aria-controls="collapseReschedulingTips">
+                                                    <i class="mdi mdi-chevron-down"></i>
+                                                </button>
+                                            </h6>
 
-                                    <!-- 🔽 Loan Dropdown + Loan Details -->
-                                    <!-- (UNCHANGED – your existing code continues here) -->
-                                    <!-- 🔽 Loan Dropdown -->
-                                    <!-- 🔽 Loan Dropdown -->
-                                    <div class="col-md-12 mb-2">
-                                        <div class="form-floating form-floating-outline">
-                                            @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanId,
-                                                new SelectList(ViewBag.MembersLoan, "Value", "Text"),
-                                                "---" + @Member_Global_LoanApplication.SelectLoan + "---",
-                                                new
-                                                {
-                                                    @class = "form-control select2",
-                                                    @search = "true",
-                                                    @id = "loanid",
-                                                    @onchange = "loadRefinancingLoan(this.value);"
-                                                })
-                                            @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.LoanId, "", new { @class = "text-danger" })
-                                            <label>@Member_Global_LoanApplication.MemberCurrentLoans</label>
-                                        </div>
-                                    </div>
+                                            <div id="collapseReschedulingTips" class="collapse">
+                                                <div class="card-body">
 
-                                    <!-- 🧾 Loan Details Card -->
-                                    <div class="card mb-2" id="loanDetailsCardWrapper">
-                                        <div class="card-header d-flex justify-content-between align-items-center" id="loanDetailsHeader">
-                                            <span class="fw-bold text-black" id="loanStatusLabel">Loan Summary</span>
-                                            <button type="button" class="btn btn-sm btn-link" data-bs-toggle="collapse" data-bs-target="#loanDetailsCard">
-                                                <i class="mdi mdi-chevron-up"></i> Collapse
-                                            </button>
-                                        </div>
+                                                    <p class="text-muted mb-2">
+                                                        In TSC, <strong>loan rescheduling</strong> is a controlled loan re-creation process.
+                                                        The system creates a <strong>new loan</strong> primarily from the
+                                                        <strong>remaining balance</strong> of an existing active loan,
+                                                        while preserving the original loan product rules, tax behavior, and accounting configuration.
+                                                    </p>
 
-                                        <div class="collapse" id="loanDetailsCard">
-                                            <div class="card-body">
-                                                <div class="accordion accordion-flush" id="loanAccordion">
-
-                                                    <!-- 🔹 Identification -->
-                                                    <div class="accordion-item">
-                                                        <h2 class="accordion-header">
-                                                            <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#loan_identification">
-                                                                🧩 Identification
-                                                            </button>
-                                                        </h2>
-                                                        <div id="loan_identification" class="accordion-collapse collapse show" data-bs-parent="#loanAccordion">
-                                                            <div class="accordion-body">
-                                                                <table class="table table-sm table-bordered">
-                                                                    <tbody>
-                                                                        <tr><td>Loan Product ID</td><td id="rl_productId"></td></tr>
-                                                                        <tr><td>Product Name</td><td id="rl_productName"></td></tr>
-                                                                        <tr><td>Loan Type</td><td><span id="rl_loanType" class="badge bg-secondary px-3 py-1"></span></td></tr>
-                                                                        <tr><td>Status</td><td><span id="rl_loanStatus" class="badge px-3 py-1"></span></td></tr>
-                                                                        <tr><td>Category</td><td id="rl_loanCategory"></td></tr>
-                                                                    </tbody>
-                                                                </table>
+                                                    <!-- ✅ Key Alert -->
+                                                    <div class="alert alert-warning d-flex align-items-start mb-3" role="alert">
+                                                        <i class="mdi mdi-alert-outline me-2 mt-1"></i>
+                                                        <div>
+                                                            <div class="fw-semibold">Important advisory before rescheduling</div>
+                                                            <div class="small">
+                                                                It is strongly recommended to <strong>clear accrued interest, VAT, and penalties</strong>
+                                                                before rescheduling. If not cleared, these amounts will be
+                                                                <strong>carried forward</strong> and included in the rescheduled loan computation.
                                                             </div>
                                                         </div>
                                                     </div>
 
-                                                    <!-- 🔹 Configuration -->
-                                                    <div class="accordion-item">
-                                                        <h2 class="accordion-header">
-                                                            <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#loan_configuration">
-                                                                ⚙️ Configuration
-                                                            </button>
-                                                        </h2>
-                                                        <div id="loan_configuration" class="accordion-collapse collapse show" data-bs-parent="#loanAccordion">
-                                                            <div class="accordion-body">
-                                                                <table class="table table-sm table-bordered">
-                                                                    <tbody>
-                                                                        <tr><td>Loan Term</td><td id="rl_loanTerm"></td></tr>
-                                                                        <tr><td>Target Population</td><td id="rl_targetPopulation"></td></tr>
-                                                                        <tr><td>Purpose</td><td id="rl_loanPurpose"></td></tr>
-                                                                        <tr><td>Repayment Period</td><td id="rl_repaymentPeriod"></td></tr>
-                                                                        <tr><td>Repayment Mode</td><td><span id="rl_repaymentMode" class="badge bg-primary px-3 py-1"></span></td></tr>
-                                                                        <tr><td>No. of Installments</td><td id="rl_installments"></td></tr>
-                                                                        <tr><td>Durations</td><td id="rl_duration"></td></tr>
-                                                                        <tr><td>Interest Calculation</td><td><span id="rl_interestCalculationMethod" class="badge bg-info text-dark px-3 py-1"></span></td></tr>
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                    <ul class="mb-3">
+                                                        <li class="mb-2">
+                                                            <i class="mdi mdi-check-circle-outline text-success me-2"></i>
+                                                            Select the <strong>existing active loan</strong> to be rescheduled.
+                                                            This loan becomes the reference for policy and behavior inheritance.
+                                                        </li>
 
-                                                    <!-- 🔹 Financials -->
-                                                    <div class="accordion-item">
-                                                        <h2 class="accordion-header">
-                                                            <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#loan_financials">
-                                                                💰 Financials
-                                                            </button>
-                                                        </h2>
-                                                        <div id="loan_financials" class="accordion-collapse collapse show" data-bs-parent="#loanAccordion">
-                                                            <div class="accordion-body">
-                                                                <table class="table table-sm table-bordered">
-                                                                    <tbody>
-                                                                        <tr><td>Interest Rate</td><td id="rl_interestRate"></td></tr>
-                                                                        <tr><td>VAT Rate</td><td id="rl_vatRate"></td></tr>
-                                                                        <tr><td>Capital</td><td id="rl_principal"></td></tr>
-                                                                        <tr><td>Interest</td><td id="rl_interest"></td></tr>
-                                                                        <tr><td>VAT</td><td id="rl_vat"></td></tr>
-                                                                        <tr><td>Penalty</td><td id="rl_penalty"></td></tr>
-                                                                        <tr class="table-danger fw-bold"><td>Total Due</td><td id="rl_dueAmount"></td></tr>
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                        <li class="mb-2">
+                                                            <i class="mdi mdi-check-circle-outline text-success me-2"></i>
+                                                            The new loan is created from the <strong>remaining balance (capital)</strong>
+                                                            of the old loan and follows the standard workflow:
+                                                            <ul class="mt-1">
+                                                                <li>✔ Loan application</li>
+                                                                <li>✔ Fees (only those marked <strong>Before Processing</strong>, if applicable)</li>
+                                                                <li>✔ Validation and approval</li>
+                                                                <li>✖ <strong>No disbursement is performed</strong> (rescheduling does not release new cash)</li>
+                                                            </ul>
+                                                        </li>
 
-                                                    <!-- 🔹 Dates -->
-                                                    <div class="accordion-item">
-                                                        <h2 class="accordion-header">
-                                                            <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#loan_dates">
-                                                                📅 Key Dates
-                                                            </button>
-                                                        </h2>
-                                                        <div id="loan_dates" class="accordion-collapse collapse show" data-bs-parent="#loanAccordion">
-                                                            <div class="accordion-body">
-                                                                <table class="table table-sm table-bordered">
-                                                                    <tbody>
-                                                                        <tr><td>Disbursement Date</td><td id="rl_disbursementDate"></td></tr>
-                                                                        <tr><td>Maturity Date</td><td id="rl_maturityDate"></td></tr>
-                                                                        <tr><td>Last Repayment</td><td id="rl_lastRepaymentDate"></td></tr>
-                                                                        <tr><td>Disbursement Channel</td><td><span id="rl_disbursementChannel" class="badge bg-success px-3 py-1"></span></td></tr>
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                        <li class="mb-2">
+                                                            <i class="mdi mdi-check-circle-outline text-success me-2"></i>
+                                                            The rescheduled loan <strong>inherits the original loan’s behavior</strong>,
+                                                            including interest rules, VAT treatment (taxable or non-taxable),
+                                                            penalty rules, repayment logic, and accounting configuration.
+                                                        </li>
 
-                                                </div> <!-- /accordion -->
+                                                        <li class="mb-2">
+                                                            <i class="mdi mdi-check-circle-outline text-success me-2"></i>
+                                                            Rescheduling may transition a loan from
+                                                            <strong>short-term</strong> to <strong>medium-term</strong> or <strong>long-term</strong>,
+                                                            by increasing the number of installments and extending the maturity period
+                                                            (subject to approval).
+                                                        </li>
+
+                                                        <li class="mb-2">
+                                                            <i class="mdi mdi-alert-circle-outline text-warning me-2"></i>
+                                                            If not cleared before rescheduling, the following are <strong>carried forward</strong>:
+                                                            <ul class="mt-1">
+                                                                <li>⚠️ <strong>Accrued interest</strong> — existing accrued interest remains, and new daily interest is added to it</li>
+                                                                <li>⚠️ <strong>VAT</strong> — remains applicable if the loan is taxable</li>
+                                                                <li>⚠️ <strong>Penalty</strong> — remains attached if unpaid</li>
+                                                            </ul>
+                                                            <div class="text-muted small mt-1">
+                                                                Best practice: clear interest, VAT, and penalties before rescheduling
+                                                                to keep the new repayment schedule clean and predictable.
+                                                            </div>
+                                                        </li>
+
+                                                        <li class="mb-2">
+                                                            <i class="mdi mdi-check-circle-outline text-success me-2"></i>
+                                                            Only <strong>approved rescheduling parameters</strong> may be modified:
+                                                            <ul class="mt-1">
+                                                                <li>✔ Repayment dates</li>
+                                                                <li>✔ Number of installments (must be greater than the original schedule)</li>
+                                                                <li>✔ Installment amounts</li>
+                                                                <li>✔ Loan duration / maturity date</li>
+                                                                <li>✔ Grace period (if approved)</li>
+                                                            </ul>
+                                                        </li>
+
+                                                        <li class="mb-2">
+                                                            <i class="mdi mdi-alert-circle-outline text-warning me-2"></i>
+                                                            The following elements are <strong>not negotiable</strong> during rescheduling:
+                                                            <ul class="mt-1">
+                                                                <li>✖ Loan product core behavior</li>
+                                                                <li>✖ Interest, VAT, and penalty policy inherited from the original loan</li>
+                                                                <li>✖ Risk configuration and accounting rules</li>
+                                                                <li>✖ Product-linked accounting mappings</li>
+                                                            </ul>
+                                                        </li>
+
+                                                        <li class="mb-2">
+                                                            <i class="mdi mdi-check-circle-outline text-success me-2"></i>
+                                                            Use <strong>"Override Balance"</strong> and
+                                                            <strong>"Stop further interest calculations"</strong>
+                                                            only when explicitly approved and fully documented.
+                                                        </li>
+
+                                                        <li class="mb-2">
+                                                            <i class="mdi mdi-alert-circle-outline text-warning me-2"></i>
+                                                            Any change affecting balances, accrued interest, VAT, penalties, or delinquency status
+                                                            must be <strong>clearly justified and formally authorized</strong>.
+                                                        </li>
+                                                    </ul>
+
+                                                    <p class="text-muted mt-3 mb-2 fw-semibold">Additional Notes</p>
+                                                    <ul class="mb-0">
+                                                        <li class="mb-2">
+                                                            <i class="mdi mdi-information-outline text-primary me-2"></i>
+                                                            The original loan is closed or frozen for audit and history,
+                                                            while the rescheduled loan becomes the active repayment instrument.
+                                                        </li>
+
+                                                        <li class="mb-2">
+                                                            <i class="mdi mdi-information-outline text-primary me-2"></i>
+                                                            All historical repayments and accounting postings on the original loan
+                                                            remain intact, traceable, and auditable.
+                                                        </li>
+
+                                                        <li class="mb-2">
+                                                            <i class="mdi mdi-alert-circle-outline text-warning me-2"></i>
+                                                            Rescheduling is intended for <strong>temporary repayment difficulty</strong>.
+                                                            If loan exposure or product structure must change fundamentally,
+                                                            consider <strong>loan restructuring</strong> or <strong>refinancing</strong>.
+                                                        </li>
+
+                                                        <li class="mb-2">
+                                                            <i class="mdi mdi-alert-circle-outline text-warning me-2"></i>
+                                                            When in doubt, consult the Loan Manager or Credit Committee before submission.
+                                                        </li>
+                                                    </ul>
+
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
 
 
-
-                                    <!-- Balance, Interest, VAT, Penalty inputs -->
-                                    <div class="col-md-12 mb-4">
-                                        <div class="form-check">
-                                            @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsOverRightOldLoanInterestAndBalance, new { @class = "form-check-input", @id = "IsOverRightOldLoanInterestAndBalance" })
-                                            <label class="form-check-label" for="IsOverRightOldLoanInterestAndBalance">@Member_Global_LoanApplication.OverrideLoanBalanceProcessRepayment</label>
-                                        </div>
-                                    </div>
-
-                                    <div class="row" id="loanoveride" style="display:none;">
-                                        <div style="display:none">
-                                            <div class="col-md-3">
-                                                <div class="form-floating form-floating-outline">
-                                                    @Html.TextBoxFor(m => m.AddLoanApplicationCommand.NewBalance, new { @class = "form-control", @id = "NewBalance", disabled = "disabled" })
-                                                    @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.NewBalance, "", new { @class = "text-danger" })
-                                                    <label for="NewBalance">@Member_Global_LoanApplication.OverrideBalance</label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-floating form-floating-outline">
-                                                    @Html.TextBoxFor(m => m.AddLoanApplicationCommand.NewInterest, new { @class = "form-control", @id = "NewInterest", disabled = "disabled" })
-                                                    @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.NewInterest, "", new { @class = "text-danger" })
-                                                    <label for="NewInterest">@Member_Global_LoanApplication.OverrideInterest</label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-floating form-floating-outline">
-                                                    @Html.TextBoxFor(m => m.AddLoanApplicationCommand.NewVAT, new { @class = "form-control", @id = "NewVAT", disabled = "disabled" })
-                                                    @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.NewVAT, "", new { @class = "text-danger" })
-                                                    <label for="NewVAT">@Member_Global_LoanApplication.OverrideVAT</label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3 mb-3">
-                                                <div class="form-floating form-floating-outline">
-                                                    @Html.TextBoxFor(m => m.AddLoanApplicationCommand.NewPenalty, new { @class = "form-control", @id = "NewPenalty", disabled = "disabled" })
-                                                    @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.NewPenalty, "", new { @class = "text-danger" })
-                                                    <label for="NewPenalty">@Member_Global_LoanApplication.OverridePenalty</label>
-                                                </div>
+                                        <!-- 🔽 Loan Dropdown + Loan Details -->
+                                        <!-- (UNCHANGED – your existing code continues here) -->
+                                        <!-- 🔽 Loan Dropdown -->
+                                        <!-- 🔽 Loan Dropdown -->
+                                        <div class="col-md-12 mb-2">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanId,
+                                                    new SelectList(ViewBag.MembersLoan, "Value", "Text"),
+                                                    "---" + @Member_Global_LoanApplication.SelectLoan + "---",
+                                                    new
+                                                    {
+                                                        @class = "form-control select2",
+                                                        @search = "true",
+                                                        @id = "loanid",
+                                                        @onchange = "loadRefinancingLoan(this.value);"
+                                                    })
+                                                @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.LoanId, "", new { @class = "text-danger" })
+                                                <label>@Member_Global_LoanApplication.MemberCurrentLoans</label>
                                             </div>
                                         </div>
 
+                                        <!-- 🧾 Loan Details Card -->
+                                        <div class="card mb-2" id="loanDetailsCardWrapper">
+                                            <div class="card-header d-flex justify-content-between align-items-center" id="loanDetailsHeader">
+                                                <span class="fw-bold text-black" id="loanStatusLabel">Loan Summary</span>
+                                                <button type="button" class="btn btn-sm btn-link" data-bs-toggle="collapse" data-bs-target="#loanDetailsCard">
+                                                    <i class="mdi mdi-chevron-up"></i> Collapse
+                                                </button>
+                                            </div>
+
+                                            <div class="collapse" id="loanDetailsCard">
+                                                <div class="card-body">
+                                                    <div class="accordion accordion-flush" id="loanAccordion">
+
+                                                        <!-- 🔹 Identification -->
+                                                        <div class="accordion-item">
+                                                            <h2 class="accordion-header">
+                                                                <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#loan_identification">
+                                                                    🧩 Identification
+                                                                </button>
+                                                            </h2>
+                                                            <div id="loan_identification" class="accordion-collapse collapse show" data-bs-parent="#loanAccordion">
+                                                                <div class="accordion-body">
+                                                                    <table class="table table-sm table-bordered">
+                                                                        <tbody>
+                                                                            <tr><td>Loan Product ID</td><td id="rl_productId"></td></tr>
+                                                                            <tr><td>Product Name</td><td id="rl_productName"></td></tr>
+                                                                            <tr><td>Loan Type</td><td><span id="rl_loanType" class="badge bg-secondary px-3 py-1"></span></td></tr>
+                                                                            <tr><td>Status</td><td><span id="rl_loanStatus" class="badge px-3 py-1"></span></td></tr>
+                                                                            <tr><td>Category</td><td id="rl_loanCategory"></td></tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- 🔹 Configuration -->
+                                                        <div class="accordion-item">
+                                                            <h2 class="accordion-header">
+                                                                <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#loan_configuration">
+                                                                    ⚙️ Configuration
+                                                                </button>
+                                                            </h2>
+                                                            <div id="loan_configuration" class="accordion-collapse collapse show" data-bs-parent="#loanAccordion">
+                                                                <div class="accordion-body">
+                                                                    <table class="table table-sm table-bordered">
+                                                                        <tbody>
+                                                                            <tr><td>Loan Term</td><td id="rl_loanTerm"></td></tr>
+                                                                            <tr><td>Target Population</td><td id="rl_targetPopulation"></td></tr>
+                                                                            <tr><td>Purpose</td><td id="rl_loanPurpose"></td></tr>
+                                                                            <tr><td>Repayment Period</td><td id="rl_repaymentPeriod"></td></tr>
+                                                                            <tr><td>Repayment Mode</td><td><span id="rl_repaymentMode" class="badge bg-primary px-3 py-1"></span></td></tr>
+                                                                            <tr><td>No. of Installments</td><td id="rl_installments"></td></tr>
+                                                                            <tr><td>Durations</td><td id="rl_duration"></td></tr>
+                                                                            <tr><td>Interest Calculation</td><td><span id="rl_interestCalculationMethod" class="badge bg-info text-dark px-3 py-1"></span></td></tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- 🔹 Financials -->
+                                                        <div class="accordion-item">
+                                                            <h2 class="accordion-header">
+                                                                <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#loan_financials">
+                                                                    💰 Financials
+                                                                </button>
+                                                            </h2>
+                                                            <div id="loan_financials" class="accordion-collapse collapse show" data-bs-parent="#loanAccordion">
+                                                                <div class="accordion-body">
+                                                                    <table class="table table-sm table-bordered">
+                                                                        <tbody>
+                                                                            <tr><td>Interest Rate</td><td id="rl_interestRate"></td></tr>
+                                                                            <tr><td>VAT Rate</td><td id="rl_vatRate"></td></tr>
+                                                                            <tr><td>Capital</td><td id="rl_principal"></td></tr>
+                                                                            <tr><td>Interest</td><td id="rl_interest"></td></tr>
+                                                                            <tr><td>VAT</td><td id="rl_vat"></td></tr>
+                                                                            <tr><td>Penalty</td><td id="rl_penalty"></td></tr>
+                                                                            <tr class="table-danger fw-bold"><td>Total Due</td><td id="rl_dueAmount"></td></tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- 🔹 Dates -->
+                                                        <div class="accordion-item">
+                                                            <h2 class="accordion-header">
+                                                                <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#loan_dates">
+                                                                    📅 Key Dates
+                                                                </button>
+                                                            </h2>
+                                                            <div id="loan_dates" class="accordion-collapse collapse show" data-bs-parent="#loanAccordion">
+                                                                <div class="accordion-body">
+                                                                    <table class="table table-sm table-bordered">
+                                                                        <tbody>
+                                                                            <tr><td>Disbursement Date</td><td id="rl_disbursementDate"></td></tr>
+                                                                            <tr><td>Maturity Date</td><td id="rl_maturityDate"></td></tr>
+                                                                            <tr><td>Last Repayment</td><td id="rl_lastRepaymentDate"></td></tr>
+                                                                            <tr><td>Disbursement Channel</td><td><span id="rl_disbursementChannel" class="badge bg-success px-3 py-1"></span></td></tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div> <!-- /accordion -->
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+                                        <!-- Balance, Interest, VAT, Penalty inputs -->
                                         <div class="col-md-12 mb-4">
                                             <div class="form-check">
-                                                @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.StopInterestCalculation, new { @class = "form-check-input", @id = "StopInterestCalculation" })
-                                                <label class="form-check-label" for="StopInterestCalculation">@Member_Global_LoanApplication.StopFurtherInterestCalculations</label>
+                                                @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsOverRightOldLoanInterestAndBalance, new { @class = "form-check-input", @id = "IsOverRightOldLoanInterestAndBalance" })
+                                                <label class="form-check-label" for="IsOverRightOldLoanInterestAndBalance">@Member_Global_LoanApplication.OverrideLoanBalanceProcessRepayment</label>
                                             </div>
                                         </div>
 
-                                        <h5>@Member_Global_LoanApplication.RepaymentDetails</h5>
+                                        <div class="row" id="loanoveride" style="display:none;">
+                                            <div style="display:none">
+                                                <div class="col-md-3">
+                                                    <div class="form-floating form-floating-outline">
+                                                        @Html.TextBoxFor(m => m.AddLoanApplicationCommand.NewBalance, new { @class = "form-control", @id = "NewBalance", disabled = "disabled" })
+                                                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.NewBalance, "", new { @class = "text-danger" })
+                                                        <label for="NewBalance">@Member_Global_LoanApplication.OverrideBalance</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-floating form-floating-outline">
+                                                        @Html.TextBoxFor(m => m.AddLoanApplicationCommand.NewInterest, new { @class = "form-control", @id = "NewInterest", disabled = "disabled" })
+                                                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.NewInterest, "", new { @class = "text-danger" })
+                                                        <label for="NewInterest">@Member_Global_LoanApplication.OverrideInterest</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-floating form-floating-outline">
+                                                        @Html.TextBoxFor(m => m.AddLoanApplicationCommand.NewVAT, new { @class = "form-control", @id = "NewVAT", disabled = "disabled" })
+                                                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.NewVAT, "", new { @class = "text-danger" })
+                                                        <label for="NewVAT">@Member_Global_LoanApplication.OverrideVAT</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 mb-3">
+                                                    <div class="form-floating form-floating-outline">
+                                                        @Html.TextBoxFor(m => m.AddLoanApplicationCommand.NewPenalty, new { @class = "form-control", @id = "NewPenalty", disabled = "disabled" })
+                                                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.NewPenalty, "", new { @class = "text-danger" })
+                                                        <label for="NewPenalty">@Member_Global_LoanApplication.OverridePenalty</label>
+                                                    </div>
+                                                </div>
+                                            </div>
 
-                                        <div class="col-md-3 mb-3">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.TextBoxFor(m => m.AddLoanApplicationCommand.OldLoanPayment.Capital, new { @class = "form-control", @id = "oldLoanCapital", @onchange = "calculateVATAndTotal()", disabled = "disabled" })
-                                                @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.OldLoanPayment.Capital, "", new { @class = "text-danger" })
-                                                <label for="oldLoanCapital">@Member_Global_LoanApplication.Capital</label>
+                                            <div class="col-md-12 mb-4">
+                                                <div class="form-check">
+                                                    @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.StopInterestCalculation, new { @class = "form-check-input", @id = "StopInterestCalculation" })
+                                                    <label class="form-check-label" for="StopInterestCalculation">@Member_Global_LoanApplication.StopFurtherInterestCalculations</label>
+                                                </div>
+                                            </div>
+
+                                            <h5>@Member_Global_LoanApplication.RepaymentDetails</h5>
+
+                                            <div class="col-md-3 mb-3">
+                                                <div class="form-floating form-floating-outline">
+                                                    @Html.TextBoxFor(m => m.AddLoanApplicationCommand.OldLoanPayment.Capital, new { @class = "form-control", @id = "oldLoanCapital", @onchange = "calculateVATAndTotal()", disabled = "disabled" })
+                                                    @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.OldLoanPayment.Capital, "", new { @class = "text-danger" })
+                                                    <label for="oldLoanCapital">@Member_Global_LoanApplication.Capital</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3 mb-3">
+                                                <div class="form-floating form-floating-outline">
+                                                    @Html.TextBoxFor(m => m.AddLoanApplicationCommand.OldLoanPayment.Interest, new { @class = "form-control", @id = "oldLoanInterest", @onchange = "calculateVATAndTotal()", disabled = "disabled" })
+                                                    @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.OldLoanPayment.Interest, "", new { @class = "text-danger" })
+                                                    <label for="oldLoanInterest">@Member_Global_LoanApplication.Interest</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-2 mb-2">
+                                                <div class="form-floating form-floating-outline">
+                                                    @Html.TextBoxFor(m => m.AddLoanApplicationCommand.VatRate, new { @class = "form-control", @id = "oldLoanvatRate", @readonly = "readonly", disabled = "disabled" })
+                                                    <label for="oldLoanvatRate">@Member_Global_LoanApplication.VatRate</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-2 mb-2">
+                                                <div class="form-floating form-floating-outline">
+                                                    @Html.TextBoxFor(m => m.AddLoanApplicationCommand.OldLoanPayment.VAT, new { @class = "form-control", @id = "oldLoanVAT", @readonly = "readonly", disabled = "disabled" })
+                                                    @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.OldLoanPayment.VAT, "", new { @class = "text-danger" })
+                                                    <label for="oldLoanVAT">@Member_Global_LoanApplication.VAT</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-2 mb-3">
+                                                <div class="form-floating form-floating-outline">
+                                                    @Html.TextBoxFor(m => m.AddLoanApplicationCommand.OldLoanPayment.Amount, new { @class = "form-control", @id = "oldLoanAmount", @readonly = "readonly", disabled = "disabled" })
+                                                    @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.OldLoanPayment.Amount, "", new { @class = "text-danger" })
+                                                    <label for="oldLoanAmount">@Member_Global_LoanApplication.DAmount</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3 mb-3">
+                                                <div class="form-floating form-floating-outline">
+                                                    @Html.TextBoxFor(m => m.AddLoanApplicationCommand.OldLoanPayment.Penalty, new { @class = "form-control", @id = "oldLoanPenalty", @onchange = "calculateVATAndTotal()", disabled = "disabled" })
+                                                    @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.OldLoanPayment.Penalty, "", new { @class = "text-danger" })
+                                                    <label for="oldLoanPenalty">@Member_Global_LoanApplication.Penalty</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-9 mb-3">
+                                                <div class="form-floating form-floating-outline">
+                                                    @Html.TextBoxFor(m => m.AddLoanApplicationCommand.OldLoanPayment.LoanId, new { @class = "form-control", @id = "oldLoanLoanId", @readonly = "readonly", disabled = "disabled" })
+                                                    @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.OldLoanPayment.LoanId, "", new { @class = "text-danger" })
+                                                    <label for="oldLoanLoanId">@Member_Global_LoanApplication.LoanReference</label>
+                                                </div>
                                             </div>
                                         </div>
 
-                                        <div class="col-md-3 mb-3">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.TextBoxFor(m => m.AddLoanApplicationCommand.OldLoanPayment.Interest, new { @class = "form-control", @id = "oldLoanInterest", @onchange = "calculateVATAndTotal()", disabled = "disabled" })
-                                                @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.OldLoanPayment.Interest, "", new { @class = "text-danger" })
-                                                <label for="oldLoanInterest">@Member_Global_LoanApplication.Interest</label>
-                                            </div>
+
+                                    </div>
+
+                                    <div class="col-md-12" id="loanProductDiv">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanProductId, new SelectList(ViewBag.LoanProducts, "Value", "Text"), @Member_Global_LoanApplication.SelectLoanProduct, new { @class = "form-control select2", @search = "true", @onchange = "LoanProductsProperties(this.value,'loanrepayment_cycles','RepaymentCircle')", @id = "loan_productid" })
+                                            @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.LoanProductId, "", new { @class = "text-danger " })
+                                            <label>@Member_Global_LoanApplication.LoanProduct</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12" id="loanTypeDiv">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanType, new SelectList(ViewBag.LoanTypes, "Value", "Text"), @Member_Global_LoanApplication.SelectLoanType, new { @class = "form-control select2", @search = "true" })
+                                            @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.LoanType, "", new { @class = "text-danger " })
+                                            <label>@Member_Global_LoanApplication.SelectLoanType</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12" id="RAmountDiv">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.AddLoanApplicationCommand.Amount, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.Amount, "", new { @class = "text-danger" })
+                                            <label id="amount">@Member_Global_LoanApplication.Amount</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.AddLoanApplicationCommand.LoanDuration, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.LoanDuration, "", new { @class = "text-danger" })
+                                            <label id="loanduration">@Member_Global_LoanApplication.LoanDuration</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12" id="beforeProcessingDiv">
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsPaidFeeBeforeProcessing, new { @class = "form-check-input", @id = "FeePaidBeforeProcessing" })
+                                            <label class="form-check-label" for="FeePaidBeforeProcessing">
+                                                @Member_Global_LoanApplication.APartialFeeMustBePaidBeforeTheLoanCanBeProcessed
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12" id="afterProcessingDiv">
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsPaidFeeAfterProcessing, new { @class = "form-check-input", @id = "FeePaidAfterProcessing", @disabled = "disabled" })
+                                            <label class="form-check-label" for="FeePaidAfterProcessing">
+                                                @Member_Global_LoanApplication.TheFeeCanEitherBePaidUpfront
+                                            </label>
+                                        </div>
+                                    </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card accordion-item mb-3" id="RiskMitigationDiv">
+                    <h2 class="accordion-header" id="headingPaymentMethod3">
+                        <button type="button"
+                                class="accordion-button collapsed"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapsePaymentMethod3"
+                                aria-expanded="false"
+                                aria-controls="collapsePaymentMethod3">
+                            @Member_Global_LoanApplication.RiskMitigation
+                            <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="@Member_Global_LoanApplication.RiskMitigationHelp"></i>
+                        </button>
+                    </h2>
+                    <div id="collapsePaymentMethod3"
+                         class="accordion-collapse collapse"
+                         aria-labelledby="headingPaymentMethod3"
+                         data-bs-parent="#collapsibleSection">
+                        <br />
+
+                        <div class="accordion-body">
+                            <fieldset class="fieldset-custom">
+                                <div class="row g-4">
+                                    <div class="card mb-3 tsc-pcmf-box" id="pcmfCoverageBox" style="display:none;">
+                                        <div class="tsc-pcmf-head">
+                                            <div class="tsc-pcmf-title">Down Payment Coverage Calculator</div>
+                                            <div class="tsc-pcmf-tag" id="pcmfTagInline"></div>
                                         </div>
 
-                                        <div class="col-md-2 mb-2">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.TextBoxFor(m => m.AddLoanApplicationCommand.VatRate, new { @class = "form-control", @id = "oldLoanvatRate", @readonly = "readonly", disabled = "disabled" })
-                                                <label for="oldLoanvatRate">@Member_Global_LoanApplication.VatRate</label>
-                                            </div>
-                                        </div>
+                                        <div class="card-body">
+                                            <div class="row g-3 small">
+                                                <div class="col-md-6">
+                                                    <div class="text-muted">Principal (Requested)</div>
+                                                    <div class="fw-semibold" id="pcmfPrincipalText">-</div>
 
-                                        <div class="col-md-2 mb-2">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.TextBoxFor(m => m.AddLoanApplicationCommand.OldLoanPayment.VAT, new { @class = "form-control", @id = "oldLoanVAT", @readonly = "readonly", disabled = "disabled" })
-                                                @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.OldLoanPayment.VAT, "", new { @class = "text-danger" })
-                                                <label for="oldLoanVAT">@Member_Global_LoanApplication.VAT</label>
-                                            </div>
-                                        </div>
+                                                    <div class="text-muted mt-2">Required Savings (Principal × Saving %)</div>
+                                                    <div class="fw-semibold" id="pcmfSavingRequiredText">-</div>
 
-                                        <div class="col-md-2 mb-3">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.TextBoxFor(m => m.AddLoanApplicationCommand.OldLoanPayment.Amount, new { @class = "form-control", @id = "oldLoanAmount", @readonly = "readonly", disabled = "disabled" })
-                                                @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.OldLoanPayment.Amount, "", new { @class = "text-danger" })
-                                                <label for="oldLoanAmount">@Member_Global_LoanApplication.DAmount</label>
-                                            </div>
-                                        </div>
+                                                    <div class="text-muted mt-2">Required Down Payment (Principal × DP %)</div>
+                                                    <div class="fw-semibold" id="pcmfDownRequiredText">-</div>
+                                                </div>
 
-                                        <div class="col-md-3 mb-3">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.TextBoxFor(m => m.AddLoanApplicationCommand.OldLoanPayment.Penalty, new { @class = "form-control", @id = "oldLoanPenalty", @onchange = "calculateVATAndTotal()", disabled = "disabled" })
-                                                @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.OldLoanPayment.Penalty, "", new { @class = "text-danger" })
-                                                <label for="oldLoanPenalty">@Member_Global_LoanApplication.Penalty</label>
-                                            </div>
-                                        </div>
+                                                <div class="col-md-6">
+                                                    <div class="text-muted">Saving Coverage Rate</div>
+                                                    <div class="fw-semibold" id="pcmfSavingRateText">-</div>
 
-                                        <div class="col-md-9 mb-3">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.TextBoxFor(m => m.AddLoanApplicationCommand.OldLoanPayment.LoanId, new { @class = "form-control", @id = "oldLoanLoanId", @readonly = "readonly", disabled = "disabled" })
-                                                @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.OldLoanPayment.LoanId, "", new { @class = "text-danger" })
-                                                <label for="oldLoanLoanId">@Member_Global_LoanApplication.LoanReference</label>
+                                                    <div class="text-muted mt-2">Down Payment Rate</div>
+                                                    <div class="fw-semibold" id="pcmfDownRateText">-</div>
+
+                                                    <div class="text-muted mt-2">Coverage Total (excluding shares)</div>
+                                                    <div class="fw-semibold" id="pcmfCoverageTotalText">-</div>
+                                                </div>
+                                            </div>
+
+                                            <div class="mt-3" id="pcmfCoverageStatus"></div>
+                                            <div class="text-muted small mt-1">
+                                                Note: Shares are validated but excluded from down payment coverage computation.
                                             </div>
                                         </div>
                                     </div>
 
+                                    <div class="col-12">
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.RequiredDownPaymentCoverageRate,
+                                                new { @class = "form-check-input", @id = "downPaymentCheckbox" })
+                                            <label id="downpaymentrate" class="form-check-label" for="downPaymentCheckbox">@Member_Global_LoanApplication.DoesThisApplicationRequireDownPayment</label>
+                                        </div>
+                                    </div>
 
-                                </div>
-                                
-                                <div class="col-md-12" id="loanProductDiv">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanProductId, new SelectList(ViewBag.LoanProducts, "Value", "Text"), @Member_Global_LoanApplication.SelectLoanProduct, new { @class = "form-control select2", @search = "true", @onchange = "LoanProductsProperties(this.value,'loanrepayment_cycles','RepaymentCircle')", @id = "loan_productid" })
-                                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.LoanProductId, "", new { @class = "text-danger " })
-                                        <label>@Member_Global_LoanApplication.LoanProduct</label>
+                                    <div class="col-12">
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsThereGuarantor, new { @class = "form-check-input" })
+                                            <label class="form-check-label" for="isActive">@Member_Global_LoanApplication.HasTheMemberProvidedAGuarantorOrCoobligator</label>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-12" id="loanTypeDiv">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanType, new SelectList(ViewBag.LoanTypes, "Value", "Text"), @Member_Global_LoanApplication.SelectLoanType, new { @class = "form-control select2", @search = "true" })
-                                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.LoanType, "", new { @class = "text-danger " })
-                                        <label>@Member_Global_LoanApplication.SelectLoanType</label>
+                                    <div class="col-12">
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsThereCollateral, new { @class = "form-check-input" })
+                                            <label class="form-check-label" for="isActive">@Member_Global_LoanApplication.HasMemberProvidedCollateral</label>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="col-md-12" id="RAmountDiv">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.AddLoanApplicationCommand.Amount, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.Amount, "", new { @class = "text-danger" })
-                                        <label id="amount">@Member_Global_LoanApplication.Amount</label>
+                                    <hr />
+
+
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.AddLoanApplicationCommand.ShareAccountCoverageAmount, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.ShareAccountCoverageAmount, "", new { @class = "text-danger" })
+                                            <label id="share">@Member_Global_LoanApplication.OrdinaryShareAccountCoverageAmount</label>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.AddLoanApplicationCommand.LoanDuration, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.LoanDuration, "", new { @class = "text-danger" })
-                                        <label id="loanduration">@Member_Global_LoanApplication.LoanDuration</label>
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.AddLoanApplicationCommand.SavingAccountCoverageRate, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.SavingAccountCoverageRate, "", new { @class = "text-danger" })
+                                            <label id="saving">@Member_Global_LoanApplication.SavingAccountCoverageRate</label>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-12" id="beforeProcessingDiv">
-                                    <div class="form-check">
-                                        @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsPaidFeeBeforeProcessing, new { @class = "form-check-input", @id = "FeePaidBeforeProcessing" })
-                                        <label class="form-check-label" for="FeePaidBeforeProcessing">
-                                            @Member_Global_LoanApplication.APartialFeeMustBePaidBeforeTheLoanCanBeProcessed
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-12" id="afterProcessingDiv">
-                                    <div class="form-check">
-                                        @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsPaidFeeAfterProcessing, new { @class = "form-check-input", @id = "FeePaidAfterProcessing", @disabled = "disabled" })
-                                        <label class="form-check-label" for="FeePaidAfterProcessing">
-                                            @Member_Global_LoanApplication.TheFeeCanEitherBePaidUpfront
-                                        </label>
-                                    </div>
-                                </div>
-</fieldset>
+                                    <!-- ✅ Down Payment & Savings Computation (PCMF) -->
+                                    @*<div class="col-12">
+            <div class="alert alert-info mb-0" id="pcmfCoverageBox" style="display:none;">
+                <div class="fw-bold mb-1">
+                    <i class="mdi mdi-calculator-variant-outline me-1"></i>
+                    Down Payment & Savings Computation
+                    <span id="pcmfTagInline" class="ms-2"></span>
+                </div>
+
+                <div class="row g-2 small">
+                    <div class="col-md-6">
+                        <div><span class="fw-semibold">Requested Principal:</span> <span id="pcmfPrincipalText">-</span></div>
+                        <div><span class="fw-semibold">Required Savings (%):</span> <span id="pcmfSavingRateText">-</span></div>
+                        <div><span class="fw-semibold">Required Savings Amount:</span> <span id="pcmfSavingRequiredText">-</span></div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div><span class="fw-semibold">Down Payment (%):</span> <span id="pcmfDownRateText">-</span></div>
+                        <div><span class="fw-semibold">Required Down Payment:</span> <span id="pcmfDownRequiredText">-</span></div>
+                        <div><span class="fw-semibold">Coverage Total:</span> <span id="pcmfCoverageTotalText">-</span></div>
+                    </div>
+
+                    <div class="col-12 mt-2">
+                        <div id="pcmfCoverageStatus" class="fw-bold"></div>
                     </div>
                 </div>
             </div>
+        </div>*@
 
-            <div class="card accordion-item mb-3" id="RiskMitigationDiv">
-                <h2 class="accordion-header" id="headingPaymentMethod3">
-                    <button type="button"
-                            class="accordion-button collapsed"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#collapsePaymentMethod3"
-                            aria-expanded="false"
-                            aria-controls="collapsePaymentMethod3">
-                        @Member_Global_LoanApplication.RiskMitigation
-                        <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="@Member_Global_LoanApplication.RiskMitigationHelp"></i>
-                    </button>
-                </h2>
-                <div id="collapsePaymentMethod3"
-                     class="accordion-collapse collapse"
-                     aria-labelledby="headingPaymentMethod3"
-                     data-bs-parent="#collapsibleSection">
-                    <br />
+                                    <div class="col-md-12">
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsPreferenceShareAccountCoverageAmount, new { @class = "form-check-input" })
+                                            <label class="form-check-label">@Member_Global_LoanApplication.PlacePreferenceShareAsGuarantee</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 form-floating form-floating-outline" style="display: none;">
+                                        @Html.TextBoxFor(m => m.AddLoanApplicationCommand.PreferenceShareAccountCoverageAmount, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.PreferenceShareAccountCoverageAmount, "", new { @class = "text-danger" })
+                                        <label>@Member_Global_LoanApplication.PreferenceCoverageAmount</label>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsDepositAccountCoverageAmount, new { @class = "form-check-input" })
+                                            <label class="form-check-label">@Member_Global_LoanApplication.PlaceDepositAsGuarantee</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 form-floating form-floating-outline" style="display: none;">
+                                        @Html.TextBoxFor(m => m.AddLoanApplicationCommand.DepositAccountCoverageAmount, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.DepositAccountCoverageAmount, "", new { @class = "text-danger" })
+                                        <label>@Member_Global_LoanApplication.DepositCoverageAmount</label>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsSalryAccount, new { @class = "form-check-input" })
+                                            <label class="form-check-label">@Member_Global_LoanApplication.CheckToPlaceStandingOrderOnSalaryAccount</label>
+                                        </div>
+                                    </div>
 
-                    <div class="accordion-body">
-                        <fieldset class="fieldset-custom">
-                            <div class="row g-4">
-                                <div class="col-12">
-                                    <div class="form-check">
-                                        @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.RequiredDownPaymentCoverageRate,
-                                            new { @class = "form-check-input", @id = "downPaymentCheckbox" })
-                                        <label id="downpaymentrate" class="form-check-label" for="downPaymentCheckbox">@Member_Global_LoanApplication.DoesThisApplicationRequireDownPayment</label>
+                                    <div class="col-md-12 form-floating form-floating-outline" style="display: none;">
+                                        @Html.TextBoxFor(m => m.AddLoanApplicationCommand.SalaryAccountCoverageRate, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.SalaryAccountCoverageRate, "", new { @class = "text-danger" })
+                                        <label id="salary">@Member_Global_LoanApplication.EnterStandingOrderAmount</label>
+                                    </div>
+
+                                </div>
+                            </fieldset>
+
+
+                            <!-- SECTION: Account Blocking Options -->
+                            <fieldset class="fieldset-custom border rounded-3 p-3 mb-3">
+                                <legend class="float-none w-auto px-2 text-primary fw-bold">
+                                    Applicant Account Blocking Options
+                                </legend>
+
+                                <div class="row g-3">
+                                    <div class="col-md-12">
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.BlockShareAccount, new { @class = "form-check-input" })
+                                            <label class="form-check-label">Block Share Account</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.BlockSavingAccount, new { @class = "form-check-input" })
+                                            <label class="form-check-label">Block Saving Account</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.BlockSalaryAccount, new { @class = "form-check-input" })
+                                            <label class="form-check-label">Block Salary Account</label>
+                                        </div>
                                     </div>
                                 </div>
+                            </fieldset>
+                            <!-- End of Account Blocking Options -->
 
-                                <div class="col-12">
-                                    <div class="form-check">
-                                        @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsThereGuarantor, new { @class = "form-check-input" })
-                                        <label class="form-check-label" for="isActive">@Member_Global_LoanApplication.HasTheMemberProvidedAGuarantorOrCoobligator</label>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+                <div class="card accordion-item mb-3">
+                    <h2 class="accordion-header" id="headingPaymentMethod4">
+                        <button type="button"
+                                class="accordion-button collapsed"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapsePaymentMethod4"
+                                aria-expanded="false"
+                                aria-controls="collapsePaymentMethod4">
+                            @Member_Global_LoanApplication.GracePeriodAndCharges
+                            <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="@Member_Global_LoanApplication.GracePeriodAndChargesHelp"></i>
+                        </button>
+                    </h2>
+                    <div id="collapsePaymentMethod4"
+                         class="accordion-collapse collapse"
+                         aria-labelledby="headingPaymentMethod4"
+                         data-bs-parent="#collapsibleSection">
+                        <br />
+
+                        <div class="accordion-body">
+                            <fieldset class="fieldset-custom">
+                                <div class="row g-4">
+                                    <div class="col-md-6">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.AddLoanApplicationCommand.GracePeriodBeforeFirstPayment, new { @class = "form-control", @readonly = true })
+                                            @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.GracePeriodBeforeFirstPayment, "", new { @class = "text-danger" })
+                                            <label>@Member_Global_LoanApplication.PreferredFirstPaymentDate</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.AddLoanApplicationCommand.GracePeriodAfterMaturityDate, new { @class = "form-control", @readonly = true })
+                                            @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.GracePeriodBeforeFirstPayment, "", new { @class = "text-danger" })
+                                            <label>@Member_Global_LoanApplication.EnterGracePeriodAfterEntireLoanIsOverdue</label>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-12">
-                                    <div class="form-check">
-                                        @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsThereCollateral, new { @class = "form-check-input" })
-                                        <label class="form-check-label" for="isActive">@Member_Global_LoanApplication.HasMemberProvidedCollateral</label>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+                <div class="card accordion-item mb-3" id="InterestDiv">
+                    <h2 class="accordion-header" id="headingDeliveryOptions">
+                        <button type="button"
+                                class="accordion-button collapsed"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapseDeliveryOptions"
+                                aria-expanded="false"
+                                aria-controls="collapseDeliveryOptions">
+                            @Member_Global_LoanApplication.Interest
+                            <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="@Member_Global_LoanApplication.InterestHelp"></i>
+                        </button>
+                    </h2>
+                    <div id="collapseDeliveryOptions"
+                         class="accordion-collapse collapse"
+                         aria-labelledby="headingDeliveryOptions"
+                         data-bs-parent="#collapsibleSection">
+                        <br />
+
+                        <div class="accordion-body">
+                            <fieldset class="fieldset-custom">
+                                <div class="row g-4">
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.AddLoanApplicationCommand.InterestRate, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.InterestRate, "", new { @class = "text-danger" })
+                                            <label id="interest">@Member_Global_LoanApplication.InterestRate</label>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card accordion-item mb-3" id="RepaymentDiv">
+                    <h2 class="accordion-header" id="headingPaymentMethod">
+                        <button type="button"
+                                class="accordion-button collapsed"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapsePaymentMethod"
+                                aria-expanded="false"
+                                aria-controls="collapsePaymentMethod">
+                            @Member_Global_LoanApplication.RepaymentAndLoanDuration
+                            <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="@Member_Global_LoanApplication.RepaymentAndLoanDurationHelp"></i>
+                        </button>
+                    </h2>
+                    <div id="collapsePaymentMethod"
+                         class="accordion-collapse collapse"
+                         aria-labelledby="headingPaymentMethod"
+                         data-bs-parent="#collapsibleSection">
+                        <br />
+
+                        <div class="accordion-body">
+                            <fieldset class="fieldset-custom">
+                                <div class="row g-4">
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.DropDownListFor(m => m.AddLoanApplicationCommand.RepaymentCircle, new SelectList(ViewBag.RepaymentCycles, "Value", "Text"), @Member_Global_LoanApplication.SelectRepaymentCycle, new { @class = "form-control select2", @search = "true", @id = "RepaymentCircle" })
+                                            @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.RepaymentCircle, "", new { @class = "text-danger " })
+                                            <label>@Member_Global_LoanApplication.RepaymentCycle</label>
+                                        </div>
                                     </div>
                                 </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+                <div class="card accordion-item mb-3">
+                    <h2 class="accordion-header" id="headingPaymentMethod7">
+                        <button type="button"
+                                class="accordion-button collapsed"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapsePaymentMethod7"
+                                aria-expanded="false"
+                                aria-controls="collapsePaymentMethod7">
+                            @Member_Global_LoanApplication.Fee
+                            <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="@Member_Global_LoanApplication.FeeHelp"></i>
+                        </button>
+                    </h2>
+                    <div id="collapsePaymentMethod7"
+                         class="accordion-collapse collapse"
+                         aria-labelledby="headingPaymentMethod7"
+                         data-bs-parent="#collapsibleSection">
+                        <br />
 
-                                <hr />
-
-
-                                <div class="col-md-12">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.AddLoanApplicationCommand.ShareAccountCoverageAmount, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.ShareAccountCoverageAmount, "", new { @class = "text-danger" })
-                                        <label id="share">@Member_Global_LoanApplication.OrdinaryShareAccountCoverageAmount</label>
+                        <div class="accordion-body">
+                            <fieldset class="fieldset-custom">
+                                <div class="row g-4">
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.ListBoxFor(m => m.AddLoanApplicationCommand.FeeIds, new MultiSelectList(ViewBag.LoanFees, "Value", "Text"), new { @class = "form-control select2", @search = "true" })
+                                            @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.FeeIds, "", new { @class = "text-danger " })
+                                            <label>@Member_Global_LoanApplication.SelectLoanFees</label>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-12">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.AddLoanApplicationCommand.SavingAccountCoverageRate, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.SavingAccountCoverageRate, "", new { @class = "text-danger" })
-                                        <label id="saving">@Member_Global_LoanApplication.SavingAccountCoverageRate</label>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+                <div class="card accordion-item mb-3" id="purposeAndActivitiesDiv">
+                    <h2 class="accordion-header" id="headingPaymentMethod8">
+                        <button type="button"
+                                class="accordion-button collapsed"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapsePaymentMethod8"
+                                aria-expanded="false"
+                                aria-controls="collapsePaymentMethod8">
+                            @Member_Global_LoanApplication.PurposeAndActivities
+                            <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="@Member_Global_LoanApplication.PurposeAndActivitiesHelp"></i>
+                        </button>
+                    </h2>
+                    <div id="collapsePaymentMethod8"
+                         class="accordion-collapse collapse"
+                         aria-labelledby="headingPaymentMethod8"
+                         data-bs-parent="#collapsibleSection">
+                        <br />
+                        <div class="accordion-body">
+                            <fieldset class="fieldset-custom">
+                                <div class="row g-4">
+                                    <div class="col-md-6">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanPurposeId, new SelectList(ViewBag.LoanPurposes, "Value", "Text"), @Member_Global_LoanApplication.SelectLoanPurpose, new { @class = "form-control select2", @search = "true", @id = "purposeId" })
+                                            @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.LoanPurposeId, "", new { @class = "text-danger " })
+                                            <label>@Member_Global_LoanApplication.PurposeOfTakenLoan</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.DropDownListFor(m => m.AddLoanApplicationCommand.EconomicActivityId, new SelectList(ViewBag.EconomicActivities, "Id", "Name"), @Member_Global_LoanApplication.SelectEconomicActivity, new { @class = "form-control select2", @search = "true" })
+                                            @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.EconomicActivityId, "", new { @class = "text-danger " })
+                                            <label>@Member_Global_LoanApplication.EconomicActivity</label>
+                                        </div>
                                     </div>
                                 </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
 
-                                <div class="col-md-12">
-                                    <div class="form-check">
-                                        @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsPreferenceShareAccountCoverageAmount, new { @class = "form-check-input" })
-                                        <label class="form-check-label">@Member_Global_LoanApplication.PlacePreferenceShareAsGuarantee</label>
+                <div class="card accordion-item mb-3">
+                    <h2 class="accordion-header" id="headingPaymentMethod6">
+                        <button type="button"
+                                class="accordion-button collapsed"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapsePaymentMethod6"
+                                aria-expanded="false"
+                                aria-controls="collapsePaymentMethod6">
+                            @Member_Global_LoanApplication.Save
+                            <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="@Member_Global_LoanApplication.SaveHelp"></i>
+                        </button>
+                    </h2>
+                    <div id="collapsePaymentMethod6"
+                         class="accordion-collapse collapse"
+                         aria-labelledby="headingPaymentMethod6"
+                         data-bs-parent="#collapsibleSection">
+                        <br />
+
+                        <div class="accordion-body">
+                            <fieldset class="fieldset-custom">
+                                <div class="row g-4">
+                                    <div class="mt-4">
+
+                                        <button type="submit" class="btn btn-primary me-2"> @Member_Global_LoanApplication.Save</button>
+
                                     </div>
                                 </div>
-                                <div class="col-md-12 form-floating form-floating-outline" style="display: none;">
-                                    @Html.TextBoxFor(m => m.AddLoanApplicationCommand.PreferenceShareAccountCoverageAmount, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.PreferenceShareAccountCoverageAmount, "", new { @class = "text-danger" })
-                                    <label>@Member_Global_LoanApplication.PreferenceCoverageAmount</label>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-check">
-                                        @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsDepositAccountCoverageAmount, new { @class = "form-check-input" })
-                                        <label class="form-check-label">@Member_Global_LoanApplication.PlaceDepositAsGuarantee</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-12 form-floating form-floating-outline" style="display: none;">
-                                    @Html.TextBoxFor(m => m.AddLoanApplicationCommand.DepositAccountCoverageAmount, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.DepositAccountCoverageAmount, "", new { @class = "text-danger" })
-                                    <label>@Member_Global_LoanApplication.DepositCoverageAmount</label>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-check">
-                                        @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsSalryAccount, new { @class = "form-check-input" })
-                                        <label class="form-check-label">@Member_Global_LoanApplication.CheckToPlaceStandingOrderOnSalaryAccount</label>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12 form-floating form-floating-outline" style="display: none;">
-                                    @Html.TextBoxFor(m => m.AddLoanApplicationCommand.SalaryAccountCoverageRate, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.SalaryAccountCoverageRate, "", new { @class = "text-danger" })
-                                    <label id="salary">@Member_Global_LoanApplication.EnterStandingOrderAmount</label>
-                                </div>
-
-                            </div>
-                        </fieldset>
-
-
-                        <!-- SECTION: Account Blocking Options -->
-                        <fieldset class="fieldset-custom border rounded-3 p-3 mb-3">
-                            <legend class="float-none w-auto px-2 text-primary fw-bold">
-                               Applicant Account Blocking Options
-                            </legend>
-
-                            <div class="row g-3">
-                                <div class="col-md-12">
-                                    <div class="form-check">
-                                        @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.BlockShareAccount, new { @class = "form-check-input" })
-                                        <label class="form-check-label">Block Share Account</label>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <div class="form-check">
-                                        @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.BlockSavingAccount, new { @class = "form-check-input" })
-                                        <label class="form-check-label">Block Saving Account</label>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <div class="form-check">
-                                        @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.BlockSalaryAccount, new { @class = "form-check-input" })
-                                        <label class="form-check-label">Block Salary Account</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </fieldset>
-                        <!-- End of Account Blocking Options -->
+                            </fieldset>
+                        </div>
 
                     </div>
                 </div>
-            </div>
 
-
-
-
-
-            <div class="card accordion-item mb-3">
-                <h2 class="accordion-header" id="headingPaymentMethod4">
-                    <button type="button"
-                            class="accordion-button collapsed"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#collapsePaymentMethod4"
-                            aria-expanded="false"
-                            aria-controls="collapsePaymentMethod4">
-                        @Member_Global_LoanApplication.GracePeriodAndCharges
-                        <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="@Member_Global_LoanApplication.GracePeriodAndChargesHelp"></i>
-                    </button>
-                </h2>
-                <div id="collapsePaymentMethod4"
-                     class="accordion-collapse collapse"
-                     aria-labelledby="headingPaymentMethod4"
-                     data-bs-parent="#collapsibleSection">
-                    <br />
-
-                    <div class="accordion-body">
-                        <fieldset class="fieldset-custom">
-                            <div class="row g-4">
-                                <div class="col-md-6">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.AddLoanApplicationCommand.GracePeriodBeforeFirstPayment, new { @class = "form-control", @readonly = true })
-                                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.GracePeriodBeforeFirstPayment, "", new { @class = "text-danger" })
-                                        <label>@Member_Global_LoanApplication.PreferredFirstPaymentDate</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.AddLoanApplicationCommand.GracePeriodAfterMaturityDate, new { @class = "form-control", @readonly = true })
-                                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.GracePeriodBeforeFirstPayment, "", new { @class = "text-danger" })
-                                        <label>@Member_Global_LoanApplication.EnterGracePeriodAfterEntireLoanIsOverdue</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </fieldset>
-                    </div>
-                </div>
-            </div>
-            <div class="card accordion-item mb-3" id="InterestDiv">
-                <h2 class="accordion-header" id="headingDeliveryOptions">
-                    <button type="button"
-                            class="accordion-button collapsed"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#collapseDeliveryOptions"
-                            aria-expanded="false"
-                            aria-controls="collapseDeliveryOptions">
-                        @Member_Global_LoanApplication.Interest
-                        <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="@Member_Global_LoanApplication.InterestHelp"></i>
-                    </button>
-                </h2>
-                <div id="collapseDeliveryOptions"
-                     class="accordion-collapse collapse"
-                     aria-labelledby="headingDeliveryOptions"
-                     data-bs-parent="#collapsibleSection">
-                    <br />
-
-                    <div class="accordion-body">
-                        <fieldset class="fieldset-custom">
-                            <div class="row g-4">
-                                <div class="col-md-12">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.AddLoanApplicationCommand.InterestRate, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.InterestRate, "", new { @class = "text-danger" })
-                                        <label id="interest">@Member_Global_LoanApplication.InterestRate</label>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </fieldset>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card accordion-item mb-3" id="RepaymentDiv">
-                <h2 class="accordion-header" id="headingPaymentMethod">
-                    <button type="button"
-                            class="accordion-button collapsed"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#collapsePaymentMethod"
-                            aria-expanded="false"
-                            aria-controls="collapsePaymentMethod">
-                        @Member_Global_LoanApplication.RepaymentAndLoanDuration
-                        <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="@Member_Global_LoanApplication.RepaymentAndLoanDurationHelp"></i>
-                    </button>
-                </h2>
-                <div id="collapsePaymentMethod"
-                     class="accordion-collapse collapse"
-                     aria-labelledby="headingPaymentMethod"
-                     data-bs-parent="#collapsibleSection">
-                    <br />
-
-                    <div class="accordion-body">
-                        <fieldset class="fieldset-custom">
-                            <div class="row g-4">
-                                <div class="col-md-12">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.AddLoanApplicationCommand.RepaymentCircle, new SelectList(ViewBag.RepaymentCycles, "Value", "Text"), @Member_Global_LoanApplication.SelectRepaymentCycle, new { @class = "form-control select2", @search = "true", @id = "RepaymentCircle" })
-                                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.RepaymentCircle, "", new { @class = "text-danger " })
-                                        <label>@Member_Global_LoanApplication.RepaymentCycle</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </fieldset>
-                    </div>
-                </div>
-            </div>
-            <div class="card accordion-item mb-3">
-                <h2 class="accordion-header" id="headingPaymentMethod7">
-                    <button type="button"
-                            class="accordion-button collapsed"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#collapsePaymentMethod7"
-                            aria-expanded="false"
-                            aria-controls="collapsePaymentMethod7">
-                        @Member_Global_LoanApplication.Fee
-                        <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="@Member_Global_LoanApplication.FeeHelp"></i>
-                    </button>
-                </h2>
-                <div id="collapsePaymentMethod7"
-                     class="accordion-collapse collapse"
-                     aria-labelledby="headingPaymentMethod7"
-                     data-bs-parent="#collapsibleSection">
-                    <br />
-
-                    <div class="accordion-body">
-                        <fieldset class="fieldset-custom">
-                            <div class="row g-4">
-                                <div class="col-md-12">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.ListBoxFor(m => m.AddLoanApplicationCommand.FeeIds, new MultiSelectList(ViewBag.LoanFees, "Value", "Text"), new { @class = "form-control select2", @search = "true" })
-                                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.FeeIds, "", new { @class = "text-danger " })
-                                        <label>@Member_Global_LoanApplication.SelectLoanFees</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </fieldset>
-                    </div>
-                </div>
-            </div>
-            <div class="card accordion-item mb-3" id="purposeAndActivitiesDiv">
-                <h2 class="accordion-header" id="headingPaymentMethod8">
-                    <button type="button"
-                            class="accordion-button collapsed"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#collapsePaymentMethod8"
-                            aria-expanded="false"
-                            aria-controls="collapsePaymentMethod8">
-                        @Member_Global_LoanApplication.PurposeAndActivities
-                        <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="@Member_Global_LoanApplication.PurposeAndActivitiesHelp"></i>
-                    </button>
-                </h2>
-                <div id="collapsePaymentMethod8"
-                     class="accordion-collapse collapse"
-                     aria-labelledby="headingPaymentMethod8"
-                     data-bs-parent="#collapsibleSection">
-                    <br />
-                    <div class="accordion-body">
-                        <fieldset class="fieldset-custom">
-                            <div class="row g-4">
-                                <div class="col-md-6">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanPurposeId, new SelectList(ViewBag.LoanPurposes, "Value", "Text"), @Member_Global_LoanApplication.SelectLoanPurpose, new { @class = "form-control select2", @search = "true", @id = "purposeId" })
-                                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.LoanPurposeId, "", new { @class = "text-danger " })
-                                        <label>@Member_Global_LoanApplication.PurposeOfTakenLoan</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.AddLoanApplicationCommand.EconomicActivityId, new SelectList(ViewBag.EconomicActivities, "Id", "Name"), @Member_Global_LoanApplication.SelectEconomicActivity, new { @class = "form-control select2", @search = "true" })
-                                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.EconomicActivityId, "", new { @class = "text-danger " })
-                                        <label>@Member_Global_LoanApplication.EconomicActivity</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </fieldset>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card accordion-item mb-3">
-                <h2 class="accordion-header" id="headingPaymentMethod6">
-                    <button type="button"
-                            class="accordion-button collapsed"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#collapsePaymentMethod6"
-                            aria-expanded="false"
-                            aria-controls="collapsePaymentMethod6">
-                        @Member_Global_LoanApplication.Save
-                        <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="@Member_Global_LoanApplication.SaveHelp"></i>
-                    </button>
-                </h2>
-                <div id="collapsePaymentMethod6"
-                     class="accordion-collapse collapse"
-                     aria-labelledby="headingPaymentMethod6"
-                     data-bs-parent="#collapsibleSection">
-                    <br />
-
-                    <div class="accordion-body">
-                        <fieldset class="fieldset-custom">
-                            <div class="row g-4">
-                                <div class="mt-4">
-
-                                    <button type="submit" class="btn btn-primary me-2"> @Member_Global_LoanApplication.Save</button>
-
-                                </div>
-                            </div>
-                        </fieldset>
-                    </div>
-
-                </div>
             </div>
 
         </div>
 
-    </div>
 
 
-
-}
+    }
 
 
 <script>

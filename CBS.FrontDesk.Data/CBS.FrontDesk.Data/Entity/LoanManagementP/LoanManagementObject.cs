@@ -88,6 +88,11 @@ namespace CBS.FrontDesk.Data.Entity.LoanManagementP
     //    // required score bands based on requested amount
     //    public List<ScoreBandDto> Bands { get; set; } = new List<ScoreBandDto>();
     //}
+    public class ReleaseOrder
+    {
+        public string MemberReference { get; set; }
+        public int Order { get; set; }
+    }
 
     public sealed class NewLoanApplicationRequest
     {
@@ -103,17 +108,16 @@ namespace CBS.FrontDesk.Data.Entity.LoanManagementP
         // ✅ REQUIRED: Requested amount + interest rate
         [Range(1, double.MaxValue)] public decimal RequestedAmount { get; set; }
         [Range(0.0001, 999999)] public decimal InterestRate { get; set; }
+        public List<ReleaseOrder> ReleaseOrders { get; set; }
 
         // Terms
         [Required] public string RepaymentPeriod { get; set; }
         [Required] public string RepaymentType { get; set; }
         [Range(0, 3650)] public int GracePeriodDays { get; set; }
         [Required] public string DisbursementType { get; set; }
-
+        public List<string> SelectedScorings { get; set; }
         // Multi-selects
-        public List<string> Charges { get; set; }
-        public List<string> ScoreAssessmentIds { get; set; }
-
+        public List<Charges> Charges { get; set; }
         // ✅ NEW: scoring summary computed/displayed in UI
         public ScoringSummaryDto Scoring { get; set; } = new ScoringSummaryDto();
 
@@ -122,7 +126,6 @@ namespace CBS.FrontDesk.Data.Entity.LoanManagementP
         public bool HasGuarantor { get; set; }
         public bool HasCollateral { get; set; }
         public bool RequiresDocuments { get; set; }
-
         public decimal SavingsCoverageAmount { get; set; }
         public decimal OrdinarySharesAmountProvided { get; set; }
         public decimal TotalDownpaymentAmountProvided { get; set; }
@@ -131,10 +134,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanManagementP
 
         // Recovery
         public bool HasRecoveryMechanism { get; set; }
-        public List<string> RecoveryAccounts { get; set; }
-        public List<RecoveryBlockDto> RecoveryBlocks { get; set; } = new List<RecoveryBlockDto>();
-        public List<ManagerRecoveryDecisionDto> ManagerRecoveryDecision { get; set; } = new List<ManagerRecoveryDecisionDto>();
-
+        public List<RecoveryAccount> RecoveryBlocks { get; set; } = new List<RecoveryAccount>();
         // ✅ Documents in review (metadata only; actual bytes should be uploaded separately)
         public List<LoanDocumentDto> Documents { get; set; } = new List<LoanDocumentDto>();
         // =====================================================
@@ -159,9 +159,10 @@ namespace CBS.FrontDesk.Data.Entity.LoanManagementP
 
     public sealed class ScoringSummaryDto
     {
+        public string ScoringId { get; set; }
         /// <summary>Badge text, e.g. "NO RISK - Loan is covered".</summary>
         public string StatusCaption { get; set; }
-
+        public decimal ProposedAmount { get; set; }
         /// <summary>Normalized status code: OK / WARN / FAIL / UNKNOWN.</summary>
         public string StatusCode { get; set; }
 
@@ -176,18 +177,20 @@ namespace CBS.FrontDesk.Data.Entity.LoanManagementP
         public int TotalSelectedPoints { get; set; }
     }
 
-    public sealed class RecoveryBlockDto
+    public sealed class RecoveryAccount
     {
-        [Required] public string AccountId { get; set; }
-        [Range(1, double.MaxValue)] public decimal BlockAmount { get; set; }
+        public string AccountId { get; set; }
+        public decimal BlockAmount { get; set; }
+        public string BlockedStatus { get; set; }
+    }
+    public sealed class Charges
+    {
+        public string ChargeId { get; set; }
+        public string ChargeName { get; set; }
+        public decimal Amount { get; set; }
+        
     }
 
-    public sealed class ManagerRecoveryDecisionDto
-    {
-        [Required] public string AccountId { get; set; }
-        public string Decision { get; set; }     // APPROVE_BLOCK / DO_NOT_BLOCK / PENDING
-        public decimal ManagerAmount { get; set; }
-    }
 
     public sealed class LoanDocumentDto
     {

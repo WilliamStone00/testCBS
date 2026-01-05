@@ -115,7 +115,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Actual Balance.
+        ///   Looks up a localized string similar to Expected Balance .
         /// </summary>
         internal static string ActualBalance {
             get {

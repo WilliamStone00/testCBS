@@ -1890,16 +1890,10 @@ function AjaxPostAndUpdate(form) {
     }
     return false;
 }
-var __appAlertTimerSuccess = null;
-var __appAlertTimerDanger = null;
 
-function appError(message) { appalert(message, 0, 1); }
-function appSuccess(message) { appalert(message, 1, 1); }
-
-
-
-// Single timer for any alert (prevents double display)
+// ✅ One timer for top page alert
 var __appAlertTimer = null;
+var __APP_ALERT_MS = 60000; // 20 sec
 
 function hideAppAlert(sel) {
     if (__appAlertTimer) {
@@ -1909,21 +1903,25 @@ function hideAppAlert(sel) {
     $(sel).addClass("d-none");
 }
 
-// Helper: set bootstrap alert-* class cleanly
 function __setAlertType($div, type) {
     $div.removeClass("alert-success alert-danger alert-warning alert-info")
         .addClass("alert-" + type);
 }
 
-// Helper: show div + auto close
 function __showAlert(divSelector, autoCloseMs) {
     $(divSelector).removeClass("d-none");
 
     if (__appAlertTimer) clearTimeout(__appAlertTimer);
     __appAlertTimer = setTimeout(function () {
         hideAppAlert(divSelector);
-    }, autoCloseMs || 20000); // ✅ default 20 seconds
+    }, autoCloseMs || __APP_ALERT_MS);
 }
+
+// ✅ quick helpers
+function appSuccess(message) { appalert(message, 1, 1); }
+function appWarning(message) { appalert(message, 2, 1); }
+function appInfo(message) { appalert(message, 3, 1); }
+function appError(message) { appalert(message, 0, 1); }
 
 /**
  * state:
@@ -1932,9 +1930,8 @@ function __showAlert(divSelector, autoCloseMs) {
  *  3 = info
  *  else = error
  *
- * alertType:
- *  1 = Bootstrap page alert ONLY
- *  2 = alertify
+ * alertType is accepted for backward compatibility,
+ * BUT we ALWAYS show: page alert + toastr.
  */
 function appalert(message, state, alertType) {
 
@@ -1943,60 +1940,53 @@ function appalert(message, state, alertType) {
     var $successDiv = $("#message_div_success");
     var $dangerDiv = $("#message_div_danger");
 
-    // Always hide both before showing one
+    // ✅ Always hide both first so only ONE page alert is visible
     $successDiv.addClass("d-none");
     $dangerDiv.addClass("d-none");
 
-    // ✅ alertType 1 => ONLY page alert (no toastr, no duplicates)
-    if (alertType === 1) {
-
-        // SUCCESS
-        if (state === 1) {
-            __setAlertType($successDiv, "success");
-            $("#messagesuccess").text(text);
-            __showAlert("#message_div_success", 20000);
-            return;
-        }
-
-        // WARNING
-        if (state === 2) {
-            __setAlertType($dangerDiv, "warning");
-            $("#messagedanger").text(text);
-            __showAlert("#message_div_danger", 20000);
-            return;
-        }
-
-        // INFO
-        if (state === 3) {
-            __setAlertType($successDiv, "info");
-            $("#messagesuccess").text(text);
-            __showAlert("#message_div_success", 20000);
-            return;
-        }
-
-        // ERROR (default)
+    // -----------------------------
+    // 1) TOP PAGE ALERT (20 seconds)
+    // -----------------------------
+    if (state === 1) {
+        __setAlertType($successDiv, "success");
+        $("#messagesuccess").text(text);
+        __showAlert("#message_div_success", __APP_ALERT_MS);
+    }
+    else if (state === 3) {
+        __setAlertType($successDiv, "info");
+        $("#messagesuccess").text(text);
+        __showAlert("#message_div_success", __APP_ALERT_MS);
+    }
+    else if (state === 2) {
+        __setAlertType($dangerDiv, "warning");
+        $("#messagedanger").text(text);
+        __showAlert("#message_div_danger", __APP_ALERT_MS);
+    }
+    else {
         __setAlertType($dangerDiv, "danger");
         $("#messagedanger").text(text);
-        __showAlert("#message_div_danger", 20000);
-        return;
+        __showAlert("#message_div_danger", __APP_ALERT_MS);
     }
 
-    // ✅ alertType 2 => alertify (unchanged behavior)
-    if (alertType === 2) {
-        if (state === 1) alertify.alert(text, function () { alertify.message('OK'); });
-        else if (state === 2) alertify.confirm("Delete", text,
-            function () { alertify.success('Ok'); },
-            function () { alertify.error('Transaction cancelled'); }
-        );
-        else if (state === 3) alertify.message(text);
-        else alertify.error(text);
-        return;
-    }
+    // -----------------------------
+    // 2) TOAST POPUP (above modals)
+    // -----------------------------
+    if (window.toastr) {
+        toastr.options = toastr.options || {};
+        toastr.options.closeButton = true;
+        toastr.options.newestOnTop = true;
+        toastr.options.preventDuplicates = true;
+        toastr.options.progressBar = true;
+        toastr.options.escapeHtml = true;  // ✅ safe
+        // ✅ increase display time
+        toastr.options.timeOut = 60000;         // 20 seconds visible
+        toastr.options.extendedTimeOut = 10000;  // stays longer on hover
 
-    // fallback => error
-    __setAlertType($dangerDiv, "danger");
-    $("#messagedanger").text(text);
-    __showAlert("#message_div_danger", 20000);
+        if (state === 1) toastr.success(text);
+        else if (state === 2) toastr.warning(text);
+        else if (state === 3) toastr.info(text);
+        else toastr.error(text);
+    }
 }
 
 

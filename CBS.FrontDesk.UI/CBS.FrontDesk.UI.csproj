@@ -8153,13 +8153,14 @@
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\CamCCULAdmin_TB.pubxml" />
     <None Include="Properties\PublishProfiles\Cpcmc_TB.pubxml" />
+    <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\PB.pubxml" />
+    <None Include="Properties\PublishProfiles\Prod Vb Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\PROD.pubxml" />
     <None Include="Properties\PublishProfiles\Production Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\TB.pubxml" />
     <None Include="Properties\PublishProfiles\TBED.pubxml" />
-    <None Include="Properties\PublishProfiles\Testbed Deploy.pubxml" />
     <None Include="Resources\TextFile1.txt" />
     <Content Include="DataSet\Transaction\TransactionDS.xsc">
       <DependentUpon>TransactionDS.xsd</DependentUpon>

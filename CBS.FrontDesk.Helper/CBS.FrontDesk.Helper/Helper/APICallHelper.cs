@@ -611,6 +611,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllLoanTerm = "/api/v1/LoanTerms";
         public static string CreateLoanTerm = "/api/v1/LoanTerm";
         public static string GetPCMFCatalog = "/api/v1/pcmf-ui-catalog";
+        public static string GetTermByPcmfPurpose = "/api/v1/LoanTerms/ByPcmfPurpose/{0}";
 
 
         public static string Get_Update_Delete_InstallmentType = "/api/v1/InstallmentType/{0}";
@@ -1620,7 +1621,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllBranchAccount = "/api/v1/BranchAccount/{0}";
 
         //Account negativity management endpoint
-        public static string Accountnegman = "Not yet provided";
+        public static string Accountnegman = "/api/v1/BranchAccount/negativity";
 
         //-------------------------- FileUpload ------------------------------------------
         public static string AffiliateUpload = "/api/v1/FileUploads/affiliates/{0}";
