@@ -1893,7 +1893,7 @@ function AjaxPostAndUpdate(form) {
 
 // ✅ One timer for top page alert
 var __appAlertTimer = null;
-var __APP_ALERT_MS = 20000; // 20 sec
+var __APP_ALERT_MS = 60000; // 20 sec
 
 function hideAppAlert(sel) {
     if (__appAlertTimer) {
@@ -1979,8 +1979,8 @@ function appalert(message, state, alertType) {
         toastr.options.progressBar = true;
         toastr.options.escapeHtml = true;  // ✅ safe
         // ✅ increase display time
-        toastr.options.timeOut = 20000;         // 20 seconds visible
-        toastr.options.extendedTimeOut = 5000;  // stays longer on hover
+        toastr.options.timeOut = 60000;         // 20 seconds visible
+        toastr.options.extendedTimeOut = 10000;  // stays longer on hover
 
         if (state === 1) toastr.success(text);
         else if (state === 2) toastr.warning(text);
