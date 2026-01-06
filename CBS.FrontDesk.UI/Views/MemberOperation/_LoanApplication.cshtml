@@ -195,7 +195,105 @@
     }
 
 </style>
+<style>
+    /* Refinancing Simulation Card */
+    .tsc-ref-card {
+        border-width: 2px;
+        border-radius: 14px;
+        overflow: hidden;
+    }
 
+    .tsc-ref-head {
+        background: linear-gradient(90deg, rgba(13,110,253,.12), rgba(13,202,240,.10));
+        border-bottom: 1px solid rgba(0,0,0,.06);
+    }
+
+    .tsc-ref-title {
+        font-weight: 800;
+        font-size: 1.05rem;
+        color: #0b2e5c;
+    }
+
+    .tsc-ref-subtitle {
+        font-size: .82rem;
+        color: rgba(0,0,0,.65);
+        margin-top: 2px;
+    }
+
+    .tsc-ref-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #0dcaf0;
+        display: inline-block;
+    }
+
+    .tsc-ref-badge {
+        background: #0dcaf0;
+        color: #00323f;
+        font-weight: 700;
+        padding: .35rem .6rem;
+    }
+
+    .tsc-ref-block {
+        background: #fff;
+        border: 1px solid rgba(0,0,0,.08);
+        border-radius: 12px;
+        padding: 12px;
+        height: 100%;
+    }
+
+    .tsc-ref-block-title {
+        font-weight: 800;
+        font-size: .95rem;
+        margin-bottom: 10px;
+        color: rgba(0,0,0,.78);
+    }
+
+    .tsc-ref-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        padding: 6px 0;
+        border-bottom: 1px dashed rgba(0,0,0,.06);
+    }
+
+        .tsc-ref-row:last-child {
+            border-bottom: 0;
+        }
+
+    .tsc-ref-val {
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+    }
+
+    .tsc-ref-row-total {
+        background: rgba(13,110,253,.05);
+        border-radius: 10px;
+        padding: 10px 10px;
+        border: 1px solid rgba(13,110,253,.12);
+    }
+
+    .tsc-ref-row-highlight {
+        background: rgba(13,202,240,.10);
+        border-radius: 10px;
+        padding: 10px 10px;
+        border: 1px solid rgba(13,202,240,.22);
+    }
+
+    .tsc-ref-row-neg span:first-child {
+        color: rgba(0,0,0,.70);
+    }
+
+    .tsc-ref-row-net {
+        background: rgba(25,135,84,.10);
+        border-radius: 10px;
+        padding: 10px 10px;
+        border: 1px solid rgba(25,135,84,.20);
+    }
+
+</style>
 <div class="card mb-1">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
         <span><i class="mdi mdi-information-outline me-2"></i> @Member_Global_LoanApplication.LoanApplicationTips</span>
@@ -929,9 +1027,151 @@
 
                                     <div class="col-md-12" id="RAmountDiv">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.TextBoxFor(m => m.AddLoanApplicationCommand.Amount, new { @class = "form-control" })
+                                            @Html.TextBoxFor(m => m.AddLoanApplicationCommand.Amount,
+                                                new { @class = "form-control", @id = "RequestedAmount" })
                                             @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.Amount, "", new { @class = "text-danger" })
                                             <label id="amount">@Member_Global_LoanApplication.Amount</label>
+                                        </div>
+                                        <!-- ✅ REFINANCING COMPUTATION (only for refinancing) -->
+                                        <div class="col-12 mt-3" id="refinancingComputationCard" style="display:none;">
+                                            <div class="card tsc-ref-card shadow-sm border-info">
+                                                <!-- Header -->
+                                                <div class="card-header tsc-ref-head d-flex justify-content-between align-items-center">
+                                                    <div class="d-flex align-items-center gap-2">
+                                                        <span class="tsc-ref-dot"></span>
+                                                        <div>
+                                                            <div class="tsc-ref-title">Refinancing Simulation</div>
+                                                            <div class="tsc-ref-subtitle">
+                                                                New loan = Old principal recapitalized + Member top-up. Settlement is paid from disbursement.
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <span class="badge rounded-pill tsc-ref-badge">Auto</span>
+                                                </div>
+
+                                                <div class="card-body">
+                                                    <!-- Manager note -->
+                                                    <div class="alert alert-info py-2 px-3 small mb-3">
+                                                        <div class="fw-semibold mb-1">Note to Loan Manager</div>
+                                                        <div>
+                                                            Refinancing recapitalizes the <strong>Old Loan Principal</strong> and adds the
+                                                            <strong>Requested (Top-Up) Amount</strong> to generate the new loan.
+                                                            At disbursement, TSC will settle the old loan. Any <strong>Interest, VAT, Penalty</strong> and
+                                                            <strong>charges</strong> are deducted from the disbursed amount before the member receives the net.
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row g-3">
+                                                        <!-- Old loan breakdown -->
+                                                        <div class="col-lg-4">
+                                                            <div class="tsc-ref-block">
+                                                                <div class="tsc-ref-block-title">Old Loan Breakdown</div>
+
+                                                                <div class="tsc-ref-row">
+                                                                    <span>Principal (Capital)</span>
+                                                                    <span class="tsc-ref-val" id="rc_oldCapital">0 FCFA</span>
+                                                                </div>
+                                                                <div class="tsc-ref-row">
+                                                                    <span>Accrued Interest</span>
+                                                                    <span class="tsc-ref-val" id="rc_oldInterest">0 FCFA</span>
+                                                                </div>
+                                                                <div class="tsc-ref-row">
+                                                                    <span>VAT on Interest</span>
+                                                                    <span class="tsc-ref-val" id="rc_oldVat">0 FCFA</span>
+                                                                </div>
+                                                                <div class="tsc-ref-row">
+                                                                    <span>Penalty</span>
+                                                                    <span class="tsc-ref-val" id="rc_oldPenalty">0 FCFA</span>
+                                                                </div>
+
+                                                                <div class="tsc-ref-row tsc-ref-row-total mt-2">
+                                                                    <span>Total Due</span>
+                                                                    <span class="tsc-ref-val" id="rc_oldTotalSettlement">0 FCFA</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- New loan computation -->
+                                                        <div class="col-lg-4">
+                                                            <div class="tsc-ref-block">
+                                                                <div class="tsc-ref-block-title">New Loan Computation</div>
+
+                                                                <div class="tsc-ref-row">
+                                                                    <span>Top-Up</span>
+                                                                    <span class="tsc-ref-val" id="rc_requested">0 FCFA</span>
+                                                                </div>
+                                                                <div class="tsc-ref-row">
+                                                                    <span>+ Recapitalized Amount</span>
+                                                                    <span class="tsc-ref-val" id="rc_oldCapital2">0 FCFA</span>
+                                                                </div>
+
+                                                                <hr class="my-2" />
+
+                                                                <div class="tsc-ref-row tsc-ref-row-highlight">
+                                                                    <span>New Loan Amount</span>
+                                                                    <span class="tsc-ref-val fw-bold" id="rc_newLoanAmount">0 FCFA</span>
+                                                                </div>
+
+                                                                <div class="text-muted small mt-2">
+                                                                    New Loan Amount = Requested + Old Principal
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- Disbursement simulation -->
+                                                        <div class="col-lg-4">
+                                                            <div class="tsc-ref-block">
+                                                                <div class="tsc-ref-block-title">Disbursement Simulation (Repayment)</div>
+
+                                                                <div class="tsc-ref-row">
+                                                                    <span>New Loan Amount</span>
+                                                                    <span class="tsc-ref-val" id="rc_newLoanAmount2">0 FCFA</span>
+                                                                </div>
+
+                                                                <div class="tsc-ref-row tsc-ref-row-neg">
+                                                                    <span>- Principal</span>
+                                                                    <span class="tsc-ref-val" id="rc_payCapital">0 FCFA</span>
+                                                                </div>
+                                                                <div class="tsc-ref-row tsc-ref-row-neg">
+                                                                    <span>- Interest</span>
+                                                                    <span class="tsc-ref-val" id="rc_payInterest">0 FCFA</span>
+                                                                </div>
+                                                                <div class="tsc-ref-row tsc-ref-row-neg">
+                                                                    <span>- VAT</span>
+                                                                    <span class="tsc-ref-val" id="rc_payVat">0 FCFA</span>
+                                                                </div>
+                                                                <div class="tsc-ref-row tsc-ref-row-neg">
+                                                                    <span>- Penalty</span>
+                                                                    <span class="tsc-ref-val" id="rc_payPenalty">0 FCFA</span>
+                                                                </div>
+
+                                                                <div class="tsc-ref-row tsc-ref-row-neg">
+                                                                    <span>- Charges (if any)</span>
+                                                                    <span class="tsc-ref-val" id="rc_charges">0 FCFA</span>
+                                                                </div>
+
+                                                                <hr class="my-2" />
+
+                                                                <div class="tsc-ref-row tsc-ref-row-net">
+                                                                    <span>Expected Net to Member</span>
+                                                                    <span class="tsc-ref-val fw-bold" id="rc_netToMember">0 FCFA</span>
+                                                                </div>
+
+                                                                <div class="text-muted small mt-2">
+                                                                    Net = New loan amount − (old settlement + charges).
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Optional warning -->
+                                                    <div class="small text-muted mt-3" id="rc_netWarn" style="display:none;">
+                                                        <i class="mdi mdi-alert-outline text-warning me-1"></i>
+                                                        Net to member is ≤ 0. Review requested amount, charges, or settlement.
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-md-12">

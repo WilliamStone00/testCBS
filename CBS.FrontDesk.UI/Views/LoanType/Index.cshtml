@@ -130,25 +130,29 @@
     <script>
         var dataTable = null;
 
+        /* ===========================
+           Select2
+        ============================ */
         function initSelect2(container) {
             $(container).find('.select2').each(function () {
                 const $select = $(this);
 
-                // Destroy if already initialized (important for AJAX reloads)
                 if ($select.hasClass('select2-hidden-accessible')) {
                     $select.select2('destroy');
                 }
 
                 $select.select2({
                     width: '100%',
-                    dropdownParent: $(container), // 🔥 REQUIRED for modals
+                    dropdownParent: $(container),
                     placeholder: $select.attr('data-placeholder') || 'Select an option',
                     allowClear: true
                 });
             });
         }
 
-
+        /* ===========================
+           Modal
+        ============================ */
         function showCreateModal() {
             ShowModal(null, '_CreateEditLoanType', 'LoanType', 'create');
         }
@@ -159,292 +163,180 @@
                 '&path=' + encodeURIComponent(path);
 
             $.get(url).done(function (html) {
-
                 const modalEl = document.getElementById('genericModal');
-                const modalBody = modalEl.querySelector('.modal-content');
-
-                modalBody.innerHTML = html;
+                modalEl.querySelector('.modal-content').innerHTML = html;
 
                 const modal = new bootstrap.Modal(modalEl);
-
-                // 🔥 Initialize Select2 AFTER HTML injection, BEFORE show
                 initSelect2(modalEl);
-
                 modal.show();
-
             }).fail(function () {
                 appalert('Failed to load content', 0, 1);
             });
         }
 
-
+        /* ===========================
+           Load Data
+        ============================ */
         function loadData() {
             var tbody = $('#loanTypeDataTable tbody');
+
+            // 🔥 show loading row ONLY temporarily
             tbody.html(`
-                            <tr>
-                                <td colspan="6" class="text-center py-4">
-                                    <p class="mt-2 mb-0 text-muted">Loading loan types data...</p>
-                                </td>
-                            </tr>
-                                    `);
+                <tr class="loading-row">
+                    <td colspan="6" class="text-center py-4 text-muted">
+                        Loading loan types data...
+                    </td>
+                </tr>
+            `);
 
             $.ajax({
                 url: '/LoanType/GetAll',
                 type: 'GET',
                 dataType: 'json',
                 success: function (response) {
-
-                    if (response.success && response.data) {
+                    if (response.success && Array.isArray(response.data)) {
                         renderTable(response.data);
                     } else {
-                        tbody.html(`
-                                <tr>
-                                    <td colspan="6" class="text-center text-danger py-4">
-                                        <i class="mdi mdi-alert-circle me-1"></i>
-                                        Failed to load data
-                                    </td>
-                                </tr>
-                            `);
-                        $('#recordCount').text('Error');
+                        showEmpty('Failed to load data');
                     }
                 },
-                error: function (xhr, status, error) {
-                    console.log('AJAX Error:', error); // Debug log
-                    tbody.html(`
-                            <tr>
-                                <td colspan="6" class="text-center text-danger py-4">
-                                    <i class="mdi mdi-alert-circle me-1"></i>
-                                    Error loading data. Please try again.
-                                </td>
-                            </tr>
-                        `);
-                    $('#recordCount').text('Error');
+                error: function () {
+                    showEmpty('Error loading data');
                 }
             });
         }
 
+        function showEmpty(message) {
+            var tbody = $('#loanTypeDataTable tbody');
+
+            if ($.fn.DataTable.isDataTable('#loanTypeDataTable')) {
+                dataTable.destroy();
+                dataTable = null;
+            }
+
+            tbody.html(`
+                <tr>
+                    <td colspan="6" class="text-center text-muted py-4">
+                        ${message}
+                    </td>
+                </tr>
+            `);
+
+            $('#recordCount').text('0 records');
+        }
+
+        /* ===========================
+           Render Table
+        ============================ */
         function renderTable(data) {
             var tbody = $('#loanTypeDataTable tbody');
 
-            // Always destroy existing DataTable instance
-            if (dataTable) {
-                try {
-                    dataTable.destroy();
-                } catch (e) {
-                    console.log('Error destroying DataTable:', e);
-                }
+            // 🔥 Destroy DataTable FIRST
+            if ($.fn.DataTable.isDataTable('#loanTypeDataTable')) {
+                dataTable.destroy();
                 dataTable = null;
-                tbody.empty();
-            } else {
-                tbody.empty();
             }
 
-            if (!data || !Array.isArray(data) || data.length === 0) {
-                console.log('No valid data array received'); // Debug log
-                tbody.html(`
-                        <tr>
-                            <td colspan="6" class="text-center text-muted py-4">
-                                <i class="mdi mdi-information-outline me-1"></i>
-                                No loan type records found
-                            </td>
-                        </tr>
-                    `);
-                $('#recordCount').text('0 records');
-                initializeDataTable();
+            // 🔥 Remove loading / old rows
+            tbody.empty();
+
+            if (!data.length) {
+                showEmpty('No loan type records found');
                 return;
             }
 
             $('#recordCount').text(data.length + ' records');
 
-            // Debug: Check first item structure
-            if (data[0]) {
-                console.log('First item properties:', Object.keys(data[0]));
-                console.log('First item values:', data[0]);
-            }
-
-            data.forEach(function (item, index) {
-                console.log(`Item ${index}:`, item); // Debug log
-
-                // Ensure all required properties exist
-                var code = escapeHtml(item.Code || 'N/A');
-                var name = escapeHtml(item.Name || 'N/A');
-                var description = escapeHtml(item.Description || 'N/A');
-                var displayOrder = item.DisplayOrder !== undefined ? item.DisplayOrder : 0;
-                var isActive = item.IsActive !== undefined ? item.IsActive : true;
-                var id = item.Id || '';
-
-                var row = `
-                        <tr>
-                            <td><span class="fw-bold text-primary">${code}</span></td>
-                            <td class="fw-semibold">${name}</td>
-                            <td>${description}</td>
-                            <td><span class="badge bg-info">${displayOrder}</span></td>
-                            <td>
-                                ${isActive ?
-                        '<span class="badge bg-success">Active</span>' :
-                        '<span class="badge bg-secondary">Inactive</span>'}
-                            </td>
-                            <td>
-                                <div class="dropdown">
-                                    <button class="btn btn-sm btn-info dropdown-toggle text-white"
-                                            type="button"
-                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="mdi mdi-cog-outline"></i> Actions
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li>
-                                            <button class="dropdown-item btn-details" data-id="${escapeHtml(id)}">
-                                                <i class="mdi mdi-eye me-1 text-primary"></i> Details
-                                            </button>
-                                        </li>
-                                        <li>
-                                            <button class="dropdown-item btn-edit" data-id="${escapeHtml(id)}">
-                                                <i class="mdi mdi-pencil me-1 text-warning"></i> Edit
-                                            </button>
-                                        </li>
-                                        <li><hr class="dropdown-divider"></li>
-                                        <li>
-                                                <button class="dropdown-item btn-delete text-danger"
-                                                        data-id="${escapeHtml(id)}" disabled>
-                                                    <i class="mdi mdi-delete me-1"></i> Delete
-                                                </button>
-                                            </li>
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
-                    `;
-
-                // Debug: Count columns in row
-                var tempRow = $(row);
-                var tdCount = tempRow.find('td').length;
-                console.log(`Row ${index} has ${tdCount} columns`); // Debug log
-
-                tbody.append(row);
+            data.forEach(function (item) {
+                tbody.append(`
+                    <tr>
+                        <td><strong>${escapeHtml(item.Code)}</strong></td>
+                        <td>${escapeHtml(item.Name)}</td>
+                        <td>${escapeHtml(item.Description)}</td>
+                        <td>${item.DisplayOrder}</td>
+                        <td>
+                            ${item.IsActive
+                        ? '<span class="badge bg-success">Active</span>'
+                        : '<span class="badge bg-secondary">Inactive</span>'}
+                        </td>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-info dropdown-toggle text-white"
+                                        data-bs-toggle="dropdown">
+                                    Actions
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <button class="dropdown-item btn-details text-info" data-id="${item.Id}">
+                                            Details
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button class="dropdown-item btn-edit text-primary" data-id="${item.Id}">
+                                            Edit
+                                        </button>
+                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <button class="dropdown-item btn-delete text-danger"
+                                                data-id="${item.Id}" disabled>
+                                            Delete
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                `);
             });
 
-            // Wait a moment before initializing DataTable
-            setTimeout(function () {
-                initializeDataTable();
-            }, 100);
+            initializeDataTable();
         }
 
+        /* ===========================
+           DataTable Init
+        ============================ */
         function initializeDataTable() {
-            var $table = $('#loanTypeDataTable');
-
-            // Check if table exists and has correct structure
-            if (!$table.length) {
-                console.error('Table not found');
-                return;
-            }
-
-            // Check column count
-            var thCount = $table.find('thead th').length;
-            var firstRowTdCount = $table.find('tbody tr:first td').length;
-            console.log(`Table header columns: ${thCount}, First row columns: ${firstRowTdCount}`);
-
-            if (thCount !== firstRowTdCount) {
-                console.error(`Column mismatch! Header: ${thCount}, Body: ${firstRowTdCount}`);
-
-                // Show error in table
-                $table.find('tbody').html(`
-                                                    <tr>
-                                                        <td colspan="${thCount}" class="text-center text-danger py-4">
-                                                            <i class="mdi mdi-alert-circle me-1"></i>
-                                                            Data structure error (Column mismatch: ${thCount} vs ${firstRowTdCount})
-                                                        </td>
-                                                    </tr>
-                                                `);
-                return;
-            }
-
-            if ($.fn.DataTable.isDataTable('#loanTypeDataTable')) {
-                console.log('DataTable already initialized, destroying...');
-                dataTable.clear().destroy();
-                $table.empty();
-            }
-
-            try {
-                dataTable = $table.DataTable({
-                    searching: true,
-                    responsive: true,
-                    order: [[3, 'asc'], [0, 'asc']], // Sort by DisplayOrder, then Code
-                    language: {
-                        emptyTable: 'No records found',
-                        info: 'Showing _START_ to _END_ of _TOTAL_ entries',
-                        infoEmpty: 'Showing 0 to 0 of 0 entries',
-                        lengthMenu: 'Show _MENU_ entries',
-                        search: 'Search:',
-                        zeroRecords: 'No matching records found'
-                    },
-                    lengthMenu: [10, 25, 50, 100],
-                    pageLength: 10,
-                    columnDefs: [
-                        { orderable: false, targets: 5 } // Actions column
-                    ],
-                    drawCallback: function () {
-                        // Initialize Bootstrap dropdowns
-                        $('.dropdown-toggle').dropdown();
-                    },
-                    initComplete: function () {
-                        console.log('DataTable initialized successfully');
-                    },
-                    error: function (settings, techNote, message) {
-                        console.error('DataTables error:', message);
-                    }
-                });
-
-                console.log('DataTable initialized');
-            } catch (e) {
-                console.error('Error initializing DataTable:', e);
-            }
+            dataTable = $('#loanTypeDataTable').DataTable({
+                searching: true,
+                responsive: true,
+                order: [[3, 'asc'], [0, 'asc']],
+                lengthMenu: [10, 25, 50, 75, 100],
+                pageLength: 10,
+                columnDefs: [{ orderable: false, targets: 5 }],
+                drawCallback: function () {
+                    $('.dropdown-toggle').dropdown();
+                }
+            });
         }
 
-        function refreshTable() {
-            loadData();
-            appalert('Data refreshed', 3, 1);
-        }
-
+     
+        /* ===========================
+           Utils
+        ============================ */
         function escapeHtml(text) {
             if (!text) return '';
-            var map = {
+            return text.toString().replace(/[&<>"']/g, m => ({
                 '&': '&amp;',
                 '<': '&lt;',
                 '>': '&gt;',
                 '"': '&quot;',
                 "'": '&#039;'
-            };
-            return text.toString().replace(/[&<>"']/g, function (m) { return map[m]; });
+            })[m]);
         }
 
-
+        /* ===========================
+           Events
+        ============================ */
         $(document).ready(function () {
             loadData();
 
             $(document).on('click', '.btn-details', function () {
-                var id = $(this).data('id');
-                ShowModal(id, '_LoanTypeDetails', 'LoanType', 'details');
+                ShowModal($(this).data('id'), '_LoanTypeDetails', 'LoanType', 'details');
             });
 
             $(document).on('click', '.btn-edit', function () {
-                var id = $(this).data('id');
-                ShowModal(id, '_CreateEditLoanType', 'LoanType', 'edit');
-            });
-
-            
-            $(document).off('click', '.btn-delete').on('click', '.btn-delete', function (e) {
-                e.preventDefault();
-
-                var raw = $(this).data('id');
-                var KEY = raw ? decodeURIComponent(raw) : null;
-
-
-
-                if (!KEY) {
-                    appalert('Missing id for delete', 0, 1);
-                    return;
-                }
-                DeleteRecordDataTable('LoanType', KEY, 'myDataTable', 'delete', 0, null, null, null);
+                ShowModal($(this).data('id'), '_CreateEditLoanType', 'LoanType', 'edit');
             });
 
             $('#genericModal').on('hidden.bs.modal', function () {
