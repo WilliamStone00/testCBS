@@ -31,20 +31,10 @@
                 @if (string.IsNullOrWhiteSpace(Model?.Id))
                 {
                     <div class="col-md-6">
-                        <div class="form-floating">
-                            @Html.DropDownListFor(
-                                m => m.Code,
-                                Enumerable.Range(1, 100)
-                                    .Select(i => new SelectListItem
-                                    {
-                                        Value = i.ToString("D3"),
-                                        Text = i.ToString("D3")
-                                    }),
-                                "-- Select Code --",
-                                new { @class = "form-select select2", @required = "required" }
-                            )
-                            <label>Code</label>
+                        <div class="form-floating shadow-sm">
+                            @Html.DropDownListFor(m => m.Code, new SelectList(ViewBag.AvailableLoanTypeCodes, "Value", "Text"), "--- Code ---", new { @class = "form-control select2", @required = "required" })
                             @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })
+                            <label>Code</label>
                         </div>
                     </div>
 
@@ -109,14 +99,32 @@
                     </div>
                 </div>
 
-                <div class="col-md-12 mt-2">
-                    <div class="form-check form-switch">
-                        @Html.CheckBoxFor(m => m.IsSSF, new { @class = "form-check-input", id = "IsSSF" })
-                        <label class="form-check-label fw-bold ms-2" for="IsSSF">
-                            Check if Loan type is SSF
-                        </label>
+
+
+                @if (Model.IsSSFexist)
+                {
+                    <div class="col-md-12 mt-2">
+                        <div class="form-check form-switch">
+                            @Html.CheckBoxFor(m => m.IsSSF, new { @class = "form-check-input", id = "IsSSF", @readonly = "readonly" })
+                            <label class="form-check-label fw-bold ms-2" for="IsSSF">
+                                Check if Loan type is SSF
+                            </label>
+                        </div>
                     </div>
-                </div>
+
+                }
+                else
+                {
+                    <div class="col-md-12 mt-2">
+                        <div class="form-check form-switch">
+                            @Html.CheckBoxFor(m => m.IsSSF, new { @class = "form-check-input", id = "IsSSF" })
+                            <label class="form-check-label fw-bold ms-2" for="IsSSF">
+                                Check if Loan type is SSF
+                            </label>
+                        </div>
+                    </div>
+                }
+
 
                 <!-- Description -->
                 <div class="col-md-12">

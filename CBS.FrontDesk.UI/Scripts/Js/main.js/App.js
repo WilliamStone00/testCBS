@@ -1567,6 +1567,7 @@ function submitChequeRequestForm(form) {
 //    return false;
 //}
 
+
 //collins added this
 function AjaxPostAndUpdate(form) {
     console.log("Form Action:", form.action);
