@@ -43,4 +43,21 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.AccountingYear
         public string Status { get; set; }
 
     }
+
+    public class CreateYear
+    {
+        public string Id { get; set; }
+        public string Code { get; set; }
+        public string IsDeleted { get; set; }
+    }
+
+    public class CreateYearQuery
+    {
+        public DataTableOptions Options { get; set; }
+        public CreateYearQuery() { Options = new DataTableOptions(); }
+
+        public string Id { get; set; }
+        public string Code { get; set; }
+
+    }
 }
