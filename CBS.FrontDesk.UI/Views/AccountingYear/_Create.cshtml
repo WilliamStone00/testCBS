@@ -1,6 +1,8 @@
 ﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.AccountingYear.CreateYear
 
 
+
+
 @using (Html.BeginForm(
     "AddOrUpdate",
     "AccountingYear",
@@ -12,6 +14,8 @@
     }))
 {
     @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.iscreate)
+
 
     <div class="container mt-3">
 
@@ -67,10 +71,31 @@
 
         <!-- SAVE -->
         <div class="text-end mt-3">
-            <button type="submit" class="btn btn-primary">
-                <i class="mdi mdi-content-save-outline me-1"></i>
-                @(string.IsNullOrEmpty(Model.Id) ? "Save" : "Update")
-            </button>
+            @*<button type="submit" class="btn btn-primary">
+                <i class="mdi mdi-content-save-outline me-1"></i>*@
+            @*@(string.IsNullOrEmpty(Model.Id) ? "Save" : "Update")*@
+
+            @if (Model.Id == null)
+            {
+
+                <button type="submit"
+                        class="btn btn-primary shadow-sm px-4"
+                        onclick="$('#iscreate').val(true);">
+                    <i class="fas fa-save me-1"></i> Save
+                </button>
+
+            }
+            else
+            {
+
+                <button type="submit"
+                        class="btn btn-primary shadow-sm px-4"
+                        onclick="$('#iscreate').val(false);">
+                    <i class="mdi mdi-pencil-outline me-1"></i> Update
+                </button>
+            }
+
+
         </div>
 
     </div>
