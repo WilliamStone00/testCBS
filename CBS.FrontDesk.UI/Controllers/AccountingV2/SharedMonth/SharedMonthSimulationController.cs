@@ -1,4 +1,5 @@
 ﻿using BusinessServices;
+using CBS.BusinessService.AccountingV2.AccountingYear;
 using CBS.BusinessService.AccountingV2.EndOfYearClosure;
 using CBS.BusinessService.AccountingV2.InterestProductConfig;
 using CBS.BusinessService.AccountingV2.JournalHead;
@@ -107,6 +108,19 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.SharedMonth
                         new SelectListItem { Value = "AnnualprocessData", Text = " Anual processed Data" }
                     };
 
+
+            var products = await _interestProductConfigService.GetProductAsync();
+
+            // PRODUCTS DROPDOWN
+            ViewBag.Products = products?
+                .Select(p => new SelectListItem
+                {
+                    Value = p.Id,                       // ProductId posted
+                    Text = $" {p.Name}"         // [Code] [Name] shown
+                })
+                .OrderBy(x => x.Text)
+                .ToList()
+                ?? new List<SelectListItem>();
 
             return true;
         }
@@ -389,9 +403,9 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.SharedMonth
                 if (string.IsNullOrWhiteSpace(model.BranchId))
                     return Json(new { success = false, message = "Branch is required." });
 
-             
 
-           
+                
+
 
                 // Call service
                 var response = await _sharedMonthSimulationService.SharedMonthUpload(model);
@@ -424,9 +438,36 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.SharedMonth
                 });
             }
         }
+        [HttpGet]
+        public async Task<ActionResult> GetAccountingYearsByBranch(string branchId)
+        {
+            if (string.IsNullOrWhiteSpace(branchId))
+                return Json(new List<object>(), JsonRequestBehavior.AllowGet);
+
+            try
+            {
+                var years = await _sharedMonthSimulationService
+                    .GetOpenAccountingYearsByBranchAsync(branchId);
+
+                var result = years
+                    .OrderByDescending(y => y.Year) // or Year
+                    .Select(y => new
+                    {
+                        Id = y.Id,   // ✅ Sent to server on submit
+                        DisplayName = $"{y.Year}" // customize
+                    });
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = 500;
+                return Json(new { message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
 
 
-        
+
 
     }
 }

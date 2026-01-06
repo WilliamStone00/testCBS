@@ -37,8 +37,8 @@
 <!-- Main Workspace Card -->
 <div class="card shadow-sm border-0 mb-4">
     <div id="mainWorkspace">
-        @using (Html.BeginForm("UploadSharedMonth","SharedMonthSimulation", FormMethod.Post,new { enctype = "multipart/form-data", onsubmit = "return fileupload(this);" }))
-         {
+        @using (Html.BeginForm("UploadSharedMonth", "SharedMonthSimulation", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return fileupload(this);" }))
+        {
 
             <div class="card-body">
                 <div class="row g-3">
@@ -60,17 +60,26 @@
                         @Html.TextBoxFor(m => m.InterestRate,
                             new { @class = "form-control", type = "number" })
                     </div>
+                   
+
                     <div class="col-md-6 mb-1">
-                        <label class="form-label fw-bold">Account Type</label>
-                        @Html.DropDownList(
-                            "AccountType",
-                            new SelectList(ViewBag.AccountType, "Value", "Text"),
-                            "--- Select Account Type ---",
-                            new { @class = "form-select select2", required = "required" })
-                        <small class="text-muted">
-                            Destinaion Account for interest 
-                        </small>
-                        <div class="invalid-feedback">Please select File type</div>
+
+                        <div class="position-relative">
+                            @Html.LabelFor(m => m.ProductId, "Account Type",
+                                new { @class = "form-label fw-bold" })
+
+                            @Html.DropDownListFor(
+                                m => m.ProductId,
+                                ViewBag.Products as List<SelectListItem>,
+                                "-- Select Account Type --",
+                                new { @class = "form-control  select2" }
+                            )
+                            <small class="text-muted">
+                                Destinaion Account for interest
+                            </small>
+                            <div class="invalid-feedback">Please select File type</div>
+
+                        </div>
                     </div>
                     <div class="col-md-12 mb-1" id="FileTypeDiv">
                         <label class="form-label fw-bold">File Type</label>
@@ -88,10 +97,19 @@
                             "Month",
                             new SelectList(ViewBag.Month, "Value", "Text"),
                             "--- Select Period ---",
-                            new { @class = "form-select select2",  id = "Month" })
+                            new { @class = "form-select select2", id = "Month" })
                         <div class="invalid-feedback">Please select a Month</div>
                     </div>
 
+                    <!-- ACCOUNTING YEAR DROPDOWN -->
+                    <div class="col-md-12 mb-1">
+                        <label class="form-label fw-bold">Accounting Year</label>
+                        <select id="AccountingYearId" name="AccountingYearId"
+                                class="form-select select2" required>
+                            <option value="">--- Select Accounting Year ---</option>
+                        </select>
+                        <div class="invalid-feedback">Please select an Accounting Year</div>
+                    </div>
 
 
                     <div class="mb-3">
@@ -138,135 +156,177 @@
 @section Scripts {
 
     @Scripts.Render("~/bundles/jqueryval")
-    <script>
-        $(document).ready(function () {
+<script>
+    $(document).ready(function () {
 
-            function toggleMonthAndLinks() {
-                var fileType = $("#FileType").val();
+        /* ================= FILE TYPE LOGIC ================= */
 
-                // Divs
-                var monthDiv = $("#MonthDiv");
-                var fileTypeDiv = $("#FileTypeDiv");
+        function toggleMonthAndLinks() {
+            var fileType = $("#FileType").val();
 
-                // Download links
-                var monthlyUnprocessLink = $("#MonthlyUnprocessDataLink");
-                var monthlyProcessLink = $("#MonthlyprocessDataLink");
-                var annualProcessLink = $("#AnnualprocessDataLink");
+            var monthDiv = $("#MonthDiv");
+            var fileTypeDiv = $("#FileTypeDiv");
 
-                // Hide all links initially
-                monthlyUnprocessLink.addClass("d-none");
-                monthlyProcessLink.addClass("d-none");
-                annualProcessLink.addClass("d-none");
+            var monthlyUnprocessLink = $("#MonthlyUnprocessDataLink");
+            var monthlyProcessLink = $("#MonthlyprocessDataLink");
+            var annualProcessLink = $("#AnnualprocessDataLink");
 
-                if (fileType === "MonthlyUnprocessData" || fileType === "MonthlyprocessData") {
-                    monthDiv.show();
-                    fileTypeDiv.removeClass("col-md-12").addClass("col-md-6");
-                    monthDiv.removeClass("col-12").addClass("col-md-6");
+            monthlyUnprocessLink.addClass("d-none");
+            monthlyProcessLink.addClass("d-none");
+            annualProcessLink.addClass("d-none");
 
-                    if (fileType === "MonthlyUnprocessData") {
-                        monthlyUnprocessLink.removeClass("d-none");
-                    } else {
-                        monthlyProcessLink.removeClass("d-none");
-                    }
-                }
-                else if (fileType === "AnnualprocessData") {
-                    monthDiv.hide();
-                    fileTypeDiv.removeClass("col-md-6").addClass("col-md-12");
-                    annualProcessLink.removeClass("d-none");
-                }
-                else {
-                    monthDiv.hide();
-                    fileTypeDiv.removeClass("col-md-6").addClass("col-md-12");
+            if (fileType === "MonthlyUnprocessData" || fileType === "MonthlyprocessData") {
+                monthDiv.show();
+                fileTypeDiv.removeClass("col-md-12").addClass("col-md-6");
+                monthDiv.removeClass("col-12").addClass("col-md-6");
+
+                if (fileType === "MonthlyUnprocessData") {
+                    monthlyUnprocessLink.removeClass("d-none");
+                } else {
+                    monthlyProcessLink.removeClass("d-none");
                 }
             }
-
-            // Hide month dropdown by default
-            $("#MonthDiv").hide();
-
-            // Trigger on dropdown change
-            $("#FileType").change(function () {
-                toggleMonthAndLinks();
-            });
-        });
-
-
-
-        function fileupload(form) {
-            try {
-                var $form = $(form);
-
-                // Re-parse MVC validation
-                if ($.validator && $.validator.unobtrusive) {
-                    $.validator.unobtrusive.parse($form);
-                }
-
-                if ($.validator && !$form.valid()) {
-                    appalert("❌ Please fill all required fields correctly.", 2, 1);
-                    return false;
-                }
-
-                // Confirmation using alertify
-                alertify.confirm(
-                    "Confirm Upload",
-                    "Are you sure you want to upload this file?",
-                    function () {
-                        // User confirmed, proceed with AJAX upload
-                        var formData = new FormData(form);
-
-                        // Anti-forgery token
-                        var token = $form.find('input[name="__RequestVerificationToken"]').val();
-                        if (token && !formData.has('__RequestVerificationToken')) {
-                            formData.append('__RequestVerificationToken', token);
-                        }
-
-                        var $btn = $("#btnSubmitUpload");
-                        $btn.prop("disabled", true);
-
-                        $.ajax({
-                            url: $form.attr("action"),
-                            type: "POST",
-                            data: formData,
-                            contentType: false,
-                            processData: false,
-
-                            success: function (response) {
-                                if (response && response.success) {
-                                    appalert(response.message || "✅ Upload successful", 1, 1);
-
-                                    // Optional refresh / redirect
-                                    setTimeout(function () {
-                                        window.location.reload();
-                                    }, 1500);
-                                } else {
-                                    appalert(response.message || "❌ Upload failed", 2, 1);
-                                }
-                            },
-
-                            error: function (xhr) {
-                                if (xhr.status === 401) {
-                                    window.location.href = "/Authentication/Login";
-                                    return;
-                                }
-                                appalert("❌ Server error occurred", 0, 1);
-                            },
-
-                            complete: function () {
-                                $btn.prop("disabled", false);
-                            }
-                        });
-                    },
-                    function () {
-                        // User cancelled
-                        appalert("⚠ Upload cancelled", 3, 1);
-                    }
-                );
-
-            } catch (ex) {
-                console.error(ex);
-                appalert("❌ Unexpected error: " + ex.message, 0, 1);
+            else if (fileType === "AnnualprocessData") {
+                monthDiv.hide();
+                fileTypeDiv.removeClass("col-md-6").addClass("col-md-12");
+                annualProcessLink.removeClass("d-none");
             }
-
-            return false; // stop normal submit
+            else {
+                monthDiv.hide();
+                fileTypeDiv.removeClass("col-md-6").addClass("col-md-12");
+            }
         }
-    </script>
+
+        $("#MonthDiv").hide();
+        $("#FileType").on("change", toggleMonthAndLinks);
+
+        /* ================= BRANCH → ACCOUNTING YEAR ================= */
+
+$("#BranchId").on("change", function () {
+    var branchId = $(this).val();
+    var $yearDropdown = $("#AccountingYearId");
+
+    $yearDropdown.empty()
+        .append('<option value="">--- Loading Accounting Years ---</option>')
+        .prop("disabled", true);
+
+    if (!branchId) {
+        $yearDropdown
+            .empty()
+            .append('<option value="">--- Select Accounting Year ---</option>')
+            .prop("disabled", false);
+        return;
+    }
+
+    $.ajax({
+        url: '@Url.Action("GetAccountingYearsByBranch", "SharedMonthSimulation")',
+        type: 'GET',
+        data: { branchId: branchId },
+
+        success: function (years) {
+            $yearDropdown.empty()
+                .append('<option value="">--- Select Accounting Year ---</option>');
+
+            if (years && years.length > 0) {
+
+                $.each(years, function (i, year) {
+                    $yearDropdown.append(
+                        $('<option/>')
+                            .val(year.Id)            // ✅ ID sent to server
+                            .text(year.DisplayName)  // eg: 2024
+                    );
+                });
+
+                // ✅ SUCCESS MESSAGE
+                appalert("✅ Accounting years loaded successfully",1,1);
+
+            } else {
+                $yearDropdown.append('<option value="">No Open Accounting Year</option>');
+
+                // ⚠ INFO MESSAGE
+                appalert("⚠ No open accounting year found for this branch",3,1);
+            }
+
+            $yearDropdown.prop("disabled", false);
+        },
+
+        error: function () {
+            appalert("❌ Failed to load Accounting Years", 0, 1);
+            $yearDropdown.prop("disabled", false);
+        }
+    });
+});
+
+    });
+
+    /* ================= FORM SUBMIT ================= */
+
+    function fileupload(form) {
+        try {
+            var $form = $(form);
+
+            if ($.validator && $.validator.unobtrusive) {
+                $.validator.unobtrusive.parse($form);
+            }
+
+            if ($.validator && !$form.valid()) {
+                appalert("❌ Please fill all required fields correctly.", 2, 1);
+                return false;
+            }
+
+            alertify.confirm(
+                "Confirm Upload",
+                "Are you sure you want to upload this file?",
+                function () {
+                    var formData = new FormData(form);
+
+                    var token = $form.find('input[name="__RequestVerificationToken"]').val();
+                    if (token && !formData.has('__RequestVerificationToken')) {
+                        formData.append('__RequestVerificationToken', token);
+                    }
+
+                    var $btn = $("#btnSubmitUpload");
+                    $btn.prop("disabled", true);
+
+                    $.ajax({
+                        url: $form.attr("action"),
+                        type: "POST",
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+
+                        success: function (response) {
+                            if (response && response.success) {
+                                appalert(response.message || "✅ Upload successful", 1, 1);
+                                
+                            } else {
+                                appalert(response.message || "❌ Upload failed", 2, 1);
+                            }
+                        },
+
+                        error: function (xhr) {
+                            if (xhr.status === 401) {
+                                window.location.href = "/Authentication/Login";
+                                return;
+                            }
+                            appalert("❌ Server error occurred", 0, 1);
+                        },
+
+                        complete: function () {
+                            $btn.prop("disabled", false);
+                        }
+                    });
+                },
+                function () {
+                    appalert("⚠ Upload cancelled", 3, 1);
+                }
+            );
+        } catch (ex) {
+            console.error(ex);
+            appalert("❌ Unexpected error: " + ex.message, 0, 1);
+        }
+
+        return false;
+    }
+</script>
 }

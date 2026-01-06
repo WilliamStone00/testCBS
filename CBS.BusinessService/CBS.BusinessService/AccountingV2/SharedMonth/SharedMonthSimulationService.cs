@@ -2,6 +2,7 @@
 using CBS.API.Helper;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.AccountingV2;
+using CBS.FrontDesk.Data.Entity.AccountingV2.AccountingYear;
 using CBS.FrontDesk.Data.Entity.AccountingV2.SharedMonth;
 using CBS.FrontDesk.Helper;
 using ClosedXML.Excel;
@@ -31,6 +32,7 @@ namespace CBS.BusinessService.AccountingV2.SharedMonth
         public SharedMonthSimulationService()
         {
 
+           
             _apiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["AccountingV2BaseUrl"].ToString());
             _apiCallerHelperT = new ApiCallerHelper(ConfigurationManager.AppSettings["TransactionBaseUrl"].ToString());
             _branchServices = new BranchServices();
@@ -311,10 +313,10 @@ namespace CBS.BusinessService.AccountingV2.SharedMonth
                      * ===================================================== */
 
                     // Date (B4)
-                    if (!DateTime.TryParse(ws.Cell("B4").GetString(), out _))
-                    {
-                        errs.Add("❌ Invalid date format in cell B4.");
-                    }
+                    //if (!DateTime.TryParse(ws.Cell("B4").GetString(), out _))
+                    //{
+                    //    errs.Add("❌ Invalid date format in cell B4.");
+                    //}
 
                     // Month (B5)
                     if (!ws.Cell("B5").GetString().Trim()
@@ -470,18 +472,18 @@ namespace CBS.BusinessService.AccountingV2.SharedMonth
                      * ===================================================== */
 
                     // Date (B4)
-                    var dateStr = ws.Cell("B4").GetString().Trim();
-                    if (!DateTime.TryParseExact(dateStr, "dd-MM-yy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime excelDate))
-                    {
-                        errs.Add("❌ Invalid date format in cell B4. Expected format: dd-MM-yy (e.g., 31-12-25).");
-                    }
+                    //var dateStr = ws.Cell("B4").GetString().Trim();
+                    //if (!DateTime.TryParseExact(dateStr, "dd-MM-yy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime excelDate))
+                    //{
+                    //    errs.Add("❌ Invalid date format in cell B4. Expected format: dd-MM-yy (e.g., 31-12-25).");
+                    //}
 
                     // Month (B5)
-                    var excelMonth = ws.Cell("B5").GetString().Trim();
-                    if (!excelMonth.Equals(model.Month, StringComparison.OrdinalIgnoreCase))
-                    {
-                        errs.Add($"❌ Month in Excel does not match selected month. Expected: {model.Month}, Found: {excelMonth}");
-                    }
+                    //var excelMonth = ws.Cell("B5").GetString().Trim();
+                    //if (!excelMonth.Equals(model.Month, StringComparison.OrdinalIgnoreCase))
+                    //{
+                    //    errs.Add($"❌ Month in Excel does not match selected month. Expected: {model.Month}, Found: {excelMonth}");
+                    //}
 
                     // Number of Members (B6)
                     if (!int.TryParse(ws.Cell("B6").GetString(), out int memberCount) || memberCount <= 0)
@@ -501,9 +503,9 @@ namespace CBS.BusinessService.AccountingV2.SharedMonth
                      * 🔒 SECTION TITLE (A8)
                      * ===================================================== */
                     if (!ws.Cell("A8").GetString().Trim()
-                        .Equals("Annual Shared Month", StringComparison.OrdinalIgnoreCase))
+                        .Equals("Anual Shared Month", StringComparison.OrdinalIgnoreCase))
                     {
-                        errs.Add("❌ Invalid file format. Missing 'Annual Shared Month' title in cell A8.");
+                        errs.Add("❌ Invalid file format. Missing 'Anual Shared Month' title in cell A8.");
                     }
 
                     /* =====================================================
@@ -584,53 +586,76 @@ namespace CBS.BusinessService.AccountingV2.SharedMonth
 
 
 
-        public async Task<ApiResponse<ServiceResponse<SharedMonthFileReponse>>> SharedMonthUpload(
-      SharedMonthFileupload model)
+        public async Task<ApiResponse<ServiceResponse<SharedMonthFileReponse>>> SharedMonthUpload(SharedMonthFileupload model)
         {
-            /*try
-            {*/
+            string validationResult = string.Empty;
+
             if (model.FileType == "MonthlyUnprocessData")
             {
-
-                // 🔍 Excel validation (RIGHT PLACE)
-                var validationError = await ValidateSharedMonthExcelUnProcessed(model.file, model);
-                if (validationError != null)
-                    throw new Exception(validationError);
+                validationResult =
+                    await ValidateSharedMonthExcelUnProcessed(model.file, model);
             }
             else if (model.FileType == "MonthlyprocessData")
             {
-                var validationError = await ValidateSharedMonthExcelProcessed(model.file, model);
-                if (validationError != null)
-                    throw new Exception(validationError);
+                validationResult =
+                    await ValidateSharedMonthExcelProcessed(model.file, model);
             }
             else if (model.FileType == "AnnualprocessData")
             {
-                var validationError = await ValidateSharedMonthExcelAnnual(model.file, model);
-                if (validationError != null)
-                    throw new Exception(validationError);
+                validationResult =
+                    await ValidateSharedMonthExcelAnnual(model.file, model);
             }
-            // 🚀 Upload only if valid
+            else
+            {
+                throw new Exception("❌ Invalid FileType.");
+            }
+
+            // ❌ STOP only when real errors exist
+            if (!string.IsNullOrWhiteSpace(validationResult) &&
+                validationResult.Contains("❌"))
+            {
+                throw new Exception(validationResult);
+            }
+
+            // 🚀 Upload ONLY when validation passed
             var endpoint = APICallHelper.SharedMonthUpload;
 
-                var result = await _apiCallerHelper.UploadSharedMonthFileAsync<
-                    ServiceResponse<SharedMonthFileReponse>>(
-                    model.file,
-                    model.BranchId,
-                    model.Month,
-                    
-                    model.FileType,
-                    endpoint, 
-                    model.AccountType,
-                    model.InterestRate
-                );
+            var result = await _apiCallerHelper.UploadSharedMonthFileAsync<
+                ServiceResponse<SharedMonthFileReponse>>(
+                model.file,
+                model.BranchId,
+                model.Month,
+                model.FileType,
+                endpoint,
+                model.ProductId,
+                model.InterestRate,
+                model.AccountingYearId
+            );
 
-                return result;
-            /*}
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }*/
+            return result;
         }
+
+
+        public async Task<List<accountingyear>> GetOpenAccountingYearsByBranchAsync(string branchId)
+        {
+            var url = $"{APICallHelper.GetAllAccoutingYear}?branchId={branchId}";
+
+            var response = await _apiCallerHelper
+                .GetAsync<ResponseObject<List<accountingyear>>>(url);
+
+            if (!response.IsSuccess || response.ApiResponseData?.Data == null)
+                return new List<accountingyear>();
+
+            return response.ApiResponseData.Data
+                .Where(y =>
+                    y.BranchId == branchId &&                                  // ✅ FILTER BY BRANCH
+                    y.Status != null &&
+                    y.Status.Equals("OPEN", StringComparison.OrdinalIgnoreCase)
+                )
+                .OrderByDescending(y => y.Year)                                // ✅ SORT
+                .ToList();
+        }
+
 
 
 

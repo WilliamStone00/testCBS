@@ -592,7 +592,7 @@
     <value>View</value>
   </data>
   <data name="ActualBalance" xml:space="preserve">
-    <value>Actual Balance</value>
+    <value>Expected Balance </value>
   </data>
   <data name="TransferStatus" xml:space="preserve">
     <value>Transfer Status</value>
