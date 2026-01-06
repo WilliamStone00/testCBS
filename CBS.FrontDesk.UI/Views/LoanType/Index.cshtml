@@ -267,12 +267,12 @@
                                 </button>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <button class="dropdown-item btn-details" data-id="${item.Id}">
+                                        <button class="dropdown-item btn-details text-info" data-id="${item.Id}">
                                             Details
                                         </button>
                                     </li>
                                     <li>
-                                        <button class="dropdown-item btn-edit" data-id="${item.Id}">
+                                        <button class="dropdown-item btn-edit text-primary" data-id="${item.Id}">
                                             Edit
                                         </button>
                                     </li>
@@ -310,76 +310,7 @@
             });
         }
 
-     function SubmitAjax (){
-            try { $.validator.unobtrusive.parse(form); } catch (e) { }
-            var $form = $(form);
-            if ($form.length && !$form.valid()) return false;
-
-            var isMultipart = ($form.attr('enctype') || '').toLowerCase() === 'multipart/form-data';
-            var token = getAntiForgeryToken();
-            var $submit = $form.find('[type="submit"]').first();
-            var origHtml = $submit.data('orig-html') || $submit.html();
-            $submit.data('orig-html', origHtml);
-            $submit.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-2" role="status"></span>Processing...');
-
-            var doAjax = function () {
-                var ajaxOptions = {
-                    url: $form.attr('action'),
-                    type: ($form.attr('method') || 'POST').toUpperCase(),
-                    dataType: 'text', // defensive - we'll normalize
-                    success: function (raw) {
-                        var res = normalizeResponse(raw);
-                        if (res && res.success) {
-                            var lvl = 1;
-                            if (res.status === 'Exist') lvl = 3;
-                            if (res.status === 'Failed') lvl = 2;
-                            showMsg(res.message || 'Operation successful', lvl);
-
-                            if (res.reloadDataView === "Yes" || res.reload === true) reloadListing(res);
-                        } else {
-                            var lvl = (res && res.status === 'Exist') ? 3 : 2;
-                            showMsg((res && res.message) ? res.message : 'Operation failed', lvl);
-                        }
-                    },
-                    error: function (xhr) {
-                        var parsed = normalizeResponse(xhr.responseText);
-                        if (parsed && parsed.message) showMsg(parsed.message, parsed.success ? 1 : 2);
-                        else if (xhr.status === 401) window.location.href = '/Authentication/Login';
-                        else {
-                            showMsg(xhr.statusText || 'Network error', 4);
-                            console.error('categorySubmitAjax error', xhr.status, xhr.responseText);
-                        }
-                    },
-                    complete: function () {
-                        $submit.prop('disabled', false).html($submit.data('orig-html') || origHtml);
-                    }
-                };
-
-                if (isMultipart) {
-                    ajaxOptions.data = new FormData(form);
-                    ajaxOptions.processData = false;
-                    ajaxOptions.contentType = false;
-                    if (token) ajaxOptions.headers = { 'RequestVerificationToken': token };
-                } else {
-                    ajaxOptions.data = $form.serialize();
-                    if (token) ajaxOptions.headers = { 'RequestVerificationToken': token };
-                }
-
-                $.ajax(ajaxOptions);
-            };
-
-            // confirmation (prefer alertify if present)
-            if (window.alertify && typeof alertify.confirm === 'function') {
-                try {
-                    alertify.confirm("Confirmation", "Are you sure you want to perform this action?", function () { doAjax(); }, function () { showMsg('Transaction cancelled', 3); }).set('labels', { ok: 'Yes', cancel: 'No' });
-                } catch (e) { if (confirm('Are you sure?')) doAjax(); else showMsg('Cancelled', 3); }
-            } else {
-                if (confirm('Are you sure you want to perform this action?')) doAjax(); else showMsg('Transaction cancelled', 3);
-            }
-
-            return false; // prevent normal form submit
-        };
-
+     
         /* ===========================
            Utils
         ============================ */
