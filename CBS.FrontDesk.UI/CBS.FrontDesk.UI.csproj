@@ -11195,6 +11195,8 @@
     <Content Include="Views\AccountingYear\List.cshtml" />
     <Content Include="Views\AccountingYear\_Create.cshtml" />
     <Content Include="Views\AccountingYear\_DataTableYear.cshtml" />
+    <Content Include="Views\SharedMonthSimulation\Data.cshtml" />
+    <Content Include="Views\SharedMonthSimulation\_table.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

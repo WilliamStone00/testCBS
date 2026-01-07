@@ -127,5 +127,15 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.SharedMonth
         public List<JobRequestItem> Items { get; set; } 
     }
 
+    public class SharedMonthQuery
+    {
+        public DataTableOptions Options { get; set; }
+        public SharedMonthQuery() { Options = new DataTableOptions(); }
 
+        public string BranchId { get; set; } = null;
+        public string AccountingYearId { get; set; }
+        public string ProductId { get; set; }
+        public bool IsEnabled { get; set; }
+
+    }
 }

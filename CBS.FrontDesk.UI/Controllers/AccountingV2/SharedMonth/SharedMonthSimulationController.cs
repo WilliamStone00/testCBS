@@ -211,6 +211,12 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.SharedMonth
             await loader();
             return View();
         }
+
+        public async Task<ActionResult> Data()
+        {
+            await loader();
+            return View();
+        }
         [HttpPost]
         public async Task<ActionResult> GenerateSimulationData(InstrestCalculation model)
         {
