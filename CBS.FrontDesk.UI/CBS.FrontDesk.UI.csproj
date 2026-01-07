@@ -621,10 +621,10 @@
       <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="AppFiles\Reporting\Transactions\Reciepts\TellerStatement.cs">
+    <Compile Include="AppFiles\Reporting\Transactions\Reciepts\TellerStatement_clone_notapproved.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>TellerStatement.rpt</DependentUpon>
+      <DependentUpon>TellerStatement_clone_notapproved.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="AppFiles\Reporting\Transactions\Reciepts\TellerStatement11.cs">
@@ -3634,10 +3634,10 @@
       <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="AppFiles\Reporting\Transactions\Reciepts\TellerStatement_old.cs">
+    <Compile Include="AppFiles\Reporting\Transactions\Reciepts\TellerStatement.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>TellerStatement_old.rpt</DependentUpon>
+      <DependentUpon>TellerStatement.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="AppFiles\Reporting\Transactions\Statement\AllIAccountStatement.cs">
@@ -9539,9 +9539,9 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>BranchCashConfig.fr.designer.cs</LastGenOutput>
     </Content>
-    <EmbeddedResource Include="AppFiles\Reporting\Transactions\Reciepts\TellerStatement.rpt">
+    <EmbeddedResource Include="AppFiles\Reporting\Transactions\Reciepts\TellerStatement_clone_notapproved.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>TellerStatement.cs</LastGenOutput>
+      <LastGenOutput>TellerStatement_clone_notapproved.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\Transactions\Reciepts\TellerStatement1.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
@@ -11308,9 +11308,9 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>Receipts.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="AppFiles\Reporting\Transactions\Reciepts\TellerStatement_old.rpt">
+    <EmbeddedResource Include="AppFiles\Reporting\Transactions\Reciepts\TellerStatement.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>TellerStatement_old.cs</LastGenOutput>
+      <LastGenOutput>TellerStatement.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\Transactions\Statement\AllIAccountStatement.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

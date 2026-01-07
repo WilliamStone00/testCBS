@@ -130,9 +130,17 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.Reciepts {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_CurrentYear {
+        public CrystalDecisions.Shared.IParameterField Parameter_DateNow {
             get {
                 return this.DataDefinition.ParameterFields[3];
+            }
+        }
+        
+        [Browsable(false)]
+        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+        public CrystalDecisions.Shared.IParameterField Parameter_CurrentYear {
+            get {
+                return this.DataDefinition.ParameterFields[4];
             }
         }
     }

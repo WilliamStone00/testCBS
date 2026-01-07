@@ -16,14 +16,14 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.Reciepts {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class TellerStatement_old : ReportClass {
+    public class TellerStatement_clone_notapproved : ReportClass {
         
-        public TellerStatement_old() {
+        public TellerStatement_clone_notapproved() {
         }
         
         public override string ResourceName {
             get {
-                return "TellerStatement_old.rpt";
+                return "TellerStatement_clone_notapproved.rpt";
             }
             set {
                 // Do nothing
@@ -41,8 +41,8 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.Reciepts {
         
         public override string FullResourceName {
             get {
-                return "CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.Reciepts.TellerStatement_old.rpt" +
-                    "";
+                return "CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.Reciepts.TellerStatement_clone_n" +
+                    "otapproved.rpt";
             }
             set {
                 // Do nothing
@@ -131,25 +131,17 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.Reciepts {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_DateNow {
-            get {
-                return this.DataDefinition.ParameterFields[3];
-            }
-        }
-        
-        [Browsable(false)]
-        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
         public CrystalDecisions.Shared.IParameterField Parameter_CurrentYear {
             get {
-                return this.DataDefinition.ParameterFields[4];
+                return this.DataDefinition.ParameterFields[3];
             }
         }
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class CachedTellerStatement_old : Component, ICachedReport {
+    public class CachedTellerStatement_clone_notapproved : Component, ICachedReport {
         
-        public CachedTellerStatement_old() {
+        public CachedTellerStatement_clone_notapproved() {
         }
         
         [Browsable(false)]
@@ -186,7 +178,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.Reciepts {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            TellerStatement_old rpt = new TellerStatement_old();
+            TellerStatement_clone_notapproved rpt = new TellerStatement_clone_notapproved();
             rpt.Site = this.Site;
             return rpt;
         }
