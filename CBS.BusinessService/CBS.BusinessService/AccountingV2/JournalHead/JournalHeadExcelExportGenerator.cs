@@ -239,16 +239,15 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
                 // ----------------------------------------------------------------
                 // RECONCILED ENTRIES
                 // ----------------------------------------------------------------
-                currentRow = CreateReconciledEntriesSection(worksheet, currentRow, model, maxColumns);
-
                 // ----------------------------------------------------------------
-                // JOURNAL LINES (ONLY IF NO RECONCILED ENTRIES)
+                // RECONCILED / JOURNAL ENTRIES (UNIFIED – SAME AS RAZOR)
                 // ----------------------------------------------------------------
-                if (model.ReconciledLedgerLines == null || !model.ReconciledLedgerLines.Any())
-                {
-                    currentRow = CreateJournalLinesSection(worksheet, currentRow, model, maxColumns);
-                }
-
+                currentRow = CreateReconciledAndJournalSections(
+                    worksheet,
+                    currentRow,
+                    model,
+                    maxColumns
+                );
                 // ----------------------------------------------------------------
                 // AUTO-FIT COLUMNS
                 // ----------------------------------------------------------------
@@ -393,241 +392,186 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
 
 
 
-        // ======================================================================
-        // RECONCILED ENTRIES (Dynamic maxColumns)
-        // ======================================================================
-        private static int CreateReconciledEntriesSection(
-            IXLWorksheet worksheet,
-            int currentRow,
-            CBS.FrontDesk.Data.Entity.AccountingV2.JournalHead model,
-            int maxColumns)
+        private static int CreateReconciledAndJournalSections(
+     IXLWorksheet ws,
+     int currentRow,
+     CBS.FrontDesk.Data.Entity.AccountingV2.JournalHead model,
+     int maxColumns)
         {
-            if (model.ReconciledLedgerLines == null || !model.ReconciledLedgerLines.Any())
-                return currentRow;
+            bool hasReconciledLines = model.ReconciledLedgerLines?.Any(r =>
+                !string.IsNullOrWhiteSpace(r.BranchId) ||
+                r.DebitAmount != 0 ||
+                r.CreditAmount != 0) ?? false;
 
-            var validReconciled = model.ReconciledLedgerLines
-                .Where(r => r.DebitAmount != 0 || r.CreditAmount != 0)
-                .OrderBy(r => r.BranchName)
-                .ThenBy(r => r.CounterpartyBranchName)
-                .ThenBy(r => r.Seq)
-                .ToList();
+            bool hasJournalLines = !hasReconciledLines &&
+                (model.Lines?.Any(l =>
+                    !string.IsNullOrWhiteSpace(l.AccountName) ||
+                    l.Amount != 0) ?? false);
 
-            if (!validReconciled.Any())
-                return currentRow;
-
-            var title = worksheet.Cell(currentRow, 1);
-            title.Value = "🧾 RECONCILED JOURNAL ENTRIES";
-            worksheet.Range(currentRow, 1, currentRow, maxColumns).Merge();
-            ApplySectionTitleStyle(title);
-
-            currentRow += 1;
-
-            var headers = new[] { "Account Number", "Account Name", "Description", "Auxiliary Ref", "Debit", "Credit" };
-
-            // GROUP BY BRANCH
-            var groupedByBranch = validReconciled
-                .GroupBy(r => new { r.BranchId, r.BranchName })
-                .ToList();
-
-            foreach (var branchGroup in groupedByBranch)
+            if (!hasReconciledLines && !hasJournalLines)
             {
-                worksheet.Cell(currentRow++, 1).Style.Font.Bold = true;
-                worksheet.Cell(currentRow++, 1).Value = $"Branch: {branchGroup.Key.BranchName}";
-
-                // LINES WITHOUT COUNTERPARTY
-                var noCp = branchGroup.Where(x => string.IsNullOrWhiteSpace(x.CounterpartyBranchId)).ToList();
-                if (noCp.Any())
-                {
-                    currentRow = CreateTableHeaderRow(worksheet, currentRow, headers);
-
-                    decimal totalDr = 0, totalCr = 0;
-
-                    foreach (var line in noCp)
-                    {
-                        worksheet.Cell(currentRow, 1).Value = line.AccountNumber;
-                        worksheet.Cell(currentRow, 2).Value = line.AccountName;
-                        worksheet.Cell(currentRow, 3).Value = line.Description;
-                        worksheet.Cell(currentRow, 4).Value = line.AuxiliaryRef;
-
-                        worksheet.Cell(currentRow, 5).Value = Math.Abs(line.DebitAmount);
-                        worksheet.Cell(currentRow, 6).Value = Math.Abs(line.CreditAmount);
-
-                        worksheet.Cell(currentRow, 5).Style.NumberFormat.Format = "#,##0";
-                        worksheet.Cell(currentRow, 6).Style.NumberFormat.Format = "#,##0";
-
-                        totalDr += Math.Abs(line.DebitAmount);
-                        totalCr += Math.Abs(line.CreditAmount);
-
-                        ApplyTableCellBorders(worksheet, currentRow, 1, 6);
-                        currentRow++;
-                    }
-
-                    currentRow = CreateTotalsRow(worksheet, currentRow, totalDr, totalCr, 6);
-                    currentRow += 2;
-                }
-
-                // LINES WITH COUNTERPARTY
-                var cpGroups = branchGroup
-                    .Where(x => !string.IsNullOrWhiteSpace(x.CounterpartyBranchId))
-                    .GroupBy(x => new { x.CounterpartyBranchId, x.CounterpartyBranchName })
-                    .ToList();
-
-                foreach (var cpGroup in cpGroups)
-                {
-                    worksheet.Cell(currentRow++, 1).Style.Font.Bold = true;
-                    worksheet.Cell(currentRow++, 1).Value = $"Counterparty Branch: {cpGroup.Key.CounterpartyBranchName}";
-
-                    currentRow = CreateTableHeaderRow(worksheet, currentRow, headers);
-
-                    decimal totalDr2 = 0, totalCr2 = 0;
-
-                    foreach (var line in cpGroup)
-                    {
-                        worksheet.Cell(currentRow, 1).Value = line.AccountNumber;
-                        worksheet.Cell(currentRow, 2).Value = line.AccountName;
-                        worksheet.Cell(currentRow, 3).Value = line.Description;
-                        worksheet.Cell(currentRow, 4).Value = line.AuxiliaryRef;
-
-                        worksheet.Cell(currentRow, 5).Value = Math.Abs(line.DebitAmount);
-                        worksheet.Cell(currentRow, 6).Value = Math.Abs(line.CreditAmount);
-
-                        worksheet.Cell(currentRow, 5).Style.NumberFormat.Format = "#,##0";
-                        worksheet.Cell(currentRow, 6).Style.NumberFormat.Format = "#,##0";
-
-                        totalDr2 += Math.Abs(line.DebitAmount);
-                        totalCr2 += Math.Abs(line.CreditAmount);
-
-                        ApplyTableCellBorders(worksheet, currentRow, 1, 6);
-                        currentRow++;
-                    }
-
-                    currentRow = CreateTotalsRow(worksheet, currentRow, totalDr2, totalCr2, 6);
-                    currentRow += 2;
-                }
+                ws.Cell(currentRow++, 1).Value = "No entries available.";
+                return currentRow;
             }
 
-            return currentRow;
-        }
-
-
-
-        // ======================================================================
-        // JOURNAL LINES (Dynamic Columns)
-        // ======================================================================
-        private static int CreateJournalLinesSection(
-            IXLWorksheet worksheet,
-            int currentRow,
-            CBS.FrontDesk.Data.Entity.AccountingV2.JournalHead model,
-            int maxColumns)
-        {
-            if (model.Lines == null || !model.Lines.Any())
-                return currentRow;
-
-            var validLines = model.Lines
-                .Where(l => !string.IsNullOrWhiteSpace(l.AccountName) || l.Amount != 0)
-                .OrderBy(l => l.BranchName)
-                .ThenBy(l => l.CounterpartyBranchName)
-                .ToList();
-
-            if (!validLines.Any())
-                return currentRow;
-
-            var title = worksheet.Cell(currentRow, 1);
-            title.Value = "🧾 JOURNAL LINE ENTRIES (UNRECONCILED)";
-            worksheet.Range(currentRow, 1, currentRow, maxColumns).Merge();
-            ApplySectionTitleStyle(title);
-
-            currentRow += 2;
-
-            var headers = new[] { "Account Number", "Account Name", "Description", "Debit", "Credit" };
-
-            // GROUP BY BRANCH
-            var groupedByBranch = validLines
-                .GroupBy(l => new { l.BranchId, l.BranchName })
-                .ToList();
-
-            foreach (var branchGroup in groupedByBranch)
+            // ======================= RECONCILED =========================
+            if (hasReconciledLines)
             {
-                worksheet.Cell(currentRow++, 1).Style.Font.Bold = true;
-                worksheet.Cell(currentRow++, 1).Value = $"Branch: {branchGroup.Key.BranchName}";
+                var valid = model.ReconciledLedgerLines
+                    .Where(r => r.DebitAmount != 0 || r.CreditAmount != 0)
+                    .OrderBy(r => r.BranchName)
+                    .ThenBy(r => r.CounterpartyBranchName)
+                    .ThenBy(r => r.Seq)
+                    .ToList();
 
-                // ------------------- NO COUNTERPARTY
-                var noCp = branchGroup.Where(x => string.IsNullOrWhiteSpace(x.CounterpartyBranchId)).ToList();
+                var grouped = valid
+                    .GroupBy(r => new { r.BranchId, r.BranchName })
+                    .Select(b => new
+                    {
+                        Branch = b.Key,
+                        SourceLines = b.ToList(), // ✅ FIX
+                        DestinationGroups = b
+                            .Where(x => !string.IsNullOrWhiteSpace(x.CounterpartyBranchId)
+                                        && x.CounterpartyBranchName != x.BranchName)
+                            .GroupBy(x => new { x.CounterpartyBranchId, x.CounterpartyBranchName })
+                            .ToList()
+                    })
+                    .ToList();
 
-                if (noCp.Any())
+                var title = ws.Cell(currentRow, 1);
+                title.Value = "🧾 RECONCILED ENTRIES";
+                ws.Range(currentRow, 1, currentRow, maxColumns).Merge();
+                ApplySectionTitleStyle(title);
+                currentRow += 2;
+
+                var headers = new[] { "Account Number", "Account Name", "Description", "Auxiliary Ref", "Debit", "Credit" };
+
+                foreach (var g in grouped)
                 {
-                    currentRow = CreateTableHeaderRow(worksheet, currentRow, headers);
+                    // SOURCE
+                    ws.Cell(currentRow++, 1).Value = $"Source: {g.Branch.BranchName}";
+                    ws.Cell(currentRow - 1, 1).Style.Font.Bold = true;
+
+                    currentRow = CreateTableHeaderRow(ws, currentRow, headers);
 
                     decimal dr = 0, cr = 0;
-
-                    foreach (var line in noCp)
+                    foreach (var l in g.SourceLines)
                     {
-                        var debit = line.DrCr?.ToLower() == "debit" ? Math.Abs(line.Amount) : 0;
-                        var credit = line.DrCr?.ToLower() == "credit" ? Math.Abs(line.Amount) : 0;
+                        ws.Cell(currentRow, 1).Value = l.AccountNumber;
+                        ws.Cell(currentRow, 2).Value = l.AccountName;
+                        ws.Cell(currentRow, 3).Value = l.Description;
+                        ws.Cell(currentRow, 4).Value = l.AuxiliaryRef;
+                        ws.Cell(currentRow, 5).Value = Math.Abs(l.DebitAmount);
+                        ws.Cell(currentRow, 6).Value = Math.Abs(l.CreditAmount);
 
-                        worksheet.Cell(currentRow, 1).Value = line.AccountNumber;
-                        worksheet.Cell(currentRow, 2).Value = line.AccountName;
-                        worksheet.Cell(currentRow, 3).Value = line.Description;
-                        worksheet.Cell(currentRow, 4).Value = debit;
-                        worksheet.Cell(currentRow, 5).Value = credit;
+                        dr += Math.Abs(l.DebitAmount);
+                        cr += Math.Abs(l.CreditAmount);
 
-                        worksheet.Cell(currentRow, 4).Style.NumberFormat.Format = "#,##0";
-                        worksheet.Cell(currentRow, 5).Style.NumberFormat.Format = "#,##0";
-
-                        dr += debit;
-                        cr += credit;
-
-                        ApplyTableCellBorders(worksheet, currentRow, 1, 5);
+                        ApplyTableCellBorders(ws, currentRow, 1, 6);
                         currentRow++;
                     }
 
-                    currentRow = CreateTotalsRow(worksheet, currentRow, dr, cr, 5);
+                    currentRow = CreateTotalsRow(ws, currentRow, dr, cr, 6);
                     currentRow += 2;
-                }
 
-                // ------------------- COUNTERPARTY
-                var cpGroups = branchGroup
-                    .Where(x => !string.IsNullOrWhiteSpace(x.CounterpartyBranchId))
-                    .GroupBy(x => new { x.CounterpartyBranchId, x.CounterpartyBranchName })
+                    // DESTINATIONS
+                    foreach (var cp in g.DestinationGroups)
+                    {
+                        ws.Cell(currentRow++, 1).Value = $"Destination: {cp.Key.CounterpartyBranchName}";
+                        ws.Cell(currentRow - 1, 1).Style.Font.Bold = true;
+
+                        currentRow = CreateTableHeaderRow(ws, currentRow, headers);
+
+                        decimal ddr = 0, dcr = 0;
+                        foreach (var l in cp)
+                        {
+                            ws.Cell(currentRow, 1).Value = l.AccountNumber;
+                            ws.Cell(currentRow, 2).Value = l.AccountName;
+                            ws.Cell(currentRow, 3).Value = l.Description;
+                            ws.Cell(currentRow, 4).Value = l.AuxiliaryRef;
+                            ws.Cell(currentRow, 5).Value = Math.Abs(l.DebitAmount);
+                            ws.Cell(currentRow, 6).Value = Math.Abs(l.CreditAmount);
+
+                            ddr += Math.Abs(l.DebitAmount);
+                            dcr += Math.Abs(l.CreditAmount);
+
+                            ApplyTableCellBorders(ws, currentRow, 1, 6);
+                            currentRow++;
+                        }
+
+                        currentRow = CreateTotalsRow(ws, currentRow, ddr, dcr, 6);
+                        currentRow += 2;
+                    }
+                }
+            }
+
+            // ======================= JOURNAL =========================
+            if (hasJournalLines)
+            {
+                var valid = model.Lines
+                    .Where(l => l.Amount != 0)
+                    .OrderBy(l => l.BranchName)
+                    .ThenBy(l => l.CounterpartyBranchName)
                     .ToList();
 
-                foreach (var cpGroup in cpGroups)
-                {
-                    worksheet.Cell(currentRow++, 1).Style.Font.Bold = true;
-                    worksheet.Cell(currentRow++, 1).Value = $"Counterparty Branch: {cpGroup.Key.CounterpartyBranchName}";
-
-                    currentRow = CreateTableHeaderRow(worksheet, currentRow, headers);
-
-                    decimal dr2 = 0, cr2 = 0;
-
-                    foreach (var line in cpGroup)
+                var grouped = valid
+                    .GroupBy(l => new { l.BranchId, l.BranchName })
+                    .Select(b => new
                     {
-                        var debit = line.DrCr?.ToLower() == "debit" ? Math.Abs(line.Amount) : 0;
-                        var credit = line.DrCr?.ToLower() == "credit" ? Math.Abs(line.Amount) : 0;
+                        Branch = b.Key,
+                        SourceLines = b.ToList(), // ✅ FIX
+                        DestinationGroups = b
+                            .Where(x => !string.IsNullOrWhiteSpace(x.CounterpartyBranchId)
+                                        && x.CounterpartyBranchName != x.BranchName)
+                            .GroupBy(x => new { x.CounterpartyBranchId, x.CounterpartyBranchName })
+                            .ToList()
+                    })
+                    .ToList();
 
-                        worksheet.Cell(currentRow, 1).Value = line.AccountNumber;
-                        worksheet.Cell(currentRow, 2).Value = line.AccountName;
-                        worksheet.Cell(currentRow, 3).Value = line.Description;
-                        worksheet.Cell(currentRow, 4).Value = debit;
-                        worksheet.Cell(currentRow, 5).Value = credit;
+                var title = ws.Cell(currentRow, 1);
+                title.Value = "🧾 JOURNAL LINES (UNRECONCILED)";
+                ws.Range(currentRow, 1, currentRow, maxColumns).Merge();
+                ApplySectionTitleStyle(title);
+                currentRow += 2;
 
-                        worksheet.Cell(currentRow, 4).Style.NumberFormat.Format = "#,##0";
-                        worksheet.Cell(currentRow, 5).Style.NumberFormat.Format = "#,##0";
+                var headers = new[] { "Account Number", "Account Name", "Description", "Debit", "Credit" };
 
-                        dr2 += debit;
-                        cr2 += credit;
+                foreach (var g in grouped)
+                {
+                    ws.Cell(currentRow++, 1).Value = $"Source: {g.Branch.BranchName}";
+                    ws.Cell(currentRow - 1, 1).Style.Font.Bold = true;
 
-                        ApplyTableCellBorders(worksheet, currentRow, 1, 5);
+                    currentRow = CreateTableHeaderRow(ws, currentRow, headers);
+
+                    decimal dr = 0, cr = 0;
+                    foreach (var l in g.SourceLines)
+                    {
+                        var d = l.DrCr?.ToLower() == "debit" ? Math.Abs(l.Amount) : 0;
+                        var c = l.DrCr?.ToLower() == "credit" ? Math.Abs(l.Amount) : 0;
+
+                        ws.Cell(currentRow, 1).Value = l.AccountNumber;
+                        ws.Cell(currentRow, 2).Value = l.AccountName;
+                        ws.Cell(currentRow, 3).Value = l.Description;
+                        ws.Cell(currentRow, 4).Value = d;
+                        ws.Cell(currentRow, 5).Value = c;
+
+                        dr += d;
+                        cr += c;
+
+                        ApplyTableCellBorders(ws, currentRow, 1, 5);
                         currentRow++;
                     }
 
-                    currentRow = CreateTotalsRow(worksheet, currentRow, dr2, cr2, 5);
+                    currentRow = CreateTotalsRow(ws, currentRow, dr, cr, 5);
                     currentRow += 2;
                 }
             }
 
             return currentRow;
         }
+
+
+
 
 
 
@@ -662,32 +606,33 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
         }
 
         private static int CreateTotalsRow(
-            IXLWorksheet worksheet,
-            int row,
-            decimal totalDebit,
-            decimal totalCredit,
-            int columnsCount)
+    IXLWorksheet worksheet,
+    int row,
+    decimal totalDebit,
+    decimal totalCredit,
+    int columnsCount)
         {
-            var label = worksheet.Cell(row, columnsCount - 2);
-            label.Value = "Totals:";
-            label.Style.Font.Bold = true;
+            // Label cell
+            var labelCell = worksheet.Cell(row, columnsCount - 2);
+            labelCell.Value = "Totals:";
+            labelCell.Style.Font.Bold = true;
+            labelCell.Style.Fill.BackgroundColor = XLColor.FromHtml("#f8f9fa");
+            labelCell.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
 
+            // Debit & Credit cells
             var debitCell = worksheet.Cell(row, columnsCount - 1);
-            var creditCell = worksheet.Cell(row, columnsCount);
-
             debitCell.Value = totalDebit;
-            creditCell.Value = totalCredit;
-
             debitCell.Style.NumberFormat.Format = "#,##0";
-            creditCell.Style.NumberFormat.Format = "#,##0";
+            debitCell.Style.Fill.BackgroundColor = XLColor.FromHtml("#f8f9fa");
+            debitCell.Style.Font.Bold = true;
+            debitCell.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
 
-            for (int col = columnsCount - 2; col <= columnsCount; col++)
-            {
-                var cell = worksheet.Cell(row, col);
-                cell.Style.Fill.BackgroundColor = XLColor.FromHtml("#f8f9fa");
-                cell.Style.Font.Bold = true;
-                cell.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-            }
+            var creditCell = worksheet.Cell(row, columnsCount);
+            creditCell.Value = totalCredit;
+            creditCell.Style.NumberFormat.Format = "#,##0";
+            creditCell.Style.Fill.BackgroundColor = XLColor.FromHtml("#f8f9fa");
+            creditCell.Style.Font.Bold = true;
+            creditCell.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
 
             return row + 1;
         }
@@ -804,7 +749,10 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
                 // ===== SHEET 1: SUMMARY & OVERVIEW =====
                 CreateSummarySheet(package, journalData, bank, branchcode, branchid, branchname, exportedBy, exportOptions);
 
-                // ===== SHEET 2: JOURNAL ENTRIES DETAILS =====
+                // ===== SHEET 2: BRANCH SUMMARY (NEW) =====
+                CreateBranchSummarySheet(package, journalData, exportedBy, exportOptions);
+
+                // ===== SHEET 3: JOURNAL ENTRIES DETAILS =====
                 CreateJournalDetailsSheet(package, journalData, exportedBy, exportOptions);
 
                 // ===== SHEETS FOR EACH BRANCH: Create individual sheets for each branch =====
@@ -832,7 +780,6 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
                 Console.WriteLine($"File saved to: {filePath}");
             }
         }
-
         private void CreateSummarySheet(ExcelPackage package, List<CBS.FrontDesk.Data.Entity.AccountingV2.JournalHead> journalData, string bank, string branchcode, string branchid, string branchname, string exportedBy, ExportOptions exportOptions)
         {
             var worksheet = package.Workbook.Worksheets.Add("Summary & Overview");
@@ -999,6 +946,156 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
 
             // Format percentages
             worksheet.Cells[$"C{currentRow - StatusSummary.Count}:C{currentRow - 1}"].Style.Numberformat.Format = "0.0%";
+
+            // Auto-fit columns
+            worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+        }
+
+        private void CreateBranchSummarySheet(ExcelPackage package, List<CBS.FrontDesk.Data.Entity.AccountingV2.JournalHead> journalData, string exportedBy, ExportOptions exportOptions)
+        {
+            var worksheet = package.Workbook.Worksheets.Add("Branch Summary");
+
+            // Set font
+            var fontName = "Bahnschrift SemiCondensed";
+            worksheet.Cells.Style.Font.Name = fontName;
+
+            // ===== HEADER SECTION =====
+            int headerColumns = 7; // Branch ID, Branch Name, Records, Resolved, Pending, Total Amount, Avg Amount
+            string headerEndColumn = GetColumnLetter(headerColumns);
+            int currentRow = CreateHeaderSection(worksheet, GetBankName(), GetBranchCode(), GetBranchID(), GetBranchName(), exportedBy, exportOptions, "BRANCH SUMMARY REPORT", headerEndColumn);
+
+            // ===== BRANCH SUMMARY SECTION =====
+            worksheet.Cells[$"A{currentRow}:G{currentRow}"].Merge = true;
+            worksheet.Cells[$"A{currentRow}"].Value = "BRANCH SUMMARY";
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Bold = true;
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Size = 14;
+            worksheet.Cells[$"A{currentRow}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            worksheet.Cells[$"A{currentRow}"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells[$"A{currentRow}"].Style.Fill.BackgroundColor.SetColor(Color.LightCoral);
+            currentRow += 2;
+
+            // Branch summary headers
+            var branchHeaders = new[] { "Branch ID", "Branch Name", "Records", "Resolved", "Pending", "Total Amount", "Avg Amount" };
+            for (int i = 0; i < branchHeaders.Length; i++)
+            {
+                worksheet.Cells[currentRow, 1 + i].Value = branchHeaders[i];
+                worksheet.Cells[currentRow, 1 + i].Style.Font.Bold = true;
+                worksheet.Cells[currentRow, 1 + i].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells[currentRow, 1 + i].Style.Fill.BackgroundColor.SetColor(Color.LightGreen);
+                worksheet.Cells[currentRow, 1 + i].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+            }
+            currentRow++;
+
+            // Branch summary data - aggregated from journalData
+            var branchSummary = journalData.GroupBy(x => new { x.BranchId, x.BranchName })
+                                        .Select(g => new
+                                        {
+                                            BranchId = g.Key.BranchId,
+                                            BranchName = g.Key.BranchName,
+                                            Records = g.Count(),
+                                            Resolved = g.Count(x => x.Status == "COMPLETED" || x.Status == "RECONCILED"),
+                                            Pending = g.Count(x => x.Status != "COMPLETED" && x.Status != "RECONCILED"),
+                                            TotalAmount = g.Sum(x => x.TotalDebit), // Using TotalDebit as transaction amount
+                                            AvgAmount = g.Average(x => x.TotalDebit)
+                                        })
+                                        .OrderByDescending(x => x.TotalAmount)
+                                        .ToList();
+
+            foreach (var branch in branchSummary)
+            {
+                worksheet.Cells[currentRow, 1].Value = branch.BranchId;
+                worksheet.Cells[currentRow, 2].Value = branch.BranchName;
+                worksheet.Cells[currentRow, 3].Value = branch.Records;
+                worksheet.Cells[currentRow, 4].Value = branch.Resolved;
+                worksheet.Cells[currentRow, 5].Value = branch.Pending;
+                worksheet.Cells[currentRow, 6].Value = branch.TotalAmount;
+                worksheet.Cells[currentRow, 7].Value = branch.AvgAmount;
+
+                for (int col = 1; col <= 7; col++)
+                {
+                    worksheet.Cells[currentRow, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                }
+                currentRow++;
+            }
+
+            // Format numbers
+            if (branchSummary.Any())
+            {
+                worksheet.Cells[$"F{currentRow - branchSummary.Count}:G{currentRow - 1}"].Style.Numberformat.Format = "#,##0.00";
+            }
+
+            // Add totals row
+            if (branchSummary.Any())
+            {
+                worksheet.Cells[currentRow, 1].Value = "TOTALS:";
+                worksheet.Cells[currentRow, 1].Style.Font.Bold = true;
+                worksheet.Cells[currentRow, 3].Value = branchSummary.Sum(x => x.Records);
+                worksheet.Cells[currentRow, 4].Value = branchSummary.Sum(x => x.Resolved);
+                worksheet.Cells[currentRow, 5].Value = branchSummary.Sum(x => x.Pending);
+                worksheet.Cells[currentRow, 6].Value = branchSummary.Sum(x => x.TotalAmount);
+                worksheet.Cells[currentRow, 7].Value = branchSummary.Average(x => x.AvgAmount);
+
+                for (int col = 1; col <= 7; col++)
+                {
+                    worksheet.Cells[currentRow, col].Style.Font.Bold = true;
+                    worksheet.Cells[currentRow, col].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    worksheet.Cells[currentRow, col].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
+                    worksheet.Cells[currentRow, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                }
+            }
+
+            currentRow += 2;
+
+            // ===== ADDITIONAL BRANCH STATISTICS =====
+            worksheet.Cells[$"A{currentRow}:G{currentRow}"].Merge = true;
+            worksheet.Cells[$"A{currentRow}"].Value = "BRANCH PERFORMANCE METRICS";
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Bold = true;
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Size = 14;
+            worksheet.Cells[$"A{currentRow}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            worksheet.Cells[$"A{currentRow}"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells[$"A{currentRow}"].Style.Fill.BackgroundColor.SetColor(Color.LightBlue);
+            currentRow += 2;
+
+            // Performance metrics headers
+            var metricHeaders = new[] { "Metric", "Value", "Branch" };
+            for (int i = 0; i < metricHeaders.Length; i++)
+            {
+                worksheet.Cells[currentRow, 1 + i].Value = metricHeaders[i];
+                worksheet.Cells[currentRow, 1 + i].Style.Font.Bold = true;
+                worksheet.Cells[currentRow, 1 + i].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells[currentRow, 1 + i].Style.Fill.BackgroundColor.SetColor(Color.LightGreen);
+                worksheet.Cells[currentRow, 1 + i].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+            }
+            currentRow++;
+
+            // Calculate performance metrics
+            var highestVolume = branchSummary.OrderByDescending(x => x.TotalAmount).FirstOrDefault();
+            var highestTransactions = branchSummary.OrderByDescending(x => x.Records).FirstOrDefault();
+            var highestPending = branchSummary.OrderByDescending(x => x.Pending).FirstOrDefault();
+            var highestResolution = branchSummary.OrderByDescending(x => x.Resolved).FirstOrDefault();
+
+            var metricsData = new[]
+            {
+        new { Metric = "Highest Transaction Volume", Value = highestVolume?.TotalAmount.ToString("N2"), Branch = highestVolume?.BranchName },
+        new { Metric = "Most Transactions", Value = highestTransactions?.Records.ToString(), Branch = highestTransactions?.BranchName },
+        new { Metric = "Highest Pending Count", Value = highestPending?.Pending.ToString(), Branch = highestPending?.BranchName },
+        new { Metric = "Highest Resolved Count", Value = highestResolution?.Resolved.ToString(), Branch = highestResolution?.BranchName },
+        new { Metric = "Average Transactions per Branch", Value = branchSummary.Average(x => x.Records).ToString("N2"), Branch = "All Branches" },
+        new { Metric = "Total Active Branches", Value = branchSummary.Count.ToString(), Branch = "All Branches" }
+    };
+
+            foreach (var metric in metricsData)
+            {
+                worksheet.Cells[currentRow, 1].Value = metric.Metric;
+                worksheet.Cells[currentRow, 2].Value = metric.Value;
+                worksheet.Cells[currentRow, 3].Value = metric.Branch;
+
+                for (int col = 1; col <= 3; col++)
+                {
+                    worksheet.Cells[currentRow, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                }
+                currentRow++;
+            }
 
             // Auto-fit columns
             worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();

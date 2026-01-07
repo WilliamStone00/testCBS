@@ -1,0 +1,104 @@
+﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.AccountingYear.CreateYear
+
+
+
+
+@using (Html.BeginForm(
+    "AddOrUpdate",
+    "AccountingYear",
+    FormMethod.Post,
+    new
+    {
+        id = "AccountingYearForm",
+        onsubmit = "return CreatYearSaveAjax(this);"
+    }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.iscreate)
+
+
+    <div class="container mt-3">
+
+        <!-- HEADER -->
+        <div class="card bg-light mb-3">
+            <div class="card-body text-center">
+                <h4 class="card-title text-primary">
+                    <i class="mdi mdi-calendar me-2"></i>
+                    @(string.IsNullOrEmpty(Model.Id)
+                        ? "ADD ACCOUNTING YEAR"
+                        : "UPDATE ACCOUNTING YEAR")
+                </h4>
+                <hr />
+            </div>
+        </div>
+
+        <!-- FORM -->
+        <div class="card">
+            <div class="card-body">
+
+                <div class="row g-3">
+
+                    <!-- ID -->
+                    <div class="col-md-6">
+                        @Html.LabelFor(m => m.Id, "Accounting Year ",
+                            new { @class = "form-label fw-bold" })
+
+                        @Html.TextBoxFor(m => m.Id,
+                            new
+                            {
+                                @class = "form-control",
+                                placeholder = "e.g. 2025"
+                            })
+                    </div>
+
+                    <!-- CODE -->
+                    <div class="col-md-6">
+                        @Html.LabelFor(m => m.Code, "Year Code",
+                            new { @class = "form-label fw-bold" })
+
+                        @Html.TextBoxFor(m => m.Code,
+                            new
+                            {
+                                @class = "form-control",
+                                placeholder = "e.g. 2025"
+                            })
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <!-- SAVE -->
+        <div class="text-end mt-3">
+            @*<button type="submit" class="btn btn-primary">
+                <i class="mdi mdi-content-save-outline me-1"></i>*@
+            @*@(string.IsNullOrEmpty(Model.Id) ? "Save" : "Update")*@
+
+            @if (Model.Id == null)
+            {
+
+                <button type="submit"
+                        class="btn btn-primary shadow-sm px-4"
+                        onclick="$('#iscreate').val(true);">
+                    <i class="fas fa-save me-1"></i> Save
+                </button>
+
+            }
+            else
+            {
+
+                <button type="submit"
+                        class="btn btn-primary shadow-sm px-4"
+                        onclick="$('#iscreate').val(false);">
+                    <i class="mdi mdi-pencil-outline me-1"></i> Update
+                </button>
+            }
+
+
+        </div>
+
+    </div>
+}
+
+

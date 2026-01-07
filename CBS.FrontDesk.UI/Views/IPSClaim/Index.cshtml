@@ -139,8 +139,22 @@
                 .done(res => {
                     console.log('API Response:', res);
 
-                    if (res.success && res.data?.customer) {
+                    // 🔴 BACKEND RETURNED ERROR
+                    if (!res.success) {
+                        $('#memberDetails')
+                            .removeClass('alert-info')
+                            .addClass('alert-warning')
+                            .html(`<i class="mdi mdi-alert-circle me-2"></i> ${res.message || 'Operation failed'}`);
+
+                        $('#memberSections').slideUp();
+                        memberData = null;
+                        return;
+                    }
+
+                    // 🟢 SUCCESS
+                    if (res.data?.customer) {
                         memberData = res.data;
+
                         displayMemberDetails(res.data);
                         populateFormFields(res.data);
                         displayBalances(res.data);
@@ -151,11 +165,23 @@
                             .html(`
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div>
-                                        <h6 class="mb-1"><i class="mdi mdi-account-check text-success me-2"></i> Member Found </h6>
-                                        <p class="mb-0">${res.data.customer.firstName} ${res.data.customer.lastName || ''} (${res.data.customer.customerId})</p>
-                                        <small class="text-muted">${res.data.summary?.AccountCount || 0} accounts, ${res.data.summary?.LoanCount || 0} loans</small>
+                                        <h6 class="mb-1">
+                                            <i class="mdi mdi-account-check text-success me-2"></i>
+                                            ${res.message || 'Member Found'}
+                                        </h6>
+                                        <p class="mb-0">
+                                            ${res.data.customer.firstName}
+                                            ${res.data.customer.lastName || ''}
+                                            (${res.data.customer.customerId})
+                                        </p>
+                                        <small class="text-muted">
+                                            ${res.data.summary?.AccountCount || 0} accounts,
+                                            ${res.data.summary?.LoanCount || 0} loans
+                                        </small>
                                     </div>
-                                    <button type="button" class="btn btn-sm btn-outline-success" onclick="loadMemberDetails('${memberId}')">
+                                    <button type="button"
+                                            class="btn btn-sm btn-outline-success"
+                                            onclick="loadMemberDetails('${memberId}')">
                                         <i class="mdi mdi-refresh me-1"></i> Refresh
                                     </button>
                                 </div>
@@ -165,27 +191,26 @@
                         $([document.documentElement, document.body]).animate({
                             scrollTop: $("#memberSections").offset().top - 50
                         }, 500);
-
-                    } else {
-                        console.log('Member not found or API returned false:', res);
-                        $('#memberDetails')
-                            .removeClass('alert-info')
-                            .addClass('alert-warning')
-                            .html('<i class="mdi mdi-alert-circle me-2"></i> Member not found');
-                        $('#memberSections').slideUp();
-                        memberData = null;
                     }
                 })
                 .fail((xhr, status, error) => {
                     console.error('AJAX Error:', error, xhr.responseText);
+
+                    const backendMessage =
+                        xhr.responseJSON?.message ||
+                        xhr.responseText ||
+                        'Unexpected server error';
+
                     $('#memberDetails')
                         .removeClass('alert-info')
                         .addClass('alert-danger')
-                        .html('<i class="mdi mdi-alert-circle me-2"></i> Error loading member details');
+                        .html(`<i class="mdi mdi-alert-circle me-2"></i> ${backendMessage}`);
+
                     $('#memberSections').slideUp();
                     memberData = null;
                 });
         }
+
 
         /* ============================
            DISPLAY MEMBER DETAILS IN TABLES - FIXED
@@ -455,8 +480,6 @@
                 return false;
             }
 
-            // Get all required data for confirmation
-            const customer = memberData.customer;
             const claimData = {
                 MemberName: $('#FirstName').val() + ' ' + $('#LastName').val(),
                 MemberId: $('#MemberId').val(),
@@ -469,38 +492,14 @@
                 NetClaimableAmount: memberBalances.netClaimableAmount,
                 BeneficiaryName: $('#BeneficiaryName').val(),
                 BeneficiaryContact: $('#BeneficiaryContact').val(),
-                AccountsCount: memberData.accounts?.length || 0,
-                LoansCount: memberData.loans?.length || 0,
                 Cause: $('#Cause option:selected').text()
             };
 
-            // Check if claim amount exceeds net claimable amount
-            if (ClaimedAmount > memberBalances.netClaimableAmount) {
-                const confirmMsg = `
-                    Claim amount (${formatCurrency(ClaimedAmount)}) exceeds net claimable amount (${formatCurrency(memberBalances.netClaimableAmount)}).
-                    <br><br>
-                    <strong>Do you want to continue?</strong>
-                `;
-
-                alertify.confirm(
-                    'Amount Exceeds Limit',
-                    confirmMsg,
-                    function() {
-                        // User confirmed, show full verification
-                        showClaimVerificationAlert(claimData);
-                    },
-                    function() {
-                        appalert('Please adjust the claimed amount', 3, 1);
-                        $('#ClaimedAmount').focus().select();
-                    }
-                ).set({ 'labels': {ok: 'Continue Anyway', cancel: 'Adjust Amount'} });
-                return false;
-            }
-
-            // Show verification alert
+            // ❗ NO BALANCE BLOCKING ❗
             showClaimVerificationAlert(claimData);
             return false;
         }
+
 
         /* ============================
            CUSTOM ALERT FOR CLAIM VERIFICATION - FIXED
@@ -544,7 +543,7 @@
             <!-- FINANCIAL SUMMARY - FIXED -->
             <div class="card border-info mb-3 shadow-sm">
                 <div class="card-header bg-light text-primary py-2">
-                    <i class="mdi mdi-calculator-variant me-2"></i> Financial Summary 
+                    <i class="mdi mdi-calculator-variant me-2"></i> Financial Summary
                 </div>
                 <div class="card-body p-4">
                     <div class="row g-3">
@@ -614,20 +613,19 @@
                 'Confirm Claim Submission',
                 alertHtml,
                 function () {
-                    // User confirmed - proceed with form submission
                     submitFormWithConfirmation();
                 },
                 function () {
-                    // User cancelled
                     appalert('Claim submission cancelled. You can modify the details.', 2, 1);
                 }
             ).set({
-                'labels': { ok: 'Confirm & Submit', cancel: 'Cancel' },
-                'padding': false,
-                'closable': false,
-                'transition': 'zoom',
-                'maximizable': true
+                labels: { ok: 'Confirm & Submit', cancel: 'Cancel' },
+                padding: false,
+                closable: false,
+                transition: 'zoom',
+                maximizable: true
             });
+
         }
 
         /* ============================

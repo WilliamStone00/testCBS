@@ -1,42 +1,46 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
 using CBS.BusinessService.Config;
+using CBS.BusinessService.LoanP;
+using CBS.FrontDesk.Data.Entity;
+using CBS.FrontDesk.Data.Entity.Accounting;
+using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.LoanConf;
+using CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure;
+using CBS.FrontDesk.Data.Entity.SavingProducts;
+using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
+using DocumentFormat.OpenXml.EMMA;
+using DocumentFormat.OpenXml.Office2010.Excel;
+using Microsoft.Owin.Logging;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CBS.FrontDesk.Data.Entity.Config;
-using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
-using CBS.FrontDesk.Data.Entity.SavingProducts;
-using CBS.FrontDesk.Data.Entity;
-using CBS.FrontDesk.Data.Entity.Accounting;
 using System.Web.Mvc;
-using DocumentFormat.OpenXml.EMMA;
-using DocumentFormat.OpenXml.Office2010.Excel;
-using Microsoft.Owin.Logging;
-using CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure;
+using PcmfLoanPurpose = CBS.FrontDesk.Data.Entity.LoanConf.PcmfLoanPurpose;
 
 namespace CBS.BusinessService.Config
 {
     public class LoanProductServices : BaseService
     {
         private readonly ApiCallerHelper _loanConfigApiHelper;
+        private readonly PcmfLoanPurposeService _pcmfLoanPurposeService;
         private readonly ApiCallerHelper _BankConfigApiHelper;
         private readonly LoanProductCategoryServices _loanProductCategoryServices;
         private readonly LoanTermServices _loanTermServices;
 
-        public LoanProductServices(LoanProductCategoryServices loanProductCategoryServices = null, LoanTermServices loanTermServices = null)
+        public LoanProductServices(LoanProductCategoryServices loanProductCategoryServices = null, LoanTermServices loanTermServices = null, PcmfLoanPurposeService pcmfLoanPurposeService = null)
         {
             _BankConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["BankConfigurationBaseUrl"].ToString());
             _loanConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["LoanBaseUrl"].ToString());
             _loanProductCategoryServices = loanProductCategoryServices;
             _loanTermServices = loanTermServices;
+            _pcmfLoanPurposeService = pcmfLoanPurposeService;
         }
 
         public async Task<ExecutionMessages> Delete(string id)
@@ -144,6 +148,7 @@ namespace CBS.BusinessService.Config
             }
         }
 
+
         public async Task<IEnumerable<StringValues>> GetStringValuesAsync()
         {
             try
@@ -214,42 +219,54 @@ namespace CBS.BusinessService.Config
         {
             try
             {
-                // Fetch data from API
-                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<LoanProduct>>>(APICallHelper.GetAllLoanProductLighterVersion);
+                var couApiResponse =
+                    await _loanConfigApiHelper.GetAsync<ResponseObject<List<PCMFLoanProduct>>>(
+                        APICallHelper.GetAllLoanProductLighterVersion);
 
-                // Check if the response is successful and contains data
                 if (couApiResponse.IsSuccess && couApiResponse.ApiResponseData?.Data != null)
                 {
-                    // Filter and map the data to the list of SelectListItem
                     var values = couApiResponse.ApiResponseData.Data
-                        .Where(x => x.TargetType == targetType && x.ActiveStatus && x.LoanTermId == loanTermId && x.LoanProductCategoryId == loanCategoryid && x.IsProductWithSavingFacilities == isSSF)
-                        .Select(x => new SelectListItem
+                        .Where(x =>
+                            x.LoanTargetId == targetType &&
+                            x.LoanTermId == loanTermId &&
+                            x.PcmfLoanPurposeId == loanCategoryid
+                        )
+                        .Select(x =>
                         {
-                            Text = $"{x.ProductCode} {x.ProductName}, [Min: {x.LoanMinimumAmount.ToString("#,##0")} - Max: {x.LoanMaximumAmount.ToString("#,##0")}], [BTN: {x.LoanTerm.MinInMonth} - {x.LoanTerm.MaxInMonth} Month(s)]",
-                            Value = x.Id
+                            // ✅ PCMF tag: Section-Group-Base (and Population if you want)
+                            // Example: [PCMF: CT-320 / Base: 3201 / Pop: Client]
+                            var pcmfTag =
+                                $"[PCMF: {x.PcmfSection}-{(x.PcmfGroupCode?.ToString() ?? "N/A")}" +
+                                $"{(x.PcmfBaseCode.HasValue ? $" / Base: {x.PcmfBaseCode.Value}" : "")}" +
+                                $"{(!string.IsNullOrWhiteSpace(x.PcmfPopulation) ? $" / Pop: {x.PcmfPopulation}" : "")}]";
+
+                            // ✅ Keep your existing text, just append the PCMF tag
+                            var text =
+                                $"{x.ProductCode} {x.ProductName}, " +
+                                $"[Min: {x.Policy.LoanMinimumAmount:#,##0} - Max: {x.Policy.LoanMaximumAmount:#,##0}], " +
+                                $"[BTN: {x.Term.MinInMonth} - {x.Term.MaxInMonth} Month(s)] " +
+                                $"{pcmfTag}";
+
+                            return new SelectListItem
+                            {
+                                Text = text,
+                                Value = x.Id
+                            };
                         })
                         .ToList();
 
-                    // Default selected value (adjust as per your needs)
                     var defaultSelectedValue = "default-value";
-
-                    // Return the SelectList
                     return new SelectList(values, "Value", "Text", defaultSelectedValue);
                 }
 
-                // Return an empty SelectList with a default "No options available" option
                 return new SelectList(new List<SelectListItem>
-                {
-                    new SelectListItem { Text = "No options available", Value = string.Empty }
-                }, "Value", "Text");
+        {
+            new SelectListItem { Text = "No options available", Value = string.Empty }
+        }, "Value", "Text");
             }
-            catch (Exception ex)
+            catch
             {
-                // Log the exception
-                // _logger.LogError(ex, "An error occurred while getting the loan products dropdown.");
-
-                // Handle the exception accordingly
-                throw; // Re-throw the exception after logging
+                throw;
             }
         }
 
@@ -298,29 +315,27 @@ namespace CBS.BusinessService.Config
             }
         }
         //GetProductTermOrDurationFromConfiguredProduct
-        public async Task<List<LoanProductCategory>> GetProductCategoryFromConfiguredProduct()
+        public async Task<List<PcmfLoanPurpose>> GetProductCategoryFromConfiguredProduct()
         {
             try
             {
                 // Fetch loan products using the API helper
-                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<LoanProduct>>>(APICallHelper.GetAllLoanProductLighterVersion);
+                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<PCMFLoanProduct>>>(APICallHelper.GetAllLoanProductLighterVersion);
 
                 // Return an empty list if the API response is unsuccessful or data is null
                 if (!(couApiResponse?.IsSuccess == true && couApiResponse.ApiResponseData?.Data != null))
                 {
-                    return new List<LoanProductCategory>();
+                    return new List<PcmfLoanPurpose>();
                 }
 
                 // Extract loan products
                 var loanProducts = couApiResponse.ApiResponseData.Data;
 
                 // Fetch loan product categories
-                var productsCats = await _loanProductCategoryServices.GetLoanProductCategorys();
-
+                //var productsCatsx = await _loanProductCategoryServices.GetLoanProductCategorys();
+                var productsCats = await _pcmfLoanPurposeService.GetAllAsync();
                 // Perform join to filter categories based on loan products
-                var productCategories = productsCats
-                    .Where(pc => loanProducts.Any(lp => lp.LoanProductCategoryId == pc.Id && lp.ActiveStatus))
-                    .ToList();
+                var productCategories = productsCats.Where(pc => loanProducts.Any(lp => lp.PcmfLoanPurposeId == pc.Id && lp.ActiveStatus)).ToList();
 
                 return productCategories;
             }
@@ -332,7 +347,26 @@ namespace CBS.BusinessService.Config
                 throw;
             }
         }
+        public async Task<IEnumerable<StringValues>> GetTermByPcmfPurpose(string pcmfPurposeid)
+        {
+            try
+            {
+                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<LoanTerm>>>(string.Format(APICallHelper.GetTermByPcmfPurpose, pcmfPurposeid));
+                if (couApiResponse.IsSuccess)
+                {
+                    var data = couApiResponse.ApiResponseData.Data.Select(x => new StringValues { Text = $"{x.NameEn}/{x.NameFr}", Value = x.Id }).ToList();
+                    return data;
+                }
+                return new List<StringValues>();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
 
+        //
         public async Task<List<LoanTerm>> GetProductTermOrDurationFromConfiguredProduct()
         {
             try

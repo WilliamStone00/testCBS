@@ -611,6 +611,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllLoanTerm = "/api/v1/LoanTerms";
         public static string CreateLoanTerm = "/api/v1/LoanTerm";
         public static string GetPCMFCatalog = "/api/v1/pcmf-ui-catalog";
+        public static string GetTermByPcmfPurpose = "/api/v1/LoanTerms/ByPcmfPurpose/{0}";
 
 
         public static string Get_Update_Delete_InstallmentType = "/api/v1/InstallmentType/{0}";
@@ -1302,6 +1303,9 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllCounterChequeByBranch = "/api/v1/counter-checks/by-branch/{branchId}";
         public static string GetCustormerchequebook = "/api/v1/checkbook/categories";
         public static string GetCustomerChequeBook = "/api/v1/checkbook/{0}";
+        public static string GetCustomerChequeBooks = "/api/v1/checkbook/customer/{0}";
+        public static string GetChequeBookWithLeaves = "/api/v1/leaves/{0}"; 
+        public static string GetChequeLeafDetails = "/api/v1/checkbook-leave/{0}"; 
 
 
         //--------------------------------------TEST--------------------------------------//
@@ -1616,6 +1620,9 @@ namespace CBS.FrontDesk.Helper
         public static string BranchAccountdatatable = "/api/v1/BranchAccount/datatable";
         public static string GetAllBranchAccount = "/api/v1/BranchAccount/{0}";
 
+        //Account negativity management endpoint
+        public static string Accountnegman = "/api/v1/BranchAccount/negativity";
+
         //-------------------------- FileUpload ------------------------------------------
         public static string AffiliateUpload = "/api/v1/FileUploads/affiliates/{0}";
         public static string BranchUpload = "/api/v1/FileUploads/trial-balance";
@@ -1850,12 +1857,14 @@ namespace CBS.FrontDesk.Helper
         public static string InterestDistributionSimulation1 = "/api/v1/InterestDistributionSimulationMock/generate/GenerateInterestDistributionSampleDataQuery";
         public static string InterestDistributionSimulation = "/api/v1/ProcessSnapshotInterestSimulation/GenerateInterestSimulation";
         public static string CreateShareMonthSimulation = "/api/v1/ProcessSnapshotInterestSimulation/Create";
-
+        public static string ActivateShareMonthSimulation = "/api/v1/ProcessSnapshotInterestSimulation/PrepareCustomerInterestBalance";
+        public static string DataTableForRequestSimulation = "/api/v1/ProcessSnapshotInterestSimulation/DataTableForRequest";
+        public static string SharedMonthUpload = "/api/v1/ProcessesExternalShareMonth/ShareMonthFile";
         //------------------------- LoanTargetCatalog ----------------
         public const string LoanTargetCatalogCreate = "/api/v1/LoanTargetCatalog/Create";
-            public const string LoanTargetCatalogGet = "/api/v1/LoanTargetCatalog/Get";
-            public const string LoanTargetCatalogGetAll = "/api/v1/LoanTargetCatalog/GetAll";
-            public const string LoanTargetCatalogUpdate = "/api/v1/LoanTargetCatalog/Update";
+        public const string LoanTargetCatalogGet = "/api/v1/LoanTargetCatalog/Get";
+        public const string LoanTargetCatalogGetAll = "/api/v1/LoanTargetCatalog/GetAll";
+        public const string LoanTargetCatalogUpdate = "/api/v1/LoanTargetCatalog/Update";
         public const string LoanTargetCatalogDelete = "/api/v1/LoanTargetCatalog/Delete";
 
         //----------------  PCMF LOAN PURPOSE ENDPOINTS --------------------------------
@@ -1864,6 +1873,20 @@ namespace CBS.FrontDesk.Helper
         public const string PcmfLoanPurposeGetById = "/api/v1/PcmfLoanPurpose/{0}";
         public const string PcmfLoanPurposeUpdate = "/api/v1/PcmfLoanPurpose/{0}";
         public const string PcmfLoanPurposeDelete = "/api/v1/PcmfLoanPurpose/{0}";
-    
-}
+
+        //---------------- LoanType API endpoints --------------------------------
+        public const string LoanTypeCreate = "/api/v1/LoanType";
+        public const string LoanTypeGetAll = "/api/v1/LoanTypes";
+        public const string LoanTypeGetById = "/api/v1/LoanType/{0}";
+        public const string LoanTypeUpdate = "/api/v1/LoanType/{0}";
+        public const string LoanTypeDelete = "/api/v1/LoanType/{0}";
+
+        //------------------- Year ---------------------------------------------
+
+        public const string AddYear = "/api/v1/Year/add";
+        public const string UpdateYear = "/api/v1/Year/update";
+        public const string GetDataTable = "/api/v1/Year/datatable";
+        public const string GetyearById = "/api/v1/Year/{0}";
+        public const string GetAllYear = "/api/v1/Year/all";
+    }
 }

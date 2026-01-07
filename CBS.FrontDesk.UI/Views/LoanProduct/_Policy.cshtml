@@ -731,13 +731,13 @@
                                             </div>
                                         </div>
 
-                                        <h6>@GlobalLoanProduct.Collateral</h6>
+                                        @*<h6>@GlobalLoanProduct.Collateral</h6>
                                         <div class="col-md-12">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.TextBoxFor(m => m.Policy.MinimumCollateralPercentage, new { @class = "form-control" })
                                                 <label>@GlobalLoanProduct.CollateralRate</label>
                                             </div>
-                                        </div>
+                                        </div>*@
                                         <h6>@GlobalLoanProduct.MembersAccount</h6>
                                         <div class="col-md-6">
                                             <div class="form-floating form-floating-outline">
@@ -787,7 +787,7 @@
                                                 <label class="form-check-label" for="shorteeFundCheckbox">@GlobalLoanProduct.ShorteeMustHaveFundToGuaranteeThisLoan.</label>
                                             </div>
                                         </div>
-                                        <div class="col-md-12" id="percentageCoverageContainer" style="display: none;">
+                                        <div class="col-md-12" id="percentageCoverageContainer">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.TextBoxFor(m => m.Policy.MinimumPercentageCoverageOfShortee, new { @class = "form-control", @id = "percentageCoverageInput" })
                                                 <label for="percentageCoverageInput">@GlobalLoanProduct.EnterShorteeMinimumPercentageCoverage.</label>
@@ -1024,16 +1024,16 @@
                                         <div class="col-md-6">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.TextBoxFor(m => m.Policy.NumberOfDaysToStopInterestCalculation, new { @class = "form-control" })
-                                                <label>Number Of Days To Stop Interest Calculation</label>
+                                                <label>Maximum number of days to stop interest calculation in case of extension</label>
                                                 @*<label>@GlobalLoanProduct.NumberOfDaysToStopInterestCalculation</label>*@
                                             </div>
                                         </div>
-                                        <div class="col-12">
+                                        @*<div class="col-12">
                                             <div class="form-check">
                                                 @Html.CheckBoxFor(m => m.Policy.InterestMustBePaidUpFront, new { @class = "form-check-input" })
                                                 <label class="form-check-label" for="isActive">@GlobalLoanProduct.InterestMustBePaidUpfront.</label>
                                             </div>
-                                        </div>
+                                        </div>*@
                                     </div>
                                     <div class="mt-4">
                                         <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
@@ -1369,7 +1369,7 @@
 </script>
 
 
-@*<script>
+<script>
     function togglePenaltySection() {
         const isChecked = $('#UpdateLoanProductCommand_IsChargesApplied').is(':checked');
         $('#penaltySection').toggle(isChecked);
@@ -1396,4 +1396,4 @@
 
         // Toggle on checkbox change
         $('#UpdateLoanProductCommand_IsChargesApplied').on('change', togglePenaltySection);
-    });</script>*@
+    });</script>

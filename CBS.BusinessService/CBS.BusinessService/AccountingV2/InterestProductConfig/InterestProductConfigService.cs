@@ -46,7 +46,7 @@ namespace CBS.BusinessService.AccountingV2.InterestProductConfig
                 //model.Command = "Create";
                 if (model.BranchId == null)
                 {
-                    model.BranchId = "Global"; // Assuming BranchId is a string. If int?, handle differently.
+                    model.BranchId = null; 
                 }
                 var response = await _apiCallerHelper.PostAsync<ServiceResponse<ProductCalculationConfig>>(APICallHelper.SaveInterestProductConfig, model);
 

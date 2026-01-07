@@ -1,6 +1,7 @@
 ﻿using CBS.BusinessService.AccountingV2.AccountingYear;
 using CBS.BusinessService.AccountingV2.CashReconciliation;
 using CBS.BusinessService.AccountingV2.ConfigurationsManualEntry;
+using CBS.BusinessService.AccountingV2.InterestProductConfig;
 using CBS.BusinessService.AccountingV2.JournalHead;
 using CBS.BusinessService.CheckManagementSystem;
 using CBS.BusinessService.Config;
@@ -10,6 +11,7 @@ using CBS.FrontDesk.Data.Entity.AccountingV2.AccountingYear;
 using CBS.FrontDesk.Data.Entity.AccountingV2.CashReconciliation;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem;
 using CBS.FrontDesk.Data.Message;
+using DocumentFormat.OpenXml.Bibliography;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -38,6 +40,14 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.AccountingYear
             return View(); //**//*
         }
 
+        public async Task<ActionResult> List()
+        {
+            await loader();
+            return View(); //**//*
+        }
+
+
+
         private List<StringValues> getAllYearStatus()
         {
             return new List<StringValues>
@@ -57,25 +67,29 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.AccountingYear
             };
         }
 
-        private List<StringValues> getAccountingYears()
-        {
-            int currentYear = DateTime.Now.Year;
-
-            return Enumerable.Range(currentYear - 3, 5)
-                .Select(y => new StringValues
-                {
-                    Value = y.ToString(),
-                    Text = y.ToString()
-                })
-                .ToList();
-        }
+        
 
         public async Task<bool> loader()
         {
             var branches = await _branchServices.GetBranches();
             ViewBag.Branches = branches;
             ViewBag.Status = getAllYearStatus();
-            ViewBag.Year = getAccountingYears();
+
+
+
+            var YearB = await _accountingYearService.GetAllYearAsync();
+
+            // PRODUCTS DROPDOWN
+            ViewBag.YearB = YearB?
+                .Select(p => new SelectListItem
+                {
+                    Value = p.Id,                       // ProductId posted
+                    Text = $" {p.Code}"         // [Code] [Name] shown
+                })
+                .OrderBy(x => x.Text)
+                .ToList()
+                ?? new List<SelectListItem>();
+
             return true;
 
         }
@@ -89,7 +103,12 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.AccountingYear
             await loader();
             return PartialView("_Update", new accountingyear());
         }
-
+        [HttpGet]
+        public async Task<ActionResult> Create()
+        {
+            
+            return PartialView("_Create", new CreateYear());
+        }
 
         [HttpGet]
         public async Task<ActionResult> GetAll()
@@ -131,8 +150,8 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.AccountingYear
 
                 entry.YearB = entry.Year.ToString();
 
-                ViewBag.StartDate = entry.StartDate?.ToString("yyyy-MM-dd") ?? "";
-                ViewBag.EndDate = entry.EndDate?.ToString("yyyy-MM-dd") ?? "";
+                ViewBag.StartDate = entry.StartDate?.ToString("dd-MM-yyyy") ?? "";
+                ViewBag.EndDate = entry.EndDate?.ToString("dd-MM-yyyy") ?? "";
 
                 // Return the partial view that will be injected into the modal
                 return PartialView("_Update", entry);
@@ -274,7 +293,122 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.AccountingYear
             }
         }
 
+        public async Task<ActionResult> AddOrUpdate(CreateYear model)
+        {
+            
+            if (model == null)
+                return Json(new { success = false, message = "Invalid or empty model." });
 
+            try
+            {
+                if (model.iscreate == true)
+                {
+                    // No Id → create new record
+                    var execMessage = await _accountingYearService.AddAsync(model);
+
+                    if (execMessage == null)
+                        return Json(new { success = false, message = "No response from service." });
+
+                    if (!execMessage.Result)
+                        return Json(new
+                        {
+                            success = false,
+                            message = execMessage.MessageString ?? "Failed to save Accounting Year.",
+                            data = execMessage.Data
+                        });
+
+                    return Json(new
+                    {
+                        success = true,
+                        message = execMessage.MessageString ?? "Accounting Year created successfully.",
+                        data = execMessage.Data
+                    });
+                }
+                else
+                {
+                    // Id present → update existing record
+                    var result = await _accountingYearService.UpdateAsync(model);
+
+                    if (result == null)
+                        return Json(new { success = false, message = "No response from service." });
+
+                    return Json(new
+                    {
+                        success = result.Result,
+                        message = Messaging.MessageResult(result),
+                        data = result.Data
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = $"❌ Error: {ex.Message}" });
+            }
+        }
+
+
+        [HttpPost]
+        public async Task<JsonResult> LoadYearData(CreateYearQuery query)
+        {
+            try
+            {
+
+
+                var data = await _accountingYearService.GetDaTableAsync(query);
+
+
+                // Deserialize DataTable payload into strongly-typed list
+                var year = JsonConvert.DeserializeObject<List<Data.Entity.AccountingV2.AccountingYear.CreateYear>>(
+                    JsonConvert.SerializeObject(data.data));
+
+                return Json(new
+                {
+
+                    draw = data.Options.draw ?? "1",
+                    recordsTotal = data.Options.recordsTotal,
+                    recordsFiltered = data.Options.recordsFiltered,
+                    data = year,
+                    success = true,
+                    message = "Display DataTable for  Year  successfully"
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                // Return DataTables-compatible empty result on error
+                return Json(new
+                {
+                    draw = query?.Options?.draw ?? "1",
+                    recordsTotal = 0,
+                    recordsFiltered = 0,
+                    data = new List<object>(),
+                    error = ex.Message
+                });
+            }
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetyearDetails(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+                return new HttpStatusCodeResult(400, "ID is required");
+
+            await loader();
+            try
+            {
+                var entry = await _accountingYearService.GetyearData(id);
+                if (entry == null)
+                    return HttpNotFound(" year not found");
+
+               
+
+                // Return the partial view that will be injected into the modal
+                return PartialView("_Create", entry);
+            }
+            catch (Exception ex)
+            {
+                return new HttpStatusCodeResult(500, ex.Message);
+            }
+        }
 
     }
 }

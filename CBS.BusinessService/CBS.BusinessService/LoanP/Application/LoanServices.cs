@@ -573,7 +573,7 @@ namespace CBS.BusinessService
 
                 // 🏦 Loan config
                 LoanType = loan.LoanType,
-                LoanTermName = loan.LoanApplication?.LoanProduct?.LoanTerm?.Name,
+                LoanTermName = loan.LoanApplication?.LoanProduct?.LoanTerm?.NameEn,
                 LoanTarget = loan.LoanTarget,
                 LoanPurpose = loan.LoanApplication?.LoanPurpose?.purposeName,
                 RepaymentPeriod = loan.LoanApplication?.RepaymentCircle,
@@ -591,8 +591,8 @@ namespace CBS.BusinessService
                 DisbursementChannel = loan.DisbursmentStatus,
                 InterestCalculationMethod = loan.LoanApplication.InterestMethod,
 
-                ProductCategoryId = loan.LoanApplication.LoanProduct.LoanProductCategoryId,
-                ProductCategoryName = loan.LoanApplication.LoanProduct.LoanProductCategory.Name,
+                ProductCategoryId = loan.LoanApplication.LoanProduct.PcmfLoanPurposeId,
+                ProductCategoryName = loan.LoanApplication.LoanProduct.PcmfLoanPurpose.NameEn,
             };
 
             return loanData;

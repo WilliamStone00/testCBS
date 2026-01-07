@@ -38,9 +38,9 @@ namespace CBS.FrontDesk.Data.Entity.BulkOperation
             BankId =branch.Bank.Id;
             BankName =branch.Bank.Name;
             BranchName =branch.Name;
-            SimulationType = simulate.SimulationType;
+            SimulationType = simulate.SimulationType2;
             SourceAccountMaxAmount = simulate.SourceAccountMaxAmount;
-            Description = simulate.Description;
+            Description = simulate.SimulationDescription2;
             DestinationAccountId = simulate.DestinationAccountId;
             SourceAccountMinAmount = simulate.SourceAccountMinAmount;
             SourceAccountType = simulate.SourceAccountType;

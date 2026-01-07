@@ -1,0 +1,347 @@
+﻿
+
+@{
+    ViewBag.Title = "Loan Type Settings";
+}
+
+<div id="datalistingview">
+    <div class="row">
+        <div class="col-12">
+            <div class="card bg-light mb-2 shadow-sm">
+                <div class="card-body text-center">
+                    <h1 class="card-title text-primary fw-bold">
+                        <i class="mdi mdi-bank me-2"></i> Institution Loan Types
+                    </h1>
+                    <p class="card-text">
+                        Manage different types of loans offered by the bank
+                    </p>
+                    <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+            <span><i class="mdi mdi-information-outline me-2"></i> Tips</span>
+            <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapseLoanTypeTips" aria-expanded="false">
+                <i class="mdi mdi-chevron-down"></i>
+            </button>
+        </h6>
+        <div id="collapseLoanTypeTips" class="collapse">
+            <div class="card-body">
+                <ul class="mb-0">
+                    <li class="mb-2">
+                        <i class="mdi mdi-tag-outline text-success me-2"></i>
+                        <strong>Code Convention:</strong> Use unique, meaningful codes (e.g., "HL" for Home Loan, "PL" for Personal Loan). Codes are case-sensitive and cannot be changed after creation.
+                    </li>
+                    <li class="mb-2">
+                        <i class="mdi mdi-format-title text-info me-2"></i>
+                        <strong>Name Standardization:</strong> Keep names clear and consistent. Use "Loan" suffix for clarity (e.g., "Education Loan" instead of just "Education").
+                    </li>
+                    <li class="mb-2">
+                        <i class="mdi mdi-order-numeric-ascending text-warning me-2"></i>
+                        <strong>Display Order:</strong> Set numerical order (0, 1, 2, etc.) to control how loan types appear in dropdowns. Lower numbers appear first.
+                    </li>
+                    <li class="mb-2">
+                        <i class="mdi mdi-text-box-outline text-primary me-2"></i>
+                        <strong>Description Best Practices:</strong> Include key terms, eligibility criteria, and typical usage. This helps staff and customers understand the loan purpose.
+                    </li>
+                    <li class="mb-2">
+                        <i class="mdi mdi-toggle-switch text-danger me-2"></i>
+                        <strong>Active/Inactive Status:</strong> Mark types as "Inactive" instead of deleting when no longer offered. This preserves historical data.
+                    </li>
+                    <li class="mb-2">
+                        <i class="mdi mdi-shield-check text-success me-2"></i>
+                        <strong>Security:</strong> Only authorized personnel should modify loan types as changes affect loan processing and reporting.
+                    </li>
+                    <li class="mb-2">
+                        <i class="mdi mdi-connection text-info me-2"></i>
+                        <strong>System Integration:</strong> Loan types are linked to interest rates, fees, and repayment schedules. Verify connections before making changes.
+                    </li>
+                    <li class="mb-2">
+                        <i class="mdi mdi-backup-restore text-warning me-2"></i>
+                        <strong>Version Control:</strong> Always document changes. The system tracks modification history for audit purposes.
+                    </li>
+                    <li class="mb-2">
+                        <i class="mdi mdi-chart-bar text-primary me-2"></i>
+                        <strong>Reporting Impact:</strong> Changes affect financial reports, portfolio analysis, and regulatory compliance reports.
+                    </li>
+                    <li class="mb-2">
+                        <i class="mdi mdi-alert-circle text-secondary me-2"></i>
+                        <strong>Testing:</strong> Test new loan types in the test environment before deploying to production.
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="card mb-1">
+        <div class="card-body d-flex justify-content-end align-items-center">
+            <button type="button" onclick="showCreateModal()" class="btn btn-label-primary btn-sm me-2">
+                <i class="mdi mdi-plus mdi-18px"></i> Add New
+            </button>
+            <button type="button" onclick="refreshTable()" class="btn btn-label-secondary btn-sm">
+                <i class="mdi mdi-refresh mdi-18px"></i> Refresh
+            </button>
+        </div>
+    </div>
+
+    <!-- DataTable -->
+    <div class="card p-3 shadow mb-4">
+        <h5 class="text-primary mb-3">
+            <i class="mdi mdi-table"></i> Loan Types Catalog
+            <small class="text-muted ms-2">
+                <span id="recordCount" class="badge bg-info">Loading...</span>
+            </small>
+        </h5>
+        <div class="table-responsive">
+            <table id="loanTypeDataTable" class="table table-bordered table-striped">
+                <thead class="table-light">
+                    <tr>
+                        <th>Code</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Display Order</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data will be loaded via AJAX -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Container -->
+<div class="modal fade" id="genericModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content"></div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        var dataTable = null;
+
+        /* ===========================
+           Select2
+        ============================ */
+        function initSelect2(container) {
+            $(container).find('.select2').each(function () {
+                const $select = $(this);
+
+                if ($select.hasClass('select2-hidden-accessible')) {
+                    $select.select2('destroy');
+                }
+
+                $select.select2({
+                    width: '100%',
+                    dropdownParent: $(container),
+                    placeholder: $select.attr('data-placeholder') || 'Select an option',
+                    allowClear: true
+                });
+            });
+        }
+
+        /* ===========================
+           Modal
+        ============================ */
+        function showCreateModal() {
+            ShowModal(null, '_CreateEditLoanType', 'LoanType', 'create');
+        }
+
+        function ShowModal(key, partialView, controller, path) {
+            var url = '/' + controller + '/InitializeData?KEY=' + encodeURIComponent(key || '') +
+                '&partialView=' + encodeURIComponent(partialView) +
+                '&path=' + encodeURIComponent(path);
+
+            $.get(url).done(function (html) {
+                const modalEl = document.getElementById('genericModal');
+                modalEl.querySelector('.modal-content').innerHTML = html;
+
+                const modal = new bootstrap.Modal(modalEl);
+                initSelect2(modalEl);
+                modal.show();
+            }).fail(function () {
+                appalert('Failed to load content', 0, 1);
+            });
+        }
+
+        /* ===========================
+           Load Data
+        ============================ */
+        function loadData() {
+            var tbody = $('#loanTypeDataTable tbody');
+
+            // 🔥 show loading row ONLY temporarily
+            tbody.html(`
+                <tr class="loading-row">
+                    <td colspan="6" class="text-center py-4 text-muted">
+                        Loading loan types data...
+                    </td>
+                </tr>
+            `);
+
+            $.ajax({
+                url: '/LoanType/GetAll',
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    if (response.success && Array.isArray(response.data)) {
+                        renderTable(response.data);
+                    } else {
+                        showEmpty('Failed to load data');
+                    }
+                },
+                error: function () {
+                    showEmpty('Error loading data');
+                }
+            });
+        }
+
+        function showEmpty(message) {
+            var tbody = $('#loanTypeDataTable tbody');
+
+            if ($.fn.DataTable.isDataTable('#loanTypeDataTable')) {
+                dataTable.destroy();
+                dataTable = null;
+            }
+
+            tbody.html(`
+                <tr>
+                    <td colspan="6" class="text-center text-muted py-4">
+                        ${message}
+                    </td>
+                </tr>
+            `);
+
+            $('#recordCount').text('0 records');
+        }
+
+        /* ===========================
+           Render Table
+        ============================ */
+        function renderTable(data) {
+            var tbody = $('#loanTypeDataTable tbody');
+
+            // 🔥 Destroy DataTable FIRST
+            if ($.fn.DataTable.isDataTable('#loanTypeDataTable')) {
+                dataTable.destroy();
+                dataTable = null;
+            }
+
+            // 🔥 Remove loading / old rows
+            tbody.empty();
+
+            if (!data.length) {
+                showEmpty('No loan type records found');
+                return;
+            }
+
+            $('#recordCount').text(data.length + ' records');
+
+            data.forEach(function (item) {
+                tbody.append(`
+                    <tr>
+                        <td><strong>${escapeHtml(item.Code)}</strong></td>
+                        <td>${escapeHtml(item.Name)}</td>
+                        <td>${escapeHtml(item.Description)}</td>
+                        <td>${item.DisplayOrder}</td>
+                        <td>
+                            ${item.IsActive
+                        ? '<span class="badge bg-success">Active</span>'
+                        : '<span class="badge bg-secondary">Inactive</span>'}
+                        </td>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-info dropdown-toggle text-white"
+                                        data-bs-toggle="dropdown">
+                                    Actions
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <button class="dropdown-item btn-details text-info" data-id="${item.Id}">
+                                            Details
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button class="dropdown-item btn-edit text-primary" data-id="${item.Id}">
+                                            Edit
+                                        </button>
+                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <button class="dropdown-item btn-delete text-danger"
+                                                data-id="${item.Id}" disabled>
+                                            Delete
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                `);
+            });
+
+            initializeDataTable();
+        }
+
+        /* ===========================
+           DataTable Init
+        ============================ */
+        function initializeDataTable() {
+            dataTable = $('#loanTypeDataTable').DataTable({
+                searching: true,
+                responsive: true,
+                order: [[3, 'asc'], [0, 'asc']],
+                lengthMenu: [10, 25, 50, 75, 100],
+                pageLength: 10,
+                columnDefs: [{ orderable: false, targets: 5 }],
+                drawCallback: function () {
+                    $('.dropdown-toggle').dropdown();
+                }
+            });
+        }
+
+     
+        /* ===========================
+           Utils
+        ============================ */
+        function escapeHtml(text) {
+            if (!text) return '';
+            return text.toString().replace(/[&<>"']/g, m => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            })[m]);
+        }
+
+        /* ===========================
+           Events
+        ============================ */
+        $(document).ready(function () {
+            loadData();
+
+            $(document).on('click', '.btn-details', function () {
+                ShowModal($(this).data('id'), '_LoanTypeDetails', 'LoanType', 'details');
+            });
+
+            $(document).on('click', '.btn-edit', function () {
+                ShowModal($(this).data('id'), '_CreateEditLoanType', 'LoanType', 'edit');
+            });
+
+            $('#genericModal').on('hidden.bs.modal', function () {
+                loadData();
+            });
+        });
+    </script>
+}
