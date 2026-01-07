@@ -621,10 +621,10 @@
       <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="AppFiles\Reporting\Transactions\Reciepts\TellerStatement33.cs">
+    <Compile Include="AppFiles\Reporting\Transactions\Reciepts\TellerStatement_clone_notapproved.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>TellerStatement33.rpt</DependentUpon>
+      <DependentUpon>TellerStatement_clone_notapproved.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="AppFiles\Reporting\Transactions\Reciepts\TellerStatement11.cs">
@@ -9544,9 +9544,9 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>BranchCashConfig.fr.designer.cs</LastGenOutput>
     </Content>
-    <EmbeddedResource Include="AppFiles\Reporting\Transactions\Reciepts\TellerStatement33.rpt">
+    <EmbeddedResource Include="AppFiles\Reporting\Transactions\Reciepts\TellerStatement_clone_notapproved.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>TellerStatement33.cs</LastGenOutput>
+      <LastGenOutput>TellerStatement_clone_notapproved.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\Transactions\Reciepts\TellerStatement1.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
