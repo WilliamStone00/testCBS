@@ -59,11 +59,46 @@
                                 }
                                 else
                                 {
-                                    <button class="btn btn-sm btn-outline-info view-leaf-btn"
-                                            data-leaf-id="@leaf.Id">
-                                        <i class="mdi mdi-eye"></i> View
-                                    </button>
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-soft-primary dropdown-toggle d-flex align-items-center gap-1"
+                                                type="button"
+                                                data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                            <i class="mdi mdi-cog-outline"></i>
+                                            Actions
+                                        </button>
+
+                                        <ul class="dropdown-menu dropdown-menu-end shadow-sm animate__animated animate__fadeIn">
+                                            <li>
+                                                <a class="dropdown-item d-flex align-items-center"
+                                                   href="@Url.Action("CounterRequest", "CounterCheque", new { leafId = leaf.Id })"
+                                                   target="_blank">
+                                                    <i class="mdi mdi-file-document-outline text-primary me-2"></i>
+                                                    <span>Counter Request</span>
+                                                </a>
+                                            </li>
+
+                                            <li>
+                                                <a class="dropdown-item d-flex align-items-center"
+                                                   href="@Url.Action("Approval", "CounterCheque", new { leafId = leaf.Id })"
+                                                   target="_blank">
+                                                    <i class="mdi mdi-check-circle-outline text-success me-2"></i>
+                                                    <span>Approval</span>
+                                                </a>
+                                            </li>
+
+                                            <li>
+                                                <a class="dropdown-item d-flex align-items-center"
+                                                   href="@Url.Action("Payment", "CounterCheque", new { leafId = leaf.Id })"
+                                                   target="_blank">
+                                                    <i class="mdi mdi-cash text-warning me-2"></i>
+                                                    <span>Payment</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 }
+
                             </td>
                         </tr>
                     }
