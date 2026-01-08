@@ -302,14 +302,14 @@ namespace CBS.BusinessService.AccountingDayObject
                 else
                 {
                     // Failed operation
-                    GetExecutionMessages(model, false, null, MessagesResults.Failed,
+                    GetExecutionMessages(model, false, Option, MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                 }
             }
             catch (Exception ex)
             {
                 // Log and handle exception
-                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                GetExecutionMessages(null, false, Option, MessagesResults.Error, ExecutionProcessOption.TryCatch,
                     SystemMessageStatus.Failed.ToString(), ex);
             }
 

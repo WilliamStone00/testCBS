@@ -2,9 +2,11 @@ using CBS.BusinessService.Accounting_V2.BranchAccountService;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Base;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using ZXing;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting_V2
 {
@@ -46,6 +48,42 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2
             return  Json(new { success = true, results });
         }
        
+
+        public async Task<ActionResult> ClearGeneratedReports()
+        {
+            var username = _branchAccountService.GetUserFullName();
+
+
+            string basePath = Server.MapPath("~/TempReportFiles");
+
+            if (!Directory.Exists(basePath))
+                return Json(new { success = false, message = "Base folder not found" });
+
+            // Loop through TrialBalance, TrialBalance6, etc.
+            var trialBalanceFolders = Directory.GetDirectories(basePath, "TrialBalance*");
+
+            foreach (var trialFolder in trialBalanceFolders)
+            {
+                // SAFE even with spaces
+                string userFolderPath = Path.Combine(trialFolder, username);
+
+                if (!Directory.Exists(userFolderPath))
+                    continue;
+
+                // Option A: delete the whole user folder
+                Directory.Delete(userFolderPath, true);
+
+                
+            }
+
+            return Json(new
+            {
+                success = true,
+                message = $"Reports cleared for user '{username}'"
+            });
+
+
+        }
 
         private async Task LoadAccountsAsync()
         {

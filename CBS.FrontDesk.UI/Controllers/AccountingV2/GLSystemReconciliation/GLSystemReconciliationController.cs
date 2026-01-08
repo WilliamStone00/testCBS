@@ -72,7 +72,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.GLSystemReconciliation
 
 
         public async Task<JsonResult> LoadReconciliationData(ReconciliationQuery query)
-        {
+       {
             try
             {
                 var data = await _glSystemReconciliationService.GetReconciliationDataTableAsync(query);

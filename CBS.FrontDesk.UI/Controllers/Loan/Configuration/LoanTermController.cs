@@ -1,5 +1,8 @@
-﻿using CBS.BusinessService.Config.Localization;
+﻿using CBS.BusinessService.Config;
+using CBS.BusinessService.Config.Localization;
+using CBS.BusinessService.LoanP;
 using CBS.FrontDesk.Data.Entity.Config;
+using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Message;
 using System;
 using System.Collections.Generic;
@@ -8,12 +11,9 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
-using CBS.FrontDesk.Data.Entity.LoanConf;
-using CBS.BusinessService.Config;
-
 namespace CBS.FrontDesk.UI.Controllers.Configuration
 {
-    [CheckSessionTimeOutAttribute]
+   // [CheckSessionTimeOutAttribute]
 
     public class LoanTermController : BaseController
     {
@@ -33,7 +33,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
         [HttpPost]
         public async Task<ActionResult> Create(LoanTerm model)
         {
-            loader();
+           
             if (model.Id == null)
             {
                 if (ModelState.IsValid)
@@ -96,6 +96,14 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
             }
         }
 
+        [HttpGet]
+        public async Task<JsonResult> GetAll()
+        {
+            loader();
+            var data = await _LoanTermServices.GetLoanTerms();
+            return Json(new { success = true, data = data }, JsonRequestBehavior.AllowGet);
+        }
+
         public async Task<ActionResult> Delete(string KEY)
         {
             var data = await _LoanTermServices.Delete(KEY);
@@ -109,7 +117,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
                 .Cast<LoanTermKind >()
                 .Select(e => new SelectListItem
                 {
-                    Value = ((int)e).ToString(),
+                    Value = e.ToString(),
                     Text = e.ToString()
                 })
                 .ToList();

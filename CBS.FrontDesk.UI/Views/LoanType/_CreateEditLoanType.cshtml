@@ -1,0 +1,211 @@
+﻿@model CBS.FrontDesk.Data.Entity.LoanConf.LoanType
+@using Resources
+
+<div class="modal-body">
+    @using (Html.BeginForm(
+        "CreateOrUpdate",
+        "LoanType",
+        FormMethod.Post,
+        new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.Id)
+
+        <div class="mt-2">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card bg-light mb-2">
+                        <div class="card-body text-center">
+                            <h1 class="card-title text-primary">
+                                <i class="mdi mdi-bank me-2"></i>
+                                @(string.IsNullOrWhiteSpace(Model?.Id) ? "Create Loan Type" : "Update Loan Type")
+                            </h1>
+                            <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-2">
+
+                @if (string.IsNullOrWhiteSpace(Model?.Id))
+                {
+                    <div class="col-md-6">
+                        <div class="form-floating shadow-sm">
+                            @Html.DropDownListFor(m => m.Code, new SelectList(ViewBag.AvailableLoanTypeCodes, "Value", "Text"), "--- Code ---", new { @class = "form-control select2", @required = "required" })
+                            @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })
+                            <label>Code</label>
+                        </div>
+                    </div>
+
+                }
+                else
+                {
+                    <!-- Code -->
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            @Html.TextBoxFor(m => m.Code, new
+                            {
+                                @class = "form-control",
+                                placeholder = "Enter code",
+                                maxlength = "50",
+                                @required = "required",
+                                @readonly = "readonly"
+                            })
+                            <label>Code </label>
+                            @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                }
+
+                <!-- Name -->
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        @Html.TextBoxFor(m => m.Name, new
+                        {
+                            @class = "form-control",
+                            placeholder = "Enter name",
+                            maxlength = "200",
+                            @required = "required"
+                        })
+                        <label>Name </label>
+                        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <!-- Display Order -->
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        @Html.TextBoxFor(m => m.DisplayOrder, new
+                        {
+                            @class = "form-control",
+                            type = "number",
+                            min = "0",
+                            placeholder = "0",
+                            @required = "required"
+                        })
+                        <label>Display Order</label>
+                        @Html.ValidationMessageFor(m => m.DisplayOrder, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <!-- Status -->
+                <div class="col-md-6 mt-2">
+                    <div class="form-check form-switch">
+                        @Html.CheckBoxFor(m => m.IsActive, new { @class = "form-check-input", id = "isActive" })
+                        <label class="form-check-label fw-bold ms-2" for="isActive">
+                            Active
+                        </label>
+                    </div>
+                </div>
+
+
+
+                @if (Model.IsSSFexist)
+                {
+                    <div class="col-md-12 mt-2">
+                        <div class="form-check form-switch">
+                            @Html.CheckBoxFor(m => m.IsSSF, new { @class = "form-check-input", id = "IsSSF", @readonly = "readonly" })
+                            <label class="form-check-label fw-bold ms-2" for="IsSSF">
+                                Check if Loan type is SSF
+                            </label>
+                        </div>
+                    </div>
+
+                }
+                else
+                {
+                    <div class="col-md-12 mt-2">
+                        <div class="form-check form-switch">
+                            @Html.CheckBoxFor(m => m.IsSSF, new { @class = "form-check-input", id = "IsSSF" })
+                            <label class="form-check-label fw-bold ms-2" for="IsSSF">
+                                Check if Loan type is SSF
+                            </label>
+                        </div>
+                    </div>
+                }
+
+
+                <!-- Description -->
+                <div class="col-md-12">
+                    <div class="form-floating">
+                        @Html.TextAreaFor(m => m.Description, new
+                        {
+                            @class = "form-control",
+                            placeholder = "Enter description",
+                            rows = "3",
+                            maxlength = "500"
+                        })
+                        <label>Description</label>
+                        @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Actions -->
+            <div class="text-end mt-3">
+                @if (string.IsNullOrWhiteSpace(Model?.Id))
+                {
+                    <button type="submit" class="btn btn-primary me-2">
+                        <i class="mdi mdi-content-save me-1"></i> @GlobalShared.Save
+                    </button>
+                    <button type="reset" class="btn btn-outline-secondary">
+                        @GlobalShared.Reset
+                    </button>
+                }
+                else
+                {
+                    <button type="submit" class="btn btn-primary me-2">
+                        <i class="mdi mdi-refresh me-1"></i> @GlobalBank.Update
+                    </button>
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+                        Close
+                    </button>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+<script>
+    $(document).ready(function () {
+        // Initialize form validation
+        $('#loanTypeForm').validate({
+            rules: {
+                Code: {
+                    required: true,
+                    maxlength: 50
+                },
+                Name: {
+                    required: true,
+                    maxlength: 200
+                },
+                DisplayOrder: {
+                    required: true,
+                    min: 0
+                },
+                Description: {
+                    maxlength: 500
+                }
+            },
+            messages: {
+                Code: {
+                    required: "Code is required",
+                    maxlength: "Code cannot exceed 50 characters"
+                },
+                Name: {
+                    required: "Name is required",
+                    maxlength: "Name cannot exceed 200 characters"
+                },
+                DisplayOrder: {
+                    required: "Display order is required",
+                    min: "Display order must be 0 or greater"
+                },
+                Description: {
+                    maxlength: "Description cannot exceed 500 characters"
+                }
+            }
+        });
+    });
+</script>

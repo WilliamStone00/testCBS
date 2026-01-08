@@ -226,7 +226,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-7">
+                    <div class="col-md-5">
                         <div class="form-floating form-floating-outline">
                             @Html.DropDownListFor(m => m.CreateOrUpdate.PcmfLoanPurposeId,
                                 new SelectList(ViewBag.PcmfLoanPurposes, "Id", "NameEn", cmd.PcmfLoanPurposeId),
@@ -238,7 +238,7 @@
                         <div class="small text-muted">Filtered by term/section.</div>
                     </div>
 
-                    <div class="col-md-5">
+                    <div class="col-md-7">
                         <div class="form-floating form-floating-outline">
                             @Html.DropDownListFor(m => m.CreateOrUpdate.LoanTargetId,
                                 new SelectList(ViewBag.LoanTargets, "Id", "NameEn", cmd.LoanTargetId),
@@ -662,43 +662,57 @@
             });
     }
 
-    function loadTargets() {
-        var facility = getLoanFacility();
-        var termId = getVal("LoanTermId");
-        var purposeId = getVal("PcmfLoanPurposeId");
+function loadTargets() {
+    var facility = getLoanFacility();
+    var termId = getVal("LoanTermId");
+    var purposeId = getVal("PcmfLoanPurposeId");
 
-        if (!purposeId) {
+    if (!purposeId) {
+        resetSelect("LoanTargetId", "--- Select Target ---");
+        clearPreview();
+        return;
+    }
+
+    setSelectLoading("LoanTargetId", "Loading targets...");
+    clearPreview();
+
+    function esc(s) {
+        return (s == null ? "" : ("" + s))
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#39;");
+    }
+
+    $.get("@Url.Action("GetTargetsForSelection","LoanProduct")",
+        { purposeId: purposeId, termId: termId, loanFacility: facility })
+        .done(function (list) {
+            var $target = $("#LoanTargetId");
+            $target.prop("disabled", false);
+            $target.empty().append('<option value="">--- Select Target ---</option>');
+
+            (list || []).forEach(function (x) {
+                var id = gp(x, "id", "Id");
+
+                // ✅ Use Hint for display (contains full PCMF details)
+                var hint = gp(x, "hint", "Hint");
+                var text = gp(x, "text", "Text"); // fallback only
+                var label = (hint || text || "").trim();
+
+                $target.append(
+                    '<option value="' + esc(id || "") + '">' + esc(label) + '</option>'
+                );
+            });
+
+            rebindSelect2("LoanTargetId");
+            $target.val("").trigger("change.select2").trigger("change");
+        })
+        .fail(function () {
             resetSelect("LoanTargetId", "--- Select Target ---");
             clearPreview();
-            return;
-        }
-
-        setSelectLoading("LoanTargetId", "Loading targets...");
-        clearPreview();
-
-        $.get("@Url.Action("GetTargetsForSelection","LoanProduct")", { purposeId: purposeId, termId: termId, loanFacility: facility })
-            .done(function (list) {
-                var $target = $("#LoanTargetId");
-                $target.prop("disabled", false);
-                $target.empty().append('<option value="">--- Select Target ---</option>');
-
-                (list || []).forEach(function (x) {
-                    var id = gp(x, "id", "Id");
-                    var text = gp(x, "text", "Text");
-                    var population = gp(x, "population", "Population");
-                    var hint = gp(x, "hint", "Hint");
-                    var tail = population ? (" (" + population + ")") : (hint ? (" (" + hint + ")") : "");
-                    $target.append('<option value="' + (id || "") + '">' + (text || "") + tail + '</option>');
-                });
-
-                rebindSelect2("LoanTargetId");
-                $target.val("").trigger("change.select2").trigger("change");
-            })
-            .fail(function () {
-                resetSelect("LoanTargetId", "--- Select Target ---");
-                clearPreview();
-            });
-    }
+        });
+}
 
     function loadPreview() {
         var facility = getLoanFacility();

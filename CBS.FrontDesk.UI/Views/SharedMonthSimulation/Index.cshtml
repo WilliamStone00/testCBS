@@ -35,10 +35,14 @@
             <div class="card-body d-flex justify-content-end align-items-center">
 
                 <a href="/SharedMonthSimulation/List" target="_blank" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="ViewList">
-                    <i class="mdi mdi-view-list mdi-18px"></i> interest Calculation
+                    <i class="mdi mdi-view-list mdi-18px"></i> File Upload
                 </a>
 
             </div>
+        </div>
+
+        <div id="datalistingview">
+            @Html.Partial("_intrestgeneration")
         </div>
 
         @using (Html.BeginForm("LoadSimulationData", "SharedMonthSimulation", FormMethod.Post, new { id = "sharedMonthForm", onsubmit = "return AjaxPostSharedMonth(this);" }))
@@ -67,7 +71,7 @@
                             <div class="invalid-feedback">Please select a branch</div>
                         </div>
 
-                       
+
 
                         <div class="col-md-6  mb-1">
                             <label class="form-label fw-bold">Year</label>
@@ -86,7 +90,7 @@
                                 new { @class = "form-control", type = "number" })
                         </div>
                         <!-- Period -->
-                       
+
 
                         <div class="col-md-6  mb-1">
                             <label class="form-label fw-bold">Month</label>
@@ -97,7 +101,7 @@
                                 new { @class = "form-select select2", required = "required" })
                             <div class="invalid-feedback">Please select a Month</div>
                         </div>
-                        
+
                         <!-- Interest Distribution Type -->
                         <div class="col-md-6  mb-1">
                             <label class="form-label fw-bold">Interest Distribution Type</label>
@@ -105,7 +109,7 @@
                             "InterestDistributionType",
                             new SelectList(ViewBag.IntrestDistributionType, "Value", "Text"),
                             "--- Select Distribution Type ---",
-                            new { @class = "form-select select2", required = "required" })                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+                            new { @class = "form-select select2", required = "required" })
                             <div class="invalid-feedback">Please select distribution type</div>
                         </div>
 
@@ -117,25 +121,19 @@
                     </div>
                 </div>
 
-
-
-
-
                 <!-- Action Buttons -->
                 <div class="row">
                     <div class="col-md-12 text-end">
                         <button type="submit" class="btn btn-primary">
-                            <i class="mdi mdi-play-circle-outline me-2"></i> Generate
+                            <i class="mdi mdi-cog-play-outline me-2"></i> Simulate
                         </button>
+
                     </div>
                 </div>
             </div>
 
 
         }
-
-
-
 
 
         <!-- Account List Section -->
@@ -201,6 +199,75 @@
     @Scripts.Render("~/bundles/jqueryval")
 
     <script>
+
+
+
+
+
+        // ===============================
+        // Request History Table
+        // ===============================
+        var requestHistoryTable = null;
+
+        function initializeRequestHistoryTable(tableData) {
+
+            // Destroy existing table if exists
+            if ($.fn.DataTable.isDataTable('#requestHistoryTable')) {
+                requestHistoryTable.destroy();
+                $('#requestHistoryTable tbody').empty();
+            }
+
+            requestHistoryTable = $('#requestHistoryTable').DataTable({
+                data: tableData,
+                serverSide: false,
+                responsive: true,
+                paging: true,
+                searching: true,
+                ordering: true,
+                pageLength: 10,
+                lengthMenu: [10, 25, 50, 100],
+                order: [[0, 'asc']],
+
+                columns: [
+                    {
+                        data: 'startDate', // camelCase
+                        render: data => data ? new Date(data).toLocaleDateString() : ''
+                    },
+                    {
+                        data: 'endDate',
+                        render: data => data ? new Date(data).toLocaleDateString() : ''
+                    },
+                    {
+                        data: 'branchName'
+                    },
+                    {
+                        data: 'createdAt',
+                        render: data => data ? new Date(data).toLocaleString() : ''
+                    },
+                   
+                   
+                    {
+                        data: 'lastError'
+                    },
+                    {
+                        data: 'status'
+                    }
+                ],
+
+                language: {
+                    emptyTable: "No request history available",
+                    search: "Search:",
+                    lengthMenu: "Show _MENU_ entries",
+                    info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                    paginate: {
+                        next: "Next",
+                        previous: "Previous"
+                    }
+                }
+            });
+        }
+
+
         var sharedMonthTable = null;
 
         // ===============================
@@ -226,63 +293,63 @@
                 order: [[0, 'asc']],
 
                 columns: [
-            {
-                data: 'MemberReference',
-                name: 'MemberReference'
-            },
-            {
-                data: 'MemberName',
-                name: 'MemberName'
-            },
-            {
-                data: 'Gross',
-                name: 'Gross',
-                className: 'text-end',
-                render: data => Number(data).toFixed(2)
-            },
-            {
-                data: 'Tax',                     // ✅ NEW
-                name: 'Tax',
-                className: 'text-end',
-                render: data => Number(data || 0).toFixed(2)
-            },
-            {
-                data: 'Interest',
-                name: 'Interest',
-                className: 'text-end',
-                render: data => Number(data).toFixed(2)
-            },
-            {
-                data: 'Adjustment',
-                name: 'Adjustment',
-                orderable: false,
-                render: function (data, type, row) {
-                    return `
-                        <input type="number"
-                               class="form-control form-control-sm adjustment-input text-end"
-                               value="${Number(data || 0).toFixed(2)}"
-                               step="0.01"
-                               min="0"
-                               data-member-ref="${row.MemberReference}" />
-                    `;
-                }
-            },
-            {
-                data: null,
-                orderable: false,
-                searchable: false,
-                className: 'text-end',
-                render: function () {
-                    return `
-                        <button type="button"
-                                class="btn btn-sm btn-outline-danger remove-account">
-                            <i class="mdi mdi-delete-outline"></i>
-                        </button>
-                    `;
-                }
-            }
-        ],
- 
+                    {
+                        data: 'MemberReference',
+                        name: 'MemberReference'
+                    },
+                    {
+                        data: 'MemberName',
+                        name: 'MemberName'
+                    },
+                    {
+                        data: 'Gross',
+                        name: 'Gross',
+                        className: 'text-end',
+                        render: data => Number(data).toFixed(2)
+                    },
+                    {
+                        data: 'Tax',                     // ✅ NEW
+                        name: 'Tax',
+                        className: 'text-end',
+                        render: data => Number(data || 0).toFixed(2)
+                    },
+                    {
+                        data: 'Interest',
+                        name: 'Interest',
+                        className: 'text-end',
+                        render: data => Number(data).toFixed(2)
+                    },
+                    {
+                        data: 'Adjustment',
+                        name: 'Adjustment',
+                        orderable: false,
+                        render: function (data, type, row) {
+                            return `
+                            <input type="number"
+                                   class="form-control form-control-sm adjustment-input text-end"
+                                   value="${Number(data || 0).toFixed(2)}"
+                                   step="0.01"
+                                   min="0"
+                                   data-member-ref="${row.MemberReference}" />
+                        `;
+                        }
+                    },
+                    {
+                        data: null,
+                        orderable: false,
+                        searchable: false,
+                        className: 'text-end',
+                        render: function () {
+                            return `
+                            <button type="button"
+                                    class="btn btn-sm btn-outline-danger remove-account">
+                                <i class="mdi mdi-delete-outline"></i>
+                            </button>
+                        `;
+                        }
+                    }
+                ],
+
 
                 language: {
                     emptyTable: "No simulation data available",
@@ -296,6 +363,9 @@
                 }
             });
         }
+
+       
+
 
         // ===============================
         // AJAX Submit
@@ -427,36 +497,224 @@
 
         $(document).on('click', '#btnConfirmSaveSimulation', function () {
 
-    const payload = {
-        ...collectSimulationParameters(),
-        ...collectModalData(),
-        ShareMonthPsiReportLineDto: collectTableData()
-    };
+            const payload = {
+                ...collectSimulationParameters(),
+                ...collectModalData(),
+                ShareMonthPsiReportLineDto: collectTableData()
+            };
 
-    $.ajax({
-        url: '/SharedMonthSimulation/SaveSimulation',
-        type: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify(payload),
+            $.ajax({
+                url: '/SharedMonthSimulation/SaveSimulation',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(payload),
 
-        success: function (res) {
-            if (!res.success) {
-                appalert(res.message || 'Save failed', 3, 1);
-                return;
+                success: function (res) {
+                    if (!res.success) {
+                        appalert(res.message || 'Save failed', 3, 1);
+                        return;
+                    }
+
+                    $('#saveSimulationModal').modal('hide');
+                    appalert('✅ Simulation saved successfully', 1, 1);
+                },
+
+                error: function (err) {
+                    appalert(err.responseJSON?.message || 'Server error', 3, 1);
+                }
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+
+            const chkNetwork = document.getElementById('IsForNetwork');
+            const branchWrapper = document.getElementById('branchWrapper');
+
+            function toggleBranch() {
+                if (chkNetwork.checked) {
+                    branchWrapper.classList.add('d-none');
+                } else {
+                    branchWrapper.classList.remove('d-none');
+                }
             }
 
-            $('#saveSimulationModal').modal('hide');
-            appalert('✅ Simulation saved successfully', 1, 1);
-        },
+            // Initial state (important on edit pages)
+            toggleBranch();
 
-        error: function (err) {
-            appalert(err.responseJSON?.message || 'Server error', 3, 1);
+            // On change
+            chkNetwork.addEventListener('change', toggleBranch);
+        });
+
+
+
+        $(document).ready(function () {
+
+            // Bind the form submit
+            $("#GenerationForm").on("submit", function (e) {
+                e.preventDefault(); // Prevent normal submission
+                ConfirmAndSubmitForm(this);
+            });
+
+            // Optional: trigger via "Activate" button
+            $("#GenerationForm button[type='button']").on("click", function () {
+                ConfirmAndSubmitForm($("#GenerationForm")[0]);
+            });
+
+        });
+
+        function ConfirmAndSubmitForm(form) {
+            // Validate form first
+            if (!$(form).valid()) {
+                appalert("Please fill all required fields.", 2, 1);
+                return false;
+            }
+
+            // Ask for confirmation before submitting
+            alertify.confirm(
+                "Confirmation",
+                "Are you sure you want to proceed?",
+                function () { // OK callback
+                    AjaxPostGeneration(form);
+                },
+                function () { // Cancel callback
+                    appalert("🚫 Operation cancelled.", 2, 1);
+                }
+            ).set({ labels: { ok: 'Yes', cancel: 'No' } });
         }
-    });
-});
 
+        function AjaxPostGeneration(form) {
 
+            // Always hide details card before new processing
+            $('#simulationdetailsCard').hide();
+
+            var $btn = $(form).find("button[type='button']");
+            var $icon = $btn.find("i");
+            var $text = $btn.find(".btn-text");
+
+            // Optional: show loading state
+            $btn.prop('disabled', true);
+            $icon.removeClass('mdi-power').addClass('mdi-loading mdi-spin');
+            $text.text('Processing...');
+
+            // Build custom payload
+            var payload = {
+                BranchId: $('#BranchId1').val() || null,
+                StartDate: $('#StartDate').val() || null, // "2025-01-15"
+                EndDate: $('#EndDate').val() || null,
+                IsForNetwork: $('#IsForNetwork').is(":checked")
+            };
+
+            $.ajax({
+                url: $(form).attr("action"),
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(payload),
+                success: function (response) {
+                    if (response && response.success) {
+
+                        appalert(response.message || "✅ Operation successful.", 1, 1);
+
+                        // ✅ SHOW simulation details card
+                        $('#simulationdetailsCard').slideDown();
+
+                        $icon.removeClass('mdi-loading mdi-spin').addClass('mdi-check-circle');
+                        $text.text('Done');
+
+                    } else {
+
+                        appalert((response && response.message) || "❌ Operation failed.", 3, 1);
+
+                        $('#simulationdetailsCard').hide();
+
+                        $btn.prop('disabled', false);
+                        $icon.removeClass('mdi-loading mdi-spin').addClass('mdi-power');
+                        $text.text('Activate');
+                    }
+                },
+
+                error: function (xhr, status, error) {
+
+                    appalert("❌ An error occurred: " + error, 3, 1);
+
+                    // ✅ Ensure card stays hidden on error
+                    $('#simulationdetailsCard').hide();
+
+                    $btn.prop('disabled', false);
+                    $icon.removeClass('mdi-loading mdi-spin').addClass('mdi-power');
+                    $text.text('Activate');
+                }
+
+            });
+
+            return false;
+        }
+
+        $(document).on('click', '#proceedToRequestBtn', function () {
+
+            var payload = {
+                BranchId: $('#BranchId1').val() || null,
+                StartDate: $('#StartDate').val() || null,
+                EndDate: $('#EndDate').val() || null,
+                IsForNetwork: $('#IsForNetwork').is(":checked")
+            };
+
+            $.ajax({
+                url: '/SharedMonthSimulation/ProceedRequestData',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(payload),
+
+                beforeSend: function () {
+                    $('#proceedToRequestBtn')
+                        .prop('disabled', true)
+                        .html('<i class="mdi mdi-loading mdi-spin me-1"></i> Processing...');
+                },
+
+                success: function (response) {
+                    if (!response || !response.success) {
+                        appalert(response?.message || '❌ Proceed request failed', 3, 1);
+                        return;
+                    }
+
+                    appalert(response.message || '✅ Request sent successfully', 1, 1);
+
+                    console.log(response.data);
+
+                    // Extract Items array
+                    if (response.data && response.data.items && response.data.items.length > 0) {
+                        initializeRequestHistoryTable(response.data.items);
+                    }
+                },
+
+                error: function (err) {
+                    appalert(err.responseJSON?.message || 'Server error', 3, 1);
+                },
+
+                complete: function () {
+                    $('#proceedToRequestBtn')
+                        .prop('disabled', false)
+                        .html('<i class="mdi mdi-arrow-right"></i> Proceed to Request');
+                }
+            });
+        });
 
 
     </script>
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

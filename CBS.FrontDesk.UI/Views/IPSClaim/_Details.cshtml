@@ -165,7 +165,7 @@
                         <tr>
                             <th width="40%">Claimed Amount:</th>
                             <td class="fw-bold text-primary">
-                                @Model.ClaimedAmount?.ToString("N0") XAF
+                                @Model.ClaimedAmount.ToString() XAF
                             </td>
                         </tr>
 
@@ -673,518 +673,677 @@
 
 @section Scripts {
     <script>
-    // Global variables for document navigation
-    let currentDocumentSet = [];
-    let currentDocumentIndex = -1;
-    let currentDocumentId = '';
-    let currentDocumentType = '';
-    let currentDocumentTitle = '';
+// Global variables for document navigation
+let currentDocumentSet = [];
+let currentDocumentIndex = -1;
+let currentDocumentId = '';
+let currentDocumentType = '';
+let currentDocumentTitle = '';
 
-    // Show print modal
-    function showPrintModal() {
-        const printModal = new bootstrap.Modal(document.getElementById('printModal'));
-        printModal.show();
-        updatePrintPreview();
+// Show print modal
+function showPrintModal() {
+    const printModal = new bootstrap.Modal(document.getElementById('printModal'));
+    printModal.show();
+    updatePrintPreview();
+}
+
+// Update print preview
+function updatePrintPreview() {
+    const previewDiv = document.getElementById('printPreview');
+    const includeImages = document.getElementById('printDocumentImages').checked;
+
+    // Start building HTML with bank/branch header
+    let previewHTML = `
+        <div style="font-family: Arial, sans-serif; padding: 15px; font-size: 12px;">
+
+            <!-- BANK & BRANCH HEADER -->
+            <div style="text-align: center; margin-bottom: 10px;">
+                <div style="font-size: 18px; font-weight: bold; color: #2c3e50;">
+                    @Model.BankName
+                </div>
+
+                <div style="font-size: 12px; margin-top: 2px;">
+                    <strong>Bank Code:</strong> @Model.BankId
+                </div>
+
+                <div style="font-size: 12px; margin-top: 2px;">
+                    <strong>Branch:</strong> @Model.BranchName
+                    &nbsp; | &nbsp;
+                    <strong>Branch Code:</strong> @Model.BranchCode
+                </div>
+                | &nbsp;
+                    <strong>Generated:</strong> ${new Date().toLocaleString()}
+            </div>
+
+            <!-- CLAIM TITLE -->
+            <div style="text-align: center; border-top: 2px solid #333; padding-top: 8px; margin-top: 10px;">
+                <h2 style="margin: 5px 0; color: #2c3e50;">
+                    ${document.getElementById('printHeader').value || 'Insurance Claim Details'}
+                </h2>
+
+                <p style="margin: 4px 0; color: #7f8c8d;">
+                    <strong>Claim ID:</strong> @Model.Id
+                    &nbsp; | &nbsp;
+                    <strong>Member:</strong> @Model.MemberId
+                    &nbsp;
+                </p>
+            </div>
+    `;
+
+    // Member & Claim Details
+    if (document.getElementById('printMemberDetails').checked) {
+        previewHTML += `
+            <div style="margin-bottom: 20px; margin-top: 20px;">
+                <h3 style="color: #3498db; border-bottom: 1px solid #eee; padding-bottom: 5px; font-size: 14px;">Member & Claim Details</h3>
+                <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+                    <tr><td style="padding: 6px; border: 1px solid #ddd;"><strong>Member ID:</strong></td><td style="padding: 6px; border: 1px solid #ddd;">@Model.MemberId</td></tr>
+                    <tr><td style="padding: 6px; border: 1px solid #ddd;"><strong>Name:</strong></td><td style="padding: 6px; border: 1px solid #ddd;">@Model.MemberLastName @Model.MemberFirstName @Model.MemberMiddleName</td></tr>
+                    <tr><td style="padding: 6px; border: 1px solid #ddd;"><strong>Date of Birth:</strong></td><td style="padding: 6px; border: 1px solid #ddd;">@Model.DateOfBirth.ToString()</td></tr>
+                    <tr><td style="padding: 6px; border: 1px solid #ddd;"><strong>Claim Type:</strong></td><td style="padding: 6px; border: 1px solid #ddd;">@Model.ClaimType</td></tr>
+                    <tr><td style="padding: 6px; border: 1px solid #ddd;"><strong>Event Category:</strong></td><td style="padding: 6px; border: 1px solid #ddd;">@Model.EventCategory</td></tr>
+                    <tr><td style="padding: 6px; border: 1px solid #ddd;"><strong>Date of Event:</strong></td><td style="padding: 6px; border: 1px solid #ddd;">@Model.DateOfDeathOrDisability.ToString()</td></tr>
+                    <tr><td style="padding: 6px; border: 1px solid #ddd;"><strong>Cause:</strong></td><td style="padding: 6px; border: 1px solid #ddd;">@Model.Cause</td></tr>
+                    <tr><td style="padding: 6px; border: 1px solid #ddd;"><strong>Branch:</strong></td><td style="padding: 6px; border: 1px solid #ddd;">@Model.BranchName</td></tr>
+                </table>
+            </div>
+        `;
     }
 
-    // Update print preview
-    function updatePrintPreview() {
-        const previewDiv = document.getElementById('printPreview');
-        const includeImages = document.getElementById('printDocumentImages').checked;
-
-        let previewHTML = `
-            <div style="font-family: 'Arial', sans-serif; padding: 15px; font-size: 12px;">
-                <div style="text-align: center; border-bottom: 2px solid #333; padding-bottom: 10px; margin-bottom: 20px;">
-                    <h2 style="margin: 0; color: #2c3e50;">${document.getElementById('printHeader').value || 'Insurance Claim Details'}</h2>
-                    <p style="margin: 5px 0; color: #7f8c8d;">Claim ID: @Model.Id | Member: @Model.MemberId | Generated: ${new Date().toLocaleString()}</p>
-                </div>
-        `;
-
-        // Member & Claim Details
-        if (document.getElementById('printMemberDetails').checked) {
-            previewHTML += `
-                <div style="margin-bottom: 20px;">
-                    <h3 style="color: #3498db; border-bottom: 1px solid #eee; padding-bottom: 5px; font-size: 14px;">Member & Claim Details</h3>
-                    <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
-                        <tr><td style="padding: 6px; border: 1px solid #ddd;"><strong>Member ID:</strong></td><td style="padding: 6px; border: 1px solid #ddd;">@Model.MemberId</td></tr>
-                        <tr><td style="padding: 6px; border: 1px solid #ddd;"><strong>Name:</strong></td><td style="padding: 6px; border: 1px solid #ddd;">@Model.MemberLastName @Model.MemberFirstName @Model.MemberMiddleName</td></tr>
-                        <tr><td style="padding: 6px; border: 1px solid #ddd;"><strong>Date of Birth:</strong></td><td style="padding: 6px; border: 1px solid #ddd;">@Model.DateOfBirth.ToString()</td></tr>
-                        <tr><td style="padding: 6px; border: 1px solid #ddd;"><strong>Claim Type:</strong></td><td style="padding: 6px; border: 1px solid #ddd;">@Model.ClaimType</td></tr>
-                        <tr><td style="padding: 6px; border: 1px solid #ddd;"><strong>Event Category:</strong></td><td style="padding: 6px; border: 1px solid #ddd;">@Model.EventCategory</td></tr>
-                        <tr><td style="padding: 6px; border: 1px solid #ddd;"><strong>Date of Event:</strong></td><td style="padding: 6px; border: 1px solid #ddd;">@Model.DateOfDeathOrDisability.ToString()</td></tr>
-                        <tr><td style="padding: 6px; border: 1px solid #ddd;"><strong>Cause:</strong></td><td style="padding: 6px; border: 1px solid #ddd;">@Model.Cause</td></tr>
-                        <tr><td style="padding: 6px; border: 1px solid #ddd;"><strong>Branch:</strong></td><td style="padding: 6px; border: 1px solid #ddd;">@Model.BranchName</td></tr>
-                    </table>
-                </div>
-            `;
-        }
-
-        // Financial Details
-        if (document.getElementById('printFinancialDetails').checked) {
-            previewHTML += `
-                <div style="margin-bottom: 20px;">
-                    <h3 style="color: #3498db; border-bottom: 1px solid #eee; padding-bottom: 5px; font-size: 14px;">Financial Details</h3>
-                    <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
-                        <tr><td style="padding: 6px; border: 1px solid #ddd;"><strong>Claimed Amount:</strong></td><td style="padding: 6px; border: 1px solid #ddd;">@Model.ClaimedAmount?.ToString("N0") XAF</td></tr>
-                        <tr><td style="padding: 6px; border: 1px solid #ddd;"><strong>Approved Amount:</strong></td><td style="padding: 6px; border: 1px solid #ddd;">${'@(Model.ApprovedAmount.HasValue ? Model.ApprovedAmount.Value.ToString("N0") + " XAF" : "Not Approved")'}</td></tr>
-                        <tr><td style="padding: 6px; border: 1px solid #ddd;"><strong>Beneficiary:</strong></td><td style="padding: 6px; border: 1px solid #ddd;">@Model.BeneficiaryName</td></tr>
-                        <tr><td style="padding: 6px; border: 1px solid #ddd;"><strong>Contact:</strong></td><td style="padding: 6px; border: 1px solid #ddd;">@Model.BeneficiaryContact</td></tr>
-                    </table>
-                </div>
-            `;
-        }
-
-        // Status Timeline
-        if (document.getElementById('printTimeline').checked) {
-            previewHTML += `
-                <div style="margin-bottom: 20px;">
-                    <h3 style="color: #3498db; border-bottom: 1px solid #eee; padding-bottom: 5px; font-size: 14px;">Status Timeline</h3>
-                    <div style="padding-left: 10px; margin-top: 10px;">
-                        <p><strong>Current Status:</strong> @Model.Status</p>
-                        <p><strong>Registered:</strong> @Model.CreatedDate.ToString() by @Model.CreatedBy</p>
-                        <p><strong>Last Updated:</strong> @Model.ModifiedDate.ToString()</p>
-                    </div>
-                </div>
-            `;
-        }
-
-        // Document Summary
-        if (document.getElementById('printDocuments').checked) {
-            previewHTML += `
-                <div style="margin-bottom: 20px;">
-                    <h3 style="color: #3498db; border-bottom: 1px solid #eee; padding-bottom: 5px; font-size: 14px;">Document Summary</h3>
-                    <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
-            `;
-
-            // Group documents for summary
-            @{
-                // Fix: Ensure Documents is not null and grouping variable is unique/local scope
-                var printDocGroups = (Model.Documents)
-                                     .GroupBy(d => d.DocumentType);
-            }
-
-            @foreach (var group in printDocGroups)
-            {
-                <text>
-                previewHTML += `
-                    <tr>
-                        <td style="padding: 6px; border: 1px solid #ddd;"><strong>@GetDocumentTypeDisplayName(group.Key):</strong></td>
-                        <td style="padding: 6px; border: 1px solid #ddd;">${'@group.Count()' === '1' ? '1 file uploaded' : '@group.Count() files uploaded'}</td>
-                    </tr>
-                `;
-                </text>
-            }
-
-            previewHTML += `
-                    </table>
-                </div>
-            `;
-
-            // Add document images if requested
-            if (includeImages && @(Model.Documents?.Any() == true ? "true" : "false")) {
-                previewHTML += `
-                    <div style="margin-bottom: 20px;">
-                        <h3 style="color: #3498db; border-bottom: 1px solid #eee; padding-bottom: 5px; font-size: 14px;">Document Images</h3>
-                `;
-
-                @if(Model.Documents != null)
-                {
-                    foreach (var document in Model.Documents.Where(d => IsImageFile(d.UrlPath)).Take(5)) // Limit to 5 images for printing
-                    {
-                        <text>
-                        previewHTML += `
-                            <div style="margin-bottom: 15px; page-break-inside: avoid;">
-                                <h4 style="font-size: 12px; margin-bottom: 5px;">@GetDocumentTypeDisplayName(document.DocumentType): @document.DocumentName@document.Extension</h4>
-                                <div style="text-align: center;">
-                                    <img src="@document.UrlPath" alt="@document.DocumentName" style="max-width: 100%; max-height: 300px; border: 1px solid #ddd; padding: 5px;">
-                                </div>
-                            </div>
-                        `;
-                        </text>
-                    }
-                }
-
-                previewHTML += `</div>`;
-            }
-        }
-
+    // Financial Details
+    if (document.getElementById('printFinancialDetails').checked) {
         previewHTML += `
-                <div style="margin-top: 30px; padding-top: 10px; border-top: 1px solid #333; text-align: center; font-size: 10px; color: #7f8c8d;">
-                    <p>${document.getElementById('printFooter').value || 'Confidential - Internal Use Only'}</p>
-                    ${document.getElementById('printTimestamp').checked ? `<p>Printed on: ${new Date().toLocaleString()}</p>` : ''}
+            <div style="margin-bottom: 20px;">
+                <h3 style="color: #3498db; border-bottom: 1px solid #eee; padding-bottom: 5px; font-size: 14px;">Financial Details</h3>
+                <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+                    <tr><td style="padding: 6px; border: 1px solid #ddd;"><strong>Claimed Amount:</strong></td><td style="padding: 6px; border: 1px solid #ddd;">@Model.ClaimedAmount?.ToString("N0") XAF</td></tr>
+                    <tr><td style="padding: 6px; border: 1px solid #ddd;"><strong>Approved Amount:</strong></td><td style="padding: 6px; border: 1px solid #ddd;">${'@(Model.ApprovedAmount.HasValue ? Model.ApprovedAmount.Value.ToString() + " XAF" : "Not Approved")'}</td></tr>
+                    <tr><td style="padding: 6px; border: 1px solid #ddd;"><strong>Beneficiary:</strong></td><td style="padding: 6px; border: 1px solid #ddd;">@Model.BeneficiaryName</td></tr>
+                    <tr><td style="padding: 6px; border: 1px solid #ddd;"><strong>Contact:</strong></td><td style="padding: 6px; border: 1px solid #ddd;">@Model.BeneficiaryContact</td></tr>
+                </table>
+            </div>
+        `;
+    }
+
+    // Status Timeline
+    if (document.getElementById('printTimeline').checked) {
+        previewHTML += `
+            <div style="margin-bottom: 20px;">
+                <h3 style="color: #3498db; border-bottom: 1px solid #eee; padding-bottom: 5px; font-size: 14px;">Status Timeline</h3>
+                <div style="padding-left: 10px; margin-top: 10px;">
+                    <p><strong>Current Status:</strong> @Model.Status</p>
+                    <p><strong>Created On:</strong> @Model.CreatedDate.ToString() by @Model.CreatedBy</p>
+                    <p><strong>Printed By:</strong> @Model.PrintedBy.ToString()</p>
+                    <p><strong>Last Updated:</strong> @Model.ModifiedDate.ToString()</p>
                 </div>
             </div>
         `;
-
-        previewDiv.innerHTML = previewHTML;
     }
 
-    // View document with navigation support
-    function viewDocument(title, url, type, id, fileName) {
-        if (!url || url.trim() === '') {
-            appalert('No document available', 3, 1);
-            return;
-        }
-
-        // Get all documents of this type for navigation
-        currentDocumentSet = [];
-        currentDocumentType = type;
-        currentDocumentTitle = title;
-
-        // Collect all documents of this type
-        @if(Model.Documents != null)
-        {
-            foreach (var doc in Model.Documents)
-            {
-                <text>
-                if ('@doc.DocumentType.Replace("'", "\\'")' === type) {
-                    currentDocumentSet.push({
-                        id: '@doc.Id',
-                        url: '@doc.UrlPath',
-                        name: '@doc.DocumentName.Replace("'", "\\'")',
-                        extension: '@doc.Extension',
-                        type: '@doc.DocumentType.Replace("'", "\\'")'
-                    });
-                    if ('@doc.Id' === id) {
-                        currentDocumentIndex = currentDocumentSet.length - 1;
-                    }
-                }
-                </text>
-            }
-        }
-
-        if (currentDocumentSet.length === 0) {
-            // appalert might not be defined in this context, using standard alert as fallback if needed
-            if(typeof appalert === 'function') appalert('Document not found', 3, 1);
-            else alert('Document not found');
-            return;
-        }
-
-        // Load the selected document
-        loadDocument(currentDocumentIndex);
-
-        // Show/hide navigation buttons
-        const navDiv = document.getElementById('documentNavigation');
-        if (currentDocumentSet.length > 1) {
-            navDiv.classList.remove('d-none');
-            updateDocumentCounter();
-        } else {
-            navDiv.classList.add('d-none');
-        }
-
-        // Show modal
-        const modal = new bootstrap.Modal(document.getElementById('documentPreviewModal'));
-        modal.show();
-    }
-
-    // Load document into preview modal
-    function loadDocument(index) {
-        if (index < 0 || index >= currentDocumentSet.length) return;
-
-        const doc = currentDocumentSet[index];
-        currentDocumentIndex = index;
-        currentDocumentId = doc.id;
-
-        // Update modal title
-        document.getElementById('documentPreviewModalLabel').textContent =
-            `${currentDocumentTitle} (${index + 1} of ${currentDocumentSet.length})`;
-
-        // Update file info
-        document.getElementById('documentFileName').textContent = `File: ${doc.name}${doc.extension}`;
-
-        // Update full view link
-        const fullViewLink = document.getElementById('documentFullViewLink');
-        fullViewLink.href = doc.url;
-
-        // Update metadata
-        const metadataDiv = document.getElementById('documentMetadata');
-        // Fix: Use Safe Navigation or default
-        metadataDiv.innerHTML = `
-            <small class="d-block">Type: ${doc.type}</small>
+    // Document Summary
+    if (document.getElementById('printDocuments').checked) {
+        previewHTML += `
+            <div style="margin-bottom: 20px;">
+                <h3 style="color: #3498db; border-bottom: 1px solid #eee; padding-bottom: 5px; font-size: 14px;">Document Summary</h3>
+                <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
         `;
 
-        // Update counter
-        updateDocumentCounter();
-
-        // Check file type
-        const previewImage = document.getElementById('documentPreviewImage');
-        const fallbackDiv = document.getElementById('documentFallback');
-        const fallbackText = document.getElementById('documentFallbackText');
-
-        const isImage = isImageFile(doc.url);
-        const isPDF = doc.url.toLowerCase().endsWith('.pdf');
-
-        if (isImage) {
-            // Show image preview
-            previewImage.src = doc.url;
-            previewImage.classList.remove('d-none');
-            fallbackDiv.classList.add('d-none');
-
-            // Handle image load error
-            previewImage.onerror = function() {
-                previewImage.classList.add('d-none');
-                fallbackDiv.classList.remove('d-none');
-                fallbackText.textContent = 'Unable to load image preview';
-            };
-        } else if (isPDF) {
-            // For PDFs, show fallback with PDF icon
-            previewImage.classList.add('d-none');
-            fallbackDiv.classList.remove('d-none');
-            fallbackText.innerHTML = `
-                <i class="mdi mdi-file-pdf-outline display-1 text-danger"></i>
-                <p class="mt-2">PDF Document - ${doc.name}${doc.extension}</p>
-                <p class="small text-muted">Click "Open in New Tab" to view</p>
-            `;
-        } else {
-            // For other file types
-            previewImage.classList.add('d-none');
-            fallbackDiv.classList.remove('d-none');
-            fallbackText.innerHTML = `
-                <i class="mdi mdi-file-outline display-1 text-muted"></i>
-                <p class="mt-2">${doc.name}${doc.extension}</p>
-                <p class="small text-muted">Click "Open in New Tab" or "Download" to access this file</p>
-            `;
-        }
-    }
-
-    // Navigate between documents
-    function navigateDocument(direction) {
-        if (direction === 'prev' && currentDocumentIndex > 0) {
-            loadDocument(currentDocumentIndex - 1);
-        } else if (direction === 'next' && currentDocumentIndex < currentDocumentSet.length - 1) {
-            loadDocument(currentDocumentIndex + 1);
-        }
-    }
-
-    // Update document counter
-    function updateDocumentCounter() {
-        const counter = document.getElementById('documentCounter');
-        counter.textContent = `${currentDocumentIndex + 1} of ${currentDocumentSet.length}`;
-    }
-
-    // Download current document
-    function downloadCurrentDocument() {
-        if (currentDocumentIndex < 0 || currentDocumentIndex >= currentDocumentSet.length) return;
-
-        const doc = currentDocumentSet[currentDocumentIndex];
-        const fileName = `${currentDocumentTitle.replace(/[^a-z0-9]/gi, '_')}_${doc.name}_@Model.Id${doc.extension}`;
-
-        downloadFile(doc.url, fileName);
-    }
-
-    // Download single document
-    function downloadSingleDocument(title, url, fileName, extension) {
-        if (!url || url.trim() === '') {
-            if(typeof appalert === 'function') appalert('No document available for download', 3, 1);
-            return;
+        // Group documents for summary
+        @{
+            var printDocGroups = (Model.Documents)
+                                 .GroupBy(d => d.DocumentType);
         }
 
-        const safeTitle = title.replace(/[^a-z0-9]/gi, '_');
-        const safeFileName = fileName.replace(/[^a-z0-9.]/gi, '_');
-        const downloadName = `${safeTitle}_${safeFileName}_@Model.Id${extension || ''}`;
-
-        downloadFile(url, downloadName);
-    }
-
-    // Download all documents by type
-    function downloadAllDocumentsByType(type, title) {
-        const documents = [];
-
-        // Collect all documents of this type
-        @if(Model.Documents != null)
+        @foreach (var group in printDocGroups)
         {
-            foreach (var doc in Model.Documents)
+            <text>
+            previewHTML += `
+                <tr>
+                    <td style="padding: 6px; border: 1px solid #ddd;"><strong>@GetDocumentTypeDisplayName(group.Key):</strong></td>
+                    <td style="padding: 6px; border: 1px solid #ddd;">${'@group.Count()' === '1' ? '1 file uploaded' : '@group.Count() files uploaded'}</td>
+                </tr>
+            `;
+            </text>
+        }
+
+        previewHTML += `
+                </table>
+            </div>
+        `;
+
+        // Add document images if requested
+        if (includeImages && @(Model.Documents?.Any() == true ? "true" : "false")) {
+            previewHTML += `
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #3498db; border-bottom: 1px solid #eee; padding-bottom: 5px; font-size: 14px;">Document Images</h3>
+            `;
+
+            @if(Model.Documents != null)
             {
-                <text>
-                if ('@doc.DocumentType.Replace("'", "\\'")' === type) {
-                    documents.push({
-                        url: '@doc.UrlPath',
-                        name: '@doc.DocumentName.Replace("'", "\\'")',
-                        extension: '@doc.Extension'
-                    });
+                foreach (var document in Model.Documents.Where(d => IsImageFile(d.UrlPath)).Take(5)) // Limit to 5 images for printing
+                {
+                    <text>
+                    previewHTML += `
+                        <div style="margin-bottom: 15px; page-break-inside: avoid;">
+                            <h4 style="font-size: 12px; margin-bottom: 5px;">@GetDocumentTypeDisplayName(document.DocumentType): @document.DocumentName@document.Extension</h4>
+                            <div style="text-align: center;">
+                                <img src="@document.UrlPath" alt="@document.DocumentName" style="max-width: 100%; max-height: 300px; border: 1px solid #ddd; padding: 5px;">
+                            </div>
+                        </div>
+                    `;
+                    </text>
                 }
-                </text>
             }
+
+            previewHTML += `</div>`;
         }
-
-        if (documents.length === 0) {
-            if(typeof appalert === 'function') appalert('No documents available for download', 3, 1);
-            return;
-        }
-
-        if(typeof appalert === 'function') appalert(`Starting download of ${documents.length} document(s)...`, 2, 1);
-
-        // Download each document with a delay to avoid browser blocking
-        documents.forEach((doc, index) => {
-            setTimeout(() => {
-                const fileName = `${title.replace(/[^a-z0-9]/gi, '_')}_${doc.name}_${index + 1}_@Model.Id${doc.extension}`;
-                downloadFile(doc.url, fileName);
-
-                if (index === documents.length - 1) {
-                    setTimeout(() => {
-                        if(typeof appalert === 'function') appalert(`Downloaded ${documents.length} document(s) successfully`, 1, 1);
-                    }, 1000);
-                }
-            }, index * 1000);
-        });
     }
 
-    // Helper function to download a file
-    function downloadFile(url, fileName) {
-        const downloadLink = document.createElement('a');
-        downloadLink.href = url;
-        downloadLink.download = fileName;
-        downloadLink.style.display = 'none';
-        document.body.appendChild(downloadLink);
-        downloadLink.click();
-        document.body.removeChild(downloadLink);
-    }
+    // SIGNATURE PREVIEW IN MODAL
+    previewHTML += `
+        <div style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #333;">
+            <div style="text-align: center; margin-bottom: 20px;">
+                <h3 style="border-bottom: 1px solid #ccc; padding-bottom: 10px; font-size: 14px; color: #2c3e50;">AUTHORIZATION SIGNATURES</h3>
+            </div>
 
-    // Check if file is an image
-    function isImageFile(url) {
-        if (!url) return false;
-        const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp', '.svg'];
-        const lowerUrl = url.toLowerCase();
-        return imageExtensions.some(ext => lowerUrl.endsWith(ext));
-    }
+            <div style="display: flex; justify-content: space-between; margin-top: 30px;">
+                <div style="flex: 1; text-align: center; margin: 0 10px; min-height: 150px;">
+                    <div style="height: 70px; border-bottom: 1px solid #000; margin-bottom: 10px;"></div>
+                    <p style="margin: 5px 0;"><strong>Prepared By</strong></p>
+                    <p style="font-size: 11px; margin: 3px 0;">Name: _________________________</p>
+                    <p style="font-size: 11px; margin: 3px 0;">Signature: ___________________</p>
+                    <p style="font-size: 11px; margin: 3px 0;">Date: ________________________</p>
+                </div>
 
-    // Generate and print final document
-    function generatePrint() {
-        const printWindow = window.open('', '_blank');
-        const orientation = document.getElementById('printOrientation').value;
+                <div style="flex: 1; text-align: center; margin: 0 10px; min-height: 150px;">
+                    <div style="height: 70px; border-bottom: 1px solid #000; margin-bottom: 10px;"></div>
+                    <p style="margin: 5px 0;"><strong>Reviewed By</strong></p>
+                    <p style="font-size: 11px; margin: 3px 0;">Name: _________________________</p>
+                    <p style="font-size: 11px; margin: 3px 0;">Signature: ___________________</p>
+                    <p style="font-size: 11px; margin: 3px 0;">Date: ________________________</p>
+                </div>
 
-        // Get preview content
-        const previewContent = document.getElementById('printPreview').innerHTML;
+                <div style="flex: 1; text-align: center; margin: 0 10px; min-height: 150px;">
+                    <div style="height: 70px; border-bottom: 1px solid #000; margin-bottom: 10px;"></div>
+                    <p style="margin: 5px 0;"><strong>Approved By</strong></p>
+                    <p style="font-size: 11px; margin: 3px 0;">Name: _________________________</p>
+                    <p style="font-size: 11px; margin: 3px 0;">Signature: ___________________</p>
+                    <p style="font-size: 11px; margin: 3px 0;">Date: ________________________</p>
+                </div>
+            </div>
+        </div>
+    `;
 
-        // Create the print document
-        const printDoc = `
+    // Footer
+    previewHTML += `
+            <div style="margin-top: 30px; padding-top: 10px; border-top: 1px solid #333; text-align: center; font-size: 10px; color: #7f8c8d;">
+                <p>${document.getElementById('printFooter').value || 'Confidential - Internal Use Only'}</p>
+                ${document.getElementById('printTimestamp').checked ? `<p>Printed on: ${new Date().toLocaleString()}</p>` : ''}
+            </div>
+        </div>
+    `;
+
+    previewDiv.innerHTML = previewHTML;
+}
+
+// Generate and print final document - THIS FUNCTION WAS MISSING
+function generatePrint() {
+    const printWindow = window.open('', '_blank');
+    const orientation = document.getElementById('printOrientation').value;
+
+    // Get preview content
+    const previewContent = document.getElementById('printPreview').innerHTML;
+
+    // Create the print document
+    const printDoc = `
 <!DOCTYPE html>
 <html>
 <head>
-<title>Claim Details - @Model.Id</title>
-<style>
-    body {
-        font-family: 'Arial', sans-serif;
-        font-size: 12pt;
-        line-height: 1.5;
-        color: #333;
-        margin: 0;
-        padding: 20px;
-    }
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 15px;
-    }
-    th, td {
-        padding: 8px;
-        border: 1px solid #ddd;
-        text-align: left;
-    }
-    th {
-        background-color: #f8f9fa;
-        font-weight: 600;
-    }
-    .print-image {
-        max-width: 100%;
-        max-height: 300px;
-        border: 1px solid #ddd;
-        padding: 5px;
-        margin: 10px auto;
-        display: block;
-    }
-    .signature-area {
-        margin-top: 50px;
-    }
-    .signature-line {
-        border-top: 1px solid #333;
-        width: 300px;
-        margin-top: 40px;
-        padding-top: 5px;
-        text-align: center;
-        display: inline-block;
-    }
-    .no-print {
-        display: block;
-    }
-
-    @@media print {
-        @@page {
-            size: A4 ${orientation};
-            margin: 15mm;
-        }
+    <title>Claim Details - @Model.Id</title>
+    <style>
         body {
-            font-size: 11pt;
+            font-family: 'Arial', sans-serif;
+            font-size: 12pt;
+            line-height: 1.5;
+            color: #333;
+            margin: 0;
+            padding: 20px;
         }
-        .no-print {
-            display: none !important;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
         }
+        th, td {
+            padding: 8px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+        .print-image {
+            max-width: 100%;
+            max-height: 300px;
+            border: 1px solid #ddd;
+            padding: 5px;
+            margin: 10px auto;
+            display: block;
+        }
+
+        /* Signature styles */
+        .signature-area {
+            margin-top: 60px;
+            padding-top: 20px;
+            border-top: 2px solid #333;
+        }
+        .signature-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+        .signature-box {
+            flex: 1;
+            text-align: center;
+            margin: 0 10px;
+            min-height: 180px;
+        }
+        .signature-line {
+            height: 80px;
+            border-bottom: 1px solid #000;
+            margin-bottom: 15px;
+        }
+
+        /* Print controls - hidden when printing */
+        .print-controls {
+            display: block;
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+
+        .print-btn {
+            padding: 12px 24px;
+            font-size: 16px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+            transition: background 0.3s;
+        }
+        .print-btn:hover {
+            background: #0056b3;
+        }
+
+        .close-btn {
+            padding: 12px 24px;
+            font-size: 16px;
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .close-btn:hover {
+            background: #545b62;
+        }
+
+        /* Page break control */
         .page-break {
             page-break-before: always;
         }
         .avoid-break {
             page-break-inside: avoid;
         }
-    }
-</style>
+
+        /* Print-specific styles */
+        @@media print {
+            @@page {
+                size: A4 ${orientation};
+                margin: 15mm;
+            }
+
+            body {
+                font-size: 11pt;
+                padding: 0;
+            }
+
+            /* Hide print controls when printing */
+            .print-controls {
+                display: none !important;
+            }
+
+            /* Ensure everything prints properly */
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            /* Prevent page breaks inside important sections */
+            .signature-container,
+            .avoid-break {
+                page-break-inside: avoid !important;
+            }
+        }
+
+        /* Screen styles */
+        @@media screen {
+            .signature-area {
+                display: block;
+            }
+        }
+    </style>
 </head>
 <body>
-${previewContent}
+    ${previewContent}
 
-<div class="signature-area no-print">
-    <div style="text-align: center; margin-top: 50px;">
-        <div style="display: flex; justify-content: space-around;">
-            <div class="signature-line">
-                <p>Prepared By</p>
-                <p>_________________________</p>
-                <p>Name & Signature</p>
-                <p>Date: ________________</p>
-            </div>
-            <div class="signature-line">
-                <p>Reviewed By</p>
-                <p>_________________________</p>
-                <p>Name & Signature</p>
-                <p>Date: ________________</p>
-            </div>
-            <div class="signature-line">
-                <p>Approved By</p>
-                <p>_________________________</p>
-                <p>Name & Signature</p>
-                <p>Date: ________________</p>
-            </div>
+    <!-- PRINT CONTROLS (Hidden during actual print) -->
+    <div class="print-controls">
+        <h3>Print Controls</h3>
+        <p>Use the buttons below to print or close this window.</p>
+        <button onclick="window.print()" class="print-btn">
+            <i class="mdi mdi-printer"></i> Print Now
+        </button>
+        <button onclick="window.close()" class="close-btn">
+            <i class="mdi mdi-close"></i> Close Window
+        </button>
+
+        <div style="margin-top: 20px; font-size: 12px; color: #666;">
+            <p><strong>Note:</strong> The signature area is included in the print preview above.</p>
+            <p>For best results, use "Save as PDF" in your browser's print dialog.</p>
         </div>
     </div>
-</div>
 
-<div class="no-print" style="text-align: center; margin-top: 50px;">
-    <button onclick="window.print()" style="padding: 10px 20px; font-size: 14px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">
-        Print Now
-    </button>
-    <button onclick="window.close()" style="padding: 10px 20px; font-size: 14px; background: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer; margin-left: 10px;">
-        Close
-    </button>
-</div>
+    <script>
+        // Auto-print after a short delay
+        setTimeout(function() {
+            window.print();
+        }, 500);
 
-<script>
-    setTimeout(function() {
-        window.print();
-    }, 500);
-<\/script>
+        // Handle after print event
+        window.onafterprint = function() {
+            // Optional: Add confirmation before closing
+            // if (confirm('Close print window?')) {
+            //     window.close();
+            // }
+        };
+    <\/script>
 </body>
 </html>`;
 
-        printWindow.document.write(printDoc);
-        printWindow.document.close();
-        $('#printModal').modal('hide');
+    printWindow.document.write(printDoc);
+    printWindow.document.close();
+
+    // Close the print modal
+    $('#printModal').modal('hide');
+}
+
+// View document with navigation support
+function viewDocument(title, url, type, id, fileName) {
+    if (!url || url.trim() === '') {
+        appalert('No document available', 3, 1);
+        return;
     }
 
-    // Keep existing functions...
-    function showApproveModal(claimId) {
-        $('#approveClaimId').val(claimId);
-        $('#approveModal').modal('show');
+    // Get all documents of this type for navigation
+    currentDocumentSet = [];
+    currentDocumentType = type;
+    currentDocumentTitle = title;
+
+    // Collect all documents of this type
+    @if(Model.Documents != null)
+    {
+        foreach (var doc in Model.Documents)
+        {
+            <text>
+            if ('@doc.DocumentType.Replace("'", "\\'")' === type) {
+                currentDocumentSet.push({
+                    id: '@doc.Id',
+                    url: '@doc.UrlPath',
+                    name: '@doc.DocumentName.Replace("'", "\\'")',
+                    extension: '@doc.Extension',
+                    type: '@doc.DocumentType.Replace("'", "\\'")'
+                });
+                if ('@doc.Id' === id) {
+                    currentDocumentIndex = currentDocumentSet.length - 1;
+                }
+            }
+            </text>
+        }
     }
 
-    // ... (other existing functions remain the same)
+    if (currentDocumentSet.length === 0) {
+        appalert('Document not found', 3, 1);
+        return;
+    }
+
+    // Load the selected document
+    loadDocument(currentDocumentIndex);
+
+    // Show/hide navigation buttons
+    const navDiv = document.getElementById('documentNavigation');
+    if (currentDocumentSet.length > 1) {
+        navDiv.classList.remove('d-none');
+        updateDocumentCounter();
+    } else {
+        navDiv.classList.add('d-none');
+    }
+
+    // Show modal
+    const modal = new bootstrap.Modal(document.getElementById('documentPreviewModal'));
+    modal.show();
+}
+
+// Load document into preview modal
+function loadDocument(index) {
+    if (index < 0 || index >= currentDocumentSet.length) return;
+
+    const doc = currentDocumentSet[index];
+    currentDocumentIndex = index;
+    currentDocumentId = doc.id;
+
+    // Update modal title
+    document.getElementById('documentPreviewModalLabel').textContent =
+        `${currentDocumentTitle} (${index + 1} of ${currentDocumentSet.length})`;
+
+    // Update file info
+    document.getElementById('documentFileName').textContent = `File: ${doc.name}${doc.extension}`;
+
+    // Update full view link
+    const fullViewLink = document.getElementById('documentFullViewLink');
+    fullViewLink.href = doc.url;
+
+    // Update metadata
+    const metadataDiv = document.getElementById('documentMetadata');
+    metadataDiv.innerHTML = `
+        <small class="d-block">Type: ${doc.type}</small>
+    `;
+
+    // Update counter
+    updateDocumentCounter();
+
+    // Check file type
+    const previewImage = document.getElementById('documentPreviewImage');
+    const fallbackDiv = document.getElementById('documentFallback');
+    const fallbackText = document.getElementById('documentFallbackText');
+
+    const isImage = isImageFile(doc.url);
+    const isPDF = doc.url.toLowerCase().endsWith('.pdf');
+
+    if (isImage) {
+        // Show image preview
+        previewImage.src = doc.url;
+        previewImage.classList.remove('d-none');
+        fallbackDiv.classList.add('d-none');
+
+        // Handle image load error
+        previewImage.onerror = function() {
+            previewImage.classList.add('d-none');
+            fallbackDiv.classList.remove('d-none');
+            fallbackText.textContent = 'Unable to load image preview';
+        };
+    } else if (isPDF) {
+        // For PDFs, show fallback with PDF icon
+        previewImage.classList.add('d-none');
+        fallbackDiv.classList.remove('d-none');
+        fallbackText.innerHTML = `
+            <i class="mdi mdi-file-pdf-outline display-1 text-danger"></i>
+            <p class="mt-2">PDF Document - ${doc.name}${doc.extension}</p>
+            <p class="small text-muted">Click "Open in New Tab" to view</p>
+        `;
+    } else {
+        // For other file types
+        previewImage.classList.add('d-none');
+        fallbackDiv.classList.remove('d-none');
+        fallbackText.innerHTML = `
+            <i class="mdi mdi-file-outline display-1 text-muted"></i>
+            <p class="mt-2">${doc.name}${doc.extension}</p>
+            <p class="small text-muted">Click "Open in New Tab" or "Download" to access this file</p>
+        `;
+    }
+}
+
+// Navigate between documents
+function navigateDocument(direction) {
+    if (direction === 'prev' && currentDocumentIndex > 0) {
+        loadDocument(currentDocumentIndex - 1);
+    } else if (direction === 'next' && currentDocumentIndex < currentDocumentSet.length - 1) {
+        loadDocument(currentDocumentIndex + 1);
+    }
+}
+
+// Update document counter
+function updateDocumentCounter() {
+    const counter = document.getElementById('documentCounter');
+    counter.textContent = `${currentDocumentIndex + 1} of ${currentDocumentSet.length}`;
+}
+
+// Download current document
+function downloadCurrentDocument() {
+    if (currentDocumentIndex < 0 || currentDocumentIndex >= currentDocumentSet.length) return;
+
+    const doc = currentDocumentSet[currentDocumentIndex];
+    const fileName = `${currentDocumentTitle.replace(/[^a-z0-9]/gi, '_')}_${doc.name}_@Model.Id${doc.extension}`;
+
+    downloadFile(doc.url, fileName);
+}
+
+// Download single document
+function downloadSingleDocument(title, url, fileName, extension) {
+    if (!url || url.trim() === '') {
+        appalert('No document available for download', 3, 1);
+        return;
+    }
+
+    const safeTitle = title.replace(/[^a-z0-9]/gi, '_');
+    const safeFileName = fileName.replace(/[^a-z0-9.]/gi, '_');
+    const downloadName = `${safeTitle}_${safeFileName}_@Model.Id${extension || ''}`;
+
+    downloadFile(url, downloadName);
+}
+
+// Download all documents by type
+function downloadAllDocumentsByType(type, title) {
+    const documents = [];
+
+    // Collect all documents of this type
+    @if(Model.Documents != null)
+    {
+        foreach (var doc in Model.Documents)
+        {
+            <text>
+            if ('@doc.DocumentType.Replace("'", "\\'")' === type) {
+                documents.push({
+                    url: '@doc.UrlPath',
+                    name: '@doc.DocumentName.Replace("'", "\\'")',
+                    extension: '@doc.Extension'
+                });
+            }
+            </text>
+        }
+    }
+
+    if (documents.length === 0) {
+        appalert('No documents available for download', 3, 1);
+        return;
+    }
+
+    appalert(`Starting download of ${documents.length} document(s)...`, 2, 1);
+
+    // Download each document with a delay to avoid browser blocking
+    documents.forEach((doc, index) => {
+        setTimeout(() => {
+            const fileName = `${title.replace(/[^a-z0-9]/gi, '_')}_${doc.name}_${index + 1}_@Model.Id${doc.extension}`;
+            downloadFile(doc.url, fileName);
+
+            if (index === documents.length - 1) {
+                setTimeout(() => {
+                    appalert(`Downloaded ${documents.length} document(s) successfully`, 1, 1);
+                }, 1000);
+            }
+        }, index * 1000);
+    });
+}
+
+// Helper function to download a file
+function downloadFile(url, fileName) {
+    const downloadLink = document.createElement('a');
+    downloadLink.href = url;
+    downloadLink.download = fileName;
+    downloadLink.style.display = 'none';
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+}
+
+// Check if file is an image
+function isImageFile(url) {
+    if (!url) return false;
+    const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp', '.svg'];
+    const lowerUrl = url.toLowerCase();
+    return imageExtensions.some(ext => lowerUrl.endsWith(ext));
+}
+
+// Keep existing functions...
+function showApproveModal(claimId) {
+    $('#approveClaimId').val(claimId);
+    $('#approveModal').modal('show');
+}
+
+// Event listeners for print options
+document.addEventListener('DOMContentLoaded', function() {
+    // Add event listeners to print options
+    const printOptions = [
+        'printMemberDetails',
+        'printFinancialDetails',
+        'printTimeline',
+        'printDocuments',
+        'printDocumentImages',
+        'printHeader',
+        'printFooter',
+        'printTimestamp',
+        'printOrientation'
+    ];
+
+    printOptions.forEach(function(optionId) {
+        const element = document.getElementById(optionId);
+        if (element) {
+            if (element.type === 'checkbox' || element.type === 'text') {
+                element.addEventListener('change', updatePrintPreview);
+            }
+        }
+    });
+
+    // Initialize print preview if modal is open
+    if (document.getElementById('printModal').classList.contains('show')) {
+        updatePrintPreview();
+    }
+});
     </script>
 }
 

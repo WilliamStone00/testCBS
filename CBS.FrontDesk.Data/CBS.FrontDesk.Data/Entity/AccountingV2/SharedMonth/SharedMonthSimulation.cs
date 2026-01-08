@@ -19,9 +19,6 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.SharedMonth
         public string EndPeriodKey { get; set; }
         public string ProductId { get; set; }
 
-
-
-
     }
 
     public class ShareMonthPsiReportLineDto
@@ -84,6 +81,61 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.SharedMonth
         public bool IsForNetwork { get; set; }
     }
 
+    public class SimulationFilterRequest
+    {
+        public string Name { get; set; } = null;
+        public string SimulatedByUserId { get; set; } = null;
+        public string BranchId { get; set; } = null;
 
+        public DateTime? StartUtc { get; set; }
+        public DateTime? EndUtc { get; set; }
 
+        public int PageNumber { get; set; } = 0;
+        public int PageSize { get; set; } = 0;
+
+        public string SortBy { get; set; }
+        public string SortDir { get; set; } = "asc";
+    }
+
+    public class JobRequestItem
+    {
+        public string Id { get; set; }
+
+        public DateTime? StartDate { get; set; }
+
+        public DateTime? EndDate { get; set; }
+
+        public string Code { get; set; }
+
+        public bool IsForNetwork { get; set; }
+
+        public string BranchName { get; set; }
+
+        public string Status { get; set; }
+
+        public DateTime? CreatedAt { get; set; }
+
+        public int TryCount { get; set; }
+
+        public string LastError { get; set; }
+
+        public DateTime? LastTriedAt { get; set; }
+    }
+
+    public class JobRequestListResponse
+    {
+        public List<JobRequestItem> Items { get; set; } 
+    }
+
+    public class SharedMonthQuery
+    {
+        public DataTableOptions Options { get; set; }
+        public SharedMonthQuery() { Options = new DataTableOptions(); }
+
+        public string BranchId { get; set; } = null;
+        public string AccountingYearId { get; set; }
+        public string ProductId { get; set; }
+        public bool IsEnabled { get; set; }
+
+    }
 }

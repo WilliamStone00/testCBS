@@ -38,7 +38,7 @@ namespace CBS.BusinessService.Accounting_V2.IPS
             string baseUrl = ConfigurationManager.AppSettings["AccountingV2BaseUrl"];
             if (string.IsNullOrEmpty(baseUrl))
             {
-                throw new ConfigurationErrorsException("The 'AccountingBaseUrl' appSetting is missing or empty in Web.config.");
+                throw new ConfigurationErrorsException("The 'AccountingV2BaseUrl' appSetting is missing or empty in Web.config.");
             }
             _apiHelper = new ApiCallerHelper(baseUrl);
             //change the base url to the actual base url
@@ -108,10 +108,27 @@ namespace CBS.BusinessService.Accounting_V2.IPS
         public async Task<IPSClaim> GetClaimByIdAsync(string claimId)
         {
             try
-            {
-                string url = string.Format(APICallHelper.GetIPSClaimById, claimId);
-                var response = await _apiHelper.GetAsync<ResponseObject<IPSClaim>>(url);
-                return response?.ApiResponseData?.Data;
+            {                
+                    string url = string.Format(APICallHelper.GetIPSClaimById, claimId);
+
+                    var response = await _apiHelper
+                        .GetAsync<ResponseObject<IPSClaim>>(url);
+
+                    var claim = response?.ApiResponseData?.Data;
+
+                    if (claim == null)
+                        return null;
+
+                    // Enrich claim with context data
+                    claim.BankId = GetBankID();
+                    claim.BankName = GetBankName();
+                    claim.BranchCode = GetBranchCode();
+                    claim.BranchName = GetBranchName();
+                    claim.BranchId = GetBranchID();
+                    claim.PrintedBy = GetUserFullName();
+
+                    return claim;
+                             
             }
             catch (Exception)
             {
@@ -218,7 +235,7 @@ namespace CBS.BusinessService.Accounting_V2.IPS
         {
             try
             {
-             
+
                 string url = string.Format(APICallHelper.PostIPSClaim, model.ClaimId);
                 var response = await _apiHelper.PostAsync<ServiceResponse<object>>(url, model);
 
@@ -410,25 +427,42 @@ namespace CBS.BusinessService.Accounting_V2.IPS
 
         public async Task<CustomerMetaDataResponse> GetinfoAsync(string id)
         {
+            var result = new CustomerMetaDataResponse();
+
             try
             {
                 if (string.IsNullOrWhiteSpace(id))
-                    throw new ArgumentException("id is required", nameof(id));
+                {
+                    result.success = false;
+                    result.statusMessage = "Member reference is required.";
+                    return result;
+                }
 
                 var encodedId = Uri.EscapeDataString(id);
                 string formattedUrl = string.Format(APICallHelper.Clientdata, encodedId);
 
-                var response = await _apiCallerHelper.GetAsync<ServiceResponse<CustomerMetaDataResponse>>(formattedUrl);
+                var response = await _apiCallerHelper
+                    .GetAsync<ServiceResponse<CustomerMetaDataResponse>>(formattedUrl);
 
-                if (response?.ApiResponseData?.Data != null && response.IsSuccess)
+                if (!response.IsSuccess || response.ApiResponseData?.Data == null)
                 {
-                    return response.ApiResponseData?.Data;
-                }
-                return null;
+                    result.success = false;
+                    result.statusMessage = response.Message;
+                    return result;
+                }               
+
+                // 🟢 SUCCESS
+                result = response.ApiResponseData.Data;
+                result.success = true;
+                result.statusMessage = response.Message; 
+
+                return result;
             }
             catch (Exception ex)
             {
-                throw;
+                result.success = false;
+                result.statusMessage = ex.Message;
+                return result;
             }
         }
     }

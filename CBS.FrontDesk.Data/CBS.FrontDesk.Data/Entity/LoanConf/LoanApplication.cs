@@ -56,6 +56,9 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public decimal NewBalance { get; set; }
         public decimal NewVAT { get; set; }
         public decimal NewPenalty { get; set; }
+        public string PcmfLoanPurposeId { get; set; }
+        public string LoanTargetId { get; set; }
+        public string LoanTermId { get; set; }
 
         public string Id { get; set; }
         [Required]
@@ -366,6 +369,8 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public int NumberOfDaysToApplyCharges { get; set; }
         public OldLoanPayment OldLoanPayment { get; set; }
         public DateTime AccountingDate { get; set; }
+        public string PcmfLoanPurposeId { get; set; }
+        public string LoanTargetId { get; set; }
         public AddLoanApplicationCommand()
         {
             Amount = 0;
@@ -564,7 +569,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public string LoanId { get; set; } = "N/A";
         public string CustomerName { get; set; }
         public int LoanDuration { get; set; }
-        public virtual LoanApplication LoanApplication { get; set; }
+        public LoanApplication LoanApplication { get; set; }
         public string LoanJourneyStatus { get; set; }
         public decimal VatRate { get; set; }
         public string LoanTarget { get; set; }//Employee, Government, Group, Company, Individual etc
@@ -592,7 +597,9 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public string StoppedBy { get; set; } = "Normal";
         public DateTime? DateInterestWastStoped { get; set; } = DateTime.MinValue;
         public DateTime? LastDeliquecyProcessedDate { get; set; } // Nullable to support unprocessed loans
-
+        public string PcmfLoanPurposeId { get; set; }
+        public string LoanTargetId { get; set; }
+        public string LoanTermId { get; set; }
         public string BranchName { get; set; }
         public int NumberOfInstallments { get; set; }
         public string RepaymentCycle { get; set; }

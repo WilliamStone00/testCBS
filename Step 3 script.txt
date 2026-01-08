@@ -1,0 +1,3967 @@
+    <script>
+
+
+        // =====================================================
+        // TSC Loan Wizard - STEP 3 (Application UI) Script ONLY
+        // Keep this file separate from Search/Facility scripts.
+        // Requires: jQuery, wizardState (global), #loanUiRoutes data-* routes.
+        // =====================================================
+        (function () {
+            "use strict";
+            var scoreConfig = null;
+            var chargesCache = []; // rules from server, per product
+            // state
+            var recoveryAccountsCache = [];                // all accounts from server
+            var selectedRecoveryIds = [];                  // checked ids
+            var recoverySelections = {};
+            var recoveryAllAccounts = [];        // full list (always)
+            var recoverySelected = {};           // id -> { amount, decision, locked... }
+            window.recoveryState = window.recoveryState || {
+                accounts: [],
+                selected: {}, // id -> { amount, decision, locked, reason, policyKey }
+                enabled: false
+            };
+            // { id: { decision, amount } }
+            // -----------------------------
+            // Guard: wizardState must exist (created in Step 1/2 script)
+            // -----------------------------
+            if (!window.wizardState) {
+                console.error("STEP3: wizardState is missing. Ensure search/facility script defines window.wizardState.");
+                return;
+            }
+            var wizardState = window.wizardState;
+            // -----------------------------
+            // Routes (from Razor)
+            // -----------------------------
+            var $routes = $("#loanUiRoutes");
+            var loanTypesUrl = $routes.data("loan-types-url");
+            var productsUrl = $routes.data("products-url");
+            var chargesUrl = $routes.data("charges-url");
+            var scoreUrl = $routes.data("score-url");
+            var accountsUrl = $routes.data("accounts-url");
+            // ---- Configure these endpoints (plug your actual URLs) ----
+            var memberLookupUrl = $routes.data("member-lookup-url");   // expects: GET ?memberReference=xxx
+            var memberAccountsUrl = $routes.data("member-accounts-url") || accountsUrl; // GET ?memberId=xxx
+
+            // -----------------------------
+            // Public API: call from Step2 script
+            // window.tscLoanApp.show()
+            // -----------------------------
+            window.tscLoanApp = window.tscLoanApp || {};
+            window.tscLoanApp.show = showApplicationPanel;
+            window.tscLoanApp.init = initApplicationUi; // optional alias
+            window.chargesUrl = chargesUrl
+            // Optional (Step2 can call this live)
+            window.tscLoan = window.tscLoan || {};
+            window.tscLoan.setOldLoan = function (loan) {
+                wizardState.oldLoan = loan || null;
+                renderOldLoanDetails();
+                applyModeUiRules(); // if already in step3
+            };
+
+            // -----------------------------
+            // Local state for Step 3 only
+            // -----------------------------
+            var productCache = null; // last selected product object
+            var scoreConfig = null;
+            var scoresLoaded = false;
+            // =====================================================
+            // UI Helpers
+            // =====================================================
+            function escapeHtml(s) {
+                return (s || "").replace(/[&<>"']/g, function (c) {
+                    return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]);
+                });
+            }
+
+            function pick(o, camel, pascal, fallback) {
+                if (!o) return fallback;
+                if (o[camel] !== undefined && o[camel] !== null) return o[camel];
+                if (o[pascal] !== undefined && o[pascal] !== null) return o[pascal];
+                return fallback;
+            }
+
+            function fmtMoney(v, currency) {
+                return Number(v || 0).toLocaleString() + " " + escapeHtml(currency || "FCFA");
+            }
+
+            function showToastHint($el, text) {
+                $el.text(text || "");
+            }
+
+            function inRange(n, min, max) {
+                n = Number(n);
+                min = Number(min);
+                max = Number(max);
+                if (isNaN(n)) return false;
+                if (!isNaN(min) && min > 0 && n < min) return false;
+                if (!isNaN(max) && max > 0 && n > max) return false;
+                return true;
+            }
+            // =========================
+            // Validation UI helpers
+            // =========================
+            function ensureInvalidFeedback($el, msg) {
+                var $fb = $el.nextAll(".invalid-feedback").first();
+                if (!$fb.length) $fb = $('<div class="invalid-feedback"></div>').insertAfter($el);
+                $fb.text(msg || "Invalid value.");
+            }
+            function normStr(s) { return (s || "").toString().trim(); }
+            function upper(s) { return normStr(s).toUpperCase(); }
+            function pick(obj, key, fallback) { return (obj && obj[key] !== undefined && obj[key] !== null) ? obj[key] : fallback; }
+
+            function getRoutes() {
+                var $r = $("#loanUiRoutes");
+                return {
+                    memberLookupUrl: $r.data("member-lookup-url"),
+                    memberAccountsUrl: $r.data("member-accounts-url"),
+                    relationshipsUrl: $r.data("relationships-url"),
+                    collateralTypesUrl: $r.data("collateral-types-url")
+                };
+            }
+
+            function validateInterestToPolicy() {
+                var policy = window.productPolicy || {};
+                var minI = Number(policy.minInterest || 0);
+                var maxI = Number(policy.maxInterest || 0);
+
+                var $i = $("#txtInterest");
+                var raw = ($i.val() || "").toString().trim();
+                var v = parseFloat(raw);
+
+                // empty => let your submit required checks handle it
+                if (raw === "") {
+                    $i.removeClass("is-invalid");
+                    return true;
+                }
+
+                if (isNaN(v) || v <= 0) {
+                    $i.addClass("is-invalid");
+                    ensureInvalidFeedback($i, "Enter a valid interest rate.");
+                    return false;
+                }
+
+                var ok = (v >= minI) && (v <= maxI);
+                if (!ok) {
+                    $i.addClass("is-invalid");
+                    ensureInvalidFeedback($i, "Interest must be within product range (" + minI + "% - " + maxI + "%).");
+
+                    // keep focus on interest so user fixes it
+                    setTimeout(function () { $i.focus(); }, 0);
+                    return false;
+                }
+
+                $i.removeClass("is-invalid");
+                return true;
+            }
+            function loadRelationshipDropdown($card) {
+                var routes = getRoutes();
+                if (!routes.relationshipsUrl) {
+                    console.warn("relationshipsUrl missing in #loanUiRoutes");
+                    return;
+                }
+
+                $.getJSON(routes.relationshipsUrl)
+                    .done(function (res) {
+                        if (!res || !res.success) return;
+
+                        var $ddl = $card.find(".ddlRelationship");
+                        if (!$ddl.length) return;
+
+                        var current = $ddl.val();
+                        $ddl.empty().append('<option value="">-- Select relationship --</option>');
+
+                        (res.data || []).forEach(function (x) {
+                            $ddl.append('<option value="' + x.Id + '">' + x.Name + '</option>');
+                        });
+
+                        if (current) $ddl.val(current);
+                    })
+                    .fail(function (xhr) {
+                        console.error("GetRelationships failed:", xhr);
+                    });
+            }
+            function loadCollateralTypeDropdown($card) {
+                var routes = getRoutes();
+                if (!routes.collateralTypesUrl) {
+                    console.warn("collateralTypesUrl missing in #loanUiRoutes");
+                    return;
+                }
+
+                $.getJSON(routes.collateralTypesUrl)
+                    .done(function (res) {
+                        if (!res || !res.success) return;
+
+                        var $ddl = $card.find(".ddlCollateralType");
+                        if (!$ddl.length) return;
+
+                        var current = $ddl.val();
+                        $ddl.empty().append('<option value="">-- Select collateral type --</option>');
+
+                        (res.data || []).forEach(function (x) {
+                            $ddl.append('<option value="' + x.Id + '">' + x.Name + '</option>');
+                        });
+
+                        if (current) $ddl.val(current);
+                    })
+                    .fail(function (xhr) {
+                        console.error("GetCollateralTypes failed:", xhr);
+                    });
+            }
+
+            // clamp on blur (manager finishes typing)
+            $("#txtInterest")
+                .off("input.intPolicy blur.intPolicy")
+                .on("input.intPolicy", function () {
+                    // soft validate while typing (no focus stealing)
+                    validateInterestToPolicy();
+                })
+                .on("blur.intPolicy", function () {
+                    // strong validate: if invalid, force focus back
+                    if (!validateInterestToPolicy()) {
+                        setTimeout(function () { $("#txtInterest").focus(); }, 0);
+                        return false;
+                    }
+
+                    // keep your existing live validator call if you want
+                    if (typeof validateAmountInterestPeriodLive === "function") {
+                        validateAmountInterestPeriodLive();
+                    }
+                });
+
+
+            // Live bind
+            $("#txtAmount, #txtInterest").on("input blur", validateAmountInterestPeriodLive);
+            $("#ddlRepaymentPeriod").on("change", validateAmountInterestPeriodLive);
+
+            // =====================================================
+            // Step 3: Show/Init Application Panel
+            // =====================================================
+            function showApplicationPanel() {
+                // Basic guards
+                if (!wizardState.memberId) {
+                    alert("Select a member first.");
+                    return;
+                }
+
+                // For NEW applications, facility must be selected
+                if (!wizardState.restructureMode && !wizardState.facility) {
+                    alert("Select a facility first (Classic / SSF / Overdraft / LOC).");
+                    return;
+                }
+
+                // Move panels
+                $("#panelFacility").hide();
+                $("#panelApplication").show();
+
+                // Stepper (if your stepper exists)
+                $("#stepFacility").removeClass("active").addClass("done");
+                $("#stepApplication").addClass("active");
+
+                initApplicationUi();
+            }
+            function validateAmountInterestPeriodLive() {
+                var okAmount = validateAmountLive();           // your existing amount validation
+                var okInterest = validateInterestLive();       // ✅ new
+                var okGrace = validateGracePeriodLive();       // ✅ new
+                var okRp = validateRepaymentPeriodLive();      // if you have it
+
+                return okAmount && okInterest && okGrace && okRp;
+            }
+            function setInvalid($el, isInvalid, message) {
+                // same pattern for ALL inputs: message under the input
+                // try to find an existing message element next to the input
+                var $msg = $el.siblings(".invalid-feedback, .field-error").first();
+
+                // if not found, create one (bootstrap invalid-feedback)
+                if (!$msg.length) {
+                    $msg = $('<div class="invalid-feedback d-block"></div>');
+                    $el.after($msg);
+                }
+
+                if (isInvalid) {
+                    $el.addClass("is-invalid");
+                    $msg.text(message || "Invalid value.").show();
+                } else {
+                    $el.removeClass("is-invalid");
+                    $msg.text("").hide();
+                }
+            }
+            function loadPolicyFromOldLoanProduct() {
+                var dfd = $.Deferred();
+
+                if (!productsUrl) return dfd.resolve(null).promise();
+
+                var loan = wizardState.oldLoan || {};
+                var oldProductId =
+                    loan.loanProductId || loan.LoanProductId ||
+                    loan.productId || loan.ProductId || "";
+
+                if (!oldProductId) {
+                    console.warn("RESCHEDULE: old loan product id missing.");
+                    resetProductPolicyBox();
+                    bindRepaymentPeriods({ Periods: [] }); // clear ddl
+                    return dfd.resolve(null).promise();
+                }
+
+                // ✅ use your existing endpoint shape (list)
+                $.get(productsUrl, {
+                    facility: wizardState.facility || "AUTO",
+                    mode: "RESCHEDULE",
+                    oldLoanId: wizardState.oldLoanId
+                })
+                    .done(function (res) {
+                        var list = (res && (res.data || res.Data)) || [];
+
+                        // find by id
+                        var p = (list || []).find(function (x) {
+                            return String(pick(x, "id", "Id", "")) === String(oldProductId);
+                        });
+
+                        // fallback: if endpoint returns only one product
+                        if (!p && list.length === 1) p = list[0];
+
+                        if (!p) {
+                            console.warn("RESCHEDULE: could not resolve old loan product in returned list.");
+                            resetProductPolicyBox();
+                            bindRepaymentPeriods({ Periods: [] });
+                            return dfd.resolve(null).promise();
+                        }
+
+                        productCache = p;
+                        bindProductPolicies(p);
+                        bindRepaymentPeriods(p);
+
+                        // optional: show purpose line even if product dropdown hidden
+                        $("#pcmfPurposeLine").text(p.PcmfPurpose || p.pcmfPurpose || "--");
+                        $("#pcmfPurposeBadge").text("Loaded");
+
+                        return dfd.resolve(p).promise();
+                    })
+                    .fail(function () {
+                        console.warn("RESCHEDULE: failed to load products list.");
+                        resetProductPolicyBox();
+                        bindRepaymentPeriods({ Periods: [] });
+                        return dfd.resolve(null).promise();
+                    });
+
+                return dfd.promise();
+            }
+            function initApplicationUi() {
+                var mode = wizardState.restructureMode ? wizardState.restructureMode : "NEW";
+                $("#txtAppMode").val(mode);
+
+                $("#txtFacility").val(wizardState.facility || "AUTO (from old loan)");
+
+                renderOldLoanDetails();
+
+                resetProductPolicyBox();
+                resetChargesSummary();
+                resetScoreBox();
+
+                loadInstitutionLoanTypes();
+
+                // ✅ NEW logic: if restructure -> load policy using oldLoanProductId
+                if (mode === "RESCHEDULE" || mode === "REFINANCE") {
+                    loadPolicyForRestructure();   // << add this
+                } else {
+                    loadInstitutionLoanProducts(); // normal NEW flow
+                }
+
+                applyModeUiRules();
+            }
+
+            function loadPolicyForRestructure() {
+                var productId = wizardState.oldLoanProductId;
+                if (!productId) {
+                    console.warn("Missing oldLoanProductId. Cannot load product policy.");
+                    return;
+                }
+
+                $.get(productsUrl, {
+                    facility: "",                           // optional (controller can ignore)
+                    mode: wizardState.restructureMode,      // "RESCHEDULE" | "REFINANCE"
+                    oldLoanId: wizardState.oldLoanId,       // optional
+                    productId: productId                    // ✅ key
+                }).done(function (res) {
+                    if (!res || !res.success) return;
+
+                    var p = (res.data && res.data.length) ? res.data[0] : null;
+                    if (!p) return;
+
+                    // cache + bind policy + periods
+                    productCache = p;
+
+                    bindProductPolicies(p);
+                    bindRepaymentPeriods(p);
+
+                    // your existing calls if needed:
+                    // ✅ FIX: charges won’t load because ddlLoanProduct change never fires in reschedule
+                    var pid = (p.Id || p.id);
+                    if (pid) loadChargesForProduct(pid);
+                    loadScoringAssessments();
+
+                    // ✅ reschedule rules
+                    if (wizardState.restructureMode === "RESCHEDULE") {
+                        lockRescheduleAmounts();
+                    }
+                });
+            }
+            function lockRescheduleAmounts() {
+                var oldLoan = wizardState.oldLoan || {};
+                var oldAmount = Number(oldLoan.Amount || oldLoan.amount || 0);
+                var oldBalance = Number(oldLoan.Balance || oldLoan.balance || 0);
+
+                // ✅ show the amount being rescheduled (usually the remaining balance)
+                $("#txtRescheduleAmount").val(oldBalance.toLocaleString());
+
+                // ✅ requested amount must remain the original amount
+                $("#txtAmount").val(oldAmount).prop("readonly", true);
+
+                // Optional: disable/lock product dropdown too (reschedule uses old product policy)
+                $("#ddlLoanProduct").prop("disabled", true);
+            }
+
+            $("#btnBackToFacility").on("click", function () {
+                $("#panelApplication").hide();
+                $("#panelFacility").show();
+
+                $("#stepApplication").removeClass("active");
+                $("#stepFacility").removeClass("done").addClass("active");
+            });
+            // =====================================================
+            // ✅ Old Loan Details section
+            // =====================================================
+            function renderOldLoanDetails() {
+                var isRestructure = !!wizardState.restructureMode && !!wizardState.oldLoanId;
+                var loan = wizardState.oldLoan;
+
+                // Show only if refinance/reschedule
+                $("#oldLoanDetailsCard").toggle(!!isRestructure);
+
+                if (!isRestructure) return;
+
+                // If step2 didn’t set oldLoan, show minimal info
+                if (!loan) {
+                    $("#oldLoanGrid").html(`
+                                    <div class="col-12 text-warning">
+                                      <i class="mdi mdi-alert-outline me-1"></i>
+                                      Old loan details not loaded yet. Please click refinance/reschedule on the loan card again.
+                                    </div>
+                                  `);
+                    return;
+                }
+
+                var currency = loan.currency || "FCFA";
+
+                $("#oldLoanGrid").html(`
+                                  <div class="col-6 col-md-3">Loan ID: <strong>${escapeHtml(loan.code || loan.id || "")}</strong></div>
+                                  <div class="col-6 col-md-3">Status: <strong>${escapeHtml(loan.status || "")}</strong></div>
+
+                                  <div class="col-6 col-md-3">Amount: <strong>${fmtMoney(loan.amount, currency)}</strong></div>
+                                  <div class="col-6 col-md-3">Balance: <strong class="text-primary">${fmtMoney(loan.balance, currency)}</strong></div>
+
+                                  <div class="col-6 col-md-3">Accrual Interest: <strong>${fmtMoney(loan.accrualInterest, currency)}</strong></div>
+                                  <div class="col-6 col-md-3">VAT: <strong>${fmtMoney(loan.vat, currency)}</strong></div>
+
+                                  <div class="col-6 col-md-3">Penalty: <strong>${fmtMoney(loan.penalty, currency)}</strong></div>
+                                  <div class="col-6 col-md-3">Total Due: <strong>${fmtMoney(loan.totalDueAmount, currency)}</strong></div>
+
+                                  <div class="col-12 mt-1 text-muted">
+                                    <i class="mdi mdi-information-outline me-1"></i>
+                                    For restructure, the system uses only remaining capital/balance (excluding interest/VAT/penalty).
+                                  </div>
+                                `);
+            }
+
+            // =====================================================
+            // ✅ Mode rules: RESCHEDULE minimal fields + Overdraft/LOC datasets
+            // =====================================================
+            function applyModeUiRules() {
+                var mode = (wizardState.restructureMode || "NEW").toUpperCase();
+                var facility = wizardState.facility || "";
+
+                // show facility-specific datasets
+                var facUpper = String(facility || "").toUpperCase();
+                $("#overdraftFieldsCard").toggle(facUpper === "OVERDRAFT");
+                $("#locFieldsCard").toggle(facUpper === "LOC" || facUpper === "LINEOFCREDIT" || facUpper === "LINE_OF_CREDIT");
+
+                var isReschedule = (mode === "RESCHEDULE");
+                // ✅ Show reschedule amount field
+                $("#rescheduleAmountCol").toggle(isReschedule);
+                // =====================================================
+                // ✅ RESCHEDULE: hide all red-highlighted non-required blocks
+                // =====================================================
+                $("#institutionLoanTypeCol").toggle(!isReschedule);     // Loan Type (Institution)
+                $("#institutionLoanProductCol").toggle(!isReschedule);  // Loan Product (Institution)
+                $("#pcmfPurposeBox").toggle(!isReschedule);             // PCMF Purpose (from product)
+                $("#recoveryCard").toggle(!isReschedule);               // Guarantees
+                $("#interestCol").toggle(!isReschedule);                // Interest Rate (%)
+                $("#disbursementCol").toggle(!isReschedule);            // Disbursement Type
+                $("#riskMitigationCard").toggle(!isReschedule);         // Entire Risk Mitigation card
+                // Your existing "heavy sections" (safe if present)
+                $("#ddlCharges").closest(".card").toggle(!isReschedule);
+                $("#ddlScoreAssessments").closest(".card").toggle(!isReschedule);
+                var isRefinance = mode === "REFINANCE";
+                // ✅ keep policy visible because grace + periods depend on it
+                $("#productPolicyBox").show();
+                $("#repaymentPeriodsPills").closest(".card, .col, .row, div").show(); // safe show
+                $("#ddlRepaymentPeriod").closest(".col, .form-group, div").show();
+
+                // ✅ hide recovery mechanism card during reschedule
+                //$("#recoveryMechanismCard").toggle(!isReschedule);
+
+                // ✅ also hide guarantees/collateral blocks etc. during reschedule (if you want)
+                $(".tsc-guarantees-wrap").toggle(!isReschedule);
+                // ✅ hide recovery mechanism during rescheduling
+                $("#recoveryAccountsWrap").closest(".card").toggle(!isReschedule);
+                // =====================================================
+                // ✅ RESCHEDULE: lock amount to remaining principal/balance
+                // =====================================================
+                if (isReschedule) {
+                    var loan = wizardState.oldLoan || {};
+
+                    var originalAmount = Number(loan.amount || loan.Amount || 0);
+                    var remainingPrincipal = Number(loan.balance || loan.Balance || 0);
+
+                    // Requested amount = ORIGINAL amount
+                    $("#txtAmount").val(originalAmount > 0 ? originalAmount : "").prop("readonly", true);
+
+                    // Amount to be rescheduled = Remaining capital
+                    $("#txtRescheduleAmount").val(remainingPrincipal > 0 ? remainingPrincipal : "");
+                    $("#hidRescheduleAmount").val(remainingPrincipal > 0 ? remainingPrincipal : "");
+
+                    //// ✅ load periods/policy from old product
+                    //loadPolicyForReschedule();
+
+                } else {
+                    $("#txtAmount").prop("readonly", false);
+                    $("#txtRescheduleAmount").val("");
+                    $("#hidRescheduleAmount").val("");
+                    $("#rescheduleAmountCol").hide();
+                    $("#rescheduleAmountWrap").hide();
+
+                    // unlock amount for NEW/REFINANCE
+                    $("#txtAmount").prop("readonly", false);
+                }
+            }
+            function applyRescheduleAmountRules() {
+                var isReschedule = (String(wizardState.restructureMode || "").toUpperCase() === "RESCHEDULE");
+
+                if (!isReschedule) {
+                    $("#rescheduleAmountWrap").hide();
+                    $("#txtAmount").prop("readonly", false);
+                    $("#txtRescheduleAmount").val("");
+                    return;
+                }
+
+                $("#rescheduleAmountWrap").show();
+
+                // requested amount stays original amount
+                $("#txtAmount").val(wizardState.oldLoanAmount || 0).prop("readonly", true);
+
+                // visible reschedule amount = balance
+                $("#txtRescheduleAmount").val(wizardState.oldLoanBalance || 0);
+            }
+
+
+            // =====================================================
+            // Loaders: Loan Type (custom institution type)
+            // =====================================================
+            function loadInstitutionLoanTypes() {
+                $("#ddlInstitutionLoanType").html(`<option value="">-- Select Custom Loan Type --</option>`);
+                if (!loanTypesUrl) return;
+
+                $.get(loanTypesUrl)
+                    .done(function (res) {
+                        var items = (res && (res.data || res.Data)) || [];
+                        items.forEach(function (t) {
+                            var id = pick(t, "id", "Id", "");
+                            var name = pick(t, "name", "Name", "");
+                            $("#ddlInstitutionLoanType").append(`<option value="${escapeHtml(id)}">${escapeHtml(name)}</option>`);
+                        });
+                    })
+                    .fail(function () { console.warn("Loan types failed to load."); });
+            }
+
+            function autoSelectPolicyRequiredAccounts() {
+                // Guard
+                if (!window.productPolicy) return;
+                if (!Array.isArray(recoveryAllAccounts)) return;
+
+                // Loan amount
+                var loanAmount = Number($("#txtAmount").val());
+                if (isNaN(loanAmount) || loanAmount < 0) loanAmount = 0;
+
+                // Policy values
+                var p = window.productPolicy;
+
+                // Required amounts:
+                // Savings required = max(absolute min, % of amount)
+                var savingsAbs = Number(p.minSavingsAbs || 0);
+                var savingsPct = Number(p.minSavingsPercent || 0);
+                var savingsByPct = (loanAmount > 0 && savingsPct > 0) ? (loanAmount * (savingsPct / 100)) : 0;
+                var savingsRequired = Math.max(savingsAbs, savingsByPct);
+
+                // Shares required = policy min shares required (already max(product, policy))
+                var sharesRequired = Number(p.minSharesRequired || 0);
+
+                // Helpers
+                function normStr(v) { return (v == null) ? "" : String(v).trim(); }
+
+                function findFirstAccount(predicate) {
+                    for (var i = 0; i < recoveryAllAccounts.length; i++) {
+                        if (predicate(recoveryAllAccounts[i])) return recoveryAllAccounts[i];
+                    }
+                    return null;
+                }
+
+                function isSavings(a) {
+                    var t = normStr(pick(a, "accountType", "AccountType", "")).toLowerCase();
+                    t = t.replace(/\s+/g, " ").trim();
+                    return t === "savings";
+                }
+
+                function isOrdinaryShares(a) {
+                    var t = normStr(pick(a, "accountType", "AccountType", "")).toLowerCase();
+                    t = t.replace(/\s+/g, " ").trim();
+                    return t === "ordinary shares"; // strict
+                }
+
+                function loadMemberAccountsForRecovery() {
+                    if (!accountsUrl || !wizardState.memberId) return;
+
+                    $("#recoveryLoadHint").text("Loading accounts...");
+
+                    $.get(accountsUrl, { memberId: wizardState.memberId })
+                        .done(function (res) {
+                            var items = (res && (res.data || res.Data)) || [];
+                            recoveryAllAccounts = items;
+
+                            autoSelectPolicyRequiredAccounts();
+                            renderRecoveryPicker();
+                            renderRecoveryEditor();
+                            //syncRecoveryHiddenJson();
+
+                            $("#recoveryLoadHint").text(items.length ? "" : "No accounts found.");
+                        })
+                        .fail(function () {
+                            $("#recoveryLoadHint").text("Failed to load accounts.");
+                            console.warn("Accounts failed to load.");
+                        });
+                }
+
+
+                // Find member accounts
+                var savingsAcc = findFirstAccount(isSavings);
+                var sharesAcc = findFirstAccount(isOrdinaryShares);
+
+                // Decide if policy requires them:
+                // ✅ You said both are required for loan, so enforce if loanAmount > 0
+                var requireSavings = (loanAmount > 0) && (savingsRequired > 0);
+                var requireShares = (loanAmount > 0) && (sharesRequired > 0);
+
+                // Apply to selection map
+                function upsertPolicyAccount(acc, requiredAmount, reasonLabel) {
+                    if (!acc) return;
+                    var id = normStr(pick(acc, "id", "Id", ""));
+                    if (!id) return;
+
+                    recoverySelected[id] = recoverySelected[id] || {};
+
+                    recoverySelected[id].amount = Math.ceil(Number(requiredAmount || 0)); // or keep as is
+                    recoverySelected[id].decision = "RequiredPolicy"; // internal key
+                    recoverySelected[id].locked = true;
+                    recoverySelected[id].policyReason = reasonLabel || "Required by policy";
+                    recoverySelected[id].policyType = "REQUIRED";
+                }
+
+                // If required -> add/lock
+                if (requireSavings) {
+                    upsertPolicyAccount(
+                        savingsAcc,
+                        savingsRequired,
+                        "Savings required by policy (" +
+                        (savingsPct > 0 ? (savingsPct + "%") : "") +
+                        (savingsAbs > 0 ? (savingsPct > 0 ? " and/or " : "") + "min " + savingsAbs.toLocaleString() + " FCFA" : "") +
+                        ")."
+                    );
+                }
+
+                if (requireShares) {
+                    upsertPolicyAccount(
+                        sharesAcc,
+                        sharesRequired,
+                        "Ordinary Shares required by policy (min " + sharesRequired.toLocaleString() + " FCFA). Not blockable."
+                    );
+                }
+
+                // If not required anymore (amount cleared), unlock/remove ONLY if it was policy-managed
+                function dropIfPolicyManaged(acc) {
+                    if (!acc) return;
+                    var id = normStr(pick(acc, "id", "Id", ""));
+                    if (!id) return;
+                    if (recoverySelected[id] && recoverySelected[id].locked) {
+                        delete recoverySelected[id];
+                    }
+                }
+
+                if (!requireSavings) dropIfPolicyManaged(savingsAcc);
+                if (!requireShares) dropIfPolicyManaged(sharesAcc);
+
+                // Re-render
+                renderRecoveryPicker();
+                renderRecoveryEditor();
+                //syncRecoveryHiddenJson();
+            }
+
+            function loadPolicyForReschedule() {
+                var productId = wizardState.oldLoanProductId ||
+                    (wizardState.oldLoan ? (wizardState.oldLoan.LoanProductId || wizardState.oldLoan.loanProductId) : null);
+
+                if (!productId) {
+                    console.warn("RESCHEDULE: oldLoanProductId missing.");
+                    $("#repaymentPeriodsPills").html(`<span class="text-danger small">Missing productId. Cannot load policy.</span>`);
+                    if ($("#ddlRepaymentPeriod").length) $("#ddlRepaymentPeriod").html(`<option value="">-- Select Repayment Period --</option>`);
+                    return;
+                }
+
+                // Show policy UI (required)
+                $("#productPolicyBox").show();
+                $("#policyBadge").text("Loading...");
+
+                // loading UI
+                $("#repaymentPeriodsPills").html(`<span class="text-muted small">Loading repayment periods...</span>`);
+                if ($("#ddlRepaymentPeriod").length) $("#ddlRepaymentPeriod").html(`<option value="">Loading...</option>`);
+
+                $.get(productsUrl, {
+                    facility: wizardState.facility || "",
+                    mode: wizardState.restructureMode || "RESCHEDULE",
+                    oldLoanId: wizardState.oldLoanId,
+                    productId: productId
+                }).done(function (res) {
+
+                    var p = (res && res.success && res.data && res.data.length) ? res.data[0] : null;
+                    if (!p) {
+                        $("#policyBadge").text("Policy");
+                        $("#repaymentPeriodsPills").html(`<span class="text-danger small">No policy returned for this product.</span>`);
+                        if ($("#ddlRepaymentPeriod").length) $("#ddlRepaymentPeriod").html(`<option value="">-- Select Repayment Period --</option>`);
+                        return;
+                    }
+
+                    productCache = p;                  // ✅ set local cache
+                    window.productPolicy = null;       // reset before rebind
+
+                    // bind policy + periods
+                    bindProductPolicies(p);
+                    bindRepaymentPeriods(p);
+                    console.log("RESCHEDULE POLICY LOADED:", {
+                        productId: (p.Id || p.id),
+                        periods: (p.Periods || p.periods),
+                        policy: window.productPolicy
+                    });
+
+                    // ✅ IMPORTANT: trigger validation refresh so the UI stops showing 0-0
+                    //validateGracePeriodLive();
+                    validateRepaymentPeriodLive();
+
+                    // optional: load charges & scoring only if you keep those in reschedule
+                    // loadChargesForProduct(p.Id || p.id);
+                    // loadScoringAssessments();
+
+                    $("#policyBadge").text("Policy Loaded");
+                }).fail(function () {
+                    $("#policyBadge").text("Policy");
+                    $("#repaymentPeriodsPills").html(`<span class="text-danger small">Failed to load product policy.</span>`);
+                    if ($("#ddlRepaymentPeriod").length) $("#ddlRepaymentPeriod").html(`<option value="">-- Select Repayment Period --</option>`);
+                });
+            }
+
+            // =====================================================
+            // Loaders: Institution Loan Products (NOT PCMF Product)
+            // - product object must include:
+            //   PcmfPurpose, InstitutionPurpose, Min/Max Amount, Min/Max Interest,
+            //   MinMonth/MaxMonth, Periods[] (repayment periods)
+            // =====================================================
+            function loadInstitutionLoanProducts() {
+                $("#ddlLoanProduct").html(`<option value="">-- Select Loan Product --</option>`);
+                if (!productsUrl) return;
+
+                $.get(productsUrl, {
+                    facility: wizardState.facility,
+                    mode: wizardState.restructureMode || "NEW",
+                    oldLoanId: wizardState.oldLoanId
+                })
+                    .done(function (res) {
+                        var items = (res && (res.data || res.Data)) || [];
+                        items.forEach(function (p) {
+                            var id = pick(p, "id", "Id", "");
+                            var name = pick(p, "name", "Name", "");
+                            $("#ddlLoanProduct").append(
+                                `<option value="${escapeHtml(String(id))}" data-json='${escapeHtml(JSON.stringify(p))}'>${escapeHtml(String(name))}</option>`
+                            );
+                        });
+                    })
+                    .fail(function () {
+                        console.warn("Products failed to load.");
+                    });
+            }
+
+            // =====================================================
+            // Product Selection -> bind policy + repayment periods + charges + scoring list
+            // =====================================================
+            $("#ddlLoanProduct").on("change", function () {
+                var raw = $(this).find("option:selected").attr("data-json");
+                if (!raw) {
+                    productCache = null;
+                    resetProductPolicyBox();
+                    resetChargesSummary();
+                    resetScoreBox();
+                    $("#ddlCharges").empty();
+                    $("#ddlScoreAssessments").empty();
+                    return;
+                }
+
+                var p = JSON.parse(raw);
+                productCache = p;
+
+                // Show PCMF purpose under which product was created
+                $("#pcmfPurposeLine").text(p.PcmfPurpose || p.pcmfPurpose || "--");
+                $("#pcmfPurposeBadge").text("Loaded");
+
+                // Institution purpose (based on PCMF purpose mapping)
+                $("#institutionPurposeLine").text(p.InstitutionPurpose || p.institutionPurpose || "--");
+
+                // Policies
+                bindProductPolicies(p);
+
+                // Repayment periods pills + dropdown (if you have ddlRepaymentPeriod)
+                bindRepaymentPeriods(p);
+
+                var $opt = $(this).find("option:selected");
+                var productId = $opt.val();
+
+                console.log("PRODUCT CHANGED:", { productId: productId });
+
+                if (!productId) {
+                    $("#ddlCharges").empty();
+                    return;
+                }
+
+                // ✅ use the new checkbox-based loader
+                if (window.loadChargesForProduct) {
+                    window.loadChargesForProduct(productId);
+                } else {
+                    console.warn("loadChargesForProduct not found on window.");
+                }
+
+
+                // Score list depends on facility (and optionally product)
+                loadScoringAssessments();
+            });
+
+
+
+
+            function loadAndBindPolicyByProductId(productId) {
+                if (!productId) {
+                    $("#oldPolicyLoadHint").text("Missing product id on old loan.");
+                    return;
+                }
+                if (!productsUrl) {
+                    $("#oldPolicyLoadHint").text("Products URL not configured.");
+                    return;
+                }
+
+                $("#oldPolicyLoadHint").text("Loading policy...");
+                $("#productPolicyBox").show();
+                $("#policyBadge").text("Loading...");
+
+                // ✅ Important: call controller with productId so it returns ONLY that product
+                $.get(productsUrl, {
+                    facility: wizardState.facility || "",
+                    mode: wizardState.restructureMode || "RESCHEDULE",
+                    oldLoanId: wizardState.oldLoanId,
+                    productId: productId
+                })
+                    .done(function (res) {
+                        var list = (res && (res.data || res.Data)) || [];
+                        var p = list.length ? list[0] : null;
+
+                        if (!p) {
+                            $("#oldPolicyLoadHint").text("No product policy returned.");
+                            $("#policyBadge").text("Policy");
+                            return;
+                        }
+
+                        // ✅ cache product for later validators
+                        productCache = p;
+
+                        // ✅ Same pipeline as dropdown change
+                        $("#pcmfPurposeLine").text(p.PcmfPurpose || p.pcmfPurpose || "--");
+                        $("#pcmfPurposeBadge").text("Loaded");
+                        $("#institutionPurposeLine").text(p.InstitutionPurpose || p.institutionPurpose || "--");
+
+                        bindProductPolicies(p);
+                        bindRepaymentPeriods(p);
+
+                        // (optional) only if you want in reschedule
+                        // loadChargesForProduct(p.Id || p.id);
+                        // loadScoringAssessments();
+
+                        // refresh validation
+                        //if (typeof validateGracePeriodLive === "function") validateGracePeriodLive();
+                        //if (typeof validateRepaymentPeriodLive === "function") validateRepaymentPeriodLive();
+
+                        $("#policyBadge").text("Policy Loaded");
+                        $("#oldPolicyLoadHint").text("Policy loaded successfully.");
+                    })
+                    .fail(function () {
+                        $("#oldPolicyLoadHint").text("Failed to load policy.");
+                        $("#policyBadge").text("Policy");
+                    });
+            }
+            $("#btnLoadOldLoanPolicy").off("click.loadOldPolicy").on("click.loadOldPolicy", function () {
+
+                var loan = wizardState.oldLoan || {};
+                var productId =
+                    wizardState.oldLoanProductId ||
+                    loan.loanProductId || loan.LoanProductId ||
+                    (loan.raw ? (loan.raw.loanProductId || loan.raw.LoanProductId) : null);
+
+                console.log("LOAD POLICY CLICK:", { productId: productId, loan: loan });
+
+                loadAndBindPolicyByProductId(productId);
+            });
+
+            function setInvalid($el, isInvalid, message) {
+                // same pattern for ALL inputs: message under the input
+                // try to find an existing message element next to the input
+                var $msg = $el.siblings(".invalid-feedback, .field-error").first();
+
+                // if not found, create one (bootstrap invalid-feedback)
+                if (!$msg.length) {
+                    $msg = $('<div class="invalid-feedback d-block"></div>');
+                    $el.after($msg);
+                }
+
+                if (isInvalid) {
+                    $el.addClass("is-invalid");
+                    $msg.text(message || "Invalid value.").show();
+                } else {
+                    $el.removeClass("is-invalid");
+                    $msg.text("").hide();
+                }
+            }
+
+            function bindProductPolicies(p) {
+                $("#productPolicyBox").show();
+                $("#policyBadge").text("Policy Loaded");
+
+                // -----------------------------
+                // Numeric helpers (safe)
+                // -----------------------------
+                function toNum(v) {
+                    var n = Number(v);
+                    return isNaN(n) ? 0 : n;
+                }
+
+                function gp(o, camel, pascal) {
+                    if (!o) return null;
+                    var v = o[camel];
+                    if (v !== undefined && v !== null) return v;
+                    v = o[pascal];
+                    if (v !== undefined && v !== null) return v;
+                    return null;
+                }
+
+                function toBool(v) {
+                    if (v === true) return true;
+                    if (v === false) return false;
+                    var s = (v === null || v === undefined) ? "" : String(v).trim().toLowerCase();
+                    return (s === "true" || s === "1" || s === "yes" || s === "y");
+                }
+
+                // -----------------------------
+                // Existing core policies
+                // -----------------------------
+                var minAmount = toNum(gp(p, "minAmount", "MinAmount"));
+                var maxAmount = toNum(gp(p, "maxAmount", "MaxAmount"));
+                var minInterest = toNum(gp(p, "minInterest", "MinInterest"));
+                var maxInterest = toNum(gp(p, "maxInterest", "MaxInterest"));
+                var minMonth = toNum(gp(p, "minMonth", "MinMonth"));
+                var maxMonth = toNum(gp(p, "maxMonth", "MaxMonth"));
+
+                // ✅ Grace Period (MONTHS) policy
+                var minGracePeriodMonths = toNum(gp(p, "minGracePeriodMonths", "MinGracePeriodMonths"));
+                var maxGracePeriodMonths = toNum(gp(p, "maxGracePeriodMonths", "MaxGracePeriodMonths"));
+
+                // Keep your absolute mins (if any)
+                var minSavingsAbs = toNum(gp(p, "minSavings", "MinSavings"));
+
+                // Product's own min share (legacy) + policy floor (75,000 default)
+                var minSharesProduct = toNum(
+                    gp(p, "minOrdinaryShares", "MinOrdinaryShares") ??
+                    gp(p, "minOrdinaryShare", "MinOrdinaryShare") ??
+                    gp(p, "minShares", "MinShares")
+                );
+
+                var minSharesPolicy = toNum(
+                    gp(p, "minOrdinarySharesPolicy", "MinOrdinarySharesPolicy")
+                );
+                if (minSharesPolicy <= 0) minSharesPolicy = 75000;
+
+                // Savings percent policy (default 20%)
+                var minSavingsPercent = toNum(gp(p, "minSavingsPercent", "MinSavingsPercent"));
+                if (minSavingsPercent <= 0) minSavingsPercent = 20;
+
+                // Down payment % policy
+                var requireDownPayment = toBool(gp(p, "requireDownPayment", "RequireDownPayment"));
+                var downPaymentRatePercent = toNum(gp(p, "downPaymentRatePercent", "DownPaymentRatePercent"));
+
+                // Risk requirement flags
+                var requireGuarantor = toBool(gp(p, "requireGuarantor", "RequireGuarantor"));
+                var requireCollateral = toBool(gp(p, "requireCollateral", "RequireCollateral"));
+                var requireCoObligor = toBool(gp(p, "requireCoObligor", "RequireCoObligor"));
+                var requireMortgage = toBool(gp(p, "requireMortgage", "RequireMortgage"));
+                var requireDocuments = toBool(gp(p, "requireDocuments", "RequireDocuments"));
+
+                // -----------------------------
+                // Persist a normalized policy for validators
+                // -----------------------------
+                window.productPolicy = {
+                    minAmount: minAmount,
+                    maxAmount: maxAmount,
+                    minInterest: minInterest,
+                    maxInterest: maxInterest,
+                    minMonth: minMonth,
+                    maxMonth: maxMonth,
+
+                    // ✅ Grace Period Months
+                    minGracePeriodMonths: minGracePeriodMonths,
+                    maxGracePeriodMonths: maxGracePeriodMonths,
+
+                    minSavingsAbs: minSavingsAbs,
+                    minSavingsPercent: minSavingsPercent,
+
+                    // Use the STRICTER of product vs policy floor
+                    minSharesProduct: minSharesProduct,
+                    minSharesPolicy: minSharesPolicy,
+                    minSharesRequired: Math.max(minSharesProduct, minSharesPolicy),
+
+                    requireDownPayment: requireDownPayment,
+                    downPaymentRatePercent: downPaymentRatePercent,
+
+                    requireGuarantor: requireGuarantor,
+                    requireCollateral: requireCollateral,
+                    requireCoObligor: requireCoObligor,
+                    requireMortgage: requireMortgage,
+                    requireDocuments: requireDocuments
+                };
+
+
+                // user toggles (optional ones)
+                $(document).on("change", ".riskMitigationToggle", function () {
+                    var name = $(this).data("name"); // e.g. data-name="Guarantor"
+                    syncMitigation(name, false);     // not required, so just follow checked/unchecked
+                });
+
+                // -----------------------------
+                // Small UI helpers
+                // -----------------------------
+                function yesNoBadge(flag) {
+                    return flag
+                        ? '<span class="badge bg-danger-subtle text-danger border border-danger-subtle">Required</span>'
+                        : '<span class="badge bg-success-subtle text-success border border-success-subtle">Optional</span>';
+                }
+
+                function fmtPct(n) {
+                    n = toNum(n);
+                    return (n <= 0) ? "0%" : (n + "%");
+                }
+
+                // -----------------------------
+                // Render Policy Grid
+                // -----------------------------
+                $("#policyGrid").html(`
+                                    <div class="col-6">Min Amount: <strong>${minAmount.toLocaleString()} FCFA</strong></div>
+                                    <div class="col-6">Max Amount: <strong>${maxAmount.toLocaleString()} FCFA</strong></div>
+
+                                    <div class="col-6">Min Interest: <strong>${minInterest}%</strong></div>
+                                    <div class="col-6">Max Interest: <strong>${maxInterest}%</strong></div>
+
+                                    <div class="col-6">Min Month: <strong>${minMonth}</strong></div>
+                                    <div class="col-6">Max Month: <strong>${maxMonth}</strong></div>
+
+                                    <div class="col-6">Min Grace (Months): <strong>${minGracePeriodMonths}</strong></div>
+                                    <div class="col-6">Max Grace (Months): <strong>${maxGracePeriodMonths}</strong></div>
+
+                                    <div class="col-6">Min Savings (Absolute): <strong>${minSavingsAbs.toLocaleString()} FCFA</strong></div>
+                                    <div class="col-6">Min Savings (% of Amount): <strong>${fmtPct(minSavingsPercent)}</strong></div>
+
+                                    <div class="col-6">Min Shares (Product): <strong>${minSharesProduct.toLocaleString()} FCFA</strong></div>
+                                    <div class="col-6">Min Shares (Policy): <strong>${minSharesPolicy.toLocaleString()} FCFA</strong></div>
+
+                                    <div class="col-12 mt-2">
+                                        <div class="d-flex flex-wrap gap-2 align-items-center">
+                                            <div>Down Payment: <strong>${fmtPct(downPaymentRatePercent)}</strong> ${yesNoBadge(requireDownPayment)}</div>
+                                            <div>Guarantor: ${yesNoBadge(requireGuarantor)}</div>
+                                            <div>Collateral: ${yesNoBadge(requireCollateral)}</div>
+                                            <div>Co-obligor: ${yesNoBadge(requireCoObligor)}</div>
+                                            <div>Mortgage: ${yesNoBadge(requireMortgage)}</div>
+                                            <div>Documents: ${yesNoBadge(requireDocuments)}</div>
+                                        </div>
+                                    </div>
+                                `);
+
+                // -----------------------------
+                // Soft guide on fields
+                // -----------------------------
+                $("#txtAmount").attr("min", minAmount || null).attr("max", maxAmount || null);
+                $("#txtInterest").attr("min", minInterest || null).attr("max", maxInterest || null);
+
+                // ✅ Grace Period is now MONTHS (integer)
+                // If your textbox id is different, change here only.
+                $("#txtGracePeriod")
+                    .attr("type", "number")
+                    .attr("step", 1)
+                    .attr("min", (minGracePeriodMonths || 0))
+                    .attr("max", (maxGracePeriodMonths || null));
+
+                // Optional: guide label
+                $("#policyHint").text("Policy limits and risk requirements are loaded.");
+
+                // Optional: auto-check the risk toggles to reflect policy (UI only, actual proof is elsewhere)
+                $("#chkDownPayment").prop("checked", requireDownPayment);
+                $("#chkGuarantor").prop("checked", requireGuarantor);
+                $("#chkCollateral").prop("checked", requireCollateral);
+                $("#chkLoanDocs").prop("checked", requireDocuments);
+
+                // Optional: show/hide docs area immediately if required
+                $("#loanDocsWrap").toggle($("#chkLoanDocs").is(":checked"));
+            }
+            //function applyRiskMitigationPolicy(policy) {
+            //    // Expected policy fields:
+            //    // RequireGuarantor, RequireCollateral, RequireCoObligor, RequireMortgage, RequireDocuments, etc.
+
+            //    syncMitigation("Guarantor", !!policy.RequireGuarantor);
+            //    syncMitigation("Collateral", !!policy.RequireCollateral);
+            //    syncMitigation("CoObligor", !!policy.RequireCoObligor);
+            //    syncMitigation("Shotee", !!policy.RequireMortgage /* or separate RequireShotee if you have */);
+
+            //    // You can add more mappings here
+            //}
+            function isSavingsType(t) { return normStr(t).toLowerCase().includes("savings"); }
+            function isOrdinarySharesType(t) {
+                var s = normStr(t).toLowerCase();
+                return s.includes("ordinary shares") || s.includes("ordinaryshares");
+            }
+
+            // call this whenever user changes amount/decision or adds/removes accounts
+            function recalcRecoveryTotals() {
+                var total = 0;
+
+                // each selected recovery item must store type + amount input
+                $(".recovery-selected-item").each(function () {
+                    var $row = $(this);
+
+                    var type = normStr($row.data("type")); // "Savings", "OrdinaryShares", ...
+                    var amt = parseFloat($row.find(".txtRecoveryAmount").val() || "0") || 0;
+
+                    // ✅ exclude shares from totals (your requirement)
+                    if (isOrdinarySharesType(type)) return;
+
+                    // optional: only count those with decision "Blocked"
+                    var decision = normStr($row.find(".ddlRecoveryDecision").val());
+                    // if you want to count only blocked:
+                    // if (decision !== "Blocked") return;
+
+                    total += amt;
+                });
+
+                $("#txtTotalRecoveryBlocked").val(Math.round(total)); // or display in label
+            }
+
+            // Hooks
+            $(document).on("keyup change", ".txtRecoveryAmount, .ddlRecoveryDecision", recalcRecoveryTotals);
+            $(document).on("click", ".btnRemoveRecoveryAccount, .btnClearRecoverySelection", function () {
+                setTimeout(recalcRecoveryTotals, 0);
+            });
+
+            function syncMitigation(name, isRequired) {
+                // Naming convention example:
+                // checkbox: #chkGuarantor
+                // wrapper:  #wrapGuarantor
+                // add btn:  #btnAddGuarantor
+                var id = name.replace(/\s/g, "");
+
+                var $chk = $("#chk" + id);
+                var $wrap = $("#wrap" + id);
+
+                if (!$chk.length || !$wrap.length) return;
+
+                if (isRequired) {
+                    $chk.prop("checked", true).prop("disabled", true); // user cannot uncheck required
+                    $wrap.show(); // show panel so user can click "Add"
+                } else {
+                    $chk.prop("disabled", false);
+                    // respect current user choice
+                    if ($chk.is(":checked")) $wrap.show(); else $wrap.hide();
+                }
+            }
+            // user toggles (optional ones)
+            $(document).on("change", ".riskMitigationToggle", function () {
+                var name = $(this).data("name"); // e.g. data-name="Guarantor"
+                syncMitigation(name, false);     // not required, so just follow checked/unchecked
+            });
+            function bindRepaymentPeriods(p) {
+                var periods = p.Periods || p.periods || [];
+                // Pills
+                var pills = (periods || []).map(function (m) {
+                    return `<span class="badge rounded-pill bg-light text-dark me-1 mb-1">${Number(m)} Months</span>`;
+                }).join("");
+
+                $("#repaymentPeriodsPills").html(pills || `<span class="text-muted small">No repayment periods configured.</span>`);
+
+                // Dropdown (if exists)
+                if ($("#ddlRepaymentPeriod").length) {
+                    $("#ddlRepaymentPeriod").html(`<option value="">-- Select Repayment Period --</option>`);
+                    (periods || []).forEach(function (m) {
+                        $("#ddlRepaymentPeriod").append(`<option value="${Number(m)}">${Number(m)} Months</option>`);
+                    });
+                }
+            }
+
+            function resetProductPolicyBox() {
+                $("#pcmfPurposeLine").text("--");
+                $("#pcmfPurposeBadge").text("Not selected");
+                $("#institutionPurposeLine").text("--");
+
+                $("#productPolicyBox").hide();
+                $("#policyBadge").text("Policy");
+
+                $("#policyGrid").empty();
+                $("#repaymentPeriodsPills").empty();
+                $("#policyHint").text("");
+            }
+
+            // =====================================================
+            // Charges: multi-select + summary (Before appraisal vs After disbursement)
+            // =====================================================
+            // =============================
+
+
+
+            // --------------------------------------
+            // ✅ Charge calculation (use your existing function)
+            // --------------------------------------
+            // --------------------------------------
+            // Helpers
+            // --------------------------------------
+            function esc(s) {
+                return (s || "").toString().replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+            }
+            function toNum(v) { v = Number(v); return isNaN(v) ? 0 : v; }
+            function normMode(v) { return String(v || "").toUpperCase(); }
+
+            // --------------------------------------
+            // ✅ Labels + Colors
+            // --------------------------------------
+            function modeBadge(mode) {
+                mode = normMode(mode);
+                // BEFORE = orange-ish, AFTER = blue-ish (bootstrap-ish classes)
+                if (mode.includes("BEFORE")) return `<span class="badge bg-warning-subtle text-warning border border-warning-subtle">BEFORE APPRAISAL</span>`;
+                return `<span class="badge bg-primary-subtle text-primary border border-primary-subtle">DURING DISBURSEMENT</span>`;
+            }
+            function feeTypeBadge(calcType) {
+                // calcType might be int OR string; normalize
+                var t = String(calcType || "").toUpperCase();
+                if (t === "1" || t === "FIXED") return `<span class="badge bg-success-subtle text-success border border-success-subtle">Fixed</span>`;
+                if (t === "2" || t === "RATE") return `<span class="badge bg-info-subtle text-info border border-info-subtle">Rate</span>`;
+                if (t === "3" || t === "RANGE") return `<span class="badge bg-purple-subtle text-purple border border-purple-subtle">Range</span>`;
+                return `<span class="badge bg-light text-dark border">Unknown</span>`;
+            }
+            function computeChargeValue(rule, amount) {
+                amount = toNum(amount);
+                if (!amount || amount <= 0) return 0;
+
+                var t = normalizeCalcType(rule); // ✅ FIXED/RATE/RANGE (supports int and string)
+
+                if (t === "FIXED") {
+                    return toNum(rule.FixedAmount ?? rule.fixedAmount ?? 0);
+                }
+
+                if (t === "RATE") {
+                    var rate = toNum(rule.RatePercent ?? rule.ratePercent ?? 0);
+                    var raw = (amount * rate / 100.0);
+
+                    var min = toNum(rule.MinFee ?? rule.minFee ?? 0);
+                    var max = toNum(rule.MaxFee ?? rule.maxFee ?? 0);
+
+                    if (min > 0) raw = Math.max(min, raw);
+                    if (max > 0) raw = Math.min(max, raw);
+
+                    return Math.round(raw);
+                }
+
+                if (t === "RANGE") {
+                    var ranges = rule.Ranges || rule.ranges || [];
+                    for (var i = 0; i < ranges.length; i++) {
+                        var r = ranges[i];
+                        var from = toNum(r.FromAmount ?? r.fromAmount ?? 0);
+                        var to = toNum(r.ToAmount ?? r.toAmount ?? 0);
+                        var fee = toNum(r.FeeAmount ?? r.feeAmount ?? 0);
+
+                        if (amount >= from && amount <= to) return fee;
+                    }
+                    return 0;
+                }
+
+                return 0;
+            }
+            // --------------------------------------
+            // ✅ State (reuse your variables)
+            // --------------------------------------
+            var chargeRulesCache = window.chargeRulesCache || [];  // will be overwritten by loader
+            var chargeUserOverrides = window.chargeUserOverrides || {};
+            var selectedChargeIds = window.selectedChargeIds || [];
+            function calcTypeLabelFromRule(rule) {
+                var t = normalizeCalcType(rule);
+                if (t === "FIXED") return "Fixed";
+                if (t === "RATE") return "Rate";
+                if (t === "RANGE") return "Range";
+                return "Unknown";
+            }
+            // --------------------------------------
+            // ✅ Checkbox picker render
+            // --------------------------------------
+            // ✅ render list with filter (does not reset checked items)
+
+            function renderChargePicker() {
+                var $wrap = $("#chargesPicker");
+                $wrap.empty();
+
+                var q = String($("#txtChargeSearch").val() || "").toLowerCase();
+
+                if (!chargeRulesCache.length) {
+                    $wrap.html(`<div class="text-muted small">No charges configured for this product.</div>`);
+                    return;
+                }
+
+                chargeRulesCache.forEach(function (c) {
+                    var id = String(c.Id || c.id || "");
+                    var name = String(c.Name || c.name || "");
+                    var mode = String(c.Mode || c.mode || "").toUpperCase();
+
+                    // ✅ keep checked state even after filtering
+                    var checked = selectedChargeIds.indexOf(id) >= 0;
+
+                    // ✅ filter by search (but don't lose checked state)
+                    if (q && !name.toLowerCase().includes(q) && !mode.toLowerCase().includes(q)) return;
+
+                    var modeBadgeClass = mode.includes("BEFORE") ? "badge bg-warning-subtle text-warning border"
+                        : "badge bg-success-subtle text-success border";
+
+                    $wrap.append(`
+                        <label class="d-flex align-items-center justify-content-between gap-2 py-1 px-1 border-bottom" style="cursor:pointer;">
+                            <span class="d-flex align-items-center gap-2">
+                                <input class="form-check-input tsc-charge-cb" type="checkbox" value="${escapeHtml(id)}" ${checked ? "checked" : ""}>
+                                <span>${escapeHtml(name)}</span>
+                            </span>
+                            <span class="${modeBadgeClass}">${escapeHtml(mode.replaceAll("_", " "))}</span>
+                        </label>
+                    `);
+                });
+            }
+
+
+            // ✅ search box filter (keeps checked items as-is)
+            $("#txtChargeSearch").off("input.tscChargeSearch").on("input.tscChargeSearch", function () {
+                renderChargePicker($(this).val());
+            });
+
+            function calcTypeDetailText(rule) {
+                var t = normalizeCalcType(rule);
+
+                function toNum(v) { v = Number(v); return isNaN(v) ? 0 : v; }
+
+                if (t === "RATE") {
+                    var rate = toNum(rule.RatePercent ?? rule.ratePercent);
+                    var minF = toNum(rule.MinFee ?? rule.minFee);
+                    var maxF = toNum(rule.MaxFee ?? rule.maxFee);
+
+                    var parts = [rate + "%"];
+                    if (minF > 0) parts.push("Min " + minF.toLocaleString());
+                    if (maxF > 0) parts.push("Max " + maxF.toLocaleString());
+                    return parts.join(" • ");
+                }
+
+                if (t === "RANGE") {
+                    var ranges = (rule.Ranges ?? rule.ranges ?? []);
+                    if (!ranges.length) return "No tiers";
+                    // show short summary
+                    var first = ranges[0];
+                    var last = ranges[ranges.length - 1];
+                    var from = Number(first.FromAmount ?? first.fromAmount ?? 0).toLocaleString();
+                    var to = Number(last.ToAmount ?? last.toAmount ?? 0).toLocaleString();
+                    return "Tiers (" + from + " → " + to + ")";
+                }
+
+                if (t === "FIXED") {
+                    var fixed = Number(rule.FixedAmount ?? rule.fixedAmount ?? 0);
+                    return fixed.toLocaleString() + " FCFA";
+                }
+
+                return "";
+            }
+            function computeSystemCharge(charge, amount) {
+                amount = Number(amount || 0);
+                var type = String(charge.CalcType || charge.calcType || "").toUpperCase();
+
+                function toNum(v) { v = Number(v); return isNaN(v) ? 0 : v; }
+
+                if (type === "FIXED") {
+                    return toNum(charge.FixedAmount || charge.fixedAmount);
+                }
+
+                if (type === "RANGE") {
+                    var ranges = (charge.Ranges || charge.ranges || []);
+                    for (var i = 0; i < ranges.length; i++) {
+                        var r = ranges[i];
+                        var from = toNum(r.FromAmount || r.fromAmount);
+                        var to = toNum(r.ToAmount || r.toAmount);
+                        var fee = toNum(r.FeeAmount || r.feeAmount);
+
+                        // inclusive range
+                        if (amount >= from && amount <= to) return fee;
+                    }
+                    return 0;
+                }
+
+                if (type === "RATE") {
+                    var rate = toNum(charge.RatePercent || charge.ratePercent); // percent
+                    var minF = toNum(charge.MinFee || charge.minFee);
+                    var maxF = toNum(charge.MaxFee || charge.maxFee);
+
+                    var fee = (amount * rate) / 100.0;
+                    if (minF > 0) fee = Math.max(fee, minF);
+                    if (maxF > 0) fee = Math.min(fee, maxF);
+
+                    return Math.round(fee); // optional rounding
+                }
+
+                return 0;
+            }
+            function normalizeCalcType(rule) {
+                var t = (rule.CalcType ?? rule.calcType ?? "").toString().trim();
+
+                // int enum support: 1 Fixed, 2 Rate, 3 Range
+                if (t === "1") return "FIXED";
+                if (t === "2") return "RATE";
+                if (t === "3") return "RANGE";
+
+                // string support
+                t = t.toUpperCase();
+                if (t.includes("FIX")) return "FIXED";
+                if (t.includes("RATE") || t.includes("%")) return "RATE";
+                if (t.includes("RANGE") || t.includes("TIER")) return "RANGE";
+
+                return "UNKNOWN";
+            }
+            // --------------------------------------
+            // ✅ Loader: do NOT auto select
+            // --------------------------------------
+            // ✅ loader: DO NOT auto-select all
+            window.loadChargesForProduct = function (productId) {
+                $("#chargesPicker").empty();
+                $("#chargesEditorWrap").hide();
+                $("#chargesEditorList").empty();
+
+                chargeRulesCache = [];
+                chargeUserOverrides = {};
+                selectedChargeIds = [];
+
+                if (!productId) return;
+                console.log("Calling charges endpoint:", window.chargesUrl, "productId:", productId);
+
+                // ✅ IMPORTANT: use window.chargesUrl (now set)
+                if (!window.chargesUrl) {
+                    console.warn("chargesUrl is missing. Check #loanUiRoutes data-charges-url.");
+                    return;
+                }
+
+                $.get(window.chargesUrl, { productId: productId })
+                    .done(function (res) {
+                        console.log("CHARGES RAW:", res);
+                        var items = (res && (res.data || res.Data || res.result || res.Result || res.items || res.Items)) || [];
+                        console.log("CHARGES ITEMS COUNT:", items.length);
+                        chargeRulesCache = items;
+                        renderChargePicker();
+
+                        renderChargePicker();          // ✅ renders checkboxes
+                        updateChargeSummary([]);       // ✅ reset summary
+                        $("#hidSelectedChargesJson").val("[]");
+                    })
+                    .fail(function (xhr) {
+                        console.warn("Charges failed to load.", xhr);
+                    });
+            };
+
+
+            // --------------------------------------
+            // ✅ Checkbox change -> recompute cards + summary
+            // --------------------------------------
+            $(document).off("change.tscCharges", ".tsc-charge-cb").on("change.tscCharges", ".tsc-charge-cb", function () {
+                var id = String($(this).val());
+                if ($(this).is(":checked")) {
+                    if (selectedChargeIds.indexOf(id) < 0) selectedChargeIds.push(id);
+                } else {
+                    selectedChargeIds = selectedChargeIds.filter(x => String(x) !== id);
+                }
+                refreshChargesEditorAndSummary();
+            });
+            // ✅ Clear all selected charges + reset UI
+            $(document)
+                .off("click.tscClearCharges", "#btnClearCharges")
+                .on("click.tscClearCharges", "#btnClearCharges", function () {
+
+                    // reset state
+                    selectedChargeIds = [];
+                    chargeUserOverrides = {};
+
+                    // uncheck all checkboxes
+                    $(".tsc-charge-cb").prop("checked", false);
+
+                    // hide editor + clear cards
+                    $("#chargesEditorWrap").hide();
+                    $("#chargesEditorList").empty();
+
+                    // reset summary + hidden json
+                    updateChargeSummary([]);
+                    $("#hidSelectedChargesJson").val("[]");
+
+                    // optional: also re-render picker (keeps current search filter)
+                    renderChargePicker();
+                });
+            // Recompute when amount changes (system charge changes)
+            $("#txtAmount").off("input.tscChargesAmount blur.tscChargesAmount").on("input.tscChargesAmount blur.tscChargesAmount", function () {
+                if (!selectedChargeIds.length) return;
+                refreshChargesEditorAndSummary();
+            });
+
+            function loadChargesForProduct(productId) {
+
+                // Reset UI
+                $("#chargesEditorWrap").hide();
+                $("#chargesEditorList").empty();
+
+                // If you still have ddlCharges in DOM, clear it (optional)
+                $("#ddlCharges").empty();
+
+                chargeRulesCache = [];
+                chargeUserOverrides = {};
+                selectedChargeIds = []; // ✅ nothing selected on load
+
+                if (!productId || !chargesUrl) return;
+
+                $.get(chargesUrl, { productId: productId })
+                    .done(function (res) {
+                        var items = (res && (res.data || res.Data)) || [];
+                        chargeRulesCache = items || [];
+
+                        if (!chargeRulesCache.length) {
+                            console.warn("No charges returned for product:", productId);
+                            renderChargePicker();          // shows “No charges…” message
+                            updateChargeSummary([]);       // reset summary
+                            $("#hidSelectedChargesJson").val("[]");
+                            return;
+                        }
+
+                        // ✅ render checkbox picker (nothing checked)
+                        renderChargePicker();
+
+                        // ✅ reset summary + hidden json
+                        updateChargeSummary([]);
+                        $("#hidSelectedChargesJson").val("[]");
+                    })
+                    .fail(function (xhr) {
+                        console.warn("Charges failed to load.", xhr);
+                    });
+            }
+            $(".charge-user-input").off("input.chgUser blur.chgUser").on("input.chgUser blur.chgUser", function () {
+                var $row = $(this).closest("[data-fee-id]");
+                var feeId = String($row.data("fee-id"));
+
+                var amount2 = parseMoneyInput($("#txtAmount").val()); // ✅ fixed
+                var rule = chargeRulesCache.find(x => String(x.Id || x.id) === feeId);
+                var systemCharge = computeChargeValue(rule || {}, amount2);
+
+                var v = parseMoneyInput($(this).val());
+                if (v < systemCharge) v = systemCharge;
+
+                $(this).val(v);
+                chargeUserOverrides[feeId] = v;
+
+                updateChargeSummaryFromSelection();
+                buildChargesSubmissionJson();
+            });
+            $(document).off("click.tscChargeRemove", ".tsc-charge-remove").on("click.tscChargeRemove", ".tsc-charge-remove", function () {
+                var id = String($(this).data("fee-id"));
+
+                selectedChargeIds = selectedChargeIds.filter(x => String(x) !== id);
+                delete chargeUserOverrides[id];
+
+                // update checkbox UI (if visible)
+                $('.tsc-charge-cb[value="' + id + '"]').prop("checked", false);
+
+                refreshChargesEditorAndSummary();
+            });
+
+            function parseMoneyInput(v) {
+                if (v === null || v === undefined) return 0;
+                // remove commas, spaces, currency symbols
+                v = String(v).replace(/[^\d.-]/g, "");
+                var n = parseFloat(v);
+                return isNaN(n) ? 0 : n;
+            }
+
+
+            function refreshChargesByAmount() {
+                var amount = parseMoneyInput($("#txtAmount").val());
+
+                // update option labels
+                $("#ddlCharges option").each(function () {
+                    var id = this.value;
+                    var charge = (chargesCache || []).find(x => String(x.Id || x.id) === String(id));
+                    if (!charge) return;
+
+                    var sys = computeSystemCharge(charge, amount);
+                    var name = charge.Name || charge.name;
+
+                    // store system value on the option (for summary)
+                    $(this).attr("data-system", sys);
+
+                    // update label text (keep selected state)
+                    this.text = `${name} (${Number(sys).toLocaleString()} FCFA)`;
+                });
+
+                // refresh detailed editor panels too (if you have them)
+                //renderSelectedChargeEditors();
+
+                // refresh totals
+                $("#ddlCharges").trigger("change");
+            }
+            $("#ddlCharges").off("change.chgSel").on("change.chgSel", function () {
+                selectedChargeIds = $("#ddlCharges").val() || [];
+                refreshChargesEditorAndSummary();
+            });
+            // --------------------------------------
+            // ✅ Selected cards render (3-up grid already in your screenshot)
+            // + Add Remove button per card
+            // --------------------------------------
+            function refreshChargesEditorAndSummary() {
+                var amount = parseMoneyInput($("#txtAmount").val());
+                var $wrap = $("#chargesEditorWrap");
+                var $list = $("#chargesEditorList");
+
+                if (!selectedChargeIds.length) {
+                    $wrap.hide();
+                    $list.empty();
+                    updateChargeSummary([]);
+                    $("#hidSelectedChargesJson").val("[]");
+                    return;
+                }
+
+                var selectedRules = chargeRulesCache.filter(c => selectedChargeIds.indexOf(String(c.Id || c.id)) >= 0);
+
+                // ✅ 3-per-row grid
+                var cards = selectedRules.map(function (c) {
+                    var id = String(c.Id || c.id);
+                    var name = String(c.Name || c.name);
+                    var mode = normMode(c.Mode || c.mode);
+                    var calcTypeRaw = (c.CalcType || c.calcType || "");
+                    var calcTypeStr = String(calcTypeRaw || "").toUpperCase(); // FIXED/RATE/RANGE or number
+
+                    var systemCharge = computeChargeValue(c, amount);
+                    var userCharge = (chargeUserOverrides[id] != null) ? toNum(chargeUserOverrides[id]) : systemCharge;
+
+                    // ✅ enforce user >= system
+                    if (userCharge < systemCharge) userCharge = systemCharge;
+                    chargeUserOverrides[id] = userCharge;
+
+                    // ✅ Details line
+                    var details = "";
+                    if (calcTypeStr === "FIXED" || calcTypeStr === "1") {
+                        details = `${toNum(c.FixedAmount || c.fixedAmount).toLocaleString()} FCFA`;
+                    } else if (calcTypeStr === "RATE" || calcTypeStr === "2") {
+                        var rate = toNum(c.RatePercent || c.ratePercent);
+                        var minF = toNum(c.MinFee || c.minFee);
+                        var maxF = toNum(c.MaxFee || c.maxFee);
+                        details = `${rate}%` + (minF ? ` • Min ${minF.toLocaleString()}` : "") + (maxF ? ` • Max ${maxF.toLocaleString()}` : "");
+                    } else if (calcTypeStr === "RANGE" || calcTypeStr === "3") {
+                        var ranges = (c.Ranges || c.ranges || []);
+                        // show min/max tier bounds
+                        var minA = ranges.length ? Math.min.apply(null, ranges.map(r => toNum(r.FromAmount || r.fromAmount))) : 0;
+                        var maxA = ranges.length ? Math.max.apply(null, ranges.map(r => toNum(r.ToAmount || r.toAmount))) : 0;
+                        details = `Tiers (${minA.toLocaleString()} → ${maxA.toLocaleString()})`;
+                    }
+
+                    return `
+              <div class="col-12 col-md-6">
+                  <div class="card shadow-sm h-100 border-0">
+                      <div class="card-body">
+                          <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
+                              <div class="fw-semibold">${esc(name)}</div>
+                              <div class="d-flex gap-1 align-items-center">
+                                  ${modeBadge(mode)}
+                                  ${feeTypeBadge(calcTypeStr)}
+                                  <button type="button"
+                                          class="btn btn-sm btn-outline-danger py-0 px-2 tsc-charge-remove"
+                                          data-fee-id="${esc(id)}"
+                                          title="Remove">
+                                      <i class="mdi mdi-close"></i>
+                                  </button>
+                              </div>
+                          </div>
+
+                          <!-- Compact layout -->
+                          <div class="row g-2 small">
+                              <div class="col-6 col-xl-3">
+                                  <div class="text-muted">System</div>
+                                  <div class="fw-bold">${systemCharge.toLocaleString()} FCFA</div>
+                              </div>
+
+                              <div class="col-6 col-xl-3">
+                                  <div class="text-muted">User</div>
+                                  <input type="number"
+                                         class="form-control form-control-sm tsc-charge-user"
+                                         data-fee-id="${esc(id)}"
+                                         min="${systemCharge}"
+                                         value="${userCharge}">
+                                  <div class="invalid-feedback">Cannot be below system charge.</div>
+                              </div>
+
+                              <div class="col-6 col-xl-3">
+                                  <div class="text-muted">Fee Type</div>
+                                  <div class="fw-bold">${esc(
+                        (calcTypeStr === "1") ? "FIXED" :
+                            (calcTypeStr === "2") ? "RATE" :
+                                (calcTypeStr === "3") ? "RANGE" : calcTypeStr
+                    )}</div>
+                              </div>
+
+                              <div class="col-6 col-xl-3">
+                                  <div class="text-muted">Details</div>
+                                  <div class="fw-bold">${esc(details || "-")}</div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+`;
+                }).join("");
+
+                $list.html(`<div class="row g-2">${cards}</div>`);
+                $wrap.show();
+
+                bindChargeCardEvents();
+                updateChargeSummaryFromSelection();
+                buildChargesSubmissionJson();
+            }
+            function bindChargeCardEvents() {
+                // Remove button on each card
+                $(".tsc-charge-remove").off("click").on("click", function () {
+                    var feeId = String($(this).data("fee-id"));
+                    selectedChargeIds = selectedChargeIds.filter(x => String(x) !== feeId);
+
+                    // sync checkbox
+                    $(`.tsc-charge-cb[value="${feeId}"]`).prop("checked", false);
+
+                    refreshChargesEditorAndSummary();
+                });
+
+                // User input validation: user >= system
+                $(".tsc-charge-user").off("input blur").on("input blur", function () {
+                    var $i = $(this);
+                    var feeId = String($i.data("fee-id"));
+                    var amount = toNum($("#txtAmount").val());
+
+                    var rule = chargeRulesCache.find(x => String(x.Id || x.id) === feeId);
+                    var sys = computeChargeValue(rule || {}, amount);
+
+                    var v = toNum($i.val());
+                    if (v < sys) {
+                        v = sys;
+                        $i.val(v);
+                        $i.addClass("is-invalid");
+                    } else {
+                        $i.removeClass("is-invalid");
+                    }
+
+                    chargeUserOverrides[feeId] = v;
+                    updateChargeSummaryFromSelection();
+                    buildChargesSubmissionJson();
+                });
+            }
+
+            // --------------------------------------
+            // ✅ Summary (color logic already from totals; keep yours)
+            // --------------------------------------
+            function updateChargeSummaryFromSelection() {
+                var amount = toNum($("#txtAmount").val());
+                var selectedRules = chargeRulesCache.filter(c => selectedChargeIds.indexOf(String(c.Id || c.id)) >= 0);
+
+                var payload = selectedRules.map(function (c) {
+                    var id = String(c.Id || c.id);
+                    var mode = normMode(c.Mode || c.mode || "");
+                    var calcType = String(c.CalcType || c.calcType || "");
+                    var systemCharge = computeChargeValue(c, amount);
+                    var userCharge = toNum(chargeUserOverrides[id] || systemCharge);
+                    if (userCharge < systemCharge) userCharge = systemCharge;
+
+                    return { id, mode, calcType, systemCharge, userCharge };
+                });
+
+                updateChargeSummary(payload);
+            }
+
+            function updateChargeSummary(items) {
+                var before = 0, after = 0, total = 0;
+
+                (items || []).forEach(function (x) {
+                    var amt = toNum(x.userCharge);
+                    if (String(x.mode || "").includes("BEFORE")) before += amt;
+                    else after += amt;
+                    total += amt;
+                });
+
+                $("#sumBefore").text(before.toLocaleString());
+                $("#sumAfter").text(after.toLocaleString());
+                $("#sumUpfront").text(before.toLocaleString());
+                $("#sumTotalCharges").text(total.toLocaleString());
+
+                // ✅ optional: tint numbers
+                $("#sumBefore").toggleClass("text-warning", before > 0);
+                $("#sumAfter").toggleClass("text-primary", after > 0);
+                $("#sumUpfront").toggleClass("text-success", before > 0);
+            }
+
+            function buildChargesSubmissionJson() {
+                var amount = toNum($("#txtAmount").val());
+                var selectedRules = chargeRulesCache.filter(c => selectedChargeIds.indexOf(String(c.Id || c.id)) >= 0);
+
+                var submit = selectedRules.map(function (c) {
+                    var feeId = String(c.Id || c.id);
+                    var mode = normMode(c.Mode || c.mode || "");
+                    var calcType = String(c.CalcType || c.calcType || "");
+
+                    var systemCharge = computeChargeValue(c, amount);
+                    var userCharge = toNum(chargeUserOverrides[feeId] || systemCharge);
+                    if (userCharge < systemCharge) userCharge = systemCharge;
+
+                    return {
+                        FeeId: feeId,
+                        Mode: mode,
+                        ChargeCalcType: calcType,
+                        SystemCharge: systemCharge,
+                        UserCharge: userCharge
+                    };
+                });
+
+                $("#hidSelectedChargesJson").val(JSON.stringify(submit));
+            }
+
+            // --------------------------------------
+            // ✅ Checkbox change -> recompute cards + summary
+            // --------------------------------------
+            $(document).off("change.tscCharges", ".tsc-charge-cb").on("change.tscCharges", ".tsc-charge-cb", function () {
+                var id = String($(this).val());
+                if ($(this).is(":checked")) {
+                    if (selectedChargeIds.indexOf(id) < 0) selectedChargeIds.push(id);
+                } else {
+                    selectedChargeIds = selectedChargeIds.filter(x => String(x) !== id);
+                }
+                refreshChargesEditorAndSummary();
+            });
+
+            // Recompute when amount changes (system charge changes)
+            $("#txtAmount").off("input.tscChargesAmount blur.tscChargesAmount").on("input.tscChargesAmount blur.tscChargesAmount", function () {
+                if (!selectedChargeIds.length) return;
+                refreshChargesEditorAndSummary();
+            });
+
+            // debounce (avoid recalculating every keystroke too aggressively)
+            var chargeTimer = null;
+            $("#txtAmount").on("input", function () {
+                clearTimeout(chargeTimer);
+                chargeTimer = setTimeout(refreshChargesByAmount, 200);
+            });
+
+
+            $("#ddlCharges").off("change.chargeEdit").on("change.chargeEdit", function () {
+                $("#chargeEditArea").empty();
+
+                $("#ddlCharges option:selected").each(function () {
+                    var $opt = $(this);
+
+                    var feeId = $opt.val();
+                    var mode = String($opt.data("mode") || "").toUpperCase();
+                    var systemCharge = Number($opt.data("system") || 0);
+                    var min = Number($opt.data("min") || systemCharge);
+                    var calcType = Number($opt.data("calctype") || 0);
+
+                    var displayName = $opt.text();
+
+                    $("#chargeEditArea").append(`
+                            <div class="border rounded p-2 mb-2 charge-row"
+                                 data-fee-id="${escapeHtml(feeId)}"
+                                 data-mode="${escapeHtml(mode)}"
+                                 data-system="${systemCharge}"
+                                 data-calctype="${calcType}">
+
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="fw-semibold small">${escapeHtml(displayName)}</div>
+                                    <span class="badge bg-light text-dark">${escapeHtml(mode.replaceAll("_", " "))}</span>
+                                </div>
+
+                                <div class="row g-2 mt-1 align-items-end">
+                                    <div class="col-12 col-md-4">
+                                        <div class="small text-muted">System Charge</div>
+                                        <div class="fw-bold">${systemCharge.toLocaleString()} FCFA</div>
+                                    </div>
+
+                                    <div class="col-12 col-md-4">
+                                        <label class="form-label small mb-1">User Charge (Editable)</label>
+                                        <input type="number"
+                                               class="form-control form-control-sm charge-input"
+                                               value="${systemCharge}"
+                                               data-min="${min}" />
+                                        <div class="invalid-feedback">Charge cannot be below system charge.</div>
+                                    </div>
+
+                                    <div class="col-12 col-md-4">
+                                        <div class="small text-muted">Calc Type</div>
+                                        <div class="fw-bold">${calcTypeLabel(calcType)}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        `);
+                });
+
+                recalcChargeSummary();
+                toggleUpfrontInfo();
+            });
+            $(document)
+                .off("input.chargeMin blur.chargeMin", ".charge-input")
+                .on("input.chargeMin blur.chargeMin", ".charge-input", function () {
+                    var $i = $(this);
+                    var min = Number($i.data("min") || 0);
+                    var v = Number($i.val() || 0);
+
+                    if (v < min) $i.addClass("is-invalid");
+                    else $i.removeClass("is-invalid");
+
+                    recalcChargeSummary();
+                    toggleUpfrontInfo();
+                });
+
+            function calcTypeLabel(v) {
+                v = Number(v || 0);
+                if (v === 1) return "Fixed";
+                if (v === 2) return "Rate";
+                if (v === 3) return "Range";
+                return "Unknown";
+            }
+            function recalcChargeSummary() {
+                var before = 0, after = 0;
+
+                $("#chargeEditArea .charge-row").each(function () {
+                    var $row = $(this);
+                    var mode = String($row.data("mode") || "").toUpperCase();
+                    var amt = Number($row.find(".charge-input").val() || 0);
+
+                    if (mode.includes("BEFORE")) before += amt;
+                    else after += amt;
+                });
+
+                $("#sumBefore").text(before.toLocaleString());
+                $("#sumAfter").text(after.toLocaleString());
+                $("#sumUpfront").text(before.toLocaleString());
+                $("#sumTotalCharges").text((before + after).toLocaleString());
+            }
+
+            function toggleUpfrontInfo() {
+                var hasBefore = false;
+                $("#chargeEditArea .charge-row").each(function () {
+                    var mode = String($(this).data("mode") || "").toUpperCase();
+                    if (mode.includes("BEFORE")) hasBefore = true;
+                });
+                $("#upfrontInfo").toggle(hasBefore);
+            }
+            function validateChargeOverrides() {
+                var ok = true;
+
+                $("#chargeEditArea .charge-row").each(function () {
+                    var $row = $(this);
+                    var systemCharge = Number($row.data("system") || 0);
+
+                    var $input = $row.find(".charge-input");
+                    var userCharge = Number($input.val() || 0);
+
+                    if (userCharge < systemCharge) {
+                        $input.addClass("is-invalid");
+                        ok = false;
+                    } else {
+                        $input.removeClass("is-invalid");
+                    }
+                });
+
+                return ok;
+            }
+
+
+            function ensureFieldErrorEl($el) {
+                // Put an error element right under the input/select
+                var $err = $el.siblings(".field-error");
+                if (!$err.length) {
+                    $err = $('<div class="field-error text-danger small mt-1" style="display:none;"></div>');
+                    $el.after($err);
+                }
+                return $err;
+            }
+            function validateAmountLive() {
+                var mode = String(wizardState.restructureMode || "NEW").toUpperCase();
+                if (mode === "RESCHEDULE") {
+                    // requested amount is forced from old loan, so don't block the UI
+                    setFieldInvalid($("#txtAmount"), false);
+                    return true;
+                }
+                var policy = window.productPolicy || {};
+                var minA = Number(policy.minAmount || 0);
+                var maxA = Number(policy.maxAmount || 0);
+
+                var $a = $("#txtAmount");
+                var raw = ($a.val() || "").trim();
+                var v = parseFloat(raw);
+
+                if (!raw) {
+                    setFieldInvalid($a, false);
+                    return true;
+                }
+
+                var ok = inRangeNumber(v, minA, maxA);
+                setFieldInvalid(
+                    $a,
+                    !ok,
+                    "Amount must be within policy range (" +
+                    Number(minA).toLocaleString() + " - " +
+                    Number(maxA).toLocaleString() + " FCFA)."
+                );
+
+                return ok;
+            }
+
+            $("#txtAmount")
+                .off(".amountPolicy")
+                .on("input.amountPolicy blur.amountPolicy", function () {
+                    validateAmountLive();
+                });
+
+            function validateRepaymentPeriodLive() {
+                var policy = window.productPolicy || {};
+                var minM = Number(policy.minMonth || 0);
+                var maxM = Number(policy.maxMonth || 0);
+
+                var $rp = $("#ddlRepaymentPeriod");
+                var rp = Number($rp.val() || 0);
+
+                // allowed list from productCache
+                var periods = (productCache && (productCache.Periods || productCache.periods)) || [];
+                var allowed = periods && periods.length ? periods.map(Number).indexOf(rp) >= 0 : true;
+
+                var ok = (rp > 0) && allowed && inRangeNumber(rp, minM, maxM);
+
+                setFieldInvalid(
+                    $rp,
+                    !ok,
+                    "Repayment period must be within policy range (" + minM + " - " + maxM + " months) and match allowed periods."
+                );
+
+                return ok;
+            }
+
+
+
+            $("#ddlRepaymentPeriod")
+                .off(".rpPolicy")
+                .on("change.rpPolicy blur.rpPolicy", function () {
+                    validateRepaymentPeriodLive();
+                });
+
+
+            $("#txtAmount")
+                .off(".amountPolicy")
+                .on("input.amountPolicy blur.amountPolicy", function () {
+                    validateAmountLive();
+                });
+
+            function validateInterestLive() {
+                var policy = window.productPolicy || {};
+                var minI = Number(policy.minInterest || 0);
+                var maxI = Number(policy.maxInterest || 0);
+
+                var $i = $("#txtInterest");
+                var raw = ($i.val() || "").trim();
+                var v = parseFloat(raw);
+
+                // allow empty while typing
+                if (!raw) {
+                    setInvalid($i, false);
+                    return true;
+                }
+
+                var ok = !isNaN(v) && v > 0 && v >= minI && v <= maxI;
+
+                setInvalid(
+                    $i,
+                    !ok,
+                    "Interest must be within policy range (" + minI + "% - " + maxI + "%)."
+                );
+
+                return ok;
+            }
+
+            // same binding style as amount
+            $("#txtInterest")
+                .off(".interestLive")
+                .on("input.interestLive blur.interestLive", function () {
+                    validateInterestLive();
+                });
+
+
+            function setFieldInvalid($el, isInvalid, message) {
+                var $err = ensureFieldErrorEl($el);
+
+                if (isInvalid) {
+                    $el.addClass("is-invalid");
+                    $err.text(message || "Invalid value.").show();
+                } else {
+                    $el.removeClass("is-invalid");
+                    $err.hide().text("");
+                }
+            }
+
+            function inRangeNumber(v, min, max) {
+                if (v === null || v === undefined || isNaN(v)) return false;
+                if (min !== null && min !== undefined && !isNaN(min) && v < min) return false;
+                if (max !== null && max !== undefined && !isNaN(max) && v > max) return false;
+                return true;
+            }
+
+            function buildChargesPayload() {
+                var amt = Number($("#txtAmount").val() || 0);
+                var selected = [];
+
+                $("#ddlCharges option:selected").each(function () {
+                    var id = this.value;
+                    var charge = (chargesCache || []).find(x => String(x.Id || x.id) === String(id));
+                    if (!charge) return;
+
+                    var sys = computeSystemCharge(charge, amt);
+                    var mode = String(charge.Mode || charge.mode || "").toUpperCase();
+                    var calcType = String(charge.CalcType || charge.calcType || "");
+
+                    // user editable field you render per selected charge
+                    var userVal = Number($(`#chargeUser_${id}`).val() || sys);
+
+                    // enforce rule: user cannot go below system
+                    if (userVal < sys) userVal = sys;
+
+                    selected.push({
+                        FeeId: id,
+                        SystemCharge: sys,
+                        UserCharge: userVal,
+                        Mode: mode,
+                        ChargeCalcType: calcType
+                    });
+                });
+
+                return selected;
+            }
+
+
+            $("#ddlCharges").on("change", function () {
+                var before = 0, after = 0;
+
+                $("#ddlCharges option:selected").each(function () {
+                    var sys = Number($(this).attr("data-system") || 0);
+                    var mode = String($(this).attr("data-mode") || "").toUpperCase();
+
+                    if (mode.includes("BEFORE")) before += sys;
+                    else after += sys;
+                });
+
+                $("#sumBefore").text(before.toLocaleString());
+                $("#sumAfter").text(after.toLocaleString());
+                $("#sumUpfront").text(before.toLocaleString());
+
+                var total = before + after;
+                $("#sumTotalCharges").text(total.toLocaleString());
+            });
+
+
+            function resetChargesSummary() {
+                $("#sumBefore").text("0");
+                $("#sumAfter").text("0");
+                $("#sumUpfront").text("0");
+                $("#upfrontHint").text("No upfront charges selected.").removeClass("text-warning").addClass("text-muted");
+            }
+
+            // =====================================================
+            // Recovery Mechanism (load accounts ONLY when enabled)
+            // =====================================================
+
+            function toNum(v) { var n = Number(v); return isNaN(n) ? 0 : n; }
+            function upper(s) { return String(s || "").trim().toUpperCase(); }
+            function normStr(v) { return (v == null) ? "" : String(v).trim(); }
+
+            function pick(o, camel, pascal, def) {
+                if (!o) return def;
+                var v = o[camel];
+                if (v !== undefined && v !== null) return v;
+                v = o[pascal];
+                if (v !== undefined && v !== null) return v;
+                return def;
+            }
+
+            function normalizeAccount(a) {
+                var id = normStr(pick(a, "id", "Id", ""));
+                var type = normStr(pick(a, "accountType", "AccountType", ""));
+                var number = normStr(pick(a, "accountNumber", "AccountNumber", ""));
+                var name = normStr(pick(a, "accountName", "AccountName", ""));      // NEW
+                var status = normStr(pick(a, "status", "Status", "ACTIVE"));        // NEW
+                var balance = Number(pick(a, "balance", "Balance", 0)) || 0;
+                var currency = normStr(pick(a, "currency", "Currency", "FCFA")) || "FCFA";
+
+                return { id, type, number, name, status, balance, currency, raw: a };
+            }
+
+
+            function esc(s) {
+                return (s ?? "").toString().replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+            }
+
+
+            function isSavings(a) {
+                var t = normStr(pick(a, "accountType", "AccountType", "")).toLowerCase().replace(/\s+/g, " ").trim();
+                return t === "savings";
+            }
+
+            function isOrdinaryShares(a) {
+                var t = normStr(pick(a, "accountType", "AccountType", "")).toLowerCase().replace(/\s+/g, " ").trim();
+                return (t === "ordinary shares" || t === "ordinaryshares");
+            }
+            //function pick(obj, key, fallback) { return (obj && obj[key] !== undefined && obj[key] !== null) ? obj[key] : fallback; }
+            function isSavingsOrShares(a) {
+                var t = normStr(pick(a, "accountType", "AccountType", "")).toLowerCase().replace(/\s+/g, " ").trim();
+                return t === "savings" || t === "ordinary shares" || t === "ordinaryshares";
+            }
+            // ✅ identify required accounts by policy flag OR by type+reason
+            function isPolicyRequiredAccount(a) {
+                var req = pick(a, "isRequired", "IsRequired", null);
+                if (req === true) return true;
+
+                var reason = upper(pick(a, "reason", "Reason", ""));
+                if (reason.includes("REQUIRED")) return true;
+
+                // fallback: if your backend marks required savings/shares by min rules, expose isRequired in API
+                return false;
+            }
+            // ✅ amounts coming from coobligor + shotee (wire these to your real state)
+            function getCoobligorTotal() { return toNum(window.recoveryState?.coobligorTotal || 0); }
+            function getShoteeTotal() { return toNum(window.recoveryState?.shoteeTotal || 0); }
+
+            // ✅ Loan/policy values (wire these to your real wizard/loan state)
+            function getRequestedLoanAmount() {
+                return toNum(window.wizardState?.application?.requestedAmount || window.wizardState?.loanAmount || 0);
+            }
+            function getDownpaymentPercent() {
+                return toNum(window.wizardState?.policy?.downpaymentPercent || window.wizardState?.facilityPolicy?.downpaymentPercent || 0);
+            }
+            function getLoanAmount() {
+                // adapt if your amount id differs
+                return toNum($("#txtAmount").val() || 0);
+            }
+            function applyRequiredRecoveryAccounts() {
+                window.recoveryState = window.recoveryState || {};
+                window.recoveryState.selected = window.recoveryState.selected || {};
+
+                var all = window.recoveryState.accounts || [];
+                var selected = window.recoveryState.selected;
+
+                all.forEach(function (a) {
+                    if (!isPolicyRequiredAccount(a)) return;
+
+                    var id = String(pick(a, "id", "Id", ""));
+                    var bal = toNum(pick(a, "balance", "Balance", 0));
+
+                    // Decide policy behavior:
+                    // - OrdinaryShares required => locked + not blockable + fixed min amount from API if provided
+                    // - Savings required => locked + blocked (or required) depending on your rules
+
+                    var minAmt = toNum(pick(a, "minRequiredAmount", "MinRequiredAmount", 0)); // ✅ best: backend supplies
+                    var requiredAmt = minAmt > 0 ? minAmt : Math.min(bal, bal); // fallback: keep existing
+
+                    // Preserve existing if already selected
+                    selected[id] = selected[id] || {};
+
+                    selected[id].locked = true;
+                    selected[id].decision = isOrdinaryShares(a) ? "Required" : "Blocked"; // shares required not blockable -> keep "Required"
+                    selected[id].amount = requiredAmt;
+                    selected[id].reason = pick(a, "policyMessage", "PolicyMessage", "Required by policy.");
+                });
+            }
+
+            function statusBadge(status) {
+                var s = (status || "").toUpperCase();
+                if (s === "ACTIVE") return `<span class="badge bg-success-subtle text-success border">ACTIVE</span>`;
+                if (s === "DORMANT") return `<span class="badge bg-warning-subtle text-warning border">DORMANT</span>`;
+                return `<span class="badge bg-secondary-subtle text-secondary border">${esc(s || "UNKNOWN")}</span>`;
+            }
+
+            function requirePolicyReady() {
+                return !!(window.productPolicy && (window.productPolicy.minSharesRequired !== undefined));
+            }
+            /**
+             * ✅ Apply current policy => auto-select & lock Savings/Shares rules
+             * - Shares: required, not blockable => Decision=Required, Amount=0, locked
+             * - Savings: required => Decision=Blocked, Amount=max(minSavingsAbs, loanAmount * minSavingsPercent/100), locked
+             */
+            function applyRecoveryPolicyFromProductPolicy() {
+                if (!window.recoveryState.enabled) return;
+                if (!requirePolicyReady()) return;
+
+                var p = window.productPolicy;
+                var loanAmount = getLoanAmount();
+
+                var minSavingsAbs = toNum(p.minSavingsAbs);
+                var minSavingsPercent = toNum(p.minSavingsPercent);
+                var minSharesRequired = toNum(p.minSharesRequired);
+
+                var needSavings = (minSavingsAbs > 0) || (minSavingsPercent > 0);
+                var needShares = (minSharesRequired > 0);
+
+                var items = window.recoveryState.accounts || [];
+                var selected = window.recoveryState.selected || {};
+
+                // ✅ helper: create/update a selected entry
+                function upsert(id, patch) {
+                    selected[id] = selected[id] || { amount: 0, decision: "KeepOpen", locked: false, reason: "" };
+                    Object.assign(selected[id], patch);
+                }
+
+                // ✅ helper: remove policy entry if policy no longer requires it
+                function dropPolicy(id, policyKey) {
+                    if (!selected[id]) return;
+                    if (selected[id].locked && selected[id].policyKey === policyKey) delete selected[id];
+                }
+
+                items.forEach(function (a) {
+                    var id = String(pick(a, "id", "Id", ""));
+                    if (!id) return;
+
+                    // ✅ Ordinary Shares (Required, not blockable)
+                    if (needShares && isOrdinaryShares(a)) {
+                        upsert(id, {
+                            decision: "Required",
+                            amount: minSharesRequired,
+                            locked: true,
+                            reason: `Shares required by policy (min ${minSharesRequired.toLocaleString()} FCFA). Not blockable.`,
+                            policyKey: "SHARES_REQUIRED"
+                        });
+                        return;
+                    }
+
+                    // ✅ Savings (Blocked, auto amount)
+                    if (needSavings && isSavings(a)) {
+                        var pctAmt = Math.round((loanAmount * minSavingsPercent) / 100);
+                        var amt = Math.max(minSavingsAbs, pctAmt);
+
+                        upsert(id, {
+                            decision: "Blocked",
+                            amount: amt,
+                            locked: true,
+                            reason: `Savings required by policy (${minSavingsPercent}% and/or min ${minSavingsAbs.toLocaleString()} FCFA).`,
+                            policyKey: "SAVINGS_REQUIRED"
+                        });
+                        return;
+                    }
+
+                    // ✅ IMPORTANT: do NOTHING for other accounts (do NOT create selected entry)
+                });
+
+                // If policy no longer requires them, remove only the locked policy-managed entries
+                if (!needSavings) {
+                    items.filter(isSavings).forEach(a => dropPolicy(String(pick(a, "id", "Id", "")), "SAVINGS_REQUIRED"));
+                }
+                if (!needShares) {
+                    items.filter(isOrdinaryShares).forEach(a => dropPolicy(String(pick(a, "id", "Id", "")), "SHARES_REQUIRED"));
+                }
+
+                window.recoveryState.selected = selected;
+
+                renderRecoveryPicker();
+                renderRecoveryEditor();
+                //syncRecoveryHiddenJson?.();
+            }
+            function clearRecoveryNonPolicySelection() {
+                var selected = window.recoveryState.selected || {};
+                Object.keys(selected).forEach(function (id) {
+                    if (!selected[id].locked) delete selected[id];
+                });
+                renderRecoveryPicker();
+                renderRecoveryEditor();
+            }
+            // Helpers
+            function normStr(v) { return (v == null) ? "" : String(v).trim(); }
+            function renderRecoveryPicker() {
+                var q = normStr($("#txtRecoverySearch").val()).toLowerCase();
+                var showOthers = $("#chkRecoveryShowOthers").is(":checked");
+
+                // filter list to display in picker
+                var all = window.recoveryState.accounts || [];
+                var selected = window.recoveryState.selected || {};
+                var displayList = all.filter(function (a) {
+                    // ✅ exclude policy-required savings/shares from other list (they are already forced-selected)
+                    if (isPolicyRequiredAccount(a) && isSavingsOrShares(a)) return false;
+                    // ✅ if showOthers OFF, hide non savings/shares
+                    if (!showOthers && !isSavingsOrShares(a)) return false;
+                    if (!q) return true;
+
+                    var type = normStr(pick(a, "accountType", "AccountType", ""));
+                    var num = normStr(pick(a, "accountNumber", "AccountNumber", ""));
+                    var name = normStr(pick(a, "accountName", "AccountName", ""));
+                    var st = normStr(pick(a, "status", "Status", ""));
+                    var hay = (type + " " + num + " " + name + " " + st).toLowerCase();
+                    return hay.includes(q);
+                });
+
+                if (!displayList.length) {
+                    $("#recoveryPicker").html(`<div class="p-2 text-muted small">No accounts found.</div>`);
+                    return;
+                }
+
+                var html = `<div class="list-group list-group-flush">`;
+
+                displayList.forEach(function (a) {
+                    var id = normStr(pick(a, "id", "Id", ""));
+                    var type = normStr(pick(a, "accountType", "AccountType", ""));
+                    var number = normStr(pick(a, "accountNumber", "AccountNumber", ""));
+                    var accName = normStr(pick(a, "accountName", "AccountName", ""));
+                    var balance = Number(pick(a, "balance", "Balance", 0)) || 0;
+                    var currency = normStr(pick(a, "currency", "Currency", "FCFA")) || "FCFA";
+                    var status = normStr(pick(a, "status", "Status", "ACTIVE")) || "ACTIVE";
+
+                    var checked = !!selected[id];
+                    var statusBadge = status.toUpperCase() === "ACTIVE"
+                        ? `<span class="badge bg-success-subtle text-success border border-success-subtle">ACTIVE</span>`
+                        : status.toUpperCase() === "DORMANT"
+                            ? `<span class="badge bg-warning-subtle text-warning border border-warning-subtle">DORMANT</span>`
+                            : `<span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle">INACTIVE</span>`;
+
+                    var sub = [accName, `Bal: ${balance.toLocaleString()} ${currency}`].filter(Boolean).join(" • ");
+
+                    html += `
+              <label class="list-group-item d-flex align-items-start gap-2">
+                  <input class="form-check-input mt-1 tsc-recovery-pick"
+                         type="checkbox"
+                         data-id="${escapeHtml(id)}"
+                         ${checked ? "checked" : ""}>
+                  <div class="flex-grow-1">
+                      <div class="fw-semibold">${escapeHtml(type)} - ${escapeHtml(number)}</div>
+                      <div class="text-muted small">${escapeHtml(sub || "-")}</div>
+                  </div>
+                  ${statusBadge}
+              </label>`;
+                });
+
+                html += `</div>`;
+                $("#recoveryPicker").html(html);
+            }
+
+            function renderRecoveryEditor() {
+                var items = window.recoveryState.accounts || [];
+                var selected = window.recoveryState.selected || {};
+                var ids = Object.keys(selected);
+
+                $("#recoveryAmountsWrap").toggle(ids.length > 0);
+
+                if (!ids.length) {
+                    $("#recoveryAmountsList").html(`<div class="text-muted small p-2">No selected accounts.</div>`);
+                    return;
+                }
+
+                var cards = ids.map(function (id) {
+                    var a = items.find(x => String(pick(x, "id", "Id", "")) === id);
+                    if (!a) return "";
+
+                    var type = pick(a, "accountType", "AccountType", "");
+                    var number = pick(a, "accountNumber", "AccountNumber", "");
+                    var name = pick(a, "accountName", "AccountName", "");
+                    var bal = toNum(pick(a, "balance", "Balance", 0));
+                    var cur = pick(a, "currency", "Currency", "FCFA");
+                    var status = pick(a, "status", "Status", "");
+
+                    var sel = selected[id];
+                    var locked = !!sel.locked;
+
+                    return `
+          <div class="col-12 col-md-6 col-xl-4">
+            <div class="card shadow-sm border-0 h-100">
+              <div class="card-body p-2">
+
+                <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
+                  <div class="min-w-0">
+                    <div class="fw-semibold text-truncate">${esc(type)} - ${esc(number)}</div>
+                    <div class="text-muted small text-truncate">${esc(name || "--")}</div>
+                    <div class="text-muted small">Bal: <strong>${bal.toLocaleString()} ${esc(cur)}</strong></div>
+                  </div>
+
+                  <div class="d-flex align-items-center gap-2 flex-shrink-0">
+                    ${statusBadge(status)}
+                    <button type="button"
+                            class="btn btn-sm btn-outline-danger py-0 px-2 tsc-recovery-remove"
+                            data-id="${esc(id)}"
+                            title="Remove"
+                            ${locked ? "disabled" : ""}>
+                      <i class="mdi mdi-close"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- ✅ Amount first, Decision second (same line) -->
+                <div class="row g-2 align-items-end">
+                  <div class="col-5">
+                    <label class="form-label small text-muted mb-1">Amount</label>
+                    <input type="number"
+                           class="form-control form-control-sm tsc-recovery-amount"
+                           data-id="${esc(id)}"
+                           min="0"
+                           max="${bal}"
+                           value="${toNum(sel.amount)}"
+                           ${locked || sel.decision === "KeepOpen" || sel.decision === "Required" ? "disabled" : ""}>
+                  </div>
+
+                  <div class="col-7">
+                    <label class="form-label small text-muted mb-1">Decision</label>
+                    <select class="form-select form-select-sm tsc-recovery-decision"
+                            data-id="${esc(id)}"
+                            ${locked ? "disabled" : ""}>
+                      <option value="Blocked" ${sel.decision === "Blocked" ? "selected" : ""}>Blocked</option>
+                      <option value="StandingOrder" ${sel.decision === "StandingOrder" ? "selected" : ""}>StandingOrder</option>
+                      <option value="KeepOpen" ${sel.decision === "KeepOpen" ? "selected" : ""}>KeepOpen</option>
+                      <option value="Lien" ${sel.decision === "Lien" ? "selected" : ""}>Lien</option>
+                      <option value="Required" ${sel.decision === "Required" ? "selected" : ""} disabled>Required (Policy)</option>
+                    </select>
+                  </div>
+                </div>
+
+                ${sel.reason ? `<div class="text-muted small mt-1">${esc(sel.reason)}</div>` : ""}
+
+              </div>
+            </div>
+          </div>
+        `;
+                }).join("");
+
+                $("#recoveryAmountsList").html(`<div class="row g-2 mt-1">${cards}</div>`);
+
+                $("#btnRecoveryClear").off("click").on("click", function () {
+                    clearRecoveryNonPolicySelection();
+                });
+
+                $(".tsc-recovery-remove").off("click").on("click", function () {
+                    var id = String($(this).data("id"));
+                    if (selected[id] && selected[id].locked) return;
+                    delete selected[id];
+                    renderRecoveryPicker();
+                    renderRecoveryEditor();
+                });
+
+                $(".tsc-recovery-decision").off("change").on("change", function () {
+                    var id = String($(this).data("id"));
+                    if (!selected[id] || selected[id].locked) return;
+
+                    selected[id].decision = String($(this).val());
+                    if (selected[id].decision === "KeepOpen") {
+                        selected[id].amount = 0;
+                    }
+                    renderRecoveryEditor();
+                });
+
+                $(".tsc-recovery-amount").off("input").on("input", function () {
+                    var id = String($(this).data("id"));
+                    if (!selected[id] || selected[id].locked) return;
+                    selected[id].amount = toNum($(this).val());
+                });
+            }
+
+            function bindRecoveryEditorEvents() {
+                // remove card
+                $(".tsc-recovery-remove").off("click").on("click", function () {
+                    var id = String($(this).data("id"));
+                    selectedRecoveryIds = selectedRecoveryIds.filter(x => x !== id);
+                    delete recoverySelections[id];
+                    $(`.tsc-recovery-cb[value="${id}"]`).prop("checked", false);
+                    renderRecoveryEditor();
+                });
+
+                // decision change
+                $(".tsc-recovery-decision").off("change").on("change", function () {
+                    var id = String($(this).data("id"));
+                    var decision = String($(this).val() || "Blocked");
+                    recoverySelections[id] = recoverySelections[id] || { decision: "Blocked", amount: 0 };
+                    recoverySelections[id].decision = decision;
+
+                    // if keep open => disable amount and force 0
+                    var $amt = $(`.tsc-recovery-amount[data-id="${id}"]`);
+                    if (decision === "KeepOpen") {
+                        recoverySelections[id].amount = 0;
+                        $amt.val(0).prop("disabled", true).removeClass("is-invalid");
+                    } else {
+                        $amt.prop("disabled", false);
+                    }
+
+                    buildRecoverySubmissionJson();
+                });
+
+                // amount change
+                $(".tsc-recovery-amount").off("input blur").on("input blur", function () {
+                    var $i = $(this);
+                    var id = String($i.data("id"));
+                    var v = toNum($i.val());
+                    var acc = recoveryAccountsCache.find(x => String(x.Id || x.id) === id);
+                    var bal = toNum(acc ? (acc.Balance || acc.balance) : 0);
+
+                    if (v > bal) {
+                        $i.addClass("is-invalid");
+                        v = bal;
+                        $i.val(v);
+                    } else {
+                        $i.removeClass("is-invalid");
+                    }
+
+                    recoverySelections[id] = recoverySelections[id] || { decision: "Blocked", amount: 0 };
+                    recoverySelections[id].amount = v;
+
+                    buildRecoverySubmissionJson();
+                });
+            }
+
+            function buildRecoverySubmissionJson() {
+                var payload = selectedRecoveryIds.map(function (id) {
+                    var acc = recoveryAccountsCache.find(x => String(x.Id || x.id) === id) || {};
+                    var sel = recoverySelections[id] || { decision: "Blocked", amount: 0 };
+
+                    return {
+                        AccountId: id,
+                        AccountNumber: acc.AccountNumber || acc.accountNumber || "",
+                        AccountType: acc.AccountType || acc.accountType || "",
+                        AccountName: acc.AccountName || acc.accountName || "",
+                        Status: acc.Status || acc.status || "",
+                        Balance: toNum(acc.Balance || acc.balance || 0),
+                        Currency: acc.Currency || acc.currency || "FCFA",
+                        Decision: sel.decision,
+                        BlockAmount: toNum(sel.amount)
+                    };
+                });
+
+                $("#hidRecoverySelectionJson").val(JSON.stringify(payload));
+            }
+
+            // ================================
+            // ✅ Toggle load accounts
+            // ================================
+            $("#chkRecoveryMechanism").on("change", function () {
+                var enabled = $(this).is(":checked");
+                window.recoveryState.enabled = enabled;
+
+                $("#recoveryAccountsWrap").toggle(enabled);
+
+                if (!enabled) {
+                    window.recoveryState.accounts = [];
+                    window.recoveryState.selected = {};
+                    $("#recoveryLoadHint").text("");
+                    $("#recoveryPicker").empty();
+                    $("#recoveryAmountsList").empty();
+                    return;
+                }
+
+                if (!accountsUrl) { $("#recoveryLoadHint").text("Accounts URL not configured."); return; }
+                if (!wizardState.memberId) { $("#recoveryLoadHint").text("Select a member first."); return; }
+
+                $("#recoveryLoadHint").text("Loading member accounts…");
+
+                $.get(accountsUrl, { memberId: wizardState.memberId })
+                    .done(function (res) {
+                        var items = (res && (res.data || res.Data)) || [];
+                        window.recoveryState.accounts = items;
+
+                        // search binding
+                        $("#txtRecoverySearch").off("input").on("input", function () {
+                            renderRecoveryPicker();
+                        });
+
+                        // ✅ policy applies immediately after load
+                        applyRecoveryPolicyFromProductPolicy();
+
+                        $("#recoveryLoadHint").text(items.length ? "Select accounts to be used for recovery." : "No accounts found.");
+                    })
+                    .fail(function () {
+                        $("#recoveryLoadHint").text("Failed to load accounts.");
+                    });
+            });
+            $("#txtAmount").on("input", function () {
+                if ($("#chkRecoveryMechanism").is(":checked")) {
+                    applyRecoveryPolicyFromProductPolicy();
+                }
+            });
+            // ✅ Re-apply recovery policy when policy loads/changes
+            if ($("#chkRecoveryMechanism").is(":checked")) {
+                applyRecoveryPolicyFromProductPolicy();
+            }
+
+            // search
+            $("#txtRecoverySearch").on("input", function () {
+                renderRecoveryPicker();
+            });
+
+            // cache flag so we don't refetch repeatedly
+            window.recoveryState = window.recoveryState || {};
+            window.recoveryState.loadedOthers = window.recoveryState.loadedOthers || false;
+
+            // ✅ toggle show others
+            $("#chkRecoveryShowOthers").off("change").on("change", async function () {
+                var showOthers = $(this).is(":checked");
+
+                // If turning ON and we haven't loaded others yet, fetch them
+                if (showOthers && !window.recoveryState.loadedOthers) {
+                    await loadRecoveryAccounts(true); // includeOthers = true
+                    window.recoveryState.loadedOthers = true;
+                }
+
+                renderRecoveryPicker();
+            });
+            async function loadRecoveryAccounts(includeOthers) {
+                // show loader
+                $("#recoveryPicker").html(`<div class="p-2 text-muted small">Loading accounts...</div>`);
+
+                try {
+                    // ✅ use your endpoint (example)
+                    // IMPORTANT: backend must return ALL accounts when includeOthers=true
+                    var res = await $.getJSON(accountsUrl, {
+                        memberId: window.wizardState.memberId,
+                        includeOthers: includeOthers === true
+                    });
+
+                    var list = (res && (res.data || res.Data || res.accounts || res.Accounts)) || [];
+                    window.recoveryState.accounts = list;
+                    // (optional if you still use it elsewhere)
+                    window.recoveryAllAccounts = list;
+                    applyRequiredRecoveryAccounts();
+                    renderRecoveryPicker();
+                    renderRecoveryEditor();
+                    renderRecoverySummary();
+
+                } catch (e) {
+                    console.error("loadRecoveryAccounts failed", e);
+                    window.recoveryState.accounts = [];
+                }
+            }
+
+
+            // checkbox change
+            $(document).off("change", ".tsc-recovery-pick").on("change", ".tsc-recovery-pick", function () {
+                var id = String($(this).data("id"));
+                var selected = window.recoveryState.selected || {};
+                var all = window.recoveryState.accounts || [];
+                var a = all.find(x => String(pick(x, "id", "Id", "")) === id);
+
+                // if policy-required => force checked and lock
+                if (a && isPolicyRequiredAccount(a)) {
+                    applyRequiredRecoveryAccounts();
+                    renderRecoveryPicker();
+                    renderRecoveryEditor();
+                    renderRecoverySummary();
+                    //syncRecoveryHiddenJson?.();
+                    return;
+                }
+
+                if ($(this).is(":checked")) {
+                    selected[id] = selected[id] || { amount: 0, decision: "Blocked", locked: false };
+                } else {
+                    delete selected[id];
+                }
+
+                window.recoveryState.selected = selected;
+                renderRecoveryEditor();
+                renderRecoverySummary();
+                //syncRecoveryHiddenJson?.();
+            });
+            function calcRecoveryTotals() {
+                var selected = window.recoveryState.selected || {};
+
+                var totalUserSelected = 0;          // sum of all selected amounts (including required)
+                var totalBlocked = 0;               // sum where decision implies blocked/lien/required
+                var totalPolicyRequired = 0;        // sum of locked required amounts only
+
+                Object.keys(selected).forEach(function (id) {
+                    var x = selected[id];
+                    var amt = toNum(x.amount);
+
+                    totalUserSelected += amt;
+
+                    if (x.locked) totalPolicyRequired += amt;
+
+                    var d = upper(x.decision);
+                    var isBlockish = (d === "BLOCKED" || d === "LIEN" || d === "REQUIRED");
+                    if (isBlockish) totalBlocked += amt;
+                });
+
+                var coob = getCoobligorTotal();
+                var shotee = getShoteeTotal();
+
+                var downPct = getDownpaymentPercent();
+                var requested = getRequestedLoanAmount();
+                var downRequired = Math.round((requested * downPct) / 100);
+
+                var provided = totalUserSelected + coob + shotee;
+                var covered = provided >= downRequired;
+                var remaining = Math.max(0, downRequired - provided);
+
+                return {
+                    requested, downPct, downRequired,
+                    totalUserSelected, totalPolicyRequired,
+                    coob, shotee,
+                    provided, covered, remaining,
+                    totalBlocked
+                };
+            }
+
+            function renderRecoverySummary() {
+                var t = calcRecoveryTotals();
+
+                var badge = t.covered
+                    ? `<span class="badge bg-success-subtle text-success border border-success-subtle">COVERED</span>`
+                    : `<span class="badge bg-danger-subtle text-danger border border-danger-subtle">NOT COVERED</span>`;
+
+                var html = `
+          <div class="card border-0 shadow-sm">
+            <div class="card-body p-2">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <div class="fw-semibold"><i class="mdi mdi-shield-check-outline me-1"></i>Policy Downpayment Coverage</div>
+                ${badge}
+              </div>
+
+              <div class="row g-2 small">
+                <div class="col-12 col-md-4">
+                  <div class="text-muted">Requested Amount</div>
+                  <div class="fw-semibold">${t.requested.toLocaleString()} FCFA</div>
+                </div>
+                <div class="col-12 col-md-4">
+                  <div class="text-muted">Downpayment (${t.downPct}%)</div>
+                  <div class="fw-semibold">${t.downRequired.toLocaleString()} FCFA</div>
+                </div>
+                <div class="col-12 col-md-4">
+                  <div class="text-muted">Remaining</div>
+                  <div class="fw-semibold ${t.covered ? "text-success" : "text-danger"}">
+                    ${t.remaining.toLocaleString()} FCFA
+                  </div>
+                </div>
+              </div>
+
+              <hr class="my-2"/>
+
+              <div class="row g-2 small">
+                <div class="col-12 col-md-3">
+                  <div class="text-muted">Accounts (Selected)</div>
+                  <div class="fw-semibold">${t.totalUserSelected.toLocaleString()} FCFA</div>
+                </div>
+                <div class="col-12 col-md-3">
+                  <div class="text-muted">Policy Required (Locked)</div>
+                  <div class="fw-semibold">${t.totalPolicyRequired.toLocaleString()} FCFA</div>
+                </div>
+                <div class="col-12 col-md-3">
+                  <div class="text-muted">Coobligor Contribution</div>
+                  <div class="fw-semibold">${t.coob.toLocaleString()} FCFA</div>
+                </div>
+                <div class="col-12 col-md-3">
+                  <div class="text-muted">Shotee Contribution</div>
+                  <div class="fw-semibold">${t.shotee.toLocaleString()} FCFA</div>
+                </div>
+              </div>
+
+              <div class="mt-2 small">
+                <div class="d-flex justify-content-between">
+                  <span class="text-muted">Total Provided</span>
+                  <span class="fw-semibold">${t.provided.toLocaleString()} FCFA</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <span class="text-muted">Total Blocked (All Block/Lien/Required)</span>
+                  <span class="fw-semibold">${t.totalBlocked.toLocaleString()} FCFA</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        `;
+
+                $("#recoverySummary").html(html);
+            }
+
+            // selecting in picker
+            $(document).on("change", ".tsc-recovery-pick", function () {
+                var id = normStr($(this).data("id"));
+                var isOn = $(this).is(":checked");
+
+                var selected = window.recoveryState.selected || (window.recoveryState.selected = {});
+
+                if (isOn) {
+                    if (!selected[id]) {
+                        selected[id] = { amount: 0, decision: "KeepOpen", locked: false, reason: "" };
+                    }
+                } else {
+                    if (selected[id] && selected[id].locked) {
+                        $(this).prop("checked", true);
+                        return;
+                    }
+                    delete selected[id];
+                }
+
+                renderRecoveryEditor();
+                //syncRecoveryHiddenJson?.();
+            });
+
+            // clear selection (✅ makes your clear button functional)
+            $("#btnClearRecoverySelection").off("click.clearRecovery").on("click.clearRecovery", function () {
+                selectedRecoveryIds = [];
+                recoverySelections = {};
+                $(".tsc-recovery-cb").prop("checked", false);
+                renderRecoveryEditor();
+                buildRecoverySubmissionJson();
+            });
+
+            // expose getter for your existing validator logic (optional)
+            window.tscRecovery = window.tscRecovery || {};
+            window.tscRecovery.getBlocks = function () {
+                // returns same shape you used earlier
+                var data = JSON.parse($("#hidRecoverySelectionJson").val() || "[]");
+                // only blocked amounts matter for "blocked totals"
+                return (data || [])
+                    .filter(x => String(x.Decision || "").toUpperCase() === "BLOCKED")
+                    .map(x => ({ AccountId: x.AccountId, BlockAmount: x.BlockAmount }));
+            };
+
+            // optional validator (if your review step calls validateBlocks())
+            window.tscRecovery.validateBlocks = function () {
+                var data = JSON.parse($("#hidRecoverySelectionJson").val() || "[]");
+                var ok = true;
+
+                (data || []).forEach(function (x) {
+                    if (String(x.Decision || "").toUpperCase() === "KEEPOPEN") return;
+
+                    var bal = toNum(x.Balance);
+                    var amt = toNum(x.BlockAmount);
+
+                    if (amt < 0 || amt > bal) ok = false;
+                    if (String(x.Decision || "").toUpperCase() !== "KEEPOPEN" && amt === 0) {
+                        // you can decide if zero is allowed or not; commonly not allowed
+                        ok = false;
+                    }
+                });
+
+                return ok;
+            };
+
+            // =====================================================
+            // Credit Scoring (Branch Manager selects from dropdown multi)
+            // Evaluate based on requested amount -> advice + risk level colors
+            // =====================================================
+
+            function loadScoreConfig() {
+                if (!scoreConfigUrl) return $.Deferred().resolve().promise();
+
+                return $.get(scoreConfigUrl, { facility: wizardState.facility })
+                    .done(function (res) {
+                        scoreConfig = (res && (res.data || res.Data)) || null;
+                    })
+                    .fail(function () {
+                        console.warn("Score config failed to load. Using fallback defaults.");
+                        scoreConfig = null;
+                    });
+            }
+
+            function loadScoringAssessments() {
+                var $ddl = $("#ddlScoreAssessments");
+                $ddl.empty();
+                autoSizeMultiSelect($ddl, 6, 16);
+
+                if (!scoreUrl) return;
+
+                scoresLoaded = false;
+
+                // ✅ One call returns BOTH: config + assessments
+                $.get(scoreUrl, { facility: wizardState.facility })
+                    .done(function (res) {
+
+                        // model contains Bands + Assessments + buffers
+                        var model = (res && (res.data || res.Data)) || null;
+
+                        // keep using same global variable name used by evaluateScore()
+                        scoreConfig = model;
+
+                        // assessments list
+                        var items = model && (model.assessments || model.Assessments) || [];
+
+                        if (!items.length) {
+                            $ddl.append(`<option value="" disabled>No scoring assessments configured</option>`);
+                            autoSizeMultiSelect($ddl, 3, 8);
+                            return;
+                        }
+
+                        items.forEach(function (s) {
+                            var id = pick(s, "id", "Id", "");
+                            var name = pick(s, "name", "Name", "");
+                            var pts = Number(pick(s, "points", "Points", 0));
+
+                            $ddl.append(
+                                `<option value="${escapeHtml(String(id))}" data-points="${pts}">
+                                                                                                    ${escapeHtml(String(name))} (+${pts})
+                                                                                                 </option>`
+                            );
+                        });
+
+                        autoSizeMultiSelect($ddl, 6, 16);
+
+                        scoresLoaded = true;
+                        evaluateScore(); // initial
+                    })
+                    .fail(function () {
+                        console.warn("Scoring model failed to load.");
+                        scoreConfig = null;
+                        autoSizeMultiSelect($ddl, 6, 16);
+                    });
+            }
+
+            function autoSizeMultiSelect($sel, minRows, maxRows) {
+                var count = $sel.find('option').length || 0;
+                var rows = Math.max(minRows || 6, Math.min(maxRows || 14, count));
+                $sel.attr('size', rows);
+            }
+
+
+            function requiredScoreByAmount(amount) {
+                amount = Number(amount || 0);
+                if (!amount || amount <= 0) return 0;
+
+                var cfg = scoreConfig;
+                var bands = cfg && (cfg.bands || cfg.Bands);
+
+                if (!bands || !bands.length) {
+                    // fallback (only if server failed)
+                    if (amount <= 200000) return 40;
+                    if (amount <= 1000000) return 60;
+                    return 75;
+                }
+
+                for (var i = 0; i < bands.length; i++) {
+                    var b = bands[i];
+                    var max = Number(b.maxAmount || b.MaxAmount || 0);
+                    var req = Number(b.requiredScore || b.RequiredScore || 0);
+                    if (max > 0 && amount <= max) return req;
+                }
+
+                var last = bands[bands.length - 1];
+                return Number(last.requiredScore || last.RequiredScore || 0);
+            }
+            function suggestedMaxAmountByScore(score) {
+                score = Number(score || 0);
+                var cfg = scoreConfig;
+                var bands = cfg && (cfg.bands || cfg.Bands);
+                if (!bands || !bands.length) return 0;
+
+                // Sort by maxAmount ascending (safe)
+                var sorted = bands.slice().sort(function (a, b) {
+                    return Number(a.maxAmount || a.MaxAmount || 0) - Number(b.maxAmount || b.MaxAmount || 0);
+                });
+
+                var best = 0;
+                for (var i = 0; i < sorted.length; i++) {
+                    var b = sorted[i];
+                    var max = Number(b.maxAmount || b.MaxAmount || 0);
+                    var req = Number(b.requiredScore || b.RequiredScore || 0);
+                    if (max > 0 && score >= req) best = max;
+                }
+                return best;
+            }
+            function getLoanAmount() {
+                var v = parseFloat($("#txtAmount").val());
+                return isNaN(v) ? 0 : v;
+            }
+
+
+            function computeBlockedByKind() {
+                var blocks = (window.tscRecovery && window.tscRecovery.getBlocks)
+                    ? window.tscRecovery.getBlocks()
+                    : [];
+
+                // Build label map from select
+                var labelMap = {};
+                $("#ddlRecoveryAccounts option").each(function () {
+                    labelMap[this.value] = $(this).text() || "";
+                });
+
+                var sums = { SAVINGS: 0, SHARES: 0, OTHER: 0, TOTAL: 0 };
+
+                for (var i = 0; i < blocks.length; i++) {
+                    var b = blocks[i];
+                    var amt = parseFloat(b.BlockAmount) || 0;
+                    var label = labelMap[b.AccountId] || "";
+                    var kind = inferAccountKindFromText(label);
+
+                    sums[kind] += amt;
+                    sums.TOTAL += amt;
+                }
+
+                return sums;
+            }
+            function inferAccountKindFromText(text) {
+                var t = String(text || "").toLowerCase();
+                // You can adjust keywords to match your labels
+                if (t.includes("ordinary shares") || t.includes("shares") || t.includes("shr-")) return "SHARES";
+                if (t.includes("savings") || t.includes("sav-")) return "SAVINGS";
+                return "OTHER";
+            }
+
+
+
+            function evaluateScore() {
+                try {
+                    var amount = Number($("#txtAmount").val() || 0);
+
+                    // no amount => hide result
+                    if (!amount || amount <= 0) {
+                        $("#scoreResultBox").hide();
+                        return;
+                    }
+
+                    // points from selected assessments
+                    var score = 0;
+                    $("#ddlScoreAssessments option:selected").each(function () {
+                        var pts = Number($(this).attr("data-points") || 0); // safer than .data() with dynamic options
+                        score += isNaN(pts) ? 0 : pts;
+                    });
+
+                    var required = requiredScoreByAmount(amount);
+
+                    var overBonus = scoreConfig ? Number(scoreConfig.overScoreBonus || scoreConfig.OverScoreBonus || 15) : 15;
+                    var medBuf = scoreConfig ? Number(scoreConfig.mediumRiskBuffer || scoreConfig.MediumRiskBuffer || 10) : 10;
+                    var suggested = suggestedMaxAmountByScore(score);
+                    var policy = window.productPolicy || {};
+                    var policyMax = Number(policy.maxAmount || 0);
+
+                    if (suggested > 0 && policyMax > 0) {
+                        suggested = Math.min(suggested, policyMax);
+                    }
+
+                    var requested = amount;
+
+                    var suggestionText = "";
+                    if (suggested > 0) {
+                        if (requested > suggested) {
+                            suggestionText =
+                                "Suggested amount based on score: " + suggested.toLocaleString() + " FCFA. " +
+                                "Tip: reduce requested amount to meet scoring comfort.";
+                        } else {
+                            suggestionText =
+                                "Suggested amount based on score: up to " + suggested.toLocaleString() + " FCFA.";
+                        }
+                    }
+                    if (suggested > 0 && policyMax > 0 && suggested === policyMax) {
+                        suggestionText += " (Capped by product max amount)";
+                    }
+
+                    // Put this text somewhere (add one small line in UI)
+                    $("#scoreSuggestedAmount").text(suggestionText);
+
+                    // risk bands
+                    var status, badgeClass, advice;
+
+                    if (score >= required + overBonus) {
+                        status = "NO RISK - Loan is covered";
+                        badgeClass = "bg-success";
+                        advice = "Recommendation: Proceed. Member is over-scored for this amount. Keep standard mitigation only.";
+                    } else if (score >= required) {
+                        status = "LOW RISK";
+                        badgeClass = "bg-primary";
+                        advice = "Recommendation: Proceed with normal controls. Consider light mitigation if policy requires.";
+                    } else if (score >= required - medBuf) {
+                        status = "MEDIUM RISK";
+                        badgeClass = "bg-warning text-dark";
+                        advice = "Recommendation: Reduce amount OR add stronger mitigation (blocking/guarantor/collateral) before approval.";
+                    } else {
+                        status = "HIGH RISK";
+                        badgeClass = "bg-danger";
+                        advice = "Recommendation: Do not proceed unless exceptional mitigation is added OR the amount is reduced significantly.";
+                    }
+
+                    $("#scoreResultBox").show();
+                    $("#scoreBadge").attr("class", "badge rounded-pill " + badgeClass).text(status);
+                    $("#scoreValue").text(score);
+                    $("#scoreRequired").text(required);
+                    $("#scoreAdvice").text(advice);
+
+                    // delta
+                    var delta = score - required;
+                    $("#scoreDelta")
+                        .text((delta >= 0 ? "+" : "") + delta + " pts")
+                        .toggleClass("text-success", delta >= 0)
+                        .toggleClass("text-danger", delta < 0);
+
+                } catch (e) {
+                    console.error("evaluateScore failed:", e);
+                }
+            }
+
+
+            $("#ddlScoreAssessments, #txtAmount").on("change input", evaluateScore);
+
+            function resetScoreBox() {
+                $("#ddlScoreAssessments").empty();
+                $("#scoreResultBox").hide();
+                $("#scoreBadge").attr("class", "badge rounded-pill bg-light text-dark").text("Not evaluated");
+                $("#scoreValue").text("0");
+                $("#scoreRequired").text("0");
+                $("#scoreDelta").text("0 pts").removeClass("text-success text-danger");
+                $("#scoreAdvice").text("");
+            }
+
+
+            // =====================================================
+            // Optional: Simple product policy validation on amount/interest
+            // =====================================================
+            $("#txtAmount, #txtInterest").on("blur", function () {
+                if (!productCache) return;
+
+                var minAmount = Number(productCache.MinAmount ?? productCache.minAmount ?? 0);
+                var maxAmount = Number(productCache.MaxAmount ?? productCache.maxAmount ?? 0);
+
+                var minInterest = Number(productCache.MinInterest ?? productCache.minInterest ?? 0);
+                var maxInterest = Number(productCache.MaxInterest ?? productCache.maxInterest ?? 0);
+
+                var amount = Number($("#txtAmount").val() || 0);
+                var interest = Number($("#txtInterest").val() || 0);
+
+                var msg = [];
+
+                if (amount && (amount < minAmount || amount > maxAmount)) {
+                    msg.push("Amount must be within product range (" + minAmount.toLocaleString() + " - " + maxAmount.toLocaleString() + ").");
+                }
+                if (interest && (interest < minInterest || interest > maxInterest)) {
+                    msg.push("Interest must be within product range (" + minInterest + "% - " + maxInterest + "%).");
+                }
+
+                $("#policyValidationHint").html(msg.length ? `<div class="alert alert-warning py-2 mb-0">${escapeHtml(msg.join(" "))}</div>` : "");
+            });
+
+
+
+
+            // Step 3: Move to Review (instead of saving)
+
+            $("#btnSubmitApplication").off("click.goReview").on("click.goReview", function () {
+
+                $("#appModeHint").removeClass("text-danger fw-bold").text("");
+
+                var ok = true;
+
+                function markInvalid($el, isOk, msg) {
+                    if (!isOk) ok = false;
+
+                    // Your inline style
+                    if (typeof setInvalid === "function") {
+                        setInvalid($el, !isOk, msg);
+                    } else {
+                        $el.toggleClass("is-invalid", !isOk);
+                    }
+                }
+
+                var mode = String(wizardState.restructureMode || "NEW").toUpperCase();
+                var isReschedule = (mode === "RESCHEDULE");
+
+                // 1) Core guards
+                if (!wizardState.memberId) {
+                    ok = false;
+                    appalert("No member selected. Please search and select a member first.", 2, 1);
+                }
+
+                if (!wizardState.restructureMode && !wizardState.facility) {
+                    ok = false;
+                    appalert("Select a loan facility first.", 2, 1);
+                }
+
+                // =====================================================
+                // ✅ RESCHEDULE: validate ONLY required controls
+                // =====================================================
+                if (isReschedule) {
+
+                    // Required in reschedule (based on your UI)
+                    markInvalid($("#ddlRepaymentPeriod"), !!$("#ddlRepaymentPeriod").val(), "Repayment period is required.");
+                    markInvalid($("#ddlRepaymentType"), !!$("#ddlRepaymentType").val(), "Repayment type is required.");
+
+                    // Grace period is optional but must be within policy if entered
+                    if (typeof validateGracePeriodLive === "function") {
+                        if (!validateGracePeriodLive()) ok = false;
+                    }
+
+                    // Repayment period policy checks (allowed list + min/max)
+                    if (typeof validateRepaymentPeriodLive === "function") {
+                        if (!validateRepaymentPeriodLive()) ok = false;
+                    }
+
+                    // Do NOT validate: loan type, loan product dropdown, interest, disbursement, charges, scoring, risk cards, etc.
+
+                    // Recovery mechanism: validate ONLY if you still allow it in reschedule
+                    // (You hide it in applyModeUiRules, so usually skip.)
+                    // If you later decide to allow it, enable the block below.
+                    /*
+                    if ($("#chkRecoveryMechanism").is(":checked") &&
+                        window.tscRecovery && typeof window.tscRecovery.validateBlocks === "function") {
+                        var okRecovery = window.tscRecovery.validateBlocks();
+                        if (!okRecovery) {
+                            ok = false;
+                            appalert("Fix recovery block amounts before proceeding to review.", 2, 1);
+                        }
+                    }
+                    */
+
+                } else {
+                    if (!validateChargeOverrides()) {
+                        ok = false;
+                        appalert("Some selected charges are below system charge. You can only increase charges.", 2, 1);
+                    }
+
+                    // =====================================================
+                    // ✅ NEW / REFINANCE: keep your current full validations
+                    // =====================================================
+                    markInvalid($("#ddlInstitutionLoanType"), !!$("#ddlInstitutionLoanType").val(), "Loan type is required.");
+                    markInvalid($("#ddlLoanProduct"), !!$("#ddlLoanProduct").val(), "Loan product is required.");
+                    markInvalid($("#ddlRepaymentType"), !!$("#ddlRepaymentType").val(), "Repayment type is required.");
+                    markInvalid($("#ddlDisbursementType"), !!$("#ddlDisbursementType").val(), "Disbursement type is required.");
+
+                    if (typeof validateAmountInterestPeriodLive === "function") {
+                        if (!validateAmountInterestPeriodLive()) ok = false;
+                    }
+
+                    if (window.tscRecovery && typeof window.tscRecovery.validateBlocks === "function") {
+                        var okRecovery2 = window.tscRecovery.validateBlocks();
+                        if (!okRecovery2) {
+                            ok = false;
+                            appalert("Fix recovery block amounts before proceeding to review.", 2, 1);
+                        }
+                    }
+                }
+
+                // 5) Final gate
+                if (!ok) {
+                    $("#appModeHint")
+                        .addClass("text-danger fw-bold")
+                        .text("Please complete the required fields highlighted in red before you can review.");
+
+                    var $firstInvalid = $(".is-invalid:visible:first");
+                    if ($firstInvalid.length) {
+                        $("html, body").animate({ scrollTop: $firstInvalid.offset().top - 120 }, 250);
+                        $firstInvalid.focus();
+                    }
+                    return;
+                }
+
+                // ✅ go to review
+                $("#stepApplication").removeClass("active").addClass("done");
+                $("#stepReview").addClass("active");
+
+                $("#panelApplication").hide();
+                $("#panelReview").show();
+
+                $("#btnSaveLoan").prop("disabled", true);
+                $("#chkConfirmReview").prop("checked", false).prop("disabled", true);
+                $("#reviewPreviewWrap").hide();
+                $("#reviewLockHint").show();
+            });
+
+
+
+
+            function validateGracePeriodLive() {
+                var policy = window.productPolicy || {};
+                var minG = Number(policy.minGracePeriodMonths || 0);
+                var maxG = Number(policy.maxGracePeriodMonths || 0);
+
+                var $g = $("#txtGracePeriod");
+                var raw = ($g.val() || "").trim();
+                var v = parseInt(raw, 10);
+
+                if (!raw) {
+                    setInvalid($g, false);
+                    return true;
+                }
+
+                var ok = !isNaN(v) && v >= minG && v <= maxG;
+
+                setInvalid(
+                    $g,
+                    !ok,
+                    "Grace period must be within policy range (" + minG + " - " + maxG + " months)."
+                );
+
+                return ok;
+            }
+
+            $("#txtGracePeriod")
+                .off(".graceLive")
+                .on("input.graceLive blur.graceLive", function () {
+                    validateGracePeriodLive();
+                });
+
+            function setInvalid($el, isInvalid, message) {
+                var $msg = $el.siblings(".invalid-feedback, .field-error").first();
+                if (!$msg.length) {
+                    $msg = $('<div class="invalid-feedback d-block"></div>');
+                    $el.after($msg);
+                }
+                if (isInvalid) {
+                    $el.addClass("is-invalid");
+                    $msg.text(message || "Invalid value.").show();
+                } else {
+                    $el.removeClass("is-invalid");
+                    $msg.text("").hide();
+                }
+            }
+
+
+            // =====================================================
+            // Risk Mitigation Forms (Downpayment + Guarantors + Collateral)
+            // =====================================================
+
+
+            // ---- Local state ----
+            var riskState = window.riskState = window.riskState || {
+                downpayment: { enabled: false, rate: 0, required: 0, provided: 0, remaining: 0, covered: false, note: "" },
+                guarantors: [],   // array of normalized guarantor entries
+                collateral: []    // array of collateral entries
+            };
+
+            function uid(prefix) {
+                return (prefix || "id") + "_" + Math.random().toString(16).slice(2) + "_" + Date.now();
+            }
+
+            function toNum(v) { v = Number(v); return isNaN(v) ? 0 : v; }
+            function escHtml(s) { return (s || "").toString().replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+
+            function showHideRiskSections() {
+                $("#downPaymentWrap").toggle($("#chkDownPayment").is(":checked"));
+                $("#guarantorWrap").toggle($("#chkGuarantor").is(":checked"));
+                $("#collateralWrap").toggle($("#chkCollateral").is(":checked"));
+                $("#loanDocsWrap").toggle($("#chkLoanDocs").is(":checked"));
+
+                // if downpayment visible, compute immediately
+                if ($("#chkDownPayment").is(":checked")) renderDownpaymentBox();
+            }
+
+            // bind toggles
+            $("#chkDownPayment, #chkGuarantor, #chkCollateral, #chkLoanDocs")
+                .off("change.risk")
+                .on("change.risk", showHideRiskSections);
+
+            // initial
+            showHideRiskSections();
+
+            // ---------------------
+            // DOWNPAYMENT LOGIC
+            // ---------------------
+            function getRequestedAmountLive() {
+                return toNum($("#txtAmount").val() || 0);
+            }
+
+            function getDownpaymentRateFromPolicy() {
+                var p = window.productPolicy || {};
+                // prefer explicit dp rate
+                var r = toNum(p.downPaymentRatePercent || p.DownPaymentRatePercent || 0);
+                return r;
+            }
+
+            // Provided = sum of all selected coobligor/shotee blocked amounts + any other selected recovery accounts
+            // NOTE: you said: "sum of selected accounts excluding ordinaryshares must be the % of amount requested"
+            // We'll compute using recoveryState.selected if present, ignoring ordinary shares.
+            function computeDownpaymentProvidedFromRecovery() {
+                var provided = 0;
+
+                // Recovery accounts selection (your existing state)
+                var rec = (window.recoveryState && window.recoveryState.selected) ? window.recoveryState.selected : {};
+                var accounts = (window.recoveryState && window.recoveryState.accounts) ? window.recoveryState.accounts : [];
+
+                Object.keys(rec).forEach(function (id) {
+                    var sel = rec[id] || {};
+                    var amt = toNum(sel.amount);
+                    if (amt <= 0) return;
+
+                    // exclude Ordinary Shares
+                    var acc = accounts.find(a => String(pick(a, "id", "Id", "")) === String(id));
+                    var t = (acc ? String(pick(acc, "accountType", "AccountType", "")) : "").toLowerCase().replace(/\s+/g, " ").trim();
+                    if (t === "ordinary shares" || t === "ordinaryshares") return;
+
+                    provided += amt;
+                });
+
+                // Also add from guarantor entries for COOBLIGOR/SHOTEE if they block amounts (stored in guarantor state)
+                var gsum = 0;
+                (riskState.guarantors || []).forEach(function (g) {
+                    var type = String(g.guarantorType || "").toUpperCase();
+                    if (type === "COOBLIGOR" || type === "SHOTEE" || type === "INTER_COOPERATION") {
+                        gsum += toNum(g.amount || 0);
+                    }
+                });
+
+                return provided + gsum;
+            }
+
+            function renderDownpaymentBox() {
+                var requested = getRequestedAmountLive();
+                var rate = getDownpaymentRateFromPolicy();
+                var required = Math.round((requested * rate) / 100);
+
+                var provided = computeDownpaymentProvidedFromRecovery();
+                var remaining = Math.max(0, required - provided);
+                var covered = (provided >= required);
+
+                $("#dpRequestedAmt").text(requested.toLocaleString());
+                $("#dpRate").text(rate);
+                $("#dpRequiredAmt").text(required.toLocaleString());
+                $("#dpProvidedAmt").text(provided.toLocaleString());
+                $("#dpRemainingAmt").text(remaining.toLocaleString());
+
+                $("#dpCoverageBadge")
+                    .removeClass()
+                    .addClass("badge border " + (covered ? "bg-success-subtle text-success" : "bg-danger-subtle text-danger"))
+                    .text(covered ? "COVERED" : "NOT COVERED");
+
+                riskState.downpayment = {
+                    enabled: true, rate: rate, required: required,
+                    provided: provided, remaining: remaining, covered: covered,
+                    note: $("#txtDownPaymentNote").val() || ""
+                };
+
+                $("#hidDownPaymentJson").val(JSON.stringify(riskState.downpayment));
+            }
+
+            $("#btnDpRecalc").off("click.dp").on("click.dp", renderDownpaymentBox);
+            $("#txtAmount").off("input.dp").on("input.dp", function () {
+                if ($("#chkDownPayment").is(":checked")) renderDownpaymentBox();
+            });
+            $("#txtDownPaymentNote").off("input.dpNote").on("input.dpNote", renderDownpaymentBox);
+
+            // If your recovery UI changes, call renderDownpaymentBox() after those changes as well.
+            // Example: in your renderRecoveryEditor() end, add: if ($("#chkDownPayment").is(":checked")) renderDownpaymentBox();
+
+
+            // ---------------------
+            // GUARANTOR LOGIC
+            // ---------------------
+            function rebuildGuarantorsJson() {
+                // normalize from DOM
+                var arr = [];
+                $("#guarantorList [data-gid]").each(function () {
+                    var $c = $(this);
+                    var gid = $c.data("gid");
+
+                    var type = String($c.find(".ddlGuarantorType").val() || "").toUpperCase();
+                    var isMemberBacked = (type === "COOBLIGOR" || type === "SHOTEE" || type === "INTER_COOPERATION");
+
+                    var item = {
+                        id: gid,
+                        guarantorType: type,
+                        memberReference: $c.find(".txtMemberRef").val() || "",
+                        memerberName: $c.find(".txtNameCompany").val() || "",
+                        companyOrGroupName: $c.find(".txtNameCompany").val() || "",
+                        affiliateOrInstitutionName: $c.find(".txtNameCompany").val() || "",
+
+                        idCardNumber: $c.find(".txtIdCardNumber").val() || "",
+                        issueDate: $c.find(".txtIssueDate").val() || "",
+                        expireDate: $c.find(".txtExpireDate").val() || "",
+
+                        relationship: $c.find(".txtRelationship").val() || "",
+                        address: $c.find(".txtAddress").val() || "",
+                        phoneNumber: $c.find(".txtPhone").val() || "",
+                        email: $c.find(".txtEmail").val() || "",
+
+                        guaranteeAmount: toNum($c.find(".txtGuaranteeAmount").val() || 0),
+
+                        // for coobligor/shotee/intercoop
+                        accountNumber: isMemberBacked ? ($c.find(".ddlAccount").val() || "") : "",
+                        amount: isMemberBacked ? toNum($c.find(".txtBlockAmount").val() || 0) : 0,
+                        blockAccount: isMemberBacked ? String($c.find(".ddlBlockFlag").val() || "true") === "true" : false,
+
+                        // release order (assigned later)
+                        releaseOrder: null
+                    };
+
+                    arr.push(item);
+                });
+
+                // release order assignment if needed (only for blocking member-backed entries)
+                var blockables = arr.filter(x =>
+                    (x.guarantorType === "COOBLIGOR" || x.guarantorType === "SHOTEE" || x.guarantorType === "INTER_COOPERATION") &&
+                    x.blockAccount === true && toNum(x.amount) > 0
+                );
+
+                // require release order only if more than 1
+                $("#releaseOrderWrap").toggle(blockables.length > 1);
+
+                if (blockables.length > 1) {
+                    // build UI
+                    var html = "";
+                    blockables.forEach(function (x) {
+                        html += `
+  <div class="col-12 col-md-6" data-rid="${escHtml(x.id)}">
+    <div class="border rounded p-2">
+      <div class="fw-semibold small">${escHtml(x.memerberName || x.memberReference || x.id)}</div>
+      <div class="text-muted small">Account: ${escHtml(x.accountNumber || "-")} • Block: ${toNum(x.amount).toLocaleString()} FCFA</div>
+      <label class="form-label small text-muted mb-1 mt-2">Release Order</label>
+      <select class="form-select form-select-sm ddlReleaseOrder">
+        <option value="">-- Select --</option>
+        ${blockables.map((_, i) => `<option value="${i + 1}">${i + 1}</option>`).join("")}
+      </select>
+    </div>
+  </div>
+`;
+                    });
+                    $("#releaseOrderList").html(`<div class="row g-2">${html}</div>`);
+
+                    // read values back
+                    $("#releaseOrderList .ddlReleaseOrder").off("change.rel").on("change.rel", function () {
+                        var $p = $(this).closest("[data-rid]");
+                        var rid = String($p.data("rid"));
+                        var v = $(this).val() ? Number($(this).val()) : null;
+
+                        arr.forEach(function (a) {
+                            if (String(a.id) === rid) a.releaseOrder = v;
+                        });
+
+                        riskState.guarantors = arr;
+                        $("#hidGuarantorsJson").val(JSON.stringify(arr));
+                        if ($("#chkDownPayment").is(":checked")) renderDownpaymentBox();
+                    });
+                } else {
+                    $("#releaseOrderList").empty();
+                }
+
+                riskState.guarantors = arr;
+                $("#hidGuarantorsJson").val(JSON.stringify(arr));
+
+                if ($("#chkDownPayment").is(":checked")) renderDownpaymentBox();
+            }
+
+            function addGuarantorCard() {
+                var gid = uid("g");
+                var tpl = $("#tplGuarantorCard").html().replaceAll("{{gid}}", gid);
+                $("#guarantorList").append(tpl);
+                bindGuarantorCardEvents($("#guarantorList [data-gid='" + gid + "']"));
+                rebuildGuarantorsJson();
+            }
+
+            $("#btnAddGuarantor").off("click.addG").on("click.addG", addGuarantorCard);
+
+            function bindGuarantorCardEvents($card) {
+                $card.find(".btnRemoveGuarantor").off("click.rmG").on("click.rmG", function () {
+                    $card.remove();
+                    rebuildGuarantorsJson();
+                });
+
+                $card.find(".ddlGuarantorType").off("change.gType").on("change.gType", function () {
+                    var t = String($(this).val() || "").toUpperCase();
+                    var isMemberBacked = (t === "COOBLIGOR" || t === "SHOTEE" || t === "INTER_COOPERATION");
+
+                    $card.find(".wrapMemberSearch").toggle(isMemberBacked);
+                    $card.find(".wrapAccountSelect").toggle(isMemberBacked);
+                    $card.find(".wrapBlockAmount").toggle(isMemberBacked);
+                    $card.find(".wrapBlockFlag").toggle(isMemberBacked);
+
+                    // clear account list when switching
+                    if (!isMemberBacked) {
+                        $card.find(".ddlAccount").empty();
+                        $card.find(".txtMemberRef").val("");
+                        $card.find(".memberSearchHint").text("");
+                    }
+
+                    rebuildGuarantorsJson();
+                });
+
+                // changes -> rebuild
+                $card.find("input, select, textarea").off("input.gAny change.gAny").on("input.gAny change.gAny", function () {
+                    rebuildGuarantorsJson();
+                });
+
+                // member search (coobligor/shotee/intercoop)
+                $card.find(".btnSearchMember").off("click.searchM").on("click.searchM", function () {
+                    var memberRef = String($card.find(".txtMemberRef").val() || "").trim();
+                    if (!memberRef) {
+                        $card.find(".memberSearchHint").text("Enter a member reference.");
+                        return;
+                    }
+                    if (!memberLookupUrl) {
+                        $card.find(".memberSearchHint").text("Member lookup URL not configured.");
+                        return;
+                    }
+
+                    $card.find(".memberSearchHint").html(`<span class="text-muted">Searching...</span>`);
+
+                    // Expected response: { success:true, data:{ memberId, name, idCardNumber, phone, email, address, issueDate, expireDate } }
+                    $.get(memberLookupUrl, { memberReference: memberRef })
+                        .done(function (res) {
+                            var ok = (res && (res.success === true || res.Success === true));
+                            var data = (res && (res.data || res.Data)) || null;
+
+                            if (!ok || !data) {
+                                $card.find(".memberSearchHint").html(`<span class="text-danger">Member not found.</span>`);
+                                return;
+                            }
+
+                            // Fill KYC
+                            $card.find(".txtNameCompany").val(data.name || data.Name || "");
+                            $card.find(".txtIdCardNumber").val(data.idCardNumber || data.IdCardNumber || "");
+                            $card.find(".txtPhone").val(data.phoneNumber || data.PhoneNumber || "");
+                            $card.find(".txtEmail").val(data.email || data.Email || "");
+                            $card.find(".txtAddress").val(data.address || data.Address || "");
+                            $card.find(".txtIssueDate").val(data.issueDate || data.IssueDate || "");
+                            $card.find(".txtExpireDate").val(data.expireDate || data.ExpireDate || "");
+
+                            $card.data("memberId", data.memberId || data.MemberId || "");
+                            $card.find(".memberSearchHint").html(`<span class="text-success">Member loaded.</span>`);
+
+                            // Load accounts
+                            var mid = $card.data("memberId");
+                            if (!mid || !memberAccountsUrl) return;
+
+                            $card.find(".ddlAccount").html(`<option value="">Loading accounts...</option>`);
+                            $.get(memberAccountsUrl, { memberId: mid })
+                                .done(function (ares) {
+                                    var items = (ares && (ares.data || ares.Data)) || [];
+                                    var opts = `<option value="">-- Select Account --</option>`;
+
+                                    items.forEach(function (a) {
+                                        var accNo = pick(a, "accountNumber", "AccountNumber", "");
+                                        var type = pick(a, "accountType", "AccountType", "");
+                                        var bal = toNum(pick(a, "balance", "Balance", 0));
+                                        var cur = pick(a, "currency", "Currency", "FCFA") || "FCFA";
+                                        opts += `<option value="${escHtml(accNo)}">${escHtml(type)} - ${escHtml(accNo)} (Bal: ${bal.toLocaleString()} ${escHtml(cur)})</option>`;
+                                    });
+
+                                    $card.find(".ddlAccount").html(opts);
+                                    rebuildGuarantorsJson();
+                                })
+                                .fail(function () {
+                                    $card.find(".ddlAccount").html(`<option value="">Failed to load accounts</option>`);
+                                });
+
+                            rebuildGuarantorsJson();
+                        })
+                        .fail(function () {
+                            $card.find(".memberSearchHint").html(`<span class="text-danger">Lookup failed.</span>`);
+                        });
+                });
+            }
+            $(document).on("click", ".btnSearchMember", function () {
+                var routes = getRoutes();
+
+                if (!routes.memberLookupUrl) {
+                    alert("Member lookup URL not configured. Check #loanUiRoutes data-member-lookup-url.");
+                    return;
+                }
+
+                var $card = $(this).closest("[data-gid]");
+                var ref = normStr($card.find(".txtMemberRef").val());
+                var $hint = $card.find(".memberSearchHint");
+
+                if (!ref) {
+                    $hint.text("Enter member reference first.");
+                    return;
+                }
+
+                $hint.text("Searching...");
+
+                $.getJSON(routes.memberLookupUrl, { memberReference: ref })
+                    .done(function (res) {
+                        if (!res || !res.success || !res.data) {
+                            $hint.text(res && res.message ? res.message : "Member not found.");
+                            return;
+                        }
+
+                        var m = res.data;
+
+                        // Autofill KYC fields
+                        $card.find(".txtNameCompany").val(pick(m, "name", ""));
+                        $card.find(".txtPhone").val(pick(m, "phoneNumber", ""));
+                        $card.find(".txtEmail").val(pick(m, "email", ""));
+                        $card.find(".txtAddress").val(pick(m, "address", ""));
+                        $card.find(".txtIdCardNumber").val(pick(m, "idCardNumber", ""));
+                        $card.find(".txtIssueDate").val(pick(m, "issueDate", ""));   // must be yyyy-MM-dd if using <input type=date>
+                        $card.find(".txtExpireDate").val(pick(m, "expireDate", "")); // must be yyyy-MM-dd if using <input type=date>
+
+                        // Store member id on card for later
+                        $card.attr("data-memberid", pick(m, "memberId", ""));
+
+                        $hint.text("Member found: " + pick(m, "name", ""));
+
+                        // Load accounts for blocking when required
+                        loadMemberAccountsIntoGuarantorCard($card, pick(m, "memberId", ""));
+                    })
+                    .fail(function (xhr) {
+                        console.error("LookupMember failed:", xhr);
+                        $hint.text("Lookup failed.");
+                    });
+            });
+            function applyRiskMitigationPolicy(policy) {
+                // Expected policy fields:
+                // RequireGuarantor, RequireCollateral, RequireCoObligor, RequireMortgage, RequireDocuments, etc.
+
+                syncMitigation("Guarantor", !!policy.RequireGuarantor);
+                syncMitigation("Collateral", !!policy.RequireCollateral);
+                syncMitigation("CoObligor", !!policy.RequireCoObligor);
+                syncMitigation("Shotee", !!policy.RequireMortgage /* or separate RequireShotee if you have */);
+
+                // You can add more mappings here
+            }
+
+            function syncMitigation(name, isRequired) {
+                // Naming convention example:
+                // checkbox: #chkGuarantor
+                // wrapper:  #wrapGuarantor
+                // add btn:  #btnAddGuarantor
+                var id = name.replace(/\s/g, "");
+
+                var $chk = $("#chk" + id);
+                var $wrap = $("#wrap" + id);
+
+                if (!$chk.length || !$wrap.length) return;
+
+                if (isRequired) {
+                    $chk.prop("checked", true).prop("disabled", true); // user cannot uncheck required
+                    $wrap.show(); // show panel so user can click "Add"
+                } else {
+                    $chk.prop("disabled", false);
+                    // respect current user choice
+                    if ($chk.is(":checked")) $wrap.show(); else $wrap.hide();
+                }
+            }
+
+            // user toggles (optional ones)
+            $(document).on("change", ".riskMitigationToggle", function () {
+                var name = $(this).data("name"); // e.g. data-name="Guarantor"
+                syncMitigation(name, false);     // not required, so just follow checked/unchecked
+            });
+
+            function loadMemberAccountsIntoGuarantorCard($card, memberId) {
+                var routes = getRoutes();
+                if (!routes.memberAccountsUrl) {
+                    console.warn("memberAccountsUrl missing in #loanUiRoutes");
+                    return;
+                }
+                if (!memberId) return;
+
+                $.getJSON(routes.memberAccountsUrl, { memberId: memberId })
+                    .done(function (res) {
+                        if (!res || !res.success) return;
+
+                        var $ddl = $card.find(".ddlAccount");
+                        if (!$ddl.length) return;
+
+                        $ddl.empty().append('<option value="">-- Select account --</option>');
+
+                        (res.data || []).forEach(function (a) {
+                            var txt = (a.AccountType || "") + " - " + (a.AccountNumber || "") + " | " + (a.AccountName || "") + " | Bal: " + (a.Balance || 0) + " " + (a.Currency || "");
+                            $ddl.append('<option value="' + a.Id + '" data-type="' + (a.AccountType || "") + '" data-balance="' + (a.Balance || 0) + '">' + txt + '</option>');
+                        });
+
+                        // Show account block UI now that accounts exist
+                        $card.find(".wrapAccountSelect,.wrapBlockAmount,.wrapBlockFlag").show();
+                    })
+                    .fail(function (xhr) {
+                        console.error("GetMemberAccountsByMemberId failed:", xhr);
+                    });
+            }
+
+            // if policy requires guarantor, optionally start with one entry
+            // (you can remove this if you don't want auto-add)
+            function autoInitGuarantorsIfRequired() {
+                var p = window.productPolicy || {};
+                if (p.requireGuarantor && $("#chkGuarantor").is(":checked") && !$("#guarantorList [data-gid]").length) {
+                    addGuarantorCard();
+                }
+            }
+
+            // call after policy load (place this inside bindProductPolicies(p) end if you want)
+            // autoInitGuarantorsIfRequired();
+
+
+            // ---------------------
+            // COLLATERAL LOGIC
+            // ---------------------
+            function rebuildCollateralJson() {
+                var arr = [];
+                $("#collateralList [data-cid]").each(function () {
+                    var $c = $(this);
+                    arr.push({
+                        id: String($c.data("cid")),
+                        name: $c.find(".colName").val() || "",
+                        collateraTypeId: $c.find(".colType").val() || "",
+                        amount: toNum($c.find(".colAmount").val() || 0),
+                        location: $c.find(".colLocation").val() || "",
+                        address: $c.find(".colAddress").val() || "",
+                        referenceNumber: $c.find(".colRef").val() || ""
+                    });
+                });
+
+                riskState.collateral = arr;
+                $("#hidCollateralJson").val(JSON.stringify(arr));
+            }
+
+            function addCollateralCard() {
+                var cid = uid("c");
+                var tpl = $("#tplCollateralCard").html().replaceAll("{{cid}}", cid);
+                $("#collateralList").append(tpl);
+
+                var $card = $("#collateralList [data-cid='" + cid + "']");
+                $card.find(".btnRemoveCollateral").off("click.rmC").on("click.rmC", function () {
+                    $card.remove();
+                    rebuildCollateralJson();
+                });
+
+                $card.find("input, select, textarea").off("input.col change.col").on("input.col change.col", rebuildCollateralJson);
+
+                rebuildCollateralJson();
+            }
+
+            $("#btnAddCollateral").off("click.addC").on("click.addC", addCollateralCard);
+
+            // Also rebuild when section toggles on/off
+            $("#chkCollateral").on("change", rebuildCollateralJson);
+            $("#chkGuarantor").on("change", rebuildGuarantorsJson);
+            $("#chkDownPayment").on("change", renderDownpaymentBox);
+
+
+        })();
+
+
+
+
+    </script>
