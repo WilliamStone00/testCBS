@@ -1335,14 +1335,12 @@ namespace CBS.FrontDesk.Helper
 
         //------------------------ Counter Cheque ------------------------
         public const string IssueCounterCheque = "/api/v1/counter-checks";
-        public const string GetCounterChequesForDataTable = "/api/v1/counter-checks/data-table";
+        public const string GetCounterChequeDataTable = "/api/v1/counter-checks/data-table";
         public const string ReviewCounterCheque = "/api/v1/counter-checks/{0}/review";
         public const string ValidateCounterCheque = "/api/v1/counter-checks/{0}/validate";
         public const string RejectCounterCheque = "/api/v1/counter-checks/{0}/reject";
 
         public const string GetCounterChequeDetails = "/api/v1/counter-checks";
-
-        public const string datatableforcounterrequest = "/api/v1/counter-checks/data-table";
 
         //----------------------- Cheque Book -------------------------
         public const string GetChequeBooksDataTable = "/api/v1/checkbook/data-table";
@@ -1881,5 +1879,12 @@ namespace CBS.FrontDesk.Helper
         public const string LoanTypeUpdate = "/api/v1/LoanType/{0}";
         public const string LoanTypeDelete = "/api/v1/LoanType/{0}";
 
+        //------------------- Year ---------------------------------------------
+
+        public const string AddYear = "/api/v1/Year/add";
+        public const string UpdateYear = "/api/v1/Year/update";
+        public const string GetDataTable = "/api/v1/Year/datatable";
+        public const string GetyearById = "/api/v1/Year/{0}";
+        public const string GetAllYear = "/api/v1/Year/all";
     }
 }

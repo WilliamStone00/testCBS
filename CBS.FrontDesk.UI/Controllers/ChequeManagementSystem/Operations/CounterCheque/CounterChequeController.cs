@@ -205,7 +205,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.Counter
             try
             {
                 var data = await _counterChequeService.GetCounterChequesForDataTableAsync(query);
-                var numConfigs = JsonConvert.DeserializeObject<List<ChequeRequestDto>>(JsonConvert.SerializeObject(data.data));
+                var numConfigs = JsonConvert.DeserializeObject<List<CounterChequeDto>>(JsonConvert.SerializeObject(data.data));
                 return Json(new
                 {
                     draw = data.draw,
@@ -220,7 +220,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.Counter
                 // return a DataTables-compatible empty result on error
                 return Json(new
                 {
-                    draw = query?.DataTableOptions?.draw ?? "1",
+                    draw = query?.DataTableOptions?.draw ?? "1",    
                     recordsTotal = 0,
                     recordsFiltered = 0,
                     data = new List<object>(),
@@ -246,29 +246,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.Counter
             return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
         }
 
-        //public async Task<ActionResult> GetChequeFullDetails(string chequeBookId)
-        //{
-        //    if (string.IsNullOrEmpty(chequeBookId))
-        //        return Json(new { success = false, message = "Invalid parameters." }, JsonRequestBehavior.AllowGet);
 
-        //    try
-        //    {
-        //        var result = await _counterChequeService.GetfullChequeDetails(chequeBookId);
-
-        //        if (result == null)
-        //            return Json(new { success = false, message = "ChequeBook not found." }, JsonRequestBehavior.AllowGet);
-
-        //        return Json(new
-        //        {
-        //            success = true,
-        //            data = result
-        //        }, JsonRequestBehavior.AllowGet);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
-        //    }
-        //}
 
         [HttpGet]
         public async Task<ActionResult> GetChequeFullDetails(string chequeBookId)
@@ -290,7 +268,51 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.Counter
             }
         }
 
+		[HttpGet]
+		public async Task<ActionResult> CounterRequest(string leafId)
+		{
+			if (string.IsNullOrEmpty(leafId))
+				return HttpNotFound("LeafId is required");
+
+			await Loader();
+
+			var leaf = await _counterChequeService.GetChequeLeafDetails(leafId);
+			if (leaf == null)
+				return HttpNotFound("Cheque leaf not found");
+
+			return View("_CounterRequest", leaf);
+		}
+
+		[HttpGet]
+		public async Task<ActionResult> Approval(string leafId)
+		{
+			if (string.IsNullOrEmpty(leafId))
+				return HttpNotFound("LeafId is required");
+
+			await Loader();
+
+			var leaf = await _counterChequeService.GetChequeLeafDetails(leafId);
+			if (leaf == null)
+				return HttpNotFound("Cheque leaf not found");
+
+			return View("_Approval", leaf);
+		}
+
+		[HttpGet]
+		public async Task<ActionResult> Payment(string leafId)
+		{
+			if (string.IsNullOrEmpty(leafId))
+				return HttpNotFound("LeafId is required");
+
+			await Loader();
+
+			var leaf = await _counterChequeService.GetChequeLeafDetails(leafId);
+			if (leaf == null)
+				return HttpNotFound("Cheque leaf not found");
+
+			return View("_Payment", leaf);
+		}
 
 
-    }
+	}
 }

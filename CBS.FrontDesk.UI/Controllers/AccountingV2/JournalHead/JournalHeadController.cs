@@ -183,7 +183,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
             {
                 // 1️⃣ Get Journal Entry
                 entry = await _journalHeadService.GetJournalEntryByIdAsync(id);
-                
+
                 var counterpartyBranch = await _branchServices.GetBranch(entry.CounterpartyBranchId);
                 entry.CounterpartyBranchName = counterpartyBranch?.Name ?? "—";
 

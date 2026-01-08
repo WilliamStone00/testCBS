@@ -1,6 +1,7 @@
 ﻿using CBS.BusinessService.LoanP;
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Message;
+using Microsoft.Ajax.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.Loan.Configuration
 {
+   // [CheckSessionTimeOutAttribute]
     public class LoanTypeController : Controller
     {
         private readonly LoanTypeService _loanTypeService;
@@ -18,14 +20,16 @@ namespace CBS.FrontDesk.UI.Controllers.Loan.Configuration
             _loanTypeService = loanTypeService;
         }
 
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
+            await LoaderAsync();
             return View();
         }
 
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null,
             string path = null, string serviceOption = null)
-        {
+        { 
+            var model = await LoaderAsync();
             if (path == "details")
             {
                 var data = await _loanTypeService.GetByIdAsync(KEY);
@@ -42,8 +46,8 @@ namespace CBS.FrontDesk.UI.Controllers.Loan.Configuration
                 return PartialView(partialView, data);
             }
             else // create
-            {
-                return PartialView(partialView, new LoanType());
+            {            
+                return PartialView(partialView, model);            
             }
         }
 
@@ -84,7 +88,7 @@ namespace CBS.FrontDesk.UI.Controllers.Loan.Configuration
 
         [HttpGet]
         public async Task<JsonResult> GetAll()
-        {
+         {
             try
             {
                 var data = await _loanTypeService.GetAllAsync();               
@@ -119,5 +123,44 @@ namespace CBS.FrontDesk.UI.Controllers.Loan.Configuration
             var data = await _loanTypeService.GetByIdAsync(id);
             return Json(new { success = data != null, data = data }, JsonRequestBehavior.AllowGet);
         }
+
+        private async Task<LoanType> LoaderAsync()
+        {
+            var data = await _loanTypeService.GetAllAsync();
+
+            // Existing Codes
+            var existingCodes = data
+                .Where(x => !string.IsNullOrWhiteSpace(x.Code))
+                .Select(x => x.Code.Trim())
+                .ToHashSet();
+
+            // Available Codes 001–100
+            var availableCodes = Enumerable.Range(1, 100)
+                .Select(i => i.ToString("D3"))
+                .Where(code => !existingCodes.Contains(code))
+                .Select(c => new SelectListItem
+                {
+                    Value = c,
+                    Text = c
+                })
+                .ToList();
+
+            ViewBag.AvailableLoanTypeCodes = availableCodes;
+
+            // Next DisplayOrder
+            int nextDisplayOrder = data.Any()
+                ? data.Max(x => x.DisplayOrder) + 1
+                : 1;
+
+            // SSF Exists?
+            bool isSSFExists = data.Any(x => x.IsSSF);
+
+            return new LoanType
+            {
+                DisplayOrder = nextDisplayOrder,
+                IsSSFexist = isSSFExists
+            };
+        }
+
     }
 }

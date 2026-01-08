@@ -1490,9 +1490,88 @@ function submitChequeRequestForm(form) {
     return false;
 }
 
+//function AjaxPostAndUpdate(form) {
+
+
+//    console.log("Form Action:", form.action);
+//    console.log("Form Method:", form.method);
+
+//    var formData = new FormData(form);
+//    for (var pair of formData.entries()) {
+//        console.log(pair[0] + ', ' + pair[1]);
+//    }
+
+//    $.validator.unobtrusive.parse(form);
+//    if ($(form).valid()) {
+//        alertify.confirm("Confirmation", "Are you sure you want to perform this action? ",
+//            function () {
+//                var ajaxConfig = {
+//                    type: 'POST',
+//                    url: form.action,
+//                    data: new FormData(form),
+//                    success: function (response) {
+//                        console.log("Response:", response);
+//                        if (response.success) {
+//                            if (response.status === "Exist") {
+//                                appalert(response.message, 3, 1);
+//                            }
+//                            else if (response.status === "Failed") {
+//                                appalert(response.message, 2, 1);
+//                            }
+//                            else {
+//                                appalert(response.message, 1, 1);
+//                            }
+
+//                            if (response.option === 'Update' && response.reloadDataView === "Yes") {
+//                                LoadDataMain(response.controllerName, response.option, response.divLoaderList, response.tableName, response.dataLoaderActionName, "KEY", "List");
+//                            }
+//                            else if (response.optype === 'Insert' && response.reloadDataView === "Yes") {
+//                                EditResetMain("KEY", response.option, response.divLoaderCreator, response.controllerName, response.reinitializedActionName, response.groupID);
+//                            }
+//                            else if (response.reloadDataView === "Yes") {
+//                                LoadDataMain(response.controllerName, response.option, response.divLoaderList, response.tableName, response.dataLoaderActionName, "KEY", "List");
+//                            }
+//                        } else {
+//                            if (response.Status === "Exist") {
+//                                appalert(response.message, 3, 1);
+//                            } else {
+//                                appalert(response.message, 2, 1);
+//                            }
+//                        }
+//                    },
+//                    error: function (err) {
+//                        console.log("Error:", err);
+
+//                        if (err.status === 401) { // Unauthorized
+//                            // Session has expired, redirect to the login page
+//                            window.location.href = '/Authentication/Login'; // Adjust the URL as needed
+//                        } else {
+//                            appalert(err.statusText, 0, 1);
+//                        }
+//                    }
+//                };
+
+//                if ($(form).attr('enctype') === "multipart/form-data") {
+//                    ajaxConfig.contentType = false;
+//                    ajaxConfig.processData = false;
+//                }
+
+//                console.log("AJAX Config:", ajaxConfig);
+//                $.ajax(ajaxConfig);
+//            },
+//            function () {
+//                appalert('Transaction cancelled', 3, 1);
+//            }
+//        );
+//    }
+//    return false;
+//}
+
+
+//collins added this
 function AjaxPostAndUpdate(form) {
     console.log("Form Action:", form.action);
-    console.log("Form Method:", form.method);
+    console.log("Form Methodss:", form.method);
 
     var formData = new FormData(form);
     for (var pair of formData.entries()) {
@@ -1893,7 +1972,7 @@ function AjaxPostAndUpdate(form) {
 
 // ✅ One timer for top page alert
 var __appAlertTimer = null;
-var __APP_ALERT_MS = 20000; // 20 sec
+var __APP_ALERT_MS = 60000; // 20 sec
 
 function hideAppAlert(sel) {
     if (__appAlertTimer) {
@@ -1979,8 +2058,8 @@ function appalert(message, state, alertType) {
         toastr.options.progressBar = true;
         toastr.options.escapeHtml = true;  // ✅ safe
         // ✅ increase display time
-        toastr.options.timeOut = 20000;         // 20 seconds visible
-        toastr.options.extendedTimeOut = 5000;  // stays longer on hover
+        toastr.options.timeOut = 60000;         // 20 seconds visible
+        toastr.options.extendedTimeOut = 10000;  // stays longer on hover
 
         if (state === 1) toastr.success(text);
         else if (state === 2) toastr.warning(text);
