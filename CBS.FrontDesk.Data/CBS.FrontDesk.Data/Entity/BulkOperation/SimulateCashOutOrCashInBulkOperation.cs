@@ -45,8 +45,10 @@ namespace CBS.FrontDesk.Data.Entity.BulkOperation
     public class BulkOperationAccount
     {
         public string BranchName { get; set; }
+        //public string BranchId { get; set; }
         public string MemberReference { get; set; }
         public string AccountType { get; set; }
+       // public string AccountTypeId { get; set; }
         public decimal Amount { get; set; }
     }  
     

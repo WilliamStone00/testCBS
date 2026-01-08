@@ -544,19 +544,19 @@
 
                 if (isContribution) {
                     $('label[for="SourceAccountType"]').text('@GlobalBulkOperation.SimulationContributionSourceAccountType');
-                    $('#StartAccount').prev('label').text('@GlobalBulkOperation.SimulationContributionStartMemberAccount');
-                    $('#EndAccount').prev('label').text('@GlobalBulkOperation.SimulationContributionEndMemberAccount');
-                    $('#SourceAccountMinAmount').prev('label').text('@GlobalBulkOperation.SimulationContributionMinimumAccountBalance');
-                    $('#SourceAccountMaxAmount').prev('label').text('@GlobalBulkOperation.SimulationContributionMaximumAccountBalance');
+                   $('label[for="StartAccount"]').text('@GlobalBulkOperation.SimulationContributionStartMemberAccount');
+                    $('label[for="EndAccount"]').text('@GlobalBulkOperation.SimulationContributionEndMemberAccount');
+                    $('label[for="SourceAccountMinAmount"]').text('@GlobalBulkOperation.SimulationContributionMinimumAccountBalance');
+                    $('label[for="SourceAccountMaxAmount"]').text('@GlobalBulkOperation.SimulationContributionMaximumAccountBalance');
 
                     $("#mainview1").hide();
                     $("#mainview2").show();
                 } else {
                     $('label[for="SourceAccountType"]').text('@GlobalBulkOperation.SimulationTopupSourceAccountType');
-                    $('#StartAccount').prev('label').text('@GlobalBulkOperation.SimulationTopupStartMemberAccount');
-                    $('#EndAccount').prev('label').text('@GlobalBulkOperation.SimulationTopupEndMemberAccount');
-                    $('#SourceAccountMinAmount').prev('label').text('@GlobalBulkOperation.SimulationTopupMinimumAccountBalance');
-                    $('#SourceAccountMaxAmount').prev('label').text('@GlobalBulkOperation.SimulationTopupMaximumAccountBalance');
+                    $('label[for="StartAccount"]').text('@GlobalBulkOperation.SimulationTopupStartMemberAccount');
+                    $('label[for="EndAccount"]').text('@GlobalBulkOperation.SimulationTopupEndMemberAccount');
+                    $('label[for="SourceAccountMinAmount"]').text('@GlobalBulkOperation.SimulationTopupMinimumAccountBalance');
+                    $('label[for="SourceAccountMaxAmount"]').text('@GlobalBulkOperation.SimulationTopupMaximumAccountBalance');
 
                     $("#mainview1").show();
                     $("#mainview2").hide();
