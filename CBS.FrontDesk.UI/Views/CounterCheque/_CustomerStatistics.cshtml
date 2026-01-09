@@ -1,0 +1,274 @@
+﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheque.CustomerCheckBookStatisticsDto
+
+<div class="card shadow-sm border-0 mb-4">
+    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+        <div>
+            <h5 class="mb-0">
+                <i class="mdi mdi-chart-bar me-2"></i>
+                Checkbook Statistics for – @Model.CustomerName
+            </h5>
+            <small class="opacity-75">Generated on @Model.GeneratedAt.ToString("dd MMM yyyy HH:mm")</small>
+        </div>
+        <span class="badge bg-@(Model.RiskLevel == "High" ? "danger" : Model.RiskLevel == "Medium" ? "warning" : "success") fs-6">
+            Risk: @Model.RiskLevel
+        </span>
+    </div>
+
+    <div class="card-body p-0">
+        <!-- CUSTOMER INFO -->
+        <div class="border-bottom p-3">
+            <div class="row">
+                <div class="col-md-4 mb-2">
+                    <small class="text-muted d-block">Customer ID</small>
+                    <strong>@Model.CustomerId</strong>
+                </div>
+                <div class="col-md-4 mb-2">
+                    <small class="text-muted d-block">Primary Account</small>
+                    <strong>@Model.PrimaryAccountNumber</strong>
+                </div>
+                <div class="col-md-4 mb-2">
+                    <small class="text-muted d-block">Total Balance</small>
+                    <strong class="@(Model.TotalBalance < 0 ? "text-danger" : "text-success")">
+                        @Model.TotalBalance.ToString("N2")
+                    </strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- QUICK STATS ROW -->
+        <div class="row g-0 text-center border-bottom">
+            <div class="col p-3 border-end">
+                <small class="text-muted d-block">Checkbooks</small>
+                <h4 class="mb-0">@Model.TotalCheckBooks</h4>
+                <small class="text-success">@Model.ActiveCheckBooks active</small>
+            </div>
+            <div class="col p-3 border-end">
+                <small class="text-muted d-block">Total Leaves</small>
+                <h4 class="mb-0">@Model.TotalLeaves</h4>
+                <small class="@(Model.TotalRemainingLeaves > 0 ? "text-success" : "text-danger")">
+                    @Model.TotalRemainingLeaves remaining
+                </small>
+            </div>
+            <div class="col p-3 border-end">
+                <small class="text-muted d-block">Usage Rate</small>
+                <h4 class="mb-0">@Model.GlobalUsageRate.ToString("0")%</h4>
+                <div class="progress mt-1" style="height: 5px;">
+                    <div class="progress-bar bg-success"
+                         style="width: @Model.GlobalUsageRate%"></div>
+                </div>
+            </div>
+            <div class="col p-3">
+                <small class="text-muted d-block">Avg Clearance</small>
+                <h4 class="mb-0">@Model.AverageClearanceTimeHours.ToString("0.##")h</h4>
+                <small class="text-muted">@Model.ClearedWithin24Hours within 24h</small>
+            </div>
+        </div>
+
+        <!-- DETAILED STATISTICS WITH COLLAPSE -->
+        <div class="accordion accordion-flush" id="statsAccordion">
+
+            <!-- FINANCIAL SUMMARY -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#financialCollapse">
+                        <i class="mdi mdi-cash me-2 text-success"></i>
+                        Financial Summary
+                    </button>
+                </h2>
+                <div id="financialCollapse" class="accordion-collapse collapse"
+                     data-bs-parent="#statsAccordion">
+                    <div class="accordion-body">
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <small class="text-muted d-block">Total Issued</small>
+                                <strong>@Model.TotalAmountIssued.ToString("N2")</strong>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <small class="text-muted d-block">Cleared</small>
+                                <strong class="text-success">@Model.TotalAmountCleared.ToString("N2")</strong>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <small class="text-muted d-block">Pending</small>
+                                <strong class="text-warning">@Model.TotalAmountPending.ToString("N2")</strong>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <small class="text-muted d-block">Rejected</small>
+                                <strong class="text-danger">@Model.TotalAmountRejected.ToString("N2")</strong>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <small class="text-muted d-block">Highest Cheque</small>
+                                <strong>@Model.HighestChequeAmount.ToString("N2")</strong>
+                            </div>
+                            <div class="col-md-6">
+                                <small class="text-muted d-block">Average Cheque</small>
+                                <strong>@Model.AverageChequeAmount.ToString("N2")</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CHECKBOOK DETAILS -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#checkbookCollapse">
+                        <i class="mdi mdi-book-open-variant me-2 text-primary"></i>
+                        Checkbook Details
+                    </button>
+                </h2>
+                <div id="checkbookCollapse" class="accordion-collapse collapse"
+                     data-bs-parent="#statsAccordion">
+                    <div class="accordion-body">
+                        <div class="row">
+                            <div class="col-md-2 mb-2">
+                                <small class="text-muted d-block">Active</small>
+                                <strong class="text-success">@Model.ActiveCheckBooks</strong>
+                            </div>
+                            <div class="col-md-2 mb-2">
+                                <small class="text-muted d-block">Blocked</small>
+                                <strong class="text-danger">@Model.BlockedCheckBooks</strong>
+                            </div>
+                            <div class="col-md-2 mb-2">
+                                <small class="text-muted d-block">Expired</small>
+                                <strong class="text-warning">@Model.ExpiredCheckBooks</strong>
+                            </div>
+                            <div class="col-md-2 mb-2">
+                                <small class="text-muted d-block">Reissued</small>
+                                <strong>@Model.ReissuedCheckBooks</strong>
+                            </div>
+                            <div class="col-md-2 mb-2">
+                                <small class="text-muted d-block">Lost</small>
+                                <strong>@Model.LostCheckBooks</strong>
+                            </div>
+                            <div class="col-md-2 mb-2">
+                                <small class="text-muted d-block">Expiring Soon</small>
+                                <strong class="@(Model.ExpiringSoonCheckBooks > 0 ? "text-warning" : "")">
+                                    @Model.ExpiringSoonCheckBooks
+                                </strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LEAVES USAGE -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#leavesCollapse">
+                        <i class="mdi mdi-note-multiple me-2 text-info"></i>
+                        Leaves Usage
+                    </button>
+                </h2>
+                <div id="leavesCollapse" class="accordion-collapse collapse"
+                     data-bs-parent="#statsAccordion">
+                    <div class="accordion-body">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Used:</span>
+                                    <strong>@Model.TotalUsedLeaves</strong>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Remaining:</span>
+                                    <strong class="@(Model.TotalRemainingLeaves > 0 ? "text-success" : "text-danger")">
+                                        @Model.TotalRemainingLeaves
+                                    </strong>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <span>Cancelled:</span>
+                                    <strong>@Model.CancelledLeaves</strong>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="progress mb-2" style="height: 20px;">
+                                    <div class="progress-bar bg-success"
+                                         style="width: @Model.GlobalUsageRate%">
+                                        @Model.GlobalUsageRate.ToString("0.##")% Used
+                                    </div>
+                                    <div class="progress-bar bg-light text-dark"
+                                         style="width: @(100-Model.GlobalUsageRate)%">
+                                        @((100-Model.GlobalUsageRate).ToString("0.##"))% Remaining
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECURITY & RISK -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#securityCollapse">
+                        <i class="mdi mdi-shield-alert me-2 text-danger"></i>
+                        Security & Risk Indicators
+                    </button>
+                </h2>
+                <div id="securityCollapse" class="accordion-collapse collapse"
+                     data-bs-parent="#statsAccordion">
+                    <div class="accordion-body">
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <small class="text-muted d-block">Bounced Cheques</small>
+                                <strong class="@(Model.BouncedChequesCount > 0 ? "text-danger" : "text-success")">
+                                    @Model.BouncedChequesCount
+                                </strong>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <small class="text-muted d-block">Stop Payments</small>
+                                <strong>@Model.StopPaymentRequests</strong>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <small class="text-muted d-block">Fraud Flags</small>
+                                <strong class="@(Model.FraudFlaggedCheques > 0 ? "text-danger" : "")">
+                                    @Model.FraudFlaggedCheques
+                                </strong>
+                            </div>
+                        </div>
+                        <div class="alert @(Model.HasBlockedCheckBooks ? "alert-warning" : "alert-success")">
+                            <i class="mdi mdi-@(Model.HasBlockedCheckBooks ? "alert-circle" : "check-circle") me-2"></i>
+                            @(Model.HasBlockedCheckBooks ? "Has blocked checkbooks" : "No blocked checkbooks")
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="card-footer text-muted small">
+        <div class="row">
+            <div class="col-md-6">
+                First issued: @(Model.FirstIssuedDate?.ToString("dd MMM yyyy") ?? "N/A")
+            </div>
+            <div class="col-md-6 text-end">
+                Last cheque issued: @(Model.LastChequeIssuedDate?.ToString("dd MMM yyyy") ?? "N/A")
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .accordion-button:not(.collapsed) {
+        background-color: rgba(13, 110, 253, 0.05);
+        color: #0d6efd;
+    }
+
+    .progress-bar {
+        transition: width 0.6s ease;
+    }
+
+    .card {
+        transition: all 0.3s ease;
+    }
+
+        .card:hover {
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1) !important;
+        }
+</style>

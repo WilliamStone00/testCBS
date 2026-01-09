@@ -1,5 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheque.CustomerData
 
+
+
 @if (Model == null || Model.CheckBooks == null || !Model.CheckBooks.Any())
 {
     <div class="alert alert-warning text-center">
@@ -18,7 +20,7 @@ else
                 @Model.CustomerDto.FirstName @Model.CustomerDto.LastName
             </h6>
             <small class="text-muted">
-                Customer ID : <strong>@Model.CustomerDto.CustomerId</strong>
+                Memeber Reference : <strong>@Model.CustomerDto.CustomerId</strong>
             </small>
         </div>
     </div>
@@ -224,14 +226,14 @@ else
         background-image: none; /* Supprime l'icône par défaut */
     }
 
-    /* Flèche gauche */
+        /* Flèche gauche */
         .carousel-control-prev-icon::after {
             content: '\276E'; /* Unicode flèche gauche ❮ */
             font-size: 2rem;
             color: #0d6efdc7; /* Couleur personnalisée */
         }
 
-    /* Flèche droite */
+        /* Flèche droite */
         .carousel-control-next-icon::after {
             content: '\276F'; /* Unicode flèche droite ❯ */
             font-size: 2rem;
@@ -243,7 +245,6 @@ else
     .carousel-control-next:hover::after {
         opacity: 0.8;
     }
-
 </style>
 
 <script>

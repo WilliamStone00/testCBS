@@ -7,7 +7,7 @@
 <div class="card bg-light mb-4 shadow-sm">
     <div class="card-body text-center">
         <h1 class="card-title text-primary fw-bold mb-2">
-            <i class="mdi mdi-cash-fast me-2"></i> Counter Cheque Management
+            <i class="mdi mdi-cash-fast me-2"></i> Member Cheque  Management Console
         </h1>
         <p class="card-text text-muted mb-1">
             Issue on-the-spot counter cheques for immediate customer withdrawals and manage the validation workflow.
@@ -47,13 +47,13 @@
      MAIN CONTENT AREA
 ================================================== -->
 <div class="card shadow p-3 mb-4">
-    <div class="card mb-1">
-        <div class="card-body d-flex justify-content-end align-items-center">
+    <!--<div class="card mb-1">
+        <div class="card-body d-flex justify-content-end align-items-center">-->
             <!-- These buttons correctly call your site's generic JavaScript functions -->
-            <a type="button" onclick="LoadDataGen('CounterCheque', 'myDataTable', '_DataTable', 0, 'datalistingview', null, 'list')" class="btn btn-label-primary btn-sm me-2">View All</a>
+            <!--<a type="button" onclick="LoadDataGen('CounterCheque', 'myDataTable', '_DataTable', 0, 'datalistingview', null, 'list')" class="btn btn-label-primary btn-sm me-2">View All</a>
             <a type="button" onclick="AddORUpdateGen(null, 'datalistingview', '_Create', 'new', 'CounterCheque')" class="btn btn-label-secondary btn-sm">New Counter Cheque</a>
         </div>
-    </div>
+    </div>-->
 
     <!-- The container where all partial views will be dynamically loaded -->
     <div id="datalistingview">
@@ -111,6 +111,49 @@
                 }
             });
 
+            //function searchCustomer() {
+            //    let customerId = $("#customerIdInput").val().trim();
+
+            //    if (!customerId) {
+            //        appalert("Please enter a Customer ID", 3, 1);
+            //        return;
+            //    }
+
+            //    // Stocker le customerId actuel
+            //    currentCustomerId = customerId;
+
+            //    $.ajax({
+            //        url: '/CounterCheque/Search',
+            //        type: 'GET',
+            //        data: { CustomerId: customerId },
+            //        success: function (partialView) {
+            //            // Remplacer le contenu de datalistingview par le carrousel
+            //            $("#datalistingview").html(partialView);
+            //            appalert("Customer cheque books loaded successfully", 1, 1);
+            //        },
+            //        error: function (err) {
+            //            // Réinitialiser l'affichage
+            //            $("#datalistingview").html(initialFormHtml);
+
+            //            if (err.status === 404) {
+            //                appalert("No cheque books found for this customer", 3, 1);
+            //            } else if (err.status === 400) {
+            //                appalert("Invalid customer ID format", 3, 1);
+            //            } else if (err.status === 500) {
+            //                appalert("Server error occurred", 0, 1);
+            //            } else if (err.status === 401) {
+            //                window.location.href = '/Authentication/Login';
+            //            } else {
+            //                appalert("Unexpected error occurred", 0, 1);
+            //            }
+            //        },
+            //        complete: function () {
+            //            $("#searchCustomerBtn").prop("disabled", false);
+            //            $("#searchCustomerBtn").html('<i class="mdi mdi-magnify"></i> Search');
+            //        }
+            //    });
+            //}
+
             function searchCustomer() {
                 let customerId = $("#customerIdInput").val().trim();
 
@@ -119,42 +162,101 @@
                     return;
                 }
 
-                // Stocker le customerId actuel
+                // Store current customerId
                 currentCustomerId = customerId;
 
+                // Disable button and show loading
+                $("#searchCustomerBtn").prop("disabled", true);
+                $("#searchCustomerBtn").html('<i class="mdi mdi-loading mdi-spin"></i> Loading...');
+
+                // Clear previous content
+                $("#statisticsContainer").empty();
+                $("#chequeLeavesContainer").empty();
+
+                // Create a counter to track both requests
+                let completedRequests = 0;
+                const totalRequests = 2;
+                let hasError = false;
+
+                // Function to check if all requests are done
+                function checkAllRequestsComplete() {
+                    completedRequests++;
+                    if (completedRequests === totalRequests) {
+                        $("#searchCustomerBtn").prop("disabled", false);
+                        $("#searchCustomerBtn").html('<i class="mdi mdi-magnify"></i> Search');
+
+                        if (!hasError) {
+                            appalert("Customer data loaded successfully", 1, 1);
+                        }
+                    }
+                }
+
+                // Load Statistics
+                $.ajax({
+                    url: '/CounterCheque/GetCustomerStatistics',
+                    type: 'GET',
+                    data: { customerId: customerId },
+                    success: function (statsHtml) {
+                        $("#statisticsContainer").html(statsHtml);
+                        // Initialize collapse functionality
+                        $('.collapse').collapse();
+                    },
+                    error: function (err) {
+                        hasError = true;
+                        let errorMsg = "Error loading statistics: ";
+                        if (err.status === 404) {
+                            errorMsg += "No statistics found";
+                        } else if (err.status === 400) {
+                            errorMsg += "Invalid customer ID";
+                        } else {
+                            errorMsg += "Server error occurred";
+                        }
+                        $("#statisticsContainer").html(`
+                <div class="alert alert-warning">
+                    <i class="mdi mdi-alert-outline me-1"></i>
+                    ${errorMsg}
+                </div>
+            `);
+                    },
+                    complete: function () {
+                        checkAllRequestsComplete();
+                    }
+                });
+
+                // Load Cheque Books (existing functionality)
                 $.ajax({
                     url: '/CounterCheque/Search',
                     type: 'GET',
                     data: { CustomerId: customerId },
                     success: function (partialView) {
-                        // Remplacer le contenu de datalistingview par le carrousel
-                        $("#datalistingview").html(partialView);
-                        appalert("Customer cheque books loaded successfully", 1, 1);
+                        $("#datalistingview1").html(partialView);
                     },
                     error: function (err) {
-                        // Réinitialiser l'affichage
-                        $("#datalistingview").html(initialFormHtml);
+                        hasError = true;
+                        // Reset display
+                        $("#datalistingview1").html(initialFormHtml);
 
+                        let errorMsg = "Error loading cheque books: ";
                         if (err.status === 404) {
-                            appalert("No cheque books found for this customer", 3, 1);
+                            errorMsg += "No cheque books found";
                         } else if (err.status === 400) {
-                            appalert("Invalid customer ID format", 3, 1);
+                            errorMsg += "Invalid customer ID format";
                         } else if (err.status === 500) {
-                            appalert("Server error occurred", 0, 1);
+                            errorMsg += "Server error occurred";
                         } else if (err.status === 401) {
                             window.location.href = '/Authentication/Login';
+                            return;
                         } else {
-                            appalert("Unexpected error occurred", 0, 1);
+                            errorMsg += "Unexpected error occurred";
                         }
+
+                        appalert(errorMsg, 3, 1);
                     },
                     complete: function () {
-                        $("#searchCustomerBtn").prop("disabled", false);
-                        $("#searchCustomerBtn").html('<i class="mdi mdi-magnify"></i> Search');
+                        checkAllRequestsComplete();
                     }
                 });
             }
-
-
 
             // BOUTON POUR REVENIR AU CAROUSEL
             $(document).on("click", "#backToSearchBtn", function () {
