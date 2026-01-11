@@ -1,0 +1,121 @@
+﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.SharedMonth.SharedMonthSimulation
+@using Resources
+
+@{
+    ViewBag.Title = " Shared Month calculation";
+}
+
+<div class="card bg-light mb-3">
+    <div class="card-body text-center">
+        <h1 class="card-title text-primary">
+            <i class="mdi mdi-cog-outline me-2"></i> Shared Month calculation
+        </h1>
+    </div>
+</div>
+
+
+<!-- Add Year Button -->
+<!--<div class="card mb-3">
+    <div class="card-body d-flex justify-content-end align-items-center">
+        <button type="button" id="btncreateYear" class="btn btn-success btn-sm px-2">
+            <i class="mdi mdi-plus-circle-outline me-1"></i> Add New
+        </button>
+    </div>
+</div>-->
+
+
+
+
+<!-- Advance Filters -->
+<div class="card shadow p-3 mb-2">
+    <h5 class="text-primary mb-2">
+        <i class="mdi mdi-filter-outline me-1"></i> ADVANCE FILTERS
+    </h5>
+
+    <form id="SharedMonthFilterForm" autocomplete="off" method="post">
+        @Html.AntiForgeryToken()
+
+        <div class="card p-3 mb-2 bg-light">
+
+
+
+
+            <!-- DATE RANGE -->
+            <div class="row mb-1">
+
+                <div class="col-md-12  mb-1">
+                    <label class="form-label fw-bold">Branch</label>
+                    @Html.DropDownList(
+                        "BranchId",
+                        new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
+                        "--- Select Branch ---",
+                        new { @class = "form-select select2", required = "required" })
+                    <div class="invalid-feedback">Please select a branch</div>
+                </div>
+
+                <div class="col-md-6 mb-1">
+
+                    <div class="position-relative">
+                        @Html.LabelFor(m => m.ProductId, "Product",
+                            new { @class = "form-label fw-bold" })
+
+                        @Html.DropDownListFor(
+                            m => m.ProductId,
+                            ViewBag.Products as List<SelectListItem>,
+                            "-- Select Product --",
+                            new { @class = "form-control  select2" }
+                        )
+
+                    </div>
+                </div>
+                <!-- Filter by ID -->
+                <div class="col-md-12 mb-1">
+                    <label class="form-label fw-bold">Accounting Year</label>
+                    <select id="AccountingYearId" name="AccountingYearId"
+                            class="form-select select2" required>
+                        <option value="">--- Select Accounting Year ---</option>
+                    </select>
+                    <div class="invalid-feedback">Please select an Accounting Year</div>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label fw-bold d-block">Enabled Status</label>
+
+                    <div class="form-check">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               id="filterIsEnabled"
+                               value="true">
+
+                        <label class="form-check-label" for="filterIsEnabled">
+                            Is Enabled
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+
+            <!-- ACTION BUTTONS -->
+            <div class="row g-2 mt-2">
+                <div class="col-12 col-md-6">
+                    <button id="applyFilterBtn" type="submit" class="btn btn-primary btn-sm w-100">
+                        <i class="mdi mdi-magnify me-1"></i> Apply Filters
+                    </button>
+                </div>
+                <div class="col-12 col-md-6">
+                    <button id="resetFilterBtn" type="button" class="btn btn-secondary btn-sm w-100">
+                        <i class="mdi mdi-refresh me-1"></i> Reset Filters
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+
+
+    </form>
+</div>
+

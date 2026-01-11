@@ -419,23 +419,13 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
             {
                 var valid = model.ReconciledLedgerLines
                     .Where(r => r.DebitAmount != 0 || r.CreditAmount != 0)
-                    .OrderBy(r => r.BranchName)
-                    .ThenBy(r => r.CounterpartyBranchName)
-                    .ThenBy(r => r.Seq)
+                    .OrderBy(r => r.Seq)
                     .ToList();
 
-                var grouped = valid
-                    .GroupBy(r => new { r.BranchId, r.BranchName })
-                    .Select(b => new
-                    {
-                        Branch = b.Key,
-                        SourceLines = b.ToList(), // ✅ FIX
-                        DestinationGroups = b
-                            .Where(x => !string.IsNullOrWhiteSpace(x.CounterpartyBranchId)
-                                        && x.CounterpartyBranchName != x.BranchName)
-                            .GroupBy(x => new { x.CounterpartyBranchId, x.CounterpartyBranchName })
-                            .ToList()
-                    })
+                // Get distinct branches (simplified approach - just two tables)
+                var distinctBranches = valid
+                    .Select(r => new { r.BranchId, r.BranchName })
+                    .Distinct()
                     .ToList();
 
                 var title = ws.Cell(currentRow, 1);
@@ -444,64 +434,102 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
                 ApplySectionTitleStyle(title);
                 currentRow += 2;
 
-                var headers = new[] { "Account Number", "Account Name", "Description", "Auxiliary Ref", "Debit", "Credit" };
+                var headers = new[] { "Seq", "Account Number", "Account Name", "Description", "Auxiliary Ref", "Debit", "Credit" };
 
-                foreach (var g in grouped)
+                if (distinctBranches.Count >= 2)
                 {
-                    // SOURCE
-                    ws.Cell(currentRow++, 1).Value = $"Source: {g.Branch.BranchName}";
+                    var sourceBranch = distinctBranches[0];
+                    var destinationBranch = distinctBranches[1];
+
+                    
+
+                    currentRow = CreateTableHeaderRow(ws, currentRow, headers);
+
+                    decimal sourceDr = 0, sourceCr = 0;
+                    var sourceEntries = valid
+                        .Where(r => r.BranchId == sourceBranch.BranchId)
+                        .OrderBy(r => r.Seq)
+                        .ToList();
+
+                    foreach (var l in sourceEntries)
+                    {
+                        ws.Cell(currentRow, 1).Value = l.Seq;
+                        ws.Cell(currentRow, 2).Value = l.AccountNumber;
+                        ws.Cell(currentRow, 3).Value = l.AccountName;
+                        ws.Cell(currentRow, 4).Value = l.Description;
+                        ws.Cell(currentRow, 5).Value = l.AuxiliaryRef;
+                        ws.Cell(currentRow, 6).Value = Math.Abs(l.DebitAmount);
+                        ws.Cell(currentRow, 7).Value = Math.Abs(l.CreditAmount);
+
+                        sourceDr += Math.Abs(l.DebitAmount);
+                        sourceCr += Math.Abs(l.CreditAmount);
+
+                        ApplyTableCellBorders(ws, currentRow, 1, 7);
+                        currentRow++;
+                    }
+
+                    currentRow = CreateTotalsRow(ws, currentRow, sourceDr, sourceCr, 7);
+                    currentRow += 2;
+
+                    
+
+                    currentRow = CreateTableHeaderRow(ws, currentRow, headers);
+
+                    decimal destDr = 0, destCr = 0;
+                    var destinationEntries = valid
+                        .Where(r => r.BranchId == destinationBranch.BranchId)
+                        .OrderBy(r => r.Seq)
+                        .ToList();
+
+                    foreach (var l in destinationEntries)
+                    {
+                        ws.Cell(currentRow, 1).Value = l.Seq;
+                        ws.Cell(currentRow, 2).Value = l.AccountNumber;
+                        ws.Cell(currentRow, 3).Value = l.AccountName;
+                        ws.Cell(currentRow, 4).Value = l.Description;
+                        ws.Cell(currentRow, 5).Value = l.AuxiliaryRef;
+                        ws.Cell(currentRow, 6).Value = Math.Abs(l.DebitAmount);
+                        ws.Cell(currentRow, 7).Value = Math.Abs(l.CreditAmount);
+
+                        destDr += Math.Abs(l.DebitAmount);
+                        destCr += Math.Abs(l.CreditAmount);
+
+                        ApplyTableCellBorders(ws, currentRow, 1, 7);
+                        currentRow++;
+                    }
+
+                    currentRow = CreateTotalsRow(ws, currentRow, destDr, destCr, 7);
+                    currentRow += 2;
+                }
+                else if (distinctBranches.Count == 1)
+                {
+                    // Handle single branch case (non-interbranch transaction)
+                    var branch = distinctBranches[0];
+                    ws.Cell(currentRow++, 1).Value = $"Branch: {branch.BranchName}";
                     ws.Cell(currentRow - 1, 1).Style.Font.Bold = true;
 
                     currentRow = CreateTableHeaderRow(ws, currentRow, headers);
 
-                    decimal dr = 0, cr = 0;
-                    foreach (var l in g.SourceLines)
+                    decimal totalDr = 0, totalCr = 0;
+                    foreach (var l in valid.OrderBy(r => r.Seq))
                     {
-                        ws.Cell(currentRow, 1).Value = l.AccountNumber;
-                        ws.Cell(currentRow, 2).Value = l.AccountName;
-                        ws.Cell(currentRow, 3).Value = l.Description;
-                        ws.Cell(currentRow, 4).Value = l.AuxiliaryRef;
-                        ws.Cell(currentRow, 5).Value = Math.Abs(l.DebitAmount);
-                        ws.Cell(currentRow, 6).Value = Math.Abs(l.CreditAmount);
+                        ws.Cell(currentRow, 1).Value = l.Seq;
+                        ws.Cell(currentRow, 2).Value = l.AccountNumber;
+                        ws.Cell(currentRow, 3).Value = l.AccountName;
+                        ws.Cell(currentRow, 4).Value = l.Description;
+                        ws.Cell(currentRow, 5).Value = l.AuxiliaryRef;
+                        ws.Cell(currentRow, 6).Value = Math.Abs(l.DebitAmount);
+                        ws.Cell(currentRow, 7).Value = Math.Abs(l.CreditAmount);
 
-                        dr += Math.Abs(l.DebitAmount);
-                        cr += Math.Abs(l.CreditAmount);
+                        totalDr += Math.Abs(l.DebitAmount);
+                        totalCr += Math.Abs(l.CreditAmount);
 
-                        ApplyTableCellBorders(ws, currentRow, 1, 6);
+                        ApplyTableCellBorders(ws, currentRow, 1, 7);
                         currentRow++;
                     }
 
-                    currentRow = CreateTotalsRow(ws, currentRow, dr, cr, 6);
+                    currentRow = CreateTotalsRow(ws, currentRow, totalDr, totalCr, 7);
                     currentRow += 2;
-
-                    // DESTINATIONS
-                    foreach (var cp in g.DestinationGroups)
-                    {
-                        ws.Cell(currentRow++, 1).Value = $"Destination: {cp.Key.CounterpartyBranchName}";
-                        ws.Cell(currentRow - 1, 1).Style.Font.Bold = true;
-
-                        currentRow = CreateTableHeaderRow(ws, currentRow, headers);
-
-                        decimal ddr = 0, dcr = 0;
-                        foreach (var l in cp)
-                        {
-                            ws.Cell(currentRow, 1).Value = l.AccountNumber;
-                            ws.Cell(currentRow, 2).Value = l.AccountName;
-                            ws.Cell(currentRow, 3).Value = l.Description;
-                            ws.Cell(currentRow, 4).Value = l.AuxiliaryRef;
-                            ws.Cell(currentRow, 5).Value = Math.Abs(l.DebitAmount);
-                            ws.Cell(currentRow, 6).Value = Math.Abs(l.CreditAmount);
-
-                            ddr += Math.Abs(l.DebitAmount);
-                            dcr += Math.Abs(l.CreditAmount);
-
-                            ApplyTableCellBorders(ws, currentRow, 1, 6);
-                            currentRow++;
-                        }
-
-                        currentRow = CreateTotalsRow(ws, currentRow, ddr, dcr, 6);
-                        currentRow += 2;
-                    }
                 }
             }
 
@@ -510,22 +538,13 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
             {
                 var valid = model.Lines
                     .Where(l => l.Amount != 0)
-                    .OrderBy(l => l.BranchName)
-                    .ThenBy(l => l.CounterpartyBranchName)
+                    .OrderBy(l => l.Seq)
                     .ToList();
 
-                var grouped = valid
-                    .GroupBy(l => new { l.BranchId, l.BranchName })
-                    .Select(b => new
-                    {
-                        Branch = b.Key,
-                        SourceLines = b.ToList(), // ✅ FIX
-                        DestinationGroups = b
-                            .Where(x => !string.IsNullOrWhiteSpace(x.CounterpartyBranchId)
-                                        && x.CounterpartyBranchName != x.BranchName)
-                            .GroupBy(x => new { x.CounterpartyBranchId, x.CounterpartyBranchName })
-                            .ToList()
-                    })
+                // Get distinct branches (simplified approach - just two tables)
+                var distinctBranches = valid
+                    .Select(l => new { l.BranchId, l.BranchName })
+                    .Distinct()
                     .ToList();
 
                 var title = ws.Cell(currentRow, 1);
@@ -534,35 +553,108 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
                 ApplySectionTitleStyle(title);
                 currentRow += 2;
 
-                var headers = new[] { "Account Number", "Account Name", "Description", "Debit", "Credit" };
+                var headers = new[] { "Seq", "Account Number", "Account Name", "Description", "Debit", "Credit" };
 
-                foreach (var g in grouped)
+                if (distinctBranches.Count >= 2)
                 {
-                    ws.Cell(currentRow++, 1).Value = $"Source: {g.Branch.BranchName}";
+                    var sourceBranch = distinctBranches[0];
+                    var destinationBranch = distinctBranches[1];
+
+                    
+
+                    currentRow = CreateTableHeaderRow(ws, currentRow, headers);
+
+                    decimal sourceDr = 0, sourceCr = 0;
+                    var sourceEntries = valid
+                        .Where(l => l.BranchId == sourceBranch.BranchId)
+                        .OrderBy(l => l.Seq)
+                        .ToList();
+
+                    foreach (var l in sourceEntries)
+                    {
+                        var debit = l.DrCr?.ToLower() == "debit" ? Math.Abs(l.Amount) : 0;
+                        var credit = l.DrCr?.ToLower() == "credit" ? Math.Abs(l.Amount) : 0;
+
+                        ws.Cell(currentRow, 1).Value = l.Seq;
+                        ws.Cell(currentRow, 2).Value = l.AccountNumber;
+                        ws.Cell(currentRow, 3).Value = l.AccountName;
+                        ws.Cell(currentRow, 4).Value = l.Description;
+                        ws.Cell(currentRow, 5).Value = debit;
+                        ws.Cell(currentRow, 6).Value = credit;
+
+                        sourceDr += debit;
+                        sourceCr += credit;
+
+                        ApplyTableCellBorders(ws, currentRow, 1, 6);
+                        currentRow++;
+                    }
+
+                    currentRow = CreateTotalsRow(ws, currentRow, sourceDr, sourceCr, 6);
+                    currentRow += 2;
+
+                    // DESTINATION TABLE
+                    
+
+                    currentRow = CreateTableHeaderRow(ws, currentRow, headers);
+
+                    decimal destDr = 0, destCr = 0;
+                    var destinationEntries = valid
+                        .Where(l => l.BranchId == destinationBranch.BranchId)
+                        .OrderBy(l => l.Seq)
+                        .ToList();
+
+                    foreach (var l in destinationEntries)
+                    {
+                        var debit = l.DrCr?.ToLower() == "debit" ? Math.Abs(l.Amount) : 0;
+                        var credit = l.DrCr?.ToLower() == "credit" ? Math.Abs(l.Amount) : 0;
+
+                        ws.Cell(currentRow, 1).Value = l.Seq;
+                        ws.Cell(currentRow, 2).Value = l.AccountNumber;
+                        ws.Cell(currentRow, 3).Value = l.AccountName;
+                        ws.Cell(currentRow, 4).Value = l.Description;
+                        ws.Cell(currentRow, 5).Value = debit;
+                        ws.Cell(currentRow, 6).Value = credit;
+
+                        destDr += debit;
+                        destCr += credit;
+
+                        ApplyTableCellBorders(ws, currentRow, 1, 6);
+                        currentRow++;
+                    }
+
+                    currentRow = CreateTotalsRow(ws, currentRow, destDr, destCr, 6);
+                    currentRow += 2;
+                }
+                else if (distinctBranches.Count == 1)
+                {
+                    // Handle single branch case (non-interbranch transaction)
+                    var branch = distinctBranches[0];
+                    ws.Cell(currentRow++, 1).Value = $"Branch: {branch.BranchName}";
                     ws.Cell(currentRow - 1, 1).Style.Font.Bold = true;
 
                     currentRow = CreateTableHeaderRow(ws, currentRow, headers);
 
-                    decimal dr = 0, cr = 0;
-                    foreach (var l in g.SourceLines)
+                    decimal totalDr = 0, totalCr = 0;
+                    foreach (var l in valid.OrderBy(r => r.Seq))
                     {
-                        var d = l.DrCr?.ToLower() == "debit" ? Math.Abs(l.Amount) : 0;
-                        var c = l.DrCr?.ToLower() == "credit" ? Math.Abs(l.Amount) : 0;
+                        var debit = l.DrCr?.ToLower() == "debit" ? Math.Abs(l.Amount) : 0;
+                        var credit = l.DrCr?.ToLower() == "credit" ? Math.Abs(l.Amount) : 0;
 
-                        ws.Cell(currentRow, 1).Value = l.AccountNumber;
-                        ws.Cell(currentRow, 2).Value = l.AccountName;
-                        ws.Cell(currentRow, 3).Value = l.Description;
-                        ws.Cell(currentRow, 4).Value = d;
-                        ws.Cell(currentRow, 5).Value = c;
+                        ws.Cell(currentRow, 1).Value = l.Seq;
+                        ws.Cell(currentRow, 2).Value = l.AccountNumber;
+                        ws.Cell(currentRow, 3).Value = l.AccountName;
+                        ws.Cell(currentRow, 4).Value = l.Description;
+                        ws.Cell(currentRow, 5).Value = debit;
+                        ws.Cell(currentRow, 6).Value = credit;
 
-                        dr += d;
-                        cr += c;
+                        totalDr += debit;
+                        totalCr += credit;
 
-                        ApplyTableCellBorders(ws, currentRow, 1, 5);
+                        ApplyTableCellBorders(ws, currentRow, 1, 6);
                         currentRow++;
                     }
 
-                    currentRow = CreateTotalsRow(ws, currentRow, dr, cr, 5);
+                    currentRow = CreateTotalsRow(ws, currentRow, totalDr, totalCr, 6);
                     currentRow += 2;
                 }
             }

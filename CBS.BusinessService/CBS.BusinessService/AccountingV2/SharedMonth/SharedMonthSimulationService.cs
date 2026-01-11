@@ -68,13 +68,13 @@ namespace CBS.BusinessService.AccountingV2.SharedMonth
 
             if (model == null)
                 throw new ArgumentNullException(nameof(model));
-            //model.ProductId = "0000";
-            //model.StartPeriodKey = "jan";
-            //model.EndPeriodKey = "feb";
+            model.ProductId = "0000";
+            model.StartPeriodKey = "jan";
+            model.EndPeriodKey = "feb";
 
             var apiResponse =
                 await _apiCallerHelper.PostAsync<ResponseObject<List<ShareMonthPsiReportLineDto>>>(
-                    APICallHelper.InterestDistributionSimulation,
+                    APICallHelper.InterestDistributionSimulation1,
                     model
                 );
 

@@ -38,7 +38,7 @@ namespace CBS.BusinessService.Accounting_V2.IPS
             string baseUrl = ConfigurationManager.AppSettings["AccountingV2BaseUrl"];
             if (string.IsNullOrEmpty(baseUrl))
             {
-                throw new ConfigurationErrorsException("The 'AccountingBaseUrl' appSetting is missing or empty in Web.config.");
+                throw new ConfigurationErrorsException("The 'AccountingV2BaseUrl' appSetting is missing or empty in Web.config.");
             }
             _apiHelper = new ApiCallerHelper(baseUrl);
             //change the base url to the actual base url

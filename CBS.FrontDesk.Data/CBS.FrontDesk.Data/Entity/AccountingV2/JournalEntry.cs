@@ -227,6 +227,7 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public decimal CreditAmount { get; set; }
 
         public string AuxiliaryRef { get; set; }
+        public int Seq { get; set; }
     }
 
     // ==============================================

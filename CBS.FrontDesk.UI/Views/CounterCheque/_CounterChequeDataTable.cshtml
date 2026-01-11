@@ -1,0 +1,32 @@
+﻿@using Resources
+
+<div class="card p-3 shadow mb-4">
+    <h5 class="text-primary mb-3">
+        <i class="mdi mdi-cash-multiple"></i> Counter Cheques List
+    </h5>
+
+    <div class="table-responsive">
+        <table id="counterChequeTable" class="table table-bordered table-striped">
+            <thead class="table-light">
+                <tr>
+                    <th>Issued On</th>
+                    <th>Customer</th>
+                    <th>Account No</th>
+                    <th>Cheque No</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Issued By</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        initCounterChequeTable();
+    });
+</script>
