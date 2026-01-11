@@ -373,8 +373,18 @@
 <div class="card p-3 shadow-sm mt-4" id="reportTableContainer">
 
     <div class="table-responsive">
-        <h5 class="text-primary mb-3"><i class="mdi mdi-table"></i>Donwload Reports In Excel / PDF</h5>
-        <table style="width: 100%" id="myDataTable" class="table table-hover table-bordered mb-0 custom-report-table">
+        <div class="d-flex justify-content-between align-items-center">
+            <h5 class="text-primary mb-3"><i class="mdi mdi-table"></i>Donwload Reports In Excel / PDF</h5>
+
+            <div>
+                <button id="clearGeneratedReports" type="button" class="btn btn-danger d-none">
+                    Clear Generated Reports
+                </button>
+            </div>
+        </div>
+
+
+        <table style="width: 100%" id="myDataTable" class="table table-hover table-bordered mt-3 mb-0 custom-report-table">
             <thead>
                 <tr>
                     <th class="report-name-column">NAME</th>
@@ -493,6 +503,7 @@
 
         // 🔹 UPDATED: Supports MULTIPLE rows + buttons changed to LINKS
         function loadReportToTable(response, reportTypeValue) {
+            $('#clearGeneratedReports').removeClass('d-none');
             const reportName = $('#ReportType option:selected').text();
             const sourceMode = $('#SourceMode option:selected').text();
 
@@ -507,6 +518,7 @@
                 </td>
             </tr>
         `);
+                $('#clearGeneratedReports').addClass('d-none');
                 return;
             }
 
@@ -684,6 +696,10 @@
                 validateFilters();
                 const val = (ev.target.value || "").trim().toLowerCase();
                 showIncludeZero(val);
+
+                if (!val.includes('trial balance')) {
+                    $('#clearGeneratedReports').addClass('d-none');
+                }
             });
 
             function showIncludeZero(val) {
@@ -793,6 +809,32 @@
                 }
             });
 
+            //========================== clearing generated reports =====================
+            $('#clearGeneratedReports').on('click', function () {
+                const btn = $(this);
+                btn.prop('disabled', true);
+
+                $.ajax({
+                    url: '/CustomeReports/ClearGeneratedReports',
+                    type: 'POST',
+                    success: function (response) {
+                        if (response.success) {
+                            appalert('✅ Reports Cleared Successfully.', 1, 1);
+                        } else {
+                            appalert(response.message || '⚠️ Failed to clear reports.', 2, 1);
+                        }
+                    },
+                    error: function () {
+                        appalert(response.message || '⚠️ An error occurred while clearing reports.', 2, 1);
+                    },
+                    complete: function () {
+                        btn.prop('disabled', false);
+                    }
+                });
+            });
+
+            //========================== clearing generated reports end =====================
+
             // Reset button
             $('#btnReset').on('click', function () {
                 $('#StartDate').val('');
@@ -810,6 +852,7 @@
                 $('.accounting-year-group').addClass('d-none');
                 $accountDropdown.empty();
                 $account_group.addClass('d-none');
+                $('#clearGeneratedReports').addClass('d-none');
 
                 $('#reportTableBody').empty();
 

@@ -46,6 +46,33 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
         [HttpPost]
         
 
+        public async Task<ActionResult> DeleteDownloadedFiles()
+        {
+            try
+            {
+                string userName = _trialBalanceService.GetUserFullName();
+                string directoryPath = Server.MapPath(
+                    $"~/TempReportFiles/TrialBalance/{userName}");
+                ClearTempReportFiles(directoryPath);
+                return Json(new
+                {
+                    success = true,
+                    message = "Temporary report files deleted successfully."
+                }, JsonRequestBehavior.AllowGet);
+
+            }
+
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = ex.Message
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
         public async Task<ActionResult> GenerateTrialBalance(AccountingV2ReportsFilter model)
         {
             try

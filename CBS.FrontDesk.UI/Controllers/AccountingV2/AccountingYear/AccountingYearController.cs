@@ -301,7 +301,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.AccountingYear
 
             try
             {
-                if (string.IsNullOrWhiteSpace(model.Id))
+                if (model.iscreate == true)
                 {
                     // No Id → create new record
                     var execMessage = await _accountingYearService.AddAsync(model);

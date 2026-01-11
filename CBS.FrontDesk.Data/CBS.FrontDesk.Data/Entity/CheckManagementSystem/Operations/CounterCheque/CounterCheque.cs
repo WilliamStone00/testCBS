@@ -58,18 +58,21 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheq
 
 	}
 
-	public class ChequeRequestDto
-	{
-		public string Id { get; set; }
-		public string CustomerId { get; set; }
-		public decimal Amount { get; set; }
-		public string AccountNumber { get; set; }
-		public string BranchId { get; set; }
-		public string CheckLeafId { get; set; }
-		public string CheckNumber { get; set; }
-		public DateTime? IssuedOn { get; set; }
-		public string IssuedBy { get; set; }
-	}
+    public class CounterChequeDto
+    {
+        public string Id { get; set; }              
+        public string CustomerId { get; set; }      
+        public decimal Amount { get; set; }         
+        public string AccountNumber { get; set; }   
+        public string BranchId { get; set; }        
+        public string CheckLeafId { get; set; }     
+        public string CheckNumber { get; set; }    
+        public DateTime IssuedOn { get; set; }      
+        public string IssuedBy { get; set; }        
+        public string Status { get; set; }        
+        public string CustomerName { get; set; }        
+        public string BranchName { get; set; }        
+    }
 
 	public class CustomerData
 	{

@@ -100,7 +100,7 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.CounterCheque
             try
             {
                 var response = await _apiHelper.PostAsync<ResponseObject<CustomDataTable>>(
-                    APICallHelper.datatableforcounterrequest, query);
+                    APICallHelper.GetCounterChequeDataTable, query);
 
                 // ⚠ CRITICAL: If API call fails or returns unsuccessful, THROW exception
                 if (!response.IsSuccess)
