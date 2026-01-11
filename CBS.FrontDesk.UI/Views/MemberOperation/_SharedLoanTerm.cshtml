@@ -81,15 +81,15 @@
                     </tr>
                     <tr>
                         <td class="font-weight-bold">@Global_SharedLoanTerm.ApplicationDate:</td>
-                        <td>@Model.LoanApplication.ApplicationDate.ToString("dd/MM/yyyy hh:mm:ss")</td>
+                        <td>@Model.LoanApplication.ApplicationDate.Value.ToString("dd/MM/yyyy hh:mm:ss")</td>
                     </tr>
                     <tr>
                         <td class="font-weight-bold">@Global_SharedLoanTerm.ApprovalDate:</td>
-                        <td>@Model.LoanApplication.ApprovalDate.ToString("dd/MM/yyyy hh:mm:ss")</td>
+                        <td>@Model.LoanApplication.ApprovalDate.Value.ToString("dd/MM/yyyy hh:mm:ss")</td>
                     </tr>
                     <tr>
                         <td class="font-weight-bold">@Global_SharedLoanTerm.DisbursementDate:</td>
-                        <td>@Model.LoanApplication.DisbursementDate.ToString("dd/MM/yyyy hh:mm:ss")</td>
+                        <td>@Model.LoanApplication.DisbursementDate.Value.ToString("dd/MM/yyyy hh:mm:ss")</td>
                     </tr>
                     <tr>
                         <td class="font-weight-bold">@Global_SharedLoanTerm.ApplicationManage:</td>
@@ -103,7 +103,7 @@
                     <tr>
                         <td class="font-weight-bold">@Global_SharedLoanTerm.MigratedLoan:</td>
                         <td>
-                            @if (!Model.LoanApplication.IsUpload.Value)
+                            @if (!Model.LoanApplication.IsUpload)
                             {
                                 <span class="badge bg-primary text-white">@Global_SharedLoanTerm.TSCLoan</span>
                             }

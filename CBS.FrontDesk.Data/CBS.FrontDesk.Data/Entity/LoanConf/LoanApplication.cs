@@ -4,6 +4,7 @@ using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.CustomerManagement;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.LoanCommitee;
+using CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -76,10 +77,10 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public string RepaymentCircle { get; set; }
         public string LoanType { get; set; }
         public int LoanDuration { get; set; }
-        public DateTime FirstInstallmentDate { get; set; }
-        public DateTime ApplicationDate { get; set; }
-        public DateTime ApprovalDate { get; set; }
-        public DateTime DisbursementDate { get; set; }
+        public DateTime? FirstInstallmentDate { get; set; }
+        public DateTime? ApplicationDate { get; set; }
+        public DateTime? ApprovalDate { get; set; }
+        public DateTime? DisbursementDate { get; set; }
         public string CustomerId { get; set; }
         public string EconomicActivityId { get; set; }
         public string DisburstmentType { get; set; }
@@ -128,7 +129,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public decimal ShareAccountCoverageRate { get; set; }
         public bool IsGuaranteeProvided { get; set; }
         public bool IsCollateralProvided { get; set; }
-        public DateTime DateOfPayment { get; set; }
+        public DateTime? DateOfPayment { get; set; }
         public bool IsIninitalProcessingFeePaid { get; set; }
         public bool IsPaidAllFeeUpFront { get; set; }
         public bool IsPaidFeeBeforeProcessing { get; set; }
@@ -146,22 +147,15 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public bool IsPreferenceShareAccountCoverageAmount { get; set; }
         public bool IsDepositAccountCoverageAmount { get; set; }
         public bool IsTermDeposiAccountCoverageAmount { get; set; }
-
-
         public decimal DownPaymentCoverageAmountProvided { get; set; }
         public bool ApplyInterestToThisLoan { get; set; }
         public bool ApplyFeeToThisLoan { get; set; }
         public bool BlockShareAccount { get; set; }
         public bool BlockSavingAccount { get; set; }
         public bool BlockSalaryAccount { get; set; }
-
-
-        public bool? IsUpload { get; set; }
-
+        public bool IsUpload { get; set; }
         public bool IsInterestPaidUpFront { get; set; } = true;
-
         public bool IsInterestRunning { get; set; } = true;
-
         public List<string> FeeIds { get; set; }
         public virtual LoanProduct LoanProduct { get; set; }
         public List<LoanApplicationCollateral> Collateras { get; set; }
@@ -172,19 +166,26 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public List<OTPNotification> OTPNotifications { get; set; }
         public List<LoanApplicationFee> LoanApplicationFees { get; set; }
         public IndividualCustomerProfile Customer { get; set; }
-
-
-
         public decimal ProcessingFee { get; set; }
-       
-
-
-
-
-
-
         public List<Loan> Loans { get; set; }
-
+        public decimal InterestAmountUpfront { get; set; }
+        public string LoanDisbursedBy { get; set; }
+        public string LoanTermName { get; set; } // ST | MT | LT
+        public string RDisbursementReference { get; set; }
+        public string RDisbursementBranchName { get; set; }
+        public string RDisbursementBranchCode { get; set; }
+        public string RDisbursedBy { get; set; }
+        public DateTime? RDisbursementDate { get; set; } = DateTime.MinValue;
+        public bool RDisbursementAccountingPostingStatus { get; set; }
+        public string ApprovalReferenceNumber { get; set; }
+        public bool RApprovalAccountingPostingStatus { get; set; }
+        public decimal SavingBalance { get; set; }
+        public decimal BlockedSaving { get; set; }
+        // In LoanApplication
+        public int? PcmfSection { get; set; }
+        public int? PcmfGroupCode { get; set; }
+        public int? PcmfPopulation { get; set; }
+        public int PcmfBaseCode { get; set; }
         public LoanApplication()
         {
             // Initialize double properties to 0
@@ -507,8 +508,8 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
 
         // 📅 Loan Dates
         public DateTime DisbursementDate { get; set; }
-        public DateTime? MaturityDate { get; set; }
-        public DateTime? LastRepaymentDate { get; set; }
+        public DateTime MaturityDate { get; set; }
+        public DateTime LastRepaymentDate { get; set; }
 
         // 📊 Status and Policy Info
         public string LoanStatus { get; set; }          // e.g., Active, Closed, Delinquent
@@ -526,6 +527,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public string Id { get; set; }
         public string LoanApplicationId { get; set; }
         public decimal Principal { get; set; }
+        public string LoanContractCode { get; set; }
         public decimal LoanAmount { get; set; }
         public decimal InterestForcasted { get; set; }
         public decimal InterestRate { get; set; }
@@ -595,7 +597,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public string DeliquentStatus { get; set; }
         public bool StopInterestCalculation { get; set; } = false;
         public string StoppedBy { get; set; } = "Normal";
-        public DateTime? DateInterestWastStoped { get; set; } = DateTime.MinValue;
+        public DateTime DateInterestWastStoped { get; set; } = DateTime.MinValue;
         public DateTime? LastDeliquecyProcessedDate { get; set; } // Nullable to support unprocessed loans
         public string PcmfLoanPurposeId { get; set; }
         public string LoanTargetId { get; set; }
@@ -633,6 +635,47 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public LoanDeliquencyConfiguration LoanDeliquencyConfiguration { get; set; }
         public string LoanDeliquencyConfigurationName { get; set; }
 
+        
+        public string PAR { get; set; } // From LoanDeliquencyConfiguration.Name (PAR bucket)
+      
+        public string ApplicationCode { get; set; }
+        public string ProductCode { get; set; }
+        public string ProductName { get; set; }
+        public string TargetType { get; set; }
+        public string PurposeName { get; set; }
+        public string LoanProductId { get; set; }
+        public string AffiliateChartOfAccountIdForPrincipalAmount { get; set; }
+        public string AffiliateChartOfAccountIdForInterest { get; set; }
+        public string AffiliateChartOfAccountIdForVat { get; set; }
+        public string AffiliateChartOfAccountIdForPenalty { get; set; }
+        public string AffiliateChartOfAccountIdForTransit { get; set; }
+
+        public string LoanDisbursedBy { get; set; }
+        public bool IsMortgage { get; set; }  // 🆕 Flag to identify mortgage
+        public string LoanTermName { get; set; } // ST | MT | LT
+
+        public decimal LastCalculatedPenaltyAmount { get; set; }
+        public decimal SavingBalance { get; set; }
+        public decimal BlockedSaving { get; set; }
+        public string LoanTypeCategory { get; set; }
+        public string Garantor { get; set; }
+        public string TaxableStatus { get; set; }
+        public string RDisbursementReference { get; set; }
+        public string RDisbursementBranchName { get; set; }
+        public string RDisbursementBranchCode { get; set; }
+        public string RDisbursedBy { get; set; }
+        public bool RDisbursementAccountingPostingStatus { get; set; }
+        public bool RApprovalAccountingPostingStatus { get; set; }
+        public DateTime? RDisbursementDate { get; set; } = DateTime.MinValue;
+        public DateTime? LastPenaltyCalculationDate { get; set; } // Nullable to support unprocessed loans
+        // In Loan
+        public int? PcmfSection { get; set; }
+        public int? PcmfGroupCode { get; set; }
+        public int? PcmfPopulation { get; set; }
+        public int? PcmfBaseCode { get; set; }
+
+        
+    
     }
     public class MembersLoanDto
     {
@@ -774,8 +817,8 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
     public class GetLoanApplicationsDataTableQuery
     {
         public DataTableOptions DataTableOptions { get; set; }
-        public DateTime? StartDate { get; set; }
-        public DateTime? EndDate { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
         public string MemberId { get; set; }
         public string BranchId { get; set; }
         public string Status { get; set; } // Pending, Approved, Rejected, or All
@@ -847,7 +890,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public bool IncludeDetails { get; set; } = false;
 
         /// <summary>Optionally limit the number of results; null = all.</summary>
-        public int? Take { get; set; }
+        public int Take { get; set; }
     }
     public sealed class RefundDetailsVM
     {

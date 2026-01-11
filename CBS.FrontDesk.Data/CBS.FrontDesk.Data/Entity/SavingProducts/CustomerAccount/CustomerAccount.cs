@@ -111,6 +111,17 @@ namespace CBS.FrontDesk.Data.Entity
         public string createdBy { get; set; }
         public string customerCode { get; set; }
     }
+    public class MemberAccountDto
+    {
+        public string Id { get; set; }
+        public string AccountNumber { get; set; }
+        public string AccountType { get; set; }
+        public string AccountName { get; set; }
+        public string Status { get; set; }
+        public decimal Balance { get; set; }
+        public string Currency { get; set; }
+    }
+
     public class TransferLimit
     {
         public string id { get; set; }
