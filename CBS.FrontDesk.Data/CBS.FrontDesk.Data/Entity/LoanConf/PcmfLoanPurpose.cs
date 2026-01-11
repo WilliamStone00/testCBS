@@ -18,6 +18,8 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public int? MtGroupCode { get; set; }
         public int? CtGroupCode { get; set; }
         public int? OdGroupCode { get; set; }
+        public string DescriptionFr { get; set; }
+        public string DescriptionEn { get; set; }
 
         public string Keys =>   PcmfPurposeKey.ToString();
     }

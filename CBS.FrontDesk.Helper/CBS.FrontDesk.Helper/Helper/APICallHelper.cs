@@ -1870,7 +1870,7 @@ namespace CBS.FrontDesk.Helper
         public const string PcmfLoanPurposeGetAll = "/api/v1/PcmfLoanPurposes";
         public const string PcmfLoanPurposeGetById = "/api/v1/PcmfLoanPurpose/{0}";
         public const string PcmfLoanPurposeUpdate = "/api/v1/PcmfLoanPurpose/{0}";
-        public const string PcmfLoanPurposeDelete = "/api/v1/PcmfLoanPurpose/{0}";
+         public const string PcmfLoanPurposeDelete = "/api/v1/PcmfLoanPurpose/{0}";
 
         //---------------- LoanType API endpoints --------------------------------
         public const string LoanTypeCreate = "/api/v1/LoanType";
