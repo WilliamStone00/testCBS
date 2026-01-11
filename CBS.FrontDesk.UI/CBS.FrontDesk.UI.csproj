@@ -8151,6 +8151,7 @@
     <Content Include="RateLimitConfig\_Data.cshtml" />
     <Content Include="RateLimitConfig\Index.cshtml" />
     <None Include="packages.config" />
+    <None Include="Properties\PublishProfiles\Buea_PT.pubxml" />
     <None Include="Properties\PublishProfiles\CamCCULAdmin_TB.pubxml" />
     <None Include="Properties\PublishProfiles\Cpcmc_TB.pubxml" />
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
@@ -11122,7 +11123,7 @@
     <Content Include="Views\GLSystemReconciliation\_OperationDetail.cshtml" />
     <Content Include="Views\GLSystemReconciliation\_StatisticsDataTable.cshtml" />
     <Content Include="Views\JournalHead\_ExportJournalHeadDataTable.cshtml" />
-    <Content Include="Views\CounterCheque\_ChequeBooks.cshtml" />
+    <Content Include="Views\CounterCheque\_CounterRequest.cshtml" />
     <Content Include="Views\GLSystemReconciliation\_StatisticsDetails.cshtml" />
     <Content Include="Views\EndOfYearClosure\Index.cshtml" />
     <Content Include="Views\EndOfYearClosure\_Initiation.cshtml" />
@@ -11197,6 +11198,8 @@
     <Content Include="Views\AccountingYear\_DataTableYear.cshtml" />
     <Content Include="Views\SharedMonthSimulation\Data.cshtml" />
     <Content Include="Views\SharedMonthSimulation\_table.cshtml" />
+    <Content Include="Views\CounterCheque\_CounterChequeDataTable.cshtml" />
+    <Content Include="Views\CounterCheque\_CustomerStatistics.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

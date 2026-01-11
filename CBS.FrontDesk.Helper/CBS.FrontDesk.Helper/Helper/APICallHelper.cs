@@ -1335,14 +1335,12 @@ namespace CBS.FrontDesk.Helper
 
         //------------------------ Counter Cheque ------------------------
         public const string IssueCounterCheque = "/api/v1/counter-checks";
-        public const string GetCounterChequesForDataTable = "/api/v1/counter-checks/data-table";
+        public const string GetCounterChequeDataTable = "/api/v1/counter-checks/data-table";
         public const string ReviewCounterCheque = "/api/v1/counter-checks/{0}/review";
         public const string ValidateCounterCheque = "/api/v1/counter-checks/{0}/validate";
         public const string RejectCounterCheque = "/api/v1/counter-checks/{0}/reject";
 
         public const string GetCounterChequeDetails = "/api/v1/counter-checks";
-
-        public const string datatableforcounterrequest = "/api/v1/counter-checks/data-table";
 
         //----------------------- Cheque Book -------------------------
         public const string GetChequeBooksDataTable = "/api/v1/checkbook/data-table";
@@ -1872,7 +1870,7 @@ namespace CBS.FrontDesk.Helper
         public const string PcmfLoanPurposeGetAll = "/api/v1/PcmfLoanPurposes";
         public const string PcmfLoanPurposeGetById = "/api/v1/PcmfLoanPurpose/{0}";
         public const string PcmfLoanPurposeUpdate = "/api/v1/PcmfLoanPurpose/{0}";
-        public const string PcmfLoanPurposeDelete = "/api/v1/PcmfLoanPurpose/{0}";
+         public const string PcmfLoanPurposeDelete = "/api/v1/PcmfLoanPurpose/{0}";
 
         //---------------- LoanType API endpoints --------------------------------
         public const string LoanTypeCreate = "/api/v1/LoanType";

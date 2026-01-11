@@ -887,9 +887,9 @@
                         $('#myDataTable tbody tr').not('.empty-row').each(function () {
                             const row = $(this);
                             accounts.push({
-                                BranchId: row.find('.branch-name').val(),
+                                BranchName: row.find('.branch-name').val(),
                                 MemberReference: row.find('.member-reference').val(),
-                                AccountTypeId: row.find('.account-type').val(),
+                                AccountType: row.find('.account-type').val(),
                                 Amount: parseFloat(row.find('.amount').val()) || 0
                             });
                         });
@@ -916,7 +916,7 @@
                             success: function (response) {
                                 if (response.success) {
                                     appalert(response.message || 'Simulation completed successfully', 1, 1);
-                                    window.location.href = '/BulkOperation/Listing';
+                                    //window.location.href = '/BulkOperation/Listing';
                                 } else {
                                     appalert(response.message || 'Simulation failed', 2, 1);
                                 }

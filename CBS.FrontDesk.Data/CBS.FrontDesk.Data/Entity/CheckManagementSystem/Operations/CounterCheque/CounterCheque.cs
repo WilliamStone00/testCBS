@@ -5,60 +5,60 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheque
 {
-    public class CounterCheques
-    {
-        [Required]
-        public string ClientId { get; set; }
-        [Required]
-        public string AccountNumber { get; set; }
-        [Required]
-        public decimal Amount { get; set; }
-        public string BranchId { get; set; }
-        public string CustomerId { get; set; }
-        // For displaying in the list
-        public string CheckLeafId { get; set; }
-        public string Id { get; set; }
-        public string CheckNumber { get; set; }
-        public DateTime? IssuedOn { get; set; }
-        public string IssuedBy { get; set; }
-        public string Status { get; set; }
-        public string Name { get; set; }
-        public string Catergoryid { get; set; }
-        public string ClientName { get; set; }
-        public int NumberOfPages { get; set; }
-        public string ChequeBookId { get; set; } 
+	public class CounterCheques
+	{
+		[Required]
+		public string ClientId { get; set; }
+		[Required]
+		public string AccountNumber { get; set; }
+		[Required]
+		public decimal Amount { get; set; }
+		public string BranchId { get; set; }
+		public string CustomerId { get; set; }
+		// For displaying in the list
+		public string CheckLeafId { get; set; }
+		public string Id { get; set; }
+		public string CheckNumber { get; set; }
+		public DateTime? IssuedOn { get; set; }
+		public string IssuedBy { get; set; }
+		public string Status { get; set; }
+		public string Name { get; set; }
+		public string Catergoryid { get; set; }
+		public string ClientName { get; set; }
+		public int NumberOfPages { get; set; }
+		public string ChequeBookId { get; set; }
 
-    }
+	}
 
-    // DTO for the modal action form
-    public class CounterChequeActionDto
-    {
-        [Required]
-        public string CounterChequeId { get; set; }
-        [Required]
-        public string Motive { get; set; }
-        public string Action { get; set; } // "Review", "Validate", or "Reject"
-    }
+	// DTO for the modal action form
+	public class CounterChequeActionDto
+	{
+		[Required]
+		public string CounterChequeId { get; set; }
+		[Required]
+		public string Motive { get; set; }
+		public string Action { get; set; } // "Review", "Validate", or "Reject"
+	}
 
-    
-    public class CounterChequeQuery
-    {
-        public CounterChequeQuery()
-        {
-            DataTableOptions = new DataTableOptions();
-        }
 
-        public DataTableOptions DataTableOptions { get; set; }
+	public class CounterChequeQuery
+	{
+		public CounterChequeQuery()
+		{
+			DataTableOptions = new DataTableOptions();
+		}
 
-        public string Id { get; set; }
-        public string CustomerId { get; set; }
-        public decimal Amount { get; set; }
-        public string AccountNumber { get; set; }
-        public string BranchId { get; set; }
-        
-    }
+		public DataTableOptions DataTableOptions { get; set; }
 
-    public class ChequeRequestDto
+		public string Id { get; set; }
+		public string CustomerId { get; set; }
+		public decimal Amount { get; set; }
+		public string AccountNumber { get; set; }
+		public string BranchId { get; set; }
+
+	}
+
+    public class CounterChequeDto
     {
         public string Id { get; set; }              
         public string CustomerId { get; set; }      
@@ -67,8 +67,11 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheq
         public string BranchId { get; set; }        
         public string CheckLeafId { get; set; }     
         public string CheckNumber { get; set; }    
-        public DateTime? IssuedOn { get; set; }      
+        public DateTime IssuedOn { get; set; }      
         public string IssuedBy { get; set; }        
+        public string Status { get; set; }        
+        public string CustomerName { get; set; }        
+        public string BranchName { get; set; }        
     }
 
 	public class CustomerData
@@ -229,5 +232,97 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheq
 		public string BankId { get; set; }
 		public string BranchId { get; set; }
 	}
+
+    public class CustomerCheckBookStatisticsDto
+    {
+        // ===============================
+        // CUSTOMER
+        // ===============================
+        public string CustomerId { get; set; }
+        public string CustomerName { get; set; }
+        public string PrimaryAccountNumber { get; set; }
+
+        // ===============================
+        // CHECKBOOK COUNTS
+        // ===============================
+        public int TotalCheckBooks { get; set; }
+        public int ActiveCheckBooks { get; set; }
+        public int BlockedCheckBooks { get; set; }
+        public int ExpiredCheckBooks { get; set; }
+        public int ReissuedCheckBooks { get; set; }
+        public int LostCheckBooks { get; set; }
+
+        // ===============================
+        // LEAVES / CHEQUES
+        // ===============================
+        public int TotalLeaves { get; set; }
+        public int TotalUsedLeaves { get; set; }
+        public int TotalRemainingLeaves { get; set; }
+        public int CancelledLeaves { get; set; }
+        public int StaleLeaves { get; set; }
+
+        public double GlobalUsageRate { get; set; }          // %
+        public double RemainingUsageRate { get; set; }       // %
+
+        // ===============================
+        // FINANCIAL STATISTICS
+        // ===============================
+        public decimal TotalBalance { get; set; }
+        public decimal AverageBalance { get; set; }
+
+        public decimal TotalAmountIssued { get; set; }
+        public decimal TotalAmountCleared { get; set; }
+        public decimal TotalAmountPending { get; set; }
+        public decimal TotalAmountRejected { get; set; }
+
+        public decimal HighestChequeAmount { get; set; }
+        public decimal AverageChequeAmount { get; set; }
+
+        // ===============================
+        // CLEARANCE & TIMING
+        // ===============================
+        public int PendingClearances { get; set; }
+        public int ClearedWithin24Hours { get; set; }
+        public int ClearedWithin72Hours { get; set; }
+        public int DelayedClearances { get; set; } // > 72H
+
+        public double AverageClearanceTimeHours { get; set; }
+
+        // ===============================
+        // LIFE CYCLE
+        // ===============================
+        public DateTime? FirstIssuedDate { get; set; }
+        public DateTime? LastIssuedDate { get; set; }
+        public DateTime? LastChequeIssuedDate { get; set; }
+        public DateTime? LastChequeClearedDate { get; set; }
+
+        public int ExpiringSoonCheckBooks { get; set; }
+        public bool NeedsRenewal { get; set; }
+
+        // ===============================
+        // SECURITY & RISK
+        // ===============================
+        public bool HasBlockedCheckBooks { get; set; }
+        public bool HasBouncedCheques { get; set; }
+        public int BouncedChequesCount { get; set; }
+
+        public int StopPaymentRequests { get; set; }
+        public int FraudFlaggedCheques { get; set; }
+
+        public string RiskLevel { get; set; } // Low | Medium | High
+
+        // ===============================
+        // SERVICE & OPERATIONS
+        // ===============================
+        public int EmergencyClearanceRequests { get; set; }
+        public int ApprovedFastTrackRequests { get; set; }
+        public decimal FastTrackFeesPaid { get; set; }
+
+        // ===============================
+        // METADATA
+        // ===============================
+        public DateTime GeneratedAt { get; set; }
+    }
+
 
 }

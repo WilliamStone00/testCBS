@@ -2,62 +2,184 @@
 @using Resources
 
 <fieldset class="fieldset-custom">
-    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                
+    <!-- Main Content -->
+    <div class="modal-body">
 
-    <!-- Header Card -->
-    <div class="card bg-light mb-4 shadow-sm">
-        <div class="card-body text-center">
-            <h1 class="card-title text-primary fw-bold mb-2">
-                <i class="mdi mdi-bank-transfer me-2"></i> PCMF Loan Purpose Details
-            </h1>
-            <p class="card-text text-muted mb-1">
-                Detailed view of PCMF loan purpose entry
-            </p>
+              <div class="card bg-light mb-4 shadow-sm">
+              
+          <div class="card-body text-center">
+              <h1 class="card-title text-primary fw-bold mb-2">
+                  <i class="mdi mdi-bank-transfer me-2"></i> PCMF Loan Purpose Details
+              </h1>
+              <p class="card-text text-muted mb-1">
+                  Detailed view of PCMF loan purpose entry
+              </p>
+          </div>
+          
+     </div>
+        <!-- Summary Card -->
+        <div class="card bg-light-subtle border-0 mb-4">
+            <div class="card-body py-3">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <p class="card-text text-muted mb-0">
+                            Detailed view of PCMF loan purpose entry
+                        </p>
+                    </div>
+                    <div class="col-auto">
+                        <span class="badge @(Model.IsActive ? "bg-success" : "bg-secondary") px-3 py-2">
+                            @(Model.IsActive ? "Active" : "Inactive")
+                        </span>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
 
-    <!-- Details Card -->
-    <div class="card mb-3">
-        <div class="card-body">
-            <div class="row">
-                <!-- Basic Information -->
-                <div class="col-md-6">
-                    <h6 class="text-primary"><i class="mdi mdi-information-outline me-2"></i> Basic Information</h6>
-                    <table class="table table-sm table-bordered mb-0">
-                        <tr><td class="fw-bold">ID</td><td>@Model.Id</td></tr>
-                        <tr><td class="fw-bold">Key</td><td>@Model.PcmfPurposeKey</td></tr>
-                        <tr><td class="fw-bold">Name (English)</td><td>@Model.NameEn</td></tr>
-                        <tr><td class="fw-bold">Name (French)</td><td>@Model.NameFr</td></tr>
-                        <tr><td class="fw-bold">LT Group Code</td><td>@Model.LtGroupCode</td></tr>
-                        <tr><td class="fw-bold">MT Group Code</td><td>@Model.MtGroupCode</td></tr>
-                        <tr><td class="fw-bold">CT Group Code</td><td>@Model.CtGroupCode</td></tr>
-                        <tr><td class="fw-bold">OD Group Code</td><td>@Model.OdGroupCode</td></tr>
-                        <tr>
-                            <td class="fw-bold">Status</td>
-                            <td>
-                                @if (Model.IsActive)
-                                {
-                                    <span class="badge bg-success">Active</span>
-                                }
-                                else
-                                {
-                                    <span class="badge bg-secondary">Inactive</span>
-                                }
-                            </td>
-                        </tr>
-                    </table>
+        <div class="row">
+            <!-- Main Information Table -->
+            <div class="col-md-7">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-header bg-white border-bottom">
+                        <h6 class="mb-0 text-primary">
+                            <i class="mdi mdi-information-outline me-2"></i>Basic Information
+                        </h6>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-sm table-borderless mb-0">
+                                <tbody>
+                                    <tr class="border-bottom">
+                                        <td class="fw-bold text-muted" style="width: 35%;">ID</td>
+                                        <td><span class="badge bg-secondary">@Model.Id</span></td>
+                                    </tr>
+                                    <tr class="border-bottom">
+                                        <td class="fw-bold text-muted">Key</td>
+                                        <td><code>@Model.PcmfPurposeKey</code></td>
+                                    </tr>
+                                    <tr class="border-bottom">
+                                        <td class="fw-bold text-muted">Name (English)</td>
+                                        <td>@Model.NameEn</td>
+                                    </tr>
+                                    <tr class="border-bottom">
+                                        <td class="fw-bold text-muted">Name (French)</td>
+                                        <td>@Model.NameFr</td>
+                                    </tr>
+                                    <tr class="border-bottom">
+                                        <td class="fw-bold text-muted">LT Group Code</td>
+                                        <td><span class="badge bg-info text-dark">@Model.LtGroupCode</span></td>
+                                    </tr>
+                                    <tr class="border-bottom">
+                                        <td class="fw-bold text-muted">MT Group Code</td>
+                                        <td><span class="badge bg-info text-dark">@Model.MtGroupCode</span></td>
+                                    </tr>
+                                    <tr class="border-bottom">
+                                        <td class="fw-bold text-muted">CT Group Code</td>
+                                        <td><span class="badge bg-info text-dark">@Model.CtGroupCode</span></td>
+                                    </tr>
+                                    <tr class="border-bottom">
+                                        <td class="fw-bold text-muted">OD Group Code</td>
+                                        <td><span class="badge bg-info text-dark">@Model.OdGroupCode</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Description Sidebar -->
+            <div class="col-md-5">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-header bg-white border-bottom">
+                        <h6 class="mb-0 text-primary">
+                            <i class="mdi mdi-text-box-outline me-2"></i>Descriptions
+                        </h6>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-sm table-borderless mb-0">
+                                <tbody>
+                                    <tr>
+                                        <td class="fw-bold text-muted align-top" style="width: 45%;">English Description</td>
+                                        <td>
+                                            <div class="description-content text-wrap" style="max-height: 150px; overflow-y: auto;">
+                                                @if (!string.IsNullOrWhiteSpace(Model.DescriptionEn))
+                                                {
+                                                    @Model.DescriptionEn
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-muted fst-italic">No description provided</span>
+                                                }
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="border-top">
+                                        <td class="fw-bold text-muted align-top">French Description</td>
+                                        <td>
+                                            <div class="description-content text-wrap" style="max-height: 150px; overflow-y: auto;">
+                                                @if (!string.IsNullOrWhiteSpace(Model.DescriptionFr))
+                                                {
+                                                    @Model.DescriptionFr
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-muted fst-italic">Aucune description fournie</span>
+                                                }
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="d-flex justify-content-end">
-        <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">
-            <i class="mdi mdi-close me-1"></i> Close
-        </button>
+    <!-- Footer Actions -->
+    <div class="modal-footer border-top-0 pt-3">
+                 <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">
+                     <i class="mdi mdi-close me-1"></i> Close
+                </button>
         <button type="button" class="btn btn-primary"
                 onclick="ShowModal('@Model.Id', '_CreateEditPcmfLoanPurpose', 'PcmfLoanPurpose', 'edit')">
-            <i class="mdi mdi-pencil me-1"></i> Edit
+            <i class="mdi mdi-pencil me-1"></i>Edit
         </button>
     </div>
+            
+
 </fieldset>
+
+<style>
+    .fieldset-custom {
+        border: none;
+        padding: 0;
+    }
+    
+    .description-content {
+        font-size: 0.875rem;
+        line-height: 1.5;
+        padding-right: 4px;
+    }
+    
+    .description-content::-webkit-scrollbar {
+        width: 4px;
+    }
+    
+    .description-content::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 2px;
+    }
+    
+    .description-content::-webkit-scrollbar-thumb {
+        background: #c1c1c1;
+        border-radius: 2px;
+    }
+    
+    .table-borderless tbody tr:not(:last-child) {
+        border-bottom: 1px solid #dee2e6;
+    }
+</style>

@@ -1,5 +1,6 @@
 ﻿using CBS.BusinessService;
 using CBS.BusinessService.Accounting;
+using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Application;
 using CBS.BusinessService.Config;
 using CBS.BusinessService.CustomerManagement;
@@ -34,6 +35,8 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
         // GET: MemberOperation
         private readonly IndividualProfileServices _individualProfileServices;
         private readonly LoanProductServices _loanProductServices;
+        private readonly AccountServices _accountServices;
+
         private readonly LoanPurposeServices _loanPurposeServices;
         private readonly LoanApplicationServices _loanApplicationServices;
         private readonly LoanServices _loanservices;
@@ -48,7 +51,7 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
         private readonly BranchServices _branchServices;
         private readonly EconomicActivityServices _economicActivityServices;
 
-        public MemberOperationController(IndividualProfileServices individualProfileServices, LoanProductServices loanProductServices = null, LoanPurposeServices loanPurposeServices = null, LoanApplicationServices loanApplicationServices = null, LoanServices loanServices = null, LoanAmortizationServices loanAmortizationServices = null, LoanCommiteeValidationHistoryServices loanCommiteeValidationHistoryServices = null, LoanApplicationCollateralServices loanApplicationCollateralServices = null, LoanGuarantorServices loanGuarantorServices = null, LoanProductCollateralServices loanProductCollateralServices = null, AttachedDocumentServices services = null, DocumentServices documentServices = null, LoanTermServices loanTermServices = null, BranchServices branchServices = null, EconomicActivityServices economicActivityServices = null)
+        public MemberOperationController(IndividualProfileServices individualProfileServices, LoanProductServices loanProductServices = null, LoanPurposeServices loanPurposeServices = null, LoanApplicationServices loanApplicationServices = null, LoanServices loanServices = null, LoanAmortizationServices loanAmortizationServices = null, LoanCommiteeValidationHistoryServices loanCommiteeValidationHistoryServices = null, LoanApplicationCollateralServices loanApplicationCollateralServices = null, LoanGuarantorServices loanGuarantorServices = null, LoanProductCollateralServices loanProductCollateralServices = null, AttachedDocumentServices services = null, DocumentServices documentServices = null, LoanTermServices loanTermServices = null, BranchServices branchServices = null, EconomicActivityServices economicActivityServices = null, AccountServices accountServices = null)
         {
             _individualProfileServices = individualProfileServices;
             _loanProductServices = loanProductServices;
@@ -63,8 +66,9 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
             _attachedDocumentServices = services;
             _documentServices = documentServices;
             _loanTermServices = loanTermServices;
-            _branchServices=branchServices;
-            _economicActivityServices=economicActivityServices;
+            _branchServices = branchServices;
+            _economicActivityServices = economicActivityServices;
+            _accountServices = accountServices;
         }
         public async Task<ActionResult> Members()
         {
@@ -727,6 +731,33 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "An error occurred while fetching loan details.");
             }
         }
+        [HttpGet]
+        public async Task<JsonResult> GetLoanCharges()
+        {
+            var charges = await _loanProductServices.GetLoanChargesAsync();
+
+            return Json(new { success = true, data = charges }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public async Task<JsonResult> GetMemberAccountsByMemberId(string memberId)
+        {
+            try
+            {
+                memberId = (memberId ?? "").Trim();
+
+                if (string.IsNullOrWhiteSpace(memberId))
+                    return Json(new { success = false, message = "memberId is required." }, JsonRequestBehavior.AllowGet);
+
+                var accounts = await _accountServices.GetMemberAccountsByMemberIdAsync(memberId);
+
+                return Json(new { success = true, data = accounts }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Failed to load accounts: " + ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
         public async Task<ActionResult> GetObject(string Key)
         {
             var data = await _loanProductServices.GetLoanProduct(Key);

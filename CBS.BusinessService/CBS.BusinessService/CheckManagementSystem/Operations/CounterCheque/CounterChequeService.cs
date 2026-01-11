@@ -100,7 +100,7 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.CounterCheque
             try
             {
                 var response = await _apiHelper.PostAsync<ResponseObject<CustomDataTable>>(
-                    APICallHelper.datatableforcounterrequest, query);
+                    APICallHelper.GetCounterChequeDataTable, query);
 
                 // ⚠ CRITICAL: If API call fails or returns unsuccessful, THROW exception
                 if (!response.IsSuccess)
@@ -186,6 +186,108 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.CounterCheque
             {
                 throw;
             }
+        }
+
+
+        public async Task<CustomerCheckBookStatisticsDto> GetCustomerCheckBookStatisticsAsync(string customerId)
+        {
+            await Task.Delay(150); // Simulate database call
+
+            var random = new Random();
+            var now = DateTime.Now;
+
+            // Create a deterministic random based on customerId
+            var seed = customerId.GetHashCode();
+            var deterministicRandom = new Random(seed);
+
+            // Mock customer details
+            var customerName = deterministicRandom.Next(0, 2) == 0
+                ? "AKURAWAH AWATH EUGENE"
+                : "NGUIMBOU SOPHIE";
+
+            var totalCheckBooks = deterministicRandom.Next(1, 8);
+            var activeCheckBooks = deterministicRandom.Next(0, totalCheckBooks);
+            var blockedCheckBooks = deterministicRandom.Next(0, 2);
+            var expiredCheckBooks = totalCheckBooks - activeCheckBooks - blockedCheckBooks;
+
+            var totalLeaves = totalCheckBooks * 100;
+            var totalUsedLeaves = deterministicRandom.Next(0, totalLeaves);
+            var totalRemainingLeaves = totalLeaves - totalUsedLeaves;
+            var usageRate = totalLeaves > 0 ? (double)totalUsedLeaves / totalLeaves * 100 : 0;
+
+            // Determine risk level based on usage and bounce rate
+            string riskLevel;
+            var bounceRate = deterministicRandom.NextDouble();
+            if (bounceRate > 0.3 || totalUsedLeaves > totalLeaves * 0.9)
+                riskLevel = "High";
+            else if (bounceRate > 0.1 || totalUsedLeaves > totalLeaves * 0.7)
+                riskLevel = "Medium";
+            else
+                riskLevel = "Low";
+
+            return new CustomerCheckBookStatisticsDto
+            {
+                CustomerId = customerId,
+                CustomerName = customerName,
+                PrimaryAccountNumber = "371100" + customerId,
+
+                TotalCheckBooks = totalCheckBooks,
+                ActiveCheckBooks = activeCheckBooks,
+                BlockedCheckBooks = blockedCheckBooks,
+                ExpiredCheckBooks = expiredCheckBooks,
+                ReissuedCheckBooks = deterministicRandom.Next(0, 2),
+                LostCheckBooks = deterministicRandom.Next(0, 1),
+
+                TotalLeaves = totalLeaves,
+                TotalUsedLeaves = totalUsedLeaves,
+                TotalRemainingLeaves = totalRemainingLeaves,
+                CancelledLeaves = deterministicRandom.Next(0, 10),
+                StaleLeaves = deterministicRandom.Next(0, 5),
+
+                GlobalUsageRate = Math.Round(usageRate, 2),
+                RemainingUsageRate = Math.Round(100 - usageRate, 2),
+
+                TotalBalance = Math.Round(deterministicRandom.Next(100000, 5000000) * 1.00m, 2),
+                AverageBalance = Math.Round(deterministicRandom.Next(50000, 1500000) * 1.00m, 2),
+
+                TotalAmountIssued = Math.Round(deterministicRandom.Next(500000, 10000000) * 1.00m, 2),
+                TotalAmountCleared = Math.Round(deterministicRandom.Next(300000, 8000000) * 1.00m, 2),
+                TotalAmountPending = Math.Round(deterministicRandom.Next(50000, 1500000) * 1.00m, 2),
+                TotalAmountRejected = Math.Round(deterministicRandom.Next(0, 1000000) * 1.00m, 2),
+
+                HighestChequeAmount = Math.Round(deterministicRandom.Next(100000, 1000000) * 1.00m, 2),
+                AverageChequeAmount = Math.Round(deterministicRandom.Next(50000, 300000) * 1.00m, 2),
+
+                PendingClearances = deterministicRandom.Next(0, 20),
+                ClearedWithin24Hours = deterministicRandom.Next(10, 100),
+                ClearedWithin72Hours = deterministicRandom.Next(5, 50),
+                DelayedClearances = deterministicRandom.Next(0, 15),
+
+                AverageClearanceTimeHours = Math.Round(deterministicRandom.NextDouble() * 96, 1), // 0-96 hours
+
+                FirstIssuedDate = now.AddMonths(-deterministicRandom.Next(6, 36)),
+                LastIssuedDate = now.AddDays(-deterministicRandom.Next(0, 90)),
+                LastChequeIssuedDate = now.AddDays(-deterministicRandom.Next(0, 30)),
+                LastChequeClearedDate = now.AddDays(-deterministicRandom.Next(0, 15)),
+
+                ExpiringSoonCheckBooks = deterministicRandom.Next(0, 2),
+                NeedsRenewal = deterministicRandom.Next(0, 2) == 1,
+
+                HasBlockedCheckBooks = blockedCheckBooks > 0,
+                HasBouncedCheques = deterministicRandom.Next(0, 5) >= 3,
+                BouncedChequesCount = deterministicRandom.Next(0, 5),
+
+                StopPaymentRequests = deterministicRandom.Next(0, 5),
+                FraudFlaggedCheques = deterministicRandom.Next(0, 2),
+
+                RiskLevel = riskLevel,
+
+                EmergencyClearanceRequests = deterministicRandom.Next(0, 3),
+                ApprovedFastTrackRequests = deterministicRandom.Next(0, 5),
+                FastTrackFeesPaid = Math.Round(deterministicRandom.Next(0, 50000) * 1.00m, 2),
+
+                GeneratedAt = now
+            };
         }
 
         public async Task<CustomerData> GetCustomerChequeBooks(string customerId)
