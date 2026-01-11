@@ -128,9 +128,9 @@
         <li data-view="view-reports">
             <span class="step-number">3.</span> <span class="step-label">Reset Income and Expense</span>
         </li>
-        <li data-view="view-review">
+        @*<li data-view="view-review">
             <span class="step-number">4.</span> <span class="step-label">Review</span>
-        </li>
+        </li>*@
     </ul>
 
 </div>
@@ -155,14 +155,14 @@
 
 
 
-<div id="view-review" class="workflow-view d-none">
+@*<div id="view-review" class="workflow-view d-none">
     
     <h3 class="text-primary">Validate End of year Activites</h3>
     <div id="endOfYearTasksContainer">
 
     </div>
 
-</div>
+</div>*@
 
 
 <div class="modal fade" id="confirmationModal" tabindex="-1" aria-hidden="true">
@@ -224,7 +224,7 @@
                 const accounts = response.data;
 
                 // Populate both dropdowns
-                populateGLDropdown("#HoLiaisonGlId", accounts);
+                //populateGLDropdown("#HoLiaisonGlId", accounts);
                 populateGLDropdown("#HoResultGlId", accounts);
             },
 
@@ -248,95 +248,95 @@
     }
 
 
-    $(document).ready(function () {
+    //$(document).ready(function () {
 
-        $("#BranchIdcl").on("change", function () {
-            const branchId = $(this).val();
+    //    $("#BranchIdcl").on("change", function () {
+    //        const branchId = $(this).val();
 
-            if (!branchId) {
-                $("#BranchLiaisonGlId").html('<option value="">--- Select GL ---</option>').trigger('change');
-                return;
-            }
+    //        if (!branchId) {
+    //            $("#BranchLiaisonGlId").html('<option value="">--- Select GL ---</option>').trigger('change');
+    //            return;
+    //        }
 
-            loadBranchLiaisonGL(branchId);
-        });
+    //        loadBranchLiaisonGL(branchId);
+    //    });
 
-    });
+    //});
 
-    function loadBranchLiaisonGL(branchId) {
-        console.log('loadBranchLiaisonGL() called with branchId=', branchId);
+    //function loadBranchLiaisonGL(branchId) {
+    //    console.log('loadBranchLiaisonGL() called with branchId=', branchId);
 
-        const $select = $("#BranchLiaisonGlId");
-        if ($select.length === 0) {
-            console.error("Element #BranchLiaisonGlId not found in DOM.");
-            appalert("⚠️ Branch GL select element not present on page.", 0, 1);
-            return;
-        }
+    //    const $select = $("#BranchLiaisonGlId");
+    //    if ($select.length === 0) {
+    //        console.error("Element #BranchLiaisonGlId not found in DOM.");
+    //        appalert("⚠️ Branch GL select element not present on page.", 0, 1);
+    //        return;
+    //    }
 
-        // Clear immediately (useful if request takes time)
-        $select.prop("disabled", true).html('<option value="">Loading...</option>').trigger('change');
+    //    // Clear immediately (useful if request takes time)
+    //    $select.prop("disabled", true).html('<option value="">Loading...</option>').trigger('change');
 
-        $.ajax({
-            url: '/ManualJournalEntry/GetAccounts',
-            type: 'GET',
-            data: { branchId: branchId },
-            dataType: 'json',
-            success: function (response) {
-                console.log("GetAccounts response:", response);
+    //    $.ajax({
+    //        url: '/ManualJournalEntry/GetAccounts',
+    //        type: 'GET',
+    //        data: { branchId: branchId },
+    //        dataType: 'json',
+    //        success: function (response) {
+    //            console.log("GetAccounts response:", response);
 
-                // Normalize response into an array of items: [{ Value, Text }, ...]
-                let items = [];
-                if (!response) {
-                    // nothing
-                } else if (Array.isArray(response)) {
-                    items = response;
-                } else if (Array.isArray(response.data)) {
-                    items = response.data;
-                } else if (response.success && Array.isArray(response.accounts)) {
-                    // fallback if API uses different key
-                    items = response.accounts;
-                }
+    //            // Normalize response into an array of items: [{ Value, Text }, ...]
+    //            let items = [];
+    //            if (!response) {
+    //                // nothing
+    //            } else if (Array.isArray(response)) {
+    //                items = response;
+    //            } else if (Array.isArray(response.data)) {
+    //                items = response.data;
+    //            } else if (response.success && Array.isArray(response.accounts)) {
+    //                // fallback if API uses different key
+    //                items = response.accounts;
+    //            }
 
-                if (!items || items.length === 0) {
-                    console.warn("No GL accounts returned for branch:", branchId);
-                    appalert(response?.message || "⚠️ No GL accounts found for this branch.", 2, 1);
-                    $select.html('<option value="">--- Select GL ---</option>').prop("disabled", false).trigger('change');
-                    return;
-                }
+    //            if (!items || items.length === 0) {
+    //                console.warn("No GL accounts returned for branch:", branchId);
+    //                appalert(response?.message || "⚠️ No GL accounts found for this branch.", 2, 1);
+    //                $select.html('<option value="">--- Select GL ---</option>').prop("disabled", false).trigger('change');
+    //                return;
+    //            }
 
-                // Build options
-                const optionsHtml = items.map(a => {
-                    // support object keys possibly named Key/Value/Text/Name
-                    const val = a.Value ?? a.value ?? a.Id ?? a.Key ?? "";
-                    const txt = a.Text ?? a.text ?? a.Name ?? a.name ?? a.Display ?? "";
-                    return `<option value="${val}">${txt}</option>`;
-                }).join("");
+    //            // Build options
+    //            const optionsHtml = items.map(a => {
+    //                // support object keys possibly named Key/Value/Text/Name
+    //                const val = a.Value ?? a.value ?? a.Id ?? a.Key ?? "";
+    //                const txt = a.Text ?? a.text ?? a.Name ?? a.name ?? a.Display ?? "";
+    //                return `<option value="${val}">${txt}</option>`;
+    //            }).join("");
 
-                $select.html('<option value="">--- Select GL ---</option>' + optionsHtml)
-                    .prop("disabled", false);
+    //            $select.html('<option value="">--- Select GL ---</option>' + optionsHtml)
+    //                .prop("disabled", false);
 
-                // If select2 is attached, refresh it properly
-                if ($select.hasClass('select2-hidden-accessible')) {
-                    try {
-                        $select.trigger('change.select2');
-                    } catch (err) {
-                        // fallback
-                        $select.trigger('change');
-                    }
-                } else {
-                    $select.trigger('change');
-                }
+    //            // If select2 is attached, refresh it properly
+    //            if ($select.hasClass('select2-hidden-accessible')) {
+    //                try {
+    //                    $select.trigger('change.select2');
+    //                } catch (err) {
+    //                    // fallback
+    //                    $select.trigger('change');
+    //                }
+    //            } else {
+    //                $select.trigger('change');
+    //            }
 
-                appalert("✅ Branch Liaison GL loaded.", 1, 1);
-            },
-            error: function (xhr, status, error) {
-                console.error("Error loading GL accounts:", status, error, xhr);
-                const serverMsg = xhr?.responseJSON?.message || xhr?.statusText || error;
-                appalert("⚠️ Error loading GL accounts: " + serverMsg, 0, 1);
-                $select.html('<option value="">--- Select GL ---</option>').prop("disabled", false).trigger('change');
-            }
-        });
-    }
+    //            appalert("✅ Branch Liaison GL loaded.", 1, 1);
+    //        },
+    //        error: function (xhr, status, error) {
+    //            console.error("Error loading GL accounts:", status, error, xhr);
+    //            const serverMsg = xhr?.responseJSON?.message || xhr?.statusText || error;
+    //            appalert("⚠️ Error loading GL accounts: " + serverMsg, 0, 1);
+    //            $select.html('<option value="">--- Select GL ---</option>').prop("disabled", false).trigger('change');
+    //        }
+    //    });
+    //}
 
 
 
@@ -491,7 +491,7 @@
             }
 
             // ===== Confirmation Modal =====
-            const title = "Confirm End-of-Year Closure";
+            const title = "Confirm the Initiation of close of Year";
             const message = `
                 <p>Please review the details below before confirming:</p>
                 <table class="table table-sm table-bordered">
@@ -911,7 +911,7 @@
      /* ==========================================================
     4️⃣ Load End-of-Year Tasks
     ========================================================== */
-    $(document).ready(function () {
+    @*$(document).ready(function () {
          $.ajax({
              url: '@Url.Action("GetAllEndTask", "EndOfYearClosure")',
              type: 'GET',
@@ -929,7 +929,7 @@
                  appalert("❌ Failed to load end-of-year tasks. Please try again.", 2, 1);
              }
          });
-     });
+     });*@
 
 
 
@@ -1083,36 +1083,8 @@
 
         const $form = $(form);
 
-        // ===== Branch (Select2-safe) =====
-        const $branchSelect = $form.find('#BranchIdcl'); // your dropdown id
-        const branchData = $branchSelect.select2('data')[0];
-        if (!branchData || !branchData.id) {
-            appalert("⚠️ Please select a branch.", 3, 1);
-            return false;
-        }
-        const branchVal = branchData.id;
-        const branchText = branchData.text;
-
-        // ===== Branch Liaison GL =====
-        const $branchLiaisonGL = $form.find('#BranchLiaisonGlId');
-        const branchLiaisonData = $branchLiaisonGL.select2('data')[0];
-        if (!branchLiaisonData || !branchLiaisonData.id) {
-            appalert("⚠️ Please select a Branch Liaison GL.", 3, 1);
-            return false;
-        }
-        const branchLiaisonVal = branchLiaisonData.id;
-        const branchLiaisonText = branchLiaisonData.text;
-
-        // ===== Head Office GL =====
-        const $hoLiaisonGL = $form.find('#HoLiaisonGlId');
-        const hoLiaisonData = $hoLiaisonGL.select2('data')[0];
-        if (!hoLiaisonData || !hoLiaisonData.id) {
-            appalert("⚠️ Please select a Head Office GL.", 3, 1);
-            return false;
-        }
-        const hoLiaisonVal = hoLiaisonData.id;
-        const hoLiaisonText = hoLiaisonData.text;
-
+       
+       
         // ===== Head Office Result GL =====
         const $hoResultGL = $form.find('#HoResultGlId');
         const hoResultData = $hoResultGL.select2('data')[0];
@@ -1146,11 +1118,11 @@
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr><th>Branch</th><td>${branchText}</td></tr>
-                <tr><th>Branch Liaison GL</th><td>${branchLiaisonText}</td></tr>
-                <tr><th>Head Office GL</th><td>${hoLiaisonText}</td></tr>
+                
+                
                 <tr><th>Head Office Result GL</th><td>${hoResultText}</td></tr>
                 <tr><th>Accounting Date</th><td>${accountingDate}</td></tr>
-                <tr><th>Accounting Year</th><td>${accountingYear}</td></tr>
+              
             </tbody>
         </table>
         <div class="form-check mt-3">
