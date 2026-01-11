@@ -25,7 +25,7 @@ else
                 @foreach (var d in Model.LoanApplications.OrderByDescending(app => app.ApplicationDate))
                 {
                     <tr>
-                        <td>@d.ApplicationDate.ToString("dd/MMM/yyyy, hh:mm:ss")</td>
+                        <td>@d.ApplicationDate.Value.ToString("dd/MMM/yyyy, hh:mm:ss")</td>
                         <td>@d.CustomerId</td>
                         <td>@d.Amount.ToString("#,##0.0")</td>
                         <td>@d.LoanApplicationType</td>
