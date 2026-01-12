@@ -87,6 +87,7 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
                 new SelectListItem() { Value = "InterBranchFunding", Text = "Inter-Branch Funding / Liaison" },
                 new SelectListItem() { Value = "MigrationAdjustment", Text = "Migration / Adjustment Batch" },
                 new SelectListItem() { Value = "ShareMonthSharing", Text = "Share Month Interest Sharing" },
+                new SelectListItem() { Value = "YearlyShareMonthSharing ", Text = "Share Month Interest Sharing for the year" },
                 new SelectListItem() { Value = "PreferenceShareSharing", Text = "Preference Share Sharing" },
                 new SelectListItem() { Value = "Other", Text = "Other (Specify in Description)" },
             };
