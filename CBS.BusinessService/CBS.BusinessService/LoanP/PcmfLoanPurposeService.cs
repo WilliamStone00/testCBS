@@ -109,7 +109,7 @@ namespace CBS.BusinessService.LoanP
                 var encodedId = Uri.EscapeDataString(model.Id);
                 var url = string.Format(APICallHelper.PcmfLoanPurposeUpdate, encodedId);
 
-                var response = await _apiCallerHelper.PostAsync<ServiceResponse<PcmfLoanPurpose>>(url, model);
+                var response = await _apiCallerHelper.PutAsync<ServiceResponse<PcmfLoanPurpose>>(url, model);
 
                 if (response.IsSuccess)
                 {

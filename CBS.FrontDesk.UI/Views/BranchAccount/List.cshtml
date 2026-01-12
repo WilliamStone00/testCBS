@@ -247,14 +247,7 @@
     cleanupExistingModal();
 
     // Show loading placeholder (NOT a modal)
-    $container.html(`
-        <div class="d-flex justify-content-center align-items-center py-5">
-            <div class="text-center">
-                <div class="spinner-border text-warning mb-2" role="status"></div>
-                <div>Loading negativity management...</div>
-            </div>
-        </div>
-    `);
+    $container.html();
 
     // Load modal content
     $.ajax({

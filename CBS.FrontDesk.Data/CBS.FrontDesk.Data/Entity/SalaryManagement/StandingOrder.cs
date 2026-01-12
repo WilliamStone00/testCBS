@@ -174,6 +174,91 @@ namespace CBS.FrontDesk.Data.Entity.SalaryManagement
 
             return ValidationResult.Success;
         }
+
+        public sealed class StandingOrderUploadRowResult
+        {
+            public int RowNumber { get; set; }
+            public string MemberId { get; set; }
+            public string MemberName { get; set; }
+            public decimal Amount { get; set; }
+            public string Reason { get; set; }
+
+            public bool Success { get; set; }
+            public string Message { get; set; }
+            public string StandingOrderId { get; set; } // optional
+        }
+        public sealed class RegisterStandingOrderUpload
+        {
+            public int RowNumber { get; set; }
+            public string MemberId { get; set; }
+            public string MemberName { get; set; }
+            public decimal Amount { get; set; }
+            public string Reason { get; set; }
+        }
+        public sealed class RegisterStandingOrderUploadMain
+        {
+            public List<RegisterStandingOrderUpload> Rows { get; set; }
+        }
+
+        public sealed partial class StandingOrderMemberRegistrationUploadSummary
+        {
+            public string FileCode { get; set; }
+            public string BranchName { get; set; }
+            public string UploadedBy { get; set; }
+
+            public int TotalRows { get; set; }
+            public int ValidRows { get; set; }
+            public int InvalidRows { get; set; }
+            public decimal TotalAmount { get; set; }
+            public int CreatedStandingOrders { get; set; }
+            public int FailedStandingOrders { get; set; }
+
+            public List<StandingOrderMemberRegistrationUploadDetail> FileDetails { get; set; } =
+                new List<StandingOrderMemberRegistrationUploadDetail>();
+            public List<StandingOrderUploadRowResult> RowCreationResult { get; set; } =
+                new List<StandingOrderUploadRowResult>();
+
+            public List<string> ValidationErrors { get; set; } = new List<string>();
+        }
+
+        public sealed class StandingOrderMemberRegistrationUploadDetail
+        {
+            public int RowNumber { get; set; }
+
+            public string MemberId { get; set; }          // Member Reference (required)
+            public string MemberName { get; set; }        // Member Name (optional but recommended)
+            public decimal Amount { get; set; }           // SO Amount (required)
+            public string Reason { get; set; }            // "Loan", "Saving", "Loan repayment", etc.
+
+            // Derived fields
+            public bool ShouldCreateSO { get; set; }
+            public string SourceAccountType { get; set; }       // Salary
+            public string DestinationAccountType { get; set; }  // Loan / Savings
+            public string Purpose { get; set; }                 // Repay my loan / Cash in to savings
+
+            // If you want to create the actual SO payload directly:
+            public CreateSOModelDto CreateSOModel { get; set; }
+        }
+
+        public sealed class CreateSOModelDto
+        {
+            public string MemberId { get; set; }
+            public string MemberName { get; set; }
+            public string SourceAccountType { get; set; }
+            public string DestinationAccountType { get; set; }
+            public decimal Amount { get; set; }
+            public string Purpose { get; set; }
+            public DateTime StartDate { get; set; }
+            public DateTime EndDate { get; set; }
+            public bool IsActive { get; set; }
+            public bool IsAutomatic { get; set; }
+            public string Frequency { get; set; }
+            public string Priority { get; set; }
+            public bool ExternalAccount { get; set; }
+            public string ExternalAccountNumber { get; set; }
+            public string ExternalAccountHolderName { get; set; }
+            public string PersonalNote { get; set; }
+        }
     }
 
 }

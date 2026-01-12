@@ -56,7 +56,7 @@ namespace CBS.BusinessService.CheckManagementSystem.Configurations.ChequeNumber
             {
                 if (!IsHeadOffice())
                 {
-                    query.BranchId = GetBankID();
+                    query.BranchId = GetBranchID();
                 }
                 var response = await _apiCallerHelper.PostAsync<ResponseObject<CustomDataTable>>(
                     APICallHelper.datatable, query);

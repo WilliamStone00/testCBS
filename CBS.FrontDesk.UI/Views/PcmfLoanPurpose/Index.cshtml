@@ -75,22 +75,76 @@
     <script>
         var dataTable = null;
 
+      function disableSubmitBtn(form) {
+
+    var btn = form.querySelector('button[type="submit"]');
+    if (!btn) return false;
+
+    // Preserve original button state
+    if (!btn.dataset.originalHtml) {
+        btn.dataset.originalHtml = btn.innerHTML;
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = '<i class="mdi mdi-loading mdi-spin me-1"></i> Processing...';
+
+    // 🔁 Helper to restore button
+    function restoreBtn() {
+        btn.disabled = false;
+        btn.innerHTML = btn.dataset.originalHtml;
+    }
+
+    /* ===============================
+       1️⃣ Intercept alertify.confirm
+       =============================== */
+    var originalConfirm = alertify.confirm;
+
+    alertify.confirm = function (title, message, onOk, onCancel) {
+
+        // Wrap OK
+        var wrappedOk = function () {
+            alertify.confirm = originalConfirm; // restore
+            if (onOk) onOk();
+        };
+
+        // Wrap Cancel
+        var wrappedCancel = function () {
+            restoreBtn();
+            alertify.confirm = originalConfirm; // restore
+            if (onCancel) onCancel();
+        };
+
+        return originalConfirm(title, message, wrappedOk, wrappedCancel);
+    };
+
+    /* ===============================
+       2️⃣ Intercept $.ajax completion
+       =============================== */
+    var originalAjax = $.ajax;
+
+    $.ajax = function (options) {
+
+        var originalComplete = options.complete;
+
+        options.complete = function () {
+            restoreBtn();                 // 🔓 re-enable
+            $.ajax = originalAjax;        // restore ajax
+            if (originalComplete) originalComplete.apply(this, arguments);
+        };
+
+        return originalAjax(options);
+    };
+
+    // 🚀 Call generic method (UNCHANGED)
+    AjaxPostAndUpdate(form);
+
+    return false; // prevent normal submit
+}
+
+
+
         function showCreateModal() {
             ShowModal(null, '_CreateEditPcmfLoanPurpose', 'PcmfLoanPurpose', 'create');
-        }
-
-        function ShowModal(key, partialView, controller, path) {
-            var url = '/' + controller + '/InitializeData?KEY=' + encodeURIComponent(key || '') +
-                '&partialView=' + encodeURIComponent(partialView) +
-                '&path=' + encodeURIComponent(path);
-
-            $.get(url).done(function (html) {
-                $('#genericModal .modal-content').html(html);
-                var modal = new bootstrap.Modal(document.getElementById('genericModal'));
-                modal.show();
-            }).fail(function () {
-                appalert('Failed to load content', 0, 1);
-            });
         }
 
         function loadData() {
@@ -135,6 +189,9 @@
                 }
             });
         }
+
+       
+
 
         function renderTable(data) {
             var tbody = $('#pcmfLoanPurposeDataTable tbody');

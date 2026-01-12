@@ -179,14 +179,15 @@ namespace CBS.BusinessService.AccountingV2.GLSystemReconciliation
                 // Deserialize the wrapper
                 ///*  var apiResponse = JsonConvert.DeserializeObject<Api*/Response<ReconciliationData>>(jsonResponse);
 
-                // check response for success / nulls
-                if (jsonResponse == null || jsonResponse.ApiResponseData == null || jsonResponse.ApiResponseData.Data == null)
+                if (jsonResponse?.ApiResponseData?.Data == null)
                 {
-                    // optionally throw or return null and let caller handle
-                    return null;
+                    return null; // or throw an exception if this is an error
                 }
 
+                // ✅ SUCCESS PATH
                 return jsonResponse.ApiResponseData.Data;
+
+
             }
             catch (Exception ex)
             {

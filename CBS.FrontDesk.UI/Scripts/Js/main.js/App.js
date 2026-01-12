@@ -1573,10 +1573,18 @@ function AjaxPostAndUpdate(form) {
     console.log("Form Action:", form.action);
     console.log("Form Methodss:", form.method);
 
+
+
     var formData = new FormData(form);
     for (var pair of formData.entries()) {
         console.log(pair[0] + ', ' + pair[1]);
     }
+
+    //update to be tested 
+    // 🔒 Disable button immediately
+    $submitBtn.prop('disabled', true);
+    $submitBtn.html('<i class="mdi mdi-loading mdi-spin me-1"></i> Processing...');
+
 
     $.validator.unobtrusive.parse(form);
     if ($(form).valid()) {
