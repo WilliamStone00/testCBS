@@ -1,18 +1,24 @@
-﻿using CBS.BusinessService;
+﻿using CBS.API.Helper;
+using CBS.BusinessService;
 using CBS.BusinessService.Accounts;
+using CBS.BusinessService.BulkOperations;
 using CBS.BusinessService.Config;
 using CBS.BusinessService.CustomerManagement;
 using CBS.FrontDesk.Data.Entity;
+using CBS.FrontDesk.Data.Entity.BulkOperation;
 using CBS.FrontDesk.Data.Entity.CMoney;
 using CBS.FrontDesk.Data.Entity.SalaryManagement;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
 using CBS.FrontDesk.Data.Message;
+using CBS.FrontDesk.Helper;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using static CBS.FrontDesk.Data.Entity.SalaryManagement.EndDateAfterStartDateAttribute;
 
 namespace CBS.FrontDesk.UI.Controllers.StandingOrderP
 {
@@ -35,6 +41,7 @@ namespace CBS.FrontDesk.UI.Controllers.StandingOrderP
         {
             return View();
         }
+     
       
        
         [HttpPost]
@@ -67,6 +74,7 @@ namespace CBS.FrontDesk.UI.Controllers.StandingOrderP
 
             return Json(new { success = false, status = false, message = errorMessage });
         }
+      
 
         
 
@@ -190,6 +198,125 @@ namespace CBS.FrontDesk.UI.Controllers.StandingOrderP
         //        throw;
         //    }
         //}
+
+        public ActionResult StandingOrderRegistration()
+        {
+            return View();
+        }
+
+        public async Task<ActionResult> DownloadStandingOrderMemberRegistrationTemplate()
+        {
+            try
+            {
+                const string fileName = "StandingOrderCreationTemplateUploadFile.xlsx";
+                string directoryPath = Server.MapPath("~/AppFiles/StandingOrder");
+
+                // Validate directory exists
+                if (!Directory.Exists(directoryPath))
+                {
+                    return Json(new { success = false, status = false, message = "Standing Order template directory not found" });
+                }
+
+                string filePath = Path.Combine(directoryPath, fileName);
+
+                // Validate file exists
+                if (!System.IO.File.Exists(filePath))
+                {
+                    return Json(new { success = false, status = false, message = "Template file not found" });
+                }
+
+                // Read file asynchronously
+                byte[] fileBytes;
+                using (FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: 4096, useAsync: true))
+                {
+                    fileBytes = new byte[fileStream.Length];
+                    await fileStream.ReadAsync(fileBytes, 0, (int)fileStream.Length);
+                }
+
+                // Return the file
+                return File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Json(new { success = false, status = false, message = "Access denied to template file" });
+            }
+            catch (IOException ex)
+            {
+                return Json(new { success = false, status = false, message = $"Error reading template file: {ex.Message}" });
+            }
+            catch (Exception ex)
+            {
+
+                // Log the exception here
+                return Json(new { success = false, status = false, message = $"An unexpected error occurred: {ex.Message}" });
+            }
+        }
+
+        public async Task<ActionResult> StandingOrderMemberRegistrationUploadFile(HttpPostedFileBase file)
+        {
+            try
+            {
+                // Validation (keep your existing validation code)
+
+                // Process the file
+                var result = await _standingOrderServices.ProcessStandingOrderMemberRegistrationUploadFileAsync(file);
+
+                if (result == null || !result.IsSuccess || result.ApiResponseData == null)
+                {
+                    return Json(new
+                    {
+                        success = false,
+                        message = result == null ? "Failed to process file" : result.Message ?? "Failed to process file",
+                        error = (result == null || result.ApiResponseData == null) ? null : result.ApiResponseData.Errors // Include any additional error details
+                    });
+                }
+
+
+                // Return proper JSON structure
+                return Json(new
+                {
+                    draw = Request.Form["draw"] ?? "1",
+                    recordsTotal = result.ApiResponseData.Data?.FileDetails?.Count ?? 0,
+                    recordsFiltered = result.ApiResponseData.Data?.FileDetails?.Count ?? 0,
+                    data = result.ApiResponseData.Data ?? new StandingOrderMemberRegistrationUploadSummary(),
+                    success = true,
+                    message = "File processed successfully"
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                // Log the error
+                return Json(new
+                {
+                    success = false,
+                    message = "An error occurred while processing your file.",
+                    error = ex.Message // Only include in development
+                });
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CreateStandingOrdersFromUpload(RegisterStandingOrderUploadMain model)
+        {
+
+           
+            var data = await _standingOrderServices.RegisterListOfStandingOrdersAsync(model);
+            return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data), activationid = data.SessionID });
+
+           
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CreateStandingOrdersFromManual(RegisterStandingOrderUploadMain model)
+        {
+
+           
+            var data = await _standingOrderServices.RegisterListOfStandingOrdersAsync(model);
+            return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data), activationid = data.SessionID });
+
+           
+        }
+
     }
 
 }

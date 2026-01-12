@@ -8,6 +8,7 @@ using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Entity.VaultManagement;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
+using DocumentFormat.OpenXml.EMMA;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,8 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
+using static CBS.FrontDesk.Data.Entity.SalaryManagement.EndDateAfterStartDateAttribute;
 
 namespace CBS.BusinessService.Accounts
 {
@@ -201,7 +204,43 @@ namespace CBS.BusinessService.Accounts
             }
             return ExecutionMessage;
         }
-       
+
+        public async Task<ApiResponse<ServiceResponse<StandingOrderMemberRegistrationUploadSummary>>> ProcessStandingOrderMemberRegistrationUploadFileAsync(HttpPostedFileBase file)
+        {
+
+            return await _transactionApiHelper.UploadBulkCashPaymentFileAsync<ServiceResponse<StandingOrderMemberRegistrationUploadSummary>>(file, APICallHelper.UploadStandingOrderMemberRegistrationPreview);
+
+        }
+
+        public async Task<ExecutionMessages> RegisterListOfStandingOrdersAsync(RegisterStandingOrderUploadMain orderUploadMain)
+        {
+
+            try
+            {
+                var response = await _transactionApiHelper.PostAsync<ServiceResponse<StandingOrder>>(APICallHelper.MemberBulkStandingOrderRegistration, orderUploadMain);
+                if (response.IsSuccess)
+                {
+                    // Successful creation
+                    GetExecutionMessages(response, true, null, MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                    return ExecutionMessage;
+                }
+                else
+                {
+                    // Failed creation
+                    GetExecutionMessages(orderUploadMain, false, null, MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
+
     }
 
 }

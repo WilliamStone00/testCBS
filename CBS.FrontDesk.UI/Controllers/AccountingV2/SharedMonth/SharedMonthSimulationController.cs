@@ -28,7 +28,6 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.SharedMonth
         private readonly SharedMonthSimulationService _sharedMonthSimulationService;
         private readonly BranchServices _branchServices;
         private readonly InterestProductConfigService _interestProductConfigService;
-        
         private readonly string _appFilesRoot;
 
         // Allowed extensions for these templates (adjust if needed)

@@ -7828,6 +7828,7 @@
     <Content Include="AppFiles\ShareMonthUpload\Anual data.xlsx" />
     <Content Include="AppFiles\ShareMonthUpload\Processed Data.xlsx" />
     <Content Include="AppFiles\ShareMonthUpload\Unprocessed data.xlsx" />
+    <Content Include="AppFiles\StandingOrder\StandingOrderCreationTemplateUploadFile.xlsx" />
     <None Include="DataSet\Loan\DeliquentLoanSummaryDataSet.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -11200,6 +11201,7 @@
     <Content Include="Views\SharedMonthSimulation\_table.cshtml" />
     <Content Include="Views\CounterCheque\_CounterChequeDataTable.cshtml" />
     <Content Include="Views\CounterCheque\_CustomerStatistics.cshtml" />
+    <Content Include="Views\StandingOrder\StandingOrderRegistration.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

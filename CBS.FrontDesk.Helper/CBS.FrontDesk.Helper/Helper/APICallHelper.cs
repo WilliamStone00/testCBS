@@ -135,6 +135,9 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllStandingOrder = "/api/v1/StandingOrder/all";
         public static string CreateStandingOrder = "/api/v1/StandingOrder/create";
         public static string Get_StandingOrderByMemberId = "/api/v1/StandingOrder/member/{0}";
+        public static string CreateStandingOrderMemberRegistrationFromFileUpload = "/api/v1/StandingOrder/member-registration/file-upload/create/{0}";
+        public static string UploadStandingOrderMemberRegistrationPreview = "/api/v1/StandingOrder/member-registration/file-upload/preview";
+        public static string MemberBulkStandingOrderRegistration = "/api/v1/StandingOrder/member-registration/bulk-create";
 
         //FileUpload
         public static string SetPrivatePublicStatus = "/api/v1/FileUpload/set-private";
