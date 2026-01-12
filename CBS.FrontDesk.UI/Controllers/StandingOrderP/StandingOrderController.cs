@@ -1,23 +1,28 @@
 ﻿using CBS.API.Helper;
 using CBS.BusinessService;
+using CBS.BusinessService.Accounting_V2.AffiliateAccounts;
 using CBS.BusinessService.Accounts;
 using CBS.BusinessService.BulkOperations;
 using CBS.BusinessService.Config;
 using CBS.BusinessService.CustomerManagement;
 using CBS.FrontDesk.Data.Entity;
+using CBS.FrontDesk.Data.Entity.Accounting_V2.AffiliateAccount;
 using CBS.FrontDesk.Data.Entity.BulkOperation;
 using CBS.FrontDesk.Data.Entity.CMoney;
 using CBS.FrontDesk.Data.Entity.SalaryManagement;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Http.Results;
 using System.Web.Mvc;
+using ZXing;
 using static CBS.FrontDesk.Data.Entity.SalaryManagement.EndDateAfterStartDateAttribute;
 
 namespace CBS.FrontDesk.UI.Controllers.StandingOrderP
@@ -29,16 +34,49 @@ namespace CBS.FrontDesk.UI.Controllers.StandingOrderP
         // GET: StandingOrder
         private readonly IndividualProfileServices _services;
         private readonly StandingOrderServices _standingOrderServices;
+        private readonly BranchServices _branchServices;
 
-        public StandingOrderController(IndividualProfileServices services, StandingOrderServices standingOrderServices)
+        public StandingOrderController(IndividualProfileServices services, StandingOrderServices standingOrderServices, BranchServices branchServices)
         {
             _services = services;
-            _standingOrderServices=standingOrderServices;
+            _standingOrderServices = standingOrderServices;
+            _branchServices = branchServices;
         }
 
-       
+
+        public async Task loader()
+        {
+            ViewBag.Branches =await _branchServices.GetBranches();
+            ViewBag.SourceAccountTypes = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "Savings Account", Value = "Savings" },
+                new SelectListItem { Text = "Loan Account", Value = "Loan" },
+                new SelectListItem { Text = "Salary Account", Value = "Salary" }
+            };
+            ViewBag.DestinationAccountTypes = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "Savings Account", Value = "Savings" },
+                new SelectListItem { Text = "Loan Account", Value = "Loan" },
+                new SelectListItem { Text = "Salary Account", Value = "Salary" }
+            };
+            ViewBag.Frequencies = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "Daily", Value = "Daily" },
+                new SelectListItem { Text = "Weekly", Value = "Weekly" },
+                new SelectListItem { Text = "Monthly", Value = "Monthly" },
+                new SelectListItem { Text = "Quarterly", Value = "Quarterly" },
+                new SelectListItem { Text = "Bi-Annually", Value = "Bi-Annually" },
+                new SelectListItem { Text = "Annually", Value = "Annually" }
+            };
+        }
+
         public ActionResult Index()
         {
+            return View();
+        }
+        public async Task<ActionResult> Listing()
+        {
+           await  loader();
             return View();
         }
      
@@ -102,6 +140,7 @@ namespace CBS.FrontDesk.UI.Controllers.StandingOrderP
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
         {
            
+            
             if (path=="search")
             {
                 ViewBag.Key=null;
@@ -201,8 +240,11 @@ namespace CBS.FrontDesk.UI.Controllers.StandingOrderP
 
         public ActionResult StandingOrderRegistration()
         {
+         
             return View();
         }
+
+        
 
         public async Task<ActionResult> DownloadStandingOrderMemberRegistrationTemplate()
         {
@@ -300,10 +342,29 @@ namespace CBS.FrontDesk.UI.Controllers.StandingOrderP
         {
 
            
-            var data = await _standingOrderServices.RegisterListOfStandingOrdersAsync(model);
-            return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data), activationid = data.SessionID });
+            var result = await _standingOrderServices.RegisterListOfStandingOrdersAsync(model);
+            if (result == null || !result.IsSuccess || result.ApiResponseData == null)
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = result == null ? "Bulk SO Registration Failed" : result.Message ?? "Bulk  SO Registration Failed",
+                    error = (result == null || result.ApiResponseData == null) ? null : result.ApiResponseData.Errors // Include any additional error details
+                });
+            }
 
-           
+
+            // Return proper JSON structure
+            return Json(new
+            {
+                draw = Request.Form["draw"] ?? "1",
+                recordsTotal = result.ApiResponseData.Data?.RowCreationResult?.Count ?? 0,
+                recordsFiltered = result.ApiResponseData.Data?.RowCreationResult?.Count ?? 0,
+                data = result.ApiResponseData.Data?.RowCreationResult ?? new List<StandingOrderUploadRowResult>(),
+                success = true,
+                message = " SO Registration processed successfully"
+            }, JsonRequestBehavior.AllowGet);
+
         }
 
         [HttpPost]
@@ -311,10 +372,68 @@ namespace CBS.FrontDesk.UI.Controllers.StandingOrderP
         {
 
            
-            var data = await _standingOrderServices.RegisterListOfStandingOrdersAsync(model);
-            return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data), activationid = data.SessionID });
+            var result = await _standingOrderServices.RegisterListOfStandingOrdersAsync(model);
+            if (result == null || !result.IsSuccess || result.ApiResponseData == null)
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = result == null ? "Bulk SO Registration Failed" : result.Message ?? "Bulk  SO Registration Failed",
+                    error = (result == null || result.ApiResponseData == null) ? null : result.ApiResponseData.Errors // Include any additional error details
+                });
+            }
 
-           
+
+            // Return proper JSON structure
+            return Json(new
+            {
+                draw = Request.Form["draw"] ?? "1",
+                recordsTotal = result.ApiResponseData.Data?.RowCreationResult?.Count ?? 0,
+                recordsFiltered = result.ApiResponseData.Data?.RowCreationResult?.Count ?? 0,
+                data = result.ApiResponseData.Data?.RowCreationResult ?? new List<StandingOrderUploadRowResult>(),
+                success = true,
+                message = " SO Registration processed successfully"
+            }, JsonRequestBehavior.AllowGet);
+
+        }
+
+
+        [HttpPost]
+        public async Task<JsonResult> LoadStandingOrderData(StandingOrderDataTableQuery query)
+        {
+            //await loader();
+            try
+            {
+
+                if(!_standingOrderServices.IsHeadOffice())
+                {
+                    query.BranchId = _standingOrderServices.GetBranchID();
+                }
+
+                var data = await _standingOrderServices.GetStandingOrderDataTableAsync(query);
+
+                var standingOrders = JsonConvert.DeserializeObject<List<StandingOrder>>(JsonConvert.SerializeObject(data.data));
+
+                return Json(new
+                {
+                    draw = data.DataTableOptions.draw,
+                    recordsTotal = data.recordsTotal,
+                    recordsFiltered = data.recordsFiltered,
+                    data = standingOrders
+                });
+            }
+            catch (Exception ex)
+            {
+                // return a DataTables-compatible empty result on error
+                return Json(new
+                {
+                    draw = query?.Options?.draw ?? "1",
+                    recordsTotal = 0,
+                    recordsFiltered = 0,
+                    data = new List<object>(),
+                    error = ex.Message
+                });
+            }
         }
 
     }

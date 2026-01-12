@@ -1,4 +1,5 @@
 ﻿using CBS.FrontDesk.Data.Entity.CustomerManagement;
+using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
 using System;
 using System.Collections.Generic;
@@ -50,6 +51,11 @@ namespace CBS.FrontDesk.Data.Entity.SalaryManagement
         public string ExternalAccountNumber { get; set; }
         public string ExternalAccountHolderName { get; set; }
         public string PersonalNote { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public string CreatedBy { get; set; }
+
+        public DateTime ModifiedDate { get; set; }
+        public string ModifiedBy { get; set; }
 
     }
 
@@ -259,6 +265,8 @@ namespace CBS.FrontDesk.Data.Entity.SalaryManagement
             public string ExternalAccountHolderName { get; set; }
             public string PersonalNote { get; set; }
         }
+
+       
     }
 
 }

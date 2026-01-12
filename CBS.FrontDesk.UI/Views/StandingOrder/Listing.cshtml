@@ -1,0 +1,415 @@
+﻿@model  CBS.FrontDesk.Data.Entity.SalaryManagement.StandingOrderDataTableQuery
+    @* create a simple query model OR reuse your existing query *@
+@using Resources
+@{
+    ViewBag.Title = "Standing Orders - Filters";
+}
+
+<style>
+    .compact .card {
+        margin-bottom: .5rem !important
+    }
+
+    .compact .card-body {
+        padding: .75rem !important
+    }
+
+    .compact .card-header {
+        padding: .5rem .75rem !important
+    }
+
+    .compact .form-label {
+        margin-bottom: .2rem !important
+    }
+
+    .compact .form-check {
+        margin-bottom: 0 !important
+    }
+
+    .compact .row.g-1 > [class^="col-"] {
+        margin-bottom: .5rem
+    }
+</style>
+
+<div class="compact">
+    @*Header*@
+    <div class="row mb-2">
+        <div class="col-12">
+            <div class="card bg-light">
+                <div class="card-body text-center py-2">
+                    <h5 class="card-title text-primary mb-1">
+                        <i class="mdi mdi-repeat me-2"></i> Standing Order Management
+                    </h5>
+                    <p class="card-text small mb-0">
+                        Register, review and manage member standing orders (filters + server-side datatable).
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tips -->
+    <div class="card mb-2">
+        <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+            <span class="small"><i class="mdi mdi-information-outline me-2"></i>Tips</span>
+            <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSOTips" aria-expanded="false">
+                <i class="mdi mdi-chevron-down"></i>
+            </button>
+        </h6>
+        <div id="collapseSOTips" class="collapse">
+            <div class="card-body py-2">
+                <ul class="mb-0 small">
+                    <li><i class="mdi mdi-check-circle-outline text-success me-2"></i>Use filters to reduce dataset before loading.</li>
+                    <li><i class="mdi mdi-filter-outline text-secondary me-2"></i>Dates filter standing orders by start/end date window.</li>
+                    <li><i class="mdi mdi-toggle-switch-outline text-info me-2"></i>Active filter helps audit operational standing orders.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="card shadow-sm p-2 mb-2">
+        <h6 class="text-primary mb-2"><i class="mdi mdi-filter-outline me-1"></i>Filters</h6>
+
+        @using (Html.BeginForm("Index", "StandingOrder", FormMethod.Get, new { id = "soFilterForm", autocomplete = "off" }))
+        {
+            <div class="card p-2 mb-2 bg-light">
+
+                <div class="row g-1">
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold small">Branch</label>
+                        @Html.DropDownList("BranchId",
+                            new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name"),
+                            "--- All Branches ---",
+                            new { @class = "form-select form-select-sm select2", id = "BranchId" })
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold small">Member Reference</label>
+                        <input id="MemberId" class="form-control form-control-sm" placeholder="e.g. 5467" />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold small">Member Name</label>
+                        <input id="MemberName" class="form-control form-control-sm" placeholder="Member name" />
+                    </div>
+                </div>
+
+                <div class="row g-1 mt-1">
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold small">Source Account Type</label>
+                        @Html.DropDownList("SourceAccountType",
+                            new SelectList(ViewBag.SourceAccountTypes ?? new List<SelectListItem>(), "Value", "Text"),
+                            "--- Any ---",
+                            new { @class = "form-select form-select-sm select2", id = "SourceAccountType" })
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold small">Destination Account Type</label>
+                        @Html.DropDownList("DestinationAccountType",
+                            new SelectList(ViewBag.DestinationAccountTypes ?? new List<SelectListItem>(), "Value", "Text"),
+                            "--- Any ---",
+                            new { @class = "form-select form-select-sm select2", id = "DestinationAccountType" })
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold small">Frequency</label>
+                        @Html.DropDownList("Frequency",
+                            new SelectList(ViewBag.Frequencies ?? new List<SelectListItem>(), "Value", "Text"),
+                            "--- Any ---",
+                            new { @class = "form-select form-select-sm select2", id = "Frequency" })
+                    </div>
+                </div>
+
+                <div class="row g-1 mt-1">
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold small">Status</label>
+                        <select id="IsActive" class="form-select form-select-sm select2">
+                            <option value="">--- Any ---</option>
+                            <option value="true">Active</option>
+                            <option value="false">Inactive</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold small">Start Date</label>
+                        <input id="StartDate" type="date" class="form-control form-control-sm" />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold small">End Date</label>
+                        <input id="EndDate" type="date" class="form-control form-control-sm" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-2">
+                <div class="col-md-12 d-flex gap-2">
+                    <button id="applySOFilterBtn" type="button" class="btn btn-primary btn-sm flex-fill">
+                        <i class="mdi mdi-magnify"></i> Apply Filter
+                    </button>
+                    <button id="resetSOFilterBtn" type="button" class="btn btn-secondary btn-sm flex-fill">
+                        <i class="mdi mdi-refresh"></i> Reset
+                    </button>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Actions -->
+    @*<div class="d-flex justify-content-end mb-2">
+            <button id="btnCreateSO" type="button" class="btn btn-success btn-sm">
+                <i class="mdi mdi-plus-circle-outline me-1"></i> Create Standing Order
+            </button>
+        </div>*@
+
+    <div class="d-flex justify-content-end mb-2">
+        <a href="/StandingOrder/StandingOrderRegistration"
+           class="btn btn-success btn-sm">
+            <i class="mdi mdi-plus-circle-outline me-1"></i>
+            <span>Create Standing Order</span>
+        </a>
+    </div>
+
+    <!-- Data -->
+    <div id="datalistingview">
+        @Html.Partial("_DataStandingOrders")  @* ✅ create this partial *@
+    </div>
+
+    <!-- Details Modal -->
+    <div class="modal fade" id="soDetailsModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create/Edit Modal (optional) -->
+    <div class="modal fade" id="soEditModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body"></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+(function($, w){
+  'use strict';
+
+  // ===== ROUTES =====
+  const dataUrl   = '@Url.Action("LoadStandingOrderData", "StandingOrder")';
+  const detailUrl = '@Url.Action("InitializeData", "StandingOrder")';
+  const initUrl   = '@Url.Action("InitializeData", "StandingOrder")';
+
+  let table = null, tableInitialized = false;
+
+  function getFilters(){
+    const isActiveVal = $('#IsActive').val();
+    return {
+      Options: {},
+      BranchId: $('#BranchId').val() || null,
+      MemberId: $.trim($('#MemberId').val()) || null,
+      MemberName: $.trim($('#MemberName').val()) || null,
+      SourceAccountType: $('#SourceAccountType').val() || null,
+      DestinationAccountType: $('#DestinationAccountType').val() || null,
+      Frequency: $('#Frequency').val() || null,
+      IsActive: isActiveVal === "" ? null : (isActiveVal === "true"),
+      StartDate: $('#StartDate').val() || null,
+      EndDate: $('#EndDate').val() || null
+    };
+  }
+
+  function showModalLoading(targetSel){
+    const $m = $(targetSel);
+    $(`${targetSel} .modal-body`).html('<div class="text-center py-4"><div class="spinner-border" role="status"></div></div>');
+    (bootstrap.Modal.getInstance($m[0]) || new bootstrap.Modal($m[0], { backdrop: 'static' })).show();
+  }
+
+  function loadIntoModal(modalSel, url, data){
+    $.get(url, data)
+      .done(html => {
+        showModalLoading(modalSel);
+        $(`${modalSel} .modal-body`).html(html || '<div class="text-center text-muted">No content.</div>');
+        if ($.fn.select2){
+          try {
+            $(`${modalSel} .select2`).each(function(){
+              if (!$(this).hasClass('select2-hidden-accessible')){
+                $(this).select2({ dropdownParent: $(modalSel) });
+              }
+            });
+          } catch(e){ console.warn('select2 in modal init failed', e); }
+        }
+      })
+      .fail(() => $(`${modalSel} .modal-body`).html('<div class="p-3 text-danger">Unable to load content. Please try again.</div>'));
+  }
+
+  function actionButtons(row){
+    const id = encodeURIComponent(String(row.Id || row.id || ''));
+    const btnId = 'so_act_' + (row.Id || row.id || Math.random().toString(36).slice(2));
+    return `
+      <div class="dropdown text-center">
+        <button class="btn btn-sm btn-info dropdown-toggle text-white" type="button" id="${btnId}" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="mdi mdi-cog-outline"></i> Actions
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="${btnId}">
+          <li><button type="button" class="dropdown-item btn-so-detail" data-id="${id}">
+            <i class="mdi mdi-eye me-1 text-primary"></i> Details</button></li>
+          <li><button type="button" class="dropdown-item btn-so-edit" data-id="${id}">
+            <i class="mdi mdi-pencil-outline me-1 text-info"></i> Edit</button></li>
+        </ul>
+      </div>`;
+  }
+
+  function initDataTable(){
+    const selector = '#myDataTable';
+    if ($.fn.DataTable.isDataTable(selector)){
+      try { $(selector).DataTable().destroy(); } catch(e){ console.warn('destroy failed', e); }
+      $(selector + ' tbody').empty();
+    }
+
+    table = $(selector).DataTable({
+      serverSide: true,
+      processing: false,
+      responsive: true,
+      autoWidth: false,
+      pageLength: 10,
+      order: [[0, 'desc']],
+      columnDefs: [
+        { targets: 0, width: '14%' }, // CreatedDate
+        { targets: 1, width: '12%' }, // MemberId
+        { targets: 2, width: '18%' }, // MemberName
+        { targets: 3, width: '12%', className: 'text-end' }, // Amount
+        { targets: 4, width: '12%' }, // Source
+        { targets: 5, width: '12%' }, // Dest
+        { targets: 6, width: '10%' }, // Frequency
+        { targets: 7, width: '10%' }, // Status
+        { targets: 8, width: '10%', className: 'text-end', orderable: false, searchable: false } // Actions
+      ],
+      ajax: {
+        url: dataUrl,
+        type: 'POST',
+        contentType: 'application/json; charset=utf-8',
+        data: function(d){
+          const filters = getFilters();
+          filters.Options = {
+            draw: d.draw,
+            start: d.start,
+            length: d.length,
+            skip: d.start,
+            pageSize: d.length,
+            searchValue: d.search?.value || '',
+            sortColumnName: '',
+            sortColumnDirection: ''
+          };
+          return JSON.stringify(filters);
+        },
+        dataSrc: function(json){
+          if (!json) return [];
+          if (Array.isArray(json.data)) return json.data;
+          if (Array.isArray(json.result)) return json.result;
+          if (Array.isArray(json.items)) return json.items;
+          for (var k in json){ if (Array.isArray(json[k])) return json[k]; }
+          return [];
+        },
+        error: function(){
+          $(selector + ' tbody').html('<tr><td colspan="9" class="text-center text-danger">Failed to load data.</td></tr>');
+        }
+      },
+      columns: [
+        {
+          data: 'CreatedDate', name: 'CreatedDate',
+          render: function(data, type, row){
+            const v = row.CreatedDate || row.createdDate;
+            return v ? (window.moment ? moment(v).format('DD/MM/YYYY HH:mm:ss') : v) : '-';
+          }
+        },
+        { data: 'MemberId', name: 'MemberId', render: (d,t,row) => row.MemberId || row.memberId || '' },
+        { data: 'MemberName', name: 'MemberName', render: (d,t,row) => row.MemberName || row.memberName || '' },
+        {
+          data: 'Amount', name: 'Amount', className: 'text-end',
+          render: function(d,t,row){
+            const amt = row.Amount ?? row.amount ?? 0;
+            return (window.formatCurrency ? formatCurrency(amt) : amt);
+          }
+        },
+        { data: 'SourceAccountType', name: 'SourceAccountType', render: (d,t,row) => row.SourceAccountType || row.sourceAccountType || '' },
+        { data: 'DestinationAccountType', name: 'DestinationAccountType', render: (d,t,row) => row.DestinationAccountType || row.destinationAccountType || '' },
+        { data: 'Frequency', name: 'Frequency', render: (d,t,row) => row.Frequency || row.frequency || '' },
+        {
+          data: 'IsActive', name: 'IsActive',
+          render: function(d,t,row){
+            const active = (row.IsActive ?? row.isActive) === true;
+            return active
+              ? '<span class="badge bg-success">Active</span>'
+              : '<span class="badge bg-secondary">Inactive</span>';
+          }
+        },
+        { data: null, orderable:false, searchable:false, className:'text-end', render: (d,t,row) => actionButtons(row) }
+      ],
+      language: { emptyTable: 'No standing orders found' }
+    });
+
+    tableInitialized = true;
+  }
+
+  function reloadTable(){
+    if (!tableInitialized){
+      if ($('#myDataTable').length === 0){ console.error('myDataTable markup missing. Ensure _DataStandingOrders partial is present.'); return; }
+      initDataTable();
+    } else if (table && table.ajax){
+      table.ajax.reload(null, false);
+    }
+  }
+
+  $(function(){
+    if ($.fn.select2){
+      try { $('.select2').select2({ width:'100%' }); } catch(e){ console.warn('select2 init failed', e); }
+    }
+
+    $('#applySOFilterBtn').on('click', function(e){ e.preventDefault(); reloadTable(); });
+
+    $('#resetSOFilterBtn').on('click', function(){
+      const $f = $('#soFilterForm'); if ($f.length) $f[0].reset();
+      if ($.fn.select2){ try { $('.select2').val(null).trigger('change'); } catch(_){} }
+      reloadTable();
+    });
+
+    $('#soFilterForm').on('keypress', 'input,select', function(e){
+      if (e.which === 13){ e.preventDefault(); reloadTable(); }
+    });
+
+    // Actions
+    $(document).on('click', '#btnCreateSO', function(){
+        loadIntoModal('#soEditModal', initUrl, { KEY: '', partialView:'_StandingOrderForm', path:'new', serviceOption:'StandingOrder' });
+    });
+
+    $('#datalistingview').on('click', '.btn-so-detail', function(){
+      const id = $(this).data('id'); if (!id) return;
+        loadIntoModal('#soDetailsModal', detailUrl, { KEY: id, partialView:'_StandingOrderDetailsPartial' });
+    });
+
+    $('#datalistingview').on('click', '.btn-so-edit', function(){
+      const id = $(this).data('id'); if (!id) return;
+        loadIntoModal('#soEditModal', initUrl, { KEY: id, partialView:'_StandingOrderForm', path:'get', serviceOption:'StandingOrder' });
+    });
+  });
+
+})(jQuery, window);
+    </script>
+}

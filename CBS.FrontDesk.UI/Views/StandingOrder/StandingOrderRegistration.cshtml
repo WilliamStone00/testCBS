@@ -55,7 +55,7 @@
         <!-- ====================== -->
         <div class="row mb-2">
             <div class="col-md-6 text-md-end mb-1 mb-md-0">
-                <a href="/StandingOrder" class="btn btn-primary btn-sm shadow-sm px-3 w-100 w-md-auto">
+                <a href="/StandingOrder/Listing" class="btn btn-primary btn-sm shadow-sm px-3 w-100 w-md-auto">
                     <i class="mdi mdi-view-list me-1"></i> Standing Orders Listing
                 </a>
             </div>
@@ -215,11 +215,56 @@
                                     </div>
                                 </div>
 
-                                <div class="row mt-2">
+                                <div class="row mt-2 mb-2">
                                     <div class="col-md-12 text-end">
                                         <button type="submit" class="btn btn-primary">
                                             <i class="mdi mdi-content-save-outline me-2"></i> Create Standing Orders
                                         </button>
+                                    </div>
+                                </div>
+
+
+                                <!-- Preview -->
+                                <div class="accordion mb-4" id="bulkCreationAccordion">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingBulkFileContent">
+                                            <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#bulkCreationContent"
+                                                    aria-expanded="false" aria-controls="collapseBulkContent">
+                                                <i class="mdi mdi-file-document-outline me-2"></i> Bulk Creation Results (Row Results)
+                                            </button>
+                                        </h2>
+                                        <div id="bulkCreationContent" class="accordion-collapse collapse" aria-labelledby="headingBulkFileContent">
+                                            <div class="accordion-body">
+                                                <div class="table-responsive mb-3">
+                                                    <table class="table table-hover table-bordered align-middle" id="soBulkCreateStatusTable">
+                                                        <thead>
+                                                            <tr>
+
+                                                                <th>Member Reference</th>
+                                                                <th>Member Name</th>
+                                                                <th>Amount</th>
+                                                                <th>Reason</th>
+                                                                <th>Status</th>
+                                                                <th>Message</th>
+                                                            </tr>
+                                                        </thead>
+                                                    </table>
+
+                                                    <div class="d-flex flex-wrap gap-2 mt-2">
+                                                        <span class="badge bg-dark" id="sumTotalRows1">Total: 0</span>
+                                                        <span class="badge bg-success" id="sumValidRows1">Valid: 0</span>
+                                                        <span class="badge bg-danger" id="sumInvalidRows1">Invalid: 0</span>
+                                                        <span class="badge bg-primary" id="sumTotalAmount1">Amount: 0</span>
+                                                    </div>
+
+                                                    <small class="text-muted d-block mt-2">
+                                                        <i class="mdi mdi-information-outline me-1"></i>
+                                                        Preview shows per-row validation/creation result returned by the API. You can create only valid rows in bulk.
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             }
@@ -337,13 +382,13 @@
                                                     <table class="table table-hover table-bordered align-middle" id="soPreviewTable">
                                                         <thead>
                                                             <tr>
-                                                         
+
                                                                 <th>Member Reference</th>
                                                                 <th>Member Name</th>
-                                                                <th class="text-end">Amount</th>
+                                                                <th >Amount</th>
                                                                 <th>Reason</th>
                                                                 @*<th class="text-center">Status</th>
-                                                                <th>Message</th>*@
+                                            <th>Message</th>*@
                                                             </tr>
                                                         </thead>
                                                     </table>
@@ -388,48 +433,48 @@
                                                     <i class="mdi mdi-information-outline me-2"></i>
                                                     This action will create standing orders for <b>all valid rows</b> in the preview table.
                                                 </div>
-@*
-                                                <div class="row g-3">
-                                                    <div class="col-md-6">
-                                                        <label class="form-label fw-semibold">Start Date</label>
-                                                        <input type="date" class="form-control" id="StartDate" name="StartDate"
-                                                               value="@DateTime.Today.ToString("yyyy-MM-dd")" />
-                                                        <small class="text-muted help-hint">
-                                                            Default is today. Used for generated SO payloads when needed.
-                                                        </small>
-                                                    </div>
+                                                @*
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Start Date</label>
+                                    <input type="date" class="form-control" id="StartDate" name="StartDate"
+                                           value="@DateTime.Today.ToString("yyyy-MM-dd")" />
+                                    <small class="text-muted help-hint">
+                                        Default is today. Used for generated SO payloads when needed.
+                                    </small>
+                                </div>
 
-                                                    <div class="col-md-6">
-                                                        <label class="form-label fw-semibold">End Date</label>
-                                                        <input type="date" class="form-control" id="EndDate" name="EndDate"
-                                                               value="@DateTime.Today.AddYears(1).ToString("yyyy-MM-dd")" />
-                                                        <small class="text-muted help-hint">
-                                                            Default is +1 year. Adjust per institution policy.
-                                                        </small>
-                                                    </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">End Date</label>
+                                    <input type="date" class="form-control" id="EndDate" name="EndDate"
+                                           value="@DateTime.Today.AddYears(1).ToString("yyyy-MM-dd")" />
+                                    <small class="text-muted help-hint">
+                                        Default is +1 year. Adjust per institution policy.
+                                    </small>
+                                </div>
 
-                                                    <div class="col-md-6">
-                                                        <label class="form-label fw-semibold">Frequency</label>
-                                                        <select class="form-select select2" id="Frequency" name="Frequency">
-                                                            <option value="Monthly" selected>Monthly</option>
-                                                            <option value="Weekly">Weekly</option>
-                                                            <option value="Daily">Daily</option>
-                                                        </select>
-                                                    </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Frequency</label>
+                                    <select class="form-select select2" id="Frequency" name="Frequency">
+                                        <option value="Monthly" selected>Monthly</option>
+                                        <option value="Weekly">Weekly</option>
+                                        <option value="Daily">Daily</option>
+                                    </select>
+                                </div>
 
-                                                    <div class="col-md-6">
-                                                        <label class="form-label fw-semibold">Priority</label>
-                                                        <select class="form-select select2" id="Priority" name="Priority">
-                                                            <option value="1" selected>1 (Highest)</option>
-                                                            <option value="2">2</option>
-                                                            <option value="3">3</option>
-                                                            <option value="4">4</option>
-                                                            <option value="5">5</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-*@
-                                                <div class="row mt-3">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Priority</label>
+                                    <select class="form-select select2" id="Priority" name="Priority">
+                                        <option value="1" selected>1 (Highest)</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                </div>
+                            </div>
+                                                *@
+                                                <div class="row mt-3 mb-2">
                                                     <div class="col-md-12 text-end">
                                                         <button type="submit" class="btn btn-primary" id="btnBulkCreate">
                                                             <i class="mdi mdi-check-circle-outline me-2"></i> Create Standing Orders (Valid Rows)
@@ -437,6 +482,50 @@
                                                     </div>
                                                 </div>
 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Preview -->
+                                <div class="accordion mb-4" id="bulkCreationAccordion2">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingBulkFileContent2">
+                                            <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#bulkCreationContent2"
+                                                    aria-expanded="false" aria-controls="collapseBulkContent2">
+                                                <i class="mdi mdi-file-document-outline me-2"></i> Bulk Creation Results (Row Results)
+                                            </button>
+                                        </h2>
+                                        <div id="bulkCreationContent2" class="accordion-collapse collapse" aria-labelledby="headingBulkFileContent2">
+                                            <div class="accordion-body">
+                                                <div class="table-responsive mb-3">
+                                                    <table class="table table-hover table-bordered align-middle" id="soBulkCreateStatusTable2">
+                                                        <thead>
+                                                            <tr>
+
+                                                                <th>Member Reference</th>
+                                                                <th>Member Name</th>
+                                                                <th>Amount</th>
+                                                                <th>Reason</th>
+                                                                <th>Status</th>
+                                                                <th>Message</th>
+                                                            </tr>
+                                                        </thead>
+                                                    </table>
+
+                                                    <div class="d-flex flex-wrap gap-2 mt-2">
+                                                        <span class="badge bg-dark" id="sumTotalRows2">Total: 0</span>
+                                                        <span class="badge bg-success" id="sumValidRows2">Valid: 0</span>
+                                                        <span class="badge bg-danger" id="sumInvalidRows2">Invalid: 0</span>
+                                                        <span class="badge bg-primary" id="sumTotalAmount2">Amount: 0</span>
+                                                    </div>
+
+                                                    <small class="text-muted d-block mt-2">
+                                                        <i class="mdi mdi-information-outline me-1"></i>
+                                                        Preview shows per-row validation/creation result returned by the API. You can create only valid rows in bulk.
+                                                    </small>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -571,7 +660,7 @@
                         // Send only valid rows
                         Rows: rows.map(r => ({
                             RowNumber: r.RowNumber,
-                            MemberRef: r.MemberId,
+                            MemberId: r.MemberId,
                             MemberName: r.MemberName,
                             Amount: parseFloat(r.Amount) || 0,
                             Reason: r.Reason
@@ -590,9 +679,9 @@
 
                                 // If API returns updated results, refresh preview
                                 if (Array.isArray(response.data)) {
-                                    window.__soPreviewRows = response.data;
-                                    displayStandingOrderPreview(response.data);
-                                    updateSummaryBadges(response.data);
+                                     displayStandingOrderCreationPreviewResult(response.data, '2');
+                                     updateSummaryBadges2(response.data, '2');
+                                  
                                 }
                             } else {
                                 appalert(response?.message || 'Bulk create failed', 2, 1);
@@ -662,6 +751,61 @@
             }
         }
 
+        function displayStandingOrderCreationPreviewResult(data, tableType) {
+
+            var tableTypeId = (String(tableType) === '2')  ? '#soBulkCreateStatusTable2' : '#soBulkCreateStatusTable'
+            var collapseFileContentId = (String(tableType) === '2')  ? '#bulkCreationContent' : '#bulkCreationContent2'
+
+            if ($.fn.DataTable.isDataTable(tableTypeId)) {
+                $(tableTypeId).DataTable().destroy();
+            }
+
+            $(tableTypeId).DataTable({
+                data: data || [],
+                columns: [
+                    /*{ data: "RowNumber", title: "#", className: "text-center", width: "60px" },*/
+                    { data: "MemberId", title: "Member Reference", render: $.fn.dataTable.render.text() },
+                    { data: "MemberName", title: "Member Name", render: $.fn.dataTable.render.text() },
+                    {
+                        data: "Amount",
+                        title: "Amount",
+                        className: "text-end",
+                        render: function (d) { return formatCurrency(d || 0); }
+                    },
+                    { data: "Reason", title: "Reason", render: $.fn.dataTable.render.text() },
+                    {
+                        data: "Success",
+                        title: "Status",
+                        className: "text-center",
+                        render: function (ok) {
+                            return ok
+                                ? '<span class="badge bg-success"><i class="mdi mdi-check-circle-outline me-1"></i>Valid</span>'
+                                : '<span class="badge bg-danger"><i class="mdi mdi-close-circle-outline me-1"></i>Invalid</span>';
+                        }
+                    },
+                    { data: "Message", title: "Message", render: $.fn.dataTable.render.text() }
+                ],
+                responsive: true,
+                pageLength: 10,
+                order: [],
+                language: {
+                    emptyTable: "No data available in table",
+                    info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                    infoEmpty: "Showing 0 to 0 of 0 entries",
+                    infoFiltered: "(filtered from _MAX_ total entries)",
+                    lengthMenu: "Show _MENU_ entries",
+                    search: "Search:",
+                    zeroRecords: "No matching records found"
+                }
+            });
+
+            // auto open preview accordion
+            const preview = document.getElementById(collapseFileContentId);
+            if (preview && !preview.classList.contains('show')) {
+                new bootstrap.Collapse(preview, { toggle: true });
+            }
+        }
+
         function updateSummaryBadges(data) {
             //rows = data || [];
             const total = data.TotalRows;
@@ -674,6 +818,27 @@
             $('#sumInvalidRows').text('Invalid: ' + invalid);
             $('#sumTotalAmount').text('Amount: ' + formatCurrency(totalAmount));
         }
+
+        function updateSummaryBadges2(rows, tableType) {
+            rows = Array.isArray(rows) ? rows : [];
+
+            const total = rows.length;
+            const valid = rows.filter(x => x && x.Success === true).length;
+            const invalid = total - valid;
+
+            const totalAmount = rows.reduce((acc, x) => {
+                const v = x ? (parseFloat(x.Amount) || 0) : 0;
+                return acc + v;
+            }, 0);
+
+            const suffix = (String(tableType) === '2') ? '2' : '1';
+
+            $('#sumTotalRows' + suffix).text('Total: ' + total);
+            $('#sumValidRows' + suffix).text('Valid: ' + valid);
+            $('#sumInvalidRows' + suffix).text('Invalid: ' + invalid);
+            $('#sumTotalAmount' + suffix).text('Amount: ' + formatCurrency(totalAmount));
+        }
+
 
         function showUploadStatus(message, type) {
             const $uploadStatus = $('#uploadStatus');
@@ -706,11 +871,11 @@
                     <tr data-row-id="${rowCounter}">
                         <td>
                             <input type="text" class="form-control form-control-sm member-id"
-                                   placeholder="e.g. 5467" required />
+                                   placeholder="e.g. 0010005467" required />
                         </td>
                         <td>
                             <input type="text" class="form-control form-control-sm member-name"
-                                   placeholder="Optional" />
+                                   placeholder="John Doe" />
                         </td>
                         <td>
                             <input type="number" class="form-control form-control-sm amount text-end"
@@ -774,7 +939,7 @@
             $('#manualRowsTable tbody tr').not('.empty-row').each(function () {
                 const $r = $(this);
                 rows.push({
-                    MemberRef: ($r.find('.member-id').val() || '').trim(),
+                    MemberId: ($r.find('.member-id').val() || '').trim(),
                     MemberName: ($r.find('.member-name').val() || '').trim(),
                     Amount: parseFloat($r.find('.amount').val()) || 0,
                     Reason: ($r.find('.reason').val() || '').trim()
@@ -782,7 +947,7 @@
             });
 
             // simple validation
-            if (rows.some(x => !x.MemberRef || x.Amount <= 0 || !x.Reason)) {
+            if (rows.some(x => !x.MemberId || x.Amount <= 0 || !x.Reason)) {
                 appalert('Please ensure Member Reference, Amount (>0) and Reason are filled for all rows.', 2, 1);
                 return false;
             }
@@ -802,6 +967,11 @@
                             success: function (response) {
                                 if (response && response.success) {
                                     appalert(response.message || 'Created successfully', 1, 1);
+                                    // If API returns updated results, refresh preview
+                                    if (Array.isArray(response.data)) {
+                                        displayStandingOrderCreationPreviewResult(response.data,'1');
+                                        updateSummaryBadges2(response.data,'1');
+                                    }
                                 } else {
                                     appalert(response?.message || 'Creation failed', 2, 1);
                                 }
