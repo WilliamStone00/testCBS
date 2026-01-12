@@ -284,10 +284,40 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheq
         public int PendingClearances { get; set; }
         public int ClearedWithin24Hours { get; set; }
         public int ClearedWithin72Hours { get; set; }
-        public int DelayedClearances { get; set; } // > 72H
+        public int DelayedClearances { get; set; } 
 
-        public double AverageClearanceTimeHours { get; set; }
+		// ===============================
+		// CLEARANCE BREAKDOWN (HOURS)
+		// ===============================
 
+        public double CounterChecks { get; set; }
+        public double OnBehalfOf { get; set; }
+        public double ByOwner { get; set; }
+
+        // ===============================
+        // CLEARANCE BREAKDOWN (COUNTS WITHIN 24H)
+        // ===============================
+        public int CounterChecksWithin24h { get; set; }
+        public int OnBehalfOfWithin24h { get; set; }
+        public int ByOwnerWithin24h { get; set; }
+
+
+        // =========================
+        // BOTTOM SECTION (TOTALS)
+        // =========================
+
+        /// <summary>
+        /// Total average clearance time (hours)
+        /// </summary>
+        public double TotalAverageClearanceHours =>
+                CounterChecks + OnBehalfOf + ByOwner;
+
+            /// <summary>
+            /// Total checks cleared within 24 hours
+            /// </summary>
+            public int TotalClearedWithin24h =>
+                CounterChecksWithin24h + OnBehalfOfWithin24h + ByOwnerWithin24h;
+        
         // ===============================
         // LIFE CYCLE
         // ===============================
@@ -322,6 +352,28 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheq
         // METADATA
         // ===============================
         public DateTime GeneratedAt { get; set; }
+
+        public List<CustomerChequeAccountDto> ChequeAccounts { get; set; }
+
+    }
+    public enum ChequeOperationType
+    {
+        CounterCheque,
+        OnBehalfOf,
+        ByOwner
+    }
+
+    public class CustomerChequeAccountDto
+    {
+        public string AccountId { get; set; }
+        public string AccountType { get; set; }        // Savings, Current, Loan
+        public string AccountNumber { get; set; }
+        public string Chequebook { get; set; }
+
+        public ChequeOperationType OperationType { get; set; }
+
+        public bool IsActive { get; set; }
+        public decimal BalanceAmount { get; set; }
     }
 
 

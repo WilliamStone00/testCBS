@@ -49,16 +49,21 @@
 <div class="card shadow p-3 mb-4">
     <!--<div class="card mb-1">
         <div class="card-body d-flex justify-content-end align-items-center">-->
-            <!-- These buttons correctly call your site's generic JavaScript functions -->
-            <!--<a type="button" onclick="LoadDataGen('CounterCheque', 'myDataTable', '_DataTable', 0, 'datalistingview', null, 'list')" class="btn btn-label-primary btn-sm me-2">View All</a>
+    <!-- These buttons correctly call your site's generic JavaScript functions -->
+    <!--<a type="button" onclick="LoadDataGen('CounterCheque', 'myDataTable', '_DataTable', 0, 'datalistingview', null, 'list')" class="btn btn-label-primary btn-sm me-2">View All</a>
             <a type="button" onclick="AddORUpdateGen(null, 'datalistingview', '_Create', 'new', 'CounterCheque')" class="btn btn-label-secondary btn-sm">New Counter Cheque</a>
         </div>
     </div>-->
-
     <!-- The container where all partial views will be dynamically loaded -->
-    <div id="datalistingview">
+    <div id="datalistingview2">
         @Html.Partial("_Create", new CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheque.CounterCheques())
     </div>
+
+    <div id="statisticsContainer" class="mt-3"></div>
+
+    <div id="datalistingview1" class="mt-3"></div>
+
+
 </div>
 
 <!-- =================================================
@@ -197,7 +202,7 @@
                     type: 'GET',
                     data: { customerId: customerId },
                     success: function (statsHtml) {
-                        $("#statisticsContainer").html(statsHtml);
+                        $("#datalistingview2").html(statsHtml);
                         // Initialize collapse functionality
                         $('.collapse').collapse();
                     },
@@ -211,7 +216,7 @@
                         } else {
                             errorMsg += "Server error occurred";
                         }
-                        $("#statisticsContainer").html(`
+                        $("#datalistingview2").html(`
                 <div class="alert alert-warning">
                     <i class="mdi mdi-alert-outline me-1"></i>
                     ${errorMsg}
