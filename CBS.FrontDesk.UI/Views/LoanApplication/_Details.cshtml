@@ -81,15 +81,15 @@
             </tr>
             <tr>
                 <td class="font-weight-bold">@GlobalLoanApplication.ApplicationDate:</td>
-                <td>@Model.ApplicationDate.ToString("dd/MM/yyyy hh:mm:ss")</td>
+                <td>@Model.ApplicationDate.Value.ToString("dd/MM/yyyy hh:mm:ss")</td>
             </tr>
             <tr>
                 <td class="font-weight-bold">@GlobalLoanApplication.ApprovalDate:</td>
-                <td>@Model.ApprovalDate.ToString("dd/MM/yyyy hh:mm:ss")</td>
+                <td>@Model.ApprovalDate.Value.ToString("dd/MM/yyyy hh:mm:ss")</td>
             </tr>
             <tr>
                 <td class="font-weight-bold">@GlobalLoanApplication.DisbursementDate:</td>
-                <td>@Model.DisbursementDate.ToString("dd/MM/yyyy hh:mm:ss")</td>
+                <td>@Model.DisbursementDate.Value.ToString("dd/MM/yyyy hh:mm:ss")</td>
             </tr>
             <tr>
                 <td class="font-weight-bold">@GlobalLoanApplication.ApplicationManage:</td>
@@ -103,7 +103,7 @@
             <tr>
                 <td class="font-weight-bold">Migrated Loan:</td>
                 <td>
-                    @if (!Model.IsUpload.Value)
+                    @if (!Model.IsUpload)
                     {
                         <span class="badge bg-primary text-white">@GlobalLoanApplication.TSCLoan</span>
                     }

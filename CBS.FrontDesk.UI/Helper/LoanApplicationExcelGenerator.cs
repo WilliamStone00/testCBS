@@ -112,8 +112,8 @@ namespace CBS.FrontDesk.UI.Helper
                         worksheet.Cell(currentRow, 1).Value = loan.Id;
                         worksheet.Cell(currentRow, 2).Value = loan.CustomerName;
                         worksheet.Cell(currentRow, 3).Value = loan.CustomerId;
-                        worksheet.Cell(currentRow, 4).Value = loan.ApplicationDate.ToString("dd/MM/yyyy HH:mm:ss");
-                        worksheet.Cell(currentRow, 5).Value = loan.ApprovalDate.ToString("dd/MM/yyyy HH:mm:ss") ?? "N/A";
+                        worksheet.Cell(currentRow, 4).Value = loan.ApplicationDate.Value.ToString("dd/MM/yyyy HH:mm:ss");
+                        worksheet.Cell(currentRow, 5).Value = loan.ApprovalDate.Value.ToString("dd/MM/yyyy HH:mm:ss") ?? "N/A";
                         worksheet.Cell(currentRow, 6).Value = loan.LoanType;
                         worksheet.Cell(currentRow, 7).Value = loan.LoanCategory;
                         worksheet.Cell(currentRow, 8).Value = loan.LoanTarget;
@@ -129,7 +129,7 @@ namespace CBS.FrontDesk.UI.Helper
                         worksheet.Cell(currentRow, 18).Value = totalCoverageAmount;
                         worksheet.Cell(currentRow, 19).Value = coveragePercentage.ToString("0.0") + "%";
                         worksheet.Cell(currentRow, 20).Value = loan.LoanPurpose?.purposeName;
-                        worksheet.Cell(currentRow, 21).Value = loan.DisbursementDate.ToString("dd/MM/yyyy HH:mm:ss") ?? "N/A";
+                        worksheet.Cell(currentRow, 21).Value = loan.DisbursementDate.Value.ToString("dd/MM/yyyy HH:mm:ss") ?? "N/A";
                         worksheet.Cell(currentRow, 22).Value = loan.IsInterestPaidUpFront ? "Yes" : "No";
 
                         currentRow++;

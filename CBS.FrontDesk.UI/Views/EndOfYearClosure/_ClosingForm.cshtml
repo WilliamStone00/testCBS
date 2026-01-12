@@ -45,26 +45,7 @@
                 )
             </div>
 
-            <div class="col-md-6 mb-2">
-                @Html.Label("BranchLiaisonGlId", "Branch Liaison GL", new { @class = "form-label fw-semibold", @for = "BranchLiaisonGlId" })
-                @Html.DropDownList(
-                    "BranchLiaisonGlId",
-                    new List<SelectListItem> { new SelectListItem { Text = "--- Select Head office GL ---", Value = "" } },
-                    new { @class = "form-control select2 mb-2", id = "BranchLiaisonGlId", required = "required" }
-                )
-            </div>
-
-        </div>
-
-
-        <div class="row mb-1">
-
-            <div class="col-md-6 mb-2">
-                @Html.Label("HoLiaisonGlId", "Head office GL", new { @class = "form-label fw-semibold" })
-                @Html.DropDownList("HoLiaisonGlId",
-                    new List<SelectListItem> { new SelectListItem { Text = "--- Select Branch GL ---", Value = "" } },
-                    new { @class = "form-control select2 mb-2", id = "HoLiaisonGlId", required = "required" })
-            </div>
+           
 
             <div class="col-md-6 mb-2">
                 @Html.Label("HoResultGlId", "Head office Result GL", new { @class = "form-label fw-semibold" })

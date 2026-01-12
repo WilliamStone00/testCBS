@@ -8,6 +8,7 @@ using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure;
+using CBS.FrontDesk.Data.Entity.LoanManagementP;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
 using CBS.FrontDesk.Data.Message;
@@ -413,6 +414,27 @@ namespace CBS.BusinessService.Config
                     return data;
                 }
                 return new List<StringValues>();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
+
+        public async Task<List<LoanChargeDto>> GetLoanChargesAsync()
+        {
+            try
+            {
+                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<Fee>>>(APICallHelper.GetAllFee);
+                var fees = (couApiResponse != null &&
+                           couApiResponse.IsSuccess &&
+                           couApiResponse.ApiResponseData != null &&
+                           couApiResponse.ApiResponseData.Data != null)
+                   ? couApiResponse.ApiResponseData.Data
+                   : new List<Fee>();
+                var charges = fees.ToLoanCharges();
+                return new List<LoanChargeDto>();
             }
             catch (Exception ex)
             {
@@ -1186,6 +1208,103 @@ namespace CBS.BusinessService.Config
             return null;
         }
 
+    }
+    public static class LoanFeeMapper
+    {
+        public static List<LoanChargeDto> ToLoanCharges(this IEnumerable<Fee> fees)
+        {
+            if (fees == null) return new List<LoanChargeDto>();
+
+            return fees
+                .Select(ToLoanCharge)
+                .Where(x => x != null)
+                .ToList();
+        }
+
+        private static LoanChargeDto ToLoanCharge(Fee fee)
+        {
+            if (fee == null) return null;
+
+            var mode = fee.IsBoforeProcesing ? "BEFORE_APPRAISAL" : "AFTER_DISBURSEMENT";
+
+            var feeBase = (fee.FeeBase ?? "").Trim().ToUpperInvariant();
+            var ranges = fee.FeeRanges ?? new List<FeeRange>();
+
+            // Decide calc type
+            ChargeCalcType calcType =
+                feeBase.Contains("PERCENT") ? ChargeCalcType.Rate :
+                feeBase.Contains("RANGE") ? ChargeCalcType.Range :
+                ChargeCalcType.Fixed;
+
+            var dto = new LoanChargeDto
+            {
+                Id = fee.Id,
+                Name = fee.Name,
+                Mode = mode,
+                CalcType = calcType,
+                Ranges = new List<ChargeRangeTier>() // keep non-null for JS safety
+            };
+
+            switch (calcType)
+            {
+                case ChargeCalcType.Range:
+                    dto.Ranges = ranges
+                        .OrderBy(r => r.AmountFrom)
+                        .Select(r => new ChargeRangeTier
+                        {
+                            FromAmount = r.AmountFrom,
+                            ToAmount = r.AmountTo,
+                            FeeAmount = r.Charge
+                        })
+                        .ToList();
+                    break;
+
+                case ChargeCalcType.Rate:
+                    var rateRow = ranges
+                        .OrderByDescending(r => r.PercentageValue)
+                        .FirstOrDefault();
+
+                    dto.RatePercent = rateRow != null ? (decimal?)rateRow.PercentageValue : null;
+
+                    // If you store MinFee in Charge
+                    dto.MinFee = (rateRow != null && rateRow.Charge > 0) ? (decimal?)rateRow.Charge : null;
+
+                    // Optional max fee resolution
+                    dto.MaxFee = TryResolveMaxFee(fee);
+
+                    break;
+
+                default: // Fixed
+                    var fixedRow = ranges.FirstOrDefault();
+                    dto.FixedAmount = fixedRow != null ? (decimal?)fixedRow.Charge : (decimal?)0m;
+                    break;
+            }
+
+            // If calc type isn't range, keep Ranges null if you prefer smaller payload:
+            if (dto.CalcType != ChargeCalcType.Range)
+                dto.Ranges = null;
+
+            return dto;
+        }
+
+        private static decimal? TryResolveMaxFee(Fee fee)
+        {
+            if (fee == null || fee.FeeRanges == null || fee.FeeRanges.Count == 0) return null;
+
+            var loanFeeType = (fee.LoanFeeType ?? "").Trim().ToUpperInvariant();
+            if (!loanFeeType.Contains("LIMIT")) return null;
+
+            var charges = fee.FeeRanges
+                .Select(x => x.Charge)
+                .Where(x => x > 0)
+                .Distinct()
+                .OrderBy(x => x)
+                .ToList();
+
+            if (charges.Count < 2) return null;
+
+            return charges.Last();
+        }
     }
 
 

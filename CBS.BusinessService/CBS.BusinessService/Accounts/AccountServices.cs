@@ -323,7 +323,27 @@ namespace CBS.BusinessService.Accounts
             }
         }
 
+        public async Task<List<MemberAccountDto>> GetMemberAccountsByMemberIdAsync(string memberId)
+        {
+            memberId = (memberId ?? "").Trim();
+            if (string.IsNullOrWhiteSpace(memberId))
+                return new List<MemberAccountDto>();
 
+            var api = await _transactionApiHelper.GetAsync<ResponseObject<List<CustomerAccount>>>(
+                string.Format(APICallHelper.GetCustomerAccounts, memberId));
+
+            var accounts = (api != null && api.ApiResponseData != null && api.ApiResponseData.Data != null)
+                ? api.ApiResponseData.Data
+                : new List<CustomerAccount>();
+
+            // ✅ map + filter + order
+            return accounts
+                .Select(a => a.ToMemberAccountDto())
+                .Where(a => a != null)
+                .Where(a => !string.Equals(a.Status, "Inactive", StringComparison.OrdinalIgnoreCase))
+                .OrderByDescending(a => a.Balance)
+                .ToList();
+        }
         public async Task<IEnumerable<CustomerAccount>> GetAllAccounts()
         {
             try
@@ -1602,6 +1622,24 @@ namespace CBS.BusinessService.Accounts
         }
 
 
+    }
+    public static class MemberAccountMapper
+    {
+        public static MemberAccountDto ToMemberAccountDto(this CustomerAccount a)
+        {
+            if (a == null) return null;
+
+            return new MemberAccountDto
+            {
+                Id = a.id,
+                AccountNumber = a.accountNumber,
+                AccountType = a.accountType, // ✅ take exactly what API gives
+                AccountName = a.accountName,
+                Status = a.status,
+                Balance = a.balance,
+                Currency = "FCFA" // keep this only if currency isn't provided by API
+            };
+        }
     }
 
 }

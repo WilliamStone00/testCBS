@@ -1,4 +1,5 @@
 ﻿using CBS.BusinessService.Accounting;
+using CBS.BusinessService.Accounting_V2.AffiliateAccounts;
 using CBS.BusinessService.Accounting_V2.BranchAccountService;
 using CBS.BusinessService.Accounting_V2.MemberReconciliation;
 using CBS.BusinessService.Accounts;
@@ -17,15 +18,15 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
     {
         // GET: OldLoanAccountingMaping
         private readonly OldLoanAccountingMapingServices _FeeServices;
-        private readonly BranchAccountService _accountingServices;
+        private readonly AffiliateAccountService _affiliateAccountService;
         private readonly LoanProductServices _loanProductServices;
         private readonly BranchServices _branchServices;
         private readonly LoanReconciliationService _LoanReconciliationService;
 
-        public OldLoanAccountingMapingController(OldLoanAccountingMapingServices FeeServices, BranchAccountService accountingServices, LoanProductServices loanProductServices = null, BranchServices branchServices = null, LoanReconciliationService loanReconciliationService = null)
+        public OldLoanAccountingMapingController(OldLoanAccountingMapingServices FeeServices, AffiliateAccountService accountingServices, LoanProductServices loanProductServices = null, BranchServices branchServices = null, LoanReconciliationService loanReconciliationService = null)
         {
             _FeeServices = FeeServices;
-            _accountingServices = accountingServices;
+            _affiliateAccountService = accountingServices;
             _loanProductServices = loanProductServices;
             _branchServices = branchServices;
             _LoanReconciliationService = loanReconciliationService;
@@ -75,10 +76,9 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         {
             var branches = await _branchServices.GetBranches();
             ViewBag.Branches = branches;
-
             // Do NOT preload loan types or account ledgers
             ViewBag.LoanTypes = Enumerable.Empty<SelectListItem>();
-            ViewBag.AccountLedgers = Enumerable.Empty<SelectListItem>();
+            ViewBag.AccountLedgers = await _affiliateAccountService.GetAllAffiliateAccounts();
 
             return true;
         }
@@ -135,12 +135,11 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         {
             try
             {
-                var branchAccounts = await _accountingServices.GetAllBranchAccountsFromDataTableAsync(branchId);
-
+                var branchAccounts = await _affiliateAccountService.GetAllAffiliateAccounts();
                 var resultList = branchAccounts.Select(a => new
                 {
-                    Id = a.Id,
-                    Name = string.IsNullOrWhiteSpace(a.Name) ? a.Id : $"{a.Name}"
+                    Id = a.Value,
+                    Name = string.IsNullOrWhiteSpace(a.Text)
                 });
 
                 return Json(resultList, JsonRequestBehavior.AllowGet);

@@ -248,6 +248,28 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.Counter
 
 
 
+        // Add this method to your CounterChequeController
+        [HttpGet]
+        public async Task<ActionResult> GetCustomerStatistics(string customerId)
+        {
+            if (string.IsNullOrEmpty(customerId))
+                return new HttpStatusCodeResult(400, "CustomerId is required");
+
+            try
+            {
+                var statistics = await _counterChequeService.GetCustomerCheckBookStatisticsAsync(customerId);
+                if (statistics == null)
+                    return HttpNotFound("Customer statistics not found");
+
+                return PartialView("_CustomerStatistics", statistics);
+            }
+            catch (Exception ex)
+            {
+                return new HttpStatusCodeResult(500, ex.Message);
+            }
+        }
+
+
         [HttpGet]
         public async Task<ActionResult> GetChequeFullDetails(string chequeBookId)
         {
