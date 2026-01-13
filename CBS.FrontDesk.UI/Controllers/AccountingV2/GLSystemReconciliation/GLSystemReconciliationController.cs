@@ -334,48 +334,67 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.GLSystemReconciliation
         [HttpPost]
         public async Task<ActionResult> UpdatePayload(string payload)
         {
-            if (string.IsNullOrWhiteSpace(payload))
-                return Json(new { success = false, message = "Payload is required" });
-
-            var idFromSession = Session["ReconciliationId"] as string;
-
-            if (string.IsNullOrWhiteSpace(idFromSession))
-                return Json(new { success = false, message = "Session expired. Reconciliation ID missing." });
-
             try
             {
-                var result = await _glSystemReconciliationService
-                    .UpdateTillClosePayloadAsync(idFromSession, payload);
-
-                if (result != null && result.IsSuccess)
+                // 🔹 Validation: payload
+                if (string.IsNullOrWhiteSpace(payload))
                 {
                     return Json(new
                     {
-                        success = true,
-                        statusCode = 200,
-                        message = result.Message ?? "Payload updated successfully",
-                        data = result
+                        success = false,
+                        statusCode = 400,
+                        message = "Payload is required"
                     });
                 }
 
+                // 🔹 Validation: session
+                var trackerId = Session["ReconciliationId"] as string;
+
+                if (string.IsNullOrWhiteSpace(trackerId))
+                {
+                    return Json(new
+                    {
+                        success = false,
+                        statusCode = 401,
+                        message = "Session expired. Reconciliation ID missing."
+                    });
+                }
+
+                // 🔹 Call service
+                var response = await _glSystemReconciliationService
+                    .UpdateTillClosePayloadAsync(trackerId, payload);
+                if (response == null)
+                {
+                    return Json(new
+                    {
+                        success = false,
+                        statusCode = 502,
+                        message = "No response received from backend service."
+                    });
+                }
+                // 🔹 Normalize ALL service responses
                 return Json(new
                 {
-                    success = false,
-                    statusCode = 400,
-                    message = result?.Message ?? "Failed to update payload",
-                    data = result
+                    success = response.IsSuccess,
+                    statusCode = response.IsSuccess ? 200 : 400,
+                    message = response.Message,
+                    data = response.ApiResponseData
                 });
             }
             catch (Exception ex)
             {
+                // 🔴 Catch ANY unexpected error
                 return Json(new
                 {
                     success = false,
                     statusCode = 500,
-                    message = $"Update failed: {ex.Message}"
+                    message = "An unexpected error occurred while updating the payload.",
+                    error = ex.Message // optional: remove in production
                 });
             }
         }
+
+
 
 
 
