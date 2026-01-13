@@ -8,8 +8,6 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheq
 	public class CounterCheques
 	{
 		[Required]
-		public string ClientId { get; set; }
-		[Required]
 		public string AccountNumber { get; set; }
 		[Required]
 		public decimal Amount { get; set; }
@@ -27,8 +25,9 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheq
 		public string ClientName { get; set; }
 		public int NumberOfPages { get; set; }
 		public string ChequeBookId { get; set; }
+		
 
-	}
+}
 
 	// DTO for the modal action form
 	public class CounterChequeActionDto

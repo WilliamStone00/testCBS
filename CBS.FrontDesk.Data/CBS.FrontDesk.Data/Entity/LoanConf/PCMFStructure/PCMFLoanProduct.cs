@@ -57,6 +57,8 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure
         public string Message { get; set; }                  // optional UI message
         public bool IsEditMode => !string.IsNullOrWhiteSpace(CreateOrUpdate?.Id);
 
+        public bool ApplyTaxIfLoanAmountMeetControl { get; set; } = true;
+
         // ============================
         // ✅ Convenience read-only helpers for display
         // ============================

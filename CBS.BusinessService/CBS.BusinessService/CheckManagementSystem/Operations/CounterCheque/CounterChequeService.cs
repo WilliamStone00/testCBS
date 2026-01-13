@@ -47,7 +47,7 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.CounterCheque
             try
             {
                 // Add any necessary data from the user's session before sending
-                model.BranchId = GetBranchID();
+                //model.BranchId = GetBranchID();
                 model.IssuedBy = GetUserFullName();
 
                 var response = await _apiHelper.PostAsync<ServiceResponse<CounterCheques>>(APICallHelper.IssueCounterCheque, model);
