@@ -273,44 +273,48 @@
             </tbody>
         </table>
     }
+    
     @* ================= ENTRIES SECTION ================= *@
     @{
         bool hasReconciledLines = Model.ReconciledLedgerLines?.Any(r =>
-            !string.IsNullOrWhiteSpace(r.BranchId) || r.DebitAmount != 0 || r.CreditAmount != 0) ?? false;
+            !string.IsNullOrWhiteSpace(r.BranchId) ||
+            r.DebitAmount != 0 ||
+            r.CreditAmount != 0) ?? false;
 
         bool hasJournalLines = !hasReconciledLines && (Model.Lines?.Any(l =>
-            !string.IsNullOrWhiteSpace(l.AccountName) || l.Amount != 0) ?? false);
+            !string.IsNullOrWhiteSpace(l.AccountName) ||
+            l.Amount != 0) ?? false);
     }
 
-    @if (!hasReconciledLines && !hasJournalLines)
+    @if ((Model.ReconciledLedgerLines == null || !Model.ReconciledLedgerLines.Any())
+        && (Model.Lines == null || !Model.Lines.Any()))
     {
         <p class="text-muted fst-italic">No entries available.</p>
     }
 
-    @if (Model.ReconciledLedgerLines != null && Model.ReconciledLedgerLines.Any(r =>
-     !string.IsNullOrWhiteSpace(r.BranchId) ||
-     !string.IsNullOrWhiteSpace(r.DrCr) ||
-     r.DebitAmount != 0 || r.CreditAmount != 0))
+    @* ======================= POSTED ENTRIES ======================= *@
+    @if (hasReconciledLines)
     {
         <h6 class="fw-bold text-primary border-bottom pb-1 mb-2">
             <i class="mdi mdi-book-account-outline me-1"></i> Posted Entries
         </h6>
 
-       
+        
             var groupedLines = Model.ReconciledLedgerLines
-                .Where(r => !string.IsNullOrWhiteSpace(r.BranchId) ||
-                            !string.IsNullOrWhiteSpace(r.DrCr) ||
-                            r.DebitAmount != 0 || r.CreditAmount != 0)
+                .Where(r =>
+                    !string.IsNullOrWhiteSpace(r.BranchId) ||
+                    !string.IsNullOrWhiteSpace(r.DrCr) ||
+                    r.DebitAmount != 0 ||
+                    r.CreditAmount != 0)
                 .GroupBy(r => r.BranchId)
-                .OrderBy(g => g.Key);
+                .OrderBy(g => g.Key)
+                .ToList();
         
 
         foreach (var branchGroup in groupedLines)
         {
             decimal branchDebit = 0;
             decimal branchCredit = 0;
-
-           
 
             <table class="table table-sm table-bordered mb-3 align-middle text-center">
                 <thead class="table-light">
@@ -327,8 +331,10 @@
                 <tbody>
                     @foreach (var rline in branchGroup.OrderBy(r => r.Seq))
                     {
-                        branchDebit += rline.DebitAmount;
-                        branchCredit += rline.CreditAmount;
+                        
+                            branchDebit += rline.DebitAmount;
+                            branchCredit += rline.CreditAmount;
+                        
 
                         <tr>
                             <td>@rline.AccountNumber</td>
@@ -352,145 +358,72 @@
         }
     }
 
-
-
-
-
-
-    @* =========================== JOURNAL LINES ============================ *@
+    @* ======================= UNPOSTED ENTRIES ======================= *@
     @if (hasJournalLines)
     {
-        var validLines = Model.Lines
-            .Where(l => !string.IsNullOrWhiteSpace(l.AccountName) || l.Amount != 0)
-            .OrderBy(l => l.Seq)  // Changed from OrderBy(l => l.BranchName)
-            .ToList();
+        <h6 class="fw-bold text-primary border-bottom pb-1 mb-2">
+            <i class="mdi mdi-swap-horizontal me-1"></i> Unposted Entries
+        </h6>
 
-        // Determine source and destination branches from the data
-        var distinctBranches = validLines
-            .Select(l => new { l.BranchId, l.BranchName })
-            .Distinct()
-            .ToList();
+        
+            var groupedLines = Model.Lines
+                .Where(l =>
+                    !string.IsNullOrWhiteSpace(l.BranchId) ||
+                    !string.IsNullOrWhiteSpace(l.DrCr) ||
+                    l.Amount != 0)
+                .GroupBy(l => l.BranchId)
+                .OrderBy(g => g.Key)
+                .ToList();
+        
 
-        if (distinctBranches.Count >= 2)
+        foreach (var branchGroup in groupedLines)
         {
-            var sourceBranch = distinctBranches[0];
-            var destinationBranch = distinctBranches[1];
+            decimal branchDebit = 0;
+            decimal branchCredit = 0;
 
-            <h6 class="fw-bold text-primary border-bottom pb-1 mb-3">
-                <i class="mdi mdi-swap-horizontal me-1"></i>
-                Unposted Entries
-            </h6>
+            <table class="table table-sm table-bordered mb-3 align-middle text-center">
+                <thead class="table-light">
+                    <tr>
+                        <th>Account Number</th>
+                        <th>Account Name</th>
+                        <th>Description</th>
+                        <th>Debit</th>
+                        <th>Credit</th>
+                    </tr>
+                </thead>
 
-            <div class="card border-0 mb-4">
-                <div class="card-body card-body-tight">
+                <tbody>
+                    @foreach (var line in branchGroup.OrderBy(l => l.Seq))
+                    {
+                        
+                            decimal debit = line.DrCr == "Debit" ? Math.Abs(line.Amount) : 0;
+                            decimal credit = line.DrCr == "Credit" ? line.Amount : 0;
 
+                            branchDebit += debit;
+                            branchCredit += credit;
+                        
 
+                        <tr>
+                            <td>@line.AccountNumber</td>
+                            <td>@line.AccountName</td>
+                            <td>@line.Description</td>
+                            <td>@(debit != 0 ? debit.ToString("N0") : "")</td>
+                            <td>@(credit != 0 ? credit.ToString("N0") : "")</td>
+                        </tr>
+                    }
+                </tbody>
 
-                    <table class="table table-hover table-striped mb-4">
-                        <thead>
-                            <tr>
-                                <th>Seq</th>
-                                <th>Account Number</th>
-                                <th>Account Name</th>
-                                <th>Description</th>
-                                <th>Debit (FCFA)</th>
-                                <th>Credit (FCFA)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @{
-                                decimal sourceDebit = 0;
-                                decimal sourceCredit = 0;
-
-                                var sourceEntries = validLines
-                                    .Where(l => l.BranchId == sourceBranch.BranchId)
-                                    .OrderBy(l => l.Seq)
-                                    .ToList();
-
-                                foreach (var line in sourceEntries)
-                                {
-                                    var debit = line.DrCr?.ToLower() == "debit" ? Math.Abs(line.Amount) : 0;
-                                    var credit = line.DrCr?.ToLower() == "credit" ? Math.Abs(line.Amount) : 0;
-
-                                    sourceDebit += debit;
-                                    sourceCredit += credit;
-
-                                    <tr>
-                                        <td>@line.Seq</td>
-                                        <td>@line.AccountNumber</td>
-                                        <td>@line.AccountName</td>
-                                        <td>@line.Description</td>
-                                        <td>@debit.ToString("N0")</td>
-                                        <td>@credit.ToString("N0")</td>
-                                    </tr>
-                                }
-                            }
-                        </tbody>
-                        <tfoot>
-                            <tr class="fw-bold bg-light">
-                                <td colspan="4" class="text-end">Total:</td>
-                                <td>@sourceDebit.ToString("N0")</td>
-                                <td>@sourceCredit.ToString("N0")</td>
-                            </tr>
-                        </tfoot>
-                    </table>
-
-                    <!-- DESTINATION TABLE -->
-
-
-                    <table class="table table-hover table-striped mb-4">
-                        <thead>
-                            <tr>
-                                <th>Seq</th>
-                                <th>Account Number</th>
-                                <th>Account Name</th>
-                                <th>Description</th>
-                                <th>Debit (FCFA)</th>
-                                <th>Credit (FCFA)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @{
-                                decimal destDebit = 0;
-                                decimal destCredit = 0;
-
-                                var destinationEntries = validLines
-                                    .Where(l => l.BranchId == destinationBranch.BranchId)
-                                    .OrderBy(l => l.Seq)
-                                    .ToList();
-
-                                foreach (var line in destinationEntries)
-                                {
-                                    var debit = line.DrCr?.ToLower() == "debit" ? Math.Abs(line.Amount) : 0;
-                                    var credit = line.DrCr?.ToLower() == "credit" ? Math.Abs(line.Amount) : 0;
-
-                                    destDebit += debit;
-                                    destCredit += credit;
-
-                                    <tr>
-                                        <td>@line.Seq</td>
-                                        <td>@line.AccountNumber</td>
-                                        <td>@line.AccountName</td>
-                                        <td>@line.Description</td>
-                                        <td>@debit.ToString("N0")</td>
-                                        <td>@credit.ToString("N0")</td>
-                                    </tr>
-                                }
-                            }
-                        </tbody>
-                        <tfoot>
-                            <tr class="fw-bold bg-light">
-                                <td colspan="4" class="text-end">Total:</td>
-                                <td>@destDebit.ToString("N0")</td>
-                                <td>@destCredit.ToString("N0")</td>
-                            </tr>
-                        </tfoot>
-                    </table>
-
-                </div>
-            </div>
+                <tfoot>
+                    <tr class="fw-bold bg-light">
+                        <td colspan="3" class="text-end">Branch Total:</td>
+                        <td>@branchDebit.ToString("N0")</td>
+                        <td>@branchCredit.ToString("N0")</td>
+                    </tr>
+                </tfoot>
+            </table>
         }
     }
+
 
 
 
