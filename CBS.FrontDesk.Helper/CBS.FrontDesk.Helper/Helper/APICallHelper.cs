@@ -1864,7 +1864,7 @@ namespace CBS.FrontDesk.Helper
         public static string SharedMonthUpload = "/api/v1/ProcessesExternalShareMonth/ShareMonthFile";
         //------------------------- LoanTargetCatalog ----------------
         public const string LoanTargetCatalogCreate = "/api/v1/LoanTargetCatalog/Create";
-        public const string LoanTargetCatalogGet = "/api/v1/LoanTargetCatalog/Get";
+        public const string LoanTargetCatalogGet = "/api/v1/LoanTargetCatalog/Get?id={0}";
         public const string LoanTargetCatalogGetAll = "/api/v1/LoanTargetCatalog/GetAll";
         public const string LoanTargetCatalogUpdate = "/api/v1/LoanTargetCatalog/Update";
         public const string LoanTargetCatalogDelete = "/api/v1/LoanTargetCatalog/Delete";

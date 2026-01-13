@@ -1,25 +1,39 @@
 ﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheque.CustomerCheckBookStatisticsDto
 
 <div class="card shadow-sm border-0 mb-4">
-    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+    <div class="card-header bg-light text-white d-flex justify-content-between align-items-center">
         <div>
             <h5 class="mb-0">
                 <i class="mdi mdi-chart-bar me-2"></i>
-                Checkbook Statistics for – @Model.CustomerName
+                Checkbook Statistics 
             </h5>
-            <small class="opacity-75">Generated on @Model.GeneratedAt.ToString("dd MMM yyyy HH:mm")</small>
+            
         </div>
-        <span class="badge bg-@(Model.RiskLevel == "High" ? "danger" : Model.RiskLevel == "Medium" ? "warning" : "success") fs-6">
+        @*<span class="badge bg-@(Model.RiskLevel == "High" ? "danger" : Model.RiskLevel == "Medium" ? "warning" : "success") fs-6">
             Risk: @Model.RiskLevel
-        </span>
+        </span>*@
     </div>
 
     <div class="card-body p-0">
+
+        <!-- TOUT LE CAROUSEL -->
+        <!-- CUSTOMER INFO -->
+        <hr />
+        <div class="card mb-3 shadow-sm">
+            <div class="card-body">
+                <h6 class="text-primary mb-1">
+                    <i class="mdi mdi-account me-1"></i>
+                    @Model.CustomerName
+                </h6>
+                <small class="opacity-75">Generated on @Model.GeneratedAt.ToString("dd MMM yyyy HH:mm")</small>
+            </div>
+        </div>
+
         <!-- CUSTOMER INFO -->
         <div class="border-bottom p-3">
             <div class="row">
                 <div class="col-md-4 mb-2">
-                    <small class="text-muted d-block">Customer ID</small>
+                    <small class="text-muted d-block">Member Reference</small>
                     <strong>@Model.CustomerId</strong>
                 </div>
                 <div class="col-md-4 mb-2">
@@ -35,37 +49,160 @@
             </div>
         </div>
 
-        <!-- QUICK STATS ROW -->
+        <!-- ==================== QUICK STATS + CLEARANCE (SAME ROW) ==================== -->
         <div class="row g-0 text-center border-bottom">
-            <div class="col p-3 border-end">
+
+            <!-- Checkbooks -->
+            <div class="col-2 p-2 border-end">
                 <small class="text-muted d-block">Checkbooks</small>
-                <h4 class="mb-0">@Model.TotalCheckBooks</h4>
+                <h5 class="mb-0">@Model.TotalCheckBooks</h5>
                 <small class="text-success">@Model.ActiveCheckBooks active</small>
             </div>
-            <div class="col p-3 border-end">
+
+            <!-- Total Leaves -->
+            <div class="col-2 p-2 border-end">
                 <small class="text-muted d-block">Total Leaves</small>
-                <h4 class="mb-0">@Model.TotalLeaves</h4>
+                <h5 class="mb-0">@Model.TotalLeaves</h5>
                 <small class="@(Model.TotalRemainingLeaves > 0 ? "text-success" : "text-danger")">
                     @Model.TotalRemainingLeaves remaining
                 </small>
             </div>
-            <div class="col p-3 border-end">
+
+            <!-- Usage Rate -->
+            <div class="col-2 p-2 border-end">
                 <small class="text-muted d-block">Usage Rate</small>
-                <h4 class="mb-0">@Model.GlobalUsageRate.ToString("0")%</h4>
-                <div class="progress mt-1" style="height: 5px;">
+                <h5 class="mb-0">@Model.GlobalUsageRate.ToString("0")%</h5>
+                <div class="progress mt-1" style="height:4px;">
                     <div class="progress-bar bg-success"
-                         style="width: @Model.GlobalUsageRate%"></div>
+                         style="width:@Model.GlobalUsageRate%"></div>
                 </div>
             </div>
-            <div class="col p-3">
-                <small class="text-muted d-block">Avg Clearance</small>
-                <h4 class="mb-0">@Model.AverageClearanceTimeHours.ToString("0.##")h</h4>
-                <small class="text-muted">@Model.ClearedWithin24Hours within 24h</small>
+
+            <!-- ==================== CLEARANCE BOX ==================== -->
+            <div class="col-6 p-2">
+
+                <div class="border rounded h-100">
+
+                    <!-- TOP SECTION -->
+                    <div class="row g-0 text-center border-bottom">
+
+                        <div class="col p-2 border-end">
+                            <small class="text-muted d-block">Counter</small>
+                            <h6 class="mb-0">@Model.CounterChecks.ToString()</h6>
+                            <small class="text-muted">@Model.CounterChecksWithin24h within 24h</small>
+                        </div>
+
+                        <div class="col p-2 border-end">
+                            <small class="text-muted d-block">On Behalf</small>
+                            <h6 class="mb-0">@Model.OnBehalfOf.ToString()</h6>
+                            <small class="text-muted">@Model.OnBehalfOfWithin24h within 24h</small>
+                        </div>
+
+                        <div class="col p-2">
+                            <small class="text-muted d-block">Owner</small>
+                            <h6 class="mb-0">@Model.ByOwner.ToString()</h6>
+                            <small class="text-muted">@Model.ByOwnerWithin24h within 24h</small>
+                        </div>
+
+                    </div>
+
+                    <!-- BOTTOM TOTAL -->
+                    <div class="text-center p-2 bg-light">
+                        <small class="text-muted d-block">Avg Clearance</small>
+                        <h6 class="mb-0">
+                            @((Model.CounterChecks + Model.OnBehalfOf + Model.ByOwner).ToString())
+                        </h6>
+                        <small class="text-muted">
+                            @( Model.CounterChecksWithin24h +  Model.OnBehalfOfWithin24h + Model.ByOwnerWithin24h ) within 24h
+                        </small>
+                    </div>
+
+                </div>
             </div>
+
         </div>
+
 
         <!-- DETAILED STATISTICS WITH COLLAPSE -->
         <div class="accordion accordion-flush" id="statsAccordion">
+
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#accountsCollapse">
+                        <i class="mdi mdi-bank me-2 text-primary"></i>
+                       Attanched Accounts to cheque book 
+                        <span class="badge bg-secondary ms-2">
+                            @Model.ChequeAccounts.Count
+                        </span>
+                    </button>
+                </h2>
+
+                <div id="accountsCollapse"
+                     class="accordion-collapse collapse"
+                     data-bs-parent="#statsAccordion">
+
+                    <div class="accordion-body p-0">
+
+                        <div class="table-responsive">
+                            <table class="table table-sm table-hover align-middle mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Account Type</th>
+                                        <th>Account Number</th>
+                                        <th>Operation</th>
+                                        <th>Cheque Book</th>
+                                        <th>Status</th>
+                                        <th class="text-end">Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var acc in Model.ChequeAccounts)
+                                    {
+                                        <tr>
+                                            <td>@acc.AccountType</td>
+                                            <td>
+                                                <span class="text-monospace">
+                                                    @acc.AccountNumber
+                                                </span>
+                                            </td>
+
+                                            <td>
+                                                <span class="badge bg-info">
+                                                    @acc.Chequebook
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-info">
+                                                    @acc.OperationType
+                                                </span>
+                                            </td>
+
+                                            <td>
+                                                @if (acc.IsActive)
+                                                {
+                                                    <span class="badge bg-success">Active</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-danger">Deactivated</span>
+                                                }
+                                            </td>
+
+                                            <td class="text-end fw-bold">
+                                                @acc.BalanceAmount.ToString("N2")
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
 
             <!-- FINANCIAL SUMMARY -->
             <div class="accordion-item">

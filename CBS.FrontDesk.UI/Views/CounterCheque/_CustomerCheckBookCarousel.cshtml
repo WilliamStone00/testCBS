@@ -1,7 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheque.CustomerData
 
-
-
 @if (Model == null || Model.CheckBooks == null || !Model.CheckBooks.Any())
 {
     <div class="alert alert-warning text-center">
@@ -11,20 +9,6 @@
 }
 else
 {
-    <!-- TOUT LE CAROUSEL -->
-    <!-- CUSTOMER INFO -->
-    <div class="card mb-3 shadow-sm">
-        <div class="card-body">
-            <h6 class="text-primary mb-1">
-                <i class="mdi mdi-account me-1"></i>
-                @Model.CustomerDto.FirstName @Model.CustomerDto.LastName
-            </h6>
-            <small class="text-muted">
-                Memeber Reference : <strong>@Model.CustomerDto.CustomerId</strong>
-            </small>
-        </div>
-    </div>
-
     <!-- CHECKBOOK CAROUSEL - MODIFIÉ POUR 2 BLOCS PAR PAGE -->
     <div id="customerCheckBookCarousel" class="carousel slide" data-bs-ride="false" data-bs-interval="false">
         <div class="carousel-inner">
@@ -107,24 +91,103 @@ else
                                                 </div>
                                             </div>
 
-                                            <!-- ACTION BUTTON -->
-                                            <div class="mt-auto pt-2 d-grid gap-2">
-                                                <button type="button"
-                                                        class="btn btn-outline-primary view-cheque-btn"
-                                                        data-view="grid"
-                                                        data-checkbook-id="@entry.CheckBook.Id">
-                                                    <i class="mdi mdi-view-grid-outline me-1"></i>
-                                                    View Grid
-                                                </button>
+                                            <!-- ACTION BUTTONS - MODIFIED -->
+                                            <div class="mt-auto pt-2">
+                                                <div class="d-grid gap-2">
+                                                    <!-- Main Actions Button -->
+                                                    <div class="dropdown">
+                                                        <button class="btn btn-info w-100 d-flex justify-content-center align-items-center gap-2 dropdown-toggle"
+                                                                type="button"
+                                                                id="chequeActions_@entry.CheckBook.Id"
+                                                                data-bs-toggle="dropdown"
+                                                                data-bs-boundary="viewport"
+                                                                aria-expanded="false"
+                                                                data-bs-offset="0,10">
+                                                            <i class="mdi mdi-cog-outline"></i>
+                                                            <span class="fw-semibold">Actions</span>
+                                                        </button>
 
-                                                <button type="button"
-                                                        class="btn btn-outline-secondary view-cheque-btn"
-                                                        data-view="list"
-                                                        data-checkbook-id="@entry.CheckBook.Id">
-                                                    <i class="mdi mdi-format-list-bulleted me-1"></i>
-                                                    View List
-                                                </button>
+                                                        <!-- Dropdown Menu -->
+                                                        <ul class="dropdown-menu w-100 shadow dropdown-menu-end"
+                                                            aria-labelledby="chequeActions_@entry.CheckBook.Id"
+                                                            style="min-width: 100%; box-sizing: border-box;">
+
+                                                            <!-- Details Button -->
+                                                            <li>
+                                                                <button class="dropdown-item d-flex align-items-center btn-cheque-view"
+                                                                        data-id="@entry.CheckBook.Id"
+                                                                        data-name="@entry.CheckBook.CheckBookCategory.Name">
+                                                                    <i class="mdi mdi-eye-outline me-2 text-primary fs-5"></i>
+                                                                    <div class="d-flex flex-column">
+                                                                        <span class="fw-semibold">Details</span>
+                                                                        <small class="text-muted">View cheque book details</small>
+                                                                    </div>
+                                                                </button>
+                                                            </li>                                                                                                                   
+
+
+                                                            <!-- View Grid -->
+                                                            <li>
+                                                                <button class="dropdown-item view-cheque-btn"
+                                                                        data-view="grid"
+                                                                        data-checkbook-id="@entry.CheckBook.Id">
+                                                                    <i class="mdi mdi-view-grid-outline me-1"></i>
+                                                                    View Grid
+                                                                </button>
+                                                            </li>
+
+                                                            <!-- View List -->
+                                                            <li>
+                                                                <button class="dropdown-item view-cheque-btn"
+                                                                        data-view="list"
+                                                                        data-checkbook-id="@entry.CheckBook.Id">
+                                                                    <i class="mdi mdi-format-list-bulleted me-1"></i>
+                                                                    View List
+                                                                </button>
+                                                            </li>
+
+                                                            <li><hr class="dropdown-divider my-2"></li>
+
+                                                            <!-- Resubscription Button -->
+                                                            <li>
+                                                                <button class="dropdown-item d-flex align-items-center btn-cheque-resubscribe">
+                                                                    <i class="mdi mdi-refresh me-2 text-info fs-5"></i>
+                                                                    <div class="d-flex flex-column">
+                                                                        <span class="fw-semibold">Resubscription</span>
+                                                                        <small class="text-muted">Renew cheque book</small>
+                                                                    </div>
+                                                                </button>
+                                                            </li>
+
+                                                            <!-- Toggle Status Button -->
+                                                            <li>
+                                                                <button class="dropdown-item d-flex align-items-center btn-cheque-toggle-status">
+                                                                    <i class="mdi mdi-lock-outline me-2 text-warning fs-5"></i>
+                                                                    <div class="d-flex flex-column">
+                                                                        <span class="fw-semibold">Activate/Deactivate</span>
+                                                                        <small class="text-muted">Change cheque book status</small>
+                                                                    </div>
+                                                                </button>
+                                                            </li>
+
+                                                            <li><hr class="dropdown-divider my-2"></li>
+
+                                                            <!-- Cancellation Button -->
+                                                            <li>
+                                                                <button class="dropdown-item d-flex align-items-center btn-cheque-cancel">
+                                                                    <i class="mdi mdi-close-circle-outline me-2 text-danger fs-5"></i>
+                                                                    <div class="d-flex flex-column">
+                                                                        <span class="fw-semibold">Cancellation</span>
+                                                                        <small class="text-muted">Cancel this cheque book</small>
+                                                                    </div>
+                                                                </button>
+                                                            </li>
+
+                                                        </ul>
+                                                    </div>
+                                                </div>
                                             </div>
+
                                         </div>
                                     </div>
                                 </div>
@@ -162,7 +225,6 @@ else
                 }
             </div>
         }
-
     </div>
 
     <!-- PAGE COUNTER -->
@@ -180,11 +242,89 @@ else
 }
 
 <style>
-    .carousel-indicators {
+    /* SPECIFIC TO CUSTOMER CHECKBOOK CAROUSEL - use more specific selectors */
+    #customerCheckBookCarousel .dropdown-menu {
+        min-width: 100% !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        position: absolute !important;
+        z-index: 1060 !important;
+        left: 0 !important;
+        right: 0 !important;
+        margin-top: 10px !important;
+    }
+
+    /* Target only dropdowns within the checkbook carousel */
+    #customerCheckBookCarousel .card {
+        position: relative;
+        overflow: visible !important;
+    }
+
+    #customerCheckBookCarousel .dropdown {
+        position: static !important;
+    }
+
+    /* Only affect dropdown items within the carousel */
+    #customerCheckBookCarousel .dropdown-item {
+        padding: 0.75rem 1rem !important;
+        border-radius: 0.375rem;
+        margin: 0.125rem 0.5rem;
+        width: calc(100% - 1rem) !important;
+        transition: all 0.2s ease;
+        border: none;
+        text-align: left;
+        background: transparent;
+    }
+
+        #customerCheckBookCarousel .dropdown-item:hover {
+            background-color: #f8f9fa !important;
+            transform: translateX(2px);
+        }
+
+        #customerCheckBookCarousel .dropdown-item:active {
+            background-color: #e9ecef !important;
+        }
+
+        /* Icon styling specific to carousel */
+        #customerCheckBookCarousel .dropdown-item i {
+            width: 24px;
+            text-align: center;
+        }
+
+        /* Dropdown text styling */
+        #customerCheckBookCarousel .dropdown-item .d-flex.flex-column small {
+            font-size: 0.75rem;
+            line-height: 1.2;
+        }
+
+    /* Ensure dropdown doesn't get clipped by carousel */
+    #customerCheckBookCarousel .carousel-inner {
+        overflow: visible !important;
+    }
+
+    #customerCheckBookCarousel .carousel-item {
+        overflow: visible !important;
+    }
+
+    /* Card hover effects only in carousel */
+    #customerCheckBookCarousel .card {
+        transition: transform 0.2s, box-shadow 0.2s;
+        border: 1px solid #dee2e6;
+        overflow: visible !important;
+    }
+
+        #customerCheckBookCarousel .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
+        }
+
+    /* Carousel controls */
+    #customerCheckBookCarousel .carousel-indicators {
         margin-bottom: 0;
     }
 
-        .carousel-indicators button {
+        #customerCheckBookCarousel .carousel-indicators button {
             width: 10px;
             height: 10px;
             border-radius: 50%;
@@ -193,61 +333,101 @@ else
             border: none;
         }
 
-            .carousel-indicators button.active {
+            #customerCheckBookCarousel .carousel-indicators button.active {
                 background-color: #0d6efd;
             }
 
-    .card {
-        transition: transform 0.2s, box-shadow 0.2s;
-        border: 1px solid #dee2e6;
-    }
-
-        .card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
-        }
-
-    .carousel-control-prev,
-    .carousel-control-next {
+    #customerCheckBookCarousel .carousel-control-prev,
+    #customerCheckBookCarousel .carousel-control-next {
         width: 5%;
         opacity: 0.7;
     }
 
-        .carousel-control-prev:hover,
-        .carousel-control-next:hover {
+        #customerCheckBookCarousel .carousel-control-prev:hover,
+        #customerCheckBookCarousel .carousel-control-next:hover {
             opacity: 1;
         }
 
-
-    /* Couleur des flèches */
-    .carousel-control-prev-icon,
-    .carousel-control-next-icon {
-        background-color: transparent; /* Supprime le fond par défaut */
-        background-image: none; /* Supprime l'icône par défaut */
+    /* Custom arrow colors */
+    #customerCheckBookCarousel .carousel-control-prev-icon,
+    #customerCheckBookCarousel .carousel-control-next-icon {
+        background-color: transparent;
+        background-image: none;
     }
 
-        /* Flèche gauche */
-        .carousel-control-prev-icon::after {
-            content: '\276E'; /* Unicode flèche gauche ❮ */
+        #customerCheckBookCarousel .carousel-control-prev-icon::after {
+            content: '\276E';
             font-size: 2rem;
-            color: #0d6efdc7; /* Couleur personnalisée */
+            color: #0d6efdc7;
         }
 
-        /* Flèche droite */
-        .carousel-control-next-icon::after {
-            content: '\276F'; /* Unicode flèche droite ❯ */
+        #customerCheckBookCarousel .carousel-control-next-icon::after {
+            content: '\276F';
             font-size: 2rem;
-            color: #0d6efdc7; /* Couleur personnalisée */
+            color: #0d6efdc7;
         }
 
-    /* Facultatif : ajuste l’opacité au hover */
-    .carousel-control-prev:hover::after,
-    .carousel-control-next:hover::after {
+    #customerCheckBookCarousel .carousel-control-prev:hover::after,
+    #customerCheckBookCarousel .carousel-control-next:hover::after {
         opacity: 0.8;
+    }
+
+    /* Main action button styling */
+    #customerCheckBookCarousel .btn-primary.dropdown-toggle {
+        background-color: #0d6efd;
+        border-color: #0d6efd;
+        font-weight: 600;
+        padding: 0.5rem 1rem;
+    }
+
+        #customerCheckBookCarousel .btn-primary.dropdown-toggle:hover {
+            background-color: #0b5ed7;
+            border-color: #0a58ca;
+        }
+
+    /* Dropdown divider */
+    #customerCheckBookCarousel .dropdown-divider {
+        margin: 0.5rem 0.75rem;
+    }
+
+    /* Ensure dropdown items are properly aligned */
+    #customerCheckBookCarousel .dropdown-item .d-flex {
+        align-items: flex-start;
+    }
+
+    /* Fix for modal z-index conflicts */
+    .modal {
+        z-index: 1080 !important;
+    }
+
+    .modal-backdrop {
+        z-index: 1079 !important;
+    }
+
+    /* Ensure dropdowns in modals work correctly */
+    .modal .dropdown-menu {
+        z-index: 1081 !important;
     }
 </style>
 
 <script>
+
+    function handleChequeView(id, name) {
+        currentChequeId = id;
+        currentChequeName = name;
+
+        // open new window (shared view handled server-side)
+        var url = '/ChequeBook/GetChequeBookDetails?id=' + encodeURIComponent(id);
+        window.open(url, '_blank');
+    }
+
+    $(document).off('click', '.btn-cheque-view').on('click', '.btn-cheque-view', function (e) {
+        e.preventDefault();
+        var id = decodeURIComponent($(this).data('id'));
+        var name = $(this).data('name') || '';
+        handleChequeView(id, name);
+    });
+
     // Mettre à jour le compteur de page
     document.addEventListener('DOMContentLoaded', function () {
         var carousel = document.getElementById('customerCheckBookCarousel');
@@ -257,5 +437,18 @@ else
                 document.getElementById('currentPage').textContent = (activeIndex + 1);
             });
         }
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function (e) {
+            if (!e.target.closest('.dropdown')) {
+                var openDropdowns = document.querySelectorAll('.dropdown-menu.show');
+                openDropdowns.forEach(function (dropdown) {
+                    var bsDropdown = bootstrap.Dropdown.getInstance(dropdown.previousElementSibling);
+                    if (bsDropdown) {
+                        bsDropdown.hide();
+                    }
+                });
+            }
+        });
     });
 </script>

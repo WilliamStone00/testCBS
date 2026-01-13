@@ -101,15 +101,54 @@
 
         <div class="card-body py-2">
             <div class="d-flex flex-wrap gap-2 align-items-center">
-                <span class="badge bg-label-secondary px-3 py-2" id="pcmfPreviewSection">Section:  @product.PcmfSection </span>
-                <span class="badge bg-label-dark px-3 py-2" id="pcmfPreviewGroup">Group:  @product.PcmfGroupCode</span>
-                <span class="badge bg-label-primary px-3 py-2" id="pcmfPreviewBase">Base:  @product.PcmfPopulation</span>
-                <span class="badge bg-label-info px-3 py-2" id="pcmfPreviewPop">Population:  @product.PcmfBaseCode</span>
+
+                <span class="badge bg-label-secondary px-3 py-2" id="pcmfPreviewSection">
+                    Section: @product.PcmfSection
+                </span>
+
+                <span class="badge bg-label-dark px-3 py-2" id="pcmfPreviewGroup">
+                    Group: @product.PcmfGroupCode
+                </span>
+
+                <span class="badge bg-label-primary px-3 py-2" id="pcmfPreviewBase">
+                    Base: @product.PcmfPopulation
+                </span>
+
+                <span class="badge bg-label-info px-3 py-2" id="pcmfPreviewPop">
+                    Population: @product.PcmfBaseCode
+                </span>
+
+                <!-- TAXATION CONTROL (INLINE) -->
+                <div class="d-flex align-items-center px-3 py-2 border rounded bg-light">
+                    <div class="form-check form-switch m-0">
+
+                        <input class="form-check-input"
+                               type="checkbox"
+                               id="ApplyTaxIfLoanAmountMeetControl"
+                               name="ApplyTaxIfLoanAmountMeetControl"
+                               value="true"
+                               @(Model.ApplyTaxIfLoanAmountMeetControl ? "checked" : "") />
+
+                        <label class="form-check-label fw-semibold ms-2"
+                               for="ApplyTaxIfLoanAmountMeetControl">
+                            Apply Tax If Loan Amount Meet Control
+                        </label>
+
+                        <!-- Important for false value -->
+                        <input type="hidden"
+                               name="ApplyTaxIfLoanAmountMeetControl"
+                               value="false" />
+                    </div>
+                </div>
+
+
             </div>
+
             <div class="small text-muted mt-2">
                 Updates automatically as you pick <b>Facility → Term → Purpose → Target</b>.
             </div>
         </div>
+
     </div>
 
 

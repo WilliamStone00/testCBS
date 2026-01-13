@@ -65,7 +65,10 @@ namespace CBS.FrontDesk.UI.Controllers.Loan.Configuration
                 });
             }
 
-            var isCreate = string.IsNullOrWhiteSpace(model.Id);
+            if(model.CtGroupCode == null ) {model.CtGroupCode = 0;  }else if(model.OdGroupCode == null) { model.OdGroupCode = 0; }else if (model.LtGroupCode == null) { model.LtGroupCode = 0; }else if (model.MtGroupCode == null) { model.MtGroupCode = 0; }
+
+
+             var isCreate = string.IsNullOrWhiteSpace(model.Id);
             var result = isCreate
                 ? await _pcmfLoanPurposeService.CreateAsync(model)
                 : await _pcmfLoanPurposeService.UpdateAsync(model);

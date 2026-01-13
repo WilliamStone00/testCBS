@@ -47,7 +47,7 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.CounterCheque
             try
             {
                 // Add any necessary data from the user's session before sending
-                model.BranchId = GetBranchID();
+                //model.BranchId = GetBranchID();
                 model.IssuedBy = GetUserFullName();
 
                 var response = await _apiHelper.PostAsync<ServiceResponse<CounterCheques>>(APICallHelper.IssueCounterCheque, model);
@@ -215,6 +215,42 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.CounterCheque
             var totalRemainingLeaves = totalLeaves - totalUsedLeaves;
             var usageRate = totalLeaves > 0 ? (double)totalUsedLeaves / totalLeaves * 100 : 0;
 
+            // ===============================
+            // CLEARANCE BREAKDOWN LOGIC
+            // ===============================
+            var counterChecksHours = deterministicRandom.Next( 5, 100);
+            var onBehalfOfHours = deterministicRandom.Next( 5, 100);
+            var byOwnerHours = deterministicRandom.Next( 5, 100);
+
+            var counterChecks24h = deterministicRandom.Next(5, 80);
+            var onBehalfOf24h = deterministicRandom.Next(5, 80);
+            var byOwner24h = deterministicRandom.Next(5, 80);
+
+            // Optional: keep total consistent with breakdown
+            var averageClearanceAll = (counterChecksHours + onBehalfOfHours + byOwnerHours);
+
+            var accountsCount = deterministicRandom.Next(2, 6);
+
+            var chequeAccounts = new List<CustomerChequeAccountDto>();
+
+            for (int i = 0; i < accountsCount; i++)
+            {
+                chequeAccounts.Add(new CustomerChequeAccountDto
+                {
+                    AccountId = Guid.NewGuid().ToString(),
+                    AccountType = deterministicRandom.Next(0, 2) == 0 ? "Savings" : "Current",
+                    Chequebook = deterministicRandom.Next(0, 2) == 0 ? "Gold" : "Premuim",
+                    AccountNumber = "3711-00" + deterministicRandom.Next(100000, 999999),
+
+                    OperationType = (ChequeOperationType)deterministicRandom.Next(0, 3),
+
+                    IsActive = deterministicRandom.Next(0, 5) != 0,
+                    BalanceAmount = Math.Round(
+                        deterministicRandom.Next(100_000, 5_000_000) * 1.00m, 2)
+                });
+            }
+
+
             // Determine risk level based on usage and bounce rate
             string riskLevel;
             var bounceRate = deterministicRandom.NextDouble();
@@ -263,7 +299,7 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.CounterCheque
                 ClearedWithin72Hours = deterministicRandom.Next(5, 50),
                 DelayedClearances = deterministicRandom.Next(0, 15),
 
-                AverageClearanceTimeHours = Math.Round(deterministicRandom.NextDouble() * 96, 1), // 0-96 hours
+                //AverageClearanceTimeHours = Math.Round(deterministicRandom.NextDouble() * 96, 1), // 0-96 hours
 
                 FirstIssuedDate = now.AddMonths(-deterministicRandom.Next(6, 36)),
                 LastIssuedDate = now.AddDays(-deterministicRandom.Next(0, 90)),
@@ -280,13 +316,31 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.CounterCheque
                 StopPaymentRequests = deterministicRandom.Next(0, 5),
                 FraudFlaggedCheques = deterministicRandom.Next(0, 2),
 
+                // ===============================
+                // CLEARANCE BREAKDOWN
+                // ===============================
+                CounterChecks = counterChecksHours,
+                OnBehalfOf = onBehalfOfHours,
+                ByOwner = byOwnerHours,
+
+                CounterChecksWithin24h = counterChecks24h,
+                OnBehalfOfWithin24h = onBehalfOf24h,
+                ByOwnerWithin24h = byOwner24h,
+
+                // Override or align existing average if needed
+                //AverageClearanceTimeHours = Math.Round(averageClearanceAll / 3, 1),
+                //ClearedWithin24Hours =  counterChecks24h + onBehalfOf24h + byOwner24h,
+
+
                 RiskLevel = riskLevel,
 
                 EmergencyClearanceRequests = deterministicRandom.Next(0, 3),
                 ApprovedFastTrackRequests = deterministicRandom.Next(0, 5),
                 FastTrackFeesPaid = Math.Round(deterministicRandom.Next(0, 50000) * 1.00m, 2),
 
-                GeneratedAt = now
+                GeneratedAt = now,
+                ChequeAccounts = chequeAccounts
+
             };
         }
 
