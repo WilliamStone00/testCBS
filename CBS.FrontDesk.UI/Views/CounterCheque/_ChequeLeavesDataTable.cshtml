@@ -1,5 +1,11 @@
 ﻿@model IEnumerable<CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheque.CheckBookLeaf>
 
+<div class="modal fade" id="genericModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content"></div>
+    </div>
+</div>
+
 <div class="card mt-3 shadow-sm">
     <div class="card-header bg-light text-primary fw-bold">
         <i class="mdi mdi-table me-1"></i> Cheque Leaves
@@ -69,13 +75,20 @@
                                         </button>
 
                                         <ul class="dropdown-menu dropdown-menu-end shadow-sm animate__animated animate__fadeIn">
-                                            <li>
+                                            @*<li>
                                                 <a class="dropdown-item d-flex align-items-center"
                                                    href="@Url.Action("CounterRequest", "CounterCheque", new { leafId = leaf.Id })"
                                                    target="_blank">
                                                     <i class="mdi mdi-file-document-outline text-primary me-2"></i>
                                                     <span>Counter Request</span>
                                                 </a>
+                                            </li>*@
+
+                                            <li>
+                                                <button class="dropdown-item btn-create" data-id="@leaf.Id">
+                                                    <i class="mdi mdi-file-document-outline text-primary me-2"></i>
+                                                    <span>Counter Request</span>
+                                                </button>
                                             </li>
 
                                             <li>
@@ -109,6 +122,12 @@
 </div>
 
 <script>
+
+    $(document).on('click', '.btn-create', function () {
+        var id = $(this).data('id');
+       ShowModal(id, '_CounterRequest', 'CounterCheque', 'new');
+    });
+
     $(document).ready(function () {
         $('#myDataTable_chequeLeaves').DataTable({
             pageLength: 10,

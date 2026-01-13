@@ -15,7 +15,7 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.CounterCheque
 {
-    [CheckSessionTimeOut]
+   // [CheckSessionTimeOut]
     public class CounterChequeController : BaseController
     {
         // Depend on the INTERFACE, not the concrete class.
@@ -132,7 +132,9 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.Counter
             }
             else if (path == "new")
             {
-                return PartialView(partialView, new CounterCheques());
+
+                var data = new CounterCheques() {CheckLeafId = KEY };
+                return PartialView(partialView, data);
             }
             else if (path == "action")
             {

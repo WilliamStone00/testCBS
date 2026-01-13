@@ -1,13 +1,16 @@
 ﻿
 using BusinessServices;
 using CBS.API.Helper;
+using CBS.FrontDesk.Data.Entity.Accounting_V2.AffiliateAccount;
 using CBS.FrontDesk.Data.Entity.AccountingDayObject;
 using CBS.FrontDesk.Data.Entity.CashCeilingManagement;
+using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.SalaryManagement;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Entity.VaultManagement;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
+using DocumentFormat.OpenXml.EMMA;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using System;
 using System.Collections.Generic;
@@ -15,6 +18,8 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
+using static CBS.FrontDesk.Data.Entity.SalaryManagement.EndDateAfterStartDateAttribute;
 
 namespace CBS.BusinessService.Accounts
 {
@@ -201,7 +206,73 @@ namespace CBS.BusinessService.Accounts
             }
             return ExecutionMessage;
         }
-       
+
+        public async Task<ApiResponse<ServiceResponse<StandingOrderMemberRegistrationUploadSummary>>> ProcessStandingOrderMemberRegistrationUploadFileAsync(HttpPostedFileBase file)
+        {
+
+            return await _transactionApiHelper.UploadBulkCashPaymentFileAsync<ServiceResponse<StandingOrderMemberRegistrationUploadSummary>>(file, APICallHelper.UploadStandingOrderMemberRegistrationPreview);
+
+        }
+
+        public async Task<ApiResponse<ServiceResponse<StandingOrderMemberRegistrationUploadSummary>>> RegisterListOfStandingOrdersAsync(RegisterStandingOrderUploadMain orderUploadMain)
+        {
+
+            /*try
+            {*/
+                return await _transactionApiHelper.PostAsync<ServiceResponse<StandingOrderMemberRegistrationUploadSummary>>(APICallHelper.MemberBulkStandingOrderRegistration, orderUploadMain);
+                /*if (response.IsSuccess)
+                {
+                    // Successful creation
+                    GetExecutionMessages(response, true, null, MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                    return ExecutionMessage;
+                }
+                else
+                {
+                    // Failed creation
+                    GetExecutionMessages(orderUploadMain, false, null, MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }*/
+          /*  }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;*/
+        }
+
+        public async Task<CustomDataTable> GetStandingOrderDataTableAsync(StandingOrderDataTableQuery query)
+        {
+            try
+            {
+                var response = await _transactionApiHelper.PostAsync<ResponseObject<CustomDataTable>>(
+                    APICallHelper.StandingOrder_Listing, query);
+
+                // ⚠️ CRITICAL: If API call fails or returns unsuccessful, THROW exception
+                if (!response.IsSuccess)
+                {
+                    throw new Exception($"API call failed: {response.Message}");
+                }
+
+                if (response.ApiResponseData == null)
+                {
+                    throw new Exception("API returned null data");
+                }
+
+                return response.ApiResponseData.Data;
+            }
+            catch (Exception ex)
+            {
+                // Log the original exception
+                System.Diagnostics.Debug.WriteLine($"API Error: {ex.Message}");
+
+                // Re-throw to trigger fallback
+                throw new Exception($"service unavailable: {ex.Message}", ex);
+            }
+        }
+
     }
 
 }

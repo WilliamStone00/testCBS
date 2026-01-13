@@ -436,6 +436,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
     }
     public class LoanProductObject
     {
+        
         public AddLoanProductCommand AddLoanProductCommand { get; set; }
         public UpdateLoanProductCommand UpdateLoanProductCommand { get; set; }
         public Penalty Penalty { get; set; }

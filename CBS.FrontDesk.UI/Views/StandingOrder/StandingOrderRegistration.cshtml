@@ -1,0 +1,993 @@
+﻿@using Resources
+@using Newtonsoft.Json
+
+@{
+    ViewBag.Title = "Standing Order Registration (Members)";
+}
+
+<style>
+    .upload-feedback {
+        transition: all 0.3s ease;
+    }
+
+    #uploadStatus {
+        transition: opacity 0.3s ease;
+    }
+
+    .progress-bar {
+        transition: width 0.3s ease;
+    }
+
+    .help-hint {
+        font-size: .85rem;
+    }
+</style>
+
+<div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12">
+
+        <!-- ====================== -->
+        <!-- HEADER -->
+        <!-- ====================== -->
+        <div class="card bg-light mb-4 shadow-sm">
+            <div class="card-body text-center">
+                <h1 class="card-title text-success fw-bold mb-2">
+                    <i class="mdi mdi-calendar-sync me-2"></i> STANDING ORDER REGISTRATION
+                </h1>
+
+                <p class="card-text text-muted mb-2">
+                    <strong>Standing Order Management Console</strong> — Register member standing orders in bulk.
+                    <br />
+                    Upload → preview → validate → create standing orders with complete audit and error traceability.
+                </p>
+
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.35);" />
+
+                <div class="alert alert-info mt-3 d-flex align-items-center justify-content-center">
+                    <i class="mdi mdi-information-outline me-2"></i>
+                    <strong>Important:</strong>&nbsp;Uploads are validated first. You can then run <b>Multiple Creation</b> for all valid rows.
+                </div>
+            </div>
+        </div>
+
+        <!-- ====================== -->
+        <!-- QUICK ACTIONS -->
+        <!-- ====================== -->
+        <div class="row mb-2">
+            <div class="col-md-6 text-md-end mb-1 mb-md-0">
+                <a href="/StandingOrder/Listing" class="btn btn-primary btn-sm shadow-sm px-3 w-100 w-md-auto">
+                    <i class="mdi mdi-view-list me-1"></i> Standing Orders Listing
+                </a>
+            </div>
+            <div class="col-md-6 text-md-start">
+                <a href="/StandingOrder/DownloadStandingOrderMemberRegistrationTemplate"
+                   class="btn btn-outline-secondary btn-sm shadow-sm px-3 w-100 w-md-auto"
+                   data-bs-toggle="tooltip" title="Download the required template (CSV/Excel)">
+                    <i class="mdi mdi-file-download-outline me-1"></i> Download Template
+                </a>
+            </div>
+        </div>
+
+        <!-- ====================== -->
+        <!-- MAIN ACCORDION -->
+        <!-- ====================== -->
+        <div class="accordion mb-2" id="soUploadAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingMethodSelection">
+                    <button class="accordion-button" type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseMethodSelection"
+                            aria-expanded="true" aria-controls="collapseMethodSelection">
+                        <i class="mdi mdi-upload me-2"></i>
+                        Standing Order Registration Method
+                        <span class="badge bg-success ms-2">Upload + Preview + Create</span>
+                    </button>
+                </h2>
+
+                <div id="collapseMethodSelection" class="accordion-collapse collapse show" aria-labelledby="headingMethodSelection">
+                    <div class="accordion-body">
+
+                        <!-- =============================== -->
+                        <!-- INPUT METHOD -->
+                        <!-- =============================== -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="mb-2">
+                                    <label class="form-label fw-semibold">
+                                        Input Method
+                                        <i class="mdi mdi-help-circle-outline text-muted"
+                                           data-bs-toggle="tooltip"
+                                           title="Choose how to register: manual entry for small batches or file upload for bulk creation."></i>
+                                    </label>
+
+                                    <div class="btn-group w-100" role="group" aria-label="Input method">
+                                        <input type="radio" class="btn-check" name="InputMethod" id="manualInput" value="manual" />
+                                        <label class="btn btn-outline-primary" for="manualInput">
+                                            <i class="mdi mdi-keyboard-outline me-2"></i> Manual Entry
+                                        </label>
+
+                                        <input type="radio" class="btn-check" name="InputMethod" id="fileInput" value="file" checked />
+                                        <label class="btn btn-outline-primary" for="fileInput">
+                                            <i class="mdi mdi-file-import-outline me-2"></i> File Upload
+                                        </label>
+                                    </div>
+
+                                    <small class="text-muted d-block help-hint mt-1">
+                                        <i class="mdi mdi-information-outline me-1"></i>
+                                        Template headers must be: <b>Member Reference</b>, <b>Member Name</b>, <b>Amount</b>, <b>Reason</b>.
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- =============================== -->
+                        <!-- MANUAL INPUT (OPTIONAL) -->
+                        <!-- =============================== -->
+                        <div id="manualInputSection" class="mt-3" style="display:none;">
+
+                            @using (Html.BeginForm("CreateStandingOrdersFromManual", "StandingOrder", FormMethod.Post,
+                                new { id = "manualForm", enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdateStandingOrdersManual(this);" }))
+                            {
+                                @Html.AntiForgeryToken()
+
+                                <div class="card shadow-sm mb-2">
+                                    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+                                        <span><i class="mdi mdi-information-outline me-2"></i> Tips & Rules (Manual Entry)</span>
+                                        <button class="btn btn-light btn-sm" type="button"
+                                                data-bs-toggle="collapse"
+                                                data-bs-target="#collapseUserTipsManual"
+                                                aria-expanded="false"
+                                                aria-controls="collapseUserTipsManual">
+                                            <i class="mdi mdi-chevron-down"></i>
+                                        </button>
+                                    </h6>
+
+                                    <div id="collapseUserTipsManual" class="collapse">
+                                        <div class="card-body">
+                                            <ol class="list-group list-group-numbered">
+                                                <li class="list-group-item">
+                                                    <div class="fw-bold">Member Reference</div>
+                                                    Must match a valid member matricule/reference in the system.
+                                                </li>
+                                                <li class="list-group-item">
+                                                    <div class="fw-bold">Amount</div>
+                                                    Must be greater than 0.
+                                                </li>
+                                                <li class="list-group-item">
+                                                    <div class="fw-bold">Reason</div>
+                                                    Used to infer SO type/purpose (Loan, Saving, Loan Repayment, etc.).
+                                                </li>
+                                            </ol>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="accordion mb-2" id="manualRowsAccordion">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingManualRows">
+                                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                                    data-bs-target="#collapseManualRows" aria-expanded="true" aria-controls="collapseManualRows">
+                                                <i class="mdi mdi-table me-2"></i> Manual Rows
+                                                <span class="badge bg-primary ms-2">Multiple Creation</span>
+                                            </button>
+                                        </h2>
+                                        <div id="collapseManualRows" class="accordion-collapse collapse show" aria-labelledby="headingManualRows">
+                                            <div class="accordion-body">
+
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover mb-0" id="manualRowsTable">
+                                                        <thead class="table-light">
+                                                            <tr>
+                                                                <th>Member Reference</th>
+                                                                <th>Member Name</th>
+                                                                <th class="text-end">Amount</th>
+                                                                <th>Reason</th>
+                                                                <th class="text-end">Actions</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr class="empty-row">
+                                                                <td colspan="5" class="text-center text-muted py-4">
+                                                                    <i class="mdi mdi-database-remove fs-3 d-block mb-2"></i>
+                                                                    No rows added yet. Click <b>“Add Row”</b> to begin.
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+                                                <div class="d-flex justify-content-between align-items-center mt-2 mb-2">
+                                                    <button type="button" class="btn btn-sm btn-outline-danger" id="resetManualRowsBtn">
+                                                        <i class="mdi mdi-delete-sweep-outline me-1"></i> Clear All
+                                                    </button>
+                                                    <button type="button" class="btn btn-sm btn-primary" id="addManualRowBtn">
+                                                        <i class="mdi mdi-plus-circle-outline me-1"></i> Add Row
+                                                    </button>
+                                                </div>
+
+                                                <small class="text-muted">
+                                                    <i class="mdi mdi-information-outline me-1"></i>
+                                                    Each row creates one Standing Order if valid.
+                                                </small>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-2 mb-2">
+                                    <div class="col-md-12 text-end">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="mdi mdi-content-save-outline me-2"></i> Create Standing Orders
+                                        </button>
+                                    </div>
+                                </div>
+
+
+                                <!-- Preview -->
+                                <div class="accordion mb-4" id="bulkCreationAccordion">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingBulkFileContent">
+                                            <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#bulkCreationContent"
+                                                    aria-expanded="false" aria-controls="collapseBulkContent">
+                                                <i class="mdi mdi-file-document-outline me-2"></i> Bulk Creation Results (Row Results)
+                                            </button>
+                                        </h2>
+                                        <div id="bulkCreationContent" class="accordion-collapse collapse" aria-labelledby="headingBulkFileContent">
+                                            <div class="accordion-body">
+                                                <div class="table-responsive mb-3">
+                                                    <table class="table table-hover table-bordered align-middle" id="soBulkCreateStatusTable">
+                                                        <thead>
+                                                            <tr>
+
+                                                                <th>Member Reference</th>
+                                                                <th>Member Name</th>
+                                                                <th>Amount</th>
+                                                                <th>Reason</th>
+                                                                <th>Status</th>
+                                                                <th>Message</th>
+                                                            </tr>
+                                                        </thead>
+                                                    </table>
+
+                                                    <div class="d-flex flex-wrap gap-2 mt-2">
+                                                        <span class="badge bg-dark" id="sumTotalRows1">Total: 0</span>
+                                                        <span class="badge bg-success" id="sumValidRows1">Valid: 0</span>
+                                                        <span class="badge bg-danger" id="sumInvalidRows1">Invalid: 0</span>
+                                                        <span class="badge bg-primary" id="sumTotalAmount1">Amount: 0</span>
+                                                    </div>
+
+                                                    <small class="text-muted d-block mt-2">
+                                                        <i class="mdi mdi-information-outline me-1"></i>
+                                                        Preview shows per-row validation/creation result returned by the API. You can create only valid rows in bulk.
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+
+                        <!-- =============================== -->
+                        <!-- FILE INPUT SECTION -->
+                        <!-- =============================== -->
+                        <div id="fileInputSection" class="mt-3">
+
+                            @* 1) UPLOAD/PREVIEW *@
+                            @using (Html.BeginForm("StandingOrderMemberRegistrationUploadFile", "StandingOrder", FormMethod.Post,
+                                new { id = "fileForm", enctype = "multipart/form-data", onsubmit = "return AjaxPostStandingOrderFileUpload(this);" }))
+                            {
+                                @Html.AntiForgeryToken()
+
+                                <div class="card shadow-sm mb-3">
+                                    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+                                        <span><i class="mdi mdi-information-outline me-2"></i> Tips & Rules (File Upload)</span>
+                                        <button class="btn btn-light btn-sm" type="button"
+                                                data-bs-toggle="collapse"
+                                                data-bs-target="#collapseUserTipsFile"
+                                                aria-expanded="false"
+                                                aria-controls="collapseUserTipsFile">
+                                            <i class="mdi mdi-chevron-down"></i>
+                                        </button>
+                                    </h6>
+                                    <div id="collapseUserTipsFile" class="collapse">
+                                        <div class="card-body">
+                                            <div class="alert alert-warning small mb-0">
+                                                <i class="mdi mdi-alert-outline me-2"></i>
+                                                Required headers (exact): <b>Member Reference</b>, <b>Member Name</b>, <b>Amount</b>, <b>Reason</b>.
+                                                Upload → preview → create valid rows in bulk.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="accordion mb-4" id="fileUploadAccordion">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingFileUpload">
+                                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                                    data-bs-target="#collapseFileUpload" aria-expanded="true" aria-controls="collapseFileUpload">
+                                                <i class="mdi mdi-cloud-upload-outline me-2"></i> Standing Order File Upload
+                                                <span class="badge bg-primary ms-2">Required</span>
+                                            </button>
+                                        </h2>
+                                        <div id="collapseFileUpload" class="accordion-collapse collapse show" aria-labelledby="headingFileUpload">
+                                            <div class="accordion-body">
+
+                                                <div class="alert alert-info mb-3">
+                                                    <i class="mdi mdi-information-outline me-2"></i>
+                                                    Upload a CSV/Excel containing member SO registration rows. Max size: 10MB.
+                                                </div>
+
+                                                <div class="row g-3 align-items-end">
+                                                    <div class="col-lg-8">
+                                                        <label for="soFile" class="form-label fw-semibold">
+                                                            Select Upload File
+                                                        </label>
+
+                                                        <div class="input-group has-validation">
+                                                            <input type="file" name="file" class="form-control"
+                                                                   id="soFile" accept=".csv,.xlsx,.xls"
+                                                                   required data-max-size="10485760" />
+
+                                                            <button class="btn btn-primary px-4" type="submit" id="uploadButton">
+                                                                <span class="upload-text">Upload</span>
+                                                                <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                                                <i class="mdi mdi-cloud-upload-outline ms-1"></i>
+                                                            </button>
+
+                                                            <div class="invalid-feedback">Please select a valid file (max 10MB).</div>
+                                                        </div>
+
+                                                        <div class="form-text">Supported: .csv, .xlsx, .xls</div>
+                                                    </div>
+
+                                                    <div class="col-lg-4 text-lg-end">
+                                                        <a href="/StandingOrder/DownloadStandingOrderMemberRegistrationTemplate"
+                                                           class="btn btn-outline-primary d-inline-flex align-items-center">
+                                                            <i class="mdi mdi-file-download-outline me-2"></i>
+                                                            <span>Download Template</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+
+                                                <div class="upload-feedback mt-3">
+                                                    <div class="progress mb-2" style="height: 8px; display: none;" id="uploadProgress">
+                                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+                                                             role="progressbar" style="width: 0%"
+                                                             aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    </div>
+                                                    <div id="uploadStatus" class="alert d-none"></div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Preview -->
+                                <div class="accordion mb-4" id="fileContentAccordion">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingFileContent">
+                                            <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#collapseFileContent"
+                                                    aria-expanded="false" aria-controls="collapseFileContent">
+                                                <i class="mdi mdi-file-document-outline me-2"></i> File Content Preview (Row Results)
+                                            </button>
+                                        </h2>
+                                        <div id="collapseFileContent" class="accordion-collapse collapse" aria-labelledby="headingFileContent">
+                                            <div class="accordion-body">
+                                                <div class="table-responsive mb-3">
+                                                    <table class="table table-hover table-bordered align-middle" id="soPreviewTable">
+                                                        <thead>
+                                                            <tr>
+
+                                                                <th>Member Reference</th>
+                                                                <th>Member Name</th>
+                                                                <th >Amount</th>
+                                                                <th>Reason</th>
+                                                                @*<th class="text-center">Status</th>
+                                            <th>Message</th>*@
+                                                            </tr>
+                                                        </thead>
+                                                    </table>
+
+                                                    <div class="d-flex flex-wrap gap-2 mt-2">
+                                                        <span class="badge bg-dark" id="sumTotalRows">Total: 0</span>
+                                                        <span class="badge bg-success" id="sumValidRows">Valid: 0</span>
+                                                        <span class="badge bg-danger" id="sumInvalidRows">Invalid: 0</span>
+                                                        <span class="badge bg-primary" id="sumTotalAmount">Amount: 0</span>
+                                                    </div>
+
+                                                    <small class="text-muted d-block mt-2">
+                                                        <i class="mdi mdi-information-outline me-1"></i>
+                                                        Preview shows per-row validation/creation result returned by the API. You can create only valid rows in bulk.
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+                            @* 2) BULK CREATE (Multiple Creation) *@
+                            @using (Html.BeginForm("CreateStandingOrdersFromUpload", "StandingOrder", FormMethod.Post,
+                                new { id = "filePosting", enctype = "multipart/form-data", onsubmit = "return AjaxPostStandingOrderBulkCreate(this);" }))
+                            {
+                                @Html.AntiForgeryToken()
+
+                                <div class="accordion mb-4" id="bulkCreateAccordion">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingBulkCreate">
+                                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                                    data-bs-target="#collapseBulkCreate" aria-expanded="true" aria-controls="collapseBulkCreate">
+                                                <i class="mdi mdi-content-save-multiple-outline me-2"></i> Multiple Creation
+                                                <span class="badge bg-primary ms-2">Create All Valid</span>
+                                            </button>
+                                        </h2>
+                                        <div id="collapseBulkCreate" class="accordion-collapse collapse show" aria-labelledby="headingBulkCreate">
+                                            <div class="accordion-body">
+
+                                                <div class="alert alert-secondary">
+                                                    <i class="mdi mdi-information-outline me-2"></i>
+                                                    This action will create standing orders for <b>all valid rows</b> in the preview table.
+                                                </div>
+                                                @*
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Start Date</label>
+                                    <input type="date" class="form-control" id="StartDate" name="StartDate"
+                                           value="@DateTime.Today.ToString("yyyy-MM-dd")" />
+                                    <small class="text-muted help-hint">
+                                        Default is today. Used for generated SO payloads when needed.
+                                    </small>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">End Date</label>
+                                    <input type="date" class="form-control" id="EndDate" name="EndDate"
+                                           value="@DateTime.Today.AddYears(1).ToString("yyyy-MM-dd")" />
+                                    <small class="text-muted help-hint">
+                                        Default is +1 year. Adjust per institution policy.
+                                    </small>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Frequency</label>
+                                    <select class="form-select select2" id="Frequency" name="Frequency">
+                                        <option value="Monthly" selected>Monthly</option>
+                                        <option value="Weekly">Weekly</option>
+                                        <option value="Daily">Daily</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Priority</label>
+                                    <select class="form-select select2" id="Priority" name="Priority">
+                                        <option value="1" selected>1 (Highest)</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                </div>
+                            </div>
+                                                *@
+                                                <div class="row mt-3 mb-2">
+                                                    <div class="col-md-12 text-end">
+                                                        <button type="submit" class="btn btn-primary" id="btnBulkCreate">
+                                                            <i class="mdi mdi-check-circle-outline me-2"></i> Create Standing Orders (Valid Rows)
+                                                        </button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Preview -->
+                                <div class="accordion mb-4" id="bulkCreationAccordion2">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingBulkFileContent2">
+                                            <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#bulkCreationContent2"
+                                                    aria-expanded="false" aria-controls="collapseBulkContent2">
+                                                <i class="mdi mdi-file-document-outline me-2"></i> Bulk Creation Results (Row Results)
+                                            </button>
+                                        </h2>
+                                        <div id="bulkCreationContent2" class="accordion-collapse collapse" aria-labelledby="headingBulkFileContent2">
+                                            <div class="accordion-body">
+                                                <div class="table-responsive mb-3">
+                                                    <table class="table table-hover table-bordered align-middle" id="soBulkCreateStatusTable2">
+                                                        <thead>
+                                                            <tr>
+
+                                                                <th>Member Reference</th>
+                                                                <th>Member Name</th>
+                                                                <th>Amount</th>
+                                                                <th>Reason</th>
+                                                                <th>Status</th>
+                                                                <th>Message</th>
+                                                            </tr>
+                                                        </thead>
+                                                    </table>
+
+                                                    <div class="d-flex flex-wrap gap-2 mt-2">
+                                                        <span class="badge bg-dark" id="sumTotalRows2">Total: 0</span>
+                                                        <span class="badge bg-success" id="sumValidRows2">Valid: 0</span>
+                                                        <span class="badge bg-danger" id="sumInvalidRows2">Invalid: 0</span>
+                                                        <span class="badge bg-primary" id="sumTotalAmount2">Amount: 0</span>
+                                                    </div>
+
+                                                    <small class="text-muted d-block mt-2">
+                                                        <i class="mdi mdi-information-outline me-1"></i>
+                                                        Preview shows per-row validation/creation result returned by the API. You can create only valid rows in bulk.
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+                        </div><!-- end file section -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(document).ready(function () {
+            // toggle sections
+            $('input[name="InputMethod"]').change(function () {
+                if ($(this).val() === 'manual') {
+                    $('#manualInputSection').show();
+                    $('#fileInputSection').hide();
+                } else {
+                    $('#manualInputSection').hide();
+                    $('#fileInputSection').show();
+                }
+            });
+
+            $('[data-bs-toggle="tooltip"]').tooltip();
+
+            if ($.fn.select2) {
+                try { $('.select2').select2({ width: '100%' }); } catch (e) { console.warn('select2 init failed', e); }
+            }
+        });
+    </script>
+
+    <!-- ======================== -->
+    <!-- FILE UPLOAD + PREVIEW JS -->
+    <!-- ======================== -->
+    <script>
+        // holds last preview dataset for bulk create
+        window.__soPreviewRows = [];
+
+        function AjaxPostStandingOrderFileUpload(form) {
+            $.validator.unobtrusive.parse(form);
+
+            if (!$(form).valid()) return false;
+
+            alertify.confirm("Confirmation", "Upload file for validation & preview?",
+                function () {
+                    var ajaxConfig = {
+                        type: 'POST',
+                        url: form.action,
+                        data: new FormData(form),
+                        success: function (response) {
+                            if (response && response.success) {
+                                showUploadStatus(response.message || 'File processed successfully', 'success');
+
+                                // DataTables expects `data`
+                                const rows = response.data.FileDetails || [];
+                                window.__soPreviewRows = rows;
+
+                                displayStandingOrderPreview(rows);
+                                updateSummaryBadges(response.data);
+
+                                form.reset();
+                            } else {
+                                showUploadStatus((response && response.message) ? response.message : 'File processing failed', 'danger');
+                                window.__soPreviewRows = [];
+                                displayStandingOrderPreview([]);
+                                updateSummaryBadges([]);
+                            }
+                        },
+                        error: function (err) {
+                            if (err.status === 401) window.location.href = '/Authentication/Login';
+                            else showUploadStatus(err.responseJSON?.message || err.statusText || 'Upload failed', 'danger');
+                        }
+                    };
+                    ajaxConfig.contentType = false;
+                    ajaxConfig.processData = false;
+                    $.ajax(ajaxConfig);
+                },
+                function () { appalert('Upload cancelled', 3, 1); }
+            );
+
+            return false;
+        }
+
+        function AjaxPostStandingOrderBulkCreate(form) {
+            $.validator.unobtrusive.parse(form);
+
+            // must have preview data
+            const rows = window.__soPreviewRows || [];
+            console.log('So Preview Rows : '+rows)
+            if (!rows.length) {
+                appalert('Please upload and preview a valid file first.', 2, 1);
+                return false;
+            }
+
+            // valid rows only
+            //const validRows = rows.filter(x => x.Success === true);
+            //if (!validRows.length) {
+            //    appalert('No valid rows found to create. Please fix invalid rows and re-upload.', 2, 1);
+            //    return false;
+            //}
+
+            // additional safety: required fields
+            const invalidShape = rows.some(r =>
+                !r.MemberId || (parseFloat(r.Amount) || 0) <= 0 || !r.Reason
+            );
+            if (invalidShape) {
+                appalert('Some valid rows are missing required data (MemberRef/Amount/Reason). Re-upload the file.', 2, 1);
+                return false;
+            }
+
+            if (!$(form).valid()) return false;
+
+            alertify.confirm("Confirmation",
+                `Create standing orders for ${rows.length} valid row(s)?`,
+                function () {
+
+                    const requestData = {
+                       /* StartDate: $('#StartDate').val(),
+                        EndDate: $('#EndDate').val(),
+                        Frequency: $('#Frequency').val(),
+                        Priority: $('#Priority').val(),*/
+
+                        // Send only valid rows
+                        Rows: rows.map(r => ({
+                            RowNumber: r.RowNumber,
+                            MemberId: r.MemberId,
+                            MemberName: r.MemberName,
+                            Amount: parseFloat(r.Amount) || 0,
+                            Reason: r.Reason
+                        }))
+                    };
+
+                    
+                    $.ajax({
+                        type: 'POST',
+                        url: form.action,
+                        data: JSON.stringify(requestData),
+                        contentType: 'application/json',
+                        success: function (response) {
+                            if (response && response.success) {
+                                appalert(response.message || 'Standing orders created successfully', 1, 1);
+
+                                // If API returns updated results, refresh preview
+                                if (Array.isArray(response.data)) {
+                                     displayStandingOrderCreationPreviewResult(response.data, '2');
+                                     updateSummaryBadges2(response.data, '2');
+                                  
+                                }
+                            } else {
+                                appalert(response?.message || 'Bulk create failed', 2, 1);
+                            }
+                        },
+                        error: function (err) {
+                            console.error(err);
+                            if (err.status === 401) window.location.href = '/Authentication/Login';
+                            else appalert(err.responseJSON?.message || err.statusText || 'An error occurred', 2, 1);
+                        }
+                    });
+                },
+                function () { appalert('Creation cancelled', 3, 1); }
+            );
+
+            return false;
+        }
+
+        function displayStandingOrderPreview(data) {
+            if ($.fn.DataTable.isDataTable('#soPreviewTable')) {
+                $('#soPreviewTable').DataTable().destroy();
+            }
+
+            $('#soPreviewTable').DataTable({
+                data: data || [],
+                columns: [
+                    /*{ data: "RowNumber", title: "#", className: "text-center", width: "60px" },*/
+                    { data: "MemberId", title: "Member Reference", render: $.fn.dataTable.render.text() },
+                    { data: "MemberName", title: "Member Name", render: $.fn.dataTable.render.text() },
+                    {
+                        data: "Amount",
+                        title: "Amount",
+                        className: "text-end",
+                        render: function (d) { return formatCurrency(d || 0); }
+                    },
+                    { data: "Reason", title: "Reason", render: $.fn.dataTable.render.text() },
+                    //{
+                    //    data: "Success",
+                    //    title: "Status",
+                    //    className: "text-center",
+                    //    render: function (ok) {
+                    //        return ok
+                    //            ? '<span class="badge bg-success"><i class="mdi mdi-check-circle-outline me-1"></i>Valid</span>'
+                    //            : '<span class="badge bg-danger"><i class="mdi mdi-close-circle-outline me-1"></i>Invalid</span>';
+                    //    }
+                    //},
+                    //{ data: "Message", title: "Message", render: $.fn.dataTable.render.text() }
+                ],
+                responsive: true,
+                pageLength: 10,
+                order: [],
+                language: {
+                    emptyTable: "No data available in table",
+                    info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                    infoEmpty: "Showing 0 to 0 of 0 entries",
+                    infoFiltered: "(filtered from _MAX_ total entries)",
+                    lengthMenu: "Show _MENU_ entries",
+                    search: "Search:",
+                    zeroRecords: "No matching records found"
+                }
+            });
+
+            // auto open preview accordion
+            const preview = document.getElementById('collapseFileContent');
+            if (preview && !preview.classList.contains('show')) {
+                new bootstrap.Collapse(preview, { toggle: true });
+            }
+        }
+
+        function displayStandingOrderCreationPreviewResult(data, tableType) {
+
+            var tableTypeId = (String(tableType) === '2')  ? '#soBulkCreateStatusTable2' : '#soBulkCreateStatusTable'
+            var collapseFileContentId = (String(tableType) === '2')  ? '#bulkCreationContent' : '#bulkCreationContent2'
+
+            if ($.fn.DataTable.isDataTable(tableTypeId)) {
+                $(tableTypeId).DataTable().destroy();
+            }
+
+            $(tableTypeId).DataTable({
+                data: data || [],
+                columns: [
+                    /*{ data: "RowNumber", title: "#", className: "text-center", width: "60px" },*/
+                    { data: "MemberId", title: "Member Reference", render: $.fn.dataTable.render.text() },
+                    { data: "MemberName", title: "Member Name", render: $.fn.dataTable.render.text() },
+                    {
+                        data: "Amount",
+                        title: "Amount",
+                        className: "text-end",
+                        render: function (d) { return formatCurrency(d || 0); }
+                    },
+                    { data: "Reason", title: "Reason", render: $.fn.dataTable.render.text() },
+                    {
+                        data: "Success",
+                        title: "Status",
+                        className: "text-center",
+                        render: function (ok) {
+                            return ok
+                                ? '<span class="badge bg-success"><i class="mdi mdi-check-circle-outline me-1"></i>Valid</span>'
+                                : '<span class="badge bg-danger"><i class="mdi mdi-close-circle-outline me-1"></i>Invalid</span>';
+                        }
+                    },
+                    { data: "Message", title: "Message", render: $.fn.dataTable.render.text() }
+                ],
+                responsive: true,
+                pageLength: 10,
+                order: [],
+                language: {
+                    emptyTable: "No data available in table",
+                    info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                    infoEmpty: "Showing 0 to 0 of 0 entries",
+                    infoFiltered: "(filtered from _MAX_ total entries)",
+                    lengthMenu: "Show _MENU_ entries",
+                    search: "Search:",
+                    zeroRecords: "No matching records found"
+                }
+            });
+
+            // auto open preview accordion
+            const preview = document.getElementById(collapseFileContentId);
+            if (preview && !preview.classList.contains('show')) {
+                new bootstrap.Collapse(preview, { toggle: true });
+            }
+        }
+
+        function updateSummaryBadges(data) {
+            //rows = data || [];
+            const total = data.TotalRows;
+            const valid = data.ValidRows;
+            const invalid = data.InvalidRows;
+            const totalAmount = data.TotalAmount; //rows.reduce((acc, x) => acc + (parseFloat(x.Amount) || 0), 0);
+
+            $('#sumTotalRows').text('Total: ' + total);
+            $('#sumValidRows').text('Valid: ' + valid);
+            $('#sumInvalidRows').text('Invalid: ' + invalid);
+            $('#sumTotalAmount').text('Amount: ' + formatCurrency(totalAmount));
+        }
+
+        function updateSummaryBadges2(rows, tableType) {
+            rows = Array.isArray(rows) ? rows : [];
+
+            const total = rows.length;
+            const valid = rows.filter(x => x && x.Success === true).length;
+            const invalid = total - valid;
+
+            const totalAmount = rows.reduce((acc, x) => {
+                const v = x ? (parseFloat(x.Amount) || 0) : 0;
+                return acc + v;
+            }, 0);
+
+            const suffix = (String(tableType) === '2') ? '2' : '1';
+
+            $('#sumTotalRows' + suffix).text('Total: ' + total);
+            $('#sumValidRows' + suffix).text('Valid: ' + valid);
+            $('#sumInvalidRows' + suffix).text('Invalid: ' + invalid);
+            $('#sumTotalAmount' + suffix).text('Amount: ' + formatCurrency(totalAmount));
+        }
+
+
+        function showUploadStatus(message, type) {
+            const $uploadStatus = $('#uploadStatus');
+            $uploadStatus.removeClass('d-none alert-danger alert-success alert-info')
+                .addClass(`alert alert-${type}`)
+                .html(`<i class="mdi mdi-${type === 'success' ? 'check' : 'alert'}-circle-outline me-2"></i>${message}`);
+        }
+
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-NG', { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(amount);
+        }
+    </script>
+
+    <!-- ======================== -->
+    <!-- MANUAL MULTI CREATION JS -->
+    <!-- ======================== -->
+    <script>
+        $(document).ready(function () {
+            let rowCounter = 0;
+
+            $('#addManualRowBtn').on('click', function () {
+                addManualRow();
+            });
+
+            function addManualRow() {
+                rowCounter++;
+                $('#manualRowsTable .empty-row').remove();
+
+                const newRow = $(`
+                    <tr data-row-id="${rowCounter}">
+                        <td>
+                            <input type="text" class="form-control form-control-sm member-id"
+                                   placeholder="e.g. 0010005467" required />
+                        </td>
+                        <td>
+                            <input type="text" class="form-control form-control-sm member-name"
+                                   placeholder="John Doe" />
+                        </td>
+                        <td>
+                            <input type="number" class="form-control form-control-sm amount text-end"
+                                   placeholder="0" step="0.01" min="0.01" required />
+                        </td>
+                        <td>
+                            <input type="text" class="form-control form-control-sm reason"
+                                   placeholder="Loan / Saving / Loan Repayment..." required />
+                        </td>
+                        <td class="text-end">
+                            <button type="button" class="btn btn-sm btn-outline-danger remove-row" title="Remove row">
+                                <i class="mdi mdi-delete-outline"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `);
+
+                $('#manualRowsTable tbody').append(newRow);
+                newRow.find('.member-id').focus();
+            }
+
+            $(document).on('click', '.remove-row', function () {
+                $(this).closest('tr').remove();
+                if ($('#manualRowsTable tbody tr').length === 0) {
+                    $('#manualRowsTable tbody').append(`
+                        <tr class="empty-row">
+                            <td colspan="5" class="text-center text-muted py-4">
+                                <i class="mdi mdi-database-remove fs-3 d-block mb-2"></i>
+                                No rows added yet. Click <b>“Add Row”</b> to begin.
+                            </td>
+                        </tr>
+                    `);
+                    rowCounter = 0;
+                }
+            });
+
+            $('#resetManualRowsBtn').on('click', function () {
+                $('#manualRowsTable tbody').empty().append(`
+                    <tr class="empty-row">
+                        <td colspan="5" class="text-center text-muted py-4">
+                            <i class="mdi mdi-database-remove fs-3 d-block mb-2"></i>
+                            No rows added yet. Click <b>“Add Row”</b> to begin.
+                        </td>
+                    </tr>
+                `);
+                rowCounter = 0;
+            });
+        });
+
+        function AjaxPostAndUpdateStandingOrdersManual(form) {
+            $.validator.unobtrusive.parse(form);
+
+            const rowCount = $('#manualRowsTable tbody tr').not('.empty-row').length;
+            if (rowCount <= 0) {
+                appalert('Please add at least one row before creating standing orders.', 2, 1);
+                return false;
+            }
+
+            // collect
+            const rows = [];
+            $('#manualRowsTable tbody tr').not('.empty-row').each(function () {
+                const $r = $(this);
+                rows.push({
+                    MemberId: ($r.find('.member-id').val() || '').trim(),
+                    MemberName: ($r.find('.member-name').val() || '').trim(),
+                    Amount: parseFloat($r.find('.amount').val()) || 0,
+                    Reason: ($r.find('.reason').val() || '').trim()
+                });
+            });
+
+            // simple validation
+            if (rows.some(x => !x.MemberId || x.Amount <= 0 || !x.Reason)) {
+                appalert('Please ensure Member Reference, Amount (>0) and Reason are filled for all rows.', 2, 1);
+                return false;
+            }
+
+            if ($(form).valid()) {
+                alertify.confirm("Confirmation", `Create standing orders for ${rows.length} row(s)?`,
+                    function () {
+
+                        // Your backend can infer Reason/purpose from Reason
+                        const requestData = { Rows: rows };
+
+                        $.ajax({
+                            type: 'POST',
+                            url: form.action,
+                            data: JSON.stringify(requestData),
+                            contentType: 'application/json',
+                            success: function (response) {
+                                if (response && response.success) {
+                                    appalert(response.message || 'Created successfully', 1, 1);
+                                    // If API returns updated results, refresh preview
+                                    if (Array.isArray(response.data)) {
+                                        displayStandingOrderCreationPreviewResult(response.data,'1');
+                                        updateSummaryBadges2(response.data,'1');
+                                    }
+                                } else {
+                                    appalert(response?.message || 'Creation failed', 2, 1);
+                                }
+                            },
+                            error: function (err) {
+                                console.error(err);
+                                if (err.status === 401) window.location.href = '/Authentication/Login';
+                                else appalert(err.responseJSON?.message || err.statusText || 'An error occurred', 2, 1);
+                            }
+                        });
+
+                    },
+                    function () { appalert('Creation cancelled', 3, 1); }
+                );
+            }
+            return false;
+        }
+    </script>
+}

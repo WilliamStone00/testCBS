@@ -135,6 +135,10 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllStandingOrder = "/api/v1/StandingOrder/all";
         public static string CreateStandingOrder = "/api/v1/StandingOrder/create";
         public static string Get_StandingOrderByMemberId = "/api/v1/StandingOrder/member/{0}";
+        public static string CreateStandingOrderMemberRegistrationFromFileUpload = "/api/v1/StandingOrder/member-registration/file-upload/create/{0}";
+        public static string UploadStandingOrderMemberRegistrationPreview = "/api/v1/StandingOrder/member-registration/file-upload/preview";
+        public static string MemberBulkStandingOrderRegistration = "/api/v1/StandingOrder/member-registration/bulk-create";
+        public static string StandingOrder_Listing = "/api/v1/StandingOrder/member-registration/data-table";
 
         //FileUpload
         public static string SetPrivatePublicStatus = "/api/v1/FileUpload/set-private";
@@ -1860,7 +1864,7 @@ namespace CBS.FrontDesk.Helper
         public static string SharedMonthUpload = "/api/v1/ProcessesExternalShareMonth/ShareMonthFile";
         //------------------------- LoanTargetCatalog ----------------
         public const string LoanTargetCatalogCreate = "/api/v1/LoanTargetCatalog/Create";
-        public const string LoanTargetCatalogGet = "/api/v1/LoanTargetCatalog/Get";
+        public const string LoanTargetCatalogGet = "/api/v1/LoanTargetCatalog/Get?id={0}";
         public const string LoanTargetCatalogGetAll = "/api/v1/LoanTargetCatalog/GetAll";
         public const string LoanTargetCatalogUpdate = "/api/v1/LoanTargetCatalog/Update";
         public const string LoanTargetCatalogDelete = "/api/v1/LoanTargetCatalog/Delete";
