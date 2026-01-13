@@ -177,7 +177,7 @@
     </div>
 
     <!-- Details Modal -->
-    <div class="modal fade" id="soDetailsModal" tabindex="-1" aria-hidden="true">
+    <!--<div class="modal fade" id="soDetailsModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
@@ -189,10 +189,91 @@
                 </div>
             </div>
         </div>
+    </div>-->
+    <!-- Standing Order Details Modal -->
+    <div class="modal fade" id="soDetailsModal" tabindex="-1" aria-labelledby="soDetailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content position-relative">
+
+                <!-- Loader Overlay -->
+                <div id="soDetailsLoader" class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 d-none z-3" style="z-index: 1055;">
+                    <div class="d-flex flex-column justify-content-center align-items-center h-100 text-center">
+                        <div class="spinner-border text-primary mb-3" role="status"></div>
+                        <p class="fw-semibold text-primary">Loading Standing Order details...</p>
+                    </div>
+                </div>
+
+                <!-- Modal Header -->
+                <div class="modal-header border-0">
+                    <div class="w-100">
+                        <div class="card bg-light mb-2">
+                            <div class="card-body text-center">
+                                <h1 class="card-title text-primary" id="soDetailsModalLabel">
+                                    <i class="mdi mdi-file-document-outline me-2"></i> Standing Order Details
+                                </h1>
+                                <p class="mb-1 text-muted" id="soDetailsSubtitle">View full standing order information and audit details.</p>
+                                <hr style="border: 2px solid rgba(128, 128, 128, 0.35);" />
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close position-absolute end-0 top-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <!-- Tips Section -->
+                <div class="card mx-3 mb-2">
+                    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+                        <span><i class="mdi mdi-information-outline me-2"></i> Tips</span>
+                        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSoDetailsTips" aria-expanded="false" aria-controls="collapseSoDetailsTips">
+                            <i class="mdi mdi-chevron-down"></i>
+                        </button>
+                    </h6>
+                    <div id="collapseSoDetailsTips" class="collapse">
+                        <div class="card-body">
+                            <ul class="mb-0">
+                                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Confirm Member ID, Amount, and Account Types match the intended instruction.</li>
+                                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> Review Start/End dates carefully before activating recurring execution.</li>
+                                <li><i class="mdi mdi-shield-check-outline text-success me-2"></i> All changes should be logged and auditable.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Content -->
+                <div class="modal-body p-4">
+                    <!-- Dynamic Details HTML will be injected here -->
+                    <div id="soDetailsBody" class="so-modal-body">
+                        <div class="text-center text-muted py-4">
+                            <i class="mdi mdi-dots-horizontal-circle-outline me-1"></i>
+                            Details will appear here.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                @*<div class="modal-footer border-0 justify-content-between">
+                    <div>
+                        <span class="text-muted fw-semibold">
+                            Standing Order ID: <span class="text-dark" id="soDetailsIdDisplay">N/A</span>
+                        </span>
+                    </div>
+                    <div class="text-center w-100">
+                        <small class="text-muted">Powered by FLX-CBS</small>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <i class="mdi mdi-close"></i> Close
+                        </button>
+                    </div>
+                </div>*@
+
+            </div>
+        </div>
     </div>
 
+
+
     <!-- Create/Edit Modal (optional) -->
-    <div class="modal fade" id="soEditModal" tabindex="-1" aria-hidden="true">
+    <!--<div class="modal fade" id="soEditModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
@@ -201,7 +282,99 @@
                 <div class="modal-body"></div>
             </div>
         </div>
+    </div>-->
+    <!-- Standing Order Create/Edit Modal -->
+    <div class="modal fade" id="soEditModal" tabindex="-1" aria-labelledby="soEditModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content position-relative">
+
+                <!-- Loader Overlay -->
+                <div id="soEditLoader" class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 d-none z-3" style="z-index: 1055;">
+                    <div class="d-flex flex-column justify-content-center align-items-center h-100 text-center">
+                        <div class="spinner-border text-primary mb-3" role="status"></div>
+                        <p class="fw-semibold text-primary">Loading Standing Order form...</p>
+                    </div>
+                </div>
+
+                <!-- Modal Header -->
+                <div class="modal-header border-0">
+                    <div class="w-100">
+                        <div class="card bg-light mb-2">
+                            <div class="card-body text-center">
+                                <h1 class="card-title text-primary" id="soEditModalLabel">
+                                    <i class="mdi mdi-pencil-box-outline me-2"></i> Standing Order Form
+                                </h1>
+                                <p class="mb-1 text-muted" id="soEditSubtitle">Create or update a standing order for a member.</p>
+                                <hr style="border: 2px solid rgba(128, 128, 128, 0.35);" />
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close position-absolute end-0 top-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <!-- Tips Section -->
+                <div class="card mx-3 mb-2">
+                    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+                        <span><i class="mdi mdi-information-outline me-2"></i> About this form</span>
+                        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSoEditTips" aria-expanded="false" aria-controls="collapseSoEditTips">
+                            <i class="mdi mdi-chevron-down"></i>
+                        </button>
+                    </h6>
+                    <div id="collapseSoEditTips" class="collapse">
+                        <div class="card-body">
+                            <ul class="mb-0">
+                                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i><strong>Important:</strong> Ensure amount and purpose are correct before saving.</li>
+                                <li><i class="mdi mdi-check-decagram text-success me-2"></i><strong>Validation:</strong> Required fields must be completed.</li>
+                                <li><i class="mdi mdi-calendar-range text-info me-2"></i><strong>Dates:</strong> Confirm Start/End dates align with expected execution window.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Content -->
+                <div class="modal-body p-4">
+                    <!-- Dynamic Form HTML will be injected here -->
+                    <div id="soEditBody" class="so-modal-body">
+                        <div class="text-center text-muted py-4">
+                            <i class="mdi mdi-dots-horizontal-circle-outline me-1"></i>
+                            Form will appear here.
+                        </div>
+                    </div>
+
+                    <!-- Optional warning -->
+                    <div class="alert alert-warning mt-4">
+                        <i class="mdi mdi-alert-outline me-2"></i>
+                        <strong>Warning:</strong> Please verify details carefully before saving changes.
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <!--<div class="modal-footer border-0 justify-content-between">
+                    <div>
+                        <span class="text-muted fw-semibold">
+                            Mode: <span class="text-dark" id="soEditModeDisplay">Create</span>
+                            | ID: <span class="text-dark" id="soEditIdDisplay">N/A</span>
+                        </span>
+                    </div>
+                    <div class="text-center w-100">
+                        <small class="text-muted">Powered by FLX-CBS</small>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-outline-secondary me-2" data-bs-dismiss="modal">
+                            <i class="mdi mdi-close"></i> Cancel
+                        </button>-->
+
+                        <!-- If you prefer the button to be inside the injected form, you can remove this -->
+                        <!--<button type="button" class="btn btn-primary" id="soEditSaveBtn">
+                            <i class="mdi mdi-content-save-outline"></i> Save
+                        </button>
+                    </div>
+                </div>-->
+
+            </div>
+        </div>
     </div>
+
 
 </div>
 
