@@ -32,10 +32,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.IPS
         private readonly AffiliateAccountService _AffiliateAccountService;
 
 
-        public IPSClaimController(
-                IPSClaimService ipsClaimService,
-                BranchServices branchServices,
-                CustomerService customerService, CashDeskServices cashDeskServices,AffiliateAccountService AffiliateAccountService,BranchAccountService BranchAccountService)
+        public IPSClaimController(IPSClaimService ipsClaimService,BranchServices branchServices,        CustomerService customerService, CashDeskServices cashDeskServices,AffiliateAccountService AffiliateAccountService,BranchAccountService BranchAccountService)
             {
          
             _ipsClaimService = ipsClaimService;
