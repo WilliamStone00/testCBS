@@ -1,78 +1,140 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SalaryManagement.StandingOrderCarrier
 @using Resources
 
+<style>
+    .so-wrap .card {
+        border-radius: 12px;
+    }
 
-<div class="accordion" id="standingOrderAccordion">
-    <!-- Standing Order Form Section -->
-    <div class="accordion-item mb-3">
-        <h2 class="accordion-header" id="standingOrderFormHeading">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#standingOrderFormCollapse" aria-expanded="false" aria-controls="standingOrderFormCollapse">
-                @GlobalStandingOrder.STANDING_ORDER_FORM
-            </button>
-        </h2>
-        <div id="standingOrderFormCollapse" class="accordion-collapse collapse show" aria-labelledby="standingOrderFormHeading" data-bs-parent="#standingOrderAccordion">
-            <div class="accordion-body">
-                <!-- Tips Section -->
-                <div class="card mb-2">
-                    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-                        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalStandingOrder.TIPS</span>
-                        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseStandingOrderTipsx" aria-expanded="false" aria-controls="collapseStandingOrderTips">
-                            <i class="mdi mdi-chevron-down"></i>
-                        </button>
-                    </h6>
-                    <div id="collapseStandingOrderTipsx" class="collapse">
-                        <div class="card-body">
-                            <ul class="mb-0">
-                                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalStandingOrder.EnsureTheAccountHoldersName.</li>
-                                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalStandingOrder.IfMakingPaymentsToExternalAccounts.</li>
-                                <li><i class="mdi mdi-information-outline text-primary me-2"></i> @GlobalStandingOrder.UseAppropriateSourceAndDestinationAccountTypes.</li>
-                                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> @GlobalStandingOrder.ChooseRealisticStartAndEndDates.</li>
-                                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalStandingOrder.RegularlyReviewActiveStandingOrders.</li>
-                                <li><i class="mdi mdi-information-outline text-primary me-2"></i> @GlobalStandingOrder.SetTheIsAutomaticOptionForSystemManagedExecution.</li>
-                                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> @GlobalStandingOrder.IfCreatingAStandingOrderForLoanRepayment.</li>
-                                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalStandingOrder.UseThePersonalNoteFieldToDocumentThePurpose.</li>
-                            </ul>
+    .so-wrap .section-title {
+        font-weight: 700;
+        font-size: .95rem;
+    }
+
+    .so-wrap .form-check-inline {
+        margin-right: 1rem;
+        margin-bottom: .35rem;
+    }
+
+    .so-wrap .divider {
+        border-top: 1px dashed #e5e7eb;
+        margin: 1rem 0;
+    }
+</style>
+
+<div class="so-wrap">
+
+    <div class="accordion" id="standingOrderAccordion">
+
+        <!-- Standing Order Form Section -->
+        <div class="accordion-item border-0 mb-3">
+            <h2 class="accordion-header" id="standingOrderFormHeading">
+                <button class="accordion-button" type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#standingOrderFormCollapse"
+                        aria-expanded="true"
+                        aria-controls="standingOrderFormCollapse">
+                    <i class="mdi mdi-repeat me-2 text-primary"></i> @GlobalStandingOrder.STANDING_ORDER_FORM
+                </button>
+            </h2>
+
+            <div id="standingOrderFormCollapse"
+                 class="accordion-collapse collapse show"
+                 aria-labelledby="standingOrderFormHeading"
+                 data-bs-parent="#standingOrderAccordion">
+
+                <div class="accordion-body p-0">
+
+                    <!-- Tips -->
+                    <div class="card mb-2">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span class="section-title text-primary">
+                                <i class="mdi mdi-information-outline me-2"></i> @GlobalStandingOrder.TIPS
+                            </span>
+                            <button class="btn btn-light btn-sm" type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#collapseStandingOrderTips"
+                                    aria-expanded="false"
+                                    aria-controls="collapseStandingOrderTips">
+                                <i class="mdi mdi-chevron-down"></i>
+                            </button>
+                        </div>
+
+                        <div id="collapseStandingOrderTips" class="collapse">
+                            <div class="card-body">
+                                <ul class="mb-0">
+                                    <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalStandingOrder.EnsureTheAccountHoldersName.</li>
+                                    <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalStandingOrder.IfMakingPaymentsToExternalAccounts.</li>
+                                    <li><i class="mdi mdi-information-outline text-primary me-2"></i> @GlobalStandingOrder.UseAppropriateSourceAndDestinationAccountTypes.</li>
+                                    <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> @GlobalStandingOrder.ChooseRealisticStartAndEndDates.</li>
+                                    <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalStandingOrder.RegularlyReviewActiveStandingOrders.</li>
+                                    <li><i class="mdi mdi-information-outline text-primary me-2"></i> @GlobalStandingOrder.SetTheIsAutomaticOptionForSystemManagedExecution.</li>
+                                    <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> @GlobalStandingOrder.IfCreatingAStandingOrderForLoanRepayment.</li>
+                                    <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalStandingOrder.UseThePersonalNoteFieldToDocumentThePurpose.</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                @using (Html.BeginForm("Create", "StandingOrder", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
-                {
-                    @Html.HiddenFor(model => model.AddOrUpdateStandingOrderCommand.Id)
-                    <fieldset class="fieldset-custom">
-                        <div class="change-group">
-                            <!-- Member Name and Reference -->
-                            <div class="row mt-2 gy-4">
-                                <div class="col-md-12">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.AddOrUpdateStandingOrderCommand.MemberName, new { @class = "form-control shadow-input-boxes", @readonly = true })
-                                        <label>@GlobalStandingOrder.AccountHolderName</label>
+                    @using (Html.BeginForm("Create", "StandingOrder", FormMethod.Post,
+                        new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                    {
+                        @Html.HiddenFor(model => model.AddOrUpdateStandingOrderCommand.Id)
+
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+
+                                <!-- MEMBER -->
+                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                    <div class="section-title text-primary">
+                                        <i class="mdi mdi-account me-2"></i> Member Information
                                     </div>
                                 </div>
-                                <div class="col-md-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.AddOrUpdateStandingOrderCommand.Amount, new { @class = "form-control shadow-input-boxes", type = "number", step = "0.01" })
+
+                                <div class="row g-3">
+                                    <div class="col-md-8">
+                                        <div class="form-floating">
+                                            @Html.TextBoxFor(m => m.AddOrUpdateStandingOrderCommand.MemberName,
+                                                new { @class = "form-control shadow-input-boxes", @readonly = true })
+                                            <label>@GlobalStandingOrder.AccountHolderName</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-floating">
+                                            @Html.TextBoxFor(m => m.AddOrUpdateStandingOrderCommand.MemberId,
+                                                new { @class = "form-control shadow-input-boxes", @readonly = true })
+                                            <label>@GlobalStandingOrder.AccountReferenceNumber</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-floating">
+                                            @Html.TextBoxFor(m => m.AddOrUpdateStandingOrderCommand.Amount,
+                                                new { @class = "form-control shadow-input-boxes", type = "number", step = "0.01", min = "0" })
+                                            <label>@GlobalStandingOrder.Amount</label>
+                                        </div>
                                         @Html.ValidationMessageFor(m => m.AddOrUpdateStandingOrderCommand.Amount, "", new { @class = "text-danger" })
-                                        <label>@GlobalStandingOrder.Amount</label>
                                     </div>
                                 </div>
-                                <div class="col-md-9">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.AddOrUpdateStandingOrderCommand.MemberId, new { @class = "form-control shadow-input-boxes", @readonly = true })
-                                        <label>@GlobalStandingOrder.AccountReferenceNumber</label>
-                                    </div>
+
+                                <div class="divider"></div>
+
+                                <!-- SOURCE -->
+                                <div class="section-title text-primary mb-2">
+                                    <i class="mdi mdi-source-branch me-2"></i> @GlobalStandingOrder.SourceAccountType
                                 </div>
-                            </div>
-                            <hr />
-                            <!-- Source Account Type -->
-                            <div class="row mt-2 gy-2">
-                                <div class="col-md-12">
-                                    <label class="form-label fw-bold">@GlobalStandingOrder.SourceAccountType</label>
-                                    <div class="d-flex align-items-center">
+
+                                <div class="bg-light rounded p-2">
+                                    <div class="d-flex flex-wrap">
                                         @foreach (var type in new[] { "Salary", "Deposit" })
                                         {
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" id="sourceType_@type" name="AddOrUpdateStandingOrderCommand.SourceAccountType" value="@type"
+                                                <input class="form-check-input"
+                                                       type="radio"
+                                                       id="sourceType_@type"
+                                                       name="AddOrUpdateStandingOrderCommand.SourceAccountType"
+                                                       value="@type"
                                                        @(Model.AddOrUpdateStandingOrderCommand.SourceAccountType == type ? "checked" : "") />
                                                 <label class="form-check-label" for="sourceType_@type">@type</label>
                                             </div>
@@ -80,28 +142,34 @@
                                     </div>
                                     @Html.ValidationMessageFor(m => m.AddOrUpdateStandingOrderCommand.SourceAccountType, "", new { @class = "text-danger" })
                                 </div>
-                            </div>
-                            <hr />
-                            <!-- External Account Section -->
-                            <div class="row mt-2 gy-2">
-                                <div class="col-md-12">
-                                    <div class="form-check">
-                                        @Html.CheckBoxFor(m => m.AddOrUpdateStandingOrderCommand.ExternalAccount, new { @class = "form-check-input", @id = "externalAccountCheckbox", @onchange = "toggleExternalAccountSection()" })
-                                        <label class="form-check-label" for="externalAccountCheckbox">@GlobalStandingOrder.MakePaymentToAnExternalAccount</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr />
 
-                            <!-- Destination Account Section -->
-                            <div id="destinationAccountSection" class="row mt-2 gy-2">
-                                <div class="col-md-12">
-                                    <label class="form-label fw-bold">@GlobalStandingOrder.DestinationAccountType</label>
-                                    <div class="d-flex align-items-center">
+                                <div class="divider"></div>
+
+                                <!-- EXTERNAL ACCOUNT TOGGLE -->
+                                <div class="section-title text-primary mb-2">
+                                    <i class="mdi mdi-bank-transfer me-2"></i> Destination / External Payment
+                                </div>
+
+                                <div class="form-check mb-2">
+                                    @Html.CheckBoxFor(m => m.AddOrUpdateStandingOrderCommand.ExternalAccount,
+                                        new { @class = "form-check-input", id = "externalAccountCheckbox" })
+                                    <label class="form-check-label" for="externalAccountCheckbox">
+                                        @GlobalStandingOrder.MakePaymentToAnExternalAccount
+                                    </label>
+                                </div>
+
+                                <!-- DESTINATION (internal) -->
+                                <div id="destinationAccountSection" class="bg-light rounded p-2">
+                                    <div class="fw-bold mb-2">@GlobalStandingOrder.DestinationAccountType</div>
+                                    <div class="d-flex flex-wrap">
                                         @foreach (var type in new[] { "Loan", "Savings", "OrdinaryShares", "PreferenceShare", "None" })
                                         {
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" id="destinationType_@type" name="AddOrUpdateStandingOrderCommand.DestinationAccountType" value="@type"
+                                                <input class="form-check-input"
+                                                       type="radio"
+                                                       id="destinationType_@type"
+                                                       name="AddOrUpdateStandingOrderCommand.DestinationAccountType"
+                                                       value="@type"
                                                        @(Model.AddOrUpdateStandingOrderCommand.DestinationAccountType == type ? "checked" : "") />
                                                 <label class="form-check-label" for="destinationType_@type">@type</label>
                                             </div>
@@ -109,165 +177,238 @@
                                     </div>
                                     @Html.ValidationMessageFor(m => m.AddOrUpdateStandingOrderCommand.DestinationAccountType, "", new { @class = "text-danger" })
                                 </div>
-                            </div>
 
-
-                            <!-- External Account Fields -->
-                            <div id="externalAccountSection" class="row mt-2 gy-2" style="display: none;">
-                                <div class="col-md-6">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.AddOrUpdateStandingOrderCommand.ExternalAccountNumber, new { @class = "form-control shadow-input-boxes" })
+                                <!-- EXTERNAL FIELDS -->
+                                <div id="externalAccountSection" class="row g-3 mt-1" style="display:none;">
+                                    <div class="col-md-6">
+                                        <div class="form-floating">
+                                            @Html.TextBoxFor(m => m.AddOrUpdateStandingOrderCommand.ExternalAccountNumber,
+                                                new { @class = "form-control shadow-input-boxes" })
+                                            <label>@GlobalStandingOrder.ExternalAccountNumber</label>
+                                        </div>
                                         @Html.ValidationMessageFor(m => m.AddOrUpdateStandingOrderCommand.ExternalAccountNumber, "", new { @class = "text-danger" })
-                                        <label>@GlobalStandingOrder.ExternalAccountNumber</label>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.AddOrUpdateStandingOrderCommand.ExternalAccountHolderName, new { @class = "form-control shadow-input-boxes" })
+                                    <div class="col-md-6">
+                                        <div class="form-floating">
+                                            @Html.TextBoxFor(m => m.AddOrUpdateStandingOrderCommand.ExternalAccountHolderName,
+                                                new { @class = "form-control shadow-input-boxes" })
+                                            <label>@GlobalStandingOrder.ExternalAccountHolderName</label>
+                                        </div>
                                         @Html.ValidationMessageFor(m => m.AddOrUpdateStandingOrderCommand.ExternalAccountHolderName, "", new { @class = "text-danger" })
-                                        <label>@GlobalStandingOrder.ExternalAccountHolderName</label>
                                     </div>
                                 </div>
-                            </div>
-                            <hr />
 
+                                <div class="divider"></div>
 
+                                <!-- PURPOSE -->
+                                <div class="section-title text-primary mb-2">
+                                    <i class="mdi mdi-bullseye-arrow me-2"></i> @GlobalStandingOrder.Purpose
+                                </div>
 
-                            <!-- Purpose -->
-                            <div class="row mt-2 gy-2">
-                                <div class="col-md-12">
-                                    <label class="form-label fw-bold">@GlobalStandingOrder.Purpose</label>
-                                    <div class="d-flex align-items-center">
+                                <div class="bg-light rounded p-2">
+                                    <div class="d-flex flex-wrap">
                                         @foreach (var purpose in new[] { "Loan_Repayment", "Cashin_to_Savings", "Cashin_to_OShare", "Payment_to_Ex_Account" })
                                         {
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" id="purpose_@purpose" name="AddOrUpdateStandingOrderCommand.Purpose" value="@purpose"
+                                                <input class="form-check-input"
+                                                       type="radio"
+                                                       id="purpose_@purpose"
+                                                       name="AddOrUpdateStandingOrderCommand.Purpose"
+                                                       value="@purpose"
                                                        @(Model.AddOrUpdateStandingOrderCommand.Purpose == purpose ? "checked" : "") />
-                                                <label class="form-check-label" for="purpose_@purpose">@purpose</label>
+                                                <label class="form-check-label" for="purpose_@purpose">@purpose.Replace("_", " ")</label>
                                             </div>
                                         }
                                     </div>
                                     @Html.ValidationMessageFor(m => m.AddOrUpdateStandingOrderCommand.Purpose, "", new { @class = "text-danger" })
                                 </div>
-                            </div>
-                            <hr />
 
-                            <!-- Start and End Date -->
-                            <div class="row mt-2 gy-2">
-                                <div class="col-md-6">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.AddOrUpdateStandingOrderCommand.StartDate, new { @class = "form-control shadow-input-boxes date-picker" })
+                                <div class="divider"></div>
+
+                                <!-- DATES -->
+                                <div class="section-title text-primary mb-2">
+                                    <i class="mdi mdi-calendar-range me-2"></i> Dates
+                                </div>
+
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <div class="form-floating">
+                                            @Html.TextBoxFor(m => m.AddOrUpdateStandingOrderCommand.StartDate,
+                                                new { @class = "form-control shadow-input-boxes date-picker", autocomplete = "off" })
+                                            <label>@GlobalStandingOrder.StartDate</label>
+                                        </div>
                                         @Html.ValidationMessageFor(m => m.AddOrUpdateStandingOrderCommand.StartDate, "", new { @class = "text-danger" })
-                                        <label>@GlobalStandingOrder.StartDate</label>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.AddOrUpdateStandingOrderCommand.EndDate, new { @class = "form-control shadow-input-boxes date-picker" })
+                                    <div class="col-md-6">
+                                        <div class="form-floating">
+                                            @Html.TextBoxFor(m => m.AddOrUpdateStandingOrderCommand.EndDate,
+                                                new { @class = "form-control shadow-input-boxes date-picker", autocomplete = "off" })
+                                            <label>@GlobalStandingOrder.EndDate</label>
+                                        </div>
                                         @Html.ValidationMessageFor(m => m.AddOrUpdateStandingOrderCommand.EndDate, "", new { @class = "text-danger" })
-                                        <label>@GlobalStandingOrder.EndDate</label>
                                     </div>
                                 </div>
-                            </div>
-                            <hr />
 
-                            <!-- Frequency and Priority -->
-                            <div class="row mt-2 gy-2">
-                                <div class="col-md-12">
-                                    <label class="form-label fw-bold">@GlobalStandingOrder.Frequency</label>
-                                    <div class="d-flex align-items-center">
-                                        @foreach (var frequency in new[] { "Monthly", "Weekly" })
-                                        {
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" id="frequency_@frequency" name="AddOrUpdateStandingOrderCommand.Frequency" value="@frequency"
-                                                       @(Model.AddOrUpdateStandingOrderCommand.Frequency == frequency ? "checked" : "") />
-                                                <label class="form-check-label" for="frequency_@frequency">@frequency</label>
+                                <div class="divider"></div>
+
+                                <!-- FREQUENCY + PRIORITY -->
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <div class="section-title text-primary mb-2">
+                                            <i class="mdi mdi-timer-outline me-2"></i> @GlobalStandingOrder.Frequency
+                                        </div>
+                                        <div class="bg-light rounded p-2">
+                                            <div class="d-flex flex-wrap">
+                                                @foreach (var frequency in new[] { "Monthly", "Weekly" })
+                                                {
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input"
+                                                               type="radio"
+                                                               id="frequency_@frequency"
+                                                               name="AddOrUpdateStandingOrderCommand.Frequency"
+                                                               value="@frequency"
+                                                               @(Model.AddOrUpdateStandingOrderCommand.Frequency == frequency ? "checked" : "") />
+                                                        <label class="form-check-label" for="frequency_@frequency">@frequency</label>
+                                                    </div>
+                                                }
                                             </div>
-                                        }
+                                            @Html.ValidationMessageFor(m => m.AddOrUpdateStandingOrderCommand.Frequency, "", new { @class = "text-danger" })
+                                        </div>
                                     </div>
-                                    @Html.ValidationMessageFor(m => m.AddOrUpdateStandingOrderCommand.Frequency, "", new { @class = "text-danger" })
-                                </div>
 
-                                <div class="col-md-12">
-                                    <label class="form-label fw-bold">@GlobalStandingOrder.Priority</label>
-                                    <div class="d-flex align-items-center">
-                                        @foreach (var priority in new[] { "High", "Medium", "Low" })
-                                        {
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" id="priority_@priority" name="AddOrUpdateStandingOrderCommand.Priority" value="@priority"
-                                                       @(Model.AddOrUpdateStandingOrderCommand.Priority == priority ? "checked" : "") />
-                                                <label class="form-check-label" for="priority_@priority">@priority</label>
+                                    <div class="col-md-6">
+                                        <div class="section-title text-primary mb-2">
+                                            <i class="mdi mdi-priority-high me-2"></i> @GlobalStandingOrder.Priority
+                                        </div>
+                                        <div class="bg-light rounded p-2">
+                                            <div class="d-flex flex-wrap">
+                                                @foreach (var priority in new[] { "High", "Medium", "Low" })
+                                                {
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input"
+                                                               type="radio"
+                                                               id="priority_@priority"
+                                                               name="AddOrUpdateStandingOrderCommand.Priority"
+                                                               value="@priority"
+                                                               @(Model.AddOrUpdateStandingOrderCommand.Priority == priority ? "checked" : "") />
+                                                        <label class="form-check-label" for="priority_@priority">@priority</label>
+                                                    </div>
+                                                }
                                             </div>
-                                        }
+                                            @Html.ValidationMessageFor(m => m.AddOrUpdateStandingOrderCommand.Priority, "", new { @class = "text-danger" })
+                                        </div>
                                     </div>
-                                    @Html.ValidationMessageFor(m => m.AddOrUpdateStandingOrderCommand.Priority, "", new { @class = "text-danger" })
                                 </div>
-                            </div>
-                            <hr />
 
-                            <!-- IsActive and IsAutomatic -->
-                            <div class="row mt-2 gy-2">
-                                <div class="col-md-6">
-                                    <div class="form-check">
-                                        @Html.CheckBoxFor(m => m.AddOrUpdateStandingOrderCommand.IsActive, new { @class = "form-check-input", @id = "IsActive" })
-                                        <label class="form-check-label" for="IsActive">@GlobalStandingOrder.KeepThisOrderActive.</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-check">
-                                        @Html.CheckBoxFor(m => m.AddOrUpdateStandingOrderCommand.IsAutomatic, new { @class = "form-check-input", @id = "IsAutomatic" })
-                                        <label class="form-check-label" for="IsAutomatic">@GlobalStandingOrder.ExecutedBySystemAutomatically.</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr />
+                                <div class="divider"></div>
 
-                            <!-- Personal Note -->
-                            <div class="row mt-2 gy-2">
-                                <div class="col-md-12">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextAreaFor(m => m.AddOrUpdateStandingOrderCommand.PersonalNote, new { @class = "form-control", @style = "height: 150px;" })
-                                        @Html.ValidationMessageFor(m => m.AddOrUpdateStandingOrderCommand.PersonalNote, "", new { @class = "text-danger" })
-                                        <label for="Description">@GlobalStandingOrder.PersonalNote</label>
+                                <!-- FLAGS -->
+                                <div class="section-title text-primary mb-2">
+                                    <i class="mdi mdi-toggle-switch-outline me-2"></i> Options
+                                </div>
+
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(m => m.AddOrUpdateStandingOrderCommand.IsActive,
+                                                new { @class = "form-check-input", id = "IsActive" })
+                                            <label class="form-check-label" for="IsActive">
+                                                @GlobalStandingOrder.KeepThisOrderActive.
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(m => m.AddOrUpdateStandingOrderCommand.IsAutomatic,
+                                                new { @class = "form-check-input", id = "IsAutomatic" })
+                                            <label class="form-check-label" for="IsAutomatic">
+                                                @GlobalStandingOrder.ExecutedBySystemAutomatically.
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <!-- Submit and Reset Buttons -->
-                            <div class="mt-2">
-                                @if (ViewBag.Key != null)
-                                {
-                                    <input type="hidden" name="Action" value="update" />
-                                    <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
-                                }
-                                else
-                                {
-                                    <input type="hidden" name="Action" value="insert" />
-                                    <button type="submit" class="btn btn-primary me-2">@GlobalShared.Save</button>
-                                    <button type="reset" class="btn btn-outline-secondary">@GlobalShared.Reset</button>
-                                }
+
+                                <div class="divider"></div>
+
+                                <!-- NOTE -->
+                                <div class="section-title text-primary mb-2">
+                                    <i class="mdi mdi-note-text-outline me-2"></i> @GlobalStandingOrder.PersonalNote
+                                </div>
+
+                                <div class="form-floating">
+                                    @Html.TextAreaFor(m => m.AddOrUpdateStandingOrderCommand.PersonalNote,
+                                        new { @class = "form-control", style = "height: 140px;" })
+                                    <label>@GlobalStandingOrder.PersonalNote</label>
+                                </div>
+                                @Html.ValidationMessageFor(m => m.AddOrUpdateStandingOrderCommand.PersonalNote, "", new { @class = "text-danger" })
+
+                                <!-- ACTIONS -->
+                                <div class="d-flex gap-2 mt-3">
+                                    @if (ViewBag.Key != null)
+                                    {
+                                        <input type="hidden" name="Action" value="update" />
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="mdi mdi-content-save-edit-outline me-1"></i> @GlobalShared.Update
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <input type="hidden" name="Action" value="insert" />
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="mdi mdi-content-save-outline me-1"></i> @GlobalShared.Save
+                                        </button>
+                                        <button type="reset" class="btn btn-outline-secondary">
+                                            <i class="mdi mdi-refresh me-1"></i> @GlobalShared.Reset
+                                        </button>
+                                    }
+                                </div>
+
                             </div>
                         </div>
-                    </fieldset>
-                }
+                    }
+                </div>
             </div>
+
         </div>
     </div>
 </div>
 
 <script>
     $(document).ready(function () {
-        initializeDatePickers();
+        initStandingOrderUI();
+        initDatePickers();
     });
-    function initializeDatePickers() {
-        var datepickerList = document.querySelectorAll('.date-picker');
-        if (datepickerList.length > 0) {
-            datepickerList.forEach(function (datepicker) {
-                flatpickr(datepicker, {
-                    // Customize your date picker options here
-                    dateFormat: "Y-m-d",
-                    mode: 'range'
-                });
-            });
+
+    function initStandingOrderUI() {
+        toggleExternalAccountSection();
+
+        $('#externalAccountCheckbox').on('change', function () {
+            toggleExternalAccountSection();
+        });
+    }
+
+    function toggleExternalAccountSection() {
+        const isExternal = $('#externalAccountCheckbox').is(':checked');
+
+        if (isExternal) {
+            $('#externalAccountSection').slideDown(120);
+            $('#destinationAccountSection').hide(); // external payment doesn't need internal destination selection
+        } else {
+            $('#externalAccountSection').hide();
+            $('#destinationAccountSection').slideDown(120);
         }
+    }
+
+    function initDatePickers() {
+        const els = document.querySelectorAll('.date-picker');
+        if (!els || els.length === 0) return;
+
+        els.forEach(function (el) {
+            flatpickr(el, {
+                dateFormat: "Y-m-d",
+                allowInput: true
+                // IMPORTANT: do not use mode:'range' since StartDate and EndDate are separate inputs
+            });
+        });
     }
 </script>

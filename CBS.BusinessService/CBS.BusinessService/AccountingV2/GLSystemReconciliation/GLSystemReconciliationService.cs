@@ -251,38 +251,58 @@ namespace CBS.BusinessService.AccountingV2.GLSystemReconciliation
             }
         }
         public async Task<ApiResponse<bool>> UpdateTillClosePayloadAsync(
-    string trackerId,
-    string payloadJson)
+     string trackerId,
+     string payloadJson)
         {
             if (string.IsNullOrWhiteSpace(trackerId))
-                throw new ArgumentNullException(nameof(trackerId));
+                return new ApiResponse<bool>
+                {
+                    IsSuccess = false,
+                    Message = "TrackerId is required",
+                    ApiResponseData = false
+                };
 
             if (string.IsNullOrWhiteSpace(payloadJson))
-                throw new ArgumentNullException(nameof(payloadJson));
+                return new ApiResponse<bool>
+                {
+                    IsSuccess = false,
+                    Message = "Payload is required",
+                    ApiResponseData = false
+                };
 
             try
             {
                 var request = new
                 {
-                    command = "PushJournalExecutionWithModifyCommand",
-                    trackerId = trackerId,
-                    payload = payloadJson // ✅ STRING, not object
+                    trackerId,
+                    payload = payloadJson
                 };
 
-                var apiResponse =
-                    await _systemReconciliationapiCallerHelper
-                        .PostAsync<ApiResponse<bool>>(
-                            APICallHelper.UpdateTillClosePayload,
-                            request
-                        );
+                // ✅ Pass inner type
+                var apiResponse = await _systemReconciliationapiCallerHelper
+                    .PostAsync<bool>(
+                        APICallHelper.UpdateTillClosePayload,
+                        request
+                    );
 
-                return apiResponse.ApiResponseData;
+                // ✅ Return the full ApiResponse<bool>
+                return apiResponse;
             }
             catch (Exception ex)
             {
-                throw new Exception($"API call failed: {ex.Message}", ex);
+                return new ApiResponse<bool>
+                {
+                    IsSuccess = false,
+                    Message = $"API call failed: {ex.Message}",
+                    ApiResponseData = false
+                };
             }
         }
+
+
+
+
+
 
 
 

@@ -1,0 +1,39 @@
+﻿@* _DataStandingOrders.cshtml *@
+@using Resources
+
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table id="myDataTable" class="table table-striped table-hover table-bordered" style="width:100%">
+                <colgroup>
+                    <col style="width:14%" />  @* CreatedDate *@
+                    <col style="width:12%" />  @* MemberId *@
+                    <col style="width:18%" />  @* MemberName *@
+                    <col style="width:12%" />  @* Amount *@
+                    <col style="width:12%" />  @* Source *@
+                    <col style="width:12%" />  @* Destination *@
+                    <col style="width:10%" />  @* Frequency *@
+                    <col style="width:10%" />  @* Status *@
+                    <col style="width:10%" />  @* Actions *@
+                </colgroup>
+
+                <thead class="table-light">
+                    <tr>
+                        <th>Created Date</th>
+                        <th>Member Ref</th>
+                        <th>Member Name</th>
+                        <th class="text-end">Amount</th>
+                        <th>Source</th>
+                        <th>Destination</th>
+                        <th>Frequency</th>
+                        <th>Status</th>
+                        <th style="width:160px">Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

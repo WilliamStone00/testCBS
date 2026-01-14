@@ -1,8 +1,10 @@
 ﻿
 using BusinessServices;
 using CBS.API.Helper;
+using CBS.FrontDesk.Data.Entity.Accounting_V2.AffiliateAccount;
 using CBS.FrontDesk.Data.Entity.AccountingDayObject;
 using CBS.FrontDesk.Data.Entity.CashCeilingManagement;
+using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.SalaryManagement;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Entity.VaultManagement;
@@ -212,13 +214,13 @@ namespace CBS.BusinessService.Accounts
 
         }
 
-        public async Task<ExecutionMessages> RegisterListOfStandingOrdersAsync(RegisterStandingOrderUploadMain orderUploadMain)
+        public async Task<ApiResponse<ServiceResponse<StandingOrderMemberRegistrationUploadSummary>>> RegisterListOfStandingOrdersAsync(RegisterStandingOrderUploadMain orderUploadMain)
         {
 
-            try
-            {
-                var response = await _transactionApiHelper.PostAsync<ServiceResponse<StandingOrder>>(APICallHelper.MemberBulkStandingOrderRegistration, orderUploadMain);
-                if (response.IsSuccess)
+            /*try
+            {*/
+                return await _transactionApiHelper.PostAsync<ServiceResponse<StandingOrderMemberRegistrationUploadSummary>>(APICallHelper.MemberBulkStandingOrderRegistration, orderUploadMain);
+                /*if (response.IsSuccess)
                 {
                     // Successful creation
                     GetExecutionMessages(response, true, null, MessagesResults.Success,
@@ -230,15 +232,45 @@ namespace CBS.BusinessService.Accounts
                     // Failed creation
                     GetExecutionMessages(orderUploadMain, false, null, MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
-                }
-            }
+                }*/
+          /*  }
             catch (Exception ex)
             {
                 // Log and handle exception
                 GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
                     SystemMessageStatus.Failed.ToString(), ex);
             }
-            return ExecutionMessage;
+            return ExecutionMessage;*/
+        }
+
+        public async Task<CustomDataTable> GetStandingOrderDataTableAsync(StandingOrderDataTableQuery query)
+        {
+            try
+            {
+                var response = await _transactionApiHelper.PostAsync<ResponseObject<CustomDataTable>>(
+                    APICallHelper.StandingOrder_Listing, query);
+
+                // ⚠️ CRITICAL: If API call fails or returns unsuccessful, THROW exception
+                if (!response.IsSuccess)
+                {
+                    throw new Exception($"API call failed: {response.Message}");
+                }
+
+                if (response.ApiResponseData == null)
+                {
+                    throw new Exception("API returned null data");
+                }
+
+                return response.ApiResponseData.Data;
+            }
+            catch (Exception ex)
+            {
+                // Log the original exception
+                System.Diagnostics.Debug.WriteLine($"API Error: {ex.Message}");
+
+                // Re-throw to trigger fallback
+                throw new Exception($"service unavailable: {ex.Message}", ex);
+            }
         }
 
     }

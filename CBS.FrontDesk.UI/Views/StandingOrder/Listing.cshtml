@@ -1,0 +1,588 @@
+﻿@model  CBS.FrontDesk.Data.Entity.SalaryManagement.StandingOrderDataTableQuery
+    @* create a simple query model OR reuse your existing query *@
+@using Resources
+@{
+    ViewBag.Title = "Standing Orders - Filters";
+}
+
+<style>
+    .compact .card {
+        margin-bottom: .5rem !important
+    }
+
+    .compact .card-body {
+        padding: .75rem !important
+    }
+
+    .compact .card-header {
+        padding: .5rem .75rem !important
+    }
+
+    .compact .form-label {
+        margin-bottom: .2rem !important
+    }
+
+    .compact .form-check {
+        margin-bottom: 0 !important
+    }
+
+    .compact .row.g-1 > [class^="col-"] {
+        margin-bottom: .5rem
+    }
+</style>
+
+<div class="compact">
+    @*Header*@
+    <div class="row mb-2">
+        <div class="col-12">
+            <div class="card bg-light">
+                <div class="card-body text-center py-2">
+                    <h5 class="card-title text-primary mb-1">
+                        <i class="mdi mdi-repeat me-2"></i> Standing Order Management
+                    </h5>
+                    <p class="card-text small mb-0">
+                        Register, review and manage member standing orders (filters + server-side datatable).
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tips -->
+    <div class="card mb-2">
+        <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+            <span class="small"><i class="mdi mdi-information-outline me-2"></i>Tips</span>
+            <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSOTips" aria-expanded="false">
+                <i class="mdi mdi-chevron-down"></i>
+            </button>
+        </h6>
+        <div id="collapseSOTips" class="collapse">
+            <div class="card-body py-2">
+                <ul class="mb-0 small">
+                    <li><i class="mdi mdi-check-circle-outline text-success me-2"></i>Use filters to reduce dataset before loading.</li>
+                    <li><i class="mdi mdi-filter-outline text-secondary me-2"></i>Dates filter standing orders by start/end date window.</li>
+                    <li><i class="mdi mdi-toggle-switch-outline text-info me-2"></i>Active filter helps audit operational standing orders.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="card shadow-sm p-2 mb-2">
+        <h6 class="text-primary mb-2"><i class="mdi mdi-filter-outline me-1"></i>Filters</h6>
+
+        @using (Html.BeginForm("Index", "StandingOrder", FormMethod.Get, new { id = "soFilterForm", autocomplete = "off" }))
+        {
+            <div class="card p-2 mb-2 bg-light">
+
+                <div class="row g-1">
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold small">Branch</label>
+                        @Html.DropDownList("BranchId",
+                            new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name"),
+                            "--- All Branches ---",
+                            new { @class = "form-select form-select-sm select2", id = "BranchId" })
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold small">Member Reference</label>
+                        <input id="MemberId" class="form-control form-control-sm" placeholder="e.g. 5467" />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold small">Member Name</label>
+                        <input id="MemberName" class="form-control form-control-sm" placeholder="Member name" />
+                    </div>
+                </div>
+
+                <div class="row g-1 mt-1">
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold small">Source Account Type</label>
+                        @Html.DropDownList("SourceAccountType",
+                            new SelectList(ViewBag.SourceAccountTypes ?? new List<SelectListItem>(), "Value", "Text"),
+                            "--- Any ---",
+                            new { @class = "form-select form-select-sm select2", id = "SourceAccountType" })
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold small">Destination Account Type</label>
+                        @Html.DropDownList("DestinationAccountType",
+                            new SelectList(ViewBag.DestinationAccountTypes ?? new List<SelectListItem>(), "Value", "Text"),
+                            "--- Any ---",
+                            new { @class = "form-select form-select-sm select2", id = "DestinationAccountType" })
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold small">Frequency</label>
+                        @Html.DropDownList("Frequency",
+                            new SelectList(ViewBag.Frequencies ?? new List<SelectListItem>(), "Value", "Text"),
+                            "--- Any ---",
+                            new { @class = "form-select form-select-sm select2", id = "Frequency" })
+                    </div>
+                </div>
+
+                <div class="row g-1 mt-1">
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold small">Status</label>
+                        <select id="IsActive" class="form-select form-select-sm select2">
+                            <option value="">--- Any ---</option>
+                            <option value="true">Active</option>
+                            <option value="false">Inactive</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold small">Start Date</label>
+                        <input id="StartDate" type="date" class="form-control form-control-sm" />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold small">End Date</label>
+                        <input id="EndDate" type="date" class="form-control form-control-sm" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-2">
+                <div class="col-md-12 d-flex gap-2">
+                    <button id="applySOFilterBtn" type="button" class="btn btn-primary btn-sm flex-fill">
+                        <i class="mdi mdi-magnify"></i> Apply Filter
+                    </button>
+                    <button id="resetSOFilterBtn" type="button" class="btn btn-secondary btn-sm flex-fill">
+                        <i class="mdi mdi-refresh"></i> Reset
+                    </button>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Actions -->
+    @*<div class="d-flex justify-content-end mb-2">
+            <button id="btnCreateSO" type="button" class="btn btn-success btn-sm">
+                <i class="mdi mdi-plus-circle-outline me-1"></i> Create Standing Order
+            </button>
+        </div>*@
+
+    <div class="d-flex justify-content-end mb-2">
+        <a href="/StandingOrder/StandingOrderRegistration"
+           class="btn btn-success btn-sm">
+            <i class="mdi mdi-plus-circle-outline me-1"></i>
+            <span>Create Standing Order</span>
+        </a>
+    </div>
+
+    <!-- Data -->
+    <div id="datalistingview">
+        @Html.Partial("_DataStandingOrders")  @* ✅ create this partial *@
+    </div>
+
+    <!-- Details Modal -->
+    <!--<div class="modal fade" id="soDetailsModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>-->
+    <!-- Standing Order Details Modal -->
+    <div class="modal fade" id="soDetailsModal" tabindex="-1" aria-labelledby="soDetailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content position-relative">
+
+                <!-- Loader Overlay -->
+                <div id="soDetailsLoader" class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 d-none z-3" style="z-index: 1055;">
+                    <div class="d-flex flex-column justify-content-center align-items-center h-100 text-center">
+                        <div class="spinner-border text-primary mb-3" role="status"></div>
+                        <p class="fw-semibold text-primary">Loading Standing Order details...</p>
+                    </div>
+                </div>
+
+                <!-- Modal Header -->
+                <div class="modal-header border-0">
+                    <div class="w-100">
+                        <div class="card bg-light mb-2">
+                            <div class="card-body text-center">
+                                <h1 class="card-title text-primary" id="soDetailsModalLabel">
+                                    <i class="mdi mdi-file-document-outline me-2"></i> Standing Order Details
+                                </h1>
+                                <p class="mb-1 text-muted" id="soDetailsSubtitle">View full standing order information and audit details.</p>
+                                <hr style="border: 2px solid rgba(128, 128, 128, 0.35);" />
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close position-absolute end-0 top-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <!-- Tips Section -->
+                <div class="card mx-3 mb-2">
+                    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+                        <span><i class="mdi mdi-information-outline me-2"></i> Tips</span>
+                        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSoDetailsTips" aria-expanded="false" aria-controls="collapseSoDetailsTips">
+                            <i class="mdi mdi-chevron-down"></i>
+                        </button>
+                    </h6>
+                    <div id="collapseSoDetailsTips" class="collapse">
+                        <div class="card-body">
+                            <ul class="mb-0">
+                                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Confirm Member ID, Amount, and Account Types match the intended instruction.</li>
+                                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> Review Start/End dates carefully before activating recurring execution.</li>
+                                <li><i class="mdi mdi-shield-check-outline text-success me-2"></i> All changes should be logged and auditable.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Content -->
+                <div class="modal-body p-4">
+                    <!-- Dynamic Details HTML will be injected here -->
+                    <div id="soDetailsBody" class="so-modal-body">
+                        <div class="text-center text-muted py-4">
+                            <i class="mdi mdi-dots-horizontal-circle-outline me-1"></i>
+                            Details will appear here.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                @*<div class="modal-footer border-0 justify-content-between">
+                    <div>
+                        <span class="text-muted fw-semibold">
+                            Standing Order ID: <span class="text-dark" id="soDetailsIdDisplay">N/A</span>
+                        </span>
+                    </div>
+                    <div class="text-center w-100">
+                        <small class="text-muted">Powered by FLX-CBS</small>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <i class="mdi mdi-close"></i> Close
+                        </button>
+                    </div>
+                </div>*@
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Create/Edit Modal (optional) -->
+    <!--<div class="modal fade" id="soEditModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body"></div>
+            </div>
+        </div>
+    </div>-->
+    <!-- Standing Order Create/Edit Modal -->
+    <div class="modal fade" id="soEditModal" tabindex="-1" aria-labelledby="soEditModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content position-relative">
+
+                <!-- Loader Overlay -->
+                <div id="soEditLoader" class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 d-none z-3" style="z-index: 1055;">
+                    <div class="d-flex flex-column justify-content-center align-items-center h-100 text-center">
+                        <div class="spinner-border text-primary mb-3" role="status"></div>
+                        <p class="fw-semibold text-primary">Loading Standing Order form...</p>
+                    </div>
+                </div>
+
+                <!-- Modal Header -->
+                <div class="modal-header border-0">
+                    <div class="w-100">
+                        <div class="card bg-light mb-2">
+                            <div class="card-body text-center">
+                                <h1 class="card-title text-primary" id="soEditModalLabel">
+                                    <i class="mdi mdi-pencil-box-outline me-2"></i> Standing Order Form
+                                </h1>
+                                <p class="mb-1 text-muted" id="soEditSubtitle">Create or update a standing order for a member.</p>
+                                <hr style="border: 2px solid rgba(128, 128, 128, 0.35);" />
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close position-absolute end-0 top-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <!-- Tips Section -->
+                <div class="card mx-3 mb-2">
+                    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+                        <span><i class="mdi mdi-information-outline me-2"></i> About this form</span>
+                        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSoEditTips" aria-expanded="false" aria-controls="collapseSoEditTips">
+                            <i class="mdi mdi-chevron-down"></i>
+                        </button>
+                    </h6>
+                    <div id="collapseSoEditTips" class="collapse">
+                        <div class="card-body">
+                            <ul class="mb-0">
+                                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i><strong>Important:</strong> Ensure amount and purpose are correct before saving.</li>
+                                <li><i class="mdi mdi-check-decagram text-success me-2"></i><strong>Validation:</strong> Required fields must be completed.</li>
+                                <li><i class="mdi mdi-calendar-range text-info me-2"></i><strong>Dates:</strong> Confirm Start/End dates align with expected execution window.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Content -->
+                <div class="modal-body p-4">
+                    <!-- Dynamic Form HTML will be injected here -->
+                    <div id="soEditBody" class="so-modal-body">
+                        <div class="text-center text-muted py-4">
+                            <i class="mdi mdi-dots-horizontal-circle-outline me-1"></i>
+                            Form will appear here.
+                        </div>
+                    </div>
+
+                    <!-- Optional warning -->
+                    <div class="alert alert-warning mt-4">
+                        <i class="mdi mdi-alert-outline me-2"></i>
+                        <strong>Warning:</strong> Please verify details carefully before saving changes.
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <!--<div class="modal-footer border-0 justify-content-between">
+                    <div>
+                        <span class="text-muted fw-semibold">
+                            Mode: <span class="text-dark" id="soEditModeDisplay">Create</span>
+                            | ID: <span class="text-dark" id="soEditIdDisplay">N/A</span>
+                        </span>
+                    </div>
+                    <div class="text-center w-100">
+                        <small class="text-muted">Powered by FLX-CBS</small>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-outline-secondary me-2" data-bs-dismiss="modal">
+                            <i class="mdi mdi-close"></i> Cancel
+                        </button>-->
+
+                        <!-- If you prefer the button to be inside the injected form, you can remove this -->
+                        <!--<button type="button" class="btn btn-primary" id="soEditSaveBtn">
+                            <i class="mdi mdi-content-save-outline"></i> Save
+                        </button>
+                    </div>
+                </div>-->
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+(function($, w){
+  'use strict';
+
+  // ===== ROUTES =====
+  const dataUrl   = '@Url.Action("LoadStandingOrderData", "StandingOrder")';
+  const detailUrl = '@Url.Action("InitializeData", "StandingOrder")';
+  const initUrl   = '@Url.Action("InitializeData", "StandingOrder")';
+
+  let table = null, tableInitialized = false;
+
+  function getFilters(){
+    const isActiveVal = $('#IsActive').val();
+    return {
+      Options: {},
+      BranchId: $('#BranchId').val() || null,
+      MemberId: $.trim($('#MemberId').val()) || null,
+      MemberName: $.trim($('#MemberName').val()) || null,
+      SourceAccountType: $('#SourceAccountType').val() || null,
+      DestinationAccountType: $('#DestinationAccountType').val() || null,
+      Frequency: $('#Frequency').val() || null,
+      IsActive: isActiveVal === "" ? null : (isActiveVal === "true"),
+      StartDate: $('#StartDate').val() || null,
+      EndDate: $('#EndDate').val() || null
+    };
+  }
+
+  function showModalLoading(targetSel){
+    const $m = $(targetSel);
+    $(`${targetSel} .modal-body`).html('<div class="text-center py-4"><div class="spinner-border" role="status"></div></div>');
+    (bootstrap.Modal.getInstance($m[0]) || new bootstrap.Modal($m[0], { backdrop: 'static' })).show();
+  }
+
+  function loadIntoModal(modalSel, url, data){
+    $.get(url, data)
+      .done(html => {
+        showModalLoading(modalSel);
+        $(`${modalSel} .modal-body`).html(html || '<div class="text-center text-muted">No content.</div>');
+        if ($.fn.select2){
+          try {
+            $(`${modalSel} .select2`).each(function(){
+              if (!$(this).hasClass('select2-hidden-accessible')){
+                $(this).select2({ dropdownParent: $(modalSel) });
+              }
+            });
+          } catch(e){ console.warn('select2 in modal init failed', e); }
+        }
+      })
+      .fail(() => $(`${modalSel} .modal-body`).html('<div class="p-3 text-danger">Unable to load content. Please try again.</div>'));
+  }
+
+  function actionButtons(row){
+    const id = encodeURIComponent(String(row.Id || row.id || ''));
+    const btnId = 'so_act_' + (row.Id || row.id || Math.random().toString(36).slice(2));
+    return `
+      <div class="dropdown text-center">
+        <button class="btn btn-sm btn-info dropdown-toggle text-white" type="button" id="${btnId}" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="mdi mdi-cog-outline"></i> Actions
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="${btnId}">
+          <li><button type="button" class="dropdown-item btn-so-detail" data-id="${id}">
+            <i class="mdi mdi-eye me-1 text-primary"></i> Details</button></li>
+          <li><button type="button" class="dropdown-item btn-so-edit" data-id="${id}">
+            <i class="mdi mdi-pencil-outline me-1 text-info"></i> Edit</button></li>
+        </ul>
+      </div>`;
+  }
+
+  function initDataTable(){
+    const selector = '#myDataTable';
+    if ($.fn.DataTable.isDataTable(selector)){
+      try { $(selector).DataTable().destroy(); } catch(e){ console.warn('destroy failed', e); }
+      $(selector + ' tbody').empty();
+    }
+
+    table = $(selector).DataTable({
+      serverSide: true,
+      processing: false,
+      responsive: true,
+      autoWidth: false,
+      pageLength: 10,
+      order: [[0, 'desc']],
+      columnDefs: [
+        { targets: 0, width: '14%' }, // CreatedDate
+        { targets: 1, width: '12%' }, // MemberId
+        { targets: 2, width: '18%' }, // MemberName
+        { targets: 3, width: '12%', className: 'text-end' }, // Amount
+        { targets: 4, width: '12%' }, // Source
+        { targets: 5, width: '12%' }, // Dest
+        { targets: 6, width: '10%' }, // Frequency
+        { targets: 7, width: '10%' }, // Status
+        { targets: 8, width: '10%', className: 'text-end', orderable: false, searchable: false } // Actions
+      ],
+      ajax: {
+        url: dataUrl,
+        type: 'POST',
+        contentType: 'application/json; charset=utf-8',
+        data: function(d){
+          const filters = getFilters();
+          filters.Options = {
+            draw: d.draw,
+            start: d.start,
+            length: d.length,
+            skip: d.start,
+            pageSize: d.length,
+            searchValue: d.search?.value || '',
+            sortColumnName: '',
+            sortColumnDirection: ''
+          };
+          return JSON.stringify(filters);
+        },
+        dataSrc: function(json){
+          if (!json) return [];
+          if (Array.isArray(json.data)) return json.data;
+          if (Array.isArray(json.result)) return json.result;
+          if (Array.isArray(json.items)) return json.items;
+          for (var k in json){ if (Array.isArray(json[k])) return json[k]; }
+          return [];
+        },
+        error: function(){
+          $(selector + ' tbody').html('<tr><td colspan="9" class="text-center text-danger">Failed to load data.</td></tr>');
+        }
+      },
+      columns: [
+        {
+          data: 'CreatedDate', name: 'CreatedDate',
+          render: function(data, type, row){
+            const v = row.CreatedDate || row.createdDate;
+            return v ? (window.moment ? moment(v).format('DD/MM/YYYY HH:mm:ss') : v) : '-';
+          }
+        },
+        { data: 'MemberId', name: 'MemberId', render: (d,t,row) => row.MemberId || row.memberId || '' },
+        { data: 'MemberName', name: 'MemberName', render: (d,t,row) => row.MemberName || row.memberName || '' },
+        {
+          data: 'Amount', name: 'Amount', className: 'text-end',
+          render: function(d,t,row){
+            const amt = row.Amount ?? row.amount ?? 0;
+            return (window.formatCurrency ? formatCurrency(amt) : amt);
+          }
+        },
+        { data: 'SourceAccountType', name: 'SourceAccountType', render: (d,t,row) => row.SourceAccountType || row.sourceAccountType || '' },
+        { data: 'DestinationAccountType', name: 'DestinationAccountType', render: (d,t,row) => row.DestinationAccountType || row.destinationAccountType || '' },
+        { data: 'Frequency', name: 'Frequency', render: (d,t,row) => row.Frequency || row.frequency || '' },
+        {
+          data: 'IsActive', name: 'IsActive',
+          render: function(d,t,row){
+            const active = (row.IsActive ?? row.isActive) === true;
+            return active
+              ? '<span class="badge bg-success">Active</span>'
+              : '<span class="badge bg-secondary">Inactive</span>';
+          }
+        },
+        { data: null, orderable:false, searchable:false, className:'text-end', render: (d,t,row) => actionButtons(row) }
+      ],
+      language: { emptyTable: 'No standing orders found' }
+    });
+
+    tableInitialized = true;
+  }
+
+  function reloadTable(){
+    if (!tableInitialized){
+      if ($('#myDataTable').length === 0){ console.error('myDataTable markup missing. Ensure _DataStandingOrders partial is present.'); return; }
+      initDataTable();
+    } else if (table && table.ajax){
+      table.ajax.reload(null, false);
+    }
+  }
+
+  $(function(){
+    if ($.fn.select2){
+      try { $('.select2').select2({ width:'100%' }); } catch(e){ console.warn('select2 init failed', e); }
+    }
+
+    $('#applySOFilterBtn').on('click', function(e){ e.preventDefault(); reloadTable(); });
+
+    $('#resetSOFilterBtn').on('click', function(){
+      const $f = $('#soFilterForm'); if ($f.length) $f[0].reset();
+      if ($.fn.select2){ try { $('.select2').val(null).trigger('change'); } catch(_){} }
+      reloadTable();
+    });
+
+    $('#soFilterForm').on('keypress', 'input,select', function(e){
+      if (e.which === 13){ e.preventDefault(); reloadTable(); }
+    });
+
+    // Actions
+    $(document).on('click', '#btnCreateSO', function(){
+        loadIntoModal('#soEditModal', initUrl, { KEY: '', partialView:'_StandingOrderForm', path:'new', serviceOption:'StandingOrder' });
+    });
+
+    $('#datalistingview').on('click', '.btn-so-detail', function(){
+      const id = $(this).data('id'); if (!id) return;
+        loadIntoModal('#soDetailsModal', detailUrl, { KEY: id, partialView:'_StandingOrderDetailsPartial' });
+    });
+
+    $('#datalistingview').on('click', '.btn-so-edit', function(){
+      const id = $(this).data('id'); if (!id) return;
+        loadIntoModal('#soEditModal', initUrl, { KEY: id, partialView:'_StandingOrderForm', path:'get', serviceOption:'StandingOrder' });
+    });
+  });
+
+})(jQuery, window);
+    </script>
+}
