@@ -1,10 +1,5 @@
 ﻿@model IEnumerable<CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheque.CheckBookLeaf>
 
-<div class="modal fade" id="genericModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content"></div>
-    </div>
-</div>
 
 <div class="card mt-3 shadow-sm">
     <div class="card-header bg-light text-primary fw-bold">
@@ -17,25 +12,25 @@
                    id="myDataTable_chequeLeaves">
                 <thead class="table-light">
                     <tr>
-                        <th>Leaf #</th>
+                        <th>Leaf</th>
+                        <th>CheckBook ID</th>
                         <th>Status</th>
                         <th>Issued Date</th>
                         <th>Issued To</th>
-                        <th>CheckBook ID</th>
                         <th style="width:15%">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var leaf in Model)
                     {
-                        var isAvailable = leaf.Status == "Available";
+                        var isAvailable = leaf.Status == "UNUSED";
                         var isIssued = leaf.Status == "Issued";
 
                         <tr class="@(isIssued ? "table-warning" : "")">
                             <td class="fw-bold text-primary">
                                 @leaf.SerialNumber.ToString("D3")
                             </td>
-
+                            <td>@leaf.CheckBookId</td>
                             <td>
                                 <span class="badge @(isAvailable ? "bg-success" : isIssued ? "bg-warning" : "bg-secondary")">
                                     @leaf.Status
@@ -51,8 +46,6 @@
                             <td>
                                 @(string.IsNullOrEmpty(leaf.IssuedTo) ? "-" : leaf.IssuedTo)
                             </td>
-
-                            <td>@leaf.CheckBookId</td>
 
                             <td>
                                 @if (isAvailable)
@@ -75,39 +68,20 @@
                                         </button>
 
                                         <ul class="dropdown-menu dropdown-menu-end shadow-sm animate__animated animate__fadeIn">
-                                            @*<li>
-                                                <a class="dropdown-item d-flex align-items-center"
-                                                   href="@Url.Action("CounterRequest", "CounterCheque", new { leafId = leaf.Id })"
-                                                   target="_blank">
-                                                    <i class="mdi mdi-file-document-outline text-primary me-2"></i>
-                                                    <span>Counter Request</span>
-                                                </a>
-                                            </li>*@
-
-                                            <li>
+                                          <li>
                                                 <button class="dropdown-item btn-create" data-id="@leaf.Id">
                                                     <i class="mdi mdi-file-document-outline text-primary me-2"></i>
                                                     <span>Counter Request</span>
                                                 </button>
-                                            </li>
+                                          </li>                                           
 
                                             <li>
-                                                <a class="dropdown-item d-flex align-items-center"
-                                                   href="@Url.Action("Approval", "CounterCheque", new { leafId = leaf.Id })"
-                                                   target="_blank">
-                                                    <i class="mdi mdi-check-circle-outline text-success me-2"></i>
-                                                    <span>Approval</span>
-                                                </a>
-                                            </li>
-
-                                            <li>
-                                                <a class="dropdown-item d-flex align-items-center"
-                                                   href="@Url.Action("Payment", "CounterCheque", new { leafId = leaf.Id })"
-                                                   target="_blank">
-                                                    <i class="mdi mdi-cash text-warning me-2"></i>
-                                                    <span>Payment</span>
-                                                </a>
-                                            </li>
+                                                <button type="button"
+                                                        class="btn btn-sm btn-outline-primary view-leaf-btn"
+                                                        data-leaf-id="@leaf.Id">
+                                                    <i class="mdi mdi-eye"></i> View Details
+                                                </button>
+                                            </li>                                           
                                         </ul>
                                     </div>
                                 }
@@ -122,13 +96,7 @@
 </div>
 
 <script>
-
-    $(document).on('click', '.btn-create', function () {
-        var id = $(this).data('id');
-       ShowModal(id, '_CounterRequest', 'CounterCheque', 'new');
-    });
-
-    $(document).ready(function () {
+        $(document).ready(function () {
         $('#myDataTable_chequeLeaves').DataTable({
             pageLength: 10,
             ordering: true,
