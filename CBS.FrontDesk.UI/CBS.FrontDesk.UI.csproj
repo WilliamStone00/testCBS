@@ -2221,6 +2221,7 @@
     <Compile Include="Controllers\ChequeManagementSystem\Operations\ChequeCancelation\CancellationRequestController.cs" />
     <Compile Include="Controllers\ChequeManagementSystem\Operations\ChequeRequest\ChequeRequestController.cs" />
     <Compile Include="Controllers\ChequeManagementSystem\Operations\CounterCheque\CounterChequeController.cs" />
+    <Compile Include="Controllers\Communication\CommunicationController.cs" />
     <Compile Include="Controllers\DailyCollectorManagement\DailyCollectionDashboardController.cs" />
     <Compile Include="Controllers\DailyCollectorManagement\DailySaverRequest.cs" />
     <Compile Include="Controllers\DailyCollectorManagement\FileValidationController.cs" />
@@ -8215,7 +8216,6 @@
     <None Include="Properties\PublishProfiles\Buea_PT.pubxml" />
     <None Include="Properties\PublishProfiles\CamCCULAdmin_TB.pubxml" />
     <None Include="Properties\PublishProfiles\Cpcmc_TB.pubxml" />
-    <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\PB.pubxml" />
     <None Include="Properties\PublishProfiles\Prod Vb Deploy.pubxml" />
@@ -8223,6 +8223,7 @@
     <None Include="Properties\PublishProfiles\Production Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\TB.pubxml" />
     <None Include="Properties\PublishProfiles\TBED.pubxml" />
+    <None Include="Properties\PublishProfiles\Testbed Deploy.pubxml" />
     <None Include="Resources\TextFile1.txt" />
     <Content Include="DataSet\Transaction\TransactionDS.xsc">
       <DependentUpon>TransactionDS.xsd</DependentUpon>
@@ -11273,6 +11274,8 @@
     <Content Include="Views\StandingOrder\_DataStandingOrders.cshtml" />
     <Content Include="Views\StandingOrder\Listing.cshtml" />
     <Content Include="Views\SalaryUpload\SharedMonthDetails.cshtml" />
+    <Content Include="Views\Communication\Index.cshtml" />
+    <Content Include="Views\Communication\_DataSmsUploads.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
