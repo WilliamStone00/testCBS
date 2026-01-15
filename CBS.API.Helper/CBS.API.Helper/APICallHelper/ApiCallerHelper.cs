@@ -940,6 +940,93 @@ namespace CBS.API.Helper
         }
 
 
+        /// <summary>
+        /// Uploads a file to an API endpoint as multipart/form-data, including additional form fields.
+        /// Designed for endpoints like: POST api/v1/SmsUpload/preview  [FromForm] SmsUploadPreviewCommand
+        ///
+        /// Example:
+        ///   await _api.UploadFileWithFormFieldsAsync<ServiceResponse<SmsUploadPreviewSummaryDto>>(
+        ///       file, "File", "api/v1/SmsUpload/preview",
+        ///       new Dictionary<string,string> { ["DefaultMessageTemplate"] = "Hello {Name} ..." });
+        /// </summary>
+        public async Task<ApiResponse<T>> UploadFileWithFormFieldsAsync<T>(
+            HttpPostedFileBase uploadedFile,
+            string apiEndpointUrl,
+            Dictionary<string, string> additionalFields = null,
+            string fileFormFieldName = "File",
+            CancellationToken cancellationToken = default)
+        {
+            // Input validation (reuse your existing validator)
+            var validationResult = ValidateUploadInputs(uploadedFile, fileFormFieldName, apiEndpointUrl);
+            if (!validationResult.IsValid)
+            {
+                return new ApiResponse<T>
+                {
+                    IsSuccess = false,
+                    Message = validationResult.ErrorMessage
+                };
+            }
+
+            try
+            {
+                // Build full URL
+                apiEndpointUrl = RemoveDuplicateSlashes($"{GetEndpoint(_newbaseURL)}{apiEndpointUrl}");
+
+                // Copy stream to memory to avoid disposal issues
+                byte[] fileBytes;
+                using (var memoryStream = new MemoryStream())
+                {
+                    await uploadedFile.InputStream.CopyToAsync(memoryStream);
+                    fileBytes = memoryStream.ToArray();
+                }
+
+                using (var formContent = new MultipartFormDataContent())
+                using (var fileContent = new ByteArrayContent(fileBytes))
+                {
+                    // --------------------------------------------
+                    // 1) File part
+                    // --------------------------------------------
+                    fileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+                    {
+                        // IMPORTANT:
+                        // In multipart, Name MUST be quoted in some servers, but .NET handles it.
+                        Name = fileFormFieldName,
+                        FileName = Path.GetFileName(uploadedFile.FileName)
+                    };
+
+                    var contentType = !string.IsNullOrWhiteSpace(uploadedFile.ContentType)
+                        ? uploadedFile.ContentType
+                        : "application/octet-stream";
+                    fileContent.Headers.ContentType = new MediaTypeHeaderValue(contentType);
+
+                    formContent.Add(fileContent, fileFormFieldName, uploadedFile.FileName);
+
+                    // --------------------------------------------
+                    // 2) Additional fields (ex: DefaultMessageTemplate)
+                    // --------------------------------------------
+                    AddAdditionalFields(formContent, additionalFields);
+
+                    // --------------------------------------------
+                    // 3) Authorization header
+                    // --------------------------------------------
+                    AddAuthorizationHeader(_httpClient);
+
+                    // --------------------------------------------
+                    // 4) POST to API
+                    // --------------------------------------------
+                    using (var response = await _httpClient.PostAsync(apiEndpointUrl, formContent, cancellationToken))
+                    {
+                        var responseText = await response.Content.ReadAsStringAsync();
+                        return await ProcessApiResponse<T>(response, responseText);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return HandleException<T>(ex);
+            }
+        }
+
         // Alternative version with better resource management
         public async Task<ApiResponse<T>> UploadFileToApiAsyncImproved<T>(
             HttpPostedFileBase uploadedFile,
