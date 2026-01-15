@@ -461,6 +461,12 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
                         ws.Cell(currentRow, 3).Value = rline.Description;
                         ws.Cell(currentRow, 4).Value = rline.AuxiliaryRef;
 
+                        // Set left alignment for first 4 columns (Account Number, Account Name, Description, Auxiliary Ref)
+                        for (int col = 1; col <= 4; col++)
+                        {
+                            ws.Cell(currentRow, col).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
+                        }
+
                         // Debit column - use explicit conversion
                         if (rline.DebitAmount != 0)
                         {
@@ -475,11 +481,9 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
                             ws.Cell(currentRow, 6).Style.NumberFormat.Format = "#,##0";
                         }
 
-                        // Center align all cells
-                        for (int col = 1; col <= headers.Length; col++)
-                        {
-                            ws.Cell(currentRow, col).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
-                        }
+                        // Set right alignment for Debit and Credit columns (columns 5 and 6)
+                        ws.Cell(currentRow, 5).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
+                        ws.Cell(currentRow, 6).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
 
                         ApplyTableCellBorders(ws, currentRow, 1, headers.Length);
                         currentRow++;
@@ -499,14 +503,14 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
                     ws.Cell(currentRow, 5).Style.Font.Bold = true;
                     ws.Cell(currentRow, 5).Style.NumberFormat.Format = "#,##0";
                     ws.Cell(currentRow, 5).Style.Fill.BackgroundColor = XLColor.FromHtml("#f8f9fa");
-                    ws.Cell(currentRow, 5).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                    ws.Cell(currentRow, 5).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
 
                     // Credit column
                     ws.Cell(currentRow, 6).Value = branchCredit;
                     ws.Cell(currentRow, 6).Style.Font.Bold = true;
                     ws.Cell(currentRow, 6).Style.NumberFormat.Format = "#,##0";
                     ws.Cell(currentRow, 6).Style.Fill.BackgroundColor = XLColor.FromHtml("#f8f9fa");
-                    ws.Cell(currentRow, 6).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                    ws.Cell(currentRow, 6).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
 
                     // Apply borders to totals row
                     for (int col = 1; col <= headers.Length; col++)
@@ -563,6 +567,12 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
                         ws.Cell(currentRow, 2).Value = line.AccountName;
                         ws.Cell(currentRow, 3).Value = line.Description;
 
+                        // Set left alignment for first 3 columns (Account Number, Account Name, Description)
+                        for (int col = 1; col <= 3; col++)
+                        {
+                            ws.Cell(currentRow, col).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
+                        }
+
                         // Debit column - use explicit conversion
                         if (debit != 0)
                         {
@@ -577,11 +587,9 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
                             ws.Cell(currentRow, 5).Style.NumberFormat.Format = "#,##0";
                         }
 
-                        // Center align all cells
-                        for (int col = 1; col <= headers.Length; col++)
-                        {
-                            ws.Cell(currentRow, col).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
-                        }
+                        // Set right alignment for Debit and Credit columns (columns 4 and 5)
+                        ws.Cell(currentRow, 4).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
+                        ws.Cell(currentRow, 5).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
 
                         ApplyTableCellBorders(ws, currentRow, 1, headers.Length);
                         currentRow++;
@@ -601,14 +609,14 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
                     ws.Cell(currentRow, 4).Style.Font.Bold = true;
                     ws.Cell(currentRow, 4).Style.NumberFormat.Format = "#,##0";
                     ws.Cell(currentRow, 4).Style.Fill.BackgroundColor = XLColor.FromHtml("#f8f9fa");
-                    ws.Cell(currentRow, 4).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                    ws.Cell(currentRow, 4).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
 
                     // Credit column
                     ws.Cell(currentRow, 5).Value = branchCredit;
                     ws.Cell(currentRow, 5).Style.Font.Bold = true;
                     ws.Cell(currentRow, 5).Style.NumberFormat.Format = "#,##0";
                     ws.Cell(currentRow, 5).Style.Fill.BackgroundColor = XLColor.FromHtml("#f8f9fa");
-                    ws.Cell(currentRow, 5).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                    ws.Cell(currentRow, 5).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
 
                     // Apply borders to totals row
                     for (int col = 1; col <= headers.Length; col++)
