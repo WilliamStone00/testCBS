@@ -128,22 +128,22 @@
         <li data-view="view-reports">
             <span class="step-number">3.</span> <span class="step-label">Reset Income and Expense</span>
         </li>
-        @*<li data-view="view-review">
+        <li data-view="view-review">
             <span class="step-number">4.</span> <span class="step-label">Review</span>
-        </li>*@
+        </li>
     </ul>
 
 </div>
 <div id="view-initiation" class="workflow-view">
     <h3 class="text-primary">Initiation of End of year  Closure </h3>
-    
+
 
 
     @Html.Partial("_Initiation")
 </div>
 
 <div id="view-adjustments" class="workflow-view d-none">
-    
+
     @Html.Partial("_Adjustment")
 </div>
 
@@ -155,14 +155,14 @@
 
 
 
-@*<div id="view-review" class="workflow-view d-none">
-    
+<div id="view-review" class="workflow-view d-none">
+
     <h3 class="text-primary">Validate End of year Activites</h3>
     <div id="endOfYearTasksContainer">
 
     </div>
 
-</div>*@
+</div>
 
 
 <div class="modal fade" id="confirmationModal" tabindex="-1" aria-hidden="true">
@@ -180,7 +180,7 @@
     @Scripts.Render("~/bundles/jqueryval")
 
 
-<script>
+    <script>
 
     ////////////////////////////// CLOSE OF YEAR ////////////////
 
@@ -911,7 +911,7 @@
      /* ==========================================================
     4️⃣ Load End-of-Year Tasks
     ========================================================== */
-    @*$(document).ready(function () {
+    $(document).ready(function () {
          $.ajax({
              url: '@Url.Action("GetAllEndTask", "EndOfYearClosure")',
              type: 'GET',
@@ -929,7 +929,7 @@
                  appalert("❌ Failed to load end-of-year tasks. Please try again.", 2, 1);
              }
          });
-     });*@
+     });
 
 
 
@@ -1078,79 +1078,87 @@
 
 
 
+
     window.CloseYearSubmitAjax = function (form) {
+
         if (!$(form).valid()) return false;
 
         const $form = $(form);
 
-       
-       
-        // ===== Head Office Result GL =====
+        // ================= Branch =================
+        const $branch = $form.find('#BranchIdcl');
+        const branchData = $branch.select2('data')[0] || {};
+        const branchVal = branchData.id || "";
+        const branchText = branchData.text || "Head Office";
+
+        // ================= Head Office Result GL =================
         const $hoResultGL = $form.find('#HoResultGlId');
         const hoResultData = $hoResultGL.select2('data')[0];
+
         if (!hoResultData || !hoResultData.id) {
             appalert("⚠️ Please select a Head Office Result GL.", 3, 1);
             return false;
         }
+
         const hoResultVal = hoResultData.id;
         const hoResultText = hoResultData.text;
 
-        // ===== Accounting Date =====
-        // Pick the first non-empty accounting date input with class "accounting-date"
+        // ================= Accounting Date =================
         const accountingDate = $form.find('.accounting-date')
             .map(function () { return this.value; })
             .get()
-            .find(v => v); // first non-empty value
+            .find(v => v);
 
         if (!accountingDate) {
             appalert("⚠️ Please select an accounting date.", 3, 1);
             return false;
         }
 
-        // ===== Accounting Year & HOBranchId from controller (hidden inputs) =====
+        // ================= Hidden Fields =================
         const accountingYear = $form.find('#AccountingYear').val() || "";
-        const hoBranchId = $form.find('#HOBranchId').val() || "";
 
-        // ===== Confirmation Modal =====
+        // ================= Confirmation =================
         const title = "Confirm Close of Year";
+        const dangerWarning = `
+            <div class="alert alert-danger fw-semibold mb-2">
+                ⚠️ Please confirm that all <b>member interest and shares have been paid</b> 
+                before proceeding. <br>
+                <b>This process is irreversible.</b>
+            </div>
+        `;
         const message = `
-        <p>Please review the details before confirming:</p>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr><th>Branch</th><td>${branchText}</td></tr>
-                
-                
-                <tr><th>Head Office Result GL</th><td>${hoResultText}</td></tr>
-                <tr><th>Accounting Date</th><td>${accountingDate}</td></tr>
-              
-            </tbody>
-        </table>
-        <div class="form-check mt-3">
-            <input type="checkbox" class="form-check-input" id="alertifyConfirmCheckbox">
-            <label for="alertifyConfirmCheckbox" class="form-check-label">
-                I confirm that the above details are correct.
-            </label>
-        </div>
-    `;
+        ${dangerWarning}
+            <p>Please review the details before confirming:</p>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr><th>Branch</th><td>${branchText}</td></tr>
+                    <tr><th>Head Office Result GL</th><td>${hoResultText}</td></tr>
+                    <tr><th>Accounting Date</th><td>${accountingDate}</td></tr>
+                </tbody>
+            </table>
+            <div class="form-check mt-3">
+                <input type="checkbox" class="form-check-input" id="alertifyConfirmCheckbox">
+                <label class="form-check-label" for="alertifyConfirmCheckbox">
+                    I confirm that the above details are correct.
+                </label>
+            </div>
+        `;
 
         alertify.confirm(title, message,
             function () {
+
                 if (!$('#alertifyConfirmCheckbox').is(':checked')) {
                     appalert("❗ Please confirm by checking the box before proceeding.", 3, 1);
-                    return false;
+                    return;
                 }
 
                 const token = $form.find('input[name="__RequestVerificationToken"]').val();
 
-                // Prepare form data
                 const formData = new FormData();
                 formData.append("BranchId", branchVal);
-                formData.append("BranchLiaisonGlId", branchLiaisonVal);
-                formData.append("HoLiaisonGlId", hoLiaisonVal);
                 formData.append("HoResultGlId", hoResultVal);
                 formData.append("AccountingDate", accountingDate);
                 formData.append("AccountingYear", accountingYear);
-                formData.append("HOBranchId", hoBranchId);
 
                 $.ajax({
                     type: 'POST',
@@ -1160,7 +1168,8 @@
                     contentType: false,
                     headers: token ? { 'RequestVerificationToken': token } : {},
                     beforeSend: function () {
-                        $('.alertify .ajs-ok').prop('disabled', true)
+                        $('.alertify .ajs-ok')
+                            .prop('disabled', true)
                             .html('<span class="spinner-border spinner-border-sm"></span> Processing...');
                     },
                     success: function (response) {
@@ -1180,7 +1189,6 @@
                         $('.alertify .ajs-ok').prop('disabled', false).html('Yes, Continue');
                     }
                 });
-
             },
             function () {
                 appalert("🚫 Operation cancelled.", 2, 1);
@@ -1190,7 +1198,7 @@
             onshow: function () {
                 const okBtn = $('.alertify .ajs-ok');
                 okBtn.prop('disabled', true);
-                $('#alertifyConfirmCheckbox').off('change').on('change', function () {
+                $('#alertifyConfirmCheckbox').on('change', function () {
                     okBtn.prop('disabled', !this.checked);
                 });
             }
@@ -1198,10 +1206,11 @@
 
         return false;
     };
+    </script>
 
 
 
-</script>
+    
 
 
 }

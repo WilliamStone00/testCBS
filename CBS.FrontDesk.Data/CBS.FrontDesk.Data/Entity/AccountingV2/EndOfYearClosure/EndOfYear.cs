@@ -128,6 +128,22 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.EndOfYearClosure
     }
 
 
+    public class YearClosureStatus
+    {
+        public Guid Id { get; set; }
+
+        public string BranchId { get; set; }
+
+        public string AccountingYearId { get; set; }
+
+        public int Step { get; set; }
+
+        public string Status { get; set; }
+
+        public DateTime CreatedDate { get; set; }
+
+        public DateTime LastModifiedDate { get; set; }
+    }
 
 
 

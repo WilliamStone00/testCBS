@@ -393,269 +393,238 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
 
 
         private static int CreateReconciledAndJournalSections(
-     IXLWorksheet ws,
-     int currentRow,
-     CBS.FrontDesk.Data.Entity.AccountingV2.JournalHead model,
-     int maxColumns)
+    IXLWorksheet ws,
+    int currentRow,
+    CBS.FrontDesk.Data.Entity.AccountingV2.JournalHead model,
+    int maxColumns)
         {
             bool hasReconciledLines = model.ReconciledLedgerLines?.Any(r =>
                 !string.IsNullOrWhiteSpace(r.BranchId) ||
                 r.DebitAmount != 0 ||
                 r.CreditAmount != 0) ?? false;
 
-            bool hasJournalLines = !hasReconciledLines &&
-                (model.Lines?.Any(l =>
-                    !string.IsNullOrWhiteSpace(l.AccountName) ||
-                    l.Amount != 0) ?? false);
+            bool hasJournalLines = !hasReconciledLines && (model.Lines?.Any(l =>
+                !string.IsNullOrWhiteSpace(l.AccountName) ||
+                l.Amount != 0) ?? false);
 
-            if (!hasReconciledLines && !hasJournalLines)
+            // Check if both collections are empty (same logic as HTML)
+            if ((model.ReconciledLedgerLines == null || !model.ReconciledLedgerLines.Any())
+                && (model.Lines == null || !model.Lines.Any()))
             {
                 ws.Cell(currentRow++, 1).Value = "No entries available.";
+                ws.Cell(currentRow - 1, 1).Style.Font.Italic = true;
+                ws.Cell(currentRow - 1, 1).Style.Font.FontColor = XLColor.Gray;
                 return currentRow;
             }
 
-            // ======================= RECONCILED =========================
+            // ======================= POSTED ENTRIES =======================
             if (hasReconciledLines)
             {
-                var valid = model.ReconciledLedgerLines
-                    .Where(r => r.DebitAmount != 0 || r.CreditAmount != 0)
-                    .OrderBy(r => r.Seq)
-                    .ToList();
-
-                // Get distinct branches (simplified approach - just two tables)
-                var distinctBranches = valid
-                    .Select(r => new { r.BranchId, r.BranchName })
-                    .Distinct()
-                    .ToList();
-
                 var title = ws.Cell(currentRow, 1);
-                title.Value = "🧾 RECONCILED ENTRIES";
+                title.Value = "Posted Entries";
                 ws.Range(currentRow, 1, currentRow, maxColumns).Merge();
-                ApplySectionTitleStyle(title);
+                title.Style.Font.Bold = true;
+                title.Style.Font.FontColor = XLColor.FromHtml("#0d6efd"); // Primary blue
                 currentRow += 2;
 
-                var headers = new[] { "Seq", "Account Number", "Account Name", "Description", "Auxiliary Ref", "Debit", "Credit" };
+                // Filter and group lines exactly like HTML
+                var validLines = model.ReconciledLedgerLines
+                    .Where(r => !string.IsNullOrWhiteSpace(r.BranchId) ||
+                               !string.IsNullOrWhiteSpace(r.DrCr) ||
+                               r.DebitAmount != 0 ||
+                               r.CreditAmount != 0)
+                    .ToList();
 
-                if (distinctBranches.Count >= 2)
+                var groupedLines = validLines
+                    .GroupBy(r => r.BranchId)
+                    .OrderBy(g => g.Key)
+                    .ToList();
+
+                var headers = new[] { "Account Number", "Account Name", "Description", "Auxiliary Ref", "Debit", "Credit" };
+
+                foreach (var branchGroup in groupedLines)
                 {
-                    var sourceBranch = distinctBranches[0];
-                    var destinationBranch = distinctBranches[1];
+                    decimal branchDebit = 0;
+                    decimal branchCredit = 0;
 
-                    
-
+                    // Create table with borders
                     currentRow = CreateTableHeaderRow(ws, currentRow, headers);
 
-                    decimal sourceDr = 0, sourceCr = 0;
-                    var sourceEntries = valid
-                        .Where(r => r.BranchId == sourceBranch.BranchId)
-                        .OrderBy(r => r.Seq)
-                        .ToList();
-
-                    foreach (var l in sourceEntries)
+                    // Add data rows
+                    foreach (var rline in branchGroup.OrderBy(r => r.Seq))
                     {
-                        ws.Cell(currentRow, 1).Value = l.Seq;
-                        ws.Cell(currentRow, 2).Value = l.AccountNumber;
-                        ws.Cell(currentRow, 3).Value = l.AccountName;
-                        ws.Cell(currentRow, 4).Value = l.Description;
-                        ws.Cell(currentRow, 5).Value = l.AuxiliaryRef;
-                        ws.Cell(currentRow, 6).Value = Math.Abs(l.DebitAmount);
-                        ws.Cell(currentRow, 7).Value = Math.Abs(l.CreditAmount);
+                        branchDebit += rline.DebitAmount;
+                        branchCredit += rline.CreditAmount;
 
-                        sourceDr += Math.Abs(l.DebitAmount);
-                        sourceCr += Math.Abs(l.CreditAmount);
+                        ws.Cell(currentRow, 1).Value = rline.AccountNumber;
+                        ws.Cell(currentRow, 2).Value = rline.AccountName;
+                        ws.Cell(currentRow, 3).Value = rline.Description;
+                        ws.Cell(currentRow, 4).Value = rline.AuxiliaryRef;
 
-                        ApplyTableCellBorders(ws, currentRow, 1, 7);
+                        // Set left alignment for first 4 columns (Account Number, Account Name, Description, Auxiliary Ref)
+                        for (int col = 1; col <= 4; col++)
+                        {
+                            ws.Cell(currentRow, col).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
+                        }
+
+                        // Debit column - use explicit conversion
+                        if (rline.DebitAmount != 0)
+                        {
+                            ws.Cell(currentRow, 5).Value = rline.DebitAmount;
+                            ws.Cell(currentRow, 5).Style.NumberFormat.Format = "#,##0";
+                        }
+
+                        // Credit column - use explicit conversion
+                        if (rline.CreditAmount != 0)
+                        {
+                            ws.Cell(currentRow, 6).Value = rline.CreditAmount;
+                            ws.Cell(currentRow, 6).Style.NumberFormat.Format = "#,##0";
+                        }
+
+                        // Set right alignment for Debit and Credit columns (columns 5 and 6)
+                        ws.Cell(currentRow, 5).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
+                        ws.Cell(currentRow, 6).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
+
+                        ApplyTableCellBorders(ws, currentRow, 1, headers.Length);
                         currentRow++;
                     }
 
-                    currentRow = CreateTotalsRow(ws, currentRow, sourceDr, sourceCr, 7);
-                    currentRow += 2;
+                    // Add branch totals row (matching HTML structure)
+                    ws.Cell(currentRow, 1).Value = "Branch Total:";
+                    ws.Cell(currentRow, 1).Style.Font.Bold = true;
+                    ws.Cell(currentRow, 1).Style.Fill.BackgroundColor = XLColor.FromHtml("#f8f9fa"); // Light gray
+                    ws.Cell(currentRow, 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
 
-                    
+                    // Merge label cells (4 columns for label)
+                    ws.Range(currentRow, 1, currentRow, 4).Merge();
 
-                    currentRow = CreateTableHeaderRow(ws, currentRow, headers);
+                    // Debit column
+                    ws.Cell(currentRow, 5).Value = branchDebit;
+                    ws.Cell(currentRow, 5).Style.Font.Bold = true;
+                    ws.Cell(currentRow, 5).Style.NumberFormat.Format = "#,##0";
+                    ws.Cell(currentRow, 5).Style.Fill.BackgroundColor = XLColor.FromHtml("#f8f9fa");
+                    ws.Cell(currentRow, 5).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
 
-                    decimal destDr = 0, destCr = 0;
-                    var destinationEntries = valid
-                        .Where(r => r.BranchId == destinationBranch.BranchId)
-                        .OrderBy(r => r.Seq)
-                        .ToList();
+                    // Credit column
+                    ws.Cell(currentRow, 6).Value = branchCredit;
+                    ws.Cell(currentRow, 6).Style.Font.Bold = true;
+                    ws.Cell(currentRow, 6).Style.NumberFormat.Format = "#,##0";
+                    ws.Cell(currentRow, 6).Style.Fill.BackgroundColor = XLColor.FromHtml("#f8f9fa");
+                    ws.Cell(currentRow, 6).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
 
-                    foreach (var l in destinationEntries)
+                    // Apply borders to totals row
+                    for (int col = 1; col <= headers.Length; col++)
                     {
-                        ws.Cell(currentRow, 1).Value = l.Seq;
-                        ws.Cell(currentRow, 2).Value = l.AccountNumber;
-                        ws.Cell(currentRow, 3).Value = l.AccountName;
-                        ws.Cell(currentRow, 4).Value = l.Description;
-                        ws.Cell(currentRow, 5).Value = l.AuxiliaryRef;
-                        ws.Cell(currentRow, 6).Value = Math.Abs(l.DebitAmount);
-                        ws.Cell(currentRow, 7).Value = Math.Abs(l.CreditAmount);
-
-                        destDr += Math.Abs(l.DebitAmount);
-                        destCr += Math.Abs(l.CreditAmount);
-
-                        ApplyTableCellBorders(ws, currentRow, 1, 7);
-                        currentRow++;
+                        ws.Cell(currentRow, col).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
                     }
 
-                    currentRow = CreateTotalsRow(ws, currentRow, destDr, destCr, 7);
-                    currentRow += 2;
-                }
-                else if (distinctBranches.Count == 1)
-                {
-                    // Handle single branch case (non-interbranch transaction)
-                    var branch = distinctBranches[0];
-                    ws.Cell(currentRow++, 1).Value = $"Branch: {branch.BranchName}";
-                    ws.Cell(currentRow - 1, 1).Style.Font.Bold = true;
-
-                    currentRow = CreateTableHeaderRow(ws, currentRow, headers);
-
-                    decimal totalDr = 0, totalCr = 0;
-                    foreach (var l in valid.OrderBy(r => r.Seq))
-                    {
-                        ws.Cell(currentRow, 1).Value = l.Seq;
-                        ws.Cell(currentRow, 2).Value = l.AccountNumber;
-                        ws.Cell(currentRow, 3).Value = l.AccountName;
-                        ws.Cell(currentRow, 4).Value = l.Description;
-                        ws.Cell(currentRow, 5).Value = l.AuxiliaryRef;
-                        ws.Cell(currentRow, 6).Value = Math.Abs(l.DebitAmount);
-                        ws.Cell(currentRow, 7).Value = Math.Abs(l.CreditAmount);
-
-                        totalDr += Math.Abs(l.DebitAmount);
-                        totalCr += Math.Abs(l.CreditAmount);
-
-                        ApplyTableCellBorders(ws, currentRow, 1, 7);
-                        currentRow++;
-                    }
-
-                    currentRow = CreateTotalsRow(ws, currentRow, totalDr, totalCr, 7);
-                    currentRow += 2;
+                    currentRow += 2; // Add spacing between tables
                 }
             }
 
-            // ======================= JOURNAL =========================
+            // ======================= UNPOSTED ENTRIES =======================
             if (hasJournalLines)
             {
-                var valid = model.Lines
-                    .Where(l => l.Amount != 0)
-                    .OrderBy(l => l.Seq)
-                    .ToList();
-
-                // Get distinct branches (simplified approach - just two tables)
-                var distinctBranches = valid
-                    .Select(l => new { l.BranchId, l.BranchName })
-                    .Distinct()
-                    .ToList();
-
                 var title = ws.Cell(currentRow, 1);
-                title.Value = "🧾 JOURNAL LINES (UNRECONCILED)";
+                title.Value = "Unposted Entries";
                 ws.Range(currentRow, 1, currentRow, maxColumns).Merge();
-                ApplySectionTitleStyle(title);
+                title.Style.Font.Bold = true;
+                title.Style.Font.FontColor = XLColor.FromHtml("#0d6efd"); // Primary blue
                 currentRow += 2;
 
-                var headers = new[] { "Seq", "Account Number", "Account Name", "Description", "Debit", "Credit" };
+                // Filter and group lines exactly like HTML
+                var validLines = model.Lines
+                    .Where(l => !string.IsNullOrWhiteSpace(l.BranchId) ||
+                               !string.IsNullOrWhiteSpace(l.DrCr) ||
+                               l.Amount != 0)
+                    .ToList();
 
-                if (distinctBranches.Count >= 2)
+                var groupedLines = validLines
+                    .GroupBy(l => l.BranchId)
+                    .OrderBy(g => g.Key)
+                    .ToList();
+
+                var headers = new[] { "Account Number", "Account Name", "Description", "Debit", "Credit" };
+
+                foreach (var branchGroup in groupedLines)
                 {
-                    var sourceBranch = distinctBranches[0];
-                    var destinationBranch = distinctBranches[1];
+                    decimal branchDebit = 0;
+                    decimal branchCredit = 0;
 
-                    
-
+                    // Create table with borders
                     currentRow = CreateTableHeaderRow(ws, currentRow, headers);
 
-                    decimal sourceDr = 0, sourceCr = 0;
-                    var sourceEntries = valid
-                        .Where(l => l.BranchId == sourceBranch.BranchId)
-                        .OrderBy(l => l.Seq)
-                        .ToList();
-
-                    foreach (var l in sourceEntries)
+                    // Add data rows
+                    foreach (var line in branchGroup.OrderBy(l => l.Seq))
                     {
-                        var debit = l.DrCr?.ToLower() == "debit" ? Math.Abs(l.Amount) : 0;
-                        var credit = l.DrCr?.ToLower() == "credit" ? Math.Abs(l.Amount) : 0;
+                        decimal debit = line.DrCr == "Debit" ? Math.Abs(line.Amount) : 0;
+                        decimal credit = line.DrCr == "Credit" ? line.Amount : 0;
 
-                        ws.Cell(currentRow, 1).Value = l.Seq;
-                        ws.Cell(currentRow, 2).Value = l.AccountNumber;
-                        ws.Cell(currentRow, 3).Value = l.AccountName;
-                        ws.Cell(currentRow, 4).Value = l.Description;
-                        ws.Cell(currentRow, 5).Value = debit;
-                        ws.Cell(currentRow, 6).Value = credit;
+                        branchDebit += debit;
+                        branchCredit += credit;
 
-                        sourceDr += debit;
-                        sourceCr += credit;
+                        ws.Cell(currentRow, 1).Value = line.AccountNumber;
+                        ws.Cell(currentRow, 2).Value = line.AccountName;
+                        ws.Cell(currentRow, 3).Value = line.Description;
 
-                        ApplyTableCellBorders(ws, currentRow, 1, 6);
+                        // Set left alignment for first 3 columns (Account Number, Account Name, Description)
+                        for (int col = 1; col <= 3; col++)
+                        {
+                            ws.Cell(currentRow, col).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
+                        }
+
+                        // Debit column - use explicit conversion
+                        if (debit != 0)
+                        {
+                            ws.Cell(currentRow, 4).Value = debit;
+                            ws.Cell(currentRow, 4).Style.NumberFormat.Format = "#,##0";
+                        }
+
+                        // Credit column - use explicit conversion
+                        if (credit != 0)
+                        {
+                            ws.Cell(currentRow, 5).Value = credit;
+                            ws.Cell(currentRow, 5).Style.NumberFormat.Format = "#,##0";
+                        }
+
+                        // Set right alignment for Debit and Credit columns (columns 4 and 5)
+                        ws.Cell(currentRow, 4).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
+                        ws.Cell(currentRow, 5).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
+
+                        ApplyTableCellBorders(ws, currentRow, 1, headers.Length);
                         currentRow++;
                     }
 
-                    currentRow = CreateTotalsRow(ws, currentRow, sourceDr, sourceCr, 6);
-                    currentRow += 2;
+                    // Add branch totals row (matching HTML structure)
+                    ws.Cell(currentRow, 1).Value = "Branch Total:";
+                    ws.Cell(currentRow, 1).Style.Font.Bold = true;
+                    ws.Cell(currentRow, 1).Style.Fill.BackgroundColor = XLColor.FromHtml("#f8f9fa"); // Light gray
+                    ws.Cell(currentRow, 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
 
-                    // DESTINATION TABLE
-                    
+                    // Merge label cells (3 columns for label)
+                    ws.Range(currentRow, 1, currentRow, 3).Merge();
 
-                    currentRow = CreateTableHeaderRow(ws, currentRow, headers);
+                    // Debit column
+                    ws.Cell(currentRow, 4).Value = branchDebit;
+                    ws.Cell(currentRow, 4).Style.Font.Bold = true;
+                    ws.Cell(currentRow, 4).Style.NumberFormat.Format = "#,##0";
+                    ws.Cell(currentRow, 4).Style.Fill.BackgroundColor = XLColor.FromHtml("#f8f9fa");
+                    ws.Cell(currentRow, 4).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
 
-                    decimal destDr = 0, destCr = 0;
-                    var destinationEntries = valid
-                        .Where(l => l.BranchId == destinationBranch.BranchId)
-                        .OrderBy(l => l.Seq)
-                        .ToList();
+                    // Credit column
+                    ws.Cell(currentRow, 5).Value = branchCredit;
+                    ws.Cell(currentRow, 5).Style.Font.Bold = true;
+                    ws.Cell(currentRow, 5).Style.NumberFormat.Format = "#,##0";
+                    ws.Cell(currentRow, 5).Style.Fill.BackgroundColor = XLColor.FromHtml("#f8f9fa");
+                    ws.Cell(currentRow, 5).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
 
-                    foreach (var l in destinationEntries)
+                    // Apply borders to totals row
+                    for (int col = 1; col <= headers.Length; col++)
                     {
-                        var debit = l.DrCr?.ToLower() == "debit" ? Math.Abs(l.Amount) : 0;
-                        var credit = l.DrCr?.ToLower() == "credit" ? Math.Abs(l.Amount) : 0;
-
-                        ws.Cell(currentRow, 1).Value = l.Seq;
-                        ws.Cell(currentRow, 2).Value = l.AccountNumber;
-                        ws.Cell(currentRow, 3).Value = l.AccountName;
-                        ws.Cell(currentRow, 4).Value = l.Description;
-                        ws.Cell(currentRow, 5).Value = debit;
-                        ws.Cell(currentRow, 6).Value = credit;
-
-                        destDr += debit;
-                        destCr += credit;
-
-                        ApplyTableCellBorders(ws, currentRow, 1, 6);
-                        currentRow++;
+                        ws.Cell(currentRow, col).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
                     }
 
-                    currentRow = CreateTotalsRow(ws, currentRow, destDr, destCr, 6);
-                    currentRow += 2;
-                }
-                else if (distinctBranches.Count == 1)
-                {
-                    // Handle single branch case (non-interbranch transaction)
-                    var branch = distinctBranches[0];
-                    ws.Cell(currentRow++, 1).Value = $"Branch: {branch.BranchName}";
-                    ws.Cell(currentRow - 1, 1).Style.Font.Bold = true;
-
-                    currentRow = CreateTableHeaderRow(ws, currentRow, headers);
-
-                    decimal totalDr = 0, totalCr = 0;
-                    foreach (var l in valid.OrderBy(r => r.Seq))
-                    {
-                        var debit = l.DrCr?.ToLower() == "debit" ? Math.Abs(l.Amount) : 0;
-                        var credit = l.DrCr?.ToLower() == "credit" ? Math.Abs(l.Amount) : 0;
-
-                        ws.Cell(currentRow, 1).Value = l.Seq;
-                        ws.Cell(currentRow, 2).Value = l.AccountNumber;
-                        ws.Cell(currentRow, 3).Value = l.AccountName;
-                        ws.Cell(currentRow, 4).Value = l.Description;
-                        ws.Cell(currentRow, 5).Value = debit;
-                        ws.Cell(currentRow, 6).Value = credit;
-
-                        totalDr += debit;
-                        totalCr += credit;
-
-                        ApplyTableCellBorders(ws, currentRow, 1, 6);
-                        currentRow++;
-                    }
-
-                    currentRow = CreateTotalsRow(ws, currentRow, totalDr, totalCr, 6);
-                    currentRow += 2;
+                    currentRow += 2; // Add spacing between tables
                 }
             }
 
@@ -685,12 +654,12 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
                 var headerCell = worksheet.Cell(row, i + 1);
                 headerCell.Value = headers[i];
                 headerCell.Style.Font.Bold = true;
-                headerCell.Style.Fill.SetBackgroundColor(XLColor.LightGreen);
+                headerCell.Style.Fill.BackgroundColor = XLColor.FromHtml("#f8f9fa"); // Light gray like HTML
+                headerCell.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
                 headerCell.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
             }
             return row + 1;
         }
-
         private static void ApplyTableCellBorders(IXLWorksheet worksheet, int row, int startColumn, int endColumn)
         {
             for (int col = startColumn; col <= endColumn; col++)

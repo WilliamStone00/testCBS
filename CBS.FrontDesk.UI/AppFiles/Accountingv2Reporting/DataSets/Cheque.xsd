@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="Cheque" targetNamespace="http://tempuri.org/Cheque.xsd" xmlns:mstns="http://tempuri.org/Cheque.xsd" xmlns="http://tempuri.org/Cheque.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="Cheque" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_UserDSName="Cheque" msprop:Generator_DataSetName="Cheque">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="ChequeBook_x0020_" msprop:Generator_RowEvHandlerName="ChequeBook_RowChangeEventHandler" msprop:Generator_RowDeletedName="ChequeBook_RowDeleted" msprop:Generator_RowDeletingName="ChequeBook_RowDeleting" msprop:Generator_RowEvArgName="ChequeBook_RowChangeEvent" msprop:Generator_TablePropName="ChequeBook_" msprop:Generator_RowChangedName="ChequeBook_RowChanged" msprop:Generator_RowChangingName="ChequeBook_RowChanging" msprop:Generator_TableClassName="ChequeBook_DataTable" msprop:Generator_RowClassName="ChequeBook_Row" msprop:Generator_TableVarName="tableChequeBook_" msprop:Generator_UserTableName="ChequeBook ">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="CustomerName" msprop:Generator_ColumnPropNameInRow="CustomerName" msprop:Generator_ColumnPropNameInTable="CustomerNameColumn" msprop:Generator_ColumnVarNameInTable="columnCustomerName" msprop:Generator_UserColumnName="CustomerName" type="xs:string" minOccurs="0" />
+              <xs:element name="AccountNumber" msprop:Generator_ColumnPropNameInRow="AccountNumber" msprop:Generator_ColumnPropNameInTable="AccountNumberColumn" msprop:Generator_ColumnVarNameInTable="columnAccountNumber" msprop:Generator_UserColumnName="AccountNumber" type="xs:string" minOccurs="0" />
+              <xs:element name="BranchName" msprop:Generator_ColumnPropNameInRow="BranchName" msprop:Generator_ColumnPropNameInTable="BranchNameColumn" msprop:Generator_ColumnVarNameInTable="columnBranchName" msprop:Generator_UserColumnName="BranchName" type="xs:string" minOccurs="0" />
+              <xs:element name="CategoryName" msprop:Generator_ColumnPropNameInRow="CategoryName" msprop:Generator_ColumnPropNameInTable="CategoryNameColumn" msprop:Generator_ColumnVarNameInTable="columnCategoryName" msprop:Generator_UserColumnName="CategoryName" type="xs:string" minOccurs="0" />
+              <xs:element name="NumberOfLeaves" msprop:Generator_ColumnPropNameInRow="NumberOfLeaves" msprop:Generator_ColumnPropNameInTable="NumberOfLeavesColumn" msprop:Generator_ColumnVarNameInTable="columnNumberOfLeaves" msprop:Generator_UserColumnName="NumberOfLeaves" type="xs:long" minOccurs="0" />
+              <xs:element name="StatusDescription" msprop:Generator_ColumnPropNameInRow="StatusDescription" msprop:Generator_ColumnPropNameInTable="StatusDescriptionColumn" msprop:Generator_ColumnVarNameInTable="columnStatusDescription" msprop:Generator_UserColumnName="StatusDescription" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Summary" msprop:Generator_RowEvHandlerName="SummaryRowChangeEventHandler" msprop:Generator_RowDeletedName="SummaryRowDeleted" msprop:Generator_RowDeletingName="SummaryRowDeleting" msprop:Generator_RowEvArgName="SummaryRowChangeEvent" msprop:Generator_TablePropName="Summary" msprop:Generator_RowChangedName="SummaryRowChanged" msprop:Generator_RowChangingName="SummaryRowChanging" msprop:Generator_TableClassName="SummaryDataTable" msprop:Generator_RowClassName="SummaryRow" msprop:Generator_TableVarName="tableSummary" msprop:Generator_UserTableName="Summary">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="TotalBranches_x0020_" msprop:Generator_ColumnPropNameInRow="TotalBranches_" msprop:Generator_ColumnPropNameInTable="TotalBranches_Column" msprop:Generator_ColumnVarNameInTable="columnTotalBranches_" msprop:Generator_UserColumnName="TotalBranches " type="xs:string" minOccurs="0" />
+              <xs:element name="TotalChequebooksIssued" msprop:Generator_ColumnPropNameInRow="TotalChequebooksIssued" msprop:Generator_ColumnPropNameInTable="TotalChequebooksIssuedColumn" msprop:Generator_ColumnVarNameInTable="columnTotalChequebooksIssued" msprop:Generator_UserColumnName="TotalChequebooksIssued" type="xs:string" minOccurs="0" />
+              <xs:element name="TotalAccountsLinked" msprop:Generator_ColumnPropNameInRow="TotalAccountsLinked" msprop:Generator_ColumnPropNameInTable="TotalAccountsLinkedColumn" msprop:Generator_ColumnVarNameInTable="columnTotalAccountsLinked" msprop:Generator_UserColumnName="TotalAccountsLinked" type="xs:string" minOccurs="0" />
+              <xs:element name="TotalLeaves" msprop:Generator_ColumnPropNameInRow="TotalLeaves" msprop:Generator_ColumnPropNameInTable="TotalLeavesColumn" msprop:Generator_ColumnVarNameInTable="columnTotalLeaves" msprop:Generator_UserColumnName="TotalLeaves" type="xs:string" minOccurs="0" />
+              <xs:element name="TotalLeavesUsed_x0020_" msprop:Generator_ColumnPropNameInRow="TotalLeavesUsed_" msprop:Generator_ColumnPropNameInTable="TotalLeavesUsed_Column" msprop:Generator_ColumnVarNameInTable="columnTotalLeavesUsed_" msprop:Generator_UserColumnName="TotalLeavesUsed " type="xs:string" minOccurs="0" />
+              <xs:element name="TotalBalance" msprop:Generator_ColumnPropNameInRow="TotalBalance" msprop:Generator_ColumnPropNameInTable="TotalBalanceColumn" msprop:Generator_ColumnVarNameInTable="columnTotalBalance" msprop:Generator_UserColumnName="TotalBalance" type="xs:string" minOccurs="0" />
+              <xs:element name="ApprovedChequeBooks" msprop:Generator_ColumnPropNameInRow="ApprovedChequeBooks" msprop:Generator_ColumnPropNameInTable="ApprovedChequeBooksColumn" msprop:Generator_ColumnVarNameInTable="columnApprovedChequeBooks" msprop:Generator_UserColumnName="ApprovedChequeBooks" type="xs:string" minOccurs="0" />
+              <xs:element name="UnclearedChequeBooks" msprop:Generator_ColumnPropNameInRow="UnclearedChequeBooks" msprop:Generator_ColumnPropNameInTable="UnclearedChequeBooksColumn" msprop:Generator_ColumnVarNameInTable="columnUnclearedChequeBooks" msprop:Generator_UserColumnName="UnclearedChequeBooks" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -92,9 +92,16 @@
     </div>
 </div>
 
+
+<div class="modal fade" id="genericModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content"></div>
+    </div>
+</div>
+
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-<script>
+    <script>
     (function ($) {
         'use strict';
         $(document).ready(function () {
@@ -115,49 +122,6 @@
                     searchCustomer();
                 }
             });
-
-            //function searchCustomer() {
-            //    let customerId = $("#customerIdInput").val().trim();
-
-            //    if (!customerId) {
-            //        appalert("Please enter a Customer ID", 3, 1);
-            //        return;
-            //    }
-
-            //    // Stocker le customerId actuel
-            //    currentCustomerId = customerId;
-
-            //    $.ajax({
-            //        url: '/CounterCheque/Search',
-            //        type: 'GET',
-            //        data: { CustomerId: customerId },
-            //        success: function (partialView) {
-            //            // Remplacer le contenu de datalistingview par le carrousel
-            //            $("#datalistingview").html(partialView);
-            //            appalert("Customer cheque books loaded successfully", 1, 1);
-            //        },
-            //        error: function (err) {
-            //            // Réinitialiser l'affichage
-            //            $("#datalistingview").html(initialFormHtml);
-
-            //            if (err.status === 404) {
-            //                appalert("No cheque books found for this customer", 3, 1);
-            //            } else if (err.status === 400) {
-            //                appalert("Invalid customer ID format", 3, 1);
-            //            } else if (err.status === 500) {
-            //                appalert("Server error occurred", 0, 1);
-            //            } else if (err.status === 401) {
-            //                window.location.href = '/Authentication/Login';
-            //            } else {
-            //                appalert("Unexpected error occurred", 0, 1);
-            //            }
-            //        },
-            //        complete: function () {
-            //            $("#searchCustomerBtn").prop("disabled", false);
-            //            $("#searchCustomerBtn").html('<i class="mdi mdi-magnify"></i> Search');
-            //        }
-            //    });
-            //}
 
             function searchCustomer() {
                 let customerId = $("#customerIdInput").val().trim();
@@ -407,6 +371,11 @@
             });
         });
 
+        $(document).on('click', '.btn-create', function () {
+            var id = $(this).data('id');
+            ShowModal(id, '_CounterRequest', 'CounterCheque', 'new');
+        });
+
          /* ================================
            ACTION MODAL (GLOBAL)
         ================================= */
@@ -503,5 +472,5 @@
         }
 
 })(jQuery);
-</script>
+    </script>
 }

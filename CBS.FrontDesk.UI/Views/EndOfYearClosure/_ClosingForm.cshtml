@@ -11,7 +11,7 @@
     <div class="card p-3 mb-2 ">
 
         @Html.HiddenFor(m => m.AccountingYear, new { id = "AccountingYear" })
-        @Html.HiddenFor(m => m.HOBranchId, new { id = "HOBranchId" })
+        
        
         
            
@@ -22,11 +22,12 @@
 
                         @Html.TextBoxFor(m => m.AccountingDate,
                             new
-                                {
+                            {
                                 @class = "form-control form-control-sm d-inline-block accounting-date",
                                 style = "width: 180px",
                                 type = "date",
-                                id = "AccountingDates"
+                                id = "AccountingDates",
+                                @readonly = "readonly"
                             })
                     </div>
 

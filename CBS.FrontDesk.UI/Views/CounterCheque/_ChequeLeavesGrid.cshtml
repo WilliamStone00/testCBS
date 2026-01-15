@@ -13,7 +13,7 @@ else
         @for (int i = 0; i < Model.Count; i++)
         {
             var leaf = Model[i];
-            var isAvailable = leaf.Status == "Available";
+            var isAvailable = leaf.Status == "UNUSED";
             var isIssued = leaf.Status == "Issued";
 
             <div class="col-xl-3 col-lg-4 col-md-6 cheque-leaf-item @(i >= 16 ? "d-none" : "")">
@@ -57,23 +57,21 @@ else
                             </div>
                         }
 
-                        <div class="mt-auto d-grid gap-2">
-                            @if (isAvailable)
-                            {
-                                <button type="button"
-                                        class="btn btn-sm btn-outline-success select-leaf-btn"
-                                        data-leaf-id="@leaf.Id"
-                                        data-serial="@leaf.SerialNumber">
-                                    <i class="mdi mdi-check"></i> Select Leaf
-                                </button>
-                            }
-
-                            <button type="button"
-                                    class="btn btn-sm btn-outline-primary view-leaf-btn"
-                                    data-leaf-id="@leaf.Id">
-                                <i class="mdi mdi-eye"></i> View Details
+                    <div class="mt-auto d-grid gap-2">
+                        @if (isAvailable)
+                        {
+                                                     <button type="button"  class="btn btn-sm btn-outline-success btn-create" data-id="@leaf.Id">
+                                <i class="mdi mdi-file-document-outline text-primary me-2"></i>
+                                <span>Counter Request</span>
                             </button>
-                        </div>
+                        }
+
+                        <button type="button"
+                                class="btn btn-sm btn-outline-primary view-leaf-btn"
+                                data-leaf-id="@leaf.Id">
+                            <i class="mdi mdi-eye"></i> View Details
+                        </button>
+                    </div>
                     </div>
 
                     <div class="card-footer bg-transparent pt-0 text-end">
