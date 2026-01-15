@@ -253,7 +253,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.Counter
         // Add this method to your CounterChequeController
         [HttpGet]
         public async Task<ActionResult> GetCustomerStatistics(string customerId)
-        {
+         {
             if (string.IsNullOrEmpty(customerId))
                 return new HttpStatusCodeResult(400, "CustomerId is required");
 
