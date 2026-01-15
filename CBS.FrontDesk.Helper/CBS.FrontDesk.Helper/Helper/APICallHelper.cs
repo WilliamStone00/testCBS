@@ -1833,6 +1833,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetCheckListStatusDataTable = "/api/v1/YearEndChecklistStatus/datatable";
         public static string PostJournalAdjustment = "/api/v1/ops/generic";
         public static string CloseYear = "/api/v1/ops/EndOfYearCarryForward";
+        public static string GetYearClosureStatus = "/api/v1/EndOfYearProcessStepQueue/{0}/{1}";
 
 
 
@@ -1862,6 +1863,7 @@ namespace CBS.FrontDesk.Helper
         public static string ActivateShareMonthSimulation = "/api/v1/ProcessSnapshotInterestSimulation/PrepareCustomerInterestBalance";
         public static string DataTableForRequestSimulation = "/api/v1/ProcessSnapshotInterestSimulation/DataTableForRequest";
         public static string SharedMonthUpload = "/api/v1/ProcessesExternalShareMonth/ShareMonthFile";
+        public static string GetSharedMonthDetail = "/api/v1/ProcessesExternalShareMonth/getById/{0}/{1}";
         //------------------------- LoanTargetCatalog ----------------
         public const string LoanTargetCatalogCreate = "/api/v1/LoanTargetCatalog/Create";
         public const string LoanTargetCatalogGet = "/api/v1/LoanTargetCatalog/Get?id={0}";

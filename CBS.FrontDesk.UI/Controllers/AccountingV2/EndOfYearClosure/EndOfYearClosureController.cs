@@ -68,7 +68,8 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.EndOfYearClosure
                 {
                     new SelectListItem { Value = "Depreciation", Text = "Depreciation" },
                     new SelectListItem { Value = "Provision(Bad Debts)", Text = "Provision(Bad Debts)" },
-                    new SelectListItem { Value = "Accrual / Deferral", Text = "Accrual / Deferral" },
+                    new SelectListItem { Value = "Accrual", Text = "Accrual" },
+                    new SelectListItem { Value = "Deferral", Text = "Deferral" },
                     new SelectListItem { Value = "Tax Provision", Text ="Tax Provision" },
                     new SelectListItem { Value = "Error Correction", Text = "Error Correction" },
                     new SelectListItem { Value = "Other", Text = "Other" }
@@ -104,14 +105,60 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.EndOfYearClosure
                 return new HttpStatusCodeResult(500, ex.Message);
             }
         }
-       
+
+        [HttpGet]
+        public async Task<ActionResult> GetYearClosureStatus(string branchId, string accountingYearId)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(branchId) ||
+                    string.IsNullOrWhiteSpace(accountingYearId))
+                {
+                    return Json(new
+                    {
+                        success = false,
+                        statusCode = 400,
+                        message = "BranchId and AccountingYearId are required."
+                    });
+                }
+
+                var response = await _endOfYearClosureService
+                    .GetYearClosureStatusAsync(branchId, accountingYearId);
+
+                if (response == null)
+                {
+                    return Json(new
+                    {
+                        success = false,
+                        statusCode = 502,
+                        message = "No response from Year Closure service."
+                    });
+                }
+
+                return Json(new
+                {
+                    success = response.IsSuccess,
+                    statusCode = response.IsSuccess ? 200 : 400,
+                    message = response.Message,
+                    data = response.ApiResponseData
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    success = false,
+                    statusCode = 500,
+                    message = $"Unexpected error occurred: {ex.Message}"
+                });
+            }
+        }
 
 
 
         [HttpPost]
         public async Task<ActionResult> InitiateClosure(CloseYearInitiate model)
         {
-
             if (string.IsNullOrEmpty(model.AccountingYearId))
             {
                 model.AccountingYearId = Session["SelectedAccountingYearId"]?.ToString();
@@ -126,18 +173,28 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.EndOfYearClosure
                 });
             }
 
-
             try
             {
-                var result = await _endOfYearClosureService.SaveInitiateClosure(model);
+                var response = await _endOfYearClosureService.SaveInitiateClosure(model);
 
-                if (result == null)
-                    return Json(new { success = false, message = "No response from Close Of Year service." });
+                // 🔴 CRITICAL: null safety
+                if (response == null)
+                {
+                    return Json(new
+                    {
+                        success = false,
+                        statusCode = 502,
+                        message = "No response from Close Of Year service."
+                    });
+                }
 
-
-
-                // Return summary as JSON
-                return Json(new { success = true, data = result });
+                return Json(new
+                {
+                    success = response.IsSuccess,
+                    statusCode = response.IsSuccess ? 200 : 400,
+                    message = response.Message,
+                    data = response.ApiResponseData
+                });
             }
             catch (Exception ex)
             {
@@ -145,10 +202,11 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.EndOfYearClosure
                 {
                     success = false,
                     statusCode = 500,
-                    message = $" Close of Year failed: {ex.Message}"
+                    message = $"Close of Year failed: {ex.Message}"
                 });
             }
         }
+
         [HttpPost]
         public async Task<ActionResult> ReviewClosure( ReviewClosureRequest model)
         {
@@ -375,7 +433,6 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.EndOfYearClosure
         }
 
 
-
         [HttpPost]
         public async Task<ActionResult> CloseYear(CloseOfYear model)
         {
@@ -395,21 +452,25 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.EndOfYearClosure
 
             try
             {
-                var result = await _endOfYearClosureService.SaveClosure(model);
+                var response = await _endOfYearClosureService.SaveClosure(model);
 
-                if (result == null)
+                // 🔴 CRITICAL: null safety
+                if (response == null)
                 {
                     return Json(new
                     {
                         success = false,
-                        message = "No response from Review Closure service."
+                        statusCode = 502,
+                        message = "No response from Close Of Year service."
                     });
                 }
 
                 return Json(new
                 {
-                    success = true,
-                    data = result
+                    success = response.IsSuccess,
+                    statusCode = response.IsSuccess ? 200 : 400,
+                    message = response.Message,
+                    data = response.ApiResponseData
                 });
             }
             catch (Exception ex)
@@ -422,6 +483,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.EndOfYearClosure
                 });
             }
         }
+
 
 
 

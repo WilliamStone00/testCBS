@@ -21,11 +21,12 @@
                 <div class="col-md-6 mb-2 text-end">
                     @Html.TextBoxFor(m => m.AccountingDate,
                         new
-                            {
-                                @class = "form-control form-control-sm d-inline-block accounting-date",
+                        {
+                            @class = "form-control form-control-sm d-inline-block accounting-date",
                             style = "width: 180px",
                             type = "date",
-                            id = "AccountingDate"
+                            id = "AccountingDate",
+                            @readonly = "readonly"
                         })
                 </div>
 

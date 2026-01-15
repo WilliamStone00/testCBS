@@ -28,17 +28,19 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.SharedMonth
         private readonly SharedMonthSimulationService _sharedMonthSimulationService;
         private readonly BranchServices _branchServices;
         private readonly InterestProductConfigService _interestProductConfigService;
+        public readonly AccountingYearService _accountingYearService;
         private readonly string _appFilesRoot;
 
         // Allowed extensions for these templates (adjust if needed)
         private static readonly string[] AllowedExtensions = { ".xlsx", ".xls" };
 
-        public SharedMonthSimulationController(BranchServices branchServices, SharedMonthSimulationService sharedMonthSimulationService, InterestProductConfigService interestProductConfigService)
+        public SharedMonthSimulationController(BranchServices branchServices, SharedMonthSimulationService sharedMonthSimulationService, InterestProductConfigService interestProductConfigService, AccountingYearService accountingYearService)
         {
             _sharedMonthSimulationService = sharedMonthSimulationService;
             _branchServices = branchServices;
             _interestProductConfigService = interestProductConfigService;
-             
+            _accountingYearService = accountingYearService;
+
 
             _appFilesRoot = Path.Combine(AppDomain.CurrentDomain.BaseDirectory ?? string.Empty, "AppFiles");
         }
@@ -48,18 +50,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.SharedMonth
             await loader();
             return View();
         }
-        private List<StringValues> getAccountingYears()
-        {
-            int currentYear = DateTime.Now.Year;
-
-            return Enumerable.Range(currentYear - 3, 5)
-                .Select(y => new StringValues
-                {
-                    Value = y.ToString(),
-                    Text = y.ToString()
-                })
-                .ToList();
-        }
+       
 
 
         public async Task<bool> loader()
@@ -97,14 +88,28 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.SharedMonth
                  new SelectListItem { Value = "Anaully", Text = "Anaully" }
             };
 
-            ViewBag.Year = getAccountingYears();
+            
+
+            var Year = await _accountingYearService.GetAllYearAsync();
+
+            // PRODUCTS DROPDOWN
+            ViewBag.Year = Year?
+                .Select(p => new SelectListItem
+                {
+                    Value = p.Id,                       // ProductId posted
+                    Text = $" {p.Code}"         // [Code] [Name] shown
+                })
+                .OrderBy(x => x.Text)
+                .ToList()
+                ?? new List<SelectListItem>();
 
 
             ViewBag.FileType = new List<SelectListItem>
                     {
                         new SelectListItem { Value = "MonthlyUnprocessData", Text = " Monthly Unprocessed Data" },
                         new SelectListItem { Value = "MonthlyprocessData", Text = "Monthly processed Data" },
-                        new SelectListItem { Value = "AnnualprocessData", Text = " Anual processed Data" }
+                        new SelectListItem { Value = "AnnualprocessData", Text = " Anual processed Data" },
+                        new SelectListItem { Value = "Tax", Text = " Tax" }
                     };
 
 

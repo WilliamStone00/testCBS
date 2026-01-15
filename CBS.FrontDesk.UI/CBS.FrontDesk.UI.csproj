@@ -11204,6 +11204,7 @@
     <Content Include="Views\StandingOrder\StandingOrderRegistration.cshtml" />
     <Content Include="Views\StandingOrder\_DataStandingOrders.cshtml" />
     <Content Include="Views\StandingOrder\Listing.cshtml" />
+    <Content Include="Views\SalaryUpload\SharedMonthDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
