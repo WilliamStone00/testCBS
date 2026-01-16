@@ -167,8 +167,10 @@
 
             // 6) Action — includes Toggle Visibility in MAIN context
             {
+                
                 data: null, orderable: false, searchable: false,
                 render: function (row) {
+                    console.log(row)
                     const ctx = $("#actionParam").val() || "fileupload_main";
                     let items = "";
 
@@ -178,11 +180,13 @@
                         const toggleIcon = row.PrivateView ? "mdi-earth" : "mdi-lock";
 
                         items = `
-                          <li>
-                            <a class="dropdown-item" href="/SalaryUpload/DownloadFile?fileId=${row.Id}">
-                              <i class="mdi mdi-download me-2"></i>Download
-                            </a>
-                          </li>
+                         <li>
+                              <a class="dropdown-item"
+                                 href="/SalaryUpload/DownloadFile?fileId=${row.Id}&fileType=${row.FileType}">
+                                <i class="mdi mdi-download me-2"></i>Download
+                              </a>
+                            </li>
+
                           <li>
                             <a class="dropdown-item" target="_blank" href="/SalaryUpload/Detail?fileUploadid=${row.Id}">
                               <i class="mdi mdi-information-outline me-2"></i>Details
@@ -208,11 +212,13 @@
                           </li>`;
                     } else if (ctx === "executer") {
                         items = `
-                          <li>
-                            <a class="dropdown-item" href="/SalaryUpload/DownloadFile?fileId=${row.Id}">
-                              <i class="mdi mdi-download me-2"></i>Download
-                            </a>
-                          </li>
+                         <li>
+                          <a class="dropdown-item"
+                             href="/SalaryUpload/DownloadFile?fileId=${row.Id}&fileType=${row.FileType}">
+                            <i class="mdi mdi-download me-2"></i>Download
+                          </a>
+                        </li>
+
                           <li>
                             <a class="dropdown-item" target="_blank" href="/SalaryExecution/Detail?fileUploadid=${row.Id}&mode=execute">
                               <i class="mdi mdi-play-circle-outline me-2"></i>Execute
@@ -234,6 +240,7 @@
                           <ul class="dropdown-menu dropdown-menu-end">${items}</ul>
                         </div>`;
                 }
+            
             }
         ],
         // sort by UploadedOn (index 5) desc by default
@@ -414,6 +421,12 @@ function toggleExecutable(id, toStatus) {
         .fail(() => alert("Failed to update availability."));
 }
 
-function downloadUpload(id) {
-    window.location = "/SalaryUpload/DownloadFile?fileId=" + encodeURIComponent(id);
+function downloadUpload(id, fileType) {
+    console.log("Downloading:", id, fileType);
+
+    window.location =
+        "/SalaryUpload/DownloadFile" +
+        "?fileId=" + encodeURIComponent(id) +
+        "&fileType=" + encodeURIComponent(fileType);
 }
+

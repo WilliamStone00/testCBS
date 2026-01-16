@@ -622,11 +622,11 @@ namespace CBS.BusinessService.AccountingV2.SharedMonth
                 .ToList();
         }
 
-        public async Task<MemberShareMonthUpload> GetFileDetailSharedmonth(string fileId,string type)
+        public async Task<MemberShareMonthUpload> GetFileDetailSharedmonth(string fileUploadId,string type)
         {
             try
             {
-                var url = string.Format(APICallHelper.GetSharedMonthDetail, fileId, type);
+                var url = string.Format(APICallHelper.GetSharedMonthDetail, fileUploadId, type);
                 var response = await _apiCallerHelper.GetAsync<ResponseObject<MemberShareMonthUpload>>(url);
                 
                 if (response.IsSuccess)
@@ -642,6 +642,39 @@ namespace CBS.BusinessService.AccountingV2.SharedMonth
                 throw ex;
             }
         }
+
+        public async Task<SharedMonthDownloadDto> Download(string fileUploadId)
+        {
+            var apiResponse = await _apiCallerHelper
+                .GetAsync<ResponseObject<SharedMonthDownloadDto>>(
+                    string.Format(APICallHelper.DownloadSharedMonth, fileUploadId)
+                );
+
+            if (apiResponse.IsSuccess)
+                return apiResponse.ApiResponseData.Data;
+
+            return null;
+        }
+
+        //public async Task<SharedMonthDownloadDto> Download(string fileId)
+        //{
+        //    // Simulate async behavior
+        //    await Task.Delay(50);
+
+        //    return new SharedMonthDownloadDto
+        //    {
+        //        Id = "da518d65-792a-4f05-b69c-39350b83ea25",
+        //        FileName = "Anual_data_00855",
+        //        Extension = ".xlsx",
+        //        DownloadPath = "Documents/2026/Head office Bamenda/AccountingManagementV2//uploads/share-month-files/Anual_data_00855_Head office Bamenda_20260115044734.xlsx",
+        //        FullPath = "https://identity.bapcculcbs.com/Documents/2026/Head office Bamenda/AccountingManagementV2//uploads/share-month-files/Anual_data_00855_Head office Bamenda_20260115044734.xlsx",
+        //        FileType = "Document",
+        //        ReportType = "ShareMonth",
+        //        BranchName = "Head office Bamenda",
+        //        Username = "Paul Formum",
+        //        Size = "File not found"
+        //    };
+        //}
 
 
     }

@@ -4,6 +4,7 @@ using CBS.BusinessService.AccountingV2.EndOfYearClosure;
 using CBS.BusinessService.AccountingV2.InterestProductConfig;
 using CBS.BusinessService.AccountingV2.JournalHead;
 using CBS.BusinessService.AccountingV2.SharedMonth;
+using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.AccountingV2;
@@ -24,17 +25,18 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.SharedMonth
 {
     public class SharedMonthSimulationController : Controller
     {
-
+       
         private readonly SharedMonthSimulationService _sharedMonthSimulationService;
         private readonly BranchServices _branchServices;
         private readonly InterestProductConfigService _interestProductConfigService;
         public readonly AccountingYearService _accountingYearService;
+        private readonly SalaryUploadServices _salaryUploadServices;
         private readonly string _appFilesRoot;
 
         // Allowed extensions for these templates (adjust if needed)
         private static readonly string[] AllowedExtensions = { ".xlsx", ".xls" };
 
-        public SharedMonthSimulationController(BranchServices branchServices, SharedMonthSimulationService sharedMonthSimulationService, InterestProductConfigService interestProductConfigService, AccountingYearService accountingYearService)
+        public SharedMonthSimulationController(BranchServices branchServices, SharedMonthSimulationService sharedMonthSimulationService, InterestProductConfigService interestProductConfigService, AccountingYearService accountingYearService, SalaryUploadServices salaryUploadServices)
         {
             _sharedMonthSimulationService = sharedMonthSimulationService;
             _branchServices = branchServices;
@@ -43,6 +45,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.SharedMonth
 
 
             _appFilesRoot = Path.Combine(AppDomain.CurrentDomain.BaseDirectory ?? string.Empty, "AppFiles");
+            _salaryUploadServices = salaryUploadServices;
         }
         // GET: SharedMonthSimulation
         public async Task<ActionResult> Index()
@@ -475,6 +478,63 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.SharedMonth
                 return Json(new { message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
+
+        [HttpGet]
+
+        public async Task<ActionResult> GenerateExcelSheet(string fileId)
+        {
+            
+
+            try
+            {
+
+                //var fileUpload = await _salaryUploadServices.GetFileUpload(fileId);
+
+                var type = "BulkTransfer";
+                // ✅ Fetch the journal entry by ID instead of by reference
+                var model = await _sharedMonthSimulationService.GetFileDetailSharedmonth(fileId, type);
+                
+
+                if (model == null)
+                    return HttpNotFound();
+
+                // ✅ Prepare file name and paths
+                string fileName = $"ShareMonth_{model.BranchCode}-{fileId}.xlsx";
+                string directoryPath = Server.MapPath("~/TempFiles");
+
+                if (!Directory.Exists(directoryPath))
+                    Directory.CreateDirectory(directoryPath);
+
+                string filePath = Path.Combine(directoryPath, fileName);
+                //string exportedBy = Session["FullName"]?.ToString() ?? "System";
+
+                // ✅ Generate Excel file
+                byte[] fileBytes = ShareMonthGenerator.FillExcelTemplate(model);
+
+
+
+
+               
+
+                // Delete temp file after sending
+                if (fileBytes == null || fileBytes.Length == 0)
+                    throw new Exception("Generated Excel file is empty.");
+
+                // ✅ Send directly to browser
+                return File(
+                    fileBytes,
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    fileName
+                );
+            }
+            catch (Exception ex)
+            {
+                // Log error or handle gracefully
+                Console.WriteLine($"Excel Export Error: {ex.Message}");
+                return Json(new { success = false, message = "An error occurred while exporting to Excel." }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
 
 
 

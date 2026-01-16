@@ -14,7 +14,7 @@
                 <p class="card-text text-muted">
                     View, analyze and manage share month summaries efficiently.
                 </p>
-                <div class="d-flex justify-content-between align-items-center mt-2">
+                @*<div class="d-flex justify-content-between align-items-center mt-2">
                     <div class="text-start">
                         <small class="text-muted">
                             <i class="mdi mdi-calendar me-1"></i> @Model.Month @Model.Date?.ToString("yyyy")
@@ -25,7 +25,7 @@
                             <i class="mdi mdi-office-building me-1"></i> @Model.BranchName (@Model.BranchCode)
                         </small>
                     </div>
-                </div>
+                </div>*@
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
 
@@ -75,16 +75,19 @@
                                 <div class="change-group">
                                     <div class="card mb-3">
                                         <div class="card-body d-flex justify-content-end align-items-center">
-                                            <a type="button" href="/ShareMonth/UploadedFiles" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="View List">
-                                                <i class="mdi mdi-view-list mdi-18px"></i> View All Uploads
+                                            <a type="button" href="/BulkOperation/Listing" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="View List">
+                                                <i class="mdi mdi-view-list mdi-18px"></i> Go to Bulk Operation
                                             </a>
-                                            <a type="button" href="#" class="btn btn-label-info btn-sm me-2" data-bs-toggle="tooltip" title="Download Report">
-                                                <i class="mdi mdi-download mdi-18px"></i> Export
+                                            <a type="button"
+                                               href="/SharedMonthSimulation/GenerateExcelSheet?fileId=@Model.Id"class="btn btn-label-info btn-sm me-2"
+                                               data-bs-toggle="tooltip">
+                                                <i class="mdi mdi-download mdi-18px"></i> Generate File for bulk Operation
                                             </a>
+
                                         </div>
                                     </div>
 
-                                    <div id="datalistingview">
+                                    
                                         <fieldset class="fieldset-custom">
                                             <div class="mb-0 border-2">
                                                 <div class="accordion" id="summaryAccordion">
@@ -98,7 +101,7 @@
                                                         <div id="overallSummary" class="accordion-collapse collapse show" aria-labelledby="overallSummaryHeading" data-bs-parent="#summaryAccordion">
                                                             <div class="accordion-body">
                                                                 <div class="row mb-3">
-                                                                    <div class="col-md-4">
+                                                                    <div class="col-md-6">
                                                                         <div class="card shadow-sm border-0">
                                                                             <div class="card-body text-center">
                                                                                 <h6 class="card-title text-primary">Total Members</h6>
@@ -108,7 +111,7 @@
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="col-md-4">
+                                                                    <div class="col-md-6">
                                                                         <div class="card shadow-sm border-0">
                                                                             <div class="card-body text-center">
                                                                                 <h6 class="card-title text-primary">Total Amount</h6>
@@ -118,7 +121,7 @@
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="col-md-4">
+                                                                    @*<div class="col-md-4">
                                                                         <div class="card shadow-sm border-0">
                                                                             <div class="card-body text-center">
                                                                                 <h6 class="card-title text-primary">Average per Member</h6>
@@ -134,7 +137,7 @@
                                                                                 </p>
                                                                             </div>
                                                                         </div>
-                                                                    </div>
+                                                                    </div>*@
                                                                 </div>
 
                                                                 <div class="row mb-3">
@@ -147,21 +150,21 @@
                                                                             </div>
                                                                             <div class="card-body">
                                                                                 <div class="row">
-                                                                                    <div class="col-md-3">
+                                                                                    <div class="col-md-4">
                                                                                         <p class="mb-1"><strong>Uploaded By:</strong></p>
                                                                                         <p class="text-muted">@Model.UploadedBy</p>
                                                                                     </div>
-                                                                                    <div class="col-md-3">
+                                                                                    <div class="col-md-4">
                                                                                         <p class="mb-1"><strong>Upload Date:</strong></p>
                                                                                         <p class="text-muted">@Model.UploadedAt.ToString("dd/MM/yyyy HH:mm")</p>
                                                                                     </div>
-                                                                                    <div class="col-md-3">
+                                                                                    @*<div class="col-md-3">
                                                                                         <p class="mb-1"><strong>File Type:</strong></p>
                                                                                         <p class="text-muted">@Model.FileType</p>
-                                                                                    </div>
-                                                                                    <div class="col-md-3">
+                                                                                    </div>*@
+                                                                                    <div class="col-md-4">
                                                                                         <p class="mb-1"><strong>Month:</strong></p>
-                                                                                        <p class="text-muted">@Model.Month @Model.Date?.ToString("yyyy")</p>
+                                                                                        <p class="text-muted">@Model.Month @Model.Date.ToString()</p>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -251,10 +254,10 @@
                                                                                     <label class="form-label fw-bold">Branch Code:</label>
                                                                                     <p class="text-muted">@Model.BranchCode</p>
                                                                                 </div>
-                                                                                <div class="mb-3">
+                                                                                @*<div class="mb-3">
                                                                                     <label class="form-label fw-bold">Branch ID:</label>
                                                                                     <p class="text-muted">@Model.BranchId</p>
-                                                                                </div>
+                                                                                </div>*@
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -267,15 +270,15 @@
                                                                                 <div class="mb-3">
                                                                                     <label class="form-label fw-bold">Total Records:</label>
                                                                                     <div class="d-flex align-items-center">
-                                                                                        <span class="badge bg-info rounded-pill me-2">@Model.Lines?.Count.ToString() ?? "0"</span>
+                                                                                        <span class="badge bg-info rounded-pill me-2">@(Model?.Lines?.Count ?? 0)</span>
                                                                                         <span>member records</span>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="mb-3">
                                                                                     <label class="form-label fw-bold">Total Amount:</label>
                                                                                     <div class="d-flex align-items-center">
-                                                                                        <i class="mdi mdi-currency-usd text-success me-2"></i>
-                                                                                        <span class="fs-5 fw-bold text-success">@Model.TotalAmount.ToString("N1")</span>
+                                                                                        <i class="mdi mdi-cash-multiple text-success me-2"></i>
+                                                                                        <span class="fs-5 fw-bold text-success">@Model.TotalAmount.ToString("N1") FCFA</span>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="mb-3">
@@ -295,7 +298,7 @@
                                                 </div>
                                             </div>
                                         </fieldset>
-                                    </div>
+                                    
                                 </div>
                             </div>
                         </div>
