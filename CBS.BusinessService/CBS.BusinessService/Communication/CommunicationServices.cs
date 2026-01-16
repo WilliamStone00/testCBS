@@ -49,17 +49,35 @@ namespace CBS.BusinessService.Communication
         /// Content: multipart/form-data
         /// </summary>
         public async Task<ApiResponse<ServiceResponse<SmsUploadPreviewSummaryDto>>> PreviewSmsUploadAsync(
-            HttpPostedFileBase file,
-            string defaultMessageTemplate = null)
+            HttpPostedFileBase file,string branchId = null, string defaultMessageTemplate = null, string senderService = null, string title = null, string purpose = null)
         {
             if (file == null || file.ContentLength <= 0)
                 throw new ArgumentException("File is required.", nameof(file));
+
+            if (string.IsNullOrWhiteSpace(branchId))
+                throw new ArgumentException("Branch is required.", nameof(title));
+            if (string.IsNullOrWhiteSpace(purpose))
+                throw new ArgumentException("Title is required.", nameof(purpose));
+            if (string.IsNullOrWhiteSpace(defaultMessageTemplate))
+                throw new ArgumentException("Message Template is required.", nameof(defaultMessageTemplate));
+            if (string.IsNullOrWhiteSpace(senderService))
+                throw new ArgumentException("SenderService is required.", nameof(senderService));
+            if (string.IsNullOrWhiteSpace(title))
+                throw new ArgumentException("Title is required.", nameof(title));
 
             // Many ApiCallerHelpers accept: (file, url, extraFormFields)
             // If yours does not, you can create a new helper method (UploadFileWithFormFieldsAsync).
             var formFields = new System.Collections.Generic.Dictionary<string, string>();
             if (!string.IsNullOrWhiteSpace(defaultMessageTemplate))
                 formFields["DefaultMessageTemplate"] = defaultMessageTemplate;
+            if (!string.IsNullOrWhiteSpace(branchId))
+                formFields["BranchId"] = branchId;
+            if (!string.IsNullOrWhiteSpace(senderService))
+                formFields["SenderService"] = senderService;
+            if (!string.IsNullOrWhiteSpace(title))
+                formFields["Title"] = title;
+            if (!string.IsNullOrWhiteSpace(purpose))
+                formFields["Purpose"] = purpose;
 
             return await _communicationApiHelper.UploadFileWithFormFieldsAsync<ServiceResponse<SmsUploadPreviewSummaryDto>>(
                 file,
@@ -106,10 +124,7 @@ namespace CBS.BusinessService.Communication
             if (command == null) throw new ArgumentNullException(nameof(command));
             if (string.IsNullOrWhiteSpace(command.FileUploadId))
                 throw new ArgumentException("FileUploadId is required.", nameof(command.FileUploadId));
-            if (string.IsNullOrWhiteSpace(command.SenderService))
-                throw new ArgumentException("SenderService is required.", nameof(command.SenderService));
-            if (string.IsNullOrWhiteSpace(command.Title))
-                throw new ArgumentException("Title is required.", nameof(command.Title));
+           
 
             return await _communicationApiHelper.PostAsync<ServiceResponse<SmsFileUploadSendSummaryDto>>(
                 APICallHelper.SmsUpload_Send,

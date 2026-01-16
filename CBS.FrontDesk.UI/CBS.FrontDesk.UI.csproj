@@ -7890,6 +7890,7 @@
     <Content Include="AppFiles\Accountingv2Reporting\DataSets\IPS.xss">
       <DependentUpon>IPS.xsd</DependentUpon>
     </Content>
+    <Content Include="AppFiles\Communication\BulkSmsExecutionTemplate.xlsx" />
     <None Include="DataSet\Loan\DeliquentLoanSummaryDataSet.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -11276,6 +11277,7 @@
     <Content Include="Views\SalaryUpload\SharedMonthDetails.cshtml" />
     <Content Include="Views\Communication\Index.cshtml" />
     <Content Include="Views\Communication\_DataSmsUploads.cshtml" />
+    <Content Include="Views\Communication\SmsUpload.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
