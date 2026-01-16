@@ -64,6 +64,21 @@ namespace CBS.FrontDesk.UI.Controllers.Communication
             return View();
         }
 
+        /// <summary>
+        /// Listing page (uploaded files table).
+        /// </summary>
+        public async Task<ActionResult> SmsUploadDetails(string fileId)
+        {
+           //await loadPreInformation();
+            var smsFileUploadDetails= await _communicationServices.GetSmsUploadDetaisAsync(fileId);
+
+            if (smsFileUploadDetails == null)
+            {
+                return HttpNotFound();
+            }
+            return View(smsFileUploadDetails);
+        }
+
         private async Task loadPreInformation() {
             var branches = await _branchServices.GetBranches();
             ViewBag.Branches = branches;
@@ -239,6 +254,53 @@ namespace CBS.FrontDesk.UI.Controllers.Communication
                 // deserialize into your concrete view model if needed
                 // otherwise return raw dt.data
                 var uploads = JsonConvert.DeserializeObject<List<SmsFileUploadDto>>(JsonConvert.SerializeObject(dt.data));
+
+                return Json(new
+                {
+                    draw = dt.draw,
+                    recordsTotal = dt.recordsTotal,
+                    recordsFiltered = dt.recordsFiltered,
+                    data = uploads
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    draw = query?.Options?.draw ?? "1",
+                    recordsTotal = 0,
+                    recordsFiltered = 0,
+                    data = new List<object>(),
+                    error = ex.Message
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
+        // ============================================================
+        // DATATABLE (LIST UPLOADS)
+        // ============================================================
+
+        /// <summary>
+        /// Loads SMS file uploads in DataTables format.
+        /// - Endpoint called: POST api/v1/SmsUpload/datatable
+        /// </summary>
+        [HttpPost]
+        public async Task<JsonResult> GetSmsFileUploadHistoryDataTable(GetSmsFileUploadHistoryDataTableQuery query)
+        {
+            try
+            {
+                if (!_communicationServices.IsHeadOffice())
+                {
+                    query.BranchId=_communicationServices.GetBranchID();
+                }
+
+                var dt = await _communicationServices.GetSmsFileUploadHistoryDataTableAsync(query);
+
+                // dt is CustomDataTable (your standard)
+                // deserialize into your concrete view model if needed
+                // otherwise return raw dt.data
+                var uploads = JsonConvert.DeserializeObject<List<SmsFileUploadHistoryDto>>(JsonConvert.SerializeObject(dt.data));
 
                 return Json(new
                 {
