@@ -1893,5 +1893,12 @@ namespace CBS.FrontDesk.Helper
         public const string GetDataTable = "/api/v1/Year/datatable";
         public const string GetyearById = "/api/v1/Year/{0}";
         public const string GetAllYear = "/api/v1/Year/all";
+
+
+        //Communication
+        public const string SmsUpload_Preview = "/api/v1/SmsUpload/preview";
+        public const string SmsUpload_DataTable = "/api/v1/SmsUpload/datatable";
+        public const string SmsUpload_Send = "/api/v1/SmsUpload/send";
+        public const string SmsUpload_DownloadById = "/api/v1/SmsUpload/download/{0}";
     }
 }

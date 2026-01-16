@@ -358,6 +358,7 @@
     <Compile Include="CheckManagementSystem\Operations\ChequeCancelation\CancellationRequestService.cs" />
     <Compile Include="CheckManagementSystem\Operations\ChequeRequestService\ChequeRequestService.cs" />
     <Compile Include="CheckManagementSystem\Operations\CounterCheque\CounterChequeService.cs" />
+    <Compile Include="Communication\CommunicationServices.cs" />
     <Compile Include="CustomerManagement\DailySaverServices.cs" />
     <Compile Include="DailyCollectionServices\DailyCollectionEndOfDayServices.cs" />
     <Compile Include="Accounting\DocumentTypeServices.cs" />
