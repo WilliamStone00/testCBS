@@ -138,4 +138,20 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.SharedMonth
         public bool IsEnabled { get; set; }
 
     }
+
+    public class SharedMonthDownloadDto
+    {
+        public string Id { get; set; }              // maps to "_id"
+        public string FileName { get; set; }
+        public string Extension { get; set; }
+        public string DownloadPath { get; set; }
+        public string FullPath { get; set; }
+        public string FileType { get; set; }
+        public string ReportType { get; set; }
+        public string BranchName { get; set; }
+        public string Username { get; set; }
+        public string Size { get; set; }
+    }
+
+
 }

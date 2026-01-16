@@ -173,32 +173,73 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Error loading loan data.");
             }
         }
-        public async Task<ActionResult> DownloadFile(string fileId = null)
+        public async Task<ActionResult> DownloadFile(string fileId = null, string fileType = null)
         {
-            
-
             try
             {
-                // Call the service to download the file
-                var response = await _salaryUploadServices.DownloadFile(fileId);
-
-                if (response != null)
+                // 🔹 CASE 1: ShareMonth or Tax → normal binary download
+                if (fileType != "ShareMonth" && fileType != "Tax")
                 {
-                    // If response is successful, return the file
-                    return File(response.FileData, response.ContentType, response.FileName);
-                }
-                else
-                {
-                    // If the response is null or contains errors, return an error view
+                    var response = await _salaryUploadServices.DownloadFile(fileId);
 
-                    return View("Error", new HandleErrorInfo(new Exception(response.ErrorMessage), "ControllerName", "ActionName"));
+                    if (response != null)
+                    {
+                        return File(
+                            response.FileData,
+                            response.ContentType,
+                            response.FileName
+                        );
+                    }
+
+                    return View(
+                        "Error",
+                        new HandleErrorInfo(
+                            new Exception(response?.ErrorMessage ?? "File download failed"),
+                            "SalaryUpload",
+                            "DownloadFile"
+                        )
+                    );
                 }
+
+                // 🔹 CASE 2: All other file types → URL-based SharedMonth download
+                var fileUpload = await _salaryUploadServices.GetFileUpload(fileId);
+
+                if (fileUpload == null)
+                {
+                    return View(
+                        "Error",
+                        new HandleErrorInfo(
+                            new Exception("File upload not found"),
+                            "SalaryUpload",
+                            "DownloadFile"
+                        )
+                    );
+                }
+
+                //var sharedResponse = await _sharedMonthSimulationService.Download(fileUpload.FileUploadId);
+
+                if (fileUpload != null && !string.IsNullOrWhiteSpace(fileUpload.FilePath))
+                {
+                    return Redirect(fileUpload.FilePath);
+                }
+
+                return View(
+                    "Error",
+                    new HandleErrorInfo(
+                        new Exception("Shared file not available for download"),
+                        "SalaryUpload",
+                        "DownloadFile"
+                    )
+                );
             }
             catch (Exception ex)
             {
-                // Handle exception and return an error view
                 Console.WriteLine($"Error downloading file: {ex.Message}");
-                return View("Error", new HandleErrorInfo(ex, "ControllerName", "ActionName"));
+
+                return View(
+                    "Error",
+                    new HandleErrorInfo(ex, "SalaryUpload", "DownloadFile")
+                );
             }
         }
 
