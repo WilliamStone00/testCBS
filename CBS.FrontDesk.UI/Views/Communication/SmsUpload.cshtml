@@ -121,7 +121,7 @@
                                         Sender Service <span class="req-star">*</span>
                                     </label>
                                     @Html.TextBoxFor(m => m.SenderService,
-                                        new { @class = "form-control", id = "SenderService", placeholder = "e.g. CMONEY / FLX / NEXAH", required = "required" })
+                                        new { @class = "form-control", id = "SenderService", placeholder = "e.g. CMONEY / CAMCCUL", required = "required" })
                                     @Html.ValidationMessageFor(m => m.SenderService, "", new { @class = "text-danger small" })
                                 </div>
 
@@ -150,7 +150,7 @@
                                         Default Message Template <span class="text-muted">(optional)</span>
                                     </label>
                                     @Html.TextAreaFor(m => m.DefaultMessageTemplate,
-                                        new { @class = "form-control", id = "DefaultMessageTemplate", rows = "2", placeholder = "Optional: used if template column missing/empty." })
+                                        new { @class = "form-control", id = "DefaultMessageTemplate", rows = "2", placeholder = "e.g Dear {Name} , your Balance is {Amount}." })
                                     <small class="text-muted help-hint">
                                         Sent to Preview endpoint as <code>defaultMessageTemplate</code>.
                                     </small>
