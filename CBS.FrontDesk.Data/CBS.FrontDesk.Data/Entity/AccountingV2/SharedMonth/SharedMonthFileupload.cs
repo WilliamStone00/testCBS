@@ -45,21 +45,38 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.SharedMonth
         public decimal TotalMember { get; set; }
         public decimal TotalAmount { get; set; }
 
-   }
+                // e.g. July
+        public string BankName { get; set; }
+        // -----------------------------
+        // Lines (table body)
+        // -----------------------------
+
+       
+        public int? AccountingYear { get; set; }
+        public string AccountingYearId { get; set; }
+       
+
+    }
 
 
 
     public sealed class CustomerInterest
     {
-        
+
         public string MemberReference { get; set; }
-        
+
+
+        public string AccountType { get; set; }
+
         public string MemberName { get; set; }
 
-        
+
         public decimal Amount { get; set; }
 
- 
+
     }
+
     
+    
+
 }
