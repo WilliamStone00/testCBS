@@ -5,6 +5,7 @@ using CBS.FrontDesk.Data.Entity.Communication;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
+using DocumentFormat.OpenXml.EMMA;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -35,9 +36,10 @@ namespace CBS.FrontDesk.UI.Controllers.Communication
         /// <summary>
         /// Initializes controller.
         /// </summary>
-        public CommunicationController(CommunicationServices communicationServices)
+        public CommunicationController(CommunicationServices communicationServices, BranchServices branchServices)
         {
             _communicationServices = communicationServices ?? throw new ArgumentNullException(nameof(communicationServices));
+            _branchServices = branchServices ?? throw new ArgumentNullException(nameof(branchServices));
         }
 
         // ============================================================
@@ -47,17 +49,39 @@ namespace CBS.FrontDesk.UI.Controllers.Communication
         /// <summary>
         /// Main page for SMS upload module.
         /// </summary>
-        public ActionResult SmsUpload()
+        public async Task<ActionResult> SmsUpload()
         {
+            await loadPreInformation();
             return View();
         }
 
         /// <summary>
         /// Listing page (uploaded files table).
         /// </summary>
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
+           await loadPreInformation();
             return View();
+        }
+
+        /// <summary>
+        /// Listing page (uploaded files table).
+        /// </summary>
+        public async Task<ActionResult> SmsUploadDetails(string fileId)
+        {
+           //await loadPreInformation();
+            var smsFileUploadDetails= await _communicationServices.GetSmsUploadDetaisAsync(fileId);
+
+            if (smsFileUploadDetails == null)
+            {
+                return HttpNotFound();
+            }
+            return View(smsFileUploadDetails);
+        }
+
+        private async Task loadPreInformation() {
+            var branches = await _branchServices.GetBranches();
+            ViewBag.Branches = branches;
         }
 
         // ============================================================
@@ -70,7 +94,7 @@ namespace CBS.FrontDesk.UI.Controllers.Communication
         /// - Returns preview rows and computed message bodies.
         /// </summary>
         [HttpPost]
-        public async Task<ActionResult> PreviewSmsUpload(HttpPostedFileBase file, string defaultMessageTemplate = null)
+        public async Task<ActionResult> PreviewSmsUpload(HttpPostedFileBase file, string branchId = null, string defaultMessageTemplate = null, string senderService = null, string title = null, string purpose = null)
         {
             try
             {
@@ -84,7 +108,31 @@ namespace CBS.FrontDesk.UI.Controllers.Communication
                     }, JsonRequestBehavior.AllowGet);
                 }
 
-                var result = await _communicationServices.PreviewSmsUploadAsync(file, defaultMessageTemplate);
+                if (string.IsNullOrWhiteSpace(branchId))
+                {
+                    return Json(new { success = false, status = false, message = "Branch is required." }, JsonRequestBehavior.AllowGet);
+                }
+                if (string.IsNullOrWhiteSpace(defaultMessageTemplate))
+                {
+                    return Json(new { success = false, status = false, message = "Message Template is required." }, JsonRequestBehavior.AllowGet);
+                }
+
+                if (string.IsNullOrWhiteSpace(senderService))
+                {
+                    return Json(new { success = false, status = false, message = "Sender Service is required." }, JsonRequestBehavior.AllowGet);
+                }
+
+                if (string.IsNullOrWhiteSpace(title))
+                {
+                    return Json(new { success = false, status = false, message = "Title is required." }, JsonRequestBehavior.AllowGet);
+                }
+
+                if (string.IsNullOrWhiteSpace(purpose))
+                {
+                    return Json(new { success = false, status = false, message = "Purpose is required." }, JsonRequestBehavior.AllowGet);
+                }
+
+                var result = await _communicationServices.PreviewSmsUploadAsync(file,branchId, defaultMessageTemplate,senderService,title,purpose);
 
                 if (result == null || !result.IsSuccess || result.ApiResponseData == null)
                 {
@@ -147,15 +195,7 @@ namespace CBS.FrontDesk.UI.Controllers.Communication
                     return Json(new { success = false, status = false, message = "FileUploadId is required." }, JsonRequestBehavior.AllowGet);
                 }
 
-                if (string.IsNullOrWhiteSpace(model.SenderService))
-                {
-                    return Json(new { success = false, status = false, message = "SenderService is required." }, JsonRequestBehavior.AllowGet);
-                }
-
-                if (string.IsNullOrWhiteSpace(model.Title))
-                {
-                    return Json(new { success = false, status = false, message = "Title is required." }, JsonRequestBehavior.AllowGet);
-                }
+                
 
                 var result = await _communicationServices.SendSmsUploadAsync(model);
 
@@ -233,6 +273,101 @@ namespace CBS.FrontDesk.UI.Controllers.Communication
                     data = new List<object>(),
                     error = ex.Message
                 }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
+        // ============================================================
+        // DATATABLE (LIST UPLOADS)
+        // ============================================================
+
+        /// <summary>
+        /// Loads SMS file uploads in DataTables format.
+        /// - Endpoint called: POST api/v1/SmsUpload/datatable
+        /// </summary>
+        [HttpPost]
+        public async Task<JsonResult> GetSmsFileUploadHistoryDataTable(GetSmsFileUploadHistoryDataTableQuery query)
+        {
+            try
+            {
+                if (!_communicationServices.IsHeadOffice())
+                {
+                    query.BranchId=_communicationServices.GetBranchID();
+                }
+
+                var dt = await _communicationServices.GetSmsFileUploadHistoryDataTableAsync(query);
+
+                // dt is CustomDataTable (your standard)
+                // deserialize into your concrete view model if needed
+                // otherwise return raw dt.data
+                var uploads = JsonConvert.DeserializeObject<List<SmsFileUploadHistoryDto>>(JsonConvert.SerializeObject(dt.data));
+
+                return Json(new
+                {
+                    draw = dt.draw,
+                    recordsTotal = dt.recordsTotal,
+                    recordsFiltered = dt.recordsFiltered,
+                    data = uploads
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    draw = query?.Options?.draw ?? "1",
+                    recordsTotal = 0,
+                    recordsFiltered = 0,
+                    data = new List<object>(),
+                    error = ex.Message
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public async Task<ActionResult> DownloadSmsUploadTemplate()
+        {
+            try
+            {
+                const string fileName = "BulkSmsExecutionTemplate.xlsx";
+                string directoryPath = Server.MapPath("~/AppFiles/Communication");
+
+                // Validate directory exists
+                if (!Directory.Exists(directoryPath))
+                {
+                    return Json(new { success = false, status = false, message = "Communication template directory not found" });
+                }
+
+                string filePath = Path.Combine(directoryPath, fileName);
+
+                // Validate file exists
+                if (!System.IO.File.Exists(filePath))
+                {
+                    return Json(new { success = false, status = false, message = "Template file not found" });
+                }
+
+                // Read file asynchronously
+                byte[] fileBytes;
+                using (FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: 4096, useAsync: true))
+                {
+                    fileBytes = new byte[fileStream.Length];
+                    await fileStream.ReadAsync(fileBytes, 0, (int)fileStream.Length);
+                }
+
+                // Return the file
+                return File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Json(new { success = false, status = false, message = "Access denied to template file" });
+            }
+            catch (IOException ex)
+            {
+                return Json(new { success = false, status = false, message = $"Error reading template file: {ex.Message}" });
+            }
+            catch (Exception ex)
+            {
+
+                // Log the exception here
+                return Json(new { success = false, status = false, message = $"An unexpected error occurred: {ex.Message}" });
             }
         }
 

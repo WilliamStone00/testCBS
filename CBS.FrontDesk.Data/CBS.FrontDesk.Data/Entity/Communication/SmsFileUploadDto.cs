@@ -27,5 +27,7 @@ namespace CBS.FrontDesk.Data.Entity.Communication
         public DateTime CreatedDate { get; set; }
         public string CreatedBy { get; set; }
         public string Purpose { get; set; }
+        public string SenderService { get; set; }
+        public string Title { get; set; }
     }
 }

@@ -13,6 +13,7 @@ using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
 using DocumentFormat.OpenXml.EMMA;
 using DocumentFormat.OpenXml.Office2010.Excel;
+using Microsoft.AspNet.SignalR.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -49,22 +50,62 @@ namespace CBS.BusinessService.Communication
         /// Content: multipart/form-data
         /// </summary>
         public async Task<ApiResponse<ServiceResponse<SmsUploadPreviewSummaryDto>>> PreviewSmsUploadAsync(
-            HttpPostedFileBase file,
-            string defaultMessageTemplate = null)
+            HttpPostedFileBase file, string branchId = null, string defaultMessageTemplate = null, string senderService = null, string title = null, string purpose = null)
         {
             if (file == null || file.ContentLength <= 0)
                 throw new ArgumentException("File is required.", nameof(file));
+
+            if (string.IsNullOrWhiteSpace(branchId))
+                throw new ArgumentException("Branch is required.", nameof(title));
+            if (string.IsNullOrWhiteSpace(purpose))
+                throw new ArgumentException("Title is required.", nameof(purpose));
+            if (string.IsNullOrWhiteSpace(defaultMessageTemplate))
+                throw new ArgumentException("Message Template is required.", nameof(defaultMessageTemplate));
+            if (string.IsNullOrWhiteSpace(senderService))
+                throw new ArgumentException("SenderService is required.", nameof(senderService));
+            if (string.IsNullOrWhiteSpace(title))
+                throw new ArgumentException("Title is required.", nameof(title));
 
             // Many ApiCallerHelpers accept: (file, url, extraFormFields)
             // If yours does not, you can create a new helper method (UploadFileWithFormFieldsAsync).
             var formFields = new System.Collections.Generic.Dictionary<string, string>();
             if (!string.IsNullOrWhiteSpace(defaultMessageTemplate))
                 formFields["DefaultMessageTemplate"] = defaultMessageTemplate;
+            if (!string.IsNullOrWhiteSpace(branchId))
+                formFields["BranchId"] = branchId;
+            if (!string.IsNullOrWhiteSpace(senderService))
+                formFields["SenderService"] = senderService;
+            if (!string.IsNullOrWhiteSpace(title))
+                formFields["Title"] = title;
+            if (!string.IsNullOrWhiteSpace(purpose))
+                formFields["Purpose"] = purpose;
 
             return await _communicationApiHelper.UploadFileWithFormFieldsAsync<ServiceResponse<SmsUploadPreviewSummaryDto>>(
                 file,
                 APICallHelper.SmsUpload_Preview,
                 formFields);
+        }
+
+
+        public async Task<SmsFileUploadDetailsDto> GetSmsUploadDetaisAsync(string fileUploadId)
+        {
+            if (fileUploadId == null)
+                throw new ArgumentException("file Upload is required.", nameof(fileUploadId));
+            try
+            {
+
+              var response=  await _communicationApiHelper.GetAsync<ServiceResponse<SmsFileUploadDetailsDto>>(string.Format(APICallHelper.SmsUpload_ById, fileUploadId));
+                if (response.ApiResponseData != null)
+                {
+                    return response.ApiResponseData.Data;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
         }
 
         /// <summary>
@@ -95,6 +136,35 @@ namespace CBS.BusinessService.Communication
             }
         }
 
+
+        /// <summary>
+        /// Loads SMS uploads  history listing using DataTables request model.
+        /// Endpoint: POST api/v1/SmsUpload/history/datatable
+        /// Content: application/json
+        /// </summary>
+        public async Task<CustomDataTable> GetSmsFileUploadHistoryDataTableAsync(GetSmsFileUploadHistoryDataTableQuery query)
+        {
+            try
+            {
+                var response = await _communicationApiHelper.PostAsync<ResponseObject<CustomDataTable>>(
+                    APICallHelper.SmsUpload_History_DataTable,
+                    query);
+
+                if (!response.IsSuccess)
+                    throw new Exception($"API call failed: {response.Message}");
+
+                if (response.ApiResponseData == null)
+                    throw new Exception("API returned null data");
+
+                return response.ApiResponseData.Data;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"API Error: {ex.Message}");
+                throw new Exception($"service unavailable: {ex.Message}", ex);
+            }
+        }
+
         /// <summary>
         /// Sends all SMS rows for a previously uploaded file (by FileUploadId),
         /// and writes history per row.
@@ -106,10 +176,7 @@ namespace CBS.BusinessService.Communication
             if (command == null) throw new ArgumentNullException(nameof(command));
             if (string.IsNullOrWhiteSpace(command.FileUploadId))
                 throw new ArgumentException("FileUploadId is required.", nameof(command.FileUploadId));
-            if (string.IsNullOrWhiteSpace(command.SenderService))
-                throw new ArgumentException("SenderService is required.", nameof(command.SenderService));
-            if (string.IsNullOrWhiteSpace(command.Title))
-                throw new ArgumentException("Title is required.", nameof(command.Title));
+
 
             return await _communicationApiHelper.PostAsync<ServiceResponse<SmsFileUploadSendSummaryDto>>(
                 APICallHelper.SmsUpload_Send,
