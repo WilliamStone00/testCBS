@@ -94,7 +94,7 @@ namespace CBS.FrontDesk.UI.Controllers.Communication
         /// - Returns preview rows and computed message bodies.
         /// </summary>
         [HttpPost]
-        public async Task<ActionResult> PreviewSmsUpload(HttpPostedFileBase file, string branchId = null, string defaultMessageTemplate = null, string senderService = null, string title = null, string purpose = null)
+        public async Task<ActionResult> PreviewSmsUpload(HttpPostedFileBase file, /*string branchId = null,*/ string defaultMessageTemplate = null, string senderService = null, string title = null, string purpose = null)
         {
             try
             {
@@ -108,10 +108,10 @@ namespace CBS.FrontDesk.UI.Controllers.Communication
                     }, JsonRequestBehavior.AllowGet);
                 }
 
-                if (string.IsNullOrWhiteSpace(branchId))
+               /* if (string.IsNullOrWhiteSpace(branchId))
                 {
                     return Json(new { success = false, status = false, message = "Branch is required." }, JsonRequestBehavior.AllowGet);
-                }
+                }*/
                 if (string.IsNullOrWhiteSpace(defaultMessageTemplate))
                 {
                     return Json(new { success = false, status = false, message = "Message Template is required." }, JsonRequestBehavior.AllowGet);
@@ -132,7 +132,7 @@ namespace CBS.FrontDesk.UI.Controllers.Communication
                     return Json(new { success = false, status = false, message = "Purpose is required." }, JsonRequestBehavior.AllowGet);
                 }
 
-                var result = await _communicationServices.PreviewSmsUploadAsync(file,branchId, defaultMessageTemplate,senderService,title,purpose);
+                var result = await _communicationServices.PreviewSmsUploadAsync(file,branchId: null, defaultMessageTemplate,senderService,title,purpose);
 
                 if (result == null || !result.IsSuccess || result.ApiResponseData == null)
                 {

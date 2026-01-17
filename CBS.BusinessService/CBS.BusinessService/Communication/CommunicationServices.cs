@@ -52,6 +52,9 @@ namespace CBS.BusinessService.Communication
         public async Task<ApiResponse<ServiceResponse<SmsUploadPreviewSummaryDto>>> PreviewSmsUploadAsync(
             HttpPostedFileBase file, string branchId = null, string defaultMessageTemplate = null, string senderService = null, string title = null, string purpose = null)
         {
+
+            branchId = GetBranchID();
+
             if (file == null || file.ContentLength <= 0)
                 throw new ArgumentException("File is required.", nameof(file));
 
