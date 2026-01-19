@@ -18,7 +18,7 @@ namespace CBS.BusinessService.AccountingV2.SharedMonth
 
     public class ShareMonthGenerator
     {
-        public static byte[] FillExcelTemplate(MemberShareMonthUpload data)
+        public static byte[] FillExcelTemplate(MemberShareMonthUpload data, string generatedBy)
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
@@ -121,17 +121,18 @@ namespace CBS.BusinessService.AccountingV2.SharedMonth
                 monthCell.Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                 monthCell.Style.Fill.PatternType = ExcelFillStyle.None;
 
-                // Apply borders to all cells for better visibility
+                // Apply THINNER borders (Hairline) to all cells for better visibility
+                var thinBorderStyle = ExcelBorderStyle.Hair; // Even thinner than Thin
                 for (int row = 2; row <= 5; row++)
                 {
-                    worksheet.Cells[$"A{row}"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                    worksheet.Cells[$"B{row}:D{row}"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                    worksheet.Cells[$"A{row}"].Style.Border.BorderAround(thinBorderStyle);
+                    worksheet.Cells[$"B{row}:D{row}"].Style.Border.BorderAround(thinBorderStyle);
                 }
 
                 // Set row heights for header rows
                 for (int row = 2; row <= 5; row++)
                 {
-                    worksheet.Row(row).Height = 25;
+                    worksheet.Row(row).Height = 22; // Slightly shorter for cleaner look
                 }
 
                 // -----------------------------
@@ -141,13 +142,13 @@ namespace CBS.BusinessService.AccountingV2.SharedMonth
                 tableTitleCell.Merge = true;
                 tableTitleCell.Value = "BULK DEBIT/CREDIT TRANSFER";
                 tableTitleCell.Style.Font.Bold = true;
-                tableTitleCell.Style.Font.Size = 14;
+                tableTitleCell.Style.Font.Size = 12; // Slightly smaller for better proportion
                 tableTitleCell.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 tableTitleCell.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
                 tableTitleCell.Style.Fill.PatternType = ExcelFillStyle.Solid;
                 tableTitleCell.Style.Fill.BackgroundColor.SetColor(Color.Orange);
-                tableTitleCell.Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                worksheet.Row(6).Height = 30;
+                tableTitleCell.Style.Border.BorderAround(thinBorderStyle);
+                worksheet.Row(6).Height = 25;
 
                 // -----------------------------
                 // TABLE HEADERS (Row 7)
@@ -158,11 +159,11 @@ namespace CBS.BusinessService.AccountingV2.SharedMonth
                 worksheet.Cells[headerRow, 1].Value = "Member Reference";
                 worksheet.Cells[headerRow, 1].Style.Font.Bold = true;
                 worksheet.Cells[headerRow, 1].Style.Font.Name = "Bahnschrift SemiCondensed";
-                worksheet.Cells[headerRow, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                worksheet.Cells[headerRow, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
                 worksheet.Cells[headerRow, 1].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
                 worksheet.Cells[headerRow, 1].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                worksheet.Cells[headerRow, 1].Style.Fill.BackgroundColor.SetColor(Color.LightGray);
-                worksheet.Cells[headerRow, 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                worksheet.Cells[headerRow, 1].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(240, 240, 240)); // Lighter gray
+                worksheet.Cells[headerRow, 1].Style.Border.BorderAround(thinBorderStyle);
 
                 // Account Type - LEFT aligned
                 worksheet.Cells[headerRow, 2].Value = "Account Type";
@@ -171,8 +172,8 @@ namespace CBS.BusinessService.AccountingV2.SharedMonth
                 worksheet.Cells[headerRow, 2].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                 worksheet.Cells[headerRow, 2].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
                 worksheet.Cells[headerRow, 2].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                worksheet.Cells[headerRow, 2].Style.Fill.BackgroundColor.SetColor(Color.LightGray);
-                worksheet.Cells[headerRow, 2].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                worksheet.Cells[headerRow, 2].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(240, 240, 240)); // Lighter gray
+                worksheet.Cells[headerRow, 2].Style.Border.BorderAround(thinBorderStyle);
 
                 // Name - LEFT aligned
                 worksheet.Cells[headerRow, 3].Value = "Name";
@@ -181,8 +182,8 @@ namespace CBS.BusinessService.AccountingV2.SharedMonth
                 worksheet.Cells[headerRow, 3].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                 worksheet.Cells[headerRow, 3].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
                 worksheet.Cells[headerRow, 3].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                worksheet.Cells[headerRow, 3].Style.Fill.BackgroundColor.SetColor(Color.LightGray);
-                worksheet.Cells[headerRow, 3].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                worksheet.Cells[headerRow, 3].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(240, 240, 240)); // Lighter gray
+                worksheet.Cells[headerRow, 3].Style.Border.BorderAround(thinBorderStyle);
 
                 // Amount - RIGHT aligned
                 worksheet.Cells[headerRow, 4].Value = "Amount";
@@ -191,10 +192,10 @@ namespace CBS.BusinessService.AccountingV2.SharedMonth
                 worksheet.Cells[headerRow, 4].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
                 worksheet.Cells[headerRow, 4].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
                 worksheet.Cells[headerRow, 4].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                worksheet.Cells[headerRow, 4].Style.Fill.BackgroundColor.SetColor(Color.LightGray);
-                worksheet.Cells[headerRow, 4].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                worksheet.Cells[headerRow, 4].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(240, 240, 240)); // Lighter gray
+                worksheet.Cells[headerRow, 4].Style.Border.BorderAround(thinBorderStyle);
 
-                worksheet.Row(headerRow).Height = 25;
+                worksheet.Row(headerRow).Height = 22;
 
                 // -----------------------------
                 // DATA ROWS (Starting from Row 8)
@@ -210,26 +211,26 @@ namespace CBS.BusinessService.AccountingV2.SharedMonth
                         worksheet.Cells[currentRow, 1].Value = line.MemberReference;
                         worksheet.Cells[currentRow, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                         worksheet.Cells[currentRow, 1].Style.Font.Name = "Bahnschrift SemiCondensed";
-                        worksheet.Cells[currentRow, 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        worksheet.Cells[currentRow, 1].Style.Border.BorderAround(thinBorderStyle);
 
                         // Account Type (Column B) - LEFT aligned
                         worksheet.Cells[currentRow, 2].Value = line.AccountType;
                         worksheet.Cells[currentRow, 2].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                         worksheet.Cells[currentRow, 2].Style.Font.Name = "Bahnschrift SemiCondensed";
-                        worksheet.Cells[currentRow, 2].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        worksheet.Cells[currentRow, 2].Style.Border.BorderAround(thinBorderStyle);
 
                         // Name (Column C) - LEFT aligned
                         worksheet.Cells[currentRow, 3].Value = line.MemberName;
                         worksheet.Cells[currentRow, 3].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                         worksheet.Cells[currentRow, 3].Style.Font.Name = "Bahnschrift SemiCondensed";
-                        worksheet.Cells[currentRow, 3].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        worksheet.Cells[currentRow, 3].Style.Border.BorderAround(thinBorderStyle);
 
                         // Amount (Column D) - RIGHT aligned
                         worksheet.Cells[currentRow, 4].Value = line.Amount;
                         worksheet.Cells[currentRow, 4].Style.Numberformat.Format = "#,##0.00";
                         worksheet.Cells[currentRow, 4].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
                         worksheet.Cells[currentRow, 4].Style.Font.Name = "Bahnschrift SemiCondensed";
-                        worksheet.Cells[currentRow, 4].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        worksheet.Cells[currentRow, 4].Style.Border.BorderAround(thinBorderStyle);
 
                         currentRow++;
                     }
@@ -246,9 +247,9 @@ namespace CBS.BusinessService.AccountingV2.SharedMonth
                         totalLabelCell.Style.Font.Bold = true;
                         totalLabelCell.Style.Font.Name = "Bahnschrift SemiCondensed";
                         totalLabelCell.Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                        totalLabelCell.Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        totalLabelCell.Style.Border.BorderAround(thinBorderStyle);
                         totalLabelCell.Style.Fill.PatternType = ExcelFillStyle.Solid;
-                        totalLabelCell.Style.Fill.BackgroundColor.SetColor(Color.LightGray);
+                        totalLabelCell.Style.Fill.BackgroundColor.SetColor(Color.FromArgb(240, 240, 240)); // Lighter gray
 
                         // Total amount in column D - RIGHT aligned
                         decimal totalAmount = data.Lines.Sum(x => x.Amount);
@@ -257,11 +258,41 @@ namespace CBS.BusinessService.AccountingV2.SharedMonth
                         worksheet.Cells[currentRow, 4].Style.Font.Name = "Bahnschrift SemiCondensed";
                         worksheet.Cells[currentRow, 4].Style.Numberformat.Format = "#,##0.00";
                         worksheet.Cells[currentRow, 4].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                        worksheet.Cells[currentRow, 4].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        worksheet.Cells[currentRow, 4].Style.Border.BorderAround(thinBorderStyle);
                         worksheet.Cells[currentRow, 4].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                        worksheet.Cells[currentRow, 4].Style.Fill.BackgroundColor.SetColor(Color.LightGray);
+                        worksheet.Cells[currentRow, 4].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(240, 240, 240)); // Lighter gray
+
+                        currentRow++; // Move to next row for footer
                     }
                 }
+
+                // -----------------------------
+                // FOOTER SECTION (Generated By and Date)
+                // -----------------------------
+                // Add one empty row for spacing
+                worksheet.Row(currentRow).Height = 10;
+                currentRow++;
+
+                // Generated By row
+                var generatedByCell = worksheet.Cells[$"A{currentRow}:D{currentRow}"];
+                generatedByCell.Merge = true;
+                generatedByCell.Value = $"Generated by: {generatedBy}";
+                generatedByCell.Style.Font.Name = "Bahnschrift SemiCondensed";
+                generatedByCell.Style.Font.Size = 10;
+                generatedByCell.Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                generatedByCell.Style.Font.Italic = true;
+                worksheet.Row(currentRow).Height = 18;
+                currentRow++;
+
+                // Generated Date row
+                var generatedDateCell = worksheet.Cells[$"A{currentRow}:D{currentRow}"];
+                generatedDateCell.Merge = true;
+                generatedDateCell.Value = $"Generated date: {DateTime.Now:dd-MM-yyyy HH:mm}";
+                generatedDateCell.Style.Font.Name = "Bahnschrift SemiCondensed";
+                generatedDateCell.Style.Font.Size = 10;
+                generatedDateCell.Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                generatedDateCell.Style.Font.Italic = true;
+                worksheet.Row(currentRow).Height = 18;
 
                 // -----------------------------
                 // FINAL FORMATTING ADJUSTMENTS
@@ -273,12 +304,12 @@ namespace CBS.BusinessService.AccountingV2.SharedMonth
                 worksheet.Column(3).Width = 45;  // Column C: Name / Value Middle
                 worksheet.Column(4).Width = 23;  // Column D: Amount / Value End
 
-                // Optional: Adjust row heights for better text visibility
+                // Adjust row heights for better text visibility
                 for (int row = 1; row <= currentRow; row++)
                 {
-                    if (worksheet.Row(row).Height < 20)
+                    if (worksheet.Row(row).Height < 18)
                     {
-                        worksheet.Row(row).Height = 20;
+                        worksheet.Row(row).Height = 18;
                     }
                 }
 

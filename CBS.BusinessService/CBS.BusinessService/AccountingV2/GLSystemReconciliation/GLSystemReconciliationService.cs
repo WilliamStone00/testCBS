@@ -165,34 +165,36 @@ namespace CBS.BusinessService.AccountingV2.GLSystemReconciliation
             }
         }
 
-        public async Task<PushRequest> PushRecordAsync(PushRequest model)
+        public async Task<ApiResponse<ResponseObject<PushRequest>>> PushRecordAsync(PushRequest model)
         {
+            if (model == null)
+            {
+                return new ApiResponse<ResponseObject<PushRequest>>
+                {
+                    IsSuccess = false,
+                    Message = "Request model is null"
+                };
+            }
+
             try
             {
+                var apiResponse =
+                    await _systemReconciliationapiCallerHelper
+                        .PostAsync<ResponseObject<PushRequest>>(
+                            APICallHelper.PushRecordReconciliation,
+                            model
+                        );
 
-
-
-                // Call API and get raw JSON
-                var jsonResponse = await _systemReconciliationapiCallerHelper
-                    .PostAsync<ServiceResponse<PushRequest>>(APICallHelper.PushRecordReconciliation, model);
-
-                // Deserialize the wrapper
-                ///*  var apiResponse = JsonConvert.DeserializeObject<Api*/Response<ReconciliationData>>(jsonResponse);
-
-                if (jsonResponse?.ApiResponseData?.Data == null)
-                {
-                    return null; // or throw an exception if this is an error
-                }
-
-                // ✅ SUCCESS PATH
-                return jsonResponse.ApiResponseData.Data;
-
-
+                // ✅ Return full backend response (NO transformation)
+                return apiResponse;
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"Summary Error: {ex.Message}");
-                throw;
+                return new ApiResponse<ResponseObject<PushRequest>>
+                {
+                    IsSuccess = false,
+                    Message = $"Push Record API call failed: {ex.Message}"
+                };
             }
         }
 

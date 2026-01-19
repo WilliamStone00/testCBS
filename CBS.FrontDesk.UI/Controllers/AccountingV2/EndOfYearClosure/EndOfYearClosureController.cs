@@ -106,51 +106,106 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.EndOfYearClosure
             }
         }
 
+        //[HttpGet]
+        //public async Task<ActionResult> GetYearClosureStatus(string branchId, string accountingYearId)
+        //{
+        //    try
+        //    {
+        //        if (string.IsNullOrWhiteSpace(branchId) ||
+        //            string.IsNullOrWhiteSpace(accountingYearId))
+        //        {
+        //            return Json(new
+        //            {
+        //                success = false,
+        //                statusCode = 400,
+        //                message = "BranchId and AccountingYearId are required."
+        //            });
+        //        }
+
+        //        var response = await _endOfYearClosureService
+        //            .GetYearClosureStatusAsync(branchId, accountingYearId);
+
+        //        if (response == null)
+        //        {
+        //            return Json(new
+        //            {
+        //                success = false,
+        //                statusCode = 502,
+        //                message = "No response from Year Closure service."
+        //            });
+        //        }
+
+        //        return Json(new
+        //        {
+        //            success = response.IsSuccess,
+        //            statusCode = response.IsSuccess ? 200 : 400,
+        //            message = response.Message,
+        //            data = response.ApiResponseData
+        //        }, JsonRequestBehavior.AllowGet);
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Json(new
+        //        {
+        //            success = false,
+        //            statusCode = 500,
+        //            message = $"Unexpected error occurred: {ex.Message}"
+        //        });
+        //    }
+        //}
+
+
         [HttpGet]
         public async Task<ActionResult> GetYearClosureStatus(string branchId, string accountingYearId)
         {
-            try
+            var response = await _endOfYearClosureService
+                .GetYearClosureStatusAsync(branchId, accountingYearId);
+
+            return Json(new
             {
-                if (string.IsNullOrWhiteSpace(branchId) ||
-                    string.IsNullOrWhiteSpace(accountingYearId))
-                {
-                    return Json(new
-                    {
-                        success = false,
-                        statusCode = 400,
-                        message = "BranchId and AccountingYearId are required."
-                    });
-                }
+                success = response.IsSuccess,
+                message = response.Message,
+                data = response.ApiResponseData
+            }, JsonRequestBehavior.AllowGet);
+        }
 
-                var response = await _endOfYearClosureService
-                    .GetYearClosureStatusAsync(branchId, accountingYearId);
 
-                if (response == null)
-                {
-                    return Json(new
-                    {
-                        success = false,
-                        statusCode = 502,
-                        message = "No response from Year Closure service."
-                    });
-                }
-
-                return Json(new
-                {
-                    success = response.IsSuccess,
-                    statusCode = response.IsSuccess ? 200 : 400,
-                    message = response.Message,
-                    data = response.ApiResponseData
-                });
+        [HttpGet]
+        public async Task<ActionResult> LoadWorkflowByStatus(string branchId, string accountingYearId)
+        {
+            if (string.IsNullOrWhiteSpace(branchId) || string.IsNullOrWhiteSpace(accountingYearId))
+            {
+                return new HttpStatusCodeResult(400, "BranchId and AccountingYearId are required.");
             }
-            catch (Exception ex)
+
+            var response = await _endOfYearClosureService
+                .GetYearClosureStatusAsync(branchId, accountingYearId);
+
+            if (response == null || !response.IsSuccess || response.ApiResponseData == null)
             {
-                return Json(new
-                {
-                    success = false,
-                    statusCode = 500,
-                    message = $"Unexpected error occurred: {ex.Message}"
-                });
+                return PartialView("_Initiation"); // safe default
+            }
+
+            var step = response.ApiResponseData.Step;
+
+            switch (step)
+            {
+                case 0: // NotStarted
+                case 1: // Initiated
+                    return PartialView("_Initiation");
+
+                case 2: // Adjustment
+                    return PartialView("_Adjustment");
+
+                case 3: // Closing
+                    return PartialView("_ClosingForm");
+
+                case 4: // Review
+                    return PartialView("_Review");
+
+                default:
+                    return PartialView("_Initiation");
             }
         }
 
@@ -206,6 +261,26 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.EndOfYearClosure
                 });
             }
         }
+        //[HttpPost]
+        //public async Task<ActionResult> InitiateClosure(CloseYearInitiate model)
+        //{
+        //    if (string.IsNullOrEmpty(model.AccountingYearId))
+        //    {
+        //        model.AccountingYearId = Session["SelectedAccountingYearId"]?.ToString();
+        //    }
+        //    var response = await _endOfYearClosureService.SaveInitiateClosure(model);
+        //    // 🔧 TEST MODE: ignore service, force success
+        //    return Json(new3
+
+        //    {
+        //        success = true,
+        //        statusCode = 200,
+        //        message = "✅ [TEST MODE] Closure initiated successfully.",
+        //        reloadDataView = "no",
+        //        accountingYearId = model.AccountingYearId
+        //    });
+        //}
+
 
         [HttpPost]
         public async Task<ActionResult> ReviewClosure( ReviewClosureRequest model)
