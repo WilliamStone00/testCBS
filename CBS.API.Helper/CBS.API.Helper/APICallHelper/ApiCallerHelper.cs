@@ -18,6 +18,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Sockets;
+using System.Runtime.Remoting.Contexts;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
@@ -1016,8 +1017,8 @@ namespace CBS.API.Helper
                     // --------------------------------------------
                     using (var response = await _httpClient.PostAsync(apiEndpointUrl, formContent, cancellationToken))
                     {
-                        var responseText = await response.Content.ReadAsStringAsync();
-                        return await ProcessApiResponse<T>(response, responseText);
+                        //HttpResponseMessage response = await _httpClient.PostAsync(apiUrl, content);
+                        return await HandleResponse<T>(response);
                     }
                 }
             }

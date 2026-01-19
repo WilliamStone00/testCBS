@@ -80,13 +80,13 @@
                 <div class="row g-1">
                     <div class="col-md-4">
                         <label class="form-label fw-bold small">
-                            Branch <span class="req-star">*</span>
+                            Branch
                         </label>
 
                         @Html.DropDownListFor(m => m.BranchId,
                             new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name", Model?.BranchId),
                             "--- Select Branch ---",
-                            new { @class = "form-select form-select-sm select2", id = "BranchId", required = "required" })
+                            new { @class = "form-select form-select-sm select2", id = "BranchId" })
                     </div>
 
                     <div class="col-md-4">
@@ -94,7 +94,7 @@
                             Uploaded By
                         </label>
                         @Html.TextBoxFor(m => m.UploadedBy,
-                            new { @class = "form-control form-control-sm", id = "UploadedBy", placeholder = "e.g. eugene / admin" })
+                            new { @class = "form-control form-control-sm", id = "UploadedBy", placeholder = "e.g. user" })
                     </div>
 
                     <div class="col-md-4">
@@ -133,20 +133,20 @@
 
                     <div class="col-md-4">
                         <label class="form-label fw-bold small">
-                            Start Date <span class="req-star">*</span>
+                            Start Date @*<span class="req-star">*</span>*@
                         </label>
                         @Html.TextBoxFor(m => m.StartDate,
                             "{0:yyyy-MM-dd}",
-                            new { @class = "form-control form-control-sm", id = "StartDate", type = "date", required = "required" })
+                            new { @class = "form-control form-control-sm", id = "StartDate", type = "date"})
                     </div>
 
                     <div class="col-md-4">
                         <label class="form-label fw-bold small">
-                            End Date <span class="req-star">*</span>
+                            End Date
                         </label>
                         @Html.TextBoxFor(m => m.EndDate,
                             "{0:yyyy-MM-dd}",
-                            new { @class = "form-control form-control-sm", id = "EndDate", type = "date", required = "required" })
+                            new { @class = "form-control form-control-sm", id = "EndDate", type = "date" })
                     </div>
                 </div>
 
@@ -158,12 +158,6 @@
                         @Html.TextBoxFor(m => m.SearchTerm,
                             new { @class = "form-control form-control-sm", id = "SearchTerm", placeholder = "file name, branch, code, uploaded by, purpose..." })
                     </div>
-                </div>
-
-                <div class="mt-2">
-                    <small class="text-muted">
-                        <span class="req-star">*</span> Required fields
-                    </small>
                 </div>
             </div>
 
@@ -204,6 +198,7 @@
 
   const dataUrl     = '@Url.Action("LoadSmsUploadData", "Communication")';
   const downloadUrl = '@Url.Action("DownloadSmsUploadFile", "Communication")';
+  const detailsUrl = '@Url.Action("SmsUploadDetails", "Communication")';
 
   let table = null, tableInitialized = false;
 
@@ -235,6 +230,11 @@
               <i class="mdi mdi-download-outline me-1 text-success"></i> Download
             </a>
           </li>
+          <li>
+            <a class="dropdown-item" href="${detailsUrl}?fileId=${id}">
+              <i class="mdi mdi-eye me-1 text-success"></i> Details
+            </a>
+          </li>
         </ul>
       </div>`;
   }
@@ -257,13 +257,13 @@
       columnDefs: [
         { targets: 0, width: '12%' }, // CreatedDate
         { targets: 1, width: '18%' }, // FileName
-        { targets: 2, width: '8%'  }, // FileType
-        { targets: 3, width: '14%' }, // Branch
-        { targets: 4, width: '10%' }, // UploadedBy
-        { targets: 5, width: '10%' }, // Status
-        { targets: 6, width: '10%' }, // FileCode
-        { targets: 7, width: '18%' }, // MessageTemplate (NEW)
-        { targets: 8, width: '10%', orderable:false, searchable:false } // Actions
+        //{ targets: 2, width: '8%'  }, // FileType
+        { targets: 2, width: '14%' }, // Branch
+        { targets: 3, width: '10%' }, // UploadedBy
+        { targets: 4, width: '10%' }, // Status
+        { targets: 5, width: '18%' }, // Purpose
+        { targets: 6, width: '18%' }, // MessageTemplate (NEW)
+        { targets: 7, width: '10%', orderable:false, searchable:false } // Actions
       ],
 
       ajax: {
@@ -306,7 +306,7 @@
           }
         },
         { data: 'FileName', name: 'FileName', render: (d,t,row) => row.FileName || row.fileName || '' },
-        { data: 'FileType', name: 'FileType', render: (d,t,row) => row.FileType || row.fileType || '' },
+        //{ data: 'FileType', name: 'FileType', render: (d,t,row) => row.FileType || row.fileType || '' },
         {
           data: null, name: 'BranchName',
           render: function(d,t,row){
@@ -324,12 +324,12 @@
             const s = String(st).toLowerCase();
             if (s.includes('fail')) return `<span class="badge bg-danger">${st}</span>`;
             if (s.includes('pend') || s.includes('view') ) return `<span class="badge bg-warning text-dark">${st}</span>`;
-            if (s.includes('processing')) return `<span class="badge bg-warning text-primary">${st}</span>`;
+              if (s.includes('processing') || s.includes('queued')) return `<span class="badge bg-warning text-primary">${st}</span>`;
             if (s.includes('sent') || s.includes('processed')) return `<span class="badge bg-success">${st}</span>`;
             return `<span class="badge bg-info">${st}</span>`;
           }
         },
-        { data: 'FileCode', name: 'FileCode', render: (d,t,row) => row.FileCode || row.fileCode || '' },
+          { data: 'Purpose', name: 'Purpose', render: (d, t, row) => row.Purpose || row.purpose || '' },
 
         // ✅ NEW: MessageTemplate
         {

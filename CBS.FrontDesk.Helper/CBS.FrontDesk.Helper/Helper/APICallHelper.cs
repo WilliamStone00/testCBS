@@ -1899,7 +1899,9 @@ namespace CBS.FrontDesk.Helper
         //Communication
         public const string SmsUpload_Preview = "/api/v1/SmsUpload/preview";
         public const string SmsUpload_DataTable = "/api/v1/SmsUpload/datatable";
+        public const string SmsUpload_History_DataTable = "/api/v1/SmsUpload/history/datatable";
         public const string SmsUpload_Send = "/api/v1/SmsUpload/send";
         public const string SmsUpload_DownloadById = "/api/v1/SmsUpload/download/{0}";
+        public const string SmsUpload_ById = "/api/v1/SmsUpload/details/{0}";
     }
 }
