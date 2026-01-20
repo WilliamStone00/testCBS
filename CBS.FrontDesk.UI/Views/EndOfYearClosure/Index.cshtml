@@ -323,19 +323,26 @@ function loadYearClosureStatus(branchId, accountingYearId) {
         data: { branchId, accountingYearId },
 
         success: function (res) {
-            console.log("Year Closure Status Response:", res);
 
             const success = res.success ?? res.Success;
             const data = res.data ?? res.Data;
 
             if (!success || !data) {
-                appalert(res.message || "Unable to determine year closure status.", 2, 1);
+                appalert("Unable to determine year closure status.", 2, 1);
                 return;
             }
 
-            console.log("Year Closure Step:", data.Step);
-            loadYearClosureWorkflow(branchId, accountingYearId);
+            const step = data.Step ?? 0;
+            console.log("🔐 Backend Step:", step);
+       
+            // 🔥 THIS LINE FIXES EVERYTHING
+            syncWorkflowStateFromStep(step);
+
+
+           // loadYearClosureWorkflow(branchId, accountingYearId);
+          
         },
+
 
         error: function (xhr) {
             console.error("Status ERROR", xhr);
@@ -345,7 +352,7 @@ function loadYearClosureStatus(branchId, accountingYearId) {
 }
 
 
-function loadYearClosureWorkflow(branchId, accountingYearId) {
+@*function loadYearClosureWorkflow(branchId, accountingYearId) {
 
     if (!branchId || !accountingYearId) return;
 
@@ -371,7 +378,7 @@ function loadYearClosureWorkflow(branchId, accountingYearId) {
             appalert("❌ Failed to load year closure workflow.", 2, 1);
         }
     });
-}
+}*@
 
 
     function loadWorkflowPartial(url, targetSelector) {
@@ -399,6 +406,25 @@ function loadYearClosureWorkflow(branchId, accountingYearId) {
             }
         });
     }
+
+
+    function syncWorkflowStateFromStep(step) {
+
+        // Reset all states
+        workflowState.initiation = false;
+        workflowState.adjustments = false;
+        workflowState.reports = false;
+        workflowState.review = false;
+
+        // Correctly update workflowState
+        if (step >= 0) workflowState.initiation = true;
+        if (step >= 1) workflowState.adjustments = true;
+        if (step >= 2) workflowState.reports = true;
+        if (step >= 3) workflowState.review = true;
+
+        refreshWorkflowTabs();
+    }
+
 
 
 

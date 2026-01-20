@@ -159,7 +159,7 @@ namespace CBS.BusinessService.AccountingV2.SharedMonth
                 worksheet.Cells[headerRow, 1].Value = "Member Reference";
                 worksheet.Cells[headerRow, 1].Style.Font.Bold = true;
                 worksheet.Cells[headerRow, 1].Style.Font.Name = "Bahnschrift SemiCondensed";
-                worksheet.Cells[headerRow, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                worksheet.Cells[headerRow, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                 worksheet.Cells[headerRow, 1].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
                 worksheet.Cells[headerRow, 1].Style.Fill.PatternType = ExcelFillStyle.Solid;
                 worksheet.Cells[headerRow, 1].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(240, 240, 240)); // Lighter gray

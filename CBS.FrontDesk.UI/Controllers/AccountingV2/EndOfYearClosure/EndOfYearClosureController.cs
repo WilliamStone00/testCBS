@@ -106,54 +106,6 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.EndOfYearClosure
             }
         }
 
-        //[HttpGet]
-        //public async Task<ActionResult> GetYearClosureStatus(string branchId, string accountingYearId)
-        //{
-        //    try
-        //    {
-        //        if (string.IsNullOrWhiteSpace(branchId) ||
-        //            string.IsNullOrWhiteSpace(accountingYearId))
-        //        {
-        //            return Json(new
-        //            {
-        //                success = false,
-        //                statusCode = 400,
-        //                message = "BranchId and AccountingYearId are required."
-        //            });
-        //        }
-
-        //        var response = await _endOfYearClosureService
-        //            .GetYearClosureStatusAsync(branchId, accountingYearId);
-
-        //        if (response == null)
-        //        {
-        //            return Json(new
-        //            {
-        //                success = false,
-        //                statusCode = 502,
-        //                message = "No response from Year Closure service."
-        //            });
-        //        }
-
-        //        return Json(new
-        //        {
-        //            success = response.IsSuccess,
-        //            statusCode = response.IsSuccess ? 200 : 400,
-        //            message = response.Message,
-        //            data = response.ApiResponseData
-        //        }, JsonRequestBehavior.AllowGet);
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Json(new
-        //        {
-        //            success = false,
-        //            statusCode = 500,
-        //            message = $"Unexpected error occurred: {ex.Message}"
-        //        });
-        //    }
-        //}
 
 
         [HttpGet]
@@ -196,9 +148,11 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.EndOfYearClosure
                     return PartialView("_Initiation");
 
                 case 2: // Adjustment
+                    await loader();
                     return PartialView("_Adjustment");
 
                 case 3: // Closing
+                    await loader();
                     return PartialView("_ClosingForm");
 
                 case 4: // Review

@@ -649,7 +649,7 @@ namespace CBS.BusinessService.AccountingV2.SharedMonth
                 .Where(y =>
                     y.BranchId == branchId &&                                  // ✅ FILTER BY BRANCH
                     y.Status != null &&
-                    y.Status.Equals("OPEN", StringComparison.OrdinalIgnoreCase)
+                    y.Status.Equals("LOCKED", StringComparison.OrdinalIgnoreCase)
                 )
                 .OrderByDescending(y => y.Year)                                // ✅ SORT
                 .ToList();

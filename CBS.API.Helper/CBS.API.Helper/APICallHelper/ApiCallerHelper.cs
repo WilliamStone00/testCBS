@@ -1996,6 +1996,7 @@ namespace CBS.API.Helper
                 {
                     string responseData = await response.Content.ReadAsStringAsync();
 
+                    
                     if (string.IsNullOrEmpty(responseData))
                     {
 
