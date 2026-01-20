@@ -50,6 +50,13 @@
         margin-top: 20px;
         border-radius: 6px;
     }
+
+    .workflow-tabs li.disabled {
+        pointer-events: none;
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
 </style>
 
 
@@ -180,7 +187,63 @@
     @Scripts.Render("~/bundles/jqueryval")
 
 
-    <script>
+<script>
+
+    $(document).ready(function () {
+        refreshWorkflowTabs();
+    });
+
+
+    // ================= WORKFLOW STATE =================
+    const workflowState = {
+        initiation: false,
+        adjustments: false,
+        reports: false,
+        review: false
+    };
+
+    // Map views to required state
+    const workflowRules = {
+        "view-initiation": [],
+        "view-adjustments": ["initiation"],
+        "view-reports": ["initiation", "adjustments"],
+        "view-review": ["initiation", "adjustments", "reports"]
+    };
+
+
+    $(document).on("click", ".workflow-tabs li", function () {
+
+        const targetView = $(this).data("view");
+        const requiredSteps = workflowRules[targetView] || [];
+
+        // Validate prerequisites
+        for (let step of requiredSteps) {
+            if (!workflowState[step]) {
+                appalert("⚠️ You must complete the previous step before proceeding.", 3, 1);
+                return;
+            }
+        }
+
+        // Allow navigation
+        $(".workflow-tabs li").removeClass("active");
+        $(this).addClass("active");
+
+        $(".workflow-view").addClass("d-none");
+        $("#" + targetView).removeClass("d-none");
+    });
+
+    function refreshWorkflowTabs() {
+        $(".workflow-tabs li").each(function () {
+            const view = $(this).data("view");
+            const requiredSteps = workflowRules[view] || [];
+
+            const allowed = requiredSteps.every(s => workflowState[s]);
+            $(this).toggleClass("disabled", !allowed && view !== "view-initiation");
+        });
+    }
+
+
+
 
     ////////////////////////////// CLOSE OF YEAR ////////////////
 
@@ -245,7 +308,124 @@
         });
 
         $ddl.trigger("change");  // refresh Select2
+        }
+
+
+
+function loadYearClosureStatus(branchId, accountingYearId) {
+
+    if (!branchId || !accountingYearId) return;
+
+    $.ajax({
+        url: '@Url.Action("GetYearClosureStatus", "EndOfYearClosure")',
+        type: 'GET',
+        dataType: 'json',
+        data: { branchId, accountingYearId },
+
+        success: function (res) {
+
+            const success = res.success ?? res.Success;
+            const data = res.data ?? res.Data;
+
+            if (!success || !data) {
+                appalert("Unable to determine year closure status.", 2, 1);
+                return;
+            }
+
+            const step = data.Step ?? 0;
+            console.log("🔐 Backend Step:", step);
+       
+            // 🔥 THIS LINE FIXES EVERYTHING
+            syncWorkflowStateFromStep(step);
+
+
+           // loadYearClosureWorkflow(branchId, accountingYearId);
+          
+        },
+
+
+        error: function (xhr) {
+            console.error("Status ERROR", xhr);
+            appalert("❌ Failed to load year closure status.", 2, 1);
+        }
+    });
+}
+
+
+@*function loadYearClosureWorkflow(branchId, accountingYearId) {
+
+    if (!branchId || !accountingYearId) return;
+
+    $.ajax({
+        url: '@Url.Action("LoadWorkflowByStatus", "EndOfYearClosure")',
+        type: 'GET',
+        data: { branchId, accountingYearId },
+
+        beforeSend: function () {
+            $("#yearClosureWorkflowContainer").html(
+                '<div class="text-center p-3">' +
+                '<span class="spinner-border spinner-border-sm"></span> Loading...' +
+                '</div>'
+            );
+        },
+
+        success: function (html) {
+            $("#yearClosureWorkflowContainer").html(html);
+        },
+
+        error: function (xhr) {
+            console.error("Workflow ERROR", xhr);
+            appalert("❌ Failed to load year closure workflow.", 2, 1);
+        }
+    });
+}*@
+
+
+    function loadWorkflowPartial(url, targetSelector) {
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+
+            beforeSend: function () {
+                $(targetSelector).html(
+                    '<div class="text-center p-3">' +
+                    '<span class="spinner-border spinner-border-sm"></span> Loading...' +
+                    '</div>'
+                );
+            },
+
+            success: function (html) {
+                $(targetSelector).html(html);
+            },
+
+            error: function () {
+                $(targetSelector).html(
+                    '<div class="text-danger">Failed to load workflow step.</div>'
+                );
+            }
+        });
     }
+
+
+    function syncWorkflowStateFromStep(step) {
+
+        // Reset all states
+        workflowState.initiation = false;
+        workflowState.adjustments = false;
+        workflowState.reports = false;
+        workflowState.review = false;
+
+        // Correctly update workflowState
+        if (step >= 0) workflowState.initiation = true;
+        if (step >= 1) workflowState.adjustments = true;
+        if (step >= 2) workflowState.reports = true;
+        if (step >= 3) workflowState.review = true;
+
+        refreshWorkflowTabs();
+    }
+
+
 
 
     //$(document).ready(function () {
@@ -396,7 +576,7 @@
                     // Fill UI (visible textbox) and hidden DB id
                     $("#AccountingYearId").val(year);
                     $("#TaskAccountingYearId").val(id);
-
+                    loadYearClosureStatus(branchId, id);
                     appalert("Accounting Year loaded successfully", 1, 1);
                 } else {
                     $("#AccountingYearId").val('');
@@ -532,15 +712,23 @@
                         },
                         success: function (response) {
                             if (response?.success) {
+                                workflowState.initiation = true;
+                                refreshWorkflowTabs();
+
                                 appalert(response.message || "✅ Closure initiated successfully!", 1, 1);
                                 alertify.dismissAll();
-                                if (String(response.reloadDataView).toLowerCase() === "yes") {
-                                    $form[0].reset();
-                                    $('.select2').val(null).trigger('change');
-                                }
+
+                                // 🔒 Lock initiation step
+                                $('#view-initiation')
+                                    .find('input, textarea, select, button')
+                                    .prop('disabled', true);
+
+                                // 👉 Move to next step
+                                $('[data-view="view-adjustments"]').click();
                             } else {
                                 appalert(response?.message || "❌ Failed to initiate closure.", 2, 1);
                             }
+
                         },
                         error: function (xhr) {
                             appalert("❌ Error: " + (xhr?.statusText || "Request failed"), 0, 1);
@@ -887,10 +1075,14 @@
                 },
                 success: function (res) {
                     if (res.success) {
+                        workflowState.adjustments = true;
+                        refreshWorkflowTabs();
+
+                        $('[data-view="view-reports"]').click();
                         appalert(res.message || 'Journal entry posted successfully', 1, 1);
-                        $('#journalFormCopy')[0].reset();
-                        $('#myDataTableCopy tbody').empty();
-                        $('#addRowBtnCopy, #postEntriesBtnCopy').prop('disabled', true);
+                        //$('#journalFormCopy')[0].reset();
+                        //$('#myDataTableCopy tbody').empty();
+                        //$('#addRowBtnCopy, #postEntriesBtnCopy').prop('disabled', true);
                     } else {
                         appalert(res.message || 'Failed to post journal entry', 2, 1);
                     }
@@ -1037,10 +1229,14 @@
                     },
                     success: function (response) {
                         if (response?.success) {
+                            workflowState.review = true;
+                            refreshWorkflowTabs();
+
+                            appalert("🎉 End of Year Closure completed successfully.", 1, 1);
                             appalert("✅ Review completed successfully!", 1, 1);
                             alertify.dismissAll();
-                            $form[0].reset();
-                            $('.select2').val(null).trigger('change');
+                            //$form[0].reset();
+                            //$('.select2').val(null).trigger('change');
                         } else {
                             appalert(response?.message || "❌ Review failed.", 2, 1);
                         }
@@ -1121,7 +1317,7 @@
         const title = "Confirm Close of Year";
         const dangerWarning = `
             <div class="alert alert-danger fw-semibold mb-2">
-                ⚠️ Please confirm that all <b>member interest and shares have been paid</b> 
+                ⚠️ Please confirm that all <b>member interest and shares have been paid</b>
                 before proceeding. <br>
                 <b>This process is irreversible.</b>
             </div>
@@ -1174,10 +1370,14 @@
                     },
                     success: function (response) {
                         if (response?.success) {
+                            workflowState.reports = true;
+                            refreshWorkflowTabs();
+
+                            $('[data-view="view-review"]').click();
                             appalert(response.message || "✅ Accounting year closed successfully!", 1, 1);
                             alertify.dismissAll();
-                            $form[0].reset();
-                            $('.select2').val(null).trigger('change');
+                            //$form[0].reset();
+                            //$('.select2').val(null).trigger('change');
                         } else {
                             appalert(response?.message || "❌ Failed to close the accounting year.", 2, 1);
                         }
@@ -1205,8 +1405,10 @@
         });
 
         return false;
-    };
-    </script>
+        };
+
+
+</script>
 
 
 

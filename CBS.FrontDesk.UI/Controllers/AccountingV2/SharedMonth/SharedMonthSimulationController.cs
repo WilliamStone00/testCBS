@@ -267,6 +267,8 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.SharedMonth
         [HttpPost]
         public async Task<ActionResult> LoadSimulationData(SharedMonthSimulation model)
         {
+
+            model.BranchId = model.BranchId1;
             try
             {
                 var result = await _sharedMonthSimulationService.GetSimulationData(model);
@@ -400,6 +402,45 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.SharedMonth
             }
         }
 
+
+        public async Task<JsonResult> LoadSharedMonthData(SharedMonthQuery query)
+        {
+            try
+            {
+
+
+                var data = await _sharedMonthSimulationService.GetShareMonthDataTableAsync(query);
+
+
+                // Deserialize DataTable payload into strongly-typed list
+                var Sharemonth = JsonConvert.DeserializeObject<List<Data.Entity.AccountingV2.JournalHead>>(
+                    JsonConvert.SerializeObject(data.data));
+
+                return Json(new
+                {
+
+                    draw = data.Options.draw ?? "1",
+                    recordsTotal = data.Options.recordsTotal,
+                    recordsFiltered = data.Options.recordsFiltered,
+                    data = Sharemonth,
+                    success = true,
+                    message = "Display DataTable Share Month  successfully"
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                // Return DataTables-compatible empty result on error
+                return Json(new
+                {
+                    draw = query?.Options?.draw ?? "1",
+                    recordsTotal = 0,
+                    recordsFiltered = 0,
+                    data = new List<object>(),
+                    error = ex.Message
+                });
+            }
+        }
+
         [HttpPost]
        
         public async Task<ActionResult> UploadSharedMonth(SharedMonthFileupload model)
@@ -483,22 +524,15 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.SharedMonth
 
         public async Task<ActionResult> GenerateExcelSheet(string fileId)
         {
-            
-
             try
             {
-
-                //var fileUpload = await _salaryUploadServices.GetFileUpload(fileId);
-
                 var type = "BulkTransfer";
-                // ✅ Fetch the journal entry by ID instead of by reference
                 var model = await _sharedMonthSimulationService.GetFileDetailSharedmonth(fileId, type);
-                
 
                 if (model == null)
                     return HttpNotFound();
 
-                // ✅ Prepare file name and paths
+                // Prepare file name and paths
                 string fileName = $"ShareMonth_{model.BranchCode}-{fileId}.xlsx";
                 string directoryPath = Server.MapPath("~/TempFiles");
 
@@ -506,17 +540,11 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.SharedMonth
                     Directory.CreateDirectory(directoryPath);
 
                 string filePath = Path.Combine(directoryPath, fileName);
-                //string exportedBy = Session["FullName"]?.ToString() ?? "System";
+                string generatedBy = Session["FullName"]?.ToString() ?? "System";
 
-                // ✅ Generate Excel file
-                byte[] fileBytes = ShareMonthGenerator.FillExcelTemplate(model);
+                // ✅ Generate Excel file with GeneratedBy parameter
+                byte[] fileBytes = ShareMonthGenerator.FillExcelTemplate(model, generatedBy);
 
-
-
-
-               
-
-                // Delete temp file after sending
                 if (fileBytes == null || fileBytes.Length == 0)
                     throw new Exception("Generated Excel file is empty.");
 
@@ -529,7 +557,6 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.SharedMonth
             }
             catch (Exception ex)
             {
-                // Log error or handle gracefully
                 Console.WriteLine($"Excel Export Error: {ex.Message}");
                 return Json(new { success = false, message = "An error occurred while exporting to Excel." }, JsonRequestBehavior.AllowGet);
             }

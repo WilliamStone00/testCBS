@@ -67,7 +67,7 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.SharedMonth
 
 
         public string AccountType { get; set; }
-
+        public string AccountName { get; set; }
         public string MemberName { get; set; }
 
 

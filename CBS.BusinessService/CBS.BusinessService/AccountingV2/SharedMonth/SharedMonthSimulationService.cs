@@ -1,14 +1,17 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
+using CBS.BusinessService.AccountingV2.JournalHead;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.AccountingV2;
 using CBS.FrontDesk.Data.Entity.AccountingV2.AccountingYear;
 using CBS.FrontDesk.Data.Entity.AccountingV2.SharedMonth;
 using CBS.FrontDesk.Data.Entity.Config;
+using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.SalaryManagement;
 using CBS.FrontDesk.Helper;
 using ClosedXML.Excel;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -18,6 +21,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Mvc;
 
 
 namespace CBS.BusinessService.AccountingV2.SharedMonth
@@ -70,9 +74,9 @@ namespace CBS.BusinessService.AccountingV2.SharedMonth
 
             if (model == null)
                 throw new ArgumentNullException(nameof(model));
-            model.ProductId = "0000";
-            model.StartPeriodKey = "jan";
-            model.EndPeriodKey = "feb";
+            //model.ProductId = "0000";
+            //model.StartPeriodKey = "jan";
+            //model.EndPeriodKey = "feb";
 
             var apiResponse =
                 await _apiCallerHelper.PostAsync<ResponseObject<List<ShareMonthPsiReportLineDto>>>(
@@ -127,6 +131,35 @@ namespace CBS.BusinessService.AccountingV2.SharedMonth
             catch (Exception ex)
             {
                 throw;
+            }
+        }
+
+
+
+        public async Task<CustomDataTable2> GetShareMonthDataTableAsync(SharedMonthQuery query)
+        {
+            try
+            {
+                
+               
+
+               
+
+                var response = await _apiCallerHelper.PostAsync<ResponseObject<CustomDataTable2>>(
+                    APICallHelper.GetShareMonthDataTable, query);
+
+                if (!response.IsSuccess)
+                    throw new Exception($"API call failed: {response.Message}");
+
+                if (response.ApiResponseData == null)
+                    throw new Exception("API returned null data");
+
+                return response.ApiResponseData.Data;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"API Error (Journal Header): {ex.Message}");
+                throw new Exception($"Journal header service unavailable: {ex.Message}", ex);
             }
         }
 
@@ -616,7 +649,7 @@ namespace CBS.BusinessService.AccountingV2.SharedMonth
                 .Where(y =>
                     y.BranchId == branchId &&                                  // ✅ FILTER BY BRANCH
                     y.Status != null &&
-                    y.Status.Equals("OPEN", StringComparison.OrdinalIgnoreCase)
+                    y.Status.Equals("LOCKED", StringComparison.OrdinalIgnoreCase)
                 )
                 .OrderByDescending(y => y.Year)                                // ✅ SORT
                 .ToList();
@@ -656,25 +689,6 @@ namespace CBS.BusinessService.AccountingV2.SharedMonth
             return null;
         }
 
-        //public async Task<SharedMonthDownloadDto> Download(string fileId)
-        //{
-        //    // Simulate async behavior
-        //    await Task.Delay(50);
-
-        //    return new SharedMonthDownloadDto
-        //    {
-        //        Id = "da518d65-792a-4f05-b69c-39350b83ea25",
-        //        FileName = "Anual_data_00855",
-        //        Extension = ".xlsx",
-        //        DownloadPath = "Documents/2026/Head office Bamenda/AccountingManagementV2//uploads/share-month-files/Anual_data_00855_Head office Bamenda_20260115044734.xlsx",
-        //        FullPath = "https://identity.bapcculcbs.com/Documents/2026/Head office Bamenda/AccountingManagementV2//uploads/share-month-files/Anual_data_00855_Head office Bamenda_20260115044734.xlsx",
-        //        FileType = "Document",
-        //        ReportType = "ShareMonth",
-        //        BranchName = "Head office Bamenda",
-        //        Username = "Paul Formum",
-        //        Size = "File not found"
-        //    };
-        //}
 
 
     }

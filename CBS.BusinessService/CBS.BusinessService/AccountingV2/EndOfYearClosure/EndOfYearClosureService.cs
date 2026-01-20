@@ -62,14 +62,15 @@ namespace CBS.BusinessService.AccountingV2.EndOfYearClosure
         }
 
 
-        public async Task<ApiResponse<YearClosureStatus>> GetYearClosureStatusAsync(string branchId,string accountingYearId)
+        public async Task<ApiResponse<YearClosureStatus>> GetYearClosureStatusAsync(
+    string branchId,
+    string accountingYearId)
         {
             if (string.IsNullOrWhiteSpace(branchId) ||
                 string.IsNullOrWhiteSpace(accountingYearId))
             {
                 return new ApiResponse<YearClosureStatus>
                 {
-                    IsSuccess = false,
                     Message = "BranchId and AccountingYearId are required."
                 };
             }
@@ -82,11 +83,25 @@ namespace CBS.BusinessService.AccountingV2.EndOfYearClosure
                     accountingYearId
                 );
 
-                // 🔑 PASS INNER TYPE ONLY
-                var apiResponse =
-                    await _apiCallerHelper.GetAsync<YearClosureStatus>(url);
+                // 🔁 Same pattern as Shared Month
+                var response =
+                    await _apiCallerHelper.GetAsync<ResponseObject<YearClosureStatus>>(url);
 
-                return apiResponse;
+                if (response.IsSuccess && response.ApiResponseData != null)
+                {
+                    return new ApiResponse<YearClosureStatus>
+                    {
+                        IsSuccess = true,
+                        ApiResponseData = response.ApiResponseData.Data,
+                        Message = response.Message
+                    };
+                }
+
+                return new ApiResponse<YearClosureStatus>
+                {
+                    IsSuccess = false,
+                    Message = response.Message
+                };
             }
             catch (Exception ex)
             {
@@ -97,6 +112,8 @@ namespace CBS.BusinessService.AccountingV2.EndOfYearClosure
                 };
             }
         }
+
+
 
 
 
