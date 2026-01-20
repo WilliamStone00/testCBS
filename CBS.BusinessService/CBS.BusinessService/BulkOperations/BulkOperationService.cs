@@ -76,6 +76,12 @@ namespace CBS.BusinessService.BulkOperations
             return await _transactionConfigApiHelper.UploadBulkCashPaymentFileAsync<ServiceResponse<BulkCashOperationFileSummary>>(file,APICallHelper.UploadBulkCashOperations);
          
         }
+        public async Task<ApiResponse< ServiceResponse<BulkCashOperationFileSummary>>> GetBulkCashOperationFileDetailsAsync(string fileId)
+        {
+
+            return await _transactionConfigApiHelper.GetAsync<ServiceResponse<BulkCashOperationFileSummary>>(string.Format(APICallHelper.BulkCashOperations_GetById,fileId));
+         
+        }
 
         public async Task<List<SavingProduct>> GetSavingProducts()
         {

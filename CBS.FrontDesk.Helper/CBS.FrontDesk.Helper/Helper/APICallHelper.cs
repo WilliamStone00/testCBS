@@ -1200,6 +1200,7 @@ namespace CBS.FrontDesk.Helper
         public static string BulkOperationDetailsDataTablePaggination = "/api/v1/BulkOperations/simulation/details";
         public static string DeleteBulkOperations = "/api/v1/BulkOperations/simulation/delete";
         public static string UploadBulkCashOperations = "/api/v1/BulkCashUpload";
+        public static string BulkCashOperations_GetById = "/api/v1/ViewBukCashFileDateByFileUploadId/{0}";
         //Zone
         public static string Get_Update_Delete_Zone = "/api/v1/Zone/{0}";
         public static string CreateZone = "/api/v1/Zone";
