@@ -232,13 +232,29 @@
         $("#" + targetView).removeClass("d-none");
     });
 
+    //function refreshWorkflowTabs() {
+    //    $(".workflow-tabs li").each(function () {
+    //        const view = $(this).data("view");
+    //        const requiredSteps = workflowRules[view] || [];
+
+    //        const allowed = requiredSteps.every(s => workflowState[s]);
+    //        $(this).toggleClass("disabled", !allowed && view !== "view-initiation");
+    //    });
+    //}
+
+
     function refreshWorkflowTabs() {
         $(".workflow-tabs li").each(function () {
-            const view = $(this).data("view");
-            const requiredSteps = workflowRules[view] || [];
 
-            const allowed = requiredSteps.every(s => workflowState[s]);
-            $(this).toggleClass("disabled", !allowed && view !== "view-initiation");
+            const view = $(this).data("view");
+
+            const allowed =
+                (view === "view-initiation" && workflowState.initiation) ||
+                (view === "view-adjustments" && workflowState.adjustments) ||
+                (view === "view-reports" && workflowState.reports) ||
+                (view === "view-review" && workflowState.review);
+
+            $(this).toggleClass("disabled", !allowed);
         });
     }
 
@@ -418,9 +434,9 @@ function loadYearClosureStatus(branchId, accountingYearId) {
 
         // Correctly update workflowState
         if (step >= 0) workflowState.initiation = true;
-        if (step >= 1) workflowState.adjustments = true;
-        if (step >= 2) workflowState.reports = true;
-        if (step >= 3) workflowState.review = true;
+        if (step >= 2) workflowState.adjustments = true;
+        if (step >= 3) workflowState.reports = true;
+        if (step >= 4) workflowState.review = true;
 
         refreshWorkflowTabs();
     }
