@@ -80,7 +80,7 @@ namespace CBS.BusinessService.AccountingV2.SharedMonth
 
             var apiResponse =
                 await _apiCallerHelper.PostAsync<ResponseObject<List<ShareMonthPsiReportLineDto>>>(
-                    APICallHelper.InterestDistributionSimulation1,
+                    APICallHelper.InterestDistributionSimulation,
                     model
                 );
 

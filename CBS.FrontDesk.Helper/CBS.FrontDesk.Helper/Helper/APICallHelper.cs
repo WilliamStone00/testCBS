@@ -1858,7 +1858,7 @@ namespace CBS.FrontDesk.Helper
 
         //-------------------------  Interest Distribution Simulation ----------------------------
         public static string InterestDistributionSimulation1 = "/api/v1/InterestDistributionSimulationMock/generate/GenerateInterestDistributionSampleDataQuery";
-        public static string InterestDistributionSimulation = "/api/v1/ProcessSnapshotInterestSimulation/GenerateInterestSimulation";
+        public static string InterestDistributionSimulation = "/api/v1/ProcessesExternalShareMonth/generate/InterestSimulation";
         public static string CreateShareMonthSimulation = "/api/v1/ProcessSnapshotInterestSimulation/Create";
         public static string ActivateShareMonthSimulation = "/api/v1/ProcessSnapshotInterestSimulation/PrepareCustomerInterestBalance";
         public static string DataTableForRequestSimulation = "/api/v1/ProcessSnapshotInterestSimulation/DataTableForRequest";
