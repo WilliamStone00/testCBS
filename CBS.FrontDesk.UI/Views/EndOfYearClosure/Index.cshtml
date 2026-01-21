@@ -1017,6 +1017,16 @@ function loadYearClosureStatus(branchId, accountingYearId) {
 
             $('#confirmAccountingDateCopy').text($('#AccountingDate').val());
 
+            // Branch
+            $('#confirmBranchCopy').text(
+                $('#BranchIdCopy option:selected').text()
+            );
+
+            // Adjustment Type
+            $('#confirmAdjustmentTypeCopy').text(
+                $('#AdjustmentType option:selected').text()
+            );
+
             confirmModalCopy.show();
         });
 

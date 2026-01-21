@@ -1832,7 +1832,7 @@ namespace CBS.FrontDesk.Helper
 
 
         public static string GetCheckListStatusDataTable = "/api/v1/YearEndChecklistStatus/datatable";
-        public static string PostJournalAdjustment = "/api/v1/ops/generic";
+        public static string PostJournalAdjustment = "/api/v1/ops/ProcessEOYCommand";
         public static string CloseYear = "/api/v1/ops/EndOfYearCarryForward";
         public static string GetYearClosureStatus = "/api/v1/EndOfYearProcessStepQueue/{0}/{1}";
 
