@@ -147,7 +147,7 @@
                  data-bs-parent="#collapsibleSection">
                 <div class="accordion-body">
                     <div class="d-flex gap-2">
-                        @if (@Model.ApprovalStatus != "Approved")
+                        @if (@Model.ApprovalStatus == "Pending" || @Model.ApprovalStatus == "Failed" || @Model.ApprovalStatus == "Reviewed")
                         {
                             <button type="button" class="btn btn-primary" id="approveBulkOperation" data-simulation-id="@Model.Id">
                                 <i class="fas fa-check me-1"></i> @GlobalBulkOperation.PerformActions

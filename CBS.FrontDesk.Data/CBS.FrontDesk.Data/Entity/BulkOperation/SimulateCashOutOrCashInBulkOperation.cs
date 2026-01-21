@@ -33,6 +33,7 @@ namespace CBS.FrontDesk.Data.Entity.BulkOperation
         public string SimulationType2 { get; set; }
         public string BranchId2 { get; set; }
         public string BulkCashStrategy2 { get; set; }
+        public string FileUploadId { get; set; }
 
         // Collections
         public List<Branch> Branches { get; set; } = new List<Branch>();

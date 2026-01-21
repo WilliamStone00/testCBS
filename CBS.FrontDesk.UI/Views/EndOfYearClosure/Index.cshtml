@@ -434,9 +434,9 @@ function loadYearClosureStatus(branchId, accountingYearId) {
 
         // Correctly update workflowState
         if (step >= 0) workflowState.initiation = true;
-        if (step >= 2) workflowState.adjustments = true;
-        if (step >= 3) workflowState.reports = true;
-        if (step >= 4) workflowState.review = true;
+        if (step >= 1) workflowState.adjustments = true;
+        if (step >= 2) workflowState.reports = true;
+        if (step >= 3) workflowState.review = true;
 
         refreshWorkflowTabs();
     }
@@ -1016,6 +1016,16 @@ function loadYearClosureStatus(branchId, accountingYearId) {
             }
 
             $('#confirmAccountingDateCopy').text($('#AccountingDate').val());
+
+            // Branch
+            $('#confirmBranchCopy').text(
+                $('#BranchIdCopy option:selected').text()
+            );
+
+            // Adjustment Type
+            $('#confirmAdjustmentTypeCopy').text(
+                $('#AdjustmentType option:selected').text()
+            );
 
             confirmModalCopy.show();
         });

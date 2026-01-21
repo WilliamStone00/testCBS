@@ -518,6 +518,9 @@
                                         </div>
                                     </div>
                                 </div>
+
+                              
+
                             }
 
                             <!-- FILE POSTING -->
@@ -537,6 +540,18 @@
                                         <div id="collapseOperationParamsFile" class="accordion-collapse collapse show" aria-labelledby="headingOperationParamsFile">
                                             <div class="accordion-body">
                                                 <div class="row g-3">
+
+                                                    <!-- ✅ NEW: FileUploadId hidden + display -->
+                                                    <div class="col-md-12">
+                                                        <label class="form-label fw-semibold">Uploaded File Reference</label>
+                                                        <input type="hidden" id="FileUploadId" name="FileUploadId" value="" />
+                                                        <input type="text" class="form-control" id="FileUploadIdDisplay"
+                                                               value="" readonly placeholder="Upload a file to generate FileUploadId" />
+                                                        <small class="text-muted d-block help-hint mt-1">
+                                                            <i class="mdi mdi-information-outline me-1"></i>
+                                                            This ID links the simulation to the uploaded batch file.
+                                                        </small>
+                                                    </div>
 
                                                     <div class="col-md-12">
                                                         @Html.LabelFor(m => m.BranchId2, @GlobalBulkOperation.SelectBranch, new { @class = "form-label fw-semibold" })
@@ -941,6 +956,11 @@
     <script>
         function AjaxPostBulkCashFileUploadOperation(form) {
             $.validator.unobtrusive.parse(form);
+
+            // clear previous id
+            $('#FileUploadId').val('');
+            $('#FileUploadIdDisplay').val('');
+
             if ($(form).valid()) {
                 alertify.confirm("Confirmation", "Upload file for preview?",
                     function () {
@@ -950,8 +970,23 @@
                             data: new FormData(form),
                             success: function (response) {
                                 if (response.success) {
+
                                     showUploadStatus(response.message || 'File uploaded successfully', 'success');
-                                    displayFileContent(response.data);
+
+                                    // ✅ Capture FileUploadId
+                                    const fileUploadId =
+                                        response?.data?.FileUploadId ||
+                                        response?.data?.fileUploadId ||
+                                        '';
+
+                                    $('#FileUploadId').val(fileUploadId);
+                                    $('#FileUploadIdDisplay').val(fileUploadId || 'N/A');
+
+                                    // ✅ 3) Persist FileUploadId on the form (hidden + visible)
+                                    $('#FileUploadId').val(fileUploadId);
+                                    $('#FileUploadIdDisplay').val(fileUploadId || 'N/A');
+
+                                    displayFileContent(response?.data?.BulkCashOperationFileDetails);
                                     form.reset();
                                 } else {
                                     showUploadStatus(response.message || 'File upload failed', 'danger');
@@ -1015,7 +1050,8 @@
                             SimulationDescription2: $('#SimulationDescription2').val(),
 
                             BulkCashStrategy: 'FileUpload',
-                            AccountIIs: accountIIs
+                            FileUploadId: $('#FileUploadId').val(),
+                            /*AccountIIs: accountIIs*/
                         };
 
                         $.ajax({

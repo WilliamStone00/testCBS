@@ -1200,6 +1200,7 @@ namespace CBS.FrontDesk.Helper
         public static string BulkOperationDetailsDataTablePaggination = "/api/v1/BulkOperations/simulation/details";
         public static string DeleteBulkOperations = "/api/v1/BulkOperations/simulation/delete";
         public static string UploadBulkCashOperations = "/api/v1/BulkCashUpload";
+        public static string BulkCashOperations_GetById = "/api/v1/ViewBukCashFileDateByFileUploadId/{0}";
         //Zone
         public static string Get_Update_Delete_Zone = "/api/v1/Zone/{0}";
         public static string CreateZone = "/api/v1/Zone";
@@ -1831,7 +1832,7 @@ namespace CBS.FrontDesk.Helper
 
 
         public static string GetCheckListStatusDataTable = "/api/v1/YearEndChecklistStatus/datatable";
-        public static string PostJournalAdjustment = "/api/v1/ops/generic";
+        public static string PostJournalAdjustment = "/api/v1/ops/ProcessEOYCommand";
         public static string CloseYear = "/api/v1/ops/EndOfYearCarryForward";
         public static string GetYearClosureStatus = "/api/v1/EndOfYearProcessStepQueue/{0}/{1}";
 
@@ -1858,7 +1859,7 @@ namespace CBS.FrontDesk.Helper
 
         //-------------------------  Interest Distribution Simulation ----------------------------
         public static string InterestDistributionSimulation1 = "/api/v1/InterestDistributionSimulationMock/generate/GenerateInterestDistributionSampleDataQuery";
-        public static string InterestDistributionSimulation = "/api/v1/ProcessSnapshotInterestSimulation/GenerateInterestSimulation";
+        public static string InterestDistributionSimulation = "/api/v1/ProcessesExternalShareMonth/generate/InterestSimulation";
         public static string CreateShareMonthSimulation = "/api/v1/ProcessSnapshotInterestSimulation/Create";
         public static string ActivateShareMonthSimulation = "/api/v1/ProcessSnapshotInterestSimulation/PrepareCustomerInterestBalance";
         public static string DataTableForRequestSimulation = "/api/v1/ProcessSnapshotInterestSimulation/DataTableForRequest";

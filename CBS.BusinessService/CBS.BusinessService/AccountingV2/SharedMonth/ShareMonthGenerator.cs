@@ -101,8 +101,8 @@ namespace CBS.BusinessService.AccountingV2.SharedMonth
                 // Merge B4:D4 for Date value
                 var dateCell = worksheet.Cells["B4:D4"];
                 dateCell.Merge = true;
-                dateCell.Value = data.Date?.ToString("dd-MM-yy");
-                dateCell.Style.Numberformat.Format = "dd-mm-yy";
+                dateCell.Value = data.Date?.ToString("dd/MM/yyyy");
+                dateCell.Style.Numberformat.Format = "dd/mm/yyyy";
                 dateCell.Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                 dateCell.Style.Fill.PatternType = ExcelFillStyle.None;
 

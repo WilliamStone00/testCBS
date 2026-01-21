@@ -80,7 +80,7 @@ namespace CBS.BusinessService.AccountingV2.SharedMonth
 
             var apiResponse =
                 await _apiCallerHelper.PostAsync<ResponseObject<List<ShareMonthPsiReportLineDto>>>(
-                    APICallHelper.InterestDistributionSimulation1,
+                    APICallHelper.InterestDistributionSimulation,
                     model
                 );
 
@@ -604,6 +604,11 @@ namespace CBS.BusinessService.AccountingV2.SharedMonth
                 validationResult =
                     await ValidateSharedMonthExcelAnnual(model.file, model);
             }
+            else if (model.FileType == "Tax")
+            {
+                validationResult =
+                    await ValidateSharedMonthExcelAnnual(model.file, model);
+            }
             else
             {
                 throw new Exception("❌ Invalid FileType.");
@@ -661,10 +666,11 @@ namespace CBS.BusinessService.AccountingV2.SharedMonth
             {
                 var url = string.Format(APICallHelper.GetSharedMonthDetail, fileUploadId, type);
                 var response = await _apiCallerHelper.GetAsync<ResponseObject<MemberShareMonthUpload>>(url);
-                
+                 GetBankName(); 
                 if (response.IsSuccess)
                 {
                     // FileDownloadDto should contain file data and metadata
+                    response.ApiResponseData.Data.BankName = GetBankName();
                     return response.ApiResponseData.Data;
                 }
                 return new MemberShareMonthUpload { };
