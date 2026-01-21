@@ -295,6 +295,9 @@
     <Compile Include="Accounting V2\MemberReconciliation\LoanReconciliationService.cs" />
     <Compile Include="Accounting V2\MemberReconciliation\MemberReconciliationService.cs" />
     <Compile Include="Accounting V2\Pendingaccounts\PendingAccountsService.cs" />
+    <Compile Include="Accounting V2\Translations\MockTranslationPlaceholderService.cs" />
+    <Compile Include="Accounting V2\Translations\TranslationPlaceholderExportGenerator.cs" />
+    <Compile Include="Accounting V2\Translations\TranslationPlaceholderService.cs" />
     <Compile Include="Accounting V2\TrialBalance\TrialBalanceFourColumnsFlatItems.cs" />
     <Compile Include="Accounting V2\TrialBalance\TrialBalanceReportItem.cs" />
     <Compile Include="Accounting V2\TrialBalance\TrialBalances4ColumsService.cs" />
@@ -352,6 +355,7 @@
     <Compile Include="CheckManagementSystem\Configurations\NotificationConfiguration\NotificationHistory\NotificationHistoryService.cs" />
     <Compile Include="CheckManagementSystem\CustomerService.cs" />
     <Compile Include="CheckManagementSystem\Operations\ChequeBookListing\ChequeBookMockService.cs" />
+    <Compile Include="CheckManagementSystem\Operations\ChequeBookListing\ChequeBookReportService.cs" />
     <Compile Include="CheckManagementSystem\Operations\ChequeBookListing\ChequeBookService.cs" />
     <Compile Include="CheckManagementSystem\Operations\ChequeCancelation\CancellationRequestMockService.cs" />
     <Compile Include="CheckManagementSystem\Operations\ChequeCancelation\CancellationRequestService.cs" />

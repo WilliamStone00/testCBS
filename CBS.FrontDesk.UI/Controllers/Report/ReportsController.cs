@@ -1,5 +1,6 @@
 ﻿using CBS.BusinessService.Accounting;
 using CBS.FrontDesk.Data.Entity.Accounting;
+using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeBookListing;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation;
 using CBS.FrontDesk.Data.ReportDataSetDto;
 using CBS.FrontDesk.UI.AppFiles.Reporting.Accounting;
@@ -88,6 +89,150 @@ namespace CBS.FrontDesk.UI.Controllers
             }
         }
 
+        public void ReportParameterLessCOLL()
+        {
+            ReportDocument rd = new ReportDocument();
+            try
+            {
+                string strReportName = System.Web.HttpContext.Current.Session["ReportName"]?.ToString();
+                var rptSource = System.Web.HttpContext.Current.Session["rptSource"];
+                var rptpath = System.Web.HttpContext.Current.Session["rptpath"]?.ToString();
+                var rpttitle = System.Web.HttpContext.Current.Session["rpttitle"]?.ToString();
+
+                if (string.IsNullOrEmpty(strReportName) || rptSource == null || rptpath == null || rpttitle == null)
+                {
+                    Response.Write("<H2>❌ No Report with such Name found</H2>");
+                    Response.Write($"<p>ReportName: {strReportName ?? "null"}</p>");
+                    Response.Write($"<p>rptSource: {(rptSource == null ? "null" : rptSource.GetType().Name)}</p>");
+                    Response.Write($"<p>rptpath: {rptpath ?? "null"}</p>");
+                    return;
+                }
+
+                // Log what we're loading
+                System.Diagnostics.Debug.WriteLine($"=== CRYSTAL REPORT LOADING ===");
+                System.Diagnostics.Debug.WriteLine($"Report: {strReportName}");
+                System.Diagnostics.Debug.WriteLine($"Path: {rptpath}");
+                System.Diagnostics.Debug.WriteLine($"Source Type: {rptSource.GetType().FullName}");
+
+                // Log DataSet details if it's a DataSet
+                if (rptSource is System.Data.DataSet dataSet)
+                {
+                    System.Diagnostics.Debug.WriteLine($"DataSet: {dataSet.DataSetName}, Tables: {dataSet.Tables.Count}");
+                    foreach (DataTable table in dataSet.Tables)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"  Table: '{table.TableName}' ({table.Rows.Count} rows)");
+                    }
+                }
+
+                string strRptPath = Server.MapPath(rptpath);
+
+                // Check if report file exists
+                if (!System.IO.File.Exists(strRptPath))
+                {
+                    Response.Write($"<H2>❌ Report file not found</H2>");
+                    Response.Write($"<p>Path: {strRptPath}</p>");
+                    return;
+                }
+
+                rd.Load(strRptPath);
+
+                // Set data source
+                rd.SetDataSource(rptSource);
+
+                // Log Crystal's internal table recognition
+                if (rd.Database != null && rd.Database.Tables != null)
+                {
+                    System.Diagnostics.Debug.WriteLine("=== CRYSTAL INTERNAL TABLES ===");
+                    foreach (CrystalDecisions.CrystalReports.Engine.Table table in rd.Database.Tables)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Crystal Table: {table.Name}");
+                    }
+                }
+
+                // Set parameters if available
+                string strFromDate = System.Web.HttpContext.Current.Session["DateFrom"]?.ToString() ?? string.Empty;
+                string strToDate = System.Web.HttpContext.Current.Session["DateTo"]?.ToString() ?? string.Empty;
+
+                if (!string.IsNullOrEmpty(strFromDate) && !string.IsNullOrEmpty(strToDate))
+                {
+                    try
+                    {
+                        rd.SetParameterValue("DateFrom", strFromDate);
+                        rd.SetParameterValue("DateTo", strToDate);
+                    }
+                    catch (Exception paramEx)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Parameter Error: {paramEx.Message}");
+                        // Continue without parameters
+                    }
+                }
+
+                // Export to PDF
+                string savedFileName = $"{rpttitle}-{DateTime.UtcNow:dd_MM_yyyy_HHmmss}";
+                rd.ExportToHttpResponse(
+                    ExportFormatType.PortableDocFormat,
+                    System.Web.HttpContext.Current.Response,
+                    false,
+                    savedFileName);
+
+                System.Diagnostics.Debug.WriteLine("✅ Report exported successfully");
+            }
+            catch (CrystalDecisions.CrystalReports.Engine.LoadSaveReportException loadEx)
+            {
+                System.Diagnostics.Debug.WriteLine($"CRYSTAL LOAD ERROR: {loadEx.Message}");
+                Response.Write($"<H2>❌ Report Loading Error</H2>");
+                Response.Write($"<p>{loadEx.Message}</p>");
+                if (loadEx.InnerException != null)
+                {
+                    Response.Write($"<p>Inner: {loadEx.InnerException.Message}</p>");
+                }
+            }
+            catch (CrystalDecisions.CrystalReports.Engine.DataSourceException dataEx)
+            {
+                System.Diagnostics.Debug.WriteLine($"CRYSTAL DATA SOURCE ERROR: {dataEx.Message}");
+                Response.Write($"<H2>❌ Data Binding Error</H2>");
+                Response.Write($"<p>{dataEx.Message}</p>");
+                Response.Write($"<p>Check that your DataSet table names match exactly what Crystal expects.</p>");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"CRYSTAL GENERAL ERROR: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"Stack Trace: {ex.StackTrace}");
+                Response.Write($"<H2>❌ An error occurred while generating the report</H2>");
+                Response.Write($"<p>{ex.Message}</p>");
+                Response.Write($"<pre>{ex.StackTrace}</pre>");
+            }
+            finally
+            {
+                CleanReport(rd);
+            }
+        }
+
+        private void SetReportParameters(ReportDocument reportDocument)
+        {
+            try
+            {
+                var query = Session["ChequeBookQuery"] as ChequeBookQuery;
+                if (query != null)
+                {
+                    if (query.StartDate.HasValue)
+                    {
+                        reportDocument.SetParameterValue("DateFrom", query.StartDate.Value.ToString("dd/MM/yyyy"));
+                    }
+
+                    if (query.EndDate.HasValue)
+                    {
+                        reportDocument.SetParameterValue("DateTo", query.EndDate.Value.ToString("dd/MM/yyyy"));
+                    }
+                }
+
+                reportDocument.SetParameterValue("GeneratedOn", DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"));
+            }
+            catch
+            {
+                // Ignore parameter errors
+            }
+        }
 
 
         public void IncomeStatementSubReports()

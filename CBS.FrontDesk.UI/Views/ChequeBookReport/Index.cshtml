@@ -1,0 +1,1011 @@
+﻿@using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Reporting
+@model Reporting
+@using System.Web.Mvc
+@using Resources; 
+
+<div class="container-fluid py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <!-- Header Card -->
+            <div class="card bg-gradient-dark border-0 shadow-lg mb-4 overflow-hidden">
+                <div class="card-body p-4">
+                    <div class="row align-items-center">
+                        <div class="col-md-9">
+                            <h1 class="h2 text-white mb-2">
+                                <i class="mdi mdi-book-open-variant mdi-36px me-3"></i>
+                                Cheque Management Reports
+                            </h1>
+                            <p class="text-white-75 mb-0">Generate comprehensive reports for all cheque-related operations and transactions</p>
+                        </div>
+                        <div class="col-md-3 text-end">
+                            <div class="bg-white-10 rounded-circle d-inline-flex p-3">
+                                <i class="mdi mdi-bank-check mdi-48px text-white"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Report Type Selection -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-gradient-light py-3">
+                    <h3 class="h5 mb-0 text-dark">
+                        <i class="mdi mdi-file-document-multiple me-2"></i>
+                        Select Report Category
+                    </h3>
+                </div>
+                <div class="card-body p-4">
+                    @using (Html.BeginForm("GenerateChequeReport", "ChequeManagement", FormMethod.Post,
+                        new { id = "chequeReportForm", @class = "needs-validation", novalidate = "novalidate" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(m => m.ReportCategory)
+
+                        <!-- Report Category Selection -->
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-2">
+                                <div class="cheque-category-card active" data-category="Category">
+                                    <input type="radio" class="btn-check" name="CategoryRadio" id="categoryReport" value="Category" checked>
+                                    <label class="card cheque-category-label h-100" for="categoryReport">
+                                        <div class="card-body text-center p-3">
+                                            <div class="icon-wrapper mb-2">
+                                                <i class="mdi mdi-folder-outline mdi-36px text-primary"></i>
+                                            </div>
+                                            <h6 class="card-title mb-1">Category Report</h6>
+                                            <p class="card-text text-muted small">Cheque category analysis</p>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="cheque-category-card" data-category="ChequeBook">
+                                    <input type="radio" class="btn-check" name="CategoryRadio" id="chequeBookReport" value="ChequeBook">
+                                    <label class="card cheque-category-label h-100" for="chequeBookReport">
+                                        <div class="card-body text-center p-3">
+                                            <div class="icon-wrapper mb-2">
+                                                <i class="mdi mdi-book-open-page-variant mdi-36px text-success"></i>
+                                            </div>
+                                            <h6 class="card-title mb-1">Cheque Book</h6>
+                                            <p class="card-text text-muted small">Cheque book issuance & status</p>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="cheque-category-card" data-category="ChequeBookRequest">
+                                    <input type="radio" class="btn-check" name="CategoryRadio" id="chequeRequestReport" value="ChequeBookRequest">
+                                    <label class="card cheque-category-label h-100" for="chequeRequestReport">
+                                        <div class="card-body text-center p-3">
+                                            <div class="icon-wrapper mb-2">
+                                                <i class="mdi mdi-file-document-edit mdi-36px text-warning"></i>
+                                            </div>
+                                            <h6 class="card-title mb-1">Cheque Request</h6>
+                                            <p class="card-text text-muted small">Cheque book requests tracking</p>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="cheque-category-card" data-category="CounterCheque">
+                                    <input type="radio" class="btn-check" name="CategoryRadio" id="counterChequeReport" value="CounterCheque">
+                                    <label class="card cheque-category-label h-100" for="counterChequeReport">
+                                        <div class="card-body text-center p-3">
+                                            <div class="icon-wrapper mb-2">
+                                                <i class="mdi mdi-counter mdi-36px text-info"></i>
+                                            </div>
+                                            <h6 class="card-title mb-1">Counter Cheque</h6>
+                                            <p class="card-text text-muted small">Counter cheque transactions</p>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="cheque-category-card" data-category="Transaction">
+                                    <input type="radio" class="btn-check" name="CategoryRadio" id="transactionReport" value="Transaction">
+                                    <label class="card cheque-category-label h-100" for="transactionReport">
+                                        <div class="card-body text-center p-3">
+                                            <div class="icon-wrapper mb-2">
+                                                <i class="mdi mdi-swap-horizontal mdi-36px text-danger"></i>
+                                            </div>
+                                            <h6 class="card-title mb-1">Transaction</h6>
+                                            <p class="card-text text-muted small">Cheque transaction history</p>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="cheque-category-card" data-category="All">
+                                    <input type="radio" class="btn-check" name="CategoryRadio" id="allReports" value="All">
+                                    <label class="card cheque-category-label h-100" for="allReports">
+                                        <div class="card-body text-center p-3">
+                                            <div class="icon-wrapper mb-2">
+                                                <i class="mdi mdi-view-dashboard mdi-36px text-purple"></i>
+                                            </div>
+                                            <h6 class="card-title mb-1">Comprehensive</h6>
+                                            <p class="card-text text-muted small">All cheque reports summary</p>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Dynamic Form Section -->
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-header bg-light py-3">
+                                <h4 class="h6 mb-0 text-dark">
+                                    <i class="mdi mdi-filter-outline me-2"></i>
+                                    Report Parameters
+                                </h4>
+                            </div>
+                            <div class="card-body p-4">
+                                <!-- Category Report Form (Default) -->
+                                <div id="CategoryForm" class="cheque-form-section">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <div class="form-floating shadow-sm">
+                                                @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "Id", "name"), "---" + @GlobalUserManagement.SelectBranch + "---", new { @class = "form-control select2" })
+                                                @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
+                                                <label>@GlobalUserManagement.Branch</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                @Html.TextBoxFor(m => m.DateFrom, new
+                                                    {
+                                                        @class = "form-control datepicker",
+                                                        type = "date",
+                                                        required = "required",
+                                                        placeholder = "From Date"
+                                                    })
+                                                <label class="fw-bold">
+                                                    <i class="mdi mdi-calendar-start me-1"></i>
+                                                    From Date
+                                                </label>
+                                                @Html.ValidationMessageFor(m => m.DateFrom, "", new { @class = "text-danger small" })
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                @Html.TextBoxFor(m => m.DateTo, new
+                                                    {
+                                                        @class = "form-control datepicker",
+                                                        type = "date",
+                                                        required = "required",
+                                                        placeholder = "To Date"
+                                                    })
+                                                <label class="fw-bold">
+                                                    <i class="mdi mdi-calendar-end me-1"></i>
+                                                    To Date
+                                                </label>
+                                                @Html.ValidationMessageFor(m => m.DateTo, "", new { @class = "text-danger small" })
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                @Html.DropDownListFor(m => m.CategoryType,
+                                                    new SelectList(new[]
+                                                    {
+                                                        new SelectListItem { Text = "All Categories", Value = "All" },
+                                                        new SelectListItem { Text = "Personal Cheques", Value = "Personal" },
+                                                        new SelectListItem { Text = "Business Cheques", Value = "Business" },
+                                                        new SelectListItem { Text = "Cashier's Cheques", Value = "Cashiers" },
+                                                        new SelectListItem { Text = "Traveler's Cheques", Value = "Travelers" }
+                                                    }, "Value", "Text"),
+                                                    "Select Category Type",
+                                                    new { @class = "form-control select2" })
+                                                <label class="fw-bold">
+                                                    <i class="mdi mdi-tag-outline me-1"></i>
+                                                    Category Type (Optional)
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Cheque Book Report Form -->
+                                <div id="ChequeBookForm" class="cheque-form-section d-none">
+                                    <div class="row g-3">
+                                        <div class="col-md-4">
+                                            <div class="form-floating shadow-sm">
+                                                @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "Id", "name"), "---" + @GlobalUserManagement.SelectBranch + "---", new { @class = "form-control select2" })
+                                                @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
+                                                <label>@GlobalUserManagement.Branch</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-floating">
+                                                @Html.TextBoxFor(m => m.MemberReference, new
+                                                    {
+                                                        @class = "form-control",
+                                                        placeholder = "Member ID/Reference",
+                                                        maxlength = "50"
+                                                    })
+                                                <label class="fw-bold">
+                                                    <i class="mdi mdi-account-search me-1"></i>
+                                                    Member Reference (Optional)
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-floating">
+                                                @Html.DropDownListFor(m => m.ChequeBookStatus,
+                                                    new SelectList(new[]
+                                                    {
+                                                        new SelectListItem { Text = "All Status", Value = "All" },
+                                                        new SelectListItem { Text = "Active", Value = "Active" },
+                                                        new SelectListItem { Text = "Issued", Value = "Issued" },
+                                                        new SelectListItem { Text = "Exhausted", Value = "Exhausted" },
+                                                        new SelectListItem { Text = "Cancelled", Value = "Cancelled" }
+                                                    }, "Value", "Text"),
+                                                    "Select Status",
+                                                    new { @class = "form-control select2" })
+                                                <label class="fw-bold">
+                                                    <i class="mdi mdi-check-circle-outline me-1"></i>
+                                                    Cheque Book Status
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                @Html.TextBoxFor(m => m.DateFrom, new
+                                                    {
+                                                        @class = "form-control datepicker",
+                                                        type = "date",
+                                                        required = "required",
+                                                        placeholder = "From Date"
+                                                    })
+                                                <label class="fw-bold">
+                                                    <i class="mdi mdi-calendar-start me-1"></i>
+                                                    From Date
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                @Html.TextBoxFor(m => m.DateTo, new
+                                                    {
+                                                        @class = "form-control datepicker",
+                                                        type = "date",
+                                                        required = "required",
+                                                        placeholder = "To Date"
+                                                    })
+                                                <label class="fw-bold">
+                                                    <i class="mdi mdi-calendar-end me-1"></i>
+                                                    To Date
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Cheque Book Request Form -->
+                                <div id="ChequeBookRequestForm" class="cheque-form-section d-none">
+                                    <div class="row g-3">
+                                        <div class="col-md-4">
+                                            <div class="form-floating shadow-sm">
+                                                @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "Id", "name"), "---" + @GlobalUserManagement.SelectBranch + "---", new { @class = "form-control select2" })
+                                                @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
+                                                <label>@GlobalUserManagement.Branch</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-floating">
+                                                @Html.TextBoxFor(m => m.MemberReference, new
+                                                    {
+                                                        @class = "form-control",
+                                                        placeholder = "Member ID/Reference",
+                                                        required = "required",
+                                                        maxlength = "50"
+                                                    })
+                                                <label class="fw-bold">
+                                                    <i class="mdi mdi-card-account-details me-1"></i>
+                                                    Member Reference
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-floating">
+                                                @Html.DropDownListFor(m => m.RequestStatus,
+                                                    new SelectList(new[]
+                                                    {
+                                                        new SelectListItem { Text = "All Requests", Value = "All" },
+                                                        new SelectListItem { Text = "Pending", Value = "Pending" },
+                                                        new SelectListItem { Text = "Approved", Value = "Approved" },
+                                                        new SelectListItem { Text = "Rejected", Value = "Rejected" },
+                                                        new SelectListItem { Text = "Processed", Value = "Processed" }
+                                                    }, "Value", "Text"),
+                                                    "Select Request Status",
+                                                    new { @class = "form-control select2" })
+                                                <label class="fw-bold">
+                                                    <i class="mdi mdi-clock-outline me-1"></i>
+                                                    Request Status
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                @Html.TextBoxFor(m => m.DateFrom, new
+                                                    {
+                                                        @class = "form-control datepicker",
+                                                        type = "date",
+                                                        required = "required",
+                                                        placeholder = "From Date"
+                                                    })
+                                                <label class="fw-bold">
+                                                    <i class="mdi mdi-calendar-start me-1"></i>
+                                                    From Date
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                @Html.TextBoxFor(m => m.DateTo, new
+                                                    {
+                                                        @class = "form-control datepicker",
+                                                        type = "date",
+                                                        required = "required",
+                                                        placeholder = "To Date"
+                                                    })
+                                                <label class="fw-bold">
+                                                    <i class="mdi mdi-calendar-end me-1"></i>
+                                                    To Date
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Counter Cheque Form -->
+                                <div id="CounterChequeForm" class="cheque-form-section d-none">
+                                    <div class="row g-3">
+                                        <div class="col-md-4">
+                                            <div class="form-floating shadow-sm">
+                                                @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "Id", "name"), "---" + @GlobalUserManagement.SelectBranch + "---", new { @class = "form-control select2" })
+                                                @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
+                                                <label>@GlobalUserManagement.Branch</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-floating">
+                                                @Html.TextBoxFor(m => m.MemberReference, new
+                                                    {
+                                                        @class = "form-control",
+                                                        placeholder = "Member ID/Reference",
+                                                        maxlength = "50"
+                                                    })
+                                                <label class="fw-bold">
+                                                    <i class="mdi mdi-account me-1"></i>
+                                                    Member Reference (Optional)
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-floating">
+                                                @Html.DropDownListFor(m => m.ChequeType,
+                                                    new SelectList(new[]
+                                                    {
+                                                        new SelectListItem { Text = "All Types", Value = "All" },
+                                                        new SelectListItem { Text = "Cash Cheque", Value = "Cash" },
+                                                        new SelectListItem { Text = "Transfer Cheque", Value = "Transfer" },
+                                                        new SelectListItem { Text = "Demand Draft", Value = "Draft" }
+                                                    }, "Value", "Text"),
+                                                    "Select Cheque Type",
+                                                    new { @class = "form-control select2" })
+                                                <label class="fw-bold">
+                                                    <i class="mdi mdi-format-list-bulleted-type me-1"></i>
+                                                    Cheque Type
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                @Html.TextBoxFor(m => m.DateFrom, new
+                                                    {
+                                                        @class = "form-control datepicker",
+                                                        type = "date",
+                                                        required = "required",
+                                                        placeholder = "From Date"
+                                                    })
+                                                <label class="fw-bold">
+                                                    <i class="mdi mdi-calendar-start me-1"></i>
+                                                    From Date
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                @Html.TextBoxFor(m => m.DateTo, new
+                                                    {
+                                                        @class = "form-control datepicker",
+                                                        type = "date",
+                                                        required = "required",
+                                                        placeholder = "To Date"
+                                                    })
+                                                <label class="fw-bold">
+                                                    <i class="mdi mdi-calendar-end me-1"></i>
+                                                    To Date
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Transaction Form -->
+                                <div id="TransactionForm" class="cheque-form-section d-none">
+                                    <div class="row g-3">
+                                        <div class="form-floating shadow-sm">
+                                            @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "Id", "name"), "---" + @GlobalUserManagement.SelectBranch + "---", new { @class = "form-control select2" })
+                                            @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
+                                            <label>@GlobalUserManagement.Branch</label>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-floating">
+                                                @Html.TextBoxFor(m => m.MemberReference, new
+                                                    {
+                                                        @class = "form-control",
+                                                        placeholder = "Member ID/Account No",
+                                                        maxlength = "50"
+                                                    })
+                                                <label class="fw-bold">
+                                                    <i class="mdi mdi-account-box me-1"></i>
+                                                    Member/Account Reference (Optional)
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-floating">
+                                                @Html.DropDownListFor(m => m.TransactionType,
+                                                    new SelectList(new[]
+                                                    {
+                                                        new SelectListItem { Text = "All Transactions", Value = "All" },
+                                                        new SelectListItem { Text = "Cleared", Value = "Cleared" },
+                                                        new SelectListItem { Text = "Bounced", Value = "Bounced" },
+                                                        new SelectListItem { Text = "Pending", Value = "Pending" },
+                                                        new SelectListItem { Text = "Stopped", Value = "Stopped" }
+                                                    }, "Value", "Text"),
+                                                    "Select Transaction Status",
+                                                    new { @class = "form-control select2" })
+                                                <label class="fw-bold">
+                                                    <i class="mdi mdi-swap-horizontal me-1"></i>
+                                                    Transaction Status
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                @Html.TextBoxFor(m => m.DateFrom, new
+                                                    {
+                                                        @class = "form-control datepicker",
+                                                        type = "date",
+                                                        required = "required",
+                                                        placeholder = "From Date"
+                                                    })
+                                                <label class="fw-bold">
+                                                    <i class="mdi mdi-calendar-start me-1"></i>
+                                                    From Date
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                @Html.TextBoxFor(m => m.DateTo, new
+                                                    {
+                                                        @class = "form-control datepicker",
+                                                        type = "date",
+                                                        required = "required",
+                                                        placeholder = "To Date"
+                                                    })
+                                                <label class="fw-bold">
+                                                    <i class="mdi mdi-calendar-end me-1"></i>
+                                                    To Date
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                @Html.TextBoxFor(m => m.ChequeNumber, new
+                                                    {
+                                                        @class = "form-control",
+                                                        placeholder = "Cheque Number",
+                                                        maxlength = "20"
+                                                    })
+                                                <label class="fw-bold">
+                                                    <i class="mdi mdi-numeric me-1"></i>
+                                                    Cheque Number (Optional)
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                @Html.DropDownListFor(m => m.AmountRange,
+                                                    new SelectList(new[]
+                                                    {
+                                                        new SelectListItem { Text = "All Amounts", Value = "All" },
+                                                        new SelectListItem { Text = "Below 1,000", Value = "Below1000" },
+                                                        new SelectListItem { Text = "1,000 - 10,000", Value = "1000-10000" },
+                                                        new SelectListItem { Text = "10,000 - 50,000", Value = "10000-50000" },
+                                                        new SelectListItem { Text = "Above 50,000", Value = "Above50000" }
+                                                    }, "Value", "Text"),
+                                                    "Select Amount Range",
+                                                    new { @class = "form-control select2" })
+                                                <label class="fw-bold">
+                                                    <i class="mdi mdi-currency-usd me-1"></i>
+                                                    Amount Range (Optional)
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- All Reports Form -->
+                                <div id="AllForm" class="cheque-form-section d-none">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <div class="form-floating shadow-sm">
+                                                @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "Id", "name"), "---" + @GlobalUserManagement.SelectBranch + "---", new { @class = "form-control select2" })
+                                                @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
+                                                <label>@GlobalUserManagement.Branch</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                @Html.TextBoxFor(m => m.DateFrom, new
+                                                    {
+                                                        @class = "form-control datepicker",
+                                                        type = "date",
+                                                        required = "required",
+                                                        placeholder = "From Date"
+                                                    })
+                                                <label class="fw-bold">
+                                                    <i class="mdi mdi-calendar-start me-1"></i>
+                                                    From Date
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                @Html.TextBoxFor(m => m.DateTo, new
+                                                    {
+                                                        @class = "form-control datepicker",
+                                                        type = "date",
+                                                        required = "required",
+                                                        placeholder = "To Date"
+                                                    })
+                                                <label class="fw-bold">
+                                                    <i class="mdi mdi-calendar-end me-1"></i>
+                                                    To Date
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                @Html.DropDownListFor(m => m.ReportFormat,
+                                                    new SelectList(new[]
+                                                    {
+                                                        new SelectListItem { Text = "Summary Report", Value = "Summary" },
+                                                        new SelectListItem { Text = "Detailed Report", Value = "Detailed" },
+                                                        new SelectListItem { Text = "Executive Summary", Value = "Executive" },
+                                                        new SelectListItem { Text = "Audit Report", Value = "Audit" }
+                                                    }, "Value", "Text"),
+                                                    "Select Report Format",
+                                                    new { @class = "form-control select2" })
+                                                <label class="fw-bold">
+                                                    <i class="mdi mdi-file-document-outline me-1"></i>
+                                                    Report Format
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Action Buttons -->
+                                <div class="mt-4 pt-4 border-top">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="d-flex gap-2">
+                                                <button type="button" class="btn btn-outline-secondary" onclick="resetChequeForm()">
+                                                    <i class="mdi mdi-refresh me-1"></i> Reset Form
+                                                </button>
+                                                <button type="button" class="btn btn-outline-info" onclick="exportToExcel()">
+                                                    <i class="mdi mdi-file-excel me-1"></i> Export to Excel
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="d-flex justify-content-end gap-2">
+                                                <button type="button" class="btn btn-primary" id="previewChequeReport">
+                                                    <i class="mdi mdi-eye-outline me-1"></i> Preview Report
+                                                </button>
+                                                <button type="submit" class="btn btn-success" id="printChequeReport">
+                                                    <i class="mdi mdi-printer-outline me-1"></i> Generate & Print
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Quick Stats Card -->
+            <div class="card border-0 shadow-sm mt-4">
+                <div class="card-header bg-light py-3">
+                    <h4 class="h6 mb-0 text-dark">
+                        <i class="mdi mdi-chart-bar me-2"></i>
+                        Quick Statistics
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <div class="card bg-primary bg-opacity-10 border-primary border">
+                                <div class="card-body text-center">
+                                    <i class="mdi mdi-book-open-variant mdi-24px text-primary mb-2"></i>
+                                    <h5 class="text-primary mb-1">1,245</h5>
+                                    <p class="text-muted small mb-0">Active Cheque Books</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card bg-success bg-opacity-10 border-success border">
+                                <div class="card-body text-center">
+                                    <i class="mdi mdi-file-document-edit mdi-24px text-success mb-2"></i>
+                                    <h5 class="text-success mb-1">89</h5>
+                                    <p class="text-muted small mb-0">Pending Requests</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card bg-warning bg-opacity-10 border-warning border">
+                                <div class="card-body text-center">
+                                    <i class="mdi mdi-counter mdi-24px text-warning mb-2"></i>
+                                    <h5 class="text-warning mb-1">432</h5>
+                                    <p class="text-muted small mb-0">Counter Cheques Today</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card bg-info bg-opacity-10 border-info border">
+                                <div class="card-body text-center">
+                                    <i class="mdi mdi-swap-horizontal mdi-24px text-info mb-2"></i>
+                                    <h5 class="text-info mb-1">2,567</h5>
+                                    <p class="text-muted small mb-0">Transactions This Month</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Loading Modal -->
+<div class="modal fade" id="chequeLoadingModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0">
+            <div class="modal-body text-center p-5">
+                <div class="spinner-border text-primary mb-4" style="width: 3rem; height: 3rem;" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <h5 class="mb-2">Generating Cheque Report</h5>
+                <p class="text-muted">Processing your request, please wait...</p>
+                <div class="progress mt-3" style="height: 4px;">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 100%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .cheque-category-card {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+            .cheque-category-card:hover .cheque-category-label {
+                border-color: #0d6efd;
+                transform: translateY(-3px);
+                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            }
+
+            .cheque-category-card.active .cheque-category-label {
+                border: 2px solid #0d6efd;
+                background-color: rgba(13, 110, 253, 0.05);
+                box-shadow: 0 4px 8px rgba(13, 110, 253, 0.1);
+            }
+
+        .cheque-category-label {
+            border: 1px solid #dee2e6;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border-radius: 10px;
+        }
+
+            .cheque-category-label:hover {
+                border-color: #adb5bd;
+            }
+
+        .icon-wrapper {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 15px;
+        }
+
+        .btn-check:checked + .cheque-category-label .icon-wrapper {
+            background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+        }
+
+        .btn-check:checked + .cheque-category-label .mdi {
+            color: white !important;
+        }
+
+        .bg-gradient-dark {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+        }
+
+        .bg-gradient-light {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+
+        .bg-white-10 {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .form-floating > label {
+            color: #495057;
+            font-weight: 500;
+        }
+
+        .form-control:focus {
+            border-color: #86b7fe;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+        }
+
+        .select2-container--default .select2-selection--single {
+            height: calc(3.5rem + 2px);
+            padding: 1rem 0.75rem;
+            border: 1px solid #ced4da;
+            border-radius: 0.375rem;
+        }
+
+        .datepicker {
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="%23888" class="bi bi-calendar" viewBox="0 0 16 16"><path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 16px 16px;
+        }
+
+        .progress-bar {
+            background-color: #0d6efd;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Initialize Select2
+            $('.select2').select2({
+                theme: 'bootstrap-5',
+                width: '100%',
+                placeholder: 'Select an option'
+            });
+
+            // Initialize datepickers
+            flatpickr(".datepicker", {
+                dateFormat: "Y-m-d",
+                allowInput: true,
+                maxDate: "today"
+            });
+
+            // Report category selection handler
+            $('.cheque-category-card').on('click', function () {
+                const category = $(this).data('category');
+
+                // Update active state
+                $('.cheque-category-card').removeClass('active');
+                $(this).addClass('active');
+
+                // Update hidden field
+                $('#ReportCategory').val(category);
+
+                // Show corresponding form
+                $('.cheque-form-section').addClass('d-none');
+                $(`#${category}Form`).removeClass('d-none');
+
+                // Update validation
+                updateChequeFormValidation(category);
+            });
+
+            // Preview button handler
+            $('#previewChequeReport').on('click', function (e) {
+                e.preventDefault();
+                if (validateChequeForm()) {
+                    generateChequeReport('preview');
+                }
+            });
+
+            // Print button handler
+            $('#printChequeReport').on('click', function (e) {
+                e.preventDefault();
+                if (validateChequeForm()) {
+                    generateChequeReport('print');
+                }
+            });
+
+            // Form submission handler
+            $('#chequeReportForm').on('submit', function (e) {
+                e.preventDefault();
+                if (validateChequeForm()) {
+                    generateChequeReport('print');
+                }
+            });
+
+            function validateChequeForm() {
+                const form = $('#chequeReportForm')[0];
+                const category = $('#ReportCategory').val();
+
+                // Clear previous validation
+                form.classList.remove('was-validated');
+
+                // Basic validation
+                if (!form.checkValidity()) {
+                    form.classList.add('was-validated');
+                    showNotification('Please fill all required fields', 'warning');
+                    return false;
+                }
+
+                // Date validation
+                const dateFrom = new Date($('#DateFrom').val());
+                const dateTo = new Date($('#DateTo').val());
+
+                if (dateFrom > dateTo) {
+                    showNotification('From date cannot be after To date', 'warning');
+                    $('#DateFrom').focus();
+                    return false;
+                }
+
+                // Category-specific validations
+                if (category === 'ChequeBookRequest' && !$('#MemberReference').val().trim()) {
+                    showNotification('Member reference is required for Cheque Book Requests', 'warning');
+                    $('#MemberReference').focus();
+                    return false;
+                }
+
+                return true;
+            }
+
+            function generateChequeReport(action) {
+                const category = $('#ReportCategory').val();
+                const formData = $('#chequeReportForm').serialize();
+
+                // Show loading modal
+                const loadingModal = new bootstrap.Modal(document.getElementById('chequeLoadingModal'));
+                loadingModal.show();
+
+                // Simulate API call
+                setTimeout(() => {
+                    loadingModal.hide();
+
+                    if (action === 'print') {
+                        // Print functionality
+                        window.print();
+                        showNotification('Cheque report generated and sent to printer!', 'success');
+                    } else {
+                        // Preview functionality
+                        showNotification('Report preview generated successfully!', 'success');
+                        // Open preview in new window
+                        window.open('/ChequeManagement/PreviewReport?' + formData, '_blank');
+                    }
+                }, 2000);
+            }
+
+            function updateChequeFormValidation(category) {
+                const forms = {
+                    'Category': ['BranchId', 'DateFrom', 'DateTo'],
+                    'ChequeBook': ['BranchId', 'DateFrom', 'DateTo'],
+                    'ChequeBookRequest': ['BranchId', 'MemberReference', 'DateFrom', 'DateTo'],
+                    'CounterCheque': ['BranchId', 'DateFrom', 'DateTo'],
+                    'Transaction': ['BranchId', 'DateFrom', 'DateTo'],
+                    'All': ['BranchId', 'DateFrom', 'DateTo']
+                };
+
+                // Reset all fields to not required first
+                $('[required]').removeAttr('required');
+
+                // Set required for current form
+                forms[category].forEach(field => {
+                    $(`#${field}`).attr('required', 'required');
+                });
+            }
+
+            function resetChequeForm() {
+                $('#chequeReportForm')[0].reset();
+                $('.cheque-form-section').addClass('d-none');
+                $('#CategoryForm').removeClass('d-none');
+                $('.cheque-category-card').removeClass('active');
+                $('.cheque-category-card[data-category="Category"]').addClass('active');
+                $('#ReportCategory').val('Category');
+                $('#chequeReportForm').removeClass('was-validated');
+
+                // Reset Select2
+                $('.select2').val(null).trigger('change');
+
+                // Reset date fields to today
+                const today = new Date().toISOString().split('T')[0];
+                $('#DateFrom').val(today);
+                $('#DateTo').val(today);
+
+                showNotification('Form has been reset', 'info');
+            }
+
+            function exportToExcel() {
+                if (validateChequeForm()) {
+                    const formData = $('#chequeReportForm').serialize();
+                    window.open('/ChequeManagement/ExportToExcel?' + formData, '_blank');
+                    showNotification('Exporting to Excel...', 'info');
+                }
+            }
+
+            function showNotification(message, type) {
+                // Use Toastr or Bootstrap toast
+                const toast = `<div class="toast align-items-center text-bg-${type === 'success' ? 'success' : type === 'warning' ? 'warning' : 'info'} border-0" role="alert">
+                        <div class="d-flex">
+                            <div class="toast-body">${message}</div>
+                            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                        </div>
+                    </div>`;
+
+                $('.toast-container').remove();
+                $('body').append(`<div class="toast-container position-fixed top-0 end-0 p-3">${toast}</div>`);
+                $('.toast').toast('show');
+            }
+
+            // Set default dates
+            const today = new Date();
+            const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+
+            $('#DateFrom').val(firstDay.toISOString().split('T')[0]);
+            $('#DateTo').val(today.toISOString().split('T')[0]);
+        });
+    </script>
+}

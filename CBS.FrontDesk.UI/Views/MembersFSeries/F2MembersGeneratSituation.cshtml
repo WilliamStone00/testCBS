@@ -379,6 +379,246 @@
     @Scripts.Render("~/bundles/jqueryval")
     <script src="~/Scripts/Js/Crud/MembersFSeries/FSeries.js"></script>
 
+    <script>
+
+        function showCreateModal(id) {
+            ShowModal(id, '_ReportView', 'MembersFSeries', 'Report');
+        }
+    </script>
+
+    <script>
+        /* ============================================================
+           REPORT GENERATOR – ONCLICK DRIVEN (STABLE VERSION)
+           ============================================================ */
+
+        window.ReportGenerator = {
+
+            currentReportType: 'MemberSituation',
+
+            reportTypeHelpTexts: {
+                MemberSituation: '<strong>Member Situation Selected:</strong> Generate comprehensive member account reports with balances and activity details',
+                AccountStatement: '<strong>Account Statement Selected:</strong> Generate detailed transaction statements for specific accounts',
+                LoanRepayment: '<strong>Loan Repayment Selected:</strong> Generate loan repayment schedules and payment history reports',
+                LoanSituation: '<strong>Loan Situation Selected:</strong> Generate comprehensive loan portfolio analysis and statistics'
+            },
+
+            /* ===============================
+               MAIN SWITCH (CALLED BY onclick)
+               =============================== */
+            handleReportTypeChange: function (reportType) {
+
+                if (!reportType) return;
+
+                this.currentReportType = reportType;
+
+                // Update MVC hidden field
+                $('#ReportType').val(reportType);
+
+                // Sync radio state
+                $('input[name="ReportTypeRadio"]').prop('checked', false);
+                $('input[value="' + reportType + '"]').prop('checked', true);
+
+                // Reset radio label styles
+                $('.form-check-label').removeAttr('style');
+
+                // Highlight active label
+                $('input[value="' + reportType + '"]')
+                    .next('.form-check-label')
+                    .css({
+                        background: 'linear-gradient(135deg, rgba(13,110,253,.1), rgba(13,110,253,.05))',
+                        borderColor: '#0d6efd',
+                        color: '#0d6efd',
+                        boxShadow: '0 4px 12px rgba(13,110,253,.15)'
+                    });
+
+                // Hide all parameter forms
+                $('.report-form-section').addClass('d-none');
+
+                // Remove all required attributes
+                $('[required]').removeAttr('required');
+
+                // Clear validation
+                this.clearValidation();
+
+                /* ===============================
+                   EXPLICIT FORM SWITCH
+                   =============================== */
+                switch (reportType) {
+
+                    case 'MemberSituation':
+                        $('#memberSituationForm').removeClass('d-none');
+                        $('#memberAccountType, #memberLoan, #memberDateFrom, #memberDateTo')
+                            .attr('required', true);
+                        break;
+
+                    case 'AccountStatement':
+                        $('#accountStatementForm').removeClass('d-none');
+                        $('#accountStatementAccount, #accountDateFrom, #accountDateTo')
+                            .attr('required', true);
+                        break;
+
+                    case 'LoanRepayment':
+                        $('#loanRepaymentForm').removeClass('d-none');
+                        $('#loanRepaymentLoan, #loanRepaymentDateFrom, #loanRepaymentDateTo')
+                            .attr('required', true);
+                        break;
+
+                    case 'LoanSituation':
+                        $('#loanSituationForm').removeClass('d-none');
+                        $('#loanSituationDateFrom, #loanSituationDateTo')
+                            .attr('required', true);
+                        break;
+                }
+
+                // Update help text
+                $('#reportTypeHelp').html(this.reportTypeHelpTexts[reportType]);
+            },
+
+            /* ===============================
+               DATE PICKERS
+               =============================== */
+            initializeDatepickers: function () {
+
+                const today = new Date();
+                const toDate = today.toISOString().split('T')[0];
+
+                const fromDateObj = new Date();
+                fromDateObj.setDate(today.getDate() - 30);
+                const fromDate = fromDateObj.toISOString().split('T')[0];
+
+                $('.datepicker').each(function () {
+
+                    if (this.id.includes('DateFrom')) $(this).val(fromDate);
+                    if (this.id.includes('DateTo')) $(this).val(toDate);
+
+                    $(this).flatpickr({
+                        dateFormat: "Y-m-d",
+                        allowInput: true,
+                        disableMobile: true
+                    });
+                });
+            },
+
+            /* ===============================
+               VALIDATION
+               =============================== */
+            validateForm: function () {
+
+                let isValid = true;
+
+                $('[required]').each(function () {
+                    if (!$(this).val()) {
+                        $(this).addClass('is-invalid');
+                        isValid = false;
+                    }
+                });
+
+                return isValid;
+            },
+
+            clearValidation: function () {
+                $('.form-control').removeClass('is-invalid');
+            },
+
+            /* ===============================
+               GENERATE REPORT
+               =============================== */
+            generateReport: async function () {
+
+                if (!this.validateForm()) return;
+
+                const $btn = $('#btnGenerateReport');
+                const originalHtml = $btn.html();
+
+                $btn.prop('disabled', true)
+                    .html('<span class="spinner-border spinner-border-sm me-2"></span>Generating...');
+
+                try {
+                    const response = await $.ajax({
+                        url: $('#reportForm').attr('action'),
+                        type: 'POST',
+                        data: $('#reportForm').serialize(),
+                        dataType: 'json'
+                    });
+
+                    if (response.success && response.pdfUrl) {
+                        window.open(response.pdfUrl, '_blank');
+                    } else {
+                        this.showToast(response.message || 'Failed to generate report', 'danger');
+                    }
+                }
+                catch {
+                    this.showToast('Unexpected error occurred', 'danger');
+                }
+                finally {
+                    $btn.prop('disabled', false).html(originalHtml);
+                }
+            },
+
+            /* ===============================
+               RESET
+               =============================== */
+            resetForm: function () {
+
+                $('#reportForm')[0].reset();
+                $('.select2').val(null).trigger('change');
+                $('.datepicker').val('');
+
+                this.handleReportTypeChange('MemberSituation');
+                this.initializeDatepickers();
+            },
+
+            /* ===============================
+               TOAST
+               =============================== */
+            showToast: function (message, type) {
+
+                if (!$('#toastContainer').length) {
+                    $('body').append('<div id="toastContainer" class="position-fixed top-0 end-0 p-3" style="z-index:1056"></div>');
+                }
+
+                const id = 'toast_' + Date.now();
+                const html = `
+                <div id="${id}" class="toast text-white bg-${type} border-0">
+                    <div class="d-flex">
+                        <div class="toast-body">${message}</div>
+                        <button class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                    </div>
+                </div>`;
+
+                $('#toastContainer').append(html);
+                new bootstrap.Toast(document.getElementById(id)).show();
+            },
+
+            /* ===============================
+               INIT
+               =============================== */
+            initialize: function () {
+
+                this.initializeDatepickers();
+
+                $('#btnGenerateReport').on('click', (e) => {
+                    e.preventDefault();
+                    this.generateReport();
+                });
+
+                $('#btnResetReport').on('click', () => this.resetForm());
+
+                // Default state
+                this.handleReportTypeChange('MemberSituation');
+            }
+        };
+
+        function switchReport(reportType) {
+            if (window.ReportGenerator) {
+                ReportGenerator.handleReportTypeChange(reportType);
+            }
+        }
+
+        $(document).ready(function () {
+            ReportGenerator.initialize();
+        });
+    </script>
 
 
 }

@@ -89,7 +89,7 @@
             <div class="row mb-3">
                 <div class="col-md-12">
                     <label class="form-label fw-bold">@GlobalMembersFSeries.Branch</label>
-                    @Html.DropDownList("BranchId", new SelectList(ViewBag.Branches, "Id", "Name"), "---"+ @GlobalMembersFSeries.SelectBranch +"---", new { @class = "form-control select2", @id = "branchId", @name = "BranchId" })
+                    @Html.DropDownList("BranchId", new SelectList(ViewBag.Branches, "Id", "Name"), "---" + @GlobalMembersFSeries.SelectBranch + "---", new { @class = "form-control select2", @id = "branchId", @name = "BranchId" })
                 </div>
             </div>
 
@@ -223,4 +223,6 @@
 
 @section Scripts {
     <script src="~/Scripts/Js/Crud/MembersFSeries/Members.js"></script>
+
+
 }

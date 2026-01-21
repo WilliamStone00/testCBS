@@ -453,15 +453,26 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AccountingV2DS.xsd</DependentUpon>
     </Compile>
-    <Compile Include="AppFiles\Accountingv2Reporting\DataSets\Cheque.Designer.cs">
+    <Compile Include="AppFiles\Accountingv2Reporting\DataSets\Cheques.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Cheque.xsd</DependentUpon>
+      <DependentUpon>Cheques.xsd</DependentUpon>
     </Compile>
     <Compile Include="AppFiles\Accountingv2Reporting\DataSets\IPS.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>IPS.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="AppFiles\Accountingv2Reporting\DataSets\MembersFSeries.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MembersFSeries.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\AccountStatement.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AccountStatement.rpt</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\AccStatement1.cs">
       <AutoGen>True</AutoGen>
@@ -479,6 +490,12 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>CrystalReport1.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\ChequeBook.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ChequeBook.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\IncomeStatement.cs">
@@ -2146,6 +2163,7 @@
     <Compile Include="Controllers\Accounting V2\Receipts\ReceiptFlatItems.cs" />
     <Compile Include="Controllers\Accounting V2\Reporting\ReportsController.cs" />
     <Compile Include="Controllers\Accounting V2\AccntStatement\AccntStatementController.cs" />
+    <Compile Include="Controllers\Accounting V2\Translation\TranslationPlaceholderController.cs" />
     <Compile Include="Controllers\Accounting V2\TrialBalance\TrialBalance4ColmunsController.cs" />
     <Compile Include="Controllers\Accounting V2\TrialBalance\TrialBalance6ColumnsController.cs" />
     <Compile Include="Controllers\Accounting V2\TrialBalance\TrialBalanceFourColumnsFlatItens.cs" />
@@ -2207,6 +2225,7 @@
     <Compile Include="Controllers\ChequeManagementSystem\LossManagementSys\LossManagementController.cs" />
     <Compile Include="Controllers\ChequeManagementSystem\Configurations\NotificationConfiguration\NotificationHistory\NotificationHistoryController.cs" />
     <Compile Include="Controllers\ChequeManagementSystem\Operations\ChequeBookListing\ChequeBookController.cs" />
+    <Compile Include="Controllers\ChequeManagementSystem\Operations\ChequeBookListing\ChequeBookReportController.cs" />
     <Compile Include="Controllers\ChequeManagementSystem\Operations\ChequeCancelation\CancellationRequestController.cs" />
     <Compile Include="Controllers\ChequeManagementSystem\Operations\ChequeRequest\ChequeRequestController.cs" />
     <Compile Include="Controllers\ChequeManagementSystem\Operations\CounterCheque\CounterChequeController.cs" />
@@ -7848,16 +7867,16 @@
     <Content Include="AppFiles\Accountingv2Reporting\DataSets\IPS.xsc">
       <DependentUpon>IPS.xsd</DependentUpon>
     </Content>
-    <Content Include="AppFiles\Accountingv2Reporting\DataSets\Cheque.xsc">
-      <DependentUpon>Cheque.xsd</DependentUpon>
+    <Content Include="AppFiles\Accountingv2Reporting\DataSets\Cheques.xsc">
+      <DependentUpon>Cheques.xsd</DependentUpon>
     </Content>
-    <None Include="AppFiles\Accountingv2Reporting\DataSets\Cheque.xsd">
+    <None Include="AppFiles\Accountingv2Reporting\DataSets\Cheques.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>Cheque.Designer.cs</LastGenOutput>
+      <LastGenOutput>Cheques.Designer.cs</LastGenOutput>
     </None>
-    <Content Include="AppFiles\Accountingv2Reporting\DataSets\Cheque.xss">
-      <DependentUpon>Cheque.xsd</DependentUpon>
+    <Content Include="AppFiles\Accountingv2Reporting\DataSets\Cheques.xss">
+      <DependentUpon>Cheques.xsd</DependentUpon>
     </Content>
     <None Include="AppFiles\Accountingv2Reporting\DataSets\IPS.xsd">
       <SubType>Designer</SubType>
@@ -7866,6 +7885,17 @@
     </None>
     <Content Include="AppFiles\Accountingv2Reporting\DataSets\IPS.xss">
       <DependentUpon>IPS.xsd</DependentUpon>
+    </Content>
+    <Content Include="AppFiles\Accountingv2Reporting\DataSets\MembersFSeries.xsc">
+      <DependentUpon>MembersFSeries.xsd</DependentUpon>
+    </Content>
+    <None Include="AppFiles\Accountingv2Reporting\DataSets\MembersFSeries.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>MembersFSeries.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="AppFiles\Accountingv2Reporting\DataSets\MembersFSeries.xss">
+      <DependentUpon>MembersFSeries.xsd</DependentUpon>
     </Content>
     <None Include="DataSet\Loan\DeliquentLoanSummaryDataSet.xsd">
       <SubType>Designer</SubType>
@@ -8846,6 +8876,10 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalLoanTerm.Designer.cs</LastGenOutput>
     </Content>
+    <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\AccountStatement.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>AccountStatement.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\AccStatement.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>AccStatement1.cs</LastGenOutput>
@@ -8857,6 +8891,10 @@
     <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\CrystalReport1.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>CrystalReport1.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\ChequeBook.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>ChequeBook.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\IncomeStatement.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
@@ -11246,6 +11284,14 @@
     <Content Include="Views\StandingOrder\StandingOrderRegistration.cshtml" />
     <Content Include="Views\StandingOrder\_DataStandingOrders.cshtml" />
     <Content Include="Views\StandingOrder\Listing.cshtml" />
+    <Content Include="Views\CounterCheque\List.cshtml" />
+    <Content Include="Views\Reports\CrystalReportViewer.cshtml" />
+    <Content Include="Views\MembersFSeries\_ReportView.cshtml" />
+    <Content Include="Views\ChequeBookReport\Index.cshtml" />
+    <Content Include="Views\TranslationPlaceholder\List.cshtml" />
+    <Content Include="Views\TranslationPlaceholder\_TranslationPlaceholderForm.cshtml" />
+    <Content Include="Views\TranslationPlaceholder\_TranslationPlaceholderDetailsPartial.cshtml" />
+    <Content Include="Views\TranslationPlaceholder\_TranslationPlaceholderDataTable.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

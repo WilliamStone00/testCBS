@@ -28,7 +28,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         [Required(ErrorMessage = "Teller is required")]
         public string tellerId { get; set; }
         public string depositType { get; set; }
-       
+
 
     }
     public class GetMemberOnboardingDetailQuery
@@ -108,7 +108,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public string CustomerID { get; set; }
         public string ReportType { get; set; }
     }
-    public class  BulkOperation
+    public class BulkOperation
     {
         public List<BulkDeposit> BulkOperations { get; set; } = new List<BulkDeposit>();
         public List<AccountToBeDebited> AccountToBeDebiteds { get; set; } = new List<AccountToBeDebited>();
@@ -281,13 +281,13 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public string accountNumber { get; set; }
         [Required(ErrorMessage = "Withdrawal type is required")]
         public string withDrawalType { get; set; }
-  
+
         public string note { get; set; }
         public string bankId { get; set; }
         public string branchId { get; set; }
         [Required(ErrorMessage = "Teller is required")]
         public string tellerId { get; set; }
-        public CurrencyNotes currencyNotes { get; set; }=new CurrencyNotes();
+        public CurrencyNotes currencyNotes { get; set; } = new CurrencyNotes();
     }
     public class DepositRequest
     {
@@ -300,7 +300,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         [Required(ErrorMessage = "Deposit type is required")]
         public string depositType { get; set; }
         public string note { get; set; }
-        public bool isDepositDoneByAccountOwner { get; set; }=true;
+        public bool isDepositDoneByAccountOwner { get; set; } = true;
         public string depositerNote { get; set; }
 
         public string depositerTelephone { get; set; }
@@ -376,8 +376,8 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
             Transfer = new TransferRequest();
             Sender = new SenderInfoDto();
             Receiver = new ReceiverInfoDto();
-            TransfterRequest=new Transfer();
-            TransfterRequests=new List<Transfer>();
+            TransfterRequest = new Transfer();
+            TransfterRequests = new List<Transfer>();
         }
     }
 
@@ -435,8 +435,8 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public string Note { get; set; }
         public TransferConfirmation()
         {
-            Status="Approved";
-            Note= "After careful review, I've examined this operation and am pleased to grant my approval.";
+            Status = "Approved";
+            Note = "After careful review, I've examined this operation and am pleased to grant my approval.";
         }
     }
     public class Transfer
@@ -575,4 +575,15 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public Depositer Depositer { get; set; }
         public string ManualEntryDailyCollectorId { get; set; }
     }
+
+    public class ReportParameters
+        {
+            public string ReportType { get; set; }
+            public string AccountTypeId { get; set; }
+            public string LoanId { get; set; }
+            public string AccountId { get; set; }
+            public DateTime DateFrom { get; set; }
+            public DateTime DateTo { get; set; }
+        }
+    
 }

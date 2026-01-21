@@ -2,8 +2,11 @@
 using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
 using CBS.BusinessService.CustomerManagement;
-using CBS.FrontDesk.Data.Entity.CustomerManagement;
+using CBS.BusinessService.LoanP;
+using CBS.BusinessService.Repayment;
 using CBS.FrontDesk.Data.Entity;
+using CBS.FrontDesk.Data.Entity.CustomerManagement;
+using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation;
 using CBS.FrontDesk.Data.Message;
@@ -16,8 +19,6 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using CBS.FrontDesk.Data.Entity.LoanConf;
-using CBS.BusinessService.Repayment;
 
 namespace CBS.FrontDesk.UI.Controllers.Series
 {
@@ -39,9 +40,41 @@ namespace CBS.FrontDesk.UI.Controllers.Series
             _accountServices = accountServices;
             _individualProfileServices = individualProfileServices;
             _branchServices = branchServices;
-            _loanServices=loanServices;
-            _refundServices=refundServices;
+            _loanServices = loanServices;
+            _refundServices = refundServices;
         }
+
+        public async Task< bool> LoadMemberAccountsAndLoans(string key, string loanFilter)
+        {
+            // 1. Get CashDesk by account number
+            var cashDesk = await _cashDeskService.GetAccountByAccountNumberSearch(key, "F5");
+
+            // 2. Prepare Accounts dropdown
+            ViewBag.Accounts = cashDesk.Accounts.Select(a => new SelectListItem
+            {
+                Value = a.id,
+                Text = $"{a.accountNumber} - {a.accountName}"
+            }).ToList();
+
+            // 3. Load Loans for the member
+            var loans = await _cashDeskService.GetMembersLoans(
+                cashDesk.CustomerId,
+                loanFilter = "All"
+            );
+
+            cashDesk.Loans = loans;
+
+            // 4. Prepare Loans dropdown
+            ViewBag.Loans = loans.Select(l => new SelectListItem
+            {
+                Value = l.Id,
+                Text = $"{l.Id} - {l.LoanType}"
+            }).ToList();
+                 
+                return true;
+        }
+
+
         public async Task<ActionResult> Index()
         {
             ViewBag.Branches=await _branchServices.GetBranches();
@@ -109,6 +142,9 @@ namespace CBS.FrontDesk.UI.Controllers.Series
 
 
         }
+
+
+
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = "_DataNotFound", string path = null, string serviceOption = null)
         {
             try
@@ -176,8 +212,13 @@ namespace CBS.FrontDesk.UI.Controllers.Series
                     var transactionHistories = await _cashDeskService.GetCustomerTransactionsByCustomerNumber(KEY);
                     cashDesk.Transactions = transactionHistories.ToList();
                     return PartialView(partialView, cashDesk);
+                }else if(path == "Report")
+                {
+                    // var data = await _pcmfLoanPurposeService.GetByIdAsync(KEY);
+                   await LoadMemberAccountsAndLoans(KEY, path);
+                    return PartialView(partialView);
                 }
-                ViewBag.message = "Invalid option selected";
+                    ViewBag.message = "Invalid option selected";
                 return PartialView("_NoRecordFound", new CashDesk());
 
             }
