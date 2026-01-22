@@ -24,6 +24,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Http.Results;
 using System.Web.Mvc;
 using ZXing;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
@@ -36,9 +37,9 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
     {
         private readonly BranchServices _branchServices;
         private readonly BulkOperationService _bulkOperationService;
-       // private readonly AccountingServices _accountingServices;
+        // private readonly AccountingServices _accountingServices;
         private readonly BranchAccountService _branchAccountService;
-       // private string operationType;
+        // private string operationType;
 
 
 
@@ -47,15 +48,15 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
             _branchServices = branchServices;
             _bulkOperationService = bulkOperationService;
             _branchAccountService = branchAccountService;
-           // operationType = "INCOME";
-           // _accountingServices = accountingEntryServices;
+            // operationType = "INCOME";
+            // _accountingServices = accountingEntryServices;
         }
-        
+
         public async Task<ActionResult> Index()
         {
-           // var chartOfAccounts = await _branchAccountService.GetBra();
-           // ViewBag.eventNames = await _accountingServices.GetEventNames(operationType);
-           // ViewBag.chartOfAccounts = chartOfAccounts.ToList();
+            // var chartOfAccounts = await _branchAccountService.GetBra();
+            // ViewBag.eventNames = await _accountingServices.GetEventNames(operationType);
+            // ViewBag.chartOfAccounts = chartOfAccounts.ToList();
             var savingProduct = await _bulkOperationService.GetSavingProducts();
             var savingOrdinaryProduct = savingProduct.Where(x => x.ProductCategory == "OrdinaryAccount").ToList();
             var Branches = await _branchServices.GetBranches();
@@ -96,9 +97,9 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
 
         public async Task<ActionResult> BulkCashOperation()
         {
-           // var chartOfAccounts = await chartOfAccountServices.GetChartOfAccounts();
-           // ViewBag.eventNames = await _accountingServices.GetEventNames(operationType);
-           // ViewBag.chartOfAccounts = chartOfAccounts.ToList();
+            // var chartOfAccounts = await chartOfAccountServices.GetChartOfAccounts();
+            // ViewBag.eventNames = await _accountingServices.GetEventNames(operationType);
+            // ViewBag.chartOfAccounts = chartOfAccounts.ToList();
 
             ViewBag.transferType = new List<StringValues>() { new StringValues { Text = "CashIn", Value = "CashIn" }, new StringValues { Text = "CashOut", Value = "CashOut" }, };
             ViewBag.operationScope = new List<StringValues>() { new StringValues { Text = "Internal", Value = "Internal" }/*, new StringValues { Text = "InterBranch", Value = "InterBranch" },*/ };
@@ -173,15 +174,16 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
                 // Process the file
                 var result = await _bulkOperationService.ProcessBulkCashOperationFileAsync(file);
 
-                if (result == null  || !result.IsSuccess  || result.ApiResponseData==null)
+                if (result == null || !result.IsSuccess || result.ApiResponseData == null)
                 {
                     return Json(new
                     {
                         success = false,
                         message = result == null ? "Failed to process file" : result.Message ?? "Failed to process file",
-                        error = (result == null || result.ApiResponseData==null) ? null : result.ApiResponseData.Errors // Include any additional error details
+                        error = (result == null || result.ApiResponseData == null) ? null : result.ApiResponseData.Errors // Include any additional error details
                     });
                 }
+
 
 
                 // Return proper JSON structure
@@ -190,7 +192,7 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
                     draw = Request.Form["draw"] ?? "1",
                     recordsTotal = result.ApiResponseData.Data?.BulkCashOperationFileDetails?.Count ?? 0,
                     recordsFiltered = result.ApiResponseData.Data?.BulkCashOperationFileDetails?.Count ?? 0,
-                    data = result.ApiResponseData.Data?.BulkCashOperationFileDetails ?? new List<BulkCashOperationFileDetails>(),
+                    data = result.ApiResponseData.Data,
                     success = true,
                     message = "File processed successfully"
                 }, JsonRequestBehavior.AllowGet);
@@ -211,6 +213,8 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
         public async Task<ActionResult> Simulate(SimulateBulkOperation model)
         {
             Func<Task<ExecutionMessages>> serviceAction = null;
+
+
 
             var Branches = await _branchServices.GetBranches();
             model.Branches = Branches.ToList();
@@ -382,7 +386,7 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
         }
 
 
-        
+
 
 
 
@@ -406,13 +410,13 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
             }, JsonRequestBehavior.AllowGet);
         }
 
- 
+
         public async Task<ActionResult> LoadBulkOperationDetailsData(GetAllSimulationDetailBySimulationIdRequestQuery query)
         {
             try
             {
 
-              
+
 
                 var data = await _bulkOperationService.GetBulkOperationDetailsDataTableAsync(query);
 
@@ -517,15 +521,18 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
                 return Json(new { success = false, message = "Invalid data submitted." });
             }
 
+           
+
+
 
             Func<Task<ExecutionMessages>> serviceAction = null;
             //var chartOfAccounts = await chartOfAccountServices.GetChartOfAccounts();
-           // var eventNames = await _accountingServices.GetEventNames(operationType);
+            // var eventNames = await _accountingServices.GetEventNames(operationType);
             var Branches = await _branchServices.GetBranches();
             var savingProduct = await _bulkOperationService.GetSavingProducts();
 
-           // var currentEvent = chartOfAccounts.FirstOrDefault(x => x.Value == simulateCashOutOrCashIn.AccountCartId);
-       
+            // var currentEvent = chartOfAccounts.FirstOrDefault(x => x.Value == simulateCashOutOrCashIn.AccountCartId);
+
 
             List<SimulateBulkOperationDetailCommandDto> simulateBulkOperationDetails = new List<SimulateBulkOperationDetailCommandDto>();
 
@@ -554,7 +561,7 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
 
             var request = new SimulateBulkCreditOrDebitOperationCommand()
             {
-              //  AccountChart = currentEvent?.Text,
+                //  AccountChart = currentEvent?.Text,
                 AccountChartId = simulateCashOutOrCashIn.AccountCartId,
                 AccountChart = simulateCashOutOrCashIn.AccountCartId,
                 AccountingDate = accountingDate,
@@ -562,9 +569,9 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
                 OperationType = simulateCashOutOrCashIn.TransferType,
                 SimulationType = simulateCashOutOrCashIn.SimulationType,
                 SimulateBulkOperationDetails = simulateBulkOperationDetails,
-                MainBranchCode= mainBranch.BranchCode,
-                MainBranchId= mainBranch.Id,
-                MainBranchName= mainBranch.Name
+                MainBranchCode = mainBranch.BranchCode,
+                MainBranchId = mainBranch.Id,
+                MainBranchName = mainBranch.Name
 
             };
 
@@ -599,6 +606,38 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
                 return Json(new { success = false, message = "Invalid data submitted." });
             }
 
+            if (simulateCashOutOrCashIn.BulkCashStrategy == "FileUpload")
+            {
+                if (string.IsNullOrEmpty(simulateCashOutOrCashIn.FileUploadId))
+                {
+                    return Json(new { success = false, message = "Please upload a valid file before proceeding." });
+                }
+                else
+                {
+                    var result = await _bulkOperationService.GetBulkCashOperationFileDetailsAsync(simulateCashOutOrCashIn.FileUploadId);
+
+                    if (result == null || !result.IsSuccess || result.ApiResponseData == null)
+                    {
+                        return Json(new
+                        {
+                            success = false,
+                            message = result == null ? "Failed to process file" : result.Message ?? "Failed to process file",
+                            error = (result == null || result.ApiResponseData == null) ? null : result.ApiResponseData.Errors // Include any additional error details
+                        });
+                    }
+
+                    simulateCashOutOrCashIn.AccountIIs = result.ApiResponseData.Data?.BulkCashOperationFileDetails.Select(x => new BulkOperationAccount2
+                    {
+                        BranchCode = x.BranchCode,
+                        MemberReference = x.MemberReference,
+                        AccountType = x.AccountType,
+                        Amount = x.Amount
+                    }).ToList() ?? new List<BulkOperationAccount2>();
+
+                }
+
+            }
+
 
             Func<Task<ExecutionMessages>> serviceAction = null;
             //var chartOfAccounts = await chartOfAccountServices.GetChartOfAccounts();
@@ -606,14 +645,14 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
             var Branches = await _branchServices.GetBranches();
             var savingProduct = await _bulkOperationService.GetSavingProducts();
 
-           // var currentEvent = chartOfAccounts.FirstOrDefault(x => x.Value == simulateCashOutOrCashIn.AccountCartId);
+            // var currentEvent = chartOfAccounts.FirstOrDefault(x => x.Value == simulateCashOutOrCashIn.AccountCartId);
 
             List<SimulateBulkOperationDetailCommandDto> simulateBulkOperationDetails = new List<SimulateBulkOperationDetailCommandDto>();
 
             foreach (var data in simulateCashOutOrCashIn.AccountIIs)
             {
                 var branch = Branches.Where(x => x.BranchCode == data.BranchCode).FirstOrDefault();
-              //  var currentProduct = savingProduct.FirstOrDefault(x => x.Id == data.AccountType);
+                //  var currentProduct = savingProduct.FirstOrDefault(x => x.Id == data.AccountType);
                 var simulateBulkOperationDetail = new SimulateBulkOperationDetailCommandDto()
                 {
                     AccountType = data.AccountType,
@@ -631,7 +670,7 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
             string accountingDate = simulateCashOutOrCashIn.AccountDate.ToString("yyyy-MM-dd");
             var request = new SimulateBulkCreditOrDebitOperationCommand()
             {
-              //  AccountChart = currentEvent?.Text,
+                //  AccountChart = currentEvent?.Text,
                 AccountChartId = simulateCashOutOrCashIn.AccountCartId,
                 AccountChart = simulateCashOutOrCashIn.AccountCartId,
                 AccountingDate = accountingDate,

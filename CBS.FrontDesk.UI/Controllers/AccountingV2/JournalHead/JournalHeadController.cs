@@ -256,6 +256,9 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
                     case "SOURCE":
                         result = await _journalHeadService.ApproveSourceAsync(model);
                         break;
+                    case "SOURCE_EOY":
+                        result = await _journalHeadService.ApproveSourceAsync(model);
+                        break;
 
                     case "DESTINATION":
                         result = await _journalHeadService.ApproveDestinationAsync(model);

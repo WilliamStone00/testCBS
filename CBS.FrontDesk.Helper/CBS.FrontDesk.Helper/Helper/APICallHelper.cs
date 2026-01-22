@@ -1200,6 +1200,7 @@ namespace CBS.FrontDesk.Helper
         public static string BulkOperationDetailsDataTablePaggination = "/api/v1/BulkOperations/simulation/details";
         public static string DeleteBulkOperations = "/api/v1/BulkOperations/simulation/delete";
         public static string UploadBulkCashOperations = "/api/v1/BulkCashUpload";
+        public static string BulkCashOperations_GetById = "/api/v1/ViewBukCashFileDateByFileUploadId/{0}";
         //Zone
         public static string Get_Update_Delete_Zone = "/api/v1/Zone/{0}";
         public static string CreateZone = "/api/v1/Zone";
@@ -1831,8 +1832,9 @@ namespace CBS.FrontDesk.Helper
 
 
         public static string GetCheckListStatusDataTable = "/api/v1/YearEndChecklistStatus/datatable";
-        public static string PostJournalAdjustment = "/api/v1/ops/generic";
+        public static string PostJournalAdjustment = "/api/v1/ops/ProcessEOYCommand";
         public static string CloseYear = "/api/v1/ops/EndOfYearCarryForward";
+        public static string GetYearClosureStatus = "/api/v1/EndOfYearProcessStepQueue/{0}/{1}";
 
 
 
@@ -1857,11 +1859,14 @@ namespace CBS.FrontDesk.Helper
 
         //-------------------------  Interest Distribution Simulation ----------------------------
         public static string InterestDistributionSimulation1 = "/api/v1/InterestDistributionSimulationMock/generate/GenerateInterestDistributionSampleDataQuery";
-        public static string InterestDistributionSimulation = "/api/v1/ProcessSnapshotInterestSimulation/GenerateInterestSimulation";
+        public static string InterestDistributionSimulation = "/api/v1/ProcessesExternalShareMonth/generate/InterestSimulation";
         public static string CreateShareMonthSimulation = "/api/v1/ProcessSnapshotInterestSimulation/Create";
         public static string ActivateShareMonthSimulation = "/api/v1/ProcessSnapshotInterestSimulation/PrepareCustomerInterestBalance";
         public static string DataTableForRequestSimulation = "/api/v1/ProcessSnapshotInterestSimulation/DataTableForRequest";
         public static string SharedMonthUpload = "/api/v1/ProcessesExternalShareMonth/ShareMonthFile";
+        public static string GetSharedMonthDetail = "/api/v1/ProcessesExternalShareMonth/getById/{0}/{1}";
+        public static string DownloadSharedMonth = "/api/v1/ProcessesExternalShareMonth/GetReportById/{0}";
+        public static string GetShareMonthDataTable = "/api/v1/ProcessesExternalShareMonth/GetShareMonthDatatable";
         //------------------------- LoanTargetCatalog ----------------
         public const string LoanTargetCatalogCreate = "/api/v1/LoanTargetCatalog/Create";
         public const string LoanTargetCatalogGet = "/api/v1/LoanTargetCatalog/Get?id={0}";
@@ -1890,6 +1895,15 @@ namespace CBS.FrontDesk.Helper
         public const string GetDataTable = "/api/v1/Year/datatable";
         public const string GetyearById = "/api/v1/Year/{0}";
         public const string GetAllYear = "/api/v1/Year/all";
+
+
+        //Communication
+        public const string SmsUpload_Preview = "/api/v1/SmsUpload/preview";
+        public const string SmsUpload_DataTable = "/api/v1/SmsUpload/datatable";
+        public const string SmsUpload_History_DataTable = "/api/v1/SmsUpload/history/datatable";
+        public const string SmsUpload_Send = "/api/v1/SmsUpload/send";
+        public const string SmsUpload_DownloadById = "/api/v1/SmsUpload/download/{0}";
+        public const string SmsUpload_ById = "/api/v1/SmsUpload/details/{0}";
 
         //---------------------- Translations ---------------------------------------
              public const string GetAllTranslationPlaceholders = "/api/v1/Translation";

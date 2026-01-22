@@ -54,13 +54,14 @@
                          new { @class = "form-select select2", required = "required" })
                         @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
                     </div>
-                    <div class="col-md-6 mb-1">
+                    <div class="col-md-6 mb-1" id="InterestRateDiv">
                         @Html.LabelFor(m => m.InterestRate, "Interest Rate",
                             new { @class = "form-label fw-bold" })
                         @Html.TextBoxFor(m => m.InterestRate,
                             new { @class = "form-control", type = "number" })
                     </div>
-                   
+
+
 
                     <div class="col-md-6 mb-1">
 
@@ -112,7 +113,7 @@
                     </div>
 
 
-                    <div class="mb-3">
+                    <div class="mb-1">
 
                         <div class="input-group">
                             <input type="file" name="file" id="file" class="form-control" required />
@@ -126,17 +127,32 @@
 
                     <div class="col-12 text-end mt-3">
                         <div class="d-flex justify-content-end gap-2">
-
-                            <a id="MonthlyUnprocessDataLink" href="@Url.Action("MonthlyUnprocessData", "SharedMonthSimulation")" class="btn btn-outline-primary">
-                                <i class="mdi mdi-file-download-outline me-1"></i> Download MFI Template (Monthly Unprocess Data)
+                            <a id="MonthlyUnprocessDataLink"
+                               href="@Url.Action("MonthlyUnprocessData", "SharedMonthSimulation")"
+                               class="btn btn-outline-primary d-none">
+                                <i class="mdi mdi-file-download-outline me-1"></i>
+                                Download MFI Template (Monthly Unprocess Data)
                             </a>
 
-                            <a id="MonthlyprocessDataLink" href="@Url.Action("MonthlyprocessData", "SharedMonthSimulation")" class="btn btn-outline-primary d-none">
-                                <i class="mdi mdi-file-download-outline me-1"></i> Download MFI Template (Monthly process Data)
+                            <a id="MonthlyprocessDataLink"
+                               href="@Url.Action("MonthlyprocessData", "SharedMonthSimulation")"
+                               class="btn btn-outline-primary d-none">
+                                <i class="mdi mdi-file-download-outline me-1"></i>
+                                Download MFI Template (Monthly process Data)
                             </a>
 
-                            <a id="AnnualprocessDataLink" href="@Url.Action("AnnualprocessData", "SharedMonthSimulation")" class="btn btn-outline-primary d-none">
-                                <i class="mdi mdi-file-download-outline me-1"></i> Download MFI Template (Annual process Data)
+                            <a id="AnnualprocessDataLink"
+                               href="@Url.Action("AnnualprocessData", "SharedMonthSimulation")"
+                               class="btn btn-outline-primary d-none">
+                                <i class="mdi mdi-file-download-outline me-1"></i>
+                                Download MFI Template (Annual process Data)
+                            </a>
+
+                            <a id="TaxprocessDataLink"
+                               href="@Url.Action("AnnualprocessData", "SharedMonthSimulation")"
+                               class="btn btn-outline-primary d-none">
+                                <i class="mdi mdi-file-download-outline me-1"></i>
+                                Download MFI Template (Tax)
                             </a>
 
 
@@ -166,96 +182,119 @@
 
             var monthDiv = $("#MonthDiv");
             var fileTypeDiv = $("#FileTypeDiv");
+            var interestRateDiv = $("#InterestRateDiv");
 
-            var monthlyUnprocessLink = $("#MonthlyUnprocessDataLink");
-            var monthlyProcessLink = $("#MonthlyprocessDataLink");
-            var annualProcessLink = $("#AnnualprocessDataLink");
+            // All download links
+            var allLinks = $(
+                "#MonthlyUnprocessDataLink," +
+                "#MonthlyprocessDataLink," +
+                "#AnnualprocessDataLink," +
+                "#TaxprocessDataLink"
+            );
 
-            monthlyUnprocessLink.addClass("d-none");
-            monthlyProcessLink.addClass("d-none");
-            annualProcessLink.addClass("d-none");
+            // Hide all links first
+            allLinks.addClass("d-none");
 
-            if (fileType === "MonthlyUnprocessData" || fileType === "MonthlyprocessData") {
-                monthDiv.show();
-                fileTypeDiv.removeClass("col-md-12").addClass("col-md-6");
-                monthDiv.removeClass("col-12").addClass("col-md-6");
+            // Default UI
+            monthDiv.hide();
+            interestRateDiv.show();
+            fileTypeDiv.removeClass("col-md-6").addClass("col-md-12");
 
-                if (fileType === "MonthlyUnprocessData") {
-                    monthlyUnprocessLink.removeClass("d-none");
-                } else {
-                    monthlyProcessLink.removeClass("d-none");
-                }
-            }
-            else if (fileType === "AnnualprocessData") {
-                monthDiv.hide();
-                fileTypeDiv.removeClass("col-md-6").addClass("col-md-12");
-                annualProcessLink.removeClass("d-none");
-            }
-            else {
-                monthDiv.hide();
-                fileTypeDiv.removeClass("col-md-6").addClass("col-md-12");
+            switch (fileType) {
+
+                case "MonthlyUnprocessData":
+                    monthDiv.show();
+                    $("#MonthlyUnprocessDataLink").removeClass("d-none");
+                    break;
+
+                case "MonthlyprocessData":
+                    monthDiv.show();
+                    $("#MonthlyprocessDataLink").removeClass("d-none");
+                    break;
+
+                case "AnnualprocessData":
+                    interestRateDiv.hide();
+                    $("#AnnualprocessDataLink").removeClass("d-none");
+                    break;
+
+                case "Tax":
+                    interestRateDiv.hide();
+                    $("#TaxprocessDataLink").removeClass("d-none");
+                    break;
+
+                default:
+                    // DEFAULT → Annual link visible
+                    $("#AnnualprocessDataLink").removeClass("d-none");
+                    break;
             }
         }
 
+        // Initial state
         $("#MonthDiv").hide();
+        toggleMonthAndLinks();
+
+        // On change
         $("#FileType").on("change", toggleMonthAndLinks);
+
+
+
 
         /* ================= BRANCH → ACCOUNTING YEAR ================= */
 
-$("#BranchId").on("change", function () {
-    var branchId = $(this).val();
-    var $yearDropdown = $("#AccountingYearId");
+        $("#BranchId").on("change", function () {
+            var branchId = $(this).val();
+            var $yearDropdown = $("#AccountingYearId");
 
-    $yearDropdown.empty()
-        .append('<option value="">--- Loading Accounting Years ---</option>')
-        .prop("disabled", true);
-
-    if (!branchId) {
-        $yearDropdown
-            .empty()
-            .append('<option value="">--- Select Accounting Year ---</option>')
-            .prop("disabled", false);
-        return;
-    }
-
-    $.ajax({
-        url: '@Url.Action("GetAccountingYearsByBranch", "SharedMonthSimulation")',
-        type: 'GET',
-        data: { branchId: branchId },
-
-        success: function (years) {
             $yearDropdown.empty()
-                .append('<option value="">--- Select Accounting Year ---</option>');
+                .append('<option value="">--- Loading Accounting Years ---</option>')
+                .prop("disabled", true);
 
-            if (years && years.length > 0) {
-
-                $.each(years, function (i, year) {
-                    $yearDropdown.append(
-                        $('<option/>')
-                            .val(year.Id)            // ✅ ID sent to server
-                            .text(year.DisplayName)  // eg: 2024
-                    );
-                });
-
-                // ✅ SUCCESS MESSAGE
-                appalert("✅ Accounting years loaded successfully",1,1);
-
-            } else {
-                $yearDropdown.append('<option value="">No Open Accounting Year</option>');
-
-                // ⚠ INFO MESSAGE
-                appalert("⚠ No open accounting year found for this branch",3,1);
+            if (!branchId) {
+                $yearDropdown
+                    .empty()
+                    .append('<option value="">--- Select Accounting Year ---</option>')
+                    .prop("disabled", false);
+                return;
             }
 
-            $yearDropdown.prop("disabled", false);
-        },
+            $.ajax({
+                url: '@Url.Action("GetAccountingYearsByBranch", "SharedMonthSimulation")',
+                type: 'GET',
+                data: { branchId: branchId },
 
-        error: function () {
-            appalert("❌ Failed to load Accounting Years", 0, 1);
-            $yearDropdown.prop("disabled", false);
-        }
-    });
-});
+                success: function (years) {
+                    $yearDropdown.empty()
+                        .append('<option value="">--- Select Accounting Year ---</option>');
+
+                    if (years && years.length > 0) {
+
+                        $.each(years, function (i, year) {
+                            $yearDropdown.append(
+                                $('<option/>')
+                                    .val(year.Id)            // ✅ ID sent to server
+                                    .text(year.DisplayName)  // eg: 2024
+                            );
+                        });
+
+                        // ✅ SUCCESS MESSAGE
+                        appalert("✅ Accounting years loaded successfully",1,1);
+
+                    } else {
+                        $yearDropdown.append('<option value="">No Open Accounting Year</option>');
+
+                        // ⚠ INFO MESSAGE
+                        appalert("⚠ No open accounting year found for this branch",3,1);
+                    }
+
+                    $yearDropdown.prop("disabled", false);
+                },
+
+                error: function () {
+                    appalert("❌ Failed to load Accounting Years", 0, 1);
+                    $yearDropdown.prop("disabled", false);
+                }
+            });
+        });
 
     });
 

@@ -1,17 +1,12 @@
 ﻿
-@model CBS.FrontDesk.Data.Entity.AccountingV2.SharedMonth.SharedMonthSimulation
-
-@using Resources
-@{
-    ViewBag.Title = "Shared Month Simulation";
-}
 
 
-<div class="row">
-    <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
+
+<!--<div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">-->
 
         <!-- Header Section -->
-        <div class="card bg-light mb-4 shadow-sm">
+        <!--<div class="card bg-light mb-4 shadow-sm">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
                     <i class="mdi mdi-calendar-month me-2"></i> SHARED MONTH
@@ -41,147 +36,161 @@
             </div>
         </div>
 
-        <div id="datalistingview">
-            @Html.Partial("_intrestgeneration")
-        </div>
-
-        @using (Html.BeginForm("LoadSimulationData", "SharedMonthSimulation", FormMethod.Post, new { id = "sharedMonthForm", onsubmit = "return AjaxPostSharedMonth(this);" }))
-
-        {
-            @Html.AntiForgeryToken()
-
-            <div class="card shadow-sm mb-4">
-                <div class="card-header">
-                    <h5 class="mb-0">
-                        <i class="mdi mdi-cog-outline me-2"></i> Distribution Parameters
-                    </h5>
-                </div>
-
-                <div class="card-body">
-                    <div class="row g-3">
-
-                        <!-- Branch -->
-                        <div class="col-md-12  mb-1">
-                            <label class="form-label fw-bold">Branch</label>
-                            @Html.DropDownList(
-                                "BranchId",
-                                new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
-                                "--- Select Branch ---",
-                                new { @class = "form-select select2", required = "required" })
-                            <div class="invalid-feedback">Please select a branch</div>
-                        </div>
 
 
-
-                        <div class="col-md-6  mb-1">
-                            <label class="form-label fw-bold">Year</label>
-                            @Html.DropDownList(
-                                "Year",
-                                new SelectList(ViewBag.Year, "Value", "Text"),
-                                "--- Select Year ---",
-                                new { @class = "form-select select2", required = "required" })
-                            <div class="invalid-feedback">Please select a year</div>
-                        </div>
-
-                        <div class="col-md-6 mb-1">
-                            @Html.LabelFor(m => m.InterestRate, "Interest Rate",
-                                new { @class = "form-label fw-bold" })
-                            @Html.TextBoxFor(m => m.InterestRate,
-                                new { @class = "form-control", type = "number" })
-                        </div>
-                        <!-- Period -->
-
-
-                        <div class="col-md-6  mb-1">
-                            <label class="form-label fw-bold">Month</label>
-                            @Html.DropDownList(
-                                "Month",
-                                new SelectList(ViewBag.Month, "Value", "Text"),
-                                "--- Select Period ---",
-                                new { @class = "form-select select2", required = "required" })
-                            <div class="invalid-feedback">Please select a Month</div>
-                        </div>
-
-                        <!-- Interest Distribution Type -->
-                        <div class="col-md-6  mb-1">
-                            <label class="form-label fw-bold">Interest Distribution Type</label>
-                            @Html.DropDownList(
-                            "InterestDistributionType",
-                            new SelectList(ViewBag.IntrestDistributionType, "Value", "Text"),
-                            "--- Select Distribution Type ---",
-                            new { @class = "form-select select2", required = "required" })
-                            <div class="invalid-feedback">Please select distribution type</div>
-                        </div>
-
-
-
-
-
-
-                    </div>
-                </div>
-
-                <!-- Action Buttons -->
-                <div class="row">
-                    <div class="col-md-12 text-end">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="mdi mdi-cog-play-outline me-2"></i> Simulate
-                        </button>
-
-                    </div>
-                </div>
-            </div>
-
-
-        }
-
-
-        <!-- Account List Section -->
-        <div class="accordion mb-2 d-none" id="accountListAccordionShared">
-
-            @Html.Partial("_SimulationData")
-
-        </div>
+       
 
     </div>
-</div>
+</div>-->
 
 
 
 
 
-<!-- Save Simulation Modal -->
-<div class="modal fade" id="saveSimulationModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+<div class="modal fade" id="sharedMonthModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
         <div class="modal-content">
 
-            <div class="modal-header">
-                <h5 class="modal-title">Save Share Month Simulation</h5>
+            <!-- Modal Header -->
+            <div class="modal-header bg-light">
+                <h5 class="modal-title text-primary">
+                    <i class="mdi mdi-calendar-month me-2"></i> Shared Month Simulation
+                </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
 
+            <!-- Modal Body -->
             <div class="modal-body">
-                <div class="mb-3">
-                    <label class="form-label fw-semibold">Name</label>
-                    <input type="text" id="SimulationName" class="form-control"
-                           placeholder="Enter simulation name" />
+
+                <!-- 🔽 PASTE YOUR EXISTING VIEW CONTENT HERE 🔽 -->
+
+                @model CBS.FrontDesk.Data.Entity.AccountingV2.SharedMonth.SharedMonthSimulation
+
+                @using Resources
+                @{
+                    ViewBag.Title = "Shared Month Simulation";
+                }
+
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12">
+
+                        <!-- EVERYTHING YOU ALREADY WROTE STAYS EXACTLY THE SAME -->
+                        <!-- Header Card -->
+                        <!-- Form -->
+                        <!-- Accordion -->
+                        <!-- Tables -->
+                        <!-- Scripts still work -->
+
+
+                        @using (Html.BeginForm("LoadSimulationData", "SharedMonthSimulation", FormMethod.Post, new { id = "sharedMonthForm", onsubmit = "return AjaxPostSharedMonth(this);" }))
+
+                        {
+                            @Html.AntiForgeryToken()
+
+                            <div class="card shadow-sm mb-4">
+                                <div class="card-header">
+                                    <h5 class="mb-0">
+                                        <i class="mdi mdi-cog-outline me-2"></i> Distribution Parameters
+                                    </h5>
+                                </div>
+
+                                <div class="card-body">
+                                    <div class="row g-3">
+
+                                        <!-- Branch -->
+                                        <div class="col-md-12  mb-1">
+                                            <label class="form-label fw-bold">Branch</label>
+                                            @Html.DropDownList(
+                                                "BranchId",
+                                                new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
+                                                "--- Select Branch ---",
+                                                new { @class = "form-select select2", required = "required" })
+                                            <div class="invalid-feedback">Please select a branch</div>
+                                        </div>
+
+
+
+                                        <div class="col-md-6  mb-1">
+                                            <label class="form-label fw-bold">Year</label>
+                                            @Html.DropDownList(
+                                                "Year",
+                                                new SelectList(ViewBag.Year, "Value", "Text"),
+                                                "--- Select Year ---",
+                                                new { @class = "form-select select2", required = "required" })
+                                            <div class="invalid-feedback">Please select a year</div>
+                                        </div>
+
+                                        <div class="col-md-6 mb-1">
+                                            @Html.LabelFor(m => m.InterestRate, "Interest Rate",
+                                                new { @class = "form-label fw-bold" })
+                                            @Html.TextBoxFor(m => m.InterestRate,
+                                                new { @class = "form-control", type = "number" })
+                                        </div>
+                                        <!-- Period -->
+
+
+                                        <div class="col-md-6  mb-1">
+                                            <label class="form-label fw-bold">Month</label>
+                                            @Html.DropDownList(
+                                                "Month",
+                                                new SelectList(ViewBag.Month, "Value", "Text"),
+                                                "--- Select Period ---",
+                                                new { @class = "form-select select2", required = "required" })
+                                            <div class="invalid-feedback">Please select a Month</div>
+                                        </div>
+
+                                        <!-- Interest Distribution Type -->
+                                        <div class="col-md-6  mb-1">
+                                            <label class="form-label fw-bold">Interest Distribution Type</label>
+                                            @Html.DropDownList(
+                                            "InterestDistributionType",
+                                            new SelectList(ViewBag.IntrestDistributionType, "Value", "Text"),
+                                            "--- Select Distribution Type ---",
+                                            new { @class = "form-select select2", required = "required" })
+                                            <div class="invalid-feedback">Please select distribution type</div>
+                                        </div>
+
+
+
+
+
+
+                                    </div>
+                                </div>
+
+                                <!-- Action Buttons -->
+                                <div class="row">
+                                    <div class="col-md-12 text-end">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="mdi mdi-cog-play-outline me-2"></i> Simulate
+                                        </button>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        }
+
+
+                        <!-- Account List Section -->
+                        <div class="accordion mb-2 d-none" id="accountListAccordionShared">
+
+                            @Html.Partial("_SimulationData")
+
+                        </div>
+
+                    </div>
                 </div>
 
-                <div class="mb-3">
-                    <label class="form-label fw-semibold">Description</label>
-                    <textarea id="SimulationDescription" class="form-control"
-                              rows="3"
-                              placeholder="Enter description"></textarea>
-                </div>
+                <!-- 🔼 END EXISTING CONTENT 🔼 -->
+
             </div>
 
+            <!-- Modal Footer -->
             <div class="modal-footer">
-                <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">
-                    Cancel
-                </button>
-                <button type="button" id="btnConfirmSaveSimulation"
-                        class="btn btn-success btn-sm">
-                    <i class="mdi mdi-content-save-outline me-1"></i> Save
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">
+                    <i class="mdi mdi-close-circle-outline me-1"></i> Close
                 </button>
             </div>
 
@@ -244,8 +253,8 @@
                         data: 'createdAt',
                         render: data => data ? new Date(data).toLocaleString() : ''
                     },
-                   
-                   
+
+
                     {
                         data: 'lastError'
                     },
@@ -325,13 +334,13 @@
                         orderable: false,
                         render: function (data, type, row) {
                             return `
-                            <input type="number"
-                                   class="form-control form-control-sm adjustment-input text-end"
-                                   value="${Number(data || 0).toFixed(2)}"
-                                   step="0.01"
-                                   min="0"
-                                   data-member-ref="${row.MemberReference}" />
-                        `;
+                                <input type="number"
+                                       class="form-control form-control-sm adjustment-input text-end"
+                                       value="${Number(data || 0).toFixed(2)}"
+                                       step="0.01"
+                                       min="0"
+                                       data-member-ref="${row.MemberReference}" />
+                            `;
                         }
                     },
                     {
@@ -341,11 +350,11 @@
                         className: 'text-end',
                         render: function () {
                             return `
-                            <button type="button"
-                                    class="btn btn-sm btn-outline-danger remove-account">
-                                <i class="mdi mdi-delete-outline"></i>
-                            </button>
-                        `;
+                                <button type="button"
+                                        class="btn btn-sm btn-outline-danger remove-account">
+                                    <i class="mdi mdi-delete-outline"></i>
+                                </button>
+                            `;
                         }
                     }
                 ],
@@ -364,7 +373,7 @@
             });
         }
 
-       
+
 
 
         // ===============================
@@ -451,13 +460,13 @@
         // ===============================
         // Show Save Simulation Modal ✅
         // ===============================
-        $(document).on('click', '#btnSaveSimulation', function () {
-            const modal = new bootstrap.Modal(
-                document.getElementById('saveSimulationModal')
-            );
-            modal.show();
-        });
-
+        //$(document).on('click', '#btnSaveSimulation', function () {
+        //    const modal = new bootstrap.Modal(
+        //        document.getElementById('saveSimulationModal')
+        //    );
+        //    modal.show();
+        //});
+       
 
         function collectModalData() {
             return {

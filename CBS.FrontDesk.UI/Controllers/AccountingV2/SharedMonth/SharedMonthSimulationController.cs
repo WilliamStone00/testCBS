@@ -4,6 +4,7 @@ using CBS.BusinessService.AccountingV2.EndOfYearClosure;
 using CBS.BusinessService.AccountingV2.InterestProductConfig;
 using CBS.BusinessService.AccountingV2.JournalHead;
 using CBS.BusinessService.AccountingV2.SharedMonth;
+using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.AccountingV2;
@@ -24,23 +25,27 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.SharedMonth
 {
     public class SharedMonthSimulationController : Controller
     {
-
+       
         private readonly SharedMonthSimulationService _sharedMonthSimulationService;
         private readonly BranchServices _branchServices;
         private readonly InterestProductConfigService _interestProductConfigService;
+        public readonly AccountingYearService _accountingYearService;
+        private readonly SalaryUploadServices _salaryUploadServices;
         private readonly string _appFilesRoot;
 
         // Allowed extensions for these templates (adjust if needed)
         private static readonly string[] AllowedExtensions = { ".xlsx", ".xls" };
 
-        public SharedMonthSimulationController(BranchServices branchServices, SharedMonthSimulationService sharedMonthSimulationService, InterestProductConfigService interestProductConfigService)
+        public SharedMonthSimulationController(BranchServices branchServices, SharedMonthSimulationService sharedMonthSimulationService, InterestProductConfigService interestProductConfigService, AccountingYearService accountingYearService, SalaryUploadServices salaryUploadServices)
         {
             _sharedMonthSimulationService = sharedMonthSimulationService;
             _branchServices = branchServices;
             _interestProductConfigService = interestProductConfigService;
-             
+            _accountingYearService = accountingYearService;
+
 
             _appFilesRoot = Path.Combine(AppDomain.CurrentDomain.BaseDirectory ?? string.Empty, "AppFiles");
+            _salaryUploadServices = salaryUploadServices;
         }
         // GET: SharedMonthSimulation
         public async Task<ActionResult> Index()
@@ -48,18 +53,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.SharedMonth
             await loader();
             return View();
         }
-        private List<StringValues> getAccountingYears()
-        {
-            int currentYear = DateTime.Now.Year;
-
-            return Enumerable.Range(currentYear - 3, 5)
-                .Select(y => new StringValues
-                {
-                    Value = y.ToString(),
-                    Text = y.ToString()
-                })
-                .ToList();
-        }
+       
 
 
         public async Task<bool> loader()
@@ -97,14 +91,28 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.SharedMonth
                  new SelectListItem { Value = "Anaully", Text = "Anaully" }
             };
 
-            ViewBag.Year = getAccountingYears();
+            
+
+            var Year = await _accountingYearService.GetAllYearAsync();
+
+            // PRODUCTS DROPDOWN
+            ViewBag.Year = Year?
+                .Select(p => new SelectListItem
+                {
+                    Value = p.Id,                       // ProductId posted
+                    Text = $" {p.Code}"         // [Code] [Name] shown
+                })
+                .OrderBy(x => x.Text)
+                .ToList()
+                ?? new List<SelectListItem>();
 
 
             ViewBag.FileType = new List<SelectListItem>
                     {
                         new SelectListItem { Value = "MonthlyUnprocessData", Text = " Monthly Unprocessed Data" },
                         new SelectListItem { Value = "MonthlyprocessData", Text = "Monthly processed Data" },
-                        new SelectListItem { Value = "AnnualprocessData", Text = " Anual processed Data" }
+                        new SelectListItem { Value = "AnnualprocessData", Text = " Anual processed Data" },
+                        new SelectListItem { Value = "Tax", Text = " Tax" }
                     };
 
 
@@ -259,6 +267,8 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.SharedMonth
         [HttpPost]
         public async Task<ActionResult> LoadSimulationData(SharedMonthSimulation model)
         {
+
+            model.BranchId = model.BranchId1;
             try
             {
                 var result = await _sharedMonthSimulationService.GetSimulationData(model);
@@ -392,6 +402,45 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.SharedMonth
             }
         }
 
+
+        public async Task<JsonResult> LoadSharedMonthData(SharedMonthQuery query)
+        {
+            try
+            {
+
+
+                var data = await _sharedMonthSimulationService.GetShareMonthDataTableAsync(query);
+
+
+                // Deserialize DataTable payload into strongly-typed list
+                var Sharemonth = JsonConvert.DeserializeObject<List<Data.Entity.AccountingV2.JournalHead>>(
+                    JsonConvert.SerializeObject(data.data));
+
+                return Json(new
+                {
+
+                    draw = data.Options.draw ?? "1",
+                    recordsTotal = data.Options.recordsTotal,
+                    recordsFiltered = data.Options.recordsFiltered,
+                    data = Sharemonth,
+                    success = true,
+                    message = "Display DataTable Share Month  successfully"
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                // Return DataTables-compatible empty result on error
+                return Json(new
+                {
+                    draw = query?.Options?.draw ?? "1",
+                    recordsTotal = 0,
+                    recordsFiltered = 0,
+                    data = new List<object>(),
+                    error = ex.Message
+                });
+            }
+        }
+
         [HttpPost]
        
         public async Task<ActionResult> UploadSharedMonth(SharedMonthFileupload model)
@@ -470,6 +519,49 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.SharedMonth
                 return Json(new { message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
+
+        [HttpGet]
+
+        public async Task<ActionResult> GenerateExcelSheet(string fileId)
+        {
+            try
+            {
+                var type = "BulkTransfer";
+                var model = await _sharedMonthSimulationService.GetFileDetailSharedmonth(fileId, type);
+
+                if (model == null)
+                    return HttpNotFound();
+
+                // Prepare file name and paths
+                string fileName = $"ShareMonth_{model.BranchCode}-{fileId}.xlsx";
+                string directoryPath = Server.MapPath("~/TempFiles");
+
+                if (!Directory.Exists(directoryPath))
+                    Directory.CreateDirectory(directoryPath);
+
+                string filePath = Path.Combine(directoryPath, fileName);
+                string generatedBy = Session["FullName"]?.ToString() ?? "System";
+
+                // ✅ Generate Excel file with GeneratedBy parameter
+                byte[] fileBytes = ShareMonthGenerator.FillExcelTemplate(model, generatedBy);
+
+                if (fileBytes == null || fileBytes.Length == 0)
+                    throw new Exception("Generated Excel file is empty.");
+
+                // ✅ Send directly to browser
+                return File(
+                    fileBytes,
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    fileName
+                );
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Excel Export Error: {ex.Message}");
+                return Json(new { success = false, message = "An error occurred while exporting to Excel." }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
 
 
 

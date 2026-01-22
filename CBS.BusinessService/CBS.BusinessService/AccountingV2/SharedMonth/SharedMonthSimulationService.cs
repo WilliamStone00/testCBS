@@ -1,12 +1,17 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
+using CBS.BusinessService.AccountingV2.JournalHead;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.AccountingV2;
 using CBS.FrontDesk.Data.Entity.AccountingV2.AccountingYear;
 using CBS.FrontDesk.Data.Entity.AccountingV2.SharedMonth;
+using CBS.FrontDesk.Data.Entity.Config;
+using CBS.FrontDesk.Data.Entity.DataTable;
+using CBS.FrontDesk.Data.Entity.SalaryManagement;
 using CBS.FrontDesk.Helper;
 using ClosedXML.Excel;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -16,6 +21,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Mvc;
 
 
 namespace CBS.BusinessService.AccountingV2.SharedMonth
@@ -68,13 +74,13 @@ namespace CBS.BusinessService.AccountingV2.SharedMonth
 
             if (model == null)
                 throw new ArgumentNullException(nameof(model));
-            model.ProductId = "0000";
-            model.StartPeriodKey = "jan";
-            model.EndPeriodKey = "feb";
+            //model.ProductId = "0000";
+            //model.StartPeriodKey = "jan";
+            //model.EndPeriodKey = "feb";
 
             var apiResponse =
                 await _apiCallerHelper.PostAsync<ResponseObject<List<ShareMonthPsiReportLineDto>>>(
-                    APICallHelper.InterestDistributionSimulation1,
+                    APICallHelper.InterestDistributionSimulation,
                     model
                 );
 
@@ -125,6 +131,35 @@ namespace CBS.BusinessService.AccountingV2.SharedMonth
             catch (Exception ex)
             {
                 throw;
+            }
+        }
+
+
+
+        public async Task<CustomDataTable2> GetShareMonthDataTableAsync(SharedMonthQuery query)
+        {
+            try
+            {
+                
+               
+
+               
+
+                var response = await _apiCallerHelper.PostAsync<ResponseObject<CustomDataTable2>>(
+                    APICallHelper.GetShareMonthDataTable, query);
+
+                if (!response.IsSuccess)
+                    throw new Exception($"API call failed: {response.Message}");
+
+                if (response.ApiResponseData == null)
+                    throw new Exception("API returned null data");
+
+                return response.ApiResponseData.Data;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"API Error (Journal Header): {ex.Message}");
+                throw new Exception($"Journal header service unavailable: {ex.Message}", ex);
             }
         }
 
@@ -408,8 +443,8 @@ namespace CBS.BusinessService.AccountingV2.SharedMonth
             return string.Join(" | ", errs);
         }
         public async Task<string> ValidateSharedMonthExcelAnnual(
-     HttpPostedFileBase file,
-     SharedMonthFileupload model)
+      HttpPostedFileBase file,
+      SharedMonthFileupload model)
         {
             List<string> errs = new List<string>();
 
@@ -429,7 +464,7 @@ namespace CBS.BusinessService.AccountingV2.SharedMonth
                      * 🔒 BANK VALIDATION (A1)
                      * ===================================================== */
                     var bankName = ws.Cell("A1").GetString().Trim();
-                    var expectedBankName = GetBankName(); // Your method to get current bank name
+                    var expectedBankName = GetBankName();
                     if (!bankName.Equals(expectedBankName, StringComparison.OrdinalIgnoreCase))
                     {
                         errs.Add("❌ Invalid bank name in cell A1.");
@@ -445,22 +480,18 @@ namespace CBS.BusinessService.AccountingV2.SharedMonth
                         return string.Join(" | ", errs);
                     }
 
-                    // 🔒 Check if branch belongs to bank
                     var branchesUnderBank = await _branchServices.GetBranchesByBankId(branch.BankId);
                     if (!branchesUnderBank.Any(b => b.Value == branch.Id.ToString()))
                     {
-                        errs.Add(
-                            $"❌ Branch '{branch.Name}' does not belong to bank '{expectedBankName}'.");
+                        errs.Add($"❌ Branch '{branch.Name}' does not belong to bank '{expectedBankName}'.");
                     }
 
-                    // 🔒 Branch Name (B2)
                     var excelBranchName = ws.Cell("B2").GetString().Trim();
                     if (!excelBranchName.Equals(branch.Name, StringComparison.OrdinalIgnoreCase))
                     {
                         errs.Add($"❌ Branch name does not match. Expected: {branch.Name}, Found: {excelBranchName}");
                     }
 
-                    // 🔒 Branch Code (B3)
                     var excelBranchCode = ws.Cell("B3").GetString().Trim();
                     if (!excelBranchCode.Equals(branch.BranchCode, StringComparison.OrdinalIgnoreCase))
                     {
@@ -471,27 +502,11 @@ namespace CBS.BusinessService.AccountingV2.SharedMonth
                      * 🔒 HEADER INFO VALIDATION
                      * ===================================================== */
 
-                    // Date (B4)
-                    //var dateStr = ws.Cell("B4").GetString().Trim();
-                    //if (!DateTime.TryParseExact(dateStr, "dd-MM-yy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime excelDate))
-                    //{
-                    //    errs.Add("❌ Invalid date format in cell B4. Expected format: dd-MM-yy (e.g., 31-12-25).");
-                    //}
-
-                    // Month (B5)
-                    //var excelMonth = ws.Cell("B5").GetString().Trim();
-                    //if (!excelMonth.Equals(model.Month, StringComparison.OrdinalIgnoreCase))
-                    //{
-                    //    errs.Add($"❌ Month in Excel does not match selected month. Expected: {model.Month}, Found: {excelMonth}");
-                    //}
-
-                    // Number of Members (B6)
                     if (!int.TryParse(ws.Cell("B6").GetString(), out int memberCount) || memberCount <= 0)
                     {
                         errs.Add("❌ Number Of Members must be a valid positive number.");
                     }
 
-                    // Uploaded By (B7)
                     var excelUploader = ws.Cell("B7").GetString().Trim();
                     var currentUser = GetUserName();
                     if (!excelUploader.Equals(currentUser, StringComparison.OrdinalIgnoreCase))
@@ -515,8 +530,7 @@ namespace CBS.BusinessService.AccountingV2.SharedMonth
                     {
                 "Member Account Number",
                 "Member Name",
-                "Shared Month",
-                "Principal Amount"
+                "Shared Month"
             };
 
                     for (int i = 0; i < headers.Length; i++)
@@ -540,49 +554,34 @@ namespace CBS.BusinessService.AccountingV2.SharedMonth
 
                         actualRowCount++;
 
-                        // Member Account Number (Column A)
                         var memberAccount = ws.Cell(row, 1).GetString().Trim();
                         if (string.IsNullOrWhiteSpace(memberAccount))
                             errs.Add($"❌ Row {row}: Member Account Number is required.");
                         else if (!int.TryParse(memberAccount, out _))
                             errs.Add($"❌ Row {row}: Member Account Number must be numeric. Found: '{memberAccount}'");
 
-                        // Member Name (Column B)
                         if (string.IsNullOrWhiteSpace(ws.Cell(row, 2).GetString()))
                             errs.Add($"❌ Row {row}: Member Name is required.");
 
-                        // Shared Month (Column C)
                         var sharedMonthStr = ws.Cell(row, 3).GetString().Trim();
                         if (!decimal.TryParse(sharedMonthStr, out decimal sharedMonth))
                             errs.Add($"❌ Row {row}: Shared Month must be numeric. Found: '{sharedMonthStr}'");
                         else if (sharedMonth < 0)
                             errs.Add($"❌ Row {row}: Shared Month cannot be negative.");
-
-                        // Principal Amount (Column D)
-                        var principalAmountStr = ws.Cell(row, 4).GetString().Trim();
-                        if (!decimal.TryParse(principalAmountStr, out decimal principalAmount))
-                            errs.Add($"❌ Row {row}: Principal Amount must be numeric. Found: '{principalAmountStr}'");
-                        else if (principalAmount < 0)
-                            errs.Add($"❌ Row {row}: Principal Amount cannot be negative.");
-
-                        // Business logic: Principal exists but Shared Month <= 0
-                        if (principalAmount > 0 && sharedMonth <= 0)
-                            errs.Add($"❌ Row {row}: Principal Amount exists but Shared Month is zero or negative.");
                     }
 
-                    // Member count consistency
                     if (memberCount != actualRowCount)
                     {
                         errs.Add($"❌ Number Of Members does not match data rows count. Expected: {memberCount}, Found: {actualRowCount}");
                     }
-
-                    // Check against model
-                    
                 }
             }
 
-            return errs.Count == 0 ? "✅ File validation successful." : string.Join(" | ", errs);
+            return errs.Count == 0
+                ? "✅ File validation successful."
+                : string.Join(" | ", errs);
         }
+
 
 
 
@@ -601,6 +600,11 @@ namespace CBS.BusinessService.AccountingV2.SharedMonth
                     await ValidateSharedMonthExcelProcessed(model.file, model);
             }
             else if (model.FileType == "AnnualprocessData")
+            {
+                validationResult =
+                    await ValidateSharedMonthExcelAnnual(model.file, model);
+            }
+            else if (model.FileType == "Tax")
             {
                 validationResult =
                     await ValidateSharedMonthExcelAnnual(model.file, model);
@@ -650,12 +654,46 @@ namespace CBS.BusinessService.AccountingV2.SharedMonth
                 .Where(y =>
                     y.BranchId == branchId &&                                  // ✅ FILTER BY BRANCH
                     y.Status != null &&
-                    y.Status.Equals("OPEN", StringComparison.OrdinalIgnoreCase)
+                    y.Status.Equals("LOCKED", StringComparison.OrdinalIgnoreCase)
                 )
                 .OrderByDescending(y => y.Year)                                // ✅ SORT
                 .ToList();
         }
 
+        public async Task<MemberShareMonthUpload> GetFileDetailSharedmonth(string fileUploadId,string type)
+        {
+            try
+            {
+                var url = string.Format(APICallHelper.GetSharedMonthDetail, fileUploadId, type);
+                var response = await _apiCallerHelper.GetAsync<ResponseObject<MemberShareMonthUpload>>(url);
+                 GetBankName(); 
+                if (response.IsSuccess)
+                {
+                    // FileDownloadDto should contain file data and metadata
+                    response.ApiResponseData.Data.BankName = GetBankName();
+                    return response.ApiResponseData.Data;
+                }
+                return new MemberShareMonthUpload { };
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<SharedMonthDownloadDto> Download(string fileUploadId)
+        {
+            var apiResponse = await _apiCallerHelper
+                .GetAsync<ResponseObject<SharedMonthDownloadDto>>(
+                    string.Format(APICallHelper.DownloadSharedMonth, fileUploadId)
+                );
+
+            if (apiResponse.IsSuccess)
+                return apiResponse.ApiResponseData.Data;
+
+            return null;
+        }
 
 
 

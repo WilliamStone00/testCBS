@@ -2,9 +2,11 @@
 using CBS.BusinessService.Accounting;
 using CBS.BusinessService.Accounting_V2.AffiliateAccounts;
 using CBS.BusinessService.Accounting_V2.BranchAccountService;
+using CBS.BusinessService.AccountingV2.SharedMonth;
 using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.Accounting;
+using CBS.FrontDesk.Data.Entity.AccountingV2.SharedMonth;
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Entity.SalaryManagement;
 using CBS.FrontDesk.Data.Message;
@@ -27,13 +29,15 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         private readonly SalaryAnalysisResultServices _salaryAnalysisResultServices;
         private readonly BranchAccountService chartOfAccountServices;
         private readonly FileUploadServices _fileUploadServices;
-        public SalaryUploadController(SalaryUploadServices salaryUploadServices, SalaryAnalysisResultServices salaryAnalysisResultServices, BranchServices branchServices, BranchAccountService chartOfAccountServices, FileUploadServices fileUploadServices)
+        private readonly SharedMonthSimulationService _sharedMonthSimulationService;
+        public SalaryUploadController(SalaryUploadServices salaryUploadServices, SalaryAnalysisResultServices salaryAnalysisResultServices, BranchServices branchServices, BranchAccountService chartOfAccountServices, FileUploadServices fileUploadServices, SharedMonthSimulationService sharedMonthSimulationService)
         {
             _salaryUploadServices = salaryUploadServices;
             _salaryAnalysisResultServices=salaryAnalysisResultServices;
             _branchServices=branchServices;
             this.chartOfAccountServices=chartOfAccountServices;
             _fileUploadServices=fileUploadServices;
+            _sharedMonthSimulationService = sharedMonthSimulationService;
         }
 
         public async Task<ActionResult> Index()
@@ -60,7 +64,9 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                 new SelectListItem { Value = "StandingOrder",       Text = "Standing Order Files" },
                 new SelectListItem { Value = "Analysis",            Text = "Analysed Files" },
                 new SelectListItem { Value = "ManualEntryDailyCollection", Text = "Daily Collection Files" },
-                new SelectListItem { Value = "Others",              Text = "Other Files" }
+                new SelectListItem { Value = "Others",              Text = "Other Files" },
+                new SelectListItem { Value = "ShareMonth",              Text = "Share Month Files" },
+                 new SelectListItem { Value = "ShareMonthTax",              Text = "Share Month Tax Files" }
             }.AsReadOnly();
 
         // One helper to populate common dropdowns; optionally include Chart of Accounts
@@ -104,13 +110,34 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
 
         public async Task<ActionResult> Detail(string fileUploadid)
         {
-            var salaryUploadModelWithBranchStatistics = await _salaryUploadServices.GetSalaryUploadModelWithBranchStatistics(fileUploadid);
-            var salaryUploadModels = salaryUploadModelWithBranchStatistics.SalaryUploadModelDtos.ToList();
             var fileUpload = await _salaryUploadServices.GetFileUpload(fileUploadid);
-            var activateSalaryFileCommand = new ActivateSalaryFileCommand { Id=fileUploadid, Status=fileUpload.IsAvalaibleForExecution};
-            var salaryUploadModelSummary = new SalaryUploadModelSummaryDto { FileUploadId=fileUploadid, 
-TotalMembers=salaryUploadModels.Count(), TotalNetSalary=salaryUploadModels.Sum(x => x.NetSalary) };
-            return View( new SalaryUploadModelCarrier { SalaryUploadModels=salaryUploadModels.ToList(), SalaryUploadModelSummaryDto=salaryUploadModelSummary, ActivateSalaryFileCommand=activateSalaryFileCommand,FileUpload=fileUpload, BranchPayrollSummaries=salaryUploadModelWithBranchStatistics.BranchPayrollSummaries});
+
+            if (fileUpload.FileType == "ShareMonth" || fileUpload.FileType == "Tax")
+            {
+                var type = fileUpload.FileType;
+
+                var memberShareMonthUpload = await _sharedMonthSimulationService.GetFileDetailSharedmonth(fileUpload.FileUploadId, type);
+               
+
+                return View("SharedMonthDetails", memberShareMonthUpload);
+
+            }
+            else
+            {
+                var salaryUploadModelWithBranchStatistics = await _salaryUploadServices.GetSalaryUploadModelWithBranchStatistics(fileUploadid);
+                var salaryUploadModels = salaryUploadModelWithBranchStatistics.SalaryUploadModelDtos.ToList();
+
+                var activateSalaryFileCommand = new ActivateSalaryFileCommand { Id = fileUploadid, Status = fileUpload.IsAvalaibleForExecution };
+                var salaryUploadModelSummary = new SalaryUploadModelSummaryDto
+                {
+                    FileUploadId = fileUploadid,
+                    TotalMembers = salaryUploadModels.Count(),
+                    TotalNetSalary = salaryUploadModels.Sum(x => x.NetSalary)
+                };
+                return View(new SalaryUploadModelCarrier { SalaryUploadModels = salaryUploadModels.ToList(), SalaryUploadModelSummaryDto = salaryUploadModelSummary, ActivateSalaryFileCommand = activateSalaryFileCommand, FileUpload = fileUpload, BranchPayrollSummaries = salaryUploadModelWithBranchStatistics.BranchPayrollSummaries });
+
+            }
+
         }
         public async Task<ActionResult> Analysis(string fileUploadid)
         {
@@ -146,32 +173,73 @@ TotalMembers=salaryUploadModels.Count(), TotalNetSalary=salaryUploadModels.Sum(x
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Error loading loan data.");
             }
         }
-        public async Task<ActionResult> DownloadFile(string fileId = null)
+        public async Task<ActionResult> DownloadFile(string fileId = null, string fileType = null)
         {
-            
-
             try
             {
-                // Call the service to download the file
-                var response = await _salaryUploadServices.DownloadFile(fileId);
-
-                if (response != null)
+                // 🔹 CASE 1: ShareMonth or Tax → normal binary download
+                if (fileType != "ShareMonth" && fileType != "Tax")
                 {
-                    // If response is successful, return the file
-                    return File(response.FileData, response.ContentType, response.FileName);
-                }
-                else
-                {
-                    // If the response is null or contains errors, return an error view
+                    var response = await _salaryUploadServices.DownloadFile(fileId);
 
-                    return View("Error", new HandleErrorInfo(new Exception(response.ErrorMessage), "ControllerName", "ActionName"));
+                    if (response != null)
+                    {
+                        return File(
+                            response.FileData,
+                            response.ContentType,
+                            response.FileName
+                        );
+                    }
+
+                    return View(
+                        "Error",
+                        new HandleErrorInfo(
+                            new Exception(response?.ErrorMessage ?? "File download failed"),
+                            "SalaryUpload",
+                            "DownloadFile"
+                        )
+                    );
                 }
+
+                // 🔹 CASE 2: All other file types → URL-based SharedMonth download
+                var fileUpload = await _salaryUploadServices.GetFileUpload(fileId);
+
+                if (fileUpload == null)
+                {
+                    return View(
+                        "Error",
+                        new HandleErrorInfo(
+                            new Exception("File upload not found"),
+                            "SalaryUpload",
+                            "DownloadFile"
+                        )
+                    );
+                }
+
+                //var sharedResponse = await _sharedMonthSimulationService.Download(fileUpload.FileUploadId);
+
+                if (fileUpload != null && !string.IsNullOrWhiteSpace(fileUpload.FilePath))
+                {
+                    return Redirect(fileUpload.FilePath);
+                }
+
+                return View(
+                    "Error",
+                    new HandleErrorInfo(
+                        new Exception("Shared file not available for download"),
+                        "SalaryUpload",
+                        "DownloadFile"
+                    )
+                );
             }
             catch (Exception ex)
             {
-                // Handle exception and return an error view
                 Console.WriteLine($"Error downloading file: {ex.Message}");
-                return View("Error", new HandleErrorInfo(ex, "ControllerName", "ActionName"));
+
+                return View(
+                    "Error",
+                    new HandleErrorInfo(ex, "SalaryUpload", "DownloadFile")
+                );
             }
         }
 

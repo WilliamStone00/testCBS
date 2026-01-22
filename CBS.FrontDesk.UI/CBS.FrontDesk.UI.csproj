@@ -453,6 +453,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AccountingV2DS.xsd</DependentUpon>
     </Compile>
+    <Compile Include="AppFiles\Accountingv2Reporting\DataSets\MembersDS.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MembersDS.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="AppFiles\Accountingv2Reporting\DataSets\Cheque.Designer.cs">
     <Compile Include="AppFiles\Accountingv2Reporting\DataSets\Cheques.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -544,6 +550,12 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>TrialBalance6Columns.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AppFiles\CrystalReport1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CrystalReport1.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="AppFiles\Reporting\Accounting\Accounting Journal Receipt.cs">
@@ -2229,6 +2241,7 @@
     <Compile Include="Controllers\ChequeManagementSystem\Operations\ChequeCancelation\CancellationRequestController.cs" />
     <Compile Include="Controllers\ChequeManagementSystem\Operations\ChequeRequest\ChequeRequestController.cs" />
     <Compile Include="Controllers\ChequeManagementSystem\Operations\CounterCheque\CounterChequeController.cs" />
+    <Compile Include="Controllers\Communication\CommunicationController.cs" />
     <Compile Include="Controllers\DailyCollectorManagement\DailyCollectionDashboardController.cs" />
     <Compile Include="Controllers\DailyCollectorManagement\DailySaverRequest.cs" />
     <Compile Include="Controllers\DailyCollectorManagement\FileValidationController.cs" />
@@ -7864,6 +7877,17 @@
     <Content Include="AppFiles\ShareMonthUpload\Processed Data.xlsx" />
     <Content Include="AppFiles\ShareMonthUpload\Unprocessed data.xlsx" />
     <Content Include="AppFiles\StandingOrder\StandingOrderCreationTemplateUploadFile.xlsx" />
+    <Content Include="AppFiles\Accountingv2Reporting\DataSets\MembersDS.xsc">
+      <DependentUpon>MembersDS.xsd</DependentUpon>
+    </Content>
+    <None Include="AppFiles\Accountingv2Reporting\DataSets\MembersDS.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>MembersDS.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="AppFiles\Accountingv2Reporting\DataSets\MembersDS.xss">
+      <DependentUpon>MembersDS.xsd</DependentUpon>
+    </Content>
     <Content Include="AppFiles\Accountingv2Reporting\DataSets\IPS.xsc">
       <DependentUpon>IPS.xsd</DependentUpon>
     </Content>
@@ -7885,17 +7909,6 @@
     </None>
     <Content Include="AppFiles\Accountingv2Reporting\DataSets\IPS.xss">
       <DependentUpon>IPS.xsd</DependentUpon>
-    </Content>
-    <Content Include="AppFiles\Accountingv2Reporting\DataSets\MembersFSeries.xsc">
-      <DependentUpon>MembersFSeries.xsd</DependentUpon>
-    </Content>
-    <None Include="AppFiles\Accountingv2Reporting\DataSets\MembersFSeries.xsd">
-      <SubType>Designer</SubType>
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>MembersFSeries.Designer.cs</LastGenOutput>
-    </None>
-    <Content Include="AppFiles\Accountingv2Reporting\DataSets\MembersFSeries.xss">
-      <DependentUpon>MembersFSeries.xsd</DependentUpon>
     </Content>
     <None Include="DataSet\Loan\DeliquentLoanSummaryDataSet.xsd">
       <SubType>Designer</SubType>
@@ -8223,7 +8236,6 @@
     <None Include="Properties\PublishProfiles\Buea_PT.pubxml" />
     <None Include="Properties\PublishProfiles\CamCCULAdmin_TB.pubxml" />
     <None Include="Properties\PublishProfiles\Cpcmc_TB.pubxml" />
-    <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\PB.pubxml" />
     <None Include="Properties\PublishProfiles\Prod Vb Deploy.pubxml" />
@@ -8231,6 +8243,7 @@
     <None Include="Properties\PublishProfiles\Production Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\TB.pubxml" />
     <None Include="Properties\PublishProfiles\TBED.pubxml" />
+    <None Include="Properties\PublishProfiles\Testbed Deploy.pubxml" />
     <None Include="Resources\TextFile1.txt" />
     <Content Include="DataSet\Transaction\TransactionDS.xsc">
       <DependentUpon>TransactionDS.xsd</DependentUpon>
@@ -8927,6 +8940,10 @@
     <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\TrialBalance6Columns.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>TrialBalance6Columns.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\CrystalReport1.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>CrystalReport1.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\Accounting\Accounting Journal Receipt.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
@@ -11284,14 +11301,6 @@
     <Content Include="Views\StandingOrder\StandingOrderRegistration.cshtml" />
     <Content Include="Views\StandingOrder\_DataStandingOrders.cshtml" />
     <Content Include="Views\StandingOrder\Listing.cshtml" />
-    <Content Include="Views\CounterCheque\List.cshtml" />
-    <Content Include="Views\Reports\CrystalReportViewer.cshtml" />
-    <Content Include="Views\MembersFSeries\_ReportView.cshtml" />
-    <Content Include="Views\ChequeBookReport\Index.cshtml" />
-    <Content Include="Views\TranslationPlaceholder\List.cshtml" />
-    <Content Include="Views\TranslationPlaceholder\_TranslationPlaceholderForm.cshtml" />
-    <Content Include="Views\TranslationPlaceholder\_TranslationPlaceholderDetailsPartial.cshtml" />
-    <Content Include="Views\TranslationPlaceholder\_TranslationPlaceholderDataTable.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

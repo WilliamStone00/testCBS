@@ -62,29 +62,90 @@ namespace CBS.BusinessService.AccountingV2.EndOfYearClosure
         }
 
 
-
-        public async Task<bool> SaveInitiateClosure(CloseYearInitiate model)
+        public async Task<ApiResponse<YearClosureStatus>> GetYearClosureStatusAsync(
+    string branchId,
+    string accountingYearId)
         {
-
-
-            if (model == null)
-                throw new ArgumentNullException(nameof(model));
+            if (string.IsNullOrWhiteSpace(branchId) ||
+                string.IsNullOrWhiteSpace(accountingYearId))
+            {
+                return new ApiResponse<YearClosureStatus>
+                {
+                    Message = "BranchId and AccountingYearId are required."
+                };
+            }
 
             try
             {
-
-                var apiResponse = await _apiCallerHelper.PostAsync<ResponseObject<bool>>(
-                    APICallHelper.InitiateClosure, // your destination endpoint
-                    model
+                var url = string.Format(
+                    APICallHelper.GetYearClosureStatus,
+                    branchId,
+                    accountingYearId
                 );
 
-                return apiResponse?.ApiResponseData?.Data?? false;
+                // 🔁 Same pattern as Shared Month
+                var response =
+                    await _apiCallerHelper.GetAsync<ResponseObject<YearClosureStatus>>(url);
+
+                if (response.IsSuccess && response.ApiResponseData != null)
+                {
+                    return new ApiResponse<YearClosureStatus>
+                    {
+                        IsSuccess = true,
+                        ApiResponseData = response.ApiResponseData.Data,
+                        Message = response.Message
+                    };
+                }
+
+                return new ApiResponse<YearClosureStatus>
+                {
+                    IsSuccess = false,
+                    Message = response.Message
+                };
             }
             catch (Exception ex)
             {
-                throw ex;
+                return new ApiResponse<YearClosureStatus>
+                {
+                    IsSuccess = false,
+                    Message = $"Failed to fetch year closure status: {ex.Message}"
+                };
             }
         }
+
+
+
+
+
+        public async Task<ApiResponse<ResponseObject<bool>>> SaveInitiateClosure(CloseYearInitiate model)
+        {
+            if (model == null)
+                return new ApiResponse<ResponseObject<bool>>
+                {
+                    IsSuccess = false,
+                    Message = "Request model is null"
+                };
+
+            try
+            {
+                var apiResponse = await _apiCallerHelper.PostAsync<ResponseObject<bool>>(
+                    APICallHelper.InitiateClosure,
+                    model
+                );
+
+                // ✅ Return full backend response
+                return apiResponse;
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<ResponseObject<bool>>
+                {
+                    IsSuccess = false,
+                    Message = $"Close of Year API call failed: {ex.Message}"
+                };
+            }
+        }
+
 
         public async Task<bool> SaveReviewClosure(ReviewClosureRequest model)
         {
@@ -237,25 +298,34 @@ namespace CBS.BusinessService.AccountingV2.EndOfYearClosure
 
             return ExecutionMessage;
         }
-        public async Task<bool> SaveClosure(CloseOfYear model)
+        public async Task<ApiResponse<ResponseObject<bool>>> SaveClosure(CloseOfYear model)
         {
             if (model == null)
-                throw new ArgumentNullException(nameof(model));
+                return new ApiResponse<ResponseObject<bool>>
+                {
+                    IsSuccess = false,
+                    Message = "Request model is null"
+                };
 
             model.HOBranchId = GetBranchID();
 
             try
             {
                 var apiResponse = await _apiCallerHelper.PostAsync<ResponseObject<bool>>(
-                    APICallHelper.CloseYear,   // your API endpoint
+                    APICallHelper.CloseYear,
                     model
                 );
 
-                return apiResponse?.ApiResponseData?.Data ?? false;
+                // ✅ Return full backend response
+                return apiResponse;
             }
-            catch
+            catch (Exception ex)
             {
-                throw; // preserves stack trace
+                return new ApiResponse<ResponseObject<bool>>
+                {
+                    IsSuccess = false,
+                    Message = $"Close of Year API call failed: {ex.Message}"
+                };
             }
         }
 

@@ -1,0 +1,399 @@
+﻿@model CBS.FrontDesk.Data.Entity.Communication.GetSmsFileUploadDataTableQuery
+@using Resources
+
+@{
+    ViewBag.Title = "SMS Upload Listing";
+}
+
+<style>
+    .compact .card {
+        margin-bottom: .5rem !important
+    }
+
+    .compact .card-body {
+        padding: .75rem !important
+    }
+
+    .compact .card-header {
+        padding: .5rem .75rem !important
+    }
+
+    .compact .form-label {
+        margin-bottom: .2rem !important
+    }
+
+    .compact .row.g-1 > [class^="col-"] {
+        margin-bottom: .5rem
+    }
+
+    .req-star {
+        color: #dc3545;
+        font-weight: 700;
+    }
+</style>
+
+<div class="compact">
+
+    <!-- Header -->
+    <div class="row mb-2">
+        <div class="col-12">
+            <div class="card bg-light">
+                <div class="card-body text-center py-2">
+                    <h5 class="card-title text-primary mb-1">
+                        <i class="mdi mdi-message-text-outline me-2"></i> SMS Upload Listing
+                    </h5>
+                    <p class="card-text small mb-0">
+                        Track uploaded SMS files, filter by branch/user/status/type and download by ID.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tips -->
+    <div class="card mb-2">
+        <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+            <span class="small"><i class="mdi mdi-information-outline me-2"></i>Tips</span>
+            <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSmsTips" aria-expanded="false">
+                <i class="mdi mdi-chevron-down"></i>
+            </button>
+        </h6>
+        <div id="collapseSmsTips" class="collapse">
+            <div class="card-body py-2">
+                <ul class="mb-0 small">
+                    <li><i class="mdi mdi-check-circle-outline text-success me-2"></i>Use filters before loading to reduce payload.</li>
+                    <li><i class="mdi mdi-filter-outline text-secondary me-2"></i>Date range filters by created/uploaded date.</li>
+                    <li><i class="mdi mdi-download-outline text-info me-2"></i>Use Actions → Download to export the uploaded Excel.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="card shadow-sm p-2 mb-2">
+        <h6 class="text-primary mb-2"><i class="mdi mdi-filter-outline me-1"></i>Filters</h6>
+
+        @using (Html.BeginForm("SmsUploadListing", "Communication", FormMethod.Get, new { id = "smsFilterForm", autocomplete = "off" }))
+        {
+            <div class="card p-2 mb-2 bg-light">
+
+                <div class="row g-1">
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold small">
+                            Branch
+                        </label>
+
+                        @Html.DropDownListFor(m => m.BranchId,
+                            new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name", Model?.BranchId),
+                            "--- Select Branch ---",
+                            new { @class = "form-select form-select-sm select2", id = "BranchId" })
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold small">
+                            Uploaded By
+                        </label>
+                        @Html.TextBoxFor(m => m.UploadedBy,
+                            new { @class = "form-control form-control-sm", id = "UploadedBy", placeholder = "e.g. user" })
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold small">
+                            File Type
+                        </label>
+
+                        @Html.DropDownListFor(m => m.FileType,
+                            new SelectList(new List<SelectListItem>
+                            {
+                                new SelectListItem{ Text="--- Any ---", Value="" },
+                                new SelectListItem{ Text="SmsUpload", Value="SmsUpload" }
+                            }, "Value", "Text", Model?.FileType),
+                            new { @class = "form-select form-select-sm select2", id = "FileType" })
+                    </div>
+                </div>
+
+                <div class="row g-1 mt-1">
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold small">
+                            Status
+                        </label>
+
+                        @Html.DropDownListFor(m => m.FileStatus,
+                            new SelectList(new List<SelectListItem>
+                            {
+                                new SelectListItem{ Text="--- Any ---", Value="" },
+                                new SelectListItem{ Text="Pending", Value="Pending" },
+                                new SelectListItem{ Text="Processing", Value="Processing" },
+                                new SelectListItem{ Text="Processed", Value="Processed" },
+                                new SelectListItem{ Text="Failed", Value="Failed" },
+                                new SelectListItem{ Text="Sent", Value="Sent" }
+                            }, "Value", "Text", Model?.FileStatus),
+                            new { @class = "form-select form-select-sm select2", id = "FileStatus" })
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold small">
+                            Start Date @*<span class="req-star">*</span>*@
+                        </label>
+                        @Html.TextBoxFor(m => m.StartDate,
+                            "{0:yyyy-MM-dd}",
+                            new { @class = "form-control form-control-sm", id = "StartDate", type = "date"})
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold small">
+                            End Date
+                        </label>
+                        @Html.TextBoxFor(m => m.EndDate,
+                            "{0:yyyy-MM-dd}",
+                            new { @class = "form-control form-control-sm", id = "EndDate", type = "date" })
+                    </div>
+                </div>
+
+                <div class="row g-1 mt-1">
+                    <div class="col-md-12">
+                        <label class="form-label fw-bold small">
+                            Search Term
+                        </label>
+                        @Html.TextBoxFor(m => m.SearchTerm,
+                            new { @class = "form-control form-control-sm", id = "SearchTerm", placeholder = "file name, branch, code, uploaded by, purpose..." })
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-2">
+                <div class="col-md-12 d-flex gap-2">
+                    <button id="applySmsFilterBtn" type="button" class="btn btn-primary btn-sm flex-fill">
+                        <i class="mdi mdi-magnify"></i> Apply Filter
+                    </button>
+                    <button id="resetSmsFilterBtn" type="button" class="btn btn-secondary btn-sm flex-fill">
+                        <i class="mdi mdi-refresh"></i> Reset
+                    </button>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Actions -->
+    <div class="d-flex justify-content-end mb-2">
+        <a href="/Communication/SmsUpload" class="btn btn-success btn-sm">
+            <i class="mdi mdi-plus-circle-outline me-1"></i>
+            <span>New SMS Upload</span>
+        </a>
+    </div>
+
+    <!-- Data -->
+    <div id="datalistingview">
+        @Html.Partial("_DataSmsUploads")
+    </div>
+
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+(function($, w){
+  'use strict';
+
+  const dataUrl     = '@Url.Action("LoadSmsUploadData", "Communication")';
+  const downloadUrl = '@Url.Action("DownloadSmsUploadFile", "Communication")';
+  const detailsUrl = '@Url.Action("SmsUploadDetails", "Communication")';
+
+  let table = null, tableInitialized = false;
+
+  function getFilters(){
+    return {
+      Options: {},
+      BranchId: $('#BranchId').val() || null,
+      UploadedBy: $.trim($('#UploadedBy').val()) || null,
+      FileType: $('#FileType').val() || null,
+      FileStatus: $('#FileStatus').val() || null,
+      StartDate: $('#StartDate').val() || null,
+      EndDate: $('#EndDate').val() || null,
+      SearchTerm: $.trim($('#SearchTerm').val()) || null
+    };
+  }
+
+  function actionButtons(row){
+    const id = encodeURIComponent(String(row.Id || row.id || ''));
+    const btnId = 'sms_act_' + (row.Id || row.id || Math.random().toString(36).slice(2));
+
+    return `
+      <div class="dropdown text-center">
+        <button class="btn btn-sm btn-info dropdown-toggle text-white" type="button" id="${btnId}" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="mdi mdi-cog-outline"></i> Actions
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="${btnId}">
+          <li>
+            <a class="dropdown-item" href="${downloadUrl}?fileId=${id}">
+              <i class="mdi mdi-download-outline me-1 text-success"></i> Download
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="${detailsUrl}?fileId=${id}">
+              <i class="mdi mdi-eye me-1 text-success"></i> Details
+            </a>
+          </li>
+        </ul>
+      </div>`;
+  }
+
+  function initDataTable(){
+    const selector = '#myDataTable';
+    if ($.fn.DataTable.isDataTable(selector)){
+      try { $(selector).DataTable().destroy(); } catch(e){ console.warn('destroy failed', e); }
+      $(selector + ' tbody').empty();
+    }
+
+    table = $(selector).DataTable({
+      serverSide: true,
+      processing: false,
+      responsive: true,
+      autoWidth: false,
+      pageLength: 10,
+      order: [[0, 'desc']], // CreatedDate desc
+
+      columnDefs: [
+        { targets: 0, width: '12%' }, // CreatedDate
+        { targets: 1, width: '18%' }, // FileName
+        //{ targets: 2, width: '8%'  }, // FileType
+        { targets: 2, width: '14%' }, // Branch
+        { targets: 3, width: '10%' }, // UploadedBy
+        { targets: 4, width: '10%' }, // Status
+        { targets: 5, width: '18%' }, // Purpose
+        { targets: 6, width: '18%' }, // MessageTemplate (NEW)
+        { targets: 7, width: '10%', orderable:false, searchable:false } // Actions
+      ],
+
+      ajax: {
+        url: dataUrl,
+        type: 'POST',
+        contentType: 'application/json; charset=utf-8',
+        data: function(d){
+          const filters = getFilters();
+          filters.Options = {
+            draw: d.draw,
+            start: d.start,
+            length: d.length,
+            skip: d.start,
+            pageSize: d.length,
+            searchValue: (d.search && d.search.value) ? d.search.value : '',
+            sortColumnName: '',
+            sortColumnDirection: ''
+          };
+          return JSON.stringify(filters);
+        },
+        dataSrc: function(json){
+          if (!json) return [];
+          if (Array.isArray(json.data)) return json.data;
+          if (Array.isArray(json.result)) return json.result;
+          if (Array.isArray(json.items)) return json.items;
+          for (var k in json){ if (Array.isArray(json[k])) return json[k]; }
+          return [];
+        },
+        error: function(){
+          $(selector + ' tbody').html('<tr><td colspan="9" class="text-center text-danger">Failed to load data.</td></tr>');
+        }
+      },
+
+      columns: [
+        {
+          data: 'CreatedDate', name: 'CreatedDate',
+          render: function(data, type, row){
+            const v = row.CreatedDate || row.createdDate;
+            return v ? (w.moment ? moment(v).format('DD/MM/YYYY HH:mm:ss') : v) : '-';
+          }
+        },
+        { data: 'FileName', name: 'FileName', render: (d,t,row) => row.FileName || row.fileName || '' },
+        //{ data: 'FileType', name: 'FileType', render: (d,t,row) => row.FileType || row.fileType || '' },
+        {
+          data: null, name: 'BranchName',
+          render: function(d,t,row){
+            const bName = row.BranchName || row.branchName || '';
+            const bCode = row.BranchCode || row.branchCode || '';
+            return bCode ? `${bName} <span class="text-muted">(${bCode})</span>` : bName;
+          }
+        },
+        { data: 'UploadedBy', name: 'UploadedBy', render: (d,t,row) => row.UploadedBy || row.uploadedBy || '' },
+        {
+          data: 'Status', name: 'Status',
+          render: function(d,t,row){
+            const st = row.Status || row.status || '';
+            if (!st) return '<span class="badge bg-secondary">N/A</span>';
+            const s = String(st).toLowerCase();
+            if (s.includes('fail')) return `<span class="badge bg-danger">${st}</span>`;
+            if (s.includes('pend') || s.includes('view') ) return `<span class="badge bg-warning text-dark">${st}</span>`;
+              if (s.includes('processing') || s.includes('queued')) return `<span class="badge bg-warning text-primary">${st}</span>`;
+            if (s.includes('sent') || s.includes('processed')) return `<span class="badge bg-success">${st}</span>`;
+            return `<span class="badge bg-info">${st}</span>`;
+          }
+        },
+          { data: 'Purpose', name: 'Purpose', render: (d, t, row) => row.Purpose || row.purpose || '' },
+
+        // ✅ NEW: MessageTemplate
+        {
+          data: 'MessageTemplate', name: 'MessageTemplate',
+          render: function(d,t,row){
+            const mt = row.MessageTemplate || row.messageTemplate || '';
+            if (!mt) return '<span class="text-muted">-</span>';
+            const safe = String(mt).replace(/</g,"&lt;").replace(/>/g,"&gt;");
+            return `<span class="small" title="${safe}">${safe}</span>`;
+          }
+        },
+
+        { data: null, orderable:false, searchable:false, className:'text-end', render: (d,t,row) => actionButtons(row) }
+      ],
+
+      language: { emptyTable: 'No SMS uploads found' }
+    });
+
+    tableInitialized = true;
+  }
+
+  function reloadTable(){
+    // validate required fields before querying
+    const form = document.getElementById('smsFilterForm');
+    if (form && !form.checkValidity()){
+      form.reportValidity();
+      return;
+    }
+
+    if (!tableInitialized){
+      if ($('#myDataTable').length === 0){
+        console.error('myDataTable markup missing. Ensure _DataSmsUploads partial is present.');
+        return;
+      }
+      initDataTable();
+    } else if (table && table.ajax){
+      table.ajax.reload(null, false);
+    }
+  }
+
+  $(function(){
+    if ($.fn.select2){
+      try { $('.select2').select2({ width: '100%' }); } catch(e){ console.warn('select2 init failed', e); }
+    }
+
+    $('#applySmsFilterBtn').on('click', function(e){ e.preventDefault(); reloadTable(); });
+
+    $('#resetSmsFilterBtn').on('click', function(){
+      const $f = $('#smsFilterForm'); if ($f.length) $f[0].reset();
+      if ($.fn.select2){ try { $('.select2').val(null).trigger('change'); } catch(_){} }
+      // don't auto-reload after reset if required fields are empty
+      if ($('#BranchId').val() && $('#StartDate').val() && $('#EndDate').val()){
+        reloadTable();
+      }
+    });
+
+    $('#smsFilterForm').on('keypress', 'input,select', function(e){
+      if (e.which === 13){ e.preventDefault(); reloadTable(); }
+    });
+
+    // Optionally do NOT auto-load since required fields exist
+    // reloadTable();
+  });
+
+})(jQuery, window);
+    </script>
+}

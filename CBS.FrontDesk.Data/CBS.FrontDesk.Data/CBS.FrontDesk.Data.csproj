@@ -232,6 +232,17 @@
     <Compile Include="Entity\CheckManagementSystem\Reporting\Reporting.cs" />
     <Compile Include="Entity\Class1.cs" />
     <Compile Include="Entity\CMoney\CMoneyMembersActivationAccount.cs" />
+    <Compile Include="Entity\Communication\GetSmsFileUploadDataTableQuery.cs" />
+    <Compile Include="Entity\Communication\GetSmsFileUploadHistoryDataTableQuery.cs" />
+    <Compile Include="Entity\Communication\SendSmsFileUploadCommand.cs" />
+    <Compile Include="Entity\Communication\SmsFileDownloadDto.cs" />
+    <Compile Include="Entity\Communication\SmsFileUploadDetailsDto.cs" />
+    <Compile Include="Entity\Communication\SmsFileUploadDto.cs" />
+    <Compile Include="Entity\Communication\SmsFileUploadHistoryDto.cs" />
+    <Compile Include="Entity\Communication\SmsFileUploadSendSummaryDto.cs" />
+    <Compile Include="Entity\Communication\SmsUploadDetailDto.cs" />
+    <Compile Include="Entity\Communication\SmsUploadPreviewCommand.cs" />
+    <Compile Include="Entity\Communication\SmsUploadPreviewSummaryDto.cs" />
     <Compile Include="Entity\DailyCollectionData\AgentAccount\AgentAccount.cs" />
     <Compile Include="Entity\DailyCollectionData\AgentDailyCashLimit\AgentDailyCashLimit.cs" />
     <Compile Include="Entity\DailyCollectionData\AgentDashBoard\AgentDashBoard.cs" />

@@ -107,7 +107,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.GLSystemReconciliation
 
         [HttpPost]
         public async Task<ActionResult> GetReconciliationSummary(ReconciliationQuerys model)
-         {
+        {
 
             model.EndUtc = model.StartDate;
             model.StartUtc = model.StartDate;
@@ -210,59 +210,67 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.GLSystemReconciliation
                 // You can log the exception here
                 return new HttpStatusCodeResult(404, ex.Message);
             }
+            
 
             return PartialView("_ReconciliationDetails", entry);
         }
 
 
 
-        
-
         [HttpPost]
         public async Task<ActionResult> PushRecord(PushRequest model)
         {
             try
             {
-                // 1️⃣ Get all branches
+                // 1️⃣ Resolve branch
                 var branches = await _branchServices.GetBranches();
-
-                // 2️⃣ Find the branch matching the incoming BranchId
-                var selectedBranch = branches
-                    .FirstOrDefault(b => b.Id == model.BranchId);
-                model.BranchName = selectedBranch.Name;
-                model.BranchCode = selectedBranch.BranchCode;
+                var selectedBranch = branches.FirstOrDefault(b => b.Id == model.BranchId);
 
                 if (selectedBranch == null)
                 {
                     return Json(new
                     {
                         success = false,
+                        statusCode = 400,
                         message = "Invalid BranchId. Branch not found."
                     });
                 }
 
-                // 3️⃣ Process push request
-                var summary = await _glSystemReconciliationService.PushRecordAsync(model);
+                // 2️⃣ Enrich request (not response)
+                model.BranchName = selectedBranch.Name;
+                model.BranchCode = selectedBranch.BranchCode;
 
-                if (summary == null)
-                    return Json(new { success = false, message = "Empty summary response." });
+                // 3️⃣ Call service
+                var response = await _glSystemReconciliationService.PushRecordAsync(model);
 
-                // 4️⃣ Attach branch info to the response
+                // 🔴 Null safety
+                if (response == null)
+                {
+                    return Json(new
+                    {
+                        success = false,
+                        statusCode = 502,
+                        message = "No response from reconciliation service."
+                    });
+                }
+
+                // ✅ SAME RESPONSE CONTRACT AS CloseYear
                 return Json(new
                 {
-                    success = true,
-                    data = summary,
-                    branch = new
-                    {
-                        BranchId = selectedBranch.Id,
-                        BranchName = selectedBranch.Name,
-                        BranchCode = selectedBranch.BranchCode
-                    }
+                    success = response.IsSuccess,
+                    statusCode = response.IsSuccess ? 200 : 400,
+                    message = response.Message,
+                    data = response.ApiResponseData
                 });
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = ex.Message });
+                return Json(new
+                {
+                    success = false,
+                    statusCode = 500,
+                    message = $"Push record failed: {ex.Message}"
+                });
             }
         }
 
