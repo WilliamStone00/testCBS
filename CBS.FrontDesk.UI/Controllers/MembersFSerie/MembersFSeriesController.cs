@@ -77,6 +77,29 @@ namespace CBS.FrontDesk.UI.Controllers.Series
                 return true;
         }
 
+        public async Task<ActionResult> LoanDetails(string loanId)
+        {
+            var loan = await _loanServices.GetLoan(loanId);
+            if (loan == null)
+                return View("LoanNotFound");
+
+            var glOptions = await _affiliateAccountService.GetAllAffiliateAccounts();
+            var glMap = glOptions
+                .GroupBy(x => x.Value)
+                .ToDictionary(g => g.Key, g => g.First().Text);
+
+            ViewBag.GlMap = glMap;
+            ViewBag.SelectedLoan = loan;
+
+            var cashDesk = new CashDesk
+            {
+                CustomerId = loan.CustomerId,
+                Loan = loan,
+                Refunds = loan.Refunds
+            };
+
+            return View("LoanDetails", cashDesk); // ✅ FULL PAGE
+        }
 
         public async Task<ActionResult> Index()
         {

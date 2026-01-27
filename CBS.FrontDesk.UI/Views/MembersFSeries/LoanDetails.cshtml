@@ -1,0 +1,303 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+@{
+    ViewBag.Title = "Loan Details";
+}
+
+<style>
+    /* ===================== TSC STANDARD BANNER (LIKE YOUR SCREENSHOT) ===================== */
+    .tsc-page-shell {
+        padding: 12px 14px 24px 14px;
+    }
+
+    .tsc-banner-card {
+        background: #e9eaec; /* light grey banner */
+        border: 1px solid #dedfe3;
+        border-radius: 10px;
+        padding: 18px 18px 14px 18px;
+        box-shadow: 0 10px 20px rgba(16,24,40,.06);
+    }
+
+    .tsc-banner-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .tsc-banner-title {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        font-weight: 900;
+        letter-spacing: .08em;
+        color: #2fb344; /* TSC green */
+        font-size: 20px;
+        text-transform: uppercase;
+        margin: 0;
+        line-height: 1.2;
+        width: 100%;
+        text-align: center;
+    }
+
+        .tsc-banner-title i {
+            font-size: 18px;
+            color: #2fb344;
+        }
+
+    .tsc-banner-desc {
+        width: 100%;
+        text-align: center;
+        color: #333;
+        margin-top: 8px;
+        font-size: 14px;
+    }
+
+    .tsc-banner-tip {
+        width: 100%;
+        text-align: center;
+        margin-top: 10px;
+        font-weight: 700;
+        color: #ff9800; /* orange tip */
+        font-size: 13.5px;
+    }
+
+    .tsc-banner-divider {
+        margin-top: 12px;
+        border-top: 2px solid rgba(0,0,0,.15);
+    }
+
+    /* Actions (right side in your pages usually) */
+    .tsc-banner-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        margin-left: auto;
+    }
+
+    .tsc-btn {
+        border-radius: 8px;
+        padding: 7px 12px;
+        font-weight: 700;
+        border: 1px solid #cfd3da;
+        background: #fff;
+        color: #111827;
+        box-shadow: 0 8px 16px rgba(16,24,40,.06);
+    }
+
+        .tsc-btn:hover {
+            background: #f9fafb;
+        }
+
+    .tsc-btn-green {
+        border-color: rgba(47,179,68,.35);
+        background: rgba(47,179,68,.12);
+        color: #0f3d1f;
+    }
+
+        .tsc-btn-green:hover {
+            background: rgba(47,179,68,.16);
+        }
+
+    /* ===================== CONTENT CARD ===================== */
+    .tsc-content-card {
+        margin-top: 14px;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        background: #fff;
+        box-shadow: 0 10px 22px rgba(16,24,40,.06);
+        overflow: hidden;
+    }
+
+    .tsc-content-header {
+        padding: 12px 14px;
+        background: #f7f7f8;
+        border-bottom: 1px solid #e5e7eb;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+        .tsc-content-header .title {
+            margin: 0;
+            font-weight: 900;
+            color: #111827;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+        }
+
+            .tsc-content-header .title i {
+                color: #2fb344;
+                font-size: 16px;
+            }
+
+        .tsc-content-header .hint {
+            margin: 0;
+            color: #6b7280;
+            font-size: 12.5px;
+            font-weight: 600;
+        }
+
+    .tsc-content-body {
+        padding: 14px;
+        background: #fff;
+    }
+
+    /* If your partial contains modal markup, hide modal shell */
+    .modal, .modal-backdrop {
+        display: none !important;
+    }
+</style>
+
+<div class="tsc-page-shell">
+
+    <!-- ===================== STANDARD TSC BANNER ===================== -->
+    <div class="tsc-banner-card">
+
+        <div class="tsc-banner-top">
+            <div style="flex:1 1 auto; min-width: 260px;">
+                <h2 class="tsc-banner-title">
+                    <i class="mdi mdi-file-document-outline"></i>
+                    LOAN DETAILS
+                </h2>
+
+                <div class="tsc-banner-desc">
+                    View and analyze full loan information including identity, money breakdown, payments, risk, documents,
+                    and accounting references — in one consolidated loan file.
+                </div>
+
+                <div class="tsc-banner-tip">
+                    <i class="mdi mdi-alert-circle-outline"></i>
+                    Use PRINT to generate a clean report view for audit and customer support.
+                </div>
+
+                <div class="tsc-banner-divider"></div>
+            </div>
+
+            @*<div class="tsc-banner-actions">
+                <a class="tsc-btn" href="javascript:history.back()">
+                    <i class="mdi mdi-arrow-left"></i> Back
+                </a>
+                <button type="button" class="tsc-btn tsc-btn-green" onclick="window.print()">
+                    <i class="mdi mdi-printer-outline"></i> Print
+                </button>
+            </div>*@
+        </div>
+    </div>
+
+    <!-- ===================== PAGE CONTENT ===================== -->
+    <div class="tsc-content-card">
+        <div class="tsc-content-header">
+            <p class="title">
+                <i class="mdi mdi-folder-open-outline"></i> Loan File
+            </p>
+            <p class="hint">Tip: Switch tabs below (Overview, Money, Payments, Risk, Docs, Posting, Audit).</p>
+        </div>
+
+        <div class="tsc-content-body">
+            @Html.Partial("_LoanDetailsModalPartial", Model)
+        </div>
+    </div>
+
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var list = [].slice.call(document.querySelectorAll('[title]'));
+            list.forEach(function (el) { new bootstrap.Tooltip(el); });
+        });
+    </script>
+
+
+    <script>
+        function filterTable(input, tableId) {
+            const filter = (input.value || "").toLowerCase();
+            const rows = document.querySelectorAll("#" + tableId + " tbody tr");
+            rows.forEach(r => {
+                const text = (r.innerText || "").toLowerCase();
+                r.style.display = text.includes(filter) ? "" : "none";
+            });
+        }
+
+        async function copyFromEl(elOrId) {
+            try {
+                const el = typeof elOrId === "string" ? document.getElementById(elOrId) : elOrId;
+                if (!el) return;
+
+                const text = (el.getAttribute("data-copy") || el.innerText || el.textContent || "").trim();
+                if (!text) return;
+
+                if (navigator.clipboard && window.isSecureContext) {
+                    await navigator.clipboard.writeText(text);
+                    showCopyToast("Copied ✓");
+                    return;
+                }
+
+                const ta = document.createElement("textarea");
+                ta.value = text;
+                ta.setAttribute("readonly", "");
+                ta.style.position = "fixed";
+                ta.style.top = "0";
+                ta.style.left = "0";
+                ta.style.opacity = "0";
+                document.body.appendChild(ta);
+                ta.focus();
+                ta.select();
+
+                const ok = document.execCommand("copy");
+                document.body.removeChild(ta);
+
+                showCopyToast(ok ? "Copied ✓" : "Copy failed");
+            } catch (e) {
+                showCopyToast("Copy blocked");
+                console.warn("Copy failed:", e);
+            }
+        }
+
+        function showCopyToast(message) {
+            let toast = document.getElementById("copyToast");
+            if (!toast) {
+                toast = document.createElement("div");
+                toast.id = "copyToast";
+                toast.style.position = "fixed";
+                toast.style.right = "20px";
+                toast.style.bottom = "20px";
+                toast.style.zIndex = "99999";
+                toast.style.padding = "10px 14px";
+                toast.style.borderRadius = "10px";
+                toast.style.boxShadow = "0 8px 24px rgba(0,0,0,.12)";
+                toast.style.background = "#111";
+                toast.style.color = "#fff";
+                toast.style.fontSize = "13px";
+                toast.style.opacity = "0";
+                toast.style.transform = "translateY(10px)";
+                toast.style.transition = "all .18s ease";
+                document.body.appendChild(toast);
+            }
+
+            toast.innerText = message;
+            toast.style.opacity = "1";
+            toast.style.transform = "translateY(0)";
+
+            clearTimeout(window.__copyToastTimer);
+            window.__copyToastTimer = setTimeout(() => {
+                toast.style.opacity = "0";
+                toast.style.transform = "translateY(10px)";
+            }, 1200);
+        }
+    </script>
+
+
+
+
+}
+

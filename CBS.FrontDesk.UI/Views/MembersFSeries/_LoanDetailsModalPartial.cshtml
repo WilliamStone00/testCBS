@@ -20,23 +20,9 @@
     var docs = loan?.LoanApplication?.DocumentAttachedToLoans ?? new List<CBS.FrontDesk.Data.Entity.LoanConf.DocumentAttachedToLoan>();
     var refunds = loan?.Refunds ?? new List<CBS.FrontDesk.Data.Entity.LoanConf.Refund>();
     var amort = loan?.LoanAmortizations ?? new List<CBS.FrontDesk.Data.Entity.LoanConf.LoanAmortization>();
-}
-@{
-    var glMap = ViewBag.GlMap as IDictionary<string, string> ?? new Dictionary<string, string>();
-
-    Func<string, IHtmlString> GlText = (id) =>
-    {
-        if (string.IsNullOrWhiteSpace(id)) return new HtmlString("<span class='text-muted'>-</span>");
-        return glMap.TryGetValue(id, out var txt)
-            ? new HtmlString($"<span class='fw-bold'>{txt}</span>")
-            : new HtmlString($"<span class='text-warning fw-bold'>UNKNOWN GL</span>");
-    };
-}
-
-@{
     var isMigrated =
-        loan.IsUpload
-        || (loan.MigrationDate.HasValue && loan.MigrationDate.Value > DateTime.MinValue);
+    loan.IsUpload
+    || (loan.MigrationDate.HasValue && loan.MigrationDate.Value > DateTime.MinValue);
 
     var isRestructured =
         loan.IsRestructured
@@ -52,8 +38,6 @@
 
     var stopInterest = loan.StopInterestCalculation;
     var stopDateMissing = stopInterest && (loan.DateInterestWastStoped == DateTime.MinValue);
-}
-@{
     var dailyInts = loan?.DailyInterestCalculations ?? new List<CBS.FrontDesk.Data.Entity.LoanConf.DailyInterestCalculation>();
 
     // sort: latest first
@@ -67,11 +51,57 @@
     var sumVat = dailyInts.Sum(x => x.CalculatedVat);
 
     var lastIntDate = hasDailyInts ? dailyInts.Max(x => x.Date) : (DateTime?)null;
+    var glMap = ViewBag.GlMap as IDictionary<string, string> ?? new Dictionary<string, string>();
 
-    // optional: show last 30 days only (toggle if you want)
-    // var cutoff = DateTime.Today.AddDays(-30);
-    // dailyInts = dailyInts.Where(x => x.Date.Date >= cutoff).ToList();
+    Func<string, IHtmlString> GlText = (id) =>
+    {
+        if (string.IsNullOrWhiteSpace(id)) return new HtmlString("<span class='text-muted'>-</span>");
+        return glMap.TryGetValue(id, out var txt)
+            ? new HtmlString($"<span class='fw-bold'>{txt}</span>")
+            : new HtmlString($"<span class='text-warning fw-bold'>UNKNOWN GL</span>");
+    };
+    //// ----------------------------
+    //// 1) MIGRATION ORIGIN
+    //// ----------------------------
+    //var isMigrated =
+    //    loan.IsUpload
+    //    || (loan.MigrationDate != DateTime.MinValue && loan.MigrationDate != default(DateTime))
+    //    || !string.IsNullOrWhiteSpace(loan.LoanId); // legacy id often exists for migrated
+
+    var originText = isMigrated ? "MIGRATED LOAN" : "NATIVE (CORE)";
+    var originBadgeClass = isMigrated ? "badge-soft-warning" : "badge-soft-success";
+    var originCardClass = isMigrated ? "origin-migrated" : "origin-native";
+
+    // ----------------------------
+    // 2) INTEREST STATE
+    // ----------------------------
+    var hasInterest = loan.InterestRate > 0; // your rule: if 0 => NO INTEREST
+
+    var interestState =
+        !hasInterest ? "NO INTEREST"
+        : stopInterest ? "STOPPED"
+        : "RUNNING";
+
+    var interestBadgeClass =
+        !hasInterest ? "badge-soft-secondary"
+        : stopInterest ? "badge-soft-dark"
+        : "badge-soft-success";
+
+    // ----------------------------
+    // 3) STATUS CHIP COLOR
+    // ----------------------------
+    var isOpen = string.Equals(loan.LoanStatus, "Open", StringComparison.OrdinalIgnoreCase);
+    var statusBadgeClass = isOpen ? "badge-soft-success" : "badge-soft-secondary";
+    var isMortgage = loan.IsMortgage;
+
+    var taxable =
+        !string.IsNullOrWhiteSpace(loan.TaxableStatus)
+        && loan.TaxableStatus.Equals("Taxable", StringComparison.OrdinalIgnoreCase);
+
+    var product = loan?.LoanApplication?.LoanProduct;
+
 }
+
 
 <style>
     .loan-details-shell {
@@ -637,6 +667,84 @@
 }
 
 </style>
+<style>
+    /* ===================== APPLICATION / CONTRACT TABS (SCOPED) ===================== */
+    #t_application .app-card, #t_contract .app-card {
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        background: #fff;
+        box-shadow: 0 10px 22px rgba(16,24,40,.06);
+    }
+
+    #t_application .app-hd, #t_contract .app-hd {
+        padding: 12px 14px;
+        background: #f7f7f8;
+        border-bottom: 1px solid #e5e7eb;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    #t_application .app-title, #t_contract .app-title {
+        margin: 0;
+        font-weight: 900;
+        color: #111827;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+        #t_application .app-title i, #t_contract .app-title i {
+            color: #2fb344;
+            font-size: 18px;
+        }
+
+    #t_application .app-hint, #t_contract .app-hint {
+        margin: 0;
+        color: #6b7280;
+        font-size: 12.5px;
+        font-weight: 600;
+    }
+
+    #t_application .app-bd, #t_contract .app-bd {
+        padding: 14px;
+    }
+
+    #t_application .app-table td:first-child {
+        width: 42%;
+        font-weight: 800;
+        color: #111827;
+        background: #fafafa;
+    }
+
+    #t_application .app-table td {
+        vertical-align: middle;
+    }
+
+    #t_application .app-sec {
+        background: #eaf6ee !important;
+        color: #137a2f !important;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: .06em;
+    }
+
+    #t_application .app-subsec {
+        background: #f2f4f7 !important;
+        color: #111827 !important;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: .04em;
+    }
+
+</style>
+
+
 @if (!hasLoan)
 {
     <div class="alert alert-warning m-3">
@@ -647,50 +755,13 @@
 
 <div class="loan-details-shell">
 
-    @{
-        //// ----------------------------
-        //// 1) MIGRATION ORIGIN
-        //// ----------------------------
-        //var isMigrated =
-        //    loan.IsUpload
-        //    || (loan.MigrationDate != DateTime.MinValue && loan.MigrationDate != default(DateTime))
-        //    || !string.IsNullOrWhiteSpace(loan.LoanId); // legacy id often exists for migrated
-
-        var originText = isMigrated ? "MIGRATED LOAN" : "NATIVE (CORE)";
-        var originBadgeClass = isMigrated ? "badge-soft-warning" : "badge-soft-success";
-        var originCardClass = isMigrated ? "origin-migrated" : "origin-native";
-
-        // ----------------------------
-        // 2) INTEREST STATE
-        // ----------------------------
-        var hasInterest = loan.InterestRate > 0; // your rule: if 0 => NO INTEREST
-
-        var interestState =
-            !hasInterest ? "NO INTEREST"
-            : stopInterest ? "STOPPED"
-            : "RUNNING";
-
-        var interestBadgeClass =
-            !hasInterest ? "badge-soft-secondary"
-            : stopInterest ? "badge-soft-dark"
-            : "badge-soft-success";
-
-        // ----------------------------
-        // 3) STATUS CHIP COLOR
-        // ----------------------------
-        var isOpen = string.Equals(loan.LoanStatus, "Open", StringComparison.OrdinalIgnoreCase);
-        var statusBadgeClass = isOpen ? "badge-soft-success" : "badge-soft-secondary";
-    }
 
     <div class="loan-details-header-v2">
 
         <!-- ROW 1: Title + actions -->
         <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
             <div class="d-flex align-items-center gap-2 flex-wrap">
-                <div class="fw-bold fs-5">
-                    <i class="mdi mdi-file-document-outline me-1"></i> Loan Details
-                </div>
-
+                
                 <div class="meta-inline">
                     <span class="lbl">Contract</span>
                     <span id="copyContract" class="val code-strong" data-copy="@Txt(loan.LoanContractCode)">
@@ -733,7 +804,7 @@
             </div>
 
             <div class="meta-item">
-                <div class="lbl">LoanId</div>
+                <div class="lbl">Loan </div>
                 <div class="val d-flex align-items-center gap-2">
                     <span id="copyLoanId" class="code-pill" data-copy="@Txt(loan.Id)">@Txt(loan.Id)</span>
                     <button type="button" class="btn btn-sm btn-outline-secondary btn-icon"
@@ -744,7 +815,7 @@
             </div>
 
             <div class="meta-item">
-                <div class="lbl">Account</div>
+                <div class="lbl">Loan Account</div>
                 <div class="val d-flex align-items-center gap-2">
                     <span id="copyAccountNo" class="code-pill" data-copy="@Txt(loan.AccountNumber)">@Txt(loan.AccountNumber)</span>
                     <button type="button" class="btn btn-sm btn-outline-secondary btn-icon"
@@ -870,9 +941,23 @@
         <!-- NAV (scrollable) -->
         <div class="loan-tabs-wrap">
             <ul class="nav nav-tabs loan-tabs" role="tablist">
+
                 <li class="nav-item">
                     <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#t_overview" type="button" title="Overview">
                         <i class="mdi mdi-view-dashboard-outline"></i><span>Overview</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#t_application" type="button">
+                        <i class="mdi mdi-file-document-edit-outline"></i>
+                        <span>APPLICATION</span>
+                    </button>
+                </li>
+
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#t_contract" type="button">
+                        <i class="mdi mdi-file-sign"></i>
+                        <span>CONTRACT</span>
                     </button>
                 </li>
 
@@ -1595,6 +1680,372 @@
 
 
                 </div>
+                <div class="tab-pane fade" id="t_application">
+                    @{
+                        var app = loan?.LoanApplication; // make sure `loan` variable exists in your partial
+                        var hasApp = app != null;
+                        var savingCoverage = hasApp ? (app.SavingAccountCoverageRate / 100m) * app.RequestedAmount : 0m;
+                        var totalRefinancing = hasApp ? (app.RequestedAmount + app.RestructuredBalance) : 0m;
+                        var fees = hasApp ? (app.LoanApplicationFees ?? new List<CBS.FrontDesk.Data.Entity.LoanConf.LoanApplicationFee>()) : new List<CBS.FrontDesk.Data.Entity.LoanConf.LoanApplicationFee>();
+                    }
+
+                    <div class="app-card">
+                        <div class="app-hd">
+                            <p class="app-title"><i class="mdi mdi-file-document-edit-outline"></i> Loan Application</p>
+                            <p class="app-hint">Complete application details used to originate this loan.</p>
+                        </div>
+
+                        <div class="app-bd">
+                            @if (!hasApp)
+                            {
+                                <div class="alert alert-light border mb-0">
+                                    <i class="mdi mdi-alert-circle-outline"></i>
+                                    No Loan Application found for this loan.
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-striped app-table mb-0">
+                                        <tbody>
+
+                                            <!-- General Information -->
+                                            <tr class="app-sec">
+                                                <td colspan="2" class="text-center">GENERAL INFORMATION</td>
+                                            </tr>
+                                            <tr><td>Member Code</td><td>@app.CustomerId</td></tr>
+                                            <tr><td>Loan Application Code</td><td>@app.Id</td></tr>
+                                            <tr>
+                                                <td>Loan Application Type</td>
+                                                <td>
+                                                    @if ((app.LoanApplicationType ?? "Normal") != "Normal")
+                                                    {
+                                                        <span class="badge bg-warning text-dark">@app.LoanApplicationType</span>
+                                                        if (!string.IsNullOrWhiteSpace(app.LoanId))
+                                                        {
+                                                            <br />
+                                                            <a href="@Url.Action("LoanDetails","Loan", new { loanId = app.LoanId })" target="_blank">
+                                                                Details &raquo; @app.LoanId
+                                                            </a>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="badge bg-primary text-white">New Loan</span>
+                                                    }
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Loan Type</td>
+                                                <td>
+                                                    @if ((app.LoanType ?? "") == "Main_Loan")
+                                                    {
+                                                        <span class="badge bg-primary text-white">@app.LoanType</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="badge bg-warning text-dark">@app.LoanType</span>
+                                                    }
+                                                </td>
+                                            </tr>
+                                            <tr><td>Loan Category</td><td>@app.LoanCategory</td></tr>
+                                            <tr><td>Targeted Population</td><td>@app.LoanTarget</td></tr>
+
+                                            <!-- Product Information -->
+                                            <tr class="app-sec">
+                                                <td colspan="2" class="text-center">PRODUCT INFORMATION</td>
+                                            </tr>
+                                            <tr><td>Product Code</td><td>@app.LoanProduct.ProductCode</td></tr>
+                                            <tr><td>Product Name</td><td>@app.LoanProduct.ProductName</td></tr>
+                                            <tr><td>Product Term</td><td>@app.LoanProduct.LoanTerm.Name</td></tr>
+
+                                            <!-- Application Details -->
+                                            <tr class="app-sec">
+                                                <td colspan="2" class="text-center">APPLICATION DETAILS</td>
+                                            </tr>
+                                            <tr><td>Application Date</td><td>@(app.ApplicationDate?.ToString("dd/MM/yyyy HH:mm:ss") ?? "N/A")</td></tr>
+                                            <tr><td>Approval Date</td><td>@(app.ApprovalDate?.ToString("dd/MM/yyyy HH:mm:ss") ?? "N/A")</td></tr>
+                                            <tr><td>Disbursement Date</td><td>@(app.DisbursementDate?.ToString("dd/MM/yyyy HH:mm:ss") ?? "N/A")</td></tr>
+                                            <tr><td>Loan Manager</td><td>@app.LoanManager</td></tr>
+
+                                            <!-- Migration Status -->
+                                            <tr class="app-sec">
+                                                <td colspan="2" class="text-center">MIGRATION STATUS</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Migrated Loan</td>
+                                                <td>
+                                                    @if (!app.IsUpload)
+                                                    {
+                                                        <span class="badge bg-primary text-white">TSC Loan</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="badge bg-warning text-dark">Migrated Loan</span>
+                                                    }
+                                                </td>
+                                            </tr>
+
+                                            <!-- Refinancing Details -->
+                                            @if ((app.LoanApplicationType ?? "") == "Refinancing")
+                                            {
+                                                <tr class="app-sec">
+                                                    <td colspan="2" class="text-center">REFINANCING DETAILS</td>
+                                                </tr>
+                                                <tr><td>Requested Amount</td><td>@app.RequestedAmount.ToString("#,##0.0") FCFA</td></tr>
+                                                <tr><td>Restructured Balance</td><td>@app.RestructuredBalance.ToString("#,##0.0") FCFA</td></tr>
+                                                <tr><td>Refinanced Amount</td><td>@totalRefinancing.ToString("#,##0.0") FCFA</td></tr>
+
+                                                <tr class="app-subsec">
+                                                    <td colspan="2" class="text-center">OLD LOAN INFORMATION</td>
+                                                </tr>
+                                                <tr><td>Old Loan Amount</td><td>@app.OldLoanAmount.ToString("#,##0.0") FCFA</td></tr>
+                                                <tr><td>Old Loan Capital</td><td>@app.OldLoanCapital.ToString("#,##0.0") FCFA</td></tr>
+                                                <tr><td>Old Loan Interest</td><td>@app.OldLoanInterest.ToString("#,##0.0") FCFA</td></tr>
+                                                <tr><td>Old Loan VAT</td><td>@app.OldLoanVat.ToString("#,##0.0") FCFA</td></tr>
+                                                <tr><td>Old Loan Penalty</td><td>@app.OldLoanPenalty.ToString("#,##0.0") FCFA</td></tr>
+                                            }
+
+                                            <!-- Loan Details -->
+                                            <tr class="app-sec">
+                                                <td colspan="2" class="text-center">LOAN DETAILS</td>
+                                            </tr>
+                                            <tr><td>Loan Product ID</td><td>@app.LoanProductId</td></tr>
+                                            <tr><td>Total Loan Amount</td><td><strong>@app.Amount.ToString("#,##0.0") FCFA</strong></td></tr>
+                                            <tr><td>Interest Rate</td><td>@app.InterestRate.ToString("#,##0.0")%</td></tr>
+                                            <tr><td>Loan Manager</td><td>@app.LoanManager</td></tr>
+
+                                            <tr>
+                                                <td>Fees</td>
+                                                <td>
+                                                    @if (app.LoanApplicationFees != null && app.LoanApplicationFees.Any())
+                                                    {
+                                                        <ul class="list-unstyled mb-1">
+                                                            @foreach (var fee in app.LoanApplicationFees)
+                                                            {
+                                                                <li>@fee.FeeLable: @(fee.FeeAmount.ToString("#,##0.0") + " FCFA")</li>
+                                                            }
+                                                        </ul>
+                                                        <div class="mt-1">
+                                                            <strong>Total Fee Amount:</strong> @app.LoanApplicationFees.Sum(f => f.FeeAmount).ToString("#,##0.0") FCFA<br />
+                                                            <strong>Total Amount Paid:</strong> @app.LoanApplicationFees.Sum(f => f.AmountPaid).ToString("#,##0.0") FCFA
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="text-muted">No fee added.</span>
+                                                    }
+                                                </td>
+                                            </tr>
+
+                                            <!-- Downpayments and Coverage -->
+                                            <tr class="app-sec">
+                                                <td colspan="2" class="text-center">DOWNPAYMENTS & COVERAGE</td>
+                                            </tr>
+                                            <tr><td>Total Downpayment Provided</td><td><strong>@app.DownPaymentCoverageAmountProvided.ToString("#,##0.0") FCFA</strong></td></tr>
+                                            <tr><td>Share Covered Amount</td><td>@app.ShareAccountCoverageAmount.ToString("#,##0.0") FCFA</td></tr>
+                                            <tr><td>Saving Coverage Provided</td><td>@app.SavingAccountCoverageRate.ToString("#,##0.0")% of @app.RequestedAmount.ToString("#,##0"): [@savingCoverage.ToString("#,##0")] FCFA</td></tr>
+
+                                            <tr>
+                                                <td>Preference Share Coverage Used</td>
+                                                <td>
+                                                    @if (app.IsPreferenceShareAccountCoverageAmount)
+                                                    {
+                                                        <span class="badge bg-primary text-white">Yes — Coverage Amount: @app.PreferenceShareAccountCoverageAmount.ToString("#,##0.0")</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="badge bg-warning text-dark">No</span>
+                                                    }
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Deposit Coverage Used</td>
+                                                <td>
+                                                    @if (app.IsDepositAccountCoverageAmount)
+                                                    {
+                                                        <span class="badge bg-primary text-white">Yes — Coverage Amount: @app.DepositAccountCoverageAmount.ToString("#,##0.0")</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="badge bg-warning text-dark">No</span>
+                                                    }
+                                                </td>
+                                            </tr>
+
+                                            <!-- Additional Details -->
+                                            <tr class="app-sec">
+                                                <td colspan="2" class="text-center">ADDITIONAL DETAILS</td>
+                                            </tr>
+                                            <tr><td>VAT Rate</td><td>@app.VatRate.ToString("#,##0.0")%</td></tr>
+                                            <tr><td>Grace Period before 1st Installment</td><td>@app.GracePeriodBeforeFirstPayment Months</td></tr>
+                                            <tr><td>Grace Period after Due Date</td><td>@app.GracePeriodAfterMaturityDate Days</td></tr>
+                                            <tr><td>Approval Status</td><td>@app.ApprovalStatus</td></tr>
+                                            <tr>
+                                                <td>Approved</td>
+                                                <td>
+                                                    @if (app.IsApproved)
+                                                    {<span class="badge bg-primary text-white">Approved</span> }
+                                                    else
+                                                    { <span class="badge bg-warning text-dark">Pending</span>}
+                                                </td>
+                                            </tr>
+
+                                            <!-- Guarantors -->
+                                            <tr class="app-sec">
+                                                <td colspan="2" class="text-center">GUARANTORS</td>
+                                            </tr>
+                                            @if (app.Guarantors?.Any() == true)
+                                            {
+                                                foreach (var g in app.Guarantors)
+                                                {
+                                                    <tr><td>Guarantor Name</td><td>@g.GuarantorName</td></tr>
+                                                    <tr><td>Relationship</td><td>@g.Relationship</td></tr>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <tr><td colspan="2" class="text-center text-muted">No guarantors provided.</td></tr>
+                                            }
+
+                                            <!-- Collateral -->
+                                            <tr class="app-sec">
+                                                <td colspan="2" class="text-center">COLLATERAL</td>
+                                            </tr>
+                                            @if (app.Collateras?.Any() == true)
+                                            {
+                                                foreach (var c in app.Collateras)
+                                                {
+                                                    <tr><td>Collateral Type / Location</td><td>@c.Location</td></tr>
+                                                    <tr><td>Collateral Value</td><td>@c.Amount.ToString("#,##0.0") FCFA</td></tr>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <tr><td colspan="2" class="text-center text-muted">No collateral provided.</td></tr>
+                                            }
+
+                                            <!-- Attached Documents -->
+                                            <tr class="app-sec">
+                                                <td colspan="2" class="text-center">ATTACHED DOCUMENTS</td>
+                                            </tr>
+                                            @if (app.DocumentAttachedToLoans?.Any() == true)
+                                            {
+                                                foreach (var d in app.DocumentAttachedToLoans)
+                                                {
+                                                    <tr><td>Document</td><td>@d.FileName @d.FileExtension</td></tr>
+                                                    <tr><td>Uploaded</td><td>@d.Date.ToString("dd/MM/yyyy HH:mm:ss")</td></tr>
+                                                    <tr>
+                                                        <td>Open</td>
+                                                        <td>
+                                                            <a href="@d.FilePath" target="_blank" class="btn btn-sm btn-primary">
+                                                                <i class="mdi mdi-open-in-new"></i> Read Content
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <tr><td colspan="2" class="text-center text-muted">No documents attached.</td></tr>
+                                            }
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="t_contract">
+                    @{
+                        // Detect a contract-like document by name
+                        var contractDoc = docs.FirstOrDefault(d =>
+                            ((d.FileName ?? "") + " " + (d.FileExtension ?? "")).IndexOf("contract", StringComparison.OrdinalIgnoreCase) >= 0
+                            || ((d.FileName ?? "") + " " + (d.FileExtension ?? "")).IndexOf("contrat", StringComparison.OrdinalIgnoreCase) >= 0
+                            || ((d.FileName ?? "") + " " + (d.FileExtension ?? "")).IndexOf("agreement", StringComparison.OrdinalIgnoreCase) >= 0
+                        );
+
+                        var contractPath = contractDoc?.FilePath;
+                        var isPdf = !string.IsNullOrWhiteSpace(contractPath) && contractPath.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase);
+                    }
+
+                    <div class="row g-3">
+                        <div class="col-lg-5">
+                            <div class="app-card">
+                                <div class="app-hd">
+                                    <p class="app-title"><i class="mdi mdi-file-sign"></i> Application Contract</p>
+                                    <p class="app-hint">Contract reference & document access.</p>
+                                </div>
+                                <div class="app-bd">
+                                    <table class="table table-bordered table-striped mb-0">
+                                        <tbody>
+                                            <tr>
+                                                <td class="fw-bold" style="width:42%;background:#fafafa;">Contract Code</td>
+                                                <td>@(loan?.LoanContractCode ?? "N/A")</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-bold" style="background:#fafafa;">Contract Document</td>
+                                                <td>
+                                                    @if (contractDoc == null || string.IsNullOrWhiteSpace(contractPath))
+                                                    {
+                                                        <span class="text-muted">No contract document detected. Upload a file named “contract/contrat/agreement”.</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="d-flex gap-2 flex-wrap align-items-center">
+                                                            <span class="badge bg-light text-dark border">
+                                                                @contractDoc.FileName@contractDoc.FileExtension
+                                                            </span>
+                                                            <a class="btn btn-sm btn-primary" target="_blank" href="@contractPath">
+                                                                <i class="mdi mdi-open-in-new"></i> Open
+                                                            </a>
+                                                        </div>
+                                                        <div class="text-muted small mt-2">Uploaded: @contractDoc.Date.ToString("dd/MM/yyyy HH:mm:ss")</div>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <div class="small text-muted mt-2">
+                                        Tip: PDF previews render inside the page. Other formats open in a new tab.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-7">
+                            <div class="app-card">
+                                <div class="app-hd">
+                                    <p class="app-title"><i class="mdi mdi-eye-outline"></i> Contract Preview</p>
+                                    <p class="app-hint">Preview available for PDF contracts.</p>
+                                </div>
+                                <div class="app-bd">
+                                    @if (string.IsNullOrWhiteSpace(contractPath))
+                                    {
+                                        <div class="alert alert-light border mb-0">
+                                            <i class="mdi mdi-information-outline"></i> No contract file to preview.
+                                        </div>
+                                    }
+                                    else if (isPdf)
+                                    {
+                                        <iframe src="@contractPath"
+                                                style="width:100%;height:560px;border:1px solid #e5e7eb;border-radius:12px;"></iframe>
+                                    }
+                                    else
+                                    {
+                                        <div class="alert alert-light border mb-0">
+                                            <i class="mdi mdi-alert-circle-outline"></i>
+                                            Preview is best for PDF. Click <b>Open</b> to view this document.
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- ===================== FINANCIALS ===================== -->
                 <div class="tab-pane fade" id="t_financials">
@@ -2286,15 +2737,6 @@
                 <div class="tab-pane fade" id="t_product">
                     <div class="row g-3">
 
-                        @{
-                            var isMortgage = loan.IsMortgage;
-
-                            var taxable =
-                                !string.IsNullOrWhiteSpace(loan.TaxableStatus)
-                                && loan.TaxableStatus.Equals("Taxable", StringComparison.OrdinalIgnoreCase);
-
-                            var product = loan?.LoanApplication?.LoanProduct;
-                        }
 
                         <!-- ===================== PRODUCT ===================== -->
                         <div class="col-lg-6">
