@@ -48,6 +48,8 @@ namespace CBS.FrontDesk.Data
         MemberCategoryAdjustment,
         AccountBalanceAdjustment,
         AccountStatusAdjustment,
+        BlockAmountAdjustment,
+       DailySavingReExecutionAdjustment
     }
 
     public enum Status { Approved, Successful, Failed, Pending, Reviewed, Rejected, Completed, ProcessingApproval }

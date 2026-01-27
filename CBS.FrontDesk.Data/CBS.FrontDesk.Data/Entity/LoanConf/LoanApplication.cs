@@ -8,6 +8,7 @@ using CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Globalization;
 
 namespace CBS.FrontDesk.Data.Entity.LoanConf
@@ -674,8 +675,68 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public int? PcmfPopulation { get; set; }
         public int? PcmfBaseCode { get; set; }
 
-        
-    
+       
+        public int RefundCount { get; set; }
+        public decimal? LastRefundAmount { get; set; }
+        public string LastRefundReference { get; set; }
+        public string PcmfPurposeKey { get; set; }
+        public string PcmfPurposeCode { get; set; }
+        public string PcmfPurposeSlug { get; set; }
+        public string InitiatingBranchId { get; set; }
+
+        public string InterestStoppedComment { get; set; }
+        // =========================
+        // COBAC COMPLIANCE LAYER
+        // =========================
+
+        // 1) Risk classification
+        public LoanClassification Classification { get; set; } = LoanClassification.Performing;
+        public DateTime? ClassificationDate { get; set; } = DateTime.MinValue;
+
+        // 2) Interest recognition mode
+        public InterestRecognitionMode InterestRecognitionMode { get; set; } = InterestRecognitionMode.Accrual;
+
+        // 3) Interest buckets:
+        // Performing / on-book accrual
+        public decimal AccruedInterestOnBook { get; set; }
+
+        // Doubtful/Loss / off-balance suspended interest (hors-bilan)
+        public decimal SuspendedInterestOffBalance { get; set; }
+
+        // Amount reversed when switching to doubtful/loss
+        public decimal ReversedAccruedInterest { get; set; }
+
+        // 4) Provisioning tracking (contra-asset reserve tracking)
+        public decimal ProvisionedAmount { get; set; }
+        public decimal ProvisionRateApplied { get; set; }
+        public DateTime? LastProvisionDate { get; set; } = DateTime.MinValue;
+        public long? LastProvisionRunId { get; set; }
+
+        // 5) Write-off metadata
+        public DateTime? WrittenOffDate { get; set; } = DateTime.MinValue;
+        public string WrittenOffBy { get; set; }
+        public string WriteOffReason { get; set; }
+
+        // Compatibility helper for old screens that still use DeliquentInterest
+        [NotMapped]
+        public decimal CobacSuspendedInterest =>
+            SuspendedInterestOffBalance > 0 ? SuspendedInterestOffBalance : DeliquentInterest;
+
+
+    }
+    public enum LoanClassification
+    {
+        Performing = 1,
+        Watch = 2,
+        Substandard = 3,
+        Doubtful = 4,
+        Loss = 5,
+        WrittenOff = 6
+    }
+    public enum InterestRecognitionMode
+    {
+        Accrual = 1,
+        CashBasisOnly = 2
     }
     public class MembersLoanDto
     {

@@ -8,12 +8,14 @@ $(document).ready(function () {
         // Set initial values
         var initialOption = $('#accountDropdown').find(':selected');
         $('#oldBalance').val(initialOption.data('balance') || "0.00");
+        $('#oldBlockedAmount').val(initialOption.data('blocked') || "0.00");
         $('#accountId').val(initialOption.val() || "");
 
         // Bind change event
         $('#accountDropdown').off('change').on('change', function () {
             var selectedOption = $(this).find(':selected');
             $('#oldBalance').val(selectedOption.data('balance') || "0.00");
+            $('#oldBlockedAmount').val(selectedOption.data('blocked') || "0.00");
             $('#accountId').val(selectedOption.val() || "");
         });
     });

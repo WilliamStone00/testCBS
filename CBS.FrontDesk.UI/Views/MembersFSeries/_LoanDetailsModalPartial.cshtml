@@ -1,191 +1,3180 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
 @{
-    var loan = Model.Loan;
-    var totalRefinancing = loan.RequestedAmount + loan.RestructuredBalance;
+    var loan = Model?.Loan;
+    bool hasLoan = loan != null && !string.IsNullOrWhiteSpace(loan.Id);
+
+    string FDate(DateTime dt) => dt == DateTime.MinValue ? "-" : dt.ToString("dd/MM/yyyy HH:mm:ss");
+    string FDateShort(DateTime dt) => dt == DateTime.MinValue ? "-" : dt.ToString("dd/MM/yyyy");
+    string FDateNullable(DateTime? dt) => dt.HasValue && dt.Value != DateTime.MinValue ? dt.Value.ToString("dd/MM/yyyy HH:mm:ss") : "-";
+
+    string Money(decimal v) => v.ToString("N0");
+    string MoneyN(decimal? v) => v.HasValue ? v.Value.ToString("N0") : "-";
+    string Percent(decimal v) => v.ToString("0.00") + "%";
+    string Txt(string s) => string.IsNullOrWhiteSpace(s) ? "-" : s;
+
+    bool isDelinq = hasLoan && (loan.IsDeliquentLoan || loan.DeliquentDays > 0 || loan.DeliquentAmount > 0);
+    bool hasAdvance = hasLoan && (loan.AdvancedPaymentDays > 0 || loan.AdvancedPaymentAmount > 0);
+    bool stopped = hasLoan && loan.StopInterestCalculation;
+
+    // Safe lists (adjust namespaces if needed in your project)
+    var docs = loan?.LoanApplication?.DocumentAttachedToLoans ?? new List<CBS.FrontDesk.Data.Entity.LoanConf.DocumentAttachedToLoan>();
+    var refunds = loan?.Refunds ?? new List<CBS.FrontDesk.Data.Entity.LoanConf.Refund>();
+    var amort = loan?.LoanAmortizations ?? new List<CBS.FrontDesk.Data.Entity.LoanConf.LoanAmortization>();
+}
+@{
+    var glMap = ViewBag.GlMap as IDictionary<string, string> ?? new Dictionary<string, string>();
+
+    Func<string, IHtmlString> GlText = (id) =>
+    {
+        if (string.IsNullOrWhiteSpace(id)) return new HtmlString("<span class='text-muted'>-</span>");
+        return glMap.TryGetValue(id, out var txt)
+            ? new HtmlString($"<span class='fw-bold'>{txt}</span>")
+            : new HtmlString($"<span class='text-warning fw-bold'>UNKNOWN GL</span>");
+    };
 }
 
-<div class="card-body">
+@{
+    var isMigrated =
+        loan.IsUpload
+        || (loan.MigrationDate.HasValue && loan.MigrationDate.Value > DateTime.MinValue);
 
-    <!-- General Information -->
-    <div class="card mb-4 shadow-sm">
-        <div class="card-header bg-light text-dark fw-bold border-bottom">General Information</div>
-        <table class="table table-bordered table-sm mb-0">
-            <tbody>
-                <tr><td class="fw-bold">Loan ID</td><td class="text-end">@loan.Id</td></tr>
-                <tr><td class="fw-bold">Loan Application ID</td><td class="text-end">@loan.LoanApplicationId</td></tr>
-                <tr><td class="fw-bold">Customer</td><td class="text-start">@loan.CustomerName (@loan.CustomerId)</td></tr>
-                <tr><td class="fw-bold">Branch</td><td class="text-start">@loan.BranchName (@loan.BranchCode)</td></tr>
-                <tr>
-                    <td class="fw-bold">Loan Type</td>
-                    <td class="text-start">
-                        @if (loan.LoanType == "Main_Loan")
-                        {
-                            <span class="badge bg-secondary">Main Loan</span>
-                        }
-                        else
-                        {
-                            <span class="badge bg-light border">@loan.LoanType</span>
-                        }
-                    </td>
-                </tr>
-                <tr><td class="fw-bold">Category</td><td class="text-start">@loan.LoanCategory</td></tr>
-                <tr><td class="fw-bold">Target</td><td class="text-start">@loan.LoanTarget</td></tr>
-                <tr><td class="fw-bold">Manager</td><td class="text-start">@loan.LoanManager</td></tr>
-                <tr><td class="fw-bold">Journey</td><td class="text-start">@loan.LoanJourneyStatus</td></tr>
-                <tr><td class="fw-bold">Status</td><td class="text-start">@loan.LoanStatus</td></tr>
-            </tbody>
-        </table>
-    </div>
+    var isRestructured =
+        loan.IsRestructured
+        || !string.IsNullOrWhiteSpace(loan.NewLoanId);
 
-    <!-- Loan Financial Summary -->
-    <div class="card mb-4 shadow-sm">
-        <div class="card-header bg-light text-dark fw-bold border-bottom">Loan Financial Summary</div>
-        <table class="table table-bordered table-sm mb-0">
-            <tbody>
-                <tr><td class="fw-bold">Requested Amount</td><td class="text-end">@loan.RequestedAmount.ToString("N0") FCFA</td></tr>
-                <tr><td class="fw-bold">Approved Amount</td><td class="text-end">@loan.LoanAmount.ToString("N0") FCFA</td></tr>
-                <tr><td class="fw-bold">Principal Paid</td><td class="text-end">@loan.TotalPrincipalPaid.ToString("N0") FCFA</td></tr>
-                <tr><td class="fw-bold">Paid (Total)</td><td class="text-end">@loan.Paid.ToString("N0") FCFA</td></tr>
-                <tr class="text-danger"><td class="fw-bold">Balance</td><td class="text-danger text-end">@loan.Balance.ToString("N0") FCFA</td></tr>
-                <tr><td class="fw-bold">Due Amount</td><td class="text-end">@loan.DueAmount.ToString("N0") FCFA</td></tr>
-                <tr><td class="fw-bold">Penalty</td><td class="text-end">@loan.Penalty.ToString("N0") FCFA</td></tr>
-                <tr><td class="fw-bold">Tax</td><td class="text-end">@loan.Tax.ToString("N0") FCFA</td></tr>
-                <tr><td class="fw-bold">Fee</td><td class="text-end">@loan.Fee.ToString("N0") FCFA</td></tr>
-                <tr><td class="fw-bold">Last Payment</td><td class="text-end">@loan.LastPayment.ToString("N0") FCFA</td></tr>
-            </tbody>
-        </table>
-    </div>
+    var isRefinanced =
+     string.Equals(loan.LoanTypeCategory, "Refinanced", StringComparison.OrdinalIgnoreCase)
+     || string.Equals(loan.LoanStatus, "Refinancing", StringComparison.OrdinalIgnoreCase)
+     || ((loan.LoanJourneyStatus ?? "").IndexOf("Refinanc", StringComparison.OrdinalIgnoreCase) >= 0);
 
-    <!-- Interest Details -->
-    <div class="card mb-4 shadow-sm">
-        <div class="card-header bg-light text-dark fw-bold border-bottom">Interest Details</div>
-        <table class="table table-bordered table-sm mb-0">
-            <tbody>
-                <tr><td class="fw-bold">Forecasted Interest</td><td class="text-end">@loan.InterestForcasted.ToString("N0") FCFA</td></tr>
-                <tr><td class="fw-bold">Interest Rate</td><td class="text-end">@loan.InterestRate.ToString("0.0") %</td></tr>
-                <tr><td class="fw-bold">Accrued Interest</td><td class="text-end">@loan.AccrualInterest.ToString("N0") FCFA</td></tr>
-                <tr><td class="fw-bold">Last Calculated Interest</td><td class="text-end">@loan.LastCalculatedInterest.ToString("N0") FCFA</td></tr>
-                <tr><td class="fw-bold">Last Calculated Date</td><td class="text-end">@loan.LastInterestCalculatedDate.ToString("dd/MM/yyyy")</td></tr>
-            </tbody>
-        </table>
-    </div>
 
-    <!-- Disbursement -->
-    <div class="card mb-4 shadow-sm">
-        <div class="card-header bg-light text-dark fw-bold border-bottom">Disbursement & Schedule</div>
-        <table class="table table-bordered table-sm mb-0">
-            <tbody>
-                <tr><td class="fw-bold">Loan Date</td><td class="text-end">@loan.LoanDate.ToString("dd/MM/yyyy")</td></tr>
-                <tr><td class="fw-bold">Disbursement Date</td><td class="text-end">@loan.DisbursementDate.ToString("dd/MM/yyyy")</td></tr>
-                <tr><td class="fw-bold">First Installment</td><td class="text-end">@loan.FirstInstallmentDate.ToString("dd/MM/yyyy")</td></tr>
-                <tr><td class="fw-bold">Next Installment</td><td class="text-end">@loan.NextInstallmentDate.ToString("dd/MM/yyyy")</td></tr>
-                <tr><td class="fw-bold">Maturity Date</td><td class="text-end">@loan.MaturityDate.ToString("dd/MM/yyyy")</td></tr>
-            </tbody>
-        </table>
-    </div>
+    var relatedLoanId = !string.IsNullOrWhiteSpace(loan.NewLoanId) ? loan.NewLoanId : null;
 
-    <!-- Guarantees -->
-    <div class="card mb-4 shadow-sm">
-        <div class="card-header bg-light text-dark fw-bold border-bottom">Guarantees & Coverage</div>
-        <table class="table table-bordered table-sm mb-0">
-            <tbody>
-                <tr><td class="fw-bold">Savings Pledged</td><td class="text-end">@loan.Savings.ToString("N0") FCFA</td></tr>
-                <tr><td class="fw-bold">Shares (Ordinary)</td><td class="text-end">@loan.OShares.ToString("N0") FCFA</td></tr>
-                <tr><td class="fw-bold">Shares (Preferred)</td><td class="text-end">@loan.PShares.ToString("N0") FCFA</td></tr>
-                <tr><td class="fw-bold">Total Guarantee Fund</td><td class="text-end">@loan.TotalFundGuranteed.ToString("N0") FCFA</td></tr>
-                <tr><td class="fw-bold">Liquidity Coverage</td><td class="text-end">@loan.PercentageOfLiquidityCoverage %</td></tr>
-                <tr><td class="fw-bold">Collateral Coverage</td><td class="text-end">@loan.PercentageOfCollateralCoverage %</td></tr>
-                <tr><td class="fw-bold">Overall Coverage</td><td class="text-end">@loan.PercentageOfOverAllCoverage %</td></tr>
-            </tbody>
-        </table>
-    </div>
+    var stopInterest = loan.StopInterestCalculation;
+    var stopDateMissing = stopInterest && (loan.DateInterestWastStoped == DateTime.MinValue);
+}
+@{
+    var dailyInts = loan?.DailyInterestCalculations ?? new List<CBS.FrontDesk.Data.Entity.LoanConf.DailyInterestCalculation>();
 
-    <!-- Delinquency -->
-    <div class="card mb-4 shadow-sm">
-        <div class="card-header bg-light text-dark fw-bold border-bottom">Delinquency & Risk</div>
-        <table class="table table-bordered table-sm mb-0">
-            <tbody>
-                <tr><td class="fw-bold">Is Delinquent</td><td class="text-start"><span class="badge bg-@(loan.IsDeliquentLoan ? "danger" : "success")">@((loan.IsDeliquentLoan ? "Yes" : "No"))</span></td></tr>
-                <tr><td class="fw-bold">Delinquent Days</td><td class="text-end">@loan.DeliquentDays</td></tr>
-                <tr><td class="fw-bold">Delinquent Amount</td><td class="text-end">@loan.DeliquentAmount.ToString("N0") FCFA</td></tr>
-                <tr><td class="fw-bold">Last Processed</td><td class="text-end">@loan.LastDeliquecyProcessedDate?.ToString("dd/MM/yyyy")</td></tr>
-                <tr><td class="fw-bold">Is Restructured</td><td class="text-start"><span class="badge bg-@(loan.IsRestructured ? "warning" : "secondary")">@((loan.IsRestructured ? "Yes" : "No"))</span></td></tr>
-                <tr><td class="fw-bold">Write-Off</td><td class="text-start"><span class="badge bg-@(loan.IsWriteOffLoan ? "danger" : "secondary")">@((loan.IsWriteOffLoan ? "Yes" : "No"))</span></td></tr>
-                <tr><td class="fw-bold">Stopped Interest Calculation</td><td class="text-start"><span class="badge bg-@(loan.StopInterestCalculation ? "danger" : "success")">@((loan.StopInterestCalculation ? $"Yes by {loan.StoppedBy}" : "No"))</span></td></tr>
-            </tbody>
-        </table>
-    </div>
+    // sort: latest first
+    dailyInts = dailyInts
+        .OrderByDescending(x => x.Date)
+        .ToList();
 
-    <!-- Repayment -->
-    <div class="card mb-4 shadow-sm">
-        <div class="card-header bg-light text-dark fw-bold border-bottom">Repayment Summary & History</div>
-        <table class="table table-bordered table-sm mb-0">
-            <thead class="table-light">
-                <tr><th>Date</th><th>Amount</th><th>Interest</th><th>Penalty</th><th>VAT</th><th>Balance After</th></tr>
-            </thead>
-            <tbody>
-                @if (loan.Refunds?.Any() == true)
-                {
-                    foreach (var r in loan.Refunds.OrderByDescending(x => x.DateOfPayment))
-                    {
-                        <tr>
-                            <td>@r.DateOfPayment.ToString("dd/MM/yyyy")</td>
-                            <td class="text-end">@r.Amount.ToString("N0")</td>
-                            <td class="text-end">@r.Interest.ToString("N0")</td>
-                            <td class="text-end">@r.Penalty.ToString("N0")</td>
-                            <td class="text-end">@r.Tax.ToString("N0")</td>
-                            <td class="text-end">@r.Balance.ToString("N0")</td>
-                        </tr>
-                    }
-                }
-                else
-                {
-                    <tr><td colspan="6" class="text-muted text-center">No repayments recorded.</td></tr>
-                }
-            </tbody>
-        </table>
-    </div>
+    var hasDailyInts = dailyInts.Any();
 
-    <!-- Interest Calculations -->
-    <div class="card mb-4 shadow-sm">
-        <div class="card-header bg-light text-dark fw-bold border-bottom">Interest Calculations (Top 10)</div>
-        @if (loan.DailyInterestCalculations.Any() == true)
-        {
-            var top10 = loan.DailyInterestCalculations.OrderByDescending(x => x.Date).Take(10).ToList();
-            var totalVat = top10.Sum(x => x.CalculatedVat);
-            var projectedNewBalance = loan.Balance + loan.AccrualInterest;
+    var sumInterest = dailyInts.Sum(x => x.InterestCalculated);
+    var sumVat = dailyInts.Sum(x => x.CalculatedVat);
 
-            <table class="table table-bordered table-sm mb-0">
-                <thead class="table-light">
-                    <tr><th>Date</th><th>Prev Bal</th><th>Rate</th><th>Interest</th><th>VAT %</th><th>VAT</th><th>New Bal</th></tr>
-                </thead>
-                <tbody>
-                    @foreach (var calc in top10)
-                    {
-                        <tr>
-                            <td>@calc.Date.ToString("dd/MM/yyyy")</td>
-                            <td class="text-end">@calc.PreviouseBalance.ToString("N0")</td>
-                            <td class="text-end">@calc.InterestRate.ToString("0.00")</td>
-                            <td class="text-end">@calc.InterestCalculated.ToString("N0")</td>
-                            <td class="text-end">@calc.VatRate.ToString("0.00")</td>
-                            <td class="text-end">@calc.CalculatedVat.ToString("N0")</td>
-                            <td class="text-end">@calc.NewBalance.ToString("N0")</td>
-                        </tr>
-                    }
-                    <tr class="table-light fw-bold text-end">
-                        <td colspan="3">Forecasted</td>
-                        <td>@loan.AccrualInterest.ToString("N0")</td>
-                        <td></td>
-                        <td>@totalVat.ToString("N0")</td>
-                        <td class="text-danger">Projected: @projectedNewBalance.ToString("N0")</td>
-                    </tr>
-                </tbody>
-            </table>
+    var lastIntDate = hasDailyInts ? dailyInts.Max(x => x.Date) : (DateTime?)null;
+
+    // optional: show last 30 days only (toggle if you want)
+    // var cutoff = DateTime.Today.AddDays(-30);
+    // dailyInts = dailyInts.Where(x => x.Date.Date >= cutoff).ToList();
+}
+
+<style>
+    .loan-details-shell {
+        background: #fff;
+    }
+
+    .loan-details-header {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background: #fff;
+        border-bottom: 1px solid #eee;
+        padding: .9rem 1rem;
+    }
+
+    .loan-hero {
+        border: 1px solid #e9ecef;
+        border-radius: 12px;
+        background: #f8fafc;
+        padding: .85rem 1rem;
+    }
+
+        .loan-hero .title {
+            font-weight: 900;
+            letter-spacing: .4px;
+            color: #198754;
+            font-size: 1.15rem;
+            text-transform: uppercase;
+            text-align: center;
         }
-        else
-        {
-            <div class="p-3 text-muted">No interest calculations available.</div>
+
+        .loan-hero .subtitle {
+            text-align: center;
+            color: #6c757d;
+            font-size: .85rem;
+            margin-top: .25rem;
         }
+
+    .loan-meta-line {
+        color: #6c757d;
+        font-size: .85rem;
+        margin-top: .2rem;
+    }
+
+    .code-strong {
+        font-weight: 900;
+        font-size: 1.15rem;
+        color: #0d6efd;
+        letter-spacing: .3px;
+    }
+
+    .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: .4rem;
+        border: 1px solid #e9ecef;
+        border-radius: 999px;
+        padding: .25rem .7rem;
+        background: #fff;
+        font-size: .82rem;
+        line-height: 1;
+        white-space: nowrap;
+    }
+
+        .pill .k {
+            color: #6c757d;
+            font-weight: 700;
+        }
+
+        .pill .v {
+            font-weight: 800;
+        }
+
+    .loan-badge-row .badge {
+        font-size: .78rem;
+        padding: .45rem .6rem;
+        border-radius: .55rem;
+    }
+
+    .loan-card {
+        border: 1px solid #e9ecef;
+        border-radius: 12px;
+        background: #fff;
+    }
+
+    .loan-card-title {
+        font-weight: 900;
+        font-size: .92rem;
+        color: #0d6efd;
+        display: flex;
+        align-items: center;
+        gap: .4rem;
+        margin-bottom: .45rem;
+    }
+
+    .kv-table td {
+        padding: .45rem .6rem;
+        vertical-align: middle;
+        border-color: #f0f0f0;
+    }
+
+        .kv-table td.k {
+            width: 56%;
+            color: #6c757d;
+            font-weight: 700;
+        }
+
+        .kv-table td.v {
+            width: 44%;
+            text-align: right;
+            font-weight: 800;
+            color: #212529;
+        }
+
+    .small-note {
+        font-size: .82rem;
+        color: #6c757d;
+    }
+
+    .table-tight td, .table-tight th {
+        padding: .45rem .6rem;
+    }
+
+    .list-scroll {
+        max-height: 320px;
+        overflow: auto;
+        border: 1px solid #f0f0f0;
+        border-radius: 12px;
+        background: #fff;
+    }
+
+    .btn-icon {
+        padding: .25rem .45rem;
+        line-height: 1;
+    }
+
+    .nav-tabs .nav-link {
+        font-weight: 800;
+        font-size: .84rem;
+        color: #6c757d;
+    }
+
+        .nav-tabs .nav-link.active {
+            color: #0d6efd;
+        }
+
+    /* make top-right labels look like the screenshot */
+    .top-labels {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .5rem;
+        align-items: center;
+        justify-content: flex-end;
+        padding: .25rem .25rem;
+    }
+    /* Horizontal scroll for long tab lists */
+    .loan-tabs-wrap {
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        border-bottom: 1px solid #dee2e6; /* aligns with bootstrap tabs underline */
+        padding-bottom: 2px; /* keeps underline visible while scrolling */
+    }
+
+    /* Keep tabs on one line */
+    .loan-tabs {
+        flex-wrap: nowrap !important;
+        white-space: nowrap;
+        width: max-content; /* important: makes the ul wider than container */
+        min-width: 100%; /* keeps underline full width */
+        border-bottom: 0; /* wrapper holds underline */
+    }
+
+        /* Make each tab not shrink */
+        .loan-tabs .nav-item {
+            flex: 0 0 auto;
+        }
+
+        /* Optional: nicer look in modal / compact */
+        .loan-tabs .nav-link {
+            padding: .65rem .9rem;
+            font-weight: 800;
+            font-size: .84rem;
+        }
+
+    /* Optional: hide ugly scrollbar but keep scrolling */
+    .loan-tabs-wrap::-webkit-scrollbar {
+        height: 6px;
+    }
+
+    .loan-tabs-wrap::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+    }
+
+    .loan-tab-content-scroll {
+        max-height: calc(100vh - 260px); /* adjust if your modal header/footer differs */
+        overflow-y: auto;
+    }
+</style>
+<style>
+    .loan-tabs-wrap {
+        border: 1px solid #e9ecef;
+        border-radius: 14px;
+        background: #fff;
+        padding: 8px 10px;
+        box-shadow: 0 1px 2px rgba(16,24,40,.05);
+    }
+
+    /* horizontal scroll */
+    .loan-tabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        gap: 8px;
+        border-bottom: 0;
+        padding-bottom: 4px;
+        scrollbar-width: thin;
+    }
+
+        /* nicer scrollbar (chromium) */
+        .loan-tabs::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .loan-tabs::-webkit-scrollbar-thumb {
+            background: #d9dee7;
+            border-radius: 999px;
+        }
+
+        .loan-tabs::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        /* tab button style = pill chips */
+        .loan-tabs .nav-link {
+            border: 1px solid transparent;
+            border-radius: 999px;
+            padding: .45rem .75rem;
+            font-weight: 600;
+            font-size: .875rem;
+            color: #495057;
+            background: #f8f9fa;
+            display: flex;
+            align-items: center;
+            gap: .45rem;
+            white-space: nowrap;
+            transition: all .15s ease-in-out;
+        }
+
+            .loan-tabs .nav-link i {
+                font-size: 1.05rem;
+                opacity: .9;
+            }
+
+            /* hover */
+            .loan-tabs .nav-link:hover {
+                background: #eef2f7;
+                border-color: #e1e6ef;
+                color: #212529;
+            }
+
+            /* active */
+            .loan-tabs .nav-link.active {
+                background: #0d6efd;
+                color: #fff;
+                border-color: #0d6efd;
+                box-shadow: 0 6px 16px rgba(13,110,253,.18);
+            }
+
+            /* keep focus clean */
+            .loan-tabs .nav-link:focus {
+                box-shadow: 0 0 0 .2rem rgba(13,110,253,.15);
+            }
+    /* ===== TAX BADGES (very visible) ===== */
+    .badge-tax {
+        font-weight: 700;
+        letter-spacing: .3px;
+        padding: .45rem .6rem;
+        border-radius: 999px;
+        border: 1px solid transparent;
+        box-shadow: 0 0 .6rem rgba(0,0,0,.08);
+    }
+
+    .badge-taxable {
+        background: rgba(13,110,253,.14);
+        color: #0d6efd;
+        border-color: rgba(13,110,253,.35);
+    }
+
+    .badge-nontaxable {
+        background: rgba(220,53,69,.14);
+        color: #dc3545;
+        border-color: rgba(220,53,69,.35);
+    }
+
+    .badge-tax .dot {
+        display: inline-block;
+        width: .55rem;
+        height: .55rem;
+        border-radius: 50%;
+        margin-right: .35rem;
+        vertical-align: -1px;
+    }
+
+    .badge-taxable .dot {
+        background: #0d6efd;
+    }
+
+    .badge-nontaxable .dot {
+        background: #dc3545;
+    }
+    /* ===== Delinquency severity (visible but clean) ===== */
+    .badge-sev {
+        font-weight: 700;
+        letter-spacing: .35px;
+        padding: .45rem .6rem;
+        border-radius: 999px;
+        border: 1px solid transparent;
+        box-shadow: 0 0 .6rem rgba(0,0,0,.08);
+    }
+
+        .badge-sev .dot {
+            display: inline-block;
+            width: .55rem;
+            height: .55rem;
+            border-radius: 50%;
+            margin-right: .35rem;
+            vertical-align: -1px;
+        }
+
+    /* OK */
+    .sev-ok {
+        background: rgba(25,135,84,.14);
+        color: #198754;
+        border-color: rgba(25,135,84,.35);
+    }
+
+        .sev-ok .dot {
+            background: #198754;
+        }
+
+    /* MED */
+    .sev-med {
+        background: rgba(255,193,7,.18);
+        color: #b58100;
+        border-color: rgba(255,193,7,.45);
+    }
+
+        .sev-med .dot {
+            background: #ffc107;
+        }
+
+    /* HIGH */
+    .sev-high {
+        background: rgba(253,126,20,.18);
+        color: #fd7e14;
+        border-color: rgba(253,126,20,.45);
+    }
+
+        .sev-high .dot {
+            background: #fd7e14;
+        }
+
+    /* CRITICAL */
+    .sev-critical {
+        background: rgba(220,53,69,.16);
+        color: #dc3545;
+        border-color: rgba(220,53,69,.40);
+    }
+
+        .sev-critical .dot {
+            background: #dc3545;
+        }
+
+    /* reuse on inline text */
+    .sev-text.sev-ok {
+        color: #198754 !important;
+        background: none;
+        border: none;
+        box-shadow: none;
+        padding: 0;
+    }
+
+    .sev-text.sev-med {
+        color: #b58100 !important;
+        background: none;
+        border: none;
+        box-shadow: none;
+        padding: 0;
+    }
+
+    .sev-text.sev-high {
+        color: #fd7e14 !important;
+        background: none;
+        border: none;
+        box-shadow: none;
+        padding: 0;
+    }
+
+    .sev-text.sev-critical {
+        color: #dc3545 !important;
+        background: none;
+        border: none;
+        box-shadow: none;
+        padding: 0;
+    }
+    /* ===== Taxability indicator (system/posting) ===== */
+    .badge-taxable {
+        background: rgba(13,110,253,.14);
+        color: #0d6efd;
+        border: 1px solid rgba(13,110,253,.35);
+        font-weight: 700;
+        border-radius: 999px;
+        padding: .42rem .6rem;
+    }
+
+    .badge-nontax {
+        background: rgba(108,117,125,.14);
+        color: #6c757d;
+        border: 1px solid rgba(108,117,125,.35);
+        font-weight: 700;
+        border-radius: 999px;
+        padding: .42rem .6rem;
+    }
+
+
+</style>
+<style>
+    .loan-details-header-v2{
+    padding: 12px 12px 10px;
+    border: 1px solid rgba(0,0,0,.08);
+    border-radius: 12px;
+    background: #fff;
+}
+
+.meta-inline{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding: 4px 8px;
+    border: 1px solid rgba(0,0,0,.08);
+    border-radius: 10px;
+    background: #f8f9fa;
+}
+
+.meta-inline .lbl{
+    font-size: 12px;
+    color: #6c757d;
+}
+.meta-inline .val{
+    font-weight: 700;
+}
+
+.loan-meta-grid{
+    display:grid;
+    grid-template-columns: repeat(3, minmax(220px, 1fr));
+    gap: 10px 14px;
+}
+
+@@media (max-width: 992px){
+    .loan-meta-grid{ grid-template-columns: repeat(2, minmax(220px, 1fr)); }
+}
+@@media (max-width: 576px){
+    .loan-meta-grid{ grid-template-columns: 1fr; }
+}
+
+.meta-item{
+    padding: 8px 10px;
+    border: 1px solid rgba(0,0,0,.07);
+    border-radius: 10px;
+    background: #fff;
+}
+.meta-item .lbl{
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    color: #6c757d;
+    margin-bottom: 2px;
+}
+.meta-item .val{
+    font-weight: 600;
+    line-height: 1.25;
+}
+
+.code-pill{
+    display:inline-flex;
+    align-items:center;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: #f1f3f5;
+    border: 1px solid rgba(0,0,0,.08);
+    font-weight: 700;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 12px;
+}
+
+.btn-icon{
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    border-radius: 10px;
+}
+
+/* chips row */
+.loan-chips{
+    display:flex;
+    flex-wrap:wrap;
+    gap: 8px;
+}
+.chip{
+    display:inline-flex;
+    align-items:center;
+    gap: 8px;
+    padding: 6px 10px;
+    border: 1px solid rgba(0,0,0,.08);
+    border-radius: 999px;
+    background: #fff;
+}
+.chip .k{
+    font-size: 12px;
+    color:#6c757d;
+}
+.chip .b{
+    font-weight: 800;
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 999px;
+}
+
+/* soft badges (consistent + readable) */
+.badge-soft-success{ background:#e7f6ee; color:#0f5132; }
+.badge-soft-danger{ background:#fde7ea; color:#842029; }
+.badge-soft-warning{ background:#fff3cd; color:#664d03; }
+.badge-soft-info{ background:#e7f1ff; color:#084298; }
+.badge-soft-secondary{ background:#eef0f2; color:#343a40; }
+.badge-soft-dark{ background:#e9ecef; color:#212529; }
+
+/* Origin tile highlight */
+.origin-native{
+    border: 2px solid rgba(25,135,84,.20);
+    background: linear-gradient(0deg, rgba(25,135,84,.06), #fff);
+}
+.origin-migrated{
+    border: 2px solid rgba(255,193,7,.30);
+    background: linear-gradient(0deg, rgba(255,193,7,.10), #fff);
+}
+
+/* keep meta tiles consistent */
+.loan-meta-grid{
+    display:grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+}
+@@media (max-width: 992px){
+    .loan-meta-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@@media (max-width: 576px){
+    .loan-meta-grid{ grid-template-columns: 1fr; }
+}
+
+</style>
+@if (!hasLoan)
+{
+    <div class="alert alert-warning m-3">
+        No loan selected. Please click <b>Details</b> on a loan row.
+    </div>
+    return;
+}
+
+<div class="loan-details-shell">
+
+    @{
+        //// ----------------------------
+        //// 1) MIGRATION ORIGIN
+        //// ----------------------------
+        //var isMigrated =
+        //    loan.IsUpload
+        //    || (loan.MigrationDate != DateTime.MinValue && loan.MigrationDate != default(DateTime))
+        //    || !string.IsNullOrWhiteSpace(loan.LoanId); // legacy id often exists for migrated
+
+        var originText = isMigrated ? "MIGRATED LOAN" : "NATIVE (CORE)";
+        var originBadgeClass = isMigrated ? "badge-soft-warning" : "badge-soft-success";
+        var originCardClass = isMigrated ? "origin-migrated" : "origin-native";
+
+        // ----------------------------
+        // 2) INTEREST STATE
+        // ----------------------------
+        var hasInterest = loan.InterestRate > 0; // your rule: if 0 => NO INTEREST
+
+        var interestState =
+            !hasInterest ? "NO INTEREST"
+            : stopInterest ? "STOPPED"
+            : "RUNNING";
+
+        var interestBadgeClass =
+            !hasInterest ? "badge-soft-secondary"
+            : stopInterest ? "badge-soft-dark"
+            : "badge-soft-success";
+
+        // ----------------------------
+        // 3) STATUS CHIP COLOR
+        // ----------------------------
+        var isOpen = string.Equals(loan.LoanStatus, "Open", StringComparison.OrdinalIgnoreCase);
+        var statusBadgeClass = isOpen ? "badge-soft-success" : "badge-soft-secondary";
+    }
+
+    <div class="loan-details-header-v2">
+
+        <!-- ROW 1: Title + actions -->
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
+            <div class="d-flex align-items-center gap-2 flex-wrap">
+                <div class="fw-bold fs-5">
+                    <i class="mdi mdi-file-document-outline me-1"></i> Loan Details
+                </div>
+
+                <div class="meta-inline">
+                    <span class="lbl">Contract</span>
+                    <span id="copyContract" class="val code-strong" data-copy="@Txt(loan.LoanContractCode)">
+                        @Txt(loan.LoanContractCode)
+                    </span>
+                    <button type="button" class="btn btn-sm btn-outline-secondary btn-icon"
+                            title="Copy Contract Code" onclick="copyFromEl('copyContract')">
+                        <i class="mdi mdi-content-copy"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="d-flex gap-2 flex-wrap">
+                <button type="button" class="btn btn-sm btn-outline-primary" onclick="window.print()">
+                    <i class="mdi mdi-printer-outline me-1"></i> Print
+                </button>
+                <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">
+                    <i class="mdi mdi-close me-1"></i> Close
+                </button>
+            </div>
+        </div>
+
+        <!-- ROW 2: Info grid -->
+        <div class="loan-meta-grid">
+
+            <div class="meta-item">
+                <div class="lbl">Member</div>
+                <div class="val">@Txt(loan.CustomerName)</div>
+            </div>
+
+            <div class="meta-item">
+                <div class="lbl">CustomerId</div>
+                <div class="val d-flex align-items-center gap-2">
+                    <span id="copyCustomerId" class="code-pill" data-copy="@Txt(loan.CustomerId)">@Txt(loan.CustomerId)</span>
+                    <button type="button" class="btn btn-sm btn-outline-secondary btn-icon"
+                            title="Copy CustomerId" onclick="copyFromEl('copyCustomerId')">
+                        <i class="mdi mdi-content-copy"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="meta-item">
+                <div class="lbl">LoanId</div>
+                <div class="val d-flex align-items-center gap-2">
+                    <span id="copyLoanId" class="code-pill" data-copy="@Txt(loan.Id)">@Txt(loan.Id)</span>
+                    <button type="button" class="btn btn-sm btn-outline-secondary btn-icon"
+                            title="Copy LoanId" onclick="copyFromEl('copyLoanId')">
+                        <i class="mdi mdi-content-copy"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="meta-item">
+                <div class="lbl">Account</div>
+                <div class="val d-flex align-items-center gap-2">
+                    <span id="copyAccountNo" class="code-pill" data-copy="@Txt(loan.AccountNumber)">@Txt(loan.AccountNumber)</span>
+                    <button type="button" class="btn btn-sm btn-outline-secondary btn-icon"
+                            title="Copy Account" onclick="copyFromEl('copyAccountNo')">
+                        <i class="mdi mdi-content-copy"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="meta-item">
+                <div class="lbl">Branch</div>
+                <div class="val">@Txt(loan.BranchName) (@Txt(loan.BranchCode))</div>
+            </div>
+
+            <div class="meta-item">
+                <div class="lbl">Routing</div>
+                <div class="val">
+                    <span class="text-muted">Init:</span>
+                    <b id="copyInitBranch" data-copy="@Txt(loan.InitiatingBranchId)">@Txt(loan.InitiatingBranchId)</b>
+                    <button type="button" class="btn btn-sm btn-outline-secondary btn-icon ms-1"
+                            title="Copy Initiating BranchId" onclick="copyFromEl('copyInitBranch')">
+                        <i class="mdi mdi-content-copy"></i>
+                    </button>
+
+                    <span class="mx-2 text-muted">•</span>
+
+                    <span class="text-muted">Disb:</span>
+                    <b id="copyDisbBranch" data-copy="@($"{Txt(loan.RDisbursementBranchName)} ({Txt(loan.RDisbursementBranchCode)})")">
+                        @Txt(loan.RDisbursementBranchName) (@Txt(loan.RDisbursementBranchCode))
+                    </b>
+                    <button type="button" class="btn btn-sm btn-outline-secondary btn-icon ms-1"
+                            title="Copy Disbursement Branch" onclick="copyFromEl('copyDisbBranch')">
+                        <i class="mdi mdi-content-copy"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ✅ NEW: ORIGIN TILE (fills the red area) -->
+            <div class="meta-item @originCardClass">
+                <div class="lbl d-flex justify-content-between align-items-center">
+                    <span>Origin</span>
+                    <span class="badge @originBadgeClass">@originText</span>
+                </div>
+
+                <div class="val">
+                    @if (isMigrated)
+                    {
+                        <div class="small-note">
+                            <i class="mdi mdi-database-import-outline me-1"></i>
+                            Migration Date: <b>@FDateNullable(loan.MigrationDate)</b>
+                        </div>
+
+                        if (!string.IsNullOrWhiteSpace(loan.LoanId))
+                        {
+                            <div class="small-note text-muted">
+                                Legacy LoanId: <b>@Txt(loan.LoanId)</b>
+                            </div>
+                        }
+
+                        <div class="small-note text-muted">
+                            Upload Flag: <b>@(loan.IsUpload ? "YES" : "NO")</b>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="small-note">
+                            <i class="mdi mdi-shield-check-outline me-1 text-success"></i>
+                            Core workflow loan (non-migrated).
+                        </div>
+                    }
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ROW 3: Chips -->
+        <div class="loan-chips mt-2">
+            <span class="chip">
+                <span class="k">Status</span>
+                <span class="b @statusBadgeClass">@Txt(loan.LoanStatus)</span>
+            </span>
+
+            <span class="chip">
+                <span class="k">Category</span>
+                <span class="b badge-soft-secondary">@Txt(loan.LoanCategory)</span>
+            </span>
+
+            <span class="chip">
+                <span class="k">Type</span>
+                <span class="b badge-soft-dark">@Txt(loan.LoanType)</span>
+            </span>
+
+            <span class="chip">
+                <span class="k">Delinq</span>
+                <span class="b @(isDelinq ? "badge-soft-danger" : "badge-soft-success")">@(isDelinq ? "YES" : "OK")</span>
+            </span>
+
+            <span class="chip">
+                <span class="k">Interest</span>
+                <span class="b @interestBadgeClass">@interestState</span>
+            </span>
+
+            <span class="chip">
+                <span class="k">Origin</span>
+                <span class="b @originBadgeClass">@(isMigrated ? "MIGRATED" : "NATIVE")</span>
+            </span>
+
+            @if (hasAdvance)
+            {
+                <span class="chip">
+                    <span class="k">Advance</span>
+                    <span class="b badge-soft-info">YES</span>
+                </span>
+            }
+        </div>
+
     </div>
 
+
+    <div class="p-3">
+
+        <!-- NAV -->
+        <!-- NAV (scrollable) -->
+        <div class="loan-tabs-wrap">
+            <ul class="nav nav-tabs loan-tabs" role="tablist">
+                <li class="nav-item">
+                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#t_overview" type="button" title="Overview">
+                        <i class="mdi mdi-view-dashboard-outline"></i><span>Overview</span>
+                    </button>
+                </li>
+
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#t_financials" type="button" title="Financials">
+                        <i class="mdi mdi-cash-multiple"></i><span>Money</span>
+                    </button>
+                </li>
+
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#t_repayment" type="button" title="Repayments">
+                        <i class="mdi mdi-history"></i><span>Payments</span>
+                    </button>
+                </li>
+
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#t_risk" type="button" title="Delinquency & Risk">
+                        <i class="mdi mdi-alert-decagram-outline"></i><span>Risk</span>
+                    </button>
+                </li>
+
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#t_product" type="button" title="Product & Purpose">
+                        <i class="mdi mdi-package-variant-closed"></i><span>Product</span>
+                    </button>
+                </li>
+
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#t_documents" type="button" title="Documents">
+                        <i class="mdi mdi-folder-multiple-outline"></i><span>Docs</span>
+                    </button>
+                </li>
+
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#t_pcmf" type="button" title="PCMF">
+                        <i class="mdi mdi-shield-check-outline"></i><span>PCMF</span>
+                    </button>
+                </li>
+
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#t_cobac" type="button" title="COBAC / Compliance">
+                        <i class="mdi mdi-shield-star-outline"></i><span>COBAC</span>
+                    </button>
+                </li>
+
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#t_system" type="button" title="System / Posting">
+                        <i class="mdi mdi-bank-outline"></i><span>Posting</span>
+                    </button>
+                </li>
+
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#t_audit" type="button" title="Audit / Extra">
+                        <i class="mdi mdi-clipboard-text-outline"></i><span>Audit</span>
+                    </button>
+                </li>
+            </ul>
+        </div>
+
+        <div class="tab-content pt-3 loan-tab-content-scroll">
+            <div class="tab-content pt-3">
+
+                <!-- ===================== OVERVIEW ===================== -->
+                <div class="tab-pane fade show active" id="t_overview">
+                    <div class="row g-3">
+                        <div class="col-lg-6">
+                            <div class="loan-card p-3">
+
+                                <!-- header + quick badges -->
+                                <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                                    <div class="loan-card-title mb-0">
+                                        <i class="mdi mdi-card-account-details-outline"></i> Identity & Status
+                                    </div>
+
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <span class="badge @(isMigrated ? "bg-dark" : "bg-light text-dark border")">
+                                            @(isMigrated ? "MIGRATED" : "NATIVE")
+                                        </span>
+
+                                        @if (isRestructured)
+                                        {
+                                            <span class="badge bg-info text-dark">RESTRUCTURED</span>
+                                        }
+                                        @if (isRefinanced)
+                                        {
+                                            <span class="badge bg-primary">REFINANCED</span>
+                                        }
+
+                                        <span class="badge @(loan.IsLoanDisbursted ? "bg-success" : "bg-secondary")">
+                                            @(loan.IsLoanDisbursted ? "DISBURSED" : "NOT DISBURSED")
+                                        </span>
+
+                                        <span class="badge @(string.Equals(loan.LoanStatus, "Open", StringComparison.OrdinalIgnoreCase) ? "bg-success" : "bg-secondary")">
+                                            @Txt(loan.LoanStatus)
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <!-- migrated hint -->
+                                @if (isMigrated)
+                                {
+                                    <div class="small-note mt-2">
+                                        <i class="mdi mdi-database-import-outline me-1"></i>
+                                        Migration Date: <b>@FDateNullable(loan.MigrationDate)</b>
+                                        @if (!string.IsNullOrWhiteSpace(loan.LoanId))
+                                        {
+                                            <span class="text-muted">• Legacy LoanId: <b>@Txt(loan.LoanId)</b></span>
+                                        }
+                                    </div>
+                                }
+
+                                <!-- related loan action -->
+                                @if (!string.IsNullOrWhiteSpace(relatedLoanId))
+                                {
+                                    <div class="mt-2">
+                                        <a class="btn btn-sm btn-outline-info"
+                                           href="@Url.Action("LoanDetails","CashDesk", new { loanId = relatedLoanId })">
+                                            <i class="mdi mdi-open-in-new me-1"></i>
+                                            Open @(isRestructured ? "Restructured" : "Related") Loan
+                                        </a>
+                                    </div>
+                                }
+
+                                <table class="table table-sm kv-table mb-0 mt-2">
+
+                                    <!-- Identity -->
+                                    <tr class="table-light">
+                                        <td colspan="2" class="fw-bold small">Identity</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="k">Customer Name</td>
+                                        <td class="v fw-bold">@Txt(loan.CustomerName)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="k">Loan Contract Code</td>
+                                        <td class="v">@Txt(loan.LoanContractCode)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="k">Loan Id</td>
+                                        <td class="v">@Txt(loan.Id)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="k">Customer Id</td>
+                                        <td class="v">@Txt(loan.CustomerId)</td>
+                                    </tr>
+
+                                    <!-- Origin / Migration -->
+                                    <tr class="table-light">
+                                        <td colspan="2" class="fw-bold small">Origin</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="k">Loan Origin</td>
+                                        <td class="v">
+                                            @if (isMigrated)
+                                            {
+                                                <span class="badge bg-dark">MIGRATED</span>
+                                                <span class="text-muted ms-2">• @FDateNullable(loan.MigrationDate)</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-light text-dark border">NATIVE (CORE)</span>
+                                            }
+                                        </td>
+                                    </tr>
+
+                                    <!-- Status -->
+                                    <tr class="table-light">
+                                        <td colspan="2" class="fw-bold small">Status</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="k">Loan Status</td>
+                                        <td class="v">
+                                            <span class="badge @(string.Equals(loan.LoanStatus, "Open", StringComparison.OrdinalIgnoreCase) ? "bg-success" : "bg-secondary")">
+                                                @Txt(loan.LoanStatus)
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr><td class="k">Journey Status</td><td class="v">@Txt(loan.LoanJourneyStatus)</td></tr>
+                                    <tr><td class="k">Loan Category</td><td class="v">@Txt(loan.LoanCategory)</td></tr>
+                                    <tr><td class="k">Loan Type</td><td class="v">@Txt(loan.LoanType)</td></tr>
+                                    <tr><td class="k">Type Category</td><td class="v">@Txt(loan.LoanTypeCategory)</td></tr>
+
+                                    <!-- Restructure / Refinance -->
+                                    <tr class="table-light">
+                                        <td colspan="2" class="fw-bold small">Restructure / Refinance</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="k">Status</td>
+                                        <td class="v">
+                                            @if (isRestructured)
+                                            {
+                                                <span class="badge bg-info text-dark">RESTRUCTURED</span>
+                                                if (!string.IsNullOrWhiteSpace(loan.NewLoanId))
+                                                {
+                                                    <span class="text-muted ms-2">• New LoanId: <b>@Txt(loan.NewLoanId)</b></span>
+                                                }
+                                            }
+                                            else if (isRefinanced)
+                                            {
+                                                <span class="badge bg-primary">REFINANCED</span>
+                                                if (string.IsNullOrWhiteSpace(relatedLoanId))
+                                                {
+                                                    <span class="text-muted ms-2">• Related loan not available</span>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted">None</span>
+                                            }
+                                        </td>
+                                    </tr>
+
+                                    <!-- Disbursement -->
+                                    <tr class="table-light">
+                                        <td colspan="2" class="fw-bold small">Disbursement</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="k">Is Disbursed?</td>
+                                        <td class="v">
+                                            <span class="badge @(loan.IsLoanDisbursted ? "bg-success" : "bg-secondary")">
+                                                @(loan.IsLoanDisbursted ? "YES" : "NO")
+                                            </span>
+                                            @if (!string.IsNullOrWhiteSpace(loan.DisbursmentStatus))
+                                            {
+                                                <span class="text-muted ms-2">• @Txt(loan.DisbursmentStatus)</span>
+                                            }
+                                        </td>
+                                    </tr>
+
+                                    <!-- Ownership -->
+                                    <tr class="table-light">
+                                        <td colspan="2" class="fw-bold small">Ownership</td>
+                                    </tr>
+                                    <tr><td class="k">Loan Manager</td><td class="v">@Txt(loan.LoanManager)</td></tr>
+                                    <tr><td class="k">Disbursed By</td><td class="v">@Txt(loan.LoanDisbursedBy)</td></tr>
+
+                                    <!-- Flags -->
+                                    <tr class="table-light">
+                                        <td colspan="2" class="fw-bold small">Flags</td>
+                                    </tr>
+                                    <tr><td class="k">Write-Off</td><td class="v">@(loan.IsWriteOffLoan ? "YES" : "NO")</td></tr>
+                                    <tr><td class="k">Current Loan</td><td class="v">@(loan.IsCurrentLoan ? "YES" : "NO")</td></tr>
+                                    <tr><td class="k">Completed</td><td class="v">@(loan.IsCompleted ? "YES" : "NO")</td></tr>
+
+                                    <!-- Audit -->
+                                    <tr class="table-light">
+                                        <td colspan="2" class="fw-bold small">Audit</td>
+                                    </tr>
+                                    <tr><td class="k">Last Event Date</td><td class="v">@FDate(loan.LastEventData)</td></tr>
+
+                                </table>
+                            </div>
+                        </div>
+
+
+                        <div class="col-lg-6">
+                            <div class="loan-card p-3">
+                                <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                                    <div class="loan-card-title mb-0">
+                                        <i class="mdi mdi-calendar-clock-outline"></i> Dates & Schedule
+                                    </div>
+
+                                    <!-- top quick badges -->
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <span class="badge @(isMigrated ? "bg-dark" : "bg-light text-dark border")">
+                                            @(isMigrated ? "MIGRATED" : "NATIVE")
+                                        </span>
+
+                                        @if (isRestructured)
+                                        {
+                                            <span class="badge bg-info text-dark">RESTRUCTURED</span>
+                                        }
+                                        @if (isRefinanced)
+                                        {
+                                            <span class="badge bg-primary">REFINANCED</span>
+                                        }
+
+                                        <span class="badge @(stopInterest ? "bg-dark" : "bg-light text-dark border")">
+                                            INT: @(stopInterest ? "STOPPED" : "RUNNING")
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <!-- migrated hint -->
+                                @if (isMigrated)
+                                {
+                                    <div class="small-note mt-2">
+                                        <i class="mdi mdi-database-import-outline me-1"></i>
+                                        Migration Date: <b>@FDateNullable(loan.MigrationDate)</b>
+                                        @if (!string.IsNullOrWhiteSpace(loan.LoanId))
+                                        {
+                                            <span class="text-muted">• Legacy LoanId: <b>@Txt(loan.LoanId)</b></span>
+                                        }
+                                    </div>
+                                }
+
+                                <!-- restructure link -->
+                                @if (!string.IsNullOrWhiteSpace(relatedLoanId))
+                                {
+                                    <div class="mt-2">
+                                        <a class="btn btn-sm btn-outline-info"
+                                           href="@Url.Action("LoanDetails","CashDesk", new { loanId = relatedLoanId })">
+                                            <i class="mdi mdi-open-in-new me-1"></i> Open Related Loan
+                                        </a>
+                                    </div>
+                                }
+
+                                <table class="table table-sm kv-table mb-0 mt-2">
+
+                                    <!-- Timeline -->
+                                    <tr class="table-light">
+                                        <td colspan="2" class="fw-bold small">Timeline</td>
+                                    </tr>
+                                    <tr><td class="k">Loan Date</td><td class="v">@FDate(loan.LoanDate)</td></tr>
+                                    <tr><td class="k">Disbursement Date</td><td class="v">@FDate(loan.DisbursementDate)</td></tr>
+
+                                    <!-- Installments -->
+                                    <tr class="table-light">
+                                        <td colspan="2" class="fw-bold small">Installment Schedule</td>
+                                    </tr>
+                                    <tr><td class="k">First Installment Date</td><td class="v">@FDateShort(loan.FirstInstallmentDate)</td></tr>
+                                    <tr><td class="k">Next Installment Date</td><td class="v">@FDateShort(loan.NextInstallmentDate)</td></tr>
+                                    <tr><td class="k">Maturity Date</td><td class="v">@FDateShort(loan.MaturityDate)</td></tr>
+
+                                    <!-- Processing -->
+                                    <tr class="table-light">
+                                        <td colspan="2" class="fw-bold small">Processing Dates</td>
+                                    </tr>
+                                    <tr><td class="k">Last Refund Date</td><td class="v">@FDate(loan.LastRefundDate)</td></tr>
+                                    <tr><td class="k">Last Interest Calc Date</td><td class="v">@FDate(loan.LastInterestCalculatedDate)</td></tr>
+                                    <tr><td class="k">Last Delinquency Proc</td><td class="v">@FDateNullable(loan.LastDeliquecyProcessedDate)</td></tr>
+
+                                    <!-- Structuring -->
+                                    <tr class="table-light">
+                                        <td colspan="2" class="fw-bold small">Structuring</td>
+                                    </tr>
+                                    <tr><td class="k">Structuring Date</td><td class="v">@FDate(loan.LoanStructuringDate)</td></tr>
+                                    <tr><td class="k">Structuring Status</td><td class="v">@Txt(loan.LoanStructuringStatus)</td></tr>
+
+                                    <!-- Interest stop control -->
+                                    <tr class="table-light">
+                                        <td colspan="2" class="fw-bold small">Interest Stop / Controls</td>
+                                    </tr>
+                                    <tr><td class="k">Interest Stop?</td><td class="v">@(stopInterest ? "YES" : "NO")</td></tr>
+                                    <tr><td class="k">Stopped By</td><td class="v">@Txt(loan.StoppedBy)</td></tr>
+                                    <tr>
+                                        <td class="k">Stop Date</td>
+                                        <td class="v">
+                                            @if (stopDateMissing)
+                                            {
+                                                <span class="text-danger fw-bold">STOPPED BUT DATE MISSING</span>
+                                            }
+                                            else
+                                            {
+                                                @FDate(loan.DateInterestWastStoped)
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr><td class="k">Stop Comment</td><td class="v">@Txt(loan.InterestStoppedComment)</td></tr>
+
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- initiation / disbursement branches (UPDATED + FULL TRACEABILITY + MIGRATION/RESTRUCTURE/REFINANCE) -->
+                        <div class="col-lg-12">
+                            <div class="loan-card p-3">
+
+                                <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-2">
+                                    <div class="loan-card-title mb-0">
+                                        <i class="mdi mdi-source-branch"></i>
+                                        Initiation, Approval & Disbursement Traceability
+                                    </div>
+
+                                    <!-- TOP BADGES (VERY VISIBLE) -->
+                                    <div class="d-flex flex-wrap gap-2">
+
+                                        <!-- MIGRATION BADGE -->
+                                        <span class="badge @(isMigrated ? "bg-dark" : "bg-light text-dark border")">
+                                            @(isMigrated ? "MIGRATED LOAN" : "NATIVE LOAN")
+                                        </span>
+
+                                        <!-- RESTRUCTURE / REFINANCE BADGES -->
+                                        @if (isRestructured)
+                                        {
+                                            <span class="badge bg-info text-dark">
+                                                RESTRUCTURED
+                                            </span>
+                                        }
+                                        @if (isRefinanced)
+                                        {
+                                            <span class="badge bg-primary">
+                                                REFINANCED
+                                            </span>
+                                        }
+
+                                        <!-- DISBURSEMENT + POSTING BADGES -->
+                                        <span class="badge @(string.Equals(loan.DisbursmentStatus,"Disbursed",StringComparison.OrdinalIgnoreCase) || loan.IsLoanDisbursted ? "bg-success" : "bg-secondary")">
+                                            DISB: @(loan.IsLoanDisbursted ? "YES" : "NO")
+                                        </span>
+
+                                        <span class="badge @(loan.RDisbursementAccountingPostingStatus ? "bg-success" : "bg-warning text-dark")">
+                                            DISB POST: @(loan.RDisbursementAccountingPostingStatus ? "DONE" : "PENDING")
+                                        </span>
+
+                                        <span class="badge @(loan.RApprovalAccountingPostingStatus ? "bg-success" : "bg-warning text-dark")">
+                                            APRV POST: @(loan.RApprovalAccountingPostingStatus ? "DONE" : "PENDING")
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <!-- MIGRATION / RESTRUCTURE / REFINANCE DETAILS (CLEAR BLOCK) -->
+                                <div class="row g-3 mb-2">
+
+                                    @if (isMigrated)
+                                    {
+                                        <div class="col-lg-12">
+                                            <div class="alert alert-dark py-2 mb-0">
+                                                <div class="fw-bold">
+                                                    <i class="mdi mdi-database-import-outline me-1"></i>
+                                                    This is a <u>MIGRATED</u> loan.
+                                                </div>
+                                                <div class="small-note">
+                                                    Migration information is shown below for audit traceability.
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="small-note">Legacy LoanId (Upload)</div>
+                                            <div class="fw-bold">@Txt(loan.LoanId)</div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="small-note">Migration Date</div>
+                                            <div class="fw-bold">@FDateNullable(loan.MigrationDate)</div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="small-note">Upload Flag</div>
+                                            <div class="fw-bold">@(loan.IsUpload ? "YES" : "NO")</div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="col-lg-12">
+                                            <div class="alert alert-light border py-2 mb-0">
+                                                <div class="fw-bold">
+                                                    <i class="mdi mdi-check-decagram-outline me-1 text-success"></i>
+                                                    This is a <u>NATIVE</u> (non-migrated) loan.
+                                                </div>
+                                                <div class="small-note">
+                                                    All initiation/approval/disbursement states are from the core workflow.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+
+                                    @if (isRestructured)
+                                    {
+                                        <div class="col-md-6">
+                                            <div class="small-note">Restructure Status</div>
+                                            <div class="fw-bold text-info">
+                                                YES • This loan has been restructured
+                                            </div>
+                                            <div class="small-note">
+                                                Related (New) LoanId: <span class="fw-bold">@Txt(loan.NewLoanId)</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6 d-flex align-items-end justify-content-md-end">
+                                            @if (!string.IsNullOrWhiteSpace(loan.NewLoanId))
+                                            {
+                                                <a class="btn btn-sm btn-outline-info"
+                                                   href="@Url.Action("LoanDetails", "CashDesk", new { loanId = loan.NewLoanId })">
+                                                    <i class="mdi mdi-open-in-new me-1"></i>
+                                                    Open Restructured Loan
+                                                </a>
+                                            }
+
+                                        </div>
+                                    }
+
+                                    @if (isRefinanced)
+                                    {
+                                        <div class="col-md-12">
+                                            <div class="alert alert-primary py-2 mb-0">
+                                                <div class="fw-bold">
+                                                    <i class="mdi mdi-swap-horizontal-bold me-1"></i>
+                                                    This loan is in a <u>REFINANCING</u> context.
+                                                </div>
+                                                <div class="small-note">
+                                                    If you have ParentLoanId / RefinancedLoanId, display it here and add the open button.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+
+                                </div>
+
+                                <div class="row g-3">
+
+                                    <!-- Initiation -->
+                                    <div class="col-md-4">
+                                        <div class="small-note">Initiating BranchId</div>
+                                        <div class="fw-bold">@Txt(loan.InitiatingBranchId)</div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="small-note">Loan Branch (Current / Owner)</div>
+                                        <div class="fw-bold">@Txt(loan.BranchName) (@Txt(loan.BranchCode))</div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="small-note">Disbursement Branch (Routing)</div>
+                                        <div class="fw-bold">@Txt(loan.RDisbursementBranchName) (@Txt(loan.RDisbursementBranchCode))</div>
+                                    </div>
+
+                                    <!-- Disbursement -->
+                                    <div class="col-md-4">
+                                        <div class="small-note">Disbursement Status</div>
+                                        <div class="fw-bold">
+                                            @(loan.IsLoanDisbursted ? "DISBURSED" : "NOT DISBURSED")
+                                            @if (!string.IsNullOrWhiteSpace(loan.DisbursmentStatus))
+                                            {
+                                                <span class="text-muted">• @Txt(loan.DisbursmentStatus)</span>
+                                            }
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="small-note">Disbursement Reference</div>
+                                        <div class="fw-bold">@Txt(loan.RDisbursementReference)</div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="small-note">R Disbursement Date</div>
+                                        <div class="fw-bold">@FDateNullable(loan.RDisbursementDate)</div>
+                                    </div>
+
+                                    <!-- Actors -->
+                                    <div class="col-md-4">
+                                        <div class="small-note">Disbursed By (Refinancing/Route)</div>
+                                        <div class="fw-bold">@Txt(loan.RDisbursedBy)</div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="small-note">Loan Disbursed By (Core)</div>
+                                        <div class="fw-bold">@Txt(loan.LoanDisbursedBy)</div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="small-note">Loan Manager</div>
+                                        <div class="fw-bold">@Txt(loan.LoanManager)</div>
+                                    </div>
+
+                                    <!-- Posting + Consistency -->
+                                    <div class="col-md-6">
+                                        <div class="small-note">Accounting Posting Status</div>
+                                        <div class="fw-bold">
+                                            Disbursement:
+                                            <span class="@(loan.RDisbursementAccountingPostingStatus ? "text-success" : "text-warning")">
+                                                @(loan.RDisbursementAccountingPostingStatus ? "POSTED" : "NOT POSTED")
+                                            </span>
+                                            <span class="text-muted">•</span>
+                                            Approval:
+                                            <span class="@(loan.RApprovalAccountingPostingStatus ? "text-success" : "text-warning")">
+                                                @(loan.RApprovalAccountingPostingStatus ? "POSTED" : "NOT POSTED")
+                                            </span>
+                                        </div>
+
+                                        <div class="small-note mt-1">
+                                            Consistency:
+                                            @if (loan.RDisbursementAccountingPostingStatus && loan.RApprovalAccountingPostingStatus)
+                                            {
+                                                <span class="fw-bold text-success">FULLY POSTED</span>
+                                            }
+                                            else if (!loan.RDisbursementAccountingPostingStatus && loan.RApprovalAccountingPostingStatus)
+                                            {
+                                                <span class="fw-bold text-danger">APPROVAL POSTED BUT DISBURSEMENT NOT POSTED</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="fw-bold text-warning">PENDING / INCOMPLETE</span>
+                                            }
+                                        </div>
+                                    </div>
+
+                                    <!-- Quick audit references -->
+                                    <div class="col-md-6">
+                                        <div class="small-note">Audit / Trace Keys</div>
+                                        <div class="fw-bold">
+                                            LoanAppId: <span class="text-muted">@Txt(loan.LoanApplicationId)</span>
+                                            <span class="text-muted">•</span>
+                                            ApplicationCode: <span class="text-muted">@Txt(loan.ApplicationCode)</span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- ===================== DAILY INTEREST ===================== -->
+                        <div class="col-lg-12">
+                            <div class="loan-card p-3">
+
+                                <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-2">
+                                    <div class="loan-card-title mb-0">
+                                        <i class="mdi mdi-percent-outline"></i> Daily Interest Calculations
+                                    </div>
+
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <span class="badge @(hasDailyInts ? "bg-success" : "bg-secondary")">
+                                            DAYS: @dailyInts.Count
+                                        </span>
+                                        <span class="badge bg-light text-dark border">
+                                            INT: @sumInterest.ToString("N0")
+                                        </span>
+                                        <span class="badge bg-light text-dark border">
+                                            VAT: @sumVat.ToString("N0")
+                                        </span>
+                                        <span class="badge bg-light text-dark border">
+                                            LAST: @(lastIntDate.HasValue ? lastIntDate.Value.ToString("dd/MM/yyyy") : "N/A")
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
+                                    <div class="small-note">
+                                        Shows daily accrual postings for this loan (interest + VAT). Use filter to search.
+                                    </div>
+
+                                    <div class="d-flex gap-2">
+                                        <input type="text"
+                                               class="form-control form-control-sm"
+                                               placeholder="Filter (date, amount, rate...)"
+                                               onkeyup="filterTable(this,'tblDailyInterest')" />
+
+                                        @if (hasDailyInts)
+                                        {
+                                            <button type="button"
+                                                    class="btn btn-sm btn-outline-secondary"
+                                                    onclick="copyText('@sumInterest.ToString("N0")')"
+                                                    title="Copy total interest">
+                                                <i class="mdi mdi-content-copy"></i>
+                                            </button>
+                                        }
+                                    </div>
+                                </div>
+
+                                @if (!hasDailyInts)
+                                {
+                                    <div class="alert alert-light border mb-0">
+                                        <i class="mdi mdi-information-outline me-1"></i>
+                                        No daily interest records found for this loan.
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="table-responsive">
+                                        <table class="table table-sm kv-table align-middle mb-0" id="tblDailyInterest">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th style="min-width:120px;">Date</th>
+                                                    <th class="text-end" style="min-width:130px;">Prev Balance</th>
+                                                    <th class="text-end" style="min-width:130px;">New Balance</th>
+                                                    <th class="text-end" style="min-width:120px;">Interest</th>
+                                                    <th class="text-end" style="min-width:90px;">Rate</th>
+                                                    <th class="text-end" style="min-width:90px;">VAT</th>
+                                                    <th class="text-end" style="min-width:90px;">VAT%</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                @foreach (var d in dailyInts)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            <span class="fw-bold">@d.Date.ToString("dd/MM/yyyy")</span>
+                                                            <div class="small-note text-muted">@d.Date.ToString("HH:mm")</div>
+                                                        </td>
+
+                                                        <td class="text-end">@d.PreviouseBalance.ToString("N0")</td>
+                                                        <td class="text-end">@d.NewBalance.ToString("N0")</td>
+
+                                                        <td class="text-end fw-bold">@d.InterestCalculated.ToString("N0")</td>
+
+                                                        <td class="text-end">
+                                                            @d.InterestRate.ToString("N2")<span class="text-muted">%</span>
+                                                        </td>
+
+                                                        <td class="text-end">@d.CalculatedVat.ToString("N0")</td>
+
+                                                        <td class="text-end">
+                                                            @d.VatRate.ToString("N2")<span class="text-muted">%</span>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+
+                                            <tfoot class="table-light">
+                                                <tr>
+                                                    <td class="fw-bold">Totals</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td class="text-end fw-bold">@sumInterest.ToString("N0")</td>
+                                                    <td></td>
+                                                    <td class="text-end fw-bold">@sumVat.ToString("N0")</td>
+                                                    <td></td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+                <!-- ===================== FINANCIALS ===================== -->
+                <div class="tab-pane fade" id="t_financials">
+                    <div class="row g-3">
+
+                        <!-- LEFT: AMOUNTS -->
+                        <div class="col-lg-6">
+                            <div class="loan-card p-3">
+
+                                <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                                    <div class="loan-card-title mb-0">
+                                        <i class="mdi mdi-cash-multiple"></i> Financial Snapshot
+                                    </div>
+
+                                    <!-- quick badges -->
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <span class="badge bg-light text-dark border">AMOUNTS</span>
+                                        <span class="badge @(loan.Balance > 0 ? "bg-warning text-dark" : "bg-success")">
+                                            BAL: @Money(loan.Balance)
+                                        </span>
+                                        <span class="badge @(loan.DueAmount > 0 ? "bg-danger" : "bg-success")">
+                                            DUE: @Money(loan.DueAmount)
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <table class="table table-sm kv-table mb-0 mt-2">
+
+                                    <!-- Core amounts -->
+                                    <tr class="table-light">
+                                        <td colspan="2" class="fw-bold small">Core Amounts</td>
+                                    </tr>
+                                    <tr><td class="k">Loan Amount</td><td class="v">@Money(loan.LoanAmount)</td></tr>
+                                    <tr><td class="k">Principal</td><td class="v">@Money(loan.Principal)</td></tr>
+                                    <tr><td class="k">Requested</td><td class="v">@Money(loan.RequestedAmount)</td></tr>
+
+                                    <!-- Position -->
+                                    <tr class="table-light">
+                                        <td colspan="2" class="fw-bold small">Position</td>
+                                    </tr>
+                                    <tr><td class="k">Paid</td><td class="v text-success">@Money(loan.Paid)</td></tr>
+                                    <tr><td class="k">Balance</td><td class="v text-danger">@Money(loan.Balance)</td></tr>
+                                    <tr><td class="k">Due Amount</td><td class="v text-warning">@Money(loan.DueAmount)</td></tr>
+                                    <tr><td class="k">Total Principal Paid</td><td class="v">@Money(loan.TotalPrincipalPaid)</td></tr>
+                                    <tr><td class="k">Restructured Balance</td><td class="v">@Money(loan.RestructuredBalance)</td></tr>
+
+                                    <!-- Flags -->
+                                    <tr class="table-light">
+                                        <td colspan="2" class="fw-bold small">Flags</td>
+                                    </tr>
+                                    <tr><td class="k">Mortgage</td><td class="v">@(loan.IsMortgage ? "YES" : "NO")</td></tr>
+
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- RIGHT: INTEREST / VAT / CHARGES -->
+                        <div class="col-lg-6">
+                            <div class="loan-card p-3">
+
+                                <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                                    <div class="loan-card-title mb-0">
+                                        <i class="mdi mdi-percent-outline"></i> Interest, VAT & Charges
+                                    </div>
+
+                                    <!-- quick badges -->
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <span class="badge bg-light text-dark border">RATES</span>
+                                        <span class="badge bg-light text-dark border">INT: @Percent(loan.InterestRate)</span>
+                                        <span class="badge bg-light text-dark border">VAT: @Percent(loan.VatRate)</span>
+                                    </div>
+                                </div>
+
+                                <table class="table table-sm kv-table mb-0 mt-2">
+
+                                    <!-- Rates -->
+                                    <tr class="table-light">
+                                        <td colspan="2" class="fw-bold small">Rates</td>
+                                    </tr>
+                                    <tr><td class="k">Interest Rate</td><td class="v">@Percent(loan.InterestRate)</td></tr>
+                                    <tr><td class="k">VAT Rate</td><td class="v">@Percent(loan.VatRate)</td></tr>
+
+                                    <!-- Interest -->
+                                    <tr class="table-light">
+                                        <td colspan="2" class="fw-bold small">Interest</td>
+                                    </tr>
+                                    <tr><td class="k">Forecasted</td><td class="v">@Money(loan.InterestForcasted)</td></tr>
+                                    <tr><td class="k">Accrued</td><td class="v">@Money(loan.AccrualInterest)</td></tr>
+                                    <tr><td class="k">Last Calc</td><td class="v">@Money(loan.LastCalculatedInterest)</td></tr>
+                                    <tr><td class="k">Accrued Paid</td><td class="v">@Money(loan.AccrualInterestPaid)</td></tr>
+
+                                    <!-- VAT / Tax -->
+                                    <tr class="table-light">
+                                        <td colspan="2" class="fw-bold small">VAT / Tax</td>
+                                    </tr>
+                                    <tr><td class="k">Tax</td><td class="v">@Money(loan.Tax)</td></tr>
+                                    <tr><td class="k">Tax Paid</td><td class="v">@Money(loan.TaxPaid)</td></tr>
+
+                                    <!-- Fees / Penalties -->
+                                    <tr class="table-light">
+                                        <td colspan="2" class="fw-bold small">Fees & Penalties</td>
+                                    </tr>
+                                    <tr><td class="k">Fee</td><td class="v">@Money(loan.Fee)</td></tr>
+                                    <tr><td class="k">Fee Paid</td><td class="v">@Money(loan.FeePaid)</td></tr>
+
+                                    <tr><td class="k">Penalty</td><td class="v">@Money(loan.Penalty)</td></tr>
+                                    <tr><td class="k">Penalty Paid</td><td class="v">@Money(loan.PenaltyPaid)</td></tr>
+                                    <tr><td class="k">Last Penalty</td><td class="v">@Money(loan.LastCalculatedPenaltyAmount)</td></tr>
+                                    <tr><td class="k">Penalty Calc Date</td><td class="v">@FDateNullable(loan.LastPenaltyCalculationDate)</td></tr>
+
+                                    <!-- Upfront -->
+                                    <tr class="table-light">
+                                        <td colspan="2" class="fw-bold small">Upfront Interest</td>
+                                    </tr>
+                                    <tr><td class="k">Paid Upfront?</td><td class="v">@(loan.InterestMustBePaidUpFront ? "YES" : "NO")</td></tr>
+                                    <tr><td class="k">Upfront Amount</td><td class="v">@Money(loan.InterestAmountUpfront)</td></tr>
+
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- COVERAGE / GUARANTEES -->
+                        <div class="col-lg-12">
+                            <div class="loan-card p-3">
+
+                                <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                                    <div class="loan-card-title mb-0">
+                                        <i class="mdi mdi-lock-outline"></i> Coverage & Guarantees
+                                    </div>
+
+                                    <!-- quick badges -->
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <span class="badge bg-light text-dark border">LIQ: @loan.PercentageOfLiquidityCoverage.ToString("0.00")%</span>
+                                        <span class="badge bg-light text-dark border">COLL: @loan.PercentageOfCollateralCoverage.ToString("0.00")%</span>
+                                        <span class="badge bg-light text-dark border">ALL: @loan.PercentageOfOverAllCoverage.ToString("0.00")%</span>
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 mt-1">
+
+                                    <!-- Member Funds -->
+                                    <div class="col-lg-12">
+                                        <div class="small-note fw-bold">Member Funds</div>
+                                    </div>
+                                    <div class="col-md-3"><div class="small-note">Savings</div><div class="fw-bold">@Money(loan.Savings)</div></div>
+                                    <div class="col-md-3"><div class="small-note">O-Shares</div><div class="fw-bold">@Money(loan.OShares)</div></div>
+                                    <div class="col-md-3"><div class="small-note">P-Shares</div><div class="fw-bold">@Money(loan.PShares)</div></div>
+                                    <div class="col-md-3"><div class="small-note">Deposit</div><div class="fw-bold">@Money(loan.Deposit)</div></div>
+
+                                    <!-- Guarantees -->
+                                    <div class="col-lg-12 mt-2">
+                                        <div class="small-note fw-bold">Guarantees & Salary</div>
+                                    </div>
+                                    <div class="col-md-3"><div class="small-note">Salary</div><div class="fw-bold">@Money(loan.Salary)</div></div>
+                                    <div class="col-md-3"><div class="small-note">Shortee</div><div class="fw-bold">@Money(loan.Shortee)</div></div>
+                                    <div class="col-md-3"><div class="small-note">Co-Obligor</div><div class="fw-bold">@Money(loan.Co_Obligor)</div></div>
+                                    <div class="col-md-3"><div class="small-note">Co-op Guarantor</div><div class="fw-bold">@Money(loan.Co_OperationGurantor)</div></div>
+
+                                    <!-- Coverage totals -->
+                                    <div class="col-lg-12 mt-2">
+                                        <div class="small-note fw-bold">Coverage Totals</div>
+                                    </div>
+                                    <div class="col-md-3"><div class="small-note">Other Fund</div><div class="fw-bold">@Money(loan.OtherGuaranteeFund)</div></div>
+                                    <div class="col-md-3"><div class="small-note">Total Guaranteed</div><div class="fw-bold">@Money(loan.TotalFundGuranteed)</div></div>
+                                    <div class="col-md-3"><div class="small-note">Saving Balance</div><div class="fw-bold">@Money(loan.SavingBalance)</div></div>
+                                    <div class="col-md-3"><div class="small-note">Blocked Saving</div><div class="fw-bold">@Money(loan.BlockedSaving)</div></div>
+
+                                    <div class="col-md-6"><div class="small-note">Guarantor</div><div class="fw-bold">@Txt(loan.Garantor)</div></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- OLD VS CURRENT -->
+                        <div class="col-lg-12">
+                            <div class="loan-card p-3">
+                                <div class="loan-card-title"><i class="mdi mdi-compare"></i> Old vs Current (Restructure / Adjustments)</div>
+
+                                <table class="table table-sm kv-table mb-0 mt-2">
+                                    <tr class="table-light">
+                                        <td colspan="2" class="fw-bold small">Previous Values</td>
+                                    </tr>
+                                    <tr><td class="k">Old Capital</td><td class="v">@Money(loan.OldCapital)</td></tr>
+                                    <tr><td class="k">Old Interest</td><td class="v">@Money(loan.OldInterest)</td></tr>
+                                    <tr><td class="k">Old VAT</td><td class="v">@Money(loan.OldVAT)</td></tr>
+                                    <tr><td class="k">Old Penalty</td><td class="v">@Money(loan.OldPenalty)</td></tr>
+                                    <tr><td class="k">Old Balance</td><td class="v">@Money(loan.OldBalance)</td></tr>
+                                    <tr><td class="k">Old Due Amount</td><td class="v">@Money(loan.OldDueAmount)</td></tr>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- ===================== REPAYMENTS ===================== -->
+                <div class="tab-pane fade" id="t_repayment">
+                    <div class="row g-3">
+
+                        @{
+                            // totals for quick badges + footer
+                            var totalPaid = refunds?.Sum(x => x.Amount) ?? 0m;
+                            var totalPaidInterest = refunds?.Sum(x => x.Interest) ?? 0m;
+                            var totalPaidVat = refunds?.Sum(x => x.Tax) ?? 0m;
+                            var totalPaidPenalty = refunds?.Sum(x => x.Penalty) ?? 0m;
+                            var totalPaidAll = totalPaid + totalPaidInterest + totalPaidVat + totalPaidPenalty;
+
+                            // amort totals (optional)
+                            var totalDuePrincipal = amort?.Sum(x => x.Principal) ?? 0m;
+                            var totalDueInterest = amort?.Sum(x => x.Interest) ?? 0m;
+                            var totalDueVat = amort?.Sum(x => x.Tax) ?? 0m;
+                            var totalDueAll = amort?.Sum(x => x.TotalDue) ?? 0m;
+                        }
+
+                        <!-- Summary -->
+                        <div class="col-lg-6">
+                            <div class="loan-card p-3">
+
+                                <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                                    <div class="loan-card-title mb-0">
+                                        <i class="mdi mdi-history"></i> Repayment Summary
+                                    </div>
+
+                                    <!-- quick badges -->
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <span class="badge bg-light text-dark border">REFUNDS: @refunds.Count</span>
+                                        <span class="badge bg-light text-dark border">AMORT: @amort.Count</span>
+                                        <span class="badge @(totalPaidAll > 0 ? "bg-success" : "bg-secondary")">
+                                            TOTAL PAID: @Money(totalPaidAll)
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <table class="table table-sm kv-table mb-0 mt-2">
+
+                                    <!-- Terms -->
+                                    <tr class="table-light"><td colspan="2" class="fw-bold small">Terms</td></tr>
+                                    <tr><td class="k">Cycle</td><td class="v">@Txt(loan.RepaymentCycle)</td></tr>
+                                    <tr><td class="k">Installments</td><td class="v">@loan.NumberOfInstallments</td></tr>
+                                    <tr><td class="k">Duration</td><td class="v">@loan.LoanDuration</td></tr>
+                                    <tr><td class="k">Term</td><td class="v">@Txt(loan.LoanTermName)</td></tr>
+
+                                    <!-- Last payment -->
+                                    <tr class="table-light"><td colspan="2" class="fw-bold small">Latest</td></tr>
+                                    <tr><td class="k">Last Payment</td><td class="v">@Money(loan.LastPayment)</td></tr>
+                                    <tr><td class="k">Refund Count</td><td class="v">@loan.RefundCount</td></tr>
+                                    <tr><td class="k">Last Refund Amount</td><td class="v">@MoneyN(loan.LastRefundAmount)</td></tr>
+                                    <tr><td class="k">Last Refund Ref</td><td class="v">@Txt(loan.LastRefundReference)</td></tr>
+
+                                    <!-- Totals paid -->
+                                    <tr class="table-light"><td colspan="2" class="fw-bold small">Totals Paid (Refunds)</td></tr>
+                                    <tr><td class="k">Principal Paid</td><td class="v text-success">@Money(totalPaid)</td></tr>
+                                    <tr><td class="k">Interest Paid</td><td class="v">@Money(totalPaidInterest)</td></tr>
+                                    <tr><td class="k">VAT Paid</td><td class="v">@Money(totalPaidVat)</td></tr>
+                                    <tr><td class="k">Penalty Paid</td><td class="v">@Money(totalPaidPenalty)</td></tr>
+                                    <tr><td class="k">Total Paid</td><td class="v fw-bold">@Money(totalPaidAll)</td></tr>
+
+                                </table>
+
+                                <div class="small-note mt-2">
+                                    Tip: Use the search boxes to audit refunds and schedule quickly.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Listings card -->
+                        <div class="col-lg-6">
+                            <div class="loan-card p-3">
+
+                                <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                                    <div class="loan-card-title mb-0">
+                                        <i class="mdi mdi-format-list-bulleted"></i> Listings
+                                    </div>
+
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <span class="pill"><span class="k">Refunds</span><span class="v">@refunds.Count</span></span>
+                                        <span class="pill"><span class="k">Amort</span><span class="v">@amort.Count</span></span>
+                                        <span class="pill"><span class="k">Docs</span><span class="v">@docs.Count</span></span>
+                                    </div>
+                                </div>
+
+                                <table class="table table-sm kv-table mb-0 mt-2">
+                                    <tr class="table-light"><td colspan="2" class="fw-bold small">Schedule Totals (Amort)</td></tr>
+                                    <tr><td class="k">Total Due</td><td class="v fw-bold">@Money(totalDueAll)</td></tr>
+                                    <tr><td class="k">Principal Due</td><td class="v">@Money(totalDuePrincipal)</td></tr>
+                                    <tr><td class="k">Interest Due</td><td class="v">@Money(totalDueInterest)</td></tr>
+                                    <tr><td class="k">VAT Due</td><td class="v">@Money(totalDueVat)</td></tr>
+                                </table>
+
+                                <div class="small-note mt-2">Lists below are scrollable and searchable.</div>
+                            </div>
+                        </div>
+
+                        <!-- Refunds -->
+                        <div class="col-lg-12">
+                            <div class="loan-card p-3">
+                                <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap gap-2">
+                                    <div class="loan-card-title mb-0">
+                                        <i class="mdi mdi-cash-check"></i> Repayment History (Refunds)
+                                    </div>
+
+                                    <div class="d-flex gap-2 flex-wrap">
+                                        <input class="form-control form-control-sm" style="max-width:260px"
+                                               placeholder="Search refunds..." onkeyup="filterTable(this,'refundTable')" />
+                                    </div>
+                                </div>
+
+                                <div class="list-scroll">
+                                    <table class="table table-sm table-striped table-hover table-tight mb-0" id="refundTable">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th style="min-width:160px;">Date</th>
+                                                <th class="text-end" style="min-width:120px;">Principal</th>
+                                                <th class="text-end" style="min-width:110px;">Interest</th>
+                                                <th class="text-end" style="min-width:90px;">VAT</th>
+                                                <th class="text-end" style="min-width:100px;">Penalty</th>
+
+                                                <!-- NEW -->
+                                                <th class="text-end" style="min-width:140px;">Total Paid</th>
+
+                                                <!-- Details -->
+                                                <th style="min-width:140px;">Channel</th>
+                                                <th style="min-width:220px;">Details</th>
+                                                <th style="min-width:180px;">Reference</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            @if (refunds.Any())
+                                            {
+                                                foreach (var r in refunds)
+                                                {
+                                                    var rowTotal = (r.Amount + r.Interest + r.Tax + r.Penalty);
+
+                                                    <tr>
+                                                        <td>
+                                                            @if (r.DateOfPayment == DateTime.MinValue)
+                                                            {
+                                                                <span class="text-muted">-</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span class="fw-bold">@r.DateOfPayment.ToString("dd/MM/yyyy")</span>
+                                                                <div class="small-note text-muted">@r.DateOfPayment.ToString("HH:mm:ss")</div>
+                                                            }
+                                                        </td>
+
+                                                        <td class="text-end">@r.Amount.ToString("N0")</td>
+                                                        <td class="text-end">@r.Interest.ToString("N0")</td>
+                                                        <td class="text-end">@r.Tax.ToString("N0")</td>
+                                                        <td class="text-end">@r.Penalty.ToString("N0")</td>
+
+                                                        <!-- NEW total -->
+                                                        <td class="text-end fw-bold">@rowTotal.ToString("N0")</td>
+
+                                                        <td>@r.PaymentChannel</td>
+
+                                                        <!-- NEW details (audit friendly) -->
+                                                        <td>
+                                                            <div class="small-note">
+                                                                <span class="text-muted">Method:</span> <b>@Txt(r.PaymentMethod)</b>
+                                                                @* Add more fields here if your Refund model has them *@
+                                                                @* • Teller: @Txt(r.TellerName) • TxRef: @Txt(r.TransactionReference) *@
+                                                            </div>
+                                                        </td>
+
+                                                        <td>
+                                                            <span class="text-muted">@Txt(r.PaymentMethod)</span>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <tr><td colspan="9" class="text-center text-muted p-3">No refunds found for this loan.</td></tr>
+                                            }
+                                        </tbody>
+
+                                        @if (refunds.Any())
+                                        {
+                                            <tfoot class="table-light">
+                                                <tr>
+                                                    <td class="fw-bold">Totals</td>
+                                                    <td class="text-end fw-bold">@totalPaid.ToString("N0")</td>
+                                                    <td class="text-end fw-bold">@totalPaidInterest.ToString("N0")</td>
+                                                    <td class="text-end fw-bold">@totalPaidVat.ToString("N0")</td>
+                                                    <td class="text-end fw-bold">@totalPaidPenalty.ToString("N0")</td>
+                                                    <td class="text-end fw-bold">@totalPaidAll.ToString("N0")</td>
+                                                    <td colspan="3"></td>
+                                                </tr>
+                                            </tfoot>
+                                        }
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Amortization -->
+                        <div class="col-lg-12">
+                            <div class="loan-card p-3">
+                                <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap gap-2">
+                                    <div class="loan-card-title mb-0">
+                                        <i class="mdi mdi-calendar-month-outline"></i> Amortization Schedule
+                                    </div>
+                                    <input class="form-control form-control-sm" style="max-width:260px"
+                                           placeholder="Search amortization..." onkeyup="filterTable(this,'amortTable')" />
+                                </div>
+
+                                <div class="list-scroll">
+                                    <table class="table table-sm table-striped table-hover table-tight mb-0" id="amortTable">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th style="min-width:60px;">#</th>
+                                                <th style="min-width:140px;">Due Date</th>
+                                                <th class="text-end" style="min-width:120px;">Principal</th>
+                                                <th class="text-end" style="min-width:110px;">Interest</th>
+                                                <th class="text-end" style="min-width:90px;">VAT</th>
+                                                <th class="text-end" style="min-width:120px;">Total</th>
+                                                <th style="min-width:120px;">Status</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            @if (amort.Any())
+                                            {
+                                                var i = 1;
+                                                foreach (var a in amort)
+                                                {
+                                                    <tr>
+                                                        <td>@i</td>
+                                                        <td>@(a.DateOfPayment == DateTime.MinValue ? "-" : a.DateOfPayment.ToString("dd/MM/yyyy"))</td>
+                                                        <td class="text-end">@a.Principal.ToString("N0")</td>
+                                                        <td class="text-end">@a.Interest.ToString("N0")</td>
+                                                        <td class="text-end">@a.Tax.ToString("N0")</td>
+                                                        <td class="text-end fw-bold">@a.TotalDue.ToString("N0")</td>
+                                                        <td>@a.Status</td>
+                                                    </tr>
+                                                    i++;
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <tr><td colspan="7" class="text-center text-muted p-3">No amortization schedule found.</td></tr>
+                                            }
+                                        </tbody>
+
+                                        @if (amort.Any())
+                                        {
+                                            <tfoot class="table-light">
+                                                <tr>
+                                                    <td colspan="2" class="fw-bold">Totals</td>
+                                                    <td class="text-end fw-bold">@totalDuePrincipal.ToString("N0")</td>
+                                                    <td class="text-end fw-bold">@totalDueInterest.ToString("N0")</td>
+                                                    <td class="text-end fw-bold">@totalDueVat.ToString("N0")</td>
+                                                    <td class="text-end fw-bold">@totalDueAll.ToString("N0")</td>
+                                                    <td></td>
+                                                </tr>
+                                            </tfoot>
+                                        }
+                                    </table>
+                                </div>
+
+                                <div class="small-note mt-2">
+                                    Note: If empty, ensure <code>LoanAmortizations</code> is loaded server-side.
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- ===================== RISK ===================== -->
+                <div class="tab-pane fade" id="t_risk">
+                    <div class="row g-3">
+
+                        @{
+                            var isDelinquent = loan.IsDeliquentLoan;
+                            var delinquentDays = loan.DeliquentDays;
+
+                            // severity (simple + clear)
+                            var sevClass =
+                                delinquentDays >= 90 ? "sev-critical" :
+                                delinquentDays >= 30 ? "sev-high" :
+                                delinquentDays >= 1 ? "sev-med" : "sev-ok";
+
+                            var sevText =
+                                delinquentDays >= 90 ? "CRITICAL" :
+                                delinquentDays >= 30 ? "HIGH" :
+                                delinquentDays >= 1 ? "MED" : "OK";
+                        }
+
+                        <!-- ===================== DELINQUENCY ===================== -->
+                        <div class="col-lg-6">
+                            <div class="loan-card p-3">
+
+                                <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                                    <div class="loan-card-title mb-0">
+                                        <i class="mdi mdi-alert-decagram-outline"></i> Delinquency
+                                    </div>
+
+                                    <!-- quick badges -->
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <span class="badge badge-sev @sevClass">
+                                            <span class="dot"></span> @sevText
+                                        </span>
+
+                                        <span class="badge @(isDelinquent ? "bg-danger" : "bg-success")">
+                                            @(isDelinquent ? "DELINQUENT" : "OK")
+                                        </span>
+
+                                        <span class="badge @(delinquentDays > 0 ? "bg-warning text-dark" : "bg-light text-dark border")">
+                                            DAYS: @delinquentDays.ToString("N0")
+                                        </span>
+
+                                        <span class="badge bg-light text-dark border">
+                                            PAR: @Txt(loan.PAR)
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <table class="table table-sm kv-table mb-0 mt-2">
+
+                                    <!-- Status -->
+                                    <tr class="table-light"><td colspan="2" class="fw-bold small">Status</td></tr>
+                                    <tr>
+                                        <td class="k">Is Delinquent</td>
+                                        <td class="v">
+                                            <span class="badge @(isDelinquent ? "bg-danger" : "bg-success")">
+                                                @(isDelinquent ? "YES" : "NO")
+                                            </span>
+                                            @if (isDelinquent && delinquentDays > 0)
+                                            {
+                                                <span class="text-muted ms-2">• Severity: <b class="sev-text @sevClass">@sevText</b></span>
+                                            }
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="k">Delinquent Days</td>
+                                        <td class="v">
+                                            <b class="sev-text @sevClass">@delinquentDays.ToString("N0")</b>
+                                            @if (delinquentDays == 0)
+                                            {
+                                                <span class="text-muted ms-2">• On-time</span>
+                                            }
+                                        </td>
+                                    </tr>
+
+                                    <tr><td class="k">Delinquent Status</td><td class="v">@Txt(loan.DeliquentStatus)</td></tr>
+
+                                    <!-- Amounts -->
+                                    <tr class="table-light"><td colspan="2" class="fw-bold small">Amounts</td></tr>
+                                    <tr>
+                                        <td class="k">Delinquent Amount</td>
+                                        <td class="v">
+                                            <span class="fw-bold @(loan.DeliquentAmount > 0 ? "text-danger" : "text-muted")">
+                                                @Money(loan.DeliquentAmount)
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="k">Delinquent Interest</td>
+                                        <td class="v">@Money(loan.DeliquentInterest)</td>
+                                    </tr>
+
+                                    <!-- Configuration -->
+                                    <tr class="table-light"><td colspan="2" class="fw-bold small">Configuration</td></tr>
+                                    <tr><td class="k">PAR Bucket</td><td class="v">@Txt(loan.PAR)</td></tr>
+                                    <tr><td class="k">Config Name</td><td class="v">@Txt(loan.LoanDeliquencyConfigurationName)</td></tr>
+                                    <tr><td class="k">Last Processed</td><td class="v">@FDateNullable(loan.LastDeliquecyProcessedDate)</td></tr>
+
+                                </table>
+
+                                @if (isDelinquent && delinquentDays >= 30)
+                                {
+                                    <div class="alert alert-warning py-2 mt-2 mb-0">
+                                        <i class="mdi mdi-alert-outline me-1"></i>
+                                        <b>Attention:</b> This loan is past due. Review collection actions and COBAC classification.
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                        <!-- ===================== PENALTY ===================== -->
+                        <div class="col-lg-6">
+                            <div class="loan-card p-3">
+
+                                <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                                    <div class="loan-card-title mb-0">
+                                        <i class="mdi mdi-gavel"></i> Penalty
+                                    </div>
+
+                                    <!-- quick badges -->
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <span class="badge @(loan.Penalty > 0 ? "bg-warning text-dark" : "bg-light text-dark border")">
+                                            PEN: @Money(loan.Penalty)
+                                        </span>
+                                        <span class="badge @(loan.PenaltyPaid > 0 ? "bg-success" : "bg-light text-dark border")">
+                                            PAID: @Money(loan.PenaltyPaid)
+                                        </span>
+                                        <span class="badge @(loan.IsWriteOffLoan ? "bg-danger" : "bg-light text-dark border")">
+                                            W/O: @(loan.IsWriteOffLoan ? "YES" : "NO")
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <table class="table table-sm kv-table mb-0 mt-2">
+                                    <tr class="table-light"><td colspan="2" class="fw-bold small">Amounts</td></tr>
+                                    <tr><td class="k">Penalty</td><td class="v fw-bold @(loan.Penalty > 0 ? "text-warning" : "text-muted")">@Money(loan.Penalty)</td></tr>
+                                    <tr><td class="k">Penalty Paid</td><td class="v @(loan.PenaltyPaid > 0 ? "text-success" : "text-muted")">@Money(loan.PenaltyPaid)</td></tr>
+
+                                    <tr class="table-light"><td colspan="2" class="fw-bold small">Calculation</td></tr>
+                                    <tr><td class="k">Last Calc Date</td><td class="v">@FDateNullable(loan.LastPenaltyCalculationDate)</td></tr>
+                                    <tr><td class="k">Last Calc Amount</td><td class="v">@Money(loan.LastCalculatedPenaltyAmount)</td></tr>
+
+                                    <tr class="table-light"><td colspan="2" class="fw-bold small">Flags</td></tr>
+                                    <tr>
+                                        <td class="k">Write-Off</td>
+                                        <td class="v">
+                                            <span class="badge @(loan.IsWriteOffLoan ? "bg-danger" : "bg-light text-dark border")">
+                                                @(loan.IsWriteOffLoan ? "YES" : "NO")
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- ===================== INTEREST STOP / CONTROLS ===================== -->
+                        <div class="col-lg-12">
+                            <div class="loan-card p-3">
+
+                                <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                                    <div class="loan-card-title mb-0">
+                                        <i class="mdi mdi-lock-outline"></i> Interest Controls
+                                    </div>
+
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <span class="badge @(stopInterest ? "bg-dark" : "bg-light text-dark border")">
+                                            INT: @(stopInterest ? "STOPPED" : "RUNNING")
+                                        </span>
+
+                                        @if (stopInterest && stopDateMissing)
+                                        {
+                                            <span class="badge bg-danger">
+                                                <i class="mdi mdi-alert-circle-outline me-1"></i> STOP DATE MISSING
+                                            </span>
+                                        }
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 mt-1">
+                                    <div class="col-md-3">
+                                        <div class="small-note">Stop Interest</div>
+                                        <div class="fw-bold">@(stopInterest ? "YES" : "NO")</div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="small-note">Stopped By</div>
+                                        <div class="fw-bold">@Txt(loan.StoppedBy)</div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="small-note">Stop Date</div>
+                                        <div class="fw-bold">
+                                            @if (stopInterest && stopDateMissing)
+                                            {
+                                                <span class="text-danger fw-bold">STOPPED BUT DATE MISSING</span>
+                                            }
+                                            else
+                                            {
+                                                @FDate(loan.DateInterestWastStoped)
+                                            }
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="small-note">Comment</div>
+                                        <div class="fw-bold">@Txt(loan.InterestStoppedComment)</div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- ===================== PRODUCT & PURPOSE ===================== -->
+                <div class="tab-pane fade" id="t_product">
+                    <div class="row g-3">
+
+                        @{
+                            var isMortgage = loan.IsMortgage;
+
+                            var taxable =
+                                !string.IsNullOrWhiteSpace(loan.TaxableStatus)
+                                && loan.TaxableStatus.Equals("Taxable", StringComparison.OrdinalIgnoreCase);
+
+                            var product = loan?.LoanApplication?.LoanProduct;
+                        }
+
+                        <!-- ===================== PRODUCT ===================== -->
+                        <div class="col-lg-6">
+                            <div class="loan-card p-3">
+
+                                <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                                    <div class="loan-card-title mb-0">
+                                        <i class="mdi mdi-package-variant-closed"></i> Product
+                                    </div>
+
+                                    <!-- quick badges -->
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <span class="badge @(isMortgage ? "bg-warning text-dark" : "bg-light text-dark border")">
+                                            MORT: @(isMortgage ? "YES" : "NO")
+                                        </span>
+
+                                        <!-- ✅ TAX badge (very visible) -->
+                                        <span class="badge badge-tax @(taxable ? "badge-taxable" : "badge-nontaxable")">
+                                            <span class="dot"></span>
+                                            TAX: @(taxable ? "TAXABLE" : "NON-TAXABLE")
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <table class="table table-sm kv-table mb-0 mt-2">
+
+                                    <!-- Product Identity -->
+                                    <tr class="table-light">
+                                        <td colspan="2" class="fw-bold small">Identity</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="k">Code</td>
+                                        <td class="v fw-bold">@Txt(product?.ProductCode)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="k">Name</td>
+                                        <td class="v">@Txt(product?.ProductName)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="k">Loan Product Id</td>
+                                        <td class="v">@Txt(loan?.LoanApplication?.LoanProductId)</td>
+                                    </tr>
+
+                                    <!-- Term -->
+                                    <tr class="table-light">
+                                        <td colspan="2" class="fw-bold small">Term</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="k">Term Name</td>
+                                        <td class="v">@Txt(loan.LoanTermName) @Txt(loan?.LoanApplication?.LoanTermName)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="k">Term Id</td>
+                                        <td class="v">@Txt(loan.LoanTermId)</td>
+                                    </tr>
+
+                                    <!-- Flags -->
+                                    <tr class="table-light">
+                                        <td colspan="2" class="fw-bold small">Flags</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="k">Mortgage?</td>
+                                        <td class="v">
+                                            <span class="badge @(isMortgage ? "bg-warning text-dark" : "bg-light text-dark border")">
+                                                @(isMortgage ? "YES" : "NO")
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="k">Tax Status</td>
+                                        <td class="v">
+                                            <span class="badge badge-tax @(taxable ? "badge-taxable" : "badge-nontaxable")">
+                                                <span class="dot"></span>
+                                                @(taxable ? "TAXABLE" : "NON-TAXABLE")
+                                            </span>
+                                            <span class="text-muted ms-2">• @Txt(loan.TaxableStatus)</span>
+                                        </td>
+                                    </tr>
+
+                                </table>
+
+                                <div class="small-note mt-2">
+                                    Tip: Product fields come from <b>LoanApplication → LoanProduct</b>. Ensure it is included in <code>GetLoan()</code>.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ===================== PURPOSE & TARGET ===================== -->
+                        <div class="col-lg-6">
+                            <div class="loan-card p-3">
+
+                                <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                                    <div class="loan-card-title mb-0">
+                                        <i class="mdi mdi-target-account"></i> Purpose & Target
+                                    </div>
+
+                                    <!-- quick badges -->
+                                    <div class="d-flex flex-wrap gap-2">
+                                        @if (!string.IsNullOrWhiteSpace(loan.PcmfPurposeCode))
+                                        {
+                                            <span class="badge bg-light text-dark border">
+                                                PCMF: @Txt(loan.PcmfPurposeCode)
+                                            </span>
+                                        }
+                                        @if (!string.IsNullOrWhiteSpace(loan.TargetType))
+                                        {
+                                            <span class="badge bg-light text-dark border">
+                                                TARGET: @Txt(loan.TargetType)
+                                            </span>
+                                        }
+                                    </div>
+                                </div>
+
+                                <table class="table table-sm kv-table mb-0 mt-2">
+
+                                    <!-- Purpose -->
+                                    <tr class="table-light">
+                                        <td colspan="2" class="fw-bold small">Purpose</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="k">Purpose Name</td>
+                                        <td class="v fw-bold">@Txt(loan.PurposeName)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="k">PCMF Purpose Id</td>
+                                        <td class="v">@Txt(loan.PcmfLoanPurposeId)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="k">PCMF Key</td>
+                                        <td class="v">@Txt(loan.PcmfPurposeKey)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="k">PCMF Code</td>
+                                        <td class="v">@Txt(loan.PcmfPurposeCode)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="k">PCMF Slug</td>
+                                        <td class="v">@Txt(loan.PcmfPurposeSlug)</td>
+                                    </tr>
+
+                                    <!-- Target -->
+                                    <tr class="table-light">
+                                        <td colspan="2" class="fw-bold small">Target</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="k">Target Type</td>
+                                        <td class="v">@Txt(loan.TargetType)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="k">Loan Target</td>
+                                        <td class="v">@Txt(loan.LoanTarget)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="k">Target Id</td>
+                                        <td class="v">@Txt(loan.LoanTargetId)</td>
+                                    </tr>
+
+                                    <!-- Reference -->
+                                    <tr class="table-light">
+                                        <td colspan="2" class="fw-bold small">Reference</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="k">Application Code</td>
+                                        <td class="v">@Txt(loan.ApplicationCode)</td>
+                                    </tr>
+
+                                </table>
+
+                                <div class="small-note mt-2">
+                                    Tip: PCMF Purpose + Target should match reporting mappings (PCMF/COBAC).
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- ===================== DOCUMENTS ===================== -->
+                <div class="tab-pane fade" id="t_documents">
+                    <div class="row g-3">
+
+                        <div class="col-lg-12">
+                            <div class="loan-card p-3">
+
+                                <!-- header + quick badges -->
+                                <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                                    <div class="loan-card-title mb-0">
+                                        <i class="mdi mdi-folder-multiple-outline"></i> Documents
+                                    </div>
+
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <span class="badge bg-light text-dark border">
+                                            FILES: @docs.Count
+                                        </span>
+                                        @if (!string.IsNullOrWhiteSpace(loan.LoanApplicationId))
+                                        {
+                                            <span class="badge bg-light text-dark border">
+                                                APP: @Txt(loan.LoanApplicationId)
+                                            </span>
+                                        }
+                                    </div>
+                                </div>
+
+                                <!-- search -->
+                                <div class="d-flex justify-content-between align-items-center mt-2 flex-wrap gap-2">
+                                    <div class="small-note">
+                                        Keep ID, guarantee, collateral, contract, and approval docs for audit.
+                                    </div>
+
+                                    <input class="form-control form-control-sm" style="max-width:260px"
+                                           placeholder="Search documents..." onkeyup="filterTable(this,'docTable')" />
+                                </div>
+
+                                <div class="table-responsive mt-2 list-scroll">
+                                    <table class="table table-sm table-striped table-hover table-tight align-middle mb-0" id="docTable">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th style="min-width:220px;">File</th>
+                                                <th style="min-width:140px;">Type</th>
+                                                <th style="min-width:170px;">Document</th>
+                                                <th class="text-end" style="min-width:140px;">Date</th>
+                                                <th class="text-end" style="min-width:170px;">Download</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            @if (docs.Any())
+                                            {
+                                                foreach (var d in docs)
+                                                {
+                                                    var docName = d.Document != null ? d.Document.Name : "";
+                                                    var docCode = d.FileName;
+
+                                                    <tr>
+                                                        <td>
+                                                            <span class="fw-bold">@Txt(d.FileName)</span>
+                                                            @if (!string.IsNullOrWhiteSpace(d.FileExtension))
+                                                            {
+                                                                <span class="text-muted ms-1">(@Txt(d.FileExtension))</span>
+                                                            }
+                                                        </td>
+
+                                                        <td>@Txt(d.FileExtension)</td>
+
+                                                        <td>
+                                                            @if (!string.IsNullOrWhiteSpace(docName) || !string.IsNullOrWhiteSpace(docCode))
+                                                            {
+                                                                <span class="fw-bold">@Txt(docName)</span>
+                                                                if (!string.IsNullOrWhiteSpace(docCode))
+                                                                {
+                                                                    <span class="text-muted ms-1">• @Txt(docCode)</span>
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                <span class="text-muted">N/A</span>
+                                                            }
+                                                        </td>
+
+                                                        <td class="text-end">@FDate(d.Date)</td>
+
+                                                        <td class="text-end">
+                                                            <!-- download is the full path (but hidden from UI) -->
+                                                            <a class="btn btn-sm btn-outline-primary"
+                                                               href="@Txt(d.FilePath)" target="_blank" rel="noopener">
+                                                                <i class="mdi mdi-download me-1"></i> Open
+                                                            </a>
+
+                                                        </td>
+
+                                                    </tr>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <tr>
+                                                    <td colspan="5" class="text-center text-muted p-3">
+                                                        No documents found.
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- ===================== PCMF ===================== -->
+                <div class="tab-pane fade" id="t_pcmf">
+                    <div class="row g-3">
+
+                        <!-- ===================== PCMF CLASSIFICATION ===================== -->
+                        <div class="col-lg-6">
+                            <div class="loan-card p-3">
+
+                                <!-- header + compact badges -->
+                                <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                                    <div class="loan-card-title mb-0">
+                                        <i class="mdi mdi-shield-check-outline"></i> PCMF Mapping
+                                    </div>
+
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <span class="badge bg-light text-dark border">
+                                            PAR: @Txt(loan.PAR)
+                                        </span>
+                                        <span class="badge @(loan.IsWriteOffLoan ? "bg-dark" : "bg-light text-dark border")">
+                                            WO: @(loan.IsWriteOffLoan ? "YES" : "NO")
+                                        </span>
+                                        <span class="badge @(loan.StopInterestCalculation ? "bg-dark" : "bg-light text-dark border")">
+                                            INT: @(loan.StopInterestCalculation ? "STOP" : "RUN")
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <table class="table table-sm kv-table mb-0 mt-2">
+
+                                    <!-- Core mapping -->
+                                    <tr class="table-light">
+                                        <td colspan="2" class="fw-bold small">Classification</td>
+                                    </tr>
+                                    <tr><td class="k">Section</td><td class="v fw-bold">@Txt(loan.PcmfSection.ToString())</td></tr>
+                                    <tr><td class="k">Group Code</td><td class="v">@Txt(loan.PcmfGroupCode.ToString())</td></tr>
+                                    <tr><td class="k">Population</td><td class="v">@Txt(loan.PcmfPopulation.ToString())</td></tr>
+                                    <tr><td class="k">Base Code</td><td class="v">@Txt(loan.PcmfBaseCode.ToString())</td></tr>
+
+                                    <!-- Purpose mapping -->
+                                    <tr class="table-light">
+                                        <td colspan="2" class="fw-bold small">Purpose Mapping</td>
+                                    </tr>
+                                    <tr><td class="k">Purpose Id</td><td class="v">@Txt(loan.PcmfLoanPurposeId)</td></tr>
+                                    <tr><td class="k">Purpose Key</td><td class="v">@Txt(loan.PcmfPurposeKey)</td></tr>
+                                    <tr><td class="k">Purpose Code</td><td class="v">@Txt(loan.PcmfPurposeCode)</td></tr>
+                                    <tr><td class="k">Purpose Slug</td><td class="v">@Txt(loan.PcmfPurposeSlug)</td></tr>
+
+                                    <!-- Links -->
+                                    <tr class="table-light">
+                                        <td colspan="2" class="fw-bold small">Linkage</td>
+                                    </tr>
+                                    <tr><td class="k">Loan Term Id</td><td class="v">@Txt(loan.LoanTermId)</td></tr>
+                                    <tr><td class="k">Loan Target Id</td><td class="v">@Txt(loan.LoanTargetId)</td></tr>
+
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- ===================== PCMF REPORTING CONTROLS ===================== -->
+                        <div class="col-lg-6">
+                            <div class="loan-card p-3">
+
+                                <!-- header + quick chips -->
+                                <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                                    <div class="loan-card-title mb-0">
+                                        <i class="mdi mdi-clipboard-check-outline"></i> Controls
+                                    </div>
+
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <span class="badge bg-light text-dark border">
+                                            TAX: @Txt(loan.TaxableStatus)
+                                        </span>
+                                        <span class="badge @(loan.InterestMustBePaidUpFront ? "bg-primary" : "bg-light text-dark border")">
+                                            UPFRONT: @(loan.InterestMustBePaidUpFront ? "YES" : "NO")
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <table class="table table-sm kv-table mb-0 mt-2">
+
+                                    <tr class="table-light">
+                                        <td colspan="2" class="fw-bold small">Risk & Reporting</td>
+                                    </tr>
+                                    <tr><td class="k">PAR Bucket</td><td class="v fw-bold">@Txt(loan.PAR)</td></tr>
+                                    <tr><td class="k">Delinquency Config</td><td class="v">@Txt(loan.LoanDeliquencyConfigurationName)</td></tr>
+
+                                    <tr class="table-light">
+                                        <td colspan="2" class="fw-bold small">Policies</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="k">Write-Off</td>
+                                        <td class="v">
+                                            <span class="badge @(loan.IsWriteOffLoan ? "bg-dark" : "bg-light text-dark border")">
+                                                @(loan.IsWriteOffLoan ? "YES" : "NO")
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="k">Interest Stopped</td>
+                                        <td class="v">
+                                            <span class="badge @(loan.StopInterestCalculation ? "bg-dark" : "bg-light text-dark border")">
+                                                @(loan.StopInterestCalculation ? "YES" : "NO")
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="k">Upfront Interest</td>
+                                        <td class="v">
+                                            <span class="badge @(loan.InterestMustBePaidUpFront ? "bg-primary" : "bg-light text-dark border")">
+                                                @(loan.InterestMustBePaidUpFront ? "YES" : "NO")
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr><td class="k">Taxable Status</td><td class="v">@Txt(loan.TaxableStatus)</td></tr>
+
+                                </table>
+
+                                <div class="small-note mt-2">
+                                    Audit check: <b>Section/Group/Population/Base</b> + <b>Purpose mapping</b> + <b>PAR</b> should align with PCMF reporting rules.
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- ===================== COBAC / COMPLIANCE ===================== -->
+                <div class="tab-pane fade" id="t_cobac">
+                    <div class="row g-3">
+
+                        <!-- ===================== CLASSIFICATION ===================== -->
+                        <div class="col-lg-6">
+                            <div class="loan-card p-3">
+
+                                <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                                    <div class="loan-card-title mb-0">
+                                        <i class="mdi mdi-shield-star-outline"></i> COBAC Classification
+                                    </div>
+
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <span class="badge bg-light text-dark border">
+                                            CLS: @Txt(loan.Classification.ToString())
+                                        </span>
+                                        <span class="badge @(loan.IsWriteOffLoan ? "bg-dark" : "bg-light text-dark border")">
+                                            WO: @(loan.IsWriteOffLoan ? "YES" : "NO")
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <table class="table table-sm kv-table mb-0 mt-2">
+
+                                    <tr class="table-light">
+                                        <td colspan="2" class="fw-bold small">Risk Status</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="k">Classification</td>
+                                        <td class="v fw-bold">@Txt(loan.Classification.ToString())</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="k">Classification Date</td>
+                                        <td class="v">@FDateNullable(loan.ClassificationDate)</td>
+                                    </tr>
+
+                                    <tr class="table-light">
+                                        <td colspan="2" class="fw-bold small">Interest Recognition</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="k">Mode</td>
+                                        <td class="v">@Txt(loan.InterestRecognitionMode.ToString())</td>
+                                    </tr>
+
+                                </table>
+
+                                <div class="small-note mt-2">
+                                    Note: Classification + recognition mode should match PAR/Delinquency policy for audit.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ===================== INTEREST BUCKETS ===================== -->
+                        <div class="col-lg-6">
+                            <div class="loan-card p-3">
+
+                                <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                                    <div class="loan-card-title mb-0">
+                                        <i class="mdi mdi-chart-timeline-variant"></i> COBAC Interest Buckets
+                                    </div>
+
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <span class="badge bg-light text-dark border">
+                                            ON: @Money(loan.AccruedInterestOnBook)
+                                        </span>
+                                        <span class="badge bg-light text-dark border">
+                                            OFF: @Money(loan.SuspendedInterestOffBalance)
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <table class="table table-sm kv-table mb-0 mt-2">
+
+                                    <tr class="table-light">
+                                        <td colspan="2" class="fw-bold small">Buckets</td>
+                                    </tr>
+                                    <tr><td class="k">Accrued (On-Book)</td><td class="v fw-bold">@Money(loan.AccruedInterestOnBook)</td></tr>
+                                    <tr><td class="k">Suspended (Off-Balance)</td><td class="v">@Money(loan.SuspendedInterestOffBalance)</td></tr>
+                                    <tr><td class="k">Reversed Accrued</td><td class="v">@Money(loan.ReversedAccruedInterest)</td></tr>
+
+                                    <tr class="table-light">
+                                        <td colspan="2" class="fw-bold small">Helper</td>
+                                    </tr>
+                                    <tr><td class="k">COBAC Suspended</td><td class="v">@Money(loan.CobacSuspendedInterest)</td></tr>
+
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- ===================== PROVISIONING ===================== -->
+                        <div class="col-lg-12">
+                            <div class="loan-card p-3">
+
+                                <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                                    <div class="loan-card-title mb-0">
+                                        <i class="mdi mdi-bank-check"></i> Provisioning
+                                    </div>
+
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <span class="badge bg-light text-dark border">
+                                            RATE: @loan.ProvisionRateApplied.ToString("0.00")%
+                                        </span>
+                                        <span class="badge bg-light text-dark border">
+                                            PROV: @Money(loan.ProvisionedAmount)
+                                        </span>
+                                        <span class="badge bg-light text-dark border">
+                                            LAST: @FDateNullable(loan.LastProvisionDate)
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 mt-1">
+                                    <div class="col-md-3">
+                                        <div class="small-note">Provisioned Amount</div>
+                                        <div class="fw-bold">@Money(loan.ProvisionedAmount)</div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="small-note">Rate Applied</div>
+                                        <div class="fw-bold">@loan.ProvisionRateApplied.ToString("0.00")%</div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="small-note">Last Provision Date</div>
+                                        <div class="fw-bold">@FDateNullable(loan.LastProvisionDate)</div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="small-note">Last Run Id</div>
+                                        <div class="fw-bold">@((loan.LastProvisionRunId.HasValue) ? loan.LastProvisionRunId.Value.ToString() : "-")</div>
+                                    </div>
+                                </div>
+
+                                <div class="small-note mt-2">
+                                    Tip: Provision rate should align with classification + delinquency bucket.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ===================== WRITE-OFF METADATA ===================== -->
+                        <div class="col-lg-12">
+                            <div class="loan-card p-3">
+
+                                <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                                    <div class="loan-card-title mb-0">
+                                        <i class="mdi mdi-delete-forever-outline"></i> Write-Off
+                                    </div>
+
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <span class="badge @(loan.IsWriteOffLoan ? "bg-dark" : "bg-light text-dark border")">
+                                            @(loan.IsWriteOffLoan ? "WRITTEN OFF" : "NOT WRITTEN OFF")
+                                        </span>
+                                        @if (loan.IsWriteOffLoan)
+                                        {
+                                            <span class="badge bg-light text-dark border">
+                                                @FDateNullable(loan.WrittenOffDate)
+                                            </span>
+                                        }
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 mt-1">
+                                    <div class="col-md-3">
+                                        <div class="small-note">Written Off?</div>
+                                        <div class="fw-bold">@(loan.IsWriteOffLoan ? "YES" : "NO")</div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="small-note">Written Off Date</div>
+                                        <div class="fw-bold">@FDateNullable(loan.WrittenOffDate)</div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="small-note">Written Off By</div>
+                                        <div class="fw-bold">@Txt(loan.WrittenOffBy)</div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="small-note">Reason</div>
+                                        <div class="fw-bold">@Txt(loan.WriteOffReason)</div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- ===================== SYSTEM / POSTING ===================== -->
+                <div class="tab-pane fade" id="t_system">
+                    <div class="row g-3">
+
+                        @{
+                            //// taxable flag (same logic you used elsewhere)
+                            //var taxable = !string.IsNullOrWhiteSpace(loan.TaxableStatus)
+                            //              && loan.TaxableStatus.Equals("Taxable", StringComparison.OrdinalIgnoreCase);
+
+                            // optional: show a clean label even if TaxableStatus is empty
+                            var taxLabel = taxable ? "TAXABLE" : "NON-TAXABLE";
+                        }
+
+                        <!-- ===================== GL MAPPING ===================== -->
+                        <div class="col-lg-12">
+                            <div class="loan-card p-3">
+
+                                <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                                    <div class="loan-card-title mb-0">
+                                        <i class="mdi mdi-bank-outline"></i> GL / Posting Mapping
+                                    </div>
+
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <span class="badge bg-light text-dark border">ORG: @Txt(loan.OrganizationId)</span>
+                                        <span class="badge bg-light text-dark border">BANK: @Txt(loan.BankId)</span>
+                                        <span class="badge bg-light text-dark border">BR: @Txt(loan.BranchCode)</span>
+
+                                        <!-- ✅ Taxability indicator -->
+                                        <span class="badge @(taxable ? "badge-taxable" : "badge-nontax")">
+                                            <i class="mdi @(taxable ? "mdi-check-decagram-outline" : "mdi-close-circle-outline") me-1"></i>
+                                            @taxLabel
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <!-- ✅ optional hint line for auditors -->
+                                <div class="small-note mt-2">
+                                    <i class="mdi mdi-file-check-outline me-1"></i>
+                                    Posting config tax mode:
+                                    <b class="@(taxable ? "text-primary" : "text-muted")">@taxLabel</b>
+                                    @if (!string.IsNullOrWhiteSpace(loan.TaxableStatus))
+                                    {
+                                        <span class="text-muted">• Source: <b>@Txt(loan.TaxableStatus)</b></span>
+                                    }
+                                </div>
+
+                                <table class="table table-sm kv-table mb-0 mt-2">
+                                    <tr class="table-light">
+                                        <td colspan="2" class="fw-bold small">GL Accounts (Code — Name)</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="k">Principal GL</td>
+                                        <td class="v">
+                                            @GlText(loan.AffiliateChartOfAccountIdForPrincipalAmount)
+                                            <div class="small-note text-muted">Id: @Txt(loan.AffiliateChartOfAccountIdForPrincipalAmount)</div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="k">Interest GL</td>
+                                        <td class="v">
+                                            @GlText(loan.AffiliateChartOfAccountIdForInterest)
+                                            <div class="small-note text-muted">Id: @Txt(loan.AffiliateChartOfAccountIdForInterest)</div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="k">VAT GL</td>
+                                        <td class="v">
+                                            @GlText(loan.AffiliateChartOfAccountIdForVat)
+                                            <div class="small-note text-muted">Id: @Txt(loan.AffiliateChartOfAccountIdForVat)</div>
+
+                                            @* ✅ If NON-TAXABLE, make it explicit why VAT GL may not be used *@
+                                            @if (!taxable)
+                                            {
+                                                <div class="small-note text-muted mt-1">
+                                                    <i class="mdi mdi-information-outline me-1"></i>
+                                                    Non-taxable posting: VAT GL is typically not used for this loan.
+                                                </div>
+                                            }
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="k">Penalty GL</td>
+                                        <td class="v">
+                                            @GlText(loan.AffiliateChartOfAccountIdForPenalty)
+                                            <div class="small-note text-muted">Id: @Txt(loan.AffiliateChartOfAccountIdForPenalty)</div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="k">Transit GL</td>
+                                        <td class="v">
+                                            @GlText(loan.AffiliateChartOfAccountIdForTransit)
+                                            <div class="small-note text-muted">Id: @Txt(loan.AffiliateChartOfAccountIdForTransit)</div>
+                                        </td>
+                                    </tr>
+
+                                    <tr class="table-light">
+                                        <td colspan="2" class="fw-bold small">Tenant / Scope</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="k">Organization / Bank</td>
+                                        <td class="v">@Txt(loan.OrganizationId) / @Txt(loan.BankId)</td>
+                                    </tr>
+                                </table>
+
+                                <div class="small-note mt-2">
+                                    Tip: Users see Code/Name; Id stays visible for compliance trace.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ===================== BRANCH / ROUTING ===================== -->
+                        <div class="col-lg-12">
+                            <div class="loan-card p-3">
+
+                                <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                                    <div class="loan-card-title mb-0">
+                                        <i class="mdi mdi-account-switch-outline"></i> Branch / Routing
+                                    </div>
+
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <span class="badge bg-light text-dark border">@Txt(loan.BranchCode)</span>
+                                        <span class="badge bg-light text-dark border">@Txt(loan.BranchName)</span>
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 mt-1">
+                                    <div class="col-md-4">
+                                        <div class="small-note">Branch Id</div>
+                                        <div class="fw-bold">@Txt(loan.BranchId)</div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="small-note">Branch Code</div>
+                                        <div class="fw-bold">@Txt(loan.BranchCode)</div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="small-note">Branch Name</div>
+                                        <div class="fw-bold">@Txt(loan.BranchName)</div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- ===================== AUDIT / EXTRA ===================== -->
+                <div class="tab-pane fade" id="t_audit">
+                    <div class="row g-3">
+
+                        <!-- ===================== IDENTIFIERS ===================== -->
+                        <div class="col-lg-6">
+                            <div class="loan-card p-3">
+
+                                <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                                    <div class="loan-card-title mb-0">
+                                        <i class="mdi mdi-information-outline"></i> Audit Identifiers
+                                    </div>
+
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <span class="badge bg-light text-dark border">APP: @Txt(loan.ApplicationCode)</span>
+                                        <span class="badge bg-light text-dark border">PAR: @Txt(loan.PAR)</span>
+                                    </div>
+                                </div>
+
+                                <table class="table table-sm kv-table mb-0 mt-2">
+
+                                    <tr class="table-light">
+                                        <td colspan="2" class="fw-bold small">Operational Keys</td>
+                                    </tr>
+                                    <tr><td class="k">LoanAppId</td><td class="v fw-bold">@Txt(loan.LoanApplicationId)</td></tr>
+                                    <tr><td class="k">Loan Id (Legacy)</td><td class="v">@Txt(loan.LoanId)</td></tr>
+                                    <tr><td class="k">Account No.</td><td class="v">@Txt(loan.AccountNumber)</td></tr>
+
+                                    <tr class="table-light">
+                                        <td colspan="2" class="fw-bold small">Mapping Keys</td>
+                                    </tr>
+                                    <tr><td class="k">Loan Term Id</td><td class="v">@Txt(loan.LoanTermId)</td></tr>
+                                    <tr><td class="k">Loan Target Id</td><td class="v">@Txt(loan.LoanTargetId)</td></tr>
+                                    <tr><td class="k">PCMF Purpose Id</td><td class="v">@Txt(loan.PcmfLoanPurposeId)</td></tr>
+
+                                </table>
+
+                                <div class="small-note mt-2">
+                                    Tip: These ids are the main join keys for audit + reconciliation.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ===================== HEALTH CHECKS ===================== -->
+                        <div class="col-lg-6">
+                            <div class="loan-card p-3">
+
+                                <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                                    <div class="loan-card-title mb-0">
+                                        <i class="mdi mdi-file-cog-outline"></i> Data Health
+                                    </div>
+
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <span class="badge bg-light text-dark border">DOCS: @docs.Count</span>
+                                        <span class="badge bg-light text-dark border">RFDS: @refunds.Count</span>
+                                        <span class="badge bg-light text-dark border">AMRT: @amort.Count</span>
+
+                                        <span class="badge @(isDelinq ? "bg-warning text-dark" : "bg-success")">
+                                            DEL: @(isDelinq ? "YES" : "NO")
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <table class="table table-sm kv-table mb-0 mt-2">
+
+                                    <tr class="table-light">
+                                        <td colspan="2" class="fw-bold small">Integrity Checks</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="k">Posting GLs</td>
+                                        <td class="v">
+                                            @if (string.IsNullOrWhiteSpace(loan.AffiliateChartOfAccountIdForPrincipalAmount)
+                                               || string.IsNullOrWhiteSpace(loan.AffiliateChartOfAccountIdForInterest)
+                                               || string.IsNullOrWhiteSpace(loan.AffiliateChartOfAccountIdForVat)
+                                               || string.IsNullOrWhiteSpace(loan.AffiliateChartOfAccountIdForPenalty)
+                                               || string.IsNullOrWhiteSpace(loan.AffiliateChartOfAccountIdForTransit))
+                                            {
+                                                <span class="badge bg-danger">MISSING</span>
+                                                <span class="text-muted ms-2">• Check Principal/Interest/VAT/Penalty/Transit</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-success">OK</span>
+                                                <span class="text-muted ms-2">• All required GLs present</span>
+                                            }
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="k">Classification</td>
+                                        <td class="v">
+                                            <span class="badge bg-light text-dark border">@Txt(loan.Classification.ToString())</span>
+                                            <span class="text-muted ms-2">• Provisioned: <b>@Money(loan.ProvisionedAmount)</b></span>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="k">Interest Stop</td>
+                                        <td class="v">
+                                            <span class="badge @(loan.StopInterestCalculation ? "bg-dark" : "bg-light text-dark border")">
+                                                @(loan.StopInterestCalculation ? "STOPPED" : "RUNNING")
+                                            </span>
+                                            @if (loan.StopInterestCalculation && (loan.DateInterestWastStoped == DateTime.MinValue))
+                                            {
+                                                <span class="text-danger fw-bold ms-2">• DATE MISSING</span>
+                                            }
+                                        </td>
+                                    </tr>
+
+                                    <tr class="table-light">
+                                        <td colspan="2" class="fw-bold small">Counts</td>
+                                    </tr>
+                                    <tr><td class="k">Documents</td><td class="v fw-bold">@docs.Count</td></tr>
+                                    <tr><td class="k">Refunds</td><td class="v fw-bold">@refunds.Count</td></tr>
+                                    <tr><td class="k">Amortizations</td><td class="v fw-bold">@amort.Count</td></tr>
+
+                                </table>
+
+                                <div class="small-note mt-2">
+                                    Tip: If AMRT = 0, ensure <code>LoanAmortizations</code> is loaded server-side.
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
 </div>
+

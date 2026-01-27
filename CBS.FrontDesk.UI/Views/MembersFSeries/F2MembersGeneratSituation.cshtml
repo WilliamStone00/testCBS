@@ -297,22 +297,12 @@
     <div class="modal-dialog modal-xl modal-dialog-scrollable">
         <div class="modal-content">
 
-            <!-- Modal Header -->
-            <div class="modal-header border-bottom-0">
-                <div class="w-100">
-                    <div class="card bg-light mb-2">
-                        <div class="card-body text-center">
-                            <h1 class="card-title text-primary" id="loanDetailsModalLabel">
-                                <i class="mdi mdi-book-open-variant-outline me-2"></i> Loan Details Overview
-                            </h1>
-                            <p class="card-text text-muted" id="loanDetailsModalDescription">
-                                Review loan disbursement, guarantees, delinquency, and repayment history for compliance and audit purposes.
-                            </p>
-                            <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
-                        </div>
-                    </div>
-                </div>
+            <!-- HERO TITLE -->
+            <div class="loan-hero m-3">
+                <div class="title">LOAN DETAILS OVERVIEW</div>
+                <div class="subtitle">Review disbursement, guarantees, delinquency, posting mapping, and repayment history for audit & compliance.</div>
             </div>
+
 
             <!-- Modal Body -->
             <div class="modal-body pt-0">
@@ -378,6 +368,12 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script src="~/Scripts/Js/Crud/MembersFSeries/FSeries.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var list = [].slice.call(document.querySelectorAll('[title]'));
+            list.forEach(function (el) { new bootstrap.Tooltip(el); });
+        });
+    </script>
 
     <script>
 
@@ -579,12 +575,12 @@
 
                 const id = 'toast_' + Date.now();
                 const html = `
-                <div id="${id}" class="toast text-white bg-${type} border-0">
-                    <div class="d-flex">
-                        <div class="toast-body">${message}</div>
-                        <button class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
-                    </div>
-                </div>`;
+                                <div id="${id}" class="toast text-white bg-${type} border-0">
+                                    <div class="d-flex">
+                                        <div class="toast-body">${message}</div>
+                                        <button class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                                    </div>
+                                </div>`;
 
                 $('#toastContainer').append(html);
                 new bootstrap.Toast(document.getElementById(id)).show();
@@ -619,6 +615,120 @@
             ReportGenerator.initialize();
         });
     </script>
+    <script>
+        function filterTable(input, tableId) {
+            const filter = (input.value || "").toLowerCase();
+            const rows = document.querySelectorAll("#" + tableId + " tbody tr");
+            rows.forEach(r => {
+                const text = (r.innerText || "").toLowerCase();
+                r.style.display = text.includes(filter) ? "" : "none";
+            });
+        }
+
+        async function copyFromEl(elOrId) {
+            try {
+                const el = typeof elOrId === "string" ? document.getElementById(elOrId) : elOrId;
+                if (!el) return;
+
+                const text = (el.getAttribute("data-copy") || el.innerText || el.textContent || "").trim();
+                if (!text) return;
+
+                if (navigator.clipboard && window.isSecureContext) {
+                    await navigator.clipboard.writeText(text);
+                    showCopyToast("Copied ✓");
+                    return;
+                }
+
+                const ta = document.createElement("textarea");
+                ta.value = text;
+                ta.setAttribute("readonly", "");
+                ta.style.position = "fixed";
+                ta.style.top = "0";
+                ta.style.left = "0";
+                ta.style.opacity = "0";
+                document.body.appendChild(ta);
+                ta.focus();
+                ta.select();
+
+                const ok = document.execCommand("copy");
+                document.body.removeChild(ta);
+
+                showCopyToast(ok ? "Copied ✓" : "Copy failed");
+            } catch (e) {
+                showCopyToast("Copy blocked");
+                console.warn("Copy failed:", e);
+            }
+        }
+
+        function showCopyToast(message) {
+            let toast = document.getElementById("copyToast");
+            if (!toast) {
+                toast = document.createElement("div");
+                toast.id = "copyToast";
+                toast.style.position = "fixed";
+                toast.style.right = "20px";
+                toast.style.bottom = "20px";
+                toast.style.zIndex = "99999";
+                toast.style.padding = "10px 14px";
+                toast.style.borderRadius = "10px";
+                toast.style.boxShadow = "0 8px 24px rgba(0,0,0,.12)";
+                toast.style.background = "#111";
+                toast.style.color = "#fff";
+                toast.style.fontSize = "13px";
+                toast.style.opacity = "0";
+                toast.style.transform = "translateY(10px)";
+                toast.style.transition = "all .18s ease";
+                document.body.appendChild(toast);
+            }
+
+            toast.innerText = message;
+            toast.style.opacity = "1";
+            toast.style.transform = "translateY(0)";
+
+            clearTimeout(window.__copyToastTimer);
+            window.__copyToastTimer = setTimeout(() => {
+                toast.style.opacity = "0";
+                toast.style.transform = "translateY(10px)";
+            }, 1200);
+        }
+    </script>
+
+    @*<script>
+        $(function () {
+            const id = "#LoansByMemberTable";
+
+            if ($.fn.DataTable.isDataTable(id)) {
+                $(id).DataTable().destroy();
+            }
+
+            const dt = $(id).DataTable({
+                paging: false,
+                searching: false,
+                info: false,
+                ordering: true,
+
+                scrollX: true,
+                scrollY: "55vh",        // ✅ vertical scroll
+                scrollCollapse: true,
+
+                autoWidth: false,
+                responsive: false,
+                fixedHeader: false
+            });
+
+            // ✅ critical: force width calc
+            setTimeout(() => dt.columns.adjust().draw(false), 80);
+
+            // tabs/modals
+            $(document).on('shown.bs.tab shown.bs.modal', function () {
+                setTimeout(() => dt.columns.adjust().draw(false), 80);
+            });
+
+            $(window).on('resize', function () {
+                dt.columns.adjust();
+            });
+        });
+    </script>*@
 
 
 }
