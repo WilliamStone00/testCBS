@@ -458,7 +458,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MembersDS.xsd</DependentUpon>
     </Compile>
-    <Compile Include="AppFiles\Accountingv2Reporting\DataSets\Cheque.Designer.cs">
     <Compile Include="AppFiles\Accountingv2Reporting\DataSets\Cheques.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -8235,6 +8234,7 @@
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\Buea_PT.pubxml" />
     <None Include="Properties\PublishProfiles\CamCCULAdmin_TB.pubxml" />
+    <None Include="Properties\PublishProfiles\CBS-UI_Akum_TB.pubxml" />
     <None Include="Properties\PublishProfiles\Cpcmc_TB.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\PB.pubxml" />
