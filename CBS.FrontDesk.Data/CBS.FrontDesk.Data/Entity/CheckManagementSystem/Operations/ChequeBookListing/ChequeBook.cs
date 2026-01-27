@@ -62,7 +62,7 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeBookL
         public int CurrentSerialNumber { get; set; }
         public int Current { get; set; }
         public string Status { get; set; }
-        public DateTime? CreatedDate { get; set; }
+        public DateTime CreatedDate { get; set; }
         public DateTime? IssuedDate { get; set; }
         public string IssuedBy { get; set; }
         public DateTime? LastUpdatedDate { get; set; }
@@ -83,26 +83,29 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeBookL
         public bool IsPrinted { get; set; }
         public bool IsIssued { get; set; }
         public string StatusDescription { get; set; }
+        public int UsedLeaves { get; set; }
+        public int RemainingLeaves { get; set; }
+        public decimal Balance { get; set; }
         public List<ChequeLeaf> Leaves { get; set; } = new List<ChequeLeaf>();
 
-        public string id { get; set; }
-        public string customerId { get; set; }
-        public string customerName { get; set; }
-        public string accountNumber { get; set; }
-		public string accountId { get; set; }
-		public string branchId { get; set; }
-        public string branchName { get; set; }
-        public string categoryId { get; set; }
-        public string categoryName { get; set; }
-        public int numberOfLeaves { get; set; }
-        public string status { get; set; } // Active, Used, Cancelled, Blocked
-        public DateTime? issueDate { get; set; }
-        public DateTime? expiryDate { get; set; }
-        public DateTime? createdDate { get; set; }
-        public decimal feeAmount { get; set; }
-        public string chequeSeriesStart { get; set; }
-        public string chequeSeriesEnd { get; set; }
-        public List<ChequeLeaf> ChequeLeaves { get; set; } = new List<ChequeLeaf>();
+  //      public string id { get; set; }
+  //      public string customerId { get; set; }
+  //      public string customerName { get; set; }
+  //      public string accountNumber { get; set; }
+		//public string accountId { get; set; }
+		//public string branchId { get; set; }
+  //      public string branchName { get; set; }
+  //      public string categoryId { get; set; }
+  //      public string categoryName { get; set; }
+  //      public int numberOfLeaves { get; set; }
+  //      public string status { get; set; } // Active, Used, Cancelled, Blocked
+  //      public DateTime? issueDate { get; set; }
+  //      public DateTime? expiryDate { get; set; }
+  //      public DateTime? createdDate { get; set; }
+  //      public decimal feeAmount { get; set; }
+  //      public string chequeSeriesStart { get; set; }
+  //      public string chequeSeriesEnd { get; set; }
+  //      public List<ChequeLeaf> ChequeLeaves { get; set; } = new List<ChequeLeaf>();
 
     }
 
@@ -167,6 +170,7 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeBookL
         }
     }
 
+      
     
-    
+
 }

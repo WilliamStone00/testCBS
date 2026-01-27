@@ -39,6 +39,15 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.Counter
         }
 
         /// <summary>
+        /// Loads the main container page for the module.
+        /// </summary>
+        public async Task<ActionResult> List()
+        {
+            await Loader();
+            return View();
+        }
+
+        /// <summary>
         /// Prepares data needed for dropdowns in the partial views.
         /// </summary>
         private async Task Loader()

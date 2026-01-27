@@ -1,0 +1,92 @@
+﻿
+@model CBS.FrontDesk.Data.Entity.Accounting_V2.Translations.TranslationPlaceholder
+@using Resources
+
+<fieldset class="fieldset-custom">
+    <!-- Header -->
+    <div class="card bg-light mb-4 shadow-sm">
+        <div class="card-body text-center">
+            <h1 class="card-title text-primary fw-bold mb-2">
+                <i class="mdi mdi-translate me-2"></i> Translation Place holder Details
+            </h1>
+            <p class="card-text text-muted mb-1">
+                View Place holder Details
+            </p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <h6 class="text-primary">
+                <i class="mdi mdi-information-outline me-2"></i> Basic Information
+            </h6>
+            <table class="table table-sm table-bordered">
+                <tr>
+                    <td class="fw-bold" style="width: 40%">ID:</td>
+                    <td>@Model.Id</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Placeholder:</td>
+                    <td>@Model.Placeholder</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">View:</td>
+                    <td>
+                        <span class="badge bg-info">@Model.View</span>
+                    </td>
+                </tr>
+               </table>
+        </div>
+
+        <div class="col-md-6">
+            <h6 class="text-primary">
+                <i class="mdi mdi-account-clock-outline me-2"></i> AuditInformation
+            </h6>
+            <table class="table table-sm table-bordered">
+                <tr>
+                    <td class="fw-bold" style="width: 40%">CreatedBy:</td>
+                    <td>@Model.CreatedBy</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">CreatedDate:</td>
+                    <td>@Model.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                </tr>
+                @if (Model.ModifiedDate.HasValue)
+                {
+                    <tr>
+                        <td class="fw-bold">ModifiedBy:</td>
+                        <td>@Model.ModifiedBy</td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold">ModifiedDate:</td>
+                        <td>@Model.ModifiedDate.Value.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <h6 class="text-primary">
+                <i class="mdi mdi-flag me-2"></i> EnglishTranslation
+            </h6>
+            <div class="card">
+                <div class="card-body bg-light">
+                    @Model.English
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <h6 class="text-primary">
+                <i class="mdi mdi-flag me-2"></i> FrenchTranslation
+            </h6>
+            <div class="card">
+                <div class="card-body bg-light">
+                    @Model.French
+                </div>
+            </div>
+        </div>
+    </div>
+</fieldset>

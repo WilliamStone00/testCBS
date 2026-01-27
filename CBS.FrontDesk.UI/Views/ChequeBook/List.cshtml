@@ -253,8 +253,12 @@
                     <i class="mdi mdi-refresh"></i> Reset
                 </button>
 
-                <button id="exportBtn" type="button" class="btn btn-success w-100">
+                <button id="exportBtn" type="button" class="btn btn-success me-2 w-100">
                     <i class="mdi mdi-file-export"></i> Export
+                </button>
+
+                <button id="printbtn" type="button" class="btn btn-info w-100">
+                    <i class="mdi mdi-printer"></i> Print
                 </button>
             </div>
         </div>
@@ -298,7 +302,7 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-    <script>
+<script>
         (function ($) {
         // single config object (use server value)
         var chequeViewConfig = {
@@ -614,21 +618,21 @@
                 },
                 columns: [
                     {
-                        data: 'createdDate',
+                        data: 'CreatedDate',
                         name: 'CreatedDate',
                         render: function (data) {
                             return data && window.moment ? moment(data).format('DD/MM/YYYY HH:mm:ss') : (data || '');
                         }
                     },
                     {
-                        data: 'customerName',
+                        data: 'CustomerName',
                         name: 'MemberName',
                         render: function(data) {
                             return escapeHtml(data || '');
                         }
                     },
                     {
-                        data: 'categoryName',
+                        data: 'CategoryName',
                         name: 'Category',
                         render: function(data) {
                             var label = data || '';
@@ -640,7 +644,7 @@
                         }
                     },
                     {
-                        data: 'status',
+                        data: 'Status',
                         name: 'Status',
                         render: function (data) {
                             var label = data || '';
@@ -655,12 +659,12 @@
                         }
                     },
                     {
-                        data: 'numberOfLeaves',
+                        data: 'NumberOfLeaves',
                         name: 'Num. Of Leaves',
                         render: function (data) { return data || '0'; }
                     },
                     {
-                        data: 'customerId',
+                        data: 'CustomerId',
                         name: 'Member Ref.',
                         render: function(data) { return escapeHtml(data || ''); }
                     },
@@ -670,7 +674,7 @@
                         render: function (data, type, row, meta) { return formatIsPrintedBadge(data, type); }
                     },
                     {
-                        data: 'id',
+                        data: 'Id',
                         orderable: false,
                         searchable: false,
                         render: function (data, type, row) { return getActionsHtml(data, row); }
@@ -735,7 +739,10 @@
             }
 
             appalert('Filters reset successfully', 1, 1);
-        }
+            }
+
+            //================= Print cristal report ==============
+
 
         // =============== DOCUMENT READY ===============
         $(function () {
@@ -850,8 +857,51 @@
                 exitEditMode();
             });
 
+            // ====================== Print Crystal Report ======================
+                  $(document).on('click', '#printbtn', function (e) {
+                    e.preventDefault();
+                    var filters = collectChequeExportParams();
+
+                    // Show loading
+                    $('#loadingOverlay').removeClass('d-none');
+
+                    $.ajax({
+                        url: '@Url.Action("GenerateChequeBookReport", "ChequeBookReport")',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(filters),
+                        success: function (res) {
+                            if (!res.success) {
+                                appalert(res.message, 0, 1);
+                                return;
+                            }
+
+                            // Prepare report parameters
+                            $.ajax({
+                                url: '@Url.Action("PrepareReport", "ChequeBookReport")',
+                                type: 'POST',
+                                success: function () {
+                                    // Open report viewer
+                                    window.open('@Url.Action("ReportParameterLessCOLL", "Reports")', '_blank');
+                                    // Add to your success callback for testing
+                                   // window.open('@Url.Action("DebugChequeBookData", "ChequeBookReport")', '_blank');
+                                },
+                                error: function () {
+                                    appalert('Error preparing report', 0, 1);
+                                }
+                            });
+                        },
+                        error: function () {
+                            appalert('Error generating report', 0, 1);
+                        },
+                        complete: function () {
+                            $('#loadingOverlay').addClass('d-none');
+                        }
+                    });
+                });
+
             // Load initial data
-            loadChequeData();
+            //loadChequeData();
 
             // Apply any server-side config
             if (chequeViewConfig && chequeViewConfig.actionType) {
@@ -860,5 +910,5 @@
         });
         })(jQuery);
 
-    </script>
+</script>
 }

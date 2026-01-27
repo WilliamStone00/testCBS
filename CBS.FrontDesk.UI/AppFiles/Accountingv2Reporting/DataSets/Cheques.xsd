@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="Cheques" targetNamespace="http://tempuri.org/Cheques.xsd" xmlns:mstns="http://tempuri.org/Cheques.xsd" xmlns="http://tempuri.org/Cheques.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="Cheques" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:Generator_UserDSName="Cheques" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="Cheques">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="ChequeBookReportRow" msprop:Generator_RowEvHandlerName="ChequeBookReportRowRowChangeEventHandler" msprop:Generator_RowDeletedName="ChequeBookReportRowRowDeleted" msprop:Generator_RowDeletingName="ChequeBookReportRowRowDeleting" msprop:Generator_RowEvArgName="ChequeBookReportRowRowChangeEvent" msprop:Generator_TablePropName="ChequeBookReportRow" msprop:Generator_RowChangedName="ChequeBookReportRowRowChanged" msprop:Generator_UserTableName="ChequeBookReportRow" msprop:Generator_RowChangingName="ChequeBookReportRowRowChanging" msprop:Generator_RowClassName="ChequeBookReportRowRow" msprop:Generator_TableClassName="ChequeBookReportRowDataTable" msprop:Generator_TableVarName="tableChequeBookReportRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="BankName" msprop:Generator_ColumnPropNameInTable="BankNameColumn" msprop:Generator_ColumnPropNameInRow="BankName" msprop:Generator_UserColumnName="BankName" msprop:Generator_ColumnVarNameInTable="columnBankName" type="xs:string" minOccurs="0" />
+              <xs:element name="BankCode" msprop:Generator_ColumnPropNameInTable="BankCodeColumn" msprop:Generator_ColumnPropNameInRow="BankCode" msprop:Generator_UserColumnName="BankCode" msprop:Generator_ColumnVarNameInTable="columnBankCode" type="xs:string" minOccurs="0" />
+              <xs:element name="BranchName" msprop:Generator_ColumnPropNameInTable="BranchNameColumn" msprop:Generator_ColumnPropNameInRow="BranchName" msprop:Generator_UserColumnName="BranchName" msprop:Generator_ColumnVarNameInTable="columnBranchName" type="xs:string" minOccurs="0" />
+              <xs:element name="BranchCode" msprop:Generator_ColumnPropNameInTable="BranchCodeColumn" msprop:Generator_ColumnPropNameInRow="BranchCode" msprop:Generator_UserColumnName="BranchCode" msprop:Generator_ColumnVarNameInTable="columnBranchCode" type="xs:string" minOccurs="0" />
+              <xs:element name="PrintedBy" msprop:Generator_ColumnPropNameInTable="PrintedByColumn" msprop:Generator_ColumnPropNameInRow="PrintedBy" msprop:Generator_UserColumnName="PrintedBy" msprop:Generator_ColumnVarNameInTable="columnPrintedBy" type="xs:string" minOccurs="0" />
+              <xs:element name="PrintedOn" msprop:Generator_ColumnPropNameInTable="PrintedOnColumn" msprop:Generator_ColumnPropNameInRow="PrintedOn" msprop:Generator_UserColumnName="PrintedOn" msprop:Generator_ColumnVarNameInTable="columnPrintedOn" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="ReportTitle" msprop:Generator_ColumnPropNameInTable="ReportTitleColumn" msprop:Generator_ColumnPropNameInRow="ReportTitle" msprop:Generator_UserColumnName="ReportTitle" msprop:Generator_ColumnVarNameInTable="columnReportTitle" type="xs:string" minOccurs="0" />
+              <xs:element name="TotalBranches" msprop:Generator_ColumnPropNameInTable="TotalBranchesColumn" msprop:Generator_ColumnPropNameInRow="TotalBranches" msprop:Generator_UserColumnName="TotalBranches" msprop:Generator_ColumnVarNameInTable="columnTotalBranches" type="xs:int" minOccurs="0" />
+              <xs:element name="TotalChequeBooksIssued" msprop:Generator_ColumnPropNameInTable="TotalChequeBooksIssuedColumn" msprop:Generator_ColumnPropNameInRow="TotalChequeBooksIssued" msprop:Generator_UserColumnName="TotalChequeBooksIssued" msprop:Generator_ColumnVarNameInTable="columnTotalChequeBooksIssued" type="xs:int" minOccurs="0" />
+              <xs:element name="TotalAccountsLinked" msprop:Generator_ColumnPropNameInTable="TotalAccountsLinkedColumn" msprop:Generator_ColumnPropNameInRow="TotalAccountsLinked" msprop:Generator_UserColumnName="TotalAccountsLinked" msprop:Generator_ColumnVarNameInTable="columnTotalAccountsLinked" type="xs:int" minOccurs="0" />
+              <xs:element name="TotalLeaves" msprop:Generator_ColumnPropNameInTable="TotalLeavesColumn" msprop:Generator_ColumnPropNameInRow="TotalLeaves" msprop:Generator_UserColumnName="TotalLeaves" msprop:Generator_ColumnVarNameInTable="columnTotalLeaves" type="xs:int" minOccurs="0" />
+              <xs:element name="TotalLeavesUsed" msprop:Generator_ColumnPropNameInTable="TotalLeavesUsedColumn" msprop:Generator_ColumnPropNameInRow="TotalLeavesUsed" msprop:Generator_UserColumnName="TotalLeavesUsed" msprop:Generator_ColumnVarNameInTable="columnTotalLeavesUsed" type="xs:int" minOccurs="0" />
+              <xs:element name="TotalBalance" msprop:Generator_ColumnPropNameInTable="TotalBalanceColumn" msprop:Generator_ColumnPropNameInRow="TotalBalance" msprop:Generator_UserColumnName="TotalBalance" msprop:Generator_ColumnVarNameInTable="columnTotalBalance" type="xs:decimal" minOccurs="0" />
+              <xs:element name="ApprovedChequeBooks" msprop:Generator_ColumnPropNameInTable="ApprovedChequeBooksColumn" msprop:Generator_ColumnPropNameInRow="ApprovedChequeBooks" msprop:Generator_UserColumnName="ApprovedChequeBooks" msprop:Generator_ColumnVarNameInTable="columnApprovedChequeBooks" type="xs:int" minOccurs="0" />
+              <xs:element name="UnclearedChequeBooks" msprop:Generator_ColumnPropNameInTable="UnclearedChequeBooksColumn" msprop:Generator_ColumnPropNameInRow="UnclearedChequeBooks" msprop:Generator_UserColumnName="UnclearedChequeBooks" msprop:Generator_ColumnVarNameInTable="columnUnclearedChequeBooks" type="xs:int" minOccurs="0" />
+              <xs:element name="PendingChequeBooks" msprop:Generator_ColumnPropNameInTable="PendingChequeBooksColumn" msprop:Generator_ColumnPropNameInRow="PendingChequeBooks" msprop:Generator_UserColumnName="PendingChequeBooks" msprop:Generator_ColumnVarNameInTable="columnPendingChequeBooks" type="xs:int" minOccurs="0" />
+              <xs:element name="ReportPeriodFrom" msprop:Generator_ColumnPropNameInTable="ReportPeriodFromColumn" msprop:Generator_ColumnPropNameInRow="ReportPeriodFrom" msprop:Generator_UserColumnName="ReportPeriodFrom" msprop:Generator_ColumnVarNameInTable="columnReportPeriodFrom" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="ReportPeriodTo" msprop:Generator_ColumnPropNameInTable="ReportPeriodToColumn" msprop:Generator_ColumnPropNameInRow="ReportPeriodTo" msprop:Generator_UserColumnName="ReportPeriodTo" msprop:Generator_ColumnVarNameInTable="columnReportPeriodTo" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="RowNumber_x0020_" msprop:Generator_ColumnPropNameInTable="RowNumber_Column" msprop:Generator_ColumnPropNameInRow="RowNumber_" msprop:Generator_UserColumnName="RowNumber " msprop:Generator_ColumnVarNameInTable="columnRowNumber_" type="xs:int" minOccurs="0" />
+              <xs:element name="CustomerName" msprop:Generator_ColumnPropNameInTable="CustomerNameColumn" msprop:Generator_ColumnPropNameInRow="CustomerName" msprop:Generator_UserColumnName="CustomerName" msprop:Generator_ColumnVarNameInTable="columnCustomerName" type="xs:string" minOccurs="0" />
+              <xs:element name="NumberOfLeaves" msprop:Generator_ColumnPropNameInTable="NumberOfLeavesColumn" msprop:Generator_ColumnPropNameInRow="NumberOfLeaves" msprop:Generator_UserColumnName="NumberOfLeaves" msprop:Generator_ColumnVarNameInTable="columnNumberOfLeaves" type="xs:int" minOccurs="0" />
+              <xs:element name="StatusDescription" msprop:Generator_ColumnPropNameInTable="StatusDescriptionColumn" msprop:Generator_ColumnPropNameInRow="StatusDescription" msprop:Generator_UserColumnName="StatusDescription" msprop:Generator_ColumnVarNameInTable="columnStatusDescription" type="xs:string" minOccurs="0" />
+              <xs:element name="Year" msprop:Generator_ColumnPropNameInTable="YearColumn" msprop:Generator_ColumnPropNameInRow="Year" msprop:Generator_UserColumnName="Year" msprop:Generator_ColumnVarNameInTable="columnYear" type="xs:string" minOccurs="0" />
+              <xs:element name="AccountNumber" msprop:Generator_ColumnPropNameInTable="AccountNumberColumn" msprop:Generator_ColumnPropNameInRow="AccountNumber" msprop:Generator_UserColumnName="AccountNumber" msprop:Generator_ColumnVarNameInTable="columnAccountNumber" type="xs:string" minOccurs="0" />
+              <xs:element name="CategoryName" msprop:Generator_ColumnPropNameInTable="CategoryNameColumn" msprop:Generator_ColumnPropNameInRow="CategoryName" msprop:Generator_UserColumnName="CategoryName" msprop:Generator_ColumnVarNameInTable="columnCategoryName" type="xs:string" minOccurs="0" />
+              <xs:element name="CreatedDate" msprop:Generator_UserColumnName="CreatedDate" msprop:Generator_ColumnPropNameInTable="CreatedDateColumn" msprop:Generator_ColumnPropNameInRow="CreatedDate" msprop:Generator_ColumnVarNameInTable="columnCreatedDate" type="xs:string" minOccurs="0" />
+              <xs:element name="Time" msprop:Generator_UserColumnName="Time" msprop:Generator_ColumnPropNameInTable="TimeColumn" msprop:Generator_ColumnPropNameInRow="Time" msprop:Generator_ColumnVarNameInTable="columnTime" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

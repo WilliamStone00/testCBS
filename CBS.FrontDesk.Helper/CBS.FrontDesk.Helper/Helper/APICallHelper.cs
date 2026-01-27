@@ -1904,5 +1904,15 @@ namespace CBS.FrontDesk.Helper
         public const string SmsUpload_Send = "/api/v1/SmsUpload/send";
         public const string SmsUpload_DownloadById = "/api/v1/SmsUpload/download/{0}";
         public const string SmsUpload_ById = "/api/v1/SmsUpload/details/{0}";
+
+        //---------------------- Translations ---------------------------------------
+             public const string GetAllTranslationPlaceholders = "/api/v1/Translation";
+            public const string GetTranslationPlaceholderById = "/api/v1/Translation/{0}";
+            public const string CreateTranslationPlaceholder = "/api/v1/Translation";
+            public const string UpdateTranslationPlaceholder = "/api/v1/Translation/{0}";
+            public const string DeactivateTranslationPlaceholder = "/api/v1/Translation/{0}";
+            public const string LoadTranslationPlaceholdersDataTable = "/api/v1/Translation/datatable";
+            public const string ExportTranslationPlaceholders = "Not avalillable";
+        
     }
 }

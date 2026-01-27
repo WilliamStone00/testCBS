@@ -1,0 +1,109 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.Translations.TranslationPlaceholder
+@using Resources
+
+
+<div class="modal-content">
+
+    @using (Html.BeginForm("CreateOrUpdate", "TranslationPlaceholder", FormMethod.Post,
+           new { enctype = "multipart/form-data", onsubmit = "return disableSubmitBtn(this);", id = "translationForm" }))
+
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.Id)
+
+        <div class="modal-body">
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card bg-light mb-2">
+                        <div class="card-body text-center">
+                            <h1 class="card-title text-primary">
+                                <i class="mdi mdi-bank-transfer me-2"></i>
+                                @(string.IsNullOrWhiteSpace(Model?.Id) ? "Add Place holder" : "Edit Place holder")
+                            </h1>
+                            <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr />
+
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <div class="row g-3">
+
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                @Html.TextBoxFor(m => m.Placeholder,
+                                    new { @class = "form-control", placeholder = "Placeholder", required = "required" })
+                                @Html.ValidationMessageFor(m => m.Placeholder, "", new { @class = "text-danger" })
+                                <label>Placeholder</label>
+                            </div>
+                        </div>
+                      
+                        <div class="col-md-6">
+                            <div class="form-floating shadow-sm">
+                                @Html.DropDownListFor(m => m.View, new SelectList(ViewBag.Views, "Value", "Text"), "--- Sellect View ---", new { @class = "form-control select2" })
+                                @Html.ValidationMessageFor(m => m.View, "", new { @class = "text-danger" })
+                                <label>Views</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                @Html.TextAreaFor(m => m.English,
+                                    new { @class = "form-control", placeholder = "English", rows = "3", required = "required" })
+                                @Html.ValidationMessageFor(m => m.English, "", new { @class = "text-danger" })
+                                <label>English</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                @Html.TextAreaFor(m => m.French,
+                                    new { @class = "form-control", placeholder = "French", rows = "3", required = "required" })
+                                @Html.ValidationMessageFor(m => m.French, "", new { @class = "text-danger" })
+                                <label>French</label>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">
+                <i class="mdi mdi-content-save me-1"></i>
+                @(Model.Id == null ? "Save" : "Update")
+            </button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                Cancel
+            </button>
+        </div>
+    }
+</div>
+
+
+<script>
+    // Form submission handler
+  
+
+    // Initialize validation
+    $(document).ready(function() {
+        $('#translationForm').validate({
+            rules: {
+                Placeholder: 'required',
+                English: 'required',
+                French: 'required',
+                View: 'required'
+            },
+            messages: {
+                Placeholder: 'PlaceholderRequired',
+                English: 'EnglishRequired',
+                French: 'FrenchRequired',
+                View: 'ViewRequired'
+            }
+        });
+    });
+</script>

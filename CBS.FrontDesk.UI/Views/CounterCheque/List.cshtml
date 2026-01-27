@@ -1,0 +1,376 @@
+﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheque.CounterChequeQuery
+@using Resources
+@{
+    ViewBag.Title = "Counter Cheque Listing - Filters";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-checkbook me-2"></i> Counter Cheque Listing
+                </h1>
+                <p class="card-text">Filter and generate counter cheque transactions</p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="filtersSection" class="card shadow p-3 mb-4">
+    <h5 class="text-primary mb-3">
+        <i class="mdi mdi-filter-outline me-1"></i> Filter Criteria
+    </h5>
+
+    <form id="counterChequeFilterForm" autocomplete="off">
+        <div class="card p-3 mb-3 bg-light">
+
+            <!-- ================= Row 1 (ALWAYS VISIBLE) ================= -->
+            <div class="row mb-3 g-3">
+
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Branch</label>
+                    @Html.DropDownListFor(
+                        m => m.BranchId,
+                        new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name"),
+                        "--- Select Branch ---",
+                        new { @class = "form-select select2", id = "BranchId" }
+                    )
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Account Number</label>
+                    @Html.TextBoxFor(
+                        m => m.AccountNumber,
+                        new { @class = "form-control", id = "AccountNumber" }
+                    )
+                </div>
+
+            </div>
+
+            <hr />
+
+            <!-- ================= OPTIONAL FILTERS ================= -->
+            <div class="row g-3">
+
+                <!-- Customer ID -->
+                <div class="col-md-6">
+                    <div class="form-check mb-1">
+                        <input class="form-check-input filter-toggle" type="checkbox" data-target="#CustomerIdWrap">
+                        <label class="form-check-label fw-semibold">Filter by Customer ID</label>
+                    </div>
+                    <div id="CustomerIdWrap" class="d-none">
+                        <label class="form-label">Customer ID</label>
+                        @Html.TextBoxFor(m => m.CustomerId,
+                            new { @class = "form-control", id = "CustomerId" })
+                    </div>
+                </div>
+
+                <!-- Client Name -->
+                <div class="col-md-6">
+                    <div class="form-check mb-1">
+                        <input class="form-check-input filter-toggle" type="checkbox" data-target="#ClientNameWrap">
+                        <label class="form-check-label fw-semibold">Filter by Client Name</label>
+                    </div>
+                    <div id="ClientNameWrap" class="d-none">
+                        <label class="form-label">Client Name</label>
+                        @Html.TextBoxFor(m => m.ClientName,
+                            new { @class = "form-control", id = "ClientName" })
+                    </div>
+                </div>
+
+                <!-- Cheque Number -->
+                <div class="col-md-6">
+                    <div class="form-check mb-1">
+                        <input class="form-check-input filter-toggle" type="checkbox" data-target="#CheckNumberWrap">
+                        <label class="form-check-label fw-semibold">Filter by Cheque Number</label>
+                    </div>
+                    <div id="CheckNumberWrap" class="d-none">
+                        <label class="form-label">Cheque Number</label>
+                        @Html.TextBoxFor(m => m.CheckNumber,
+                            new { @class = "form-control", id = "CheckNumber" })
+                    </div>
+                </div>
+
+                <!-- Status -->
+                <div class="col-md-6">
+                    <div class="form-check mb-1">
+                        <input class="form-check-input filter-toggle" type="checkbox" data-target="#StatusWrap">
+                        <label class="form-check-label fw-semibold">Filter by Status</label>
+                    </div>
+                    <div id="StatusWrap" class="d-none">
+                        <label class="form-label">Status</label>
+                        @Html.DropDownListFor(
+                            m => m.Status,
+                            new SelectList(new[]
+                            {
+                                new SelectListItem { Text = "--- Select Status ---", Value = "" },
+                                new SelectListItem { Text = "Issued", Value = "Issued" },
+                                new SelectListItem { Text = "Cleared", Value = "Cleared" },
+                                new SelectListItem { Text = "Cancelled", Value = "Cancelled" }
+                            }, "Value", "Text"),
+                            new { @class = "form-select", id = "Status" }
+                        )
+                    </div>
+                </div>
+
+                <!-- Amount -->
+                <div class="col-md-6">
+                    <div class="form-check mb-1">
+                        <input class="form-check-input filter-toggle" type="checkbox" data-target="#AmountWrap">
+                        <label class="form-check-label fw-semibold">Filter by Amount</label>
+                    </div>
+                    <div id="AmountWrap" class="d-none">
+                        <label class="form-label">Amount</label>
+                        @Html.TextBoxFor(m => m.Amount,
+                            new { @class = "form-control", type = "number", step = "0.01", id = "Amount" })
+                    </div>
+                </div>
+
+                <!-- Date Range -->
+                <div class="col-md-6">
+                    <div class="form-check mb-1">
+                        <input class="form-check-input filter-toggle" type="checkbox" data-target="#DateRangeWrap">
+                        <label class="form-check-label fw-semibold">Filter by Date Range</label>
+                    </div>
+                    <div id="DateRangeWrap" class="d-none">
+                        <label class="form-label">Start Date</label>
+                        @Html.TextBoxFor(m => m.StartDate,
+                            new { @class = "form-control", type = "date", id = "StartDate" })
+
+                        <label class="form-label mt-2">End Date</label>
+                        @Html.TextBoxFor(m => m.EndDate,
+                            new { @class = "form-control", type = "date", id = "EndDate" })
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ================= Buttons ================= -->
+        <div class="row mt-3">
+            <div class="col-md-12 d-flex gap-2">
+                <button id="applyCounterChequeFilterBtn" type="button" class="btn btn-primary w-100">
+                    <i class="mdi mdi-magnify"></i> Apply Filter
+                </button>
+                <button id="resetCounterChequeFilterBtn" type="button" class="btn btn-secondary w-100">
+                    <i class="mdi mdi-refresh"></i> Reset
+                </button>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+<div id="datalistingview">
+    @Html.Partial("_CounterChequeDataTable")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+    var counterChequeTable = null;
+
+    function emptyToNull(v) {
+        return (v === undefined || v === null || v === '') ? null : v;
+    }
+
+    function collectCounterChequeFilters() {
+        return {
+            BranchId: emptyToNull($('#BranchId').val()),
+            AccountNumber: emptyToNull($('#AccountNumber').val()),
+            CustomerId: emptyToNull($('#CustomerId').val()),
+            ClientName: emptyToNull($('#ClientName').val()),
+            CheckNumber: emptyToNull($('#CheckNumber').val()),
+            Status: emptyToNull($('#Status').val()),
+            IssuedBy: emptyToNull($('#IssuedBy').val()),
+            Amount: ($('#Amount').val() === '' ? null : parseFloat($('#Amount').val())),
+            StartDate: emptyToNull($('#StartDate').val()),
+            EndDate: emptyToNull($('#EndDate').val()),
+            DataTableOptions: {}
+        };
+    }
+
+    function initCounterChequeTable() {
+
+        if ($.fn.DataTable.isDataTable('#myDataTable')) {
+            return;
+        }
+
+        counterChequeTable = $('#myDataTable').DataTable({
+            serverSide: true,
+            processing: false,
+            responsive: true,
+            order: [[0, 'desc']], // IssuedOn DESC
+            ajax: {
+                url: '/CounterCheque/LoadCounterCheques',
+                type: 'POST',
+                contentType: 'application/json',
+                data: function (d) {
+                    var filters = collectCounterChequeFilters();
+                    filters.DataTableOptions = {
+                        draw: d.draw,
+                        start: d.start,
+                        length: d.length,
+                        searchValue: d.search?.value || '',
+                        sortColumnName: 'IssuedOn',
+                        sortColumnDirection: 'desc'
+                    };
+                    return JSON.stringify(filters);
+                },
+                error: function () {
+                    appalert('Failed to load counter cheque records.', 0, 1);
+                }
+            },
+            columns: [
+                {
+                    data: 'issuedOn',
+                    render: function (d) {
+                        return d ? moment(d).format('DD/MM/YYYY HH:mm') : '-';
+                    }
+                },
+                {
+                    data: 'clientName',
+                    defaultContent: '-'
+                },
+                {
+                    data: 'accountNumber',
+                    defaultContent: '-'
+                },
+                {
+                    data: 'checkNumber',
+                    defaultContent: '-'
+                },
+                {
+                    data: 'amount',
+                    render: function (v) {
+                        return v != null ? parseFloat(v).toFixed(2) : '0.00';
+                    }
+                },
+                {
+                    data: 'status',
+                    render: function (s) {
+                        if (!s) return '-';
+                        var badge = 'secondary';
+                        if (s === 'Approved') badge = 'success';
+                        else if (s === 'Rejected') badge = 'danger';
+                        else if (s === 'Pending') badge = 'warning';
+                        return `<span class="badge bg-${badge}">${s}</span>`;
+                    }
+                },
+                {
+                    data: 'issuedBy',
+                    defaultContent: '-'
+                },
+                {
+                    data: 'id',
+                    orderable: false,
+                    searchable: false,
+                    render: function (id, type, row) {
+
+                        var safeId = encodeURIComponent(id);
+
+                        return `
+                        <div class="dropdown text-center">
+                            <button class="btn btn-sm btn-info dropdown-toggle text-white"
+                                    type="button"
+                                    data-bs-toggle="dropdown">
+                                <i class="mdi mdi-cog-outline"></i> Actions
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <button class="dropdown-item btn-details" data-id="${safeId}">
+                                        <i class="mdi mdi-eye-outline text-primary me-1"></i> Details
+                                    </button>
+                                </li>
+                                <li>
+                                    <button class="dropdown-item btn-review" data-id="${safeId}">
+                                        <i class="mdi mdi-file-search-outline text-info me-1"></i> Review
+                                    </button>
+                                </li>
+                                <li><hr class="dropdown-divider" /></li>
+                                <li>
+                                    <button class="dropdown-item btn-approve text-success" data-id="${safeId}">
+                                        <i class="mdi mdi-check-circle-outline me-1"></i> Approve
+                                    </button>
+                                </li>
+                                <li>
+                                    <button class="dropdown-item btn-reject text-danger" data-id="${safeId}">
+                                        <i class="mdi mdi-close-circle-outline me-1"></i> Reject
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>`;
+                    }
+                }
+            ],
+            lengthMenu: [10, 25, 50],
+            pageLength: 10,
+            language: {
+                emptyTable: 'No counter cheque records found'
+            }
+        });
+    }
+
+    // ================== Button bindings ==================
+
+    $('#applyCounterChequeFilterBtn').on('click', function () {
+        if (counterChequeTable) {
+            counterChequeTable.ajax.reload();
+        } else {
+            initCounterChequeTable();
+        }
+    });
+
+    $('#resetCounterChequeFilterBtn').on('click', function () {
+        document.getElementById('counterChequeFilterForm').reset();
+        if (counterChequeTable) counterChequeTable.ajax.reload();
+    });
+
+        // ================== Action handlers ==================
+        $(document).on('change', '.filter-toggle', function () {
+            const target = $($(this).data('target'));
+
+            if (this.checked) {
+                target.removeClass('d-none');
+            } else {
+                target.addClass('d-none');
+                target.find('input, select').val('');
+            }
+        });
+
+        $('#resetCounterChequeFilterBtn').on('click', function () {
+            $('#counterChequeFilterForm')[0].reset();
+            $('.filter-toggle').prop('checked', false);
+            $('[id$="Wrap"]').addClass('d-none');
+        });
+
+
+    $(document).on('click', '.btn-details', function () {
+        var id = decodeURIComponent($(this).data('id'));
+        ViewCounterChequeDetails(id);
+    });
+
+    $(document).on('click', '.btn-review', function () {
+        var id = decodeURIComponent($(this).data('id'));
+        ReviewCounterCheque(id);
+    });
+
+    $(document).on('click', '.btn-approve', function () {
+        var id = decodeURIComponent($(this).data('id'));
+        ApproveCounterCheque(id);
+    });
+
+    $(document).on('click', '.btn-reject', function () {
+        var id = decodeURIComponent($(this).data('id'));
+        RejectCounterCheque(id);
+    });
+
+    $(document).ready(function () {
+       // initCounterChequeTable();
+    });
+    </script>
+}

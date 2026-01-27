@@ -1,0 +1,726 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.Translations.TranslationPlaceholderQuery
+@using Resources
+@{
+    ViewBag.Title = "Translation Placeholders";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2 shadow-sm">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary fw-bold">
+                    <i class="mdi mdi-translate me-2"></i> Translation Placeholders Management
+                </h1>
+                <p class="card-text">
+                    On This page we are to manage the over all translations for the system
+                </p>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Action Buttons -->
+<div class="card mb-1">
+    <div class="card-body d-flex justify-content-end align-items-center">
+        <button type="button"
+                onclick="ShowModal(null,'_TranslationPlaceholderForm', 'TranslationPlaceholder', 'new')"
+                class="btn btn-primary btn-sm">
+            <i class="mdi mdi-plus me-1"></i> Add New Placeholder
+        </button>
+    </div>
+</div>
+<hr />
+<!-- Filters Section -->
+<div class="card shadow p-3 mb-4 bg-light" id="filtersSection">
+    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i>Filters</h5>
+
+    <form id="placeholderFilterForm" autocomplete="off">
+        <div class="row g-3">
+            <div class="col-md-4">
+                <label class="form-label fw-bold">Placeholder</label>
+                <input type="text" id="filterPlaceholder" name="Placeholder" class="form-control"
+                       placeholder="Search By Placeholder" />
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label fw-bold">CreatedBy</label>
+                <input type="text" id="filterCreatedBy" name="CreatedBy" class="form-control"
+                       placeholder="Search By Creator" />
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label fw-bold">Views</label>
+
+                @Html.DropDownListFor(
+                    m => m.View,
+                    new SelectList(ViewBag.Views, "Value", "Text"),
+                    "--- Select View ---",
+                    new { @class = "form-control select2", id = "views" }
+                )
+
+                @Html.ValidationMessageFor(m => m.View, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-bold">StartDate</label>
+                <input type="date" id="filterStartDate" name="StartDate" class="form-control" />
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-bold">EndDate</label>
+                <input type="date" id="filterEndDate" name="EndDate" class="form-control" />
+            </div>
+            <div class="row mt-2 g-2">
+                <div class="col-md-4">
+                    <button id="applyFiltersBtn" type="button" class="btn btn-primary w-100">
+                        <i class="mdi mdi-magnify me-1"></i> Apply Filters
+                    </button>
+                </div>
+
+                <div class="col-md-4">
+                    <button id="clearFiltersBtn" type="button" class="btn btn-secondary w-100">
+                        <i class="mdi mdi-close me-1"></i> Reset
+                    </button>
+                </div>
+
+                <div class="col-md-4">
+                    <button id="btnExport" type="button" class="btn btn-success w-100">
+                        <i class="mdi mdi-file-export me-1"></i> Export
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
+
+<!-- DataTable Partial -->
+<div id="datalistingview">
+    @Html.Partial("_TranslationPlaceholderDataTable")
+</div>
+
+<!-- Modal Container -->
+<div class="modal fade" id="genericModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content"></div>
+    </div>
+</div>
+
+<!-- Details Modal -->
+<div class="modal fade" id="placeholderDetailsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Content will be loaded dynamically -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+<script>
+    function disableSubmitBtn(form) {
+
+        var btn = form.querySelector('button[type="submit"]');
+        if (!btn) return false;
+
+        // Preserve original button state
+        if (!btn.dataset.originalHtml) {
+            btn.dataset.originalHtml = btn.innerHTML;
+        }
+
+        btn.disabled = true;
+        btn.innerHTML = '<i class="mdi mdi-loading mdi-spin me-1"></i> Processing...';
+
+        // 🔁 Helper to restore button
+        function restoreBtn() {
+            btn.disabled = false;
+            btn.innerHTML = btn.dataset.originalHtml;
+        }
+
+        /* ===============================
+           1️⃣ Intercept alertify.confirm
+           =============================== */
+        var originalConfirm = alertify.confirm;
+
+        alertify.confirm = function (title, message, onOk, onCancel) {
+
+            // Wrap OK
+            var wrappedOk = function () {
+                alertify.confirm = originalConfirm; // restore
+                if (onOk) onOk();
+            };
+
+            // Wrap Cancel
+            var wrappedCancel = function () {
+                restoreBtn();
+                alertify.confirm = originalConfirm; // restore
+                if (onCancel) onCancel();
+            };
+
+            return originalConfirm(title, message, wrappedOk, wrappedCancel);
+        };
+
+        /* ===============================
+           2️⃣ Intercept $.ajax completion
+           =============================== */
+        var originalAjax = $.ajax;
+
+        $.ajax = function (options) {
+
+            var originalComplete = options.complete;
+
+            options.complete = function () {
+                restoreBtn();                 // 🔓 re-enable
+                $.ajax = originalAjax;        // restore ajax
+                if (originalComplete) originalComplete.apply(this, arguments);
+            };
+
+            return originalAjax(options);
+        };
+
+        // 🚀 Call generic method (UNCHANGED)
+        AjaxPostAndUpdate(form);
+
+        return false; // prevent normal submit
+    }
+
+    $(document).ready(function () {
+        console.log("Document ready");
+
+        // Initialize DataTable on page load
+        //initTranslationPlaceholderDataTable();
+
+        // Filter button handlers
+        $('#applyFiltersBtn').click(function () {
+            console.log("Apply Filters button clicked");
+            applyFiltersAndReload();
+        });
+
+        // Enter key in filter fields triggers apply
+        $('#placeholderFilterForm input').keypress(function (e) {
+            if (e.which === 13) { // Enter key
+                e.preventDefault();
+                applyFiltersAndReload();
+            }
+        });
+
+        $('#clearFiltersBtn').click(function () {
+            console.log("Clear Filters button clicked");
+            clearFilters();
+        });
+
+        $('#btnResetFilters').click(function () {
+            console.log("Reset Filters button clicked");
+            clearFilters();
+        });
+
+        // Export button handler
+        $('#btnExport').click(function () {
+            console.log("Export button clicked");
+            exportPlaceholders();
+        });
+
+        // Initialize select2
+        if ($.fn.select2) {
+            console.log("Initializing Select2 dropdown");
+            $('#filterView').select2({
+                placeholder: 'SelectView',
+                width: '100%'
+            });
+        }
+
+        $('#translationForm').validate({
+            rules: {
+                Placeholder: 'required',
+                English: 'required',
+                French: 'required',
+                View: 'required'
+            },
+            messages: {
+                Placeholder: 'PlaceholderRequired',
+                English: 'EnglishRequired',
+                French: 'FrenchRequired',
+                View: 'ViewRequired'
+            }
+        });
+    });
+
+    var placeholderTable = null;
+
+    function initTranslationPlaceholderDataTable() {
+        console.log("initTranslationPlaceholderDataTable called");
+
+        if ($.fn.DataTable.isDataTable('#myDataTable')) {
+            console.log("DataTable already exists, destroying and recreating");
+            placeholderTable.destroy();
+            placeholderTable = null;
+            $('#myDataTable').empty();
+        }
+
+        console.log("Creating new DataTable instance");
+        placeholderTable = $('#myDataTable').DataTable({
+            serverSide: true,
+          
+            responsive: true,
+            order: [[0, 'desc']],
+            ajax: {
+                url: '/TranslationPlaceholder/LoadTranslationPlaceholderData',
+                type: 'POST',
+                contentType: 'application/json',
+                data: function (d) {
+                    var filters = getFilters();
+                    // Update draw parameter for server-side processing
+                    filters.Options.draw = d.draw || 1;
+                    filters.Options.start = d.start || 0;
+                    filters.Options.length = d.length || 10;
+                    filters.Options.searchValue = d.search?.value || '';
+                    filters.Options.sortColumnName = d.columns && d.order && d.columns[d.order[0].column]
+                        ? d.columns[d.order[0].column].data
+                        : 'CreatedDate';
+                    filters.Options.sortColumnDirection = d.order && d.order[0]
+                        ? d.order[0].dir
+                        : 'desc';
+
+                    console.log("Sending AJAX request with filters:", filters);
+                    return JSON.stringify(filters);
+                },
+                error: function (xhr, status, error) {
+                    console.error("DataTable AJAX error:", status, error, xhr.responseText);
+                }
+            },
+            columns: [
+                {
+                    data: 'CreatedDate',
+                    render: function (data, type) {
+                        if (type === 'display') {
+                            return moment(data).format('DD/MM/YYYY HH:mm:ss');
+                        }
+                        return data; // raw ISO date
+                    }
+                },
+                {
+                    data: 'Placeholder',
+                    render: function (data) {
+                        console.log("Rendering placeholder:", data);
+                        return data;
+                    }
+                },
+                {
+                    data: 'English',
+                    render: function (data) {
+                        console.log("Rendering English text:", data);
+                        return data && data.length > 50 ? data.substring(0, 50) + '...' : data;
+                    }
+                },
+                {
+                    data: 'French',
+                    render: function (data) {
+                        console.log("Rendering French text:", data);
+                        return data && data.length > 50 ? data.substring(0, 50) + '...' : data;
+                    }
+                },
+                {
+                    data: 'View',
+                    render: function (data) {
+                        console.log("Rendering view:", data);
+                        return data;
+                    }
+                },
+                {
+                    data: 'CreatedBy',
+                    render: function (data) {
+                        console.log("Rendering createdBy:", data);
+                        return data;
+                    }
+                },
+                {
+                    data: 'Id',
+                    orderable: false,
+                    searchable: false,
+                    render: function (data, type, row) {
+                        console.log("Rendering action dropdown for ID:", data, "Row:", row);
+
+                        var recordId = encodeURIComponent(data);
+                        var safeId = String(data || '').replace(/[^a-zA-Z0-9_-]/g, '') || 'x';
+                        var dropdownId = 'actionsDropdown_' + safeId;
+
+                        return `
+                            <div class="dropdown text-center">
+                                <button class="btn btn-sm btn-info dropdown-toggle"
+                                        type="button"
+                                        id="${dropdownId}"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false">
+                                    <i class="mdi mdi-cog-outline"></i> Actions
+                                </button>
+
+                                <ul class="dropdown-menu" aria-labelledby="${dropdownId}">
+                                    <li>
+                                        <button class="dropdown-item btn-details"
+                                                data-id="${recordId}">
+                                            <i class="mdi mdi-eye me-1 text-primary"></i> View Details
+                                        </button>
+                                    </li>
+
+                                    <li>
+                                        <button class="dropdown-item btn-edit"
+                                                data-id="${recordId}">
+                                            <i class="mdi mdi-pencil me-1 text-warning"></i> Edit
+                                        </button>
+
+                                    </li>
+
+                                    <li>
+                                        <button class="dropdown-item btn-delete text-danger"
+                                                data-id="${recordId}"
+                                                data-name="${row.Placeholder}">
+                                            <i class="mdi mdi-delete me-1"></i> Delete
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        `;
+                    }
+
+                }
+            ],
+            language: {
+                emptyTable: 'NoDataAvailable',
+               
+            },
+            initComplete: function () {
+                console.log("DataTable initialized and ready");
+
+                // Attach event handlers after table is initialized
+                attachActionHandlers();
+            }
+        });
+    }
+
+    function attachActionHandlers() {
+        // Event delegation for action buttons
+        $(document).off('click', '.btn-details').on('click', '.btn-details', function () {
+            var id = decodeURIComponent($(this).data('id'));
+            console.log("Details button clicked for ID:", id);
+            showPlaceholderDetails(id);
+        });
+
+        $(document).off('click', '.btn-edit').on('click', '.btn-edit', function () {
+            var id = decodeURIComponent($(this).data('id'));
+            console.log("Edit button clicked for ID:", id);
+            showCreateModal(id);
+        });
+
+        $(document).off('click', '.btn-delete').on('click', '.btn-delete', function () {
+            var id = decodeURIComponent($(this).data('id'));
+            var name = $(this).data('name');
+            console.log("Delete button clicked for ID:", id, "Name:", name);
+            deletePlaceholder(id, name);
+        });
+    }
+
+    function showCreateModal(id) {
+        ShowModal(id, '_TranslationPlaceholderForm', 'TranslationPlaceholder', 'edit')
+    }
+
+    function getFilters() {
+        var filters = {
+            Placeholder: $('#filterPlaceholder').val() || null,
+            CreatedBy: $('#filterCreatedBy').val() || null,
+            View: $('#filterView').val() || null,
+            StartDate: $('#filterStartDate').val() || null,
+            EndDate: $('#filterEndDate').val() || null,
+            Options: {
+                draw: 1,
+                start: 0,
+                length: 10,
+                searchValue: '',
+                sortColumnName: 'CreatedDate',
+                sortColumnDirection: 'desc'
+            }
+        };
+        console.log("getFilters called, returning:", filters);
+        return filters;
+    }
+
+    function applyFiltersAndReload() {
+        console.log("applyFiltersAndReload called");
+
+        if (!placeholderTable) {
+            console.log("DataTable not initialized, initializing now");
+            initTranslationPlaceholderDataTable();
+            return;
+        }
+
+        // Reset to first page when applying filters
+        placeholderTable.page('first').draw('page');
+
+        // Force a full reload with new filters
+        placeholderTable.ajax.reload(function(json) {
+            console.log("DataTable reloaded with new filters");
+            attachActionHandlers(); // Re-attach event handlers
+        }, false);
+    }
+
+    function loadPlaceholderData() {
+        console.log("loadPlaceholderData called");
+        if (placeholderTable) {
+            console.log("Reloading DataTable via ajax.reload()");
+            placeholderTable.ajax.reload(null, false); // false = keep current pagination
+        } else {
+            console.log("DataTable not initialized yet");
+        }
+    }
+
+    function clearFilters() {
+        console.log("clearFilters called");
+        $('#placeholderFilterForm')[0].reset();
+        if ($.fn.select2 && $('#filterView').hasClass('select2-hidden-accessible')) {
+            $('#filterView').val(null).trigger('change');
+        }
+
+        if (placeholderTable) {
+            applyFiltersAndReload();
+        } else {
+            initTranslationPlaceholderDataTable();
+        }
+
+        appalert('Filters cleared', 3, 1);
+    }
+
+    function showPlaceholderDetails(id) {
+        console.log("showPlaceholderDetails called for ID:", id);
+        $('#placeholderDetailsModal .modal-body').html(
+            '<div class="text-center"><div class="spinner-border" role="status"></div></div>'
+        );
+
+        $.get('/TranslationPlaceholder/InitializeData', { KEY: id, partialView: '_TranslationPlaceholderDetailsPartial' })
+            .done(function (html) {
+                console.log("Details loaded successfully for ID:", id);
+                $('#placeholderDetailsModal .modal-body').html(html);
+                var modal = new bootstrap.Modal(document.getElementById('placeholderDetailsModal'));
+                modal.show();
+            })
+            .fail(function () {
+                console.error("Failed to load details for ID:", id);
+                appalert('Failed to load details', 0, 1);
+            });
+    }
+
+    function editPlaceholder(id) {
+        console.log("editPlaceholder called for ID:", id);
+        AddORUpdateGen(id, 'datalistingview', '_TranslationPlaceholderForm', 'get', 'TranslationPlaceholder');
+    }
+
+    function deletePlaceholder(id, name) {
+        console.log("deletePlaceholder called for ID:", id, "Name:", name);
+        alertify.confirm(
+            'ConfirmDelete',
+            `AreYouSureDeletePlaceholder "${name}"?`,
+            function () {
+                console.log("Confirmed delete for ID:", id);
+                $.ajax({
+                    url: '/TranslationPlaceholder/Delete',
+                    type: 'POST',
+                    data: {
+                        __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val(),
+                        KEY: id
+                    },
+                    success: function (response) {
+                        console.log("Delete response:", response);
+                        if (response.success) {
+                            appalert(response.message, 1, 1);
+                            loadPlaceholderData();
+                        } else {
+                            appalert(response.message, 4, 1);
+                        }
+                    },
+                    error: function () {
+                        console.error("Delete failed for ID:", id);
+                        appalert('DeleteFailed', 4, 1);
+                    }
+                });
+            },
+            function () {
+                console.log("Delete cancelled for ID:", id);
+                appalert('DeleteCancelled', 3, 1);
+            }
+        );
+    }
+
+    // Helper function to extract DataTable data
+    function getTableDataForExport() {
+        console.log("getTableDataForExport called");
+
+        if (!placeholderTable) {
+            console.log("DataTable not initialized");
+            return [];
+        }
+
+        // Get all data from DataTable
+        var tableData = placeholderTable.rows({ search: 'applied' }).data().toArray();
+        console.log(`Found ${tableData.length} rows in DataTable`);
+
+        // Map to the expected TranslationPlaceholder structure
+        var exportData = [];
+
+        tableData.forEach(function(row, index) {
+            console.log(`Processing row ${index + 1}:`, row);
+
+            // Handle different property naming conventions
+            var placeholder = {
+                Id: row.Id || row.id || '',
+                Placeholder: row.Placeholder || row.placeholder || '',
+                English: row.English || row.english || '',
+                French: row.French || row.french || '',
+                View: row.View || row.view || '',
+                CreatedBy: row.CreatedBy || row.createdBy || '',
+                CreatedDate: moment(row.CreatedDate).toISOString(),
+                ModifiedBy: row.ModifiedBy || row.modifiedBy || null,
+                ModifiedDate: row.ModifiedDate || row.modifiedDate || null,
+                IsActive: row.IsActive !== undefined
+                    ? row.IsActive
+                    : (row.isActive !== undefined ? row.isActive : true)
+            };
+
+
+            // Ensure dates are in proper format
+            if (placeholder.CreatedDate && typeof placeholder.CreatedDate === 'string') {
+                if (!placeholder.CreatedDate.includes('T')) {
+                    // Try to parse and format as ISO
+                    var date = new Date(placeholder.CreatedDate);
+                    if (!isNaN(date.getTime())) {
+                        placeholder.CreatedDate = date.toISOString();
+                    }
+                }
+            }
+
+            console.log(`Processed placeholder: ${placeholder.Placeholder}`);
+            exportData.push(placeholder);
+        });
+
+        console.log(`Total export data prepared: ${exportData.length} items`);
+        return exportData;
+    }
+
+    // Updated exportPlaceholders function
+    function exportPlaceholders() {
+        console.log("exportPlaceholders called");
+
+        // Check if DataTable is initialized
+        if (!placeholderTable) {
+            console.log("DataTable not initialized - table not loaded yet");
+            appalert('LoadTableFirst', 0, 1);
+            return;
+        }
+
+        // Get the current data from DataTable
+        var tableData = getTableDataForExport();
+
+        if (tableData.length === 0) {
+            console.log("No data to export from DataTable");
+            appalert('LoadTableFirst', 0, 1);
+            return;
+        }
+
+        console.log(`Exporting ${tableData.length} records from DataTable`);
+
+        // Disable export button and show loading
+        $('#btnExport').prop('disabled', true).html(
+            '<span class="spinner-border spinner-border-sm me-2"></span>Exporting...'
+        );
+
+        // Prepare export request object
+        var exportRequest = {
+            TableData: tableData,
+            Query: getFilters(), // Keep filters for metadata
+            ExportedBy: '@User?.Identity?.Name' || 'System',
+            ExportDate: new Date().toISOString()
+        };
+
+        // Remove pagination options from Query
+        if (exportRequest.Query && exportRequest.Query.Options) {
+            delete exportRequest.Query.Options;
+        }
+
+        console.log("Sending export request with data:", exportRequest);
+
+        // Send AJAX request with the table data
+        $.ajax({
+            url: '/TranslationPlaceholder/Export',
+            type: 'POST',
+            data: JSON.stringify(exportRequest),
+            contentType: 'application/json',
+            xhrFields: {
+                responseType: 'blob'  // Important for file downloads
+            },
+            success: function (blob, status, xhr) {
+                console.log("Export successful, creating download link");
+
+                // Get filename from response headers or use default
+                var filename = 'TranslationPlaceholders.xlsx';
+                var disposition = xhr.getResponseHeader('Content-Disposition');
+
+                if (disposition && disposition.indexOf('attachment') !== -1) {
+                    var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                    var matches = filenameRegex.exec(disposition);
+                    if (matches != null && matches[1]) {
+                        filename = matches[1].replace(/['"]/g, '');
+                    }
+                } else {
+                    // Fallback filename with timestamp
+                    filename = `TranslationPlaceholders_${new Date().toISOString().slice(0, 10)}.xlsx`;
+                }
+
+                // Create and trigger download
+                var downloadUrl = window.URL.createObjectURL(blob);
+                var a = document.createElement('a');
+                a.href = downloadUrl;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+
+                // Cleanup
+                setTimeout(function() {
+                    document.body.removeChild(a);
+                    window.URL.revokeObjectURL(downloadUrl);
+                }, 100);
+
+                console.log("Export completed successfully");
+                appalert('ExportSuccess', 1, 1);
+            },
+            error: function (xhr, status, error) {
+                console.error("Export failed:", status, error, xhr.responseText);
+
+                var errorMessage = 'ExportFailed: ';
+                try {
+                    // Try to parse JSON error response
+                    var response = JSON.parse(xhr.responseText);
+                    errorMessage += response.message || error || 'Unknown error';
+                } catch (e) {
+                    // If not JSON, use plain text
+                    errorMessage += xhr.responseText || error || 'Unknown error';
+                }
+
+                appalert(errorMessage, 0, 1);
+            },
+            complete: function () {
+                // Re-enable export button
+                $('#btnExport').prop('disabled', false).html(
+                    '<i class="mdi mdi-file-export me-1"></i> Export'
+                );
+            }
+        });
+    }
+</script>
+
+}

@@ -2,8 +2,10 @@
 using CBS.BusinessService.CheckManagementSystem.Operations.ChequeBookListing;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeBookListing;
+using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeBookListing.Report;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
+using CrystalDecisions.Shared;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -112,7 +114,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeB
             }
         }
 
-      
+
         public async Task<ActionResult> GetLeafDetails(string leafId)
         {
             try
@@ -211,6 +213,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeB
             ViewBag.LeafId = leafId;
             return PartialView("_BlockLeafForm");
         }
+     
     }
 }
 

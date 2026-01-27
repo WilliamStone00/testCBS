@@ -1,4 +1,5 @@
 ﻿using CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorLicense;
+using CBS.FrontDesk.Data.Entity.Accounting_V2.Translations;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using System;
 using System.Collections.Generic;
@@ -33,6 +34,7 @@ namespace CBS.FrontDesk.Data.Entity.DataTable
         public int recordsFiltered { get; set; }
         public object data { get; set; }
         public DataTableOptions DataTableOptions { get; set; }
+     
 
         public CustomDataTable() { }
 
