@@ -124,6 +124,9 @@
     </div>
 </div>
 
+
+
+
 <!-- DataTable Partial -->
 <div id="datalistingview">
     @Html.Partial("_MemberAdjustmentData")
@@ -316,6 +319,10 @@
                                     badge = 'danger';
                                     text = 'Account Status Change';
                                     break;
+                                case 'blockamountadjustment':
+                                    badge = 'secondary';
+                                    text = 'Block Amount Adjustment';
+                                    break;
                             }
 
                             return `<span class="badge bg-${badge}">${text}</span>`;
@@ -377,6 +384,9 @@
 
                                     data-old-accountstatus="${row.OldAccountStatus}"
                                     data-new-accountstatus="${row.NewAccountStatus}"
+
+                                    data-old-blockamount="${row.OldBlockedAmount}"
+                                    data-new-blockamount="${row.NewBlockedAmount}"
 
                                     onclick="approveMemberRequest(this)">
                                 <i class="mdi mdi-check-circle-outline"></i>
@@ -488,7 +498,8 @@
                 { label: "Member Category", old: $btn.data("old-membercategory"), new: $btn.data("new-membercategory") },
                 { label: "Member Activation Status", old: $btn.data("old-status"), new: $btn.data("new-status") },
                 { label: "Account Status", old: $btn.data("old-accountstatus"), new: $btn.data("new-accountstatus") },
-                { label: "Member Reference", old: $btn.data("old-memberid"), new: $btn.data("new-memberid") }
+                { label: "Member Reference", old: $btn.data("old-memberid"), new: $btn.data("new-memberid") },
+                { label: "Blocked Amount", old: parseFloat($btn.data("old-blockamount") || 0).toFixed(2), new: parseFloat($btn.data("new-blockamount") || 0).toFixed(2) }
             ];
             console.log(fields)
             // Detect changed fields

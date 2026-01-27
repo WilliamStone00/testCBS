@@ -11,6 +11,7 @@ namespace CBS.FrontDesk.Data.Entity.MemberAdjustmentConsole
         public string MemberId { get; set; }
         public string BranchId { get; set; }
         public string AccountId { get; set; }
+        public string AccountNumber { get; set; }
         public string NewFirstName { get; set; }
         public string OldFirstName { get; set; }
         public string NewLastName { get; set; }
@@ -34,8 +35,14 @@ namespace CBS.FrontDesk.Data.Entity.MemberAdjustmentConsole
         public string RequestedBy { get; set; }
         public bool IsMemberProfileModified { get; set; }
         public bool IsMemberAccountModified { get; set; }
-        public decimal OldBalance { get; set; }
+        public decimal? OldBalance { get; set; }
         public bool AccountStatus { get; set; }
+
+        public decimal OldBlockedAmount { get; set; }
+        public decimal NewBlockedAmount { get; set; }
+
+        public string DailySavingReExecutionFileId { get; set; }
+        public int TotalDailySavers { get; set; }
 
         public List<CustomerAccount> CustomerAccounts { get; set; }
     }

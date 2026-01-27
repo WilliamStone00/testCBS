@@ -1,4 +1,5 @@
 ﻿using CBS.BusinessService;
+using CBS.BusinessService.Accounting_V2.AffiliateAccounts;
 using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
 using CBS.BusinessService.CustomerManagement;
@@ -31,10 +32,11 @@ namespace CBS.FrontDesk.UI.Controllers.Series
         private readonly AccountServices _accountServices;
         private readonly LoanServices _loanServices;
         private readonly RefundServices _refundServices;
+        private readonly AffiliateAccountService _affiliateAccountService;
 
         private readonly IndividualProfileServices _individualProfileServices;
         private readonly BranchServices _branchServices;
-        public MembersFSeriesController(CashDeskServices cashDeskService, AccountServices accountServices = null, IndividualProfileServices individualProfileServices = null, BranchServices branchServices = null, LoanServices loanServices = null, RefundServices refundServices = null)
+        public MembersFSeriesController(CashDeskServices cashDeskService, AccountServices accountServices = null, IndividualProfileServices individualProfileServices = null, BranchServices branchServices = null, LoanServices loanServices = null, RefundServices refundServices = null, AffiliateAccountService affiliateAccountService = null)
         {
             _cashDeskService = cashDeskService;
             _accountServices = accountServices;
@@ -42,6 +44,7 @@ namespace CBS.FrontDesk.UI.Controllers.Series
             _branchServices = branchServices;
             _loanServices = loanServices;
             _refundServices = refundServices;
+            _affiliateAccountService = affiliateAccountService;
         }
 
         public async Task< bool> LoadMemberAccountsAndLoans(string key, string loanFilter)
@@ -336,15 +339,26 @@ namespace CBS.FrontDesk.UI.Controllers.Series
             var cdesk = new CashDesk { CustomerId=memberId, Loans=loans };
             return PartialView("_LoansTablePartial", cdesk); // View name must match Razor file below
         }
+   
         public async Task<ActionResult> LoanDetailsPartial(string loanId)
         {
             var loan = await _loanServices.GetLoan(loanId); // Include all accounts + loans
-            var cashDesk = new CashDesk { CustomerId=loan.CustomerId, Loan=loan, Refunds=loan.Refunds };
             if (loan == null)
                 return PartialView("_LoanNotFound");
+
+            // ✅ Load affiliate accounts once and build lookup: Id -> "CODE — NAME"
+            var glOptions = await _affiliateAccountService.GetAllAffiliateAccounts(); // List<StringValues> {Value=Id, Text="Code — Name"}
+            var glMap = glOptions
+                .GroupBy(x => x.Value)
+                .ToDictionary(g => g.Key, g => g.First().Text);
+
+            ViewBag.GlMap = glMap; // for display in Razor
             ViewBag.SelectedLoan = loan;
+
+            var cashDesk = new CashDesk { CustomerId = loan.CustomerId, Loan = loan, Refunds = loan.Refunds };
             return PartialView("_LoanDetailsModalPartial", cashDesk);
         }
+
         // e.g., MembersController (or LoanController) 
         [HttpGet]
         public async Task<ActionResult> MemberRefundsPartial(string customerId, DateTime? dateFrom, DateTime? dateTo)

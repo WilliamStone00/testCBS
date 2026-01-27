@@ -53,5 +53,8 @@ namespace CBS.FrontDesk.Data.Entity.MemberAdjustmentConsole
         public string ApprovedBy { get; set; }
         public DateTime? ApprovedDate { get; set; }
         public string RejectionReason { get; set; }
+
+        public decimal OldBlockedAmount { get; set; }
+        public decimal NewBlockedAmount { get; set; }
     }
 }

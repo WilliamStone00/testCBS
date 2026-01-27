@@ -8234,6 +8234,7 @@
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\Buea_PT.pubxml" />
     <None Include="Properties\PublishProfiles\CamCCULAdmin_TB.pubxml" />
+    <None Include="Properties\PublishProfiles\CBS-UI_Akum_TB.pubxml" />
     <None Include="Properties\PublishProfiles\Cpcmc_TB.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\PB.pubxml" />
@@ -11300,6 +11301,13 @@
     <Content Include="Views\StandingOrder\StandingOrderRegistration.cshtml" />
     <Content Include="Views\StandingOrder\_DataStandingOrders.cshtml" />
     <Content Include="Views\StandingOrder\Listing.cshtml" />
+    <Content Include="Views\SalaryUpload\SharedMonthDetails.cshtml" />
+    <Content Include="Views\Communication\Index.cshtml" />
+    <Content Include="Views\Communication\_DataSmsUploads.cshtml" />
+    <Content Include="Views\Communication\SmsUpload.cshtml" />
+    <Content Include="Views\Communication\SmsUploadDetails.cshtml" />
+    <Content Include="Views\MemberAdjustmentConsole\_MemberBlockAmountAdjustementModal.cshtml" />
+    <Content Include="Views\MemberAdjustmentConsole\_REexcutionM0dalBody.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
