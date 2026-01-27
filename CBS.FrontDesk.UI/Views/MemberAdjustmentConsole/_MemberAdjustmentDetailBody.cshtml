@@ -27,7 +27,8 @@
 {
         new AdjustmentDisplayItem { Label = "Balance", OldValue = request.OldBalance.ToString("N2"), NewValue = $"{request.NewBalance.ToString("N2")}" },
         new AdjustmentDisplayItem { Label = "Account Status", OldValue = request.OldAccountStatus.ToString(), NewValue = request.NewAccountStatus.ToString() },
-        new AdjustmentDisplayItem { Label = "Status Flag", OldValue = request.OldStatus.ToString(), NewValue = request.NewStatus.ToString() }
+        new AdjustmentDisplayItem { Label = "Status Flag", OldValue = request.OldStatus.ToString(), NewValue = request.NewStatus.ToString() },
+         new AdjustmentDisplayItem { Label = "Blocked Amount", OldValue = request.OldBlockedAmount.ToString(), NewValue = request.NewBlockedAmount.ToString() }
     };
 }
 

@@ -11279,6 +11279,8 @@
     <Content Include="Views\Communication\_DataSmsUploads.cshtml" />
     <Content Include="Views\Communication\SmsUpload.cshtml" />
     <Content Include="Views\Communication\SmsUploadDetails.cshtml" />
+    <Content Include="Views\MemberAdjustmentConsole\_MemberBlockAmountAdjustementModal.cshtml" />
+    <Content Include="Views\MemberAdjustmentConsole\_REexcutionM0dalBody.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

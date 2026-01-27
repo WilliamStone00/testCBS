@@ -1,0 +1,125 @@
+﻿@model CBS.FrontDesk.Data.Entity.MemberAdjustmentConsole.MemberAdjustmentModel
+
+@using (Html.BeginForm(
+    "MemberAdjustmentRequest",
+    "MemberAdjustmentConsole",
+    FormMethod.Post,
+    new { id = "memberBlockAmountAdjustmentForm", onsubmit = "return postMemberAdjustmentRequest(this);" }
+))
+{
+    <div class="container-fluid">
+
+        <!-- ===================== -->
+        <!-- TOP SECTION -->
+        <!-- ===================== -->
+        <div class="border rounded p-3 mb-3 bg-light">
+            <div class="row">
+
+                <div class="col-md-6 mb-3">
+                    <label for="accountDropdown" class="form-label">Choose Account</label>
+                    <select id="accountDropdown" class="form-select" required>
+                        <option value="" data-balance="0" data-blocked="0">
+                            -- Select Account --
+                        </option>
+                        @if (Model.CustomerAccounts != null && Model.CustomerAccounts.Any())
+                        {
+                            foreach (var acc in Model.CustomerAccounts)
+                            {
+                                <option value="@acc.id"
+                                        data-accnumber="@acc.accountNumber"
+                                        data-status="@acc.status"
+                                        data-balance="@acc.balance"
+                                        data-blocked="@acc.blockedAmount">
+                                    @acc.accountType (@acc.status.ToString())
+                                </option>
+                            }
+                        }
+                    </select>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    @Html.LabelFor(m => m.OldBalance, "Balance", new { @class = "form-label" })
+                    @Html.TextBoxFor(
+                        m => m.OldBalance,
+                        new { @class = "form-control", @readonly = "readonly", id = "oldBalance" }
+                    )
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ===================== -->
+        <!-- DOWN SECTION -->
+        <!-- ===================== -->
+        <div class="border rounded p-3">
+
+            <div class="row">
+                <div class="col-md-6 mb-1">
+                    @Html.LabelFor(m => m.OldBlockedAmount, "Old Blocked Amount", new { @class = "form-label" })
+                    @Html.TextBoxFor(
+                        m => m.OldBlockedAmount,
+                        new { @class = "form-control", @readonly = "readonly", id = "oldBlockedAmount" }
+                    )
+                </div>
+
+                <div class="col-md-6 mb-1">
+                    @Html.LabelFor(m => m.NewBlockedAmount, "New Blocked Amount", new { @class = "form-label" })
+                    @Html.TextBoxFor(
+                        m => m.NewBlockedAmount,
+                        new
+                        {
+                            @class = "form-control",
+                            id = "newBlockedAmount",
+                            type = "number",
+                            min = "0",
+                            step = "0.01",
+                            required = "required"
+                        }
+                    )
+
+                    <small class="text-danger d-none" id="blockError">
+                        New blocked amount cannot be greater than available balance.
+                    </small>
+                </div>
+            </div>
+
+            @Html.HiddenFor(m => m.MemberId)
+            @Html.HiddenFor(m => m.BranchId)
+            @Html.HiddenFor(m => m.AdjustmentType)
+            @Html.HiddenFor(m => m.IsMemberProfileModified)
+            @Html.HiddenFor(m => m.IsMemberAccountModified)
+            @Html.HiddenFor(m => m.AccountId, new { id = "accountId" })
+            @Html.HiddenFor(m => m.AccountNumber, new { id = "accountNumber" })
+
+            <!-- Reason -->
+            <div class="row">
+                <div class="col-md-12 mb-3">
+                    @Html.LabelFor(m => m.Reason, "Reason for Adjustment", new { @class = "form-label" })
+                    @Html.TextAreaFor(
+                        m => m.Reason,
+                        new
+                        {
+                            @class = "form-control",
+                            rows = "3",
+                            required = "required",
+                            placeholder = "Please provide a reason for this adjustment"
+                        }
+                    )
+                    <div class="invalid-feedback">Please provide a reason</div>
+                    @Html.ValidationMessageFor(m => m.Reason, "", new { @class = "text-danger small" })
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ===================== -->
+        <!-- ACTIONS -->
+        <!-- ===================== -->
+        <div class="text-end mt-3">
+            <button type="submit" id="submitBlockAdjustment" class="btn btn-primary">
+                <i class="mdi mdi-lock-outline me-1"></i> Submit Block Adjustment
+            </button>
+        </div>
+
+    </div>
+}

@@ -69,23 +69,38 @@ namespace CBS.BusinessService.AccountingV2.SharedMonth
         }
 
 
-        public async Task<List<ShareMonthPsiReportLineDto>> GetSimulationData(SharedMonthSimulation model)
+        public async Task<ApiResponse<ResponseObject<List<ShareMonthPsiReportLineDto>>>> GetSimulationData(SharedMonthSimulation model)
         {
-
             if (model == null)
-                throw new ArgumentNullException(nameof(model));
-            //model.ProductId = "0000";
-            //model.StartPeriodKey = "jan";
-            //model.EndPeriodKey = "feb";
+            {
+                return new ApiResponse<ResponseObject<List<ShareMonthPsiReportLineDto>>>
+                {
+                    IsSuccess = false,
+                    Message = "Request model is null"
+                };
+            }
 
-            var apiResponse =
-                await _apiCallerHelper.PostAsync<ResponseObject<List<ShareMonthPsiReportLineDto>>>(
-                    APICallHelper.InterestDistributionSimulation,
-                    model
-                );
+            try
+            {
+                var apiResponse =
+                    await _apiCallerHelper.PostAsync<ResponseObject<List<ShareMonthPsiReportLineDto>>>(
+                        APICallHelper.InterestDistributionSimulation,
+                        model
+                    );
 
-            return apiResponse?.ApiResponseData?.Data ?? new List<ShareMonthPsiReportLineDto>();
+                // ✅ Return full backend response
+                return apiResponse;
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<ResponseObject<List<ShareMonthPsiReportLineDto>>>
+                {
+                    IsSuccess = false,
+                    Message = $"Simulation API call failed: {ex.Message}"
+                };
+            }
         }
+
         public async Task<JobRequestListResponse> GetRequestDataAsync(SimulationFilterRequest model)
         {
             if (model == null)
@@ -666,7 +681,7 @@ namespace CBS.BusinessService.AccountingV2.SharedMonth
             {
                 var url = string.Format(APICallHelper.GetSharedMonthDetail, fileUploadId, type);
                 var response = await _apiCallerHelper.GetAsync<ResponseObject<MemberShareMonthUpload>>(url);
-                 GetBankName(); 
+                 
                 if (response.IsSuccess)
                 {
                     // FileDownloadDto should contain file data and metadata

@@ -267,27 +267,32 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.SharedMonth
         [HttpPost]
         public async Task<ActionResult> LoadSimulationData(SharedMonthSimulation model)
         {
-
-            model.BranchId = model.BranchId1;
             try
             {
-                var result = await _sharedMonthSimulationService.GetSimulationData(model);
+                
+                var response = await _sharedMonthSimulationService.GetSimulationData(model);
 
-                if (result == null || !result.Any())
+                // 🔴 Null safety
+                if (response == null)
                 {
                     return Json(new
                     {
                         success = false,
-                        message = "No simulation data found"
+                        statusCode = 502,
+                        message = "No response from Simulation service."
                     });
                 }
 
+                var data = response.ApiResponseData?.Data;
+
+             
+
                 return Json(new
                 {
-                    success = true,
-                    statusCode = 200,
-                    message = "Simulation completed successfully",
-                    data = result
+                    success = response.IsSuccess,
+                    statusCode = response.IsSuccess ? 200 : 400,
+                    message = response.Message ?? "Simulation completed successfully",
+                    data = data
                 });
             }
             catch (Exception ex)
@@ -300,6 +305,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.SharedMonth
                 });
             }
         }
+
 
         [HttpPost]
         public async Task<ActionResult> ProceedRequestData(SimulationFilterRequest model)
@@ -413,7 +419,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.SharedMonth
 
 
                 // Deserialize DataTable payload into strongly-typed list
-                var Sharemonth = JsonConvert.DeserializeObject<List<Data.Entity.AccountingV2.JournalHead>>(
+                var Sharemonth = JsonConvert.DeserializeObject<List<Data.Entity.AccountingV2.SharedMonth.ShareMonthSimulation>>(
                     JsonConvert.SerializeObject(data.data));
 
                 return Json(new

@@ -292,40 +292,61 @@
                 // ==============================
                 // Load Summary (Returns JSON → Insert into DIV)
                 // ==============================
+                //function loadSummary() {
+                //    const query = getSummaryFilters();
+
+                //    $.ajax({
+                //        url: '/GLSystemReconciliation/GetReconciliationSummary',
+                //        method: 'POST',
+                //        contentType: 'application/json',
+                //        data: JSON.stringify(query),
+                //        success: function (res) {
+                //            if (!res.success) {
+                //                $("#datalistingview").html(`<div class="alert alert-warning">${res.message}</div>`);
+                //                return;
+                //            }
+
+                //            const summary = res.data;
+
+                //            // Load partial view with summary
+                //            $.ajax({
+                //                url: '/GLSystemReconciliation/LoadRecordsForm',
+                //                method: 'POST',
+                //                contentType: 'application/json',
+                //                data: JSON.stringify(summary),
+                //                success: function (html) {
+                //                    $("#datalistingview").html(html);
+                //                    loadReconciliationData(); // initialize table
+                //                }
+                //            });
+                //        },
+                //        error: function (xhr, status, err) {
+                //            console.error('❌ Load summary failed:', status, err);
+                //            appalert('❌ Failed to load summary. Status: ' + xhr.status, 4, 1);
+                //        }
+                //    });
+    //}
+
+
                 function loadSummary() {
                     const query = getSummaryFilters();
 
                     $.ajax({
-                        url: '/GLSystemReconciliation/GetReconciliationSummary',
+                        url: '/GLSystemReconciliation/LoadRecordsForm',
                         method: 'POST',
                         contentType: 'application/json',
                         data: JSON.stringify(query),
-                        success: function (res) {
-                            if (!res.success) {
-                                $("#datalistingview").html(`<div class="alert alert-warning">${res.message}</div>`);
-                                return;
-                            }
-
-                            const summary = res.data;
-
-                            // Load partial view with summary
-                            $.ajax({
-                                url: '/GLSystemReconciliation/LoadRecordsForm',
-                                method: 'POST',
-                                contentType: 'application/json',
-                                data: JSON.stringify(summary),
-                                success: function (html) {
-                                    $("#datalistingview").html(html);
-                                    loadReconciliationData(); // initialize table
-                                }
-                            });
+                        success: function (html) {
+                            $("#datalistingview").html(html);
+                            loadReconciliationData(); // initialize table
                         },
                         error: function (xhr, status, err) {
-                            console.error('❌ Load summary failed:', status, err);
-                            appalert('❌ Failed to load summary. Status: ' + xhr.status, 4, 1);
+                            console.error('❌ Load records failed:', status, err);
+                            appalert('❌ Failed to load records. Status: ' + xhr.status, 4, 1);
                         }
                     });
                 }
+
 
                 // ==============================
                 // Load Reconciliation Data (DataTable)
