@@ -458,7 +458,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MembersDS.xsd</DependentUpon>
     </Compile>
-    <Compile Include="AppFiles\Accountingv2Reporting\DataSets\Cheque.Designer.cs">
     <Compile Include="AppFiles\Accountingv2Reporting\DataSets\Cheques.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
