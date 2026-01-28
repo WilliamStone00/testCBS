@@ -16,20 +16,15 @@
 
 <!-- Add Year Button -->
 <div class="card mb-3">
-    <div class="card-body d-flex justify-content-end align-items-center">
+    <div class="card-body d-flex justify-content-end align-items-center gap-2">
         <button type="button" id="btnshareMonth" class="btn btn-success btn-sm px-2">
             <i class="mdi mdi-plus-circle-outline me-1"></i> Prepare Data
         </button>
-    </div>
 
-    <div class="card mb-1">
-        <div class="card-body d-flex justify-content-end align-items-center">
 
-            <a href="/SharedMonthSimulation/List" target="_blank" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="ViewList">
-                <i class="mdi mdi-view-list mdi-18px"></i> File Upload
-            </a>
-
-        </div>
+        <a href="/SharedMonthSimulation/List" target="_blank" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="ViewList">
+            <i class="mdi mdi-view-list mdi-18px"></i> File Upload
+        </a>
     </div>
 
 </div>
@@ -147,7 +142,7 @@
 
                 <!-- 🔽 PASTE YOUR EXISTING VIEW CONTENT HERE 🔽 -->
 
-                 
+
 
                 <div class="row">
                     <div class="col-xl-12 col-lg-12 col-md-12">
@@ -211,7 +206,7 @@
                                         <div class="col-md-6  mb-1">
                                             <label class="form-label fw-bold">Month</label>
                                             @Html.DropDownList(
-                                                "Month",
+                                                "Month1",
                                                 new SelectList(ViewBag.Month, "Value", "Text"),
                                                 "--- Select Period ---",
                                                 new { @class = "form-select select2", required = "required" })
@@ -222,16 +217,12 @@
                                         <div class="col-md-6  mb-1">
                                             <label class="form-label fw-bold">Interest Distribution Type</label>
                                             @Html.DropDownList(
-                                            "InterestDistributionType",
+                                            "IntrestType1",
                                             new SelectList(ViewBag.IntrestDistributionType, "Value", "Text"),
                                             "--- Select Distribution Type ---",
-                                            new { @class = "form-select select2", required = "required" })
+                                            new { @class = "form-select select2", required = "required", id = "IntrestType1" })
                                             <div class="invalid-feedback">Please select distribution type</div>
                                         </div>
-
-
-
-
 
 
                                     </div>
@@ -241,11 +232,16 @@
                                 <div class="row">
                                     <div class="col-md-12 text-end">
                                         <button type="submit" class="btn btn-primary">
-                                            <i class="mdi mdi-cog-play-outline me-2"></i> Simulate
+                                            <i class="mdi mdi-cog-play-outline"></i>
+                                            <span class="btn-text">Simulate</span>
                                         </button>
+
 
                                     </div>
                                 </div>
+
+
+
                             </div>
 
 
@@ -262,7 +258,7 @@
                     </div>
                 </div>
 
-                <!-- 🔼 END EXISTING CONTENT 🔼 -->
+               
 
             </div>
 
@@ -320,7 +316,7 @@
                 columns: [
                     { data: 'BranchName', name: 'BranchName' },
                     { data: 'Month', name: 'Month' },
-                    { data: 'IntrestType', name: 'IntrestType' },
+                    { data: 'InterestType', name: 'InterestType' },
                     {
                         data: 'Status',
                         name: 'Status',
@@ -335,11 +331,11 @@
                         orderable: false,
                         render: function (_, __, row) {
                             return `
-                                    <div class="text-center">
-                                        <button class="btn btn-sm btn-info" data-id="${row.Id}">
-                                            <i class="mdi mdi-eye-outline me-1"></i> View
-                                        </button>
-                                    </div>`;
+                                <div class="text-center">
+                                    <button class="btn btn-sm btn-info" data-id="${row.Id}">
+                                        <i class="mdi mdi-eye-outline me-1"></i> View
+                                    </button>
+                                </div>`;
                         }
                     }
                 ],
@@ -355,7 +351,6 @@
             });
         }
 
-
         function collectSharedMonthFilters() {
             return {
                 BranchId: $('#BranchId').val(),
@@ -364,9 +359,6 @@
                 Options: {}
             };
         }
-
-
-
 
         // Apply filters
         $('#SharedMonthFilterForm').on('submit', function (e) {
@@ -382,27 +374,21 @@
         function resetSharedMonthFilters() {
             $('#SharedMonthFilterForm').trigger('reset');
             $('.select2').val('').trigger('change');
-            // loadSharedMonthData();
             appalert('🧹 Filters reset successfully', 1, 1);
         }
 
-       
-
+        // Show Modal
         $(document).on('click', '#btnshareMonth', function () {
-            const modal = new bootstrap.Modal(
-                document.getElementById('sharedMonthModal')
-            );
+            const modal = new bootstrap.Modal(document.getElementById('sharedMonthModal'));
             modal.show();
         });
 
-
-
+        // Load Year when Branch changes
         $(document).on('change', '#BranchId1', function () {
 
             const branchId = $(this).val();
             const $yearDropdown = $('#Year');
 
-            // Reset Year dropdown
             $yearDropdown.empty()
                 .append('<option value="">--- Select Year ---</option>')
                 .prop('disabled', true);
@@ -415,7 +401,6 @@
                 data: { branchId: branchId },
 
                 success: function (data) {
-
                     if (!data || data.length === 0) {
                         appalert('⚠ No open accounting years found for this branch', 2, 1);
                         return;
@@ -424,8 +409,8 @@
                     $.each(data, function (i, item) {
                         $yearDropdown.append(
                             $('<option>', {
-                                value: item.Id,        // ✅ AccountingYearId
-                                text: item.DisplayName // ✅ Year text
+                                value: item.Id,
+                                text: item.DisplayName
                             })
                         );
                     });
@@ -438,5 +423,134 @@
                 }
             });
         });
+
+
+        // ==============================
+        // 🔹 Ajax Post with Alertify Confirm
+        // ==============================
+        function AjaxPostSharedMonth(form) {
+
+            var $form = $(form);
+
+            // Get values
+            var branchVal = $('#BranchId1').val();
+            var branchText = $('#BranchId1 option:selected').text();
+
+            var yearVal = $('#Year').val();
+            var yearText = $('#Year option:selected').text();
+
+            var monthVal = $('#Month1').val();
+            var monthText = $('#Month1 option:selected').text();
+          
+
+            var interestRate = $('#InterestRate').val();
+
+            // **Interest Distribution Type**
+            var interestTypeVal = $('#IntrestType1').val();
+            var interestTypeText = $('#IntrestType1 option:selected').text();
+
+            // Confirm message
+            const message = `
+                <p>Please review the details before confirming:</p>
+                <table class="table table-sm table-bordered">
+                    <tbody>
+                        <tr><th>Branch</th><td>${branchText}</td></tr>
+                        <tr><th>Accounting Year</th><td>${yearText}</td></tr>
+                        <tr><th>Month</th><td>${monthText}</td></tr>
+                        <tr><th>Interest Rate</th><td>${interestRate}</td></tr>
+                        <tr><th>Distribution Type</th><td>${interestTypeText}</td></tr>
+                    </tbody>
+                </table>
+                <div class="form-check mt-3">
+                    <input type="checkbox" class="form-check-input" id="alertifyConfirmCheckbox">
+                    <label class="form-check-label" for="alertifyConfirmCheckbox">
+                        I confirm that the above details are correct.
+                    </label>
+                </div>
+            `;
+
+            alertify.confirm("Confirm Simulation", message,
+                function () {
+
+                    if (!$('#alertifyConfirmCheckbox').is(':checked')) {
+                        appalert("❗ Please confirm by checking the box before proceeding.", 3, 1);
+                        return;
+                    }
+
+                    // Hide details card before running
+                    $('#simulationdetailsCard').hide();
+
+                    var $btn = $form.find("button[type='submit']");
+                    var $icon = $btn.find("i");
+                    var $text = $btn.find(".btn-text");
+
+                    // Loading state
+                    $btn.prop('disabled', true);
+                    $icon.removeClass('mdi-cog-play-outline').addClass('mdi-loading mdi-spin');
+                    $text.text('Processing...');
+
+                    const token = $form.find('input[name="__RequestVerificationToken"]').val();
+
+                    var formData = new FormData($form[0]);
+                    formData.append("IntrestType", interestTypeVal);
+                    formData.append("Month", monthVal);
+                    formData.append("BranchId", branchVal);
+                    formData.append("Year", yearVal);
+
+                    $.ajax({
+                        url: $form.attr("action"),
+                        type: "POST",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        headers: token ? { 'RequestVerificationToken': token } : {},
+
+                        success: function (response) {
+
+                            if (response && response.success) {
+                                appalert(response.message || "✅ Simulation successful.", 1, 1);
+                                $('#simulationdetailsCard').slideDown();
+
+                                $icon.removeClass('mdi-loading mdi-spin').addClass('mdi-check-circle');
+                                $text.text('Done');
+
+                                alertify.dismissAll();
+                            } else {
+                                appalert((response && response.message) || "❌ Operation failed.", 3, 1);
+                                $('#simulationdetailsCard').hide();
+
+                                $btn.prop('disabled', false);
+                                $icon.removeClass('mdi-loading mdi-spin').addClass('mdi-cog-play-outline');
+                                $text.text('Simulate');
+                            }
+                        },
+
+                        error: function (xhr, status, error) {
+                            appalert("❌ An error occurred: " + error, 3, 1);
+                            $('#simulationdetailsCard').hide();
+
+                            $btn.prop('disabled', false);
+                            $icon.removeClass('mdi-loading mdi-spin').addClass('mdi-cog-play-outline');
+                            $text.text('Simulate');
+                        }
+                    });
+
+                },
+                function () {
+                    appalert("🚫 Operation cancelled.", 2, 1);
+                }
+            ).set({
+                labels: { ok: 'Yes, Continue', cancel: 'Cancel' },
+                onshow: function () {
+                    const okBtn = $('.alertify .ajs-ok');
+                    okBtn.prop('disabled', true);
+                    $('#alertifyConfirmCheckbox').on('change', function () {
+                        okBtn.prop('disabled', !this.checked);
+                    });
+                }
+            });
+
+            return false;
+        }
     </script>
 }

@@ -9,16 +9,16 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.SharedMonth
 {
     public class SharedMonthSimulation
     {
-        public string BranchId1 { get; set; }
+        
         public string BranchId { get; set; }
         public int Year { get; set; }
         public string IntrestType { get; set; }
         
         public decimal InterestRate { get; set; }
         public string Month { get; set; }
-        //public string StartPeriodKey { get; set; }
-        //public string EndPeriodKey { get; set; }
-        //public string ProductId { get; set; }
+
+        
+
 
     }
 
@@ -153,6 +153,38 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.SharedMonth
         public string Username { get; set; }
         public string Size { get; set; }
     }
+
+    public class ShareMonthSimulation 
+    {
+        public Guid Id { get; set; }
+
+        public string Status { get; set; }
+
+        public int TryCount { get; set; }
+
+        public DateTime CreatedAt { get; set; }
+
+        public DateTime LastTriedAt { get; set; }
+
+        public string LastError { get; set; }
+
+        public int? AccountingYearId { get; set; }
+
+        
+
+        public string BranchId { get; set; }
+
+        public string BranchName { get; set; }
+
+        public string Month { get; set; }
+
+        public decimal InterestRate { get; set; }
+
+        public string InterestType { get; set; }
+
+        public string Username { get; set; }
+    }
+
 
 
 }
