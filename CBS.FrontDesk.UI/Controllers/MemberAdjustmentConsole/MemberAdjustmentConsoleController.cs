@@ -1,15 +1,23 @@
 ﻿ using CBS.BusinessService.Accounts;
-using CBS.BusinessService.Config.Localization;
 using CBS.BusinessService.Config;
+using CBS.BusinessService.Config.Localization;
 using CBS.BusinessService.CustomerManagement;
+using CBS.BusinessService.LoanP.LoanAdjustmentP;
+using CBS.BusinessService.MemberP.MemberAdjustment;
 using CBS.BusinessService.MembersAccountSettings;
 using CBS.BusinessService.Session;
+using CBS.FrontDesk.Data;
+using CBS.FrontDesk.Data.Entity;
+using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheque;
 using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.CustomerManagement;
 using CBS.FrontDesk.Data.Entity.DataTable;
+using CBS.FrontDesk.Data.Entity.MemberAdjustmentConsole;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
-using CBS.FrontDesk.Data.Entity;
+using CBS.FrontDesk.Data.LoanAdjustmentP;
 using CBS.FrontDesk.Data.Message;
+using DocumentFormat.OpenXml.EMMA;
+using DocumentFormat.OpenXml.Office2010.Excel;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -18,13 +26,6 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using CBS.BusinessService.LoanP.LoanAdjustmentP;
-using DocumentFormat.OpenXml.Office2010.Excel;
-using CBS.FrontDesk.Data.Entity.MemberAdjustmentConsole;
-using CBS.FrontDesk.Data.LoanAdjustmentP;
-using CBS.BusinessService.MemberP.MemberAdjustment;
-using DocumentFormat.OpenXml.EMMA;
-using CBS.FrontDesk.Data;
 
 namespace CBS.FrontDesk.UI.Controllers.MemberAdjustmentConsole
 {
@@ -152,6 +153,15 @@ namespace CBS.FrontDesk.UI.Controllers.MemberAdjustmentConsole
             return PartialView("_MemberAccountBalanceAdjustmentModalBody", request);
         }
 
+        // Block Amount Adjustment
+        [HttpGet]
+        public async Task<ActionResult> GetMemberBlockAmountDetailPartial(string id)
+        {
+            var model = await InitializeCustomerData(id);
+            var request = _memberAdjustmentService.initialiseMemberAdjustmentModel(AdjustmentType.BlockAmountAdjustment, model);
+            return PartialView("_MemberBlockAmountAdjustementModal", request);
+        }
+
         [HttpPost]
         public async Task<ActionResult> MemberAdjustmentRequest(MemberAdjustmentModel model)
         {
@@ -159,7 +169,15 @@ namespace CBS.FrontDesk.UI.Controllers.MemberAdjustmentConsole
             {
                 return Json(new { success = false, message = "Invalid request data." });
             }
-
+            if (model.AdjustmentType == AdjustmentType.BlockAmountAdjustment.ToString())
+            {
+                model.OldBalance = null;
+            }
+            if (model.DailySavingReExecutionFileId != null)
+            {
+                model.AdjustmentType = "DailySavingReExecutionAdjustment";
+                //model.AdjustmentType ==  AdjustmentType.BlockAmountAdjustment.ToString();
+            }
 
 
             model.RequestedBy = Session["FullName"]?.ToString();

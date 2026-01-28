@@ -249,6 +249,31 @@
     </form>
 </div>
 
+
+<div class="card mb-3">
+    <div class="card-body d-flex justify-content-end align-items-center">
+        <button type="button" id="btnReexecute" class="btn btn-success btn-sm px-2">
+            <i class="mdi mdi-plus-circle-outline me-1"></i> Re execute Daily Saving
+        </button>
+    </div>
+</div>
+
+
+
+
+
+
+<div class="modal fade" id="reexecuteDailySavingModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+
+            @Html.Partial("_REexcutionM0dalBody")
+
+        </div>
+    </div>
+</div>
+
+
 <!-- DataTable Partial -->
 <div id="datalistingview">
     @Html.Partial("_IndividualData")
@@ -434,70 +459,78 @@
                         orderable: false,
                         render: function (_, __, row) {
                             return `
-                                    <div class="text-center dropdown">
-                                        <button class="btn btn-sm btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                                            <i class="mdi mdi-eye"></i> Action
-                                        </button>
-                                        <ul class="dropdown-menu">
+                                                                <div class="text-center dropdown">
+                                                                    <button class="btn btn-sm btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                                                        <i class="mdi mdi-eye"></i> Action
+                                                                    </button>
+                                                                    <ul class="dropdown-menu">
 
-                                            <li>
-                                                <button class="dropdown-item text-dark"
-                                                        onclick="window.open('/Individual/CustomerProfile?KEY=${row.CustomerId}', '_blank')">
-                                                    <i class="mdi mdi-account-circle-outline me-2 text-primary"></i> Profile
-                                                </button>
-                                            </li>
+                                                                        <li>
+                                                                            <button class="dropdown-item text-dark"
+                                                                                    onclick="window.open('/Individual/CustomerProfile?KEY=${row.CustomerId}', '_blank')">
+                                                                                <i class="mdi mdi-account-circle-outline me-2 text-primary"></i> Profile
+                                                                            </button>
+                                                                        </li>
 
-                                            <li>
-                                                <button class="dropdown-item text-dark"
-                                                        onclick="openMemberAdjustmentModal('/MemberAdjustmentConsole/GetMemberNamesDetailPartial?id=${row.CustomerId}','N/A','${row.CustomerId}','${row.FullName}','${row.BranchName}')">
-                                                    <i class="mdi mdi-rename-box me-2 text-warning"></i> Initiate Member Name Adjustment
-                                                </button>
-                                            </li>
+                                                                        <li>
+                                                                            <button class="dropdown-item text-dark"
+                                                                                    onclick="openMemberAdjustmentModal('/MemberAdjustmentConsole/GetMemberNamesDetailPartial?id=${row.CustomerId}','N/A','${row.CustomerId}','${row.FullName}','${row.BranchName}')">
+                                                                                <i class="mdi mdi-rename-box me-2 text-warning"></i> Initiate Member Name Adjustment
+                                                                            </button>
+                                                                        </li>
 
-                                            <li>
-                                                <button class="dropdown-item text-dark"
-                                                        onclick="openMemberAdjustmentModal('/MemberAdjustmentConsole/GetMemberStatusDetailPartial?id=${row.CustomerId}','N/A','${row.CustomerId}','${row.FullName}','${row.BranchName}')">
-                                                    <i class="mdi mdi-toggle-switch me-2 text-danger"></i> Activate Or Deactivate Member Adjustment
-                                                </button>
-                                            </li>
+                                                                        <li>
+                                                                            <button class="dropdown-item text-dark"
+                                                                                    onclick="openMemberAdjustmentModal('/MemberAdjustmentConsole/GetMemberStatusDetailPartial?id=${row.CustomerId}','N/A','${row.CustomerId}','${row.FullName}','${row.BranchName}')">
+                                                                                <i class="mdi mdi-toggle-switch me-2 text-danger"></i> Activate Or Deactivate Member Adjustment
+                                                                            </button>
+                                                                        </li>
 
-                                            <li>
-                                                <button class="dropdown-item text-dark"
-                                                        onclick="openMemberAdjustmentModal('/MemberAdjustmentConsole/GetMemberActiveStatusDetailPartial?id=${row.CustomerId}','N/A','${row.CustomerId}','${row.FullName}','${row.BranchName}')">
-                                                    <i class="mdi mdi-account-check-outline me-2 text-success"></i> Initiate Member Active Status Adjustment
-                                                </button>
-                                            </li>
+                                                                        <li>
+                                                                            <button class="dropdown-item text-dark"
+                                                                                    onclick="openMemberAdjustmentModal('/MemberAdjustmentConsole/GetMemberActiveStatusDetailPartial?id=${row.CustomerId}','N/A','${row.CustomerId}','${row.FullName}','${row.BranchName}')">
+                                                                                <i class="mdi mdi-account-check-outline me-2 text-success"></i> Initiate Member Active Status Adjustment
+                                                                            </button>
+                                                                        </li>
 
-                                            <li>
-                                                <button class="dropdown-item text-dark"
-                                                        onclick="openMemberAdjustmentModal('/MemberAdjustmentConsole/GetMemberMembershipStatusDetailPartial?id=${row.CustomerId}','N/A','${row.CustomerId}','${row.FullName}','${row.BranchName}')">
-                                                    <i class="mdi mdi-card-account-details-outline me-2 text-info"></i> Initiate Membership Status Adjustment
-                                                </button>
-                                            </li>
+                                                                        <li>
+                                                                            <button class="dropdown-item text-dark"
+                                                                                    onclick="openMemberAdjustmentModal('/MemberAdjustmentConsole/GetMemberMembershipStatusDetailPartial?id=${row.CustomerId}','N/A','${row.CustomerId}','${row.FullName}','${row.BranchName}')">
+                                                                                <i class="mdi mdi-card-account-details-outline me-2 text-info"></i> Initiate Membership Status Adjustment
+                                                                            </button>
+                                                                        </li>
 
-                                            <li>
-                                                <button class="dropdown-item text-dark"
-                                                        onclick="openMemberAdjustmentModal('/MemberAdjustmentConsole/GetMemberReferenceDetailPartial?id=${row.CustomerId}','N/A','${row.CustomerId}','${row.FullName}','${row.BranchName}')">
-                                                    <i class="mdi mdi-identifier me-2 text-secondary"></i> Member Reference Adjustment
-                                                </button>
-                                            </li>
+                                                                        <li>
+                                                                            <button class="dropdown-item text-dark"
+                                                                                    onclick="openMemberAdjustmentModal('/MemberAdjustmentConsole/GetMemberReferenceDetailPartial?id=${row.CustomerId}','N/A','${row.CustomerId}','${row.FullName}','${row.BranchName}')">
+                                                                                <i class="mdi mdi-identifier me-2 text-secondary"></i> Member Reference Adjustment
+                                                                            </button>
+                                                                        </li>
 
-                                            <li>
-                                                <button class="dropdown-item text-dark"
-                                                        onclick="openMemberAdjustmentModal('/MemberAdjustmentConsole/GetMemberCategoryDetailPartial?id=${row.CustomerId}','N/A','${row.CustomerId}','${row.FullName}','${row.BranchName}')">
-                                                    <i class="mdi mdi-account-group-outline me-2 text-primary"></i> Member Category Adjustment
-                                                </button>
-                                            </li>
+                                                                        <li>
+                                                                            <button class="dropdown-item text-dark"
+                                                                                    onclick="openMemberAdjustmentModal('/MemberAdjustmentConsole/GetMemberCategoryDetailPartial?id=${row.CustomerId}','N/A','${row.CustomerId}','${row.FullName}','${row.BranchName}')">
+                                                                                <i class="mdi mdi-account-group-outline me-2 text-primary"></i> Member Category Adjustment
+                                                                            </button>
+                                                                        </li>
 
-                                            <li>
-                                                <button class="dropdown-item text-dark"
-                                                        onclick="openMemberAdjustmentModal('/MemberAdjustmentConsole/GetMemberAccountBalanceDetailPartial?id=${row.CustomerId}','N/A','${row.CustomerId}','${row.FullName}','${row.BranchName}')">
-                                                    <i class="mdi mdi-cash-multiple me-2 text-success"></i> Member Account Balance Adjustment
-                                                </button>
-                                            </li>
+                                                                        <li>
+                                                                            <button class="dropdown-item text-dark"
+                                                                                    onclick="openMemberAdjustmentModal('/MemberAdjustmentConsole/GetMemberAccountBalanceDetailPartial?id=${row.CustomerId}','N/A','${row.CustomerId}','${row.FullName}','${row.BranchName}')">
+                                                                                <i class="mdi mdi-cash-multiple me-2 text-success"></i> Member Account Balance Adjustment
+                                                                            </button>
+                                                                        </li>
 
-                                        </ul>
-                                    </div>`;
+                                                                        <li>
+                                                                            <button class="dropdown-item text-dark"
+                                                                                    onclick="openMemberAdjustmentModal('/MemberAdjustmentConsole/GetMemberBlockAmountDetailPartial?id=${row.CustomerId}','N/A','${row.CustomerId}','${row.FullName}','${row.BranchName}')">
+                                                                                <i class="mdi mdi-lock-outline me-2 text-danger"></i> Block Amount Adjustment
+                                                                            </button>
+                                                                        </li>
+
+
+                                                                    </ul>
+                                                                </div>`;
                         }
                     }
                 ]
@@ -594,5 +627,304 @@
     </script>
 
     @*<script src="~/Scripts/Js/Crud/CustomerAdjustment/Customer/MyAdjustmentCustomers.js"></script>*@
-    <script src="~/Scripts/Js/Crud/CustomerAdjustment/Customer/MemberAcccountBalanceAdjustment.js"></script>
+    @*<script src="~/Scripts/Js/Crud/CustomerAdjustment/Customer/MemberAcccountBalanceAdjustment.js"></script>*@
+
+    <script>
+        $(document).ready(function () {
+
+            /* ============================================================
+             * MEMBER BLOCK AMOUNT ADJUSTMENT MODAL
+             * ============================================================ */
+
+            const memberAdjustmentModalEl = document.getElementById('memberAdjustmentModal');
+            const memberAdjustmentModal = new bootstrap.Modal(memberAdjustmentModalEl);
+
+            function validateBlockedAmount() {
+                const newBlocked = parseFloat($('#newBlockedAmount').val()) || 0;
+                const balance = parseFloat($('#oldBalance').val()) || 0;
+
+                const $input = $('#newBlockedAmount');
+                const $submitBtn = $('#submitBlockAdjustment');
+
+                console.log('🔍 Validating Blocked Amount:', { newBlocked, balance });
+
+                $input.removeClass('is-valid is-invalid');
+
+                // ❌ INVALID
+                if (newBlocked > balance) {
+                    console.warn('❌ Blocked amount exceeds balance');
+                    $input.addClass('is-invalid');
+                    $submitBtn.prop('disabled', true);
+                    return false;
+                }
+
+                // ✅ VALID
+                console.info('✅ Valid blocked amount');
+                $input.addClass('is-valid');
+                $submitBtn.prop('disabled', false);
+                return true;
+            }
+
+            $('#memberAdjustmentModal').on('shown.bs.modal', function () {
+
+                const initialOption = $('#accountDropdown').find(':selected');
+
+                $('#oldBalance').val(initialOption.data('balance') || "0.00");
+                $('#oldBlockedAmount').val(initialOption.data('blocked') || "0.00");
+                $('#accountId').val(initialOption.val() || "");
+                $('#accountNumber').val(initialOption.data('accnumber') || "");
+
+                validateBlockedAmount();
+
+                // Account change
+                $('#accountDropdown')
+                    .off('change')
+                    .on('change', function () {
+                        const opt = $(this).find(':selected');
+
+                        $('#oldBalance').val(opt.data('balance') || "0.00");
+                        $('#oldBlockedAmount').val(opt.data('blocked') || "0.00");
+                        $('#accountId').val(opt.val() || "");
+                        $('#accountNumber').val(opt.data('accnumber') || "");
+
+                        validateBlockedAmount();
+                    });
+
+                // New blocked amount change
+                $('#newBlockedAmount')
+                    .off('change keyup')
+                    .on('change keyup', validateBlockedAmount);
+            });
+
+
+            /* ============================================================
+             * BLOCK AMOUNT ADJUSTMENT – ALERTIFY CONFIRM
+             * ============================================================ */
+
+            $('#memberBlockAmountAdjustmentForm').on('submit', function (e) {
+                e.preventDefault();
+
+                if (!validateBlockedAmount()) {
+                    appalert(
+                        '❌ New blocked amount cannot be greater than the account balance.',
+                        3,
+                        1
+                    );
+                    return false;
+                }
+
+                const $form = $(this);
+
+                // Collect values
+                const accountText = $('#accountDropdown option:selected').text();
+                const balance = $('#oldBalance').val();
+                const oldBlocked = $('#oldBlockedAmount').val();
+                const newBlocked = $('#newBlockedAmount').val();
+                const reason = $('textarea[name="Reason"]').val();
+
+                const message = `
+                    <p>Please review the details before confirming:</p>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr><th>Account</th><td>${accountText}</td></tr>
+                            <tr><th>Balance</th><td>${balance}</td></tr>
+                            <tr><th>Old Blocked Amount</th><td>${oldBlocked}</td></tr>
+                            <tr><th>New Blocked Amount</th><td>${newBlocked}</td></tr>
+                            <tr><th>Reason</th><td>${reason || '-'}</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="form-check mt-3">
+                        <input type="checkbox" class="form-check-input" id="alertifyConfirmCheckbox">
+                        <label class="form-check-label" for="alertifyConfirmCheckbox">
+                            I confirm that the above details are correct.
+                        </label>
+                    </div>
+                `;
+
+                alertify.confirm(
+                    "Confirm Block Adjustment",
+                    message,
+
+                    // ✅ YES
+                    function () {
+
+                        if (!$('#alertifyConfirmCheckbox').is(':checked')) {
+                            appalert("❗ Please confirm by checking the box before proceeding.", 3, 1);
+                            return;
+                        }
+
+                        const $btn = $('#submitBlockAdjustment');
+                        const $icon = $btn.find('i');
+
+                        // Loading state
+                        $btn.prop('disabled', true);
+                        $icon.removeClass()
+                            .addClass('mdi mdi-loading mdi-spin');
+                        $btn.contents().last()[0].textContent = ' Processing...';
+
+                        const token = $form.find('input[name="__RequestVerificationToken"]').val();
+                        const formData = new FormData($form[0]);
+
+                        $.ajax({
+                            url: $form.attr('action'),
+                            type: 'POST',
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            headers: token ? { 'RequestVerificationToken': token } : {},
+
+                            success: function (response) {
+                                if (response?.success) {
+                                    appalert(response.message || "✅ Block amount adjusted successfully.", 1, 1);
+
+                                    $icon.removeClass('mdi-loading mdi-spin')
+                                        .addClass('mdi mdi-check-circle');
+                                    $btn.contents().last()[0].textContent = ' Done';
+
+                                    alertify.dismissAll();
+
+                                    // Optional: close modal
+                                    setTimeout(() => {
+                                        bootstrap.Modal.getInstance(
+                                            document.getElementById('memberAdjustmentModal')
+                                        ).hide();
+                                    }, 800);
+
+                                } else {
+                                    handleFailure(response?.message);
+                                }
+                            },
+
+                            error: function () {
+                                handleFailure("❌ An error occurred while processing the adjustment.");
+                            }
+                        });
+
+                        function handleFailure(message) {
+                            appalert(message || "❌ Operation failed.", 3, 1);
+
+                            $btn.prop('disabled', false);
+                            $icon.removeClass('mdi-loading mdi-spin')
+                                .addClass('mdi mdi-lock-outline');
+                            $btn.contents().last()[0].textContent = ' Submit Block Adjustment';
+                        }
+                    },
+
+                    // ❌ CANCEL
+                    function () {
+                        appalert("🚫 Block adjustment cancelled.", 2, 1);
+                    }
+
+                ).set({
+                    labels: { ok: 'Yes, Continue', cancel: 'Cancel' },
+                    onshow: function () {
+                        const okBtn = $('.alertify .ajs-ok');
+                        okBtn.prop('disabled', true);
+
+                        $('#alertifyConfirmCheckbox').on('change', function () {
+                            okBtn.prop('disabled', !this.checked);
+                        });
+                    }
+                });
+
+                return false;
+            });
+
+
+            /* ============================================================
+             * DAILY SAVING RE-EXECUTION MODAL
+             * ============================================================ */
+
+            const reexecuteModalEl = document.getElementById('reexecuteDailySavingModal');
+            const reexecuteModal = new bootstrap.Modal(reexecuteModalEl);
+
+            $('#btnReexecute').on('click', function () {
+                console.log('🟢 Re-execute button clicked');
+                reexecuteModal.show();
+            });
+
+            $('#reexecuteDailySavingForm').on('submit', function (e) {
+                e.preventDefault();
+
+                alertify.confirm(
+                    "Confirmation",
+                    "Are you sure you want to re-execute daily saving?",
+                    function () {
+
+                        const $btn = $('#btnReexecuteSubmit');
+                        const $icon = $btn.find('i');
+                        const $text = $btn.find('.btn-text');
+
+                        // Disable + spinner
+                        $btn.prop('disabled', true);
+                        $icon.removeClass('mdi-check-circle-outline')
+                            .addClass('mdi-loading mdi-spin');
+                        $text.text('Processing...');
+
+                        const payload = {
+                            DailySavingReExecutionFileId: $('#DailySavingReExecutionFileId').val(),
+                            TotalDailySavers: parseInt($('#TotalDailySavers').val(), 10),
+                            Reason: $('#Reason').val()
+                        };
+
+                        console.log('📦 Re-execution payload:', payload);
+
+                        $.ajax({
+                            url: '/MemberAdjustmentConsole/MemberAdjustmentRequest',
+                            type: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify(payload),
+
+                            success: function (response) {
+                                if (response && response.success) {
+                                    appalert(response.message || "✅ Re-executed successfully.", 1, 1);
+
+                                    $icon.removeClass('mdi-loading mdi-spin')
+                                        .addClass('mdi-check-circle');
+                                    $text.text('Completed');
+
+                                    setTimeout(() => {
+                                        bootstrap.Modal.getInstance(
+                                            document.getElementById('reexecuteDailySavingModal')
+                                        ).hide();
+                                    }, 800);
+
+                                } else {
+                                    appalert((response && response.message) || "❌ Re-execution failed.", 2, 1);
+
+                                    // Restore button
+                                    $btn.prop('disabled', false);
+                                    $icon.removeClass('mdi-loading mdi-spin')
+                                        .addClass('mdi-check-circle-outline');
+                                    $text.text('Re-execute');
+                                }
+                            },
+
+                            error: function () {
+                                appalert("❌ An error occurred during re-execution.", 0, 1);
+
+                                // Restore button
+                                $btn.prop('disabled', false);
+                                $icon.removeClass('mdi-loading mdi-spin')
+                                    .addClass('mdi-check-circle-outline');
+                                $text.text('Re-execute');
+                            }
+                        });
+
+                    },
+                    function () {
+                        appalert("🚫 Re-execution cancelled.", 2, 1);
+                    }
+                ).set({
+                    labels: { ok: 'Yes, Continue', cancel: 'Cancel' }
+                });
+
+            });
+
+        });
+    </script>
+
+
+
+
 }

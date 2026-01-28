@@ -32,7 +32,12 @@ namespace CBS.FrontDesk.Data.Entity.MemberAdjustmentConsole
         public string AdjustmentType { get; set; }
         public bool IsMemberProfileModified { get; set; }
         public bool IsMemberAccountModified { get; set; }
-        public decimal OldBalance { get; set; }
+        public decimal? OldBalance { get; set; }
         public bool AccountStatus { get; set; }
+        public decimal NewBlockedAmount { get; set; }
+        public decimal OldBlockedAmount { get; set; }
+
+        public string DailySavingReExecutionFileId { get; set; }
+        public int TotalDailySavers { get; set; }
     }
 }

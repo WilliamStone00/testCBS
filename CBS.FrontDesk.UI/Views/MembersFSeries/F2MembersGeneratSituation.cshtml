@@ -306,22 +306,12 @@
     <div class="modal-dialog modal-xl modal-dialog-scrollable">
         <div class="modal-content">
 
-            <!-- Modal Header -->
-            <div class="modal-header border-bottom-0">
-                <div class="w-100">
-                    <div class="card bg-light mb-2">
-                        <div class="card-body text-center">
-                            <h1 class="card-title text-primary" id="loanDetailsModalLabel">
-                                <i class="mdi mdi-book-open-variant-outline me-2"></i> Loan Details Overview
-                            </h1>
-                            <p class="card-text text-muted" id="loanDetailsModalDescription">
-                                Review loan disbursement, guarantees, delinquency, and repayment history for compliance and audit purposes.
-                            </p>
-                            <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
-                        </div>
-                    </div>
-                </div>
+            <!-- HERO TITLE -->
+            <div class="loan-hero m-3">
+                <div class="title">LOAN DETAILS OVERVIEW</div>
+                <div class="subtitle">Review disbursement, guarantees, delinquency, posting mapping, and repayment history for audit & compliance.</div>
             </div>
+
 
             <!-- Modal Body -->
             <div class="modal-body pt-0">
@@ -387,6 +377,12 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script src="~/Scripts/Js/Crud/MembersFSeries/FSeries.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var list = [].slice.call(document.querySelectorAll('[title]'));
+            list.forEach(function (el) { new bootstrap.Tooltip(el); });
+        });
+    </script>
 
     <script>
 
@@ -1001,35 +997,11 @@
             return isValid;
         }
 
-        // ============================================================
-        // TEST FUNCTIONS (FOR DEBUGGING)
-        // ============================================================
-        window.testReport = {
-            generate: function() {
-                console.log('Testing report generation...');
-                $('#reportForm').submit();
-            },
-            reset: function() {
-                console.log('Testing reset...');
-                resetForm();
-            },
-            switch: function(type) {
-                console.log('Switching to:', type);
-                switchReport(type);
-            },
-            validate: function() {
-                console.log('Validation result:', validateForm());
-            },
-            debugFormData: function() {
-                var formData = buildFormData();
-                console.log('Form data to be sent:');
-                for (var key in formData) {
-                    console.log(key + ': ' + formData[key]);
-                }
-            }
-        };
+        $(document).ready(function () {
+            ReportGenerator.initialize();
+        });
+    </script>
 
-        console.log('✅ Report Generator loaded. Use testReport.debugFormData() to check form values.');
 
         </script>
     }

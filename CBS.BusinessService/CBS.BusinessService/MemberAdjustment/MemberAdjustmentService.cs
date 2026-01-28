@@ -105,6 +105,17 @@ namespace CBS.BusinessService.MemberP.MemberAdjustment
                         BranchId = model.CustomerList.BranchId,
                         AdjustmentType = AdjustmentType.AccountBalanceAdjustment.ToString(),
                     };
+
+                case AdjustmentType.BlockAmountAdjustment:
+                    return new MemberAdjustmentModel()
+                    {
+                        MemberId = model.CustomerList.CustomerId,
+                        CustomerAccounts = model.CustomerAccounts,
+                        
+                       // IsMemberAccountModified = true,
+                        BranchId = model.CustomerList.BranchId,
+                        AdjustmentType = AdjustmentType.BlockAmountAdjustment.ToString(),
+                    };
                 default:
                     return null;
             }
@@ -153,7 +164,14 @@ namespace CBS.BusinessService.MemberP.MemberAdjustment
 
                 // --- Modification Flags ---
                 IsMemberProfileModified = model.IsMemberProfileModified,
-                IsMemberAccountModified = model.IsMemberAccountModified
+                IsMemberAccountModified = model.IsMemberAccountModified,
+
+                // --- block amount -----
+                NewBlockedAmount = model.NewBlockedAmount,
+                OldBlockedAmount = model.OldBlockedAmount,
+
+                DailySavingReExecutionFileId = model.DailySavingReExecutionFileId,
+                TotalDailySavers = model.TotalDailySavers,
             };
         }
 
