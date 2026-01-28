@@ -85,6 +85,15 @@
             <i class="fas fa-receipt me-2"></i>
             <span>Member Operational Receipts</span>
         </a>
+
+   
+    <button type="button"
+            onclick="showCreateModal('@Model.CustomerId')"
+            class="btn btn-label-primary btn-info me-2">
+        <i class="mdi mdi-plus mdi-18px"></i> Generate Reports
+    </button>
+            
+         
     </div>
 </div>
 
@@ -387,238 +396,640 @@
     </script>
 
     <script>
-        /* ============================================================
-           REPORT GENERATOR – ONCLICK DRIVEN (STABLE VERSION)
-           ============================================================ */
 
-        window.ReportGenerator = {
+        // ============================================================
+        // REPORT GENERATOR - UPDATED VERSION WITH NEW FEATURES
+        // ============================================================
 
-            currentReportType: 'MemberSituation',
+        $(document).ready(function() {
+            console.log('Report Generator: Initializing...');
 
-            reportTypeHelpTexts: {
-                MemberSituation: '<strong>Member Situation Selected:</strong> Generate comprehensive member account reports with balances and activity details',
+            // Initialize components
+            initializePage();
+        });
+
+        // ============================================================
+        // INITIALIZE PAGE
+        // ============================================================
+        function initializePage() {
+            // Set default dates
+            setDefaultDates();
+
+            // Setup radio buttons
+            setupRadioButtons();
+
+            // Setup checkbox handlers
+            setupCheckboxHandlers();
+
+            // Setup reset button
+            $('#btnResetReport').off('click').on('click', function(e) {
+                e.preventDefault();
+                resetForm();
+            });
+
+            // Setup account selection handler for Account Situation
+            $('#accountSituationIds').on('change', function() {
+                updateSelectedAccountsList();
+            });
+
+            // Default report type
+            switchReport('MemberSituation');
+
+            console.log('Report Generator: Ready!');
+        }
+
+        // ============================================================
+        // SET DEFAULT DATES
+        // ============================================================
+        function setDefaultDates() {
+            var today = new Date();
+            var toDate = today.toISOString().split('T')[0];
+
+            var fromDate = new Date();
+            fromDate.setDate(today.getDate() - 30);
+            var fromDateStr = fromDate.toISOString().split('T')[0];
+
+            $('input[type="date"]').each(function() {
+                if (this.id.includes('DateFrom') || this.id.includes('DateTo')) {
+                    var isFrom = this.id.includes('DateFrom');
+                    $(this).val(isFrom ? fromDateStr : toDate);
+                }
+            });
+        }
+
+        // ============================================================
+        // SETUP CHECKBOX HANDLERS
+        // ============================================================
+        function setupCheckboxHandlers() {
+            // Member Situation checkboxes - mutually exclusive
+            $('#memberByDate, #memberByBalance').on('change', function () {
+                var clickedCheckbox = $(this);
+                var otherCheckboxId = clickedCheckbox.attr('id') === 'memberByDate' ? 'memberByBalance' : 'memberByDate';
+                var otherCheckbox = $('#' + otherCheckboxId);
+
+                // If the clicked checkbox is now checked, uncheck the other
+                if (clickedCheckbox.is(':checked')) {
+                    otherCheckbox.prop('checked', false);
+                }
+
+                // Handle date section visibility
+                var byDate = $('#memberByDate').is(':checked');
+                $('#memberDateSection').toggle(byDate);
+
+                if (byDate) {
+                    $('#memberDateFrom, #memberDateTo').attr('required', true);
+                } else {
+                    $('#memberDateFrom, #memberDateTo').removeAttr('required');
+                }
+            });
+
+            // Loan Repayment checkboxes - mutually exclusive
+            $('#repaymentByLoan, #repaymentByRepayment').on('change', function () {
+                var clickedCheckbox = $(this);
+                var otherCheckboxId = clickedCheckbox.attr('id') === 'repaymentByLoan' ? 'repaymentByRepayment' : 'repaymentByLoan';
+                var otherCheckbox = $('#' + otherCheckboxId);
+
+                // If the clicked checkbox is now checked, uncheck the other
+                if (clickedCheckbox.is(':checked')) {
+                    otherCheckbox.prop('checked', false);
+                }
+
+                // Handle visibility based on selection
+                var byLoan = $('#repaymentByLoan').is(':checked');
+                var byRepayment = $('#repaymentByRepayment').is(':checked');
+
+                $('#loanSelectionSection').toggle(byLoan);
+                $('#loanRepaymentDateSection').toggle(byLoan || byRepayment);
+
+                if (byLoan) {
+                    $('#loanRepaymentLoan').attr('required', true);
+                } else {
+                    $('#loanRepaymentLoan').removeAttr('required');
+                }
+
+                if (byLoan || byRepayment) {
+                    $('#loanRepaymentDateFrom, #loanRepaymentDateTo').attr('required', true);
+                } else {
+                    $('#loanRepaymentDateFrom, #loanRepaymentDateTo').removeAttr('required');
+                }
+            });
+
+            // Loan Situation checkboxes - mutually exclusive
+            $('#loanSituationByDate, #loanSituationByBalance').on('change', function () {
+                var clickedCheckbox = $(this);
+                var otherCheckboxId = clickedCheckbox.attr('id') === 'loanSituationByDate' ? 'loanSituationByBalance' : 'loanSituationByDate';
+                var otherCheckbox = $('#' + otherCheckboxId);
+
+                // If the clicked checkbox is now checked, uncheck the other
+                if (clickedCheckbox.is(':checked')) {
+                    otherCheckbox.prop('checked', false);
+                }
+
+                // Handle date section visibility
+                var byDate = $('#loanSituationByDate').is(':checked');
+                $('#loanSituationDateSection').toggle(byDate);
+
+                if (byDate) {
+                    $('#loanSituationDateFrom, #loanSituationDateTo')
+                        .attr('required', true)
+                        .prop('disabled', false);
+                } else {
+                    $('#loanSituationDateFrom, #loanSituationDateTo')
+                        .removeAttr('required')
+                        .prop('disabled', true)
+                        .val('');
+                }
+            });
+        }
+
+
+        // ============================================================
+        // UPDATE SELECTED ACCOUNTS LIST
+        // ============================================================
+        function updateSelectedAccountsList() {
+            var selectedValues = $('#accountSituationIds').val() || [];
+            var selectedOptions = $('#accountSituationIds option:selected');
+            var container = $('#selectedAccountsList');
+
+            if (selectedValues.length === 0) {
+                container.html('<div class="text-muted small">No accounts selected yet</div>');
+                $('#SelectedAccountIds').val('');
+                return;
+            }
+
+            var html = '';
+            selectedOptions.each(function() {
+                var value = $(this).val();
+                var text = $(this).text();
+                html += '<div class="selected-account-item mb-2">' +
+                        '<span>' + text + '</span>' +
+                        '<span class="remove-account" data-value="' + value + '" title="Remove account">' +
+                        ' <i class="mdi mdi-close-circle"></i>' +
+                        '</span>' +
+                        '</div>';
+            });
+
+            container.html(html);
+            $('#SelectedAccountIds').val(JSON.stringify(selectedValues));
+
+            // Add remove handler
+            $('.remove-account').off('click').on('click', function() {
+                var valueToRemove = $(this).data('value');
+                var currentValues = $('#accountSituationIds').val() || [];
+                var newValues = currentValues.filter(function(val) {
+                    return val !== valueToRemove;
+                });
+
+                $('#accountSituationIds').val(newValues).trigger('change');
+                updateSelectedAccountsList();
+            });
+        }
+
+        // ============================================================
+        // SWITCH REPORT TYPE
+        // ============================================================
+        function switchReport(reportType) {
+            console.log('Switching to report type:', reportType);
+
+            // Update hidden field
+            $('#ReportType').val(reportType);
+
+            // Sync radio buttons
+            $('input[name="ReportTypeRadio"]').prop('checked', false);
+            $('input[value="' + reportType + '"]').prop('checked', true);
+
+            // Hide all forms
+            $('.report-form-section').addClass('d-none');
+
+            // Remove required attributes
+            $('[required]').removeAttr('required');
+
+            // Clear validation
+            $('.form-control').removeClass('is-invalid');
+
+            // Reset checkboxes to defaults
+            resetCheckboxes(reportType);
+
+            // Show selected form and set required fields
+            switch (reportType) {
+                case 'MemberSituation':
+                    $('#memberSituationForm').removeClass('d-none');
+                    $('#memberAccountIds, #memberLoanStatus').attr('required', true);
+                    if ($('#memberByDate').is(':checked')) {
+                        $('#memberDateFrom, #memberDateTo').attr('required', true);
+                    }
+                    break;
+
+                case 'AccountSituation':
+                    $('#accountSituationForm').removeClass('d-none');
+                    $('#accountSituationIds, #accountSituationDateFrom, #accountSituationDateTo').attr('required', true);
+                    break;
+
+                case 'AccountStatement':
+                    $('#accountStatementForm').removeClass('d-none');
+                    $('#accountStatementAccount, #accountDateFrom, #accountDateTo').attr('required', true);
+                    break;
+
+                case 'LoanRepayment':
+                    $('#loanRepaymentForm').removeClass('d-none');
+                    if ($('#repaymentByLoan').is(':checked')) {
+                        $('#loanRepaymentLoan').attr('required', true);
+                    }
+                    if ($('#repaymentByLoan').is(':checked') || $('#repaymentByRepayment').is(':checked')) {
+                        $('#loanRepaymentDateFrom, #loanRepaymentDateTo').attr('required', true);
+                    }
+                    break;
+
+                case 'LoanSituation':
+                    $('#loanSituationForm').removeClass('d-none');
+                    if ($('#loanSituationByDate').is(':checked')) {
+                        $('#loanSituationDateFrom, #loanSituationDateTo').attr('required', true);
+                    }
+                    break;
+            }
+
+            // Update help text
+            var helpTexts = {
+                MemberSituation: '<strong>Member Situation Selected:</strong> Generate comprehensive member account reports with multiple account selection and loan status filtering',
+                AccountSituation: '<strong>Account Situation Selected:</strong> Generate analysis for multiple selected accounts with date range filtering',
                 AccountStatement: '<strong>Account Statement Selected:</strong> Generate detailed transaction statements for specific accounts',
                 LoanRepayment: '<strong>Loan Repayment Selected:</strong> Generate loan repayment schedules and payment history reports',
                 LoanSituation: '<strong>Loan Situation Selected:</strong> Generate comprehensive loan portfolio analysis and statistics'
-            },
+            };
 
-            /* ===============================
-               MAIN SWITCH (CALLED BY onclick)
-               =============================== */
-            handleReportTypeChange: function (reportType) {
+            $('#reportTypeHelp').html(helpTexts[reportType] || '');
+        }
 
-                if (!reportType) return;
+        // ============================================================
+        // RESET CHECKBOXES TO DEFAULTS
+        // ============================================================
+        function resetCheckboxes(reportType) {
+            // Reset all checkboxes
+            $('input[type="checkbox"]').prop('checked', false);
 
-                this.currentReportType = reportType;
+            // Set defaults based on report type (only check one per group)
+            switch (reportType) {
+                case 'MemberSituation':
+                    $('#memberByDate').prop('checked', true);
+                    break;
+                case 'LoanRepayment':
+                    $('#repaymentByLoan').prop('checked', true);
+                    break;
+                case 'LoanSituation':
+                    $('#loanSituationByDate').prop('checked', true);
+                    break;
+            }
 
-                // Update MVC hidden field
-                $('#ReportType').val(reportType);
+            // Trigger change to update UI
+            $('input[type="checkbox"]').trigger('change');
+        }
 
-                // Sync radio state
-                $('input[name="ReportTypeRadio"]').prop('checked', false);
-                $('input[value="' + reportType + '"]').prop('checked', true);
+            // ============================================================
+            // RESET FORM
+            // ============================================================
+            function resetForm() {
+                // Reset form
+                $('#reportForm')[0].reset();
 
-                // Reset radio label styles
-                $('.form-check-label').removeAttr('style');
+                // Reset Select2 if exists
+                if ($.fn.select2) {
+                    $('.select2').val(null).trigger('change');
+                }
 
-                // Highlight active label
-                $('input[value="' + reportType + '"]')
-                    .next('.form-check-label')
-                    .css({
-                        background: 'linear-gradient(135deg, rgba(13,110,253,.1), rgba(13,110,253,.05))',
-                        borderColor: '#0d6efd',
-                        color: '#0d6efd',
-                        boxShadow: '0 4px 12px rgba(13,110,253,.15)'
-                    });
+                // Reset dates
+                setDefaultDates();
 
-                // Hide all parameter forms
-                $('.report-form-section').addClass('d-none');
-
-                // Remove all required attributes
-                $('[required]').removeAttr('required');
+                // Reset to default report type
+                switchReport('MemberSituation');
 
                 // Clear validation
-                this.clearValidation();
+                $('.form-control').removeClass('is-invalid');
 
-                /* ===============================
-                   EXPLICIT FORM SWITCH
-                   =============================== */
-                switch (reportType) {
+                // Clear selected accounts list
+                $('#selectedAccountsList').html('<div class="text-muted small">No accounts selected yet</div>');
+                $('#SelectedAccountIds').val('');
 
-                    case 'MemberSituation':
-                        $('#memberSituationForm').removeClass('d-none');
-                        $('#memberAccountType, #memberLoan, #memberDateFrom, #memberDateTo')
-                            .attr('required', true);
-                        break;
+                appalert('Form has been reset', 3, 1);
+            }
 
-                    case 'AccountStatement':
-                        $('#accountStatementForm').removeClass('d-none');
-                        $('#accountStatementAccount, #accountDateFrom, #accountDateTo')
-                            .attr('required', true);
-                        break;
+            // ============================================================
+            // GENERATE REPORT (MAIN FUNCTION - AJAX POST)
+            // ============================================================
+            function generateReportAjax(form) {
+                console.log("=== STARTING REPORT GENERATION ===");
 
-                    case 'LoanRepayment':
-                        $('#loanRepaymentForm').removeClass('d-none');
-                        $('#loanRepaymentLoan, #loanRepaymentDateFrom, #loanRepaymentDateTo')
-                            .attr('required', true);
-                        break;
+                // Get submit button
+                var $submitBtn = $(form).find('button[type="submit"]');
+                var originalBtnText = $submitBtn.html();
 
-                    case 'LoanSituation':
-                        $('#loanSituationForm').removeClass('d-none');
-                        $('#loanSituationDateFrom, #loanSituationDateTo')
-                            .attr('required', true);
-                        break;
+                // Disable button and show loading
+                $submitBtn.prop('disabled', true);
+                $submitBtn.html('<i class="mdi mdi-loading mdi-spin me-2"></i> Processing...');
+
+                // Show loading overlay
+                $('#loadingOverlay').removeClass('d-none');
+
+                // Validate form first
+                if (!validateForm()) {
+                    appalert('Please fill all required fields', 2, 1);
+                    $submitBtn.prop('disabled', false).html(originalBtnText);
+                    $('#loadingOverlay').addClass('d-none');
+                    return false;
                 }
 
-                // Update help text
-                $('#reportTypeHelp').html(this.reportTypeHelpTexts[reportType]);
-            },
+                // Build form data based on current report type
+                var formData = buildFormData();
+                console.log("Form data to send:", formData);
 
-            /* ===============================
-               DATE PICKERS
-               =============================== */
-            initializeDatepickers: function () {
+                // Ask for confirmation
+                alertify.confirm("Confirmation", "Are you sure you want to generate this report?",
+                    function() {
+                        // AJAX configuration
+                        var ajaxConfig = {
+                            type: 'POST',
+                            url: form.action,
+                            data: formData,
+                            dataType: 'json',
+                            success: function(response) {
+                                console.log("=== SERVER RESPONSE ===");
+                                console.log("Full response:", response);
 
-                const today = new Date();
-                const toDate = today.toISOString().split('T')[0];
+                                if (response.success) {
+                                    if (response.status === "Failed") {
+                                        appalert(response.message, 2, 1);
+                                    } else {
+                                        appalert(response.message || 'Report data generated successfully', 1, 1);
 
-                const fromDateObj = new Date();
-                fromDateObj.setDate(today.getDate() - 30);
-                const fromDate = fromDateObj.toISOString().split('T')[0];
+                                        // Log the count
+                                        console.log("Report count:", response.count);
 
-                $('.datepicker').each(function () {
+                                        // If we have success, proceed to PrepareReport
+                                        if (response.success && response.count > 0) {
+                                            prepareCrystalReport();
+                                        }
+                                    }
+                                } else {
+                                    appalert(response.message || 'Failed to generate report', 0, 1);
+                                }
+                            },
+                            error: function(err) {
+                                console.log("=== AJAX ERROR ===");
+                                console.log("Error object:", err);
 
-                    if (this.id.includes('DateFrom')) $(this).val(fromDate);
-                    if (this.id.includes('DateTo')) $(this).val(toDate);
+                                if (err.status === 401) {
+                                    window.location.href = '/Authentication/Login';
+                                } else if (err.status === 500) {
+                                    appalert('Server error: ' + (err.responseText || 'Internal server error'), 0, 1);
+                                } else {
+                                    appalert(err.statusText || 'Error generating report', 0, 1);
+                                }
+                            },
+                            complete: function() {
+                                // Re-enable button
+                                $submitBtn.prop('disabled', false).html(originalBtnText);
+                                $('#loadingOverlay').addClass('d-none');
+                            }
+                        };
 
-                    $(this).flatpickr({
-                        dateFormat: "Y-m-d",
-                        allowInput: true,
-                        disableMobile: true
-                    });
-                });
-            },
+                        console.log("AJAX Config:", ajaxConfig);
+                        $.ajax(ajaxConfig);
+                    },
+                    function() {
+                        // Cancel callback
+                        appalert('Report generation cancelled', 3, 1);
+                        $submitBtn.prop('disabled', false).html(originalBtnText);
+                        $('#loadingOverlay').addClass('d-none');
+                    }
+                );
 
-            /* ===============================
-               VALIDATION
-               =============================== */
-            validateForm: function () {
+                return false;
+            }
 
-                let isValid = true;
+        // ============================================================
+        // BUILD FORM DATA BASED ON REPORT TYPE
+        // ============================================================
+        function buildFormData() {
+            var reportType = $('#ReportType').val();
+            var formData = {
+                ReportType: reportType,
+                CustomerId: $('#CustomerId').val(),
+                __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+            };
 
-                $('[required]').each(function () {
-                    if (!$(this).val()) {
-                        $(this).addClass('is-invalid');
+            switch (reportType) {
+                case 'MemberSituation':
+                    formData.AccountIds = JSON.stringify($('#memberAccountIds').val() || []);
+                    formData.LoanStatus = $('#memberLoanStatus').val();
+                    formData.ByDate = $('#memberByDate').is(':checked');
+                    formData.ByBalance = $('#memberByBalance').is(':checked');
+                    if ($('#memberByDate').is(':checked')) {
+                        formData.DateFrom = $('#memberDateFrom').val();
+                        formData.DateTo = $('#memberDateTo').val();
+                    }
+                    break;
+
+                case 'AccountSituation':
+                    formData.AccountIds = JSON.stringify($('#accountSituationIds').val() || []);
+                    formData.DateFrom = $('#accountSituationDateFrom').val();
+                    formData.DateTo = $('#accountSituationDateTo').val();
+                    break;
+
+                case 'AccountStatement':
+                    formData.AccountTypeId = $('#accountStatementAccount').val();
+                    formData.DateFrom = $('#accountDateFrom').val();
+                    formData.DateTo = $('#accountDateTo').val();
+                    break;
+
+                case 'LoanRepayment':
+                    formData.ByLoan = $('#repaymentByLoan').is(':checked');
+                    formData.ByRepayment = $('#repaymentByRepayment').is(':checked');
+                    if ($('#repaymentByLoan').is(':checked')) {
+                        formData.LoanId = $('#loanRepaymentLoan').val();
+                    }
+                    if ($('#repaymentByLoan').is(':checked') || $('#repaymentByRepayment').is(':checked')) {
+                        formData.DateFrom = $('#loanRepaymentDateFrom').val();
+                        formData.DateTo = $('#loanRepaymentDateTo').val();
+                    }
+                    break;
+
+                case 'LoanSituation':
+                    formData.ByDate = $('#loanSituationByDate').is(':checked');
+                    formData.ByBalance = $('#loanSituationByBalance').is(':checked');
+                    if ($('#loanSituationByDate').is(':checked')) {
+                        formData.DateFrom = $('#loanSituationDateFrom').val();
+                        formData.DateTo = $('#loanSituationDateTo').val();
+                    }
+                    break;
+            }
+
+            console.log('Form Data Built:', formData);
+            return formData;
+        }
+
+        // ============================================================
+        // PREPARE CRYSTAL REPORT (STEP 2)
+        // ============================================================
+        function prepareCrystalReport() {
+            console.log('=== PREPARING CRYSTAL REPORT ===');
+
+            // Show loading
+            $('#loadingOverlay').removeClass('d-none');
+
+            $.ajax({
+                url: '@Url.Action("PrepareReport", "MembersFSeriesReport")',
+                type: 'POST',
+                dataType: 'json',
+                success: function(response) {
+                    console.log('PrepareReport success:', response);
+
+                    if (response.success) {
+                        // Open the PDF in new tab
+                        var reportUrl = '@Url.Action("ReportParameterLessCOLL", "Reports")';
+                        console.log('Opening report:', reportUrl);
+                        window.open(reportUrl, '_blank');
+
+                        appalert('Report generated successfully! Check the new tab.', 1, 1);
+                    } else {
+                        appalert('Error preparing report: ' + (response.message || 'Unknown error'), 0, 1);
+                    }
+                },
+                error: function(xhr) {
+                    console.error('PrepareReport error:', xhr);
+                    appalert('Error preparing report for display', 0, 1);
+                },
+                complete: function() {
+                    $('#loadingOverlay').addClass('d-none');
+                }
+            });
+        }
+
+        // ============================================================
+        // FORM VALIDATION
+        // ============================================================
+        function validateForm() {
+            var isValid = true;
+            var reportType = $('#ReportType').val();
+
+            // Clear all validation first
+            $('.form-control').removeClass('is-invalid');
+
+            // Validate based on report type
+            switch(reportType) {
+                case 'MemberSituation':
+                    if (!$('#memberAccountIds').val() || $('#memberAccountIds').val().length === 0) {
+                        $('#memberAccountIds').addClass('is-invalid');
                         isValid = false;
                     }
-                });
-
-                return isValid;
-            },
-
-            clearValidation: function () {
-                $('.form-control').removeClass('is-invalid');
-            },
-
-            /* ===============================
-               GENERATE REPORT
-               =============================== */
-            generateReport: async function () {
-
-                if (!this.validateForm()) return;
-
-                const $btn = $('#btnGenerateReport');
-                const originalHtml = $btn.html();
-
-                $btn.prop('disabled', true)
-                    .html('<span class="spinner-border spinner-border-sm me-2"></span>Generating...');
-
-                try {
-                    const response = await $.ajax({
-                        url: $('#reportForm').attr('action'),
-                        type: 'POST',
-                        data: $('#reportForm').serialize(),
-                        dataType: 'json'
-                    });
-
-                    if (response.success && response.pdfUrl) {
-                        window.open(response.pdfUrl, '_blank');
-                    } else {
-                        this.showToast(response.message || 'Failed to generate report', 'danger');
+                    if (!$('#memberLoanStatus').val()) {
+                        $('#memberLoanStatus').addClass('is-invalid');
+                        isValid = false;
                     }
-                }
-                catch {
-                    this.showToast('Unexpected error occurred', 'danger');
-                }
-                finally {
-                    $btn.prop('disabled', false).html(originalHtml);
-                }
+                    if ($('#memberByDate').is(':checked')) {
+                        if (!$('#memberDateFrom').val()) {
+                            $('#memberDateFrom').addClass('is-invalid');
+                            isValid = false;
+                        }
+                        if (!$('#memberDateTo').val()) {
+                            $('#memberDateTo').addClass('is-invalid');
+                            isValid = false;
+                        }
+                    }
+                    break;
+
+                case 'AccountSituation':
+                    if (!$('#accountSituationIds').val() || $('#accountSituationIds').val().length === 0) {
+                        $('#accountSituationIds').addClass('is-invalid');
+                        isValid = false;
+                    }
+                    if (!$('#accountSituationDateFrom').val()) {
+                        $('#accountSituationDateFrom').addClass('is-invalid');
+                        isValid = false;
+                    }
+                    if (!$('#accountSituationDateTo').val()) {
+                        $('#accountSituationDateTo').addClass('is-invalid');
+                        isValid = false;
+                    }
+                    break;
+
+                case 'AccountStatement':
+                    if (!$('#accountStatementAccount').val()) {
+                        $('#accountStatementAccount').addClass('is-invalid');
+                        isValid = false;
+                    }
+                    if (!$('#accountDateFrom').val()) {
+                        $('#accountDateFrom').addClass('is-invalid');
+                        isValid = false;
+                    }
+                    if (!$('#accountDateTo').val()) {
+                        $('#accountDateTo').addClass('is-invalid');
+                        isValid = false;
+                    }
+                    break;
+
+                case 'LoanRepayment':
+                    if ($('#repaymentByLoan').is(':checked') && !$('#loanRepaymentLoan').val()) {
+                        $('#loanRepaymentLoan').addClass('is-invalid');
+                        isValid = false;
+                    }
+                    if (($('#repaymentByLoan').is(':checked') || $('#repaymentByRepayment').is(':checked')) &&
+                        (!$('#loanRepaymentDateFrom').val() || !$('#loanRepaymentDateTo').val())) {
+                        if (!$('#loanRepaymentDateFrom').val()) {
+                            $('#loanRepaymentDateFrom').addClass('is-invalid');
+                        }
+                        if (!$('#loanRepaymentDateTo').val()) {
+                            $('#loanRepaymentDateTo').addClass('is-invalid');
+                        }
+                        isValid = false;
+                    }
+                    break;
+
+                case 'LoanSituation':
+                    if ($('#loanSituationByDate').is(':checked')) {
+                        if (!$('#loanSituationDateFrom').val()) {
+                            $('#loanSituationDateFrom').addClass('is-invalid');
+                            isValid = false;
+                        }
+                        if (!$('#loanSituationDateTo').val()) {
+                            $('#loanSituationDateTo').addClass('is-invalid');
+                            isValid = false;
+                        }
+                    }
+                    break;
+            }
+
+            console.log('Validation result:', isValid ? 'VALID' : 'INVALID');
+            return isValid;
+        }
+
+        // ============================================================
+        // TEST FUNCTIONS (FOR DEBUGGING)
+        // ============================================================
+        window.testReport = {
+            generate: function() {
+                console.log('Testing report generation...');
+                $('#reportForm').submit();
             },
-
-            /* ===============================
-               RESET
-               =============================== */
-            resetForm: function () {
-
-                $('#reportForm')[0].reset();
-                $('.select2').val(null).trigger('change');
-                $('.datepicker').val('');
-
-                this.handleReportTypeChange('MemberSituation');
-                this.initializeDatepickers();
+            reset: function() {
+                console.log('Testing reset...');
+                resetForm();
             },
-
-            /* ===============================
-               TOAST
-               =============================== */
-            showToast: function (message, type) {
-
-                if (!$('#toastContainer').length) {
-                    $('body').append('<div id="toastContainer" class="position-fixed top-0 end-0 p-3" style="z-index:1056"></div>');
+            switch: function(type) {
+                console.log('Switching to:', type);
+                switchReport(type);
+            },
+            validate: function() {
+                console.log('Validation result:', validateForm());
+            },
+            debugFormData: function() {
+                var formData = buildFormData();
+                console.log('Form data to be sent:');
+                for (var key in formData) {
+                    console.log(key + ': ' + formData[key]);
                 }
-
-                const id = 'toast_' + Date.now();
-                const html = `
-                <div id="${id}" class="toast text-white bg-${type} border-0">
-                    <div class="d-flex">
-                        <div class="toast-body">${message}</div>
-                        <button class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
-                    </div>
-                </div>`;
-
-                $('#toastContainer').append(html);
-                new bootstrap.Toast(document.getElementById(id)).show();
-            },
-
-            /* ===============================
-               INIT
-               =============================== */
-            initialize: function () {
-
-                this.initializeDatepickers();
-
-                $('#btnGenerateReport').on('click', (e) => {
-                    e.preventDefault();
-                    this.generateReport();
-                });
-
-                $('#btnResetReport').on('click', () => this.resetForm());
-
-                // Default state
-                this.handleReportTypeChange('MemberSituation');
             }
         };
 
-        function switchReport(reportType) {
-            if (window.ReportGenerator) {
-                ReportGenerator.handleReportTypeChange(reportType);
-            }
-        }
+        console.log('✅ Report Generator loaded. Use testReport.debugFormData() to check form values.');
 
-        $(document).ready(function () {
-            ReportGenerator.initialize();
-        });
-    </script>
-
-
-}
+        </script>
+    }

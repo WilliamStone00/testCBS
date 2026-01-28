@@ -458,7 +458,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MembersDS.xsd</DependentUpon>
     </Compile>
-    <Compile Include="AppFiles\Accountingv2Reporting\DataSets\Cheque.Designer.cs">
     <Compile Include="AppFiles\Accountingv2Reporting\DataSets\Cheques.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -490,12 +489,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>BalanceSheet.rpt</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\CrystalReport1.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CrystalReport1.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\ChequeBook.cs">
@@ -2309,6 +2302,7 @@
     <Compile Include="Controllers\MemberNoneCashOperation\MobileMoneyBackOfficeController.cs" />
     <Compile Include="Controllers\LoanApplicationManagement\MemberOperationController.cs" />
     <Compile Include="Controllers\MembersFSerie\MembersFSeriesController.cs" />
+    <Compile Include="Controllers\MembersFSerie\MembersFSeriesReportController.cs" />
     <Compile Include="Controllers\MobileMoneyV2\MobileMoneyConfigV2Controller.cs" />
     <Compile Include="Controllers\Overdraft\OverdraftActivationController.cs" />
     <Compile Include="Controllers\Overdraft\OverdraftFacilityConfigController.cs" />
@@ -7910,6 +7904,17 @@
     <Content Include="AppFiles\Accountingv2Reporting\DataSets\IPS.xss">
       <DependentUpon>IPS.xsd</DependentUpon>
     </Content>
+    <Content Include="AppFiles\Accountingv2Reporting\DataSets\MembersFSeries.xsc">
+      <DependentUpon>MembersFSeries.xsd</DependentUpon>
+    </Content>
+    <None Include="AppFiles\Accountingv2Reporting\DataSets\MembersFSeries.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>MembersFSeries.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="AppFiles\Accountingv2Reporting\DataSets\MembersFSeries.xss">
+      <DependentUpon>MembersFSeries.xsd</DependentUpon>
+    </Content>
     <None Include="DataSet\Loan\DeliquentLoanSummaryDataSet.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -8900,10 +8905,6 @@
     <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\BalanceSheet.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>BalanceSheet.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\CrystalReport1.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>CrystalReport1.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\ChequeBook.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
@@ -11301,6 +11302,11 @@
     <Content Include="Views\StandingOrder\StandingOrderRegistration.cshtml" />
     <Content Include="Views\StandingOrder\_DataStandingOrders.cshtml" />
     <Content Include="Views\StandingOrder\Listing.cshtml" />
+    <Content Include="Views\TranslationPlaceholder\List.cshtml" />
+    <Content Include="Views\TranslationPlaceholder\_TranslationPlaceholderDataTable.cshtml" />
+    <Content Include="Views\TranslationPlaceholder\_TranslationPlaceholderDetailsPartial.cshtml" />
+    <Content Include="Views\TranslationPlaceholder\_TranslationPlaceholderForm.cshtml" />
+    <Content Include="Views\MembersFSeries\_ReportView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
@@ -11334,6 +11340,7 @@
     <Folder Include="Views\DaillyCollectorLicense\" />
     <Folder Include="Views\Default\" />
     <Folder Include="Views\Language\" />
+    <Folder Include="Views\MembersFSeriesReport\" />
     <Folder Include="Views\ReportLineMapping\" />
     <Folder Include="Views\ReportLinet\" />
     <Folder Include="Views\ReportSection\" />
