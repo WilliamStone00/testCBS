@@ -101,6 +101,15 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public List<Remittance> Remittances { get; set; } = new List<Remittance>();
         public string ServiceOption { get; set; }
     }
+    public class MemberAccountVm
+    {
+        public string AccountNumber { get; set; }
+        public string AccountName { get; set; }
+        public decimal Balance { get; set; }
+        public decimal BlockedAmount { get; set; }
+        public string AccountType { get; set; }
+    }
+
     public class PrintDate
     {
         public string DateFrom { get; set; }
