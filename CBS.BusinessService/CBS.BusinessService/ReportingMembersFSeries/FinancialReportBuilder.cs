@@ -67,15 +67,17 @@ namespace CBS.BusinessService.ReportingMembersFSeries
         // 1. Build Account Statement Rows
         public async Task<List<AccountStatementRow>> BuildAccountStatementRows(ReportParameters parameters)
         {
-           var cus = await GetCustomer(parameters.CustomerId);
-            var transactions = await _reportService.GetCustomerTransactionsByAccountNumber(parameters.AccountTypeId);
+            var cus = await GetCustomer(parameters.CustomerId);
+            var transactions = await _reportService
+                .GetCustomerTransactionsByAccountNumber(parameters.AccountTypeId);
 
             var rows = new List<AccountStatementRow>();
 
             decimal totalDebit = 0;
             decimal totalCredit = 0;
-           
-            // ✅ CASE 1: No transactions → add ONE row for header only
+            decimal finalBalance = 0;
+
+            // ✅ CASE 1: No transactions → header only
             if (!transactions.Any())
             {
                 rows.Add(new AccountStatementRow
@@ -93,64 +95,75 @@ namespace CBS.BusinessService.ReportingMembersFSeries
                     Currency = "Central African CFA franc",
                     PrintedBy = GetUserFullName(),
                     PrintedOn = DateTime.Now.Year.ToString(),
-                   // PoBox = cus.Po,
                     Phone = cus.Phone,
                     BegginingBalance = 0
                 });
 
-                return rows; // 👈 stop here
+                return rows;
             }
 
-            // ✅ CASE 2: Transactions exist → header fields included once
+            // ✅ CASE 2: Transactions exist
             foreach (var transaction in transactions)
-            {           
+            {
+                totalDebit += transaction.Debit;
+                totalCredit += transaction.Credit;
+
+                // 🔑 Use DB running balance (bank-correct)
+                finalBalance = transaction.Balance;
+
                 rows.Add(new AccountStatementRow
                 {
-                    // Header fields (same for all rows, but Crystal uses first row)
+                    // Header (Crystal uses first row)
                     BankName = GetBankName(),
-                   // BankCode = GetBankCode(),
                     BranchName = GetBranchName(),
                     BranchCode = GetBranchCode(),
                     Tell = "22316870",
                     Bp = "392",
                     ReportHeader = "ACCOUNT STATEMENT",
-                   // PeriodFrom = parameters.DateFrom.ToString("dd/MM/yyyy"),
                     PeriodFrom = parameters.DateFrom.ToString("dd/MM/yyyy"),
                     PeriodTo = parameters.DateTo.ToString("dd/MM/yyyy"),
                     AccountNo = parameters.AccountTypeId,
                     Currency = "Central African CFA franc",
                     PrintedBy = GetUserFullName(),
                     PrintedOn = DateTime.Now.ToString("dd/MM/yyyy"),
-                     // PoBox = "B.P. 392 INTENDANCE-YAOUNDE",
                     Phone = cus.Phone,
                     AccountName = transaction.Account.AccountName,
 
-                    // Transaction fields
+                    // Transaction details
                     Date = ParseTransactionDate(transaction.CreatedDate, "dd/MM/yyyy"),
                     Time = ParseTransactionDate(transaction.CreatedDate, "HH:mm:ss"),
                     Description = transaction.Operation,
                     Reference = transaction.TransactionReference,
-                    Representative = string.IsNullOrWhiteSpace(transaction.DepositorName) ? "N/A"  : transaction.DepositorName,
-                    Debit = transaction.Debit > 0 ? transaction.Debit.ToString("N2") : "0",
-                    Credit = transaction.Credit > 0 ? transaction.Credit.ToString("N2") : "0",
-                    Balance = transaction.Balance.ToString("N2"),
+                    Representative = string.IsNullOrWhiteSpace(transaction.DepositorName)
+                        ? "N/A"
+                        : transaction.DepositorName,
+
+                    Debit = transaction.Debit > 0 ? transaction.Debit.ToString("N1") : "0.0",
+                    Credit = transaction.Credit > 0 ? transaction.Credit.ToString("N1") : "0.0",
+                    Balance = transaction.Balance.ToString("N1"),
+
                     CustomerId = cus.CustomerId,
-                    CustomerName = cus.FirstName + cus.LastName,
+                    CustomerName = cus.FirstName + " " + cus.LastName,
+
                     OpeningBalance = transaction.Account.OpeningBalance,
-                    ClosingBalance = transaction.Account.ClosingBalance,
+
                     Year = DateTime.Now.Year.ToString(),
-                    TotalDebit = totalDebit.ToString("N2"),
-                    TotalCredit = totalCredit.ToString("N2"),
-                    AcountBalanceOn = $"Balance as of {parameters.DateTo.ToString("dd/MM/yyyy")}: {transaction.Account.Balance.ToString("N2")}",
+                    TotalDebit = totalDebit.ToString("N1"),
+                    TotalCredit = totalCredit.ToString("N1"),
                     TotalOperation = transactions.Count.ToString()
                 });
+            }
 
-                totalDebit += transaction.Debit;
-                totalCredit += transaction.Credit;
+            // ✅ FINAL STEP: enforce SAME closing balance & total on all rows
+            foreach (var row in rows)
+            {
+                row.ClosingBalance = finalBalance;
+                row.Total = $"Balance as of {parameters.DateTo:dd/MM/yyyy}: {finalBalance:N1}";
             }
 
             return rows;
-        }     
+        }
+
 
         // 2. Build Member Situation Rows
         public async Task<List<MemberSituationRow>> BuildMemberSituationRows(ReportParameters parameters)
