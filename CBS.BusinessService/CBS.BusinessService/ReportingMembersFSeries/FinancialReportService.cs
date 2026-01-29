@@ -95,8 +95,7 @@ namespace CBS.BusinessService.ReportingMembersFSeries
         //    return ExecutionMessage;
         //}
 
-        // 2. Member Situation Data
-        public async Task<MemberSituationData> GetMemberSituationData(string accountTypeId, string loanId, DateTime fromDate, DateTime toDate)
+           public async Task<MemberSituationData> GetMemberSituationData(string accountTypeId, string loanId, DateTime fromDate, DateTime toDate)
             {
                 try
                 {
@@ -126,7 +125,6 @@ namespace CBS.BusinessService.ReportingMembersFSeries
                 }
             }
 
-            // 3. Loan Repayment Data
             public async Task<LoanRepaymentData> GetLoanRepaymentData(string loanId, DateTime fromDate, DateTime toDate)
             {
                 try
@@ -158,7 +156,6 @@ namespace CBS.BusinessService.ReportingMembersFSeries
                 }
             }
 
-            // 4. Loan Situation Data
             public async Task<LoanSituationData> GetLoanSituationData(DateTime fromDate, DateTime toDate)
             {
                 try
@@ -225,9 +222,5 @@ namespace CBS.BusinessService.ReportingMembersFSeries
                 // Implementation for transaction summary
                 return await Task.FromResult(new TransactionSummary());
             }
-        }
-
-    // DTO Classes
-    
-    
+  }      
 }

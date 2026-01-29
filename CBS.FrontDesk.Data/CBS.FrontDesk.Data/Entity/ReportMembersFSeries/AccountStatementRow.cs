@@ -48,7 +48,7 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
         public decimal ClosingBalance { get; set; }
 
         // Summary Information
-        public int Total { get; set; }
+        public string Total { get; set; }
         public string AcountBalanceOn { get; set; }
         public string TotalOperation { get; set; }
         public string TotalDebit { get; set; }
