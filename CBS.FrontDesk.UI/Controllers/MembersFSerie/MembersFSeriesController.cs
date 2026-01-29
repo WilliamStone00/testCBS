@@ -57,7 +57,7 @@ namespace CBS.FrontDesk.UI.Controllers.Series
             // 2. Prepare Accounts dropdown
             ViewBag.Accounts = cashDesk.Accounts.Select(a => new SelectListItem
             {
-                Value = a.id,
+                Value = a.accountNumber,
                 Text = $"{a.accountNumber} - {a.accountName}"
             }).ToList();
 
@@ -73,7 +73,7 @@ namespace CBS.FrontDesk.UI.Controllers.Series
             ViewBag.Loans = loans.Select(l => new SelectListItem
             {
                 Value = l.Id,
-                Text = $"{l.Id} - {l.LoanType}"
+                Text = $"{l.Id} - {l.LoanType} - {l.Balance}"
             }).ToList();
                  
                 return true;
@@ -315,8 +315,9 @@ namespace CBS.FrontDesk.UI.Controllers.Series
                 }else if(path == "Report")
                 {
                     // var data = await _pcmfLoanPurposeService.GetByIdAsync(KEY);
-                   await LoadMemberAccountsAndLoans(KEY, path);
-                    return PartialView(partialView);
+                    await LoadMemberAccountsAndLoans(KEY, path);
+                    var id = new ReportParameters { CustomerId = KEY };
+                    return PartialView(partialView,id);
                 }
                     ViewBag.message = "Invalid option selected";
                 return PartialView("_NoRecordFound", new CashDesk());

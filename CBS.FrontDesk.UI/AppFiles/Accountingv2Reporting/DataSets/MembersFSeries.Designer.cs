@@ -279,19 +279,25 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
         public partial class AccountStatementDataTable : global::System.Data.TypedTableBase<AccountStatementRow> {
             
+            private global::System.Data.DataColumn columnYear;
+            
+            private global::System.Data.DataColumn columnOpeningBalance;
+            
+            private global::System.Data.DataColumn columnClosingBalance;
+            
+            private global::System.Data.DataColumn columnAccountName;
+            
             private global::System.Data.DataColumn columnBankName;
             
             private global::System.Data.DataColumn columnBankCode;
             
-            private global::System.Data.DataColumn columnBranchName;
-            
             private global::System.Data.DataColumn columnBranchCode;
+            
+            private global::System.Data.DataColumn columnBranchName;
             
             private global::System.Data.DataColumn columnTell;
             
             private global::System.Data.DataColumn columnBp;
-            
-            private global::System.Data.DataColumn columnReportHeader;
             
             private global::System.Data.DataColumn columnPeriodFrom;
             
@@ -300,8 +306,6 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             private global::System.Data.DataColumn columnAccountNo;
             
             private global::System.Data.DataColumn columnCurrency;
-            
-            private global::System.Data.DataColumn columnBeginingBalance;
             
             private global::System.Data.DataColumn columnCustomerId;
             
@@ -329,17 +333,21 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             private global::System.Data.DataColumn columnTotal;
             
-            private global::System.Data.DataColumn columnAcountBalanceOn;
-            
-            private global::System.Data.DataColumn columnTotalOperation;
+            private global::System.Data.DataColumn columnAccountBalanceOn;
             
             private global::System.Data.DataColumn columnTotalDebit;
             
             private global::System.Data.DataColumn columnTotalCredit;
             
-            private global::System.Data.DataColumn columnPrintedBy;
+            private global::System.Data.DataColumn columnTotalOperation;
             
             private global::System.Data.DataColumn columnPrintedOn;
+            
+            private global::System.Data.DataColumn columnPrintedBy;
+            
+            private global::System.Data.DataColumn columnaddition1;
+            
+            private global::System.Data.DataColumn columnaddition2;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
@@ -376,6 +384,38 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn YearColumn {
+                get {
+                    return this.columnYear;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn OpeningBalanceColumn {
+                get {
+                    return this.columnOpeningBalance;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn ClosingBalanceColumn {
+                get {
+                    return this.columnClosingBalance;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn AccountNameColumn {
+                get {
+                    return this.columnAccountName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public global::System.Data.DataColumn BankNameColumn {
                 get {
                     return this.columnBankName;
@@ -392,17 +432,17 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public global::System.Data.DataColumn BranchNameColumn {
+            public global::System.Data.DataColumn BranchCodeColumn {
                 get {
-                    return this.columnBranchName;
+                    return this.columnBranchCode;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public global::System.Data.DataColumn BranchCodeColumn {
+            public global::System.Data.DataColumn BranchNameColumn {
                 get {
-                    return this.columnBranchCode;
+                    return this.columnBranchName;
                 }
             }
             
@@ -419,14 +459,6 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             public global::System.Data.DataColumn BpColumn {
                 get {
                     return this.columnBp;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public global::System.Data.DataColumn ReportHeaderColumn {
-                get {
-                    return this.columnReportHeader;
                 }
             }
             
@@ -459,14 +491,6 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             public global::System.Data.DataColumn CurrencyColumn {
                 get {
                     return this.columnCurrency;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public global::System.Data.DataColumn BeginingBalanceColumn {
-                get {
-                    return this.columnBeginingBalance;
                 }
             }
             
@@ -576,17 +600,9 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public global::System.Data.DataColumn AcountBalanceOnColumn {
+            public global::System.Data.DataColumn AccountBalanceOnColumn {
                 get {
-                    return this.columnAcountBalanceOn;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public global::System.Data.DataColumn TotalOperationColumn {
-                get {
-                    return this.columnTotalOperation;
+                    return this.columnAccountBalanceOn;
                 }
             }
             
@@ -608,9 +624,9 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public global::System.Data.DataColumn PrintedByColumn {
+            public global::System.Data.DataColumn TotalOperationColumn {
                 get {
-                    return this.columnPrintedBy;
+                    return this.columnTotalOperation;
                 }
             }
             
@@ -619,6 +635,30 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             public global::System.Data.DataColumn PrintedOnColumn {
                 get {
                     return this.columnPrintedOn;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn PrintedByColumn {
+                get {
+                    return this.columnPrintedBy;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn addition1Column {
+                get {
+                    return this.columnaddition1;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn addition2Column {
+                get {
+                    return this.columnaddition2;
                 }
             }
             
@@ -660,18 +700,20 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public AccountStatementRow AddAccountStatementRow(
+                        string Year, 
+                        decimal OpeningBalance, 
+                        decimal ClosingBalance, 
+                        string AccountName, 
                         string BankName, 
                         string BankCode, 
-                        string BranchName, 
                         string BranchCode, 
+                        string BranchName, 
                         string Tell, 
                         string Bp, 
-                        string ReportHeader, 
-                        System.DateTime PeriodFrom, 
-                        System.DateTime PeriodTo, 
+                        string PeriodFrom, 
+                        string PeriodTo, 
                         string AccountNo, 
                         string Currency, 
-                        int BeginingBalance, 
                         string CustomerId, 
                         string CustomerName, 
                         string Phone, 
@@ -685,26 +727,30 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                         string Credit, 
                         string Balance, 
                         string Total, 
-                        string AcountBalanceOn, 
-                        string TotalOperation, 
+                        string AccountBalanceOn, 
                         string TotalDebit, 
                         string TotalCredit, 
+                        string TotalOperation, 
+                        string PrintedOn, 
                         string PrintedBy, 
-                        System.DateTime PrintedOn) {
+                        string addition1, 
+                        string addition2) {
                 AccountStatementRow rowAccountStatementRow = ((AccountStatementRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
+                        Year,
+                        OpeningBalance,
+                        ClosingBalance,
+                        AccountName,
                         BankName,
                         BankCode,
-                        BranchName,
                         BranchCode,
+                        BranchName,
                         Tell,
                         Bp,
-                        ReportHeader,
                         PeriodFrom,
                         PeriodTo,
                         AccountNo,
                         Currency,
-                        BeginingBalance,
                         CustomerId,
                         CustomerName,
                         Phone,
@@ -718,12 +764,14 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                         Credit,
                         Balance,
                         Total,
-                        AcountBalanceOn,
-                        TotalOperation,
+                        AccountBalanceOn,
                         TotalDebit,
                         TotalCredit,
+                        TotalOperation,
+                        PrintedOn,
                         PrintedBy,
-                        PrintedOn};
+                        addition1,
+                        addition2};
                 rowAccountStatementRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowAccountStatementRow);
                 return rowAccountStatementRow;
@@ -746,18 +794,20 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             internal void InitVars() {
+                this.columnYear = base.Columns["Year"];
+                this.columnOpeningBalance = base.Columns["OpeningBalance"];
+                this.columnClosingBalance = base.Columns["ClosingBalance"];
+                this.columnAccountName = base.Columns["AccountName"];
                 this.columnBankName = base.Columns["BankName"];
                 this.columnBankCode = base.Columns["BankCode"];
-                this.columnBranchName = base.Columns["BranchName"];
                 this.columnBranchCode = base.Columns["BranchCode"];
+                this.columnBranchName = base.Columns["BranchName"];
                 this.columnTell = base.Columns["Tell"];
                 this.columnBp = base.Columns["Bp"];
-                this.columnReportHeader = base.Columns["ReportHeader"];
                 this.columnPeriodFrom = base.Columns["PeriodFrom"];
                 this.columnPeriodTo = base.Columns["PeriodTo"];
                 this.columnAccountNo = base.Columns["AccountNo"];
                 this.columnCurrency = base.Columns["Currency"];
-                this.columnBeginingBalance = base.Columns["BeginingBalance"];
                 this.columnCustomerId = base.Columns["CustomerId"];
                 this.columnCustomerName = base.Columns["CustomerName"];
                 this.columnPhone = base.Columns["Phone"];
@@ -771,41 +821,47 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                 this.columnCredit = base.Columns["Credit"];
                 this.columnBalance = base.Columns["Balance"];
                 this.columnTotal = base.Columns["Total"];
-                this.columnAcountBalanceOn = base.Columns["AcountBalanceOn"];
-                this.columnTotalOperation = base.Columns["TotalOperation"];
+                this.columnAccountBalanceOn = base.Columns["AccountBalanceOn"];
                 this.columnTotalDebit = base.Columns["TotalDebit"];
                 this.columnTotalCredit = base.Columns["TotalCredit"];
-                this.columnPrintedBy = base.Columns["PrintedBy"];
+                this.columnTotalOperation = base.Columns["TotalOperation"];
                 this.columnPrintedOn = base.Columns["PrintedOn"];
+                this.columnPrintedBy = base.Columns["PrintedBy"];
+                this.columnaddition1 = base.Columns["addition1"];
+                this.columnaddition2 = base.Columns["addition2"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             private void InitClass() {
+                this.columnYear = new global::System.Data.DataColumn("Year", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnYear);
+                this.columnOpeningBalance = new global::System.Data.DataColumn("OpeningBalance", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOpeningBalance);
+                this.columnClosingBalance = new global::System.Data.DataColumn("ClosingBalance", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnClosingBalance);
+                this.columnAccountName = new global::System.Data.DataColumn("AccountName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAccountName);
                 this.columnBankName = new global::System.Data.DataColumn("BankName", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnBankName);
                 this.columnBankCode = new global::System.Data.DataColumn("BankCode", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnBankCode);
-                this.columnBranchName = new global::System.Data.DataColumn("BranchName", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnBranchName);
                 this.columnBranchCode = new global::System.Data.DataColumn("BranchCode", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnBranchCode);
+                this.columnBranchName = new global::System.Data.DataColumn("BranchName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBranchName);
                 this.columnTell = new global::System.Data.DataColumn("Tell", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTell);
                 this.columnBp = new global::System.Data.DataColumn("Bp", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnBp);
-                this.columnReportHeader = new global::System.Data.DataColumn("ReportHeader", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnReportHeader);
-                this.columnPeriodFrom = new global::System.Data.DataColumn("PeriodFrom", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                this.columnPeriodFrom = new global::System.Data.DataColumn("PeriodFrom", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPeriodFrom);
-                this.columnPeriodTo = new global::System.Data.DataColumn("PeriodTo", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                this.columnPeriodTo = new global::System.Data.DataColumn("PeriodTo", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPeriodTo);
                 this.columnAccountNo = new global::System.Data.DataColumn("AccountNo", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnAccountNo);
                 this.columnCurrency = new global::System.Data.DataColumn("Currency", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnCurrency);
-                this.columnBeginingBalance = new global::System.Data.DataColumn("BeginingBalance", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnBeginingBalance);
                 this.columnCustomerId = new global::System.Data.DataColumn("CustomerId", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnCustomerId);
                 this.columnCustomerName = new global::System.Data.DataColumn("CustomerName", typeof(string), null, global::System.Data.MappingType.Element);
@@ -832,18 +888,22 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                 base.Columns.Add(this.columnBalance);
                 this.columnTotal = new global::System.Data.DataColumn("Total", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTotal);
-                this.columnAcountBalanceOn = new global::System.Data.DataColumn("AcountBalanceOn", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnAcountBalanceOn);
-                this.columnTotalOperation = new global::System.Data.DataColumn("TotalOperation", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnTotalOperation);
+                this.columnAccountBalanceOn = new global::System.Data.DataColumn("AccountBalanceOn", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAccountBalanceOn);
                 this.columnTotalDebit = new global::System.Data.DataColumn("TotalDebit", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTotalDebit);
                 this.columnTotalCredit = new global::System.Data.DataColumn("TotalCredit", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTotalCredit);
+                this.columnTotalOperation = new global::System.Data.DataColumn("TotalOperation", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalOperation);
+                this.columnPrintedOn = new global::System.Data.DataColumn("PrintedOn", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPrintedOn);
                 this.columnPrintedBy = new global::System.Data.DataColumn("PrintedBy", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPrintedBy);
-                this.columnPrintedOn = new global::System.Data.DataColumn("PrintedOn", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnPrintedOn);
+                this.columnaddition1 = new global::System.Data.DataColumn("addition1", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnaddition1);
+                this.columnaddition2 = new global::System.Data.DataColumn("addition2", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnaddition2);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -986,6 +1046,70 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string Year {
+                get {
+                    try {
+                        return ((string)(this[this.tableAccountStatement.YearColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Year\' in table \'AccountStatement\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableAccountStatement.YearColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal OpeningBalance {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableAccountStatement.OpeningBalanceColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OpeningBalance\' in table \'AccountStatement\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableAccountStatement.OpeningBalanceColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal ClosingBalance {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableAccountStatement.ClosingBalanceColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ClosingBalance\' in table \'AccountStatement\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableAccountStatement.ClosingBalanceColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string AccountName {
+                get {
+                    try {
+                        return ((string)(this[this.tableAccountStatement.AccountNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'AccountName\' in table \'AccountStatement\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableAccountStatement.AccountNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public string BankName {
                 get {
                     try {
@@ -1018,22 +1142,6 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string BranchName {
-                get {
-                    try {
-                        return ((string)(this[this.tableAccountStatement.BranchNameColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'BranchName\' in table \'AccountStatement\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableAccountStatement.BranchNameColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public string BranchCode {
                 get {
                     try {
@@ -1045,6 +1153,22 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                 }
                 set {
                     this[this.tableAccountStatement.BranchCodeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string BranchName {
+                get {
+                    try {
+                        return ((string)(this[this.tableAccountStatement.BranchNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BranchName\' in table \'AccountStatement\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableAccountStatement.BranchNameColumn] = value;
                 }
             }
             
@@ -1082,26 +1206,10 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string ReportHeader {
+            public string PeriodFrom {
                 get {
                     try {
-                        return ((string)(this[this.tableAccountStatement.ReportHeaderColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'ReportHeader\' in table \'AccountStatement\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableAccountStatement.ReportHeaderColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public System.DateTime PeriodFrom {
-                get {
-                    try {
-                        return ((global::System.DateTime)(this[this.tableAccountStatement.PeriodFromColumn]));
+                        return ((string)(this[this.tableAccountStatement.PeriodFromColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'PeriodFrom\' in table \'AccountStatement\' is DBNull.", e);
@@ -1114,10 +1222,10 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public System.DateTime PeriodTo {
+            public string PeriodTo {
                 get {
                     try {
-                        return ((global::System.DateTime)(this[this.tableAccountStatement.PeriodToColumn]));
+                        return ((string)(this[this.tableAccountStatement.PeriodToColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'PeriodTo\' in table \'AccountStatement\' is DBNull.", e);
@@ -1157,22 +1265,6 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                 }
                 set {
                     this[this.tableAccountStatement.CurrencyColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public int BeginingBalance {
-                get {
-                    try {
-                        return ((int)(this[this.tableAccountStatement.BeginingBalanceColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'BeginingBalance\' in table \'AccountStatement\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableAccountStatement.BeginingBalanceColumn] = value;
                 }
             }
             
@@ -1386,33 +1478,17 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string AcountBalanceOn {
+            public string AccountBalanceOn {
                 get {
                     try {
-                        return ((string)(this[this.tableAccountStatement.AcountBalanceOnColumn]));
+                        return ((string)(this[this.tableAccountStatement.AccountBalanceOnColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'AcountBalanceOn\' in table \'AccountStatement\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'AccountBalanceOn\' in table \'AccountStatement\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableAccountStatement.AcountBalanceOnColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string TotalOperation {
-                get {
-                    try {
-                        return ((string)(this[this.tableAccountStatement.TotalOperationColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'TotalOperation\' in table \'AccountStatement\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableAccountStatement.TotalOperationColumn] = value;
+                    this[this.tableAccountStatement.AccountBalanceOnColumn] = value;
                 }
             }
             
@@ -1450,6 +1526,38 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string TotalOperation {
+                get {
+                    try {
+                        return ((string)(this[this.tableAccountStatement.TotalOperationColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalOperation\' in table \'AccountStatement\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableAccountStatement.TotalOperationColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string PrintedOn {
+                get {
+                    try {
+                        return ((string)(this[this.tableAccountStatement.PrintedOnColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PrintedOn\' in table \'AccountStatement\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableAccountStatement.PrintedOnColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public string PrintedBy {
                 get {
                     try {
@@ -1466,18 +1574,82 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public System.DateTime PrintedOn {
+            public string addition1 {
                 get {
                     try {
-                        return ((global::System.DateTime)(this[this.tableAccountStatement.PrintedOnColumn]));
+                        return ((string)(this[this.tableAccountStatement.addition1Column]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'PrintedOn\' in table \'AccountStatement\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'addition1\' in table \'AccountStatement\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableAccountStatement.PrintedOnColumn] = value;
+                    this[this.tableAccountStatement.addition1Column] = value;
                 }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string addition2 {
+                get {
+                    try {
+                        return ((string)(this[this.tableAccountStatement.addition2Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'addition2\' in table \'AccountStatement\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableAccountStatement.addition2Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsYearNull() {
+                return this.IsNull(this.tableAccountStatement.YearColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetYearNull() {
+                this[this.tableAccountStatement.YearColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsOpeningBalanceNull() {
+                return this.IsNull(this.tableAccountStatement.OpeningBalanceColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetOpeningBalanceNull() {
+                this[this.tableAccountStatement.OpeningBalanceColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsClosingBalanceNull() {
+                return this.IsNull(this.tableAccountStatement.ClosingBalanceColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetClosingBalanceNull() {
+                this[this.tableAccountStatement.ClosingBalanceColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsAccountNameNull() {
+                return this.IsNull(this.tableAccountStatement.AccountNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetAccountNameNull() {
+                this[this.tableAccountStatement.AccountNameColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1506,18 +1678,6 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public bool IsBranchNameNull() {
-                return this.IsNull(this.tableAccountStatement.BranchNameColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void SetBranchNameNull() {
-                this[this.tableAccountStatement.BranchNameColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsBranchCodeNull() {
                 return this.IsNull(this.tableAccountStatement.BranchCodeColumn);
             }
@@ -1526,6 +1686,18 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetBranchCodeNull() {
                 this[this.tableAccountStatement.BranchCodeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsBranchNameNull() {
+                return this.IsNull(this.tableAccountStatement.BranchNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetBranchNameNull() {
+                this[this.tableAccountStatement.BranchNameColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1550,18 +1722,6 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetBpNull() {
                 this[this.tableAccountStatement.BpColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public bool IsReportHeaderNull() {
-                return this.IsNull(this.tableAccountStatement.ReportHeaderColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void SetReportHeaderNull() {
-                this[this.tableAccountStatement.ReportHeaderColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1610,18 +1770,6 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetCurrencyNull() {
                 this[this.tableAccountStatement.CurrencyColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public bool IsBeginingBalanceNull() {
-                return this.IsNull(this.tableAccountStatement.BeginingBalanceColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void SetBeginingBalanceNull() {
-                this[this.tableAccountStatement.BeginingBalanceColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1782,26 +1930,14 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public bool IsAcountBalanceOnNull() {
-                return this.IsNull(this.tableAccountStatement.AcountBalanceOnColumn);
+            public bool IsAccountBalanceOnNull() {
+                return this.IsNull(this.tableAccountStatement.AccountBalanceOnColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void SetAcountBalanceOnNull() {
-                this[this.tableAccountStatement.AcountBalanceOnColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public bool IsTotalOperationNull() {
-                return this.IsNull(this.tableAccountStatement.TotalOperationColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void SetTotalOperationNull() {
-                this[this.tableAccountStatement.TotalOperationColumn] = global::System.Convert.DBNull;
+            public void SetAccountBalanceOnNull() {
+                this[this.tableAccountStatement.AccountBalanceOnColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1830,14 +1966,14 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public bool IsPrintedByNull() {
-                return this.IsNull(this.tableAccountStatement.PrintedByColumn);
+            public bool IsTotalOperationNull() {
+                return this.IsNull(this.tableAccountStatement.TotalOperationColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void SetPrintedByNull() {
-                this[this.tableAccountStatement.PrintedByColumn] = global::System.Convert.DBNull;
+            public void SetTotalOperationNull() {
+                this[this.tableAccountStatement.TotalOperationColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1850,6 +1986,42 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetPrintedOnNull() {
                 this[this.tableAccountStatement.PrintedOnColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsPrintedByNull() {
+                return this.IsNull(this.tableAccountStatement.PrintedByColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetPrintedByNull() {
+                this[this.tableAccountStatement.PrintedByColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool Isaddition1Null() {
+                return this.IsNull(this.tableAccountStatement.addition1Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void Setaddition1Null() {
+                this[this.tableAccountStatement.addition1Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool Isaddition2Null() {
+                return this.IsNull(this.tableAccountStatement.addition2Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void Setaddition2Null() {
+                this[this.tableAccountStatement.addition2Column] = global::System.Convert.DBNull;
             }
         }
         

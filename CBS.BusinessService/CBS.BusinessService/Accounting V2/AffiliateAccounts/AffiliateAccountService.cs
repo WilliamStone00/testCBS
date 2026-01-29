@@ -185,7 +185,7 @@ namespace CBS.BusinessService.Accounting_V2.AffiliateAccounts
 
 
         public async Task<List<StringValues>> GetAllAffiliateAccounts()
-        {
+       {
             try
             {
                 AffiliateAccountQuery query = new AffiliateAccountQuery()

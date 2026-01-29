@@ -40,7 +40,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.IPS
         }
 
         public async Task<bool> Loader()
-        {
+         {
             var branches = await _branchServices.GetBranches();
             ViewBag.Branches = branches;
 
