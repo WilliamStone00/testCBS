@@ -2,7 +2,7 @@
 @model CBS.API.Helper.AuthRequest
 @{
     Layout = "~/Views/Shared/_LoginMainCover.cshtml";
-    ViewBag.Title = GlobalLogin.Title;
+    ViewBag.Title = AuthenticationRessource.Title;
 }
 
 <style>
@@ -145,10 +145,10 @@
             </div>
             <hr class="styled-hr">
             <h5 class="trustbank-text mb-1">
-                <span class="trust-soft">@GlobalHome.TrustSoft</span>
-                <span class="credit">@GlobalHome.Credit</span>
+                <span class="trust-soft">@AuthenticationRessource.TrustSoft</span>
+                <span class="credit">@AuthenticationRessource.Credit</span>
             </h5>
-            <small class="d-block mt-0"><i>@GlobalHome.SatisfactionText</i></small>
+            <small class="d-block mt-0"><i>@AuthenticationRessource.SatisfactionText</i></small>
 
             <hr class="styled-hr">
 
@@ -178,7 +178,7 @@
                 <div class="form-floating form-floating-outline mb-3">
                     @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @placeholder = "Email or Username", autocomplete = "username" })
                     @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
-                    <label for="username">@GlobalLogin.UserName</label>
+                    <label for="username">@AuthenticationRessource.Email_or_Username</label>
                 </div>
                 <!-- 🛡️ Hidden field to store real Browser User-Agent -->
                 <input type="hidden" id="UserAgent" name="UserAgent" />
@@ -188,7 +188,7 @@
                         <div class="form-floating form-floating-outline">
                             @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password", autocomplete = "current-password" })
                             @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
-                            <label for="password">@GlobalLogin.Password</label>
+                            <label for="password">@GlobalShared.Password</label>
                         </div>
                         <span class="input-group-text cursor-pointer"><i class="mdi mdi-eye-off-outline"></i></span>
                     </div>
@@ -200,17 +200,17 @@
 
 
                 <!-- Login Button -->
-                <button type="submit" class="btn btn-primary d-grid w-100">@GlobalLogin.LoginButton</button>
+                <button type="submit" class="btn btn-primary d-grid w-100">@AuthenticationRessource.Login</button>
             }
 
             <!-- Login Policy -->
         <div class="login-policy mt-4">
-            <p class="text-muted mb-0 text-center mt-2"><b>@GlobalLogin.LOGINPOLICY_TITLE</b></p>
+            <p class="text-muted mb-0 text-center mt-2"><b>@AuthenticationRessource.LOGIN_POLICY</b></p>
             <hr class="styled-hr" />
             <ol class="text-start ps-3">
-                <li>@GlobalLogin.LOGINPOLICY_1</li>
-                <li>@GlobalLogin.LOGIN_POLICY_2</li>
-                <li>@GlobalLogin.LOGIN_POLICY_3</li>
+                <li>@AuthenticationRessource.Your_max_login_attempt_is_3_else_blocked</li>
+                <li>@AuthenticationRessource.If_your_account_is_blocked_contact_administrator</li>
+                <li>@AuthenticationRessource.If_you_forget_your_password_contact_administrator</li>
             </ol>
         </div>
 

@@ -117,31 +117,161 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddProduct" xml:space="preserve">
+    <value>Add product</value>
+  </data>
+  <data name="AddressBilling" xml:space="preserve">
+    <value>Address &amp; Billing</value>
+  </data>
+  <data name="AllCustomers" xml:space="preserve">
+    <value>All customers</value>
+  </data>
+  <data name="BackToLoginPage" xml:space="preserve">
+    <value>Back to login page</value>
+  </data>
+  <data name="CategoryList" xml:space="preserve">
+    <value>Category list</value>
+  </data>
+  <data name="Checkout" xml:space="preserve">
+    <value>Checkout</value>
+  </data>
   <data name="Credit" xml:space="preserve">
     <value>CREDIT</value>
+    <comment>Brand name part 2</comment>
+  </data>
+  <data name="Customer" xml:space="preserve">
+    <value>Customer</value>
+  </data>
+  <data name="CustomerDetails" xml:space="preserve">
+    <value>Customer details</value>
+  </data>
+  <data name="Dashboard" xml:space="preserve">
+    <value>Dashboard</value>
+  </data>
+  <data name="ECommerce" xml:space="preserve">
+    <value>eCommerce</value>
   </data>
   <data name="Home" xml:space="preserve">
-    <value>Accueil</value>
+    <value>Home</value>
+    <comment>Home page</comment>
+  </data>
+  <data name="Locations" xml:space="preserve">
+    <value>Locations</value>
+  </data>
+  <data name="If_your_account_is_blocked_contact_administrator" xml:space="preserve">
+    <value>If your account is blocked, contact administrator.</value>
+  </data>
+  <data name="If_you_forget_your_password_contact_administrator" xml:space="preserve">
+    <value>If you forget your password, contact administrator.</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Login</value>
+    <comment>Login</comment>
+  </data>
+  <data name="LoginNote" xml:space="preserve">
+    <value>Please sign in to your account.</value>
+    <comment>Please sign in to your account.</comment>
+  </data>
+  <data name="Your_max_login_attempt_is_3_else_blocked" xml:space="preserve">
+    <value>Your max login attempt is 3, else blocked.</value>
+  </data>
+  <data name="LOGIN_POLICY" xml:space="preserve">
+    <value>LOGIN POLICY</value>
+  </data>
+  <data name="ManageReviews" xml:space="preserve">
+    <value>Manage reviews</value>
+  </data>
+  <data name="MultipleActiveSessionsDetected" xml:space="preserve">
+    <value>Multiple active sessions detected!</value>
+  </data>
+  <data name="MultipleActiveSessionsDetected1" xml:space="preserve">
+    <value>Multiple active sessions detected!</value>
   </data>
   <data name="NoInternetConnection" xml:space="preserve">
-    <value>Pas de connexion Internet</value>
+    <value>No internet connection</value>
+  </data>
+  <data name="Notifications" xml:space="preserve">
+    <value>Notifications</value>
+  </data>
+  <data name="OpenSessions" xml:space="preserve">
+    <value>Open sessions</value>
+  </data>
+  <data name="Order" xml:space="preserve">
+    <value>Order</value>
+  </data>
+  <data name="OrderDetails" xml:space="preserve">
+    <value>Order details</value>
+  </data>
+  <data name="OrderList" xml:space="preserve">
+    <value>Order list</value>
+  </data>
+  <data name="Overview" xml:space="preserve">
+    <value>Overview</value>
   </data>
   <data name="PartnerText" xml:space="preserve">
-    <value>Votre partenaire sécurisé et fiable. FLUX !</value>
+    <value>Your Secure &amp; Reliable Partner. FLUX!</value>
+    <comment>Slogan line under the heading</comment>
+  </data>
+  <data name="Payments" xml:space="preserve">
+    <value>Payments</value>
+  </data>
+  <data name="ProductList" xml:space="preserve">
+    <value>Product list</value>
+  </data>
+  <data name="Products" xml:space="preserve">
+    <value>Products</value>
+  </data>
+  <data name="Referrals" xml:space="preserve">
+    <value>Referrals</value>
   </data>
   <data name="RETRY" xml:space="preserve">
-    <value>RÉESSAYER</value>
+    <value>RETRY</value>
   </data>
   <data name="SatisfactionText" xml:space="preserve">
-    <value>Flux SARL ! : Autonomiser les entreprises. Améliorer les vies.</value>
+    <value>Flux SARL! : Empowering businesses. Enhancing lives.</value>
+    <comment>Mission statement under the slogan</comment>
+  </data>
+  <data name="Security" xml:space="preserve">
+    <value>Security</value>
+  </data>
+  <data name="SessionRecoveryCode" xml:space="preserve">
+    <value>Session recovery code</value>
+  </data>
+  <data name="SessionSecurityNotice" xml:space="preserve">
+    <value>Session Security Notice</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="ShippingDelivery" xml:space="preserve">
+    <value>Shipping &amp; Delivery</value>
+  </data>
+  <data name="StoreDetails" xml:space="preserve">
+    <value>Store details</value>
+  </data>
+  <data name="TerminateOtherSessions" xml:space="preserve">
+    <value>Terminate other sessions</value>
+  </data>
+  <data name="ThisEnsuresOnlyYourSessionRemainsActive" xml:space="preserve">
+    <value>This ensures only your session remains active for enhanced security</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>T R U S T S O F T C R E D I T-Authentication</value>
+    <comment>Authenthication page title</comment>
   </data>
   <data name="TrustSoft" xml:space="preserve">
     <value>TRUSTSOFT</value>
+    <comment>Brand name part 1</comment>
+  </data>
+  <data name="Email_or_Username" xml:space="preserve">
+    <value>Email or Username</value>
+    <comment>Email or Username</comment>
   </data>
   <data name="WelcomeTitle" xml:space="preserve">
-    <value>BIENVENUE À</value>
+    <value>WELCOME TO</value>
+    <comment>Main welcome heading for the home page</comment>
   </data>
   <data name="YouAreCurrentlyOffline" xml:space="preserve">
-    <value>Vous êtes actuellement hors ligne. Veuillez vérifier votre connexion Internet et réessayer</value>
+    <value>You are currently offline. Please check your internet connection and try again</value>
   </data>
 </root>

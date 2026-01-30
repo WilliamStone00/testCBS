@@ -14,7 +14,7 @@
                 <div class="col-md-6">
                     <div class="form-floating">
                         @Html.TextBoxFor(m => m.Code, new { @class = "form-control", placeholder = AccountingV2.placeholdercodetext , id = "code", maxlength = "50" })
-                        <label for="code">@AccountingV2.Code</label>
+                        <label for="code">@GlobalShared.Code</label>
                         @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -22,7 +22,7 @@
                 <div class="col-md-6">
                     <div class="form-floating">
                         @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "Affiliate name", id = "name", maxlength = "50" })
-                        <label for="name">@AccountingV2.Name</label>
+                        <label for="name">@GlobalShared.Name</label>
                         @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -34,14 +34,14 @@
                 <div class="col-md-6 d-flex align-items-center">
                     <div class="form-check">
                         @Html.CheckBoxFor(m => m.IsActive, new { @class = "form-check-input", id = "isActive" })
-                        <label class="form-check-label fw-bold ms-2" for="isActive">@AccountingV2.IsActive</label>
+                        <label class="form-check-label fw-bold ms-2" for="isActive">@GlobalShared.IsActive</label>
                     </div>
                 </div>
 
                 <div class="col-md-6 d-flex align-items-center">
                     <div class="form-check">
                         @Html.CheckBoxFor(m => m.IsHeadOffice, new { @class = "form-check-input", id = "isHeadOffice" })
-                        <label class="form-check-label fw-bold ms-2" for="isHeadOffice">@AccountingV2.IsHeadOffice</label>
+                        <label class="form-check-label fw-bold ms-2" for="isHeadOffice">@GlobalShared.Is_Head_Office</label>
                     </div>
                 </div>
             </div>

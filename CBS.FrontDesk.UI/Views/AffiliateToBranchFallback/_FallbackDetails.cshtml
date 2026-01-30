@@ -1,13 +1,13 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.FallBack.FallbackLogResponse
-
+@using Resources
 <fieldset class="fieldset-custom">
     <div class="card bg-light mb-2">
         <div class="card-body text-center">
             <h1 class="card-title text-primary">
-                <i class="mdi mdi-sync-alert me-2"></i> Fallback Log Details
+                <i class="mdi mdi-sync-alert me-2"></i> @AffiliateToBranchFallback.Fallback_Log_Details
             </h1>
             <p class="card-text text-muted mb-1">
-                Detailed information about the fallback transaction
+                @AffiliateToBranchFallback.Detailed_information_about_the_fallback_transaction
             </p>
             <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
         </div>
@@ -22,7 +22,7 @@
                  data-bs-toggle="collapse"
                  data-bs-target="#basicInfoCollapse"
                  style="cursor: pointer;">
-                <h6 class="text-primary mb-0"><i class="mdi mdi-information-outline me-2"></i> Basic Information</h6>
+                <h6 class="text-primary mb-0"><i class="mdi mdi-information-outline me-2"></i> @GlobalShared.Basic_Information</h6>
                 <i class="mdi mdi-chevron-down accordion-icon"></i>
             </div>
             <div id="basicInfoCollapse" class="collapse show" data-bs-parent="#fallbackAccordion">
@@ -31,24 +31,24 @@
                         <div class="col-md-6">
                             <table class="table table-sm table-bordered">
                                 <tr><td class="fw-bold">ID</td><td>@Model.id</td></tr>
-                                <tr><td class="fw-bold">Branch</td><td>@Model.branchName</td></tr>
-                                <tr><td class="fw-bold">Operation Code</td><td>@Model.operationCode</td></tr>
+                                <tr><td class="fw-bold">@GlobalShared.Branch</td><td>@Model.branchName</td></tr>
+                                <tr><td class="fw-bold">@GlobalShared.Operation_Code</td><td>@Model.operationCode</td></tr>
                             </table>
                         </div>
                         <div class="col-md-6">
                             <table class="table table-sm table-bordered">
-                                <tr><td class="fw-bold">Reference</td><td>@Model.reference</td></tr>
-                                <tr><td class="fw-bold">Amount</td><td>@String.Format("{0:N2}", Model.amount)</td></tr>
+                                <tr><td class="fw-bold">@GlobalShared.Reference</td><td>@Model.reference</td></tr>
+                                <tr><td class="fw-bold">@GlobalShared.Amount</td><td>@String.Format("{0:N2}", Model.amount)</td></tr>
                                 <tr>
                                     <td class="fw-bold">Status</td>
                                     <td>
                                         @if (Model.isResolved)
                                         {
-                                            <span class="badge bg-success">Resolved</span>
+                                            <span class="badge bg-success">@GlobalShared.Resolved</span>
                                         }
                                         else
                                         {
-                                            <span class="badge bg-warning">Pending Reconciliation</span>
+                                            <span class="badge bg-warning">@GlobalShared.Pending_Reconciliation</span>
                                         }
                                     </td>
                                 </tr>
@@ -65,36 +65,36 @@
                  data-bs-toggle="collapse"
                  data-bs-target="#accountInfoCollapse"
                  style="cursor: pointer;">
-                <h6 class="text-primary mb-0"><i class="mdi mdi-bank me-2"></i> Account Information</h6>
+                <h6 class="text-primary mb-0"><i class="mdi mdi-bank me-2"></i> @GlobalShared.Account_Information</h6>
                 <i class="mdi mdi-chevron-down accordion-icon"></i>
             </div>
             <div id="accountInfoCollapse" class="collapse" data-bs-parent="#fallbackAccordion">
                 <div class="card-body">
-                     Your account information content here 
+                    @AffiliateToBranchFallback.Your_account_information_content_here
                     <div class="row">
                         <div class="col-md-6">
-                            <h6 class="text-primary mb-3"><i class="mdi mdi-arrow-top-right me-2"></i> Supposed GL Account</h6>
+                            <h6 class="text-primary mb-3"><i class="mdi mdi-arrow-top-right me-2"></i> @AffiliateToBranchFallback.Supposed_GL_Account</h6>
                             <table class="table table-sm table-bordered">
-                                <tr><td class="fw-bold">Account ID</td><td>@Model.supposedGlAccountId</td></tr>
-                                <tr><td class="fw-bold">Account Number</td><td>@Model.supposedGlAccountNumber</td></tr>
-                                <tr><td class="fw-bold">Account Name</td><td>@Model.supposedGlAccountName</td></tr>
+                                <tr><td class="fw-bold">@GlobalShared.Account_ID</td><td>@Model.supposedGlAccountId</td></tr>
+                                <tr><td class="fw-bold">@GlobalShared.Account_Number</td><td>@Model.supposedGlAccountNumber</td></tr>
+                                <tr><td class="fw-bold">@GlobalShared.Account_Name</td><td>@Model.supposedGlAccountName</td></tr>
                             </table>
                         </div>
                         <div class="col-md-6">
-                            <h6 class="text-primary mb-3"><i class="mdi mdi-arrow-bottom-left me-2"></i> Fallback GL Account</h6>
+                            <h6 class="text-primary mb-3"><i class="mdi mdi-arrow-bottom-left me-2"></i> @AffiliateToBranchFallback.Fallback_GL_Account</h6>
                             <table class="table table-sm table-bordered">
-                                <tr><td class="fw-bold">Account ID</td><td>@Model.fallbackBranchAccountId</td></tr>
-                                <tr><td class="fw-bold">Account Number</td><td>@Model.fallbackBranchAccountNumber</td></tr>
-                                <tr><td class="fw-bold">Account Name</td><td>@Model.fallbackBranchAccountName</td></tr>
+                                <tr><td class="fw-bold">@GlobalShared.Account_ID</td><td>@Model.fallbackBranchAccountId</td></tr>
+                                <tr><td class="fw-bold">@GlobalShared.Account_Number</td><td>@Model.fallbackBranchAccountNumber</td></tr>
+                                <tr><td class="fw-bold">@GlobalShared.Account_Name</td><td>@Model.fallbackBranchAccountName</td></tr>
                             </table>
                         </div>
                     </div>
 
-                     @*Timeline section inside Account Information*@ 
+                    @*Timeline section inside Account Information*@
                     <div class="row mt-3">
                         <div class="col-12">
                             <table class="table table-sm table-bordered">
-                                <tr><td class="fw-bold">Auto Created</td><td>@(Model.isBranchAccountAutoCreated ? "Yes" : "No")</td></tr>
+                                <tr><td class="fw-bold">@GlobalShared.Auto_Created</td><td>@(Model.isBranchAccountAutoCreated ? "Yes" : "No")</td></tr>
                             </table>
 
                             <div class="card mt-3">
@@ -102,17 +102,17 @@
                                      data-bs-toggle="collapse"
                                      data-bs-target="#timelineCollapse"
                                      style="cursor: pointer;">
-                                    <h6 class="text-primary mb-0"><i class="mdi mdi-timeline-clock-outline me-2"></i> Timeline</h6>
+                                    <h6 class="text-primary mb-0"><i class="mdi mdi-timeline-clock-outline me-2"></i> @GlobalShared.Timeline</h6>
                                     <i class="mdi mdi-chevron-down accordion-icon"></i>
                                 </div>
                                 <div id="timelineCollapse" class="collapse">
                                     <div class="card-body">
                                         <table class="table table-sm table-bordered">
-                                            <tr><td class="fw-bold">Created Date</td><td>@Model.createdDate.ToString()</td></tr>
-                                           @if (Model.isResolved)
+                                            <tr><td class="fw-bold">@GlobalShared.CreatedDate</td><td>@Model.createdDate.ToString()</td></tr>
+                                            @if (Model.isResolved)
                                             {
-                                                <tr><td class="fw-bold">Resolved On</td><td>@Model.resolvedOn.ToString()</td></tr>
-                                                <tr><td class="fw-bold">Resolved By</td><td>@Model.resolvedBy</td></tr>
+                                                <tr><td class="fw-bold">@GlobalShared.Resolved_On</td><td>@Model.resolvedOn.ToString()</td></tr>
+                                                <tr><td class="fw-bold">@GlobalShared.Resolved_By</td><td>@Model.resolvedBy</td></tr>
                                             }
                                         </table>
                                     </div>
@@ -132,7 +132,7 @@
                      data-bs-toggle="collapse"
                      data-bs-target="#tipsCollapse"
                      style="cursor: pointer;">
-                    <h6 class="text-primary mb-0"><i class="mdi mdi-lightbulb-on-outline me-2"></i> Resolution Tips</h6>
+                    <h6 class="text-primary mb-0"><i class="mdi mdi-lightbulb-on-outline me-2"></i> @GlobalShared.Resolution_Tips</h6>
                     <i class="mdi mdi-chevron-down accordion-icon"></i>
                 </div>
                 <div id="tipsCollapse" class="collapse" data-bs-parent="#fallbackAccordion">
@@ -153,7 +153,7 @@
                      data-bs-toggle="collapse"
                      data-bs-target="#reconcileCollapse"
                      style="cursor: pointer;">
-                    <h6 class="text-primary mb-0"><i class="mdi mdi-check-circle me-2"></i> Reconciliation</h6>
+                    <h6 class="text-primary mb-0"><i class="mdi mdi-check-circle me-2"></i> @GlobalShared.Reconciliation</h6>
                     <i class="mdi mdi-chevron-down accordion-icon"></i>
                 </div>
                 <div id="reconcileCollapse" class="collapse" data-bs-parent="#fallbackAccordion">

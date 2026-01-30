@@ -1,0 +1,468 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Add_indicators_that_are_known_to_be_part_of_malicious_requests_or_scanners" xml:space="preserve">
+    <value>Add indicators that are known to be part of malicious requests or scanners</value>
+  </data>
+  <data name="and" xml:space="preserve">
+    <value>and</value>
+  </data>
+  <data name="Any_request_path_containing_one_of_these_substrings_will_bypass_inspection" xml:space="preserve">
+    <value>Any request path containing one of these substrings will bypass inspection</value>
+  </data>
+  <data name="Blacklisted_User_Agents" xml:space="preserve">
+    <value>Blacklisted User-Agents</value>
+  </data>
+  <data name="Blocked_File_Extensions_one_per_line" xml:space="preserve">
+    <value>Blocked File Extensions (one per line)</value>
+  </data>
+  <data name="Block_Duration" xml:space="preserve">
+    <value>Block Duration</value>
+  </data>
+  <data name="Body_File_Upload_Scanning" xml:space="preserve">
+    <value>Body &amp; File Upload Scanning</value>
+  </data>
+  <data name="Bot_an_scanner_signatures" xml:space="preserve">
+    <value>Bot and scanner signatures</value>
+  </data>
+  <data name="CIDR_ranges_are_used_to_explicitly_allow_traffic_from_known_I_blocks_such_as_internal_networks_or_trusted_partners" xml:space="preserve">
+    <value>CIDR ranges are used to explicitly allow traffic from known IP blocks, such as internal networks or trusted partners. This is crucial for geo-restricted services, internal portals, and access control</value>
+  </data>
+  <data name="Configure_thresholds_to_limit_the_number_of_requests_allowed" xml:space="preserve">
+    <value>Configure thresholds to limit the number of requests allowed from a single user session or IP address over a given time period.</value>
+  </data>
+  <data name="Duration_in_minutes_for_which_an_IP_or_session_should_be_blocked_after_exceeding_rate_limits" xml:space="preserve">
+    <value>Duration (in minutes) for which an IP or session should be blocked after exceeding rate limits</value>
+  </data>
+  <data name="Enter_trusted_IP_ranges_to_allow_requests_regardless_o_GeoIP_lookup" xml:space="preserve">
+    <value>Enter trusted IP ranges (CIDR notation) to allow requests regardless of GeoIP lookup. Useful for internal services, VPN gateways, or ISP blocks</value>
+  </data>
+  <data name="Exact_or_partial_request_paths_that_should_not_be_inspected_These_will_bypass_all_WAF_filters" xml:space="preserve">
+    <value>Exact or partial request paths that should not be inspected. These will bypass all WAF filters</value>
+  </data>
+  <data name="Excluded_File_Extensions" xml:space="preserve">
+    <value>Excluded File Extensions</value>
+  </data>
+  <data name="Excluded_Request_Paths" xml:space="preserve">
+    <value>Excluded Request Paths</value>
+  </data>
+  <data name="Excluded_Substrings_in_Path" xml:space="preserve">
+    <value>Excluded Substrings in Path</value>
+  </data>
+  <data name="Headers_commonly_abused_for_internal_rewrites_or_server_exploits" xml:space="preserve">
+    <value>Headers commonly abused for internal rewrites or server exploits</value>
+  </data>
+  <data name="Headers_that_are_explicitly_allowed_and_should_never_trigger_filtering" xml:space="preserve">
+    <value>Headers that are explicitly allowed and should never trigger filtering. Useful for internal or trusted monitoring systems</value>
+  </data>
+  <data name="Header_names_that_typically_belong_to_bot_traffic_or_APM_tools" xml:space="preserve">
+    <value>Header names that typically belong to bot traffic or APM tools. If detected, the request may be flagged or blocked</value>
+  </data>
+  <data name="Header_Validation_Bot_Detection" xml:space="preserve">
+    <value>Header Validation &amp; Bot Detection</value>
+  </data>
+  <data name="Helps_reduce_repeated_abuse" xml:space="preserve">
+    <value>Helps reduce repeated abuse</value>
+  </data>
+  <data name="High_Risk_Header_Keys" xml:space="preserve">
+    <value>High-Risk Header Keys</value>
+  </data>
+  <data name="IP_Request_Limit" xml:space="preserve">
+    <value>IP Request Limit</value>
+  </data>
+  <data name="IP_Time_Window_Seconds" xml:space="preserve">
+    <value>IP Time Window (seconds)</value>
+  </data>
+  <data name="It_helps_prevent_fil_based_and_payload_based_attacks_such_as" xml:space="preserve">
+    <value>It helps prevent file-based and payload-based attacks, such as</value>
+  </data>
+  <data name="It_protects_the_application_from_scanners_telemetry_systems_header_based_injection_attempts_and_unauthorized_cross_origin_requests" xml:space="preserve">
+    <value>It protects the application from scanners, telemetry systems, header-based injection attempts, and unauthorized cross-origin requests. It also improves threat response through strict referer/origin validation and heuristic filtering</value>
+  </data>
+  <data name="Limits_the_size_of_uploaded_files" xml:space="preserve">
+    <value>Limits the size of uploaded files</value>
+  </data>
+  <data name="malware_uploads" xml:space="preserve">
+    <value>malware uploads</value>
+  </data>
+  <data name="Maximum_number_of_requests_allowed_per_user_session" xml:space="preserve">
+    <value>Maximum number of requests allowed per user session within the specified time window. Example</value>
+  </data>
+  <data name="Max_File_Upload_Size" xml:space="preserve">
+    <value>Max File Upload Size</value>
+  </data>
+  <data name="Number_of_allowed_requests_from_a_single_IP_address_before_it_is_rate_limited" xml:space="preserve">
+    <value>Number of allowed requests from a single IP address before it is rate limited</value>
+  </data>
+  <data name="Path_Extension_Exclusions" xml:space="preserve">
+    <value>Path &amp; Extension Exclusions</value>
+  </data>
+  <data name="path_traversal" xml:space="preserve">
+    <value>path traversal</value>
+  </data>
+  <data name="penetration_tools" xml:space="preserve">
+    <value>penetration tools</value>
+  </data>
+  <data name="Protected_Path_Referer_Requirements" xml:space="preserve">
+    <value>Protected Path Referer Requirements</value>
+  </data>
+  <data name="Rate_Limiting_Configuration" xml:space="preserve">
+    <value>Rate Limiting Configuration</value>
+  </data>
+  <data name="Regex_Patterns_for_Safe_Header_Values" xml:space="preserve">
+    <value>Regex Patterns for Safe Header Values</value>
+  </data>
+  <data name="Regular_expressions_used_to_validate_header_values_for_expected_formats" xml:space="preserve">
+    <value>Regular expressions used to validate header values for expected formats. Helps reject encoded payloads or injection</value>
+  </data>
+  <data name="Requests_with_these_file_extensions_will_skip_all_WAF_logic_Useful_for_static_resources" xml:space="preserve">
+    <value>Requests with these file extensions will skip all WAF logic. Useful for static resources</value>
+  </data>
+  <data name="script_injection" xml:space="preserve">
+    <value>script injection</value>
+  </data>
+  <data name="Select_ISO_3166_1_alpha2_codes_for_countries_from_which_requests_should_be_allowed" xml:space="preserve">
+    <value>Select ISO 3166-1 alpha-2 codes for countries from which requests should be allowed. Requests from other countries may be blocked if GeoIP filtering is active</value>
+  </data>
+  <data name="Sensitive_Paths_Requiring_Origin_or_Referer" xml:space="preserve">
+    <value>Sensitive Paths Requiring Origin or Referer</value>
+  </data>
+  <data name="Session_Request_Limit" xml:space="preserve">
+    <value>Session Request Limit</value>
+  </data>
+  <data name="Session_Time_Window_seconds" xml:space="preserve">
+    <value>Session Time Window (seconds)</value>
+  </data>
+  <data name="Specify_substrings_or_patterns_that_must_not_appear_in_field_names_or_keys" xml:space="preserve">
+    <value>Specify substrings or patterns that must not appear in field names or keys</value>
+  </data>
+  <data name="Spoofed_or_malformed_header_values" xml:space="preserve">
+    <value>Spoofed or malformed header values</value>
+  </data>
+  <data name="Suspicious_Form_Key_Patterns" xml:space="preserve">
+    <value>Suspicious Form Key Patterns</value>
+  </data>
+  <data name="Suspicious_Indicators_Payload_Markers" xml:space="preserve">
+    <value>Suspicious Indicators &amp; Payload Markers</value>
+  </data>
+  <data name="Suspicious_Keywords_or_Paths" xml:space="preserve">
+    <value>Suspicious Keywords or Paths</value>
+  </data>
+  <data name="Telemetry_Bot_Header_Prefixes" xml:space="preserve">
+    <value>Telemetry/Bot Header Prefixes</value>
+  </data>
+  <data name="The_TSC_Advanced_Security_Shield_enables_administrators_to_define_and_enforce_robust_rate_limiting" xml:space="preserve">
+    <value>The TSC Advanced Security Shield enables administrators to define and enforce robust rate-limiting and traffic filtering rules to protect core banking and API services from unauthorized or malicious access. These settings are designed to counter DDoS attacks, brute-force attempts, traffic flooding, and automated exploit scans</value>
+  </data>
+  <data name="These_rules_help_protect_your_system_against_dos" xml:space="preserve">
+    <value>These rules help protect your system against denial-of-service (DoS) attacks, brute-force attempts, excessive resource usage, and other forms of automated abuse.</value>
+  </data>
+  <data name="This_section_allows_you_to_enforce_advanced_header_level_inspections_to_detect_malformed" xml:space="preserve">
+    <value>This section allows you to enforce advanced header-level inspections to detect malformed, spoofed, or bot-related traffic</value>
+  </data>
+  <data name="This_section_defines_security_controls_for_scanning_HTTP_request_bodies" xml:space="preserve">
+    <value>This section defines security controls for scanning HTTP request bodies and file uploads submitted via forms or API calls</value>
+  </data>
+  <data name="Time_interval_during_which_the_above_session_request_limit_is_enforced" xml:space="preserve">
+    <value>Time interval (in seconds) during which the above session request limit is enforced. Example</value>
+  </data>
+  <data name="Time_window_in_seconds_to_apply_the_IP_based_request_limit" xml:space="preserve">
+    <value>Time window in seconds to apply the IP-based request limit</value>
+  </data>
+  <data name="Uploaded_files_with_these_extensions_will_be_rejected" xml:space="preserve">
+    <value>Uploaded files with these extensions will be rejected</value>
+  </data>
+  <data name="User_Agent_substrings_or_patterns_that_indicate_bots_scrapers_or_penetration_testing_tools" xml:space="preserve">
+    <value>User-Agent substrings or patterns that indicate bots, scrapers, or penetration testing tools</value>
+  </data>
+  <data name="Use_these_to_detect_common_exploit_tools_automated_scanners_or_unauthorized_access_attempts" xml:space="preserve">
+    <value>Use these to detect common exploit tools, automated scanners, or unauthorized access attempts</value>
+  </data>
+  <data name="Use_this_section_to_configure_allowlists_regex_validation_patterns_and_enforce_referer_origin_policies_for_sensitive_endpoints" xml:space="preserve">
+    <value>Use this section to configure allowlists, regex validation patterns, and enforce referer/origin policies for sensitive endpoints. These settings help detect automation, reduce attack surface, and enforce strict client legitimacy in your request pipeline</value>
+  </data>
+  <data name="Use_this_section_to_define_allowed_geographic_regions_and_IP_address_ranges" xml:space="preserve">
+    <value>Use this section to define allowed geographic regions and IP address ranges. GeoIP filtering enables you to restrict access to your application based on the originating country of the request</value>
+  </data>
+  <data name="Validation_covers_field_names_field_values_and_file_content_types_or_extensions" xml:space="preserve">
+    <value>Validation covers field names, field values, and file content types or extensions. Suspicious keys, forbidden filenames, or oversized uploads will be blocked immediately.</value>
+  </data>
+  <data name="Web_Application_Firewall_Rate_Limiting_Settings" xml:space="preserve">
+    <value>Web Application Firewall &amp; Rate Limiting Settings</value>
+  </data>
+  <data name="Whitelisted_Countries" xml:space="preserve">
+    <value>Whitelisted Countries</value>
+  </data>
+  <data name="Whitelisted_Headers" xml:space="preserve">
+    <value>Whitelisted Headers</value>
+  </data>
+  <data name="With_support_for_country_based_whitelisting_CIDR_filtering_suspicious_request_inspection" xml:space="preserve">
+    <value>With support for country-based whitelisting, CIDR filtering, suspicious request inspection, bad User-Agent blocking, and trusted header exemptions, this shield ensures that only verified and geo-authorized clients can interact with your system</value>
+  </data>
+  <data name="Fine_tune_request_thresholds_block_durations_and_enforce_countr_IP_alignment_using_white_listed_ISO_codes_and_CIDRs" xml:space="preserve">
+    <value>Fine-tune request thresholds, block durations, and enforce country-IP alignment using white-listed ISO codes and CIDRs. The configuration is globally scoped—only one active security policy is permitted at a time to ensure system integrity</value>
+  </data>
+  <data name="TSC_Advanced_Security_Shield" xml:space="preserve">
+    <value>TSC Advanced Security Shield</value>
+  </data>
+  <data name="TSC_allows_only_one_global_security_configuration" xml:space="preserve">
+    <value>TSC allows only &lt;u&gt;one global security configuration&lt;/u&gt;</value>
+  </data>
+  <data name="TSC_Advanced_Security_Shield_Configuration_Tips" xml:space="preserve">
+    <value>TSC Advanced Security Shield Configuration Tips</value>
+  </data>
+  <data name="Defines_how_many_requests_a_single_user_or_session_is_allowed_to_make_during_a_short_period" xml:space="preserve">
+    <value>Defines how many requests a single user or session is allowed to make during a short period</value>
+  </data>
+  <data name="This_prevents_users_from_overloading_the_server" xml:space="preserve">
+    <value>This prevents users from overloading the server</value>
+  </data>
+  <data name="to_allow_up_to_100_requests_per_minute_per_user" xml:space="preserve">
+    <value>to allow up to 100 requests per minute per user</value>
+  </data>
+  <data name="Set_to" xml:space="preserve">
+    <value>Set to</value>
+  </data>
+  <data name="Number_of_requests_allowed_from_the_same_IP_address_within_the_IP_specific_window" xml:space="preserve">
+    <value>Number of requests allowed from the same IP address within the IP-specific window</value>
+  </data>
+  <data name="Protects_against_external_bots_and_DDoS_from_a_single_source" xml:space="preserve">
+    <value>Protects against external bots and DDoS from a single source</value>
+  </data>
+  <data name="to_tolerate_up_to_300_requests_from_the_same_IP_in_a_short_time" xml:space="preserve">
+    <value>to tolerate up to 300 requests from the same IP in a short time</value>
+  </data>
+  <data name="Sample_Configuration_Snapshot" xml:space="preserve">
+    <value>Sample Configuration Snapshot</value>
+  </data>
+  <data name="This_cannot_be_undone_All_custom_rules_will_be_erased" xml:space="preserve">
+    <value>This cannot be undone. All custom rules will be erased</value>
+  </data>
+  <data name="Deleting_the_current_configuration_will_restore_the_default_secure_policy" xml:space="preserve">
+    <value>Deleting the current configuration will restore the default secure policy</value>
+  </data>
+  <data name="File_extensions_that_are_skipped_from_inspection" xml:space="preserve">
+    <value>File extensions that are skipped from inspection</value>
+  </data>
+  <data name="Improves_performance_for_static_asset_delivery" xml:space="preserve">
+    <value>Improves performance for static asset delivery</value>
+  </data>
+  <data name="Useful_for_allowing_non_sensitive_internal_tools" xml:space="preserve">
+    <value>Useful for allowing non-sensitive internal tools</value>
+  </data>
+  <data name="Any_request_path_that_contains_these_words_will_skip_filtering" xml:space="preserve">
+    <value>Any request path that contains these words will skip filtering</value>
+  </data>
+  <data name="Use_for_static_resources_like_images_or_JS" xml:space="preserve">
+    <value>Use for static resources like images or JS</value>
+  </data>
+  <data name="URLs_that_bypass_all_security_filtering" xml:space="preserve">
+    <value>URLs that bypass all security filtering</value>
+  </data>
+  <data name="IP_values_that_are_considered_fake_or_internal" xml:space="preserve">
+    <value>IP values that are considered fake or internal</value>
+  </data>
+  <data name="Time_frame_used_to_track_IP_based_request_limits" xml:space="preserve">
+    <value>Time frame used to track IP-based request limits</value>
+  </data>
+  <data name="Smaller_windows_catch_fast_flooding_traffic" xml:space="preserve">
+    <value>Smaller windows catch fast-flooding traffic</value>
+  </data>
+  <data name="HTTP_headers_that_when_present_tell_the_system_to_skip_rate_limiting" xml:space="preserve">
+    <value>HTTP headers that, when present, tell the system to skip rate limiting</value>
+  </data>
+  <data name="Used_for_internal_services_monitoring_agents_or_exempt_systems" xml:space="preserve">
+    <value>Used for internal services, monitoring agents, or exempt systems</value>
+  </data>
+  <data name="Protects_against_CSRF_and_CORS_based_spoofing" xml:space="preserve">
+    <value>Protects against CSRF and CORS-based spoofing</value>
+  </data>
+  <data name="Valid_websites_or_domains_allowed_to_send_cross_origin_requests" xml:space="preserve">
+    <value>Valid websites or domains allowed to send cross-origin requests</value>
+  </data>
+  <data name="Blocked_to_prevent_injection_attacks" xml:space="preserve">
+    <value>Blocked to prevent injection attacks</value>
+  </data>
+  <data name="Custom_headers_often_seen_in_penetration_testing_or_exploit_payloads" xml:space="preserve">
+    <value>Custom headers often seen in penetration testing or exploit payloads</value>
+  </data>
+  <data name="Used_to_block_automated_or_non_human_traffic" xml:space="preserve">
+    <value>Used to block automated or non-human traffic</value>
+  </data>
+  <data name="Header_name_prefixes_used_by_bot_trackers_debuggers_or_monitoring_tools" xml:space="preserve">
+    <value>Header name prefixes used by bot trackers, debuggers, or monitoring tools</value>
+  </data>
+  <data name="Requests_with_these_agents_are_blocked_immediately" xml:space="preserve">
+    <value>Requests with these agents are blocked immediately</value>
+  </data>
+  <data name="Identifiers_from_the_User_Agent_header_used_by_known_bots_or_exploit_tools" xml:space="preserve">
+    <value>Identifiers from the User-Agent header used by known bots or exploit tools</value>
+  </data>
+  <data name="Words_or_filenames_that_often_appear_in_malicious_requests" xml:space="preserve">
+    <value>Words or filenames that often appear in malicious requests</value>
+  </data>
+  <data name="Used_to_detect_hacking_attempts_or_scanning_tools" xml:space="preserve">
+    <value>Used to detect hacking attempts or scanning tools</value>
+  </data>
+  <data name="Filters_traffic_to_allow_only_Cameroon_based_addresses" xml:space="preserve">
+    <value>Filters traffic to allow only Cameroon-based addresses</value>
+  </data>
+  <data name="CIDR_formatted_IP_ranges_representing_valid_Cameroon_network_blocks" xml:space="preserve">
+    <value>CIDR-formatted IP ranges representing valid Cameroon network blocks</value>
+  </data>
+  <data name="List_of_allowed_countries_using_2_letter_ISO_codes" xml:space="preserve">
+    <value>List of allowed countries using 2-letter ISO codes</value>
+  </data>
+  <data name="Enforces_GeoIP_based_access_control" xml:space="preserve">
+    <value>Enforces GeoIP-based access control</value>
+  </data>
+  <data name="Prevents_abuse_and_gives_time_for_cooling_down" xml:space="preserve">
+    <value>Prevents abuse and gives time for cooling down</value>
+  </data>
+  <data name="The_time_in_minutes_that_a_user_or_IP_will_be_denied_access_after_hitting_a_limit" xml:space="preserve">
+    <value>The time (in minutes) that a user or IP will be denied access after hitting a limit</value>
+  </data>
+  <data name="With_a_60_second_window_users_who_send_over_100_requests_in_1_minute_are_blocked" xml:space="preserve">
+    <value>With a 60-second window, users who send over 100 requests in 1 minute are blocked</value>
+  </data>
+  <data name="The_time_window_in_seconds_in_which_the_system_counts_the_number_of_requests_per_user" xml:space="preserve">
+    <value>The time window (in seconds) in which the system counts the number of requests per user</value>
+  </data>
+  <data name="Prevents_direct_access_or_deep_linking_into_sensitive_pages" xml:space="preserve">
+    <value>Prevents direct access or deep-linking into sensitive pages</value>
+  </data>
+  <data name="Used_to_secure_login_and_token_endpoints_against_CSRF" xml:space="preserve">
+    <value>Used to secure login and token endpoints against CSRF</value>
+  </data>
+  <data name="Request_Limit" xml:space="preserve">
+    <value>Request Limit</value>
+  </data>
+  <data name="Combined_with" xml:space="preserve">
+    <value>Combined with</value>
+  </data>
+  <data name="to_detect_rapid_access" xml:space="preserve">
+    <value>to detect rapid access</value>
+  </data>
+  <data name="No_rate_limit_configurations_have_been_defined_yet" xml:space="preserve">
+    <value>No rate limit configurations have been defined yet</value>
+  </data>
+  <data name="RATE_LIMIT_CONFIGURATIONS" xml:space="preserve">
+    <value>RATE LIMIT CONFIGURATIONS</value>
+  </data>
+</root>

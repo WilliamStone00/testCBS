@@ -49,7 +49,7 @@
                                 <td> @Model.IssuedBy </td>
                             </tr>
                             <tr>
-                                <td>@GlobalBankingOperations.ApprovedBy </td>
+                                <td>@GlobalShared.Approved_by </td>
                                 <td> @Model.ApprovedBy </td>
                             </tr>
                             <tr>
@@ -59,7 +59,7 @@
 
 
                             <tr>
-                                <td>@GlobalBankingOperations.ApprovedDate</td>
+                                <td>@GlobalShared.Approved_Date</td>
                                 <td>@Model.ApprovedDate </td>
                             </tr>
                             <tr>
@@ -69,7 +69,7 @@
                             <tr>
 
 
-                                <td> @GlobalBankingOperations.Status</td>
+                                <td> @GlobalShared.Status</td>
                                 @if (@Model.Status.ToUpper().Equals("PENDING"))
                                 {
                                     <td class="badge bg-label-primary rounded-pill text-uppercase">

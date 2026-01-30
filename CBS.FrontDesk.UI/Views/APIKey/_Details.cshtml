@@ -1,9 +1,9 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.API.ApiKey
-
+@using Resources
 <div class="card bg-light mb-2">
     <div class="card-body text-center">
         <h1 class="card-title text-primary">
-            <i class="mdi mdi-key-chain me-2"></i>API Key Details
+            <i class="mdi mdi-key-chain me-2"></i>@ApiKeyRessource.API_Key_Details
         </h1>
 
         <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
@@ -14,7 +14,7 @@
     <div class="card-body">
         <div class="row g-3">
             <div class="col-md-6">
-                <label class="form-label fw-bold">User Name</label>
+                <label class="form-label fw-bold">@GlobalShared.User_Name</label>
                 <div class="form-control bg-light">@Model.UserName</div>
             </div>
 
@@ -29,7 +29,7 @@
             </div>
 
             <div class="col-md-12">
-                <label class="form-label fw-bold">RawKey</label>
+                <label class="form-label fw-bold">@GlobalShared.RawKey</label>
                 <div class="input-group">
                     <div class="form-control bg-light font-monospace">@Model.RawKey</div>
                     <button class="btn btn-outline-secondary" type="button" onclick="copyToClipboard('@Model.RawKey')">
@@ -39,7 +39,7 @@
             </div>
 
             <div class="col-md-6">
-                <label class="form-label fw-bold">Key Prefix</label>
+                <label class="form-label fw-bold">@GlobalShared.Key_Prefix</label>
                 <div class="input-group">
                     <div class="form-control bg-light font-monospace">@Model.KeyPrefix</div>
                     <button class="btn btn-outline-secondary" type="button" onclick="copyToClipboard('@Model.KeyPrefix')">
@@ -49,51 +49,51 @@
             </div>
 
             <div class="col-md-6">
-                <label class="form-label fw-bold">Created At</label>
+                <label class="form-label fw-bold">@GlobalShared.Created_At</label>
                 <div class="form-control bg-light">@Model.CreatedAt.ToString()</div>
             </div>
 
             <div class="col-md-6">
-                <label class="form-label fw-bold">Expiration Date</label>
+                <label class="form-label fw-bold">@GlobalShared.Expiration_Date</label>
                 <div class="form-control bg-light @(Model.ExpirationDate < DateTime.UtcNow ? "text-danger" : "text-success")">
                     @Model.ExpirationDate.ToString()
                 </div>
             </div>
 
             <div class="col-md-6">
-                <label class="form-label fw-bold">Modified Date</label>
+                <label class="form-label fw-bold">@GlobalShared.Modified_Date</label>
                 <div class="form-control bg-light">@Model.ModifiedDate.ToString()</div>
             </div>
 
             <div class="col-md-6">
-                <label class="form-label fw-bold">Status</label>
+                <label class="form-label fw-bold">@GlobalShared.Status</label>
                 <div class="form-control bg-light">
                     @if (Model.RevokedAt.HasValue)
                     {
-                        <span class="badge bg-danger">Revoked</span>
+                        <span class="badge bg-danger">@GlobalShared.Revoked</span>
                         <small class="text-muted ms-2">on @Model.RevokedAt.Value.ToString()</small>
                     }
                     else if (!Model.IsActive)
                     {
-                        <span class="badge bg-warning">Inactive</span>
+                        <span class="badge bg-warning">@GlobalShared.InActive</span>
                     }
                     else
                     {
-                        <span class="badge bg-success">Active</span>
+                        <span class="badge bg-success">@GlobalShared.Active</span>
                     }
                 </div>
             </div>
 
             <div class="col-md-6">
-                <label class="form-label fw-bold">Is Active</label>
+                <label class="form-label fw-bold">@GlobalShared.Is_Active</label>
                 <div class="form-control bg-light">
                     @if (Model.IsActive)
                     {
-                        <span class="badge bg-success">Yes</span>
+                        <span class="badge bg-success">@GlobalShared.Yes</span>
                     }
                     else
                     {
-                        <span class="badge bg-secondary">No</span>
+                        <span class="badge bg-secondary">@GlobalShared.No</span>
                     }
                 </div>
             </div>
@@ -101,17 +101,17 @@
             @if (Model.RevokedAt.HasValue)
             {
                 <div class="col-12">
-                    <label class="form-label fw-bold">Revocation Reason</label>
+                    <label class="form-label fw-bold">@GlobalShared.Revocation_Reason</label>
                     <div class="form-control bg-light">@Model.RevocationReason</div>
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label fw-bold">Revoked By</label>
+                    <label class="form-label fw-bold">@GlobalShared.Revoked_By</label>
                     <div class="form-control bg-light">@Model.RevokedBy</div>
                 </div>
             }
         </div>
         <div class="modal-footer mt-3">
-            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-light" data-bs-dismiss="modal">@GlobalShared.Close</button>
         </div>
  </div>    </div>

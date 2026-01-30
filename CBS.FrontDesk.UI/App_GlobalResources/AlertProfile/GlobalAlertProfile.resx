@@ -120,44 +120,8 @@
   <data name="ActiveStatus" xml:space="preserve">
     <value>Active status</value>
   </data>
-  <data name="Alert" xml:space="preserve">
-    <value>Alert</value>
-  </data>
   <data name="AlertProfile" xml:space="preserve">
     <value>Alert profile</value>
-  </data>
-  <data name="EmailNotification" xml:space="preserve">
-    <value>Email notification</value>
-  </data>
-  <data name="IsSuperAdmin" xml:space="preserve">
-    <value>Is super admin</value>
-  </data>
-  <data name="Language" xml:space="preserve">
-    <value>Language</value>
-  </data>
-  <data name="Msisdn" xml:space="preserve">
-    <value>Msisdn</value>
-  </data>
-  <data name="Name" xml:space="preserve">
-    <value>Name</value>
-  </data>
-  <data name="NotificationLanguage" xml:space="preserve">
-    <value>notificationLanguage</value>
-  </data>
-  <data name="SelectLanguage" xml:space="preserve">
-    <value>Select language</value>
-  </data>
-  <data name="SelectService" xml:space="preserve">
-    <value>Select service</value>
-  </data>
-  <data name="SendMail" xml:space="preserve">
-    <value>Send mail</value>
-  </data>
-  <data name="SendSms" xml:space="preserve">
-    <value>Send sms</value>
-  </data>
-  <data name="Service" xml:space="preserve">
-    <value>Service</value>
   </data>
   <data name="SmsNotification" xml:space="preserve">
     <value>Sms notification</value>
