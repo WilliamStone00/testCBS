@@ -102,7 +102,7 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
             // ViewBag.chartOfAccounts = chartOfAccounts.ToList();
 
             ViewBag.transferType = new List<StringValues>() { new StringValues { Text = "CashIn", Value = "CashIn" }, new StringValues { Text = "CashOut", Value = "CashOut" }, };
-            ViewBag.operationScope = new List<StringValues>() { new StringValues { Text = "Internal", Value = "Internal" }/*, new StringValues { Text = "InterBranch", Value = "InterBranch" },*/ };
+            ViewBag.operationScope = new List<StringValues>() { new StringValues { Text = "Internal", Value = "Internal" }, new StringValues { Text = "InterBranch", Value = "InterBranch" }, };
             var Branches = await _branchServices.GetBranches();
             var savingProduct = await _bulkOperationService.GetSavingProducts();
             var savingOrdinaryProduct = savingProduct.Where(x => x.ProductCategory == "OrdinaryAccount").ToList();

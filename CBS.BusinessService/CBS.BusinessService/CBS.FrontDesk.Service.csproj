@@ -536,6 +536,8 @@
     <Compile Include="LoanP\Config\LoanProductCollateralServices.cs" />
     <Compile Include="MembersAccountSettings\Policy\MemberAccountActivationPolicy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReportingMembersFSeries\FinancialReportBuilder.cs" />
+    <Compile Include="ReportingMembersFSeries\FinancialReportService.cs" />
     <Compile Include="RequestLoggerServicesP\ClientDataService.cs" />
     <Compile Include="RequestLoggerServicesP\PasswordPolicyManagentService.cs" />
     <Compile Include="RequestLoggerServicesP\RateLimitedUserService.cs" />

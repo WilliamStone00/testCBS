@@ -1,5 +1,6 @@
 ﻿using BusinessServices;
 using CBS.BusinessService;
+using CBS.BusinessService.Accounting_V2.AffiliateAccounts;
 using CBS.BusinessService.Accounts;
 using CBS.BusinessService.AuditTrailP;
 using CBS.BusinessService.Config;
@@ -48,14 +49,16 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
         private readonly UserManagementServices _userManagementServices;
         private readonly BranchServices _branchServices;
         private readonly LoanDeliquencyConfigurationServices _LoanDeliquencyConfigurationServices;
+        private readonly AffiliateAccountService _affiliateAccountService;
 
-        public LoanController(LoanServices LoanServices, LoanCommiteeMemberServices loanCommiteeMember, UserManagementServices userManagementServices, BranchServices branchServices = null, LoanDeliquencyConfigurationServices loanDeliquencyConfigurationServices = null)
+        public LoanController(LoanServices LoanServices, LoanCommiteeMemberServices loanCommiteeMember, UserManagementServices userManagementServices, BranchServices branchServices = null, LoanDeliquencyConfigurationServices loanDeliquencyConfigurationServices = null, AffiliateAccountService affiliateAccountService = null)
         {
             _LoanServices = LoanServices;
             _loanCommiteeMember = loanCommiteeMember;
             _userManagementServices = userManagementServices;
             _branchServices = branchServices;
-            _LoanDeliquencyConfigurationServices=loanDeliquencyConfigurationServices;
+            _LoanDeliquencyConfigurationServices = loanDeliquencyConfigurationServices;
+            _affiliateAccountService = affiliateAccountService;
         }
 
         public async Task<ActionResult> Index()

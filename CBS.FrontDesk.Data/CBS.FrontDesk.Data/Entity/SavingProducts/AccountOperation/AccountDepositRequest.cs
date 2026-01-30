@@ -101,6 +101,15 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public List<Remittance> Remittances { get; set; } = new List<Remittance>();
         public string ServiceOption { get; set; }
     }
+    public class MemberAccountVm
+    {
+        public string AccountNumber { get; set; }
+        public string AccountName { get; set; }
+        public decimal Balance { get; set; }
+        public decimal BlockedAmount { get; set; }
+        public string AccountType { get; set; }
+    }
+
     public class PrintDate
     {
         public string DateFrom { get; set; }
@@ -575,15 +584,37 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public Depositer Depositer { get; set; }
         public string ManualEntryDailyCollectorId { get; set; }
     }
+    public class ReportParametersx
+    {
+        public string ReportType { get; set; }// LoanSituation, LoanRepayments, MembersSituation,AccountSituations,AccountStatements
+        public string AccountTypeId { get; set; }
+        public string LoanId { get; set; }
+        public string AccountId { get; set; }
+        public string LoanStatus { get; set; }
+        public bool ByDate { get; set; }
+        public bool ByBalance { get; set; }
+        public bool ByLoan { get; set; }
+        public bool ByRepayment { get; set; }
+        public DateTime DateFrom { get; set; }
+        public DateTime DateTo { get; set; }
+        public List<string> AccountIds { get; set; } = new List<string>();
+    }
 
     public class ReportParameters
-        {
-            public string ReportType { get; set; }
-            public string AccountTypeId { get; set; }
-            public string LoanId { get; set; }
-            public string AccountId { get; set; }
-            public DateTime DateFrom { get; set; }
-            public DateTime DateTo { get; set; }
-        }
-    
+    {
+        public string CustomerId { get; set; }
+        public string ReportType { get; set; }
+        public string AccountTypeId { get; set; }
+        public string LoanId { get; set; }
+        public string AccountId { get; set; }
+        public string LoanStatus { get; set; }
+        public bool ByDate { get; set; }
+        public bool ByBalance { get; set; }
+        public bool ByLoan { get; set; }
+        public bool ByRepayment { get; set; }
+        public DateTime DateFrom { get; set; }
+        public DateTime DateTo { get; set; }
+        public List<string> AccountIds { get; set; } = new List<string>();
+    }
+
 }

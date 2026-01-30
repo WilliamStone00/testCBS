@@ -1,6 +1,7 @@
 ﻿using CBS.BusinessService;
 using CBS.BusinessService.Accounting_V2.AffiliateAccounts;
 using CBS.BusinessService.Accounts;
+using CBS.BusinessService.CheckManagementSystem.BranchConfiguration;
 using CBS.BusinessService.Config;
 using CBS.BusinessService.CustomerManagement;
 using CBS.BusinessService.LoanP;
@@ -29,6 +30,7 @@ namespace CBS.FrontDesk.UI.Controllers.Series
     {
         // GET: MembersFSeries
         private readonly CashDeskServices _cashDeskService;
+
         private readonly AccountServices _accountServices;
         private readonly LoanServices _loanServices;
         private readonly RefundServices _refundServices;
@@ -55,7 +57,7 @@ namespace CBS.FrontDesk.UI.Controllers.Series
             // 2. Prepare Accounts dropdown
             ViewBag.Accounts = cashDesk.Accounts.Select(a => new SelectListItem
             {
-                Value = a.id,
+                Value = a.accountNumber,
                 Text = $"{a.accountNumber} - {a.accountName}"
             }).ToList();
 
@@ -71,11 +73,106 @@ namespace CBS.FrontDesk.UI.Controllers.Series
             ViewBag.Loans = loans.Select(l => new SelectListItem
             {
                 Value = l.Id,
-                Text = $"{l.Id} - {l.LoanType}"
+                Text = $"{l.Id} - {l.LoanType} - {l.Balance}"
             }).ToList();
                  
                 return true;
         }
+
+        public async Task<ActionResult> LoanDetails(string loanId)
+        {
+            var loan = await _loanServices.GetLoan(loanId);
+            if (loan == null)
+                return View("LoanNotFound");
+
+            // ✅ 1) Extract ONLY GL ids referenced by this loan
+            var loanGlIds = new[]
+            {
+                loan.AffiliateChartOfAccountIdForPrincipalAmount,
+                loan.AffiliateChartOfAccountIdForInterest,
+                loan.AffiliateChartOfAccountIdForVat,
+                loan.AffiliateChartOfAccountIdForPenalty,
+                loan.AffiliateChartOfAccountIdForTransit
+            }
+            .Where(x => !string.IsNullOrWhiteSpace(x))
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+            // ✅ 2) Pull full list (only service you have)
+            var allGlOptions = await _affiliateAccountService.GetAllAffiliateAccounts();
+
+            // ✅ 3) Keep only the GLs used by this loan
+            var loanGlOptions = allGlOptions
+                .Where(x => !string.IsNullOrWhiteSpace(x.Value) && loanGlIds.Contains(x.Value))
+                .ToList();
+
+            // ✅ 4) Build map: GLId -> "Code — Name"
+            var glMap = loanGlOptions
+                .GroupBy(x => x.Value, StringComparer.OrdinalIgnoreCase)
+                .ToDictionary(g => g.Key, g => g.First().Text, StringComparer.OrdinalIgnoreCase);
+
+            ViewBag.GlMap = glMap;
+            ViewBag.SelectedLoan = loan;
+            var accounts = await _accountServices.GetMemberAccountsVmByMemberIdAsync(loan.CustomerId); // implement
+            ViewBag.MemberAccounts = accounts.ToList();
+
+            var cashDesk = new CashDesk
+            {
+                CustomerId = loan.CustomerId,
+                Loan = loan,
+                Refunds = loan.Refunds
+            };
+
+            return View("LoanDetails", cashDesk);
+        }
+        [HttpPost]
+        public ActionResult BlockMemberAccount(string loanId, string accountNumber, decimal amount, string comment)
+        {
+            if (string.IsNullOrWhiteSpace(loanId))
+                return Json(new { ok = false, msg = "LoanId is required." });
+
+            if (string.IsNullOrWhiteSpace(accountNumber))
+                return Json(new { ok = false, msg = "Account number is required." });
+
+            if (amount <= 0)
+                return Json(new { ok = false, msg = "Amount must be > 0." });
+
+            // ✅ SIMULATION ONLY: no service calls, no DB calls, no updates
+            return Json(new
+            {
+                ok = true,
+                msg = "Blocked successfully (SIMULATION).",
+                data = new
+                {
+                    loanId,
+                    accountNumber,
+                    amount,
+                    comment = comment ?? ""
+                }
+            });
+        }
+        //[HttpPost]
+        //public async Task<ActionResult> BlockMemberAccount(string loanId, string accountNumber, decimal amount, string comment)
+        //{
+        //    // Load account to validate
+        //    var acct = await _accountService.GetAccountByNumber(accountNumber);
+        //    if (acct == null) return Json(new { ok = false, msg = "Account not found." });
+
+        //    var available = acct.Balance - acct.BlockedAmount;
+        //    if (amount <= 0) return Json(new { ok = false, msg = "Amount must be > 0." });
+        //    if (amount > available) return Json(new { ok = false, msg = "Amount cannot exceed available balance." });
+
+        //    // Call your blocking service / API
+        //    var res = await _accountService.BlockAccount(new BlockAccountCommand
+        //    {
+        //        LoanId = loanId,
+        //        AccountNumber = accountNumber,
+        //        Amount = amount,
+        //        Comment = comment
+        //    });
+
+        //    return Json(new { ok = res.IsSuccess, msg = res.IsSuccess ? "Account blocked successfully." : res.Message });
+        //}
 
 
         public async Task<ActionResult> Index()
@@ -218,8 +315,9 @@ namespace CBS.FrontDesk.UI.Controllers.Series
                 }else if(path == "Report")
                 {
                     // var data = await _pcmfLoanPurposeService.GetByIdAsync(KEY);
-                   await LoadMemberAccountsAndLoans(KEY, path);
-                    return PartialView(partialView);
+                    await LoadMemberAccountsAndLoans(KEY, path);
+                    var id = new ReportParameters { CustomerId = KEY };
+                    return PartialView(partialView,id);
                 }
                     ViewBag.message = "Invalid option selected";
                 return PartialView("_NoRecordFound", new CashDesk());

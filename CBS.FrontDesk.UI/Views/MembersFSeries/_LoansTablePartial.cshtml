@@ -369,15 +369,22 @@ else
                             <td class="text-center sticky-right-2 col-status">
                                 <span class="status-pill @statusPillClass">@status</span>
                             </td>
-
                             <td class="text-center sticky-right col-action">
-                                <button type="button"
-                                        class="btn btn-sm btn-outline-primary px-2"
-                                        title="Details"
-                                        onclick="loadLoanDetails('@loan.Id')">
+                                <a class="btn btn-sm btn-outline-primary px-2"
+                                   target="_blank"
+                                   href="@Url.Action("LoanDetails", "MembersFSeries", new { loanId = loan.Id })">
                                     <i class="mdi mdi-eye-outline"></i>
-                                </button>
+                                </a>
                             </td>
+
+                            @*<td class="text-center sticky-right col-action">
+            <button type="button"
+                    class="btn btn-sm btn-outline-primary px-2"
+                    title="Details"
+                    onclick="loadLoanDetails('@loan.Id')">
+                <i class="mdi mdi-eye-outline"></i>
+            </button>
+        </td>*@
                         </tr>
                     }
                 </tbody>
