@@ -1,5 +1,6 @@
 ﻿@model CBS.FrontDesk.Data.Entity.RequestManagement.WafDashboardData
 @using Newtonsoft.Json
+@using Resources
 @{
     ViewBag.Title = "WAF Dashboard";
 }
@@ -42,7 +43,7 @@
                 <h1 class="card-title text-primary">
                     <i class="bi bi-shield-lock-fill me-2"></i> WAF Dashboard
                 </h1>
-                <p class="card-text">Monitor and analyze access control enforced by the WAF. Apply filters below to view metrics within the selected date range.</p>
+                <p class="card-text">@BlacklistUserRessource.Monitor_and_analyze_access_control_enforced_by_the_WAF_Apply_filters_below.</p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
         </div>
@@ -51,24 +52,24 @@
 
 <!-- Filter Form -->
 <form id="filterForm" method="post" asp-action="GetWafDashBoardForBlockedUsers" class="card bg-light p-3 mb-3">
-    <h5 class="text-primary mb-3"><i class="bi bi-filter me-1"></i> Filters</h5>
+    <h5 class="text-primary mb-3"><i class="bi bi-filter me-1"></i> @GlobalShared.Filters</h5>
     <div class="row g-3">
         <div class="col-md-3">
-            <label class="form-label fw-bold">From Date</label>
+            <label class="form-label fw-bold">@GlobalShared.From_Date</label>
             <input type="date" name="FromDate" class="form-control" />
         </div>
         <div class="col-md-3">
-            <label class="form-label fw-bold">To Date</label>
+            <label class="form-label fw-bold">@GlobalShared.To_Date</label>
             <input type="date" name="ToDate" class="form-control" />
         </div>
         <div class="col-md-3 d-flex align-items-end">
             <button id="applyFilterBtn" type="submit" class="btn btn-primary w-100">
-                <i class="bi bi-search"></i> Apply Filter
+                <i class="bi bi-search"></i> @GlobalShared.Apply_Filter
             </button>
         </div>
         <div class="col-md-3 d-flex align-items-end">
             <button id="exportExcelBtn" type="button" class="btn btn-success w-100">
-                <i class="bi bi-file-earmark-excel"></i> Export to Excel
+                <i class="bi bi-file-earmark-excel"></i> @GlobalShared.ExportToExcel
             </button>
         </div>
     </div>
@@ -78,25 +79,25 @@
     <div class="row g-3 mb-4">
         <div class="col-md-3">
             <div class="card text-center p-3 h-100 d-flex flex-column justify-content-center">
-                <h6 class="text-warning">Active Blocks</h6>
+                <h6 class="text-warning">@BlacklistUserRessource.Active_Blocks</h6>
                 <h3>@Model.Summary.ActiveBlocks</h3>
             </div>
         </div>
         <div class="col-md-3">
             <div class="card text-center p-3 h-100 d-flex flex-column justify-content-center">
-                <h6 class="text-info">Top Country</h6>
+                <h6 class="text-info">@GlobalShared.Top_Country</h6>
                 <h3>@Model.Summary.TopCountry</h3>
             </div>
         </div>
         <div class="col-md-3">
             <div class="card text-center p-3 h-100 d-flex flex-column justify-content-center">
-                <h6 class="text-danger">Blocked IPs</h6>
+                <h6 class="text-danger">@BlacklistUserRessource.Blocked_IPs</h6>
                 <h3>@Model.Summary.BlockedIps</h3>
             </div>
         </div>
         <div class="col-md-3">
             <div class="card text-center p-3 h-100 d-flex flex-column justify-content-center">
-                <h6 class="text-warning">Top Reason</h6>
+                <h6 class="text-warning">@GlobalShared.Top_Reason</h6>
                 <p class="mb-0">@Model.Summary.TopReason</p>
             </div>
         </div>
@@ -105,7 +106,7 @@
 </div>
 
 <div class="card mt-2">
-    <h5 class="section-title mb-2">Blocked User Locations</h5>
+    <h5 class="section-title mb-2">@BlacklistUserRessource.Blocked_User_Locations</h5>
     <div id="blockedUserMap" style="height: 400px; width: 100%; border-radius: 12px;"></div>
 </div>
 
@@ -128,11 +129,11 @@
 @*<canvas id="blockReasonsPie"></canvas>
     <canvas id="blockTrendsChart"></canvas>*@
 <!-- Recent Blocked Users -->
-<h5 class="text-primary mt-5"><i class="bi bi-person-lines-fill me-1"></i> Recent Blocked Users</h5>
+<h5 class="text-primary mt-5"><i class="bi bi-person-lines-fill me-1"></i> @BlacklistUserRessource.Recent_Blocked_Users</h5>
 <div class="card p-3">
     <div class="d-flex justify-content-end mb-2">
         <button class="btn btn-danger btn-sm" onclick="releaseSelectedUsers()" id="releaseSelectedBtn" disabled>
-            <i class="bi bi-unlock"></i> Release Selected
+            <i class="bi bi-unlock"></i> @GlobalShared.Release_Selected
         </button>
     </div>
     <div class="table-responsive">
@@ -140,13 +141,13 @@
             <thead class="table-light text-center">
                 <tr>
                     <th style="width: 30px;">
-                        <input type="checkbox" id="selectAll" title="Select All" />
+                        <input type="checkbox" id="selectAll" title="@GlobalShared.Select_All" />
                     </th>
                     <th>IP</th>
-                    <th>User</th>
-                    <th>Reason</th>
-                    <th>Country</th>
-                    <th>Time</th>
+                    <th>@GlobalShared.User</th>
+                    <th>@GlobalShared.Reason</th>
+                    <th>@GlobalShared.Country</th>
+                    <th>@GlobalShared.Time</th>
                     <th style="width: 90px;">Action</th>
                 </tr>
             </thead>
@@ -159,7 +160,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="blacklistDetailModalLabel">
-                    <i class="mdi mdi-eye-outline text-primary me-1"></i> Blacklisted User Details
+                    <i class="mdi mdi-eye-outline text-primary me-1"></i> @BlacklistUserRessource.Blacklisted_User_Details
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -167,12 +168,12 @@
             <div class="modal-body" id="blacklistDetailContent">
                 <!-- AJAX-loaded partial view (_Details.cshtml) will appear here -->
                 <div class="text-center text-muted">
-                    <i class="fas fa-spinner fa-spin"></i> Loading details...
+                    <i class="fas fa-spinner fa-spin"></i> @GlobalShared.Loading details...
                 </div>
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@GlobalShared.Close</button>
             </div>
         </div>
     </div>

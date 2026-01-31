@@ -1,6 +1,7 @@
-﻿<div class="card mb-1">
+﻿@using Resources
+<div class="card mb-1">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> TSC Advanced Security Shield Configuration Tips</span>
+        <span><i class="mdi mdi-information-outline me-2"></i> @AdvancedShield.TSC_Advanced_Security_Shield_Configuration_Tips</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -11,141 +12,141 @@
 
                 <li>
                     <strong>RequestLimit</strong>:
-                    Defines how many requests a single user or session is allowed to make during a short period.
-                    <span class="text-muted">This prevents users from overloading the server.</span><br />
-                    <em>Example:</em> Set to <code>100</code> to allow up to 100 requests per minute per user.
+                    @AdvancedShield.Defines_how_many_requests_a_single_user_or_session_is_allowed_to_make_during_a_short_period.
+                    <span class="text-muted">@AdvancedShield.This_prevents_users_from_overloading_the_server.</span><br />
+                    <em>Example:</em> @AdvancedShield.Set_to <code>100</code> @AdvancedShield.to_allow_up_to_100_requests_per_minute_per_user.
                 </li>
 
                 <li>
                     <strong>TimeWindowSeconds</strong>:
-                    The time window (in seconds) in which the system counts the number of requests per user.
-                    <span class="text-muted">Combined with <code>RequestLimit</code> to detect rapid access.</span><br />
-                    <em>Example:</em> With a 60-second window, users who send over 100 requests in 1 minute are blocked.
+                    @AdvancedShield.The_time_window_in_seconds_in_which_the_system_counts_the_number_of_requests_per_user.
+                    <span class="text-muted">@AdvancedShield.Combined_with <code>@AdvancedShield.Request_Limit</code> @AdvancedShield.to_detect_rapid_access.</span><br />
+                    <em>Example:</em> @AdvancedShield.With_a_60_second_window_users_who_send_over_100_requests_in_1_minute_are_blocked.
                 </li>
 
                 <li>
                     <strong>BlockDurationMinutes</strong>:
-                    The time (in minutes) that a user or IP will be denied access after hitting a limit.
-                    <span class="text-muted">Prevents abuse and gives time for cooling down.</span><br />
-                    <em>Example:</em> Set to <code>15</code> to block attackers for 15 minutes.
+                    @AdvancedShield.The_time_in_minutes_that_a_user_or_IP_will_be_denied_access_after_hitting_a_limit.
+                    <span class="text-muted">@AdvancedShield.Prevents_abuse_and_gives_time_for_cooling_down.</span><br />
+                    <em>Example:</em> @AdvancedShield.Set_to <code>15</code> to block attackers for 15 minutes.
                 </li>
 
                 <li>
                     <strong>IPRequestLimit</strong>:
-                    Number of requests allowed from the same IP address within the IP-specific window.
-                    <span class="text-muted">Protects against external bots and DDoS from a single source.</span><br />
-                    <em>Example:</em> Set to <code>300</code> to tolerate up to 300 requests from the same IP in a short time.
+                    @AdvancedShield.Number_of_requests_allowed_from_the_same_IP_address_within_the_IP_specific_window.
+                    <span class="text-muted">@AdvancedShield.Protects_against_external_bots_and_DDoS_from_a_single_source.</span><br />
+                    <em>Example:</em> @AdvancedShield.Set_to <code>300</code> @AdvancedShield.to_tolerate_up_to_300_requests_from_the_same_IP_in_a_short_time.
                 </li>
 
                 <li>
                     <strong>IPTimeWindowSeconds</strong>:
-                    Time frame used to track IP-based request limits.
-                    <span class="text-muted">Smaller windows catch fast-flooding traffic.</span><br />
+                    @AdvancedShield.Time_frame_used_to_track_IP_based_request_limits.
+                    <span class="text-muted">@AdvancedShield.Smaller_windows_catch_fast_flooding_traffic.</span><br />
                     <em>Example:</em> If set to <code>30</code>, then 300+ requests from one IP in 30s will trigger a block.
                 </li>
 
                 <li>
                     <strong>WhitelistedHeaders</strong>:
-                    HTTP headers that, when present, tell the system to skip rate limiting.
-                    <span class="text-muted">Used for internal services, monitoring agents, or exempt systems.</span><br />
+                    @AdvancedShield.HTTP_headers_that_when_present_tell_the_system_to_skip_rate_limiting.
+                <span class="text-muted">Used_for_internal_services_monitoring_agents_or_exempt_systems.</span><br />
                     <em>Example:</em> Add <code>X-Internal-Request</code> for requests made by trusted servers.
                 </li>
 
                 <li>
                     <strong>WhiteListedCountriesCode</strong>:
-                    List of allowed countries using 2-letter ISO codes.
-                    <span class="text-muted">Enforces GeoIP-based access control.</span><br />
+                    @AdvancedShield.List_of_allowed_countries_using_2_letter_ISO_codes.
+                    <span class="text-muted">@AdvancedShield.Enforces_GeoIP_based_access_control.</span><br />
                     <em>Example:</em> <code>CM</code> allows Cameroon; <code>FR</code> allows France.
                 </li>
 
                 <li>
                     <strong>CameroonCidrs</strong>:
-                    CIDR-formatted IP ranges representing valid Cameroon network blocks.
-                    <span class="text-muted">Filters traffic to allow only Cameroon-based addresses.</span><br />
+                    @AdvancedShield.CIDR_formatted_IP_ranges_representing_valid_Cameroon_network_blocks.
+                    <span class="text-muted">@AdvancedShield.Filters_traffic_to_allow_only_Cameroon_based_addresses.</span><br />
                     <em>Example:</em> <code>102.244.128.0/18</code> (range), <code>105.112.5.45/32</code> (single IP).
                 </li>
 
                 <li>
                     <strong>SuspiciousIndicators</strong>:
-                    Words or filenames that often appear in malicious requests.
-                    <span class="text-muted">Used to detect hacking attempts or scanning tools.</span><br />
+                    @AdvancedShield.Words_or_filenames_that_often_appear_in_malicious_requests.
+                    <span class="text-muted">@AdvancedShield.Used_to_detect_hacking_attempts_or_scanning_tools.</span><br />
                     <em>Example:</em> <code>shell.php</code>, <code>.env</code>, <code>wp-login</code>.
                 </li>
 
                 <li>
                     <strong>BadUserAgents</strong>:
-                    Identifiers from the User-Agent header used by known bots or exploit tools.
-                    <span class="text-muted">Requests with these agents are blocked immediately.</span><br />
+                    @AdvancedShield.Identifiers_from_the_User_Agent_header_used_by_known_bots_or_exploit_tools.
+                    <span class="text-muted">@AdvancedShield.Requests_with_these_agents_are_blocked_immediately.</span><br />
                     <em>Example:</em> <code>curl</code>, <code>sqlmap</code>, <code>python-requests</code>.
                 </li>
 
                 <li>
                     <strong>AllowedOrigins</strong>:
-                    Valid websites or domains allowed to send cross-origin requests.
-                    <span class="text-muted">Protects against CSRF and CORS-based spoofing.</span><br />
+                    @AdvancedShield.Valid_websites_or_domains_allowed_to_send_cross_origin_requests.
+                    <span class="text-muted">@AdvancedShield.Protects_against_CSRF_and_CORS_based_spoofing.</span><br />
                     <em>Example:</em> <code>https://secure.tsccore.cm</code>, <code>https://camccul.org</code>.
                 </li>
 
                 <li>
                     <strong>TelemetryHeaderPrefixes</strong>:
-                    Header name prefixes used by bot trackers, debuggers, or monitoring tools.
-                    <span class="text-muted">Used to block automated or non-human traffic.</span><br />
+                    @AdvancedShield.Header_name_prefixes_used_by_bot_trackers_debuggers_or_monitoring_tools.
+                    <span class="text-muted">@AdvancedShield.Used_to_block_automated_or_non_human_traffic.</span><br />
                     <em>Example:</em> <code>x-openai-</code>, <code>x-datadog-</code>, <code>cf-ray</code>.
                 </li>
 
                 <li>
                     <strong>HighRiskHeaderKeys</strong>:
-                    Custom headers often seen in penetration testing or exploit payloads.
-                    <span class="text-muted">Blocked to prevent injection attacks.</span><br />
+                    @AdvancedShield.Custom_headers_often_seen_in_penetration_testing_or_exploit_payloads.
+                    <span class="text-muted">@AdvancedShield.Blocked_to_prevent_injection_attacks.</span><br />
                     <em>Example:</em> <code>x-sql-injection</code>, <code>x-command-injection</code>.
                 </li>
 
                 <li>
                     <strong>ProtectedPathRefererRequired</strong>:
-                    Routes that must include a valid <code>Referer</code> header.
-                    <span class="text-muted">Prevents direct access or deep-linking into sensitive pages.</span><br />
+                    @AdvancedShield.Routes that must include a valid <code>Referer</code> header.
+                    <span class="text-muted">@AdvancedShield.Prevents_direct_access_or_deep_linking_into_sensitive_pages.</span><br />
                     <em>Example:</em> <code>/admin</code>, <code>/user/settings</code>.
                 </li>
 
                 <li>
                     <strong>SensitiveHeaderMissingCheckPaths</strong>:
                     Paths where both <code>Origin</code> and <code>Referer</code> headers are mandatory.
-                    <span class="text-muted">Used to secure login and token endpoints against CSRF.</span><br />
+                    <span class="text-muted">@AdvancedShield.Used_to_secure_login_and_token_endpoints_against_CSRF.</span><br />
                     <em>Example:</em> <code>/api/login</code>, <code>/token</code>.
                 </li>
 
                 <li>
                     <strong>SpoofedForwardedForIndicators</strong>:
-                    IP values that are considered fake or internal.
-                    <span class="text-muted">Helps detect spoofed <code>X-Forwarded-For</code> headers.</span><br />
+                    @AdvancedShield.IP_values_that_are_considered_fake_or_internal.
+                    <span class="text-muted">@AdvancedShield.Helps detect spoofed <code>X-Forwarded-For</code> headers.</span><br />
                     <em>Example:</em> <code>127.0.0.1</code>, <code>::1</code>, <code>localhost</code>.
                 </li>
 
                 <li>
                     <strong>ExcludedPaths</strong>:
-                    URLs that bypass all security filtering.
-                    <span class="text-muted">Use for static resources like images or JS.</span><br />
+                    @AdvancedShield.URLs_that_bypass_all_security_filtering.
+                    <span class="text-muted">@AdvancedShield.Use_for_static_resources_like_images_or_JS.</span><br />
                     <em>Example:</em> <code>/favicon.ico</code>, <code>/signalr/hubs</code>.
                 </li>
 
                 <li>
                     <strong>ExcludedSubstrings</strong>:
-                    Any request path that contains these words will skip filtering.
-                    <span class="text-muted">Useful for allowing non-sensitive internal tools.</span><br />
+                    @AdvancedShield.Any_request_path_that_contains_these_words_will_skip_filtering.
+                    <span class="text-muted">@AdvancedShield.Useful_for_allowing_non_sensitive_internal_tools.</span><br />
                     <em>Example:</em> <code>dashboard</code>, <code>keepalive</code>.
                 </li>
 
                 <li>
                     <strong>ExcludedExtensions</strong>:
-                    File extensions that are skipped from inspection.
-                    <span class="text-muted">Improves performance for static asset delivery.</span><br />
+                    @AdvancedShield.File_extensions_that_are_skipped_from_inspection.
+                    <span class="text-muted">@AdvancedShield.Improves_performance_for_static_asset_delivery.</span><br />
                     <em>Example:</em> <code>.css</code>, <code>.js</code>, <code>.png</code>.
                 </li>
 
                 <li>
                     <strong>Reset Policy</strong>:
-                    Deleting the current configuration will restore the default secure policy.
-                    <span class="text-muted">⚠️ This cannot be undone. All custom rules will be erased.</span>
+                    @AdvancedShield.Deleting_the_current_configuration_will_restore_the_default_secure_policy.
+                    <span class="text-muted">⚠️ @AdvancedShield.This_cannot_be_undone_All_custom_rules_will_be_erased.</span>
                 </li>
 
             </ul>
@@ -154,7 +155,7 @@
 
         <!-- Default Config Display -->
         <div class="alert alert-secondary mt-3">
-            <strong>Sample Configuration Snapshot:</strong><br />
+            <strong>@AdvancedShield.Sample_Configuration_Snapshot:</strong><br />
             <code>
                 RequestLimit = 100<br />
                 TimeWindowSeconds = 60<br />

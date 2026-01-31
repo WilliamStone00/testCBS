@@ -10,7 +10,7 @@
         <div class="accordion-item mb-2">
             <h2 class="accordion-header" id="detailsHeader">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#detailsCollapse" aria-expanded="true" aria-controls="detailsCollapse">
-                    @AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.VaultInformations
+                    @AndriodAppVersioning.VaultInformations
                 </button>
             </h2>
             <div id="detailsCollapse" class="accordion-collapse collapse show" aria-labelledby="detailsHeader" data-bs-parent="#vaultAccordion">
@@ -18,71 +18,71 @@
                     <table class="table table-bordered table-striped">
                         <tbody>
                             <tr class="table-primary">
-                                <td colspan="2" class="font-weight-bold text-center">@AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.VaultDetails</td>
+                                <td colspan="2" class="font-weight-bold text-center">@AndriodAppVersioning.VaultDetails</td>
                             </tr>
                             <tr>
-                                <td class="font-weight-bold">@AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.VaultID:</td>
+                                <td class="font-weight-bold">@AndriodAppVersioning.VaultID:</td>
                                 <td>@Model.Id</td>
                             </tr>
                             <tr>
-                                <td class="font-weight-bold">@AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.Name:</td>
+                                <td class="font-weight-bold">@GlobalShared.Name:</td>
                                 <td>@Model.Name</td>
                             </tr>
                             <tr>
-                                <td class="font-weight-bold">@AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.BranchID:</td>
+                                <td class="font-weight-bold">@GlobalShared.Branch_ID:</td>
                                 <td>@Model.BranchId</td>
                             </tr>
                             <tr>
-                                <td class="font-weight-bold">@AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.BranchCode:</td>
+                                <td class="font-weight-bold">@GlobalShared.Branch_Code:</td>
                                 <td>@Model.BranchCode</td>
                             </tr>
                             <tr>
-                                <td class="font-weight-bold">@AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.Description:</td>
+                                <td class="font-weight-bold">@GlobalShared.Description:</td>
                                 <td>@Model.Description</td>
                             </tr>
                             <tr>
-                                <td class="font-weight-bold">@AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.Location:</td>
+                                <td class="font-weight-bold">@GlobalShared.Location:</td>
                                 <td>@Model.Location</td>
                             </tr>
                             <tr>
-                                <td class="font-weight-bold">@AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.Address:</td>
+                                <td class="font-weight-bold">@GlobalShared.Address:</td>
                                 <td>@Model.Address</td>
                             </tr>
                             <tr>
-                                <td class="font-weight-bold">@AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.Dimensions:</td>
+                                <td class="font-weight-bold">@GlobalShared.Dimensions:</td>
                                 <td>@Model.Diamention</td>
                             </tr>
                             <tr>
-                                <td class="font-weight-bold">@AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.MaximumCapacity:</td>
+                                <td class="font-weight-bold">@GlobalShared.Maximum_capacity:</td>
                                 <td>@Model.MaximumCapacity.ToString("#,##0.0") FCFA</td>
                             </tr>
                             <tr>
-                                <td class="font-weight-bold">@AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.CurrentBalance:</td>
+                                <td class="font-weight-bold">@GlobalShared.CurrentBalance:</td>
                                 <td>@Model.CurrentBalance.ToString("#,##0.0") FCFA</td>
                             </tr>
                             <tr>
-                                <td class="font-weight-bold">@AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.PreviousBalance:</td>
+                                <td class="font-weight-bold">@GlobalShared.PreviousBalance:</td>
                                 <td>@Model.PreviouseBalance.ToString("#,##0.0") FCFA</td>
                             </tr>
                             <tr>
-                                <td class="font-weight-bold">@AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.IsActive:</td>
+                                <td class="font-weight-bold">@GlobalShared.IsActive:</td>
                                 <td>
                                     @if (Model.IsActive)
                                     {
-                                        <span class="badge bg-primary text-white">@AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.Active</span>
+                                        <span class="badge bg-primary text-white">@GlobalShared.Active</span>
                                     }
                                     else
                                     {
-                                <span class="badge bg-danger text-white">@AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.Inactive</span>
+                                <span class="badge bg-danger text-white">@GlobalShared.InActive</span>
                                     }
                                 </td>
                             </tr>
                             <tr>
-                                <td class="font-weight-bold">@AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.LastOperation:</td>
+                                <td class="font-weight-bold">@GlobalShared.Last_operation:</td>
                                 <td>@Model.LastOperation</td>
                             </tr>
                             <tr>
-                                <td class="font-weight-bold">@AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.LastOperationAmount:</td>
+                                <td class="font-weight-bold">@GlobalShared.Last_operation_amount:</td>
                                 <td>@Model.LastOperationAmount.ToString("#,##0.00") FCFA</td>
                             </tr>
                         </tbody>
@@ -95,7 +95,7 @@
         <div class="accordion-item mb-2">
             <h2 class="accordion-header" id="denominationsHeader">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#denominationsCollapse" aria-expanded="false" aria-controls="denominationsCollapse">
-                    @AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.Denominations
+                    @GlobalShared.Denominations
                 </button>
             </h2>
             <div id="denominationsCollapse" class="accordion-collapse collapse" aria-labelledby="denominationsHeader" data-bs-parent="#vaultAccordion">
@@ -125,7 +125,7 @@
                         </tbody>
                         <tfoot>
                             <tr class="table-light">
-                                <td class="font-weight-bold text-end">@AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.CurrentBalance:</td>
+                                <td class="font-weight-bold text-end">@GlobalShared.CurrentBalance:</td>
                                 <td class="text-center">
                                     @{
                                         var total = Model.ClosingNote10000 * 10000 +
@@ -154,7 +154,7 @@
         <div class="accordion-item mb-2">
             <h2 class="accordion-header" id="authorizedPersonsHeader">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#authorizedPersonsCollapse" aria-expanded="false" aria-controls="authorizedPersonsCollapse">
-                    @AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.AuthorizedPersons
+                    @GlobalShared.Authorized_persons
                 </button>
             </h2>
             <div id="authorizedPersonsCollapse" class="accordion-collapse collapse" aria-labelledby="authorizedPersonsHeader" data-bs-parent="#vaultAccordion">
@@ -166,7 +166,7 @@
                             {
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
                                     <div>
-                                        <strong>@AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.Name:</strong> @person.Name
+                                        <strong>@GlobalShared.Name:</strong> @person.Name
                                     </div>
                                     <span class="badge @((person.IsLeader) ? "bg-primary" : "bg-secondary") text-white">
                                         @((person.IsLeader) ? "Leader" : "Member")
@@ -177,7 +177,7 @@
                     }
                     else
                     {
-                <p class="text-muted">@AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.NoAuthorizedPersons.</p>
+                <p class="text-muted">@GlobalShared.No_authorized_persons.</p>
                     }
                 </div>
             </div>
@@ -187,7 +187,7 @@
         <div class="accordion-item mb-2">
             <h2 class="accordion-header" id="vaultOperationsHeader">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#vaultOperationsCollapse" aria-expanded="false" aria-controls="vaultOperationsCollapse">
-                    @AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.VaultOperations
+                    @AndriodAppVersioning.VaultOperations
                 </button>
             </h2>
             <div id="vaultOperationsCollapse" class="accordion-collapse collapse" aria-labelledby="vaultOperationsHeader" data-bs-parent="#vaultAccordion">
@@ -199,10 +199,10 @@
                             @foreach (var operation in recentOperations)
                             {
                                 <li class="list-group-item">
-                                    <strong>@AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.OperationType:</strong> @operation.OperationType <br />
-                                    <strong>@AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.Amount:</strong> @operation.Amount.ToString("#,##0.0") FCFA <br />
-                                    <strong>@AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.DoneBy:</strong> @operation.DoneBy <br />
-                                    <strong>@AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.Reference:</strong> @operation.Reference
+                                    <strong>@GlobalShared.Operation_type:</strong> @operation.OperationType <br />
+                                    <strong>@GlobalShared.Amount:</strong> @operation.Amount.ToString("#,##0.0") FCFA <br />
+                                    <strong>@GlobalShared.Done_by:</strong> @operation.DoneBy <br />
+                                    <strong>@GlobalShared.Reference:</strong> @operation.Reference
                                 </li>
                             }
                         </ul>
@@ -210,14 +210,14 @@
                         {
                             <div class="text-center mt-3">
                                 <button type="button" class="btn btn-outline-primary btn-sm" onclick="viewAllVaultOperations()">
-                                    @AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.ViewMore
+                                    @GlobalShared.View_more
                                 </button>
                             </div>
                         }
                     }
                     else
                     {
-                        <p class="text-muted">@AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.NoOperationsPerformed.</p>
+                        <p class="text-muted">@GlobalShared.No_operations_performed.</p>
                     }
                 </div>
             </div>

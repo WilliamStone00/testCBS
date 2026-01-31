@@ -8,14 +8,14 @@
         <div class="card bg-light mb-2 shadow-sm">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary fw-bold">
-                    <i class="mdi mdi-sync-alert me-2"></i> Fallback Reconciliation
+                    <i class="mdi mdi-sync-alert me-2"></i> @AffiliateToBranchFallback.Fallback_Reconciliation
                 </h1>
                 <p class="card-text">
-                    Manage and reconcile affiliate to branch fallback transactions
+                    @AffiliateToBranchFallback.Manage_and_reconcile_affiliate_to_branch_fallback_transactions
                 </p>
                 <div class="alert alert-info mt-3 py-2">
                     <i class="mdi mdi-information-outline me-1"></i>
-                    Review and reconcile transactions that fell back to branch accounts
+                    @AffiliateToBranchFallback.Review_and_reconcile_transactions_that_fell_back_to_branch_accounts
                 </div>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -26,7 +26,7 @@
 <!-- Filters Section -->
 <div class="card shadow p-3 mb-1" id="filtersSection">
     <div class="card-header bg-light d-flex justify-content-between align-items-center" data-bs-toggle="collapse" data-bs-target="#filtersCollapse" style="cursor: pointer;">
-        <h5 class="text-primary mb-0"><i class="mdi mdi-filter-outline me-1"></i>Filters</h5>
+        <h5 class="text-primary mb-0"><i class="mdi mdi-filter-outline me-1"></i>@GlobalShared.Filters</h5>
         <i class="mdi mdi-chevron-down"></i>
     </div>
 
@@ -36,45 +36,45 @@
                 <div class="card p-3 mb-1 bg-light">
                     <div class="row mb-1">
                         <div class="col-md-3">
-                            <label class="form-label fw-bold">Branch ID</label>
+                            <label class="form-label fw-bold">@GlobalShared.Branch_ID</label>
                             <input type="text" id="branchId" name="BranchId" class="form-control" placeholder="Enter Branch ID" />
                         </div>
                         <div class="col-md-3">
-                            <label class="form-label fw-bold">Operation Code</label>
+                            <label class="form-label fw-bold">@GlobalShared.Operation_Code</label>
                             <input type="text" id="operationCode" name="OperationCode" class="form-control" placeholder="Enter Operation Code" />
                         </div>
                         <div class="col-md-3">
-                            <label class="form-label fw-bold">Reference</label>
+                            <label class="form-label fw-bold">@GlobalShared.Reference</label>
                             <input type="text" id="reference" name="Reference" class="form-control" placeholder="Enter Reference" />
                         </div>
                         <div class="col-md-3">
-                            <label class="form-label fw-bold">Status</label>
+                            <label class="form-label fw-bold">@GlobalShared.Status</label>
                             <select id="status" name="Status" class="form-control">
                                 <option value="">All</option>
-                                <option value="resolved">Resolved</option>
-                                <option value="unresolved">Unresolved</option>
+                                <option value="resolved">@GlobalShared.Resolved</option>
+                                <option value="unresolved">@GlobalShared.Unresolved</option>
                             </select>
                         </div>
                     </div>
 
                     <div class="row mb-1">
                         <div class="col-md-6">
-                            <label class="form-label fw-bold">Supposed GL Contains</label>
+                            <label class="form-label fw-bold">@AffiliateToBranchFallback.Supposed_GL_Contains</label>
                             <input type="text" id="supposedGlContains" name="SupposedGlContains" class="form-control" placeholder="Search in supposed GL" />
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label fw-bold">Fallback GL Contains</label>
+                            <label class="form-label fw-bold">@AffiliateToBranchFallback.Fallback_GL_Contains</label>
                             <input type="text" id="fallbackGlContains" name="FallbackGlContains" class="form-control" placeholder="Search in fallback GL" />
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-6">
-                            <label class="form-label fw-bold">From Date</label>
+                            <label class="form-label fw-bold">@GlobalShared.From_Date</label>
                             <input type="date" id="fromDate" name="From" class="form-control" />
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label fw-bold">To Date</label>
+                            <label class="form-label fw-bold">@GlobalShared.To_Date</label>
                             <input type="date" id="toDate" name="To" class="form-control" />
                         </div>
                     </div>
@@ -83,10 +83,10 @@
                 <div class="row mt-2">
                     <div class="col-md-12 d-flex">
                         <button id="applyFilterBtn" type="button" class="btn btn-primary me-2 w-100">
-                            <i class="mdi mdi-magnify"></i> Apply Filter
+                            <i class="mdi mdi-magnify"></i> @GlobalShared.Apply_Filter
                         </button>
                         <button id="resetFilterBtn" type="button" class="btn btn-secondary me-2 w-100">
-                            <i class="mdi mdi-refresh"></i> Reset
+                            <i class="mdi mdi-refresh"></i> @GlobalShared.Reset
                         </button>
                     </div>
                 </div>
@@ -98,7 +98,7 @@
 <!-- Statistics Cards -->
 <div class="card shadow mb-4">
     <div class="card-header bg-light d-flex justify-content-between align-items-center" data-bs-toggle="collapse" data-bs-target="#statsCollapse" style="cursor: pointer;">
-        <h5 class="text-primary mb-0"><i class="mdi mdi-chart-bar me-1"></i>Statistics</h5>
+        <h5 class="text-primary mb-0"><i class="mdi mdi-chart-bar me-1"></i>@GlobalShared.Statistics</h5>
         <i class="mdi mdi-chevron-down"></i>
     </div>
 
@@ -116,7 +116,7 @@
                                 </div>
                                 <h5 class="ms-1 mb-0" style="font-size: 1.2rem;"><span id="toBeReconciledCount">0</span></h5>
                             </div>
-                            <p class="mb-0 text-heading" style="font-size: 0.85rem;">To Be Reconciled</p>
+                            <p class="mb-0 text-heading" style="font-size: 0.85rem;">@GlobalShared.To_Be_Reconciled</p>
                         </div>
                     </div>
                 </div>
@@ -131,7 +131,7 @@
                                 </div>
                                 <h5 class="ms-1 mb-0" style="font-size: 1.2rem;"><span id="alreadyReconciledCount">0</span></h5>
                             </div>
-                            <p class="mb-0 text-heading" style="font-size: 0.85rem;">Already Reconciled</p>
+                            <p class="mb-0 text-heading" style="font-size: 0.85rem;">@GlobalShared.Already_Reconciled</p>
                         </div>
                     </div>
                 </div>
@@ -146,7 +146,7 @@
                                 </div>
                                 <h5 class="ms-1 mb-0" style="font-size: 1.2rem;"><span id="totalCount">0</span></h5>
                             </div>
-                            <p class="mb-0 text-heading" style="font-size: 0.85rem;">Total Records</p>
+                            <p class="mb-0 text-heading" style="font-size: 0.85rem;">@GlobalShared.Total_Records</p>
                         </div>
                     </div>
                 </div>
@@ -161,11 +161,11 @@
                                 </div>
                                 <div class="ms-1">
                                     <button type="button" id="btnExportFallback" class="btn btn-success btn-sm w-100">
-                                        <i class="mdi mdi-export me-1"></i> Export Excel
+                                        <i class="mdi mdi-export me-1"></i> @GlobalShared.Export_Excel
                                     </button>
                                 </div>
                             </div>
-                            <p class="mb-0 text-heading" style="font-size: 0.85rem;">Export Data</p>
+                            <p class="mb-0 text-heading" style="font-size: 0.85rem;">@GlobalShared.Export_Data</p>
                         </div>
                     </div>
                 </div>
@@ -177,7 +177,7 @@
 <!-- DataTable Section -->
 <div class="card shadow">
     <div class="card-header bg-light d-flex justify-content-between align-items-center" data-bs-toggle="collapse" data-bs-target="#tableCollapse" style="cursor: pointer;">
-        <h5 class="text-primary mb-0"><i class="mdi mdi-table me-1"></i>Fallback Records</h5>
+        <h5 class="text-primary mb-0"><i class="mdi mdi-table me-1"></i>@GlobalShared.Fallback_Records</h5>
         <i class="mdi mdi-chevron-down"></i>
     </div>
 

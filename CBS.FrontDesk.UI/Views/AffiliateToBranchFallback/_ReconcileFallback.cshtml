@@ -1,13 +1,13 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.FallBack.ReconcileFallbackRequest
-
+@using Resources
 <div class="card bg-light mb-2">
     <div class="card-body text-center">
         <h1 class="card-title text-primary">
-            <i class="mdi mdi-check-circle me-2"></i> Reconcile Fallback Transaction
+            <i class="mdi mdi-check-circle me-2"></i> @AffiliateToBranchFallback.Reconcile_Fallback_Transaction
         </h1>
         <div class="alert alert-info">
             <i class="mdi mdi-information-outline me-2"></i>
-            <strong>Info:</strong> Reconcile the fallback transaction by mapping source and destination GL accounts.
+            <strong>Info:</strong> @AffiliateToBranchFallback.Reconcile_the_fallback_transaction_by_mapping_source_and_destination_GL_accounts.
         </div>
         <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
     </div>
@@ -25,7 +25,7 @@
             <div class="card mb-4">
                 <div class="card-header bg-info text-white" data-bs-toggle="collapse" data-bs-target="#sourceSection" style="cursor: pointer;">
                     <h6 class="mb-0">
-                        <i class="mdi mdi-arrow-top-right me-2"></i> Source Transaction (Readonly)
+                        <i class="mdi mdi-arrow-top-right me-2"></i> @GlobalShared.Source_Transaction_Readonly
                         <i class="mdi mdi-chevron-down float-end"></i>
                     </h6>
                 </div>
@@ -33,7 +33,7 @@
                     <div class="card-body">
                         <div class="row g-3">
                             <div class="col-md-6">
-                                <label class="form-label fw-bold">Source GL Account</label>
+                                <label class="form-label fw-bold">@GlobalShared.Source_GL_Account</label>
                                 @Html.TextBoxFor(m => m.SourceGlAccountNumber, new
                                 {
                                     @class = "form-control",
@@ -42,7 +42,7 @@
                                 })
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label fw-bold">Source Amount</label>
+                                <label class="form-label fw-bold">@GlobalShared.Source_Amount</label>
                                 @Html.TextBoxFor(m => m.SourceAmount, new
                                 {
                                     @class = "form-control",
@@ -51,7 +51,7 @@
                                 })
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label fw-bold">Source SIT</label>
+                                <label class="form-label fw-bold">@GlobalShared.Source_SIT</label>
                                 @Html.TextBoxFor(m => m.SourceSit, new
                                 {
                                     @class = "form-control",
@@ -60,7 +60,7 @@
                                 })
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label fw-bold">Source Description</label>
+                                <label class="form-label fw-bold">@GlobalShared.Source_Description</label>
                                 @Html.TextBoxFor(m => m.SourceDescription, new
                                 {
                                     @class = "form-control",
@@ -76,12 +76,12 @@
             <!-- Destination Section -->
             <div class="card">
                 <div class="card-header bg-primary text-white">
-                    <h6 class="mb-0"><i class="mdi mdi-arrow-bottom-left me-2"></i>Destination Transaction</h6>
+                    <h6 class="mb-0"><i class="mdi mdi-arrow-bottom-left me-2"></i>@GlobalShared.Destination_Transaction</h6>
                 </div>
                 <div class="card-body">
                     <div class="row g-3">
                         <div class="col-md-6">
-                            <label class="form-label fw-bold">Destination GL Account </label>
+                            <label class="form-label fw-bold">@GlobalShared.Destination_GL_Account </label>
                             @if (ViewBag.BranchAccount != null)
                             {
                                 @Html.DropDownListFor(m => m.DestinationGlAccountNumber, new SelectList(ViewBag.BranchAccount, "Id", "name"), "--- Select branch Account ---", new { @class = "form-control select2" })
@@ -89,14 +89,14 @@
                             else
                             {
                                 <div class="alert alert-warning">
-                                    <i class="mdi mdi-alert me-2"></i>Branch accounts not available. Please try refreshing the page.
+                                    <i class="mdi mdi-alert me-2"></i>@AffiliateToBranchFallback.Branch_accounts_not_available_Please_try_refreshing_the_page.
                                 </div>
                                 @Html.HiddenFor(m => m.DestinationGlAccountNumber)
                             }
                             @Html.ValidationMessageFor(m => m.DestinationGlAccountNumber, "", new { @class = "text-danger" })
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label fw-bold">Destination Amount </label>
+                            <label class="form-label fw-bold">@GlobalShared.Destination_Amount </label>
                             @Html.TextBoxFor(m => m.DestinationAmount, new
                             {
                                 @class = "form-control",
@@ -108,7 +108,7 @@
                             @Html.ValidationMessageFor(m => m.DestinationAmount, "", new { @class = "text-danger small" })
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label fw-bold">Destination SIT *</label>
+                            <label class="form-label fw-bold">@GlobalShared.Destination_SIT *</label>
                             @Html.TextBoxFor(m => m.DestinationSit, new
                             {
                                 @class = "form-control",
@@ -117,7 +117,7 @@
                             @Html.ValidationMessageFor(m => m.DestinationSit, "", new { @class = "text-danger small" })
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label fw-bold">Destination Description </label>
+                            <label class="form-label fw-bold">@GlobalShared.Destination_Description </label>
                             @Html.TextBoxFor(m => m.DestinationDescription, new
                             {
                                 @class = "form-control",
@@ -133,7 +133,7 @@
         <div class="card-footer bg-transparent d-flex justify-content-end">
             <button type="button" class="btn btn-light me-2 btn-back-to-list">Cancel</button>
             <button type="submit" class="btn btn-success">
-                <i class="mdi mdi-check-circle me-1"></i> Complete Reconciliation
+                <i class="mdi mdi-check-circle me-1"></i> @GlobalShared.Complete_Reconciliation
             </button>
         </div>
   

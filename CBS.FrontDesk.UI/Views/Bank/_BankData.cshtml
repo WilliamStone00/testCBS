@@ -4,10 +4,10 @@
 <table class="table table-hover" id="myDataTable">
     <thead class="table-light">
         <tr>
-            <th>@GlobalBankData.Name</th>
-            <th>@GlobalBankData.Code</th>
-            <th>@GlobalBankData.Tel</th>
-            <th>@GlobalBankData.Action</th>
+            <th>@GlobalShared.Name</th>
+            <th>@GlobalShared.Code</th>
+            <th>@GlobalShared.Tel</th>
+            <th>@GlobalShared.Action</th>
         </tr>
     </thead>
     <tbody>
@@ -23,7 +23,7 @@
                        class="mr-2"
                        data-toggle="tooltip" data-placement="top"
                        title="Select @d.Name to edit">
-                        @GlobalBankData.Edit
+                        @GlobalShared.Edit
                     </a> |
 
                     <a href="#"

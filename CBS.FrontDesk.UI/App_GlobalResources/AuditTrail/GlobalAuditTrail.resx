@@ -132,23 +132,11 @@
   <data name="AvailableSearchOptionsAndExamples" xml:space="preserve">
     <value>**Available Search Options and Examples:**</value>
   </data>
-  <data name="BranchCode" xml:space="preserve">
-    <value>Branch Code</value>
-  </data>
-  <data name="BranchName" xml:space="preserve">
-    <value>Branch Name</value>
-  </data>
   <data name="CorrelationIDOrTransactionCode" xml:space="preserve">
     <value>Correlation id or transaction code</value>
   </data>
   <data name="CriticalLevel" xml:space="preserve">
     <value>Critical Level</value>
-  </data>
-  <data name="DateFrom" xml:space="preserve">
-    <value>Date From</value>
-  </data>
-  <data name="DateTo" xml:space="preserve">
-    <value>DateTo</value>
   </data>
   <data name="DetailResponseMessage" xml:space="preserve">
     <value>Detail Response Message</value>
@@ -156,17 +144,8 @@
   <data name="DowntownBranch" xml:space="preserve">
     <value>Downtown branch</value>
   </data>
-  <data name="Enter" xml:space="preserve">
-    <value>Enter</value>
-  </data>
   <data name="EnterPartOfTheRequestObjectOrTransactionDetails" xml:space="preserve">
     <value>Enter part of the request object or transaction details</value>
-  </data>
-  <data name="Error" xml:space="preserve">
-    <value>Error</value>
-  </data>
-  <data name="Example" xml:space="preserve">
-    <value>Example</value>
   </data>
   <data name="ExportLogsUseTheExportButtonToDownload" xml:space="preserve">
     <value>**Export Logs:** Use the "Export" button to download filtered logs as an Excel or CSV file for external review and reporting</value>
@@ -180,17 +159,8 @@
   <data name="FilterLogsContainingSpecificResponseMessages" xml:space="preserve">
     <value>Filter logs containing specific response messages, such as errors or confirmation messages</value>
   </data>
-  <data name="FullName" xml:space="preserve">
-    <value>Full Name</value>
-  </data>
-  <data name="Information" xml:space="preserve">
-    <value>Information</value>
-  </data>
   <data name="MonitorCriticalLogsReviewLogsMarkedAs" xml:space="preserve">
     <value>**Monitor Critical Logs:** Review logs marked as</value>
-  </data>
-  <data name="Or" xml:space="preserve">
-    <value>or</value>
   </data>
   <data name="OrWithStatusCodesToDetectAnomalies" xml:space="preserve">
     <value>or with status codes 500 to detect anomalies and potential issues</value>
@@ -279,9 +249,6 @@
   <data name="TransactionFailed" xml:space="preserve">
     <value>Transaction failed</value>
   </data>
-  <data name="UserName" xml:space="preserve">
-    <value>User Name (Full)</value>
-  </data>
   <data name="UserOrSystemAction" xml:space="preserve">
     <value>User or System Action</value>
   </data>
@@ -300,14 +267,8 @@
   <data name="ViewFullDetailsClickOnALogEntryToOpen" xml:space="preserve">
     <value>**View Full Details:** Click on a log entry to open a detailed view with complete information, including the affected entity and associated request/response data</value>
   </data>
-  <data name="Warning" xml:space="preserve">
-    <value>Warning</value>
-  </data>
   <data name="MicroserviceName" xml:space="preserve">
     <value>Microservice Name</value>
-  </data>
-  <data name="Level" xml:space="preserve">
-    <value>Level</value>
   </data>
   <data name="CorrolationIdOrTransCode" xml:space="preserve">
     <value>Corrolation Id or Trans Code</value>
@@ -320,12 +281,6 @@
   </data>
   <data name="AuditTrailDetails" xml:space="preserve">
     <value>Audit Trail Details</value>
-  </data>
-  <data name="Close" xml:space="preserve">
-    <value>Close</value>
-  </data>
-  <data name="Action" xml:space="preserve">
-    <value>Action</value>
   </data>
   <data name="Timestamp" xml:space="preserve">
     <value>Timestamp</value>
@@ -347,9 +302,6 @@
   </data>
   <data name="UseThe" xml:space="preserve">
     <value>Use the</value>
-  </data>
-  <data name="Copy" xml:space="preserve">
-    <value>Copy</value>
   </data>
   <data name="ButtonToCopyLogInformation" xml:space="preserve">
     <value>button to copy log information (e.g., messages and object details) for reporting or debugging</value>
@@ -387,17 +339,8 @@
   <data name="StatusCode" xml:space="preserve">
     <value>Status code</value>
   </data>
-  <data name="Unknown" xml:space="preserve">
-    <value>Unknown</value>
-  </data>
   <data name="BranchInformation" xml:space="preserve">
     <value>Branch information</value>
-  </data>
-  <data name="BranchID" xml:space="preserve">
-    <value>Branch id</value>
-  </data>
-  <data name="BankID" xml:space="preserve">
-    <value>Bank id</value>
   </data>
   <data name="CorrelationID" xml:space="preserve">
     <value>Correlation id</value>
@@ -407,8 +350,5 @@
   </data>
   <data name="StringifiedObject" xml:space="preserve">
     <value>Stringified object</value>
-  </data>
-  <data name="Back" xml:space="preserve">
-    <value>Back</value>
   </data>
 </root>

@@ -79,65 +79,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Account name.
-        /// </summary>
-        internal static string AccountName {
-            get {
-                return ResourceManager.GetString("AccountName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Action.
-        /// </summary>
-        internal static string Action {
-            get {
-                return ResourceManager.GetString("Action", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Add entries.
-        /// </summary>
-        internal static string AddEntries {
-            get {
-                return ResourceManager.GetString("AddEntries", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Add journal entries.
         /// </summary>
         internal static string AddJournalEntries {
             get {
                 return ResourceManager.GetString("AddJournalEntries", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Amount.
-        /// </summary>
-        internal static string Amount {
-            get {
-                return ResourceManager.GetString("Amount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Approved by.
-        /// </summary>
-        internal static string ApprovedBy {
-            get {
-                return ResourceManager.GetString("ApprovedBy", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Approved date.
-        /// </summary>
-        internal static string ApprovedDate {
-            get {
-                return ResourceManager.GetString("ApprovedDate", resourceCulture);
             }
         }
         
@@ -156,15 +102,6 @@ namespace Resources {
         internal static string ApprovedMessageDescription {
             get {
                 return ResourceManager.GetString("ApprovedMessageDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Back to home.
-        /// </summary>
-        internal static string BackToHome {
-            get {
-                return ResourceManager.GetString("BackToHome", resourceCulture);
             }
         }
         
@@ -201,15 +138,6 @@ namespace Resources {
         internal static string ClickToViewPendingTransactionReversalRequest {
             get {
                 return ResourceManager.GetString("ClickToViewPendingTransactionReversalRequest", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Description.
-        /// </summary>
-        internal static string Description {
-            get {
-                return ResourceManager.GetString("Description", resourceCulture);
             }
         }
         
@@ -394,15 +322,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select account.
-        /// </summary>
-        internal static string SelectAccount {
-            get {
-                return ResourceManager.GetString("SelectAccount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Select booking direction.
         /// </summary>
         internal static string SelectBookingDirection {
@@ -453,15 +372,6 @@ namespace Resources {
         internal static string SendRequest {
             get {
                 return ResourceManager.GetString("SendRequest", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Status.
-        /// </summary>
-        internal static string Status {
-            get {
-                return ResourceManager.GetString("Status", resourceCulture);
             }
         }
         

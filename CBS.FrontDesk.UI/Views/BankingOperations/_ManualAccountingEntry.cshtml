@@ -31,7 +31,7 @@
                                 <div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
                                         <label for="Account">@GlobalBankingOperations.SelectSourceAccount</label>
-                                        @Html.DropDownListFor(m => m.ManualAccountingEntry.SourceAccountId, new SelectList(ViewBag.Accounts == null ? "" : ViewBag.Accounts, "Text", "Value"), "---"+@GlobalBankingOperations.SelectAccount+"---", new { @class = "form-control select2", @search = "true" })
+                                        @Html.DropDownListFor(m => m.ManualAccountingEntry.SourceAccountId, new SelectList(ViewBag.Accounts == null ? "" : ViewBag.Accounts, "Text", "Value"), "---"+GlobalShared.Select_account+"---", new { @class = "form-control select2", @search = "true" })
                                         @Html.ValidationMessageFor(model => model.ManualAccountingEntry.SourceAccountId, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
@@ -46,7 +46,7 @@
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(model => model.ManualAccountingEntry.Amount, new { @class = "form-control", placeholder = "XFA 0.0" })
                                         @Html.ValidationMessageFor(model => model.ManualAccountingEntry.Amount, "", new { @class = "text-danger" })
-                                        <label for="Amount">@GlobalBankingOperations.Amount</label>
+                                        <label for="Amount">@GlobalShared.Amount</label>
                                     </div>
                                 </div>
 
@@ -55,7 +55,7 @@
                                         @Html.TextAreaFor(m => m.ManualAccountingEntry.Description, new { @class = "form-control", @style = "height: 200px;" })
                                         @Html.ValidationMessageFor(model => model.ManualAccountingEntry.Description, "", new { @class = "text-danger" })
 
-                                        <label for="Description"> @GlobalBankingOperations.Description</label>
+                                        <label for="Description"> @GlobalShared.Description</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -71,7 +71,7 @@
                                 <div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
                                         <label for="Account">@GlobalBankingOperations.SelectDestinationAccount</label>
-                                        @Html.DropDownListFor(m => m.ManualAccountingEntry.destinationAccountId, new SelectList(ViewBag.Accounts == null ? "" : ViewBag.Accounts, "Text", "Value"), "---" + @GlobalBankingOperations.SelectAccount + "---", new { @class = "form-control select2", @search = "true" })
+                                        @Html.DropDownListFor(m => m.ManualAccountingEntry.destinationAccountId, new SelectList(ViewBag.Accounts == null ? "" : ViewBag.Accounts, "Text", "Value"), "---" + GlobalShared.Select_account + "---", new { @class = "form-control select2", @search = "true" })
                                         @Html.ValidationMessageFor(model => model.ManualAccountingEntry.destinationAccountId, "", new { @class = "text-danger" })
                                     </div>
                                 </div>

@@ -117,37 +117,67 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Credit" xml:space="preserve">
-    <value>CREDIT</value>
-    <comment>Brand name part 2</comment>
+  <data name="Actions" xml:space="preserve">
+    <value>Actions</value>
   </data>
-  <data name="Home" xml:space="preserve">
-    <value>Home</value>
-    <comment>Home page</comment>
+  <data name="ANDROIDVERSIONDETAILS" xml:space="preserve">
+    <value>ANDROID VERSION DETAILS</value>
   </data>
-  <data name="NoInternetConnection" xml:space="preserve">
-    <value>No internet connection</value>
+  <data name="ANDROIDVERSIONLISTING" xml:space="preserve">
+    <value>ANDROID VERSION LISTING</value>
   </data>
-  <data name="PartnerText" xml:space="preserve">
-    <value>Your Secure &amp; Reliable Partner. FLUX!</value>
-    <comment>Slogan line under the heading</comment>
+  <data name="AndroidVersionManagement" xml:space="preserve">
+    <value>Android Version Management</value>
   </data>
-  <data name="RETRY" xml:space="preserve">
-    <value>RETRY</value>
+  <data name="ANDROIDVERSIONMANAGEMENT_UC" xml:space="preserve">
+    <value>ANDROID VERSION MANAGEMENT</value>
   </data>
-  <data name="SatisfactionText" xml:space="preserve">
-    <value>Flux SARL! : Empowering businesses. Enhancing lives.</value>
-    <comment>Mission statement under the slogan</comment>
+  <data name="APKDownloadURL" xml:space="preserve">
+    <value>APK Download URL</value>
   </data>
-  <data name="TrustSoft" xml:space="preserve">
-    <value>TRUSTSOFT</value>
-    <comment>Brand name part 1</comment>
+  <data name="APKURL" xml:space="preserve">
+    <value>APK URL</value>
   </data>
-  <data name="WelcomeTitle" xml:space="preserve">
-    <value>WELCOME TO</value>
-    <comment>Main welcome heading for the home page</comment>
+  <data name="AppCode" xml:space="preserve">
+    <value>App code</value>
   </data>
-  <data name="YouAreCurrentlyOffline" xml:space="preserve">
-    <value>You are currently offline. Please check your internet connection and try again</value>
+  <data name="AppCode1" xml:space="preserve">
+    <value>App code</value>
+  </data>
+  <data name="EnsureVersionNamesFollowSemanticVersioning" xml:space="preserve">
+    <value>Ensure version names follow semantic versioning</value>
+  </data>
+  <data name="EnterAPKDownloadURL" xml:space="preserve">
+    <value>Enter APK Download URL</value>
+  </data>
+  <data name="ManageAllAndroidVersionReleases" xml:space="preserve">
+    <value>Manage all Android version releases and configurations. Use the options below to view, add, or update versions</value>
+  </data>
+  <data name="NoAndroidVersionsHaveBeenConfigured" xml:space="preserve">
+    <value>No Android versions have been configured yet</value>
+  </data>
+  <data name="OnlyAuthorizedPersonnelCanUpdate" xml:space="preserve">
+    <value>Only authorized personnel can update or remove versions</value>
+  </data>
+  <data name="ProvideAValidAPKURL" xml:space="preserve">
+    <value>Provide a valid APK URL for downloading the Android app</value>
+  </data>
+  <data name="SecretCode" xml:space="preserve">
+    <value>Secret code</value>
+  </data>
+  <data name="VaultDetails" xml:space="preserve">
+    <value>Vault details</value>
+  </data>
+  <data name="VaultID" xml:space="preserve">
+    <value>Vault id</value>
+  </data>
+  <data name="VaultInformations" xml:space="preserve">
+    <value>Vault Informations</value>
+  </data>
+  <data name="VaultOperations" xml:space="preserve">
+    <value>Vault operations</value>
+  </data>
+  <data name="ViewDetailsAndManageAndroidVersions" xml:space="preserve">
+    <value>View details and manage Android versions efficiently</value>
   </data>
 </root>

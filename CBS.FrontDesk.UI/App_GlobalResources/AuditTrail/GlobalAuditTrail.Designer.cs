@@ -70,15 +70,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Action.
-        /// </summary>
-        internal static string Action {
-            get {
-                return ResourceManager.GetString("Action", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Audit entries involving critical operations should be further investigated if any irregularities are detected.
         /// </summary>
         internal static string AuditEntriesInvolvingCriticalOperations {
@@ -142,56 +133,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Back.
-        /// </summary>
-        internal static string Back {
-            get {
-                return ResourceManager.GetString("Back", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Bank id.
-        /// </summary>
-        internal static string BankID {
-            get {
-                return ResourceManager.GetString("BankID", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Branch Code.
-        /// </summary>
-        internal static string BranchCode {
-            get {
-                return ResourceManager.GetString("BranchCode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Branch id.
-        /// </summary>
-        internal static string BranchID {
-            get {
-                return ResourceManager.GetString("BranchID", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Branch information.
         /// </summary>
         internal static string BranchInformation {
             get {
                 return ResourceManager.GetString("BranchInformation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Branch Name.
-        /// </summary>
-        internal static string BranchName {
-            get {
-                return ResourceManager.GetString("BranchName", resourceCulture);
             }
         }
         
@@ -205,29 +151,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Close.
-        /// </summary>
-        internal static string Close {
-            get {
-                return ResourceManager.GetString("Close", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Confirm the user who performed the action and cross-check the timestamp for accuracy.
         /// </summary>
         internal static string ConfirmTheUserWhoPerformedTheAction {
             get {
                 return ResourceManager.GetString("ConfirmTheUserWhoPerformedTheAction", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Copy.
-        /// </summary>
-        internal static string Copy {
-            get {
-                return ResourceManager.GetString("Copy", resourceCulture);
             }
         }
         
@@ -277,24 +205,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Date From.
-        /// </summary>
-        internal static string DateFrom {
-            get {
-                return ResourceManager.GetString("DateFrom", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to DateTo.
-        /// </summary>
-        internal static string DateTo {
-            get {
-                return ResourceManager.GetString("DateTo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Detail message.
         /// </summary>
         internal static string DetailMessage {
@@ -322,15 +232,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enter.
-        /// </summary>
-        internal static string Enter {
-            get {
-                return ResourceManager.GetString("Enter", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Enter part of the request object or transaction details.
         /// </summary>
         internal static string EnterPartOfTheRequestObjectOrTransactionDetails {
@@ -345,24 +246,6 @@ namespace Resources {
         internal static string EntityAffected {
             get {
                 return ResourceManager.GetString("EntityAffected", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Error.
-        /// </summary>
-        internal static string Error {
-            get {
-                return ResourceManager.GetString("Error", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Example.
-        /// </summary>
-        internal static string Example {
-            get {
-                return ResourceManager.GetString("Example", resourceCulture);
             }
         }
         
@@ -403,15 +286,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Full Name.
-        /// </summary>
-        internal static string FullName {
-            get {
-                return ResourceManager.GetString("FullName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to General Information.
         /// </summary>
         internal static string GeneralInformation {
@@ -448,29 +322,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Information.
-        /// </summary>
-        internal static string Information {
-            get {
-                return ResourceManager.GetString("Information", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to IP address.
         /// </summary>
         internal static string IPAddress {
             get {
                 return ResourceManager.GetString("IPAddress", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Level.
-        /// </summary>
-        internal static string Level {
-            get {
-                return ResourceManager.GetString("Level", resourceCulture);
             }
         }
         
@@ -498,15 +354,6 @@ namespace Resources {
         internal static string NetworkInformation {
             get {
                 return ResourceManager.GetString("NetworkInformation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to or.
-        /// </summary>
-        internal static string Or {
-            get {
-                return ResourceManager.GetString("Or", resourceCulture);
             }
         }
         
@@ -853,24 +700,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unknown.
-        /// </summary>
-        internal static string Unknown {
-            get {
-                return ResourceManager.GetString("Unknown", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to User Name (Full).
-        /// </summary>
-        internal static string UserName {
-            get {
-                return ResourceManager.GetString("UserName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to User or System Action.
         /// </summary>
         internal static string UserOrSystemAction {
@@ -930,15 +759,6 @@ namespace Resources {
         internal static string ViewFullDetailsClickOnALogEntryToOpen {
             get {
                 return ResourceManager.GetString("ViewFullDetailsClickOnALogEntryToOpen", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Warning.
-        /// </summary>
-        internal static string Warning {
-            get {
-                return ResourceManager.GetString("Warning", resourceCulture);
             }
         }
     }
