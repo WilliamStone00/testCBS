@@ -81,25 +81,25 @@ namespace CBS.BusinessService
 
             // --- Denominations (filter zeros) ---
             var denominations = new List<DenominationDS>
-    {
-        new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "10000 Note", Quantity = paymentReceipt.Note10000, Value = 10000m * paymentReceipt.Note10000, DenominationType = "Notes" },
-        new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "5000 Note",  Quantity = paymentReceipt.Note5000,  Value =  5000m * paymentReceipt.Note5000,  DenominationType = "Notes" },
-        new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "2000 Note",  Quantity = paymentReceipt.Note2000,  Value =  2000m * paymentReceipt.Note2000,  DenominationType = "Notes" },
-        new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "1000 Note",  Quantity = paymentReceipt.Note1000,  Value =  1000m * paymentReceipt.Note1000,  DenominationType = "Notes" },
-        new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "500 Note",   Quantity = paymentReceipt.Note500,   Value =   500m * paymentReceipt.Note500,   DenominationType = "Notes" },
+            {
+                new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "10000 Note", Quantity = paymentReceipt.Note10000, Value = 10000m * paymentReceipt.Note10000, DenominationType = "Notes" },
+                new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "5000 Note",  Quantity = paymentReceipt.Note5000,  Value =  5000m * paymentReceipt.Note5000,  DenominationType = "Notes" },
+                new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "2000 Note",  Quantity = paymentReceipt.Note2000,  Value =  2000m * paymentReceipt.Note2000,  DenominationType = "Notes" },
+                new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "1000 Note",  Quantity = paymentReceipt.Note1000,  Value =  1000m * paymentReceipt.Note1000,  DenominationType = "Notes" },
+                new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "500 Note",   Quantity = paymentReceipt.Note500,   Value =   500m * paymentReceipt.Note500,   DenominationType = "Notes" },
 
-        new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "500 Coin", Quantity = paymentReceipt.Coin500, Value = 500m * paymentReceipt.Coin500, DenominationType = "Coins" },
-        new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "350 Coin", Quantity = paymentReceipt.Coin350, Value = 350m * paymentReceipt.Coin350, DenominationType = "Coins" },
-        new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "250 Coin", Quantity = paymentReceipt.Coin250, Value = 250m * paymentReceipt.Coin250, DenominationType = "Coins" },
-        new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "200 Coin", Quantity = paymentReceipt.Coin200, Value = 200m * paymentReceipt.Coin200, DenominationType = "Coins" },
-        new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "150 Coin", Quantity = paymentReceipt.Coin150, Value = 150m * paymentReceipt.Coin150, DenominationType = "Coins" },
-        new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "100 Coin", Quantity = paymentReceipt.Coin100, Value = 100m * paymentReceipt.Coin100, DenominationType = "Coins" },
-        new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "50 Coin",  Quantity = paymentReceipt.Coin50,  Value =  50m * paymentReceipt.Coin50,  DenominationType = "Coins" },
-        new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "25 Coin",  Quantity = paymentReceipt.Coin25,  Value =  25m * paymentReceipt.Coin25,  DenominationType = "Coins" },
-        new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "10 Coin",  Quantity = paymentReceipt.Coin10,  Value =  10m * paymentReceipt.Coin10,  DenominationType = "Coins" },
-        new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "5 Coin",   Quantity = paymentReceipt.Coin5,   Value =   5m * paymentReceipt.Coin5,   DenominationType = "Coins" },
-        new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "1 Coin",   Quantity = paymentReceipt.Coin1,   Value =   1m * paymentReceipt.Coin1,   DenominationType = "Coins" }
-    }
+                new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "500 Coin", Quantity = paymentReceipt.Coin500, Value = 500m * paymentReceipt.Coin500, DenominationType = "Coins" },
+                new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "350 Coin", Quantity = paymentReceipt.Coin350, Value = 350m * paymentReceipt.Coin350, DenominationType = "Coins" },
+                new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "250 Coin", Quantity = paymentReceipt.Coin250, Value = 250m * paymentReceipt.Coin250, DenominationType = "Coins" },
+                new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "200 Coin", Quantity = paymentReceipt.Coin200, Value = 200m * paymentReceipt.Coin200, DenominationType = "Coins" },
+                new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "150 Coin", Quantity = paymentReceipt.Coin150, Value = 150m * paymentReceipt.Coin150, DenominationType = "Coins" },
+                new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "100 Coin", Quantity = paymentReceipt.Coin100, Value = 100m * paymentReceipt.Coin100, DenominationType = "Coins" },
+                new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "50 Coin",  Quantity = paymentReceipt.Coin50,  Value =  50m * paymentReceipt.Coin50,  DenominationType = "Coins" },
+                new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "25 Coin",  Quantity = paymentReceipt.Coin25,  Value =  25m * paymentReceipt.Coin25,  DenominationType = "Coins" },
+                new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "10 Coin",  Quantity = paymentReceipt.Coin10,  Value =  10m * paymentReceipt.Coin10,  DenominationType = "Coins" },
+                new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "5 Coin",   Quantity = paymentReceipt.Coin5,   Value =   5m * paymentReceipt.Coin5,   DenominationType = "Coins" },
+                new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "1 Coin",   Quantity = paymentReceipt.Coin1,   Value =   1m * paymentReceipt.Coin1,   DenominationType = "Coins" }
+            }
             .Where(d => d.Value > 0)
             .ToList();
 

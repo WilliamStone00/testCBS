@@ -60,6 +60,136 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
         public string  Year { get; set; }
     }
 
+    public class TransactionStaement
+    {
+        // Coins
+        public int Coin1 { get; set; }
+        public int Coin5 { get; set; }
+        public int Coin10 { get; set; }
+        public int Coin25 { get; set; }
+        public int Coin50 { get; set; }
+        public int Coin100 { get; set; }
+        public int Coin500 { get; set; }
+
+        // Notes
+        public int Note500 { get; set; }
+        public int Note1000 { get; set; }
+        public int Note2000 { get; set; }
+        public int Note5000 { get; set; }
+        public int Note10000 { get; set; }
+
+        // Amounts
+        public decimal Amount { get; set; }
+        public decimal OriginalDepositAmount { get; set; }
+        public decimal Debit { get; set; }
+        public decimal Credit { get; set; }
+        public decimal Tax { get; set; }
+        public decimal PreviousBalance { get; set; }
+        public decimal SourceBranchCommission { get; set; }
+        public decimal DestinationBranchCommission { get; set; }
+        public decimal Balance { get; set; }
+        public decimal Fee { get; set; }
+        public decimal Charges { get; set; }
+        public decimal ClosingBalance { get; set; }
+        public string OpeningBalance { get; set; }
+
+        // Transaction info
+        public string AccountNumber { get; set; }
+        public string TransactionType { get; set; }
+        public string OperationType { get; set; }
+        public string Status { get; set; }
+        public string TransactionRef { get; set; }
+        public string Reference { get; set; }
+        public string Representative { get; set; }
+        public DateTime TransactionDate { get; set; }
+
+        // Branch
+        public string SendingBranch { get; set; }
+        public string RecievingBranch { get; set; }
+        public string BranchName { get; set; }
+        public string BranchCode { get; set; }
+        public string BranchAddress { get; set; }
+        public string BranchTelephone { get; set; }
+
+        // People
+        public string SenderName { get; set; }
+        public string RecieverName { get; set; }
+        public string DepositorName { get; set; }
+        public string DepositorIDNumber { get; set; }
+        public string DepositerTelephone { get; set; }
+        public string DepositorIDIssueDate { get; set; }
+        public string DepositorIDExpiryDate { get; set; }
+        public string DepositorIDNumberPlaceOfIssue { get; set; }
+        public string DepositerNote { get; set; }
+        public bool IsDepositDoneByAccountOwner { get; set; }
+
+        // Inter-branch
+        public bool IsInterBrachOperation { get; set; }
+        public string InterBrachOperation { get; set; }
+
+        // Product / Fees
+        public string ProductName { get; set; }
+        public string FeeType { get; set; }
+        public string SourceType { get; set; }
+
+        // Cashier
+        public string TellerName { get; set; }
+        public string CashierName { get; set; }
+
+        // Organization
+        public string Logo { get; set; }
+        public string HeadOfficeName { get; set; }
+        public string HeadOfficeAddress { get; set; }
+        public string HeadOfficeTelephone { get; set; }
+        public string HeadOfficeEmail { get; set; }
+        public string HeadOfficeWebSite { get; set; }
+        public string HeadOfficeInitial { get; set; }
+        public string HeadOfficeCode { get; set; }
+
+        // Account / Customer
+        public string AccountType { get; set; }
+        public string AccountName { get; set; }
+        public string CustomerName { get; set; }
+        public string CustomerId { get; set; }
+
+        // Address
+        public string Address { get; set; }
+        public string Town { get; set; }
+        public string Village { get; set; }
+        public string Country { get; set; }
+
+        // Misc
+        public string ExpireDate { get; set; }
+        public string DeliveryDate { get; set; }
+        public string Telephone { get; set; }
+        public string Key { get; set; }
+        public string BarCode { get; set; }
+        public string AmountInWord { get; set; }
+        public string ReceiptTitle { get; set; }
+        public string Description { get; set; }
+
+        // Report
+        public string ReportTitle { get; set; }
+        public string Year { get; set; }
+        public string PrintedBy { get; set; }
+        public string Printedfrom { get; set; }
+        public string PrintedTo { get; set; }
+        public string PrintedOn { get; set; }
+        public string BalanceasOf { get; set; }
+        public string TotalOperation { get; set; }
+        public string TotalDebit { get; set; }
+        public string TotalCredit { get; set; }
+
+        // Date / Time (string as in XSD)
+        public DateTime Date { get; set; }
+        public DateTime Time { get; set; }
+
+        // Identification
+        public string CNI { get; set; }
+        public string Currreccy { get; set; }
+    }
+
+
     public class MemberSituationRow
     {
         // Header Information
@@ -639,12 +769,13 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
             public string TransactionReference { get; set; }
             public string Operation { get; set; } // e.g., "BulkOperationTransfer"
             public string Note { get; set; }
-
-            public string CreatedDate { get; set; } // Keeping as string to parse manually if format varies
+            public string Logi { get; set; }
+            public DateTime CreatedDate { get; set; } // Keeping as string to parse manually if format varies
             public string CreatedBy { get; set; }
 
-            // Account & Customer Link
-            public string AccountNumber { get; set; }
+
+        // Account & Customer Link
+        public string AccountNumber { get; set; }
             public string CustomerId { get; set; }
 
             // Representative Info
@@ -652,12 +783,12 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
             public string DepositerTelephone { get; set; }
 
             // Nested Objects
-            public Branch Branch { get; set; }
+            public Branchs Branch { get; set; }
             public Account Account { get; set; }
         }
 
         // 3. Branch Info
-        public class Branch
+        public class Branchs
         {
             public string Name { get; set; }
             public string BranchCode { get; set; }
