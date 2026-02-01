@@ -117,49 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ActiveStatus" xml:space="preserve">
-    <value>Active status</value>
+  <data name="Actions" xml:space="preserve">
+    <value>Actions</value>
   </data>
-  <data name="Alert" xml:space="preserve">
-    <value>Alert</value>
+  <data name="ANDROIDVERSIONLISTING" xml:space="preserve">
+    <value>ANDROID VERSION LISTING</value>
   </data>
-  <data name="AlertProfile" xml:space="preserve">
-    <value>Alert profile</value>
+  <data name="APKURL" xml:space="preserve">
+    <value>APK URL</value>
   </data>
-  <data name="EmailNotification" xml:space="preserve">
-    <value>Email notification</value>
+  <data name="AppCode" xml:space="preserve">
+    <value>App code</value>
   </data>
-  <data name="IsSuperAdmin" xml:space="preserve">
-    <value>Is super admin</value>
+  <data name="ApplicationName" xml:space="preserve">
+    <value>Application name</value>
   </data>
-  <data name="Language" xml:space="preserve">
-    <value>Language</value>
+  <data name="Environment" xml:space="preserve">
+    <value>Environment</value>
   </data>
-  <data name="Msisdn" xml:space="preserve">
-    <value>Msisdn</value>
+  <data name="NoAndroidVersionsHaveBeenConfigured" xml:space="preserve">
+    <value>No Android versions have been configured yet</value>
   </data>
-  <data name="Name" xml:space="preserve">
-    <value>Name</value>
+  <data name="Version" xml:space="preserve">
+    <value>Version</value>
   </data>
-  <data name="NotificationLanguage" xml:space="preserve">
-    <value>notificationLanguage</value>
-  </data>
-  <data name="SelectLanguage" xml:space="preserve">
-    <value>Select language</value>
-  </data>
-  <data name="SelectService" xml:space="preserve">
-    <value>Select service</value>
-  </data>
-  <data name="SendMail" xml:space="preserve">
-    <value>Send mail</value>
-  </data>
-  <data name="SendSms" xml:space="preserve">
-    <value>Send sms</value>
-  </data>
-  <data name="Service" xml:space="preserve">
-    <value>Service</value>
-  </data>
-  <data name="SmsNotification" xml:space="preserve">
-    <value>Sms notification</value>
+  <data name="VersionStatus" xml:space="preserve">
+    <value>Version status</value>
   </data>
 </root>

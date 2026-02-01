@@ -22,14 +22,14 @@ namespace Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Web.Application.StronglyTypedResourceProxyBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class GlobalAlertProfile {
+    internal class AndriodAppVersioning_Index {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal GlobalAlertProfile() {
+        internal AndriodAppVersioning_Index() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Resources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Resources.GlobalAlertProfile", global::System.Reflection.Assembly.Load("App_GlobalResources"));
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Resources.AndriodAppVersioning_Index", global::System.Reflection.Assembly.Load("App_GlobalResources"));
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,137 +61,101 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Active status.
+        ///   Looks up a localized string similar to Add new version.
         /// </summary>
-        internal static string ActiveStatus {
+        internal static string AddNewVersion {
             get {
-                return ResourceManager.GetString("ActiveStatus", resourceCulture);
+                return ResourceManager.GetString("AddNewVersion", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Alert.
+        ///   Looks up a localized string similar to Add version.
         /// </summary>
-        internal static string Alert {
+        internal static string AddVersion {
             get {
-                return ResourceManager.GetString("Alert", resourceCulture);
+                return ResourceManager.GetString("AddVersion", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Alert profile.
+        ///   Looks up a localized string similar to ANDROID VERSION DETAILS.
         /// </summary>
-        internal static string AlertProfile {
+        internal static string ANDROIDVERSIONDETAILS {
             get {
-                return ResourceManager.GetString("AlertProfile", resourceCulture);
+                return ResourceManager.GetString("ANDROIDVERSIONDETAILS", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Email notification.
+        ///   Looks up a localized string similar to Android Version Management.
         /// </summary>
-        internal static string EmailNotification {
+        internal static string AndroidVersionManagement {
             get {
-                return ResourceManager.GetString("EmailNotification", resourceCulture);
+                return ResourceManager.GetString("AndroidVersionManagement", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Is super admin.
+        ///   Looks up a localized string similar to Ensure version names follow semantic versioning.
         /// </summary>
-        internal static string IsSuperAdmin {
+        internal static string EnsureVersionNamesFollowSemanticVersioning {
             get {
-                return ResourceManager.GetString("IsSuperAdmin", resourceCulture);
+                return ResourceManager.GetString("EnsureVersionNamesFollowSemanticVersioning", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Language.
+        ///   Looks up a localized string similar to Manage all Android version releases and configurations. Use the options below to view, add, or update versions.
         /// </summary>
-        internal static string Language {
+        internal static string ManageAllAndroidVersionReleases {
             get {
-                return ResourceManager.GetString("Language", resourceCulture);
+                return ResourceManager.GetString("ManageAllAndroidVersionReleases", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Msisdn.
+        ///   Looks up a localized string similar to Only authorized personnel can update or remove versions.
         /// </summary>
-        internal static string Msisdn {
+        internal static string OnlyAuthorizedPersonnelCanUpdate {
             get {
-                return ResourceManager.GetString("Msisdn", resourceCulture);
+                return ResourceManager.GetString("OnlyAuthorizedPersonnelCanUpdate", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Name.
+        ///   Looks up a localized string similar to Provide a valid APK URL for downloading the Android app.
         /// </summary>
-        internal static string Name {
+        internal static string ProvideAValidAPKURL {
             get {
-                return ResourceManager.GetString("Name", resourceCulture);
+                return ResourceManager.GetString("ProvideAValidAPKURL", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to notificationLanguage.
+        ///   Looks up a localized string similar to TIPS.
         /// </summary>
-        internal static string NotificationLanguage {
+        internal static string TIPS {
             get {
-                return ResourceManager.GetString("NotificationLanguage", resourceCulture);
+                return ResourceManager.GetString("TIPS", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select language.
+        ///   Looks up a localized string similar to View details and manage Android versions efficiently.
         /// </summary>
-        internal static string SelectLanguage {
+        internal static string ViewDetailsAndManageAndroidVersions {
             get {
-                return ResourceManager.GetString("SelectLanguage", resourceCulture);
+                return ResourceManager.GetString("ViewDetailsAndManageAndroidVersions", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select service.
+        ///   Looks up a localized string similar to View versions.
         /// </summary>
-        internal static string SelectService {
+        internal static string ViewVersions {
             get {
-                return ResourceManager.GetString("SelectService", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Send mail.
-        /// </summary>
-        internal static string SendMail {
-            get {
-                return ResourceManager.GetString("SendMail", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Send sms.
-        /// </summary>
-        internal static string SendSms {
-            get {
-                return ResourceManager.GetString("SendSms", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Service.
-        /// </summary>
-        internal static string Service {
-            get {
-                return ResourceManager.GetString("Service", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Sms notification.
-        /// </summary>
-        internal static string SmsNotification {
-            get {
-                return ResourceManager.GetString("SmsNotification", resourceCulture);
+                return ResourceManager.GetString("ViewVersions", resourceCulture);
             }
         }
     }

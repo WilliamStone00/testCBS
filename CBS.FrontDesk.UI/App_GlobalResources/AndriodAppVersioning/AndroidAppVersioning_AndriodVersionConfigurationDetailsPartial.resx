@@ -117,49 +117,88 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ActiveStatus" xml:space="preserve">
-    <value>Active status</value>
+  <data name="Active" xml:space="preserve">
+    <value>Active</value>
   </data>
-  <data name="Alert" xml:space="preserve">
-    <value>Alert</value>
+  <data name="Address" xml:space="preserve">
+    <value>Address</value>
   </data>
-  <data name="AlertProfile" xml:space="preserve">
-    <value>Alert profile</value>
+  <data name="Amount" xml:space="preserve">
+    <value>Amount</value>
   </data>
-  <data name="EmailNotification" xml:space="preserve">
-    <value>Email notification</value>
+  <data name="AuthorizedPersons" xml:space="preserve">
+    <value>Authorized persons</value>
   </data>
-  <data name="IsSuperAdmin" xml:space="preserve">
-    <value>Is super admin</value>
+  <data name="BranchCode" xml:space="preserve">
+    <value>Branch code</value>
   </data>
-  <data name="Language" xml:space="preserve">
-    <value>Language</value>
+  <data name="BranchID" xml:space="preserve">
+    <value>Branch id</value>
   </data>
-  <data name="Msisdn" xml:space="preserve">
-    <value>Msisdn</value>
+  <data name="CurrentBalance" xml:space="preserve">
+    <value>Current balance</value>
+  </data>
+  <data name="Denominations" xml:space="preserve">
+    <value>Denominations</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="Dimensions" xml:space="preserve">
+    <value>Dimensions</value>
+  </data>
+  <data name="DoneBy" xml:space="preserve">
+    <value>Done by</value>
+  </data>
+  <data name="Inactive" xml:space="preserve">
+    <value>Inactive</value>
+  </data>
+  <data name="IsActive" xml:space="preserve">
+    <value>Is active</value>
+  </data>
+  <data name="LastOperation" xml:space="preserve">
+    <value>LastOperation</value>
+  </data>
+  <data name="LastOperationAmount" xml:space="preserve">
+    <value>LastOperationAmount</value>
+  </data>
+  <data name="Location" xml:space="preserve">
+    <value>Location</value>
+  </data>
+  <data name="MaximumCapacity" xml:space="preserve">
+    <value>Maximum capacity</value>
   </data>
   <data name="Name" xml:space="preserve">
     <value>Name</value>
   </data>
-  <data name="NotificationLanguage" xml:space="preserve">
-    <value>notificationLanguage</value>
+  <data name="NoAuthorizedPersons" xml:space="preserve">
+    <value>No authorized persons</value>
   </data>
-  <data name="SelectLanguage" xml:space="preserve">
-    <value>Select language</value>
+  <data name="NoOperationsPerformed" xml:space="preserve">
+    <value>No operations performed</value>
   </data>
-  <data name="SelectService" xml:space="preserve">
-    <value>Select service</value>
+  <data name="OperationType" xml:space="preserve">
+    <value>Operation type</value>
   </data>
-  <data name="SendMail" xml:space="preserve">
-    <value>Send mail</value>
+  <data name="PreviousBalance" xml:space="preserve">
+    <value>Previous balance</value>
   </data>
-  <data name="SendSms" xml:space="preserve">
-    <value>Send sms</value>
+  <data name="Reference" xml:space="preserve">
+    <value>Reference</value>
   </data>
-  <data name="Service" xml:space="preserve">
-    <value>Service</value>
+  <data name="VaultDetails" xml:space="preserve">
+    <value>Vault details</value>
   </data>
-  <data name="SmsNotification" xml:space="preserve">
-    <value>Sms notification</value>
+  <data name="VaultID" xml:space="preserve">
+    <value>Vault id</value>
+  </data>
+  <data name="VaultInformations" xml:space="preserve">
+    <value>Vault Informations</value>
+  </data>
+  <data name="VaultOperations" xml:space="preserve">
+    <value>Vault operations</value>
+  </data>
+  <data name="ViewMore" xml:space="preserve">
+    <value>View more</value>
   </data>
 </root>

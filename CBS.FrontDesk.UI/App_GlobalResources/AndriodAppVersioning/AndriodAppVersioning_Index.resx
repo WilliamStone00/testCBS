@@ -117,49 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ActiveStatus" xml:space="preserve">
-    <value>Active status</value>
+  <data name="AddNewVersion" xml:space="preserve">
+    <value>Add new version</value>
   </data>
-  <data name="Alert" xml:space="preserve">
-    <value>Alert</value>
+  <data name="AddVersion" xml:space="preserve">
+    <value>Add version</value>
   </data>
-  <data name="AlertProfile" xml:space="preserve">
-    <value>Alert profile</value>
+  <data name="ANDROIDVERSIONDETAILS" xml:space="preserve">
+    <value>ANDROID VERSION DETAILS</value>
   </data>
-  <data name="EmailNotification" xml:space="preserve">
-    <value>Email notification</value>
+  <data name="AndroidVersionManagement" xml:space="preserve">
+    <value>Android Version Management</value>
   </data>
-  <data name="IsSuperAdmin" xml:space="preserve">
-    <value>Is super admin</value>
+  <data name="EnsureVersionNamesFollowSemanticVersioning" xml:space="preserve">
+    <value>Ensure version names follow semantic versioning</value>
   </data>
-  <data name="Language" xml:space="preserve">
-    <value>Language</value>
+  <data name="ManageAllAndroidVersionReleases" xml:space="preserve">
+    <value>Manage all Android version releases and configurations. Use the options below to view, add, or update versions</value>
   </data>
-  <data name="Msisdn" xml:space="preserve">
-    <value>Msisdn</value>
+  <data name="OnlyAuthorizedPersonnelCanUpdate" xml:space="preserve">
+    <value>Only authorized personnel can update or remove versions</value>
   </data>
-  <data name="Name" xml:space="preserve">
-    <value>Name</value>
+  <data name="ProvideAValidAPKURL" xml:space="preserve">
+    <value>Provide a valid APK URL for downloading the Android app</value>
   </data>
-  <data name="NotificationLanguage" xml:space="preserve">
-    <value>notificationLanguage</value>
+  <data name="TIPS" xml:space="preserve">
+    <value>TIPS</value>
   </data>
-  <data name="SelectLanguage" xml:space="preserve">
-    <value>Select language</value>
+  <data name="ViewDetailsAndManageAndroidVersions" xml:space="preserve">
+    <value>View details and manage Android versions efficiently</value>
   </data>
-  <data name="SelectService" xml:space="preserve">
-    <value>Select service</value>
-  </data>
-  <data name="SendMail" xml:space="preserve">
-    <value>Send mail</value>
-  </data>
-  <data name="SendSms" xml:space="preserve">
-    <value>Send sms</value>
-  </data>
-  <data name="Service" xml:space="preserve">
-    <value>Service</value>
-  </data>
-  <data name="SmsNotification" xml:space="preserve">
-    <value>Sms notification</value>
+  <data name="ViewVersions" xml:space="preserve">
+    <value>View versions</value>
   </data>
 </root>

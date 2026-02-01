@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,49 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ActiveStatus" xml:space="preserve">
-    <value>Active status</value>
+  <data name="UpdateLogo" xml:space="preserve">
+    <value>Mettre à jour le logo</value>
   </data>
-  <data name="Alert" xml:space="preserve">
-    <value>Alert</value>
-  </data>
-  <data name="AlertProfile" xml:space="preserve">
-    <value>Alert profile</value>
-  </data>
-  <data name="EmailNotification" xml:space="preserve">
-    <value>Email notification</value>
-  </data>
-  <data name="IsSuperAdmin" xml:space="preserve">
-    <value>Is super admin</value>
-  </data>
-  <data name="Language" xml:space="preserve">
-    <value>Language</value>
-  </data>
-  <data name="Msisdn" xml:space="preserve">
-    <value>Msisdn</value>
+  <data name="Tel" xml:space="preserve">
+    <value>Tél</value>
   </data>
   <data name="Name" xml:space="preserve">
-    <value>Name</value>
+    <value>Nom</value>
   </data>
-  <data name="NotificationLanguage" xml:space="preserve">
-    <value>notificationLanguage</value>
+  <data name="Initial" xml:space="preserve">
+    <value>Initiale</value>
   </data>
-  <data name="SelectLanguage" xml:space="preserve">
-    <value>Select language</value>
+  <data name="Edit" xml:space="preserve">
+    <value>Éditer</value>
   </data>
-  <data name="SelectService" xml:space="preserve">
-    <value>Select service</value>
+  <data name="Code" xml:space="preserve">
+    <value>Code</value>
   </data>
-  <data name="SendMail" xml:space="preserve">
-    <value>Send mail</value>
-  </data>
-  <data name="SendSms" xml:space="preserve">
-    <value>Send sms</value>
-  </data>
-  <data name="Service" xml:space="preserve">
-    <value>Service</value>
-  </data>
-  <data name="SmsNotification" xml:space="preserve">
-    <value>Sms notification</value>
+  <data name="Action" xml:space="preserve">
+    <value>Action</value>
   </data>
 </root>

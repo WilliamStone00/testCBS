@@ -1034,19 +1034,74 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AccountOpeningRulePerBranch_Index.fr.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\AffiliateAccount\AffiliateAccount.Designer.cs" />
+    <Compile Include="App_GlobalResources\AffiliateAccount\AffiliateAccount1.designer.cs" />
+    <Compile Include="App_GlobalResources\AffiliateAccount\AffiliateAccount2.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AffiliateAccount.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AffiliateToBranchFallback\AffiliateToBranchFallback.Designer.cs" />
+    <Compile Include="App_GlobalResources\AffiliateToBranchFallback\AffiliateToBranchFallback1.designer.cs" />
+    <Compile Include="App_GlobalResources\AffiliateToBranchFallback\AffiliateToBranchFallback2.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AffiliateToBranchFallback.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Affiliate\Affiliate1.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Affiliate.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\AlertProfile\GlobalAlertProfile.fr.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalAlertProfile.fr.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning_Create.Designer.cs" />
-    <Compile Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning_Data.Designer.cs" />
-    <Compile Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning_Index.Designer.cs" />
-    <Compile Include="App_GlobalResources\AndriodAppVersioning\AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.Designer.cs" />
+    <Compile Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning1.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AndriodAppVersioning.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning_Create.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AndriodAppVersioning_Create.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning_Data.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AndriodAppVersioning_Data.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning_Index.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AndriodAppVersioning_Index.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AndriodAppVersioning\AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\APIKey\ApiKeyRessource1.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ApiKeyRessource.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\BankingOperations\GlobalBankingOperations.fr.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalBankingOperations.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Bank\GlobalBankData.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalBankData.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Bank\GlobalBankData.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalBankData.fr.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\BudgetManagement\GlobalBudgetManagement.fr.designer.cs">
       <AutoGen>True</AutoGen>
@@ -4070,16 +4125,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalBank.fr.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\Bank\GlobalBankData.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>GlobalBankData.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\Bank\GlobalBankData.fr.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>GlobalBankData.fr.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\BranchManagement\GlobalBranchManagement.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -7836,23 +7881,6 @@
     <Content Include="Content\bootstrap-grid.rtl.css.map" />
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
-    <Content Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning_Create.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>AndriodAppVersioning_Create1.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning_Data.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>AndriodAppVersioning_Data1.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning_Index.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>AndriodAppVersioning_Index1.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\AndriodAppVersioning\AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial1.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\AccountingConfiguration.zip" />
     <Content Include="AppFiles\ManualDailyCollection\Manualdaillycollectiontemplete.xlsx" />
     <Content Include="AppFiles\AffiliateAccountUpload\BAPCCUL_ACCOUNTS2.xlsx" />
     <Content Include="AppFiles\AffiliateAccountUpload\SampleBalanceSheet2.xlsx" />
@@ -7865,6 +7893,50 @@
     <Content Include="App_GlobalResources\Login\GlobalLogin.fr.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalLogin.fr.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AndriodAppVersioning1.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning_Create.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AndriodAppVersioning_Create.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning_Data.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AndriodAppVersioning_Data.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning_Index.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AndriodAppVersioning_Index.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AndriodAppVersioning\AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Bank\GlobalBankData.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalBankData.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Bank\GlobalBankData.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalBankData.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Affiliate\Affiliate.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Affiliate1.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AffiliateAccount\AffiliateAccount.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AffiliateAccount2.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AffiliateToBranchFallback\AffiliateToBranchFallback.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AffiliateToBranchFallback2.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\APIKey\ApiKeyRessource.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>ApiKeyRessource1.designer.cs</LastGenOutput>
     </Content>
     <None Include="AppFiles\Accountingv2Reporting\DataSets\AccountingV2DS.xsd">
       <SubType>Designer</SubType>
@@ -8285,17 +8357,9 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalBank.Designer.cs</LastGenOutput>
     </Content>
-    <Content Include="App_GlobalResources\Bank\GlobalBankData.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>GlobalBankData.Designer.cs</LastGenOutput>
-    </Content>
     <Content Include="App_GlobalResources\Bank\GlobalBank.fr.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalBank.fr.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\Bank\GlobalBankData.fr.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>GlobalBankData.fr.designer.cs</LastGenOutput>
     </Content>
     <Content Include="App_GlobalResources\AccountCategory\Globals_Update.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
