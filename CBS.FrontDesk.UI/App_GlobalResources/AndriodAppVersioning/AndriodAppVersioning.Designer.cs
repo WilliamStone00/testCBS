@@ -22,14 +22,14 @@ namespace Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Web.Application.StronglyTypedResourceProxyBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class AndriodAppVersioning_Index {
+    internal class AndriodAppVersioning {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal AndriodAppVersioning_Index() {
+        internal AndriodAppVersioning() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Resources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Resources.AndriodAppVersioning_Index", global::System.Reflection.Assembly.Load("App_GlobalResources"));
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Resources.AndriodAppVersioning", global::System.Reflection.Assembly.Load("App_GlobalResources"));
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,20 +61,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add new version.
+        ///   Looks up a localized string similar to Actions.
         /// </summary>
-        internal static string AddNewVersion {
+        internal static string Actions {
             get {
-                return ResourceManager.GetString("AddNewVersion", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Add version.
-        /// </summary>
-        internal static string AddVersion {
-            get {
-                return ResourceManager.GetString("AddVersion", resourceCulture);
+                return ResourceManager.GetString("Actions", resourceCulture);
             }
         }
         
@@ -88,11 +79,65 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ANDROID VERSION LISTING.
+        /// </summary>
+        internal static string ANDROIDVERSIONLISTING {
+            get {
+                return ResourceManager.GetString("ANDROIDVERSIONLISTING", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Android Version Management.
         /// </summary>
         internal static string AndroidVersionManagement {
             get {
                 return ResourceManager.GetString("AndroidVersionManagement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ANDROID VERSION MANAGEMENT.
+        /// </summary>
+        internal static string ANDROIDVERSIONMANAGEMENT_UC {
+            get {
+                return ResourceManager.GetString("ANDROIDVERSIONMANAGEMENT_UC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to APK Download URL.
+        /// </summary>
+        internal static string APKDownloadURL {
+            get {
+                return ResourceManager.GetString("APKDownloadURL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to APK URL.
+        /// </summary>
+        internal static string APKURL {
+            get {
+                return ResourceManager.GetString("APKURL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to App code.
+        /// </summary>
+        internal static string AppCode {
+            get {
+                return ResourceManager.GetString("AppCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to App code.
+        /// </summary>
+        internal static string AppCode1 {
+            get {
+                return ResourceManager.GetString("AppCode1", resourceCulture);
             }
         }
         
@@ -106,11 +151,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enter APK Download URL.
+        /// </summary>
+        internal static string EnterAPKDownloadURL {
+            get {
+                return ResourceManager.GetString("EnterAPKDownloadURL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Manage all Android version releases and configurations. Use the options below to view, add, or update versions.
         /// </summary>
         internal static string ManageAllAndroidVersionReleases {
             get {
                 return ResourceManager.GetString("ManageAllAndroidVersionReleases", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Android versions have been configured yet.
+        /// </summary>
+        internal static string NoAndroidVersionsHaveBeenConfigured {
+            get {
+                return ResourceManager.GetString("NoAndroidVersionsHaveBeenConfigured", resourceCulture);
             }
         }
         
@@ -133,11 +196,47 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to TIPS.
+        ///   Looks up a localized string similar to Secret code.
         /// </summary>
-        internal static string TIPS {
+        internal static string SecretCode {
             get {
-                return ResourceManager.GetString("TIPS", resourceCulture);
+                return ResourceManager.GetString("SecretCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vault details.
+        /// </summary>
+        internal static string VaultDetails {
+            get {
+                return ResourceManager.GetString("VaultDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vault id.
+        /// </summary>
+        internal static string VaultID {
+            get {
+                return ResourceManager.GetString("VaultID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vault Informations.
+        /// </summary>
+        internal static string VaultInformations {
+            get {
+                return ResourceManager.GetString("VaultInformations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vault operations.
+        /// </summary>
+        internal static string VaultOperations {
+            get {
+                return ResourceManager.GetString("VaultOperations", resourceCulture);
             }
         }
         
@@ -147,15 +246,6 @@ namespace Resources {
         internal static string ViewDetailsAndManageAndroidVersions {
             get {
                 return ResourceManager.GetString("ViewDetailsAndManageAndroidVersions", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to View versions.
-        /// </summary>
-        internal static string ViewVersions {
-            get {
-                return ResourceManager.GetString("ViewVersions", resourceCulture);
             }
         }
     }

@@ -120,44 +120,8 @@
   <data name="ActiveStatus" xml:space="preserve">
     <value>Statut actif</value>
   </data>
-  <data name="Alert" xml:space="preserve">
-    <value>Alerte</value>
-  </data>
   <data name="AlertProfile" xml:space="preserve">
     <value>Profil d'alerte</value>
-  </data>
-  <data name="EmailNotification" xml:space="preserve">
-    <value>Notification par e-mail</value>
-  </data>
-  <data name="IsSuperAdmin" xml:space="preserve">
-    <value>Est super administrateur</value>
-  </data>
-  <data name="Language" xml:space="preserve">
-    <value>Langue</value>
-  </data>
-  <data name="Msisdn" xml:space="preserve">
-    <value>Msisdn</value>
-  </data>
-  <data name="Name" xml:space="preserve">
-    <value>Nom</value>
-  </data>
-  <data name="NotificationLanguage" xml:space="preserve">
-    <value>Langue de notification</value>
-  </data>
-  <data name="SelectLanguage" xml:space="preserve">
-    <value>Sélectionner la langue</value>
-  </data>
-  <data name="SelectService" xml:space="preserve">
-    <value>Sélectionner le service</value>
-  </data>
-  <data name="SendMail" xml:space="preserve">
-    <value>Envoyer un e-mail</value>
-  </data>
-  <data name="SendSms" xml:space="preserve">
-    <value>Envoyer un SMS</value>
-  </data>
-  <data name="Service" xml:space="preserve">
-    <value>Service</value>
   </data>
   <data name="SmsNotification" xml:space="preserve">
     <value>Notification par SMS</value>

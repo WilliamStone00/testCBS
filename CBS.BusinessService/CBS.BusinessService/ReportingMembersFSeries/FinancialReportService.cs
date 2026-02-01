@@ -32,32 +32,15 @@ namespace CBS.BusinessService.ReportingMembersFSeries
 
                 _transactionApiHelper = new ApiCallerHelper(transactionUrl);
                 _loanApiHelper = new ApiCallerHelper(loanUrl);
-               // _accountApiHelper = new ApiCallerHelper(accountUrl);
-              //  _memberApiHelper = new ApiCallerHelper(accountUrl);
-            }
+            // _accountApiHelper = new ApiCallerHelper(accountUrl);
+            //  _memberApiHelper = new ApiCallerHelper(accountUrl);
+        }
 
-        // 1. Account Statement Data
-        //public async Task<List<TransactionHistory>> GetCustomerTransactionsByAccountNumber(ReportParameters parameters)
-        //{
-        //    try
-        //    {
-        //        string endpoint = string.Format(APICallHelper.GetTransactionHistoryByAccountNumber, parameters);
-
-        //        var response = await _transactionApiHelper.GetAsync<ResponseObject<List<TransactionHistory>>>(endpoint);
-        //        return response.ApiResponseData.Data;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Log exception
-        //        throw;
-        //    }
-        //}
-
-        public async Task<List<TransactionRaw>> GetCustomerTransactionsByAccountNumber(string parameters)
+        public async Task<List<TransactionRaw>> GetCustomerTransactionsByAccountNumber(ReportParameters parameters)
         {
             try
             {
-                string endpoint = string.Format(APICallHelper.GetTransactionHistoryByAccountNumber, parameters);
+                string endpoint = string.Format(APICallHelper.GetTransactionHistoryByAccountNumber, parameters.AccountTypeId);
 
                 var response = await _transactionApiHelper.GetAsync<ResponseObject<List<TransactionRaw>>>(endpoint);
                 return response.ApiResponseData.Data;
@@ -68,6 +51,8 @@ namespace CBS.BusinessService.ReportingMembersFSeries
                 throw;
             }
         }
+
+       
 
         //public async Task<ExecutionMessages> GetCustomerTransactionsByAccountNumber(ReportParameters parameters)
         //{
@@ -95,7 +80,7 @@ namespace CBS.BusinessService.ReportingMembersFSeries
         //    return ExecutionMessage;
         //}
 
-           public async Task<MemberSituationData> GetMemberSituationData(string accountTypeId, string loanId, DateTime fromDate, DateTime toDate)
+        public async Task<MemberSituationData> GetMemberSituationData(string accountTypeId, string loanId, DateTime fromDate, DateTime toDate)
             {
                 try
                 {
@@ -224,3 +209,5 @@ namespace CBS.BusinessService.ReportingMembersFSeries
             }
   }      
 }
+
+

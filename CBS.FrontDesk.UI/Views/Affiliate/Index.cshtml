@@ -10,14 +10,14 @@
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-account-multiple-outline me-2"></i>@AccountingV2.AffiliateManagement
+                    <i class="mdi mdi-account-multiple-outline me-2"></i>@Affiliate.Affiliate_Management
                 </h1>
                 <p class="card-text">
-                    @AccountingV2.affiliatetext
+                    @Affiliate.Create_and_manage_affiliates_within_your_organization_Each_affiliate_has_a_unique
                 </p>
                 <div class="alert alert-info mt-3 py-2">
                     <i class="mdi mdi-information-outline me-1"></i>
-                    @AccountingV2.affilliatetext2
+                    @Affiliate.Use_this_section_to_define_and_update_affiliate_details
                 </div>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -28,7 +28,7 @@
 <!-- Tips -->
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> @AccountingV2.Tips</span>
+        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalShared.Tips</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAffiliateTips" aria-expanded="false">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -38,27 +38,27 @@
             <ul>
                 <li>
                     <i class="mdi mdi-pound-box text-success me-2"></i>
-                    <strong>@AccountingV2.Code:</strong>@AccountingV2.codetext1 , <code>BR001</code> or <code>HQ01</code>) @AccountingV2.codetext2 .
+                    <strong>@Affiliate.Account_Number:</strong>@Affiliate.Enter_a_short_unique_identifier (e.g., <code>BR001</code> @GlobalShared.or <code>HQ01</code>) @Affiliate.for_each_affiliate .
                 </li>
                 <li>
                     <i class="mdi mdi-form-textbox text-info me-2"></i>
-                    <strong>@AccountingV2.Name:</strong>@AccountingV2.Nametext1 , <code>@AccountingV2.CentralBranch</code> or <code>@AccountingV2.HeadOffice</code>).
+                    <strong>@GlobalShared.Name:</strong>@Affiliate.Provide_a_descriptive_name (e.g., <code>@GlobalShared.Central_Branch</code> @GlobalShared.or <code>@GlobalShared.HeadOffice</code>).
                 </li>
                 <li>
                     <i class="mdi mdi-toggle-switch text-warning me-2"></i>
-                    <strong>@AccountingV2.IsActive:</strong>@AccountingV2.IsActivetext
+                    <strong>@GlobalShared.IsActive:</strong>@Affiliate.Enable_this_option_if_the_affiliate_is_currently_operational
                 </li>
                 <li>
                     <i class="mdi mdi-office-building-marker text-primary me-2"></i>
-                    <strong>@AccountingV2.IsHeadOffice:</strong>@AccountingV2.IsHeadOfficetext
+                    <strong>@GlobalShared.Is_Head_Office:</strong>@Affiliate.Check_this_box_to_mark_the_affiliate_as_the_main_administrative_or_head_office
                 </li>
                 <li>
                     <i class="mdi mdi-content-save text-secondary me-2"></i>
-                    <strong>@AccountingV2.SaveorUpdate:</strong>@AccountingV2.Click <strong>@AccountingV2.Save</strong>@AccountingV2.affoiliatetext4 <strong>@AccountingV2.Update</strong>@AccountingV2.affiliatetext3
+                    <strong>@GlobalShared.SaveorUpdate:</strong>@GlobalShared.Click <strong>@GlobalShared.Save</strong>@Affiliate.to_create_a_new_affiliate_or <strong>@GlobalShared.Update</strong>@Affiliate.to_modify_existing_details
                 </li>
                 <li>
                     <i class="mdi mdi-refresh text-success me-2"></i>
-                    <strong>@AccountingV2.Reset:</strong>@AccountingV2.resettext
+                    <strong>@GlobalShared.Reset:</strong>@Affiliate.Use_the_reset_button_to_clear_all_inputs_and_start_fresh
                 </li>
             </ul>
         </div>
@@ -81,7 +81,7 @@
                onclick="AddORUpdateGen(null,'datalistingview','_CreateAffiliate','new','Affiliate')"
                class="btn btn-label-secondary btn-sm"
                data-bs-toggle="tooltip" title="Add New Configuration">
-                <i class="mdi mdi-plus mdi-18px"></i> Add
+                <i class="mdi mdi-plus mdi-18px"></i> @GlobalShared.Add
             </a>
         </div>
     </div>

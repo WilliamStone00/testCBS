@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,25 +117,70 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="UpdateLogo" xml:space="preserve">
-    <value>Mettre à jour le logo</value>
+  <data name="Active_Blocks" xml:space="preserve">
+    <value>Active Blocks</value>
   </data>
-  <data name="Tel" xml:space="preserve">
-    <value>Tél</value>
+  <data name="BLACKLISTED_USERS" xml:space="preserve">
+    <value>BLACKLISTED USERS</value>
   </data>
-  <data name="Name" xml:space="preserve">
-    <value>Nom</value>
+  <data name="Blacklisted_Users_LC" xml:space="preserve">
+    <value>Blacklisted Users</value>
   </data>
-  <data name="Initial" xml:space="preserve">
-    <value>Initiale</value>
+  <data name="Blacklisted_User_Details" xml:space="preserve">
+    <value>Blacklisted User Details</value>
   </data>
-  <data name="Edit" xml:space="preserve">
-    <value>Éditer</value>
+  <data name="Blacklist_Configuration" xml:space="preserve">
+    <value>Blacklist Configuration</value>
   </data>
-  <data name="Code" xml:space="preserve">
-    <value>Code</value>
+  <data name="BLACKLIST_USER_IP" xml:space="preserve">
+    <value>BLACKLIST USER / IP</value>
   </data>
-  <data name="Action" xml:space="preserve">
-    <value>Action</value>
+  <data name="Blocked_By" xml:space="preserve">
+    <value>Blocked By</value>
+  </data>
+  <data name="Blocked_IPs" xml:space="preserve">
+    <value>Blocked IPs</value>
+  </data>
+  <data name="Blocked_On" xml:space="preserve">
+    <value>Blocked On</value>
+  </data>
+  <data name="Blocked_User_Locations" xml:space="preserve">
+    <value>Blocked User Locations</value>
+  </data>
+  <data name="Blocking_Details" xml:space="preserve">
+    <value>Blocking Details</value>
+  </data>
+  <data name="Block_Ends" xml:space="preserve">
+    <value>Block Ends</value>
+  </data>
+  <data name="Ensure_IP_or_User_ID_is_accurate_before_applying_a_block" xml:space="preserve">
+    <value>Ensure IP or User ID is accurate before applying a block</value>
+  </data>
+  <data name="Geolocation_Details" xml:space="preserve">
+    <value>Geolocation Details</value>
+  </data>
+  <data name="Manage_users_and_IPs_that_have_been_blocked_due_to_suspicious_or_abusive_behavior" xml:space="preserve">
+    <value>Manage users and IPs that have been blocked due to suspicious or abusive behavior</value>
+  </data>
+  <data name="Monitor_and_analyze_access_control_enforced_by_the_WAF_Apply_filters_below" xml:space="preserve">
+    <value>Monitor and analyze access control enforced by the WAF. Apply filters below to view metrics within the selected date range</value>
+  </data>
+  <data name="Monitor_location_branch_and_timestamp_info_for_investigation" xml:space="preserve">
+    <value>Monitor location, branch, and timestamp info for investigation</value>
+  </data>
+  <data name="No_users_or_IPs_are_currently_blacklisted" xml:space="preserve">
+    <value>No users or IPs are currently blacklisted</value>
+  </data>
+  <data name="Reason_for_Blocking" xml:space="preserve">
+    <value>Reason for Blocking</value>
+  </data>
+  <data name="Recent_Blocked_Users" xml:space="preserve">
+    <value>Recent Blocked Users</value>
+  </data>
+  <data name="Set_a_reasonable_block_duration_long_enough_to_deter_abuse" xml:space="preserve">
+    <value>Set a reasonable block duration — long enough to deter abuse</value>
+  </data>
+  <data name="Unblock_Delete_User_or_IP" xml:space="preserve">
+    <value>Unblock / Delete User or IP</value>
   </data>
 </root>

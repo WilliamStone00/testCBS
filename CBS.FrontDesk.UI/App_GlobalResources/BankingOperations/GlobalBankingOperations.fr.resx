@@ -120,23 +120,11 @@
   <data name="ACCOUNTINGTRANSACTIONREVERSALREQUEST" xml:space="preserve">
     <value>DEMANDE D'INVERSION DE TRANSACTION COMPTABLE</value>
   </data>
-  <data name="Action" xml:space="preserve">
-    <value>Action</value>
-  </data>
-  <data name="ApprovedBy" xml:space="preserve">
-    <value>Approuvé par</value>
-  </data>
-  <data name="ApprovedDate" xml:space="preserve">
-    <value>Date d'approbation</value>
-  </data>
   <data name="ApprovedMessage" xml:space="preserve">
     <value>Message d'approbation</value>
   </data>
   <data name="ApprovedMessageDescription" xml:space="preserve">
     <value>Description du message d'approbation</value>
-  </data>
-  <data name="BackToHome" xml:space="preserve">
-    <value>Retour à l'accueil</value>
   </data>
   <data name="BANKINGOPERATIONSCASHMANAGEMENT" xml:space="preserve">
     <value>OPÉRATIONS BANCAIRES - GESTION DE LA TRÉSORERIE</value>
@@ -203,9 +191,6 @@
   </data>
   <data name="SelectYourDecisionAndClickOnApprovedAccount" xml:space="preserve">
     <value>Sélectionnez votre décision et cliquez sur le bouton d'approbation de la demande pour approuver la demande</value>
-  </data>
-  <data name="Status" xml:space="preserve">
-    <value>Statut</value>
   </data>
   <data name="SuccessfullTransactionReversalRequestApproval" xml:space="preserve">
     <value>Approbation réussie de la demande d'inversion de transaction</value>
@@ -279,12 +264,6 @@
   <data name="EntryType" xml:space="preserve">
     <value>Type d'écriture</value>
   </data>
-  <data name="Amount" xml:space="preserve">
-    <value>Montant</value>
-  </data>
-  <data name="Description" xml:space="preserve">
-    <value>Description</value>
-  </data>
   <data name="ReferenceNumber" xml:space="preserve">
     <value>Numéro de référence</value>
   </data>
@@ -296,15 +275,6 @@
   </data>
   <data name="SelectBookingDirection" xml:space="preserve">
     <value>Sélectionner le sens d'enregistrement</value>
-  </data>
-  <data name="SelectAccount" xml:space="preserve">
-    <value>Sélectionner le compte</value>
-  </data>
-  <data name="AddEntries" xml:space="preserve">
-    <value>Ajouter des écritures</value>
-  </data>
-  <data name="AccountName" xml:space="preserve">
-    <value>Nom du compte</value>
   </data>
   <data name="AddJournalEntries" xml:space="preserve">
     <value>Ajouter des écritures comptables</value>

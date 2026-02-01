@@ -9,52 +9,52 @@
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.name, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.name, "", new { @class = "text-danger" })
-                <label>@GlobalAlertProfile.Name</label>
+                <label>@GlobalShared.Name</label>
             </div>
         </div>
         <div class="col-md-12">
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.msisdn, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.msisdn, "", new { @class = "text-danger" })
-                <label>@GlobalAlertProfile.Msisdn</label>
+                <label>@GlobalShared.Msisdn</label>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.language, new SelectList(ViewBag.Languages, "Text", "Value"), "---"+ @GlobalAlertProfile.SelectLanguage+"---", new { @class = "form-control select2", @search = "true" })
+                @Html.DropDownListFor(m => m.language, new SelectList(ViewBag.Languages, "Text", "Value"), "---"+ GlobalShared.Select_Language+"---", new { @class = "form-control select2", @search = "true" })
                 @Html.ValidationMessageFor(m => m.language, "", new { @class = "text-danger " })
-                <label>@GlobalAlertProfile.Language</label>
+                <label>@GlobalShared.Language</label>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.serviceId, new SelectList(ViewBag.Services, "Text", "Value"), "---"+ @GlobalAlertProfile.SelectService+ "---", new { @class = "form-control select2", @search = "true" })
+                @Html.DropDownListFor(m => m.serviceId, new SelectList(ViewBag.Services, "Text", "Value"), "---"+ GlobalShared.Select_Service+ "---", new { @class = "form-control select2", @search = "true" })
                 @Html.ValidationMessageFor(m => m.serviceId, "", new { @class = "text-danger " })
-                <label>@GlobalAlertProfile.Service</label>
+                <label>@GlobalShared.Service</label>
             </div>
         </div>
         <div class="col-6">
             <div class="form-check">
                 @Html.CheckBoxFor(m => m.sendSMS, new { @class = "form-check-input" })
-                <label class="form-check-label">@GlobalAlertProfile.SendSms</label>
+                <label class="form-check-label">@GlobalShared.SendSms</label>
             </div>
         </div>
         <div class="col-6">
             <div class="form-check">
                 @Html.CheckBoxFor(m => m.sendEmail, new { @class = "form-check-input" })
-                <label class="form-check-label">@GlobalAlertProfile.SendMail</label>
+                <label class="form-check-label">@GlobalShared.SendMail</label>
             </div>
         </div>
         <div class="col-6">
             <div class="form-check">
                 @Html.CheckBoxFor(m => m.isSupperAdmin, new { @class = "form-check-input" })
-                <label class="form-check-label">@GlobalAlertProfile.IsSuperAdmin</label>
+                <label class="form-check-label">@GlobalShared.IsSuperAdmin</label>
             </div>
         </div>
         <div class="col-6">
             <div class="form-check">
                 @Html.CheckBoxFor(m => m.activeStatus, new { @class = "form-check-input" })
-                <label class="form-check-label">@GlobalAlertProfile.ActiveStatus</label>
+                <label class="form-check-label">@GlobalShared.Active_Status</label>
             </div>
         </div>
     </div>
