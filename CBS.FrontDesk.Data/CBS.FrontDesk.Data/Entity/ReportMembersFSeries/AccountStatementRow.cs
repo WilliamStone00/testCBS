@@ -788,48 +788,27 @@ public class FinancialReportResponseDto
     // 3. Updated Transaction Item with MAPPINGS (Crucial!)
     public class TransactionRaw
     {
-        // Map JSON "transactionId" to C# "Id"
-        [JsonProperty("transactionId")]
         public string Id { get; set; }
-
-        [JsonProperty("transactionReference")]
         public string TransactionReference { get; set; }
-
-        [JsonProperty("transactionDate")]
         public DateTime CreatedDate { get; set; }
-
-        // Map JSON "balanceAfter" to C# "Balance"
-        [JsonProperty("balanceAfter")]
         public decimal Balance { get; set; }
-
-        // Map JSON "balanceBefore" to C# "PreviousBalance"
-        [JsonProperty("balanceBefore")]
         public decimal PreviousBalance { get; set; }
-
-        [JsonProperty("debit")]
         public decimal Debit { get; set; }
-
-        [JsonProperty("credit")]
         public decimal Credit { get; set; }
-
-        [JsonProperty("amount")]
         public decimal Amount { get; set; }
-
-        [JsonProperty("operation")]
         public string Operation { get; set; }
-
-        [JsonProperty("note")]
-        public string Note { get; set; }
-
-        [JsonProperty("createdBy")]
+        public string Note { get; set; }  
         public string CreatedBy { get; set; }
-
-        [JsonProperty("accountNumber")]
         public string AccountNumber { get; set; }
-        public string AccountType { get; set; }
-
-        [JsonProperty("depositorName")]
+        public string AccountType { get; set; }    
         public string DepositorName { get; set; }
+        public bool IsDepositDoneByAccountOwner { get; set; }  
+        public string DepositorIDNumber { get; set; }
+        public string DepositorTelephone { get; set; }
+        public string DepositorIDIssueDate { get; set; }
+        public string DepositorIDExpiryDate { get; set; }
+        public string DepositorIDPlaceOfIssue { get; set; }
+        public string DepositorNote { get; set; }
 
         // These fields are NOT in the JSON Transaction object, 
         // so they will remain null. You must handle nulls in your UI logic.
