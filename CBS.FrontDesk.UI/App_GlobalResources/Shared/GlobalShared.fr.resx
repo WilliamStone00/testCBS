@@ -399,6 +399,9 @@
   <data name="OrGoBackToYourPage" xml:space="preserve">
     <value>Ou revenir à votre page</value>
   </data>
+  <data name="Password" xml:space="preserve">
+    <value>Mot de passe</value>
+  </data>
   <data name="Pending" xml:space="preserve">
     <value>En attente</value>
   </data>

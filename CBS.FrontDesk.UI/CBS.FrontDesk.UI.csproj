@@ -1034,15 +1034,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AccountOpeningRulePerBranch_Index.fr.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\AffiliateAccount\AffiliateAccount.Designer.cs" />
-    <Compile Include="App_GlobalResources\AffiliateAccount\AffiliateAccount1.designer.cs" />
     <Compile Include="App_GlobalResources\AffiliateAccount\AffiliateAccount2.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>AffiliateAccount.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\AffiliateToBranchFallback\AffiliateToBranchFallback.Designer.cs" />
-    <Compile Include="App_GlobalResources\AffiliateToBranchFallback\AffiliateToBranchFallback1.designer.cs" />
     <Compile Include="App_GlobalResources\AffiliateToBranchFallback\AffiliateToBranchFallback2.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

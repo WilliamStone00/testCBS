@@ -1924,6 +1924,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetLoanPortfolioSummary = "/api/v1/loans/portfolio/summary";
         public static string GetLoanDelinquencyData = "/api/v1/loans/delinquency";
         public static string GetTransactionHistoryByAccountNumber2 = "/api/v1/Transaction/GetTransactionsByDatesAndAccountNumber";
+        public static string GetTransactionHistoryByAccountNumber3 = "/api/v1/Report/Financial";
 
     }
 }

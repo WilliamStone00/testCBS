@@ -100,10 +100,12 @@ namespace CBS.BusinessService.ReportingMembersFSeries
         #endregion
 
         // 1. Build Account Statement Rows
-        public async Task<List<TransactionStaement>> BuildAccountStatementRows(ReportParameters parameters)
+        public async Task<List<TransactionStaement>> BuildAccountStatementRows(FinancialReportFilter parameters)
         {
             var bra = await GetBranchandbank();
-            var cus = await GetCustomer(parameters.CustomerId);
+            var cus = await GetCustomer(parameters.MemberReference);
+
+            // This now returns the list correctly thanks to the fix above
             var transactions = await _reportService.GetCustomerTransactionsByAccountNumber(parameters);
 
             var rows = new List<TransactionStaement>();
@@ -113,18 +115,18 @@ namespace CBS.BusinessService.ReportingMembersFSeries
             decimal finalBalance = 0;
 
             // ✅ CASE 1: No transactions → header only
-            if (!transactions.Any())
+            if (transactions == null || !transactions.Any())
             {
                 rows.Add(new TransactionStaement
                 {
                     BranchName = GetBranchName(),
                     BranchCode = GetBranchCode(),
                     HeadOfficeName = GetBankName(),
-                    AccountNumber = parameters.AccountTypeId,
+                    AccountNumber = parameters.AccountId ?? parameters.AccountNumber, // Fallback if Id is null
                     Currreccy = "Central African CFA franc",
                     PrintedBy = GetUserFullName(),
                     PrintedOn = DateTime.Now.Year.ToString(),
-                    Telephone = cus.Phone,
+                    Telephone = cus?.Phone ?? "N/A",
                     OpeningBalance = "0"
                 });
 
@@ -134,23 +136,25 @@ namespace CBS.BusinessService.ReportingMembersFSeries
             // ✅ CASE 2: Transactions exist
             foreach (var transaction in transactions)
             {
-                totalDebit += transaction.Debit;
-                totalCredit += transaction.Credit;
+                totalDebit = transaction.summary.TotalDebit;
+                totalCredit = transaction.summary.TotalCredit;
 
-                // 🔑 Use DB running balance
+                // 🔑 Use DB running balance mapped from "balanceAfter"
                 finalBalance = transaction.Balance;
-
+                           
                 rows.Add(new TransactionStaement
                 {
                     // -------- Account / Customer --------
-                    AccountNumber = parameters.AccountTypeId,
-                    AccountName = transaction.Account.AccountName,
-                    CustomerId = cus.CustomerId,
-                    CustomerName = cus.FirstName + " " + cus.LastName,
-                    Telephone = cus.Phone,
+                    AccountNumber = parameters.AccountId ?? transaction.AccountNumber,
+                    // FIX: transaction.Account is NULL in JSON. Use Customer Name or Param.
+                    AccountName = transaction.AccountType ?? "N/A",
+                    CustomerId = cus?.CustomerId ?? "N/A",
+                    CustomerName = cus != null ? $"{cus.FirstName} {cus.LastName}" : "N/A",
+                    Telephone = cus?.Phone ?? "N/A",
                     Currreccy = "Central African CFA franc",
-                     Village=cus.town, 
-                    // -------- Branch /*--------*/
+                    Village = cus?.town ?? "",
+
+                    // -------- Branch --------
                     BranchName = GetBranchName(),
                     BranchCode = GetBranchCode(),
                     HeadOfficeName = GetBankName(),
@@ -162,18 +166,17 @@ namespace CBS.BusinessService.ReportingMembersFSeries
 
                     Description = transaction.Operation,
                     Reference = transaction.TransactionReference,
+                    // FIX: Handle null depositor name
                     Representative = string.IsNullOrWhiteSpace(transaction.DepositorName) ? "N/A" : transaction.DepositorName,
-                    DepositorName = string.IsNullOrWhiteSpace(transaction.DepositorName)
-                        ? "N/A"
-                        : transaction.DepositorName,
+                    DepositorName = string.IsNullOrWhiteSpace(transaction.DepositorName) ? "N/a" : transaction.DepositorName,
 
                     // -------- Amounts --------
                     Debit = transaction.Debit,
                     Credit = transaction.Credit,
                     Balance = transaction.Balance,
-                    OpeningBalance = transaction.Account.OpeningBalance.ToString("N1"),
-                    Logo = PaymentReceiptMapping.GenerateAndSaveBankLogoImage(bra.Bank.LogoUrl, bra.Name),
-
+                    // FIX: Use PreviousBalance from the row instead of transaction.Account.OpeningBalance
+                    OpeningBalance = transaction.summary.OpeningBalance,
+                    Logo = bra != null ? PaymentReceiptMapping.GenerateAndSaveBankLogoImage(bra.Bank?.LogoUrl, bra.Name) : "",
 
                     // -------- Report --------
                     Year = DateTime.Now.Year.ToString(),
@@ -185,17 +188,19 @@ namespace CBS.BusinessService.ReportingMembersFSeries
                     Printedfrom = parameters.DateFrom.ToString("dd/MM/yyyy"),
                     PrintedTo = parameters.DateTo.ToString("dd/MM/yyyy"),
                     CNI = "N/A",
-                    Address = cus.Address,
-                    HeadOfficeAddress = bra.Address
+                    Address = cus?.Address ?? "",
+                    HeadOfficeAddress = bra?.Address ?? "",
+                    ClosingBalance = transaction.summary.ClosingBalance,
+                    BalanceasOf = $"Balance as of {parameters.DateTo:dd/MM/yyyy}: {transaction.summary.ClosingBalance:N1}",
                 });
             }
 
-            // ✅ FINAL STEP: enforce SAME closing balance & balance-as-of
-            foreach (var row in rows)
-            {
-                row.ClosingBalance = finalBalance;
-                row.BalanceasOf = $"Balance as of {parameters.DateTo:dd/MM/yyyy}: {finalBalance:N1}";
-            }
+            //// ✅ FINAL STEP: enforce SAME closing balance & balance-as-of
+            //foreach (var row in rows)
+            //{
+            //    row.ClosingBalance = finalBalance;
+            //    row.BalanceasOf = $"Balance as of {parameters.DateTo:dd/MM/yyyy}: {finalBalance:N1}";
+            //}
 
             return rows;
         }
@@ -203,9 +208,9 @@ namespace CBS.BusinessService.ReportingMembersFSeries
 
 
         // 2. Build Member Situation Rows
-        public async Task<List<MemberSituationRow>> BuildMemberSituationRows(ReportParameters parameters)
+        public async Task<List<MemberSituationRow>> BuildMemberSituationRows(FinancialReportFilter  parameters)
         {
-                var memberData = await _reportService.GetMemberSituationData(parameters.AccountTypeId,
+                var memberData = await _reportService.GetMemberSituationData(parameters.AccountId,
                     parameters.LoanId,
                     parameters.DateFrom,
                     parameters.DateTo);
@@ -256,7 +261,7 @@ namespace CBS.BusinessService.ReportingMembersFSeries
             }
 
             // 3. Build Loan Repayment Rows
-            public async Task<List<LoanRepaymentRow>> BuildLoanRepaymentRows(ReportParameters parameters)
+            public async Task<List<LoanRepaymentRow>> BuildLoanRepaymentRows(FinancialReportFilter parameters)
             {
                 var repaymentData = await _reportService.GetLoanRepaymentData(
                     parameters.LoanId,
@@ -305,7 +310,7 @@ namespace CBS.BusinessService.ReportingMembersFSeries
             }
 
             // 4. Build Loan Situation Rows
-            public async Task<List<LoanSituationRow>> BuildLoanSituationRows(ReportParameters parameters)
+            public async Task<List<LoanSituationRow>> BuildLoanSituationRows(FinancialReportFilter  parameters)
             {
                 var situationData = await _reportService.GetLoanSituationData(
                     parameters.DateFrom,
@@ -349,7 +354,7 @@ namespace CBS.BusinessService.ReportingMembersFSeries
 
                 return rows;
             }         
-            public async Task<List<LoanSituationRow>> BuildAccountSituationRows(ReportParameters parameters)
+            public async Task<List<LoanSituationRow>> BuildAccountSituationRows(FinancialReportFilter  parameters)
             {
                 var situationData = await _reportService.GetAccountSituationData(parameters.AccountId,
                     parameters.DateFrom,
