@@ -764,6 +764,7 @@ public class FinancialReportResponseDto
 
         [JsonProperty("accountStatement")]
         public AccountStatementResponseDto AccountStatement { get; set; }
+        public AccountStatementSummary summary { get; set; }
     }
 
     // 2. Unique Wrapper for the "accountStatement" object
@@ -781,6 +782,7 @@ public class FinancialReportResponseDto
         // This maps the JSON list "accountStatements" to the C# property "Transactions"
         [JsonProperty("accountStatements")]
         public List<TransactionRaw> Transactions { get; set; }
+        public AccountStatementSummary summary { get; set; }
     }
 
     // 3. Updated Transaction Item with MAPPINGS (Crucial!)
@@ -833,7 +835,6 @@ public class FinancialReportResponseDto
         // so they will remain null. You must handle nulls in your UI logic.
         public Branchs Branch { get; set; }
         public Account Account { get; set; }
-        public AccountStatementSummary summary { get; set; }
         public string CustomerId { get; set; }
         public string DepositerTelephone { get; set; }
         public string Currency { get; set; }
@@ -856,6 +857,17 @@ public class FinancialReportResponseDto
         public decimal Balance { get; set; }
         public decimal OpeningBalance { get; set; }
         public decimal ClosingBalance { get; set; }
+    }
+
+    public class AccountStatementSummary
+    {
+        public decimal TotalCredit { get; set; }
+        public decimal TotalDebit { get; set; }
+        public int TransactionsCount { get; set; }
+        public decimal ClosingBalance { get; set; }
+        public string OpeningBalance { get; set; }
+        public decimal YearOpeningBalance { get; set; }
+        public decimal PeriodOpeningBalance { get; set; }
     }
 
     // New API Response Model
@@ -932,16 +944,7 @@ public class FinancialReportResponseDto
         public decimal Balance { get; set; }
     }
 
-    public class AccountStatementSummary
-    {
-        public decimal TotalCredit { get; set; }
-        public decimal TotalDebit { get; set; }
-        public int TransactionsCount { get; set; }
-        public decimal ClosingBalance { get; set; }
-        public string OpeningBalance { get; set; }
-        public decimal YearOpeningBalance { get; set; }
-        public decimal PeriodOpeningBalance { get; set; }
-    }
+   
 
     public class MemberSituationData
     {

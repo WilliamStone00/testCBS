@@ -246,7 +246,7 @@ namespace CBS.FrontDesk.UI.Controllers.Series
 
 
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = "_DataNotFound", string path = null, string serviceOption = null)
-        {
+         {
             try
             {
                 //if (path == "list")

@@ -99,54 +99,59 @@ namespace CBS.BusinessService.ReportingMembersFSeries
 
         #endregion
 
-        // 1. Build Account Statement Rows
-        public async Task<List<TransactionStaement>> BuildAccountStatementRows(FinancialReportFilter parameters)
+        public async Task<List<TransactionStaement>> BuildAccountStatementRows(
+     FinancialReportFilter parameters)
         {
             var bra = await GetBranchandbank();
             var cus = await GetCustomer(parameters.MemberReference);
 
-            // This now returns the list correctly thanks to the fix above
-            var transactions = await _reportService.GetCustomerTransactionsByAccountNumber(parameters);
+            // ✅ Correct call
+            var accountStatement =
+                await _reportService.GetCustomerTransactionsByAccountNumber(parameters);
 
             var rows = new List<TransactionStaement>();
 
-            decimal totalDebit = 0;
-            decimal totalCredit = 0;
-            decimal finalBalance = 0;
+            var transactions = accountStatement?.Transactions ?? new List<TransactionRaw>();
+            var summary = accountStatement?.summary;
 
-            // ✅ CASE 1: No transactions → header only
-            if (transactions == null || !transactions.Any())
+            decimal totalDebit = summary?.TotalDebit ?? 0;
+            decimal totalCredit = summary?.TotalCredit ?? 0;
+            decimal closingBalance = summary?.ClosingBalance ?? 0;
+
+            // =========================
+            // CASE 1: NO TRANSACTIONS
+            // =========================
+            if (!transactions.Any())
             {
                 rows.Add(new TransactionStaement
                 {
                     BranchName = GetBranchName(),
                     BranchCode = GetBranchCode(),
                     HeadOfficeName = GetBankName(),
-                    AccountNumber = parameters.AccountId ?? parameters.AccountNumber, // Fallback if Id is null
+                    AccountNumber = parameters.AccountId ?? parameters.AccountNumber,
                     Currreccy = "Central African CFA franc",
                     PrintedBy = GetUserFullName(),
-                    PrintedOn = DateTime.Now.Year.ToString(),
+                    PrintedOn = DateTime.Now.ToString("dd/MM/yyyy"),
                     Telephone = cus?.Phone ?? "N/A",
-                    OpeningBalance = "0"
+                    OpeningBalance = accountStatement?.OpeningBalance.ToString("N1") ?? "0",
+                    TotalDebit = "0",
+                    TotalCredit = "0",
+                    ClosingBalance = 0,
+                    BalanceasOf = $"Balance as of {parameters.DateTo:dd/MM/yyyy}: 0"
                 });
 
                 return rows;
             }
 
-            // ✅ CASE 2: Transactions exist
+            // =========================
+            // CASE 2: TRANSACTIONS EXIST
+            // =========================
             foreach (var transaction in transactions)
             {
-                totalDebit = transaction.summary.TotalDebit;
-                totalCredit = transaction.summary.TotalCredit;
-
-                // 🔑 Use DB running balance mapped from "balanceAfter"
-                finalBalance = transaction.Balance;
-                           
                 rows.Add(new TransactionStaement
                 {
                     // -------- Account / Customer --------
                     AccountNumber = parameters.AccountId ?? transaction.AccountNumber,
-                    // FIX: transaction.Account is NULL in JSON. Use Customer Name or Param.
                     AccountName = transaction.AccountType ?? "N/A",
                     CustomerId = cus?.CustomerId ?? "N/A",
                     CustomerName = cus != null ? $"{cus.FirstName} {cus.LastName}" : "N/A",
@@ -166,41 +171,42 @@ namespace CBS.BusinessService.ReportingMembersFSeries
 
                     Description = transaction.Operation,
                     Reference = transaction.TransactionReference,
-                    // FIX: Handle null depositor name
-                    Representative = string.IsNullOrWhiteSpace(transaction.DepositorName) ? "N/A" : transaction.DepositorName,
-                    DepositorName = string.IsNullOrWhiteSpace(transaction.DepositorName) ? "N/a" : transaction.DepositorName,
+                    Representative = string.IsNullOrWhiteSpace(transaction.DepositorName)
+                                        ? "N/A"
+                                        : transaction.DepositorName,
+
+                    DepositorName = string.IsNullOrWhiteSpace(transaction.DepositorName)
+                                        ? "N/A"
+                                        : transaction.DepositorName,
 
                     // -------- Amounts --------
                     Debit = transaction.Debit,
                     Credit = transaction.Credit,
                     Balance = transaction.Balance,
-                    // FIX: Use PreviousBalance from the row instead of transaction.Account.OpeningBalance
-                    OpeningBalance = transaction.summary.OpeningBalance,
-                    Logo = bra != null ? PaymentReceiptMapping.GenerateAndSaveBankLogoImage(bra.Bank?.LogoUrl, bra.Name) : "",
+                    OpeningBalance = transaction.PreviousBalance.ToString("N1"),
 
-                    // -------- Report --------
-                    Year = DateTime.Now.Year.ToString(),
-                    PrintedBy = GetUserFullName(),
+                    // -------- Totals (FROM SUMMARY) --------
                     TotalDebit = totalDebit.ToString("N1"),
                     TotalCredit = totalCredit.ToString("N1"),
                     TotalOperation = transactions.Count.ToString(),
 
+                    ClosingBalance = closingBalance,
+                    BalanceasOf =
+                        $"Balance as of {parameters.DateTo:dd/MM/yyyy}: {closingBalance:N1}",
+
+                    // -------- Report --------
                     Printedfrom = parameters.DateFrom.ToString("dd/MM/yyyy"),
                     PrintedTo = parameters.DateTo.ToString("dd/MM/yyyy"),
-                    CNI = "N/A",
+                    Year = DateTime.Now.Year.ToString(),
+                    PrintedBy = GetUserFullName(),
                     Address = cus?.Address ?? "",
                     HeadOfficeAddress = bra?.Address ?? "",
-                    ClosingBalance = transaction.summary.ClosingBalance,
-                    BalanceasOf = $"Balance as of {parameters.DateTo:dd/MM/yyyy}: {transaction.summary.ClosingBalance:N1}",
+                    Logo = bra != null
+                        ? PaymentReceiptMapping.GenerateAndSaveBankLogoImage(
+                            bra.Bank?.LogoUrl, bra.Name)
+                        : ""
                 });
             }
-
-            //// ✅ FINAL STEP: enforce SAME closing balance & balance-as-of
-            //foreach (var row in rows)
-            //{
-            //    row.ClosingBalance = finalBalance;
-            //    row.BalanceasOf = $"Balance as of {parameters.DateTo:dd/MM/yyyy}: {finalBalance:N1}";
-            //}
 
             return rows;
         }

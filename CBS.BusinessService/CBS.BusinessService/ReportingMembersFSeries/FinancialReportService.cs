@@ -36,11 +36,11 @@ namespace CBS.BusinessService.ReportingMembersFSeries
             //  _memberApiHelper = new ApiCallerHelper(accountUrl);
         }
 
-        public async Task<List<TransactionRaw>> GetCustomerTransactionsByAccountNumber(FinancialReportFilter parameters)
+        public async Task<AccountStatementResponseDto>
+     GetCustomerTransactionsByAccountNumber(FinancialReportFilter parameters)
         {
             try
             {
-                // Ensure parameters are wrapped if the API expects { "filter": { ... } }
                 var request = new FinancialReportRequest
                 {
                     Filter = parameters
@@ -48,7 +48,6 @@ namespace CBS.BusinessService.ReportingMembersFSeries
 
                 string endpoint = APICallHelper.GetTransactionHistoryByAccountNumber3;
 
-                // CHANGE: Use the new unique class name 'FinancialReportResponseDto'
                 var response = await _transactionApiHelper
                     .PostAsync<ResponseObject<FinancialReportResponseDto>>(endpoint, request);
 
@@ -68,13 +67,9 @@ namespace CBS.BusinessService.ReportingMembersFSeries
                         response.ApiResponseData?.Message
                     );
 
-                    // CHANGE: Drill down using the new class properties
-                    if (response.ApiResponseData?.Data?.AccountStatement?.Transactions != null)
-                    {
-                        return response.ApiResponseData.Data.AccountStatement.Transactions;
-                    }
-
-                    return new List<TransactionRaw>();
+                    // ✅ RETURN THE WHOLE ACCOUNT STATEMENT (SUMMARY + TRANSACTIONS)
+                    return response.ApiResponseData?.Data?.AccountStatement
+                           ?? new AccountStatementResponseDto();
                 }
 
                 // =========================
@@ -91,7 +86,7 @@ namespace CBS.BusinessService.ReportingMembersFSeries
                     response?.ApiResponseData?.Message ?? response?.Message
                 );
 
-                return new List<TransactionRaw>();
+                return new AccountStatementResponseDto();
             }
             catch (Exception ex)
             {
@@ -109,11 +104,9 @@ namespace CBS.BusinessService.ReportingMembersFSeries
                     ex.Message
                 );
 
-                return new List<TransactionRaw>();
+                return new AccountStatementResponseDto();
             }
         }
-
-
 
 
         //public async Task<ExecutionMessages> GetCustomerTransactionsByAccountNumber(ReportParameters parameters)
