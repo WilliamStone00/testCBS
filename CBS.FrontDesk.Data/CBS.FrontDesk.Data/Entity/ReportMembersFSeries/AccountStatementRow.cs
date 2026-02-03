@@ -791,6 +791,8 @@ public class FinancialReportResponseDto
         public string Id { get; set; }
         public string TransactionReference { get; set; }
         public DateTime CreatedDate { get; set; }
+        public DateTime AccountingDate { get; set; }
+
         public decimal Balance { get; set; }
         public decimal PreviousBalance { get; set; }
         public decimal Debit { get; set; }
