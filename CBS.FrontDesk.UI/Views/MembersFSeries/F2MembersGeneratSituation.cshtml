@@ -394,7 +394,7 @@
     <script>
     // ============================================================
     // REPORT GENERATOR - UPDATED VERSION WITH GLOBAL FUNCTIONS
-    // ============================================================
+        // ============================================================
 
     // Global variables
     var ReportGenerator = {};
@@ -727,13 +727,13 @@
 
         switch (reportType) {
             case 'MemberSituation':
-                formData.AccountIds = JSON.stringify($('#memberAccountIds').val() || []);
+                formData.AccountIds = $('#memberAccountIds').val() || [];
                 formData.LoanStatus = $('#memberLoanStatus').val();
                 formData.DateTo = $('#memberDateTo').val();
                 break;
 
             case 'AccountSituation':
-                formData.AccountIds = JSON.stringify($('#accountSituationIds').val() || []);
+                formData.AccountIds = $('#accountSituationIds').val() || [];
                 formData.DateTo = $('#memberDateTo').val(); // Using the same date field
                 break;
 

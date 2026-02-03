@@ -57,7 +57,7 @@ namespace CBS.FrontDesk.UI.Controllers.Series
             // 2. Prepare Accounts dropdown
             ViewBag.Accounts = cashDesk.Accounts.Select(a => new SelectListItem
             {
-                Value = a.accountNumber,
+                Value = a.id,
                 Text = $"{a.accountNumber} - {a.accountName}"
             }).ToList();
 

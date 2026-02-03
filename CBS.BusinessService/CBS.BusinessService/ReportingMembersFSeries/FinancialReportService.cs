@@ -1,11 +1,13 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Affiliate;
+using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.ReportMembersFSeries;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
 using DocumentFormat.OpenXml.Spreadsheet;
+using DocumentFormat.OpenXml.Wordprocessing;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -108,33 +110,6 @@ namespace CBS.BusinessService.ReportingMembersFSeries
             }
         }
 
-
-        //public async Task<ExecutionMessages> GetCustomerTransactionsByAccountNumber(ReportParameters parameters)
-        //{
-        //    try
-        //    {
-        //        string endpoint = string.Format(APICallHelper.GetTransactionHistoryByAccountNumber, parameters);
-        //        var response = await _transactionApiHelper.GetAsync<ResponseObject<List<TransactionHistory>>>(endpoint);
-
-        //        if (response.IsSuccess)
-        //        {           
-        //            GetExecutionMessages(response.ApiResponseData.Data, true, null, MessagesResults.Success,
-        //            ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData?.Message);
-        //        }
-        //        else
-        //        {
-        //            GetExecutionMessages(null, false, null, MessagesResults.Failed,
-        //                ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.ApiResponseData?.Message ?? response.Message);
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        GetExecutionMessages(null, false, null, MessagesResults.Error,
-        //            ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message);
-        //    }
-        //    return ExecutionMessage;
-        //}
-
         public async Task<MemberSituationData> GetMemberSituationData(string accountTypeId, string loanId, DateTime fromDate, DateTime toDate)
             {
                 try
@@ -204,9 +179,9 @@ namespace CBS.BusinessService.ReportingMembersFSeries
                     var loansResponse = await _loanApiHelper.GetAsync<ResponseObject<List<LoanPortfolioItem>>>(
                         string.Format(APICallHelper.GetLoanPortfolio, fromDate.ToString("yyyy-MM-dd"), toDate.ToString("yyyy-MM-dd")));
 
-                    // Get portfolio summary
-                    var summaryResponse = await _loanApiHelper.GetAsync<ResponseObject<LoanPortfolioSummary>>(
-                        APICallHelper.GetLoanPortfolioSummary);
+                    //// Get portfolio summary
+                    //var summaryResponse = await _loanApiHelper.GetAsync<ResponseObject<LoanPortfolioSummary>>(
+                    //    APICallHelper.GetLoanPortfolioSummary);
 
                     // Get delinquency data
                     var delinquencyResponse = await _loanApiHelper.GetAsync<ResponseObject<LoanDelinquencyData>>(
@@ -215,7 +190,7 @@ namespace CBS.BusinessService.ReportingMembersFSeries
                     return new LoanSituationData
                     {
                         LoanPortfolio = loansResponse.ApiResponseData.Data,
-                        PortfolioSummary = summaryResponse.ApiResponseData.Data,
+                        //PortfolioSummary = summaryResponse.ApiResponseData.Data,
                         DelinquencyData = delinquencyResponse.ApiResponseData.Data,
                         ReportPeriod = new ReportParameters { DateFrom = fromDate, DateTo = toDate }
                     };
@@ -224,40 +199,80 @@ namespace CBS.BusinessService.ReportingMembersFSeries
                 {
                     // Log exception
                     throw;
-                }
             }
-            public async Task<LoanSituationData> GetAccountSituationData(string Account,DateTime fromDate, DateTime toDate)
+        }
+        
+        public async Task<MemberFinancialReport> GetAccountSituationData(FinancialReportFilter parameters)
+        {
+            try
             {
-                try
+                var request = new FinancialReportRequest
                 {
-                    // Get all loans
-                    var loansResponse = await _loanApiHelper.GetAsync<ResponseObject<List<LoanPortfolioItem>>>(
-                        string.Format(APICallHelper.GetLoanPortfolio, fromDate.ToString("yyyy-MM-dd"), toDate.ToString("yyyy-MM-dd")));
+                    Filter = parameters
+                };
 
-                    // Get portfolio summary
-                    var summaryResponse = await _loanApiHelper.GetAsync<ResponseObject<LoanPortfolioSummary>>(
-                        APICallHelper.GetLoanPortfolioSummary);
+                string endpoint = APICallHelper.GetTransactionHistoryByAccountNumber3;
 
-                    // Get delinquency data
-                    var delinquencyResponse = await _loanApiHelper.GetAsync<ResponseObject<LoanDelinquencyData>>(
-                        APICallHelper.GetLoanDelinquencyData);
+                var response = await _transactionApiHelper.PostAsync<ResponseObject<MemberFinancialReport>>(endpoint, request);
 
-                    return new LoanSituationData
-                    {
-                        LoanPortfolio = loansResponse.ApiResponseData.Data,
-                        PortfolioSummary = summaryResponse.ApiResponseData.Data,
-                        DelinquencyData = delinquencyResponse.ApiResponseData.Data,
-                        ReportPeriod = new ReportParameters { DateFrom = fromDate, DateTo = toDate }
-                    };
-                }
-                catch (Exception ex)
+                // =========================
+                // SUCCESS
+                // =========================
+                if (response != null && response.IsSuccess && response.ApiResponseData?.Data != null)
                 {
-                    // Log exception
-                    throw;
+                    GetExecutionMessages(
+                        parameters,
+                        true,
+                        parameters.MemberReference,
+                        MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages,
+                        SystemMessageStatus.Success.ToString(),
+                        null,
+                        response.ApiResponseData.Message
+                    );
+
+                    // ✅ RETURN FULL REPORT DATA
+                    return response.ApiResponseData.Data;
                 }
+
+                // =========================
+                // API FAILURE (Handled)
+                // =========================
+                GetExecutionMessages(
+                    parameters,
+                    false,
+                    parameters.MemberReference,
+                    MessagesResults.Failed,
+                    ExecutionProcessOption.DefaultFailedMessages,
+                    SystemMessageStatus.Failed.ToString(),
+                    null,
+                    response?.ApiResponseData?.Message ?? response?.Message
+                );
+
+                return null;
             }
+            catch (Exception ex)
+            {
+                // =========================
+                // EXCEPTION
+                // =========================
+                GetExecutionMessages(
+                    parameters,
+                    false,
+                    parameters.MemberReference,
+                    MessagesResults.Error,
+                    ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Error.ToString(),
+                    ex,
+                    ex.Message
+                );
 
-            private async Task<TransactionSummary> GetTransactionSummary(string accountTypeId, DateTime? fromDate, DateTime? toDate)
+                return null;
+            }
+        }
+
+
+        private async Task<TransactionSummary> GetTransactionSummary(string accountTypeId, DateTime? fromDate, DateTime? toDate)
             {
                 // Implementation for transaction summary
                 return await Task.FromResult(new TransactionSummary());

@@ -73,7 +73,7 @@ namespace CBS.FrontDesk.UI.Controllers
                     reportData = await _reportBuilder.BuildMemberSituationRows(filter);
                     break;
 
-                case "accountSituation":
+                case "AccountSituation":
                     filter.ReportType = (int)FinancialReportType.AccountSituation;
                     reportData = await _reportBuilder.BuildAccountSituationRows(filter);
                     break;
@@ -172,7 +172,7 @@ namespace CBS.FrontDesk.UI.Controllers
                 Session["ReportName"] = reportName;
                 Session["rptpath"] = $"~/AppFiles/Accountingv2Reporting/ReportRPT/{reportName}";
          
-            Session["rpttitle"] = reportTitle;
+                Session["rpttitle"] = reportTitle;
                 Session["DateFrom"] = parameters.DateFrom.ToString("dd/MM/yyyy");
                 Session["DateTo"] = parameters.DateTo.ToString("dd/MM/yyyy");
 
@@ -184,84 +184,6 @@ namespace CBS.FrontDesk.UI.Controllers
             }
         }
 
-        //// GET: Reports/ReportParameterLessCOLL
-        //public void ReportParameterLessCOLL()
-        //{
-        //    ReportDocument rd = new ReportDocument();
-        //    try
-        //    {
-        //        string strReportName = Session["ReportName"]?.ToString();
-        //        var rptSource = Session["rptSource"];
-        //        var rptpath = Session["rptpath"]?.ToString();
-        //        var rpttitle = Session["rpttitle"]?.ToString();
-
-        //        if (string.IsNullOrEmpty(strReportName) || rptSource == null || rptpath == null || rpttitle == null)
-        //        {
-        //            Response.Write("<H2>❌ No Report with such Name found</H2>");
-        //            Response.Write($"<p>ReportName: {strReportName ?? "null"}</p>");
-        //            return;
-        //        }
-
-        //        string strRptPath = Server.MapPath(rptpath);
-
-        //        // Check if report file exists
-        //        if (!System.IO.File.Exists(strRptPath))
-        //        {
-        //            Response.Write($"<H2>❌ Report file not found</H2>");
-        //            Response.Write($"<p>Path: {strRptPath}</p>");
-        //            return;
-        //        }
-
-        //        rd.Load(strRptPath);
-        //        rd.SetDataSource(rptSource);
-
-        //        // Set parameters if available
-        //        string strFromDate = Session["DateFrom"]?.ToString() ?? string.Empty;
-        //        string strToDate = Session["DateTo"]?.ToString() ?? string.Empty;
-
-        //        if (!string.IsNullOrEmpty(strFromDate) && !string.IsNullOrEmpty(strToDate))
-        //        {
-        //            try
-        //            {
-        //                rd.SetParameterValue("DateFrom", strFromDate);
-        //                rd.SetParameterValue("DateTo", strToDate);
-        //            }
-        //            catch
-        //            {
-        //                // Continue without parameters
-        //            }
-        //        }
-
-        //        // Export to PDF
-        //        string savedFileName = $"{rpttitle}-{DateTime.UtcNow:dd_MM_yyyy_HHmmss}";
-        //        rd.ExportToHttpResponse(
-        //            ExportFormatType.PortableDocFormat,
-        //            Response,
-        //            false,
-        //            savedFileName);
-        //    }
-        //    catch (CrystalDecisions.CrystalReports.Engine.LoadSaveReportException loadEx)
-        //    {
-        //        Response.Write($"<H2>❌ Report Loading Error</H2>");
-        //        Response.Write($"<p>{loadEx.Message}</p>");
-        //    }
-        //    catch (CrystalDecisions.CrystalReports.Engine.DataSourceException dataEx)
-        //    {
-        //        Response.Write($"<H2>❌ Data Binding Error</H2>");
-        //        Response.Write($"<p>{dataEx.Message}</p>");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Response.Write($"<H2>❌ An error occurred while generating the report</H2>");
-        //        Response.Write($"<p>{ex.Message}</p>");
-        //    }
-        //    finally
-        //    {
-        //        CleanReport(rd);
-        //    }
-        //}
-
-        // GET: Reports/DebugReportData
         public ActionResult DebugReportData()
         {
             try
@@ -319,6 +241,9 @@ namespace CBS.FrontDesk.UI.Controllers
                 case "LoanSituation":
                     return "LoanSituation.rpt";
 
+                case "AccountSituation":
+                    return "AccountSituation.rpt";
+
                 default:
                     return "FinancialReport.rpt";
             }
@@ -339,6 +264,9 @@ namespace CBS.FrontDesk.UI.Controllers
 
                 case "LoanSituation":
                     return "LoanSituationReport";
+
+                case "AccountSituation":
+                    return "AccountSituation";
 
                 default:
                     return "FinancialReport";

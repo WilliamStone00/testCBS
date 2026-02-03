@@ -99,8 +99,7 @@ namespace CBS.BusinessService.ReportingMembersFSeries
 
         #endregion
 
-        public async Task<List<TransactionStaement>> BuildAccountStatementRows(
-     FinancialReportFilter parameters)
+        public async Task<List<TransactionStaement>> BuildAccountStatementRows(FinancialReportFilter parameters)
         {
             var bra = await GetBranchandbank();
             var cus = await GetCustomer(parameters.MemberReference);
@@ -313,96 +312,133 @@ namespace CBS.BusinessService.ReportingMembersFSeries
                 }
 
                 return rows;
+        }
+
+        // 4. Build Loan Situation Rows
+        public async Task<List<LoanSituationRow>> BuildLoanSituationRows(FinancialReportFilter parameters)
+        {
+            var situationData = await _reportService.GetLoanSituationData(
+                parameters.DateFrom,
+                parameters.DateTo);
+
+            var rows = new List<LoanSituationRow>();
+
+            // Header
+            rows.Add(new LoanSituationRow
+            {
+                ReportTitle = "LOAN PORTFOLIO SITUATION REPORT",
+                BankName = GetBankName(),
+                BranchName = GetBranchName(),
+                PeriodFrom = parameters.DateFrom,
+                PeriodTo = parameters.DateTo,
+                PrintedBy = GetUserFullName(),
+                PrintedOn = DateTime.Now,
+                //TotalLoans = situationData.PortfolioSummary.TotalLoans,
+                //TotalPortfolioValue = situationData.PortfolioSummary.TotalPortfolioValue,
+                //AverageInterestRate = situationData.PortfolioSummary.AverageInterestRate,
+                // DelinquencyRate = situationData.DelinquencyData.DelinquencyRate
+            });
+
+            // Loan Portfolio Details
+            foreach (var loan in situationData.LoanPortfolio)
+            {
+                rows.Add(new LoanSituationRow
+                {
+                    LoanNumber = loan.LoanNumber,
+                    CustomerName = loan.CustomerName,
+                    LoanType = loan.LoanType,
+                    LoanAmount = loan.LoanAmount,
+                    OutstandingBalance = loan.OutstandingBalance,
+                    DisbursementDate = loan.DisbursementDate,
+                    MaturityDate = loan.MaturityDate,
+                    InterestRate = loan.InterestRate,
+                    LoanStatus = loan.LoanStatus,
+                    DaysPastDue = loan.DaysPastDue
+                });
             }
 
-            // 4. Build Loan Situation Rows
-            public async Task<List<LoanSituationRow>> BuildLoanSituationRows(FinancialReportFilter  parameters)
-            {
-                var situationData = await _reportService.GetLoanSituationData(
-                    parameters.DateFrom,
-                    parameters.DateTo);
+            return rows;
+        }
 
-                var rows = new List<LoanSituationRow>();
 
-                // Header
-                rows.Add(new LoanSituationRow
-                {
-                    ReportTitle = "LOAN PORTFOLIO SITUATION REPORT",
-                    BankName = GetBankName(),
-                    BranchName = GetBranchName(),
-                    PeriodFrom = parameters.DateFrom,
-                    PeriodTo = parameters.DateTo,
-                    PrintedBy = GetUserFullName(),
-                    PrintedOn = DateTime.Now,
-                    TotalLoans = situationData.PortfolioSummary.TotalLoans,
-                    TotalPortfolioValue = situationData.PortfolioSummary.TotalPortfolioValue,
-                    AverageInterestRate = situationData.PortfolioSummary.AverageInterestRate,
-                   // DelinquencyRate = situationData.DelinquencyData.DelinquencyRate
-                });
+        public async Task<List<TransactionStaement>> BuildAccountSituationRows(FinancialReportFilter parameters)
+        {
+            var situationData = await _reportService.GetAccountSituationData(parameters);
 
-                // Loan Portfolio Details
-                foreach (var loan in situationData.LoanPortfolio)
-                {
-                    rows.Add(new LoanSituationRow
-                    {
-                        LoanNumber = loan.LoanNumber,
-                        CustomerName = loan.CustomerName,
-                        LoanType = loan.LoanType,
-                        LoanAmount = loan.LoanAmount,
-                        OutstandingBalance = loan.OutstandingBalance,
-                        DisbursementDate = loan.DisbursementDate,
-                        MaturityDate = loan.MaturityDate,
-                        InterestRate = loan.InterestRate,
-                        LoanStatus = loan.LoanStatus,
-                        DaysPastDue = loan.DaysPastDue
-                    });
-                }
+            var bra = await GetBranchandbank();
+            var cus = await GetCustomer(parameters.MemberReference);
 
+            var rows = new List<TransactionStaement>();
+
+            if (situationData?.AccountSituation == null)
                 return rows;
-            }         
-            public async Task<List<LoanSituationRow>> BuildAccountSituationRows(FinancialReportFilter  parameters)
+
+            var situation = situationData.AccountSituation;           
+
+            // =========================
+            // ACCOUNT SITUATION ROWS
+            // =========================
+            foreach (var acc in situation.Accounts)
             {
-                var situationData = await _reportService.GetAccountSituationData(parameters.AccountId,
-                    parameters.DateFrom,
-                    parameters.DateTo);
-
-                var rows = new List<LoanSituationRow>();
-
-                // Header
-                rows.Add(new LoanSituationRow
+                rows.Add(new TransactionStaement
                 {
-                    ReportTitle = "Account PORTFOLIO SITUATION REPORT",
-                    BankName = GetBankName(),
+                    // ===== HEADER FIELDS =====
+                    ReportTitle = "ACCOUNT PORTFOLIO SITUATION REPORT",
+                    CNI = "N/A",
+
                     BranchName = GetBranchName(),
-                    PeriodFrom = parameters.DateFrom,
-                    PeriodTo = parameters.DateTo,
+                    BranchCode = GetBranchCode(),
+                    HeadOfficeName = GetBankName(),
+                    HeadOfficeAddress = bra.Address,
+                    HeadOfficeTelephone = bra.Telephone,
+
+                    AccountName = parameters.AccountIds != null && parameters.AccountIds.Any()
+                        ? string.Join(" - ", parameters.AccountIds)
+                        : "N/A",
+
+                    CustomerId = cus.CustomerId,
+                    CustomerName = cus.FirstName + " " + cus.LastName,
+                    Telephone = cus.Phone,
+
                     PrintedBy = GetUserFullName(),
-                    PrintedOn = DateTime.Now,
-                    TotalLoans = situationData.PortfolioSummary.TotalLoans,
-                    TotalPortfolioValue = situationData.PortfolioSummary.TotalPortfolioValue,
-                    AverageInterestRate = situationData.PortfolioSummary.AverageInterestRate,
-                   // DelinquencyRate = situationData.DelinquencyData.DelinquencyRate
+                    PrintedOn = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"),
+
+                    Printedfrom = situation.OperationDate.ToString("dd/MM/yyyy"),
+                    PrintedTo = situation.OperationDate.ToString("dd/MM/yyyy"),
+
+                    Currreccy = "Central African CFA franc",
+                    Address = cus.town,
+
+                    Balance = acc.Balance,
+                    NetBalance = acc.ActualBalance,
+                    BlockedAmount = acc.BlockedAmount,
+                    TotalBalance = situation.Summary.TotalActualBalance,
+                    TotalBlockedAmount = situation.Summary.TotalBlockedAmount,
+                    TotalActualBalance = situation.Summary.TotalActualBalance,
+
+                    Year = DateTime.Now.Year.ToString(),
+
+                    // ===== DETAIL FIELDS =====
+                    AccountNumber = acc.AccountNumber,
+                    AccountType = acc.AccountType,
+          
+                    OpeningBalance = acc.Balance.ToString(),                   
+
+                    Charges = acc.BlockedAmount,
+                    Amount = acc.ActualBalance,
+                    TotalOperation = situation.Accounts.Count.ToString(),
+                    Date = acc.SnapshotDate,
+                    Time = acc.SnapshotDate,
+                     Logo = bra != null
+                        ? PaymentReceiptMapping.GenerateAndSaveBankLogoImage(
+                            bra.Bank?.LogoUrl, bra.Name)
+                        : ""
                 });
+            }
 
-                // Loan Portfolio Details
-                foreach (var loan in situationData.LoanPortfolio)
-                {
-                    rows.Add(new LoanSituationRow
-                    {
-                        LoanNumber = loan.LoanNumber,
-                        CustomerName = loan.CustomerName,
-                        LoanType = loan.LoanType,
-                        LoanAmount = loan.LoanAmount,
-                        OutstandingBalance = loan.OutstandingBalance,
-                        DisbursementDate = loan.DisbursementDate,
-                        MaturityDate = loan.MaturityDate,
-                        InterestRate = loan.InterestRate,
-                        LoanStatus = loan.LoanStatus,
-                        DaysPastDue = loan.DaysPastDue
-                    });
-                }
 
-                return rows;
-            }         
+            return rows;
+        }
+
     }
 }
