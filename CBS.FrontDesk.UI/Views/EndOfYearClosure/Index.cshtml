@@ -205,10 +205,17 @@
     // Map views to required state
     const workflowRules = {
         "view-initiation": [],
+
+        // ❌ Adjustments requires initiation
         "view-adjustments": ["initiation"],
-        "view-reports": ["initiation", "adjustments"],
-        "view-review": ["initiation", "adjustments", "reports"]
+
+        // ✅ Reports ALSO only requires initiation
+        "view-reports": ["initiation"],
+
+        // 🔐 Review requires reports
+        "view-review": ["initiation", "reports"]
     };
+
 
 
     $(document).on("click", ".workflow-tabs li", function () {
@@ -243,21 +250,32 @@
     //}
 
 
+    //function refreshWorkflowTabs() {
+    //    $(".workflow-tabs li").each(function () {
+
+    //        const view = $(this).data("view");
+
+    //        const allowed =
+    //            (view === "view-initiation" && workflowState.initiation) ||
+    //            (view === "view-adjustments" && workflowState.adjustments) ||
+    //            (view === "view-reports" && workflowState.reports) ||
+    //            (view === "view-review" && workflowState.review);
+
+    //        $(this).toggleClass("disabled", !allowed);
+    //    });
+    //}
+
     function refreshWorkflowTabs() {
         $(".workflow-tabs li").each(function () {
 
             const view = $(this).data("view");
+            const required = workflowRules[view] || [];
 
-            const allowed =
-                (view === "view-initiation" && workflowState.initiation) ||
-                (view === "view-adjustments" && workflowState.adjustments) ||
-                (view === "view-reports" && workflowState.reports) ||
-                (view === "view-review" && workflowState.review);
+            const allowed = required.every(step => workflowState[step]);
 
             $(this).toggleClass("disabled", !allowed);
         });
     }
-
 
 
 
@@ -352,7 +370,8 @@ function loadYearClosureStatus(branchId, accountingYearId) {
             console.log("🔐 Backend Step:", step);
        
             // 🔥 THIS LINE FIXES EVERYTHING
-            syncWorkflowStateFromStep(step);
+            //syncWorkflowStateFromStep(step);
+            syncWorkflowState(data)
 
 
            // loadYearClosureWorkflow(branchId, accountingYearId);
@@ -424,23 +443,31 @@ function loadYearClosureStatus(branchId, accountingYearId) {
     }
 
 
-    function syncWorkflowStateFromStep(step) {
+    //function syncWorkflowStateFromStep(step) {
 
-        // Reset all states
-        workflowState.initiation = false;
-        workflowState.adjustments = false;
-        workflowState.reports = false;
-        workflowState.review = false;
+    //    // Reset all states
+    //    workflowState.initiation = false;
+    //    workflowState.adjustments = false;
+    //    workflowState.reports = false;
+    //    workflowState.review = false;
 
-        // Correctly update workflowState
-        if (step >= 0) workflowState.initiation = true;
-        if (step >= 1) workflowState.adjustments = true;
-        if (step >= 2) workflowState.reports = true;
-        if (step >= 3) workflowState.review = true;
+    //    // Correctly update workflowState
+    //    if (step >= 0) workflowState.initiation = true;
+    //    if (step >= 1) workflowState.adjustments = true;
+    //    if (step >= 2) workflowState.reports = true;
+    //    if (step >= 3) workflowState.review = true;
+
+    //    refreshWorkflowTabs();
+    //}
+
+    function syncWorkflowState(data) {
+        workflowState.initiation = !!data.InitiationDone;
+        workflowState.adjustments = !!data.AdjustmentsDone;
+        workflowState.reports = !!data.ReportsDone;
+        workflowState.review = !!data.ReviewDone;
 
         refreshWorkflowTabs();
     }
-
 
 
 

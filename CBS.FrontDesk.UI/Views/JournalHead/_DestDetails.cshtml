@@ -497,13 +497,25 @@ else
         // Approve Destination
         // ==========================
 
-        const destState = '@(Model?.State ?? "")';
-        if (destState.toUpperCase() === 'APPROVED') {
-            $('#btnApproveDestination')
-                .prop('disabled', true)
-                .addClass('btn-secondary')
-                .removeClass('btn-success');
-        }
+                @*const destState = '@(Model?.State ?? "")';
+                if (destState.toUpperCase() === 'APPROVED') {
+                    $('#btnApproveDestination')
+                        .prop('disabled', true)
+                        .addClass('btn-secondary')
+                        .removeClass('btn-success');
+                }*@
+
+
+
+        const destState = '@(Model?.State ?? "")'.toUpperCase();
+
+            if (['APPROVED', 'REJECTED', 'RECONCILED'].includes(destState)) {
+                $('#btnApproveDestination')
+                    .prop('disabled', true)
+                    .addClass('btn-secondary')
+                    .removeClass('btn-success')
+                    .attr('aria-disabled', 'true');
+            }
 
         $('#btnApproveDestination').on('click', function (e) {
             e.preventDefault();
