@@ -228,7 +228,8 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
             model.DestinationBranchId = model.BranchId;
             model.BranchId = null;
             model.SourceBranchId = null;
-            model.TicketType = null;   
+            model.TicketType = null;
+            model.Approve = true;
             if (model == null)
                 throw new ArgumentNullException(nameof(model));
 

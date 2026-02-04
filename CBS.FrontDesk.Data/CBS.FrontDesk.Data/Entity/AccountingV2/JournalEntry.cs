@@ -133,6 +133,7 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public string Status { get; set; } = "RECEIVED";
         public decimal TotalDebit { get; set; }
         public decimal TotalCredit { get; set; }
+        public decimal InitiatedAmount { get; set; }
         public string CorrelationId { get; set; } = null;
         public string CounterpartyBranchId { get; set; } = null;
         public string CounterpartyBranchName { get; set; } = null;

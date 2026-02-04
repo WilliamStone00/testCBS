@@ -86,6 +86,8 @@
     return;
 }
 
+
+
 @if (Model.TicketType == "SOURCE")
 {
     @Html.Partial("_SourceDetails")
@@ -273,16 +275,18 @@ else
 
                 <div class="mt-3 d-flex justify-content-end">
 
+                    <button type="button" id="btnApproveDestination" class="btn btn-success">
+                        <i class="mdi mdi-check-circle-outline"></i>
+                        <span class="btn-text">Approve</span>
+                    </button>
+
 
                     <button type="button" id="btnReject" class="btn btn-danger me-2">
                         <i class="mdi mdi-check-circle-outline"></i>
                         <span class="btn-text">Reject</span>
                     </button>
 
-                    <button type="button" id="btnApproveDestination" class="btn btn-success">
-                        <i class="mdi mdi-check-circle-outline"></i>
-                        <span class="btn-text">Approve</span>
-                    </button>
+
                 </div>
 
             </div>
@@ -295,310 +299,6 @@ else
 
 
 
-        <script>
-    $(document).ready(function () {
-        let accounts = [];
-
-        // ==========================
-        // Utility functions
-        // ==========================
-
-        function initSelect2(element) {
-            element.select2({
-                width: '100%',
-                placeholder: 'Select Account',
-                allowClear: true,
-                dropdownParent: $('#SourceDetailsModal')
-            });
-        }
-
-        window.autoGrow = function (element) {
-            element.style.height = 'auto';
-            element.style.height = (element.scrollHeight) + 'px';
-        }
-
-        function loadAccounts(branchId, callback) {
-            if (!branchId) {
-                appalert("⚠️ Please select a branch first.", 2, 1);
-                return;
-            }
-
-            if (loadAccounts.request) loadAccounts.request.abort();
-
-            loadAccounts.request = $.ajax({
-                url: '/ManualJournalEntry/GetAccounts',
-                type: 'GET',
-                data: { branchId: branchId },
-                dataType: 'json',
-                success: function (response) {
-                    if (!response.success || !response.data) {
-                        appalert(response.message || '⚠️ No accounts found for this branch.', 2, 1);
-                        accounts = [];
-                        return;
-                    }
-
-                    accounts = response.data.map(a => ({
-                        Value: a.Value,
-                        Text: `${a.Text}`
-                    }));
-
-                    appalert('✅ Accounts loaded successfully for selected branch.', 1, 1);
-
-                    if (callback) callback();
-                },
-                error: function (err) {
-                    if (err.statusText !== 'abort')
-                        appalert("Error loading accounts: " + err.statusText, 0, 1);
-                }
-            });
-        }
-
-        function addRow(tableBody) {
-            const index = tableBody.children('tr').length;
-            const row = $(`
-                <tr>
-                    <td style="width: 35%;">
-                        <select name="Lines[${index}].AffiliateAccountId" class="form-select account-select account-id" required>
-                            <option value="">Select Account</option>
-                            ${accounts.map(a => `<option value="${a.Value}">${a.Text}</option>`).join('')}
-                        </select>
-                    </td>
-                    <td style="width: 25%;">
-                        <textarea class="form-control memo"
-                                  name="Lines[${index}].Narration"
-                                  placeholder="Enter memo"
-                                  rows="1"
-                                  oninput="autoGrow(this)"
-                                  required></textarea>
-                    </td>
-                    <td style="width: 15%;">
-                        <input type="number" step="0.01" class="form-control debit-input amount"
-                               name="Lines[${index}].Debit" placeholder="0.00" min="0" />
-                    </td>
-                    <td style="width: 15%;">
-                        <input type="number" step="0.01" class="form-control credit-input amount"
-                               name="Lines[${index}].Credit" placeholder="0.00" min="0" />
-                    </td>
-                    <td class="text-center" style="width: 10%;">
-                        <button type="button" class="btn btn-sm btn-outline-danger deleteRow">
-                            <i class="mdi mdi-delete"></i>
-                        </button>
-                    </td>
-                </tr>
-            `);
-
-            tableBody.append(row);
-            initSelect2(row.find('.account-select'));
-        }
-
-        function updateTotals(modal) {
-            const tableBody = modal.find('#myDataTable tbody');
-            let debitTotal = 0, creditTotal = 0;
-
-            tableBody.find('.debit-input').each(function () {
-                debitTotal += parseFloat($(this).val()) || 0;
-            });
-
-            tableBody.find('.credit-input').each(function () {
-                creditTotal += parseFloat($(this).val()) || 0;
-            });
-
-            const diff = debitTotal - creditTotal;
-            const initiatedAmount = Math.abs(parseFloat('@Model.InitiatedAmount')) || 0;
-
-            // Update totals in UI
-            modal.find('#totalDebit').text(`XAF ${debitTotal.toLocaleString()}`);
-            modal.find('#totalCredit').text(`XAF ${creditTotal.toLocaleString()}`);
-            modal.find('#difference')
-                .text(`Diff: XAF ${diff.toLocaleString()}`)
-                .toggleClass('text-danger', diff !== 0)
-                .toggleClass('text-success', diff === 0);
-
-            const approveBtn = $('#btnApproveDestination');
-
-            // ✅ Enable Approve button only when:
-            // 1. Debits = Credits
-            // 2. Debits > 0
-            // 3. Debits (or Credits) == InitiatedAmount
-            const canApprove =
-                diff === 0 &&
-                debitTotal > 0 &&
-                debitTotal.toFixed(2) === initiatedAmount.toFixed(2);
-
-            if (canApprove) {
-                approveBtn.prop('disabled', false)
-                    .removeClass('btn-secondary')
-                    .addClass('btn-success');
-            } else {
-                approveBtn.prop('disabled', true)
-                    .removeClass('btn-success')
-                    .addClass('btn-secondary');
-            }
-        }
-
-        // ==========================
-        // Modal events
-        // ==========================
-
-        $('#SourceDetailsModal').off('shown.bs.modal').on('shown.bs.modal', function () {
-            const modal = $(this);
-            const tableBody = modal.find('#myDataTable tbody');
-            tableBody.empty();
-
-            const branchId = $('#BranchId').val();
-            if (!branchId) {
-                appalert("⚠️ Please select a branch before adding journal entries.", 2, 1);
-                return;
-            }
-
-            loadAccounts(branchId, () => addRow(tableBody));
-
-            modal.find('#addRowBtn').off('click').on('click', function () {
-                if (accounts.length === 0) {
-                    appalert("⚠️ Please select a branch first to load accounts.", 2, 1);
-                    return;
-                }
-                addRow(tableBody);
-            });
-
-            tableBody.off('click', '.deleteRow').on('click', '.deleteRow', function () {
-                $(this).closest('tr').remove();
-                updateTotals(modal);
-            });
-
-            tableBody.off('input', '.debit-input').on('input', '.debit-input', function () {
-                const $row = $(this).closest('tr');
-                const debitVal = parseFloat($(this).val()) || 0;
-                const $credit = $row.find('.credit-input');
-                $credit.prop('disabled', debitVal > 0).val(debitVal > 0 ? '' : $credit.val());
-                updateTotals(modal);
-            });
-
-            tableBody.off('input', '.credit-input').on('input', '.credit-input', function () {
-                const $row = $(this).closest('tr');
-                const creditVal = parseFloat($(this).val()) || 0;
-                const $debit = $row.find('.debit-input');
-                $debit.prop('disabled', creditVal > 0).val(creditVal > 0 ? '' : $debit.val());
-                updateTotals(modal);
-            });
-        });
-
-        // ==========================
-        // Branch change
-        // ==========================
-
-        $('#BranchId').off('change').on('change', function () {
-            const branchId = $(this).val();
-            accounts = [];
-            if (branchId) loadAccounts(branchId);
-        });
-
-        // ==========================
-        // Approve Destination
-        // ==========================
-
-                @*const destState = '@(Model?.State ?? "")';
-                if (destState.toUpperCase() === 'APPROVED') {
-                    $('#btnApproveDestination')
-                        .prop('disabled', true)
-                        .addClass('btn-secondary')
-                        .removeClass('btn-success');
-                }*@
-
-
-
-        const destState = '@(Model?.State ?? "")'.toUpperCase();
-
-            if (['APPROVED', 'REJECTED', 'RECONCILED'].includes(destState)) {
-                $('#btnApproveDestination')
-                    .prop('disabled', true)
-                    .addClass('btn-secondary')
-                    .removeClass('btn-success')
-                    .attr('aria-disabled', 'true');
-            }
-
-        $('#btnApproveDestination').on('click', function (e) {
-            e.preventDefault();
-
-            alertify.confirm(
-                "Confirmation",
-                "Are you sure you want to approve this journal entry?",
-                function () {
-
-                    var $btn = $('#btnApproveDestination');
-                    var $icon = $btn.find('i');
-                    var $text = $btn.find('.btn-text');
-
-                    $btn.prop('disabled', true);
-                    $icon.removeClass('mdi-check-circle-outline')
-                         .addClass('mdi-loading mdi-spin');
-                    $text.text('Approving...');
-
-                    var payload = {
-                        Reference: '@Model.Reference',
-                        BranchId: $('#BranchId').val() || '@Model.BranchId',
-                        Approver: '@User.Identity.Name',
-                        TicketType: '@Model.TicketType',
-                        Lines: []
-                    };
-
-                    $('#myDataTable tbody tr').each(function () {
-                        var $row = $(this);
-                        var affiliateAccountId = $row.find('.account-id').val();
-                        var debitVal = parseFloat($row.find('.debit-input').val()) || 0;
-                        var creditVal = parseFloat($row.find('.credit-input').val()) || 0;
-
-                        if (affiliateAccountId && (debitVal > 0 || creditVal > 0)) {
-                            payload.Lines.push({
-                                AffiliateAccountId: affiliateAccountId,
-                                DrCr: debitVal > 0 ? 'DR' : 'CR',
-                                Amount: debitVal > 0 ? debitVal : creditVal,
-                                Memo: $row.find('.memo').val()
-                            });
-                        }
-                    });
-
-                    $.ajax({
-                        url: '@Url.Action("Approve", "JournalHead")',
-                        type: 'POST',
-                        contentType: 'application/json',
-                        data: JSON.stringify(payload),
-                        success: function (response) {
-                            if (response && response.success) {
-                                appalert(response.message || "✅ Approved successfully.", 1, 1);
-
-                                $btn.prop('disabled', true);
-                                $icon.removeClass('mdi-loading mdi-spin')
-                                     .addClass('mdi-check-circle');
-                                $text.text('Approved');
-                            } else {
-                                appalert((response && response.message) || "❌ Approval failed.", 2, 1);
-
-                                $btn.prop('disabled', false);
-                                $icon.removeClass('mdi-loading mdi-spin')
-                                     .addClass('mdi-check-circle-outline');
-                                $text.text('Approve');
-                            }
-                        },
-                        error: function (xhr) {
-                            appalert("❌ An error occurred while approving.", 0, 1);
-
-                            $btn.prop('disabled', false);
-                            $icon.removeClass('mdi-loading mdi-spin')
-                                 .addClass('mdi-check-circle-outline');
-                            $text.text('Approve');
-                        }
-                    });
-                },
-                function () {
-                    appalert("🚫 Approval cancelled.", 2, 1);
-                }
-            );
-        });
-    });
-
-
-        </script>
     }
     else
     {
@@ -776,10 +476,33 @@ else
         </div>
 
 
+        <div class="modal-footer d-flex justify-content-between">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                <i class="mdi mdi-close"></i> Close
+            </button>
+            <div>
 
 
+                <button type="button" id="btnExportExcel" class="btn btn-outline-primary me-2">
+                    <i class="mdi mdi-file-excel-outline"></i> Export Excel
+                </button>
 
-        <script>
+
+                <button type="button" id="btnApprove" class="btn btn-success">
+                    <i class="mdi mdi-check-circle-outline"></i>
+                    <span class="btn-text">Approve</span>
+                </button>
+
+                <button type="button" id="btnReject" class="btn btn-danger">
+                    <i class="mdi mdi-check-circle-outline"></i>
+                    <span class="btn-text">Reject</span>
+                </button>
+
+            </div>
+        </div>
+
+
+        @*<script>
             $(document).ready(function () {
 
                  $('#btnExportExcel').click(function () {
@@ -792,7 +515,7 @@ else
                      window.location.href = '@Url.Action("DownloadJournalHeadExcel", "JournalHead")' + '?id=' + id;
                  });
             });
-        </script>
+        </script>*@
     }
 }
 
