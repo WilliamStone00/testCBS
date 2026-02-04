@@ -399,6 +399,9 @@
   <data name="OrGoBackToYourPage" xml:space="preserve">
     <value>Or go back to your page</value>
   </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
   <data name="Pending" xml:space="preserve">
     <value>Pending</value>
   </data>

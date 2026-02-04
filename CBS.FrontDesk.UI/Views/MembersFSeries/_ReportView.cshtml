@@ -3,6 +3,8 @@
 @using System.Web.Mvc
 
 <div class="container-fluid">
+
+    <hr />
     <!-- Header Section -->
     <div class="row">
         <div class="col-12">
@@ -21,91 +23,98 @@
         </div>
     </div>
 
-    <!-- Tips Section -->
-    <div class="card mb-3">
-        <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-            <span><i class="mdi mdi-information-outline me-2"></i> Report Generation Guide</span>
-            <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseReportTips" aria-expanded="false" aria-controls="collapseReportTips">
-                <i class="mdi mdi-chevron-down"></i>
-            </button>
-        </h6>
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> Report Generation Guide</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseReportTips" aria-expanded="false" aria-controls="collapseReportTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
 
-        <div id="collapseReportTips" class="collapse">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <h6 class="text-primary mb-3">Report Types Overview</h6>
-                        <div class="steps">
-                            <div class="step-item mb-3">
-                                <div class="step-number bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center me-3" style="width: 30px; height: 30px;">
-                                    <i class="mdi mdi-account-multiple-outline"></i>
-                                </div>
-                                <div class="step-content d-inline-block">
-                                    <strong>Member Situation</strong>
-                                    <div class="small text-muted">Comprehensive member account overview with balances and status</div>
-                                </div>
+    <div id="collapseReportTips" class="collapse">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <h6 class="text-primary mb-3">Report Types Overview</h6>
+                    <div class="steps">
+                        <div class="step-item mb-3">
+                            <div class="step-number bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center me-3" style="width: 30px; height: 30px;">
+                                <i class="mdi mdi-account-multiple-outline"></i>
                             </div>
-                            <div class="step-item mb-3">
-                                <div class="step-number bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center me-3" style="width: 30px; height: 30px;">
-                                    <i class="mdi mdi-bank-transfer"></i>
-                                </div>
-                                <div class="step-content d-inline-block">
-                                    <strong>Account Statement</strong>
-                                    <div class="small text-muted">Detailed transaction history for specific accounts</div>
-                                </div>
+                            <div class="step-content d-inline-block">
+                                <strong>Member Situation</strong>
+                                <div class="small text-muted">Comprehensive member account overview with balances and status</div>
                             </div>
-                            <div class="step-item mb-3">
-                                <div class="step-number bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center me-3" style="width: 30px; height: 30px;">
-                                    <i class="mdi mdi-cash-multiple"></i>
-                                </div>
-                                <div class="step-content d-inline-block">
-                                    <strong>Loan Repayment</strong>
-                                    <div class="small text-muted">Loan payment schedules and repayment progress</div>
-                                </div>
+                        </div>
+                        <div class="step-item mb-3">
+                            <div class="step-number bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center me-3" style="width: 30px; height: 30px;">
+                                <i class="mdi mdi-account-box-multiple-outline"></i>
                             </div>
-                            <div class="step-item mb-3">
-                                <div class="step-number bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center me-3" style="width: 30px; height: 30px;">
-                                    <i class="mdi mdi-chart-line"></i>
-                                </div>
-                                <div class="step-content d-inline-block">
-                                    <strong>Loan Situation</strong>
-                                    <div class="small text-muted">Overall loan portfolio analysis and statistics</div>
-                                </div>
+                            <div class="step-content d-inline-block">
+                                <strong>Account Situation</strong>
+                                <div class="small text-muted">Multiple account analysis with selection options</div>
+                            </div>
+                        </div>
+                        <div class="step-item mb-3">
+                            <div class="step-number bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center me-3" style="width: 30px; height: 30px;">
+                                <i class="mdi mdi-bank-transfer"></i>
+                            </div>
+                            <div class="step-content d-inline-block">
+                                <strong>Account Statement</strong>
+                                <div class="small text-muted">Detailed transaction history for specific accounts</div>
+                            </div>
+                        </div>
+                        <div class="step-item mb-3">
+                            <div class="step-number bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center me-3" style="width: 30px; height: 30px;">
+                                <i class="mdi mdi-cash-multiple"></i>
+                            </div>
+                            <div class="step-content d-inline-block">
+                                <strong>Loan Repayment</strong>
+                                <div class="small text-muted">Loan payment schedules and repayment progress</div>
+                            </div>
+                        </div>
+                        <div class="step-item mb-3">
+                            <div class="step-number bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center me-3" style="width: 30px; height: 30px;">
+                                <i class="mdi mdi-chart-line"></i>
+                            </div>
+                            <div class="step-content d-inline-block">
+                                <strong>Loan Situation</strong>
+                                <div class="small text-muted">Overall loan portfolio analysis and statistics</div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <h6 class="text-primary mb-3">Quick Reference</h6>
-                        <ul class="list-unstyled">
-                            <li class="mb-2">
-                                <i class="mdi mdi-calendar-text-outline text-success me-2"></i>
-                                <strong>Date Range:</strong> All reports support custom date filtering
-                            </li>
-                            <li class="mb-2">
-                                <i class="mdi mdi-format-list-bulleted-type text-warning me-2"></i>
-                                <strong>Multiple Formats:</strong> PDF, Excel, and Print-ready formats available
-                            </li>
-                            <li class="mb-2">
-                                <i class="mdi mdi-filter-outline text-info me-2"></i>
-                                <strong>Flexible Filtering:</strong> Filter by account type, loan type, and date range
-                            </li>
-                            <li class="mb-2">
-                                <i class="mdi mdi-shield-check-outline text-success me-2"></i>
-                                <strong>Secure:</strong> All reports are generated with enterprise-grade security
-                            </li>
-                        </ul>
+                </div>
+                <div class="col-md-6">
+                    <h6 class="text-primary mb-3">Quick Reference</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <i class="mdi mdi-calendar-text-outline text-success me-2"></i>
+                            <strong>Date Range:</strong> Most reports support custom date filtering
+                        </li>
+                        <li class="mb-2">
+                            <i class="mdi mdi-format-list-bulleted-type text-warning me-2"></i>
+                            <strong>Multiple Formats:</strong> PDF, Excel, and Print-ready formats available
+                        </li>
+                        <li class="mb-2">
+                            <i class="mdi mdi-filter-outline text-info me-2"></i>
+                            <strong>Flexible Filtering:</strong> Filter by account type, loan type, and date range
+                        </li>
+                        <li class="mb-2">
+                            <i class="mdi mdi-shield-check-outline text-success me-2"></i>
+                            <strong>Secure:</strong> All reports are generated with enterprise-grade security
+                        </li>
+                    </ul>
 
-                        <div class="mt-3 p-3 bg-light rounded">
-                            <div class="small text-muted">
-                                <i class="mdi mdi-lightbulb-on-outline me-1"></i>
-                                <strong>Pro Tip:</strong> Select your report type first, then fill in the required parameters. Use Reset to clear all fields and start over.
-                            </div>
+                    <div class="mt-3 p-3 bg-light rounded">
+                        <div class="small text-muted">
+                            <i class="mdi mdi-lightbulb-on-outline me-1"></i>
+                            <strong>Pro Tip:</strong> Select your report type first, then fill in the required parameters. Use Reset to clear all fields and start over.
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
 
     <!-- Report Type Selection -->
     <div class="card mb-3">
@@ -129,6 +138,19 @@
                             <label class="form-check-label" for="memberSituation">
                                 <i class="mdi mdi-account-multiple-outline me-2"></i>
                                 Member Situation
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input"
+                                   type="radio"
+                                   name="ReportTypeRadio"
+                                   id="accountSituation"
+                                   value="AccountSituation"
+                                   onclick="switchReport('AccountSituation')">
+                            <label class="form-check-label" for="accountSituation">
+                                <i class="mdi mdi-account-box-multiple-outline me-2"></i>
+                                Account Situation
                             </label>
                         </div>
 
@@ -167,7 +189,7 @@
                                    onclick="switchReport('LoanSituation')">
                             <label class="form-check-label" for="loanSituation">
                                 <i class="mdi mdi-chart-line me-2"></i>
-                                Loan Situation
+                                Loan History
                             </label>
                         </div>
 
@@ -188,108 +210,150 @@
     <!-- Report Parameters Section -->
     <div class="card">
         <div class="card-body">
-            @using (Html.BeginForm("GenerateReport", "Reports", FormMethod.Post, new { id = "reportForm", @class = "needs-validation", novalidate = "novalidate" }))
+            @using (Html.BeginForm("GenerateReport", "MembersFSeriesReport", FormMethod.Post, new { id = "reportForm", @class = "needs-validation", novalidate = "novalidate", onsubmit = "return generateReportAjax(this);" }))
             {
                 @Html.AntiForgeryToken()
                 @Html.HiddenFor(m => m.ReportType, new { id = "ReportType", @value = "MemberSituation" })
-
-                <h5 class="text-primary mb-3"><i class="mdi mdi-tune me-1"></i>Step 2: Configure Report Parameters</h5>
+                @Html.HiddenFor(m => m.CustomerId)
+                <!-- Hidden field for selected accounts (JSON array) -->
+                @Html.Hidden("SelectedAccountIds", "", new { id = "SelectedAccountIds" })
 
                 <!-- Member Situation Form (Default) -->
                 <div id="memberSituationForm" class="report-form-section">
                     <div class="card border-primary">
                         <div class="card-body">
                             <div class="row g-3">
-                                <!-- Account Type -->
-                                <div class="col-md-6">
+                                <!-- Account Selection (Multiple) -->
+                                <div class="col-md-12">
                                     <label class="fw-medium">
                                         <i class="mdi mdi-account-card-outline me-2 text-primary"></i>
-                                        Account Type 
+                                        Select Accounts
                                     </label>
                                     <div class="form-floating">
-                                        @Html.DropDownListFor(m => m.AccountTypeId,
+                                        @Html.ListBox("AccountIds_Member",
                                             (IEnumerable<SelectListItem>)ViewBag.Accounts,
-                                            "Select Account Type",
-                                            new { @class = "form-control select2", required = "required", id = "memberAccountType" })
-
+                                            new { @class = "form-control select2", id = "memberAccountIds", multiple = "multiple" })
+                                        <label for="memberAccountIds">Select multiple accounts</label>
                                         <div class="invalid-feedback">
-                                            Please select an account type
+                                            Please select at least one account
                                         </div>
                                         <div class="mt-1 small text-muted">
-                                            Select the type of member account for the report
+                                            Select one or multiple member accounts for the report
                                         </div>
                                     </div>
                                 </div>
 
-                                <!-- Loan -->
-                                <div class="col-md-6">
+                                <!-- Loan Status Filter -->
+                                <div class="col-md-12">
                                     <label class="fw-medium">
                                         <i class="mdi mdi-hand-coin-outline me-2 text-primary"></i>
-                                        Loan Selection 
+                                        Loan Status Filter
                                     </label>
                                     <div class="form-floating">
-                                        @Html.DropDownListFor(m => m.LoanId,
-                                            (IEnumerable<SelectListItem>)ViewBag.Loans,
-                                            "Select Loan",
-                                            new { @class = "form-control select2", required = "required", id = "memberLoan" })
-
+                                        <select class="form-control" id="memberLoanStatus" name="LoanStatus_Member">
+                                            <option value="" disabled selected>Select Filter</option>
+                                            <option value="all">All Loans</option>
+                                            <option value="approved">Approved</option>
+                                            <option value="rescheduled">Rescheduled</option>
+                                            <option value="refinanced">Refinanced</option>
+                                            <option value="restructured">Restructured</option>
+                                            <option value="current">Current</option>
+                                        </select>
+                                        <label for="memberLoanStatus">Filter by loan status</label>
                                         <div class="invalid-feedback">
-                                            Please select a loan
+                                            Please select a loan status filter
                                         </div>
                                         <div class="mt-1 small text-muted">
-                                            Select the loan associated with the member
+                                            Filter loans by their current status
                                         </div>
                                     </div>
                                 </div>
-                                <hr/>
-                                <!-- From Date -->
-                                <div class="col-md-6">
+                                <hr />
+
+                                <!-- Date Range Section -->
+                                <div id="memberDateSection">
+                                    <div class="row g-3">
+                                        <div class="col-md-12">
+                                            <label class="fw-medium">
+                                                <i class="mdi mdi-calendar-end me-2 text-primary"></i>
+                                                Date
+                                            </label>
+                                            <div class="form-floating">
+                                                @Html.TextBox(
+                                                    "DateTo_Member",
+                                                    DateTime.Now.ToString("yyyy-MM-dd"),
+                                                    new
+                                                    {
+                                                        @class = "form-control datepicker",
+                                                        type = "date",
+                                                        required = "required",
+                                                        id = "memberDateTo"
+                                                    })
+                                                <label for="memberDateTo">operation date</label>
+                                                <div class="invalid-feedback">
+                                                    Please select an end date
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Account Situation Form -->
+                <div id="accountSituationForm" class="report-form-section d-none">
+                    <div class="card border-primary">
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <!-- Account Selection (Multiple) -->
+                                <div class="col-md-12">
                                     <label class="fw-medium">
-                                        <i class="mdi mdi-calendar-start me-2 text-primary"></i>
-                                        From Date 
+                                        <i class="mdi mdi-account-box-multiple-outline me-2 text-primary"></i>
+                                        Select Accounts
                                     </label>
                                     <div class="form-floating">
-                                        @Html.TextBoxFor(m => m.DateFrom, new
-                                        {
-                                            @class = "form-control datepicker",
-                                            type = "date",
-                                            required = "required",
-                                            placeholder = "From Date",
-                                            id = "memberDateFrom"
-                                        })
-
+                                        @Html.ListBox("AccountIds_Situation",
+                                            (IEnumerable<SelectListItem>)ViewBag.Accounts,
+                                            new { @class = "form-control select2", id = "accountSituationIds", multiple = "multiple" })
+                                        <label for="accountSituationIds">Select multiple accounts</label>
                                         <div class="invalid-feedback">
-                                            Please select a start date
+                                            Please select at least one account
                                         </div>
                                         <div class="mt-1 small text-muted">
-                                            Start date for the report period
+                                            Select one or multiple accounts for situation analysis
                                         </div>
                                     </div>
                                 </div>
 
-                                <!-- To Date -->
-                                <div class="col-md-6">
-                                    <label class="fw-medium ">
-                                        <i class="mdi mdi-calendar-end me-2 text-primary"></i>
-                                        To Date 
-                                    </label>
-                                    <div class="form-floating">
-                                        @Html.TextBoxFor(m => m.DateTo, new
-                                        {
-                                            @class = "form-control datepicker",
-                                            type = "date",
-                                            required = "required",
-                                            placeholder = "To Date",
-                                            id = "memberDateTo"
-                                        })
 
-                                        <div class="invalid-feedback">
-                                            Please select an end date
-                                        </div>
-                                        <div class="mt-1 small text-muted">
-                                            End date for the report period
+                                <!-- Date Range -->
+                                <div class="row g-3">
+                                    <div class="col-md-12">
+                                        <label class="fw-medium">
+                                            <i class="mdi mdi-calendar-end me-2 text-primary"></i>
+                                            Date
+                                        </label>
+                                        <div class="form-floating">
+                                            @Html.TextBox(
+                                                "DateTo_Member",
+                                                DateTime.Now.ToString("yyyy-MM-dd"),
+                                                new
+                                                {
+                                                    @class = "form-control datepicker",
+                                                    type = "date",
+                                                    required = "required",
+                                                    id = "memberDateTo"
+                                                })
+                                            <label for="memberDateTo">Operation date</label>
+                                            <div class="invalid-feedback">
+                                                Please select the Operation date
+                                            </div>
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
@@ -305,45 +369,40 @@
                                 <div class="col-md-12">
                                     <label class="fw-medium">
                                         <i class="mdi mdi-bank me-2 text-primary"></i>
-                                        Account Selection 
+                                        Account Selection
                                     </label>
                                     <div class="form-floating">
-                                        @Html.DropDownListFor(m => m.AccountTypeId,
+                                        @Html.DropDownList("AccountTypeId_Statement",
                                             (IEnumerable<SelectListItem>)ViewBag.Accounts,
                                             "Select Account",
-                                            new { @class = "form-control select2", id = "accountStatementAccount" })
-
+                                            new { @class = "form-control select2", required = "required", id = "accountStatementAccount" })
+                                        <label for="accountStatementAccount">Select account</label>
                                         <div class="invalid-feedback">
                                             Please select an account
                                         </div>
-                                        <div class="mt-1 small text-muted">
-                                            Select the account for statement generation
-                                        </div>
                                     </div>
                                 </div>
-                                
-                                <hr/>
+
+                                <hr />
 
                                 <!-- From Date -->
                                 <div class="col-md-6">
                                     <label class="fw-medium">
                                         <i class="mdi mdi-calendar-start me-2 text-primary"></i>
-                                        From Date 
+                                        From Date
                                     </label>
                                     <div class="form-floating">
-                                        @Html.TextBoxFor(m => m.DateFrom, new
-                                            {
+                                        @Html.TextBox("DateFrom_Statement", "{0:yyyy-MM-dd}",
+                                            new
+                                                 {
                                                 @class = "form-control datepicker",
                                                 type = "date",
-                                                placeholder = "From Date",
+                                                required = "required",
                                                 id = "accountDateFrom"
                                             })
-
+                                        <label for="accountDateFrom">Start date</label>
                                         <div class="invalid-feedback">
                                             Please select a start date
-                                        </div>
-                                        <div class="mt-1 small text-muted">
-                                            Start date for the statement period
                                         </div>
                                     </div>
                                 </div>
@@ -352,22 +411,20 @@
                                 <div class="col-md-6">
                                     <label class="fw-medium">
                                         <i class="mdi mdi-calendar-end me-2 text-primary"></i>
-                                        To Date 
+                                        To Date
                                     </label>
                                     <div class="form-floating">
-                                        @Html.TextBoxFor(m => m.DateTo, new
-                                            {
+                                        @Html.TextBox("DateTo_Statement", "{0:yyyy-MM-dd}",
+                                            new
+                                                 {
                                                 @class = "form-control datepicker",
                                                 type = "date",
-                                                placeholder = "To Date",
+                                                required = "required",
                                                 id = "accountDateTo"
                                             })
-
+                                        <label for="accountDateTo">End date</label>
                                         <div class="invalid-feedback">
                                             Please select an end date
-                                        </div>
-                                        <div class="mt-1 small text-muted">
-                                            End date for the statement period
                                         </div>
                                     </div>
                                 </div>
@@ -381,74 +438,95 @@
                     <div class="card border-primary">
                         <div class="card-body">
                             <div class="row g-3">
-                                <!-- Loan Selection -->
-                                <div class="col-md-12">
-                                    <label class="fw-medium">
-                                        <i class="mdi mdi-hand-coin-outline me-2 text-primary"></i>
-                                        Loan Selection 
+                                <!-- Selection Method - Now Radio Buttons -->
+                                <div class="col-md-12 mb-3">
+                                    <label class="fw-medium mb-2">
+                                        <i class="mdi mdi-filter-outline me-2 text-primary"></i>
+                                        Report Type
                                     </label>
-                                    <div class="form-floating">
-                                        @Html.DropDownListFor(m => m.LoanId,
-                                            (IEnumerable<SelectListItem>)ViewBag.Loans,
-                                            "Select Loan",
-                                            new { @class = "form-control select2", id = "loanRepaymentLoan" })
-
-                                        <div class="invalid-feedback">
-                                            Please select a loan
+                                    <div class="d-flex gap-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" id="repaymentByLoan" name="repaymentType" value="byLoan" checked>
+                                            <label class="form-check-label" for="repaymentByLoan">
+                                                By Specific Loan
+                                            </label>
                                         </div>
-                                        <div class="mt-1 small text-muted">
-                                            Select the loan for repayment report
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" id="repaymentByRepayment" name="repaymentType" value="byRepayment">
+                                            <label class="form-check-label" for="repaymentByRepayment">
+                                                By Repayment Period
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <!-- Add this help text div -->
+                                    <div class="mt-2 small text-muted" id="repaymentTypeHelp">
+                                        <strong>By Specific Loan Selected:</strong> Generate repayment schedule for a specific loan
+                                    </div>
+                                </div>
+
+                                <!-- Loan Selection Section -->
+                                <div id="loanSelectionSection">
+                                    <div class="col-md-12">
+                                        <label class="fw-medium">
+                                            <i class="mdi mdi-hand-coin-outline me-2 text-primary"></i>
+                                            Loan Selection
+                                        </label>
+                                        <div class="form-floating">
+                                            @Html.DropDownList("LoanId_Repayment",
+                                                (IEnumerable<SelectListItem>)ViewBag.Loans,
+                                                "Select Loan",
+                                                new { @class = "form-control select2", id = "loanRepaymentLoan" })
+                                            <label for="loanRepaymentLoan">Select loan</label>
+                                            <div class="invalid-feedback">
+                                                Please select a loan
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <!-- Empty column for spacing -->
-                                <div class="col-md-6"></div>
-
-                                <!-- From Date -->
-                                <div class="col-md-6">
-                                    <label class="fw-medium">
-                                        <i class="mdi mdi-calendar-start me-2 text-primary"></i>
-                                        From Date 
-                                    </label>
-                                    <div class="form-floating">
-                                        @Html.TextBoxFor(m => m.DateFrom, new
-                                            {
-                                                @class = "form-control datepicker",
-                                                type = "date",
-                                                placeholder = "From Date",
-                                                id = "loanRepaymentDateFrom"
-                                            })
-
-                                        <div class="invalid-feedback">
-                                            Please select a start date
+                                <!-- Date Range Section - ALWAYS VISIBLE -->
+                                <div id="loanRepaymentDateSection" class="mt-3">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="fw-medium">
+                                                <i class="mdi mdi-calendar-start me-2 text-primary"></i>
+                                                From Date
+                                            </label>
+                                            <div class="form-floating">
+                                                @Html.TextBox("DateFrom_Repayment", "{0:yyyy-MM-dd}",
+                                                    new
+                                                         {
+                                                        @class = "form-control datepicker",
+                                                        type = "date",
+                                                        required = "required",
+                                                        id = "loanRepaymentDateFrom"
+                                                    })
+                                                <label for="loanRepaymentDateFrom">Start date</label>
+                                                <div class="invalid-feedback">
+                                                    Please select a start date
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="mt-1 small text-muted">
-                                            Start date for repayment analysis
-                                        </div>
-                                    </div>
-                                </div>
 
-                                <!-- To Date -->
-                                <div class="col-md-6">
-                                    <label class="fw-medium">
-                                        <i class="mdi mdi-calendar-end me-2 text-primary"></i>
-                                        To Date 
-                                    </label>
-                                    <div class="form-floating">
-                                        @Html.TextBoxFor(m => m.DateTo, new
-                                            {
-                                                @class = "form-control datepicker",
-                                                type = "date",
-                                                placeholder = "To Date",
-                                                id = "loanRepaymentDateTo"
-                                            })
-
-                                        <div class="invalid-feedback">
-                                            Please select an end date
-                                        </div>
-                                        <div class="mt-1 small text-muted">
-                                            End date for repayment analysis
+                                        <div class="col-md-6">
+                                            <label class="fw-medium">
+                                                <i class="mdi mdi-calendar-end me-2 text-primary"></i>
+                                                To Date
+                                            </label>
+                                            <div class="form-floating">
+                                                @Html.TextBox("DateTo_Repayment", "{0:yyyy-MM-dd}",
+                                                    new
+                                                         {
+                                                        @class = "form-control datepicker",
+                                                        type = "date",
+                                                        required = "required",
+                                                        id = "loanRepaymentDateTo"
+                                                    })
+                                                <label for="loanRepaymentDateTo">End date</label>
+                                                <div class="invalid-feedback">
+                                                    Please select an end date
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -462,26 +540,25 @@
                     <div class="card border-primary">
                         <div class="card-body">
                             <div class="row g-3">
+
                                 <!-- From Date -->
                                 <div class="col-md-6">
                                     <label class="fw-medium">
                                         <i class="mdi mdi-calendar-start me-2 text-primary"></i>
-                                        From Date 
+                                        From Date
                                     </label>
                                     <div class="form-floating">
-                                        @Html.TextBoxFor(m => m.DateFrom, new
-                                            {
+                                        @Html.TextBox("DateFrom_Statement", "{0:yyyy-MM-dd}",
+                                            new
+                                                 {
                                                 @class = "form-control datepicker",
                                                 type = "date",
-                                                placeholder = "From Date",
+                                                required = "required",
                                                 id = "loanSituationDateFrom"
                                             })
-
+                                        <label for="accountDateFrom">Start date</label>
                                         <div class="invalid-feedback">
                                             Please select a start date
-                                        </div>
-                                        <div class="mt-1 small text-muted">
-                                            Start date for loan portfolio analysis
                                         </div>
                                     </div>
                                 </div>
@@ -490,25 +567,24 @@
                                 <div class="col-md-6">
                                     <label class="fw-medium">
                                         <i class="mdi mdi-calendar-end me-2 text-primary"></i>
-                                        To Date 
+                                        To Date
                                     </label>
                                     <div class="form-floating">
-                                        @Html.TextBoxFor(m => m.DateTo, new
-                                            {
+                                        @Html.TextBox("DateTo_Statement", "{0:yyyy-MM-dd}",
+                                            new
+                                                 {
                                                 @class = "form-control datepicker",
                                                 type = "date",
-                                                placeholder = "To Date",
+                                                required = "required",
                                                 id = "loanSituationDateTo"
                                             })
-
+                                        <label for="accountDateTo">End date</label>
                                         <div class="invalid-feedback">
                                             Please select an end date
                                         </div>
-                                        <div class="mt-1 small text-muted">
-                                            End date for loan portfolio analysis
-                                        </div>
                                     </div>
                                 </div>
+
                             </div>
                             <div class="alert alert-info mt-3 mb-0">
                                 <div class="d-flex">
@@ -520,7 +596,6 @@
                                         <p class="mb-0 small">
                                             This report provides comprehensive analysis of the entire loan portfolio
                                             including performance metrics, risk analysis, and portfolio health.
-                                            No account or loan selection is required.
                                         </p>
                                     </div>
                                 </div>
@@ -536,7 +611,7 @@
                             <button type="button" class="btn btn-light btn-lg px-4" id="btnResetReport">
                                 <i class="mdi mdi-refresh me-2"></i> Reset Form
                             </button>
-                            <button type="button" class="btn btn-primary btn-lg px-4" id="btnGenerateReport">
+                            <button type="submit" id="btnGenerateReport" class="btn btn-primary btn-lg px-4">
                                 <i class="mdi mdi-printer-outline me-2"></i> Generate Report
                             </button>
                         </div>
@@ -545,249 +620,99 @@
             }
         </div>
     </div>
+
 </div>
 
-
+<!-- Loading Overlay -->
+<div id="loadingOverlay" class="position-fixed top-0 left-0 w-100 h-100 d-none" style="background: rgba(0,0,0,0.5); z-index: 9999;">
+    <div class="d-flex justify-content-center align-items-center h-100">
+        <div class="text-center">
+            <div class="spinner-border text-light" style="width: 3rem; height: 3rem;" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <div class="text-white mt-3 fs-5">Generating Report...</div>
+        </div>
+    </div>
+</div>
 
 <style>
-    /* Radio button styling */
+    /* Existing styles remain the same, just adding new ones for checkboxes */
+    /* Smooth transitions for loan repayment sections */
+    #loanSelectionSection {
+        transition: all 0.3s ease-in-out;
+        overflow: hidden;
+    }
+
+        /* When hiding loan section */
+        #loanSelectionSection.d-none {
+            opacity: 0;
+            max-height: 0;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* When showing loan section */
+        #loanSelectionSection:not(.d-none) {
+            opacity: 1;
+            max-height: 500px;
+        }
+
+    /* Date range section is always visible */
+    #loanRepaymentDateSection {
+        opacity: 1;
+        max-height: 500px;
+        transition: all 0.3s ease-in-out;
+    }
+
+    /* Checkbox styling */
     .form-check {
-        padding-left: 0;
-        margin-bottom: 0;
-        flex: 1;
+        margin-bottom: 0.5rem;
     }
 
     .form-check-input {
-        display: none;
+        margin-right: 0.5rem;
     }
 
     .form-check-label {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 16px 20px;
-        border-radius: 8px;
-        border: 2px solid #e9ecef;
-        background-color: #fff;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        text-align: center;
-        height: 100%;
-        min-height: 80px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
-
-    .form-check-input:checked + .form-check-label {
-        background: linear-gradient(135deg, rgba(13, 110, 253, 0.1) 0%, rgba(13, 110, 253, 0.05) 100%);
-        border-color: #0d6efd;
-        color: #0d6efd;
-        box-shadow: 0 4px 12px rgba(13, 110, 253, 0.15);
-        transform: translateY(-2px);
-    }
-
-    .form-check-label:hover {
-        background-color: #f8f9fa;
-        transform: translateY(-1px);
-    }
-
-    .form-check-label i {
-        font-size: 1.5rem;
-        margin-bottom: 5px;
-        display: block;
-    }
-
-    /* Card styling */
-    .card {
-        border-radius: 10px;
-        overflow: hidden;
-        margin-bottom: 1rem;
-        border: 1px solid rgba(0,0,0,0.125);
-    }
-
-    .card-header {
-        border-radius: 10px 10px 0 0 !important;
-        border-bottom: 2px solid rgba(0,0,0,0.1);
-    }
-
-    .card.border-primary {
-        border: 2px solid #0d6efd;
-    }
-
-    .card-header.bg-light {
-        background-color: #f8f9fa !important;
-        border-bottom: 2px solid rgba(13, 110, 253, 0.1);
-    }
-
-    /* Form styling */
-    .form-floating {
-        position: relative;
-    }
-
-        .form-floating label {
-            color: #495057;
-            padding-left: 2.5rem;
-        }
-
-        .form-floating i {
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #6c757d;
-            z-index: 5;
-        }
-
-        .form-floating > .form-control:focus ~ i,
-        .form-floating > .form-control:not(:placeholder-shown) ~ i {
-            color: #0d6efd;
-        }
-
-    /* Select2 styling */
-    .select2-container--bootstrap-5 .select2-selection {
-        height: 58px;
-        padding: 1rem 1rem 0.5rem 2.5rem;
-        border-radius: 0.375rem;
-        border: 1px solid #ced4da;
-    }
-
-        .select2-container--bootstrap-5 .select2-selection:focus {
-            border-color: #0d6efd;
-            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-        }
-
-    .select2-container--bootstrap-5 .select2-selection--single .select2-selection__rendered {
-        padding-top: 0.25rem;
-    }
-
-    /* Datepicker styling */
-    .datepicker {
-        padding-left: 2.5rem;
-        height: 58px;
-        cursor: pointer;
-    }
-
-        .datepicker:focus {
-            border-color: #0d6efd;
-            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-        }
-
-    /* Button styling */
-    .btn {
-        border-radius: 8px;
         font-weight: 500;
-        transition: all 0.3s ease;
+        color: #495057;
     }
 
-    .btn-lg {
-        padding: 0.75rem 2rem;
+    /* Selected accounts list */
+    .selected-account-item {
+        display: inline-block;
+        background: #e9ecef;
+        border-radius: 4px;
+        padding: 4px 8px;
+        margin: 2px;
+        font-size: 0.85rem;
     }
 
-    .btn-primary {
-        background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
-        border: none;
-        box-shadow: 0 2px 4px rgba(13, 110, 253, 0.2);
-    }
-
-        .btn-primary:hover {
-            background: linear-gradient(135deg, #0b5ed7 0%, #0a58ca 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+        .selected-account-item .remove-account {
+            cursor: pointer;
+            margin-left: 5px;
+            color: #dc3545;
         }
 
-    .btn-light {
-        border: 2px solid #dee2e6;
-        background-color: #fff;
-    }
-
-        .btn-light:hover {
-            background-color: #f8f9fa;
-            border-color: #ced4da;
-            transform: translateY(-2px);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-    /* Steps styling */
-    .steps .step-item {
-        display: flex;
-        align-items: flex-start;
-    }
-
-    .step-number {
-        width: 36px;
-        height: 36px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: bold;
-        flex-shrink: 0;
-    }
-
-    .step-content {
-        flex: 1;
-    }
-
-    /* Responsive adjustments */
-    @@media (max-width: 768px) {
-        .form-check-label {
-            min-height: 70px;
-            padding: 12px 15px;
-            font-size: 0.9rem;
-        }
-
-            .form-check-label i {
-                font-size: 1.25rem;
-                margin-bottom: 3px;
+            .selected-account-item .remove-account:hover {
+                color: #bd2130;
             }
 
-        .btn-lg {
-            padding: 0.5rem 1.5rem;
-            font-size: 0.9rem;
-        }
-
-        .card-body {
-            padding: 1rem;
-        }
-
-        .form-floating label {
-            padding-left: 2rem;
-            font-size: 0.9rem;
-        }
-
-        .form-floating i {
-            left: 0.75rem;
-        }
-
-        .select2-container--bootstrap-5 .select2-selection {
-            padding-left: 2rem;
-            height: 52px;
-        }
+    /* Conditional sections */
+    .conditional-section {
+        transition: all 0.3s ease;
     }
 
-    /* Animation for form switching */
-    .report-form-section {
-        animation: fadeIn 0.3s ease;
-    }
-
-    @@keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(10px);
+    /* Remove the flex-wrap from the radio buttons container for better mobile */
+    @@media (max-width: 768px) {
+        .d-flex.flex-wrap.gap-3 {
+            flex-direction: column;
+            gap: 10px !important;
         }
 
-        to {
-            opacity: 1;
-            transform: translateY(0);
+        .form-check-label {
+            min-height: 60px;
+            padding: 10px 15px;
         }
-    }
-
-    /* Help text styling */
-    .text-muted small {
-        font-size: 0.85rem;
-        line-height: 1.4;
-    }
-
-    /* Card hover effect */
-    .card.border-primary:hover {
-        box-shadow: 0 4px 15px rgba(13, 110, 253, 0.1);
     }
 </style>

@@ -1,11 +1,11 @@
 ﻿@model CBS.FrontDesk.Data.Entity.LoanConf.DocumentAttachedToLoan
-    @using Resources
+    @using Resources 
 
 @using (Html.BeginForm("UploadFiles", "AttachedLoanDocuments", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.HiddenFor(model => model.LoanApplicationId)
 
-    <label for="fileUpload">@GlobalShared.SelectFiles:</label>
+    <label for="fileUpload">@GlobalShared.Select_Files:</label>
     <input type="file" id="fileUpload" name="AttachedFiles" multiple />
     <br />
 

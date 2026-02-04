@@ -1,5 +1,5 @@
 ﻿@model List<CBS.FrontDesk.Data.Entity.Accounting_V2.API.ApiKey>
-
+@using Resources
 @foreach (var item in Model)
 {
     <tr data-id="@item.Id">
@@ -22,15 +22,15 @@
         <td>
             @if (item.RevokedAt.HasValue)
             {
-                <span class="badge bg-danger">Revoked</span>
+                <span class="badge bg-danger">@GlobalShared.Revoked</span>
             }
             else if (!item.IsActive)
             {
-                <span class="badge bg-warning">Inactive</span>
+                <span class="badge bg-warning">@GlobalShared.InActive</span>
             }
             else
             {
-                <span class="badge bg-success">Active</span>
+                <span class="badge bg-success">@GlobalShared.Active</span>
             }
         </td>
        
@@ -39,44 +39,44 @@
                 <button class="btn btn-sm btn-info dropdown-toggle text-white"
                         type="button" data-bs-toggle="dropdown"
                         aria-expanded="false">
-                    <i class="mdi mdi-cog-outline"></i> Actions
+                    <i class="mdi mdi-cog-outline"></i> @GlobalShared.Actions
                 </button>
                 <ul class="dropdown-menu">
                     <li>
                         <button class="dropdown-item" onclick="showDetails('@item.Id')">
-                            <i class="mdi mdi-eye me-1 text-primary"></i> Details
+                            <i class="mdi mdi-eye me-1 text-primary"></i> @GlobalShared.Details
                         </button>
                     </li>
                     <li><hr class="dropdown-divider"></li>
                     <li>
                         <button class="dropdown-item" onclick="showRenew('@item.Id')">
-                            <i class="mdi mdi-calendar-refresh me-1 text-warning"></i> Renew
+                            <i class="mdi mdi-calendar-refresh me-1 text-warning"></i> @ApiKeyRessource.Renew
                         </button>
                     </li>
                     <li>
                         @if (item.IsActive)
                         {
                             <button class="dropdown-item" onclick="showChangeStatus('@item.Id')">
-                                <i class="mdi mdi-toggle-switch-off me-1 text-secondary"></i> Deactivate
+                                <i class="mdi mdi-toggle-switch-off me-1 text-secondary"></i>@GlobalShared.Deactivate
                             </button>
                         }
                         else
                         {
                             <button class="dropdown-item" onclick="showChangeStatus('@item.Id')">
-                                <i class="mdi mdi-toggle-switch me-1 text-success"></i> Activate
+                                <i class="mdi mdi-toggle-switch me-1 text-success"></i> @GlobalShared.Activate
                             </button>
                         }
                     </li>
                     <li>
                         <button class="dropdown-item text-danger" onclick="showRevoke('@item.Id')">
-                            <i class="mdi mdi-key-remove me-1 text-danger"></i> Revoke
+                            <i class="mdi mdi-key-remove me-1 text-danger"></i> @GlobalShared.Revoke
                         </button>
                     </li>
                     <li><hr class="dropdown-divider"></li>
                     <li>
                         <button class="dropdown-item text-danger"
                                 onclick="deleteApiKey('@item.Id', '@item.UserName')">
-                            <i class="mdi mdi-delete-outline me-1 text-danger"></i> Delete
+                            <i class="mdi mdi-delete-outline me-1 text-danger"></i> @GlobalShared.Delete
                         </button>
                     </li>
                 </ul>
@@ -91,7 +91,7 @@
         <td colspan="8" class="text-center text-muted py-4">
             <i class="mdi mdi-key-remove mdi-48px mb-2"></i>
             <br />
-            No API keys found
+            @ApiKeyRessource.No_API_keys_found
         </td>
     </tr>
 }

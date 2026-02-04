@@ -1309,8 +1309,8 @@ namespace CBS.FrontDesk.Helper
         public static string GetCustormerchequebook = "/api/v1/checkbook/categories";
         public static string GetCustomerChequeBook = "/api/v1/checkbook/{0}";
         public static string GetCustomerChequeBooks = "/api/v1/checkbook/customer/{0}";
-        public static string GetChequeBookWithLeaves = "/api/v1/leaves/{0}"; 
-        public static string GetChequeLeafDetails = "/api/v1/checkbook-leave/{0}"; 
+        public static string GetChequeBookWithLeaves = "/api/v1/leaves/{0}";
+        public static string GetChequeLeafDetails = "/api/v1/checkbook-leave/{0}";
 
 
         //--------------------------------------TEST--------------------------------------//
@@ -1879,7 +1879,7 @@ namespace CBS.FrontDesk.Helper
         public const string PcmfLoanPurposeGetAll = "/api/v1/PcmfLoanPurposes";
         public const string PcmfLoanPurposeGetById = "/api/v1/PcmfLoanPurpose/{0}";
         public const string PcmfLoanPurposeUpdate = "/api/v1/PcmfLoanPurpose/{0}";
-         public const string PcmfLoanPurposeDelete = "/api/v1/PcmfLoanPurpose/{0}";
+        public const string PcmfLoanPurposeDelete = "/api/v1/PcmfLoanPurpose/{0}";
 
         //---------------- LoanType API endpoints --------------------------------
         public const string LoanTypeCreate = "/api/v1/LoanType";
@@ -1906,13 +1906,25 @@ namespace CBS.FrontDesk.Helper
         public const string SmsUpload_ById = "/api/v1/SmsUpload/details/{0}";
 
         //---------------------- Translations ---------------------------------------
-             public const string GetAllTranslationPlaceholders = "/api/v1/Translation";
-            public const string GetTranslationPlaceholderById = "/api/v1/Translation/{0}";
-            public const string CreateTranslationPlaceholder = "/api/v1/Translation";
-            public const string UpdateTranslationPlaceholder = "/api/v1/Translation/{0}";
-            public const string DeactivateTranslationPlaceholder = "/api/v1/Translation/{0}";
-            public const string LoadTranslationPlaceholdersDataTable = "/api/v1/Translation/datatable";
-            public const string ExportTranslationPlaceholders = "Not avalillable";
-        
+        public const string GetAllTranslationPlaceholders = "/api/v1/Translation";
+        public const string GetTranslationPlaceholderById = "/api/v1/Translation/{0}";
+        public const string CreateTranslationPlaceholder = "/api/v1/Translation";
+        public const string UpdateTranslationPlaceholder = "/api/v1/Translation/{0}";
+        public const string DeactivateTranslationPlaceholder = "/api/v1/Translation/{0}";
+        public const string LoadTranslationPlaceholdersDataTable = "/api/v1/Translation/datatable";
+        public const string ExportTranslationPlaceholders = "Not avalillable";
+
+        //------------------------ Reports MembersFSeries -----------------------------
+        public static string GetMemberAccounts = "/api/v1/members/accounts/{0}";
+        public static string GetMemberLoans ="/api/v1/loans/member/{0}";
+        public static string GetLoanDetails ="/api/v1/loans/{0}";
+        public static string GetLoanRepaymentSchedule ="/api/v1/loans/{0}/repayment-schedule";
+        public static string GetLoanRepayments = "/api/v1/loans/{0}";
+        public static string GetLoanPortfolio = "/api/v1/loans/portfolio?fromDate={0}&toDate={1}";
+        public static string GetLoanPortfolioSummary = "/api/v1/loans/portfolio/summary";
+        public static string GetLoanDelinquencyData = "/api/v1/loans/delinquency";
+        public static string GetTransactionHistoryByAccountNumber2 = "/api/v1/Transaction/GetTransactionsByDatesAndAccountNumber";
+        public static string GetTransactionHistoryByAccountNumber3 = "/api/v1/Report/Financial";
+
     }
 }

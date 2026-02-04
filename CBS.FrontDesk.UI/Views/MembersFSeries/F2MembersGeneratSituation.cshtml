@@ -85,6 +85,15 @@
             <i class="fas fa-receipt me-2"></i>
             <span>Member Operational Receipts</span>
         </a>
+
+   
+    <button type="button"
+            onclick="showCreateModal('@Model.CustomerId')"
+            class="btn btn-label-primary btn-info me-2">
+        <i class="mdi mdi-plus mdi-18px"></i> Generate Reports
+    </button>
+            
+         
     </div>
 </div>
 
@@ -383,352 +392,525 @@
     </script>
 
     <script>
-        /* ============================================================
-           REPORT GENERATOR – ONCLICK DRIVEN (STABLE VERSION)
-           ============================================================ */
+    // ============================================================
+    // REPORT GENERATOR - UPDATED VERSION WITH GLOBAL FUNCTIONS
+    // ============================================================
 
-        window.ReportGenerator = {
+    // Global variables
+    var ReportGenerator = {};
 
-            currentReportType: 'MemberSituation',
+    // ============================================================
+    // GLOBAL FUNCTIONS (called from onclick handlers)
+    // ============================================================
 
-            reportTypeHelpTexts: {
-                MemberSituation: '<strong>Member Situation Selected:</strong> Generate comprehensive member account reports with balances and activity details',
-                AccountStatement: '<strong>Account Statement Selected:</strong> Generate detailed transaction statements for specific accounts',
-                LoanRepayment: '<strong>Loan Repayment Selected:</strong> Generate loan repayment schedules and payment history reports',
-                LoanSituation: '<strong>Loan Situation Selected:</strong> Generate comprehensive loan portfolio analysis and statistics'
-            },
+    // Called from radio button onclick
+    function switchReport(reportType) {
+        console.log('switchReport called with:', reportType);
 
-            /* ===============================
-               MAIN SWITCH (CALLED BY onclick)
-               =============================== */
-            handleReportTypeChange: function (reportType) {
+        // Update hidden field
+        $('#ReportType').val(reportType);
 
-                if (!reportType) return;
+        // Sync radio buttons
+        $('input[name="ReportTypeRadio"]').prop('checked', false);
+        $('input[value="' + reportType + '"]').prop('checked', true);
 
-                this.currentReportType = reportType;
+        // Hide all forms
+        $('.report-form-section').addClass('d-none');
 
-                // Update MVC hidden field
-                $('#ReportType').val(reportType);
+        // Remove required attributes
+        $('[required]').removeAttr('required');
 
-                // Sync radio state
-                $('input[name="ReportTypeRadio"]').prop('checked', false);
-                $('input[value="' + reportType + '"]').prop('checked', true);
+        // Clear validation
+        $('.form-control').removeClass('is-invalid');
 
-                // Reset radio label styles
-                $('.form-check-label').removeAttr('style');
+        // Show selected form and set required fields
+        switch (reportType) {
+            case 'MemberSituation':
+                $('#memberSituationForm').removeClass('d-none');
+                $('#memberAccountIds, #memberLoanStatus, #memberDateTo').attr('required', true);
+                break;
 
-                // Highlight active label
-                $('input[value="' + reportType + '"]')
-                    .next('.form-check-label')
-                    .css({
-                        background: 'linear-gradient(135deg, rgba(13,110,253,.1), rgba(13,110,253,.05))',
-                        borderColor: '#0d6efd',
-                        color: '#0d6efd',
-                        boxShadow: '0 4px 12px rgba(13,110,253,.15)'
-                    });
+            case 'AccountSituation':
+                $('#accountSituationForm').removeClass('d-none');
+                $('#accountSituationIds').attr('required', true);
+                // Note: memberDateTo is reused in accountSituationForm
+                break;
 
-                // Hide all parameter forms
-                $('.report-form-section').addClass('d-none');
+            case 'AccountStatement':
+                $('#accountStatementForm').removeClass('d-none');
+                $('#accountStatementAccount, #accountDateFrom, #accountDateTo').attr('required', true);
+                break;
 
-                // Remove all required attributes
-                $('[required]').removeAttr('required');
-
-                // Clear validation
-                this.clearValidation();
-
-                /* ===============================
-                   EXPLICIT FORM SWITCH
-                   =============================== */
-                switch (reportType) {
-
-                    case 'MemberSituation':
-                        $('#memberSituationForm').removeClass('d-none');
-                        $('#memberAccountType, #memberLoan, #memberDateFrom, #memberDateTo')
-                            .attr('required', true);
-                        break;
-
-                    case 'AccountStatement':
-                        $('#accountStatementForm').removeClass('d-none');
-                        $('#accountStatementAccount, #accountDateFrom, #accountDateTo')
-                            .attr('required', true);
-                        break;
-
-                    case 'LoanRepayment':
-                        $('#loanRepaymentForm').removeClass('d-none');
-                        $('#loanRepaymentLoan, #loanRepaymentDateFrom, #loanRepaymentDateTo')
-                            .attr('required', true);
-                        break;
-
-                    case 'LoanSituation':
-                        $('#loanSituationForm').removeClass('d-none');
-                        $('#loanSituationDateFrom, #loanSituationDateTo')
-                            .attr('required', true);
-                        break;
+            case 'LoanRepayment':
+                $('#loanRepaymentForm').removeClass('d-none');
+                if ($('#repaymentByLoan').is(':checked')) {
+                    $('#loanRepaymentLoan').attr('required', true);
                 }
+                $('#loanRepaymentDateFrom, #loanRepaymentDateTo').attr('required', true);
+                break;
 
-                // Update help text
-                $('#reportTypeHelp').html(this.reportTypeHelpTexts[reportType]);
-            },
+            case 'LoanSituation':
+                $('#loanSituationForm').removeClass('d-none');
+                $('#loanSituationDateFrom, #loanSituationDateTo').attr('required', true);
+                break;
+        }
 
-            /* ===============================
-               DATE PICKERS
-               =============================== */
-            initializeDatepickers: function () {
+        // Update help text
+        var helpTexts = {
+            MemberSituation: '<strong>Member Situation Selected:</strong> Generate comprehensive member account reports with multiple account selection and loan status filtering',
+            AccountSituation: '<strong>Account Situation Selected:</strong> Generate analysis for multiple selected accounts with date range filtering',
+            AccountStatement: '<strong>Account Statement Selected:</strong> Generate detailed transaction statements for specific accounts',
+            LoanRepayment: '<strong>Loan Repayment Selected:</strong> Generate loan repayment schedules and payment history reports',
+            LoanSituation: '<strong>Loan Situation Selected:</strong> Generate comprehensive loan portfolio analysis and statistics'
+        };
 
-                const today = new Date();
-                const toDate = today.toISOString().split('T')[0];
+        $('#reportTypeHelp').html(helpTexts[reportType] || '');
+    }
 
-                const fromDateObj = new Date();
-                fromDateObj.setDate(today.getDate() - 30);
-                const fromDate = fromDateObj.toISOString().split('T')[0];
+    // ============================================================
+    // INITIALIZATION FUNCTIONS
+    // ============================================================
 
-                $('.datepicker').each(function () {
+    function initializePage() {
+        console.log('Report Generator: Initializing...');
 
-                    if (this.id.includes('DateFrom')) $(this).val(fromDate);
-                    if (this.id.includes('DateTo')) $(this).val(toDate);
+        // Set default dates
+        setDefaultDates();
 
-                    $(this).flatpickr({
-                        dateFormat: "Y-m-d",
-                        allowInput: true,
-                        disableMobile: true
-                    });
-                });
-            },
+        // Setup event handlers
+        setupRadioButtons();
+        setupCheckboxHandlers();
+        setupResetButton();
 
-            /* ===============================
-               VALIDATION
-               =============================== */
-            validateForm: function () {
+        // Setup account selection handler for Account Situation
+        $('#accountSituationIds').on('change', function() {
+            updateSelectedAccountsList();
+        });
 
-                let isValid = true;
+        // Default report type
+        switchReport('MemberSituation');
 
-                $('[required]').each(function () {
-                    if (!$(this).val()) {
-                        $(this).addClass('is-invalid');
-                        isValid = false;
+        console.log('Report Generator: Ready!');
+    }
+
+    function setupRadioButtons() {
+        console.log('Setting up radio buttons...');
+        // This function is still defined but radio buttons use onclick handlers
+        // Keep it for any additional setup if needed
+    }
+
+    function setDefaultDates() {
+        var today = new Date();
+        var toDate = today.toISOString().split('T')[0];
+
+        var fromDate = new Date();
+        fromDate.setDate(today.getDate() - 30);
+        var fromDateStr = fromDate.toISOString().split('T')[0];
+
+        $('input[type="date"]').each(function() {
+            if (this.id.includes('DateFrom') || this.id.includes('DateTo')) {
+                var isFrom = this.id.includes('DateFrom');
+                $(this).val(isFrom ? fromDateStr : toDate);
+            }
+        });
+    }
+
+    function setupCheckboxHandlers() {
+        // Loan Repayment radio buttons
+        $('#repaymentByLoan, #repaymentByRepayment').off('change').on('change', function () {
+            var clickedRadio = $(this);
+            var otherRadioId = clickedRadio.attr('id') === 'repaymentByLoan' ? 'repaymentByRepayment' : 'repaymentByLoan';
+            var otherRadio = $('#' + otherRadioId);
+
+            // Handle visibility based on selection
+            var byLoan = $('#repaymentByLoan').is(':checked');
+            var byRepayment = $('#repaymentByRepayment').is(':checked');
+
+            $('#loanSelectionSection').toggle(byLoan);
+
+            // Update required fields
+            if (byLoan) {
+                $('#loanRepaymentLoan').attr('required', true);
+            } else {
+                $('#loanRepaymentLoan').removeAttr('required');
+            }
+
+            // Update help text
+            var helpText = byLoan
+                ? '<strong>By Specific Loan Selected:</strong> Generate repayment schedule for a specific loan'
+                : '<strong>By Repayment Period Selected:</strong> Generate repayment schedule by date range';
+            $('#repaymentTypeHelp').html(helpText);
+        });
+    }
+
+    function setupResetButton() {
+        $('#btnResetReport').off('click').on('click', function(e) {
+            e.preventDefault();
+            resetForm();
+        });
+    }
+
+    function updateSelectedAccountsList() {
+        var selectedValues = $('#accountSituationIds').val() || [];
+        var selectedOptions = $('#accountSituationIds option:selected');
+        var container = $('#selectedAccountsList');
+
+        if (!container.length) {
+            // Create container if it doesn't exist
+            $('#accountSituationIds').after('<div id="selectedAccountsList" class="mt-2"></div>');
+            container = $('#selectedAccountsList');
+        }
+
+        if (selectedValues.length === 0) {
+            container.html('<div class="text-muted small">No accounts selected yet</div>');
+            $('#SelectedAccountIds').val('');
+            return;
+        }
+
+        var html = '';
+        selectedOptions.each(function() {
+            var value = $(this).val();
+            var text = $(this).text();
+            html += '<div class="selected-account-item mb-2">' +
+                    '<span>' + text + '</span>' +
+                    '<span class="remove-account" data-value="' + value + '" title="Remove account">' +
+                    ' <i class="mdi mdi-close-circle"></i>' +
+                    '</span>' +
+                    '</div>';
+        });
+
+        container.html(html);
+        $('#SelectedAccountIds').val(JSON.stringify(selectedValues));
+
+        // Add remove handler
+        $('.remove-account').off('click').on('click', function() {
+            var valueToRemove = $(this).data('value');
+            var currentValues = $('#accountSituationIds').val() || [];
+            var newValues = currentValues.filter(function(val) {
+                return val !== valueToRemove;
+            });
+
+            $('#accountSituationIds').val(newValues).trigger('change');
+            updateSelectedAccountsList();
+        });
+    }
+
+    function resetForm() {
+        // Reset form
+        $('#reportForm')[0].reset();
+
+        // Reset Select2 if exists
+        if ($.fn.select2) {
+            $('.select2').val(null).trigger('change');
+        }
+
+        // Reset dates
+        setDefaultDates();
+
+        // Reset to default report type
+        switchReport('MemberSituation');
+
+        // Clear validation
+        $('.form-control').removeClass('is-invalid');
+
+        // Clear selected accounts list
+        $('#selectedAccountsList').html('<div class="text-muted small">No accounts selected yet</div>');
+        $('#SelectedAccountIds').val('');
+
+        // Reset loan repayment radio to default
+        $('#repaymentByLoan').prop('checked', true).trigger('change');
+
+        appalert('Form has been reset', 3, 1);
+    }
+
+    // ============================================================
+    // REPORT GENERATION FUNCTIONS
+    // ============================================================
+
+    function generateReportAjax(form) {
+        console.log("=== STARTING REPORT GENERATION ===");
+
+        // Get submit button
+        var $submitBtn = $(form).find('button[type="submit"]');
+        var originalBtnText = $submitBtn.html();
+
+        // Disable button and show loading
+        $submitBtn.prop('disabled', true);
+        $submitBtn.html('<i class="mdi mdi-loading mdi-spin me-2"></i> Processing...');
+
+        // Show loading overlay
+        $('#loadingOverlay').removeClass('d-none');
+
+        // Validate form first
+        if (!validateForm()) {
+            appalert('Please fill all required fields', 2, 1);
+            $submitBtn.prop('disabled', false).html(originalBtnText);
+            $('#loadingOverlay').addClass('d-none');
+            return false;
+        }
+
+        // Build form data based on current report type
+        var formData = buildFormData();
+        console.log("Form data to send:", formData);
+
+        // Ask for confirmation
+        alertify.confirm("Confirmation", "Are you sure you want to generate this report?",
+            function() {
+                // AJAX configuration
+                var ajaxConfig = {
+                    type: 'POST',
+                    url: form.action,
+                    data: formData,
+                    dataType: 'json',
+                    success: function(response) {
+                        console.log("=== SERVER RESPONSE ===");
+                        console.log("Full response:", response);
+
+                        if (response.success) {
+                            if (response.status === "Failed") {
+                                appalert(response.message, 2, 1);
+                            } else {
+                                appalert(response.message || 'Report data generated successfully', 1, 1);
+
+                                // Log the count
+                                console.log("Report count:", response.count);
+
+                                // If we have success, proceed to PrepareReport
+                                if (response.success && response.count > 0) {
+                                    prepareCrystalReport();
+                                }
+                            }
+                        } else {
+                            appalert(response.message || 'Failed to generate report', 0, 1);
+                        }
+                    },
+                    error: function(err) {
+                        console.log("=== AJAX ERROR ===");
+                        console.log("Error object:", err);
+
+                        if (err.status === 401) {
+                            window.location.href = '/Authentication/Login';
+                        } else if (err.status === 500) {
+                            appalert('Server error: ' + (err.responseText || 'Internal server error'), 0, 1);
+                        } else {
+                            appalert(err.statusText || 'Error generating report', 0, 1);
+                        }
+                    },
+                    complete: function() {
+                        // Re-enable button
+                        $submitBtn.prop('disabled', false).html(originalBtnText);
+                        $('#loadingOverlay').addClass('d-none');
                     }
-                });
+                };
 
-                return isValid;
+                console.log("AJAX Config:", ajaxConfig);
+                $.ajax(ajaxConfig);
             },
+            function() {
+                // Cancel callback
+                appalert('Report generation cancelled', 3, 1);
+                $submitBtn.prop('disabled', false).html(originalBtnText);
+                $('#loadingOverlay').addClass('d-none');
+            }
+        );
 
-            clearValidation: function () {
-                $('.form-control').removeClass('is-invalid');
-            },
+        return false;
+    }
 
-            /* ===============================
-               GENERATE REPORT
-               =============================== */
-            generateReport: async function () {
+    function buildFormData() {
+        var reportType = $('#ReportType').val();
+        var formData = {
+            ReportType: reportType,
+            CustomerId: $('#CustomerId').val(),
+            __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+        };
 
-                if (!this.validateForm()) return;
+        switch (reportType) {
+            case 'MemberSituation':
+                formData.AccountIds = JSON.stringify($('#memberAccountIds').val() || []);
+                formData.LoanStatus = $('#memberLoanStatus').val();
+                formData.DateTo = $('#memberDateTo').val();
+                break;
 
-                const $btn = $('#btnGenerateReport');
-                const originalHtml = $btn.html();
+            case 'AccountSituation':
+                formData.AccountIds = JSON.stringify($('#accountSituationIds').val() || []);
+                formData.DateTo = $('#memberDateTo').val(); // Using the same date field
+                break;
 
-                $btn.prop('disabled', true)
-                    .html('<span class="spinner-border spinner-border-sm me-2"></span>Generating...');
+            case 'AccountStatement':
+                formData.AccountTypeId = $('#accountStatementAccount').val();
+                formData.DateFrom = $('#accountDateFrom').val();
+                formData.DateTo = $('#accountDateTo').val();
+                break;
 
-                try {
-                    const response = await $.ajax({
-                        url: $('#reportForm').attr('action'),
-                        type: 'POST',
-                        data: $('#reportForm').serialize(),
-                        dataType: 'json'
-                    });
-
-                    if (response.success && response.pdfUrl) {
-                        window.open(response.pdfUrl, '_blank');
-                    } else {
-                        this.showToast(response.message || 'Failed to generate report', 'danger');
-                    }
+            case 'LoanRepayment':
+                formData.ByLoan = $('#repaymentByLoan').is(':checked');
+                formData.ByRepayment = $('#repaymentByRepayment').is(':checked');
+                if ($('#repaymentByLoan').is(':checked')) {
+                    formData.LoanId = $('#loanRepaymentLoan').val();
                 }
-                catch {
-                    this.showToast('Unexpected error occurred', 'danger');
-                }
-                finally {
-                    $btn.prop('disabled', false).html(originalHtml);
+                formData.DateFrom = $('#loanRepaymentDateFrom').val();
+                formData.DateTo = $('#loanRepaymentDateTo').val();
+                break;
+
+            case 'LoanSituation':
+                formData.DateFrom = $('#loanSituationDateFrom').val();
+                formData.DateTo = $('#loanSituationDateTo').val();
+                break;
+        }
+
+        console.log('Form Data Built:', formData);
+        return formData;
+    }
+
+    function prepareCrystalReport() {
+        console.log('=== PREPARING CRYSTAL REPORT ===');
+
+        // Show loading
+        $('#loadingOverlay').removeClass('d-none');
+
+        $.ajax({
+            url: '@Url.Action("PrepareReport", "MembersFSeriesReport")',
+            type: 'POST',
+            dataType: 'json',
+            success: function(response) {
+                console.log('PrepareReport success:', response);
+
+                if (response.success) {
+                    // Open the PDF in new tab
+                    var reportUrl = '@Url.Action("ReportParameterLessCOLL", "Reports")';
+                    console.log('Opening report:', reportUrl);
+                    window.open(reportUrl, '_blank');
+
+                    appalert('Report generated successfully! Check the new tab.', 1, 1);
+                } else {
+                    appalert('Error preparing report: ' + (response.message || 'Unknown error'), 0, 1);
                 }
             },
-
-            /* ===============================
-               RESET
-               =============================== */
-            resetForm: function () {
-
-                $('#reportForm')[0].reset();
-                $('.select2').val(null).trigger('change');
-                $('.datepicker').val('');
-
-                this.handleReportTypeChange('MemberSituation');
-                this.initializeDatepickers();
+            error: function(xhr) {
+                console.error('PrepareReport error:', xhr);
+                appalert('Error preparing report for display', 0, 1);
             },
+            complete: function() {
+                $('#loadingOverlay').addClass('d-none');
+            }
+        });
+    }
 
-            /* ===============================
-               TOAST
-               =============================== */
-            showToast: function (message, type) {
+    function validateForm() {
+        var isValid = true;
+        var reportType = $('#ReportType').val();
 
-                if (!$('#toastContainer').length) {
-                    $('body').append('<div id="toastContainer" class="position-fixed top-0 end-0 p-3" style="z-index:1056"></div>');
+        // Clear all validation first
+        $('.form-control').removeClass('is-invalid');
+
+        // Validate based on report type
+        switch(reportType) {
+            case 'MemberSituation':
+                if (!$('#memberAccountIds').val() || $('#memberAccountIds').val().length === 0) {
+                    $('#memberAccountIds').addClass('is-invalid');
+                    isValid = false;
                 }
+                if (!$('#memberLoanStatus').val()) {
+                    $('#memberLoanStatus').addClass('is-invalid');
+                    isValid = false;
+                }
+                if (!$('#memberDateTo').val()) {
+                    $('#memberDateTo').addClass('is-invalid');
+                    isValid = false;
+                }
+                break;
 
-                const id = 'toast_' + Date.now();
-                const html = `
-                                <div id="${id}" class="toast text-white bg-${type} border-0">
-                                    <div class="d-flex">
-                                        <div class="toast-body">${message}</div>
-                                        <button class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
-                                    </div>
-                                </div>`;
+            case 'AccountSituation':
+                if (!$('#accountSituationIds').val() || $('#accountSituationIds').val().length === 0) {
+                    $('#accountSituationIds').addClass('is-invalid');
+                    isValid = false;
+                }
+                if (!$('#memberDateTo').val()) {
+                    $('#memberDateTo').addClass('is-invalid');
+                    isValid = false;
+                }
+                break;
 
-                $('#toastContainer').append(html);
-                new bootstrap.Toast(document.getElementById(id)).show();
+            case 'AccountStatement':
+                if (!$('#accountStatementAccount').val()) {
+                    $('#accountStatementAccount').addClass('is-invalid');
+                    isValid = false;
+                }
+                if (!$('#accountDateFrom').val()) {
+                    $('#accountDateFrom').addClass('is-invalid');
+                    isValid = false;
+                }
+                if (!$('#accountDateTo').val()) {
+                    $('#accountDateTo').addClass('is-invalid');
+                    isValid = false;
+                }
+                break;
+
+            case 'LoanRepayment':
+                if ($('#repaymentByLoan').is(':checked') && !$('#loanRepaymentLoan').val()) {
+                    $('#loanRepaymentLoan').addClass('is-invalid');
+                    isValid = false;
+                }
+                if (!$('#loanRepaymentDateFrom').val()) {
+                    $('#loanRepaymentDateFrom').addClass('is-invalid');
+                    isValid = false;
+                }
+                if (!$('#loanRepaymentDateTo').val()) {
+                    $('#loanRepaymentDateTo').addClass('is-invalid');
+                    isValid = false;
+                }
+                break;
+
+            case 'LoanSituation':
+                if (!$('#loanSituationDateFrom').val()) {
+                    $('#loanSituationDateFrom').addClass('is-invalid');
+                    isValid = false;
+                }
+                if (!$('#loanSituationDateTo').val()) {
+                    $('#loanSituationDateTo').addClass('is-invalid');
+                    isValid = false;
+                }
+                break;
+        }
+
+        console.log('Validation result:', isValid ? 'VALID' : 'INVALID');
+        return isValid;
+    }
+
+    // ============================================================
+    // DOCUMENT READY INITIALIZATION
+    // ============================================================
+    $(document).ready(function() {
+        console.log('Document ready - Initializing Report Generator...');
+
+        // Initialize the page
+        initializePage();
+
+        // Initialize ReportGenerator object (for backward compatibility)
+        ReportGenerator = {
+            initialize: function() {
+                initializePage();
+                return this;
             },
-
-            /* ===============================
-               INIT
-               =============================== */
-            initialize: function () {
-
-                this.initializeDatepickers();
-
-                $('#btnGenerateReport').on('click', (e) => {
-                    e.preventDefault();
-                    this.generateReport();
-                });
-
-                $('#btnResetReport').on('click', () => this.resetForm());
-
-                // Default state
-                this.handleReportTypeChange('MemberSituation');
+            switchReport: function(reportType) {
+                switchReport(reportType);
             }
         };
 
-        function switchReport(reportType) {
-            if (window.ReportGenerator) {
-                ReportGenerator.handleReportTypeChange(reportType);
-            }
-        }
+        // Make functions globally available
+        window.setupRadioButtons = setupRadioButtons;
+        window.switchReport = switchReport;
+        window.initializePage = initializePage;
+        window.resetForm = resetForm;
+        window.generateReportAjax = generateReportAjax;
+        window.validateForm = validateForm;
+        window.ReportGenerator = ReportGenerator;
 
-        $(document).ready(function () {
-            ReportGenerator.initialize();
-        });
-    </script>
-    <script>
-        function filterTable(input, tableId) {
-            const filter = (input.value || "").toLowerCase();
-            const rows = document.querySelectorAll("#" + tableId + " tbody tr");
-            rows.forEach(r => {
-                const text = (r.innerText || "").toLowerCase();
-                r.style.display = text.includes(filter) ? "" : "none";
-            });
-        }
-
-        async function copyFromEl(elOrId) {
-            try {
-                const el = typeof elOrId === "string" ? document.getElementById(elOrId) : elOrId;
-                if (!el) return;
-
-                const text = (el.getAttribute("data-copy") || el.innerText || el.textContent || "").trim();
-                if (!text) return;
-
-                if (navigator.clipboard && window.isSecureContext) {
-                    await navigator.clipboard.writeText(text);
-                    showCopyToast("Copied ✓");
-                    return;
-                }
-
-                const ta = document.createElement("textarea");
-                ta.value = text;
-                ta.setAttribute("readonly", "");
-                ta.style.position = "fixed";
-                ta.style.top = "0";
-                ta.style.left = "0";
-                ta.style.opacity = "0";
-                document.body.appendChild(ta);
-                ta.focus();
-                ta.select();
-
-                const ok = document.execCommand("copy");
-                document.body.removeChild(ta);
-
-                showCopyToast(ok ? "Copied ✓" : "Copy failed");
-            } catch (e) {
-                showCopyToast("Copy blocked");
-                console.warn("Copy failed:", e);
-            }
-        }
-
-        function showCopyToast(message) {
-            let toast = document.getElementById("copyToast");
-            if (!toast) {
-                toast = document.createElement("div");
-                toast.id = "copyToast";
-                toast.style.position = "fixed";
-                toast.style.right = "20px";
-                toast.style.bottom = "20px";
-                toast.style.zIndex = "99999";
-                toast.style.padding = "10px 14px";
-                toast.style.borderRadius = "10px";
-                toast.style.boxShadow = "0 8px 24px rgba(0,0,0,.12)";
-                toast.style.background = "#111";
-                toast.style.color = "#fff";
-                toast.style.fontSize = "13px";
-                toast.style.opacity = "0";
-                toast.style.transform = "translateY(10px)";
-                toast.style.transition = "all .18s ease";
-                document.body.appendChild(toast);
-            }
-
-            toast.innerText = message;
-            toast.style.opacity = "1";
-            toast.style.transform = "translateY(0)";
-
-            clearTimeout(window.__copyToastTimer);
-            window.__copyToastTimer = setTimeout(() => {
-                toast.style.opacity = "0";
-                toast.style.transform = "translateY(10px)";
-            }, 1200);
-        }
-    </script>
-
-    @*<script>
-        $(function () {
-            const id = "#LoansByMemberTable";
-
-            if ($.fn.DataTable.isDataTable(id)) {
-                $(id).DataTable().destroy();
-            }
-
-            const dt = $(id).DataTable({
-                paging: false,
-                searching: false,
-                info: false,
-                ordering: true,
-
-                scrollX: true,
-                scrollY: "55vh",        // ✅ vertical scroll
-                scrollCollapse: true,
-
-                autoWidth: false,
-                responsive: false,
-                fixedHeader: false
-            });
-
-            // ✅ critical: force width calc
-            setTimeout(() => dt.columns.adjust().draw(false), 80);
-
-            // tabs/modals
-            $(document).on('shown.bs.tab shown.bs.modal', function () {
-                setTimeout(() => dt.columns.adjust().draw(false), 80);
-            });
-
-            $(window).on('resize', function () {
-                dt.columns.adjust();
-            });
-        });
-    </script>*@
+        console.log('All functions initialized and available globally');
+    });
+    </script>    
+    }
 
 
-}
+

@@ -101,6 +101,15 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public List<Remittance> Remittances { get; set; } = new List<Remittance>();
         public string ServiceOption { get; set; }
     }
+    public class MemberAccountVm
+    {
+        public string AccountNumber { get; set; }
+        public string AccountName { get; set; }
+        public decimal Balance { get; set; }
+        public decimal BlockedAmount { get; set; }
+        public string AccountType { get; set; }
+    }
+
     public class PrintDate
     {
         public string DateFrom { get; set; }
@@ -575,15 +584,82 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public Depositer Depositer { get; set; }
         public string ManualEntryDailyCollectorId { get; set; }
     }
+    public class ReportParametersx
+    {
+        public string ReportType { get; set; }// LoanSituation, LoanRepayments, MembersSituation,AccountSituations,AccountStatements
+        public string AccountTypeId { get; set; }
+        public string LoanId { get; set; }
+        public string AccountId { get; set; }
+        public string LoanStatus { get; set; }
+        public bool ByDate { get; set; }
+        public bool ByBalance { get; set; }
+        public bool ByLoan { get; set; }
+        public bool ByRepayment { get; set; }
+        public DateTime DateFrom { get; set; }
+        public DateTime DateTo { get; set; }
+        public List<string> AccountIds { get; set; } = new List<string>();
+    }
 
     public class ReportParameters
-        {
-            public string ReportType { get; set; }
-            public string AccountTypeId { get; set; }
-            public string LoanId { get; set; }
-            public string AccountId { get; set; }
-            public DateTime DateFrom { get; set; }
-            public DateTime DateTo { get; set; }
-        }
-    
+    {
+        public string CustomerId { get; set; }
+        public string ReportType { get; set; }
+        public string AccountTypeId { get; set; }
+        public string LoanId { get; set; }
+        public string AccountId { get; set; }
+        public string LoanStatus { get; set; }
+        public bool ByDate { get; set; }
+        public bool ByBalance { get; set; }
+        public bool ByLoan { get; set; }
+        public bool ByRepayment { get; set; }
+        public DateTime DateFrom { get; set; }
+        public DateTime DateTo { get; set; }
+        public List<string> AccountIds { get; set; } = new List<string>();
+    }
+
+    public class FinancialReportRequest
+    {
+        public FinancialReportFilter Filter { get; set; }
+    }
+
+
+    public class FinancialReportFilter
+    {
+        public int ReportType { get; set; }                  // FinancialReportType (int)
+        public string MemberReference { get; set; }
+
+        public List<string> AccountIds { get; set; } = new List<string>();
+        public List<string> AccountNumbers { get; set; } = new List<string>();
+
+        public string AccountId { get; set; }
+        public string AccountNumber { get; set; }
+
+        public string LoanId { get; set; }
+        public string LoanStatus { get; set; }
+
+        public int LoanRepaymentMode { get; set; }            // LoanRepaymentReportMode (int)
+
+        public DateTime? OperationDate { get; set; }
+        public DateTime DateFrom { get; set; }
+        public DateTime DateTo { get; set; }
+
+        public string BranchId { get; set; }
+        public string BankId { get; set; }
+    }
+
+    public enum FinancialReportType
+    {
+        MemberSituation = 1,
+        AccountSituation = 2,
+        AccountStatement = 3,
+        LoanRepayment = 4,
+        LoanHistory = 5
+    }
+
+    public enum LoanRepaymentReportMode
+    {
+        BySpecificLoan = 1,
+        ByRepaymentPeriod = 2
+    }
+
 }

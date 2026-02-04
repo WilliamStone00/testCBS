@@ -119,6 +119,7 @@ namespace CBS.FrontDesk.Data.Entity
         public string AccountName { get; set; }
         public string Status { get; set; }
         public decimal Balance { get; set; }
+        public decimal BlockedBalance { get; set; }
         public string Currency { get; set; }
     }
 

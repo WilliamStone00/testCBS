@@ -431,35 +431,61 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.EndOfYearClosure
 
 
 
-        public async Task<ActionResult> GetAccounts(string branchId)
+        public async Task<ActionResult> GetAccounts(string branchId, bool isHeadOffice = false)
         {
             try
             {
-                //branchId = _branchAccountService.GetBranchID();
-                branchId = _branchAccountService.GetHeadOfficeBranchID();
-                if (string.IsNullOrWhiteSpace(branchId))
-                    return Json(new { success = false, message = "⚠️ Please select a branch." }, JsonRequestBehavior.AllowGet);
+                // Resolve branch
+                if (isHeadOffice)
+                {
+                    branchId = _branchAccountService.GetHeadOfficeBranchID();
+                }
+                else
+                {
+                    if (string.IsNullOrWhiteSpace(branchId))
+                        return Json(new
+                        {
+                            success = false,
+                            message = "⚠️ Please select a branch."
+                        }, JsonRequestBehavior.AllowGet);
+                }
 
-                var branchAccounts = await _branchAccountService.GetAllBranchAccountsFromDataTableAsync(branchId);
+                var branchAccounts =
+                    await _branchAccountService.GetAllBranchAccountsFromDataTableAsync(branchId);
+
                 var result = _branchAccountService.DropDownGen(branchAccounts.ToList());
 
-
-                // var result = await _manualJournalEntryService.GetAccountsByBranchAsync(branchId);
-
                 if (result == null || !result.Any())
-                    return Json(new { success = false, message = "⚠️ No accounts found for this branch." }, JsonRequestBehavior.AllowGet);
+                    return Json(new
+                    {
+                        success = false,
+                        message = "⚠️ No accounts found for this branch."
+                    }, JsonRequestBehavior.AllowGet);
 
-                return Json(new { success = true, data = result }, JsonRequestBehavior.AllowGet);
+                return Json(new
+                {
+                    success = true,
+                    data = result
+                }, JsonRequestBehavior.AllowGet);
             }
             catch (TaskCanceledException)
             {
-                return Json(new { success = false, message = "⚠️ Timeout while fetching accounts — backend service not responding." }, JsonRequestBehavior.AllowGet);
+                return Json(new
+                {
+                    success = false,
+                    message = "⚠️ Timeout while fetching accounts — backend service not responding."
+                }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new
+                {
+                    success = false,
+                    message = ex.Message
+                }, JsonRequestBehavior.AllowGet);
             }
         }
+
 
 
         [HttpPost]
