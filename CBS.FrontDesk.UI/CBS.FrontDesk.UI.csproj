@@ -476,6 +476,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MembersFSeries.xsd</DependentUpon>
     </Compile>
+    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\AccountSituation.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AccountSituation.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\AccountStatement.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -8435,6 +8441,10 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalLoanTerm.Designer.cs</LastGenOutput>
     </Content>
+    <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\AccountSituation.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>AccountSituation.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\AccountStatement.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>AccountStatement.cs</LastGenOutput>

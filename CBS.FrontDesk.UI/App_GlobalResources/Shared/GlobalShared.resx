@@ -600,9 +600,10 @@
   <data name="TimeRemaining" xml:space="preserve">
     <value>Time Remaining</value>
   </data>
-   <data name="Tips" xml:space="preserve">
-   <value>Tips</value>
- </data>
+  <data name="Tips" xml:space="preserve">
+    <value>Tips</value>
+    <comment>Tips</comment>
+  </data>
   <data name="ToDownload" xml:space="preserve">
     <value>To download</value>
   </data>
