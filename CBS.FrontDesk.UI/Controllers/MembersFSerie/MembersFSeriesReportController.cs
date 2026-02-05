@@ -59,11 +59,13 @@ namespace CBS.FrontDesk.UI.Controllers
                 AccountIds = parameters.AccountIds,
                 DateFrom = parameters.DateFrom,
                 DateTo = parameters.DateTo,
-                OperationDate = DateTime.Now
+                OperationDate = DateTime.Now,
+                InterestVadPenaltyType = parameters.InterestVadPenaltyType
             };
 
             object reportData = null;
 
+            // Single switch statement - handles all report types including mapped ones
             switch (parameters.ReportType)
             {
                 case "MemberSituation":
@@ -93,10 +95,26 @@ namespace CBS.FrontDesk.UI.Controllers
                     reportData = await _reportBuilder.BuildLoanRepaymentRows(filter);
                     break;
 
-                case "LoanHistory":
+                case "LoanSituation":
                     filter.ReportType = (int)FinancialReportType.LoanHistory;
                     filter.LoanStatus = parameters.LoanStatus;
-                   // reportData = await _reportBuilder.BuildLoanHistoryRows(filter);
+                    reportData = await _reportBuilder.BuildLoanSituationRows(filter);
+                    break;
+
+                // These come directly from JavaScript mapping
+                case "Interest":
+                    filter.ReportType = (int)FinancialReportType.Interest;
+                    reportData = await _reportBuilder.BuildInterestRows(filter);
+                    break;
+
+                case "VAT":
+                    filter.ReportType = (int)FinancialReportType.VAT;
+                    reportData = await _reportBuilder.BuildVatRows(filter);
+                    break;
+
+                case "Penalty":
+                    filter.ReportType = (int)FinancialReportType.Penalty;
+                    reportData = await _reportBuilder.BuildPenaltyRows(filter);
                     break;
 
                 default:
@@ -110,10 +128,6 @@ namespace CBS.FrontDesk.UI.Controllers
 
             Session["rptSource"] = reportData;
             Session["ReportFilter"] = filter;
-
-            // Store data in session for Crystal Reports
-            //Session["rptSource"] = reportData;
-
             Session["ReportParameters"] = parameters;
             Session["ReportItemCount"] = GetItemCount(reportData);
 
@@ -124,7 +138,6 @@ namespace CBS.FrontDesk.UI.Controllers
                 count = GetItemCount(reportData)
             });
         }
-
 
 
         // Helper method to get item count

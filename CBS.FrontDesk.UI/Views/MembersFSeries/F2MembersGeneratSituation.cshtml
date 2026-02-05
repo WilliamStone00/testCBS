@@ -393,8 +393,8 @@
 
     <script>
     // ============================================================
-    // REPORT GENERATOR - UPDATED VERSION WITH GLOBAL FUNCTIONS
-        // ============================================================
+    // REPORT GENERATOR - UPDATED VERSION WITH INTEREST/VAD/PENALTY
+    // ============================================================
 
     // Global variables
     var ReportGenerator = {};
@@ -404,68 +404,76 @@
     // ============================================================
 
     // Called from radio button onclick
-    function switchReport(reportType) {
-        console.log('switchReport called with:', reportType);
+        // Called from radio button onclick
+        function switchReport(reportType) {
+            console.log('switchReport called with:', reportType);
 
-        // Update hidden field
-        $('#ReportType').val(reportType);
+            // Update hidden field
+            $('#ReportType').val(reportType);
 
-        // Sync radio buttons
-        $('input[name="ReportTypeRadio"]').prop('checked', false);
-        $('input[value="' + reportType + '"]').prop('checked', true);
+            // Sync radio buttons
+            $('input[name="ReportTypeRadio"]').prop('checked', false);
+            $('input[value="' + reportType + '"]').prop('checked', true);
 
-        // Hide all forms
-        $('.report-form-section').addClass('d-none');
+            // Hide all forms
+            $('.report-form-section').addClass('d-none');
 
-        // Remove required attributes
-        $('[required]').removeAttr('required');
+            // Remove required attributes
+            $('[required]').removeAttr('required');
 
-        // Clear validation
-        $('.form-control').removeClass('is-invalid');
+            // Clear validation
+            $('.form-control').removeClass('is-invalid');
 
-        // Show selected form and set required fields
-        switch (reportType) {
-            case 'MemberSituation':
-                $('#memberSituationForm').removeClass('d-none');
-                $('#memberAccountIds, #memberLoanStatus, #memberDateTo').attr('required', true);
-                break;
+            // Show selected form and set required fields
+            switch (reportType) {
+                case 'MemberSituation':
+                    $('#memberSituationForm').removeClass('d-none');
+                    $('#memberAccountIds, #memberLoanStatus, #memberDateTo').attr('required', true);
+                    break;
 
-            case 'AccountSituation':
-                $('#accountSituationForm').removeClass('d-none');
-                $('#accountSituationIds').attr('required', true);
-                // Note: memberDateTo is reused in accountSituationForm
-                break;
+                case 'AccountSituation':
+                    $('#accountSituationForm').removeClass('d-none');
+                    $('#accountSituationIds, #accountSituationDateTo').attr('required', true);
+                    break;
 
-            case 'AccountStatement':
-                $('#accountStatementForm').removeClass('d-none');
-                $('#accountStatementAccount, #accountDateFrom, #accountDateTo').attr('required', true);
-                break;
+                case 'AccountStatement':
+                    $('#accountStatementForm').removeClass('d-none');
+                    $('#accountStatementAccount, #accountDateFrom, #accountDateTo').attr('required', true);
+                    break;
 
-            case 'LoanRepayment':
-                $('#loanRepaymentForm').removeClass('d-none');
-                if ($('#repaymentByLoan').is(':checked')) {
-                    $('#loanRepaymentLoan').attr('required', true);
-                }
-                $('#loanRepaymentDateFrom, #loanRepaymentDateTo').attr('required', true);
-                break;
+                case 'LoanRepayment':
+                    $('#loanRepaymentForm').removeClass('d-none');
+                    if ($('#repaymentByLoan').is(':checked')) {
+                        $('#loanRepaymentLoan').attr('required', true);
+                    }
+                    $('#loanRepaymentDateFrom, #loanRepaymentDateTo').attr('required', true);
+                    break;
 
-            case 'LoanSituation':
-                $('#loanSituationForm').removeClass('d-none');
-                $('#loanSituationDateFrom, #loanSituationDateTo').attr('required', true);
-                break;
+                case 'LoanSituation':
+                    $('#loanSituationForm').removeClass('d-none');
+                    $('#loanSituationDateFrom, #loanSituationDateTo').attr('required', true);
+                    break;
+
+                case 'InterestVadPenalty':
+                    $('#interestVadPenaltyForm').removeClass('d-none');
+                    $('#interestVadPenaltyDateFrom, #interestVadPenaltyDateTo').attr('required', true);
+                    // Add date validation event listeners
+                    setupInterestVadPenaltyDateValidation();
+                    break;
+            }
+
+            // Update help text
+            var helpTexts = {
+                MemberSituation: '<strong>Member Situation Selected:</strong> Generate comprehensive member account reports with multiple account selection and loan status filtering',
+                AccountSituation: '<strong>Account Situation Selected:</strong> Generate analysis for multiple selected accounts with date range filtering',
+                AccountStatement: '<strong>Account Statement Selected:</strong> Generate detailed transaction statements for specific accounts',
+                LoanRepayment: '<strong>Loan Repayment Selected:</strong> Generate loan repayment schedules and payment history reports',
+                LoanSituation: '<strong>Loan Situation Selected:</strong> Generate comprehensive loan portfolio analysis and statistics',
+                InterestVadPenalty: '<strong>Interest/VAT/Penalty Selected:</strong> Generate Interest, VAT, or Penalty reports with date range filtering'
+            };
+
+            $('#reportTypeHelp').html(helpTexts[reportType] || '');
         }
-
-        // Update help text
-        var helpTexts = {
-            MemberSituation: '<strong>Member Situation Selected:</strong> Generate comprehensive member account reports with multiple account selection and loan status filtering',
-            AccountSituation: '<strong>Account Situation Selected:</strong> Generate analysis for multiple selected accounts with date range filtering',
-            AccountStatement: '<strong>Account Statement Selected:</strong> Generate detailed transaction statements for specific accounts',
-            LoanRepayment: '<strong>Loan Repayment Selected:</strong> Generate loan repayment schedules and payment history reports',
-            LoanSituation: '<strong>Loan Situation Selected:</strong> Generate comprehensive loan portfolio analysis and statistics'
-        };
-
-        $('#reportTypeHelp').html(helpTexts[reportType] || '');
-    }
 
     // ============================================================
     // INITIALIZATION FUNCTIONS
@@ -481,6 +489,8 @@
         setupRadioButtons();
         setupCheckboxHandlers();
         setupResetButton();
+        setupInterestVadPenaltyRadioButtons();
+        setupDateValidation();
 
         // Setup account selection handler for Account Situation
         $('#accountSituationIds').on('change', function() {
@@ -510,7 +520,12 @@
         $('input[type="date"]').each(function() {
             if (this.id.includes('DateFrom') || this.id.includes('DateTo')) {
                 var isFrom = this.id.includes('DateFrom');
-                $(this).val(isFrom ? fromDateStr : toDate);
+                var dateValue = isFrom ? fromDateStr : toDate;
+
+                // Don't set dates for Interest/VAD/Penalty as they have max attribute
+                if (!this.id.includes('interestVadPenalty')) {
+                    $(this).val(dateValue);
+                }
             }
         });
     }
@@ -540,6 +555,118 @@
                 ? '<strong>By Specific Loan Selected:</strong> Generate repayment schedule for a specific loan'
                 : '<strong>By Repayment Period Selected:</strong> Generate repayment schedule by date range';
             $('#repaymentTypeHelp').html(helpText);
+        });
+    }
+
+        function setupInterestVadPenaltyRadioButtons() {
+            // Interest/VAD/Penalty radio buttons (inside the form section)
+            $('input[name="interestVadPenaltyType"]').off('change').on('change', function () {
+                var selectedValue = $(this).val();
+                var helpTexts = {
+                    'Interest': '<strong>Interest Report Selected:</strong> Generate interest calculation report for the selected date range',
+                    'VAD': '<strong>VAT Report Selected:</strong> Generate Value Added Tax details report for the selected date range',
+                    'Penalty': '<strong>Penalty Report Selected:</strong> Generate penalty charges report for the selected date range'
+                };
+                $('#interestVadPenaltyHelp').html(helpTexts[selectedValue] || '');
+            });
+        }
+
+    function setupDateValidation() {
+        // Add max attribute to all date fields to prevent future dates
+        $('input[type="date"]').each(function() {
+            if (!$(this).attr('max')) {
+                var today = new Date().toISOString().split('T')[0];
+                $(this).attr('max', today);
+            }
+        });
+
+        // Validate date ranges on change
+        $('input[type="date"]').on('change', function() {
+            validateDateRange($(this));
+        });
+    }
+
+    function validateDateRange(dateInput) {
+        var inputId = dateInput.attr('id');
+        var dateValue = dateInput.val();
+
+        // Check if date is in the future
+        var today = new Date();
+        var selectedDate = new Date(dateValue);
+
+        if (selectedDate > today) {
+            dateInput.addClass('is-invalid');
+            dateInput.addClass('date-validation-error');
+            dateInput.next('.invalid-feedback').text('Date cannot be in the future');
+            return false;
+        }
+
+        // Remove future date error if fixed
+        dateInput.removeClass('date-validation-error');
+
+        // Check date ranges for pairs
+        if (inputId.includes('DateFrom')) {
+            var toId = inputId.replace('DateFrom', 'DateTo');
+            var toDate = $('#' + toId).val();
+
+            if (toDate && dateValue && new Date(dateValue) > new Date(toDate)) {
+                dateInput.addClass('is-invalid');
+                dateInput.next('.invalid-feedback').text('From date cannot be after To date');
+                return false;
+            }
+        }
+
+        if (inputId.includes('DateTo')) {
+            var fromId = inputId.replace('DateTo', 'DateFrom');
+            var fromDate = $('#' + fromId).val();
+
+            if (fromDate && dateValue && new Date(dateValue) < new Date(fromDate)) {
+                dateInput.addClass('is-invalid');
+                dateInput.next('.invalid-feedback').text('To date cannot be before From date');
+                return false;
+            }
+        }
+
+        // Clear validation if all good
+        dateInput.removeClass('is-invalid');
+        return true;
+    }
+
+    function setupInterestVadPenaltyDateValidation() {
+        // Specific validation for Interest/VAD/Penalty dates
+        $('#interestVadPenaltyDateFrom, #interestVadPenaltyDateTo').off('change').on('change', function() {
+            var fromDate = $('#interestVadPenaltyDateFrom').val();
+            var toDate = $('#interestVadPenaltyDateTo').val();
+            var messageDiv = $('#dateValidationMessage');
+            var messageText = $('#dateValidationText');
+
+            if (!fromDate || !toDate) return;
+
+            var fromDateObj = new Date(fromDate);
+            var toDateObj = new Date(toDate);
+            var today = new Date();
+
+            // Reset styles
+            $('#interestVadPenaltyDateFrom, #interestVadPenaltyDateTo').removeClass('is-invalid');
+            messageDiv.hide();
+
+            // Check for future dates
+            if (fromDateObj > today || toDateObj > today) {
+                $('#interestVadPenaltyDateFrom, #interestVadPenaltyDateTo').addClass('is-invalid');
+                messageText.text('Dates cannot be in the future');
+                messageDiv.removeClass('alert-warning').addClass('alert-danger').show();
+                return false;
+            }
+
+            // Check if from date is after to date
+            if (fromDateObj > toDateObj) {
+                $('#interestVadPenaltyDateFrom').addClass('is-invalid');
+                messageText.text('From date cannot be after To date');
+                messageDiv.removeClass('alert-danger').addClass('alert-warning').show();
+                return false;
+            }
+
+            return true;
         });
     }
 
@@ -595,33 +722,40 @@
         });
     }
 
-    function resetForm() {
-        // Reset form
-        $('#reportForm')[0].reset();
+        function resetForm() {
+            // Reset form
+            $('#reportForm')[0].reset();
 
-        // Reset Select2 if exists
-        if ($.fn.select2) {
-            $('.select2').val(null).trigger('change');
+            // Reset Select2 if exists
+            if ($.fn.select2) {
+                $('.select2').val(null).trigger('change');
+            }
+
+            // Reset dates
+            setDefaultDates();
+
+            // Reset to default report type
+            switchReport('MemberSituation');
+
+            // Clear validation
+            $('.form-control').removeClass('is-invalid');
+
+            // Clear selected accounts list
+            $('#selectedAccountsList').html('<div class="text-muted small">No accounts selected yet</div>');
+            $('#SelectedAccountIds').val('');
+
+            // Reset loan repayment radio to default
+            $('#repaymentByLoan').prop('checked', true).trigger('change');
+
+            // Reset Interest/VAD/Penalty radio in the form to default
+            $('#interestReport').prop('checked', true);
+            $('#interestVadPenaltyHelp').html('<strong>Interest Report Selected:</strong> Generate interest calculation report for the selected date range');
+
+            // Hide validation messages
+            $('#dateValidationMessage').hide();
+
+            appalert('Form has been reset', 3, 1);
         }
-
-        // Reset dates
-        setDefaultDates();
-
-        // Reset to default report type
-        switchReport('MemberSituation');
-
-        // Clear validation
-        $('.form-control').removeClass('is-invalid');
-
-        // Clear selected accounts list
-        $('#selectedAccountsList').html('<div class="text-muted small">No accounts selected yet</div>');
-        $('#SelectedAccountIds').val('');
-
-        // Reset loan repayment radio to default
-        $('#repaymentByLoan').prop('checked', true).trigger('change');
-
-        appalert('Form has been reset', 3, 1);
-    }
 
     // ============================================================
     // REPORT GENERATION FUNCTIONS
@@ -717,51 +851,78 @@
         return false;
     }
 
-    function buildFormData() {
-        var reportType = $('#ReportType').val();
-        var formData = {
-            ReportType: reportType,
-            CustomerId: $('#CustomerId').val(),
-            __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
-        };
+        function buildFormData() {
+            var reportType = $('#ReportType').val();
+            var formData = {
+                CustomerId: $('#CustomerId').val(),
+                __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+            };
 
-        switch (reportType) {
-            case 'MemberSituation':
-                formData.AccountIds = $('#memberAccountIds').val() || [];
-                formData.LoanStatus = $('#memberLoanStatus').val();
-                formData.DateTo = $('#memberDateTo').val();
-                break;
+            switch (reportType) {
+                case 'MemberSituation':
+                    formData.ReportType = 'MemberSituation';
+                    formData.AccountIds = $('#memberAccountIds').val() || [];
+                    formData.LoanStatus = $('#memberLoanStatus').val();
+                    formData.DateTo = $('#memberDateTo').val();
+                    break;
 
-            case 'AccountSituation':
-                formData.AccountIds = $('#accountSituationIds').val() || [];
-                formData.DateTo = $('#memberDateTo').val(); // Using the same date field
-                break;
+                case 'AccountSituation':
+                    formData.ReportType = 'AccountSituation';
+                    formData.AccountIds = $('#accountSituationIds').val() || [];
+                    formData.DateTo = $('#accountSituationDateTo').val();
+                    break;
 
-            case 'AccountStatement':
-                formData.AccountTypeId = $('#accountStatementAccount').val();
-                formData.DateFrom = $('#accountDateFrom').val();
-                formData.DateTo = $('#accountDateTo').val();
-                break;
+                case 'AccountStatement':
+                    formData.ReportType = 'AccountStatement';
+                    formData.AccountTypeId = $('#accountStatementAccount').val();
+                    formData.DateFrom = $('#accountDateFrom').val();
+                    formData.DateTo = $('#accountDateTo').val();
+                    break;
 
-            case 'LoanRepayment':
-                formData.ByLoan = $('#repaymentByLoan').is(':checked');
-                formData.ByRepayment = $('#repaymentByRepayment').is(':checked');
-                if ($('#repaymentByLoan').is(':checked')) {
-                    formData.LoanId = $('#loanRepaymentLoan').val();
-                }
-                formData.DateFrom = $('#loanRepaymentDateFrom').val();
-                formData.DateTo = $('#loanRepaymentDateTo').val();
-                break;
+                case 'LoanRepayment':
+                    formData.ReportType = 'LoanRepayment';
+                    formData.ByLoan = $('#repaymentByLoan').is(':checked');
+                    formData.ByRepayment = $('#repaymentByRepayment').is(':checked');
+                    if ($('#repaymentByLoan').is(':checked')) {
+                        formData.LoanId = $('#loanRepaymentLoan').val();
+                    }
+                    formData.DateFrom = $('#loanRepaymentDateFrom').val();
+                    formData.DateTo = $('#loanRepaymentDateTo').val();
+                    break;
 
-            case 'LoanSituation':
-                formData.DateFrom = $('#loanSituationDateFrom').val();
-                formData.DateTo = $('#loanSituationDateTo').val();
-                break;
+                case 'LoanSituation':
+                    formData.ReportType = 'LoanSituation';
+                    formData.DateFrom = $('#loanSituationDateFrom').val();
+                    formData.DateTo = $('#loanSituationDateTo').val();
+                    break;
+
+                case 'InterestVadPenalty':
+                    // Map form selection to specific report type
+                    var selectedType = $('input[name="interestVadPenaltyType"]:checked').val();
+
+                    switch (selectedType) {
+                        case 'Interest':
+                            formData.ReportType = 'Interest';
+                            break;
+                        case 'VAD':
+                            formData.ReportType = 'VAT'; // Map VAD to VAT
+                            break;
+                        case 'Penalty':
+                            formData.ReportType = 'Penalty';
+                            break;
+                        default:
+                            formData.ReportType = 'Interest'; // Default fallback
+                    }
+
+                    formData.InterestVadPenaltyType = selectedType;
+                    formData.DateFrom = $('#interestVadPenaltyDateFrom').val();
+                    formData.DateTo = $('#interestVadPenaltyDateTo').val();
+                    break;
+            }
+
+            console.log('Form Data Built:', formData);
+            return formData;
         }
-
-        console.log('Form Data Built:', formData);
-        return formData;
-    }
 
     function prepareCrystalReport() {
         console.log('=== PREPARING CRYSTAL REPORT ===');
@@ -797,86 +958,119 @@
         });
     }
 
-    function validateForm() {
-        var isValid = true;
-        var reportType = $('#ReportType').val();
+        function validateForm() {
+            var isValid = true;
+            var reportType = $('#ReportType').val();
 
-        // Clear all validation first
-        $('.form-control').removeClass('is-invalid');
+            // Clear all validation first
+            $('.form-control').removeClass('is-invalid');
 
-        // Validate based on report type
-        switch(reportType) {
-            case 'MemberSituation':
-                if (!$('#memberAccountIds').val() || $('#memberAccountIds').val().length === 0) {
-                    $('#memberAccountIds').addClass('is-invalid');
-                    isValid = false;
-                }
-                if (!$('#memberLoanStatus').val()) {
-                    $('#memberLoanStatus').addClass('is-invalid');
-                    isValid = false;
-                }
-                if (!$('#memberDateTo').val()) {
-                    $('#memberDateTo').addClass('is-invalid');
-                    isValid = false;
-                }
-                break;
+            // Validate based on report type
+            switch (reportType) {
+                case 'MemberSituation':
+                    if (!$('#memberAccountIds').val() || $('#memberAccountIds').val().length === 0) {
+                        $('#memberAccountIds').addClass('is-invalid');
+                        isValid = false;
+                    }
+                    if (!$('#memberLoanStatus').val()) {
+                        $('#memberLoanStatus').addClass('is-invalid');
+                        isValid = false;
+                    }
+                    if (!$('#memberDateTo').val()) {
+                        $('#memberDateTo').addClass('is-invalid');
+                        isValid = false;
+                    }
+                    break;
 
-            case 'AccountSituation':
-                if (!$('#accountSituationIds').val() || $('#accountSituationIds').val().length === 0) {
-                    $('#accountSituationIds').addClass('is-invalid');
-                    isValid = false;
-                }
-                if (!$('#memberDateTo').val()) {
-                    $('#memberDateTo').addClass('is-invalid');
-                    isValid = false;
-                }
-                break;
+                case 'AccountSituation':
+                    if (!$('#accountSituationIds').val() || $('#accountSituationIds').val().length === 0) {
+                        $('#accountSituationIds').addClass('is-invalid');
+                        isValid = false;
+                    }
+                    if (!$('#accountSituationDateTo').val()) {
+                        $('#accountSituationDateTo').addClass('is-invalid');
+                        isValid = false;
+                    }
+                    break;
 
-            case 'AccountStatement':
-                if (!$('#accountStatementAccount').val()) {
-                    $('#accountStatementAccount').addClass('is-invalid');
-                    isValid = false;
-                }
-                if (!$('#accountDateFrom').val()) {
-                    $('#accountDateFrom').addClass('is-invalid');
-                    isValid = false;
-                }
-                if (!$('#accountDateTo').val()) {
-                    $('#accountDateTo').addClass('is-invalid');
-                    isValid = false;
-                }
-                break;
+                case 'AccountStatement':
+                    if (!$('#accountStatementAccount').val()) {
+                        $('#accountStatementAccount').addClass('is-invalid');
+                        isValid = false;
+                    }
+                    if (!$('#accountDateFrom').val()) {
+                        $('#accountDateFrom').addClass('is-invalid');
+                        isValid = false;
+                    }
+                    if (!$('#accountDateTo').val()) {
+                        $('#accountDateTo').addClass('is-invalid');
+                        isValid = false;
+                    }
+                    break;
 
-            case 'LoanRepayment':
-                if ($('#repaymentByLoan').is(':checked') && !$('#loanRepaymentLoan').val()) {
-                    $('#loanRepaymentLoan').addClass('is-invalid');
-                    isValid = false;
-                }
-                if (!$('#loanRepaymentDateFrom').val()) {
-                    $('#loanRepaymentDateFrom').addClass('is-invalid');
-                    isValid = false;
-                }
-                if (!$('#loanRepaymentDateTo').val()) {
-                    $('#loanRepaymentDateTo').addClass('is-invalid');
-                    isValid = false;
-                }
-                break;
+                case 'LoanRepayment':
+                    if ($('#repaymentByLoan').is(':checked') && !$('#loanRepaymentLoan').val()) {
+                        $('#loanRepaymentLoan').addClass('is-invalid');
+                        isValid = false;
+                    }
+                    if (!$('#loanRepaymentDateFrom').val()) {
+                        $('#loanRepaymentDateFrom').addClass('is-invalid');
+                        isValid = false;
+                    }
+                    if (!$('#loanRepaymentDateTo').val()) {
+                        $('#loanRepaymentDateTo').addClass('is-invalid');
+                        isValid = false;
+                    }
+                    break;
 
-            case 'LoanSituation':
-                if (!$('#loanSituationDateFrom').val()) {
-                    $('#loanSituationDateFrom').addClass('is-invalid');
-                    isValid = false;
-                }
-                if (!$('#loanSituationDateTo').val()) {
-                    $('#loanSituationDateTo').addClass('is-invalid');
-                    isValid = false;
-                }
-                break;
+                case 'LoanSituation':
+                    if (!$('#loanSituationDateFrom').val()) {
+                        $('#loanSituationDateFrom').addClass('is-invalid');
+                        isValid = false;
+                    }
+                    if (!$('#loanSituationDateTo').val()) {
+                        $('#loanSituationDateTo').addClass('is-invalid');
+                        isValid = false;
+                    }
+                    break;
+
+                case 'InterestVadPenalty':
+                    if (!$('#interestVadPenaltyDateFrom').val()) {
+                        $('#interestVadPenaltyDateFrom').addClass('is-invalid');
+                        isValid = false;
+                    }
+                    if (!$('#interestVadPenaltyDateTo').val()) {
+                        $('#interestVadPenaltyDateTo').addClass('is-invalid');
+                        isValid = false;
+                    }
+
+                    // Additional date validation
+                    var fromDate = $('#interestVadPenaltyDateFrom').val();
+                    var toDate = $('#interestVadPenaltyDateTo').val();
+
+                    if (fromDate && toDate) {
+                        var fromDateObj = new Date(fromDate);
+                        var toDateObj = new Date(toDate);
+                        var today = new Date();
+
+                        // Check for future dates
+                        if (fromDateObj > today || toDateObj > today) {
+                            $('#interestVadPenaltyDateFrom, #interestVadPenaltyDateTo').addClass('is-invalid');
+                            isValid = false;
+                        }
+
+                        // Check if from date is after to date
+                        if (fromDateObj > toDateObj) {
+                            $('#interestVadPenaltyDateFrom').addClass('is-invalid');
+                            isValid = false;
+                        }
+                    }
+                    break;
+            }
+
+            console.log('Validation result:', isValid ? 'VALID' : 'INVALID');
+            return isValid;
         }
-
-        console.log('Validation result:', isValid ? 'VALID' : 'INVALID');
-        return isValid;
-    }
 
     // ============================================================
     // DOCUMENT READY INITIALIZATION
@@ -909,7 +1103,7 @@
 
         console.log('All functions initialized and available globally');
     });
-    </script>    
+    </script>   
     }
 
 

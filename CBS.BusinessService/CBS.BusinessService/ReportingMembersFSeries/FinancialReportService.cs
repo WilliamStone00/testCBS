@@ -123,13 +123,13 @@ namespace CBS.BusinessService.ReportingMembersFSeries
                         string.Format(APICallHelper.GetMemberLoans, loanId));
 
                     // Get transaction summary
-                    var transactionSummary = await GetTransactionSummary(accountTypeId, fromDate, toDate);
+                   /* var transactionSummary = await GetTransactionSummary(accountTypeId, fromDate, toDate)*/;
 
                     return new MemberSituationData
                     {
                         MemberAccounts = accountsResponse.ApiResponseData.Data,
                         MemberLoans = loansResponse.ApiResponseData.Data,
-                        TransactionSummary = transactionSummary,
+                        //TransactionSummary = transactionSummary,
                         ReportPeriod = new ReportParameters { DateFrom = fromDate, DateTo = toDate }
                     };
                 }
@@ -271,13 +271,274 @@ namespace CBS.BusinessService.ReportingMembersFSeries
             }
         }
 
-
-        private async Task<TransactionSummary> GetTransactionSummary(string accountTypeId, DateTime? fromDate, DateTime? toDate)
+        /// <summary>
+        /// Gets interest report data for a specific date range and optionally for a specific customer
+        /// </summary>
+        public async Task<InterestReportRow> GetInterestReportData(DateTime fromDate, DateTime toDate, string memberReference = null)
+        {
+            try
             {
-                // Implementation for transaction summary
-                return await Task.FromResult(new TransactionSummary());
+                var parameters = new FinancialReportFilter
+                {
+                    DateFrom = fromDate,
+                    DateTo = toDate,
+                    MemberReference = memberReference,
+                    ReportType = (int)FinancialReportType.Interest
+                };
+
+                var request = new FinancialReportRequest
+                {
+                    Filter = parameters
+                };
+
+                string endpoint = APICallHelper.GetInterestReportData; // You'll need to define this constant
+
+                var response = await _transactionApiHelper.PostAsync<ResponseObject<InterestReportRow>>(endpoint, request);
+
+                // =========================
+                // SUCCESS
+                // =========================
+                if (response != null && response.IsSuccess && response.ApiResponseData?.Data != null)
+                {
+                    GetExecutionMessages(
+                        parameters,
+                        true,
+                        parameters.MemberReference,
+                        MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages,
+                        SystemMessageStatus.Success.ToString(),
+                        null,
+                        response.ApiResponseData.Message
+                    );
+
+                    return response.ApiResponseData.Data;
+                }
+
+                // =========================
+                // API FAILURE (Handled)
+                // =========================
+                GetExecutionMessages(
+                    parameters,
+                    false,
+                    parameters.MemberReference,
+                    MessagesResults.Failed,
+                    ExecutionProcessOption.DefaultFailedMessages,
+                    SystemMessageStatus.Failed.ToString(),
+                    null,
+                    response?.ApiResponseData?.Message ?? response?.Message
+                );
+
+                // Return empty data structure instead of null for testing/development
+                return new InterestReportRow
+                {
+                    InterestDetails = new List<InterestDetail>(),
+                    Summary = new InterestSummary()
+                };
             }
-  }      
+            catch (Exception ex)
+            {
+                // =========================
+                // EXCEPTION
+                // =========================
+                GetExecutionMessages(
+                    new FinancialReportFilter { MemberReference = memberReference },
+                    false,
+                    memberReference,
+                    MessagesResults.Error,
+                    ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Error.ToString(),
+                    ex,
+                    ex.Message
+                );
+
+                // Return empty data structure instead of null for testing/development
+                return new InterestReportRow
+                {
+                    InterestDetails = new List<InterestDetail>(),
+                    Summary = new InterestSummary()
+                };
+            }
+        }
+
+        /// <summary>
+        /// Gets VAT report data for a specific date range and optionally for a specific customer
+        /// </summary>
+        public async Task<VatReportRow> GetVatReportData(DateTime fromDate, DateTime toDate, string memberReference = null)
+        {
+            try
+            {
+                var parameters = new FinancialReportFilter
+                {
+                    DateFrom = fromDate,
+                    DateTo = toDate,
+                    MemberReference = memberReference,
+                    ReportType = (int)FinancialReportType.VAT
+                };
+
+                var request = new FinancialReportRequest
+                {
+                    Filter = parameters
+                };
+
+                string endpoint = APICallHelper.GetVatReportData; // You'll need to define this constant
+
+                var response = await _transactionApiHelper.PostAsync<ResponseObject<VatReportRow>>(endpoint, request);
+
+                // =========================
+                // SUCCESS
+                // =========================
+                if (response != null && response.IsSuccess && response.ApiResponseData?.Data != null)
+                {
+                    GetExecutionMessages(
+                        parameters,
+                        true,
+                        parameters.MemberReference,
+                        MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages,
+                        SystemMessageStatus.Success.ToString(),
+                        null,
+                        response.ApiResponseData.Message
+                    );
+
+                    return response.ApiResponseData.Data;
+                }
+
+                // =========================
+                // API FAILURE (Handled)
+                // =========================
+                GetExecutionMessages(
+                    parameters,
+                    false,
+                    parameters.MemberReference,
+                    MessagesResults.Failed,
+                    ExecutionProcessOption.DefaultFailedMessages,
+                    SystemMessageStatus.Failed.ToString(),
+                    null,
+                    response?.ApiResponseData?.Message ?? response?.Message
+                );
+
+                // Return empty data structure instead of null for testing/development
+                return new VatReportRow
+                {
+                    VatDetails = new List<VatDetail>(),
+                    Summary = new VatSummary()
+                };
+            }
+            catch (Exception ex)
+            {
+                // =========================
+                // EXCEPTION
+                // =========================
+                GetExecutionMessages(
+                    new FinancialReportFilter { MemberReference = memberReference },
+                    false,
+                    memberReference,
+                    MessagesResults.Error,
+                    ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Error.ToString(),
+                    ex,
+                    ex.Message
+                );
+
+                // Return empty data structure instead of null for testing/development
+                return new VatReportRow
+                {
+                    VatDetails = new List<VatDetail>(),
+                    Summary = new VatSummary()
+                };
+            }
+        }
+
+        /// <summary>
+        /// Gets penalty report data for a specific date range and optionally for a specific customer
+        /// </summary>
+        public async Task<PenaltyReportRow> GetPenaltyReportData(DateTime fromDate, DateTime toDate, string memberReference = null)
+        {
+            try
+            {
+                var parameters = new FinancialReportFilter
+                {
+                    DateFrom = fromDate,
+                    DateTo = toDate,
+                    MemberReference = memberReference,
+                    ReportType = (int)FinancialReportType.Penalty
+                };
+
+                var request = new FinancialReportRequest
+                {
+                    Filter = parameters
+                };
+
+                string endpoint = APICallHelper.GetPenaltyReportData; // You'll need to define this constant
+
+                var response = await _transactionApiHelper.PostAsync<ResponseObject<PenaltyReportRow>>(endpoint, request);
+
+                // =========================
+                // SUCCESS
+                // =========================
+                if (response != null && response.IsSuccess && response.ApiResponseData?.Data != null)
+                {
+                    GetExecutionMessages(
+                        parameters,
+                        true,
+                        parameters.MemberReference,
+                        MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages,
+                        SystemMessageStatus.Success.ToString(),
+                        null,
+                        response.ApiResponseData.Message
+                    );
+
+                    return response.ApiResponseData.Data;
+                }
+
+                // =========================
+                // API FAILURE (Handled)
+                // =========================
+                GetExecutionMessages(
+                    parameters,
+                    false,
+                    parameters.MemberReference,
+                    MessagesResults.Failed,
+                    ExecutionProcessOption.DefaultFailedMessages,
+                    SystemMessageStatus.Failed.ToString(),
+                    null,
+                    response?.ApiResponseData?.Message ?? response?.Message
+                );
+
+                // Return empty data structure instead of null for testing/development
+                return new PenaltyReportRow
+                {
+                    PenaltyDetails = new List<PenaltyDetail>(),
+                    Summary = new PenaltySummary()
+                };
+            }
+            catch (Exception ex)
+            {
+                // =========================
+                // EXCEPTION
+                // =========================
+                GetExecutionMessages(
+                    new FinancialReportFilter { MemberReference = memberReference },
+                    false,
+                    memberReference,
+                    MessagesResults.Error,
+                    ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Error.ToString(),
+                    ex,
+                    ex.Message
+                );
+
+                // Return empty data structure instead of null for testing/development
+                return new PenaltyReportRow
+                {
+                    PenaltyDetails = new List<PenaltyDetail>(),
+                    Summary = new PenaltySummary()
+                };
+            }
+        }
+
+    }      
 }
 
 

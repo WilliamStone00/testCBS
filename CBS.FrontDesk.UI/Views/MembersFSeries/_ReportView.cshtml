@@ -77,8 +77,17 @@
                                 <i class="mdi mdi-chart-line"></i>
                             </div>
                             <div class="step-content d-inline-block">
-                                <strong>Loan Situation</strong>
+                                <strong>Loan History</strong>
                                 <div class="small text-muted">Overall loan portfolio analysis and statistics</div>
+                            </div>
+                        </div>
+                        <div class="step-item mb-3">
+                            <div class="step-number bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center me-3" style="width: 30px; height: 30px;">
+                                <i class="mdi mdi-percent"></i>
+                            </div>
+                            <div class="step-content d-inline-block">
+                                <strong>Interest/VAD/Penalty</strong>
+                                <div class="small text-muted">Interest, VAD, and Penalty reports with date range filtering</div>
                             </div>
                         </div>
                     </div>
@@ -115,7 +124,6 @@
         </div>
     </div>
 
-    <!--I AM TO DISABLE SOME REPORT OPTIONS-->
     <!-- Report Type Selection -->
     <div class="card mb-3">
         <div class="card-header bg-light">
@@ -190,6 +198,19 @@
                             <label class="form-check-label" for="loanSituation">
                                 <i class="mdi mdi-chart-line me-2"></i>
                                 Loan History
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input"
+                                   type="radio"
+                                   name="ReportTypeRadio"
+                                   id="interestVadPenalty"
+                                   value="InterestVadPenalty"
+                                   @*onclick="switchReport('InterestVadPenalty')"*@>
+                            <label class="form-check-label" for="interestVadPenalty">
+                                <i class="mdi mdi-percent me-2"></i>
+                                Interest/VAT/Penalty
                             </label>
                         </div>
 
@@ -338,22 +359,22 @@
                                         </label>
                                         <div class="form-floating">
                                             @Html.TextBox(
-                                                "DateTo_Member",
+                                                "DateTo_Situation",
                                                 DateTime.Now.ToString("yyyy-MM-dd"),
                                                 new
                                                 {
                                                     @class = "form-control datepicker",
                                                     type = "date",
                                                     required = "required",
-                                                    id = "memberDateTo"
+                                                    id = "accountSituationDateTo",
+                                                    max = DateTime.Now.ToString("yyyy-MM-dd")
                                                 })
-                                            <label for="memberDateTo">Operation date</label>
+                                            <label for="accountSituationDateTo">Operation date</label>
                                             <div class="invalid-feedback">
                                                 Please select the Operation date
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -394,11 +415,12 @@
                                     <div class="form-floating">
                                         @Html.TextBox("DateFrom_Statement", "{0:yyyy-MM-dd}",
                                             new
-                                                 {
+                                            {
                                                 @class = "form-control datepicker",
                                                 type = "date",
                                                 required = "required",
-                                                id = "accountDateFrom"
+                                                id = "accountDateFrom",
+                                                max = DateTime.Now.ToString("yyyy-MM-dd")
                                             })
                                         <label for="accountDateFrom">Start date</label>
                                         <div class="invalid-feedback">
@@ -416,11 +438,12 @@
                                     <div class="form-floating">
                                         @Html.TextBox("DateTo_Statement", "{0:yyyy-MM-dd}",
                                             new
-                                                 {
+                                            {
                                                 @class = "form-control datepicker",
                                                 type = "date",
                                                 required = "required",
-                                                id = "accountDateTo"
+                                                id = "accountDateTo",
+                                                max = DateTime.Now.ToString("yyyy-MM-dd")
                                             })
                                         <label for="accountDateTo">End date</label>
                                         <div class="invalid-feedback">
@@ -495,11 +518,12 @@
                                             <div class="form-floating">
                                                 @Html.TextBox("DateFrom_Repayment", "{0:yyyy-MM-dd}",
                                                     new
-                                                         {
+                                                    {
                                                         @class = "form-control datepicker",
                                                         type = "date",
                                                         required = "required",
-                                                        id = "loanRepaymentDateFrom"
+                                                        id = "loanRepaymentDateFrom",
+                                                        max = DateTime.Now.ToString("yyyy-MM-dd")
                                                     })
                                                 <label for="loanRepaymentDateFrom">Start date</label>
                                                 <div class="invalid-feedback">
@@ -516,11 +540,12 @@
                                             <div class="form-floating">
                                                 @Html.TextBox("DateTo_Repayment", "{0:yyyy-MM-dd}",
                                                     new
-                                                         {
+                                                    {
                                                         @class = "form-control datepicker",
                                                         type = "date",
                                                         required = "required",
-                                                        id = "loanRepaymentDateTo"
+                                                        id = "loanRepaymentDateTo",
+                                                        max = DateTime.Now.ToString("yyyy-MM-dd")
                                                     })
                                                 <label for="loanRepaymentDateTo">End date</label>
                                                 <div class="invalid-feedback">
@@ -540,7 +565,6 @@
                     <div class="card border-primary">
                         <div class="card-body">
                             <div class="row g-3">
-
                                 <!-- From Date -->
                                 <div class="col-md-6">
                                     <label class="fw-medium">
@@ -548,15 +572,16 @@
                                         From Date
                                     </label>
                                     <div class="form-floating">
-                                        @Html.TextBox("DateFrom_Statement", "{0:yyyy-MM-dd}",
+                                        @Html.TextBox("DateFrom_LoanSituation", "{0:yyyy-MM-dd}",
                                             new
-                                                 {
+                                            {
                                                 @class = "form-control datepicker",
                                                 type = "date",
                                                 required = "required",
-                                                id = "loanSituationDateFrom"
+                                                id = "loanSituationDateFrom",
+                                                max = DateTime.Now.ToString("yyyy-MM-dd")
                                             })
-                                        <label for="accountDateFrom">Start date</label>
+                                        <label for="loanSituationDateFrom">Start date</label>
                                         <div class="invalid-feedback">
                                             Please select a start date
                                         </div>
@@ -570,15 +595,16 @@
                                         To Date
                                     </label>
                                     <div class="form-floating">
-                                        @Html.TextBox("DateTo_Statement", "{0:yyyy-MM-dd}",
+                                        @Html.TextBox("DateTo_LoanSituation", "{0:yyyy-MM-dd}",
                                             new
-                                                 {
+                                            {
                                                 @class = "form-control datepicker",
                                                 type = "date",
                                                 required = "required",
-                                                id = "loanSituationDateTo"
+                                                id = "loanSituationDateTo",
+                                                max = DateTime.Now.ToString("yyyy-MM-dd")
                                             })
-                                        <label for="accountDateTo">End date</label>
+                                        <label for="loanSituationDateTo">End date</label>
                                         <div class="invalid-feedback">
                                             Please select an end date
                                         </div>
@@ -597,6 +623,123 @@
                                             This report provides comprehensive analysis of the entire loan portfolio
                                             including performance metrics, risk analysis, and portfolio health.
                                         </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interest/VAD/Penalty Form -->
+                <div id="interestVadPenaltyForm" class="report-form-section d-none">
+                    <div class="card border-primary">
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <!-- Report Type Selection -->
+                                <div class="col-md-12 mb-3">
+                                    <label class="fw-medium mb-2">
+                                        <i class="mdi mdi-filter-outline me-2 text-primary"></i>
+                                        Select Report Type
+                                    </label>
+                                    <div class="d-flex flex-wrap gap-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" id="interestReport" name="interestVadPenaltyType" value="Interest" checked>
+                                            <label class="form-check-label" for="interestReport">
+                                                <i class="mdi mdi-cash-usd me-2 text-success"></i>
+                                                Interest Report
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" id="vadReport" name="interestVadPenaltyType" value="VAD">
+                                            <label class="form-check-label" for="vadReport">
+                                                <i class="mdi mdi-scale-balance me-2 text-warning"></i>
+                                                VAT Report
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" id="penaltyReport" name="interestVadPenaltyType" value="Penalty">
+                                            <label class="form-check-label" for="penaltyReport">
+                                                <i class="mdi mdi-alert-circle me-2 text-danger"></i>
+                                                Penalty Report
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="mt-2 small text-muted" id="interestVadPenaltyHelp">
+                                        <strong>Interest Report Selected:</strong> Generate interest calculation report for the selected date range
+                                    </div>
+                                </div>
+
+                                <!-- Date Range Section -->
+                                <div class="row g-3 mt-2">
+                                    <div class="col-md-6">
+                                        <label class="fw-medium">
+                                            <i class="mdi mdi-calendar-start me-2 text-primary"></i>
+                                            From Date
+                                        </label>
+                                        <div class="form-floating">
+                                            @Html.TextBox("DateFrom_InterestVadPenalty", "{0:yyyy-MM-dd}",
+                                                new
+                                                {
+                                                    @class = "form-control datepicker",
+                                                    type = "date",
+                                                    required = "required",
+                                                    id = "interestVadPenaltyDateFrom",
+                                                    max = DateTime.Now.ToString("yyyy-MM-dd")
+                                                })
+                                            <label for="interestVadPenaltyDateFrom">Start date</label>
+                                            <div class="invalid-feedback">
+                                                Please select a start date (cannot be in the future)
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="fw-medium">
+                                            <i class="mdi mdi-calendar-end me-2 text-primary"></i>
+                                            To Date
+                                        </label>
+                                        <div class="form-floating">
+                                            @Html.TextBox("DateTo_InterestVadPenalty", "{0:yyyy-MM-dd}",
+                                                new
+                                                {
+                                                    @class = "form-control datepicker",
+                                                    type = "date",
+                                                    required = "required",
+                                                    id = "interestVadPenaltyDateTo",
+                                                    max = DateTime.Now.ToString("yyyy-MM-dd")
+                                                })
+                                            <label for="interestVadPenaltyDateTo">End date</label>
+                                            <div class="invalid-feedback">
+                                                Please select an end date (cannot be in the future)
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Date Validation Message -->
+                                <div class="col-12 mt-2">
+                                    <div class="alert alert-warning small mb-0" id="dateValidationMessage" style="display: none;">
+                                        <i class="mdi mdi-alert me-2"></i>
+                                        <span id="dateValidationText"></span>
+                                    </div>
+                                </div>
+
+                                <!-- Information Alert -->
+                                <div class="col-12 mt-3">
+                                    <div class="alert alert-info">
+                                        <div class="d-flex">
+                                            <div class="me-2">
+                                                <i class="mdi mdi-information-outline"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="alert-heading mb-1">Report Information</h6>
+                                                <p class="mb-0 small">
+                                                    <strong>Interest Report:</strong> Shows interest calculations and accruals<br>
+                                                    <strong>VAT Report:</strong> Shows Value Added Tax details and calculations<br>
+                                                    <strong>Penalty Report:</strong> Shows penalty charges and calculations
+                                                </p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -715,4 +858,15 @@
             padding: 10px 15px;
         }
     }
+
+    /* Interest/VAD/Penalty specific styles */
+    #interestVadPenaltyForm .form-check-label i {
+        font-size: 1.1rem;
+        margin-right: 5px;
+    }
+
+    .date-validation-error {
+        border-color: #dc3545 !important;
+    }
 </style>
+
