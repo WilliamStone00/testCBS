@@ -1100,6 +1100,7 @@
       <DependentUpon>GlobalBankData.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\BranchAccount\BranchAccountRessources.Designer.cs">
+    </Compile>
     <Compile Include="App_GlobalResources\Bank\GlobalBankData.fr.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
