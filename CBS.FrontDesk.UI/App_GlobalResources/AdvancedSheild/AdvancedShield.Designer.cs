@@ -97,6 +97,16 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to at a time. Edit or enhance the existing configuration below. Delete to Reset the configuration to default.
+        /// </summary>
+        internal static string at_a_time_Edit_or_enhance_the_existing_configuration_below_Delete_to_Reset_the_configuration_to_default {
+            get {
+                return ResourceManager.GetString("at_a_time_Edit_or_enhance_the_existing_configuration_below_Delete_to_Reset_the_co" +
+                        "nfiguration_to_default", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Blacklisted User-Agents.
         /// </summary>
         internal static string Blacklisted_User_Agents {
@@ -207,11 +217,41 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Define specific paths, file extensions, or substrings that should bypass WAF and security filtering rules. This is useful for allowing health checks,.
+        /// </summary>
+        internal static string Define_specific_paths_file_extensions_or_substrings_that_should_bypass_WAF_and_security_filtering_rules_This_is_useful_for_allowing_health_checks {
+            get {
+                return ResourceManager.GetString("Define_specific_paths_file_extensions_or_substrings_that_should_bypass_WAF_and_se" +
+                        "curity_filtering_rules_This_is_useful_for_allowing_health_checks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Define substrings, keywords, or filenames that are often associated with malicious activity. These values will be scanned in request paths, form keys, and header values..
+        /// </summary>
+        internal static string Define_substrings_keywords_or_filenames_that_are_often_associated_with_malicious_activity_These_values_will_be_scanned_in_request_paths_form_keys_and_header_values {
+            get {
+                return ResourceManager.GetString("Define_substrings_keywords_or_filenames_that_are_often_associated_with_malicious_" +
+                        "activity_These_values_will_be_scanned_in_request_paths_form_keys_and_header_valu" +
+                        "es", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Deleting the current configuration will restore the default secure policy.
         /// </summary>
         internal static string Deleting_the_current_configuration_will_restore_the_default_secure_policy {
             get {
                 return ResourceManager.GetString("Deleting_the_current_configuration_will_restore_the_default_secure_policy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Detected matches will be logged or blocked depending on WAF rules..
+        /// </summary>
+        internal static string Detected_matches_will_be_logged_or_blocked_depending_on_WAF_rules {
+            get {
+                return ResourceManager.GetString("Detected_matches_will_be_logged_or_blocked_depending_on_WAF_rules", resourceCulture);
             }
         }
         
@@ -354,6 +394,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Helps detect spoofed headers.
+        /// </summary>
+        internal static string Helps_detect_spoofed_headers {
+            get {
+                return ResourceManager.GetString("Helps_detect_spoofed_headers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Helps reduce repeated abuse.
         /// </summary>
         internal static string Helps_reduce_repeated_abuse {
@@ -368,6 +417,15 @@ namespace Resources {
         internal static string High_Risk_Header_Keys {
             get {
                 return ResourceManager.GetString("High_Risk_Header_Keys", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to High-risk internal headers.
+        /// </summary>
+        internal static string High_risk_internal_headers {
+            get {
+                return ResourceManager.GetString("High_risk_internal_headers", resourceCulture);
             }
         }
         
@@ -490,6 +548,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Missing or forged CORS origins and referers.
+        /// </summary>
+        internal static string Missing_or_forged_CORS_origins_and_referers {
+            get {
+                return ResourceManager.GetString("Missing_or_forged_CORS_origins_and_referers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No rate limit configurations have been defined yet.
         /// </summary>
         internal static string No_rate_limit_configurations_have_been_defined_yet {
@@ -518,6 +585,61 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to often abused in SSRF and path-based injection attacks.
+        /// </summary>
+        internal static string often_abused_in_SSRF_and_path_based_injection_attacks {
+            get {
+                return ResourceManager.GetString("often_abused_in_SSRF_and_path_based_injection_attacks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to one global security configuration.
+        /// </summary>
+        internal static string one_global_security_configuration {
+            get {
+                return ResourceManager.GetString("one_global_security_configuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to on protected resources.
+        /// </summary>
+        internal static string on_protected_resources {
+            get {
+                return ResourceManager.GetString("on_protected_resources", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Origins allowed for cross-origin requests. Requests with a mismatched or missing &lt;code&gt;Origin&lt;/code&gt; header may be blocked..
+        /// </summary>
+        internal static string Origins_allowed_for_cross_origin_requests_Requests_with_a_mismatched_or_missing_Origin_header_may_be_blocked {
+            get {
+                return ResourceManager.GetString("Origins_allowed_for_cross_origin_requests_Requests_with_a_mismatched_or_missing_O" +
+                        "rigin_header_may_be_blocked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Paths that must contain at least one of &lt;code&gt;Origin&lt;/code&gt; or &lt;code&gt;Referer&lt;/code&gt; headers..
+        /// </summary>
+        internal static string Paths_that_must_contain_at_least_one_of_Origin_or_Referer_headers {
+            get {
+                return ResourceManager.GetString("Paths_that_must_contain_at_least_one_of_Origin_or_Referer_headers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Paths that require a matching &lt;code&gt;Referer&lt;/code&gt; header to be present..
+        /// </summary>
+        internal static string Paths_that_require_a_matching_Referer_header_to_be_present {
+            get {
+                return ResourceManager.GetString("Paths_that_require_a_matching_Referer_header_to_be_present", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Path &amp; Extension Exclusions.
         /// </summary>
         internal static string Path_Extension_Exclusions {
@@ -532,6 +654,15 @@ namespace Resources {
         internal static string path_traversal {
             get {
                 return ResourceManager.GetString("path_traversal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Patterns that indicate spoofed or internal loopback IPs in headers of type.
+        /// </summary>
+        internal static string Patterns_that_indicate_spoofed_or_internal_loopback_IPs_in_headers_of_type {
+            get {
+                return ResourceManager.GetString("Patterns_that_indicate_spoofed_or_internal_loopback_IPs_in_headers_of_type", resourceCulture);
             }
         }
         
@@ -654,6 +785,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Routes that must include a valid header.
+        /// </summary>
+        internal static string Routes_that_must_include_a_valid_header {
+            get {
+                return ResourceManager.GetString("Routes_that_must_include_a_valid_header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sample Configuration Snapshot.
         /// </summary>
         internal static string Sample_Configuration_Snapshot {
@@ -745,6 +885,16 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to static content, internal service endpoints, or other benign traffic to pass through uninspected.
+        /// </summary>
+        internal static string static_content_internal_service_endpoints_or_other_benign_traffic_to_pass_through_uninspected {
+            get {
+                return ResourceManager.GetString("static_content_internal_service_endpoints_or_other_benign_traffic_to_pass_through" +
+                        "_uninspected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Suspicious Form Key Patterns.
         /// </summary>
         internal static string Suspicious_Form_Key_Patterns {
@@ -772,6 +922,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Telemetry and tracing headers.
+        /// </summary>
+        internal static string Telemetry_and_tracing_headers {
+            get {
+                return ResourceManager.GetString("Telemetry_and_tracing_headers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Telemetry/Bot Header Prefixes.
         /// </summary>
         internal static string Telemetry_Bot_Header_Prefixes {
@@ -781,11 +940,30 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to that can bypass access rules.
+        /// </summary>
+        internal static string that_can_bypass_access_rules {
+            get {
+                return ResourceManager.GetString("that_can_bypass_access_rules", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to These rules help protect your system against denial-of-service (DoS) attacks, brute-force attempts, excessive resource usage, and other forms of automated abuse..
         /// </summary>
         internal static string These_rules_help_protect_your_system_against_dos {
             get {
                 return ResourceManager.GetString("These_rules_help_protect_your_system_against_dos", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The &lt;strong&gt;Header Validation &amp; Bot Detection&lt;/strong&gt; module strengthens your application&apos;s perimeter by analyzing HTTP request headers for tampering, spoofing, or automation indicators. It inspects key headers like &lt;code&gt;User-Agent&lt;/code&gt;, &lt;code&gt;Origin&lt;/code&gt;, &lt;code&gt;Referer&lt;/code&gt;, and &lt;code&gt;X-Forwarded-For&lt;/code&gt; to detect:.
+        /// </summary>
+        internal static string The_Header_Validation_Bot_Detection_module_strengthens_your_applications_perimeter {
+            get {
+                return ResourceManager.GetString("The_Header_Validation_Bot_Detection_module_strengthens_your_applications_perimete" +
+                        "r", resourceCulture);
             }
         }
         
@@ -929,6 +1107,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to TSC allows only.
+        /// </summary>
+        internal static string TSC_allows_only {
+            get {
+                return ResourceManager.GetString("TSC_allows_only", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to TSC allows only &lt;u&gt;one global security configuration&lt;/u&gt;.
         /// </summary>
         internal static string TSC_allows_only_one_global_security_configuration {
@@ -952,6 +1139,15 @@ namespace Resources {
         internal static string URLs_that_bypass_all_security_filtering {
             get {
                 return ResourceManager.GetString("URLs_that_bypass_all_security_filtering", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to used by bots and monitoring tools.
+        /// </summary>
+        internal static string used_by_bots_and_monitoring_tools {
+            get {
+                return ResourceManager.GetString("used_by_bots_and_monitoring_tools", resourceCulture);
             }
         }
         

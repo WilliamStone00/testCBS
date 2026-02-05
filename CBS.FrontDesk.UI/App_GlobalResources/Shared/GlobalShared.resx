@@ -144,6 +144,12 @@
   <data name="AddNew" xml:space="preserve">
     <value>Add new</value>
   </data>
+  <data name="All" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="Apply_Filter" xml:space="preserve">
+    <value>Apply Filter</value>
+  </data>
   <data name="AddNewRequest" xml:space="preserve">
     <value>Add new request</value>
   </data>
@@ -404,9 +410,6 @@
   </data>
   <data name="Pending" xml:space="preserve">
     <value>Pending</value>
-  </data>
-  <data name="PendingRequests" xml:space="preserve">
-    <value>Pending requests</value>
   </data>
   <data name="PhotoPreview" xml:space="preserve">
     <value>Photo preview</value>

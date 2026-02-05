@@ -1,7 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
     @using Resources
 @{
-    ViewBag.Title = @OtherCashMobileMoney.MobileMoneyOperations;
+    ViewBag.Title = @CashDeskRessource.MobileMoneyOperations;
 }
 
 <!-- Page Title and Welcome Message -->
@@ -10,16 +10,16 @@
         <div class="card bg-light mb-3">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-cellphone-message me-2"></i> @OtherCashMobileMoney.MobileMoneyManagement
+                    <i class="mdi mdi-cellphone-message me-2"></i> @CashDeskRessource.MobileMoneyManagement
                 </h1>
                 <p class="card-text">
-                    @OtherCashMobileMoney.WelcomeToThe <strong>@OtherCashMobileMoney.MobileMoneyCashDesk</strong> @OtherCashMobileMoney.Of <strong>@OtherCashMobileMoney.TRUSTSOFTCREDITTSC</strong>. @OtherCashMobileMoney.ThisInterfaceManages <strong>@OtherCashMobileMoney.MobileMoneyMTNAndOrangeOperations</strong> @OtherCashMobileMoney.ForBoth <strong>@OtherCashMobileMoney.CashIn</strong> @OtherCashMobileMoney.And <strong>@OtherCashMobileMoney.CashOut</strong> @OtherCashMobileMoney.Transactions.
+                    @CashDeskRessource.WelcomeToThe <strong>@CashDeskRessource.MobileMoneyCashDesk</strong> @CashDeskRessource.Of <strong>@CashDeskRessource.TRUSTSOFTCREDITTSC</strong>. @CashDeskRessource.ThisInterfaceManages <strong>@CashDeskRessource.MobileMoneyMTNAndOrangeOperations</strong> @CashDeskRessource.ForBoth <strong>@GlobalShared.Cash_In</strong> @CashDeskRessource.And <strong>@GlobalShared.Cash_out</strong> @CashDeskRessource.Transactions.
                 </p>
                 <p class="card-text">
-                    @OtherCashMobileMoney.MobileMoneyTransactionsAreRegisteredUnder <strong>@OtherCashMobileMoney.GLAccounts</strong> @OtherCashMobileMoney.UsingDefined <strong>@OtherCashMobileMoney.AccountingMappings</strong> @OtherCashMobileMoney.AndLinkedTo <strong>@OtherCashMobileMoney.NonMemberRepresentatives</strong>.
+                    @CashDeskRessource.MobileMoneyTransactionsAreRegisteredUnder <strong>@CashDeskRessource.GLAccounts</strong> @CashDeskRessource.UsingDefined <strong>@CashDeskRessource.AccountingMappings</strong> @CashDeskRessource.AndLinkedTo <strong>@CashDeskRessource.NonMemberRepresentatives</strong>.
                 </p>
                 <p class="card-text">
-                    💡 <strong>@OtherCashMobileMoney.Note:</strong> @OtherCashMobileMoney.ThisModuleSupports <strong>@OtherCashMobileMoney.CashBasedTransactions</strong> @OtherCashMobileMoney.WithTelecomWallets, @OtherCashMobileMoney.ValidatedVia <strong>@OtherCashMobileMoney.TillCodes</strong> @OtherCashMobileMoney.AndProperlyItemizedForReconciliation.
+                    💡 <strong>@CashDeskRessource.Note:</strong> @CashDeskRessource.ThisModuleSupports <strong>@CashDeskRessource.CashBasedTransactions</strong> @CashDeskRessource.WithTelecomWallets, @CashDeskRessource.ValidatedVia <strong>@GlobalShared.Till_Codes</strong> @CashDeskRessource.AndProperlyItemizedForReconciliation.
                 </p>
                 <hr style="border: 2px solid rgba(0, 128, 0, 0.5);" />
             </div>
@@ -34,22 +34,22 @@
             <div class="accordion-item">
                 <h2 class="accordion-header">
                     <button class="accordion-button collapsed fw-bold text-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
-                        <i class="mdi mdi-information-outline me-2"></i> @OtherCashMobileMoney.TipsAndGuidelinesForMobileMoneyTransactions
+                        <i class="mdi mdi-information-outline me-2"></i> @CashDeskRessource.TipsAndGuidelinesForMobileMoneyTransactions
                     </button>
                 </h2>
                 <div id="collapseTips" class="accordion-collapse collapse" data-bs-parent="#tipsAccordion">
                     <div class="accordion-body">
                         <ul class="mb-2">
-                            <li><strong>@OtherCashMobileMoney.OperatorSelection:</strong> @OtherCashMobileMoney.ChooseEither <span style="color: #FFD700;"><strong>@OtherCashMobileMoney.MTNMobileMoney</strong></span> @OtherCashMobileMoney.Or <span style="color: #FFA500;"><strong>@OtherCashMobileMoney.OrangeMoney</strong></span> @OtherCashMobileMoney.ToSpecifyTheTransactionSource.</li>
-                            <li><strong>@OtherCashMobileMoney.TransactionDirection:</strong> @OtherCashMobileMoney.IndicateWhetherTheTransactionIsA <strong>@OtherCashMobileMoney.CashIn</strong> (@OtherCashMobileMoney.Deposit) @OtherCashMobileMoney.Or <strong>@OtherCashMobileMoney.CashOut</strong> (@OtherCashMobileMoney.Withdrawal).</li>
-                            <li><strong>@OtherCashMobileMoney.ClientIdentification:</strong> @OtherCashMobileMoney.EnterThe <strong>@OtherCashMobileMoney.RepresentativesName</strong>, <strong>@OtherCashMobileMoney.PhoneNumber</strong>, @OtherCashMobileMoney.And <strong>@OtherCashMobileMoney.CNI</strong> @OtherCashMobileMoney.ForProperCustomerTracking.</li>
-                            <li><strong>@OtherCashMobileMoney.MemberReference:</strong> @OtherCashMobileMoney.OptionallyProvideAReferenceIfTheTransactionIsLinkedToAKnownMember.</li>
-                            <li><strong>@OtherCashMobileMoney.TillCode:</strong> @OtherCashMobileMoney.The <strong>@OtherCashMobileMoney.TillCode</strong> @OtherCashMobileMoney.Is <span class="text-danger fw-bold">@OtherCashMobileMoney.Mandatory</span> @OtherCashMobileMoney.ForBranchOfficesWith <strong>@OtherCashMobileMoney.MultipleTills</strong>. @OtherCashMobileMoney.ThisEnsuresPrecise <strong>@OtherCashMobileMoney.TellerTrackingAndReconciliation</strong>.</li>
-                            <li><strong>@OtherCashMobileMoney.TransactionEntry:</strong> @OtherCashMobileMoney.UseTheTransactionTableToInputAmountsConfirmThemAndMonitorTotalBalancesDynamically.</li>
-                            <li><strong>@OtherCashMobileMoney.PostingMapping:</strong> @OtherCashMobileMoney.AllOperationsAreAutomaticallyLinkedToPredefinedGLAccountsBasedOnSelectedTelecomOperatorAndTransactionType.</li>
+                            <li><strong>@CashDeskRessource.OperatorSelection:</strong> @CashDeskRessource.ChooseEither <span style="color: #FFD700;"><strong>@CashDeskRessource.MTNMobileMoney</strong></span> @CashDeskRessource.Or <span style="color: #FFA500;"><strong>@CashDeskRessource.OrangeMoney</strong></span> @CashDeskRessource.ToSpecifyTheTransactionSource.</li>
+                            <li><strong>@CashDeskRessource.TransactionDirection:</strong> @CashDeskRessource.IndicateWhetherTheTransactionIsA <strong>@GlobalShared.Cash_In</strong> (@GlobalShared.Deposit) @CashDeskRessource.Or <strong>@GlobalShared.Cash_out</strong> (@CashDeskRessource.Withdrawal).</li>
+                            <li><strong>@CashDeskRessource.ClientIdentification:</strong> @CashDeskRessource.EnterThe <strong>@CashDeskRessource.RepresentativesName</strong>, <strong>@GlobalShared.Phone_Number</strong>, @CashDeskRessource.And <strong>@CashDeskRessource.CNI</strong> @CashDeskRessource.ForProperCustomerTracking.</li>
+                            <li><strong>@CashDeskRessource.MemberReference:</strong> @CashDeskRessource.OptionallyProvideAReferenceIfTheTransactionIsLinkedToAKnownMember.</li>
+                            <li><strong>@GlobalShared.Till_Code:</strong> @CashDeskRessource.The <strong>@GlobalShared.Till_Code</strong> @CashDeskRessource.Is <span class="text-danger fw-bold">@CashDeskRessource.Mandatory</span> @CashDeskRessource.ForBranchOfficesWith <strong>@CashDeskRessource.MultipleTills</strong>. @CashDeskRessource.ThisEnsuresPrecise <strong>@CashDeskRessource.TellerTrackingAndReconciliation</strong>.</li>
+                            <li><strong>@CashDeskRessource.TransactionEntry:</strong> @CashDeskRessource.UseTheTransactionTableToInputAmountsConfirmThemAndMonitorTotalBalancesDynamically.</li>
+                            <li><strong>@CashDeskRessource.PostingMapping:</strong> @CashDeskRessource.AllOperationsAreAutomaticallyLinkedToPredefinedGLAccountsBasedOnSelectedTelecomOperatorAndTransactionType.</li>
                         </ul>
                         <p class="text">
-                            <strong>@OtherCashMobileMoney.Reminder:</strong> @OtherCashMobileMoney.UseThisInterfaceForExternalMobileMoneyWalletInteractionsOnly.
+                            <strong>@CashDeskRessource.Reminder:</strong> @CashDeskRessource.UseThisInterfaceForExternalMobileMoneyWalletInteractionsOnly.
                         </p>
 
                     </div>
@@ -66,14 +66,14 @@
             <div class="card accordion-item mb-3">
                 <h2 class="accordion-header" id="headingMobileMoney">
                     <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#collapseMobileMoney" aria-expanded="true" aria-controls="collapseMobileMoney">
-                        <i class="mdi mdi-cash-register me-2"></i> @OtherCashMobileMoney.MobileMoneyOperationsHC
+                        <i class="mdi mdi-cash-register me-2"></i> @CashDeskRessource.MobileMoneyOperationsHC
                     </button>
                 </h2>
                 <hr />
                 <div id="collapseMobileMoney" class="accordion-collapse collapse show" data-bs-parent="#collapsibleSection">
                     <div class="accordion-body">
                         <div id="datalistingview">
-                            @Html.Partial("_OtherCashMobileMoneyDesk")
+                            @Html.Partial("_CashDeskRessourceDesk")
                         </div>
                     </div>
                 </div>
@@ -88,5 +88,5 @@
 <!-- 🔷 Scripts -->
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-    <script src="~/Scripts/Js/Crud/CashDesk/OtherCashMobileMoney.js"></script>
+    <script src="~/Scripts/Js/Crud/CashDesk/CashDeskRessource.js"></script>
 }

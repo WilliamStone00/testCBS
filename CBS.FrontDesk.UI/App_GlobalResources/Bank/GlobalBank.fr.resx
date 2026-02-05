@@ -117,11 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="DateOfCreation" xml:space="preserve">
-    <value>Date de création</value>
+  <data name="BankInformation" xml:space="preserve">
+    <value>Informations</value>
   </data>
-  <data name="Email" xml:space="preserve">
-    <value>Email</value>
+  <data name="BankInitial" xml:space="preserve">
+    <value>Banque initiale</value>
+  </data>
+  <data name="CustomerServiceContact" xml:space="preserve">
+    <value>Numéro du service client</value>
   </data>
   <data name="ImmatriculationNumber" xml:space="preserve">
     <value>Numéro d'immatriculation</value>
@@ -135,43 +138,16 @@
   <data name="RegistrationNumber" xml:space="preserve">
     <value>Numéro d'enrégistrement</value>
   </data>
-  <data name="Save" xml:space="preserve">
-    <value>Sauvegarder</value>
-  </data>
-  <data name="Telephone" xml:space="preserve">
-    <value>Téléphone</value>
-  </data>
-  <data name="Update" xml:space="preserve">
-    <value>Mettre à jour</value>
+  <data name="TaxPayerNumber" xml:space="preserve">
+    <value>Numéro de contribuable</value>
   </data>
   <data name="WebSite" xml:space="preserve">
     <value>Site Web</value>
   </data>
-  <data name="TaxPayerNumber" xml:space="preserve">
-    <value>Numéro de contribuable</value>
-  </data>
-  <data name="BankName" xml:space="preserve">
-    <value>Nom de la banque</value>
-  </data>
-  <data name="BankInitial" xml:space="preserve">
-    <value>Banque initiale</value>
-  </data>
-  <data name="BankInformation" xml:space="preserve">
-    <value>Informations</value>
-  </data>
-  <data name="BankCode" xml:space="preserve">
-    <value>Code de la banque</value>
-  </data>
-  <data name="Address" xml:space="preserve">
-    <value>Adresse</value>
-  </data>
-  <data name="CustomerServiceContact" xml:space="preserve">
-    <value>Numéro du service client</value>
-  </data>
-  <data name="PageTitle" xml:space="preserve">
-    <value>Gestion des banques</value>
-  </data>
   <data name="BankConfiguration" xml:space="preserve">
     <value>Configuration de la banque</value>
+  </data>
+  <data name="Bank_Management" xml:space="preserve">
+    <value />
   </data>
 </root>

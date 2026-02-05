@@ -465,4 +465,67 @@
   <data name="RATE_LIMIT_CONFIGURATIONS" xml:space="preserve">
     <value>RATE LIMIT CONFIGURATIONS</value>
   </data>
+  <data name="Helps_detect_spoofed_headers" xml:space="preserve">
+    <value>Helps detect spoofed headers</value>
+  </data>
+  <data name="Routes_that_must_include_a_valid_header" xml:space="preserve">
+    <value>Routes that must include a valid header</value>
+  </data>
+  <data name="TSC_allows_only" xml:space="preserve">
+    <value>TSC allows only</value>
+  </data>
+  <data name="one_global_security_configuration" xml:space="preserve">
+    <value>one global security configuration</value>
+  </data>
+  <data name="at_a_time_Edit_or_enhance_the_existing_configuration_below_Delete_to_Reset_the_configuration_to_default" xml:space="preserve">
+    <value>at a time. Edit or enhance the existing configuration below. Delete to Reset the configuration to default</value>
+  </data>
+  <data name="Define_substrings_keywords_or_filenames_that_are_often_associated_with_malicious_activity_These_values_will_be_scanned_in_request_paths_form_keys_and_header_values" xml:space="preserve">
+    <value>Define substrings, keywords, or filenames that are often associated with malicious activity. These values will be scanned in request paths, form keys, and header values.</value>
+  </data>
+  <data name="Detected_matches_will_be_logged_or_blocked_depending_on_WAF_rules" xml:space="preserve">
+    <value>Detected matches will be logged or blocked depending on WAF rules.</value>
+  </data>
+  <data name="Define_specific_paths_file_extensions_or_substrings_that_should_bypass_WAF_and_security_filtering_rules_This_is_useful_for_allowing_health_checks" xml:space="preserve">
+    <value>Define specific paths, file extensions, or substrings that should bypass WAF and security filtering rules. This is useful for allowing health checks,</value>
+  </data>
+  <data name="static_content_internal_service_endpoints_or_other_benign_traffic_to_pass_through_uninspected" xml:space="preserve">
+    <value>static content, internal service endpoints, or other benign traffic to pass through uninspected</value>
+  </data>
+  <data name="Patterns_that_indicate_spoofed_or_internal_loopback_IPs_in_headers_of_type" xml:space="preserve">
+    <value>Patterns that indicate spoofed or internal loopback IPs in headers of type</value>
+  </data>
+  <data name="that_can_bypass_access_rules" xml:space="preserve">
+    <value>that can bypass access rules</value>
+  </data>
+  <data name="on_protected_resources" xml:space="preserve">
+    <value>on protected resources</value>
+  </data>
+  <data name="Missing_or_forged_CORS_origins_and_referers" xml:space="preserve">
+    <value>Missing or forged CORS origins and referers</value>
+  </data>
+  <data name="used_by_bots_and_monitoring_tools" xml:space="preserve">
+    <value>used by bots and monitoring tools</value>
+  </data>
+  <data name="often_abused_in_SSRF_and_path_based_injection_attacks" xml:space="preserve">
+    <value>often abused in SSRF and path-based injection attacks</value>
+  </data>
+  <data name="Telemetry_and_tracing_headers" xml:space="preserve">
+    <value>Telemetry and tracing headers</value>
+  </data>
+  <data name="High_risk_internal_headers" xml:space="preserve">
+    <value>High-risk internal headers</value>
+  </data>
+  <data name="Origins_allowed_for_cross_origin_requests_Requests_with_a_mismatched_or_missing_Origin_header_may_be_blocked" xml:space="preserve">
+    <value>Origins allowed for cross-origin requests. Requests with a mismatched or missing &lt;code&gt;Origin&lt;/code&gt; header may be blocked.</value>
+  </data>
+  <data name="Paths_that_require_a_matching_Referer_header_to_be_present" xml:space="preserve">
+    <value>Paths that require a matching &lt;code&gt;Referer&lt;/code&gt; header to be present.</value>
+  </data>
+  <data name="Paths_that_must_contain_at_least_one_of_Origin_or_Referer_headers" xml:space="preserve">
+    <value>Paths that must contain at least one of &lt;code&gt;Origin&lt;/code&gt; or &lt;code&gt;Referer&lt;/code&gt; headers.</value>
+  </data>
+  <data name="The_Header_Validation_Bot_Detection_module_strengthens_your_applications_perimeter" xml:space="preserve">
+    <value>The &lt;strong&gt;Header Validation &amp; Bot Detection&lt;/strong&gt; module strengthens your application's perimeter by analyzing HTTP request headers for tampering, spoofing, or automation indicators. It inspects key headers like &lt;code&gt;User-Agent&lt;/code&gt;, &lt;code&gt;Origin&lt;/code&gt;, &lt;code&gt;Referer&lt;/code&gt;, and &lt;code&gt;X-Forwarded-For&lt;/code&gt; to detect:</value>
+  </data>
 </root>

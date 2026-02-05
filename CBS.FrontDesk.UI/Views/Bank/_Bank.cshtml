@@ -41,7 +41,7 @@
     <fieldset class="fieldset-custom">
         <legend class="d-flex align-items-center">
             <i class="bi bi-bank2"></i>
-            @string.Format("{0} {1} {2}", GlobalBank.Update, Model?.Bank?.Name ?? "", GlobalBank.BankInformation)
+            @string.Format("{0} {1} {2}", GlobalShared.Update, Model?.Bank?.Name ?? "", GlobalBank.BankInformation)
         </legend>
 
         @Html.HiddenFor(m => m.Bank.Id)
@@ -62,15 +62,15 @@
                 <div class="row g-3">
                     <div class="col-md-3">
                         <div class="form-floating">
-                            @Html.TextBoxFor(m => m.Bank.BankCode, new { @class = "form-control", placeholder = GlobalBank.BankCode })
-                            <label>@GlobalBank.BankCode</label>
+                            @Html.TextBoxFor(m => m.Bank.BankCode, new { @class = "form-control", placeholder = GlobalShared.Bank_Code })
+                            <label>@GlobalShared.Bank_Code</label>
                             @Html.ValidationMessageFor(m => m.Bank.BankCode, "", new { @class = "text-danger small" })
                         </div>
                     </div>
                     <div class="col-md-5">
                         <div class="form-floating">
-                            @Html.TextBoxFor(m => m.Bank.Name, new { @class = "form-control", placeholder = GlobalBank.BankName })
-                            <label>@GlobalBank.BankName</label>
+                            @Html.TextBoxFor(m => m.Bank.Name, new { @class = "form-control", placeholder = GlobalShared.Bank_Name })
+                            <label>@GlobalShared.Bank_Name</label>
                             @Html.ValidationMessageFor(m => m.Bank.Name, "", new { @class = "text-danger small" })
                         </div>
                     </div>
@@ -102,7 +102,7 @@
                     <div class="col-md-4">
                         <div class="form-floating">
                             @Html.TextBoxFor(m => m.Bank.DateOfCreation, new { @class = "form-control", type = "date" })
-                            <label>@GlobalBank.DateOfCreation</label>
+                            <label>@GlobalShared.Date_of_creation</label>
                             @Html.ValidationMessageFor(m => m.Bank.DateOfCreation, "", new { @class = "text-danger small" })
                         </div>
                     </div>
@@ -125,8 +125,8 @@
                 <div class="row g-3">
                     <div class="col-md-4">
                         <div class="form-floating">
-                            @Html.TextBoxFor(m => m.Bank.Telephone, new { @class = "form-control", placeholder = GlobalBank.Telephone })
-                            <label>@GlobalBank.Telephone</label>
+                            @Html.TextBoxFor(m => m.Bank.Telephone, new { @class = "form-control", placeholder = GlobalShared.Telephone })
+                            <label>@GlobalShared.Telephone</label>
                             @Html.ValidationMessageFor(m => m.Bank.Telephone, "", new { @class = "text-danger small" })
                         </div>
                     </div>
@@ -139,16 +139,16 @@
                     </div>
                     <div class="col-md-4">
                         <div class="form-floating">
-                            @Html.TextBoxFor(m => m.Bank.Email, new { @class = "form-control", placeholder = GlobalBank.Email, type = "email" })
-                            <label>@GlobalBank.Email</label>
+                            @Html.TextBoxFor(m => m.Bank.Email, new { @class = "form-control", placeholder = GlobalShared.Email, type = "email" })
+                            <label>@GlobalShared.Email</label>
                             @Html.ValidationMessageFor(m => m.Bank.Email, "", new { @class = "text-danger small" })
                         </div>
                     </div>
 
                     <div class="col-md-12">
                         <div class="form-floating">
-                            @Html.TextBoxFor(m => m.Bank.Address, new { @class = "form-control", placeholder = GlobalBank.Address })
-                            <label>@GlobalBank.Address</label>
+                            @Html.TextBoxFor(m => m.Bank.Address, new { @class = "form-control", placeholder = GlobalShared.Address })
+                            <label>@GlobalShared.Address</label>
                             @Html.ValidationMessageFor(m => m.Bank.Address, "", new { @class = "text-danger small" })
                         </div>
                     </div>
@@ -281,7 +281,7 @@
         <!-- Actions -->
         <div class="d-flex gap-2">
             <button type="submit" class="btn btn-primary">
-                <i class="bi bi-check2-circle me-1"></i> @(Model?.Bank?.Id == null ? GlobalBank.Save : GlobalBank.Update)
+                <i class="bi bi-check2-circle me-1"></i> @(Model?.Bank?.Id == null ? GlobalShared.Save : GlobalShared.Update)
             </button>
             @*<button type="reset" class="btn btn-outline-secondary">
                     <i class="bi bi-arrow-counterclockwise me-1"></i> @GlobalBank.Reset

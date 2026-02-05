@@ -38,7 +38,7 @@
     @Html.AntiForgeryToken()
     <fieldset class="fieldset-custom">
         <legend class="mb-3">
-            <span class="section-chip"><i class="bi bi-diagram-3"></i> @GlobalBranchManagement.BranchInformation</span>
+            <span class="section-chip"><i class="bi bi-diagram-3"></i> @GlobalShared.Branch_Information</span>
         </legend>
 
         <input type="hidden" name="ServiceOption" value="branch" id="ServiceOption" />
@@ -48,30 +48,30 @@
         <!-- Identity -->
         <div class="card border-0 shadow-sm mb-3">
             <div class="px-2 pt-2 section-wrap">
-                <div class="section-chip"><i class="bi bi-info-circle"></i><span>Identity</span></div>
-                <div class="section-subtle">@GlobalBranchManagement.BranchName, code &amp; location.</div>
+                <div class="section-chip"><i class="bi bi-info-circle"></i><span>@GlobalShared.Identity</span></div>
+                <div class="section-subtle">@GlobalShared.Branch_Name, @GlobalShared.Code &amp; @GlobalShared.Location.</div>
             </div>
             <hr class="section-divider" />
             <div class="card-body">
                 <div class="row g-3">
                     <div class="col-md-3">
                         <div class="form-floating form-floating-outline">
-                            @Html.TextBoxFor(m => m.Branch.BranchCode, new { @class = "form-control", placeholder = GlobalBranchManagement.BranchCode, id = "BranchCode" })
-                            <label>@GlobalBranchManagement.BranchCode</label>
+                            @Html.TextBoxFor(m => m.Branch.BranchCode, new { @class = "form-control", placeholder = GlobalShared.Branch_Code, id = "BranchCode" })
+                            <label>@GlobalShared.Branch_Code</label>
                             @Html.ValidationMessageFor(m => m.Branch.BranchCode, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="col-md-9">
                         <div class="form-floating form-floating-outline">
-                            @Html.TextBoxFor(m => m.Branch.Name, new { @class = "form-control", placeholder = GlobalBranchManagement.BranchName })
-                            <label>@GlobalBranchManagement.BranchName</label>
+                            @Html.TextBoxFor(m => m.Branch.Name, new { @class = "form-control", placeholder = GlobalShared.Branch_Name })
+                            <label>@GlobalShared.Branch_Name</label>
                             @Html.ValidationMessageFor(m => m.Branch.Name, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-floating form-floating-outline">
-                            @Html.TextBoxFor(m => m.Branch.Location, new { @class = "form-control", placeholder = GlobalBranchManagement.Location })
-                            <label>@GlobalBranchManagement.Location</label>
+                            @Html.TextBoxFor(m => m.Branch.Location, new { @class = "form-control", placeholder = GlobalShared.Location })
+                            <label>@GlobalShared.Location</label>
                             @Html.ValidationMessageFor(m => m.Branch.Location, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -82,8 +82,8 @@
         <!-- Status & flags -->
         <div class="card border-0 shadow-sm mb-3">
             <div class="px-2 pt-2 section-wrap">
-                <div class="section-chip"><i class="bi bi-toggle2-on"></i><span>Status</span></div>
-                <div class="section-subtle">Activation, head office and bank link.</div>
+                <div class="section-chip"><i class="bi bi-toggle2-on"></i><span>@GlobalShared.Status</span></div>
+                <div class="section-subtle">@GlobalBranchManagement.Activation_head_office_and_bank_link.</div>
             </div>
             <hr class="section-divider" />
             <div class="card-body">
@@ -91,19 +91,19 @@
                     <div class="col-md-4">
                         <div class="form-check form-switch">
                             @Html.CheckBoxFor(m => m.Branch.ActiveStatus, new { @class = "form-check-input", id = "ActiveStatusChk" })
-                            <label class="form-check-label" for="ActiveStatusChk">@GlobalBranchManagement.Active</label>
+                            <label class="form-check-label" for="ActiveStatusChk">@GlobalShared.Active</label>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-check form-switch">
                             @Html.CheckBoxFor(m => m.Branch.IsHeadOffice, new { @class = "form-check-input", id = "IsHeadOfficeChk" })
-                            <label class="form-check-label" for="IsHeadOfficeChk">@GlobalBranchManagement.SetAsHeadOfficeBranch</label>
+                            <label class="form-check-label" for="IsHeadOfficeChk">@GlobalBranchManagement.Set_as_head_office_branch</label>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-check form-switch">
                             @Html.CheckBoxFor(m => m.Branch.IsHavingBank, new { @class = "form-check-input", id = "IsHavingBankChk" })
-                            <label class="form-check-label" for="IsHavingBankChk">@GlobalBranchManagement.IsThisBranchLinkedToAnyBank</label>
+                            <label class="form-check-label" for="IsHavingBankChk">@GlobalBranchManagement.Is_this_branch_linked_to_any_bank</label>
                         </div>
                     </div>
 
@@ -115,44 +115,44 @@
         <!-- Contact -->
         <div class="card border-0 shadow-sm mb-3">
             <div class="px-2 pt-2 section-wrap">
-                <div class="section-chip"><i class="bi bi-telephone"></i><span>Contact</span></div>
-                <div class="section-subtle">Address, P.O. Box, email, phone &amp; website.</div>
+                <div class="section-chip"><i class="bi bi-telephone"></i><span>@GlobalShared.Contact</span></div>
+                <div class="section-subtle">@GlobalShared.Address, P.O. Box, @GlobalShared.Email, @GlobalShared.Phone &amp; @GlobalShared.WebSite.</div>
             </div>
             <hr class="section-divider" />
             <div class="card-body">
                 <div class="row g-3">
                     <div class="col-md-5">
                         <div class="form-floating form-floating-outline">
-                            @Html.TextBoxFor(m => m.Branch.Address, new { @class = "form-control", placeholder = GlobalBranchManagement.Address })
-                            <label>@GlobalBranchManagement.Address</label>
+                            @Html.TextBoxFor(m => m.Branch.Address, new { @class = "form-control", placeholder = GlobalShared.Address })
+                            <label>@GlobalShared.Address</label>
                             @Html.ValidationMessageFor(m => m.Branch.Address, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-floating form-floating-outline">
-                            @Html.TextBoxFor(m => m.Branch.PBox, new { @class = "form-control", placeholder = GlobalBranchManagement.PBox })
-                            <label>@GlobalBranchManagement.PBox</label>
+                            @Html.TextBoxFor(m => m.Branch.PBox, new { @class = "form-control", placeholder = GlobalShared.PBox })
+                            <label>@GlobalShared.PBox</label>
                             @Html.ValidationMessageFor(m => m.Branch.PBox, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-floating form-floating-outline">
-                            @Html.TextBoxFor(m => m.Branch.Email, new { @class = "form-control", placeholder = GlobalBranchManagement.Email, type = "email" })
-                            <label>@GlobalBranchManagement.Email</label>
+                            @Html.TextBoxFor(m => m.Branch.Email, new { @class = "form-control", placeholder = GlobalShared.Email, type = "email" })
+                            <label>@GlobalShared.Email</label>
                             @Html.ValidationMessageFor(m => m.Branch.Email, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-floating form-floating-outline">
-                            @Html.TextBoxFor(m => m.Branch.Telephone, new { @class = "form-control", placeholder = GlobalBranchManagement.Telephone })
-                            <label>@GlobalBranchManagement.Telephone</label>
+                            @Html.TextBoxFor(m => m.Branch.Telephone, new { @class = "form-control", placeholder = GlobalShared.Telephone })
+                            <label>@GlobalShared.Telephone</label>
                             @Html.ValidationMessageFor(m => m.Branch.Telephone, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-floating form-floating-outline">
-                            @Html.TextBoxFor(m => m.Branch.WebSite, new { @class = "form-control", placeholder = GlobalBranchManagement.WebSite, type = "url" })
-                            <label>@GlobalBranchManagement.WebSite</label>
+                            @Html.TextBoxFor(m => m.Branch.WebSite, new { @class = "form-control", placeholder = GlobalShared.WebSite, type = "url" })
+                            <label>@GlobalShared.WebSite</label>
                             @Html.ValidationMessageFor(m => m.Branch.WebSite, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -163,30 +163,30 @@
         <!-- Legal -->
         <div class="card border-0 shadow-sm mb-3">
             <div class="px-2 pt-2 section-wrap">
-                <div class="section-chip"><i class="bi bi-file-text"></i><span>Registration &amp; Tax</span></div>
-                <div class="section-subtle">Legal identifiers for the branch.</div>
+                <div class="section-chip"><i class="bi bi-file-text"></i><span>@GlobalShared.Registration &amp; @GlobalShared.Tax</span></div>
+                <div class="section-subtle">@GlobalBranchManagement.Legal_identifiers_for_the_branch</div>
             </div>
             <hr class="section-divider" />
             <div class="card-body">
                 <div class="row g-3">
                     <div class="col-md-12">
                         <div class="form-floating form-floating-outline">
-                            @Html.TextBoxFor(m => m.Branch.RegistrationNumber, new { @class = "form-control", placeholder = GlobalBranchManagement.RegistrationNumber })
-                            <label>@GlobalBranchManagement.RegistrationNumber</label>
+                            @Html.TextBoxFor(m => m.Branch.RegistrationNumber, new { @class = "form-control", placeholder = GlobalShared.Registration_number })
+                            <label>@GlobalShared.Registration_number</label>
                             @Html.ValidationMessageFor(m => m.Branch.RegistrationNumber, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-floating form-floating-outline">
-                            @Html.TextBoxFor(m => m.Branch.ImmatriculationNumber, new { @class = "form-control", placeholder = GlobalBranchManagement.ImmatriculationNumber })
-                            <label>@GlobalBranchManagement.ImmatriculationNumber</label>
+                            @Html.TextBoxFor(m => m.Branch.ImmatriculationNumber, new { @class = "form-control", placeholder = GlobalShared.Immatriculation_number })
+                            <label>@GlobalShared.Immatriculation_number</label>
                             @Html.ValidationMessageFor(m => m.Branch.ImmatriculationNumber, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-floating form-floating-outline">
-                            @Html.TextBoxFor(m => m.Branch.TaxPayerNUmber, new { @class = "form-control", placeholder = GlobalBranchManagement.TaxPayerNumber })
-                            <label>@GlobalBranchManagement.TaxPayerNumber</label>
+                            @Html.TextBoxFor(m => m.Branch.TaxPayerNUmber, new { @class = "form-control", placeholder = GlobalShared.Tax_Payer_Number })
+                            <label>@GlobalShared.Tax_Payer_Number</label>
                             @Html.ValidationMessageFor(m => m.Branch.TaxPayerNUmber, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -197,30 +197,30 @@
         <!-- Branding & Dates -->
         <div class="card border-0 shadow-sm mb-3">
             <div class="px-2 pt-2 section-wrap">
-                <div class="section-chip"><i class="bi bi-palette"></i><span>Branding &amp; Dates</span></div>
-                <div class="section-subtle">Initials, motto and creation date.</div>
+                <div class="section-chip"><i class="bi bi-palette"></i><span>@GlobalShared.Branding &amp; @GlobalShared.Dates</span></div>
+                <div class="section-subtle">@GlobalBranchManagement.Initials_motto_and_creation_date.</div>
             </div>
             <hr class="section-divider" />
             <div class="card-body">
                 <div class="row g-3">
                     <div class="col-md-6">
                         <div class="form-floating form-floating-outline">
-                            @Html.TextBoxFor(m => m.Branch.BankInitial, new { @class = "form-control", placeholder = GlobalBranchManagement.BankInitial, id = "BankInitial" })
-                            <label>@GlobalBranchManagement.BankInitial</label>
+                            @Html.TextBoxFor(m => m.Branch.BankInitial, new { @class = "form-control", placeholder = GlobalShared.Bank_Initial, id = "BankInitial" })
+                            <label>@GlobalShared.Bank_Initial</label>
                             @Html.ValidationMessageFor(m => m.Branch.BankInitial, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-floating form-floating-outline">
                             @Html.TextBoxFor(m => m.Branch.DateOfCreation, new { @class = "form-control", type = "date" })
-                            <label>@GlobalBranchManagement.DateOfCreation</label>
+                            <label>@GlobalShared.Date_of_creation</label>
                             @Html.ValidationMessageFor(m => m.Branch.DateOfCreation, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="form-floating form-floating-outline">
-                            @Html.TextBoxFor(m => m.Branch.Motto, new { @class = "form-control", placeholder = GlobalBranchManagement.Motto })
-                            <label>@GlobalBranchManagement.Motto</label>
+                            @Html.TextBoxFor(m => m.Branch.Motto, new { @class = "form-control", placeholder = GlobalShared.Motto })
+                            <label>@GlobalShared.Motto</label>
                             @Html.ValidationMessageFor(m => m.Branch.Motto, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -231,23 +231,23 @@
         <!-- Head Office -->
         <div class="card border-0 shadow-sm mb-3">
             <div class="px-2 pt-2 section-wrap">
-                <div class="section-chip"><i class="bi bi-building"></i><span>Head Office</span></div>
-                <div class="section-subtle">Contact and address for escalations.</div>
+                <div class="section-chip"><i class="bi bi-building"></i><span>@GlobalShared.Head_Office</span></div>
+                <div class="section-subtle">@GlobalBranchManagement.Contact_and_address_for_escalations.</div>
             </div>
             <hr class="section-divider" />
             <div class="card-body">
                 <div class="row g-3">
                     <div class="col-md-6">
                         <div class="form-floating form-floating-outline">
-                            @Html.TextBoxFor(m => m.Branch.HeadOfficeTelehoneNumber, new { @class = "form-control", placeholder = GlobalBranchManagement.HeadOfficePhoneNumber })
-                            <label>@GlobalBranchManagement.HeadOfficePhoneNumber</label>
+                            @Html.TextBoxFor(m => m.Branch.HeadOfficeTelehoneNumber, new { @class = "form-control", placeholder = GlobalShared.Head_office_telephone_number })
+                            <label>@GlobalShared.Head_office_telephone_number</label>
                             @Html.ValidationMessageFor(m => m.Branch.HeadOfficeTelehoneNumber, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-floating form-floating-outline">
-                            @Html.TextBoxFor(m => m.Branch.HeadOfficeAddress, new { @class = "form-control", placeholder = GlobalBranchManagement.HeadOfficeAddress })
-                            <label>@GlobalBranchManagement.HeadOfficeAddress</label>
+                            @Html.TextBoxFor(m => m.Branch.HeadOfficeAddress, new { @class = "form-control", placeholder = GlobalShared.Head_office_address })
+                            <label>@GlobalShared.Head_office_address</label>
                             @Html.ValidationMessageFor(m => m.Branch.HeadOfficeAddress, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -260,13 +260,13 @@
             @if (Model.Branch.Id == null)
             {
                 @Html.HiddenFor(m => m.Branch.BankId)
-                <button type="submit" class="btn btn-primary">@GlobalBranchManagement.Save</button>
+                <button type="submit" class="btn btn-primary">@GlobalShared.Save</button>
                 <input type="hidden" name="Action" value="insert" id="Action" />
             }
             else
             {
                 @Html.HiddenFor(m => m.Branch.Id)
-                <button type="submit" class="btn btn-primary">@GlobalBranchManagement.Update</button>
+                <button type="submit" class="btn btn-primary">@GlobalShared.Update</button>
                 <input type="hidden" name="Action" value="update" id="Action" />
             }
             <button type="reset" class="btn btn-outline-secondary">@GlobalShared.Reset</button>

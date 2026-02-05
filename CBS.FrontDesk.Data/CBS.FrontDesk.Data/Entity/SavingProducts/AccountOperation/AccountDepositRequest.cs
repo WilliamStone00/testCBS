@@ -615,6 +615,8 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public DateTime DateFrom { get; set; }
         public DateTime DateTo { get; set; }
         public List<string> AccountIds { get; set; } = new List<string>();
+
+        public string InterestVadPenaltyType { get; set; }
     }
 
     public class FinancialReportRequest
@@ -645,6 +647,8 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
 
         public string BranchId { get; set; }
         public string BankId { get; set; }
+        public string InterestVadPenaltyType { get; set; }
+
     }
 
     public enum FinancialReportType
@@ -653,7 +657,11 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         AccountSituation = 2,
         AccountStatement = 3,
         LoanRepayment = 4,
-        LoanHistory = 5
+        LoanHistory = 5,
+        Interest = 6,
+        VAT = 7,
+        Penalty = 8
+        
     }
 
     public enum LoanRepaymentReportMode
