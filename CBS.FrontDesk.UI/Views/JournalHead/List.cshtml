@@ -476,7 +476,7 @@
 
                         const payload = {
                             Reference: modal.data('reference'),
-                            BranchId: $('#sourceBranchId').val(),
+                            BranchId: $("#sourceBranchId").val(),
                             Approver: modal.data('user'),
                             Approve: true,
                             TicketType: modal.data('ticket')
@@ -561,10 +561,11 @@
 
                         const payload = {
                             Reference: modal.data('reference'),
-                            BranchId: $('#sourceBranchId').val(),
+                            Approver: modal.data('user'),
+                            Reason: reason,
+                            BranchId: $("#sourceBranchId").val(),
                             Approver: modal.data('user'),
                             Approve: false,
-                            Reason: reason
                         };
 
                         const $btn = $('#btnSubmitReject');
@@ -1013,13 +1014,13 @@
             //        function () { // ✅ YES
             //            const modal = $('#SourceDetailsModal');
 
-            //            const payload = {
-            //                Reference: modal.data('reference'),
-            //                BranchId: $('#sourceBranchId').val(),
-            //                Approver: modal.data('user'),
-            //                Approve: false,
-            //                Reason: reason
-            //            };
+                        const payload = {
+                            Reference: modal.data('reference'),
+                            BranchId: $("#sourceBranchId").val(),
+                            Approve: false,
+                            Approver: modal.data('user'),
+                            Reason: reason
+                        };
 
             //            const $btn = $('#btnSubmitReject');
             //            $btn.prop('disabled', true).text('Rejecting...');
