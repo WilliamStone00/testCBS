@@ -2066,7 +2066,7 @@ namespace Resources {
                 return ResourceManager.GetString("Executed", resourceCulture);
             }
         }
-        }
+       
         
         /// <summary>
         ///   Looks up a localized string similar to Exit.
@@ -4725,15 +4725,7 @@ namespace Resources {
             }
         }
         
-        /// <summary>
-        ///   Looks up a localized string similar to Select to edit.
-        /// </summary>
-        internal static string SelectToEdit {
-            get {
-                return ResourceManager.GetString("SelectToEdit", resourceCulture);
-                return ResourceManager.GetString("Select_Language", resourceCulture);
-            }
-        }
+  
         
         /// <summary>
         ///   Looks up a localized string similar to Select Operation File.
@@ -5296,11 +5288,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Tips.
         /// </summary>
-        internal static string Tips {
-            get {
-                return ResourceManager.GetString("Tips", resourceCulture);
-            }
-        }
+  
         
         /// <summary>
         ///   Looks up a localized string similar to To download.
