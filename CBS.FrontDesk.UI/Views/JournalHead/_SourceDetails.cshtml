@@ -95,7 +95,8 @@
         Detailed information for the selected journal entry.
     </p>
 </div>
-
+<input type="hidden" id="sourceBranchId" value="@Model.BranchId" />
+<input type="hidden" id="ExcelId" value="@Model.Id" />
 <!-- ===================== MODAL BODY ===================== -->
 <div class="modal-body">
     <h6 class="fw-bold text-primary border-bottom pb-1 mb-2">
@@ -104,7 +105,18 @@
     <table class="table table-sm table-bordered mb-3">
         <tbody>
             <tr><th class="bg-label">Reference</th><td>@(Model?.Reference ?? "")</td></tr>
-            <tr><th class="bg-label">State</th><td>@(Model?.State ?? "")</td></tr>
+            <tr>
+                <th class="bg-label">State</th>
+                <td>
+                    <span class="badge
+            @(Model?.State == "APPROVED" ? "bg-success" :
+              Model?.State == "REJECTED" ? "bg-danger" :
+              "bg-secondary")">
+                        @(Model?.State ?? "")
+                    </span>
+                </td>
+            </tr>
+
             <tr><th class="bg-label">Operation Code</th><td>@(Model?.OperationCode ?? "")</td></tr>
             <tr><th class="bg-label">Branch</th><td>@(Model?.BranchName ?? "")</td></tr>
             <tr><th class="bg-label">Ticket Type</th><td>@(Model?.TicketType ?? "")</td></tr>

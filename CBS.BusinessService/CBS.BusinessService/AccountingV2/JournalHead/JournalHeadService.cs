@@ -200,7 +200,7 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
             model.BranchId = null;
             model.DestinationBranchId = null;
             model.TicketType = null;
-            model.Approve = true;
+            
          
             if (model == null)
                 throw new ArgumentNullException(nameof(model));
@@ -229,7 +229,7 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
             model.BranchId = null;
             model.SourceBranchId = null;
             model.TicketType = null;
-            model.Approve = true;
+            
             if (model == null)
                 throw new ArgumentNullException(nameof(model));
 
