@@ -437,8 +437,9 @@
 
                         const payload = {
                             Reference: modal.data('reference'),
-                            BranchId: modal.data('branch'),
+                            BranchId: $("#sourceBranchId").val(),
                             Approver: modal.data('user'),
+                            Approve: true,
                             TicketType: modal.data('ticket')
                         };
 
@@ -521,9 +522,11 @@
 
                         const payload = {
                             Reference: modal.data('reference'),
-                            BranchId: modal.data('branch'),
                             Approver: modal.data('user'),
-                            Reason: reason
+                            Reason: reason,
+                            BranchId: $("#sourceBranchId").val(),
+                            Approver: modal.data('user'),
+                            Approve: false,
                         };
 
                         const $btn = $('#btnSubmitReject');
@@ -949,7 +952,8 @@
 
                         const payload = {
                             Reference: modal.data('reference'),
-                            BranchId: modal.data('branch'),
+                            BranchId: $("#sourceBranchId").val(),
+                            Approve: false,
                             Approver: modal.data('user'),
                             Reason: reason
                         };
