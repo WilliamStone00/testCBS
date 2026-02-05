@@ -213,6 +213,9 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Data.SqlClient">
+      <HintPath>..\..\..\..\..\..\Program Files\Microsoft Visual Studio\2022\Professional\Common7\IDE\Extensions\Microsoft\SQLDB\DAC\Microsoft.Data.SqlClient.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Extensions.DependencyInjection, Version=8.0.0.1, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.8.0.1\lib\net462\Microsoft.Extensions.DependencyInjection.dll</HintPath>
     </Reference>
@@ -721,16 +724,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AccountingV2.fr.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\Accounting V2\AccountingV2.fr2.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AccountingV2.fr.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\Accounting V2\AccountingV22.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AccountingV2.resx</DependentUpon>
-    </Compile>
     <Compile Include="App_GlobalResources\AccountingChart\GlobalAccountingChart.fr.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1041,22 +1034,17 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AccountOpeningRulePerBranch_Index.fr.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\AdvancedSheild\AdvancedShield.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AdvancedShield.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\AffiliateAccount\AffiliateAccount.Designer.cs">
+    <Compile Include="App_GlobalResources\AffiliateAccount\AffiliateAccount2.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>AffiliateAccount.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\AffiliateToBranchFallback\AffiliateToBranchFallback.Designer.cs">
+    <Compile Include="App_GlobalResources\AffiliateToBranchFallback\AffiliateToBranchFallback2.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>AffiliateToBranchFallback.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\Affiliate\Affiliate.Designer.cs">
+    <Compile Include="App_GlobalResources\Affiliate\Affiliate1.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Affiliate.resx</DependentUpon>
@@ -1071,32 +1059,53 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalAlertProfile.fr.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning.Designer.cs">
+    <Compile Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning1.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>AndriodAppVersioning.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\APIKey\ApiKeyRessource.Designer.cs">
+    <Compile Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning_Create.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AndriodAppVersioning_Create.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning_Data.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AndriodAppVersioning_Data.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning_Index.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AndriodAppVersioning_Index.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AndriodAppVersioning\AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\APIKey\ApiKeyRessource1.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ApiKeyRessource.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\Authentication\AuthenticationRessource.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AuthenticationRessource.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\BankingOperations\GlobalBankingOperations.fr.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalBankingOperations.fr.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\BlacklistUser\BlacklistUserRessource.Designer.cs">
+    <Compile Include="App_GlobalResources\Bank\GlobalBankData.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>BlacklistUserRessource.resx</DependentUpon>
+      <DependentUpon>GlobalBankData.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\BranchAccount\BranchAccountRessources.Designer.cs">
+    <Compile Include="App_GlobalResources\Bank\GlobalBankData.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalBankData.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\BudgetManagement\GlobalBudgetManagement.fr.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>BranchAccountRessources.resx</DependentUpon>
@@ -1375,6 +1384,21 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalLoan.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Login\GlobalLogin.fr.Designer.cs">
+      <DependentUpon>GlobalLogin.fr.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="App_GlobalResources\Login\LoginBasic.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LoginBasic.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Login\ResolveMultipleSessions.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ResolveMultipleSessions.fr.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\ManuallyJournalEntry\GlobalManuallyJournalEntry.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -4089,6 +4113,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalAbout.fr.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\HomePage\GlobalHome.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalHome.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\HomePage\GlobalHome.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalHome.fr.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\Individual\GlobalIndividual.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -4108,6 +4142,21 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalLoan.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Login\GlobalLogin.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalLogin.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Login\LoginBasic.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LoginBasic.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Login\ResolveMultipleSessions.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ResolveMultipleSessions.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\MemberOperation\GlobalLoanApplicationApproval.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -7214,6 +7263,14 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalShared.Designer.cs</LastGenOutput>
     </Content>
+    <Content Include="App_GlobalResources\Login\LoginBasic.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>LoginBasic.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Login\ResolveMultipleSessions.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>ResolveMultipleSessions.Designer.cs</LastGenOutput>
+    </Content>
     <Content Include="App_GlobalResources\ManuallyJournalEntry\GlobalManuallyJournalEntry.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalManuallyJournalEntry.Designer.cs</LastGenOutput>
@@ -7436,7 +7493,6 @@
     <Content Include="Content\bootstrap-grid.rtl.css.map" />
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
-    <Content Include="App_GlobalResources\AccountingConfiguration.zip" />
     <Content Include="AppFiles\ManualDailyCollection\Manualdaillycollectiontemplete.xlsx" />
     <Content Include="AppFiles\AffiliateAccountUpload\BAPCCUL_ACCOUNTS2.xlsx" />
     <Content Include="AppFiles\AffiliateAccountUpload\SampleBalanceSheet2.xlsx" />
@@ -7446,9 +7502,53 @@
     <Content Include="AppFiles\Accountingv2Reporting\DataSets\AccountingV2DS.xsc">
       <DependentUpon>AccountingV2DS.xsd</DependentUpon>
     </Content>
-    <Content Include="App_GlobalResources\BlacklistUser\BlacklistUserRessource.resx">
+    <Content Include="App_GlobalResources\Login\GlobalLogin.fr.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>BlacklistUserRessource.Designer.cs</LastGenOutput>
+      <LastGenOutput>GlobalLogin.fr.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AndriodAppVersioning1.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning_Create.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AndriodAppVersioning_Create.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning_Data.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AndriodAppVersioning_Data.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning_Index.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AndriodAppVersioning_Index.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AndriodAppVersioning\AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Bank\GlobalBankData.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalBankData.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Bank\GlobalBankData.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalBankData.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Affiliate\Affiliate.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Affiliate1.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AffiliateAccount\AffiliateAccount.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AffiliateAccount2.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AffiliateToBranchFallback\AffiliateToBranchFallback.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AffiliateToBranchFallback2.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\APIKey\ApiKeyRessource.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>ApiKeyRessource1.designer.cs</LastGenOutput>
     </Content>
     <Content Include="App_GlobalResources\BranchAccount\BranchAccountRessources.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
@@ -7533,6 +7633,14 @@
     </None>
     <Content Include="DataSet\Loan\DeliquentLoanSummaryDataSet.xss">
       <DependentUpon>DeliquentLoanSummaryDataSet.xsd</DependentUpon>
+    </Content>
+    <Content Include="App_GlobalResources\Login\LoginBasic.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>LoginBasic.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Login\ResolveMultipleSessions.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>ResolveMultipleSessions.fr.designer.cs</LastGenOutput>
     </Content>
     <Content Include="App_GlobalResources\ManuallyJournalEntry\GlobalManuallyJournalEntry.fr.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
@@ -8920,42 +9028,6 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>TellerStatement11.cs</LastGenOutput>
     </EmbeddedResource>
-    <Content Include="App_GlobalResources\AdvancedSheild\AdvancedShield.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>AdvancedShield.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\Affiliate\Affiliate.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>Affiliate.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\Accounting V2\AccountingV2.fr.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>AccountingV2.fr2.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\Accounting V2\AccountingV2.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>AccountingV22.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\AffiliateAccount\AffiliateAccount.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>AffiliateAccount.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\AffiliateToBranchFallback\AffiliateToBranchFallback.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>AffiliateToBranchFallback.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>AndriodAppVersioning.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\APIKey\ApiKeyRessource.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>ApiKeyRessource.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\Authentication\AuthenticationRessource.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>AuthenticationRessource.Designer.cs</LastGenOutput>
-    </Content>
     <Content Include="App_GlobalResources\TransactionConfiguration\GlobalOrdinaryAccounts.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalOrdinaryAccounts.Designer.cs</LastGenOutput>
@@ -10622,8 +10694,6 @@
     <Folder Include="AppFiles\Migration\TrialBalance\" />
     <Folder Include="App_Data\" />
     <Folder Include="App_GlobalResources\AttachedLoanDocuments\" />
-    <Folder Include="App_GlobalResources\Login\" />
-    <Folder Include="App_GlobalResources\NewFolder1\" />
     <Folder Include="bin\bin\fr\" />
     <Folder Include="bin\ca\" />
     <Folder Include="bin\de\" />
@@ -10773,6 +10843,18 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>OpeningAndClossingOfTellersRPT.cs</LastGenOutput>
     </EmbeddedResource>
+    <Content Include="App_GlobalResources\HomePage\GlobalHome.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalHome.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\HomePage\GlobalHome.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalHome.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Login\GlobalLogin.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalLogin.Designer.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />

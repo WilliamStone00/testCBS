@@ -60,6 +60,136 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
         public string  Year { get; set; }
     }
 
+    public class TransactionStaement
+    {
+        // Coins
+        public int Coin1 { get; set; }
+        public int Coin5 { get; set; }
+        public int Coin10 { get; set; }
+        public int Coin25 { get; set; }
+        public int Coin50 { get; set; }
+        public int Coin100 { get; set; }
+        public int Coin500 { get; set; }
+
+        // Notes
+        public int Note500 { get; set; }
+        public int Note1000 { get; set; }
+        public int Note2000 { get; set; }
+        public int Note5000 { get; set; }
+        public int Note10000 { get; set; }
+
+        // Amounts
+        public decimal Amount { get; set; }
+        public decimal OriginalDepositAmount { get; set; }
+        public decimal Debit { get; set; }
+        public decimal Credit { get; set; }
+        public decimal Tax { get; set; }
+        public decimal PreviousBalance { get; set; }
+        public decimal SourceBranchCommission { get; set; }
+        public decimal DestinationBranchCommission { get; set; }
+        public decimal Balance { get; set; }
+        public decimal Fee { get; set; }
+        public decimal Charges { get; set; }
+        public decimal ClosingBalance { get; set; }
+        public string OpeningBalance { get; set; }
+
+        // Transaction info
+        public string AccountNumber { get; set; }
+        public string TransactionType { get; set; }
+        public string OperationType { get; set; }
+        public string Status { get; set; }
+        public string TransactionRef { get; set; }
+        public string Reference { get; set; }
+        public string Representative { get; set; }
+        public DateTime TransactionDate { get; set; }
+
+        // Branch
+        public string SendingBranch { get; set; }
+        public string RecievingBranch { get; set; }
+        public string BranchName { get; set; }
+        public string BranchCode { get; set; }
+        public string BranchAddress { get; set; }
+        public string BranchTelephone { get; set; }
+
+        // People
+        public string SenderName { get; set; }
+        public string RecieverName { get; set; }
+        public string DepositorName { get; set; }
+        public string DepositorIDNumber { get; set; }
+        public string DepositerTelephone { get; set; }
+        public string DepositorIDIssueDate { get; set; }
+        public string DepositorIDExpiryDate { get; set; }
+        public string DepositorIDNumberPlaceOfIssue { get; set; }
+        public string DepositerNote { get; set; }
+        public bool IsDepositDoneByAccountOwner { get; set; }
+
+        // Inter-branch
+        public bool IsInterBrachOperation { get; set; }
+        public string InterBrachOperation { get; set; }
+
+        // Product / Fees
+        public string ProductName { get; set; }
+        public string FeeType { get; set; }
+        public string SourceType { get; set; }
+
+        // Cashier
+        public string TellerName { get; set; }
+        public string CashierName { get; set; }
+
+        // Organization
+        public string Logo { get; set; }
+        public string HeadOfficeName { get; set; }
+        public string HeadOfficeAddress { get; set; }
+        public string HeadOfficeTelephone { get; set; }
+        public string HeadOfficeEmail { get; set; }
+        public string HeadOfficeWebSite { get; set; }
+        public string HeadOfficeInitial { get; set; }
+        public string HeadOfficeCode { get; set; }
+
+        // Account / Customer
+        public string AccountType { get; set; }
+        public string AccountName { get; set; }
+        public string CustomerName { get; set; }
+        public string CustomerId { get; set; }
+
+        // Address
+        public string Address { get; set; }
+        public string Town { get; set; }
+        public string Village { get; set; }
+        public string Country { get; set; }
+
+        // Misc
+        public string ExpireDate { get; set; }
+        public string DeliveryDate { get; set; }
+        public string Telephone { get; set; }
+        public string Key { get; set; }
+        public string BarCode { get; set; }
+        public string AmountInWord { get; set; }
+        public string ReceiptTitle { get; set; }
+        public string Description { get; set; }
+
+        // Report
+        public string ReportTitle { get; set; }
+        public string Year { get; set; }
+        public string PrintedBy { get; set; }
+        public string Printedfrom { get; set; }
+        public string PrintedTo { get; set; }
+        public string PrintedOn { get; set; }
+        public string BalanceasOf { get; set; }
+        public string TotalOperation { get; set; }
+        public string TotalDebit { get; set; }
+        public string TotalCredit { get; set; }
+
+        // Date / Time (string as in XSD)
+        public DateTime Date { get; set; }
+        public DateTime Time { get; set; }
+
+        // Identification
+        public string CNI { get; set; }
+        public string Currreccy { get; set; }
+    }
+
+
     public class MemberSituationRow
     {
         // Header Information
@@ -166,7 +296,6 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
         public decimal CollateralValue { get; set; }
         public string OfficerName { get; set; }
     }
-
 
     public class MemberAccount
     {
@@ -626,57 +755,177 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
     }
 
 
-        // 2. The Transaction Item (The core data block)
-        public class TransactionRaw
-        {
-            public string Id { get; set; }
-            public decimal Amount { get; set; }
-            public decimal Debit { get; set; }
-            public decimal Credit { get; set; }
-            public decimal Balance { get; set; }
-            public decimal PreviousBalance { get; set; }
-            public string Currency { get; set; }
-            public string TransactionReference { get; set; }
-            public string Operation { get; set; } // e.g., "BulkOperationTransfer"
-            public string Note { get; set; }
 
-            public string CreatedDate { get; set; } // Keeping as string to parse manually if format varies
-            public string CreatedBy { get; set; }
+// 1. Unique Wrapper for the "data" object
+public class FinancialReportResponseDto
+    {
+        [JsonProperty("reportType")]
+        public int ReportType { get; set; }
 
-            // Account & Customer Link
-            public string AccountNumber { get; set; }
-            public string CustomerId { get; set; }
+        [JsonProperty("accountStatement")]
+        public AccountStatementResponseDto AccountStatement { get; set; }
+        public AccountStatementSummary summary { get; set; }
+    }
 
-            // Representative Info
-            public string DepositorName { get; set; }
-            public string DepositerTelephone { get; set; }
+    // 2. Unique Wrapper for the "accountStatement" object
+    public class AccountStatementResponseDto
+    {
+        [JsonProperty("accountId")]
+        public string AccountId { get; set; }
 
-            // Nested Objects
-            public Branch Branch { get; set; }
-            public Account Account { get; set; }
-        }
+        [JsonProperty("accountNumber")]
+        public string AccountNumber { get; set; }
 
-        // 3. Branch Info
-        public class Branch
-        {
-            public string Name { get; set; }
-            public string BranchCode { get; set; }
-            public string Telephone { get; set; }
-            public string PBox { get; set; }
-            // Bank info is null in your JSON, usually retrieved here or hardcoded
-        }
+        [JsonProperty("openingBalance")]
+        public decimal OpeningBalance { get; set; }
 
-        // 4. Account Info (For Customer Name)
-        public class Account
-        {
-            public string CustomerName { get; set; }
-            public string AccountName { get; set; }
-            public decimal Balance { get; set; }
-            public decimal OpeningBalance { get; set; }
-            public decimal ClosingBalance { get; set; }
+        // This maps the JSON list "accountStatements" to the C# property "Transactions"
+        [JsonProperty("accountStatements")]
+        public List<TransactionRaw> Transactions { get; set; }
+        public AccountStatementSummary summary { get; set; }
+    }
 
-        }
+    // 3. Updated Transaction Item with MAPPINGS (Crucial!)
+    public class TransactionRaw
+    {
+        public string Id { get; set; }
+        public string TransactionReference { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public DateTime AccountingDate { get; set; }
 
+        public decimal Balance { get; set; }
+        public decimal PreviousBalance { get; set; }
+        public decimal Debit { get; set; }
+        public decimal Credit { get; set; }
+        public decimal Amount { get; set; }
+        public string Operation { get; set; }
+        public string Note { get; set; }  
+        public string CreatedBy { get; set; }
+        public string AccountNumber { get; set; }
+        public string AccountType { get; set; }    
+        public string DepositorName { get; set; }
+        public bool IsDepositDoneByAccountOwner { get; set; }  
+        public string DepositorIDNumber { get; set; }
+        public string DepositorTelephone { get; set; }
+        public string DepositorIDIssueDate { get; set; }
+        public string DepositorIDExpiryDate { get; set; }
+        public string DepositorIDPlaceOfIssue { get; set; }
+        public string DepositorNote { get; set; }
+
+        // These fields are NOT in the JSON Transaction object, 
+        // so they will remain null. You must handle nulls in your UI logic.
+        public Branchs Branch { get; set; }
+        public Account Account { get; set; }
+        public string CustomerId { get; set; }
+        public string DepositerTelephone { get; set; }
+        public string Currency { get; set; }
+        public string Logi { get; set; }
+    }
+
+    // Keep your existing Branchs and Account classes as they were...
+    public class Branchs
+    {
+        public string Name { get; set; }
+        public string BranchCode { get; set; }
+        public string Telephone { get; set; }
+        public string PBox { get; set; }
+    }
+
+    public class Account
+    {
+        public string CustomerName { get; set; }
+        public string AccountName { get; set; }
+        public decimal Balance { get; set; }
+        public decimal OpeningBalance { get; set; }
+        public decimal ClosingBalance { get; set; }
+    }
+
+    public class AccountStatementSummary
+    {
+        public decimal TotalCredit { get; set; }
+        public decimal TotalDebit { get; set; }
+        public int TransactionsCount { get; set; }
+        public decimal ClosingBalance { get; set; }
+        public string OpeningBalance { get; set; }
+        public decimal YearOpeningBalance { get; set; }
+        public decimal PeriodOpeningBalance { get; set; }
+    }
+
+    // New API Response Model
+    public class AccountStatementApiResponse
+    {
+        public AccountStatementData Data { get; set; }
+        public int StatusCode { get; set; }
+        public string Message { get; set; }
+        public string Status { get; set; }
+        public string Description { get; set; }
+        public List<string> Errors { get; set; }
+        public bool Success { get; set; }
+    }
+
+    public class AccountStatementData
+    {
+        public int ReportType { get; set; }
+        public DateTime GeneratedAt { get; set; }
+        public FinancialReportFilter Filter { get; set; }
+        public string MemberReference { get; set; }
+        public AccountStatement AccountStatement { get; set; }
+        // ... other properties as needed
+    }
+
+    public class AccountStatement
+    {
+        public string AccountId { get; set; }
+        public string AccountNumber { get; set; }
+        public DateTime DateFrom { get; set; }
+        public DateTime DateTo { get; set; }
+        public List<AccountStatementTransaction> AccountStatements { get; set; }
+        public AccountStatementSummary Summary { get; set; }
+        public decimal OpeningBalance { get; set; }
+        public decimal ClosingBalance { get; set; }
+        public decimal YearOpeningBalance { get; set; }
+        public decimal PeriodOpeningBalance { get; set; }
+    }
+
+    public class AccountStatementTransaction
+    {
+        public string TransactionId { get; set; }
+        public string TransactionReference { get; set; }
+        public DateTime TransactionDate { get; set; }
+        public DateTime AccountingDate { get; set; }
+        public string AccountId { get; set; }
+        public string AccountNumber { get; set; }
+        public string AccountType { get; set; }
+        public string Currency { get; set; }
+        public decimal Debit { get; set; }
+        public decimal Credit { get; set; }
+        public decimal BalanceBefore { get; set; }
+        public decimal BalanceAfter { get; set; }
+        public decimal Amount { get; set; }
+        public decimal Fee { get; set; }
+        public decimal Tax { get; set; }
+        public decimal TotalCharges { get; set; }
+        public string TransactionType { get; set; }
+        public string OperationType { get; set; }
+        public string Operation { get; set; }
+        public string Status { get; set; }
+        public string ExternalReference { get; set; }
+        public bool IsExternalOperation { get; set; }
+        public string ExternalApplicationName { get; set; }
+        public string SourceBranchId { get; set; }
+        public string DestinationBranchId { get; set; }
+        public bool IsInterBranchOperation { get; set; }
+        public string TellerId { get; set; }
+        public string BranchId { get; set; }
+        public string BankId { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public string Note { get; set; }
+        public string ReceiptTitle { get; set; }
+        public decimal Balance { get; set; }
+    }
+
+   
 
     public class MemberSituationData
     {

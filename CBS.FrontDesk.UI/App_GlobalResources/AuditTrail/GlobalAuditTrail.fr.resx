@@ -132,11 +132,23 @@
   <data name="AvailableSearchOptionsAndExamples" xml:space="preserve">
     <value>**Options de recherche disponibles et exemples :**</value>
   </data>
+  <data name="BranchCode" xml:space="preserve">
+    <value>Code agence</value>
+  </data>
+  <data name="BranchName" xml:space="preserve">
+    <value>Nom de l'agence</value>
+  </data>
   <data name="CorrelationIDOrTransactionCode" xml:space="preserve">
     <value>ID de corrélation ou code de transaction</value>
   </data>
   <data name="CriticalLevel" xml:space="preserve">
     <value>Niveau critique</value>
+  </data>
+  <data name="DateFrom" xml:space="preserve">
+    <value>Date de début</value>
+  </data>
+  <data name="DateTo" xml:space="preserve">
+    <value>Date de fin</value>
   </data>
   <data name="DetailResponseMessage" xml:space="preserve">
     <value>Message de réponse détaillé</value>
@@ -144,8 +156,17 @@
   <data name="DowntownBranch" xml:space="preserve">
     <value>Agence du centre-ville</value>
   </data>
+  <data name="Enter" xml:space="preserve">
+    <value>Entrer</value>
+  </data>
   <data name="EnterPartOfTheRequestObjectOrTransactionDetails" xml:space="preserve">
     <value>Entrer une partie de l'objet de la demande ou des détails de la transaction</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Erreur</value>
+  </data>
+  <data name="Example" xml:space="preserve">
+    <value>Exemple</value>
   </data>
   <data name="ExportLogsUseTheExportButtonToDownload" xml:space="preserve">
     <value>**Exporter les journaux:** Utilisez le bouton "Exporter" pour télécharger les journaux filtrés sous forme de fichier Excel ou CSV pour une revue externe et un reporting</value>
@@ -159,8 +180,17 @@
   <data name="FilterLogsContainingSpecificResponseMessages" xml:space="preserve">
     <value>Filtrer les journaux contenant des messages de réponse spécifiques, tels que des erreurs ou des messages de confirmation</value>
   </data>
+  <data name="FullName" xml:space="preserve">
+    <value>Nom complet</value>
+  </data>
+  <data name="Information" xml:space="preserve">
+    <value>Information</value>
+  </data>
   <data name="MonitorCriticalLogsReviewLogsMarkedAs" xml:space="preserve">
     <value>**Surveiller les journaux critiques :** Examinez les journaux marqués comme</value>
+  </data>
+  <data name="Or" xml:space="preserve">
+    <value>ou</value>
   </data>
   <data name="OrWithStatusCodesToDetectAnomalies" xml:space="preserve">
     <value>avec des codes de statut 500 pour détecter les anomalies et les problèmes potentiels</value>
@@ -249,6 +279,9 @@
   <data name="TransactionFailed" xml:space="preserve">
     <value>Transaction échouée</value>
   </data>
+  <data name="UserName" xml:space="preserve">
+    <value>Nom d'utilisateur (complet)</value>
+  </data>
   <data name="UserOrSystemAction" xml:space="preserve">
     <value>Action de l'utilisateur ou du système</value>
   </data>
@@ -267,8 +300,14 @@
   <data name="ViewFullDetailsClickOnALogEntryToOpen" xml:space="preserve">
     <value>**Afficher les détails complets :** Cliquez sur une entrée de journal pour ouvrir une vue détaillée avec des informations complètes, y compris l'entité affectée et les données de demande/réponse associées</value>
   </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Avertissement</value>
+  </data>
   <data name="MicroserviceName" xml:space="preserve">
     <value>Nom du microservice</value>
+  </data>
+  <data name="Level" xml:space="preserve">
+    <value>Niveau</value>
   </data>
   <data name="CorrolationIdOrTransCode" xml:space="preserve">
     <value>ID de corrélation ou code de transaction</value>
@@ -281,6 +320,12 @@
   </data>
   <data name="AuditTrailDetails" xml:space="preserve">
     <value>Détails de la piste d'audit</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Fermer</value>
+  </data>
+  <data name="Action" xml:space="preserve">
+    <value>Action</value>
   </data>
   <data name="Timestamp" xml:space="preserve">
     <value>Horodatage</value>
@@ -302,6 +347,9 @@
   </data>
   <data name="UseThe" xml:space="preserve">
     <value>Utilisez le bouton</value>
+  </data>
+  <data name="Copy" xml:space="preserve">
+    <value>Copier</value>
   </data>
   <data name="ButtonToCopyLogInformation" xml:space="preserve">
     <value>pour copier les informations de journal (par exemple, les messages et les détails d'objet) pour le reporting ou le débogage</value>
@@ -339,8 +387,17 @@
   <data name="StatusCode" xml:space="preserve">
     <value>Code de statut</value>
   </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Inconnu</value>
+  </data>
   <data name="BranchInformation" xml:space="preserve">
     <value>Informations sur l'agence</value>
+  </data>
+  <data name="BranchID" xml:space="preserve">
+    <value>ID de l'agence</value>
+  </data>
+  <data name="BankID" xml:space="preserve">
+    <value>ID de la banque</value>
   </data>
   <data name="CorrelationID" xml:space="preserve">
     <value>ID de corrélation</value>
@@ -350,5 +407,8 @@
   </data>
   <data name="StringifiedObject" xml:space="preserve">
     <value>Objet stringifié</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Retour</value>
   </data>
 </root>

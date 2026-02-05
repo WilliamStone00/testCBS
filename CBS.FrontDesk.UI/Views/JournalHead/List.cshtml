@@ -41,6 +41,12 @@
 </div>
 
 
+@*<input type="hidden" id="JournalReference" value="@(Model?.Reference ?? "")" />
+    <input type="hidden" id="JournalBranch" value="@(Model?.BranchId ?? "")" />
+    <input type="hidden" id="JournalTicketType" value="@(Model?.TicketType ?? "")" />
+    <input type="hidden" id="JournalState" value="@(Model?.State ?? "")" />*@
+
+
 
 <div class="card shadow p-3 mb-2">
     <h5 class="text-primary mb-2">
@@ -118,20 +124,28 @@
             @*<hr class="my-3" />*@
 
             <!-- 🔹 Reference, Operation Type & Work Ticket (always visible) -->
-            <div class="row mb-1">
-                <div class="col-md-6 mb-1">
-                    <label class="form-label fw-bold">Reference</label>
-                    <input type="text" id="reference" name="Reference" class="form-control mb-1" placeholder="Enter Reference" />
-                </div>
-
-                <div class="col-md-6 mb-1">
-                    <label class="form-label fw-bold">Ticket Source</label>
-                    @Html.DropDownList("TicketSource",
-                        new SelectList(ViewBag.TicketSource, "Value", "Text"),
-                        "Select Ticket Source",
-                        new { @class = "form-control select2 mb-1", @id = "TicketSource" })
-                </div>
+        <div class="row mb-1">
+            <div class="col-md-4 mb-1">
+                <label class="form-label fw-bold">Reference</label>
+                <input type="text" id="reference" name="Reference" class="form-control mb-1" placeholder="Enter Reference" />
             </div>
+
+            <div class="col-md-4 mb-1">
+                <label class="form-label fw-bold">Ticket Source</label>
+                @Html.DropDownList("TicketSource",
+                    new SelectList(ViewBag.TicketSource, "Value", "Text"),
+                    "Select Ticket Source",
+                    new { @class = "form-control select2 mb-1", @id = "TicketSource" })
+            </div>
+
+            <div class="col-md-4 mb-1">
+                <label class="form-label fw-bold">Ticket Source</label>
+                @Html.DropDownList("Status",
+                    new SelectList(ViewBag.Status, "Value", "Text"),
+                    "Select Status",
+                    new { @class = "form-control select2 mb-1", @id = "status" })
+            </div>
+        </div>
             @*<div class="row mb-1">
                     <div class="col-md-6 mb-1">
                         <label class="form-label fw-bold">Reconciliation Status</label>
@@ -209,8 +223,9 @@
 
 
 @section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
 
-    <script>
+<script>
 
         // =====================================
         // Track if filters were applied
@@ -265,19 +280,56 @@
                     },
                     { data: 'Reference', name: 'Reference' },
                     { data: 'CreatedBy', name: 'CreatedBy' },
-                    { data: 'State', name: 'State' },
+                    {
+                                        data: 'State',
+                                        name: 'State',
+                                        render: function (data) {
+
+                                            if (!data) return '-';
+
+                                            const state = data.toUpperCase();
+                                            let badgeClass = 'bg-secondary'; // default (ash)
+
+                                            switch (state) {
+                                                case 'APPROVED':
+                                                    badgeClass = 'bg-success';
+                                                    break;
+
+                                                case 'REJECTED':
+                                                    badgeClass = 'bg-danger';
+                                                    break;
+
+                                                case 'INITIATED':
+                                                    badgeClass = 'bg-secondary'; // ash
+                                                    break;
+                                            }
+
+                                            return `
+                            <span class="badge ${badgeClass}">
+                                ${state}
+                            </span>
+                        `;
+                        }
+                    },
                     {
                         data: null,
                         orderable: false,
                         render: function (_, __, row) {
-                            return `
-                                    <div class="text-center">
-                                        <button class="btn btn-sm btn-info view-details" data-id="${row.Id}">
-                                            <i class="mdi mdi-eye-outline me-1"></i> Details
-                                        </button>
-                                    </div>`;
+                         return `
+                            <div class="text-center">
+                                <button class="btn btn-sm btn-info view-details"
+                                        data-id="${row.Id}"
+                                        data-reference="${row.Reference}"
+                                        data-branch="${row.BranchId}"
+                                        data-ticket="${row.TicketType}"
+                                        data-state="${row.State}"
+                                        data-amount="${row.InitiatedAmount}">
+                                    <i class="mdi mdi-eye-outline me-1"></i> Details
+                                </button>
+                            </div>`;
                         }
                     }
+
                 ]
             });
         }
@@ -296,6 +348,7 @@
                 TicketSource: $('#TicketSource').val(),
                 StartDate: $('#startDate').val(),
                 EndDate: $('#endDate').val(),
+                Status: $('#status').val(),
                 Options: {}
             };
         }
@@ -328,31 +381,229 @@
             });
 
         });
+        // ============================================
+        // OPEN DETAILS MODAL (AJAX LOAD)
+    // ============================================
 
-        // ==============================
-        // Handle Details Button
-        // ==============================
-        $(document).on('click', '.view-details', function () {
-            const journalId = $(this).data('id');
 
+            $(document).on('click', '.view-details', function () {
+
+            const $btn = $(this);
+
+            const journalId = $btn.data('id');
             if (!journalId) return;
+
+            const modal = $('#SourceDetailsModal');
+
+            // ✅ Read directly from button (SOURCE OF TRUTH)
+            const state = ($btn.data('state') || '').toUpperCase();
+
+            modal
+                .data('reference', $btn.data('reference'))
+                .data('branch', $btn.data('branch'))
+                .data('ticket', $btn.data('ticket'))
+                .data('state', state)
+                .data('user', '@User.Identity.Name');
 
             $.ajax({
                 url: `/JournalHead/Details?id=${journalId}`,
                 type: 'GET',
-                success: function (partialViewHtml) {
+                success: function (html) {
 
-                    $('#SourceDetailsModal .modal-content').html(partialViewHtml);
+                    modal.find('.modal-content').html(html);
 
-                    const modal = new bootstrap.Modal(document.getElementById('SourceDetailsModal'));
-                    modal.show();
+                    bootstrap.Modal
+                        .getOrCreateInstance(modal[0])
+                        .show();
+
+                    // 🔥 Apply button logic AFTER modal renders
+                    applyWorkflowButtonState(state);
                 },
-                error: function (xhr) {
-                    let message = xhr.responseText || 'An error occurred while fetching details.';
-                    alert(message);
+                error: function () {
+                    appalert("Failed to load journal details.", 2, 1);
                 }
             });
         });
+
+
+        function applyWorkflowButtonState(state) {
+
+            if (["APPROVED", "REJECTED", "RECONCILED"].includes(state)) {
+
+                $('#btnApprove')
+                    .prop('disabled', true)
+                    .removeClass('btn-success')
+                    .addClass('btn-secondary');
+
+                $('#btnReject')
+                    .prop('disabled', true)
+                    .removeClass('btn-danger')
+                    .addClass('btn-secondary');
+            }
+        }
+
+
+
+
+
+
+
+    // ============================================
+    // APPROVE
+    // ============================================
+        $(document).on('click', '#btnApprove', function (e) {
+            e.preventDefault();
+
+            if ($(this).is(':disabled')) return;
+
+            alertify
+                .confirm(
+                    "Confirmation",
+                    "Are you sure you want to approve this journal entry?",
+
+                    // ✅ OK
+                    function () {
+
+                        const $btn = $('#btnApprove');
+                        const $icon = $btn.find('i');
+                        const $text = $btn.find('.btn-text');
+
+                        $btn.prop('disabled', true);
+                        $icon.removeClass().addClass('mdi mdi-loading mdi-spin');
+                        $text.text('Approving...');
+
+                        const modal = $('#SourceDetailsModal');
+
+                        const payload = {
+                            Reference: modal.data('reference'),
+                            BranchId: $("#sourceBranchId").val(),
+                            Approver: modal.data('user'),
+                            Approve: true,
+                            TicketType: modal.data('ticket')
+                        };
+
+                        $.ajax({
+                            url: '/JournalHead/Approve',
+                            type: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify(payload),
+                            success: function (res) {
+                                if (res?.success) {
+                                    appalert(res.message || "Approved successfully.", 1, 1);
+                                    $('#btnApprove, #btnReject').prop('disabled', true);
+                                    $icon.removeClass().addClass('mdi mdi-check-circle');
+                                    $text.text('Approved');
+                                } else {
+                                    resetApprove();
+                                    appalert(res?.message || "Approval failed.", 2, 1);
+                                }
+                            },
+                            error: function () {
+                                resetApprove();
+                                appalert("Error during approval.", 2, 1);
+                            }
+                        });
+                    },
+
+                    // ❌ CANCEL
+                    function () {
+                        resetApprove();
+                        appalert("🚫 Approval cancelled.", 2, 1);
+                    }
+                )
+                .set({
+                    labels: { ok: 'Yes', cancel: 'No' }
+                });
+        });
+
+    function resetApprove() {
+        const $btn = $('#btnApprove');
+        if (!$btn.length) return;
+
+        $btn.prop('disabled', false);
+        $btn.find('i').removeClass().addClass('mdi mdi-check-circle-outline');
+        $btn.find('.btn-text').text('Approve');
+    }
+
+
+    // ============================================
+    // OPEN REJECT MODAL
+    // ============================================
+    $(document).on('click', '#btnReject', function () {
+        if ($(this).prop('disabled')) return;
+        $('#rejectModal').modal('show');
+    });
+
+
+    // ============================================
+    // SUBMIT REJECT
+    // ============================================
+        // ============================================
+        // SUBMIT REJECT (WITH CONFIRMATION)
+        // ============================================
+        $(document).on('click', '#btnSubmitReject', function () {
+
+            const reason = $('#RejectReason').val().trim();
+            if (!reason) {
+                appalert("Please enter a rejection reason.", 3, 1);
+                return;
+            }
+
+            alertify
+                .confirm(
+                    "Confirm Rejection",
+                    "Are you sure you want to reject this journal entry?",
+
+                    // ✅ YES
+                    function () {
+
+                        const modal = $('#SourceDetailsModal');
+
+                        const payload = {
+                            Reference: modal.data('reference'),
+                            Approver: modal.data('user'),
+                            Reason: reason,
+                            BranchId: $("#sourceBranchId").val(),
+                            Approver: modal.data('user'),
+                            Approve: false,
+                        };
+
+                        const $btn = $('#btnSubmitReject');
+                        $btn.prop('disabled', true).text('Rejecting...');
+
+                        $.ajax({
+                            url: '/JournalHead/Reject',
+                            type: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify(payload),
+                            success: function (res) {
+                                if (res?.success) {
+                                    appalert("Journal rejected successfully.", 1, 1);
+                                    $('#rejectModal').modal('hide');
+                                    $('#btnApprove, #btnReject').prop('disabled', true);
+                                } else {
+                                    appalert(res?.message || "Rejection failed.", 2, 1);
+                                }
+                            },
+                            error: function () {
+                                appalert("Error during rejection.", 2, 1);
+                            },
+                            complete: function () {
+                                $btn.prop('disabled', false).text('Submit Rejection');
+                            }
+                        });
+                    },
+
+                    // ❌ NO
+                    function () {
+                        appalert("🚫 Rejection cancelled.", 2, 1);
+                    }
+                )
+                .set({
+                    labels: { ok: 'Yes', cancel: 'No' }
+                });
+        });
+
 
 
         // =====================================================
@@ -437,16 +688,376 @@
                 }
             });
 
+
+
+
         });
 
 
+   
+
+        $(document).on('click', '#btnExportExcel', function () {
+
+            const id = $('#ExcelId').val(); // ✅ from hidden input
+
+            console.log('📤 Export Excel ID:', id);
+
+            if (!id) {
+                appalert("❌ Invalid journal ID!", 2, 1);
+                return;
+            }
+
+            window.location.href =
+                '/JournalHead/DownloadJournalHeadExcel?id=' + id;
+        });
+
+    
+
+
+
+</script>
+
+    
+   
 
 
 
 
+    <script>
+        $(document).ready(function () {
+
+            // =====================================================
+            // GLOBALS
+            // =====================================================
+            let accounts = [];
+
+            function getModal() {
+                return $('#SourceDetailsModal');
+            }
+
+            function getInitiatedAmount() {
+                return Math.abs(parseFloat(getModal().data('amount'))) || 0;
+            }
+
+            function getDestState() {
+                return (getModal().data('state') || '').toUpperCase();
+            }
+
+            // =====================================================
+            // UTILITIES
+            // =====================================================
+            function initSelect2(element) {
+                element.select2({
+                    width: '100%',
+                    placeholder: 'Select Account',
+                    allowClear: true,
+                    dropdownParent: getModal()
+                });
+            }
+
+            window.autoGrow = function (el) {
+                el.style.height = 'auto';
+                el.style.height = el.scrollHeight + 'px';
+            };
+
+            // =====================================================
+            // LOAD ACCOUNTS
+            // =====================================================
+            function loadAccounts(branchId, callback) {
+
+                if (!branchId) {
+                    appalert("⚠️ Please select a branch first.", 2, 1);
+                    return;
+                }
+
+                if (loadAccounts.request) loadAccounts.request.abort();
+
+                loadAccounts.request = $.ajax({
+                    url: '/ManualJournalEntry/GetAccounts',
+                    type: 'GET',
+                    data: { branchId },
+                    success: function (res) {
+
+                        if (!res?.success || !res.data) {
+                            appalert(res?.message || '⚠️ No accounts found.', 2, 1);
+                            accounts = [];
+                            return;
+                        }
+
+                        accounts = res.data.map(a => ({
+                            Value: a.Value,
+                            Text: a.Text
+                        }));
+
+                        appalert('✅ Accounts loaded.', 1, 1);
+                        callback && callback();
+                    },
+                    error: function (err) {
+                        if (err.statusText !== 'abort')
+                            appalert("❌ Error loading accounts.", 0, 1);
+                    }
+                });
+            }
+
+            // =====================================================
+            // ADD ROW
+            // =====================================================
+            function addRow(tableBody) {
+
+                const row = $(`
+                                <tr>
+                                    <td style="width:35%">
+                                        <select class="form-select account-select account-id" required>
+                                            <option value="">Select Account</option>
+                                            ${accounts.map(a => `<option value="${a.Value}">${a.Text}</option>`).join('')}
+                                        </select>
+                                    </td>
+                                    <td style="width:25%">
+                                        <textarea class="form-control memo" rows="1"
+                                            placeholder="Enter memo"
+                                            oninput="autoGrow(this)" required></textarea>
+                                    </td>
+                                    <td style="width:15%">
+                                        <input type="number" step="0.01" class="form-control debit-input" min="0">
+                                    </td>
+                                    <td style="width:15%">
+                                        <input type="number" step="0.01" class="form-control credit-input" min="0">
+                                    </td>
+                                    <td class="text-center" style="width:10%">
+                                        <button type="button" class="btn btn-sm btn-outline-danger deleteRow">
+                                            <i class="mdi mdi-delete"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            `);
+
+                tableBody.append(row);
+                initSelect2(row.find('.account-select'));
+            }
+
+            // =====================================================
+            // TOTALS & APPROVE LOGIC
+            // =====================================================
+            function updateTotals() {
+                const modal = getModal();
+                let debitTotal = 0, creditTotal = 0;
+
+                // Sum only rows with account and amount
+                modal.find('#myDataTable tbody tr').each(function () {
+                    const dr = parseFloat($(this).find('.debit-input').val()) || 0;
+                    const cr = parseFloat($(this).find('.credit-input').val()) || 0;
+                    const acc = $(this).find('.account-id').val();
+
+                    if (acc && (dr || cr)) {
+                        debitTotal += dr;
+                        creditTotal += cr;
+                    }
+                });
+
+                const diff = debitTotal - creditTotal;
+
+                modal.find('#totalDebit').text(`XAF ${debitTotal.toLocaleString()}`);
+                modal.find('#totalCredit').text(`XAF ${creditTotal.toLocaleString()}`);
+                modal.find('#difference')
+                    .text(`Diff: XAF ${diff.toLocaleString()}`)
+                    .toggleClass('text-danger', diff !== 0)
+                    .toggleClass('text-success', diff === 0);
+
+                // Enable approve only if totals match and at least 1 filled row
+                const hasFilledRow = debitTotal > 0 || creditTotal > 0;
+                const canApprove = hasFilledRow && diff === 0;
+
+                const btn = $('#btnApproveDestination');
+                btn.prop('disabled', !canApprove)
+                    .removeClass('btn-secondary')
+                    .toggleClass('btn-success', canApprove);
+            }
+
+            // =====================================================
+            // MODAL INIT
+            // =====================================================
+            $('#SourceDetailsModal').on('shown.bs.modal', function () {
+
+                const modal = getModal();
+                const tableBody = modal.find('#myDataTable tbody').empty();
+                const branchId = modal.data('branch');
+
+                if (!branchId) {
+                    appalert("⚠️ Branch not found.", 2, 1);
+                    return;
+                }
+
+                loadAccounts(branchId, () => addRow(tableBody));
+            });
+
+            // =====================================================
+            // TABLE EVENTS
+            // =====================================================
+            $(document)
+                .on('click', '#addRowBtn', function () {
+                    if (!accounts.length) {
+                        appalert("⚠️ Load accounts first.", 2, 1);
+                        return;
+                    }
+                    addRow($('#myDataTable tbody'));
+                })
+                .on('click', '.deleteRow', function () {
+                    $(this).closest('tr').remove();
+                    updateTotals();
+                })
+                .on('input', '.debit-input', function () {
+                    const row = $(this).closest('tr');
+                    row.find('.credit-input').prop('disabled', this.value > 0).val('');
+                    updateTotals();
+                })
+                .on('input', '.credit-input', function () {
+                    const row = $(this).closest('tr');
+                    row.find('.debit-input').prop('disabled', this.value > 0).val('');
+                    updateTotals();
+                });
+
+            // =====================================================
+            // DESTINATION APPROVE
+            // =====================================================
+            $(document).off('click', '#btnApproveDestination').on('click', '#btnApproveDestination', function (e) {
+                e.preventDefault();
+
+                const modal = getModal();
+
+                alertify.confirm(
+                    "Confirmation",
+                    "Approve this journal entry?",
+                    function () {
+
+                        const btn = $('#btnApproveDestination').prop('disabled', true);
+                        btn.find('i').removeClass().addClass('mdi mdi-loading mdi-spin');
+
+                        const payload = {
+                            Reference: modal.data('reference'),
+                            BranchId: $('#sourceBranchId').val(),
+                            Approver: modal.data('user'),
+                            Approver: true,
+                            TicketType: modal.data('ticket'),
+                            Lines: []
+                        };
+
+                        $('#myDataTable tbody tr').each(function () {
+                            const dr = parseFloat($(this).find('.debit-input').val()) || 0;
+                            const cr = parseFloat($(this).find('.credit-input').val()) || 0;
+                            const acc = $(this).find('.account-id').val();
+
+                            if (acc && (dr || cr)) {
+                                payload.Lines.push({
+                                    AffiliateAccountId: acc,
+                                    DrCr: dr > 0 ? 'DR' : 'CR',
+                                    Amount: dr || cr,
+                                    Memo: $(this).find('.memo').val()
+                                });
+                            }
+                        });
+
+                        $.ajax({
+                            url: '/JournalHead/Approve',
+                            type: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify(payload),
+                            success: function (r) {
+                                appalert(r?.message || "✅ Approved.", 1, 1);
+                                btn.find('i').removeClass().addClass('mdi mdi-check-circle');
+                            },
+                            error: function () {
+                                appalert("❌ Approval failed.", 0, 1);
+                                btn.prop('disabled', false);
+                                btn.find('i').removeClass().addClass('mdi mdi-check-circle-outline');
+                            }
+                        });
+                    },
+                    function () {
+                        appalert("🚫 Approval cancelled.", 2, 1);
+                    }
+                );
+            });
 
 
+            //$(document).on('click', '#btnRejectd', function () {
+            //    if ($(this).prop('disabled')) return;
+
+            //    // Copy data attributes to the reject modal
+            //    const modal = $('#SourceDetailsModal');
+            //    modal.data('reference', $(this).data('reference'));
+            //    modal.data('branch', $('#sourceBranchId').val());
+            //    modal.data('user', $(this).data('user'));
+
+            //    $('#rejectModal').modal('show');
+            //});
+
+
+
+            //// ============================================
+            //// SUBMIT REJECT
+            //// ============================================
+            //// ============================================
+            //// SUBMIT REJECT (WITH CONFIRMATION)
+            //// ============================================
+            //$(document).on('click', '#btnSubmitReject', function () {
+
+            //    const reason = $('#RejectReason').val().trim();
+            //    if (!reason) {
+            //        appalert("Please enter a rejection reason.", 3, 1);
+            //        return;
+            //    }
+
+            //    alertify.confirm(
+            //        "Confirm Rejection",
+            //        "Are you sure you want to reject this journal entry?",
+
+            //        function () { // ✅ YES
+            //            const modal = $('#SourceDetailsModal');
+
+                        const payload = {
+                            Reference: modal.data('reference'),
+                            BranchId: $("#sourceBranchId").val(),
+                            Approve: false,
+                            Approver: modal.data('user'),
+                            Reason: reason
+                        };
+
+            //            const $btn = $('#btnSubmitReject');
+            //            $btn.prop('disabled', true).text('Rejecting...');
+
+            //            $.ajax({
+            //                url: '/JournalHead/Reject',
+            //                type: 'POST',
+            //                contentType: 'application/json',
+            //                data: JSON.stringify(payload),
+            //                success: function (res) {
+            //                    if (res?.success) {
+            //                        appalert("Journal rejected successfully.", 1, 1);
+            //                        $('#rejectModal').modal('hide');
+            //                        $('#btnApproveDestination, #btnReject').prop('disabled', true);
+            //                    } else {
+            //                        appalert(res?.message || "Rejection failed.", 2, 1);
+            //                    }
+            //                },
+            //                error: function () {
+            //                    appalert("Error during rejection.", 2, 1);
+            //                },
+            //                complete: function () {
+            //                    $btn.prop('disabled', false).text('Submit Rejection');
+            //                }
+            //            });
+            //        },
+
+            //        function () { // ❌ NO
+            //            appalert("🚫 Rejection cancelled.", 2, 1);
+            //        }
+            //    ).set({ labels: { ok: 'Yes', cancel: 'No' } });
+            //});
+
+
+        });
     </script>
+
 
 }
 

@@ -70,11 +70,119 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Alert.
+        /// </summary>
+        internal static string Alert {
+            get {
+                return ResourceManager.GetString("Alert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Alert profile.
         /// </summary>
         internal static string AlertProfile {
             get {
                 return ResourceManager.GetString("AlertProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email notification.
+        /// </summary>
+        internal static string EmailNotification {
+            get {
+                return ResourceManager.GetString("EmailNotification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Is super admin.
+        /// </summary>
+        internal static string IsSuperAdmin {
+            get {
+                return ResourceManager.GetString("IsSuperAdmin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Language.
+        /// </summary>
+        internal static string Language {
+            get {
+                return ResourceManager.GetString("Language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Msisdn.
+        /// </summary>
+        internal static string Msisdn {
+            get {
+                return ResourceManager.GetString("Msisdn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        internal static string Name {
+            get {
+                return ResourceManager.GetString("Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to notificationLanguage.
+        /// </summary>
+        internal static string NotificationLanguage {
+            get {
+                return ResourceManager.GetString("NotificationLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select language.
+        /// </summary>
+        internal static string SelectLanguage {
+            get {
+                return ResourceManager.GetString("SelectLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select service.
+        /// </summary>
+        internal static string SelectService {
+            get {
+                return ResourceManager.GetString("SelectService", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Send mail.
+        /// </summary>
+        internal static string SendMail {
+            get {
+                return ResourceManager.GetString("SendMail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Send sms.
+        /// </summary>
+        internal static string SendSms {
+            get {
+                return ResourceManager.GetString("SendSms", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Service.
+        /// </summary>
+        internal static string Service {
+            get {
+                return ResourceManager.GetString("Service", resourceCulture);
             }
         }
         

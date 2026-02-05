@@ -120,11 +120,23 @@
   <data name="ACCOUNTINGTRANSACTIONREVERSALREQUEST" xml:space="preserve">
     <value>ACCOUNTING TRANSACTION REVERSAL REQUEST</value>
   </data>
+  <data name="Action" xml:space="preserve">
+    <value>Action</value>
+  </data>
+  <data name="ApprovedBy" xml:space="preserve">
+    <value>Approved by</value>
+  </data>
+  <data name="ApprovedDate" xml:space="preserve">
+    <value>Approved date</value>
+  </data>
   <data name="ApprovedMessage" xml:space="preserve">
     <value>Approved message</value>
   </data>
   <data name="ApprovedMessageDescription" xml:space="preserve">
     <value>Approved Message Description</value>
+  </data>
+  <data name="BackToHome" xml:space="preserve">
+    <value>Back to home</value>
   </data>
   <data name="BANKINGOPERATIONSCASHMANAGEMENT" xml:space="preserve">
     <value>BANKING OPERATIONS-CASH MANAGEMENT</value>
@@ -191,6 +203,9 @@
   </data>
   <data name="SelectYourDecisionAndClickOnApprovedAccount" xml:space="preserve">
     <value>Select your decision and click on Approved Account Replenishment button to approved the request</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Status</value>
   </data>
   <data name="SuccessfullTransactionReversalRequestApproval" xml:space="preserve">
     <value>Successfull Transaction reversal request approval</value>
@@ -264,6 +279,12 @@
   <data name="EntryType" xml:space="preserve">
     <value>Entry type</value>
   </data>
+  <data name="Amount" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
   <data name="ReferenceNumber" xml:space="preserve">
     <value>Reference number</value>
   </data>
@@ -275,6 +296,15 @@
   </data>
   <data name="SelectBookingDirection" xml:space="preserve">
     <value>Select booking direction</value>
+  </data>
+  <data name="SelectAccount" xml:space="preserve">
+    <value>Select account</value>
+  </data>
+  <data name="AddEntries" xml:space="preserve">
+    <value>Add entries</value>
+  </data>
+  <data name="AccountName" xml:space="preserve">
+    <value>Account name</value>
   </data>
   <data name="AddJournalEntries" xml:space="preserve">
     <value>Add journal entries</value>

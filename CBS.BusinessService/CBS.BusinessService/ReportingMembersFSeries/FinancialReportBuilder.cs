@@ -2,9 +2,11 @@
 using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Session;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission;
+using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.CustomerManagement;
 using CBS.FrontDesk.Data.Entity.ReportMembersFSeries;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -34,141 +36,192 @@ namespace CBS.BusinessService.ReportingMembersFSeries
             var customer = await _CashDeskServicesService.GetCustomer(customerId);
             if (customer == null)
                 return null;
-        
+
             return customer;
         }
-        // Helper method to parse transaction date string
-        private string ParseTransactionDate(string dateString, string format)
+
+        public async Task<Branch> GetBranchandbank()
         {
-            if (DateTime.TryParse(dateString, out DateTime date))
-            {
-                return date.ToString(format);
-            }
 
-            // Try parsing with specific formats if needed
-            string[] formats = {
-            "yyyy-MM-ddTHH:mm:ss.fffZ",
-            "yyyy-MM-ddTHH:mm:ss",
-            "dd/MM/yyyy HH:mm:ss",
-            "MM/dd/yyyy HH:mm:ss"
-             };
-
-            if (DateTime.TryParseExact(dateString, formats, CultureInfo.InvariantCulture,
-                DateTimeStyles.None, out DateTime parsedDate))
-            {
-                return parsedDate.ToString(format);
-            }
-
-            // Return empty string or original if cannot parse
-            return "";
+            Branch branch = _CashDeskServicesService.RetrieveBranchFromSession();
+                        
+            if (branch == null)
+                return null;
+        
+            return branch;
         }
+        // Helper method to parse transaction date string
+        public static class DateFormatter
+        {
+            public static string Format(DateTime date, string format)
+            {
+                return date.ToString(format, CultureInfo.InvariantCulture);
+            }
+
+            public static string Format(DateTime? date, string format)
+            {
+                return date.HasValue
+                    ? date.Value.ToString(format, CultureInfo.InvariantCulture)
+                    : string.Empty;
+            }
+        }
+
+        public static class DateTimeHelper
+        {
+            public static DateTime ExtractDate(DateTime value)
+                => value.Date;
+
+            public static DateTime ExtractTime(DateTime value)
+                => DateTime.Today.Add(value.TimeOfDay);
+        }
+
+
+        // to format decimal places 
+        public static class NumberFormatter
+        {
+            public static decimal ToDecimalPlaces(decimal value, int decimalPlaces)
+            {
+                return Math.Round(value, decimalPlaces, MidpointRounding.AwayFromZero);
+            }
+
+            public static decimal? ToDecimalPlaces(decimal? value, int decimalPlaces)
+            {
+                if (!value.HasValue) return null;
+                return Math.Round(value.Value, decimalPlaces, MidpointRounding.AwayFromZero);
+            }
+
+            // Optional: double support
+            public static double ToDecimalPlaces(double value, int decimalPlaces)
+            {
+                return Math.Round(value, decimalPlaces, MidpointRounding.AwayFromZero);
+            }
+        }
+
         #endregion
 
-        // 1. Build Account Statement Rows
-        public async Task<List<AccountStatementRow>> BuildAccountStatementRows(ReportParameters parameters)
+        public async Task<List<TransactionStaement>> BuildAccountStatementRows(FinancialReportFilter parameters)
         {
-            var cus = await GetCustomer(parameters.CustomerId);
-            var transactions = await _reportService
-                .GetCustomerTransactionsByAccountNumber(parameters.AccountTypeId);
+            var bra = await GetBranchandbank();
+            var cus = await GetCustomer(parameters.MemberReference);
+            var accountStatement = await _reportService.GetCustomerTransactionsByAccountNumber(parameters);
 
-            var rows = new List<AccountStatementRow>();
+            var rows = new List<TransactionStaement>();
 
-            decimal totalDebit = 0;
-            decimal totalCredit = 0;
-            decimal finalBalance = 0;
+            var openingBalance = accountStatement?.OpeningBalance ?? 0m;
 
-            // ✅ CASE 1: No transactions → header only
+            // ✅ Order transactions ONCE
+            var transactions = (accountStatement?.Transactions ?? new List<TransactionRaw>())
+                .OrderBy(x => x.AccountingDate)
+                .ThenBy(x => x.TransactionReference)
+                .ToList();
+
+            // ✅ Generate logo once
+            var logoPath = bra != null
+                ? PaymentReceiptMapping.GenerateAndSaveBankLogoImage(bra.Bank?.LogoUrl, bra.Name)
+                : "";
+
+            // =========================
+            // CASE 1: NO TRANSACTIONS
+            // =========================
             if (!transactions.Any())
             {
-                rows.Add(new AccountStatementRow
+                rows.Add(new TransactionStaement
                 {
-                    BankName = GetBankName(),
-                    BankCode = GetBankCode(),
                     BranchName = GetBranchName(),
                     BranchCode = GetBranchCode(),
-                    Tell = "22316870",
-                    Bp = "392",
-                    ReportHeader = "ACCOUNT STATEMENT",
-                    PeriodFrom = parameters.DateFrom.Year.ToString(),
-                    PeriodTo = parameters.DateTo.Year.ToString(),
-                    AccountNo = parameters.AccountTypeId,
-                    Currency = "Central African CFA franc",
+                    HeadOfficeName = GetBankName(),
+                    AccountNumber = parameters.AccountId ?? parameters.AccountNumber,
+                    Currreccy = "Central African CFA franc",
                     PrintedBy = GetUserFullName(),
-                    PrintedOn = DateTime.Now.Year.ToString(),
-                    Phone = cus.Phone,
-                    BegginingBalance = 0
+                    PrintedOn = DateTime.Now.ToString("dd/MM/yyyy"),
+                    Telephone = cus?.Phone ?? "-",
+
+                    OpeningBalance = openingBalance.ToString("N1"),
+                    Balance = openingBalance,
+                    ClosingBalance = openingBalance,
+
+                    TotalDebit = "0.0",
+                    TotalCredit = "0.0",
+                    TotalOperation = "0",
+                    BalanceasOf = $"Balance as of {parameters.DateTo:dd/MM/yyyy}: {openingBalance:N1}"
                 });
 
                 return rows;
             }
 
-            // ✅ CASE 2: Transactions exist
-            foreach (var transaction in transactions)
+            // =========================
+            // CASE 2: TRANSACTIONS EXIST
+            // =========================
+            decimal runningBalance = openingBalance;
+            decimal totalDebit = 0m;
+            decimal totalCredit = 0m;
+
+            foreach (var t in transactions)
             {
-                totalDebit += transaction.Debit;
-                totalCredit += transaction.Credit;
+                var balanceBefore = runningBalance;
 
-                // 🔑 Use DB running balance (bank-correct)
-                finalBalance = transaction.Balance;
+                runningBalance += t.Credit - t.Debit;
+                totalDebit += t.Debit;
+                totalCredit += t.Credit;
 
-                rows.Add(new AccountStatementRow
+                rows.Add(new TransactionStaement
                 {
-                    // Header (Crystal uses first row)
-                    BankName = GetBankName(),
+                    // -------- Account / Customer --------
+                    AccountNumber = parameters.AccountId ?? t.AccountNumber,
+                    AccountName = t.AccountType ?? "-",
+                    CustomerId = cus?.CustomerId ?? "-",
+                    CustomerName = cus != null ? $"{cus.FirstName} {cus.LastName}" : "-",
+                    Telephone = cus?.Phone ?? "-",
+                    Currreccy = "Central African CFA franc",
+                    Village = cus?.town ?? "",
+
+                    // -------- Branch --------
                     BranchName = GetBranchName(),
                     BranchCode = GetBranchCode(),
-                    Tell = "22316870",
-                    Bp = "392",
-                    ReportHeader = "ACCOUNT STATEMENT",
-                    PeriodFrom = parameters.DateFrom.ToString("dd/MM/yyyy"),
-                    PeriodTo = parameters.DateTo.ToString("dd/MM/yyyy"),
-                    AccountNo = parameters.AccountTypeId,
-                    Currency = "Central African CFA franc",
-                    PrintedBy = GetUserFullName(),
-                    PrintedOn = DateTime.Now.ToString("dd/MM/yyyy"),
-                    Phone = cus.Phone,
-                    AccountName = transaction.Account.AccountName,
+                    HeadOfficeName = GetBankName(), 
 
-                    // Transaction details
-                    Date = ParseTransactionDate(transaction.CreatedDate, "dd/MM/yyyy"),
-                    Time = ParseTransactionDate(transaction.CreatedDate, "HH:mm:ss"),
-                    Description = transaction.Operation,
-                    Reference = transaction.TransactionReference,
-                    Representative = string.IsNullOrWhiteSpace(transaction.DepositorName)
-                        ? "N/A"
-                        : transaction.DepositorName,
+                    // -------- Transaction --------
+                    Date = t.AccountingDate,
+                    Time = t.AccountingDate,
+                    PrintedOn = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"),
+                    Description = t.Operation,
+                    Reference = t.TransactionReference,
+                    Representative = string.IsNullOrWhiteSpace(t.DepositorName) ? "-" : t.DepositorName,
+                    DepositorName = string.IsNullOrWhiteSpace(t.DepositorName) ? "-" : t.DepositorName,
 
-                    Debit = transaction.Debit > 0 ? transaction.Debit.ToString("N1") : "0.0",
-                    Credit = transaction.Credit > 0 ? transaction.Credit.ToString("N1") : "0.0",
-                    Balance = transaction.Balance.ToString("N1"),
+                    // -------- Amounts --------
+                    Debit = t.Debit,
+                    Credit = t.Credit,
+                    OpeningBalance = balanceBefore.ToString("N1"),
+                    Balance = runningBalance,
 
-                    CustomerId = cus.CustomerId,
-                    CustomerName = cus.FirstName + " " + cus.LastName,
-
-                    OpeningBalance = transaction.Account.OpeningBalance,
-
-                    Year = DateTime.Now.Year.ToString(),
+                    // -------- Totals (CONSISTENT) --------
                     TotalDebit = totalDebit.ToString("N1"),
                     TotalCredit = totalCredit.ToString("N1"),
-                    TotalOperation = transactions.Count.ToString()
-                });
-            }
+                    TotalOperation = transactions.Count.ToString(),
+                    ClosingBalance = accountStatement.summary.ClosingBalance,
+                    BalanceasOf = $"Balance as of {parameters.DateTo:dd/MM/yyyy}: {runningBalance:N1}",
 
-            // ✅ FINAL STEP: enforce SAME closing balance & total on all rows
-            foreach (var row in rows)
-            {
-                row.ClosingBalance = finalBalance;
-                row.Total = $"Balance as of {parameters.DateTo:dd/MM/yyyy}: {finalBalance:N1}";
+                    // -------- Report --------
+                    Printedfrom = parameters.DateFrom.ToString("dd/MM/yyyy"),
+                    PrintedTo = parameters.DateTo.ToString("dd/MM/yyyy"),
+                    Year = DateTime.Now.Year.ToString(),
+                    PrintedBy = GetUserFullName(),
+                    Address = cus?.Address ?? "",
+                    HeadOfficeAddress = bra?.Address ?? "",
+                    Logo = logoPath
+                });
             }
 
             return rows;
         }
 
 
+
         // 2. Build Member Situation Rows
-        public async Task<List<MemberSituationRow>> BuildMemberSituationRows(ReportParameters parameters)
+        public async Task<List<MemberSituationRow>> BuildMemberSituationRows(FinancialReportFilter  parameters)
         {
-                var memberData = await _reportService.GetMemberSituationData(parameters.AccountTypeId,
+                var memberData = await _reportService.GetMemberSituationData(parameters.AccountId,
                     parameters.LoanId,
                     parameters.DateFrom,
                     parameters.DateTo);
@@ -219,7 +272,7 @@ namespace CBS.BusinessService.ReportingMembersFSeries
             }
 
             // 3. Build Loan Repayment Rows
-            public async Task<List<LoanRepaymentRow>> BuildLoanRepaymentRows(ReportParameters parameters)
+            public async Task<List<LoanRepaymentRow>> BuildLoanRepaymentRows(FinancialReportFilter parameters)
             {
                 var repaymentData = await _reportService.GetLoanRepaymentData(
                     parameters.LoanId,
@@ -268,7 +321,7 @@ namespace CBS.BusinessService.ReportingMembersFSeries
             }
 
             // 4. Build Loan Situation Rows
-            public async Task<List<LoanSituationRow>> BuildLoanSituationRows(ReportParameters parameters)
+            public async Task<List<LoanSituationRow>> BuildLoanSituationRows(FinancialReportFilter  parameters)
             {
                 var situationData = await _reportService.GetLoanSituationData(
                     parameters.DateFrom,
@@ -312,7 +365,7 @@ namespace CBS.BusinessService.ReportingMembersFSeries
 
                 return rows;
             }         
-            public async Task<List<LoanSituationRow>> BuildAccountSituationRows(ReportParameters parameters)
+            public async Task<List<LoanSituationRow>> BuildAccountSituationRows(FinancialReportFilter  parameters)
             {
                 var situationData = await _reportService.GetAccountSituationData(parameters.AccountId,
                     parameters.DateFrom,

@@ -32,42 +32,82 @@ namespace CBS.BusinessService.ReportingMembersFSeries
 
                 _transactionApiHelper = new ApiCallerHelper(transactionUrl);
                 _loanApiHelper = new ApiCallerHelper(loanUrl);
-               // _accountApiHelper = new ApiCallerHelper(accountUrl);
-              //  _memberApiHelper = new ApiCallerHelper(accountUrl);
-            }
+            // _accountApiHelper = new ApiCallerHelper(accountUrl);
+            //  _memberApiHelper = new ApiCallerHelper(accountUrl);
+        }
 
-        // 1. Account Statement Data
-        //public async Task<List<TransactionHistory>> GetCustomerTransactionsByAccountNumber(ReportParameters parameters)
-        //{
-        //    try
-        //    {
-        //        string endpoint = string.Format(APICallHelper.GetTransactionHistoryByAccountNumber, parameters);
-
-        //        var response = await _transactionApiHelper.GetAsync<ResponseObject<List<TransactionHistory>>>(endpoint);
-        //        return response.ApiResponseData.Data;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Log exception
-        //        throw;
-        //    }
-        //}
-
-        public async Task<List<TransactionRaw>> GetCustomerTransactionsByAccountNumber(string parameters)
+        public async Task<AccountStatementResponseDto>
+     GetCustomerTransactionsByAccountNumber(FinancialReportFilter parameters)
         {
             try
             {
-                string endpoint = string.Format(APICallHelper.GetTransactionHistoryByAccountNumber, parameters);
+                var request = new FinancialReportRequest
+                {
+                    Filter = parameters
+                };
 
-                var response = await _transactionApiHelper.GetAsync<ResponseObject<List<TransactionRaw>>>(endpoint);
-                return response.ApiResponseData.Data;
+                string endpoint = APICallHelper.GetTransactionHistoryByAccountNumber3;
+
+                var response = await _transactionApiHelper
+                    .PostAsync<ResponseObject<FinancialReportResponseDto>>(endpoint, request);
+
+                // =========================
+                // SUCCESS
+                // =========================
+                if (response != null && response.IsSuccess)
+                {
+                    GetExecutionMessages(
+                        parameters,
+                        true,
+                        parameters.MemberReference,
+                        MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages,
+                        SystemMessageStatus.Success.ToString(),
+                        null,
+                        response.ApiResponseData?.Message
+                    );
+
+                    // ✅ RETURN THE WHOLE ACCOUNT STATEMENT (SUMMARY + TRANSACTIONS)
+                    return response.ApiResponseData?.Data?.AccountStatement
+                           ?? new AccountStatementResponseDto();
+                }
+
+                // =========================
+                // API FAILURE (Handled)
+                // =========================
+                GetExecutionMessages(
+                    parameters,
+                    false,
+                    parameters.MemberReference,
+                    MessagesResults.Failed,
+                    ExecutionProcessOption.DefaultFailedMessages,
+                    SystemMessageStatus.Failed.ToString(),
+                    null,
+                    response?.ApiResponseData?.Message ?? response?.Message
+                );
+
+                return new AccountStatementResponseDto();
             }
             catch (Exception ex)
             {
-                // Log exception
-                throw;
+                // =========================
+                // EXCEPTION
+                // =========================
+                GetExecutionMessages(
+                    parameters,
+                    false,
+                    parameters.MemberReference,
+                    MessagesResults.Error,
+                    ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Error.ToString(),
+                    ex,
+                    ex.Message
+                );
+
+                return new AccountStatementResponseDto();
             }
         }
+
 
         //public async Task<ExecutionMessages> GetCustomerTransactionsByAccountNumber(ReportParameters parameters)
         //{
@@ -95,7 +135,7 @@ namespace CBS.BusinessService.ReportingMembersFSeries
         //    return ExecutionMessage;
         //}
 
-           public async Task<MemberSituationData> GetMemberSituationData(string accountTypeId, string loanId, DateTime fromDate, DateTime toDate)
+        public async Task<MemberSituationData> GetMemberSituationData(string accountTypeId, string loanId, DateTime fromDate, DateTime toDate)
             {
                 try
                 {
@@ -224,3 +264,5 @@ namespace CBS.BusinessService.ReportingMembersFSeries
             }
   }      
 }
+
+
