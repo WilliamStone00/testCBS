@@ -1,7 +1,7 @@
 ﻿@model List<CBS.FrontDesk.Data.Entity.VaultManagement.Vault>
 @using Resources
 <fieldset class="fieldset-custom">
-    <legend id="select_base">@GlobalCashChangeManagement.VAULTS</legend>
+    <legend id="select_base">@GlobalShared.VAULTS</legend>
     @if (!Model.Any())
     {
         <div class="text-center my-3">
@@ -14,12 +14,12 @@
             <table class="table table-hover table-bordered" id="myDataTable">
                 <thead class="table-light">
                     <tr>
-                        <th style="width: 32%;">@GlobalCashChangeManagement.VaultName</th>
-                        <th style="width: 5%;">@GlobalCashChangeManagement.BCode</th>
-                        <th style="width: 20%;" class="text-end">@GlobalCashChangeManagement.MaximumCapacity</th>
-                        <th style="width: 20%;" class="text-end">@GlobalCashChangeManagement.CurrentBalance</th>
-                        <th style="width: 8%;">@GlobalCashChangeManagement.Status</th>
-                        <th style="width: 15%;">@GlobalCashChangeManagement.Actions</th>
+                        <th style="width: 32%;">@GlobalShared.Vault_name</th>
+                        <th style="width: 5%;">@GlobalShared.BCode</th>
+                        <th style="width: 20%;" class="text-end">@GlobalShared.Maximum_capacity</th>
+                        <th style="width: 20%;" class="text-end">@GlobalShared.CurrentBalance</th>
+                        <th style="width: 8%;">@GlobalShared.Status</th>
+                        <th style="width: 15%;">@GlobalShared.Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -34,13 +34,13 @@
                                 @if (vault.IsActive)
                                 {
                                     <span class="badge rounded-pill bg-success fs-6">
-                                        <i class="fas fa-check-circle"></i> @GlobalCashChangeManagement.Active
+                                        <i class="fas fa-check-circle"></i> @GlobalShared.Active
                                     </span>
                                 }
                                 else
                                 {
                             <span class="badge rounded-pill bg-danger fs-6">
-                                <i class="fas fa-times-circle"></i> @GlobalCashChangeManagement.Inactive
+                                <i class="fas fa-times-circle"></i> @GlobalShared.InActive
                             </span>
                                 }
                             </td>

@@ -5,11 +5,11 @@
     <div class="card">
         <div class="card-body">
             <h4 class="group-title">
-                @CashDesk_CustomerCard.MemberReference # <span class="highlight-text">@Model.Customer.CustomerId</span><br />
+                @CashDeskRessource.MemberReference # <span class="highlight-text">@Model.Customer.CustomerId</span><br />
                 <hr />
-                <small>@CashDesk_CustomerCard.MemberCode</small><br />
-                <small>@CashDesk_CustomerCard.BankCode: @Session["BankCode"].ToString()</small><br />
-                <small>@CashDesk_CustomerCard.BranchCode: @Session["BranchCode"].ToString()</small>
+                <small>@GlobalShared.Member_code</small><br />
+                <small>@GlobalShared.Bank_Code: @Session["BankCode"].ToString()</small><br />
+                <small>@GlobalShared.Branch_Code: @Session["BranchCode"].ToString()</small>
             </h4>
         </div>
     </div>
@@ -17,20 +17,20 @@
     <div class="card">
         <div class="card-body">
             <h4 class="group-title">
-                @CashDesk_CustomerCard.MemberStatus
+                @CashDeskRessource.MemberStatus
                 <hr />
                 @if (Model.Customer.MembershipApprovalStatus == "Approved")
                 {
-                    <small>@CashDesk_CustomerCard.ApprovedBY:  @Model.Customer.MembershipApprovalBy</small><br />
-                    <small>@CashDesk_CustomerCard.ApprovedDate:  @Model.Customer.MembershipApprovedDate</small><br />
-                    <small>@CashDesk_CustomerCard.Status: <span class="highlight-text">@Model.Customer.MembershipApprovalStatus.ToUpper()</span></small>
+                    <small>@GlobalShared.Approved_by:  @Model.Customer.MembershipApprovalBy</small><br />
+                    <small>@GlobalShared.Approved_Date:  @Model.Customer.MembershipApprovedDate</small><br />
+                    <small>@GlobalShared.Status: <span class="highlight-text">@Model.Customer.MembershipApprovalStatus.ToUpper()</span></small>
                 }
                 else
                 {
-                    <small>@CashDesk_CustomerCard.Status: <span class="highlight-text">@Model.Customer.MembershipApprovalStatus</span></small>
+                    <small>@GlobalShared.Status: <span class="highlight-text">@Model.Customer.MembershipApprovalStatus</span></small>
                 }
                 <br />
-                <small>@CashDesk_CustomerCard.RegistrationDate: @Model.Customer.MembershipApplicantDate</small>
+                <small>@GlobalShared.Registration_Date: @Model.Customer.MembershipApplicantDate</small>
             </h4>
         </div>
     </div>
@@ -52,14 +52,14 @@
                 {
                     <!-- Clickable photo for preview -->
                     <a href="#" data-bs-toggle="modal" data-bs-target="#photoPreviewModal">
-                        <img src="@Model.Customer.photoUrl" class="img-fluid preview-image" alt="@CashDesk_CustomerCard.UploadedImage">
+                        <img src="@Model.Customer.photoUrl" class="img-fluid preview-image" alt="@GlobalShared.UploadedImage">
                     </a>
                     <!-- Modal for photo preview -->
                     <div class="modal fade" id="photoPreviewModal" tabindex="-1" aria-labelledby="photoPreviewModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
                                 <div class="modal-body">
-                                    <img src="@Model.Customer.photoUrl" class="img-fluid" alt="@CashDesk_CustomerCard.UploadedImage">
+                                    <img src="@Model.Customer.photoUrl" class="img-fluid" alt="@GlobalShared.UploadedImage">
                                 </div>
                             </div>
                         </div>
@@ -67,7 +67,7 @@
                 }
                 else
                 {
-                    <img src="@Url.Content(Model.Customer.ImageNoVirtualPath)" class="img-fluid preview-image" alt="@CashDesk_CustomerCard.NoImageFound" data-bs-toggle="modal" data-bs-target="#imagePreviewModal">
+                    <img src="@Url.Content(Model.Customer.ImageNoVirtualPath)" class="img-fluid preview-image" alt="@GlobalShared.NoImageFound" data-bs-toggle="modal" data-bs-target="#imagePreviewModal">
 
                 }
                 <!-- ... Other content ... -->
@@ -83,14 +83,14 @@
                 {
                     <!-- Clickable signature for preview -->
                     <a href="#" data-bs-toggle="modal" data-bs-target="#signaturePreviewModal">
-                        <img src="@Model.Customer.signatureUrl" class="img-fluid preview-image" alt="@CashDesk_CustomerCard.UploadedSignature">
+                        <img src="@Model.Customer.signatureUrl" class="img-fluid preview-image" alt="@GlobalShared.UploadedSignature">
                     </a>
                     <!-- Modal for signature preview -->
                     <div class="modal fade" id="signaturePreviewModal" tabindex="-1" aria-labelledby="signaturePreviewModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
                                 <div class="modal-body">
-                                    <img src="@Model.Customer.signatureUrl" class="img-fluid" alt="@CashDesk_CustomerCard.UploadedSignature">
+                                    <img src="@Model.Customer.signatureUrl" class="img-fluid" alt="@GlobalShared.UploadedSignature">
                                 </div>
                             </div>
                         </div>
@@ -98,7 +98,7 @@
                 }
                 else
                 {
-                    <img src="@Url.Content(Model.Customer.ImageVirtualNoSignaturePath)" class="img-fluid preview-image" alt="@CashDesk_CustomerCard.NoSignatureFound" data-bs-toggle="modal" data-bs-target="#imagePreviewModal">
+                    <img src="@Url.Content(Model.Customer.ImageVirtualNoSignaturePath)" class="img-fluid preview-image" alt="@GlobalShared.NoSignatureFound" data-bs-toggle="modal" data-bs-target="#imagePreviewModal">
 
                 }
                 <!-- ... Other content ... -->

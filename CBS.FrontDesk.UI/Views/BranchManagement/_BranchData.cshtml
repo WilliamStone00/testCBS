@@ -3,12 +3,12 @@
 <table class="table table-hover" id="myDataTable_Branch">
     <thead class="table-light">
         <tr>
-            <th>@GlobalBranchManagement.Name</th>
-            <th>@GlobalBranchManagement.Code</th>
-            <th>@GlobalBranchManagement.Tell</th>
-            <th>@GlobalBranchManagement.OfficeType</th>
-            <th>@GlobalBranchManagement.Status</th>
-            <th>@GlobalBranchManagement.Action</th>
+            <th>@GlobalShared.Name</th>
+            <th>@GlobalShared.Code</th>
+            <th>@GlobalShared.Tell</th>
+            <th>@GlobalShared.Office_type</th>
+            <th>@GlobalShared.Status</th>
+            <th>@GlobalShared.Action</th>
         </tr>
     </thead>
     <tbody>
@@ -21,21 +21,21 @@
                 <td style="width:15%">
                     @if (d.IsHeadOffice)
                     {
-                        <span class="badge bg-info">@GlobalBranchManagement.HeadOffice</span>
+                        <span class="badge bg-info">@GlobalShared.HeadOffice</span>
                     }
                     else
                     {
-                <span class="badge bg-dark">@GlobalBranchManagement.BranchOffice</span>
+                <span class="badge bg-dark">@GlobalShared.Branch_Office</span>
                     }
                 </td>
                 <td style="width:10%">
                     @if (d.ActiveStatus)
                     {
-                        <span class="badge bg-info">@GlobalBranchManagement.Active</span>
+                        <span class="badge bg-info">@GlobalShared.Active</span>
                     }
                     else
                     {
-                <span class="badge bg-danger">@GlobalBranchManagement.Inactive</span>
+                <span class="badge bg-danger">@GlobalShared.InActive</span>
                     }
                 </td>
                 <td style="width:15%">

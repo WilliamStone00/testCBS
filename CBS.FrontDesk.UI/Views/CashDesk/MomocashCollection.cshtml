@@ -1,7 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
 @using Resources
 @{
-    ViewBag.Title = @MomocashCollection.MomocashCollectionTitle;
+    ViewBag.Title = "Cash Desk Management";
 }
 <link href="https://cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css" rel="stylesheet">
 
@@ -50,7 +50,7 @@
                                     aria-controls="collapseMomocash">
                                 <i class="mdi mdi-bank me-2"></i>
                                 <span id="cashDeskOperations">
-                                    @MomocashCollection.MomocashCollectionNoneCashOperation
+                                    @CashDeskRessource.MomocashCollectionNoneCashOperation
                                 </span>
                             </button>
                         </h2>
@@ -60,7 +60,7 @@
                              aria-labelledby="headingMomocash"
                              data-bs-parent="#collapsibleSection">
                             <div class="accordion-body py-1">
-                                @Html.Partial("_MomocashCollectionSearchBox")
+                                @Html.Partial("_CashDeskRessourceSearchBox")
                                 <div id="datalistingview">
                                     @* member search results will load here *@
                                 </div>
@@ -163,5 +163,5 @@
     })();
 
     </script>
-    <script src="~/Scripts/Js/Crud/CashDesk/MomocashCollection.js"></script>
+    <script src="~/Scripts/Js/Crud/CashDesk/CashDeskRessource.js"></script>
 }

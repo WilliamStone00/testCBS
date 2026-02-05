@@ -61,299 +61,65 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Action.
+        ///   Looks up a localized string similar to Activation, head office and bank link.
         /// </summary>
-        internal static string Action {
+        internal static string Activation_head_office_and_bank_link {
             get {
-                return ResourceManager.GetString("Action", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Active.
-        /// </summary>
-        internal static string Active {
-            get {
-                return ResourceManager.GetString("Active", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Address.
-        /// </summary>
-        internal static string Address {
-            get {
-                return ResourceManager.GetString("Address", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Bank initial.
-        /// </summary>
-        internal static string BankInitial {
-            get {
-                return ResourceManager.GetString("BankInitial", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Box code.
-        /// </summary>
-        internal static string BoxCode {
-            get {
-                return ResourceManager.GetString("BoxCode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Branch code.
-        /// </summary>
-        internal static string BranchCode {
-            get {
-                return ResourceManager.GetString("BranchCode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Branch Information.
-        /// </summary>
-        internal static string BranchInformation {
-            get {
-                return ResourceManager.GetString("BranchInformation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Branch name.
-        /// </summary>
-        internal static string BranchName {
-            get {
-                return ResourceManager.GetString("BranchName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Branch-Office.
-        /// </summary>
-        internal static string BranchOffice {
-            get {
-                return ResourceManager.GetString("BranchOffice", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Code.
-        /// </summary>
-        internal static string Code {
-            get {
-                return ResourceManager.GetString("Code", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Date of creation.
-        /// </summary>
-        internal static string DateOfCreation {
-            get {
-                return ResourceManager.GetString("DateOfCreation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Email.
-        /// </summary>
-        internal static string Email {
-            get {
-                return ResourceManager.GetString("Email", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Head-Office.
-        /// </summary>
-        internal static string HeadOffice {
-            get {
-                return ResourceManager.GetString("HeadOffice", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Head office address.
-        /// </summary>
-        internal static string HeadOfficeAddress {
-            get {
-                return ResourceManager.GetString("HeadOfficeAddress", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Head office telephone number.
-        /// </summary>
-        internal static string HeadOfficePhoneNumber {
-            get {
-                return ResourceManager.GetString("HeadOfficePhoneNumber", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Immatriculation number.
-        /// </summary>
-        internal static string ImmatriculationNumber {
-            get {
-                return ResourceManager.GetString("ImmatriculationNumber", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Inactive.
-        /// </summary>
-        internal static string Inactive {
-            get {
-                return ResourceManager.GetString("Inactive", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Is this branch linked to any bank ?.
-        /// </summary>
-        internal static string IsThisBranchLinkedToAnyBank {
-            get {
-                return ResourceManager.GetString("IsThisBranchLinkedToAnyBank", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Location.
-        /// </summary>
-        internal static string Location {
-            get {
-                return ResourceManager.GetString("Location", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Motto.
-        /// </summary>
-        internal static string Motto {
-            get {
-                return ResourceManager.GetString("Motto", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Name.
-        /// </summary>
-        internal static string Name {
-            get {
-                return ResourceManager.GetString("Name", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Office type.
-        /// </summary>
-        internal static string OfficeType {
-            get {
-                return ResourceManager.GetString("OfficeType", resourceCulture);
+                return ResourceManager.GetString("Activation_head_office_and_bank_link", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Branch Management.
         /// </summary>
-        internal static string PageTitle {
+        internal static string Branch_Management {
             get {
-                return ResourceManager.GetString("PageTitle", resourceCulture);
+                return ResourceManager.GetString("Branch_Management", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to PBox.
+        ///   Looks up a localized string similar to Contact and address for escalations.
         /// </summary>
-        internal static string PBox {
+        internal static string Contact_and_address_for_escalations {
             get {
-                return ResourceManager.GetString("PBox", resourceCulture);
+                return ResourceManager.GetString("Contact_and_address_for_escalations", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Registration number.
+        ///   Looks up a localized string similar to Initials, motto and creation date.
         /// </summary>
-        internal static string RegistrationNumber {
+        internal static string Initials_motto_and_creation_date {
             get {
-                return ResourceManager.GetString("RegistrationNumber", resourceCulture);
+                return ResourceManager.GetString("Initials_motto_and_creation_date", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Save.
+        ///   Looks up a localized string similar to Is this branch linked to any bank ?.
         /// </summary>
-        internal static string Save {
+        internal static string Is_this_branch_linked_to_any_bank {
             get {
-                return ResourceManager.GetString("Save", resourceCulture);
+                return ResourceManager.GetString("Is_this_branch_linked_to_any_bank", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Legal identifiers for the branch..
+        /// </summary>
+        internal static string Legal_identifiers_for_the_branch {
+            get {
+                return ResourceManager.GetString("Legal_identifiers_for_the_branch", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Set as head office branch.
         /// </summary>
-        internal static string SetAsHeadOfficeBranch {
+        internal static string Set_as_head_office_branch {
             get {
-                return ResourceManager.GetString("SetAsHeadOfficeBranch", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Status.
-        /// </summary>
-        internal static string Status {
-            get {
-                return ResourceManager.GetString("Status", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to TaxPayerNumber.
-        /// </summary>
-        internal static string TaxPayerNumber {
-            get {
-                return ResourceManager.GetString("TaxPayerNumber", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Telephone.
-        /// </summary>
-        internal static string Telephone {
-            get {
-                return ResourceManager.GetString("Telephone", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Till.
-        /// </summary>
-        internal static string Tell {
-            get {
-                return ResourceManager.GetString("Tell", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Update.
-        /// </summary>
-        internal static string Update {
-            get {
-                return ResourceManager.GetString("Update", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Web site.
-        /// </summary>
-        internal static string WebSite {
-            get {
-                return ResourceManager.GetString("WebSite", resourceCulture);
+                return ResourceManager.GetString("Set_as_head_office_branch", resourceCulture);
             }
         }
     }

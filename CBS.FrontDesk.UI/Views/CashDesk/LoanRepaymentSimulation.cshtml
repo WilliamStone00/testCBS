@@ -1,17 +1,17 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
 @using Resources
 @{
-    ViewBag.Title = @LoanRepaymentSimulation.LoanRepaymentSimulationTitle;
+    ViewBag.Title = @CashDeskRessource.LoanRepaymentSimulationTitle;
 }
 
 <!-- Page Header -->
 <div class="card` bg-light mb-1">
     <div class="card-body text-center">
         <h1 class="card-title text-primary">
-            <i class="mdi mdi-cash me-2"></i> @LoanRepaymentSimulation.LoanRepaymentSimulationAtMemberServiceDesk
+            <i class="mdi mdi-cash me-2"></i> @CashDeskRessource.LoanRepaymentSimulationAtMemberServiceDesk
         </h1>
         <p class="card-text">
-            @LoanRepaymentSimulation.LoanRepaymentSimulationDescription
+            @CashDeskRessource.LoanRepaymentSimulationDescription
         </p>
         <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
     </div>
@@ -20,7 +20,7 @@
 <div class="card mb-1">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
         <span>
-            <i class="mdi mdi-information-outline me-2"></i> @LoanRepaymentSimulation.TipsForAccurateLoanRepaymentSimulation
+            <i class="mdi mdi-information-outline me-2"></i> @CashDeskRessource.TipsForAccurateLoanRepaymentSimulation
         </span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLoanRepaymentTips" aria-expanded="false" aria-controls="collapseLoanRepaymentTips">
             <i class="mdi mdi-chevron-down"></i>
@@ -29,34 +29,34 @@
     <div id="collapseLoanRepaymentTips" class="collapse">
         <div class="card-body">
             <ul>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @LoanRepaymentSimulation.PurposeOfSimulation</li>
-                <li><i class="mdi mdi-cash-plus text-success me-2"></i> <strong>@LoanRepaymentSimulation.AccurateInput:</strong> @LoanRepaymentSimulation.EnterTheCorrectAmountsUnder <strong>@LoanRepaymentSimulation.Capital</strong>, <strong>@LoanRepaymentSimulation.Interest</strong>, @LoanRepaymentSimulation.And <strong>@LoanRepaymentSimulation.Penalty</strong> @LoanRepaymentSimulation.ToProjectTheCorrectRepaymentTotal.</li>
-                <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> <strong>@LoanRepaymentSimulation.VATApplicability:</strong> @LoanRepaymentSimulation.VATIsAutomaticallyAppliedToLoansOf <strong>@LoanRepaymentSimulation.TwoMillionXAFOrMore</strong>. @LoanRepaymentSimulation.SelectThe <strong>@LoanRepaymentSimulation.VATInclusive</strong> @LoanRepaymentSimulation.CheckboxIfVATIsAlreadyPartOfTheInterestEntered.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @CashDeskRessource.PurposeOfSimulation</li>
+                <li><i class="mdi mdi-cash-plus text-success me-2"></i> <strong>@CashDeskRessource.AccurateInput:</strong> @CashDeskRessource.EnterTheCorrectAmountsUnder <strong>@GlobalShared.Capital</strong>, <strong>@GlobalShared.Interest</strong>, @CashDeskRessource.And <strong>@GlobalShared.Penalty</strong> @CashDeskRessource.ToProjectTheCorrectRepaymentTotal.</li>
+                <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> <strong>@CashDeskRessource.VATApplicability:</strong> @CashDeskRessource.VATIsAutomaticallyAppliedToLoansOf <strong>@CashDeskRessource.TwoMillionXAFOrMore</strong>. @CashDeskRessource.SelectThe <strong>@CashDeskRessource.VATInclusive</strong> @CashDeskRessource.CheckboxIfVATIsAlreadyPartOfTheInterestEntered.</li>
                 <li>
-                    <i class="mdi mdi-check-circle-outline text-primary me-2"></i> @LoanRepaymentSimulation.SummaryVerification
+                    <i class="mdi mdi-check-circle-outline text-primary me-2"></i> @CashDeskRessource.SummaryVerification
                     <ul>
-                        <li>@LoanRepaymentSimulation.EnsureTotalRepaymentMatchesExpectations</li>
-                        <li>@LoanRepaymentSimulation.DoubleCheckBreakdownOfIndividualComponents</li>
+                        <li>@CashDeskRessource.EnsureTotalRepaymentMatchesExpectations</li>
+                        <li>@CashDeskRessource.DoubleCheckBreakdownOfIndividualComponents</li>
                     </ul>
                 </li>
-                <li><i class="mdi mdi-note-edit-outline text-info me-2"></i> @LoanRepaymentSimulation.GuidanceForMembers</li>
-                <li><i class="mdi mdi-content-save-edit-outline text-warning me-2"></i> @LoanRepaymentSimulation.Adjustments</li>
-                <li><i class="mdi mdi-account-multiple-check-outline text-primary me-2"></i> @LoanRepaymentSimulation.MultipleLoans</li>
+                <li><i class="mdi mdi-note-edit-outline text-info me-2"></i> @CashDeskRessource.GuidanceForMembers</li>
+                <li><i class="mdi mdi-content-save-edit-outline text-warning me-2"></i> @CashDeskRessource.Adjustments</li>
+                <li><i class="mdi mdi-account-multiple-check-outline text-primary me-2"></i> @CashDeskRessource.MultipleLoans</li>
                 <li>
-                    <i class="mdi mdi-alert-circle-check-outline text-danger me-2"></i> @LoanRepaymentSimulation.ScenarioExamples
+                    <i class="mdi mdi-alert-circle-check-outline text-danger me-2"></i> @CashDeskRessource.ScenarioExamples
                     <ul>
                         <li>
-                            <strong>@LoanRepaymentSimulation.Scenario1VATIncluded</strong> @LoanRepaymentSimulation.Scenario1VATIncludedDescription
+                            <strong>@CashDeskRessource.Scenario1VATIncluded</strong> @CashDeskRessource.Scenario1VATIncludedDescription
                             <ul>
-                                <li>@LoanRepaymentSimulation.VATCalculationFormula <em>@LoanRepaymentSimulation.formula</em></li>
-                                <li>@LoanRepaymentSimulation.TotalRepaymentReflectsComputedVAT</li>
+                                <li>@CashDeskRessource.VATCalculationFormula <em>@CashDeskRessource.formula</em></li>
+                                <li>@CashDeskRessource.TotalRepaymentReflectsComputedVAT</li>
                             </ul>
                         </li>
                         <li>
-                            <strong>@LoanRepaymentSimulation.Scenario2SeparateVAT</strong> @LoanRepaymentSimulation.Scenario2SeparateVATDescription
+                            <strong>@CashDeskRessource.Scenario2SeparateVAT</strong> @CashDeskRessource.Scenario2SeparateVATDescription
                             <ul>
-                                <li>@LoanRepaymentSimulation.VATCalculation</li>
-                                <li>@LoanRepaymentSimulation.TotalRepaymentIncludesInterestPlusVAT</li>
+                                <li>@CashDeskRessource.VATCalculation</li>
+                                <li>@CashDeskRessource.TotalRepaymentIncludesInterestPlusVAT</li>
                             </ul>
                         </li>
                     </ul>

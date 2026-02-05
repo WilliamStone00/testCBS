@@ -117,38 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Actions" xml:space="preserve">
-    <value>Actions</value>
-  </data>
-  <data name="Active" xml:space="preserve">
-    <value>Actif</value>
-  </data>
-  <data name="AddCashChange" xml:space="preserve">
-    <value>Ajouter un changement de caisse</value>
-  </data>
-  <data name="AddNewVault" xml:space="preserve">
-    <value>Ajouter un nouveau coffre</value>
-  </data>
-  <data name="AmountGiven" xml:space="preserve">
-    <value>Montant donné</value>
-  </data>
-  <data name="AmountReceived" xml:space="preserve">
-    <value>Montant reçu</value>
-  </data>
-  <data name="BCode" xml:space="preserve">
-    <value>Code B</value>
-  </data>
   <data name="ChangeDenominations" xml:space="preserve">
     <value>Changer les dénominations</value>
   </data>
   <data name="ChangeToBeGiven" xml:space="preserve">
     <value>Changement à donner</value>
-  </data>
-  <data name="ControlBalance" xml:space="preserve">
-    <value>Contrôle du solde</value>
-  </data>
-  <data name="CurrentBalance" xml:space="preserve">
-    <value>Solde actuel</value>
   </data>
   <data name="DenominationChangeManagement" xml:space="preserve">
     <value>Gestion des dénominations</value>
@@ -168,9 +141,6 @@
   <data name="EnterTheDenominationsForTheTotalChangeAmount" xml:space="preserve">
     <value>Entrez les dénominations pour le montant total de changement à donner. Ces valeurs refléteront le total de caisse distribué au client</value>
   </data>
-  <data name="Inactive" xml:space="preserve">
-    <value>Inactif</value>
-  </data>
   <data name="ManageDenominationsEfficiently" xml:space="preserve">
     <value>Gérez efficacement les dénominations pour les opérations de coffre dans votre agence. Utilisez les options ci-dessous pour mettre à jour ou examiner les dénominations</value>
   </data>
@@ -179,9 +149,6 @@
   </data>
   <data name="MANAGEMENTOFDENOMINATIONS" xml:space="preserve">
     <value>Gestion des dénominations</value>
-  </data>
-  <data name="MaximumCapacity" xml:space="preserve">
-    <value>Capacité maximale</value>
   </data>
   <data name="NoVaultsHaveBeenConfiguredYet" xml:space="preserve">
     <value>Aucun coffre n'a été configuré pour le moment</value>
@@ -192,25 +159,10 @@
   <data name="ReasonForTheCashChange" xml:space="preserve">
     <value>Raison du changement de caisse</value>
   </data>
-  <data name="Status" xml:space="preserve">
-    <value>Statut</value>
-  </data>
-  <data name="TIPS" xml:space="preserve">
-    <value>CONSEILS</value>
-  </data>
-  <data name="TotalAmount" xml:space="preserve">
-    <value>Montant total</value>
-  </data>
   <data name="UseNumericValuesOnlyForDenominations" xml:space="preserve">
     <value>Utilisez uniquement des valeurs numériques pour les dénominations et les quantités</value>
   </data>
   <data name="VaultDenominationChangeManagement" xml:space="preserve">
     <value>Gestion des dénominations de coffre</value>
-  </data>
-  <data name="VaultName" xml:space="preserve">
-    <value>Nom du coffre</value>
-  </data>
-  <data name="VAULTS" xml:space="preserve">
-    <value>COFFRES</value>
   </data>
 </root>

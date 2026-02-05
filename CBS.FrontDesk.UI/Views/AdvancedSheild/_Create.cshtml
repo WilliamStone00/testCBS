@@ -196,14 +196,14 @@
                     <p class="mb-3">
                         @AdvancedShield.This_section_allows_you_to_enforce_advanced_header_level_inspections_to_detect_malformed.
                         @AdvancedShield.It_protects_the_application_from_scanners_telemetry_systems_header_based_injection_attempts_and_unauthorized_cross_origin_requests.
-                        @AdvancedShield.The <strong>Header Validation & Bot Detection</strong> module strengthens your application's perimeter by analyzing HTTP request headers for tampering, spoofing, or automation indicators. It inspects key headers like <code>User-Agent</code>, <code>Origin</code>, <code>Referer</code>, and <code>X-Forwarded-For</code> to detect:
+                        @Html.Raw(@AdvancedShield.The_Header_Validation_Bot_Detection_module_strengthens_your_applications_perimeter)
                     </p>
                     <ul class="text-muted">
                         <li>🧠 <strong>@AdvancedShield.Bot_an_scanner_signatures</strong> (e.g., <code>curl</code>, <code>wget</code>, @AdvancedShield.penetration_tools)</li>
-                        <li>🚫 <strong>@AdvancedShield.Spoofed_or_malformed_header_values</strong> that can bypass access rules</li>
-                        <li>🔐 <strong>@AdvancedShield.Missing or forged CORS origins and referers</strong> on protected resources</li>
-                        <li>🕵️‍♂️ <strong>@AdvancedShield.Telemetry and tracing headers</strong> used by bots and monitoring tools</li>
-                        <li>🧱 <strong>@AdvancedShield.High-risk internal headers</strong> often abused in SSRF and path-based injection attacks</li>
+                        <li>🚫 <strong>@AdvancedShield.Spoofed_or_malformed_header_values</strong> @AdvancedShield.that_can_bypass_access_rules</li>
+                        <li>🔐 <strong>@AdvancedShield.Missing_or_forged_CORS_origins_and_referers</strong> @AdvancedShield.on_protected_resources</li>
+                        <li>🕵️‍♂️ <strong>@AdvancedShield.Telemetry_and_tracing_headers</strong> @AdvancedShield.used_by_bots_and_monitoring_tools</li>
+                        <li>🧱 <strong>@AdvancedShield.High_risk_internal_headers</strong> @AdvancedShield.often_abused_in_SSRF_and_path_based_injection_attacks</li>
                     </ul>
                     <p class="mb-0">
                         @AdvancedShield.Use_this_section_to_configure_allowlists_regex_validation_patterns_and_enforce_referer_origin_policies_for_sensitive_endpoints.
@@ -237,7 +237,7 @@
                                     <label for="ProtectedPathRefererRequired">@AdvancedShield.Protected_Path_Referer_Requirements</label>
                                     @Html.ValidationMessage("ProtectedPathRefererRequired", "", new { @class = "text-danger" })
                                     <small class="form-text text-muted">
-                                        @AdvancedShield.Paths that require a matching <code>Referer</code> header to be present.
+                                        @Html.Raw(@AdvancedShield.Paths_that_require_a_matching_Referer_header_to_be_present)
                                         <br />Examples: <code>/admin</code>, <code>/settings</code>, <code>/config</code>
                                     </small>
                                 </div>
@@ -250,7 +250,7 @@
                                     <label for="SensitiveHeaderMissingCheckPaths">@AdvancedShield.Sensitive_Paths_Requiring_Origin_or_Referer</label>
                                     @Html.ValidationMessage("SensitiveHeaderMissingCheckPaths", "", new { @class = "text-danger" })
                                     <small class="form-text text-muted">
-                                        @AdvancedShield.Paths that must contain at least one of <code>Origin</code> or <code>Referer</code> headers.
+                                        @Html.Raw(@AdvancedShield.Paths_that_must_contain_at_least_one_of_Origin_or_Referer_headers)
                                         <br />Examples: <code>/api/token</code>, <code>/transaction/submit</code>
                                     </small>
                                 </div>
@@ -276,7 +276,7 @@
                                     <label for="AllowedOrigins">CORS Allowed Origins</label>
                                     @Html.ValidationMessage("AllowedOrigins", "", new { @class = "text-danger" })
                                     <small class="form-text text-muted">
-                                        @AdvancedShield.Origins allowed for cross-origin requests. Requests with a mismatched or missing <code>Origin</code> header may be blocked.
+                                        @Html.Raw(@AdvancedShield.Origins_allowed_for_cross_origin_requests_Requests_with_a_mismatched_or_missing_Origin_header_may_be_blocked)
                                         <br />Example: <code>https://portal.tscgroup.cm</code>
                                     </small>
                                 </div>
@@ -314,10 +314,10 @@
                                     @Html.TextArea("SpoofedForwardedForIndicators", Model.SpoofedForwardedForIndicators != null ? string.Join("\n", Model.SpoofedForwardedForIndicators) : "", new { @class = "form-control", style = "height: 100px;", placeholder = "127.0.0.1\n::1\nunknown" })
                                     <label for="SpoofedForwardedForIndicators">X-Forwarded-For Spoofing Signatures</label>
                                     @Html.ValidationMessage("SpoofedForwardedForIndicators", "", new { @class = "text-danger" })
-                                    <small class="form-text text-muted">
-                                        @AdvancedShield.Patterns that indicate spoofed or internal loopback IPs in <code>X-Forwarded-For</code> headers.
-                                        <br />Examples: <code>127.0.0.1</code>, <code>::1</code>, <code>unknown</code>
-                                    </small>
+                                <small class="form-text text-muted">
+                                    @AdvancedShield.Patterns_that_indicate_spoofed_or_internal_loopback_IPs_in_headers_of_type: <code>X-Forwarded-For</code> .
+                                    <br />Examples: <code>127.0.0.1</code>, <code>::1</code>, <code>unknown</code>
+                                </small>
                                 </div>
                             </div>
 
@@ -371,8 +371,8 @@
             <div id="collapsePathExclusion" class="accordion-collapse collapse" data-bs-parent="#rateLimitAccordion">
                 <div class="accordion-body text-muted">
                     <p>
-                        @AdvancedShield.Define specific paths, file extensions, or substrings that should bypass WAF and security filtering rules. This is useful for allowing health checks,
-                        static content, internal service endpoints, or other benign traffic to pass through uninspected.
+                        @AdvancedShield.Define_specific_paths_file_extensions_or_substrings_that_should_bypass_WAF_and_security_filtering_rules_This_is_useful_for_allowing_health_checks
+                        @AdvancedShield.static_content_internal_service_endpoints_or_other_benign_traffic_to_pass_through_uninspected.
                     </p>
 
                     @using (Html.BeginForm("AddOrUpdate", "AdvancedSheild", FormMethod.Post, new
@@ -460,8 +460,8 @@
             <div id="collapseSuspiciousIndicators" class="accordion-collapse collapse" data-bs-parent="#rateLimitAccordion">
                 <div class="accordion-body text-muted">
                     <p>
-                        @AdvancedShield.Define substrings, keywords, or filenames that are often associated with malicious activity. These values will be scanned in request paths, form keys,
-                        and header values. Detected matches will be logged or blocked depending on WAF rules.
+                        @AdvancedShield.Define_substrings_keywords_or_filenames_that_are_often_associated_with_malicious_activity_These_values_will_be_scanned_in_request_paths_form_keys_and_header_values
+                        @AdvancedShield.Detected_matches_will_be_logged_or_blocked_depending_on_WAF_rules
                         <br />@AdvancedShield.Use_these_to_detect_common_exploit_tools_automated_scanners_or_unauthorized_access_attempts.
                     </p>
 

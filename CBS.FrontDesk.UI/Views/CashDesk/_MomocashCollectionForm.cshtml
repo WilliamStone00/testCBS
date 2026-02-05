@@ -275,12 +275,12 @@
                             <div class="d-flex flex-wrap gap-2">
                                 <label class="momo-pill">
                                     @Html.RadioButtonFor(m => m.BulkDeposit.SourceType, "MomocashCollectionMTN", new { id = "MobileMoneyMTN" })
-                                    @CashDesk_MomocashCollectionForm.MomoCashCollectionMobileMoneyMTN
+                                    @CashDeskRessource.MomoCashCollectionMobileMoneyMTN
                                 </label>
 
                                 <label class="momo-pill">
                                     @Html.RadioButtonFor(m => m.BulkDeposit.SourceType, "MomocashCollectionOrange", new { id = "MobileMoneyORANGE" })
-                                    @CashDesk_MomocashCollectionForm.MomoCashCollectionMobileMoneyOrange
+                                    @CashDeskRessource.MomoCashCollectionMobileMoneyOrange
                                 </label>
                             </div>
                         </div>
@@ -380,54 +380,54 @@
                                     <div class="col-md-6">
                                         <div class="form-floating">
                                             <input type="text" id="DepositorName" class="form-control form-control-sm"
-                                                   placeholder="@CashDesk_DepositerForm.FullName">
-                                            <label for="DepositorName" class="small">@CashDesk_DepositerForm.Name</label>
-                                            <div class="invalid-feedback">@CashDesk_DepositerForm.PleaseEnterName.</div>
+                                                   placeholder="@GlobalShared.Full_Name">
+                                            <label for="DepositorName" class="small">@GlobalShared.Name</label>
+                                            <div class="invalid-feedback">@GlobalShared.Please_enter_name.</div>
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
                                         <div class="form-floating">
                                             <input type="tel" id="DepositorTelephone" class="form-control form-control-sm"
-                                                   placeholder="@CashDesk_DepositerForm.PhoneNumber">
-                                            <label for="DepositorTelephone" class="small">@CashDesk_DepositerForm.PhoneNumber</label>
-                                            <div class="invalid-feedback">@CashDesk_DepositerForm.PhoneNumberIsRequired.</div>
+                                                   placeholder="@GlobalShared.Phone_Number">
+                                            <label for="DepositorTelephone" class="small">@GlobalShared.Phone_Number</label>
+                                            <div class="invalid-feedback">@GlobalShared.Phone_number_is_required.</div>
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
                                         <div class="form-floating">
                                             <input type="text" id="DepositorIDNumber" class="form-control form-control-sm"
-                                                   placeholder="@CashDesk_DepositerForm.IDNumber">
-                                            <label for="DepositorIDNumber" class="small">@CashDesk_DepositerForm.CNIIDNumber</label>
-                                            <div class="invalid-feedback">@CashDesk_DepositerForm.EnterAValidIDNumber.</div>
+                                                   placeholder="@GlobalShared.ID_Number">
+                                            <label for="DepositorIDNumber" class="small">@GlobalShared.CNI_ID_Number</label>
+                                            <div class="invalid-feedback">@GlobalShared.Enter_a_valid_ID_number.</div>
                                         </div>
                                     </div>
 
                                     <div class="col-md-3">
                                         <div class="form-floating">
                                             <input type="date" id="DepositorIDIssueDate" class="form-control form-control-sm">
-                                            <label for="DepositorIDIssueDate" class="small">@CashDesk_DepositerForm.IssueDate</label>
-                                            <div class="invalid-feedback">@CashDesk_DepositerForm.IssueDateRequired.</div>
+                                            <label for="DepositorIDIssueDate" class="small">@GlobalShared.Issue_Date</label>
+                                            <div class="invalid-feedback">@GlobalShared.Issue_date_is_required.</div>
                                         </div>
                                     </div>
 
                                     <div class="col-md-3">
                                         <div class="form-floating">
                                             <input type="date" id="DepositorIDExpiryDate" class="form-control form-control-sm">
-                                            <label for="DepositorIDExpiryDate" class="small">@CashDesk_DepositerForm.ExpiryDate</label>
-                                            <div class="invalid-feedback">@CashDesk_DepositerForm.ExpiryDateIsRequired.</div>
-                                            <div class="invalid-feedback">@CashDesk_DepositerForm.PleaseEnterValidDate.</div>
+                                            <label for="DepositorIDExpiryDate" class="small">@GlobalShared.Expiry_Date</label>
+                                            <div class="invalid-feedback">@GlobalShared.Expiry_date_is_required.</div>
+                                            <div class="invalid-feedback">@GlobalShared.Please_enter_a_valid_date.</div>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="form-floating">
                                             <input type="text" id="DepositorIDNumberPlaceOfIssue" class="form-control form-control-sm"
-                                                   placeholder="@CashDesk_DepositerForm.PlaceOfIssue">
-                                            <label for="DepositorIDNumberPlaceOfIssue" class="small">@CashDesk_DepositerForm.PlaceOfIssue</label>
-                                            <div class="invalid-feedback">@CashDesk_DepositerForm.PlaceOfIssue.</div>
-                                            <div class="invalid-feedback">@CashDesk_DepositerForm.PleaseEnterValidPlace.</div>
+                                                   placeholder="@GlobalShared.PlaceOfIssue">
+                                            <label for="DepositorIDNumberPlaceOfIssue" class="small">@GlobalShared.PlaceOfIssue</label>
+                                            <div class="invalid-feedback">@GlobalShared.PlaceOfIssue.</div>
+                                            <div class="invalid-feedback">@GlobalShared.Please_enter_a_valid_place.</div>
                                         </div>
                                     </div>
 
@@ -435,7 +435,7 @@
                                         <div class="form-floating">
                                             <textarea id="DepositorNote" class="form-control form-control-sm"
                                                       placeholder="Optional note..." style="height:70px;"></textarea>
-                                            <label for="DepositorNote" class="small">@CashDesk_DepositerForm.Note</label>
+                                            <label for="DepositorNote" class="small">@CashDeskRessource.Note</label>
                                         </div>
                                     </div>
                                 </div>
@@ -466,14 +466,14 @@
                         <table class="table table-hover align-middle" id="myDataTableT">
                             <thead class="table-light">
                                 <tr>
-                                    <th style="display:none;">@CashDesk_MomocashCollectionForm.ProductID</th>
-                                    <th>@CashDesk_MomocashCollectionForm.Accounts</th>
-                                    <th class="text-end">@CashDesk_MomocashCollectionForm.Balance</th>
-                                    <th style="min-width:140px;">@CashDesk_MomocashCollectionForm.Amount</th>
-                                    <th style="min-width:120px;">@CashDesk_MomocashCollectionForm.Fee</th>
-                                    <th class="text-end">@CashDesk_MomocashCollectionForm.Total</th>
-                                    <th class="text-center col-check">@CashDesk_MomocashCollectionForm.Confirm</th>
-                                    <th class="text-center col-inc">@CashDesk_MomocashCollectionForm.Inc</th>
+                                    <th style="display:none;">@GlobalShared.Product_ID</th>
+                                    <th>@GlobalShared.Accounts</th>
+                                    <th class="text-end">@GlobalShared.Balance</th>
+                                    <th style="min-width:140px;">@GlobalShared.Amount</th>
+                                    <th style="min-width:120px;">@CashDeskRessource.Fee</th>
+                                    <th class="text-end">@GlobalShared.Total</th>
+                                    <th class="text-center col-check">@GlobalShared.Confirm</th>
+                                    <th class="text-center col-inc">@GlobalShared.Inc</th>
                                 </tr>
                             </thead>
 
@@ -509,7 +509,7 @@
                             <tfoot class="table-light">
                                 <tr>
                                     <td colspan="5" class="text-end">
-                                        <strong>@CashDesk_MomocashCollectionForm.Total:</strong>
+                                        <strong>@GlobalShared.Total:</strong>
                                     </td>
                                     <td class="text-end fw-bold" id="tableTotal">0</td>
                                     <td colspan="2"></td>
@@ -532,17 +532,17 @@
 
         <button type="submit" id="submit" class="btn btn-primary d-inline-flex align-items-center" onclick="PostCashIn()">
             <i class="fas fa-money-bill-wave me-1"></i>
-            @CashDesk_MomocashCollectionForm.CashIn
+            @GlobalShared.Cash_In
         </button>
 
         <button type="submit" id="submit" class="btn btn-secondary d-inline-flex align-items-center" onclick="Reprint()">
             <i class="fas fa-print me-1"></i>
-            @CashDesk_MomocashCollectionForm.RePrint
+            @GlobalShared.Re_print
         </button>
 
         <button type="reset" class="btn btn-outline-secondary d-inline-flex align-items-center">
             <i class="fas fa-sync-alt me-1"></i>
-            @CashDesk_MomocashCollectionForm.Reset
+            @GlobalShared.Reset
         </button>
     </div>
 }
@@ -587,7 +587,7 @@ else if (ViewBag.Operation == "repayment_momokash_collection")
                                         m => m.AddOtherTransactionMobileMoneyCommand.SourceType,
                                         "MomocashCollectionMTN",
                                         new { @class = "form-check-input shadow-input-boxes", id = "MobileMoneyMTN" })
-                                    @CashDesk_MomocashCollectionForm.MomoCashCollectionMobileMoneyMTN
+                                    @CashDeskRessource.MomoCashCollectionMobileMoneyMTN
                                 </label>
 
                                 <label class="momo-pill">
@@ -595,7 +595,7 @@ else if (ViewBag.Operation == "repayment_momokash_collection")
                                         m => m.AddOtherTransactionMobileMoneyCommand.SourceType,
                                         "MomocashCollectionOrange",
                                         new { @class = "form-check-input shadow-input-boxes", id = "MobileMoneyORANGE" })
-                                    @CashDesk_MomocashCollectionForm.MomoCashCollectionMobileMoneyOrange
+                                    @CashDeskRessource.MomoCashCollectionMobileMoneyOrange
                                 </label>
                             </div>
                         </div>
@@ -779,9 +779,9 @@ else if (ViewBag.Operation == "repayment_momokash_collection")
                                        id="DepositorName"
                                        name="DepositorName"
                                        class="form-control form-control-sm"
-                                       placeholder="@CashDesk_DepositerForm.FullName">
-                                <label for="DepositorName" class="small">@CashDesk_DepositerForm.Name</label>
-                                <div class="invalid-feedback">@CashDesk_DepositerForm.PleaseEnterName.</div>
+                                       placeholder="@GlobalShared.Full_Name">
+                                <label for="DepositorName" class="small">@GlobalShared.Name</label>
+                                <div class="invalid-feedback">@GlobalShared.Please_enter_name.</div>
                             </div>
                         </div>
 
@@ -791,9 +791,9 @@ else if (ViewBag.Operation == "repayment_momokash_collection")
                                        id="DepositorTelephone"
                                        name="DepositorTelephone"
                                        class="form-control form-control-sm"
-                                       placeholder="@CashDesk_DepositerForm.PhoneNumber">
-                                <label for="DepositorTelephone" class="small">@CashDesk_DepositerForm.PhoneNumber</label>
-                                <div class="invalid-feedback">@CashDesk_DepositerForm.PhoneNumberIsRequired.</div>
+                                       placeholder="@GlobalShared.Phone_Number">
+                                <label for="DepositorTelephone" class="small">@GlobalShared.Phone_Number</label>
+                                <div class="invalid-feedback">@GlobalShared.Phone_number_is_required.</div>
                             </div>
                         </div>
 
@@ -803,9 +803,9 @@ else if (ViewBag.Operation == "repayment_momokash_collection")
                                        id="DepositorIDNumber"
                                        name="DepositorIDNumber"
                                        class="form-control form-control-sm"
-                                       placeholder="@CashDesk_DepositerForm.IDNumber">
-                                <label for="DepositorIDNumber" class="small">@CashDesk_DepositerForm.CNIIDNumber</label>
-                                <div class="invalid-feedback">@CashDesk_DepositerForm.EnterAValidIDNumber.</div>
+                                       placeholder="@GlobalShared.ID_Number">
+                                <label for="DepositorIDNumber" class="small">@GlobalShared.CNI_ID_Number</label>
+                                <div class="invalid-feedback">@GlobalShared.Enter_a_valid_ID_number.</div>
                             </div>
                         </div>
 
@@ -815,8 +815,8 @@ else if (ViewBag.Operation == "repayment_momokash_collection")
                                        id="DepositorIDIssueDate"
                                        name="DepositorIDIssueDate"
                                        class="form-control form-control-sm">
-                                <label for="DepositorIDIssueDate" class="small">@CashDesk_DepositerForm.IssueDate</label>
-                                <div class="invalid-feedback">@CashDesk_DepositerForm.IssueDateRequired.</div>
+                                <label for="DepositorIDIssueDate" class="small">@GlobalShared.Issue_Date</label>
+                                <div class="invalid-feedback">@GlobalShared.Issue_date_is_required.</div>
                             </div>
                         </div>
 
@@ -826,8 +826,8 @@ else if (ViewBag.Operation == "repayment_momokash_collection")
                                        id="DepositorIDExpiryDate"
                                        name="DepositorIDExpiryDate"
                                        class="form-control form-control-sm">
-                                <label for="DepositorIDExpiryDate" class="small">@CashDesk_DepositerForm.ExpiryDate</label>
-                                <div class="invalid-feedback">@CashDesk_DepositerForm.ExpiryDateIsRequired.</div>
+                                <label for="DepositorIDExpiryDate" class="small">@GlobalShared.Expiry_Date</label>
+                                <div class="invalid-feedback">@GlobalShared.Expiry_date_is_required.</div>
                             </div>
                         </div>
 
@@ -837,9 +837,9 @@ else if (ViewBag.Operation == "repayment_momokash_collection")
                                        id="DepositorIDNumberPlaceOfIssue"
                                        name="DepositorIDNumberPlaceOfIssue"
                                        class="form-control form-control-sm"
-                                       placeholder="@CashDesk_DepositerForm.PlaceOfIssue">
-                                <label for="DepositorIDNumberPlaceOfIssue" class="small">@CashDesk_DepositerForm.PlaceOfIssue</label>
-                                <div class="invalid-feedback">@CashDesk_DepositerForm.PlaceOfIssue.</div>
+                                       placeholder="@GlobalShared.PlaceOfIssue">
+                                <label for="DepositorIDNumberPlaceOfIssue" class="small">@GlobalShared.PlaceOfIssue</label>
+                                <div class="invalid-feedback">@GlobalShared.PlaceOfIssue.</div>
                             </div>
                         </div>
 
@@ -850,7 +850,7 @@ else if (ViewBag.Operation == "repayment_momokash_collection")
                                           class="form-control form-control-sm"
                                           placeholder="Optional note..."
                                           style="height:70px;"></textarea>
-                                <label for="DepositorNote" class="small">@CashDesk_DepositerForm.Note</label>
+                                <label for="DepositorNote" class="small">@CashDeskRessource.Note</label>
                             </div>
                         </div>
 
@@ -877,19 +877,19 @@ else if (ViewBag.Operation == "repayment_momokash_collection")
                         <table class="table table-hover align-middle" id="myDataTableT">
                             <thead class="table-light">
                                 <tr>
-                                    <th style="display:none;">@CashDesk_MomocashCollectionForm.LoanId</th>
-                                    <th>@CashDesk_MomocashCollectionForm.Date</th>
-                                    <th style="display:none;">@CashDesk_MomocashCollectionForm.Amount</th>
-                                    <th class="text-end">@CashDesk_MomocashCollectionForm.Balance</th>
-                                    <th class="text-end">@CashDesk_MomocashCollectionForm.Int</th>
-                                    <th style="display:none;">@CashDesk_MomocashCollectionForm.VRate</th>
-                                    <th style="display:none;">@CashDesk_MomocashCollectionForm.DueA</th>
-                                    <th style="min-width:130px;">@CashDesk_MomocashCollectionForm.EnterCapital</th>
-                                    <th style="min-width:130px;">@CashDesk_MomocashCollectionForm.EnterInterest</th>
-                                    <th style="min-width:130px;">@CashDesk_MomocashCollectionForm.EnterPenalty</th>
-                                    <th class="text-end">@CashDesk_MomocashCollectionForm.Total</th>
-                                    <th class="text-center col-conf">@CashDesk_MomocashCollectionForm.Conf</th>
-                                    <th class="text-center col-vat">@CashDesk_MomocashCollectionForm.VatIncExc</th>
+                                    <th style="display:none;">@GlobalShared.LoanId</th>
+                                    <th>@GlobalShared.Date</th>
+                                    <th style="display:none;">@GlobalShared.Amount</th>
+                                    <th class="text-end">@GlobalShared.Balance</th>
+                                    <th class="text-end">@GlobalShared.Int</th>
+                                    <th style="display:none;">@GlobalShared.V_Rate</th>
+                                    <th style="display:none;">@GlobalShared.Due_A</th>
+                                    <th style="min-width:130px;">@GlobalShared.EnterCapital</th>
+                                    <th style="min-width:130px;">@GlobalShared.EnterInterest</th>
+                                    <th style="min-width:130px;">@GlobalShared.EnterPenalty</th>
+                                    <th class="text-end">@GlobalShared.Total</th>
+                                    <th class="text-center col-conf">@GlobalShared.Conf</th>
+                                    <th class="text-center col-vat">@CashDeskRessource.VatIncExc</th>
                                 </tr>
                             </thead>
 
@@ -1000,8 +1000,8 @@ else if (ViewBag.Operation == "repayment_momokash_collection")
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content shadow-lg border-0">
                 <div class="modal-header bg-info text-white">
-                    <h5 class="modal-title" id="loanDetailsModalLabel">📋 @CashDesk_MomocashCollectionForm.LoanDetails</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="@CashDesk_MomocashCollectionForm.Close"></button>
+                    <h5 class="modal-title" id="loanDetailsModalLabel">📋 @GlobalShared.Loan_Details</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="@GlobalShared.Close"></button>
                 </div>
                 <div class="modal-body p-4">
                     <!-- Loan Details Section -->
@@ -1009,34 +1009,16 @@ else if (ViewBag.Operation == "repayment_momokash_collection")
                         <div class="col-6">
                             <div class="card bg-light shadow-sm">
                                 <div class="card-body text-center">
-                                    <h6 class="card-title text-muted mb-1">@CashDesk_MomocashCollectionForm.LoanDate</h6>
-                                    <h4 class="card-text text-dark" id="detailLoanDate">@CashDesk_MomocashCollectionForm.na</h4>
+                                    <h6 class="card-title text-muted mb-1">@GlobalShared.Loan_Date</h6>
+                                    <h4 class="card-text text-dark" id="detailLoanDate">@GlobalShared.N_A</h4>
                                 </div>
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="card bg-light shadow-sm">
                                 <div class="card-body text-center">
-                                    <h6 class="card-title text-muted mb-1">@CashDesk_MomocashCollectionForm.Amount</h6>
-                                    <h4 class="card-text text-dark" id="detailLoanAmount">@CashDesk_MomocashCollectionForm.xaf 0</h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-4">
-                        <div class="col-6">
-                            <div class="card bg-light shadow-sm">
-                                <div class="card-body text-center">
-                                    <h6 class="card-title text-muted mb-1">@CashDesk_MomocashCollectionForm.Balance</h6>
-                                    <h4 class="card-text text-dark" id="detailBalance">@CashDesk_MomocashCollectionForm.xaf 0</h4>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="card bg-light shadow-sm">
-                                <div class="card-body text-center">
-                                    <h6 class="card-title text-muted mb-1">@CashDesk_MomocashCollectionForm.Interest</h6>
-                                    <h4 class="card-text text-dark" id="detailInterest">@CashDesk_MomocashCollectionForm.xaf 0</h4>
+                                    <h6 class="card-title text-muted mb-1">@GlobalShared.Amount</h6>
+                                    <h4 class="card-text text-dark" id="detailLoanAmount">@GlobalShared.XAF 0</h4>
                                 </div>
                             </div>
                         </div>
@@ -1045,16 +1027,16 @@ else if (ViewBag.Operation == "repayment_momokash_collection")
                         <div class="col-6">
                             <div class="card bg-light shadow-sm">
                                 <div class="card-body text-center">
-                                    <h6 class="card-title text-muted mb-1">@CashDesk_MomocashCollectionForm.DueAmount</h6>
-                                    <h4 class="card-text text-dark" id="detailDueAmount">@CashDesk_MomocashCollectionForm.xaf 0</h4>
+                                    <h6 class="card-title text-muted mb-1">@GlobalShared.Balance</h6>
+                                    <h4 class="card-text text-dark" id="detailBalance">@GlobalShared.XAF 0</h4>
                                 </div>
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="card bg-light shadow-sm">
                                 <div class="card-body text-center">
-                                    <h6 class="card-title text-muted mb-1">@CashDesk_MomocashCollectionForm.Penalty</h6>
-                                    <h4 class="card-text text-dark" id="detailPenalty">@CashDesk_MomocashCollectionForm.xaf 0</h4>
+                                    <h6 class="card-title text-muted mb-1">@GlobalShared.Interest</h6>
+                                    <h4 class="card-text text-dark" id="detailInterest">@GlobalShared.XAF 0</h4>
                                 </div>
                             </div>
                         </div>
@@ -1063,7 +1045,25 @@ else if (ViewBag.Operation == "repayment_momokash_collection")
                         <div class="col-6">
                             <div class="card bg-light shadow-sm">
                                 <div class="card-body text-center">
-                                    <h6 class="card-title text-muted mb-1">@CashDesk_MomocashCollectionForm.Vat</h6>
+                                    <h6 class="card-title text-muted mb-1">@GlobalShared.Due_Amount</h6>
+                                    <h4 class="card-text text-dark" id="detailDueAmount">@GlobalShared.XAF 0</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="card bg-light shadow-sm">
+                                <div class="card-body text-center">
+                                    <h6 class="card-title text-muted mb-1">@GlobalShared.Penalty</h6>
+                                    <h4 class="card-text text-dark" id="detailPenalty">@GlobalShared.XAF 0</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col-6">
+                            <div class="card bg-light shadow-sm">
+                                <div class="card-body text-center">
+                                    <h6 class="card-title text-muted mb-1">@GlobalShared.VAT</h6>
                                     <h4 class="card-text text-dark" id="vatRate">0 %</h4>
                                 </div>
                             </div>
@@ -1071,7 +1071,7 @@ else if (ViewBag.Operation == "repayment_momokash_collection")
                         <div class="col-6">
                             <div class="card bg-light shadow-sm">
                                 <div class="card-body text-center">
-                                    <h6 class="card-title text-muted mb-1">@CashDesk_MomocashCollectionForm.InterestRate</h6>
+                                    <h6 class="card-title text-muted mb-1">@GlobalShared.Interest_Rate</h6>
                                     <h4 class="card-text text-dark" id="interestRate">0 %</h4>
                                 </div>
                             </div>
@@ -1080,7 +1080,7 @@ else if (ViewBag.Operation == "repayment_momokash_collection")
                 </div>
                 <div class="modal-footer d-flex justify-content-between">
                     <button type="button" class="btn btn-secondary btn-lg shadow-sm" data-bs-dismiss="modal">
-                        <i class="bi bi-x-circle"></i> @CashDesk_MomocashCollectionForm.Close
+                        <i class="bi bi-x-circle"></i> @GlobalShared.Close
                     </button>
                 </div>
             </div>
@@ -1093,7 +1093,7 @@ else if (ViewBag.Operation == "repayment_momokash_collection")
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content shadow-lg border-0">
                 <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title" id="paymentModalLabel">💵  @CashDesk_MomocashCollectionForm.PaymentDetails</h5>
+                    <h5 class="modal-title" id="paymentModalLabel">💵  @GlobalShared.Payment_Details</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-4">
@@ -1101,16 +1101,16 @@ else if (ViewBag.Operation == "repayment_momokash_collection")
                         <div class="col-6">
                             <div class="card bg-light shadow-sm">
                                 <div class="card-body text-center">
-                                    <h6 class="card-title text-muted mb-1"> @CashDesk_MomocashCollectionForm.AccrualInterest</h6>
-                                    <h4 class="card-text text-dark" id="modalAccrualInterest">@CashDesk_MomocashCollectionForm.xaf 0</h4>
+                                    <h6 class="card-title text-muted mb-1"> @GlobalShared.Accrual_Interest</h6>
+                                    <h4 class="card-text text-dark" id="modalAccrualInterest">@CashDeskRessource.XAF 0</h4>
                                 </div>
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="card bg-light shadow-sm">
                                 <div class="card-body text-center">
-                                    <h6 class="card-title text-muted mb-1"> @CashDesk_MomocashCollectionForm.Balance</h6>
-                                    <h4 class="card-text text-dark" id="modalBalance">@CashDesk_MomocashCollectionForm.xaf 0</h4>
+                                    <h6 class="card-title text-muted mb-1"> @GlobalShared.Balance</h6>
+                                    <h4 class="card-text text-dark" id="modalBalance">@GlobalShared.XAF 0</h4>
                                 </div>
                             </div>
                         </div>
@@ -1118,39 +1118,39 @@ else if (ViewBag.Operation == "repayment_momokash_collection")
 
                     <div class="input-group mb-4">
                         <span class="input-group-text bg-primary text-white">
-                            <i class="bi bi-cash-stack"></i>  @CashDesk_MomocashCollectionForm.Capital
+                            <i class="bi bi-cash-stack"></i>  @GlobalShared.Capital
                         </span>
-                        <input type="number" class="form-control form-control-lg shadow-sm" id="modalAmount" placeholder="@CashDesk_MomocashCollectionForm.EnterCapitalAmount" oninput="updateTotal()">
+                        <input type="number" class="form-control form-control-lg shadow-sm" id="modalAmount" placeholder="@GlobalShared.Enter_capital_amount" oninput="updateTotal()">
                     </div>
 
                     <div class="input-group mb-4">
                         <span class="input-group-text bg-primary text-white">
-                            <i class="bi bi-piggy-bank"></i>  @CashDesk_MomocashCollectionForm.Interest
+                            <i class="bi bi-piggy-bank"></i>  @GlobalShared.Interest
                         </span>
-                        <input type="number" class="form-control form-control-lg shadow-sm" id="modalInterest" placeholder="@CashDesk_MomocashCollectionForm.EnterInterest" oninput="updateTotal()">
+                        <input type="number" class="form-control form-control-lg shadow-sm" id="modalInterest" placeholder="@GlobalShared.EnterInterest" oninput="updateTotal()">
                     </div>
 
                     <div class="input-group mb-4">
                         <span class="input-group-text bg-primary text-white">
-                            <i class="bi bi-exclamation-triangle"></i>  @CashDesk_MomocashCollectionForm.Penalty
+                            <i class="bi bi-exclamation-triangle"></i>  @GlobalShared.Penalty
                         </span>
-                        <input type="number" class="form-control form-control-lg shadow-sm" id="modalPenalty" placeholder="@CashDesk_MomocashCollectionForm.EnterPenalty" oninput="updateTotal()">
+                        <input type="number" class="form-control form-control-lg shadow-sm" id="modalPenalty" placeholder="@GlobalShared.EnterPenalty" oninput="updateTotal()">
                     </div>
 
                     <div class="input-group mb-4">
                         <span class="input-group-text bg-primary text-white">
-                            <i class="bi bi-calculator"></i>  @CashDesk_MomocashCollectionForm.TotalEntered
+                            <i class="bi bi-calculator"></i>  @GlobalShared.Total_entered
                         </span>
-                        <input type="text" class="form-control form-control-lg shadow-sm" id="modalTotalAmount" readonly value="@CashDesk_MomocashCollectionForm.xaf 0">
+                        <input type="text" class="form-control form-control-lg shadow-sm" id="modalTotalAmount" readonly value="@GlobalShared.XAF 0">
                     </div>
                 </div>
 
                 <div class="modal-footer d-flex justify-content-between">
                     <button type="button" class="btn btn-secondary btn-lg shadow-sm" data-bs-dismiss="modal">
-                        <i class="bi bi-x-circle"></i>  @CashDesk_MomocashCollectionForm.Cancel
+                        <i class="bi bi-x-circle"></i>  @GlobalShared.Cancel
                     </button>
                     <button type="button" class="btn btn-primary btn-lg shadow-sm" onclick="applyPayment()">
-                        <i class="bi bi-check-circle"></i>  @CashDesk_MomocashCollectionForm.Confirm
+                        <i class="bi bi-check-circle"></i>  @GlobalShared.Confirm
                     </button>
                 </div>
             </div>
@@ -1165,17 +1165,17 @@ else if (ViewBag.Operation == "repayment_momokash_collection")
 
         <button type="submit" id="submit" class="btn btn-primary d-inline-flex align-items-center" onclick="PostLoanRepayment()">
             <i class="fas fa-money-bill-wave me-1"></i>
-            @CashDesk_MomocashCollectionForm.RePay
+            @GlobalShared.Re_Pay
         </button>
 
         <button type="submit" id="submit" class="btn btn-secondary d-inline-flex align-items-center" onclick="Reprint()">
             <i class="fas fa-print me-1"></i>
-            @CashDesk_MomocashCollectionForm.RePrint
+            @GlobalShared.Re_print
         </button>
 
         <button type="reset" class="btn btn-outline-secondary d-inline-flex align-items-center">
             <i class="fas fa-sync-alt me-1"></i>
-            @CashDesk_MomocashCollectionForm.Reset
+            @GlobalShared.Reset
         </button>
     </div>
 

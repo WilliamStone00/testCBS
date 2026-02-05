@@ -1,0 +1,273 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Account_Negativity_Management" xml:space="preserve">
+    <value>Account Negativity Management</value>
+  </data>
+  <data name="Add_Management_Account" xml:space="preserve">
+    <value>Add Management Account</value>
+  </data>
+  <data name="Allow_Negative_Balance" xml:space="preserve">
+    <value>Allow Negative Balance</value>
+  </data>
+  <data name="All_negativity_changes_are_logged_with_user_timestamp_and_previous_settings" xml:space="preserve">
+    <value>All negativity changes are logged with user, timestamp, and previous settings</value>
+  </data>
+  <data name="Apply_settings_to_all_accounts_within_a_specific_class_Asset_Liability_Equity" xml:space="preserve">
+    <value>Apply settings to all accounts within a specific class (e.g., Asset, Liability, Equity)</value>
+  </data>
+  <data name="Auto_filled_from_the_existing_account_read_only" xml:space="preserve">
+    <value>Auto-filled from the existing account (read-only)</value>
+  </data>
+  <data name="Branch_Account_Details" xml:space="preserve">
+    <value>Branch Account Details</value>
+  </data>
+  <data name="Branch_Account_Node_Setup" xml:space="preserve">
+    <value>Branch Account Node Setup</value>
+  </data>
+  <data name="By_Account_Class" xml:space="preserve">
+    <value>By Account Class</value>
+  </data>
+  <data name="By_Specific_Account" xml:space="preserve">
+    <value>By Specific Account</value>
+  </data>
+  <data name="Certain_account_types_like_reserve_accounts_may_legally_require_positive_balances" xml:space="preserve">
+    <value>Certain account types (like reserve accounts) may legally require positive balances</value>
+  </data>
+  <data name="Choose_the_accounting_class" xml:space="preserve">
+    <value>Choose the accounting class (Asset, Liability, etc.)</value>
+  </data>
+  <data name="Choose_what_is_changing_for_this_update_request" xml:space="preserve">
+    <value>Choose what is changing for this update request</value>
+  </data>
+  <data name="Click_the_caret_to_expand_or_collapse_child_nodes" xml:space="preserve">
+    <value>Click the caret to expand or collapse child nodes</value>
+  </data>
+  <data name="Configure_negative_balance_allowances_for_branch_accounts_by_class_or_specific_account" xml:space="preserve">
+    <value>Configure negative balance allowances for branch accounts by class or specific account</value>
+  </data>
+  <data name="Create_mode_requirements" xml:space="preserve">
+    <value>Create mode requirements</value>
+  </data>
+  <data name="Disabling_negativity_for_active_accounts_may_block_transactions_that_would_create_overdrafts" xml:space="preserve">
+    <value>Disabling negativity for active accounts may block transactions that would create overdrafts</value>
+  </data>
+  <data name="Edit_Branch_Account" xml:space="preserve">
+    <value>Edit Branch  Account</value>
+  </data>
+  <data name="For_create_requests" xml:space="preserve">
+    <value>For create requests</value>
+  </data>
+  <data name="hierarchical_structure_for_the_selected_node" xml:space="preserve">
+    <value>hierarchical structure for the selected node</value>
+  </data>
+  <data name="Link_to_the_correct_chart_of_account_affiliate" xml:space="preserve">
+    <value>Link to the correct chart-of-account (affiliate)</value>
+  </data>
+  <data name="Management_Account_Negativity" xml:space="preserve">
+    <value>Management Account Negativity</value>
+  </data>
+  <data name="must_be_empty_Please_clear_the_selection" xml:space="preserve">
+    <value>must be empty. Please clear the selection</value>
+  </data>
+  <data name="must_be_left_empty_when_creating_a_new_account" xml:space="preserve">
+    <value>must be left empty when creating a new account</value>
+  </data>
+  <data name="Matches_against_affiliate_name" xml:space="preserve">
+    <value>Matches against affiliate name.</value>
+  </data>
+  <data name="Old_values_are_locked_to_prevent_accidental_edits" xml:space="preserve">
+    <value>Old values are locked to prevent accidental edits</value>
+  </data>
+  <data name="Only_enter_the_new_values_you_want_to_apply" xml:space="preserve">
+    <value>Only enter the new values you want to apply</value>
+  </data>
+  <data name="Provide_a_unique" xml:space="preserve">
+    <value>Provide a unique</value>
+  </data>
+  <data name="Provide_both_English_and_Français" xml:space="preserve">
+    <value>Provide both English and Français</value>
+  </data>
+  <data name="Regularly_review_negativity_settings_to_prevent_unauthorized_overdrafts" xml:space="preserve">
+    <value>Regularly review negativity settings to prevent unauthorized overdrafts</value>
+  </data>
+  <data name="Required_only_if_Update_Type_includes" xml:space="preserve">
+    <value>Required only if Update Type includes</value>
+  </data>
+  <data name="Root_Branch_Account_Setup" xml:space="preserve">
+    <value>Root Branch Account Setup</value>
+  </data>
+  <data name="Start_by_selecting_a_branch_to_view_and_manage_its_account_negativity_settings" xml:space="preserve">
+    <value>Start by selecting a branch to view and manage its account negativity settings</value>
+  </data>
+  <data name="Target_individual_branch_accounts_for_precise_negativity_control" xml:space="preserve">
+    <value>Target individual branch accounts for precise negativity control</value>
+  </data>
+  <data name="This_page_is_used_for_editing_of_branch_Name_Bothe_in_english_and_french" xml:space="preserve">
+    <value>This page is used for editing of branch Name Bothe in english and french</value>
+  </data>
+  <data name="Tips_for_Branch_Account" xml:space="preserve">
+    <value>Tips for Branch Account</value>
+  </data>
+  <data name="Tips_for_Root_Branch_Account" xml:space="preserve">
+    <value>Tips for Root Branch Account</value>
+  </data>
+  <data name="Use_By_Account_Class_to_apply_changes_to_multiple_accounts_simultaneously" xml:space="preserve">
+    <value>Use "By Account Class" to apply changes to multiple accounts simultaneously</value>
+  </data>
+  <data name="Use_the_filters_below_to_search_and_manage_Branch_Accounts" xml:space="preserve">
+    <value>Use the filters below to search and manage Branch Accounts</value>
+  </data>
+  <data name="Use_this_form_to_create_branch_specific_ledger_accounts_Ensure_the_Account_Number" xml:space="preserve">
+    <value>Use this form to create branch-specific ledger accounts. Ensure the Account Number is unique within the branch and the Affiliate (Chart of Account) is selected correctly</value>
+  </data>
+  <data name="Use_this_form_to_create_branch_specific_ledger_accounts_Ensure_the_Account_Number_is_unique_within_the_branch_and_the_Affiliate_Chart_of_Account_is_selected_correctly" xml:space="preserve">
+    <value>Use this form to create branch-specific ledger accounts. Ensure the Account Number is unique within the branch and the Affiliate (Chart of Account) is selected correctly</value>
+  </data>
+  <data name="Use_this_tool_to_manage_whether_accounts_can_have_negative_balances_Disabling_negativity_prevents_overdrafts" xml:space="preserve">
+    <value>Use this tool to manage whether accounts can have negative balances. Disabling negativity prevents overdrafts</value>
+  </data>
+  <data name="When_disabled_accounts_must_maintain_positive_balances_at_all_times" xml:space="preserve">
+    <value>When disabled, accounts must maintain positive balances at all times</value>
+  </data>
+  <data name="When_enabled_accounts_can_have_negative_balances_useful_for_overdraft_facilities" xml:space="preserve">
+    <value>When enabled, accounts can have negative balances (useful for overdraft facilities)</value>
+  </data>
+  <data name="When_enabled_accounts_can_have_negative_balances_When_disabled_all_balances_must_be_positive" xml:space="preserve">
+    <value>When enabled, accounts can have negative balances. When disabled, all balances must be positive</value>
+  </data>
+  <data name="Use_full_or_partial_affiliate_code_for_quick_lookup" xml:space="preserve">
+    <value>Use full or partial affiliate code for quick lookup.</value>
+  </data>
+  <data name="Choose_All_Active_Inactive_All_will_not_filter_by_active_state" xml:space="preserve">
+    <value>Choose All/Active/Inactive — `All` will not filter by active state.</value>
+  </data>
+  <data name="Toggle_date_filters_to_limit_by_creation_range_UTC" xml:space="preserve">
+    <value>Toggle date filters to limit by creation range (UTC)</value>
+  </data>
+  <data name="to_open_close_all_nodes_quickly" xml:space="preserve">
+    <value>to open close all nodes quickly</value>
+  </data>
+  <data name="Posting_nodes_are_labelled_with_a" xml:space="preserve">
+    <value>Posting nodes are labelled with a</value>
+  </data>
+  <data name="Posting_badge" xml:space="preserve">
+    <value>Posting badge</value>
+  </data>
+</root>

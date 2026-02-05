@@ -449,7 +449,7 @@
 
 
 <fieldset class="fieldset-custom mt-1">
-    <legend class="legend-chip">@CashDesk_LoanRepaymentSimulationForm.ComputedDetails</legend>
+    <legend class="legend-chip">@CashDeskRessource.ComputedDetails</legend>
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
         <button class="btn btn-outline-primary"
                 type="button"
@@ -457,7 +457,7 @@
                 data-bs-target="#computedDetailsSection"
                 aria-expanded="true"
                 aria-controls="computedDetailsSection">
-            @CashDesk_LoanRepaymentSimulationForm.ToggleSummary
+            @GlobalShared.Toggle_Summary
         </button>
     </div>
 
@@ -467,8 +467,8 @@
             <div class="col-12 col-md-6 col-xl-3">
                 <div class="stat-tile h-100">
                     <div class="stat-icon bg-success-subtle text-success">₵</div>
-                    <div class="stat-label">@CashDesk_LoanRepaymentSimulationForm.RefundAmount</div>
-                    <div class="stat-value" id="summaryCapital">0.0 @CashDesk_LoanRepaymentSimulationForm.XAF</div>
+                    <div class="stat-label">@GlobalShared.RefundAmount</div>
+                    <div class="stat-value" id="summaryCapital">0.0 @CashDeskRessource.XAF</div>
                 </div>
             </div>
 
@@ -476,8 +476,8 @@
             <div class="col-12 col-md-6 col-xl-3">
                 <div class="stat-tile h-100">
                     <div class="stat-icon bg-info-subtle text-info">%</div>
-                    <div class="stat-label">@CashDesk_LoanRepaymentSimulationForm.InterestAmount</div>
-                    <div class="stat-value" id="summaryInterest">0.0 @CashDesk_LoanRepaymentSimulationForm.XAF</div>
+                    <div class="stat-label">@GlobalShared.InterestAmount</div>
+                    <div class="stat-value" id="summaryInterest">0.0 @CashDeskRessource.XAF</div>
                 </div>
             </div>
 
@@ -489,7 +489,7 @@
                         @* Use text literal to avoid resource-key spacing issue *@
                         <text>VAT Amount (on Interest)</text>
                     </div>
-                    <div class="stat-value" id="summaryVat">0.0 @CashDesk_LoanRepaymentSimulationForm.XAF</div>
+                    <div class="stat-value" id="summaryVat">0.0 @CashDeskRessource.XAF</div>
                 </div>
             </div>
 
@@ -497,8 +497,8 @@
             <div class="col-12 col-md-6 col-xl-3">
                 <div class="stat-tile h-100">
                     <div class="stat-icon bg-secondary-subtle text-secondary">!</div>
-                    <div class="stat-label">@CashDesk_LoanRepaymentSimulationForm.PenaltyAmount</div>
-                    <div class="stat-value" id="summaryPenalty">0.0 @CashDesk_LoanRepaymentSimulationForm.XAF</div>
+                    <div class="stat-label">@GlobalShared.PenaltyAmount</div>
+                    <div class="stat-value" id="summaryPenalty">0.0 @CashDeskRessource.XAF</div>
                 </div>
             </div>
 
@@ -506,11 +506,11 @@
             <div class="col-12">
                 <div class="total-panel">
                     <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-2">
-                        <div class="text-dark-emphasis small fw-semibold">@CashDesk_LoanRepaymentSimulationForm.TotalRepaymentAmount</div>
-                        <div class="display-6 fw-bolder mb-0" id="summaryTotal">0.0 @CashDesk_LoanRepaymentSimulationForm.XAF</div>
+                        <div class="text-dark-emphasis small fw-semibold">@GlobalShared.Total_Repayment_Amount</div>
+                        <div class="display-6 fw-bolder mb-0" id="summaryTotal">0.0 @CashDeskRessource.XAF</div>
                     </div>
                     <div class="mt-1 small text-secondary">
-                        <text>@CashDesk_LoanRepaymentSimulationForm.Interest</text>
+                        <text>@GlobalShared.Interest</text>
                     </div>
                 </div>
             </div>
@@ -525,7 +525,7 @@
     <!-- Your existing table block is unchanged -->
     @* (Keep your current table markup exactly as you posted) *@
 
-    <legend class="legend-chip">@CashDesk_LoanRepaymentSimulationForm.LoanRepaymentFrom</legend>
+    <legend class="legend-chip">@CashDeskRessource.LoanRepaymentFrom</legend>
 
     <div class="card shadow-sm border-0 sim-card">
         <div class="card-body pb-2">
@@ -563,17 +563,17 @@
                 <table class="table table-sm align-middle table-hover sim-table">
                     <thead>
                         <tr>
-                            <th style="display:none;">@CashDesk_LoanRepaymentSimulationForm.LoanId</th>
-                            <th>@CashDesk_LoanRepaymentSimulationForm.Date</th>
-                            <th>@CashDesk_LoanRepaymentSimulationForm.LoanAmount</th>
-                            <th>@CashDesk_LoanRepaymentSimulationForm.Balance</th>
-                            <th>@CashDesk_LoanRepaymentSimulationForm.Interest</th>
-                            <th>@CashDesk_LoanRepaymentSimulationForm.VAT</th>
-                            <th>@CashDesk_LoanRepaymentSimulationForm.Penalty</th>
-                            <th>@CashDesk_LoanRepaymentSimulationForm.EnterCapital</th>
-                            <th>@CashDesk_LoanRepaymentSimulationForm.EnterInterest</th>
-                            <th>@CashDesk_LoanRepaymentSimulationForm.EnterPenalty</th>
-                            <th class="text-end">@CashDesk_LoanRepaymentSimulationForm.Total</th>
+                            <th style="display:none;">@GlobalShared.LoanId</th>
+                            <th>@GlobalShared.Date</th>
+                            <th>@GlobalShared.LoanAmount</th>
+                            <th>@GlobalShared.Balance</th>
+                            <th>@GlobalShared.Interest</th>
+                            <th>@GlobalShared.VAT</th>
+                            <th>@GlobalShared.Penalty</th>
+                            <th>@GlobalShared.EnterCapital</th>
+                            <th>@GlobalShared.EnterInterest</th>
+                            <th>@GlobalShared.EnterPenalty</th>
+                            <th class="text-end">@GlobalShared.Total</th>
                         </tr>
                     </thead>
                     <tbody id="loanRepaymentTable">

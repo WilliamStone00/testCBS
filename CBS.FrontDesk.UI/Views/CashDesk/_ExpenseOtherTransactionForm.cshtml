@@ -3,7 +3,7 @@
 
 <div class="form-wrapper">
     <fieldset class="fieldset-custom">
-        <legend>@CashDesk_ExpenseOtherTransactionForm.OtherPaymentExpensive</legend>
+        <legend>@CashDeskRessource.OtherPaymentExpenses</legend>
         <hr />
         <div class="change-group">
             <div class="row mt-2 gy-4">
@@ -12,7 +12,7 @@
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" id="isInterBranchCheck" onchange="toggleBranchDropdown()" />
                         <label class="form-check-label fw-semibold" for="isInterBranchCheck" id="interBranchLabel">
-                            🔄 Enable Inter-Branch Transaction
+                            🔄 @CashDeskRessource.Enable_Inter_Branch_Transaction
                         </label>
                     </div>
                 </div>
@@ -35,9 +35,9 @@
                 <!-- 🔹 Member Search -->
                 <div class="col-md-6">
                     <div class="input-group mb-3">
-                        <input type="text" id="manualSearchInput" class="form-control shadow-box" placeholder="@CashDesk_ExpenseOtherTransactionForm.EnterMemberReferenceNumber" />
+                        <input type="text" id="manualSearchInput" class="form-control shadow-box" placeholder="@CashDeskRessource.EnterMemberReferenceNumber" />
                         <button class="btn btn-outline-secondary" type="button" id="manualSearchInputbutton" onclick="GetMember()">
-                            @CashDesk_ExpenseOtherTransactionForm.Search
+                            @GlobalShared.Search
                         </button>
                     </div>
                 </div>
@@ -45,7 +45,7 @@
                 <!-- 🔹 Total Amount Display -->
                 <div class="col-md-6">
                     <div class="form-floating">
-                        <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@CashDesk_ExpenseOtherTransactionForm.TotalAmount: 0.0</span>
+                        <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@GlobalShared.Total_amount: 0.0</span>
                         <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0" />
                     </div>
                 </div>
@@ -57,13 +57,13 @@
                     <div class="col-6">
                         <div class="form-check">
                             @Html.RadioButtonFor(m => m.BulkDeposit.OtherTransaction.SourceType, "Member_Account", new { @class = "form-check-input", id = "memberAccountOption" })
-                            <label class="form-check-label" for="memberAccountOption">@CashDesk_ExpenseOtherTransactionForm.ItSAMember</label>
+                            <label class="form-check-label" for="memberAccountOption">@CashDeskRessource.ItSAMember</label>
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="form-check">
                             @Html.RadioButtonFor(m => m.BulkDeposit.OtherTransaction.SourceType, "Cash_Collected", new { @class = "form-check-input", id = "cashCollectionOption" })
-                            <label class="form-check-label" for="cashCollectionOption">@CashDesk_ExpenseOtherTransactionForm.NoneMemberOrStaff</label>
+                            <label class="form-check-label" for="cashCollectionOption">@CashDeskRessource.NoneMemberOrStaff</label>
                         </div>
                     </div>
                 </div>
@@ -73,9 +73,9 @@
                     <div class="form-floating shadow-sm">
                         @Html.DropDownListFor(m => m.BulkDeposit.OtherTransaction.EventCode,
                             new SelectList(ViewBag.EventCodes, "Value", "Text"),
-                            "---" + @CashDesk_ExpenseOtherTransactionForm.SelectEventItem + "---",
+                            "---" + @CashDeskRessource.SelectEventItem + "---",
                             new { @class = "form-control select2", @id = "BulkDeposit_OtherTransaction_EventCode" })
-                        <label for="BulkDeposit_OtherTransaction_EventCode">@CashDesk_ExpenseOtherTransactionForm.WhatEventItem</label>
+                        <label for="BulkDeposit_OtherTransaction_EventCode">@CashDeskRessource.WhatEventItem</label>
                         @Html.ValidationMessageFor(m => m.BulkDeposit.OtherTransaction.EventCode, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -84,7 +84,7 @@
                 <div class="col-md-12">
                     <div class="form-floating shadow-sm">
                         @Html.TextBoxFor(m => m.BulkDeposit.OtherTransaction.MemberName, new { @class = "form-control", @id = "Name" })
-                        <label for="MemberName">@CashDesk_ExpenseOtherTransactionForm.EnterIndividualName</label>
+                        <label for="MemberName">@CashDeskRessource.EnterIndividualName</label>
                         @Html.ValidationMessageFor(m => m.BulkDeposit.OtherTransaction.MemberName, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -93,7 +93,7 @@
                 <div class="col-md-12">
                     <div class="form-floating shadow-sm">
                         @Html.TextAreaFor(m => m.BulkDeposit.OtherTransaction.Narration, new { @class = "form-control", @style = "height: 80px;", @id = "Naration" })
-                        <label for="Naration">@CashDesk_ExpenseOtherTransactionForm.NarationOrDescription</label>
+                        <label for="Naration">@CashDeskRessource.NarationOrDescription</label>
                         @Html.ValidationMessageFor(m => m.BulkDeposit.OtherTransaction.Narration, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -109,15 +109,15 @@
                 <input type="hidden" name="customerId" value="" id="customerId" />
 
                 <button type="submit" id="submitExpense" class="btn btn-primary me-2" onclick="PostExpense()">
-                    <i class="fas fa-save me-1"></i> @CashDesk_ExpenseOtherTransactionForm.Post
+                    <i class="fas fa-save me-1"></i> @GlobalShared.Post
                 </button>
 
                 <button type="button" id="reprintExpense" class="btn btn-secondary me-2" onclick="Reprint()">
-                    <i class="fas fa-print me-1"></i> @CashDesk_ExpenseOtherTransactionForm.Reprint
+                    <i class="fas fa-print me-1"></i> @GlobalShared.Re_print
                 </button>
 
                 <button type="reset" class="btn btn-outline-secondary">
-                    <i class="fas fa-sync-alt me-1"></i> @CashDesk_ExpenseOtherTransactionForm.Reset
+                    <i class="fas fa-sync-alt me-1"></i> @GlobalShared.Reset
                 </button>
             </div>
         </div>

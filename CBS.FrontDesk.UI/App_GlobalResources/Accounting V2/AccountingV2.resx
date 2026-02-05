@@ -135,15 +135,6 @@
   <data name="Accountupdatedsuccessfully" xml:space="preserve">
     <value>Account updated successfully</value>
   </data>
-  <data name="Actions" xml:space="preserve">
-    <value>Actions</value>
-  </data>
-  <data name="Active" xml:space="preserve">
-    <value>Active</value>
-  </data>
-  <data name="Affiliate" xml:space="preserve">
-    <value>Affiliate</value>
-  </data>
   <data name="AffiliateAccountManagement" xml:space="preserve">
     <value>Affiliate Account Management</value>
   </data>
@@ -174,15 +165,6 @@
   <data name="Afterclicking" xml:space="preserve">
     <value>After clicking</value>
   </data>
-  <data name="All" xml:space="preserve">
-    <value>All</value>
-  </data>
-  <data name="ApplyFilter" xml:space="preserve">
-    <value>Apply Filter</value>
-  </data>
-  <data name="Branch" xml:space="preserve">
-    <value>Branch</value>
-  </data>
   <data name="BranchAndAffiliateFileUpload" xml:space="preserve">
     <value>Branch And Affiliate File Upload</value>
   </data>
@@ -201,9 +183,6 @@
   <data name="Class" xml:space="preserve">
     <value>Class</value>
   </data>
-  <data name="Click" xml:space="preserve">
-    <value>Click</value>
-  </data>
   <data name="Clickthe" xml:space="preserve">
     <value>Click the</value>
   </data>
@@ -212,9 +191,6 @@
   </data>
   <data name="COAtext2" xml:space="preserve">
     <value> Important: Changes to account structure may affect financial reporting and transactions.</value>
-  </data>
-  <data name="Code" xml:space="preserve">
-    <value>Account Number</value>
   </data>
   <data name="codetext" xml:space="preserve">
     <value>Use full or partial affiliate code for quick lookup.</value>
@@ -225,29 +201,14 @@
   <data name="codetext2" xml:space="preserve">
     <value>for each affiliate</value>
   </data>
-  <data name="CreatedDate" xml:space="preserve">
-    <value>Created Date</value>
-  </data>
   <data name="CreatedDates" xml:space="preserve">
     <value>Created Dates </value>
   </data>
   <data name="CreatedDatestext" xml:space="preserve">
     <value>Toggle date filters to limit by creation range (UTC)</value>
   </data>
-  <data name="CreatedFrom" xml:space="preserve">
-    <value>Created From</value>
-  </data>
-  <data name="CreatedTo" xml:space="preserve">
-    <value>Created To</value>
-  </data>
-  <data name="Deleted" xml:space="preserve">
-    <value>Deleted</value>
-  </data>
   <data name="Depth" xml:space="preserve">
     <value>Depth</value>
-  </data>
-  <data name="English" xml:space="preserve">
-    <value>English</value>
   </data>
   <data name="fileuploadtext1" xml:space="preserve">
     <value>Sellect checkbox choice, if is Affiliate then choose affeliate account if not choose branch</value>
@@ -260,9 +221,6 @@
   </data>
   <data name="HeadOffice" xml:space="preserve">
     <value>Head Office</value>
-  </data>
-  <data name="Inactive" xml:space="preserve">
-    <value>Inactive</value>
   </data>
   <data name="IncludeDeleted" xml:space="preserve">
     <value>Include Deleted</value>
@@ -285,9 +243,6 @@
   <data name="ModifiedDate" xml:space="preserve">
     <value>Modified Date</value>
   </data>
-  <data name="Name" xml:space="preserve">
-    <value>Name</value>
-  </data>
   <data name="Nameen" xml:space="preserve">
     <value>Name (English)</value>
   </data>
@@ -306,14 +261,8 @@
   <data name="NamingConventiontext" xml:space="preserve">
     <value> Use clear and consistent naming in both English and French for all accounts.</value>
   </data>
-  <data name="No" xml:space="preserve">
-    <value>No</value>
-  </data>
   <data name="ParentId" xml:space="preserve">
     <value>Parent Id</value>
-  </data>
-  <data name="Path" xml:space="preserve">
-    <value>Path</value>
   </data>
   <data name="PCMFCAMCULLDetails" xml:space="preserve">
     <value>PCMF CAMCULL Details</value>
@@ -330,35 +279,20 @@
   <data name="PostingRightstext" xml:space="preserve">
     <value>Only leaf-level accounts (with no children) should allow transaction posting.</value>
   </data>
-  <data name="Refresh" xml:space="preserve">
-    <value>Refresh</value>
-  </data>
   <data name="RefreshData" xml:space="preserve">
     <value>Refresh Data</value>
   </data>
   <data name="RefreshDataText" xml:space="preserve">
     <value>Use the refresh button to ensure you're viewing the latest account structure</value>
   </data>
-  <data name="Reset" xml:space="preserve">
-    <value>Reset</value>
-  </data>
   <data name="resettext" xml:space="preserve">
     <value>Use the reset button to clear all inputs and start fresh.</value>
-  </data>
-  <data name="Save" xml:space="preserve">
-    <value>Save</value>
-  </data>
-  <data name="SaveChanges" xml:space="preserve">
-    <value>Save Changes</value>
   </data>
   <data name="SaveChangestext" xml:space="preserve">
     <value> Remember to save after making any modifications to account details.</value>
   </data>
   <data name="SaveorUpdate" xml:space="preserve">
     <value>Save or Update</value>
-  </data>
-  <data name="Search" xml:space="preserve">
-    <value>Search</value>
   </data>
   <data name="SearchAffiliate" xml:space="preserve">
     <value>Search Affiliate</value>
@@ -374,9 +308,6 @@
   </data>
   <data name="ShowCreatedDateFilters" xml:space="preserve">
     <value>Show Created Date Filters</value>
-  </data>
-  <data name="Status" xml:space="preserve">
-    <value>Status</value>
   </data>
   <data name="Statustext" xml:space="preserve">
     <value>Choose All/Active/Inactive — `All` will not filter by active state.</value>
@@ -417,19 +348,13 @@
   <data name="text12" xml:space="preserve">
     <value> Please ensure Branch or Affiliate as well file to be uploaded are correctly set before uploading.</value>
   </data>
-  <data name="Tips" xml:space="preserve">
-    <value>Tips</value>
-  </data>
   <data name="Unchecked" xml:space="preserve">
     <value>Unchecked</value>
   </data>
-  <data name="Update" xml:space="preserve">
-    <value>Update</value>
+  <data name="Code" xml:space="preserve">
+    <value>Account Number</value>
   </data>
-  <data name="Upload" xml:space="preserve">
-    <value>Upload</value>
-  </data>
-  <data name="Yes" xml:space="preserve">
-    <value>Yes</value>
+  <data name="Affiliate" xml:space="preserve">
+    <value>Affiliate</value>
   </data>
 </root>

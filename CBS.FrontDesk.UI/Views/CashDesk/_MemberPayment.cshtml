@@ -4,9 +4,9 @@
     <table class="table table-hover" id="myDataTableT">
         <thead class="table-light">
             <tr>
-                <th>@CashDesk_MemberPayment.Amount</th>
-                <th>@CashDesk_MemberPayment.Total</th>
-                <th>@CashDesk_MemberPayment.confirm</th>
+                <th>@GlobalShared.Amount</th>
+                <th>@GlobalShared.Total</th>
+                <th>@GlobalShared.Confirm</th>
             </tr>
         </thead>
         <tbody>
@@ -27,13 +27,13 @@
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="1" style="text-align: right;"><strong>@CashDesk_MemberPayment.Total:</strong></td>
+                <td colspan="1" style="text-align: right;"><strong>@GlobalShared.Total:</strong></td>
                 <td style="display:none;"></td>
                 <td id="tableTotal">0</td>
                 <td></td>
             </tr>
             <tr>
-                <td colspan="1" style="text-align: right;"><strong>@CashDesk_MemberPayment.Difference:</strong></td>
+                <td colspan="1" style="text-align: right;"><strong>@GlobalShared.Difference:</strong></td>
                 <td id="tableBalance">0</td>
                 <td></td>
             </tr>
