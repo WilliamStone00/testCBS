@@ -72,10 +72,6 @@
             <i class="mdi mdi-cog-outline me-2"></i> End Of Year Closure
         </h1>
 
-        @*<div class="alert alert-info mt-3 py-2">
-                <i class="mdi mdi-information-outline me-1"></i>
-                Use the filters below to search and review journal entries efficiently.
-            </div>*@
     </div>
 </div>
 
@@ -90,37 +86,12 @@
     <div id="collapseFilterTips" class="collapse">
         <div class="card-body">
             <ul class="mb-0">
-                @*<li><strong>Branch Filter:</strong> Check the box to enable branch selection. You can show or hide it as needed.</li>
-                    <li><strong>Operation Type:</strong> Choose whether to view <em>Cash In</em> or <em>Cash Out</em> operations.</li>
-                    <li><strong>Reconciliation Status:</strong> Filter between <em>Temporary</em> or <em>Reconciled</em> journal entries.</li>
-                    <li><strong>Reference:</strong> Enter a reference number or keyword to search for specific transactions.</li>
-                    <li><strong>Date Filters:</strong> Use the toggle to show or hide accounting and creation date filters. You can filter by range for better results.</li>
-                    <li><strong>Apply Filters:</strong> Click <em>Search</em> to load matching results in the table below.</li>
-                    <li><strong>Reset Filters:</strong> Use the reset button to clear all filters and start a new search.</li>
-                    <li><strong>Tip:</strong> Combine filters (e.g., Branch + Date) for more precise results.</li>*@
             </ul>
         </div>
     </div>
 </div>
 <div class="workflow-header">
-    @*<div class="row text-center">
-            <div class="col">
-                <small>FISCAL YEAR</small>
-                <div class="fw-bold fs-5">2025</div>
-            </div>
-            <div class="col">
-                <small>CURRENT STATUS</small>
-                <div class="badge bg-light text-primary fw-bold">IN PROGRESS</div>
-            </div>
-            <div class="col">
-                <small>BRANCH</small>
-                <div class="fw-bold">Head Office</div>
-            </div>
-            <div class="col">
-                <small>INITIATED BY</small>
-                <div class="fw-bold">John Doe</div>
-            </div>
-        </div>*@
+   
 
     <hr>
 
@@ -282,36 +253,109 @@
 
 
 
+
     $(document).ready(function () {
-        loadBranchAccountsOnPageLoad();
+
+        // Load HO Result GL on page load
+        loadHeadOfficeResultGl();
+
+        // Load Branch Result GL only when button is clicked
+        $('#btnLoadBranchResultGl').on('click', function () {
+            loadBranchResultGl();
+        });
     });
 
-    function loadBranchAccountsOnPageLoad() {
+    function loadBranchResultGl() {
+
+        const branchId = $('#BranchIdcl').val();
+
+        if (!branchId) {
+            appalert("⚠️ Branch is required to load Branch Result GL.", 2, 1);
+            return;
+        }
 
         $.ajax({
             url: '/EndOfYearClosure/GetAccounts',
             type: 'GET',
             dataType: 'json',
+            data: {
+                branchId: branchId,
+                isHeadOffice: false
+            },
 
             success: function (response) {
 
                 if (!response.success || !response.data) {
-                    appalert(response.message || "⚠️ No accounts found for this branch.", 2, 1);
+                    appalert(response.message || "⚠️ No branch accounts found.", 2, 1);
                     return;
                 }
 
-                const accounts = response.data;
-
-                // Populate both dropdowns
-                //populateGLDropdown("#HoLiaisonGlId", accounts);
-                populateGLDropdown("#HoResultGlId", accounts);
+                populateGLDropdown("#BranchResultGlId", response.data);
             },
 
             error: function () {
-                appalert("❌ Error loading GL accounts.", 3, 1);
+                appalert("❌ Error loading Branch Result GL accounts.", 3, 1);
             }
         });
     }
+
+    function loadHeadOfficeResultGl() {
+
+        $.ajax({
+            url: '/EndOfYearClosure/GetAccounts',
+            type: 'GET',
+            dataType: 'json',
+            data: {
+                isHeadOffice: true
+            },
+
+            success: function (response) {
+
+                if (!response.success || !response.data) {
+                    appalert(response.message || "⚠️ No head office accounts found.", 2, 1);
+                    return;
+                }
+
+                populateGLDropdown("#HoResultGlId", response.data);
+            },
+
+            error: function () {
+                appalert("❌ Error loading Head Office Result GL accounts.", 3, 1);
+            }
+        });
+    }
+
+
+    //$(document).ready(function () {
+    //    loadBranchAccountsOnPageLoad();
+    //});
+
+    //function loadBranchAccountsOnPageLoad() {
+
+    //    $.ajax({
+    //        url: '/EndOfYearClosure/GetAccounts',
+    //        type: 'GET',
+    //        dataType: 'json',
+
+    //        success: function (response) {
+
+    //            if (!response.success || !response.data) {
+    //                appalert(response.message || "⚠️ No accounts found for this branch.", 2, 1);
+    //                return;
+    //            }
+
+    //            const accounts = response.data;
+
+    //            // Populate both dropdowns
+    //            //populateGLDropdown("#HoLiaisonGlId", accounts);
+    //            populateGLDropdown("#HoResultGlId", accounts);
+    //        },
+
+    //        error: function () {
+    //            appalert("❌ Error loading GL accounts.", 3, 1);
+    //        }
+    //    });
+    //}
 
     function populateGLDropdown(selector, accounts) {
         const $ddl = $(selector);
@@ -1312,7 +1356,17 @@ function loadYearClosureStatus(branchId, accountingYearId) {
         const branchData = $branch.select2('data')[0] || {};
         const branchVal = branchData.id || "";
         const branchText = branchData.text || "Head Office";
+        // ================= Branch Result GL =================
+        const $branchResultGL = $form.find('#BranchResultGlId');
+        const branchResultData = $branchResultGL.select2('data')[0];
 
+        if (!branchResultData || !branchResultData.id) {
+            appalert("⚠️ Please select a Branch Result GL.", 3, 1);
+            return false;
+        }
+
+        const branchResultVal = branchResultData.id;
+        const branchResultText = branchResultData.text;
         // ================= Head Office Result GL =================
         const $hoResultGL = $form.find('#HoResultGlId');
         const hoResultData = $hoResultGL.select2('data')[0];
@@ -1325,16 +1379,7 @@ function loadYearClosureStatus(branchId, accountingYearId) {
         const hoResultVal = hoResultData.id;
         const hoResultText = hoResultData.text;
 
-        // ================= Accounting Date =================
-        const accountingDate = $form.find('.accounting-date')
-            .map(function () { return this.value; })
-            .get()
-            .find(v => v);
 
-        if (!accountingDate) {
-            appalert("⚠️ Please select an accounting date.", 3, 1);
-            return false;
-        }
 
         // ================= Hidden Fields =================
         const accountingYear = $form.find('#AccountingYear').val() || "";
@@ -1351,11 +1396,11 @@ function loadYearClosureStatus(branchId, accountingYearId) {
         const message = `
         ${dangerWarning}
             <p>Please review the details before confirming:</p>
-            <table class="table table-sm table-bordered">
+           <table class="table table-sm table-bordered">
                 <tbody>
                     <tr><th>Branch</th><td>${branchText}</td></tr>
+                    <tr><th>Branch Result GL</th><td>${branchResultText}</td></tr>
                     <tr><th>Head Office Result GL</th><td>${hoResultText}</td></tr>
-                    <tr><th>Accounting Date</th><td>${accountingDate}</td></tr>
                 </tbody>
             </table>
             <div class="form-check mt-3">
@@ -1379,9 +1424,8 @@ function loadYearClosureStatus(branchId, accountingYearId) {
                 const formData = new FormData();
                 formData.append("BranchId", branchVal);
                 formData.append("HoResultGlId", hoResultVal);
-                formData.append("AccountingDate", accountingDate);
                 formData.append("AccountingYear", accountingYear);
-
+                formData.append("BranchResultGlId", branchResultVal);
                 $.ajax({
                     type: 'POST',
                     url: $form.attr('action'),

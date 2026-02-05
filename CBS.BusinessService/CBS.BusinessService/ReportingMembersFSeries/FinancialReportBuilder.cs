@@ -103,19 +103,22 @@ namespace CBS.BusinessService.ReportingMembersFSeries
         {
             var bra = await GetBranchandbank();
             var cus = await GetCustomer(parameters.MemberReference);
-
-            // ✅ Correct call
-            var accountStatement =
-                await _reportService.GetCustomerTransactionsByAccountNumber(parameters);
+            var accountStatement = await _reportService.GetCustomerTransactionsByAccountNumber(parameters);
 
             var rows = new List<TransactionStaement>();
 
-            var transactions = accountStatement?.Transactions ?? new List<TransactionRaw>();
-            var summary = accountStatement?.summary;
+            var openingBalance = accountStatement?.OpeningBalance ?? 0m;
 
-            decimal totalDebit = summary?.TotalDebit ?? 0;
-            decimal totalCredit = summary?.TotalCredit ?? 0;
-            decimal closingBalance = summary?.ClosingBalance ?? 0;
+            // ✅ Order transactions ONCE
+            var transactions = (accountStatement?.Transactions ?? new List<TransactionRaw>())
+                .OrderBy(x => x.AccountingDate)
+                .ThenBy(x => x.TransactionReference)
+                .ToList();
+
+            // ✅ Generate logo once
+            var logoPath = bra != null
+                ? PaymentReceiptMapping.GenerateAndSaveBankLogoImage(bra.Bank?.LogoUrl, bra.Name)
+                : "";
 
             // =========================
             // CASE 1: NO TRANSACTIONS
@@ -131,12 +134,16 @@ namespace CBS.BusinessService.ReportingMembersFSeries
                     Currreccy = "Central African CFA franc",
                     PrintedBy = GetUserFullName(),
                     PrintedOn = DateTime.Now.ToString("dd/MM/yyyy"),
-                    Telephone = cus?.Phone ?? "N/A",
-                    OpeningBalance = accountStatement?.OpeningBalance.ToString("N1") ?? "0",
-                    TotalDebit = "0",
-                    TotalCredit = "0",
-                    ClosingBalance = 0,
-                    BalanceasOf = $"Balance as of {parameters.DateTo:dd/MM/yyyy}: 0"
+                    Telephone = cus?.Phone ?? "-",
+
+                    OpeningBalance = openingBalance.ToString("N1"),
+                    Balance = openingBalance,
+                    ClosingBalance = openingBalance,
+
+                    TotalDebit = "0.0",
+                    TotalCredit = "0.0",
+                    TotalOperation = "0",
+                    BalanceasOf = $"Balance as of {parameters.DateTo:dd/MM/yyyy}: {openingBalance:N1}"
                 });
 
                 return rows;
@@ -145,53 +152,55 @@ namespace CBS.BusinessService.ReportingMembersFSeries
             // =========================
             // CASE 2: TRANSACTIONS EXIST
             // =========================
-            foreach (var transaction in transactions)
+            decimal runningBalance = openingBalance;
+            decimal totalDebit = 0m;
+            decimal totalCredit = 0m;
+
+            foreach (var t in transactions)
             {
+                var balanceBefore = runningBalance;
+
+                runningBalance += t.Credit - t.Debit;
+                totalDebit += t.Debit;
+                totalCredit += t.Credit;
+
                 rows.Add(new TransactionStaement
                 {
                     // -------- Account / Customer --------
-                    AccountNumber = parameters.AccountId ?? transaction.AccountNumber,
-                    AccountName = transaction.AccountType ?? "N/A",
-                    CustomerId = cus?.CustomerId ?? "N/A",
-                    CustomerName = cus != null ? $"{cus.FirstName} {cus.LastName}" : "N/A",
-                    Telephone = cus?.Phone ?? "N/A",
+                    AccountNumber = parameters.AccountId ?? t.AccountNumber,
+                    AccountName = t.AccountType ?? "-",
+                    CustomerId = cus?.CustomerId ?? "-",
+                    CustomerName = cus != null ? $"{cus.FirstName} {cus.LastName}" : "-",
+                    Telephone = cus?.Phone ?? "-",
                     Currreccy = "Central African CFA franc",
                     Village = cus?.town ?? "",
 
                     // -------- Branch --------
                     BranchName = GetBranchName(),
                     BranchCode = GetBranchCode(),
-                    HeadOfficeName = GetBankName(),
+                    HeadOfficeName = GetBankName(), 
 
                     // -------- Transaction --------
-                    Date = transaction.CreatedDate,
-                    Time = transaction.CreatedDate,
+                    Date = t.AccountingDate,
+                    Time = t.AccountingDate,
                     PrintedOn = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"),
-
-                    Description = transaction.Operation,
-                    Reference = transaction.TransactionReference,
-                    Representative = string.IsNullOrWhiteSpace(transaction.DepositorName)
-                                        ? "N/A"
-                                        : transaction.DepositorName,
-
-                    DepositorName = string.IsNullOrWhiteSpace(transaction.DepositorName)
-                                        ? "N/A"
-                                        : transaction.DepositorName,
+                    Description = t.Operation,
+                    Reference = t.TransactionReference,
+                    Representative = string.IsNullOrWhiteSpace(t.DepositorName) ? "-" : t.DepositorName,
+                    DepositorName = string.IsNullOrWhiteSpace(t.DepositorName) ? "-" : t.DepositorName,
 
                     // -------- Amounts --------
-                    Debit = transaction.Debit,
-                    Credit = transaction.Credit,
-                    Balance = transaction.Balance,
-                    OpeningBalance = transaction.PreviousBalance.ToString("N1"),
+                    Debit = t.Debit,
+                    Credit = t.Credit,
+                    OpeningBalance = balanceBefore.ToString("N1"),
+                    Balance = runningBalance,
 
-                    // -------- Totals (FROM SUMMARY) --------
+                    // -------- Totals (CONSISTENT) --------
                     TotalDebit = totalDebit.ToString("N1"),
                     TotalCredit = totalCredit.ToString("N1"),
                     TotalOperation = transactions.Count.ToString(),
-
-                    ClosingBalance = closingBalance,
-                    BalanceasOf =
-                        $"Balance as of {parameters.DateTo:dd/MM/yyyy}: {closingBalance:N1}",
+                    ClosingBalance = accountStatement.summary.ClosingBalance,
+                    BalanceasOf = $"Balance as of {parameters.DateTo:dd/MM/yyyy}: {runningBalance:N1}",
 
                     // -------- Report --------
                     Printedfrom = parameters.DateFrom.ToString("dd/MM/yyyy"),
@@ -200,10 +209,7 @@ namespace CBS.BusinessService.ReportingMembersFSeries
                     PrintedBy = GetUserFullName(),
                     Address = cus?.Address ?? "",
                     HeadOfficeAddress = bra?.Address ?? "",
-                    Logo = bra != null
-                        ? PaymentReceiptMapping.GenerateAndSaveBankLogoImage(
-                            bra.Bank?.LogoUrl, bra.Name)
-                        : ""
+                    Logo = logoPath
                 });
             }
 
