@@ -20,7 +20,7 @@
                             new { @class = "form-control select2", id = "UserId", @search = "true" }
                         )
                         @Html.ValidationMessageFor(m => m.BlockRequest.UserId, "", new { @class = "text-danger" })
-                        <label for="UserId">@GlobalShared.Select_User</label>
+                        <label for="UserId">@GlobalShared.userAccount</label>
                     </div>
                 </div>
 
@@ -29,7 +29,7 @@
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.BlockRequest.UserIP, new { @class = "form-control", id = "BlockRequest_UserIP", placeholder = "192.168.1.1 or IPv6" })
                         @Html.ValidationMessageFor(m => m.BlockRequest.UserIP, "", new { @class = "text-danger" })
-                        <label for="BlockRequest_UserIP">@BlacklistUserRessource.IP_Address</label>
+                        <label for="BlockRequest_UserIP">@BlacklistUserRessource.Blocked_IPs</label>
                         <span id="ipError" class="text-danger small d-block mt-1" style="display: none;"></span>
                     </div>
                 </div>
@@ -39,7 +39,7 @@
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.BlockRequest.NumberOfDays, new { @class = "form-control", type = "number", min = 1, max = 365 })
                         @Html.ValidationMessageFor(m => m.BlockRequest.NumberOfDays, "", new { @class = "text-danger" })
-                        <label for="NumberOfDays">@BlacklistUserRessource.Duration_Days</label>
+                        <label for="NumberOfDays">@BlacklistUserRessource.Set_a_reasonable_block_duration_long_enough_to_deter_abuse</label>
                     </div>
                 </div>
 
