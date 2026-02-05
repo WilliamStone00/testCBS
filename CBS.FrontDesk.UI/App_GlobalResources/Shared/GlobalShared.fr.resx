@@ -147,9 +147,6 @@
   <data name="AddNew" xml:space="preserve">
     <value>Ajouter un nouveau</value>
   </data>
-  <data name="AddNewRequest" xml:space="preserve">
-    <value>Ajouter une nouvelle demande</value>
-  </data>
   <data name="All" xml:space="preserve">
     <value />
   </data>
@@ -452,9 +449,6 @@
   </data>
   <data name="Pending" xml:space="preserve">
     <value>En attente</value>
-  </data>
-  <data name="PendingRequests" xml:space="preserve">
-    <value>Demandes en attente</value>
   </data>
   <data name="PhotoPreview" xml:space="preserve">
     <value>Aperçu de la photo</value>
@@ -1231,6 +1225,1008 @@
     <value />
   </data>
   <data name="Approved_by" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Bank_Name" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Telephone" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Date_of_creation" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Bank_Code" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Use" xml:space="preserve">
+    <value />
+  </data>
+  <data name="and" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Minimum_12_characters" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Use_digits_only" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Affiliate_Account" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Old_values" xml:space="preserve">
+    <value />
+  </data>
+  <data name="min_length_12" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Digits_only" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Chart_Of_Account" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Posting" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Depth" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Posting_Allowed" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Summary" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Apply_Changes" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Branch_Account" xml:space="preserve">
+    <value />
+  </data>
+  <data name="First_select_Branch" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Specific_Account" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Account_Class" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Branch_Selection" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Compliance" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Audit_Trail" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Risk_Management" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Bulk_Operations" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Disallow_Negative" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Allow_Negative" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Created_Dates " xml:space="preserve">
+    <value />
+  </data>
+  <data name="New_Configuration" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Vault_Account" xml:space="preserve">
+    <value />
+  </data>
+  <data name="All_Statuses" xml:space="preserve">
+    <value />
+  </data>
+  <data name="GL_Account_ID" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Tips_Important_Notes" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Vault" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Real_time" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Till_Cash_in_Hand" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Revenue" xml:space="preserve">
+    <value />
+  </data>
+  <data name="HO_Liaison" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Partner" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Backup" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Transfer_Commission" xml:space="preserve">
+    <value />
+  </data>
+  <data name="VAT_Account" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Cash_In_Commission" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Cash_Out_Commission" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Interest_Income" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Operation_Status" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Income_GL_to_record_application_form_charges_when_not_mapped_at_product_operation_level" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Head_Office_Liaison_Account" xml:space="preserve">
+    <value />
+  </data>
+  <data name="MoMoCash_Commission_Account" xml:space="preserve">
+    <value />
+  </data>
+  <data name="MoMoCash_Settlement_Account" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Revenue_Account" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Partner_Account" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CamCCUL_Account" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Implication" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Best_Practice" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Update_Watermark" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Identity" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Immatriculation_number" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Box_code" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Tax_Payer_Number" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Branch_Information" xml:space="preserve">
+    <value>Information de la branche</value>
+  </data>
+  <data name="Branch_Office" xml:space="preserve">
+    <value>Agence</value>
+  </data>
+  <data name="Bank_Initial" xml:space="preserve">
+    <value>Banque initiale</value>
+  </data>
+  <data name="Motto" xml:space="preserve">
+    <value>Motto</value>
+  </data>
+  <data name="Office_type" xml:space="preserve">
+    <value>Type d'agence</value>
+  </data>
+  <data name="Registration_number" xml:space="preserve">
+    <value>Numéro d'enrégistrement</value>
+  </data>
+  <data name="Tell" xml:space="preserve">
+    <value>Tenue de caisse</value>
+  </data>
+  <data name="WebSite" xml:space="preserve">
+    <value>Site Web</value>
+  </data>
+  <data name="Head_office_address" xml:space="preserve">
+    <value>Adresse du siège social</value>
+  </data>
+  <data name="Head_office_telephone_number" xml:space="preserve">
+    <value>Numéro de téléphone du siège social</value>
+  </data>
+  <data name="PBox" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Tax" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Registration" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Head_Office" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Dates" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Branding" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Contact" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Category_name" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Select_chart_of_account" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Apply_filters" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Completed" xml:space="preserve">
+    <value>Terminé</value>
+  </data>
+  <data name="Current_balance" xml:space="preserve">
+    <value>Solde actuel</value>
+  </data>
+  <data name="Destination_type" xml:space="preserve">
+    <value>Type de destination</value>
+  </data>
+  <data name="Filter_by_branch_name" xml:space="preserve">
+    <value>Filtrer par nom d'agence</value>
+  </data>
+  <data name="Filter_by_status" xml:space="preserve">
+    <value>Filtrer par statut</value>
+  </data>
+  <data name="Secure" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Approval_date" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Created_by" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Transfer_date" xml:space="preserve">
+    <value>Date de transfert</value>
+  </data>
+  <data name="Transfer_details" xml:space="preserve">
+    <value>Détails du transfert</value>
+  </data>
+  <data name="Transfer_Status" xml:space="preserve">
+    <value>Statut de Transfere</value>
+  </data>
+  <data name="Total_accounts" xml:space="preserve">
+    <value>Nombre total de comptes</value>
+  </data>
+  <data name="Total_balance" xml:space="preserve">
+    <value>Solde total</value>
+  </data>
+  <data name="Total_members" xml:space="preserve">
+    <value>Nombre total de membres</value>
+  </data>
+  <data name="Total_volume" xml:space="preserve">
+    <value>Volume total</value>
+  </data>
+  <data name="Source_account" xml:space="preserve">
+    <value>Compte source</value>
+  </data>
+  <data name="Source_account_type" xml:space="preserve">
+    <value>Type de compte source</value>
+  </data>
+  <data name="Source_balance" xml:space="preserve">
+    <value>Solde source</value>
+  </data>
+  <data name="Source_type" xml:space="preserve">
+    <value>Type de source</value>
+  </data>
+  <data name="Simulation_Title" xml:space="preserve">
+    <value>Titre de la simulation</value>
+  </data>
+  <data name="Simulation_volume" xml:space="preserve">
+    <value>Volume de simulation</value>
+  </data>
+  <data name="Simulation_details" xml:space="preserve">
+    <value>Détails de la simulation</value>
+  </data>
+  <data name="Transaction_id" xml:space="preserve">
+    <value>ID de transaction</value>
+  </data>
+  <data name="Transaction_Reference" xml:space="preserve">
+    <value>Transaction Reference</value>
+  </data>
+  <data name="Approval_information" xml:space="preserve">
+    <value>Informations d'approbation</value>
+  </data>
+  <data name="Approval_by" xml:space="preserve">
+    <value>Approbation par</value>
+  </data>
+  <data name="Available_actions" xml:space="preserve">
+    <value>Actions disponibles</value>
+  </data>
+  <data name="No_Valid_Accounts" xml:space="preserve">
+    <value>No Valid Accounts</value>
+  </data>
+  <data name="Select_status" xml:space="preserve">
+    <value>Sélectionner le statut</value>
+  </data>
+  <data name="Reviewed" xml:space="preserve">
+    <value>Examiné</value>
+  </data>
+  <data name="Powered_by" xml:space="preserve">
+    <value>Propulsé par</value>
+  </data>
+  <data name="Processing_approval" xml:space="preserve">
+    <value>Approbation du traitement</value>
+  </data>
+  <data name="Processing_bulk_operation" xml:space="preserve">
+    <value>Traitement de l'opération en masse</value>
+  </data>
+  <data name="Select_Operation_Scope" xml:space="preserve">
+    <value>Sélectionner la portée de l'opération</value>
+  </data>
+  <data name="Not_provided" xml:space="preserve">
+    <value>Non fourni</value>
+  </data>
+  <data name="Operation_information" xml:space="preserve">
+    <value>Informations sur l'opération</value>
+  </data>
+  <data name="Operation_members" xml:space="preserve">
+    <value>Membres de l'opération</value>
+  </data>
+  <data name="Perform_actions" xml:space="preserve">
+    <value>Effectuer des actions</value>
+  </data>
+  <data name="Amount_to_debit" xml:space="preserve">
+    <value>Montant à débiter</value>
+  </data>
+  <data name="Irreversible" xml:space="preserve">
+    <value>Irréversible</value>
+  </data>
+  <data name="Member_Information" xml:space="preserve">
+    <value>Informations sur le membre</value>
+  </data>
+  <data name="Member_name" xml:space="preserve">
+    <value>Nom du membre</value>
+  </data>
+  <data name="Member_ref" xml:space="preserve">
+    <value>Référence du membre</value>
+  </data>
+  <data name="Member_reference" xml:space="preserve">
+    <value>Référence du membre</value>
+  </data>
+  <data name="Net_balance" xml:space="preserve">
+    <value>Solde net</value>
+  </data>
+  <data name="Balance_Information" xml:space="preserve">
+    <value>Informations de solde</value>
+  </data>
+  <data name="Destination_account" xml:space="preserve">
+    <value>Compte de destination</value>
+  </data>
+  <data name="Complete_history" xml:space="preserve">
+    <value>Historique complet</value>
+  </data>
+  <data name="Simulation_type" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Approval_status" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Expected_balance " xml:space="preserve">
+    <value>Balance Actuel</value>
+  </data>
+  <data name="Actual_balance" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Account_type" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Required" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Simulation" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Input_Method" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Manual_Entry" xml:space="preserve">
+    <value />
+  </data>
+  <data name="File_Upload" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Select_operation_type" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Please_select_a_branch" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rules" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Add_Account" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Operation_Parameters" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Run_Simulation" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Audit" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Accounting" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Please_select_a_valid_file" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Download_Template" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Upload_a_CSV_Excel_containing_accounts_and_amounts_Max_size" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Select_Operation_File" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Uploaded_File_Reference" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Operation_Parameters_File" xml:space="preserve">
+    <value />
+  </data>
+  <data name="File_Content_Preview" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Cash_Source" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Top_Up" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Operation_Mode" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Contribution" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Quick_Guide" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Accepted" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Failed" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Filter_by_between_dates" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Active_filters_applied" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Date_Range" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Apply_Branch" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Pro_Tip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Request_Type" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Request_Comment" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Add_new_request" xml:space="preserve">
+    <value>Ajouter une nouvelle demande</value>
+  </data>
+  <data name="Pending_requests" xml:space="preserve">
+    <value>Demandes en attente</value>
+  </data>
+  <data name="Request_note" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Total_amount" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Approval_note" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Amount_To_be_Transfer" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Requested_by" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Vault_details" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Vault_id" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Vault_informations" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Vault_operations" xml:space="preserve">
+    <value />
+  </data>
+  <data name="View_all_requests" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Approval_management" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Add_request" xml:space="preserve">
+    <value />
+  </data>
+  <data name="View_requests" xml:space="preserve">
+    <value />
+  </data>
+  <data name="HELP_TIPS" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Balance" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Vault_name" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Amount_received" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Amount_given" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Control_balance" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Add_new_vault" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Add_cash_change" xml:space="preserve">
+    <value />
+  </data>
+  <data name="BCode" xml:space="preserve">
+    <value />
+  </data>
+  <data name="VAULTS" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Uploaded_Image" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Uploaded_Signature" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Registration_Date" xml:space="preserve">
+    <value />
+  </data>
+  <data name="No_Image_Found" xml:space="preserve">
+    <value />
+  </data>
+  <data name="No_Signature_Found" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Notes" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Coins" xml:space="preserve">
+    <value />
+  </data>
+  <data name="DENOMINATION_UC" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Issue_Date" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CNI_ID_Number" xml:space="preserve">
+    <value>CNI / Numéro de carte d'identité</value>
+  </data>
+  <data name="Enter_a_valid_ID_number" xml:space="preserve">
+    <value>Entrez un numéro de carte d'identité valide</value>
+  </data>
+  <data name="Expiry_Date" xml:space="preserve">
+    <value>Date d'expiration</value>
+  </data>
+  <data name="Expiry_date_is_required" xml:space="preserve">
+    <value>La date d'expiration est requise</value>
+  </data>
+  <data name="ID_Number" xml:space="preserve">
+    <value>Numéro de carte d'identité</value>
+  </data>
+  <data name="Issue_date_is_required" xml:space="preserve">
+    <value>La date d'émission est requise</value>
+  </data>
+  <data name="Phone_number_is_required" xml:space="preserve">
+    <value>Le numéro de téléphone est requis</value>
+  </data>
+  <data name="Place_of_Issue" xml:space="preserve">
+    <value>Lieu d'émission</value>
+  </data>
+  <data name="Please_enter_a_valid_date" xml:space="preserve">
+    <value>Veuillez entrer une date valide</value>
+  </data>
+  <data name="Please_enter_a_valid_place" xml:space="preserve">
+    <value>Veuillez entrer un lieu valide</value>
+  </data>
+  <data name="Please_enter_name" xml:space="preserve">
+    <value>Veuillez entrer le nom</value>
+  </data>
+  <data name="Post" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Re_print" xml:space="preserve">
+    <value />
+  </data>
+  <data name="EnterCapital" xml:space="preserve">
+    <value>Entrez le capital</value>
+  </data>
+  <data name="EnterInterest" xml:space="preserve">
+    <value>Entrez les intérêts</value>
+  </data>
+  <data name="EnterPenalty" xml:space="preserve">
+    <value>Entrez la pénalité</value>
+  </data>
+  <data name="InterestAmount" xml:space="preserve">
+    <value>Montant des intérêts</value>
+  </data>
+  <data name="LoanAmount" xml:space="preserve">
+    <value>Montant du prêt</value>
+  </data>
+  <data name="LoanId" xml:space="preserve">
+    <value>ID du prêt</value>
+  </data>
+  <data name="PenaltyAmount" xml:space="preserve">
+    <value>Montant de la pénalité</value>
+  </data>
+  <data name="RefundAmount" xml:space="preserve">
+    <value>Montant du remboursement (capital)</value>
+  </data>
+  <data name="Toggle_Summary" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Total_Repayment_Amount" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Difference" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Total" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Accounts" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Capital" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Interest" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Penalty" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Re_Pay" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Cash_In" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Enter_capital_amount" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Due_Amount" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Accrual_Interest" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Members_name" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Calculated_Vat" xml:space="preserve">
+    <value>TVA calculée</value>
+  </data>
+  <data name="Interest_Rate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Loan_Date" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Loan_Details" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Total_entered" xml:space="preserve">
+    <value />
+  </data>
+  <data name="V_Rate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Fee" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Inc" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Int" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Conf" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Due_A" xml:space="preserve">
+    <value />
+  </data>
+  <data name="N_A" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Payment_Details" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Product_ID" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XAF" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Add_note" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Add_depositor" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Perform_cashin_operation" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Ordinary_accounts" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Cash_out" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CASH_IN_UC" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CASH_OUT_UC" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Period" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Requested_Amount" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Grace" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Check_name" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Check_number" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Confirm_payment" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Fee_Label" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Fee_Charges" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Form_charges" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Notification_Id" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Fee_Range_Id" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Loan_Application_Id" xml:space="preserve">
+    <value />
+  </data>
+  <data name="LOAN_FEE_UC" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PAY_FEE" xml:space="preserve">
+    <value />
+  </data>
+  <data name="IDW" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Number" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Till_Code" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Representative_Name" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CNI" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Event_Item" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Narration_Description" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Other_Cash_In" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Select_Source" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Check_cashout" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Other_expense_entries" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Other_income_entries" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Other_payments" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Deposit" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Shares" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Savings" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Grand_Total" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Moral_Person" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Physical_Person" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Loan_Fee" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Loan_Repayment" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Exit" xml:space="preserve">
+    <value />
+  </data>
+  <data name="First_Name" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Age_Category" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Customer_ID" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Customer_Type" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Date_Registered" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Gender_Or_Groups" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Date_of_Birth_From" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Date_of_Birth_To" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Last_Name" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Legal_Form" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Marital_Status" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Member_Filters" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Membership_Approval" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Members_Profile" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Member_Status" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Search_Filters" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Select_Action" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Working_Status" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Member" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Icon" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Inclusive" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Enter_Amount" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Exclusive" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Checkbox" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Definitions" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Check" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Normal" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Input" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Enter_a_note_here" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Members" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Reminder" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Staff" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Till_Codes" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Member_code" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Denomination" xml:space="preserve">
+    <value />
+  </data>
+  <data name="VAT" xml:space="preserve">
     <value />
   </data>
 </root>

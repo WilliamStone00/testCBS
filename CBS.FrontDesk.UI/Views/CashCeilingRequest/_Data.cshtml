@@ -1,11 +1,11 @@
 ﻿@model List<CBS.FrontDesk.Data.Entity.CashCeilingManagement.CashCeilingRequest>
     @using Resources
 <fieldset class="fieldset-custom">
-    <legend id="select_base">@CashCeilingRequest_InitiatorData.CashCeilingRequests</legend>
+    <legend id="select_base">@CashCeilingRequestRessource.CashCeilingRequests</legend>
     @if (!Model.Any())
     {
         <div class="text-center my-3">
-            <p class="text-muted">@CashCeilingRequest_InitiatorData.NoCashCeilingRequestsHaveBeenMadeYet.</p>
+            <p class="text-muted">@CashCeilingRequestRessource.NoCashCeilingRequestsHaveBeenMadeYet.</p>
         </div>
     }
     else
@@ -14,12 +14,12 @@
             <table class="table table-hover table-bordered text-center" id="myDataTable">
                 <thead class="table-light">
                     <tr>
-                        <th style="width: 20%;">@CashCeilingRequest_InitiatorData.Branch</th>
-                        <th style="width: 15%;">Requested By</th>
-                        <th style="width: 15%;">@CashCeilingRequest_InitiatorData.RequestType</th>
-                        <th style="width: 15%;">@CashCeilingRequest_InitiatorData.Amount</th>
-                        <th style="width: 15%;">@CashCeilingRequest_InitiatorData.Status</th>
-                        <th style="width: 20%;">@CashCeilingRequest_InitiatorData.Actions</th>
+                        <th style="width: 20%;">@GlobalShared.Branch</th>
+                        <th style="width: 15%;">@GlobalShared.Requested_by</th>
+                        <th style="width: 15%;">@GlobalShared.Request_Type</th>
+                        <th style="width: 15%;">@GlobalShared.Amount</th>
+                        <th style="width: 15%;">@GlobalShared.Status</th>
+                        <th style="width: 20%;">@GlobalShared.Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -31,34 +31,34 @@
                             <td>
                                 @if (request.RequestType == "Cash_To_Vault")
                                 {
-                                    <span class="badge bg-primary">@CashCeilingRequest_InitiatorData.CashToVaultt</span>
+                                    <span class="badge bg-primary">@CashCeilingRequestRessource.CashToVault</span>
                                 }
                                 else if (request.RequestType == "Subteller_Cash_To_PrimaryTeller")
                                 {
-                            <span class="badge bg-warning">@CashCeilingRequest_InitiatorData.SubTellerToPrimaryTeller</span>
+                            <span class="badge bg-warning">@CashCeilingRequestRessource.SubTellerToPrimaryTeller</span>
                                 }
                                 else
                                 {
-                            <span class="badge bg-secondary">@CashCeilingRequest_InitiatorData.Unknown</span>
+                            <span class="badge bg-secondary">@GlobalShared.Unknown</span>
                                 }
                             </td>
                             <td>@request.CashoutRequestAmount.ToString("#,##0.0") FCFA</td>
                             <td>
                                 @if (request.ApprovedStatus == "Pending")
                                 {
-                                    <span class="badge bg-warning">@CashCeilingRequest_RequestValidation.Pending</span>
+                                    <span class="badge bg-warning">@GlobalShared.Pending</span>
                                 }
                                 else if (request.ApprovedStatus == "Approved")
                                 {
-                            <span class="badge bg-success">@CashCeilingRequest_RequestValidation.Approved</span>
+                            <span class="badge bg-success">@GlobalShared.Approved</span>
                                 }
                                 else if (request.ApprovedStatus == "Rejected")
                                 {
-                            <span class="badge bg-danger">@CashCeilingRequest_RequestValidation.Rejected</span>
+                            <span class="badge bg-danger">@GlobalShared.Rejected</span>
                                 }
                                 else
                                 {
-                            <span class="badge bg-secondary">@CashCeilingRequest_InitiatorData.Unknown</span>
+                            <span class="badge bg-secondary">@GlobalShared.Unknown</span>
                                 }
                             </td>
                             <td>

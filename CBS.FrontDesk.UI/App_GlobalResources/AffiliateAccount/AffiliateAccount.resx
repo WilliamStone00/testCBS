@@ -168,6 +168,12 @@
   <data name="pick_the_correct_account_class" xml:space="preserve">
     <value>pick the correct account class</value>
   </data>
+  <data name="Posting_badge" xml:space="preserve">
+    <value>Posting badge</value>
+  </data>
+  <data name="Posting_nodes_are_labelled_with_a" xml:space="preserve">
+    <value>Posting nodes are labelled with a</value>
+  </data>
   <data name="Required_because_Update_Type_includes" xml:space="preserve">
     <value>Required because Update Type includes</value>
   </data>
@@ -179,6 +185,9 @@
   </data>
   <data name="Tips_for_Affiliate_Account" xml:space="preserve">
     <value>Tips for Affiliate Account</value>
+  </data>
+  <data name="to_open_close_all_nodes_quickly" xml:space="preserve">
+    <value>to open/close all nodes quickly</value>
   </data>
   <data name="Your_server_side_validator_will_enforce_requirements_based_on_the_selected_Update_Type" xml:space="preserve">
     <value>Your server-side validator will enforce requirements based on the selected Update Type</value>

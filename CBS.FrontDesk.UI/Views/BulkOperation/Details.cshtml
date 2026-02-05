@@ -18,7 +18,7 @@
                     <i class="mdi mdi-database-export me-2"></i> @GlobalBulkOperation.BulkOperationDetails - @Model.SimulationType
                 </h1>
                 <p class="card-text lead">
-                    Bulk Operation Details, Verification and Approvals...
+                    @GlobalBulkOperation.Bulk_Operation_Details_Verification_and_Approvals...
                 </p>
                 <hr class="my-3" style="border: 2px solid rgba(128, 128, 128, 0.3);" />
             </div>
@@ -75,7 +75,7 @@
             <div id="confirmBulkOperationLoader" class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 d-none z-3" style="z-index: 1055;">
                 <div class="d-flex flex-column justify-content-center align-items-center h-100 text-center">
                     <div class="spinner-border text-primary mb-3" role="status"></div>
-                    <p class="fw-semibold text-primary">@GlobalBulkOperation.ProcessingBulkOperation...</p>
+                    <p class="fw-semibold text-primary">@GlobalShared.Processing_bulk_operation...</p>
                 </div>
             </div>
 
@@ -105,9 +105,9 @@
                 <div id="collapseBulkOperationTips" class="collapse">
                     <div class="card-body">
                         <ul class="mb-0">
-                            <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i><strong>@GlobalBulkOperation.Important:</strong> @GlobalBulkOperation.ThisActionWillAffectMultipleRecords.</li>
-                            <li><i class="mdi mdi-shield-check-outline text-success me-2"></i><strong>@GlobalBulkOperation.Secure:</strong> @GlobalBulkOperation.AllChangesAreLoggedForAuditPurposes.</li>
-                            <li><i class="mdi mdi-undo text-danger me-2"></i><strong>@GlobalBulkOperation.Irreversible:</strong> @GlobalBulkOperation.ThisOperationCannotBeUndone.</li>
+                            <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i><strong>@GlobalShared.Important:</strong> @GlobalBulkOperation.ThisActionWillAffectMultipleRecords.</li>
+                            <li><i class="mdi mdi-shield-check-outline text-success me-2"></i><strong>@GlobalShared.Secure:</strong> @GlobalBulkOperation.AllChangesAreLoggedForAuditPurposes.</li>
+                            <li><i class="mdi mdi-undo text-danger me-2"></i><strong>@GlobalShared.Irreversible:</strong> @GlobalBulkOperation.ThisOperationCannotBeUndone.</li>
                         </ul>
                     </div>
                 </div>
@@ -120,33 +120,33 @@
 
                     <div class="mb-3">
                         <label for="approvalStatus" class="form-label text-primary fw-semibold">
-                            <i class="mdi mdi-check-decagram me-2"></i>@GlobalBulkOperation.ApprovalStatus
+                            <i class="mdi mdi-check-decagram me-2"></i>@GlobalShared.Approval_status
                         </label>
                         <select class="form-select" id="approvalStatus" name="ApprovalStatus" required>
-                            <option value="Pending" @(status == "Pending" ? "selected" : "")>Pending</option>
-                            <option value="Approved" @(status == "Approved" ? "selected" : "")>Approved</option>
-                            <option value="Reviewed" @(status == "Reviewed" ? "selected" : "")>Reviewed</option>
-                            <option value="Rejected" @(status == "Rejected" ? "selected" : "")>Rejected</option>
+                            <option value="Pending" @(status == "Pending" ? "selected" : "")>@GlobalShared.Pending</option>
+                            <option value="Approved" @(status == "Approved" ? "selected" : "")>@GlobalShared.Approved</option>
+                            <option value="Reviewed" @(status == "Reviewed" ? "selected" : "")>@GlobalShared.Reviewed</option>
+                            <option value="Rejected" @(status == "Rejected" ? "selected" : "")>@GlobalShared.Rejected</option>
                         </select>
                     </div>
 
                     <div class="mb-3">
                         <label for="approvalStatusDescription" class="form-label text-primary fw-semibold">
-                            <i class="mdi mdi-text-box-outline me-2"></i>@GlobalBulkOperation.Description
+                            <i class="mdi mdi-text-box-outline me-2"></i>@GlobalShared.Description
                         </label>
                         <textarea class="form-control" id="approvalStatusDescription" name="ApprovalStatusDescription" rows="3" placeholder="@GlobalBulkOperation.EnterDescriptionOrComments..."></textarea>
                     </div>
 
                     <div class="mb-3">
                         <label for="approvalBy" class="form-label text-primary fw-semibold">
-                            <i class="mdi mdi-account-check-outline me-2"></i>@GlobalBulkOperation.ApprovedBy
+                            <i class="mdi mdi-account-check-outline me-2"></i>@GlobalShared.Approved_by
                         </label>
                         <input type="text" class="form-control" id="approvalBy" name="ApprovalBy" value="@ViewBag.FullName" readonly />
                     </div>
 
                     <div class="alert alert-warning mt-4">
                         <i class="mdi mdi-alert-outline me-2"></i>
-                        <strong>@GlobalBulkOperation.Warning:</strong> @GlobalBulkOperation.PleaseReviewAllDetailsCarefullyBeforeConfirmingThisBulkOperation.
+                        <strong>@GlobalShared.Warning:</strong> @GlobalBulkOperation.PleaseReviewAllDetailsCarefullyBeforeConfirmingThisBulkOperation.
                     </div>
                 </form>
             </div>
@@ -159,14 +159,14 @@
                     </span>
                 </div>
                 <div class="text-center w-100">
-                    <small class="text-muted">@GlobalBulkOperation.PoweredBy FLX-CBS</small>
+                    <small class="text-muted">@GlobalShared.Powered_by FLX-CBS</small>
                 </div>
                 <div>
                     <button type="button" class="btn btn-outline-secondary me-2" data-bs-dismiss="modal">
-                        <i class="mdi mdi-close"></i> @GlobalBulkOperation.Cancel
+                        <i class="mdi mdi-close"></i> @GlobalShared.Cancel
                     </button>
                     <button type="button" class="btn btn-primary" id="confirmBulkOperationBtn">
-                        <i class="mdi mdi-check-circle-outline"></i> @GlobalBulkOperation.Confirm
+                        <i class="mdi mdi-check-circle-outline"></i> @GlobalShared.Confirm
                     </button>
                 </div>
             </div>
@@ -235,7 +235,8 @@
         }
 
         function showLoading(modal, contentDiv, message) {
-            // Simple: just show modal for now
+            // Simple: just show modal f
+        or now
             modal.show();
         }
 
@@ -307,7 +308,7 @@
                 columns: [
                     {
                         data: 'CreatedDate',
-                        title: '@GlobalBulkOperation.Date',
+                        title: '@GlobalShared.Date',
                         width: '12%',
                         render: function (data) {
                             if (!data) return 'N/A';
@@ -316,7 +317,7 @@
                     },
                     {
                         data: 'MemberName',
-                        title: '@GlobalBulkOperation.MemberName',
+                        title: '@GlobalShared.Member_name',
                         width: '18%',
                         render: function (data, type, row) {
                             const ref = row.MemberReference ? ` <small class="text-muted">(${row.MemberReference})</small>` : '';
@@ -325,7 +326,7 @@
                     },
                     {
                         data: 'BranchName',
-                        title: '@GlobalBulkOperation.BranchName',
+                        title: '@GlobalShared.Branch_Name',
                         width: '12%',
                         render: function (data, type, row) {
                             const code = row.BranchCode ? ` <small class="text-muted">(${row.BranchCode})</small>` : '';
@@ -334,7 +335,7 @@
                     },
                     {
                         data: 'SourceAccountNumber',
-                        title: '@GlobalBulkOperation.SourceAccount',
+                        title: '@GlobalShared.Source_account',
                         width: '14%',
                         render: function (data, type, row) {
                             const typeText = row.SourceAccountType ? ` <small class="text-muted">[${row.SourceAccountType}]</small>` : '';
@@ -343,7 +344,7 @@
                     },
                     {
                         data: 'DestinationAccountNumber',
-                        title: '@GlobalBulkOperation.DestinationAccount',
+                        title: '@GlobalShared.Destination_account',
                         width: '14%',
                         render: function (data, type, row) {
                             const typeText = row.DestinationAccountType ? ` <small class="text-muted">[${row.DestinationAccountType}]</small>` : '';
@@ -352,7 +353,7 @@
                     },
                     {
                         data: 'SourceAccountBalance',
-                        title: '@GlobalBulkOperation.SourceBalance',
+                        title: '@GlobalShared.Source_balance',
                         width: '8%',
                         className: 'text-end',
                         render: function (data) {
@@ -361,7 +362,7 @@
                     },
                     {
                         data: 'AmountToDebit',
-                        title: '@GlobalBulkOperation.AmountToDebit',
+                        title: '@GlobalShared.Amount_to_debit',
                         width: '8%',
                         className: 'text-end',
                         render: function (data) {
@@ -370,7 +371,7 @@
                     },
                     {
                         data: 'NetBalance',
-                        title: '@GlobalBulkOperation.ActualBalance',
+                        title: '@GlobalShared.Actual_balance',
                         width: '8%',
                         className: 'text-end',
                         render: function (data) {
@@ -379,7 +380,7 @@
                     },
                     {
                         data: 'ApprovalStatus',
-                        title: '@GlobalBulkOperation.ApprovalStatus',
+                        title: '@GlobalShared.Approval_status',
                         width: '8%',
                         render: function (data) {
                             return renderApprovalStatusBadge(data || 'Pending');
@@ -387,7 +388,7 @@
                     },
                     {
                         data: 'TransferStatus',
-                        title: '@GlobalBulkOperation.TransferStatus',
+                        title: '@GlobalShared.Transfer_Status',
                         width: '10%',
                         render: function (data) {
                             return renderTransferStatusBadge(data);
@@ -405,9 +406,9 @@
                                 <div class="text-center">
                                     <a href="#"
                                        class="btn btn-sm btn-outline-primary details-btn"
-                                       title="@GlobalBulkOperation.ViewDetails"
+                                       title="@GlobalShared.ViewDetails"
                                        data-id="${id}">
-                                        <i class="fas fa-user-cog me-1"></i>@GlobalBulkOperation.View
+                                        <i class="fas fa-user-cog me-1"></i>@GlobalShared.View
                                     </a>
                                 </div>`;
                         }

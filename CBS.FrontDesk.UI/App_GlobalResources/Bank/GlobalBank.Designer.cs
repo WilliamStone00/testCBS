@@ -61,24 +61,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Address.
-        /// </summary>
-        internal static string Address {
-            get {
-                return ResourceManager.GetString("Address", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Bank code.
-        /// </summary>
-        internal static string BankCode {
-            get {
-                return ResourceManager.GetString("BankCode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Bank Configuration.
         /// </summary>
         internal static string BankConfiguration {
@@ -106,11 +88,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Bank name.
+        ///   Looks up a localized string similar to Bank Management.
         /// </summary>
-        internal static string BankName {
+        internal static string Bank_Management {
             get {
-                return ResourceManager.GetString("BankName", resourceCulture);
+                return ResourceManager.GetString("Bank_Management", resourceCulture);
             }
         }
         
@@ -120,24 +102,6 @@ namespace Resources {
         internal static string CustomerServiceContact {
             get {
                 return ResourceManager.GetString("CustomerServiceContact", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Date of creation.
-        /// </summary>
-        internal static string DateOfCreation {
-            get {
-                return ResourceManager.GetString("DateOfCreation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Email.
-        /// </summary>
-        internal static string Email {
-            get {
-                return ResourceManager.GetString("Email", resourceCulture);
             }
         }
         
@@ -160,15 +124,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Bank Management.
-        /// </summary>
-        internal static string PageTitle {
-            get {
-                return ResourceManager.GetString("PageTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to PBox.
         /// </summary>
         internal static string PBox {
@@ -187,38 +142,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Save.
-        /// </summary>
-        internal static string Save {
-            get {
-                return ResourceManager.GetString("Save", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Tax payer number.
         /// </summary>
         internal static string TaxPayerNumber {
             get {
                 return ResourceManager.GetString("TaxPayerNumber", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Telephone.
-        /// </summary>
-        internal static string Telephone {
-            get {
-                return ResourceManager.GetString("Telephone", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Update.
-        /// </summary>
-        internal static string Update {
-            get {
-                return ResourceManager.GetString("Update", resourceCulture);
             }
         }
         

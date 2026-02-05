@@ -2,7 +2,7 @@
 
 <fieldset class="fieldset-custom p-3 shadow-sm mb-1">
     <legend class="fw-bold text-primary mb-1">
-        <i class="mdi mdi-account-search me-1"></i> @CashDesk_SearchBox.Search
+        <i class="mdi mdi-account-search me-1"></i> @GlobalShared.Search
     </legend>
 
     <div class="row">
@@ -10,20 +10,20 @@
             <!-- 🔍 Search Input + Button -->
             <div class="input-group shadow-sm">
                 <input type="text" id="manualSearchInput" class="form-control"
-                       placeholder="@CashDesk_SearchBox.EnterMemberReferenceNumber"
-                       aria-label="@CashDesk_SearchBox.EnterMemberReferenceNumber" />
+                       placeholder="@CashDeskRessource.EnterMemberReferenceNumber"
+                       aria-label="@CashDeskRessource.EnterMemberReferenceNumber" />
                 <button class="btn btn-primary" type="button" onclick="GetMember()">
-                    <i class="mdi mdi-magnify me-1"></i> @CashDesk_SearchBox.Search
+                    <i class="mdi mdi-magnify me-1"></i> @GlobalShared.Search
                 </button>
             </div>
 
             <!-- ℹ️ Help Text -->
             <div class="form-text text-muted mt-2">
                 <i class="fas fa-info-circle me-1 text-info"></i>
-                @CashDesk_SearchBox.EnterThe10DigitMemberReferenceNumber
+                @CashDeskRessource.EnterThe10DigitMemberReferenceNumber
                 <br />
                 <i class="fas fa-lock me-1 text-info"></i>
-                @CashDesk_SearchBox.PerformSecureCashDepositsIntoMemberAccounts
+                @CashDeskRessource.PerformSecureCashDepositsIntoMemberAccounts
             </div>
         </div>
     </div>
@@ -35,6 +35,6 @@
 <!-- 🖨 Reprint Button -->
 <div class="text-end mb-3">
     <button type="button" class="btn btn-outline-secondary" onclick="Reprint()">
-        <i class="fas fa-print me-1"></i> @CashDesk_OperationForm.RePrint
+        <i class="fas fa-print me-1"></i> @GlobalShared.Re_print
     </button>
 </div>

@@ -61,69 +61,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Actions.
-        /// </summary>
-        internal static string Actions {
-            get {
-                return ResourceManager.GetString("Actions", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Active.
-        /// </summary>
-        internal static string Active {
-            get {
-                return ResourceManager.GetString("Active", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Add cash change.
-        /// </summary>
-        internal static string AddCashChange {
-            get {
-                return ResourceManager.GetString("AddCashChange", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Add new vault.
-        /// </summary>
-        internal static string AddNewVault {
-            get {
-                return ResourceManager.GetString("AddNewVault", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Amount given.
-        /// </summary>
-        internal static string AmountGiven {
-            get {
-                return ResourceManager.GetString("AmountGiven", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Amount received.
-        /// </summary>
-        internal static string AmountReceived {
-            get {
-                return ResourceManager.GetString("AmountReceived", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to B.Code.
-        /// </summary>
-        internal static string BCode {
-            get {
-                return ResourceManager.GetString("BCode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Change denominations.
         /// </summary>
         internal static string ChangeDenominations {
@@ -138,24 +75,6 @@ namespace Resources {
         internal static string ChangeToBeGiven {
             get {
                 return ResourceManager.GetString("ChangeToBeGiven", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Control balance.
-        /// </summary>
-        internal static string ControlBalance {
-            get {
-                return ResourceManager.GetString("ControlBalance", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Current balance.
-        /// </summary>
-        internal static string CurrentBalance {
-            get {
-                return ResourceManager.GetString("CurrentBalance", resourceCulture);
             }
         }
         
@@ -214,15 +133,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Inactive.
-        /// </summary>
-        internal static string Inactive {
-            get {
-                return ResourceManager.GetString("Inactive", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Manage denominations efficiently for vault operations in your branch. Use the options below to update or review denominations.
         /// </summary>
         internal static string ManageDenominationsEfficiently {
@@ -246,15 +156,6 @@ namespace Resources {
         internal static string MANAGEMENTOFDENOMINATIONS {
             get {
                 return ResourceManager.GetString("MANAGEMENTOFDENOMINATIONS", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Maximum capacity.
-        /// </summary>
-        internal static string MaximumCapacity {
-            get {
-                return ResourceManager.GetString("MaximumCapacity", resourceCulture);
             }
         }
         
@@ -286,33 +187,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Status.
-        /// </summary>
-        internal static string Status {
-            get {
-                return ResourceManager.GetString("Status", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to TIPS.
-        /// </summary>
-        internal static string TIPS {
-            get {
-                return ResourceManager.GetString("TIPS", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Total amount.
-        /// </summary>
-        internal static string TotalAmount {
-            get {
-                return ResourceManager.GetString("TotalAmount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Use numeric values only for denominations and quantities.
         /// </summary>
         internal static string UseNumericValuesOnlyForDenominations {
@@ -327,24 +201,6 @@ namespace Resources {
         internal static string VaultDenominationChangeManagement {
             get {
                 return ResourceManager.GetString("VaultDenominationChangeManagement", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Vault name.
-        /// </summary>
-        internal static string VaultName {
-            get {
-                return ResourceManager.GetString("VaultName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to VAULTS.
-        /// </summary>
-        internal static string VAULTS {
-            get {
-                return ResourceManager.GetString("VAULTS", resourceCulture);
             }
         }
     }

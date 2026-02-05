@@ -70,15 +70,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Action.
-        /// </summary>
-        internal static string Action {
-            get {
-                return ResourceManager.GetString("Action", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Budget.
         /// </summary>
         internal static string Budget {
@@ -124,15 +115,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to BUDGET CONFIGURATIONS.
-        /// </summary>
-        internal static string BUDGETCONFIGURATIONS {
-            get {
-                return ResourceManager.GetString("BUDGETCONFIGURATIONS", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Budget creation.
         /// </summary>
         internal static string BudgetCreation {
@@ -160,38 +142,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Category name.
+        ///   Looks up a localized string similar to BUDGET CONFIGURATIONS.
         /// </summary>
-        internal static string CategoryName {
+        internal static string BUDGET_CONFIGURATIONS {
             get {
-                return ResourceManager.GetString("CategoryName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Chart of account.
-        /// </summary>
-        internal static string ChartOfAccount {
-            get {
-                return ResourceManager.GetString("ChartOfAccount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Description.
-        /// </summary>
-        internal static string Description {
-            get {
-                return ResourceManager.GetString("Description", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Name.
-        /// </summary>
-        internal static string Name {
-            get {
-                return ResourceManager.GetString("Name", resourceCulture);
+                return ResourceManager.GetString("BUDGET_CONFIGURATIONS", resourceCulture);
             }
         }
         
@@ -210,15 +165,6 @@ namespace Resources {
         internal static string SelectBudgetPeriods {
             get {
                 return ResourceManager.GetString("SelectBudgetPeriods", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select chart of account.
-        /// </summary>
-        internal static string SelectChartOfAccount {
-            get {
-                return ResourceManager.GetString("SelectChartOfAccount", resourceCulture);
             }
         }
         

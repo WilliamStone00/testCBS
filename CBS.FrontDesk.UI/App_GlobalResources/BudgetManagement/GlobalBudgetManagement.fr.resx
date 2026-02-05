@@ -120,9 +120,6 @@
   <data name="AccountingConfigurations" xml:space="preserve">
     <value>Configurations comptables</value>
   </data>
-  <data name="Action" xml:space="preserve">
-    <value>Action</value>
-  </data>
   <data name="Budget" xml:space="preserve">
     <value>Budget</value>
   </data>
@@ -138,7 +135,7 @@
   <data name="BudgetCode" xml:space="preserve">
     <value>Code de budget</value>
   </data>
-  <data name="BUDGETCONFIGURATIONS" xml:space="preserve">
+  <data name="BUDGET_CONFIGURATIONS" xml:space="preserve">
     <value>CONFIGURATIONS DE BUDGET</value>
   </data>
   <data name="BudgetCreation" xml:space="preserve">
@@ -150,26 +147,11 @@
   <data name="BudgetDetails" xml:space="preserve">
     <value>Détails du budget</value>
   </data>
-  <data name="CategoryName" xml:space="preserve">
-    <value>Nom de la catégorie</value>
-  </data>
-  <data name="ChartOfAccount" xml:space="preserve">
-    <value>Plan comptable</value>
-  </data>
-  <data name="Description" xml:space="preserve">
-    <value>Description</value>
-  </data>
-  <data name="Name" xml:space="preserve">
-    <value>Nom</value>
-  </data>
   <data name="OrganizationUnit" xml:space="preserve">
     <value>Unité organisationnelle</value>
   </data>
   <data name="SelectBudgetPeriods" xml:space="preserve">
     <value>Sélectionner les périodes de budget</value>
-  </data>
-  <data name="SelectChartOfAccount" xml:space="preserve">
-    <value>Sélectionner le plan comptable</value>
   </data>
   <data name="SelectOrganizationalUnit" xml:space="preserve">
     <value>Sélectionner l'unité organisationnelle</value>

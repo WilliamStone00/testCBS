@@ -215,6 +215,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Posting badge.
+        /// </summary>
+        internal static string Posting_badge {
+            get {
+                return ResourceManager.GetString("Posting_badge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Posting nodes are labelled with a.
+        /// </summary>
+        internal static string Posting_nodes_are_labelled_with_a {
+            get {
+                return ResourceManager.GetString("Posting_nodes_are_labelled_with_a", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Required because Update Type includes.
         /// </summary>
         internal static string Required_because_Update_Type_includes {
@@ -247,6 +265,15 @@ namespace Resources {
         internal static string Tips_for_Affiliate_Account {
             get {
                 return ResourceManager.GetString("Tips_for_Affiliate_Account", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to to open/close all nodes quickly.
+        /// </summary>
+        internal static string to_open_close_all_nodes_quickly {
+            get {
+                return ResourceManager.GetString("to_open_close_all_nodes_quickly", resourceCulture);
             }
         }
         

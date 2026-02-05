@@ -14,14 +14,14 @@
                     <div class="card bg-light mb-2">
                         <div class="card-body text-center">
                             <h1 class="card-title text-primary">
-                                <i class="mdi mdi-bank-off me-2"></i>Account Negativity Management
+                                <i class="mdi mdi-bank-off me-2"></i>@BranchAccountRessources.Account_Negativity_Management
                             </h1>
                             <p class="card-text">
-                                Configure negative balance allowances for branch accounts by class or specific account.
+                                @BranchAccountRessources.Configure_negative_balance_allowances_for_branch_accounts_by_class_or_specific_account.
                             </p>
                             <div class="alert alert-info mt-3 py-2">
                                 <i class="mdi mdi-alert-outline me-1"></i>
-                                Use this tool to manage whether accounts can have negative balances. Disabling negativity prevents overdrafts.
+                                @BranchAccountRessources.Use_this_tool_to_manage_whether_accounts_can_have_negative_balances_Disabling_negativity_prevents_overdrafts.
                             </div>
                               <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
                         </div>
@@ -41,43 +41,43 @@
                         <ul>
                             <li>
                                 <i class="mdi mdi-filter-outline text-success me-2"></i>
-                                <strong>Branch Selection:</strong> Start by selecting a branch to view and manage its account negativity settings.
+                                <strong>@GlobalShared.Branch_Selection:</strong> @BranchAccountRessources.Start_by_selecting_a_branch_to_view_and_manage_its_account_negativity_settings.
                             </li>
                             <li>
                                 <i class="mdi mdi-account-group text-primary me-2"></i>
-                                <strong>Account Class:</strong> Apply settings to all accounts within a specific class (e.g., Asset, Liability, Equity).
+                                <strong>@GlobalShared.Account_Class:</strong> @BranchAccountRessources.Apply_settings_to_all_accounts_within_a_specific_class_Asset_Liability_Equity.
                             </li>
                             <li>
                                 <i class="mdi mdi-bank text-info me-2"></i>
-                                <strong>Specific Account:</strong> Target individual branch accounts for precise negativity control.
+                                <strong>@GlobalShared.Specific_Account:</strong> @BranchAccountRessources.Target_individual_branch_accounts_for_precise_negativity_control.
                             </li>
                             <li>
                                 <i class="mdi mdi-check-circle text-success me-2"></i>
-                                <strong>Allow Negative:</strong> When enabled, accounts can have negative balances (useful for overdraft facilities).
+                                <strong>@GlobalShared.Allow_Negative:</strong> @BranchAccountRessources.When_enabled_accounts_can_have_negative_balances_useful_for_overdraft_facilities.
                             </li>
                             <li>
                                 <i class="mdi mdi-close-circle text-danger me-2"></i>
-                                <strong>Disallow Negative:</strong> When disabled, accounts must maintain positive balances at all times.
+                                <strong>@GlobalShared.Disallow_Negative:</strong> @BranchAccountRessources.When_disabled_accounts_must_maintain_positive_balances_at_all_times.
                             </li>
                             <li>
                                 <i class="mdi mdi-alert-box text-warning me-2"></i>
-                                <strong>Important:</strong> Disabling negativity for active accounts may block transactions that would create overdrafts.
+                                <strong>@GlobalShared.Important:</strong> @BranchAccountRessources.Disabling_negativity_for_active_accounts_may_block_transactions_that_would_create_overdrafts.
                             </li>
                             <li>
                                 <i class="mdi mdi-backup-restore text-secondary me-2"></i>
-                                <strong>Bulk Operations:</strong> Use "By Account Class" to apply changes to multiple accounts simultaneously.
+                                <strong>@GlobalShared.Bulk_Operations:</strong> @BranchAccountRessources.Use_By_Account_Class_to_apply_changes_to_multiple_accounts_simultaneously.
                             </li>
                             <li>
                                 <i class="mdi mdi-shield-check text-success me-2"></i>
-                                <strong>Risk Management:</strong> Regularly review negativity settings to prevent unauthorized overdrafts.
+                                <strong>@GlobalShared.Risk_Management:</strong> @BranchAccountRessources.Regularly_review_negativity_settings_to_prevent_unauthorized_overdrafts.
                             </li>
                             <li>
                                 <i class="mdi mdi-history text-info me-2"></i>
-                                <strong>Audit Trail:</strong> All negativity changes are logged with user, timestamp, and previous settings.
+                                <strong>@GlobalShared.Audit_Trail:</strong> @BranchAccountRessources.All_negativity_changes_are_logged_with_user_timestamp_and_previous_settings.
                             </li>
                             <li>
                                 <i class="mdi mdi-currency-usd-off text-danger me-2"></i>
-                                <strong>Compliance:</strong> Certain account types (like reserve accounts) may legally require positive balances.
+                                <strong>@GlobalShared.Compliance:</strong> @BranchAccountRessources.Certain_account_types_like_reserve_accounts_may_legally_require_positive_balances.
                             </li>
                         </ul>
                     </div>
@@ -105,14 +105,14 @@
                                 <input class="form-check-input" type="radio" name="negativityMode"
                                        id="negModeClass" value="class" checked>
                                 <label class="form-check-label" for="negModeClass">
-                                    By Account Class
+                                    @BranchAccountRessources.By_Account_Class
                                 </label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="negativityMode"
                                        id="negModeSpecific" value="specific">
                                 <label class="form-check-label" for="negModeSpecific">
-                                    By Specific Account
+                                    @BranchAccountRessources.By_Specific_Account
                                 </label>
                             </div>
                         </div>
@@ -122,7 +122,7 @@
                 <!-- CLASS Section (Default) -->
                 <div id="classSection" class="row mb-3">
                     <div class="col-md-12">
-                        <label class="form-label">Account Class</label>
+                        <label class="form-label">@GlobalShared.Account_Class</label>
                         @Html.DropDownList("NegClassId",
                             new SelectList(ViewBag.classes, "Value", "Text"),
                             "--- Select Class ---",
@@ -134,10 +134,10 @@
                 <!-- SPECIFIC ACCOUNT Section (Hidden initially) -->
                 <div id="specificAccountSection" class="row mb-3" style="display: none;">
                     <div class="col-md-12">
-                        <label class="form-label">Branch Account</label>
+                        <label class="form-label">@GlobalShared.Branch_Account</label>
                         <select id="NegBranchAccountId" class="form-select form-select-sm select2"
                                 disabled>
-                            <option value="">--- First select Branch ---</option>
+                            <option value="">--- @GlobalShared.First_select_Branch ---</option>
                         </select>
                     </div>
                 </div>
@@ -149,11 +149,11 @@
                             <input class="form-check-input" type="checkbox"
                                    id="AllowNegativeBalance" checked>
                             <label class="form-check-label" for="AllowNegativeBalance">
-                                Allow Negative Balance
+                                @BranchAccountRessources.Allow_Negative_Balance
                             </label>
                         </div>
                         <small class="text-muted">
-                            When enabled, accounts can have negative balances. When disabled, all balances must be positive.
+                            @BranchAccountRessources.When_enabled_accounts_can_have_negative_balances_When_disabled_all_balances_must_be_positive.
                         </small>
                     </div>
                 </div>
@@ -163,16 +163,16 @@
                     <div class="d-flex align-items-center">
                         <i class="mdi mdi-information-outline me-2"></i>
                         <div>
-                            <strong>Summary:</strong>
+                            <strong>@GlobalShared.Summary:</strong>
                             <div id="summaryText" class="small"></div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">@GlobalShared.Cancel</button>
                 <button type="button" class="btn btn-primary btn-sm" id="btnApplyNegativity">
-                    <i class="mdi mdi-check-circle me-1"></i> Apply Changes
+                    <i class="mdi mdi-check-circle me-1"></i> @GlobalShared.Apply_Changes
                 </button>
             </div>
         </div>

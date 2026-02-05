@@ -6,11 +6,11 @@
         <div class="card bg-light mb-1">
             <div class="card-body text-center py-2">
                 <h1 class="card-title text-primary fs-4 mb-1">
-                    <i class="mdi mdi-bank-outline me-2"></i> Root Branch Account Setup
+                    <i class="mdi mdi-bank-outline me-2"></i> @BranchAccountRessources.Root_Branch_Account_Setup
                 </h1>
                 <div class="alert alert-info mt-2 py-1 mb-0">
                     <i class="mdi mdi-information-outline me-1"></i>
-                    Use this form to create branch-specific ledger accounts. Ensure the Account Number is unique within the branch and the Affiliate (Chart of Account) is selected correctly.
+                    @BranchAccountRessources.Use_this_form_to_create_branch_specific_ledger_accounts_Ensure_the_Account_Number_is_unique_within_the_branch_and_the_Affiliate_Chart_of_Account_is_selected_correctly.
                 </div>
                 <hr class="my-2" style="border: 1px solid rgba(128,128,128,0.4);" />
             </div>
@@ -20,7 +20,7 @@
 
 <div class="card mb-2">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary py-2">
-        <span><i class="mdi mdi-help-circle-outline me-2"></i> Tips for Root Branch Account</span>
+        <span><i class="mdi mdi-help-circle-outline me-2"></i> @BranchAccountRessources.Tips_for_Root_Branch_Account</span>
         <button class="btn btn-light btn-sm py-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBranchAccountTips" aria-expanded="false">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -28,9 +28,9 @@
     <div id="collapseBranchAccountTips" class="collapse">
         <div class="card-body py-2">
             <ul class="mb-0">
-                <li class="mb-1"><i class="mdi mdi-pound-box text-success me-2"></i><strong>Account Number:</strong> Digits only (e.g. <code>114000000110</code>), min length 12.</li>
-                <li class="mb-1"><i class="mdi mdi-form-textbox text-info me-2"></i><strong>Account Name (EN/FR):</strong> Provide both English and Français.</li>
-                <li class="mb-0"><i class="mdi mdi-shape-outline text-warning me-2"></i><strong>Class:</strong> Choose the accounting class (Asset, Liability, etc.).</li>
+                <li class="mb-1"><i class="mdi mdi-pound-box text-success me-2"></i><strong>@GlobalShared.Account_Number:</strong> @GlobalShared.Digits_only (e.g. <code>114000000110</code>), @GlobalShared.min_length_12.</li>
+                <li class="mb-1"><i class="mdi mdi-form-textbox text-info me-2"></i><strong>@GlobalShared.Account_Name (EN/FR):</strong> @BranchAccountRessources.Provide_both_English_and_Français.</li>
+                <li class="mb-0"><i class="mdi mdi-shape-outline text-warning me-2"></i><strong>Class:</strong> @BranchAccountRessources.Choose_the_accounting_class.</li>
             </ul>
         </div>
     </div>
@@ -162,13 +162,13 @@
                 <div class="text-end">
                     @if (string.IsNullOrWhiteSpace(Model?.UpdateReference))
                     {
-                        <button type="submit" class="btn btn-primary btn-sm me-2" data-bs-dismiss="modal"><i class="fas fa-save me-1"></i> Save</button>
-                        <button type="reset" class="btn btn-outline-secondary btn-sm">Reset</button>
+                        <button type="submit" class="btn btn-primary btn-sm me-2" data-bs-dismiss="modal"><i class="fas fa-save me-1"></i> @GlobalShared.Save</button>
+                        <button type="reset" class="btn btn-outline-secondary btn-sm">@GlobalShared.Reset</button>
                     }
                     else
                     {
-                        <button type="submit" class="btn btn-primary btn-sm me-2" data-bs-dismiss="modal"><i class="mdi mdi-refresh"></i> Update</button>
-                        <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary btn-sm me-2" data-bs-dismiss="modal"><i class="mdi mdi-refresh"></i> @GlobalShared.Update</button>
+                        <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">@GlobalShared.Close</button>
                     }
                 </div>
             </div>
