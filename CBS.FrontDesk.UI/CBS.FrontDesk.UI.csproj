@@ -748,11 +748,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AccountingV2.fr.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\Accounting V2\AccountingV23.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AccountingV2.resx</DependentUpon>
-    </Compile>
     <Compile Include="App_GlobalResources\AccountingChart\GlobalAccountingChart.fr.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1064,11 +1059,6 @@
       <DependentUpon>AccountOpeningRulePerBranch_Index.fr.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\AdvancedSheild\AdvancedShield.Designer.cs" />
-    <Compile Include="App_GlobalResources\AdvancedSheild\AdvancedShield1.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AdvancedShield.resx</DependentUpon>
-    </Compile>
     <Compile Include="App_GlobalResources\AffiliateAccount\AffiliateAccount2.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1125,11 +1115,6 @@
       <DependentUpon>ApiKeyRessource.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\Authentication\AuthenticationRessource.Designer.cs" />
-    <Compile Include="App_GlobalResources\Authentication\AuthenticationRessource1.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AuthenticationRessource.resx</DependentUpon>
-    </Compile>
     <Compile Include="App_GlobalResources\BankingOperations\GlobalBankingOperations.fr.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1141,11 +1126,6 @@
       <DependentUpon>GlobalBankData.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\BlacklistUser\BlacklistUserRessource.Designer.cs" />
-    <Compile Include="App_GlobalResources\BlacklistUser\BlacklistUserRessource1.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>BlacklistUserRessource.resx</DependentUpon>
-    </Compile>
     <Compile Include="App_GlobalResources\BranchAccount\BranchAccountRessources.Designer.cs">
     </Compile>
     <Compile Include="App_GlobalResources\Bank\GlobalBankData.fr.designer.cs">
@@ -1247,11 +1227,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ChequeManagements.fr.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\ChequeManagementSystem\ChequeManagements1.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ChequeManagements.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\CMoneyMembership\GlobalCMoneyMembership.fr.designer.cs">
       <AutoGen>True</AutoGen>
