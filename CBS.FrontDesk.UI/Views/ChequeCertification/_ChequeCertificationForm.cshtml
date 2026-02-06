@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.ChequeCertification.ChequeCertificationDto
-
+@using Resources
 <div class="card shadow p-3 mb-4">
     @using (Html.BeginForm("SaveCertification", "ChequeCertification", FormMethod.Post, new
     {
@@ -16,7 +16,7 @@
                 <span id="formTitle">@(Model?.MemberReference == null ? "Create Cheque Certification" : "Edit Cheque Certification")</span>
             </h5>
             <button type="button" class="btn btn-outline-secondary btn-sm" onclick="goBackToList()">
-                <i class="mdi mdi-arrow-left me-1"></i> Back to List
+                <i class="mdi mdi-arrow-left me-1"></i> @GlobalShared.Back_to_List
             </button>
         </div>
 
@@ -29,7 +29,7 @@
 
         <div class="row g-3">
             <div class="col-md-6">
-                <label class="form-label fw-bold required">Cheque Certification ID</label>
+                <label class="form-label fw-bold required">@ChequeCertificationResource.Cheque_Certification_ID</label>
                 @Html.TextBoxFor(model => model.ChequeCertificationID, new { 
                     @class = "form-control", 
                     required = "required", 
@@ -40,7 +40,7 @@
             </div>
 
             <div class="col-md-6">
-                <label class="form-label fw-bold required">Member Reference</label>
+                <label class="form-label fw-bold required">@GlobalShared.Member_reference</label>
                 @Html.TextBoxFor(model => model.MemberReference, new { 
                     @class = "form-control", 
                     required = "required", 
@@ -51,7 +51,7 @@
             </div>
 
             <div class="col-md-6">
-                <label class="form-label fw-bold required">Branch ID</label>
+                <label class="form-label fw-bold required">@GlobalShared.Branch_ID</label>
                 @Html.TextBoxFor(model => model.BranchId, new { 
                     @class = "form-control", 
                     required = "required", 
@@ -71,7 +71,7 @@
 
         <div class="row g-3">
             <div class="col-md-6">
-                <label class="form-label fw-bold required">Cheque Book ID</label>
+                <label class="form-label fw-bold required">@ChequeCertificationResource.Cheque_Book_ID</label>
                 @Html.TextBoxFor(model => model.ChequeBookId, new { 
                     @class = "form-control", 
                     required = "required", 
@@ -82,7 +82,7 @@
             </div>
 
             <div class="col-md-6">
-                <label class="form-label fw-bold required">Cheque Leaf ID</label>
+                <label class="form-label fw-bold required">@ChequeCertificationResource.Cheque_Leaf_ID</label>
                 @Html.TextBoxFor(model => model.ChequeleafId, new { 
                     @class = "form-control", 
                     required = "required", 
@@ -93,7 +93,7 @@
             </div>
 
             <div class="col-md-6">
-                <label class="form-label fw-bold required">Account Number</label>
+                <label class="form-label fw-bold required">@GlobalShared.Account_Number</label>
                 @Html.TextBoxFor(model => model.AccountNumber, new { 
                     @class = "form-control", 
                     required = "required", 
@@ -104,7 +104,7 @@
             </div>
 
             <div class="col-md-6">
-                <label class="form-label fw-bold required">Amount</label>
+                <label class="form-label fw-bold required">@GlobalShared.Amount</label>
                 @Html.TextBoxFor(model => model.Amount, new { 
                     @class = "form-control", 
                     type = "number", 
@@ -126,7 +126,7 @@
 
         <div class="row g-3">
             <div class="col-12">
-                <label class="form-label fw-bold">Description</label>
+                <label class="form-label fw-bold">@GlobalShared.Description</label>
                 @Html.TextAreaFor(model => model.Description, new { 
                     @class = "form-control", 
                     rows = 3, 
@@ -142,13 +142,13 @@
         {
             <div class="col-12 mt-4">
                 <h6 class="text-primary border-bottom pb-1 mb-3">
-                    <i class="mdi mdi-information-outline me-1"></i> Status Information
+                    <i class="mdi mdi-information-outline me-1"></i> @GlobalShared.Status_Information
                 </h6>
             </div>
 
             <div class="row g-3">
                 <div class="col-md-6">
-                    <label class="form-label fw-bold">Certification Status</label>
+                    <label class="form-label fw-bold">@GlobalShared.Certification_Status</label>
                     <div>
                         @{
                             var statusBadgeClass = "bg-secondary";
@@ -166,7 +166,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label fw-bold">Created Date</label>
+                    <label class="form-label fw-bold">@GlobalShared.Created_Date</label>
                     <div class="form-control-plaintext border rounded p-2 bg-light">
                         <i class="mdi mdi-calendar-clock me-1 text-muted"></i>
                         @Model.CreatedDate.ToString("dd/MM/yyyy HH:mm")
@@ -179,10 +179,10 @@
         <div class="col-12 text-end mt-4 pt-3 border-top">
             <button type="submit" class="btn btn-primary px-4">
                 <i class="mdi mdi-content-save me-1"></i>
-                <span id="submitButtonText">Save Certification</span>
+                <span id="submitButtonText">@GlobalShared.Save_Certification</span>
             </button>
             <button type="button" class="btn btn-outline-secondary px-4" onclick="LoadDataGen('ChequeCertification', 'myDataTable', '_ChequeCertificationDataTable', 0, 'datalistingview', null, 'list')">
-                <i class="mdi mdi-close me-1"></i>Cancel
+                <i class="mdi mdi-close me-1"></i>@GlobalShared.Cancel
             </button>
         </div>
     }

@@ -1,0 +1,195 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Important_Changes_to_account_structure_may_affect_financial_reporting_and_transactions" xml:space="preserve">
+    <value> Important: Changes to account structure may affect financial reporting and transactions.</value>
+  </data>
+  <data name="Affiliate_Account_Details" xml:space="preserve">
+    <value>Affiliate Account Details</value>
+  </data>
+  <data name="Click_the_caret_to_expand_or_collapse_child_nodes" xml:space="preserve">
+    <value>Click the caret to expand or collapse child nodes</value>
+  </data>
+  <data name="Details_amp_hierarchical_structure_for_the_selected_node" xml:space="preserve">
+    <value>Details &amp;amp; hierarchical structure for the selected node</value>
+  </data>
+  <data name="Edit_Chart_Of_Account_Management" xml:space="preserve">
+    <value>Edit Chart Of Account Management</value>
+  </data>
+  <data name="PCMF_CAMCULL_Details" xml:space="preserve">
+    <value>PCMF CAMCULL Details</value>
+  </data>
+  <data name="Posting_nodes_are_labelled_with_a_Posting_badge" xml:space="preserve">
+    <value>Posting nodes are labelled with a &lt;span class="badge bg-info"&gt;Posting&lt;/span&gt; badge.</value>
+  </data>
+  <data name="Select_an_account_to_view_details" xml:space="preserve">
+    <value>Select an account to view details</value>
+  </data>
+  <data name="Use_Expand_and_Collapse_to_open_close_all_nodes_quickly" xml:space="preserve">
+    <value>Use &lt;em&gt;Expand&lt;/em&gt; and &lt;em&gt;Collapse&lt;/em&gt; to open/close all nodes quickly.</value>
+  </data>
+  <data name="Manage_and_organize_your_financial_accounts_hierarchy_with_ease_Display_edit_and_maintain_your_chart_of_accounts_structure" xml:space="preserve">
+    <value> Manage and organize your financial accounts hierarchy with ease. Display, edit, and maintain your chart of accounts structure.</value>
+  </data>
+  <data name="Remember_to_save_after_making_any_modifications_to_account_details" xml:space="preserve">
+    <value> Remember to save after making any modifications to account details.</value>
+  </data>
+  <data name="Follow_the_established_numbering_system_for_consistent_account_identification" xml:space="preserve">
+    <value>Follow the established numbering system for consistent account identification.</value>
+  </data>
+  <data name="Use_the_refresh_button_to_ensure_you_re_viewing_the_latest_account_structure" xml:space="preserve">
+    <value>Use the refresh button to ensure you're viewing the latest account structure</value>
+  </data>
+  <data name="Only_leaf_level_accounts_with_no_children_should_allow_transaction_posting" xml:space="preserve">
+    <value>Only leaf-level accounts (with no children) should allow transaction posting.</value>
+  </data>
+  <data name="Use_clear_and_consistent_naming_in_both_English_and_French_for_all_accounts" xml:space="preserve">
+    <value> Use clear and consistent naming in both English and French for all accounts.</value>
+  </data>
+  <data name="Maintain_proper_parent_child_relationships_for_accurate_financial_reporting" xml:space="preserve">
+    <value>Maintain proper parent-child relationships for accurate financial reporting.</value>
+  </data>
+  <data name="Account_Hierarchy" xml:space="preserve">
+    <value>Account Hierarchy</value>
+  </data>
+  <data name="Naming_Convention" xml:space="preserve">
+    <value>Naming Convention</value>
+  </data>
+  <data name="Posting_Rights" xml:space="preserve">
+    <value>Posting Rights</value>
+  </data>
+  <data name="Chart_of_Accounts_Management" xml:space="preserve">
+    <value> Chart of Accounts Management</value>
+  </data>
+  <data name="Filter_and_manage_affiliates_search_by_code_name_status_and_creation_date" xml:space="preserve">
+    <value>Filter and manage affiliates (search by code, name, status and creation date).</value>
+  </data>
+  <data name="Use_full_or_partial_affiliate_code_for_quick_lookup" xml:space="preserve">
+    <value>Use full or partial affiliate code for quick lookup.</value>
+  </data>
+  <data name="Matches_against_affiliate_name" xml:space="preserve">
+    <value>Matches against affiliate name.</value>
+  </data>
+  <data name="Choose_All_Active_Inactive_All_will_not_filter_by_active_state" xml:space="preserve">
+    <value>Choose All/Active/Inactive — `All` will not filter by active state.</value>
+  </data>
+  <data name="Toggle_date_filters_to_limit_by_creation_range_UTC" xml:space="preserve">
+    <value>Toggle date filters to limit by creation range (UTC)</value>
+  </data>
+</root>

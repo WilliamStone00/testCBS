@@ -144,7 +144,7 @@
                             <div class="form-check form-switch d-flex align-items-center gap-2 m-0">
                                 <input class="form-check-input" type="checkbox" id="includeLoanRepaymentCheckbox" onchange="toggleLoanRepayment()" />
                                 <label class="form-check-label fw-bold m-0" for="includeLoanRepaymentCheckbox" style="font-size:0.95rem;">
-                                    Include Loan Repayment
+                                    @GlobalShared.Include_Loan_Repayment
                                 </label>
                                 <!-- mirror for backend -->
                                 <input type="hidden" id="IncludeLoanRepayment" name="IncludeLoanRepayment" value="false" />
@@ -166,14 +166,14 @@
                         <!-- Collection Approach (Radio Buttons) -->
                         <div class="col-md-12">
                             <fieldset class="mb-3">
-                                <legend class="fs-6 text-muted mb-2">Collection Approach</legend>
+                                <legend class="fs-6 text-muted mb-2">@GlobalShared.Collection_Approach</legend>
 
                                 <div class="d-flex gap-4 flex-wrap" id="collectionApproachGroup">
                                     <div class="form-check form-check-inline">
                                         @Html.RadioButtonFor(m => m.DailyCollectorCollectApproach, "Device",
                                             new { @class = "form-check-input", id = "approachDevice" })
                                         <label class="form-check-label fw-semibold" for="approachDevice">
-                                            <i class="mdi mdi-nfc-tap-variant me-1"></i> Device (C-Money / POS)
+                                            <i class="mdi mdi-nfc-tap-variant me-1"></i> @GlobalShared.Device (C-Money / POS)
                                         </label>
                                     </div>
 
@@ -181,13 +181,13 @@
                                         @Html.RadioButtonFor(m => m.DailyCollectorCollectApproach, "Manual",
                                             new { @class = "form-check-input", id = "approachManual" })
                                         <label class="form-check-label fw-semibold" for="approachManual">
-                                            <i class="mdi mdi-file-upload-outline me-1"></i> Manual (Uploaded batch)
+                                            <i class="mdi mdi-file-upload-outline me-1"></i> @GlobalShared.Manual (@GlobalShared.Uploaded_batch)
                                         </label>
                                     </div>
                                 </div>
 
                                 <small class="text-muted d-block mt-1">
-                                    Choose <strong>Manual</strong> to clear from an approved uploaded batch, or <strong>Device</strong> for C-Money/POS device collections.
+                                    @Html.Raw(@CashDeskRessource.Choose_Manual_to_clear_from_an_approved_uploaded_batch_or_Device_for_C_Money_POS_device_collections)
                                 </small>
                             </fieldset>
                         </div>
@@ -203,9 +203,9 @@
                                         : "--- No Approved Batches ---",
                                     new { @class = "form-control select2", id = "ManualEntryDailyCollectorId" } /* required toggled by JS */
                                 )
-                                <label>Approved Daily Collector Batch (Cash Clearance)</label>
+                                <label>@CashDeskRessource.Approved_Daily_Collector_Batch_Cash_Clearance</label>
                                 <small class="text-muted d-block mt-1">
-                                    Only batches with <em>Status = Approved</em> and not yet fully completed are listed.
+                                    @Html.Raw(@CashDeskRessource.Only_batches_with_Status_Approved_and_not_yet_fully_completed_are_listed)
                                 </small>
                             </div>
                         </div>
@@ -223,7 +223,7 @@
                                         <!-- New header row (legend) to match the loans table style -->
                                         <tr>
                                             <th colspan="8" class="text-center fw-bold bg-light text-dark">
-                                                MEMBER'S ACCOUNTS
+                                                @GlobalShared.MEMBERS_ACCOUNTS
                                             </th>
                                         </tr>
                                         <tr>
@@ -290,7 +290,7 @@
                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                     <!-- Left: Search member’s loans -->
                                     <button type="button" class="btn btn-sm btn-outline-primary" id="btnLoadMemberLoans">
-                                        <i class="mdi mdi-magnify me-1"></i> Load Member’s Loans
+                                        <i class="mdi mdi-magnify me-1"></i> @CashDeskRessource.Load_Members_Loans
                                     </button>
 
                                     <!-- Right: VAT buttons -->
@@ -299,14 +299,14 @@
                                                value="exclusive"
                                                onchange="applyVatModeToAllRows()" onclick="applyVatModeToAllRows()">
                                         <label class="btn btn-outline-primary" for="vatModeExclusive">
-                                            VAT Exclusive (19.25%)
+                                            @GlobalShared.VAT_Exclusive (19.25%)
                                         </label>
 
                                         <input class="btn-check" type="radio" name="vatMode" id="vatModeInclusive"
                                                value="inclusive" checked
                                                onchange="applyVatModeToAllRows()" onclick="applyVatModeToAllRows()">
                                         <label class="btn btn-outline-primary" for="vatModeInclusive">
-                                            VAT Inclusive (16.1425%)
+                                            @GlobalShared.VAT_Inclusive (16.1425%)
                                         </label>
                                     </div>
                                 </div>
@@ -987,8 +987,8 @@ else if (ViewBag.Operation == "repayment")
                         <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
                             <div class="small text-muted">
                                 <i class="mdi mdi-information-outline me-1"></i>
-                                Choose the applicable <strong>VAT mode</strong> below. The system will automatically
-                                recalculate VAT and totals for all rows in real time.
+                                @CashDeskRessource.Choose_the_applicable_VAT_mode_below)
+                                @CashDeskRessource.The_system_will_automatically_recalculate_VAT_and_totals_for_all_rows_in_real_time
                             </div>
 
 
@@ -998,14 +998,14 @@ else if (ViewBag.Operation == "repayment")
                                            value="exclusive"
                                            onchange="applyVatModeToAllRows()" onclick="applyVatModeToAllRows()">
                                     <label class="btn btn-outline-primary" for="vatModeExclusive">
-                                        VAT Exclusive (19.25%)
+                                        @GlobalShared.VAT_Exclusive (19.25%)
                                     </label>
 
                                     <input class="btn-check" type="radio" name="vatMode" id="vatModeInclusive"
                                            value="inclusive" checked
                                            onchange="applyVatModeToAllRows()" onclick="applyVatModeToAllRows()">
                                     <label class="btn btn-outline-primary" for="vatModeInclusive">
-                                        VAT Inclusive (16.1425%)
+                                        @GlobalShared.VAT_Inclusive (16.1425%)
                                     </label>
                                 </div>
                             </div>
@@ -1029,7 +1029,7 @@ else if (ViewBag.Operation == "repayment")
                                     <th>@GlobalShared.EnterPenalty</th>
                                     <th>@GlobalShared.Total</th>
                                     <th>@GlobalShared.Conf</th>
-                                    <th>Vat rate</th>
+                                    <th>@GlobalShared.Vat_rate</th>
                                 </tr>
                             </thead>
                             <tbody>

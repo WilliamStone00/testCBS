@@ -137,7 +137,7 @@
                                    disabled
                                    onchange="toggleBranchDropdown()" />
                             <label class="form-check-label fw-semibold" for="isInterBranchCheck" id="interBranchLabel">
-                                🔄 Enable Inter-Branch Transaction
+                                🔄 @CashDeskRessource.Enable_Inter_Branch_Transaction
                             </label>
                         </div>
 
@@ -163,7 +163,7 @@
                                 "--- Select Branch ---",
                                 new { @class = "form-control select2", @id = "ExternalBranchId" }
                             )
-                            <label for="ExternalBranchId">Destination Branch</label>
+                            <label for="ExternalBranchId">@GlobalShared.Destination_Branch</label>
                             @Html.ValidationMessageFor(m => m.BulkDeposit.OtherTransaction.ExternalBranchId, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -178,7 +178,7 @@
                                        id="IsOtherSource"
                                        onchange="OtherSourceUI.toggle()">
                                 <label class="form-check-label fw-semibold" for="IsOtherSource">
-                                    Use another source GL (e.g., petty cash)
+                                    @CashDeskRessource.Use_another_source_GL
                                 </label>
                             </div>
 
@@ -190,9 +190,9 @@
                                         "--- Select Source GL ---",
                                         new { @class = "form-control select2", @id = "OtherSourceOfAccountId" }
                                     )
-                                    <label for="OtherSourceOfAccountId">Source GL (credited)</label>
+                                    <label for="OtherSourceOfAccountId">@GlobalShared.Source_GL (@GlobalShared.credited)</label>
                                     <span class="small text-muted d-block mt-1">
-                                        This GL will be credited as the source of funds for the expense.
+                                        @CashDeskRessource.This_GL_will_be_credited_as_the_source_of_funds_for_the_expense
                                     </span>
                                 </div>
                             </div>
@@ -230,7 +230,7 @@
                 <div class="col-md-3">
                     <div class="form-floating">
                         <input type="tel" id="TelephoneNumber" class="form-control" inputmode="tel" placeholder="Telephone" />
-                        <label for="TelephoneNumber">Telephone</label>
+                        <label for="TelephoneNumber">@GlobalShared.Telephone</label>
                     </div>
                 </div>
             </div>
@@ -289,12 +289,12 @@ else if (ViewBag.Operation == "transfer_non_member")
                         <div class="form-check m-0">
                             <input type="checkbox" class="form-check-input" id="isInterBranchCheck" onchange="toggleBranchDropdown()" />
                             <label class="form-check-label fw-semibold" for="isInterBranchCheck" id="interBranchLabel">
-                                🔄 Enable Inter-Branch Transaction
+                                🔄 @CashDeskRessource.Enable_Inter_Branch_Transaction
                             </label>
                         </div>
 
                         <div class="form-check form-check-inline m-0">
-                            <span class="fw-semibold me-2">Select Source</span>
+                            <span class="fw-semibold me-2">@GlobalShared.Select_Source</span>
                             @Html.RadioButtonFor(
                               m => m.BulkDeposit.OtherTransaction.SourceType,
                               "Cash_Collected",
@@ -321,7 +321,7 @@ else if (ViewBag.Operation == "transfer_non_member")
 
                 <div class="col-lg-4 d-flex justify-content-lg-end">
                     <span class="total-badge" id="lblDepositRequest_amount">
-                        Total Amount: 0.0
+                        @GlobalShared.Total_amount: 0.0
                     </span>
                     <input type="hidden" id="totalNoteAmount" value="0" />
                 </div>

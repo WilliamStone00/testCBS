@@ -11,14 +11,14 @@
                     @CashDeskRessource.EnterMemberReferenceNumber
                 </div>
                 <div class="small text-muted">
-                    Search by member reference number to load member details for Cash-In / Loan Repayment.
+                    @CashDeskRessource.Search_by_member_reference_number_to_load_member_details_for_Cash_In_Loan_Repayment
                 </div>
             </div>
 
             <div class="text-end d-none d-md-block">
                 <span class="badge rounded-pill bg-light text-dark border">
                     <i class="mdi mdi-information-outline me-1"></i>
-                    Cash-In &amp; Loan Repayments (Charges Supported)
+                    @Html.Raw(@CashDeskRessource.Cash_In_Loan_Repayments_Charges_Supported)
                 </span>
             </div>
         </div>
@@ -46,7 +46,7 @@
                            autocomplete="off"
                            inputmode="numeric" />
                     <small id="manualSearchInputError" class="text-danger d-none">
-                        Member reference is required.
+                        @CashDeskRessource.Member_reference_is_required
                     </small>
 
                     <!-- DO NOT CHANGE id + onclick -->
@@ -61,14 +61,14 @@
 
                 <div class="form-text mt-1">
                     <i class="mdi mdi-keyboard-return me-1"></i>
-                    Press <strong>Enter</strong> or click <strong>Search</strong>.
+                    @Html.Raw(@CashDeskRessource.Press_Enter_or_click_Search)
                 </div>
             </div>
 
             <div class="col-lg-4 text-lg-end d-none d-lg-block">
                 <div class="small text-muted">
                     <i class="mdi mdi-shield-check-outline me-1"></i>
-                    Ensure the reference is correct before proceeding.
+                    @CashDeskRessource.Ensure_the_reference_is_correct_before_proceeding
                 </div>
             </div>
         </div>

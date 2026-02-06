@@ -7,7 +7,7 @@
 <div class="table-responsive" id="cash_collected" style="width: 100%;">
     <div class="row mb-3">
         <div class="col text-end">
-            <label class="form-label fw-semibold me-2">Accounting Date</label>
+            <label class="form-label fw-semibold me-2">@GlobalShared.Accounting_Date</label>
             @Html.TextBoxFor(
                 m => m.BulkDeposit.AccountingDate,
                 Model.BulkDeposit.AccountingDate.HasValue
@@ -41,10 +41,10 @@
     <table class="table table-hover align-middle" id="myDataTableT">
         <thead class="table-light">
             <tr>
-                <th style="width:45%;">Account</th>
-                <th style="width:30%;">Note</th>
+                <th style="width:45%;">@GlobalShared.Account</th>
+                <th style="width:30%;">@GlobalShared.Note</th>
                 <th style="width:17%;" class="text-end">@GlobalShared.Amount</th>
-                <th style="width:5%; text-align:center;">Select</th>
+                <th style="width:5%; text-align:center;">@GlobalShared.Select</th>
                 <th style="width:50px;" class="text-center">✖</th>
             </tr>
         </thead>
@@ -84,7 +84,7 @@
         </tbody>
         <tfoot>
             <tr>
-                <td class="text-end" colspan="2"><strong>@GlobalShared.Total (Selected):</strong></td>
+                <td class="text-end" colspan="2"><strong>@GlobalShared.Total (@GlobalShared.Selected):</strong></td>
                 <td class="text-end"><strong id="tableTotal">0.00</strong></td>
                 <td colspan="2"></td>
             </tr>
@@ -98,7 +98,7 @@
 
     <div class="mt-2">
         <button type="button" class="btn btn-sm btn-outline-primary" id="btnAddAllocRow">
-            <i class="mdi mdi-plus"></i> Add Row
+            <i class="mdi mdi-plus"></i> @GlobalShared.Add_Row
         </button>
     </div>
 

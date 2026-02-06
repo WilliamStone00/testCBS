@@ -97,11 +97,38 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;strong&gt;Accounting Date&lt;/strong&gt; is &lt;em&gt;read-only&lt;/em&gt; and uses the current accounting date..
+        /// </summary>
+        internal static string Accounting_Date_is_read_only_and_uses_the_current_accounting_date {
+            get {
+                return ResourceManager.GetString("Accounting_Date_is_read_only_and_uses_the_current_accounting_date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Accurate Input.
         /// </summary>
         internal static string AccurateInput {
             get {
                 return ResourceManager.GetString("AccurateInput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add a clear &lt;strong&gt;Narration&lt;/strong&gt; and capture &lt;strong&gt;Name / CNI / Telephone&lt;/strong&gt; for audit..
+        /// </summary>
+        internal static string Add_a_clear_Narration_and_capture_Name_CNI_Telephone_for_audit {
+            get {
+                return ResourceManager.GetString("Add_a_clear_Narration_and_capture_Name_CNI_Telephone_for_audit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to “Add to Total” will include it in the footer totals (if your JS uses it)..
+        /// </summary>
+        internal static string Add_to_Total_will_include_it_in_the_footer_totals_if_your_JS_uses_it {
+            get {
+                return ResourceManager.GetString("Add_to_Total_will_include_it_in_the_footer_totals_if_your_JS_uses_it", resourceCulture);
             }
         }
         
@@ -129,6 +156,25 @@ namespace Resources {
         internal static string AfterASuccessfulTransactionClick {
             get {
                 return ResourceManager.GetString("AfterASuccessfulTransactionClick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to After posting successfully, click &lt;strong&gt;Re-Print&lt;/strong&gt; to print the operation receipt for your records..
+        /// </summary>
+        internal static string After_posting_successfully_click_Re_Print_to_print_the_operation_receipt_for_your_records {
+            get {
+                return ResourceManager.GetString("After_posting_successfully_click_Re_Print_to_print_the_operation_receipt_for_your" +
+                        "_records", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to After posting, use &lt;b&gt;Re-Print&lt;/b&gt; in the receipt view to print..
+        /// </summary>
+        internal static string After_posting_use_Re_Print_in_the_receipt_view_to_print {
+            get {
+                return ResourceManager.GetString("After_posting_use_Re_Print_in_the_receipt_view_to_print", resourceCulture);
             }
         }
         
@@ -271,11 +317,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Approved Daily Collector Batch (Cash Clearance).
+        /// </summary>
+        internal static string Approved_Daily_Collector_Batch_Cash_Clearance {
+            get {
+                return ResourceManager.GetString("Approved_Daily_Collector_Batch_Cash_Clearance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to at the teller desk and recorded against.
         /// </summary>
         internal static string AtTheTellerDeskAndRecordedAgainst {
             get {
                 return ResourceManager.GetString("AtTheTellerDeskAndRecordedAgainst", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to at the teller desk, allocated against predefined branch GL accounts..
+        /// </summary>
+        internal static string at_the_teller_desk_allocated_against_predefined_branch_GL_accounts {
+            get {
+                return ResourceManager.GetString("at_the_teller_desk_allocated_against_predefined_branch_GL_accounts", resourceCulture);
             }
         }
         
@@ -497,6 +561,33 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cash at hand (System).
+        /// </summary>
+        internal static string Cash_at_hand_System {
+            get {
+                return ResourceManager.GetString("Cash_at_hand_System", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cash-In &amp;amp; Loan Repayments (Charges Supported).
+        /// </summary>
+        internal static string Cash_In_Loan_Repayments_Charges_Supported {
+            get {
+                return ResourceManager.GetString("Cash_In_Loan_Repayments_Charges_Supported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cash-out posted directly to the branch chart of accounts..
+        /// </summary>
+        internal static string Cash_out_posted_directly_to_the_branch_chart_of_accounts {
+            get {
+                return ResourceManager.GetString("Cash_out_posted_directly_to_the_branch_chart_of_accounts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Charges Exclusive.
         /// </summary>
         internal static string ChargesExclusive {
@@ -560,6 +651,34 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Choose &lt;strong&gt;Manual&lt;/strong&gt; to clear from an approved uploaded batch, or &lt;strong&gt;Device&lt;/strong&gt; for C-Money/POS device collections..
+        /// </summary>
+        internal static string Choose_Manual_to_clear_from_an_approved_uploaded_batch_or_Device_for_C_Money_POS_device_collections {
+            get {
+                return ResourceManager.GetString("Choose_Manual_to_clear_from_an_approved_uploaded_batch_or_Device_for_C_Money_POS_" +
+                        "device_collections", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose the applicable &lt;strong&gt;VAT mode&lt;/strong&gt; below..
+        /// </summary>
+        internal static string Choose_the_applicable_VAT_mode_below {
+            get {
+                return ResourceManager.GetString("Choose_the_applicable_VAT_mode_below", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose the correspondent GL that receives the loan repayment collection..
+        /// </summary>
+        internal static string Choose_the_correspondent_GL_that_receives_the_loan_repayment_collection {
+            get {
+                return ResourceManager.GetString("Choose_the_correspondent_GL_that_receives_the_loan_repayment_collection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Clear Beneficiary Info.
         /// </summary>
         internal static string ClearBeneficiaryInfo {
@@ -592,6 +711,24 @@ namespace Resources {
         internal static string ClickThe {
             get {
                 return ResourceManager.GetString("ClickThe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Click &lt;strong&gt;Add Row&lt;/strong&gt; to add a new GL entry (choose GL, enter Note and Amount)..
+        /// </summary>
+        internal static string Click_Add_Row_to_add_a_new_GL_entry_choose_GL_enter_Note_and_Amount {
+            get {
+                return ResourceManager.GetString("Click_Add_Row_to_add_a_new_GL_entry_choose_GL_enter_Note_and_Amount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Click the &lt;strong&gt;Delete&lt;/strong&gt; button on a row to remove that GL entry..
+        /// </summary>
+        internal static string Click_the_Delete_button_on_a_row_to_remove_that_GL_entry {
+            get {
+                return ResourceManager.GetString("Click_the_Delete_button_on_a_row_to_remove_that_GL_entry", resourceCulture);
             }
         }
         
@@ -677,6 +814,34 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Confirm details carefully in the dialog before posting..
+        /// </summary>
+        internal static string Confirm_details_carefully_in_the_dialog_before_posting {
+            get {
+                return ResourceManager.GetString("Confirm_details_carefully_in_the_dialog_before_posting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;strong&gt;Confirm the GLs to be impacted&lt;/strong&gt; by ticking the &lt;em&gt;Select&lt;/em&gt; checkbox on each row before posting. .
+        /// </summary>
+        internal static string Confirm_the_GLs_to_be_impacted_by_ticking_the_Select_checkbox_on_each_row_before_posting {
+            get {
+                return ResourceManager.GetString("Confirm_the_GLs_to_be_impacted_by_ticking_the_Select_checkbox_on_each_row_before_" +
+                        "posting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Correspondent account.
+        /// </summary>
+        internal static string Correspondent_account {
+            get {
+                return ResourceManager.GetString("Correspondent_account", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Denomination Breakdown.
         /// </summary>
         internal static string DenominationBreakdown {
@@ -691,6 +856,24 @@ namespace Resources {
         internal static string DenominationEntry {
             get {
                 return ResourceManager.GetString("DenominationEntry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Denominations (left) must equal the payout amount..
+        /// </summary>
+        internal static string Denominations_left_must_equal_the_payout_amount {
+            get {
+                return ResourceManager.GetString("Denominations_left_must_equal_the_payout_amount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Denomination snapshot.
+        /// </summary>
+        internal static string Denomination_snapshot {
+            get {
+                return ResourceManager.GetString("Denomination_snapshot", resourceCulture);
             }
         }
         
@@ -791,6 +974,24 @@ namespace Resources {
         internal static string EnsureTotalRepaymentMatchesExpectations {
             get {
                 return ResourceManager.GetString("EnsureTotalRepaymentMatchesExpectations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ensure the reference is correct before proceeding..
+        /// </summary>
+        internal static string Ensure_the_reference_is_correct_before_proceeding {
+            get {
+                return ResourceManager.GetString("Ensure_the_reference_is_correct_before_proceeding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ensure the sum of all &lt;strong&gt;selected&lt;/strong&gt; GL amounts equals the cash &lt;strong&gt;Denominations&lt;/strong&gt;..
+        /// </summary>
+        internal static string Ensure_the_sum_of_all_selected_GL_amounts_equals_the_cash_Denominations {
+            get {
+                return ResourceManager.GetString("Ensure_the_sum_of_all_selected_GL_amounts_equals_the_cash_Denominations", resourceCulture);
             }
         }
         
@@ -917,6 +1118,60 @@ namespace Resources {
         internal static string EnterTheCorrectAmountsUnder {
             get {
                 return ResourceManager.GetString("EnterTheCorrectAmountsUnder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter amount + fee, tick confirm, and totals will compute..
+        /// </summary>
+        internal static string Enter_amount_fee_tick_confirm_and_totals_will_compute {
+            get {
+                return ResourceManager.GetString("Enter_amount_fee_tick_confirm_and_totals_will_compute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter capital / interest / penalty. VAT can be Inclusive/Exclusive..
+        /// </summary>
+        internal static string Enter_capital_interest_penalty_VAT_can_be_Inclusive_Exclusive {
+            get {
+                return ResourceManager.GetString("Enter_capital_interest_penalty_VAT_can_be_Inclusive_Exclusive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter gross interest; VAT is extracted (16.1425%) and the field shows net.
+        /// </summary>
+        internal static string Enter_gross_interest_VAT_is_extracted_and_the_field_shows_net {
+            get {
+                return ResourceManager.GetString("Enter_gross_interest_VAT_is_extracted_and_the_field_shows_net", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter net interest; VAT is added on top (19.25%).
+        /// </summary>
+        internal static string Enter_net_interest_VAT_is_added_on_top {
+            get {
+                return ResourceManager.GetString("Enter_net_interest_VAT_is_added_on_top", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter the collection fee (XAF). Default is 0..
+        /// </summary>
+        internal static string Enter_the_collection_fee_Default_is_0 {
+            get {
+                return ResourceManager.GetString("Enter_the_collection_fee_Default_is_0", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter the &lt;b&gt;salary code&lt;/b&gt; then click &lt;b&gt;Find&lt;/b&gt;.
+        /// </summary>
+        internal static string Enter_the_salary_code_then_click_Find {
+            get {
+                return ResourceManager.GetString("Enter_the_salary_code_then_click_Find", resourceCulture);
             }
         }
         
@@ -1200,6 +1455,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to If &lt;strong&gt;Inter-Branch&lt;/strong&gt; is enabled, select the destination branch before posting..
+        /// </summary>
+        internal static string If_Inter_Branch_is_enabled_select_the_destination_branch_before_posting {
+            get {
+                return ResourceManager.GetString("If_Inter_Branch_is_enabled_select_the_destination_branch_before_posting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to in.
         /// </summary>
         internal static string In {
@@ -1290,6 +1554,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Loading current provisions.
+        /// </summary>
+        internal static string Loading_current_provisions {
+            get {
+                return ResourceManager.GetString("Loading_current_provisions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load Member’s Loans.
+        /// </summary>
+        internal static string Load_Members_Loans {
+            get {
+                return ResourceManager.GetString("Load_Members_Loans", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Loan Payment.
         /// </summary>
         internal static string LoanPayment {
@@ -1349,6 +1631,24 @@ namespace Resources {
         internal static string LoanRepaymentSimulationTitle {
             get {
                 return ResourceManager.GetString("LoanRepaymentSimulationTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loans Repayment Lines.
+        /// </summary>
+        internal static string Loans_Repayment_Lines {
+            get {
+                return ResourceManager.GetString("Loans_Repayment_Lines", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loan Repayment Simulation — Summary.
+        /// </summary>
+        internal static string Loan_Repayment_Simulation_Summary {
+            get {
+                return ResourceManager.GetString("Loan_Repayment_Simulation_Summary", resourceCulture);
             }
         }
         
@@ -1520,6 +1820,15 @@ namespace Resources {
         internal static string Member_code_Last_4_digits {
             get {
                 return ResourceManager.GetString("Member_code_Last_4_digits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Member reference is required..
+        /// </summary>
+        internal static string Member_reference_is_required {
+            get {
+                return ResourceManager.GetString("Member_reference_is_required", resourceCulture);
             }
         }
         
@@ -1776,6 +2085,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Non-Member Salary Payout.
+        /// </summary>
+        internal static string Non_Member_Salary_Payout {
+            get {
+                return ResourceManager.GetString("Non_Member_Salary_Payout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Normal Withdrawal.
         /// </summary>
         internal static string NormalWithdrawal {
@@ -1920,6 +2238,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Only batches with &lt;em&gt;Status = Approved&lt;/em&gt; and not yet fully completed are listed..
+        /// </summary>
+        internal static string Only_batches_with_Status_Approved_and_not_yet_fully_completed_are_listed {
+            get {
+                return ResourceManager.GetString("Only_batches_with_Status_Approved_and_not_yet_fully_completed_are_listed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only checked rows are included..
+        /// </summary>
+        internal static string Only_checked_rows_are_included {
+            get {
+                return ResourceManager.GetString("Only_checked_rows_are_included", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to operations posted to GL accounts. Use other modules for withdrawals or member-based deposits..
         /// </summary>
         internal static string OperationsPostedToGLAccounts {
@@ -1943,6 +2279,15 @@ namespace Resources {
         internal static string OptionallyProvideAReferenceIfTheTransactionIsLinkedToAKnownMember {
             get {
                 return ResourceManager.GetString("OptionallyProvideAReferenceIfTheTransactionIsLinkedToAKnownMember", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Optional fee charged for this collection (will be added to totals if enabled)..
+        /// </summary>
+        internal static string Optional_fee_charged_for_this_collection_will_be_added_to_totals_if_enabled {
+            get {
+                return ResourceManager.GetString("Optional_fee_charged_for_this_collection_will_be_added_to_totals_if_enabled", resourceCulture);
             }
         }
         
@@ -2163,6 +2508,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pick the correspondent GL account that receives the Momocash collection..
+        /// </summary>
+        internal static string Pick_the_correspondent_GL_account_that_receives_the_Momocash_collection {
+            get {
+                return ResourceManager.GetString("Pick_the_correspondent_GL_account_that_receives_the_Momocash_collection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please enter a positive integer.
         /// </summary>
         internal static string Please_enter_a_positive_integer {
@@ -2204,6 +2558,15 @@ namespace Resources {
         internal static string PreRegisteredMembersPRM {
             get {
                 return ResourceManager.GetString("PreRegisteredMembersPRM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Press &lt;strong&gt;Enter&lt;/strong&gt; or click &lt;strong&gt;Search&lt;/strong&gt;..
+        /// </summary>
+        internal static string Press_Enter_or_click_Search {
+            get {
+                return ResourceManager.GetString("Press_Enter_or_click_Search", resourceCulture);
             }
         }
         
@@ -2307,6 +2670,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Representative / Depositor Info.
+        /// </summary>
+        internal static string Representative_Depositor_Info {
+            get {
+                return ResourceManager.GetString("Representative_Depositor_Info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Required for KYC and AML regulations..
         /// </summary>
         internal static string RequiredForKYCAndAMLRegulations {
@@ -2330,6 +2702,15 @@ namespace Resources {
         internal static string RequiredOnboardingItems {
             get {
                 return ResourceManager.GetString("RequiredOnboardingItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Salary Temp Pay Code.
+        /// </summary>
+        internal static string Salary_Temp_Pay_Code {
+            get {
+                return ResourceManager.GetString("Salary_Temp_Pay_Code", resourceCulture);
             }
         }
         
@@ -2415,6 +2796,16 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Search by member reference number to load member details for Cash-In / Loan Repayment..
+        /// </summary>
+        internal static string Search_by_member_reference_number_to_load_member_details_for_Cash_In_Loan_Repayment {
+            get {
+                return ResourceManager.GetString("Search_by_member_reference_number_to_load_member_details_for_Cash_In_Loan_Repayme" +
+                        "nt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select account to perform the operation.
         /// </summary>
         internal static string SelectAccountToPerformTheOperation {
@@ -2474,6 +2865,43 @@ namespace Resources {
         internal static string SelectThe {
             get {
                 return ResourceManager.GetString("SelectThe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select an operation type. Member data will refresh automatically for the selected operation..
+        /// </summary>
+        internal static string Select_an_operation_type_Member_data_will_refresh_automatically_for_the_selected_operation {
+            get {
+                return ResourceManager.GetString("Select_an_operation_type_Member_data_will_refresh_automatically_for_the_selected_" +
+                        "operation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select MTN Or Orange GL.
+        /// </summary>
+        internal static string Select_MTN_Or_Orange_GL {
+            get {
+                return ResourceManager.GetString("Select_MTN_Or_Orange_GL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the branch to load available Momocash GL accounts..
+        /// </summary>
+        internal static string Select_the_branch_to_load_available_Momocash_GL_accounts {
+            get {
+                return ResourceManager.GetString("Select_the_branch_to_load_available_Momocash_GL_accounts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the &lt;b&gt;Source GL&lt;/b&gt; the cash leaves from (petty cash, vault…)..
+        /// </summary>
+        internal static string Select_the_Source_GL_the_cash_leaves_from {
+            get {
+                return ResourceManager.GetString("Select_the_Source_GL_the_cash_leaves_from", resourceCulture);
             }
         }
         
@@ -2582,6 +3010,15 @@ namespace Resources {
         internal static string ThatDoNotInvolveDirectMemberAccounts {
             get {
                 return ResourceManager.GetString("ThatDoNotInvolveDirectMemberAccounts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to that does not involve member accounts..
+        /// </summary>
+        internal static string that_does_not_involve_member_accounts {
+            get {
+                return ResourceManager.GetString("that_does_not_involve_member_accounts", resourceCulture);
             }
         }
         
@@ -2724,6 +3161,16 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The system will automatically recalculate VAT and totals for all rows in real time..
+        /// </summary>
+        internal static string The_system_will_automatically_recalculate_VAT_and_totals_for_all_rows_in_real_time {
+            get {
+                return ResourceManager.GetString("The_system_will_automatically_recalculate_VAT_and_totals_for_all_rows_in_real_tim" +
+                        "e", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This ensures precise.
         /// </summary>
         internal static string ThisEnsuresPrecise {
@@ -2814,6 +3261,45 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This document is a &lt;strong&gt;simulation summary&lt;/strong&gt; for advisory purposes only; it is not a receipt..
+        /// </summary>
+        internal static string This_document_is_a_simulation_summary_for_advisory_purposes_only_it_is_not_a_receipt {
+            get {
+                return ResourceManager.GetString("This_document_is_a_simulation_summary_for_advisory_purposes_only_it_is_not_a_rece" +
+                        "ipt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This feature is only for &lt;b&gt;Cash-In&lt;/b&gt; and &lt;b&gt;Loan Repayments&lt;/b&gt; — both operations support &lt;b&gt;charges&lt;/b&gt;..
+        /// </summary>
+        internal static string This_feature_is_only_for_Cash_In_and_Loan_Repayments_both_operations_support_charges {
+            get {
+                return ResourceManager.GetString("This_feature_is_only_for_Cash_In_and_Loan_Repayments_both_operations_support_char" +
+                        "ges", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This GL will be credited as the source of funds for the expense..
+        /// </summary>
+        internal static string This_GL_will_be_credited_as_the_source_of_funds_for_the_expense {
+            get {
+                return ResourceManager.GetString("This_GL_will_be_credited_as_the_source_of_funds_for_the_expense", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This interface manages &lt;strong&gt;@opName&lt;/strong&gt; transactions posted directly to the &lt;strong&gt;branch chart of accounts&lt;/strong&gt;..
+        /// </summary>
+        internal static string This_interface_manages_opName_transactions_posted_directly_to_the_branch_chart_of_accounts {
+            get {
+                return ResourceManager.GetString("This_interface_manages_opName_transactions_posted_directly_to_the_branch_chart_of" +
+                        "_accounts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 300 XAF for Physical Persons.
         /// </summary>
         internal static string ThreeHundredXAFFromPhysical {
@@ -2873,6 +3359,15 @@ namespace Resources {
         internal static string TipsForUsingThisPanel {
             get {
                 return ResourceManager.GetString("TipsForUsingThisPanel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tips for Non-Member Salary Payout.
+        /// </summary>
+        internal static string Tips_for_Non_Member_Salary_Payout {
+            get {
+                return ResourceManager.GetString("Tips_for_Non_Member_Salary_Payout", resourceCulture);
             }
         }
         
@@ -3085,11 +3580,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Turn off to ignore the charge..
+        /// </summary>
+        internal static string Turn_off_to_ignore_the_charge {
+            get {
+                return ResourceManager.GetString("Turn_off_to_ignore_the_charge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 2,000,000 XAF or more.
         /// </summary>
         internal static string TwoMillionXAFOrMore {
             get {
                 return ResourceManager.GetString("TwoMillionXAFOrMore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type the salary temp pay code and click &lt;b&gt;Find&lt;/b&gt;.
+        /// </summary>
+        internal static string Type_the_salary_temp_pay_code_and_click_Find {
+            get {
+                return ResourceManager.GetString("Type_the_salary_temp_pay_code_and_click_Find", resourceCulture);
             }
         }
         
@@ -3158,6 +3671,42 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Use &lt;em&gt;Add Row&lt;/em&gt; to insert additional GL lines..
+        /// </summary>
+        internal static string Use_Add_Row_to_insert_additional_GL_lines {
+            get {
+                return ResourceManager.GetString("Use_Add_Row_to_insert_additional_GL_lines", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use another source GL (e.g., petty cash).
+        /// </summary>
+        internal static string Use_another_source_GL {
+            get {
+                return ResourceManager.GetString("Use_another_source_GL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use only for non-member salary payouts from petty cash/teller vault..
+        /// </summary>
+        internal static string Use_only_for_non_member_salary_payouts_from_petty_cash_teller_vault {
+            get {
+                return ResourceManager.GetString("Use_only_for_non_member_salary_payouts_from_petty_cash_teller_vault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use this strictly for.
+        /// </summary>
+        internal static string Use_this_strictly_for {
+            get {
+                return ResourceManager.GetString("Use_this_strictly_for", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to using defined.
         /// </summary>
         internal static string UsingDefined {
@@ -3181,6 +3730,15 @@ namespace Resources {
         internal static string ValidatedVia {
             get {
                 return ResourceManager.GetString("ValidatedVia", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Values depend on VAT mode and current inputs provided at simulation time..
+        /// </summary>
+        internal static string Values_depend_on_VAT_mode_and_current_inputs_provided_at_simulation_time {
+            get {
+                return ResourceManager.GetString("Values_depend_on_VAT_mode_and_current_inputs_provided_at_simulation_time", resourceCulture);
             }
         }
         
@@ -3239,11 +3797,39 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Verify/edit &lt;b&gt;Name, CNI, Telephone&lt;/b&gt; and add a clear &lt;b&gt;Narration&lt;/b&gt;..
+        /// </summary>
+        internal static string Verify_edit_Name_CNI_Telephone_and_add_a_clear_Narration {
+            get {
+                return ResourceManager.GetString("Verify_edit_Name_CNI_Telephone_and_add_a_clear_Narration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verify the member, select the correct operation type, and review charges before confirming..
+        /// </summary>
+        internal static string Verify_the_member_select_the_correct_operation_type_and_review_charges_before_confirming {
+            get {
+                return ResourceManager.GetString("Verify_the_member_select_the_correct_operation_type_and_review_charges_before_con" +
+                        "firming", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to via configured.
         /// </summary>
         internal static string ViaConfigured {
             get {
                 return ResourceManager.GetString("ViaConfigured", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View denomination snapshot.
+        /// </summary>
+        internal static string View_denomination_snapshot {
+            get {
+                return ResourceManager.GetString("View_denomination_snapshot", resourceCulture);
             }
         }
         
@@ -3293,11 +3879,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Welcome to the Cash Desk of &lt;strong&gt;TSC&lt;/strong&gt;..
+        /// </summary>
+        internal static string Welcome_to_the_Cash_Desk_of_TSC {
+            get {
+                return ResourceManager.GetString("Welcome_to_the_Cash_Desk_of_TSC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to What event item?.
         /// </summary>
         internal static string WhatEventItem {
             get {
                 return ResourceManager.GetString("WhatEventItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Where the payout leaves from (e.g, Salary Payable GL, Other Selected GL)..
+        /// </summary>
+        internal static string Where_the_payout_leaves_from_Salary_Payable_GL_Other_Selected_GL {
+            get {
+                return ResourceManager.GetString("Where_the_payout_leaves_from_Salary_Payable_GL_Other_Selected_GL", resourceCulture);
             }
         }
         
@@ -3452,6 +4056,15 @@ namespace Resources {
         internal static string XAF {
             get {
                 return ResourceManager.GetString("XAF", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You can allocate the transaction to &lt;strong&gt;multiple GL accounts&lt;/strong&gt;..
+        /// </summary>
+        internal static string You_can_allocate_the_transaction_to_multiple_GL_accounts {
+            get {
+                return ResourceManager.GetString("You_can_allocate_the_transaction_to_multiple_GL_accounts", resourceCulture);
             }
         }
     }

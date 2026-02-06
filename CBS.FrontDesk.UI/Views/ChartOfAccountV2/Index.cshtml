@@ -12,14 +12,14 @@
             <div class="card bg-light mb-2">
                 <div class="card-body text-center">
                     <h1 class="card-title text-primary">
-                        <i class="fas fa-sitemap me-2"></i> @AccountingV2.ChartofAccountsManagement
+                        <i class="fas fa-sitemap me-2"></i> @ChartOfAccountV2Resource.Chart_of_Accounts_Management
                     </h1>
                     <p class="card-text">
-                        @AccountingV2.COAtext1
+                        @ChartOfAccountV2Resource.Manage_and_organize_your_financial_accounts_hierarchy_with_ease_Display_edit_and_maintain_your_chart_of_accounts_structure
                     </p>
                     <div class="alert alert-info mt-3 py-2">
                         <i class="fas fa-info-circle me-1"></i>
-                        @AccountingV2.COAtext2
+                        @ChartOfAccountV2Resource.Important_Changes_to_account_structure_may_affect_financial_reporting_and_transactions
                     </div>
                     <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
                 </div>
@@ -32,7 +32,7 @@
         <div class="col-12">
             <div class="card mb-3">
                 <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-                    <span><i class="fas fa-lightbulb me-2"></i>@AccountingV2.Tips</span>
+                    <span><i class="fas fa-lightbulb me-2"></i>@GlobalShared.Tips</span>
                     <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false">
                         <i class="fas fa-chevron-down"></i>
                     </button>
@@ -40,12 +40,12 @@
                 <div id="collapseTips" class="collapse">
                     <div class="card-body">
                         <ul class="mb-0">
-                            <li class="mb-2"><i class="fas fa-project-diagram text-success me-2"></i><strong>@AccountingV2.AccountHierarchy:</strong> @AccountingV2.AccountHierarchytext</li>
-                            <li class="mb-2"><i class="fas fa-edit text-info me-2"></i><strong>@AccountingV2.NamingConvention:</strong>@AccountingV2.NamingConventiontext</li>
-                            <li class="mb-2"><i class="fas fa-exchange-alt text-warning me-2"></i><strong>@AccountingV2.PostingRights:</strong> @AccountingV2.PostingRightstext</li>
-                            <li class="mb-2"><i class="fas fa-sync-alt text-info me-2"></i><strong>@AccountingV2.RefreshData:</strong> @AccountingV2.RefreshDataText</li>
-                            <li class="mb-2"><i class="fas fa-code text-primary me-2"></i><strong>@AccountingV2.AccountCodes:</strong> @AccountingV2.AccountCodestext</li>
-                            <li class="mb-2"><i class="fas fa-save text-success me-2"></i><strong>@AccountingV2.SaveChanges:</strong>@AccountingV2.SaveChangestext</li>
+                            <li class="mb-2"><i class="fas fa-project-diagram text-success me-2"></i><strong>@ChartOfAccountV2Resource.Account_Hierarchy:</strong> @ChartOfAccountV2Resource.Maintain_proper_parent_child_relationships_for_accurate_financial_reporting</li>
+                            <li class="mb-2"><i class="fas fa-edit text-info me-2"></i><strong>@ChartOfAccountV2Resource.Naming_Convention:</strong>@ChartOfAccountV2Resource.Use_clear_and_consistent_naming_in_both_English_and_French_for_all_accounts</li>
+                            <li class="mb-2"><i class="fas fa-exchange-alt text-warning me-2"></i><strong>@ChartOfAccountV2Resource.Posting_Rights:</strong> @ChartOfAccountV2Resource.Only_leaf_level_accounts_with_no_children_should_allow_transaction_posting</li>
+                            <li class="mb-2"><i class="fas fa-sync-alt text-info me-2"></i><strong>@GlobalShared.Refresh_Data:</strong> @ChartOfAccountV2Resource.Use_the_refresh_button_to_ensure_you_re_viewing_the_latest_account_structure</li>
+                            <li class="mb-2"><i class="fas fa-code text-primary me-2"></i><strong>@GlobalShared.AccountCodes:</strong> @ChartOfAccountV2Resource.Follow_the_established_numbering_system_for_consistent_account_identification</li>
+                            <li class="mb-2"><i class="fas fa-save text-success me-2"></i><strong>@GlobalShared.SaveChanges:</strong>@ChartOfAccountV2Resource.Remember_to_save_after_making_any_modifications_to_account_details</li>
                         </ul>
                     </div>
                 </div>
@@ -62,20 +62,20 @@
                 <div class="card-header">
                     <div class="d-flex align-items-center">
                         <i class="fas fa-sitemap me-2 text-primary"></i>
-                        <h5 class="mb-0">Chart of Accounts</h5>
+                        <h5 class="mb-0">@GlobalShared.Chart_of_Accounts</h5>
                     </div>
 
                     <div class="d-flex align-items-center">
                         <div class="me-2">
                             <button id="refreshTree" class="btn btn-outline-secondary btn-sm">
-                                <i class="fas fa-sync-alt"></i>@AccountingV2.Refresh
+                                <i class="fas fa-sync-alt"></i>@GlobalShared.Refresh
                             </button>
                         </div>
 
                         <div class="form-check form-switch mb-0">
                             <input class="form-check-input" type="checkbox" id="languageToggle">
                             <label class="form-check-label small ms-2" for="languageToggle">
-                                <span id="languageLabel">@AccountingV2.English</span>
+                                <span id="languageLabel">@GlobalShared.English</span>
                             </label>
                         </div>
                     </div>
@@ -92,7 +92,7 @@
             <!-- right card: Details -->
             <div id="accountDetails" class="card h-100 shadow-sm">
                 <div class="card-header">
-                    <h6 class="card-title mb-0"> @AccountingV2.PCMFCAMCULLDetails</h6>
+                    <h6 class="card-title mb-0"> @ChartOfAccountV2Resource.PCMF_CAMCULL_Details</h6>
                     <button type="button"
                             id="hideDetailsBtn"
                             class="btn btn-sm btn-light ms-2"
@@ -105,7 +105,7 @@
                 <div class="card-body">
                     <div id="noSelection" class="text-muted text-center py-5">
                         <i class="fas fa-mouse-pointer fa-2x mb-0"></i>
-                        <p>@AccountingV2.Selectanaccounttoviewdetails</p>
+                        <p>@ChartOfAccountV2Resource.Select_an_account_to_view_details</p>
                     </div>
 
                     <div id="accountInfo" style="display: none;">
@@ -114,22 +114,22 @@
                             <input type="hidden" id="accountId" name="Id" />
 
                             <div class="mb-3">
-                                <label for="accountCode" class="form-label">@AccountingV2.AccountCode</label>
+                                <label for="accountCode" class="form-label">@GlobalShared.AccountCode</label>
                                 <input type="text" class="form-control" id="accountCode" readonly>
                             </div>
 
                             <div class="mb-3">
-                                <label for="accountNameEn" class="form-label">@AccountingV2.Nameen</label>
+                                <label for="accountNameEn" class="form-label">@GlobalShared.Name (@GlobalShared.English)</label>
                                 <input type="text" class="form-control" id="accountNameEn" name="NameEn">
                             </div>
 
                             <div class="mb-3">
-                                <label for="accountNameFr" class="form-label">@AccountingV2.namefr</label>
+                                <label for="accountNameFr" class="form-label">@GlobalShared.Name (@GlobalShared.French)</label>
                                 <input type="text" class="form-control" id="accountNameFr" name="NameFr">
                             </div>
 
                             <div class="mb-3">
-                                <label for="accountClass" class="form-label">@AccountingV2.Class</label>
+                                <label for="accountClass" class="form-label">@GlobalShared.Class</label>
                                 <input type="text" class="form-control" id="accountClass" readonly>
                             </div>
 
@@ -137,7 +137,7 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="postingAllowed" disabled>
                                     <label class="form-check-label" for="postingAllowed">
-                                        @AccountingV2.PostingAllowed
+                                        @GlobalShared.Posting_Allowed
                                     </label>
                                 </div>
                             </div>
@@ -145,7 +145,7 @@
                             <div class="mt-auto">
                                 <!-- keeps button at bottom of card-body -->
                                 <button type="submit" class="btn btn-primary w-100" id="saveButton">
-                                    <i class="fas fa-save me-2"></i>@AccountingV2.SaveChanges
+                                    <i class="fas fa-save me-2"></i>@GlobalShared.SaveChanges
                                 </button>
                             </div>
                         </form>
@@ -162,7 +162,7 @@
             <div class="modal-body text-center py-4">
                 <i class="fas fa-check-circle text-success fa-3x mb-3"></i>
                 <h5>Success!</h5>
-                <p class="mb-0">@AccountingV2.Accountupdatedsuccessfully</p>
+                <p class="mb-0">@GlobalShared.Account_updated_successfully</p>
             </div>
         </div>
     </div>

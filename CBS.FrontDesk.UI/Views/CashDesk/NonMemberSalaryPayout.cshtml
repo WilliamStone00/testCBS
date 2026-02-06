@@ -2,7 +2,7 @@
     ViewBag.Title = "Non-Member Salary Payout";
     var gls = (IEnumerable<dynamic>)ViewBag.AccountIds ?? new List<dynamic>();
 }
-
+@using Resources
 <style>
     /* ===== Layout polish & readability ===== */
     .mini {
@@ -132,17 +132,17 @@
 <!-- ===== Page Header (short & readable) ===== -->
 <div class="page-band p-3 mb-2 text-center">
     <h2 class="page-title text-primary mb-2">
-        <i class="mdi mdi-cash me-2"></i> Non-Member Salary Payout
-        <span class="badge bg-danger ms-2">Expense</span>
+        <i class="mdi mdi-cash me-2"></i> @CashDeskRessource.Non_Member_Salary_Payout
+    <span class="badge bg-danger ms-2">@GlobalShared.Expense</span>
     </h2>
-    <div class="text-muted">Cash-out posted directly to the branch chart of accounts.</div>
-    <div class="text-muted small">Use only for non-member salary payouts from petty cash/teller vault.</div>
+    <div class="text-muted">@CashDeskRessource.Cash_out_posted_directly_to_the_branch_chart_of_accounts</div>
+    <div class="text-muted small">@CashDeskRessource.Use_only_for_non_member_salary_payouts_from_petty_cash_teller_vault</div>
 </div>
 
 <!-- ===== Tips (compact, collapsible) ===== -->
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i>Tips for Non-Member Salary Payout</span>
+        <span><i class="mdi mdi-information-outline me-2"></i>@CashDeskRessource.Tips_for_Non_Member_Salary_Payout</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse"
                 data-bs-target="#collapsePayoutTips" aria-expanded="false" aria-controls="collapsePayoutTips">
             <i class="mdi mdi-chevron-down"></i>
@@ -151,12 +151,12 @@
     <div id="collapsePayoutTips" class="collapse">
         <div class="card-body mini">
             <ul class="mb-0">
-                <li><i class="mdi mdi-key-outline text-primary me-2"></i> Enter the <b>salary code</b> then click <b>Find</b>.</li>
-                <li><i class="mdi mdi-account-edit text-primary me-2"></i> Verify/edit <b>Name, CNI, Telephone</b> and add a clear <b>Narration</b>.</li>
-                <li><i class="mdi mdi-cash-multiple text-success me-2"></i> Denominations (left) must equal the payout amount.</li>
-                <li><i class="mdi mdi-bank text-primary me-2"></i> Select the <b>Source GL</b> the cash leaves from (petty cash, vault…).</li>
-                <li><i class="mdi mdi-shield-check-outline text-success me-2"></i> Confirm details carefully in the dialog before posting.</li>
-                <li><i class="mdi mdi-printer-check text-secondary me-2"></i> After posting, use <b>Re-Print</b> in the receipt view to print.</li>
+                <li><i class="mdi mdi-key-outline text-primary me-2"></i> @Html.Raw(@CashDeskRessource.Enter_the_salary_code_then_click_Find).</li>
+                <li><i class="mdi mdi-account-edit text-primary me-2"></i> @Html.Raw(@CashDeskRessource.Verify_edit_Name_CNI_Telephone_and_add_a_clear_Narration)</li>
+                <li><i class="mdi mdi-cash-multiple text-success me-2"></i> @CashDeskRessource.Denominations_left_must_equal_the_payout_amount</li>
+                <li><i class="mdi mdi-bank text-primary me-2"></i> @Html.Raw(@CashDeskRessource.Select_the_Source_GL_the_cash_leaves_from)</li>
+                <li><i class="mdi mdi-shield-check-outline text-success me-2"></i> @CashDeskRessource.Confirm_details_carefully_in_the_dialog_before_posting</li>
+                <li><i class="mdi mdi-printer-check text-secondary me-2"></i> @Html.Raw(@CashDeskRessource.After_posting_use_Re_Print_in_the_receipt_view_to_print)</li>
             </ul>
         </div>
     </div>
@@ -167,7 +167,7 @@
     <!-- Left: Denominations -->
     <div class="col-md-3">
         <div class="card shadow-sm">
-            <div class="card-header text-dark fw-semibold">Denomination</div>
+            <div class="card-header text-dark fw-semibold">@GlobalShared.Denomination</div>
             <div class="card-body p-2">
                 @Html.Partial("_DenominationBreakDown")
             </div>
@@ -180,10 +180,10 @@
             <!-- Header with clear Accounting Date -->
             <div class="card-header d-flex align-items-center justify-content-between bg-light border-bottom">
                 <div class="fw-bold text-dark d-flex align-items-center">
-                    <i class="mdi mdi-cash text-danger me-2"></i> Non-Member Salary Payout
+                    <i class="mdi mdi-cash text-danger me-2"></i> @CashDeskRessource.Non_Member_Salary_Payout
                 </div>
                 <div class="acc-chip">
-                    <span>Accounting Date</span>
+                    <span>@GlobalShared.Accounting_Date</span>
                     <input id="AccountingDate" type="date" readonly
                            value="@DateTime.Today.ToString("yyyy-MM-dd")" />
                 </div>
@@ -194,13 +194,13 @@
                 <div class="row g-3 align-items-end">
                     <div class="col-md-7">
                         <div class="form-floating input-group">
-                            <input id="PlainCode" class="form-control" placeholder="Enter salary code…" autocomplete="off" />
-                            <label for="PlainCode">Salary Temp Pay Code</label>
+                            <input id="PlainCode" class="form-control" placeholder="@GlobalShared.Enter_salary_code…" autocomplete="off" />
+                            <label for="PlainCode">@CashDeskRessource.Salary_Temp_Pay_Code</label>
                             <button type="button" id="btnFindPayCode" class="btn btn-outline-primary" onclick="SalaryPay.search()">
-                                <i class="mdi mdi-magnify me-1"></i> Find
+                                <i class="mdi mdi-magnify me-1"></i> @GlobalShared.Find
                             </button>
                         </div>
-                        <div class="form-text">Type the salary temp pay code and click <b>Find</b>.</div>
+                        <div class="form-text">@Html.Raw(@CashDeskRessource.Type_the_salary_temp_pay_code_and_click_Find).</div>
                     </div>
 
                     <div class="col-md-5 text-md-end">
@@ -208,7 +208,7 @@
                     Total amount:&nbsp;<span id="totalNoteAmount" data-amt="0">0</span>
                 </span>*@
                         <span class="total-badge formatted-amount shadow-box mb-2" id="lblDepositRequest_amount">
-                            Total : <b>0.0</b>
+                            @GlobalShared.Total : <b>0.0</b>
                         </span>
                         <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0" />
                     </div>
@@ -221,7 +221,7 @@
                         <div class="col-md-6">
                             <div class="sum-row">
                                 <i class="mdi mdi-account-outline"></i>
-                                <div><b>Name:</b> <span id="Sum_Name">-</span></div>
+                                <div><b>@GlobalShared.Name:</b> <span id="Sum_Name">-</span></div>
                             </div>
                             <div class="sum-row">
                                 <i class="mdi mdi-card-account-details-outline"></i>
@@ -229,23 +229,23 @@
                             </div>
                             <div class="sum-row">
                                 <i class="mdi mdi-domain"></i>
-                                <div><b>Branch:</b> <span id="Sum_Branch">-</span></div>
+                                <div><b>@GlobalShared.Branch:</b> <span id="Sum_Branch">-</span></div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="sum-row">
                                 <i class="mdi mdi-cash-multiple"></i>
-                                <div><b>Amount:</b> <span id="Sum_Amount">0</span> <span id="Sum_Currency"></span></div>
+                                <div><b>@GlobalShared.Amount:</b> <span id="Sum_Amount">0</span> <span id="Sum_Currency"></span></div>
                             </div>
                             <div class="sum-row">
                                 <i class="mdi mdi-timer-sand"></i>
-                                <div><b>Expires:</b> <span id="Sum_Expires">-</span></div>
+                                <div><b>@GlobalShared.Expires:</b> <span id="Sum_Expires">-</span></div>
                             </div>
                             <div class="sum-row">
                                 <i class="mdi mdi-shield-check-outline"></i>
                                 <div>
-                                    <b>Status:</b> <span id="Sum_Status" class="badge badge-pill bg-secondary">-</span>
-                                    <span class="text-muted"> (Attempts left: <span id="Sum_Attempts">-</span>)</span>
+                                    <b>@GlobalShared.Status:</b> <span id="Sum_Status" class="badge badge-pill bg-secondary">-</span>
+                                                                      <span class="text-muted"> (@GlobalShared.Attempts_left: <span id="Sum_Attempts">-</span>)</span>
                                 </div>
                             </div>
                         </div>
@@ -256,14 +256,14 @@
                 <div class="row g-3 mt-3">
                     <div class="col-md-4">
                         <div class="form-floating">
-                            <input id="Name" class="form-control" placeholder="Beneficiary Name" />
-                            <label for="Name">Beneficiary Name</label>
+                            <input id="Name" class="form-control" placeholder="@GlobalShared.Beneficiary_Name" />
+                            <label for="Name">@GlobalShared.Beneficiary_Name</label>
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="form-floating">
-                            <input id="CustomerId" class="form-control" placeholder="Customer ID" readonly />
-                            <label for="CustomerId">Member</label>
+                            <input id="CustomerId" class="form-control" placeholder="@GlobalShared.Customer_ID" readonly />
+                            <label for="CustomerId">@GlobalShared.Member</label>
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -275,7 +275,7 @@
                     <div class="col-md-3">
                         <div class="form-floating">
                             <input id="TelephoneNumber" class="form-control" inputmode="tel" placeholder="Telephone" />
-                            <label for="TelephoneNumber">Telephone</label>
+                            <label for="TelephoneNumber">@GlobalShared.Telephone</label>
                         </div>
                     </div>
                 </div>
@@ -287,8 +287,8 @@
                 <div class="row g-3 mt-1">
                     <div class="col-12">
                         <div class="form-floating">
-                            <textarea id="DepositerNote" class="form-control" style="height:72px;" placeholder="Narration"></textarea>
-                            <label for="DepositerNote">Narration / Description</label>
+                            <textarea id="DepositerNote" class="form-control" style="height:72px;" placeholder="@GlobalShared.Narration"></textarea>
+                            <label for="DepositerNote">@GlobalShared.Narration / @GlobalShared.Description</label>
                         </div>
                     </div>
                 </div>
@@ -297,26 +297,26 @@
                 <div class="row g-3 mt-2">
                     <div class="col-md-12">
                         <div class="form-floating alloc-cell">
-                            <select id="SourceChartOfAccountId" class="form-control select2" data-placeholder="Select source GL">
+                            <select id="SourceChartOfAccountId" class="form-control select2" data-placeholder="@GlobalShared.Select_source_GL">
                                 <option value=""></option>
                                 @foreach (var acc in (IEnumerable<dynamic>)ViewBag.AccountIds ?? new List<dynamic>())
                                 {
                                     <option value="@acc.Value">@acc.Text</option>
                                 }
                             </select>
-                            <label for="SourceChartOfAccountId">Source GL (cash box)</label>
+                            <label for="SourceChartOfAccountId">@GlobalShared.Source_GL_cash_box</label>
                         </div>
-                        <div class="form-text">Where the payout leaves from (e.g, Salary Payable GL, Other Selected GL).</div>
+                        <div class="form-text">@CashDeskRessource.Where_the_payout_leaves_from_Salary_Payable_GL_Other_Selected_GL</div>
                     </div>
                 </div>
 
                 <!-- Actions -->
                 <div class="d-flex justify-content-end gap-2 mt-3">
                     <button id="btnPostSalary" class="btn btn-primary" onclick="SalaryPay.submit()">
-                        <i class="mdi mdi-send me-1"></i> Post
+                        <i class="mdi mdi-send me-1"></i> @GlobalShared.Post
                     </button>
                     <button class="btn btn-outline-secondary" onclick="window.location.reload()">
-                        <i class="mdi mdi-refresh me-1"></i> Reset
+                        <i class="mdi mdi-refresh me-1"></i> @GlobalShared.Reset
                     </button>
                 </div>
             </div>
