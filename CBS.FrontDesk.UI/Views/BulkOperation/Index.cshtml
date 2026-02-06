@@ -664,8 +664,17 @@
             return false;
         }
 
+        const shouldImpactAccounting = $('#ShouldImpactAccounting').is(':checked');
+
+
+        const confirmationMessage = shouldImpactAccounting
+            ? "Are you sure you want to run this cash simulation?"
+            : "Are you sure you want to run this cash simulation? <br/>  <b class='text-warning'>⚠ Attention</b><br/>" +
+            "Accounting will <b>NOT</b> be impacted by this operation.<br/>" +
+            "Proceed only if this is intentional.";
+
         // Confirm + submit
-        alertify.confirm("Confirmation", "Are you sure you want to simulate this bulk operation?",
+        alertify.confirm("Confirmation", confirmationMessage,
             function () {
 
                 const ajaxConfig = {
