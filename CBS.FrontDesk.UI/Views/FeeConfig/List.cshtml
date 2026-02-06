@@ -32,20 +32,21 @@
                 <li><strong>@ChequeManagements.SavingChanges:</strong>@ChequeManagements.feeindextext4</li>
                 <li><strong>@ChequeManagements.DeletingaConfiguration:</strong>@ChequeManagements.feeindextext5</li>
             </ul>
+            <a href="~/Views/FeeConfig/List.cshtml">~/Views/FeeConfig/List.cshtml</a>
         </div>
     </div>
 </div>
 
-<!-- Number Config Filters -->
+<!-- Fee Config Filters -->
 <div class="card shadow p-3 mb-4" id="filtersSection">
     <h5 class="text-primary mb-3">
-        <i class="mdi mdi-filter-outline me-1"></i> Number Config Filters
+        <i class="mdi mdi-filter-outline me-1"></i> Fee Config Filters
     </h5>
 
-    <form id="numconfigFilterForm" autocomplete="off">
+    <form id="feeConfigFilterForm" method="post" autocomplete="off">
         <div class="card p-3 mb-3 bg-light">
 
-            <!-- Toggle switches to show/hide optional filter groups -->
+            <!-- Toggle switches -->
             <div class="row mb-3">
                 <div class="col-md-3">
                     <div class="form-check">
@@ -76,103 +77,104 @@
                 </div>
             </div>
 
-            <!-- Branch Section (hidden by default) -->
+            <!-- Branch Section -->
             <div id="branchFilter" class="d-none mb-3">
-                <div class="row mb-3">
-                    <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-6">
                         <label class="form-label fw-bold">Branch</label>
                         @Html.DropDownList("BranchId",
                             new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
                             "--- Select Branch ---",
-                            new { @class = "form-control select2", @id = "branchId", @name = "BranchId" })
+                            new { @class = "form-control select2" })
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Branch Code</label>
+                        <input type="text"
+                               name="BranchCode"
+                               class="form-control"
+                               placeholder="e.g. B001" />
                     </div>
                 </div>
             </div>
 
-            <!-- Fee Type (hidden by default) -->
+            <!-- Fee Type -->
             <div id="feeTypeContainer" class="d-none mb-3">
-                <div class="row mb-3">
+                <div class="row">
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">@ChequeManagements.SelectFeeType</label>
-                        @Html.DropDownList("FeeType", new SelectList(ViewBag.FeeTypes, "Value", "Text"), "--- Select Fee Type ---", new { @class = "form-control select2", id = "feeType", name = "FeeType" })
+                        <label class="form-label fw-bold">Fee Type</label>
+                        @Html.DropDownList("FeeType",
+                            new SelectList(ViewBag.FeeTypes, "Value", "Text"),
+                            "--- Select Fee Type ---",
+                            new { @class = "form-control select2" })
                     </div>
                 </div>
             </div>
 
-            <!-- Flags (hidden by default) -->
+            <!-- Flags -->
             <div id="flagsContainer" class="d-none mb-3">
-                <div class="row mb-3">
+                <div class="row">
                     <div class="col-md-3">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="acceptStaticAmount" name="AcceptStaticAmount" value="true" />
-                            <label class="form-check-label fw-bold" for="acceptStaticAmount">@ChequeManagements.AcceptStaticAmount</label>
+                            <input class="form-check-input" type="checkbox"
+                                   name="AcceptStaticAmount"
+                                   value="true" />
+                            <label class="form-check-label fw-bold">
+                                Accept Static Amount
+                            </label>
                         </div>
                     </div>
+
                     <div class="col-md-3">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="acceptPercentage" name="AcceptPercentage" value="true" />
-                            <label class="form-check-label fw-bold" for="acceptPercentage">@ChequeManagements.AcceptPercentage</label>
+                            <input class="form-check-input" type="checkbox"
+                                   name="AcceptPercentage"
+                                   value="true" />
+                            <label class="form-check-label fw-bold">
+                                Accept Percentage
+                            </label>
                         </div>
                     </div>
+
                     <div class="col-md-3">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="acceptRange" name="AcceptRange" value="true" />
-                            <label class="form-check-label fw-bold" for="acceptRange">@ChequeManagements.AcceptRange</label>
+                            <input class="form-check-input" type="checkbox"
+                                   name="AcceptRange"
+                                   value="true" />
+                            <label class="form-check-label fw-bold">
+                                Accept Range
+                            </label>
                         </div>
                     </div>
+
                     <div class="col-md-3">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="isCentralized" name="IsCentralized" value="true" />
-                            <label class="form-check-label fw-bold" for="isCentralized">@ChequeManagements.IsCentralized</label>
+                            <input class="form-check-input" type="checkbox"
+                                   name="IsCentralized"
+                                   value="true" />
+                            <label class="form-check-label fw-bold">
+                                Is Centralized
+                            </label>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Default Filters (always visible) -->
-            <div class="row mb-3">
-                <div class="col-md-4">
-                    <label class="form-label fw-bold">@ChequeManagements.BranchCode</label>
-                    <input type="text" id="branchCode" name="BranchCode" class="form-control" placeholder="e.g. B001" />
-                </div>
-
-                <div class="col-md-4">
-                    <label class="form-label fw-bold">@ChequeManagements.Name</label>
-                    <input type="text" id="name" name="Name" class="form-control" placeholder="Configuration name" />
-                </div>
-
-                <div class="col-md-4">
-                    <label class="form-label fw-bold">@ChequeManagements.SerialNumberPosition</label>
-                    <input type="number" id="serialNumberPosition" name="SerialNumberPosition" class="form-control" min="0" />
-                </div>
-            </div>
-
-            <!-- Position Settings (always visible) -->
-            <div class="row mb-3">
-                <div class="col-md-4">
-                    <label class="form-label fw-bold">@ChequeManagements.BankCodePosition</label>
-                    <input type="number" id="bankCodePosition" name="BankCodePosition" class="form-control" min="0" />
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label fw-bold">@ChequeManagements.BranchCodePosition</label>
-                    <input type="number" id="branchCodePosition" name="BranchCodePosition" class="form-control" min="0" />
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label fw-bold">@ChequeManagements.YearPosition</label>
-                    <input type="number" id="yearPosition" name="YearPosition" class="form-control" min="0" />
-                </div>
-            </div>
-
-            <!-- Date Filters (hidden by default) -->
+            <!-- Date Filters -->
             <div id="dateFilters" class="d-none">
-                <div class="row mb-3">
+                <div class="row">
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">@ChequeManagements.StartDate</label>
-                        <input type="date" id="startDate" name="StartDate" class="form-control" />
+                        <label class="form-label fw-bold">Start Date</label>
+                        <input type="date"
+                               name="StartDate"
+                               class="form-control" />
                     </div>
+
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">@ChequeManagements.EndDate</label>
-                        <input type="date" id="endDate" name="EndDate" class="form-control" />
+                        <label class="form-label fw-bold">End Date</label>
+                        <input type="date"
+                               name="EndDate"
+                               class="form-control" />
                     </div>
                 </div>
             </div>
@@ -182,22 +184,44 @@
         <!-- Buttons -->
         <div class="row mt-2">
             <div class="col-md-12 d-flex">
-                <button id="applyFilterBtn" type="button" class="btn btn-primary me-2 w-100">
-                    <i class="mdi mdi-magnify"></i>@ChequeManagements.ApplyFilter
+                <button id="applyFilterBtn"
+                        type="submit"
+                        class="btn btn-primary me-2 w-100">
+                    <i class="mdi mdi-magnify"></i> Apply Filter
                 </button>
-                <button id="resetFilterBtn" type="button" class="btn btn-secondary me-2 w-100">
-                    <i class="mdi mdi-refresh"></i>@ChequeManagements.Reset
+
+                <button id="resetFilterBtn"
+                        type="reset"
+                        class="btn btn-secondary me-2 w-100">
+                    <i class="mdi mdi-refresh"></i> Reset
                 </button>
             </div>
         </div>
     </form>
+
 </div>
 
 <div id="datalistingview">
     @Html.Partial("_feeconfigData")
 </div>
 
+<div class="modal fade" id="detailsModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="detailsModalBody">
+                <!-- AJAX content -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
 @section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
     <script>
     (function () {
         // Config - change this if your controller action name is different
@@ -312,7 +336,17 @@
                                         <i class="mdi mdi-cog-outline"></i> Actions
                                     </button>
                                     <ul class="dropdown-menu" aria-labelledby="act_${safeId}">
-                                        <li><button class="dropdown-item" type="button" onclick="showDetails('${escapeJs(id)}')"><i class="mdi mdi-eye me-1 text-info"></i> View Details</button></li>
+
+
+<li>
+    <button class="dropdown-item btn-details" type="button" data-id="${encodeURIComponent(id)}">
+        <i class="mdi mdi-eye me-1 text-info"></i> View Details
+    </button>
+</li>
+
+
+
+
                                         <li><button class="dropdown-item" type="button" onclick="editConfig('${escapeJs(id)}')"><i class="mdi mdi-pencil me-1 text-primary"></i> Edit</button></li>
                                         <li><button class="dropdown-item text-danger" type="button" onclick="deleteConfig('${escapeJs(id)}')"><i class="mdi mdi-delete me-1"></i> Delete</button></li>
                                     </ul>
@@ -328,29 +362,48 @@
 
         // Build FeeConfigQuery from form fields
         function buildQueryObject() {
-            // read toggles: if container hidden, treat as null
-            const branchId = $('#branchFilter').hasClass('d-none') ? null : ($('#branchId').val() || null);
-            const feeType = $('#feeTypeContainer').hasClass('d-none') ? null : ($('#feeType').val() || null);
 
-            const q = {
-                BranchCode: ($('#branchCode').val() || null),
-                BranchId: branchId,
-                BranchName: (branchId ? ($('#branchId option:selected').data('name') || null) : null),
-                FeeType: feeType,
-                AcceptStaticAmount: $('#flagsContainer').hasClass('d-none') ? null : ($('#acceptStaticAmount').is(':checked') || false),
-                AcceptPercentage: $('#flagsContainer').hasClass('d-none') ? null : ($('#acceptPercentage').is(':checked') || false),
-                AcceptRange: $('#flagsContainer').hasClass('d-none') ? null : ($('#acceptRange').is(':checked') || false),
-                IsCentralized: $('#flagsContainer').hasClass('d-none') ? null : ($('#isCentralized').is(':checked') || false),
-                StartDate: ($('#dateFilters').hasClass('d-none') ? null : ($('#startDate').val() || null)),
-                EndDate: ($('#dateFilters').hasClass('d-none') ? null : ($('#endDate').val() || null)),
+            const branchVisible = !$('#branchFilter').hasClass('d-none');
+            const feeTypeVisible = !$('#feeTypeContainer').hasClass('d-none');
+            const flagsVisible = !$('#flagsContainer').hasClass('d-none');
+            const dateVisible = !$('#dateFilters').hasClass('d-none');
+
+            const branchSelect = $('#BranchId');
+            const selectedBranchText = branchSelect.find('option:selected').text();
+
+            return {
+                BranchCode: branchVisible ? ($('#branchCode').val() || null) : null,
+                BranchId: branchVisible ? (branchSelect.val() || null) : null,
+                BranchName: branchVisible && branchSelect.val() ? selectedBranchText : null,
+
+                FeeType: feeTypeVisible ? ($('#FeeType').val() || null) : null,
+
+                AcceptStaticAmount: flagsVisible
+                    ? ($('#acceptStaticAmount').is(':checked') ? true : null)
+                    : null,
+
+                AcceptPercentage: flagsVisible
+                    ? ($('#acceptPercentage').is(':checked') ? true : null)
+                    : null,
+
+                AcceptRange: flagsVisible
+                    ? ($('#acceptRange').is(':checked') ? true : null)
+                    : null,
+
+                IsCentralized: flagsVisible
+                    ? ($('#isCentralized').is(':checked') ? true : null)
+                    : null,
+
+                StartDate: dateVisible ? ($('#startDate').val() || null) : null,
+                EndDate: dateVisible ? ($('#endDate').val() || null) : null,
+
                 Options: {
-                    // optional datatable options - server can use these if needed
-                    pageSize: 0,
-                    draw: 0
+                    draw: feeTable ? feeTable.page.info().page : 0,
+                    pageSize: feeTable ? feeTable.page.len() : 10
                 }
             };
-            return q;
         }
+
 
         // Apply Filters button clicked
         function onApplyFilters() {
@@ -429,22 +482,79 @@
             return String(s).replace(/'/g, "\\'").replace(/"/g, '\\"');
         }
 
-        // expose global functions used by action buttons (if not already global)
-        window.showDetails = window.showDetails || function (id) {
-            const conf = allFeeConfigs.find(x => String(x.id) === String(id));
-            if (!conf) { if (typeof appalert === 'function') appalert('Configuration not found', 2, 1); return; }
-            // If you have server partial details injection flow, you can call:
-             AddORUpdateGen(id, 'detailsModalBody', '_FeeConfigDetails', 'get', 'FeeConfig');
-            // For now reuse your client-side render if present:
-            //if (typeof showDetails === 'function' && showDetails !== window.showDetails) {
-            //    // there is another showDetails defined elsewhere; call it
-            //    showDetails(id);
-            //    return;
-            //}
-            // fallback: open modal with basic JSON
-            //$('#detailsModalBody').html('<pre>' + escapeHtml(JSON.stringify(conf, null, 2)) + '</pre>');
-            $('#detailsModal').modal('show');
-        };
+        //// expose global functions used by action buttons (if not already global)
+        //window.showDetails = window.showDetails || function (id) {
+        //    const conf = allFeeConfigs.find(x => String(x.id) === String(id));
+        //    if (!conf) { if (typeof appalert === 'function') appalert('Configuration not found', 2, 1); return; }
+        //    // If you have server partial details injection flow, you can call:
+        //     AddORUpdateGen(id, 'detailsModalBody', '_FeeConfigDetails', 'get', 'FeeConfig');
+        //    // For now reuse your client-side render if present:
+        //    //if (typeof showDetails === 'function' && showDetails !== window.showDetails) {
+        //    //    // there is another showDetails defined elsewhere; call it
+        //    //    showDetails(id);
+        //    //    return;
+        //    //}
+        //    // fallback: open modal with basic JSON
+        //    //$('#detailsModalBody').html('<pre>' + escapeHtml(JSON.stringify(conf, null, 2)) + '</pre>');
+        //    $('#detailsModal').modal('show');
+        //};
+
+        // Delegated actions: view details in modal
+        $(document).off('click', '.btn-details').on('click', '.btn-details', function (e) {
+            e.preventDefault();
+
+            var raw = $(this).data('id');
+            var partialView = "_FeeConfigDetails";
+            var id = raw ? decodeURIComponent(raw) : null;
+
+            if (!id) {
+                appalert('Missing id for details', 0, 1);
+                return;
+            }
+
+            var modalElement = document.getElementById('detailsModal');
+            var modalBody = document.getElementById('detailsModalBody');
+
+            if (!modalElement || !modalBody) {
+                appalert('Details modal not found', 0, 1);
+                return;
+            }
+
+            var bsModal = bootstrap.Modal.getOrCreateInstance(modalElement);
+
+            // Show spinner inside modal body (but DO NOT show modal yet)
+            modalBody.innerHTML = `
+        <div class="text-center my-3">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>`;
+
+            // AJAX GET partial view
+            $.get('/FeeConfig/InitializeData', { KEY: id, partialView: partialView })
+                .done(function (html) {
+
+                    modalBody.innerHTML = html ||
+                        '<div class="text-center text-muted">No details available.</div>';
+
+                    // Re-init tooltips if needed
+                    if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
+                        document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) {
+                            new bootstrap.Tooltip(el);
+                        });
+                    }
+
+                    // ✅ SHOW MODAL ONLY AFTER CONTENT IS READY
+                    bsModal.show();
+                })
+                .fail(function () {
+                    modalBody.innerHTML =
+                        '<div class="text-center text-danger">Error loading details</div>';
+
+                    appalert('Failed to load details', 0, 1);
+                });
+        });
+
 
         window.editConfig = window.editConfig || function (id) {
             $('#filtersSection').addClass('d-none'); // preferred, keeps bootstrap classes consistent

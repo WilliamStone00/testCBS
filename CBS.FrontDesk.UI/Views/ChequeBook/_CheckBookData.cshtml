@@ -1,19 +1,19 @@
 ﻿
 @using Resources
 <div class="card p-3 shadow mb-4">
-    <h5 class="text-primary mb-3"><i class="mdi mdi-table"></i>CheckBooks</h5>
+    <h5 class="text-primary mb-3"><i class="mdi mdi-table"></i>@ChequeBookResource.CheckBooks</h5>
     <div class="table-responsive">
         <table id="myDataTable" class="table table-bordered table-striped">
             <thead class="table-light">
                 <tr>
-                    <th>Creation Date</th>
-                    <th>MemberName</th>
-                    <th>Category</th>
-                    <th>Status</th>
-                    <th>Num. Of Leaves</th>
-                    <th>Member Ref.</th>
-                    <th>Printed</th>
-                    <th>Actions</th>
+                    <th>@GlobalShared.Creation_Date</th>
+                    <th>@GlobalShared.Member_name</th>
+                    <th>@GlobalShared.Category</th>
+                    <th>@GlobalShared.Status</th>
+                    <th>@ChequeBookResource.Number_Of_Leaves</th>
+                    <th>@GlobalShared.Member_ref.</th>
+                    <th>@GlobalShared.Printed</th>
+                    <th>@GlobalShared.Actions</th>
                 </tr>
             </thead>
             <tbody></tbody>

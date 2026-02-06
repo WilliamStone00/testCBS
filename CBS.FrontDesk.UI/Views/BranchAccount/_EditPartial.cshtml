@@ -8,8 +8,9 @@
             <div class="card bg-light mb-2">
                 <div class="card-body text-center">
                     <h1 class="card-title text-primary">
-                        <i class="mdi mdi-account-group me-2"></i>Edit Branch  Account                     </h1>
-                    <p class="card-text"> This page is used for editing of branch Name Bothe in english and french </p>
+                        <i class="mdi mdi-account-group me-2"></i>@BranchAccountRessources.Edit_Branch_Account
+                    </h1>
+                    <p class="card-text"> @BranchAccountRessources.This_page_is_used_for_editing_of_branch_Name_Bothe_in_english_and_french </p>
                     <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
                 </div>
             </div>
@@ -31,35 +32,35 @@
                         <input type="text" class="form-control" id="accountCode" name="Code" readonly value="@Model.BranchId" />
                     </div>
                     <div class="mb-3">
-                        <label for="accountCode" class="form-label">@AccountingV2.AccountCode</label>
+                        <label for="accountCode" class="form-label">@GlobalShared.AccountCode</label>
                         <input type="text" class="form-control" id="accountCode" name="Code" readonly value="@Model.Code" />
                     </div>
 
                     <div class="mb-3">
-                        <label for="accountNameEn" class="form-label">@AccountingV2.Nameen</label>
+                        <label for="accountNameEn" class="form-label">@GlobalShared.Name en</label>
                         <input type="text" class="form-control" id="accountNameEn" name="NameEn" value="@Model.NameEn" />
                     </div>
 
                     <div class="mb-3">
-                        <label for="accountNameFr" class="form-label">@AccountingV2.namefr</label>
+                        <label for="accountNameFr" class="form-label">@GlobalShared.Name fr</label>
                         <input type="text" class="form-control" id="accountNameFr" name="NameFr" value="@Model.NameFr" />
                     </div>
 
                     <div class="mb-3">
-                        <label for="accountClass" class="form-label">@AccountingV2.Class</label>
+                        <label for="accountClass" class="form-label">@GlobalShared.Class</label>
                         <input type="text" class="form-control" id="accountClass" readonly value="@Model.Class" />
                     </div>
 
                     <div class="mb-3">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="postingAllowed" name="PostingAllowed" @(Model.PostingAllowed == true ? "checked" : "") disabled />
-                            <label class="form-check-label" for="postingAllowed">@AccountingV2.PostingAllowed</label>
+                            <label class="form-check-label" for="postingAllowed">@GlobalShared.Posting_Allowed</label>
                         </div>
                     </div>
 
                     <div class="mt-auto">
                         <button type="submit" class="btn btn-primary w-100" id="saveButton" data-bs-dismiss="modal">
-                            <i class="fas fa-save me-2"></i>@AccountingV2.SaveChanges
+                            <i class="fas fa-save me-2"></i>@GlobalShared.SaveChanges
                         </button>
                     </div>
                 </form>

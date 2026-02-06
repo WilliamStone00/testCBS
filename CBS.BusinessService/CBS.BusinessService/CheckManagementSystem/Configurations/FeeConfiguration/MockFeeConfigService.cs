@@ -26,9 +26,8 @@ namespace CBS.BusinessService.CheckManagementSystem.Configurations.FeeConfigurat
                 description = "Configuration centralisée",
                 feeType = "CashIn",
                 acceptPercentage = true,
-                percentageApplied = 2.5,
+                percentageApplied = 25,
                 acceptRange = false,
-                IsActive = true,
                 feeTypeRanges = new List<Range> { new Range { amountFrom = 0, amountTo = 1000, value = 10 } }
             },
             new FeeConfig
@@ -42,7 +41,6 @@ namespace CBS.BusinessService.CheckManagementSystem.Configurations.FeeConfigurat
                 acceptPercentage = false,
                 percentageApplied = null,
                 acceptRange = true,
-                IsActive = true,
                 feeTypeRanges = new List<Range>
                 {
                     new Range { amountFrom = 0, amountTo = 500, value = 5 },
@@ -60,7 +58,6 @@ namespace CBS.BusinessService.CheckManagementSystem.Configurations.FeeConfigurat
                 acceptPercentage = false,
                 percentageApplied = null,
                 acceptRange = true,
-                IsActive = true,
                 feeTypeRanges = new List<Range>
                 {
                     new Range { amountFrom = 0, amountTo = 10000, value = 2500 },
@@ -101,7 +98,6 @@ namespace CBS.BusinessService.CheckManagementSystem.Configurations.FeeConfigurat
                         id = c.id,
                         feeType = c.feeType,
                         description = c.description,
-                        IsActive = c.IsActive,
                         isCentralized = c.isCentralized,
                         branchName = c.branchName
                     }).ToList();
@@ -169,7 +165,6 @@ namespace CBS.BusinessService.CheckManagementSystem.Configurations.FeeConfigurat
                         existing.acceptPercentage = model.acceptPercentage;
                         existing.percentageApplied = model.percentageApplied;
                         existing.acceptRange = model.acceptRange;
-                        existing.IsActive = model.IsActive;
                         existing.feeTypeRanges = model.feeTypeRanges ?? new List<Range>();
 
                         GetExecutionMessages(existing, true, "FeeConfig", MessagesResults.Success, ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, "Updated");

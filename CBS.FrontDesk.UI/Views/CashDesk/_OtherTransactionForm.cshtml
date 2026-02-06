@@ -137,12 +137,12 @@
                                    disabled
                                    onchange="toggleBranchDropdown()" />
                             <label class="form-check-label fw-semibold" for="isInterBranchCheck" id="interBranchLabel">
-                                🔄 Enable Inter-Branch Transaction
+                                🔄 @CashDeskRessource.Enable_Inter_Branch_Transaction
                             </label>
                         </div>
 
                         <div class="form-check form-check-inline m-0">
-                            <span class="fw-semibold me-2">@CashDesk_OtherTransactionForm.SelectSource</span>
+                            <span class="fw-semibold me-2">@GlobalShared.Select_Source</span>
                             @Html.RadioButtonFor(
                                 m => m.BulkDeposit.OtherTransaction.SourceType,
                                 "Cash_Collected",
@@ -163,7 +163,7 @@
                                 "--- Select Branch ---",
                                 new { @class = "form-control select2", @id = "ExternalBranchId" }
                             )
-                            <label for="ExternalBranchId">Destination Branch</label>
+                            <label for="ExternalBranchId">@GlobalShared.Destination_Branch</label>
                             @Html.ValidationMessageFor(m => m.BulkDeposit.OtherTransaction.ExternalBranchId, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -178,7 +178,7 @@
                                        id="IsOtherSource"
                                        onchange="OtherSourceUI.toggle()">
                                 <label class="form-check-label fw-semibold" for="IsOtherSource">
-                                    Use another source GL (e.g., petty cash)
+                                    @CashDeskRessource.Use_another_source_GL
                                 </label>
                             </div>
 
@@ -190,9 +190,9 @@
                                         "--- Select Source GL ---",
                                         new { @class = "form-control select2", @id = "OtherSourceOfAccountId" }
                                     )
-                                    <label for="OtherSourceOfAccountId">Source GL (credited)</label>
+                                    <label for="OtherSourceOfAccountId">@GlobalShared.Source_GL (@GlobalShared.credited)</label>
                                     <span class="small text-muted d-block mt-1">
-                                        This GL will be credited as the source of funds for the expense.
+                                        @CashDeskRessource.This_GL_will_be_credited_as_the_source_of_funds_for_the_expense
                                     </span>
                                 </div>
                             </div>
@@ -203,7 +203,7 @@
 
                 <div class="col-lg-4 d-flex justify-content-lg-end">
                     <span class="total-badge" id="lblDepositRequest_amount">
-                        @CashDesk_OtherTransactionForm.TotalAmount 0.0
+                        @GlobalShared.Total_amount 0.0
                     </span>
                     <input type="hidden" id="totalNoteAmount" value="0" />
                 </div>
@@ -217,7 +217,7 @@
                             m => m.BulkDeposit.OtherTransaction.MemberName,
                             new { @class = "form-control", @id = "Name", placeholder = "Name" }
                         )
-                        <label for="Name">@CashDesk_OtherTransactionForm.Name</label>
+                        <label for="Name">@GlobalShared.Name</label>
                         @Html.ValidationMessageFor(m => m.BulkDeposit.OtherTransaction.MemberName, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -230,7 +230,7 @@
                 <div class="col-md-3">
                     <div class="form-floating">
                         <input type="tel" id="TelephoneNumber" class="form-control" inputmode="tel" placeholder="Telephone" />
-                        <label for="TelephoneNumber">Telephone</label>
+                        <label for="TelephoneNumber">@GlobalShared.Telephone</label>
                     </div>
                 </div>
             </div>
@@ -241,7 +241,7 @@
                         m => m.BulkDeposit.OtherTransaction.Narration,
                         new { @class = "form-control", @style = "height:74px;", @id = "DepositerNote", placeholder = "Narration / Description" }
                     )
-                    <label for="DepositerNote">@CashDesk_OtherTransactionForm.NarrationDescription</label>
+                    <label for="DepositerNote">@GlobalShared.Narration_Description</label>
                     @Html.ValidationMessageFor(m => m.BulkDeposit.OtherTransaction.Narration, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -253,15 +253,15 @@
                 <input type="hidden" name="customerId" value="" id="customerId" />
 
                 <button type="submit" id="submit" class="btn btn-primary me-2" onclick="PostOtherCashIn()">
-                    <i class="fas fa-save me-1"></i> @CashDesk_OtherTransactionForm.Post
+                    <i class="fas fa-save me-1"></i> @GlobalShared.Post
                 </button>
 
                 <button type="button" id="reprint" class="btn btn-secondary me-2" onclick="Reprint()">
-                    <i class="fas fa-print me-1"></i> @CashDesk_OtherTransactionForm.Reprint
+                    <i class="fas fa-print me-1"></i> @GlobalShared.Re_print
                 </button>
 
                 <button type="reset" class="btn btn-outline-secondary">
-                    <i class="fas fa-sync-alt me-1"></i> @CashDesk_OtherTransactionForm.Reset
+                    <i class="fas fa-sync-alt me-1"></i> @GlobalShared.Reset
                 </button>
             </div>
         </fieldset>
@@ -289,12 +289,12 @@ else if (ViewBag.Operation == "transfer_non_member")
                         <div class="form-check m-0">
                             <input type="checkbox" class="form-check-input" id="isInterBranchCheck" onchange="toggleBranchDropdown()" />
                             <label class="form-check-label fw-semibold" for="isInterBranchCheck" id="interBranchLabel">
-                                🔄 Enable Inter-Branch Transaction
+                                🔄 @CashDeskRessource.Enable_Inter_Branch_Transaction
                             </label>
                         </div>
 
                         <div class="form-check form-check-inline m-0">
-                            <span class="fw-semibold me-2">Select Source</span>
+                            <span class="fw-semibold me-2">@GlobalShared.Select_Source</span>
                             @Html.RadioButtonFor(
                               m => m.BulkDeposit.OtherTransaction.SourceType,
                               "Cash_Collected",
@@ -321,7 +321,7 @@ else if (ViewBag.Operation == "transfer_non_member")
 
                 <div class="col-lg-4 d-flex justify-content-lg-end">
                     <span class="total-badge" id="lblDepositRequest_amount">
-                        Total Amount: 0.0
+                        @GlobalShared.Total_amount: 0.0
                     </span>
                     <input type="hidden" id="totalNoteAmount" value="0" />
                 </div>
@@ -337,19 +337,19 @@ else if (ViewBag.Operation == "withdrawal_non_member")
 {
     <div class="form-wrapper">
         <fieldset class="fieldset-custom">
-            <legend>@CashDesk_OtherTransactionForm.CashOut</legend>
+            <legend>@GlobalShared.Cash_out</legend>
             <hr />
             <div class="change-group">
                 <div class="row mt-2 gy-4">
                     <div class="col-md-6">
                         <div class="form-floating form-floating-outline">
-                            <span class="formatted-amount shadow-box float-start">@CashDesk_OtherTransactionForm.MembersName: @Model.Customer.name</span>
+                            <span class="formatted-amount shadow-box float-start">@GlobalShared.Members_name: @Model.Customer.name</span>
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="form-floating form-floating-outline">
-                            <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@CashDesk_OtherTransactionForm.TotalAmount: 0.0</span>
+                            <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@GlobalShared.Total_amount: 0.0</span>
                             <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0">
                         </div>
                     </div>
@@ -357,12 +357,12 @@ else if (ViewBag.Operation == "withdrawal_non_member")
                         <table class="table table-hover" id="myDataTableT">
                             <thead class="table-light">
                                 <tr>
-                                    <th style="display:none;">@CashDesk_OtherTransactionForm.ProductID</th>
-                                    <th>@CashDesk_OtherTransactionForm.OrdinaryAccounts</th>
-                                    <th>@CashDesk_OtherTransactionForm.Amount</th>
-                                    <th>@CashDesk_OtherTransactionForm.FeeCharges</th>
-                                    <th>@CashDesk_OtherTransactionForm.Total</th>
-                                    <th>@CashDesk_OtherTransactionForm.Confirm</th>
+                                    <th style="display:none;">@GlobalShared.Product_ID</th>
+                                    <th>@GlobalShared.Ordinary_accounts</th>
+                                    <th>@GlobalShared.Amount</th>
+                                    <th>@GlobalShared.Fee_Charges</th>
+                                    <th>@GlobalShared.Total</th>
+                                    <th>@GlobalShared.Confirm</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -391,12 +391,12 @@ else if (ViewBag.Operation == "withdrawal_non_member")
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <td colspan="3" style="text-align: right;"><strong>@CashDesk_OtherTransactionForm.Total:</strong></td>
+                                    <td colspan="3" style="text-align: right;"><strong>@GlobalShared.Total:</strong></td>
                                     <td id="tableTotal">0</td>
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="4" style="text-align: right;"><strong>@CashDesk_OtherTransactionForm.Balance:</strong></td>
+                                    <td colspan="4" style="text-align: right;"><strong>@GlobalShared.Balance:</strong></td>
                                     <td id="tableBalance">0</td>
                                 </tr>
                             </tfoot>
@@ -415,13 +415,13 @@ else if (ViewBag.Operation == "withdrawal_non_member")
                     <input type="hidden" name="OperationType" value="Withdrawal" id="OperationType" />
                     <input type="hidden" name="customerId" value="@Model.CustomerId" id="customerId" />
                     <button type="submit" id="submit" class="btn btn-primary me-2" onclick="PostCashOut()">
-                        <i class="fas fa-money-bill-wave me-1"></i> @CashDesk_OtherTransactionForm.CashOut
+                        <i class="fas fa-money-bill-wave me-1"></i> @GlobalShared.Cash_out
                     </button>
                     <button type="submit" id="submit" class="btn btn-secondary me-2" onclick="Reprint()">
-                        <i class="fas fa-print me-1"></i> @CashDesk_OtherTransactionForm.Reprint
+                        <i class="fas fa-print me-1"></i> @GlobalShared.Re_print
                     </button>
                     <button type="reset" class="btn btn-outline-secondary">
-                        <i class="fas fa-sync-alt me-1"></i> @CashDesk_OtherTransactionForm.Reset
+                        <i class="fas fa-sync-alt me-1"></i> @GlobalShared.Reset
                     </button>
                 </div>
             </div>

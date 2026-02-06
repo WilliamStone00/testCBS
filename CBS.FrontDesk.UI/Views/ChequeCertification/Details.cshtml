@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.ChequeCertification.ChequeCertificationDto
-
+@using Resources
 <style>
     .section-header {
         font-weight: bold;
@@ -27,25 +27,25 @@
 
     <!-- 🔷 Cheque Certification Header -->
     <h5 class="fw-bold text-uppercase text-primary border-bottom mb-3">
-        <i class="mdi mdi-checkbook me-1"></i> Cheque Certification Details
+        <i class="mdi mdi-checkbook me-1"></i> @ChequeCertificationResource.Cheque_Certification_Details
     </h5>
 
     <!-- 🔷 Certification Information -->
     <h6 class="fw-bold border-bottom text-primary">
-        <i class="mdi mdi-certificate me-1"></i> Certification Information
+        <i class="mdi mdi-certificate me-1"></i> @ChequeCertificationResource.Certification_Information
     </h6>
     <table class="table table-sm table-bordered mb-3">
         <tbody>
             <tr>
-                <th class="bg-light" style="width: 220px;">Certification ID</th>
+                <th class="bg-light" style="width: 220px;">@ChequeCertificationResource.Certification_ID</th>
                 <td>@Model.ChequeCertificationID</td>
             </tr>
             <tr>
-                <th class="bg-light">Member Reference</th>
+                <th class="bg-light">@GlobalShared.Member_reference</th>
                 <td>@Model.MemberReference</td>
             </tr>
             <tr>
-                <th class="bg-light">Certification Status</th>
+                <th class="bg-light">@GlobalShared.Certification_Status</th>
                 <td>
                     @{
                         var statusBadgeClass = "badge bg-secondary";
@@ -62,7 +62,7 @@
                 </td>
             </tr>
             <tr>
-                <th class="bg-light">Created Date</th>
+                <th class="bg-light">@GlobalShared.Created_Date</th>
                 <td>@Model.CreatedDate.ToString("dd/MM/yyyy HH:mm")</td>
             </tr>
         </tbody>
@@ -70,28 +70,28 @@
 
     <!-- 🔷 Cheque Details -->
     <h6 class="fw-bold border-bottom text-primary">
-        <i class="mdi mdi-checkbook-outline me-1"></i> Cheque Details
+        <i class="mdi mdi-checkbook-outline me-1"></i> @ChequeCertificationResource.Cheque_Details
     </h6>
     <table class="table table-sm table-bordered mb-3">
         <tbody>
             <tr>
-                <th class="bg-light" style="width: 220px;">Branch ID</th>
+                <th class="bg-light" style="width: 220px;">@GlobalShared.Branch_ID</th>
                 <td>@Model.BranchId</td>
             </tr>
             <tr>
-                <th class="bg-light">Cheque Book ID</th>
+                <th class="bg-light">@ChequeCertificationResource.Cheque_Book_ID</th>
                 <td>@Model.ChequeBookId</td>
             </tr>
             <tr>
-                <th class="bg-light">Cheque Leaf ID</th>
+                <th class="bg-light">@ChequeCertificationResource.Cheque_Leaf_ID</th>
                 <td>@Model.ChequeleafId</td>
             </tr>
             <tr>
-                <th class="bg-light">Account Number</th>
+                <th class="bg-light">@GlobalShared.Account_Number</th>
                 <td>@Model.AccountNumber</td>
             </tr>
             <tr>
-                <th class="bg-light">Amount</th>
+                <th class="bg-light">@GlobalShared.Amount</th>
                 <td><strong>@Model.Amount.ToString("N2") FCFA</strong></td>
             </tr>
         </tbody>
@@ -101,12 +101,12 @@
     @if (!string.IsNullOrEmpty(Model.Description))
     {
         <h6 class="fw-bold border-bottom text-primary">
-            <i class="mdi mdi-text-box-outline me-1"></i> Description
+            <i class="mdi mdi-text-box-outline me-1"></i> @GlobalShared.Description
         </h6>
         <table class="table table-sm table-bordered mb-3">
             <tbody>
                 <tr>
-                    <th class="bg-light" style="width: 220px;">Description</th>
+                    <th class="bg-light" style="width: 220px;">@GlobalShared.Description</th>
                     <td>@Model.Description</td>
                 </tr>
             </tbody>

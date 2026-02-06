@@ -117,103 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Action" xml:space="preserve">
-    <value>Action</value>
+  <data name="Activation_head_office_and_bank_link" xml:space="preserve">
+    <value />
   </data>
-  <data name="Active" xml:space="preserve">
-    <value>Actif</value>
-  </data>
-  <data name="Address" xml:space="preserve">
-    <value>Adresse</value>
-  </data>
-  <data name="BankInitial" xml:space="preserve">
-    <value>Banque initiale</value>
-  </data>
-  <data name="BoxCode" xml:space="preserve">
-    <value>Code postal</value>
-  </data>
-  <data name="BranchCode" xml:space="preserve">
-    <value>Code de la branche</value>
-  </data>
-  <data name="BranchInformation" xml:space="preserve">
-    <value>Information de la branche</value>
-  </data>
-  <data name="BranchName" xml:space="preserve">
-    <value>Nom de la branche</value>
-  </data>
-  <data name="BranchOffice" xml:space="preserve">
-    <value>Agence</value>
-  </data>
-  <data name="Code" xml:space="preserve">
-    <value>Code</value>
-  </data>
-  <data name="DateOfCreation" xml:space="preserve">
-    <value>Date de création</value>
-  </data>
-  <data name="Email" xml:space="preserve">
-    <value>Email</value>
-  </data>
-  <data name="HeadOffice" xml:space="preserve">
-    <value>Siège Social</value>
-  </data>
-  <data name="HeadOfficeAddress" xml:space="preserve">
-    <value>Adresse du siège social</value>
-  </data>
-  <data name="HeadOfficePhoneNumber" xml:space="preserve">
-    <value>Numéro de téléphone du siège social</value>
-  </data>
-  <data name="ImmatriculationNumber" xml:space="preserve">
-    <value>Numéro d'immatriculation</value>
-  </data>
-  <data name="Inactive" xml:space="preserve">
-    <value>Inactif</value>
-  </data>
-  <data name="IsThisBranchLinkedToAnyBank" xml:space="preserve">
+  <data name="Is_this_branch_linked_to_any_bank" xml:space="preserve">
     <value>Cette branche est-elle liée à une banque ?</value>
   </data>
-  <data name="Location" xml:space="preserve">
-    <value>Localisation</value>
-  </data>
-  <data name="Motto" xml:space="preserve">
-    <value>Motto</value>
-  </data>
-  <data name="Name" xml:space="preserve">
-    <value>Nom</value>
-  </data>
-  <data name="OfficeType" xml:space="preserve">
-    <value>Type d'agence</value>
-  </data>
-  <data name="PageTitle" xml:space="preserve">
-    <value>Gestion des agences</value>
-  </data>
-  <data name="PBox" xml:space="preserve">
-    <value>PBox</value>
-  </data>
-  <data name="RegistrationNumber" xml:space="preserve">
-    <value>Numéro d'enrégistrement</value>
-  </data>
-  <data name="Save" xml:space="preserve">
-    <value>Sauvegarder</value>
-  </data>
-  <data name="SetAsHeadOfficeBranch" xml:space="preserve">
+  <data name="Set_as_head_office_branch" xml:space="preserve">
     <value>Définir comme branche du siège social</value>
   </data>
-  <data name="Status" xml:space="preserve">
-    <value>Statut</value>
+  <data name="Legal_identifiers_for_the_branch" xml:space="preserve">
+    <value />
   </data>
-  <data name="TaxPayerNumber" xml:space="preserve">
-    <value>Numéro de contribuable</value>
+  <data name="Contact_and_address_for_escalations" xml:space="preserve">
+    <value />
   </data>
-  <data name="Telephone" xml:space="preserve">
-    <value>Téléphone</value>
+  <data name="Initials_motto_and_creation_date" xml:space="preserve">
+    <value />
   </data>
-  <data name="Tell" xml:space="preserve">
-    <value>Tenue de caisse</value>
-  </data>
-  <data name="Update" xml:space="preserve">
-    <value>Mettre à jour</value>
-  </data>
-  <data name="WebSite" xml:space="preserve">
-    <value>Site Web</value>
+  <data name="Branch_Management" xml:space="preserve">
+    <value>Gestion des agences</value>
   </data>
 </root>

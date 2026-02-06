@@ -1,7 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
 @using Resources
 @{
-    ViewBag.Title = @CashDeskCashout.CashDeskCashoutTitle;
+    ViewBag.Title = @CashDeskRessource.CashDeskCashoutTitle;
 }
 <style>
     /* subtle hover wobble for the pill */
@@ -30,10 +30,10 @@
         <div class="card bg-light mb-1">
             <div class="card-body text-center">
                 <h1 class="card-title text-danger">
-                    <i class="mdi mdi-cash-multiple me-2"></i> @CashDeskCashout.CashDeskWithdrawalOperations
+                    <i class="mdi mdi-cash-multiple me-2"></i> @CashDeskRessource.CashDeskWithdrawalOperations
                 </h1>
                 <p class="card-text">
-                    @CashDeskCashout.ManageMemberCashWithdrawalOperations
+                    @CashDeskRessource.ManageMemberCashWithdrawalOperations
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -48,7 +48,7 @@
             <div class="card">
                 <h6 class="card-header d-flex justify-content-between align-items-center text-danger">
                     <span>
-                        <i class="mdi mdi-lightbulb-on-outline me-2"></i> @CashDeskCashout.WithdrawalTipsAndInstructions
+                        <i class="mdi mdi-lightbulb-on-outline me-2"></i> @CashDeskRessource.WithdrawalTipsAndInstructions
                     </span>
                     <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHelpTips" aria-expanded="true" aria-controls="collapseHelpTips">
                         <i class="mdi mdi-chevron-up"></i>
@@ -58,32 +58,32 @@
                     <div class="card-body">
                         <ul class="mb-2">
                             <li>
-                                <strong><i class="mdi mdi-cash me-1"></i> @CashDeskCashout.NormalWithdrawal:</strong>
+                                <strong><i class="mdi mdi-cash me-1"></i> @CashDeskRessource.NormalWithdrawal:</strong>
                                 <ul>
-                                    <li>@CashDeskCashout.EnterDenominations.</li>
-                                    <li>@CashDeskCashout.Input <strong>@CashDeskCashout.Amount</strong> @CashDeskCashout.And <strong>@CashDeskCashout.Fee</strong>.</li>
-                                    <li>@CashDeskCashout.Use <strong>@CashDeskCashout.CONF</strong> @CashDeskCashout.ToConfirmAnd <strong>@CashDeskCashout.INC</strong> @CashDeskCashout.ForInclusiveCharges.</li>
-                                    <li>@CashDeskCashout.Click <strong>@CashDeskCashout.Save</strong> @CashDeskCashout.Then <strong>@CashDeskCashout.RePrint</strong>.</li>
+                                    <li>@CashDeskRessource.EnterDenominations.</li>
+                                    <li>@GlobalShared.Input <strong>@GlobalShared.Amount</strong> @CashDeskRessource.And <strong>@CashDeskRessource.Fee</strong>.</li>
+                                    <li>@CashDeskRessource.Use <strong>@CashDeskRessource.CONF</strong> @CashDeskRessource.ToConfirmAnd <strong>@GlobalShared.Inc</strong> @CashDeskRessource.ForInclusiveCharges.</li>
+                                    <li>@CashDeskRessource.Click <strong>@GlobalShared.Save</strong> @CashDeskRessource.Then <strong>@GlobalShared.Re_print</strong>.</li>
                                 </ul>
                             </li>
                             <li>
-                                <strong><i class="mdi mdi-file-document-edit-outline me-1"></i> @CashDeskCashout.SWSWithdrawal:</strong>
+                                <strong><i class="mdi mdi-file-document-edit-outline me-1"></i> @CashDeskRessource.SWSWithdrawal:</strong>
                                 <ul>
-                                    <li>@CashDeskCashout.Provide <strong>@CashDeskCashout.CheckName</strong> @CashDeskCashout.And <strong>@CashDeskCashout.CheckNumber</strong>.</li>
-                                    <li>@CashDeskCashout.UseOneAccountOnlyWith <strong>@CashDeskCashout.Amount</strong> @CashDeskCashout.And <strong>@CashDeskCashout.FormFee</strong>.</li>
-                                    <li>@CashDeskCashout.Check <strong>@CashDeskCashout.CONF</strong> @CashDeskCashout.AndProvide <strong>@CashDeskCashout.RepresentativeInfo</strong>.</li>
-                                    <li>@CashDeskCashout.Click <strong>@CashDeskCashout.Save</strong> @CashDeskCashout.Then <strong>@CashDeskCashout.RePrint</strong>.</li>
+                                    <li>@CashDeskRessource.Provide <strong>@GlobalShared.Check_name</strong> @CashDeskRessource.And <strong>@GlobalShared.Check_number</strong>.</li>
+                                    <li>@CashDeskRessource.UseOneAccountOnlyWith <strong>@GlobalShared.Amount</strong> @CashDeskRessource.And <strong>@CashDeskRessource.FormFee</strong>.</li>
+                                    <li>@GlobalShared.Check <strong>@CashDeskRessource.CONF</strong> @CashDeskRessource.AndProvide <strong>@CashDeskRessource.RepresentativeInfo</strong>.</li>
+                                    <li>@CashDeskRessource.Click <strong>@GlobalShared.Save</strong> @CashDeskRessource.Then <strong>@GlobalShared.Re_print</strong>.</li>
                                 </ul>
                             </li>
                             <li>
-                                <strong><i class="mdi mdi-bell-alert-outline me-1"></i> @CashDeskCashout.WithdrawalFromSavingNotificationPolicy:</strong>
+                                <strong><i class="mdi mdi-bell-alert-outline me-1"></i> @CashDeskRessource.WithdrawalFromSavingNotificationPolicy:</strong>
                                 <ul>
-                                    <li><strong>@CashDeskCashout.WithNotification:</strong> @CashDeskCashout.OnlyFormFeeApplies</li>
-                                    <li><strong>@CashDeskCashout.WithoutNotification:</strong> @CashDeskCashout.FormFeePlusServiceCharge</li>
+                                    <li><strong>@CashDeskRessource.WithNotification:</strong> @CashDeskRessource.OnlyFormFeeApplies</li>
+                                    <li><strong>@CashDeskRessource.WithoutNotification:</strong> @CashDeskRessource.FormFeePlusServiceCharge</li>
                                 </ul>
                             </li>
                         </ul>
-                        <p class="text-muted mb-0"><strong>@CashDeskCashout.Note:</strong> @CashDeskCashout.AlwaysValidateAccountBalanceServiceFeesAndRepresentativeInformationBeforeProceeding.</p>
+                        <p class="text-muted mb-0"><strong>@CashDeskRessource.Note:</strong> @CashDeskRessource.AlwaysValidateAccountBalanceServiceFeesAndRepresentativeInformationBeforeProceeding.</p>
                     </div>
                 </div>
             </div>
@@ -100,7 +100,7 @@
                     <h2 class="accordion-header" id="headingDeliveryAddress">
                         <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordionPopoutIcon-3" aria-expanded="true" aria-controls="accordionPopoutIcon-3">
                             <i class="mdi mdi-bank me-2"></i>
-                            <span id="cashDeskOperations">@CashDeskCashout.WithdrawalOperations</span>
+                            <span id="cashDeskOperations">@CashDeskRessource.WithdrawalOperations</span>
                         </button>
                     </h2>
                     <hr />
@@ -124,7 +124,7 @@
             <div id="depositorLoader" class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 d-none z-3" style="z-index: 1055;">
                 <div class="d-flex flex-column justify-content-center align-items-center h-100 text-center">
                     <div class="spinner-border text-primary mb-3" role="status"></div>
-                    <p class="fw-semibold text-primary">@CashDeskCashout.ProcessingTransactionPleaseWait...</p>
+                    <p class="fw-semibold text-primary">@CashDeskRessource.ProcessingTransactionPleaseWait...</p>
                 </div>
             </div>
 
@@ -134,11 +134,11 @@
                     <div class="card bg-light mb-2">
                         <div class="card-body text-center">
                             <h1 class="card-title text-primary" id="depositorModalTitle">
-                                <i class="mdi mdi-account-card-details-outline me-2"></i> @CashDeskCashout.DepositorInformationRequired
+                                <i class="mdi mdi-account-card-details-outline me-2"></i> @CashDeskRessource.DepositorInformationRequired
                             </h1>
                             <span id="operationTypeTag" class="ms-2"></span>
                             <p class="card-text" id="depositorModalDescription">
-                                @CashDeskCashout.ToCompleteThisTransactionPleaseEnterTheDepositorsFullInformationForRegulatoryAndAuditCompliance.
+                                @CashDeskRessource.ToCompleteThisTransactionPleaseEnterTheDepositorsFullInformationForRegulatoryAndAuditCompliance.
                             </p>
                             <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
                         </div>
@@ -149,7 +149,7 @@
             <!-- Tips Section -->
             <div class="card m-3">
                 <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-                    <span><i class="mdi mdi-information-outline me-2"></i> @CashDeskCashout.WhyThisIsRequired</span>
+                    <span><i class="mdi mdi-information-outline me-2"></i> @CashDeskRessource.WhyThisIsRequired</span>
                     <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDepositorTips">
                         <i class="mdi mdi-chevron-down"></i>
                     </button>
@@ -157,9 +157,9 @@
                 <div id="collapseDepositorTips" class="collapse">
                     <div class="card-body">
                         <ul class="mb-0">
-                            <li><i class="mdi mdi-account-check-outline text-primary me-2"></i><strong>@CashDeskCashout.IdentityTracking:</strong> @CashDeskCashout.HelpsTrackWhoCompletedTheTransaction.</li>
-                            <li><i class="mdi mdi-shield-lock-outline text-success me-2"></i><strong>@CashDeskCashout.Compliance:</strong> @CashDeskCashout.RequiredForKYCAndAMLRegulations.</li>
-                            <li><i class="mdi mdi-file-document-box-check-outline text-warning me-2"></i><strong>@CashDeskCashout.AuditTrail:</strong> @CashDeskCashout.PermanentProofOfWhoDepositedFunds.</li>
+                            <li><i class="mdi mdi-account-check-outline text-primary me-2"></i><strong>@CashDeskRessource.IdentityTracking:</strong> @CashDeskRessource.HelpsTrackWhoCompletedTheTransaction.</li>
+                            <li><i class="mdi mdi-shield-lock-outline text-success me-2"></i><strong>@GlobalShared.Compliance:</strong> @CashDeskRessource.RequiredForKYCAndAMLRegulations.</li>
+                            <li><i class="mdi mdi-file-document-box-check-outline text-warning me-2"></i><strong>@CashDeskRessource.AuditTrail:</strong> @CashDeskRessource.PermanentProofOfWhoDepositedFunds.</li>
                         </ul>
                     </div>
                 </div>
@@ -172,16 +172,16 @@
             <div class="modal-footer justify-content-between">
                 <div>
                     <span class="text-muted fw-semibold">
-                        @CashDeskCashout.Member: <span class="text-dark" id="depositorCustomerName"></span> |
-                        @CashDeskCashout.ID: <span class="text-dark" id="depositorCustomerId"></span>
+                        @GlobalShared.Member: <span class="text-dark" id="depositorCustomerName"></span> |
+                        ID: <span class="text-dark" id="depositorCustomerId"></span>
                     </span>
                 </div>
                 <div class="d-flex align-items-center">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                        <i class="mdi mdi-close"></i> @CashDeskCashout.Cancel
+                        <i class="mdi mdi-close"></i> @GlobalShared.Cancel
                     </button>
                     <button type="button" id="confirmDepositorBtn" class="btn btn-success ms-2">
-                        <i class="mdi mdi-check-circle-outline"></i> @CashDeskCashout.ConfirmAndProceed
+                        <i class="mdi mdi-check-circle-outline"></i> @CashDeskRessource.ConfirmAndProceed
                     </button>
                 </div>
             </div>
@@ -194,7 +194,7 @@
         class="btn btn-tsc-primary shadow-lg position-fixed"
         style="right: 18px; bottom: 18px; z-index: 1055; border-radius: 999px; padding: 10px 14px;"
         title="Show current cash status">
-    <i class="bi bi-cash-stack me-1"></i> Cash status
+    <i class="bi bi-cash-stack me-1"></i> @GlobalShared.Cash_status
 </button>
 
 <!-- Flappy card -->
@@ -204,15 +204,15 @@
     <div class="card-header d-flex align-items-center justify-content-between py-2 px-3 bg-light">
         <div class="d-flex align-items-center gap-2">
             <i class="bi bi-wallet2"></i>
-            <strong>Cash Situation</strong>
+            <strong>@CashDeskRessource.Cash_Situation</strong>
             <span id="cs-branch" class="badge bg-secondary-subtle text-secondary-emphasis"></span>
             <span id="cs-date" class="badge bg-secondary-subtle text-secondary-emphasis"></span>
         </div>
         <div class="d-flex align-items-center gap-2">
-            <button id="cs-refresh" class="btn btn-sm btn-outline-primary" title="Refresh now">
+            <button id="cs-refresh" class="btn btn-sm btn-outline-primary" title="@GlobalShared.Refresh_now">
                 <i class="bi bi-arrow-clockwise"></i>
             </button>
-            <button id="cs-close" class="btn btn-sm btn-outline-secondary" title="Close">
+            <button id="cs-close" class="btn btn-sm btn-outline-secondary" title="@GlobalShared.Close">
                 <i class="bi bi-x-lg"></i>
             </button>
         </div>
@@ -222,7 +222,7 @@
         <!-- loader -->
         <div id="cs-loading" class="text-center py-4">
             <div class="spinner-border" role="status"></div>
-            <div class="small text-muted mt-2">Loading current provisions…</div>
+            <div class="small text-muted mt-2">@CashDeskRessource.Loading_current_provisions…</div>
         </div>
 
         <!-- content -->
@@ -230,26 +230,26 @@
             <div class="row g-2">
                 <div class="col-6">
                     <div class="border rounded-3 p-2">
-                        <div class="small text-muted">Opening (Day)</div>
+                        <div class="small text-muted">@GlobalShared.Opening (@GlobalShared.Day)</div>
                         <div id="cs-opening" class="fw-bold fs-6">—</div>
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="border rounded-3 p-2">
-                        <div class="small text-muted">Cash at hand (System)</div>
+                        <div class="small text-muted">@CashDeskRessource.Cash_at_hand_System</div>
                         <div id="cs-system" class="fw-bold fs-6">—</div>
                     </div>
                 </div>
 
                 <div class="col-6">
                     <div class="border rounded-3 p-2">
-                        <div class="small text-muted">Reported cash</div>
+                        <div class="small text-muted">@GlobalShared.Reported_cash</div>
                         <div id="cs-reported" class="fw-bold fs-6">—</div>
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="border rounded-3 p-2">
-                        <div class="small text-muted">Account balance</div>
+                        <div class="small text-muted">@GlobalShared.Account_balance</div>
                         <div id="cs-acct" class="fw-bold fs-6">—</div>
                     </div>
                 </div>
@@ -257,7 +257,7 @@
                 <div class="col-12">
                     <div class="border rounded-3 p-2 d-flex justify-content-between align-items-center">
                         <div>
-                            <div class="small text-muted">Surplus / Deficit</div>
+                            <div class="small text-muted">@GlobalShared.Surplus / @GlobalShared.Deficit</div>
                             <div id="cs-sd" class="fw-bold">—</div>
                         </div>
                         <span id="cs-sd-badge" class="badge">—</span>
@@ -267,13 +267,13 @@
                 <div class="col-12">
                     <div class="border rounded-3 p-2">
                         <div class="d-flex justify-content-between small text-muted">
-                            <span>#Cash-In</span><span>#Cash-Out</span>
+                            <span>#@GlobalShared.Cash_In</span><span>#@GlobalShared.Cash_out</span>
                         </div>
                         <div class="d-flex justify-content-between fw-semibold">
                             <span id="cs-nin">—</span><span id="cs-nout">—</span>
                         </div>
                         <div class="d-flex justify-content-between small text-muted mt-2">
-                            <span>Vol Cash-In</span><span>Vol Cash-Out</span>
+                            <span>Vol @GlobalShared.Cash_In</span><span>Vol @GlobalShared.Cash_out</span>
                         </div>
                         <div class="d-flex justify-content-between fw-semibold">
                             <span id="cs-vin">—</span><span id="cs-vout">—</span>
@@ -283,7 +283,7 @@
 
                 <div class="col-12">
                     <div class="border rounded-3 p-2">
-                        <div class="small text-muted">Last operation</div>
+                        <div class="small text-muted">@GlobalShared.Last_operation</div>
                         <div class="d-flex justify-content-between">
                             <span id="cs-last-type" class="fw-semibold">—</span>
                             <span id="cs-last-amt" class="fw-bold">—</span>
@@ -294,11 +294,11 @@
 
             <div class="d-flex justify-content-between align-items-center mt-3">
                 <button id="cs-denom" class="btn btn-sm btn-outline-dark">
-                    <i class="bi bi-list-ul me-1"></i> View denomination snapshot
+                    <i class="bi bi-list-ul me-1"></i> @CashDeskRessource.View_denomination_snapshot
                 </button>
                 <div class="form-check form-switch">
                     <input class="form-check-input" type="checkbox" id="cs-autorefresh">
-                    <label class="form-check-label small" for="cs-autorefresh">Auto-refresh (30s)</label>
+                    <label class="form-check-label small" for="cs-autorefresh">@GlobalShared.Auto_refresh (30s)</label>
                 </div>
             </div>
         </div>
@@ -313,7 +313,7 @@
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h6 class="modal-title"><i class="bi bi-list-ul me-2"></i>Denomination snapshot</h6>
+                <h6 class="modal-title"><i class="bi bi-list-ul me-2"></i>@CashDeskRessource.Denomination_snapshot</h6>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">

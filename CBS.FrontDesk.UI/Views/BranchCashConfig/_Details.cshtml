@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.BranchCashConfigV.BranchCashConfigManagement
+    @using Resources
 @{
     var vm = Model.BranchCashConfigDetailsVm;
 }
@@ -64,70 +65,70 @@
     <div class="detail-header d-flex justify-content-between align-items-center">
         <div>
             <div class="fw-bold">Configuration Details</div>
-            <div class="text-muted small">Review the branch cash configuration</div>
+            <div class="text-muted small">@BranchCashConfigRessource.Review_the_branch_cash_configuration</div>
         </div>
         <div>
             @if (vm.RealTimeCashPosting == true)
-            {<span class="pill pill-success">Real-time: Yes</span> }
+            {<span class="pill pill-success">@GlobalShared.Real_time: @GlobalShared.Yes</span> }
             else
-            { <span class="pill pill-muted">Real-time: No</span>}
+            { <span class="pill pill-muted">@GlobalShared.Real_time: @GlobalShared.No</span>}
         </div>
     </div>
 
     <div class="p-3">
         <div class="mb-3">
-            <span class="pair-label">Branch:</span>
+            <span class="pair-label">@GlobalShared.Branch:</span>
             <span class="ms-1">@vm.Branch</span>
         </div>
 
         <div class="grid-2col">
             <!-- Till & Vault -->
             <div>
-                <div class="pair-label">Till (Cash in Hand)</div>
+                <div class="pair-label">@GlobalShared.Till_Cash_in_Hand</div>
                 <span class="pair-name">@vm.CashInHand.Name</span>
                 <span class="pair-no">@vm.CashInHand.Number</span>
             </div>
 
             <div>
-                <div class="pair-label">Vault</div>
+                <div class="pair-label">@GlobalShared.Vault</div>
                 <span class="pair-name">@vm.Vault.Name</span>
                 <span class="pair-no">@vm.Vault.Number</span>
             </div>
 
             <!-- HO Liaison & Revenue -->
             <div>
-                <div class="pair-label">HO Liaison</div>
+                <div class="pair-label">@GlobalShared.HO_Liaison</div>
                 <span class="pair-name">@vm.HeadOfficeLiaison.Name</span>
                 <span class="pair-no">@vm.HeadOfficeLiaison.Number</span>
             </div>
 
             <div>
-                <div class="pair-label">Revenue</div>
+                <div class="pair-label">@GlobalShared.Revenue</div>
                 <span class="pair-name">@vm.Revenue.Name</span>
                 <span class="pair-no">@vm.Revenue.Number</span>
             </div>
 
             <!-- Surplus & Shortage -->
             <div>
-                <div class="pair-label">Surplus Income</div>
+                <div class="pair-label">@BranchCashConfigRessource.Surplus_Income</div>
                 <span class="pair-name">@vm.SurplusIncome.Name</span>
                 <span class="pair-no">@vm.SurplusIncome.Number</span>
             </div>
 
             <div>
-                <div class="pair-label">Shortage Expense</div>
+                <div class="pair-label">@BranchCashConfigRessource.Shortage_Expense</div>
                 <span class="pair-name">@vm.ShortageExpense.Name</span>
                 <span class="pair-no">@vm.ShortageExpense.Number</span>
             </div>
             <!-- Cash Reversal Account -->
             <div>
-                <div class="pair-label">Cash Reversal Account</div>
+                <div class="pair-label">@BranchCashConfigRessource.Cash_Reversal_Account</div>
                 <span class="pair-name">@vm.CashReversal.Name</span>
                 <span class="pair-no">@vm.CashReversal.Number</span>
             </div>
             <!-- Partner & CamCCUL -->
             <div>
-                <div class="pair-label">Partner</div>
+                <div class="pair-label">@GlobalShared.Partner</div>
                 <span class="pair-name">@vm.Partner.Name</span>
                 <span class="pair-no">@vm.Partner.Number</span>
             </div>
@@ -140,70 +141,70 @@
 
             <!-- Form Fee Income -->
             <div>
-                <div class="pair-label">Form Fee Income</div>
+                <div class="pair-label">@BranchCashConfigRessource.Form_Fee_Income</div>
                 <span class="pair-name">@vm.FormFeeIncome.Name</span>
                 <span class="pair-no">@vm.FormFeeIncome.Number</span>
             </div>
 
             <!-- Loan Transit -->
             <div>
-                <div class="pair-label">Loan Transit</div>
+                <div class="pair-label">@BranchCashConfigRessource.Loan_Transit</div>
                 <span class="pair-name">@vm.LoanTransit.Name</span>
                 <span class="pair-no">@vm.LoanTransit.Number</span>
             </div>
 
             <!-- Interest Income (Backup) -->
             <div>
-                <div class="pair-label">Interest Income (Backup)</div>
+                <div class="pair-label">@GlobalShared.Interest_Income (@GlobalShared.Backup)</div>
                 <span class="pair-name">@vm.InterestGeneratedFrom.Name</span>
                 <span class="pair-no">@vm.InterestGeneratedFrom.Number</span>
             </div>
 
             <!-- Cash-In Commission -->
             <div>
-                <div class="pair-label">Cash-In Commission (Backup)</div>
+                <div class="pair-label">@GlobalShared.Cash_In_Commission (@GlobalShared.Backup)</div>
                 <span class="pair-name">@vm.CashInCommission.Name</span>
                 <span class="pair-no">@vm.CashInCommission.Number</span>
             </div>
 
             <!-- Cash-Out Commission -->
             <div>
-                <div class="pair-label">Cash-Out Commission (Backup)</div>
+                <div class="pair-label">@GlobalShared.Cash_Out_Commission (@GlobalShared.Backup)</div>
                 <span class="pair-name">@vm.CashOutCommission.Name</span>
                 <span class="pair-no">@vm.CashOutCommission.Number</span>
             </div>
 
             <!-- Transfer Commission -->
             <div>
-                <div class="pair-label">Transfer Commission (Backup)</div>
+                <div class="pair-label">@GlobalShared.Transfer_Commission (@GlobalShared.Backup)</div>
                 <span class="pair-name">@vm.TransferCommission.Name</span>
                 <span class="pair-no">@vm.TransferCommission.Number</span>
             </div>
 
             <!-- VAT Backup -->
             <div>
-                <div class="pair-label">VAT Account (Backup)</div>
+                <div class="pair-label">@GlobalShared.VAT_Account (@GlobalShared.Backup)</div>
                 <span class="pair-name">@vm.VAT.Name</span>
                 <span class="pair-no">@vm.VAT.Number</span>
             </div>
 
             <!-- MoMoCash Settlement -->
             <div>
-                <div class="pair-label">MoMoCash Settlement</div>
+                <div class="pair-label">@BranchCashConfigRessource.MoMoCash_Settlement</div>
                 <span class="pair-name">@vm.Momocash.Name</span>
                 <span class="pair-no">@vm.Momocash.Number</span>
             </div>
 
             <!-- MoMoCash Commission -->
             <div>
-                <div class="pair-label">MoMoCash Commission</div>
+                <div class="pair-label">@BranchCashConfigRessource.MoMoCash_Commission</div>
                 <span class="pair-name">@vm.MomocashCommission.Name</span>
                 <span class="pair-no">@vm.MomocashCommission.Number</span>
             </div>
 
             <!-- NEW: Global Fallback Suspense GL -->
             <div>
-                <div class="pair-label">Fallback Suspense GL</div>
+                <div class="pair-label">@BranchCashConfigRessource.Fallback_Suspense_GL</div>
                 <span class="pair-name">@vm.FallbackSuspense.Name</span>
                 <span class="pair-no">@vm.FallbackSuspense.Number</span>
             </div>

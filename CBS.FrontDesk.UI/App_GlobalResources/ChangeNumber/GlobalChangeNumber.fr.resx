@@ -117,15 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Active" xml:space="preserve">
-    <value>Actif</value>
-  </data>
-  <data name="Address" xml:space="preserve">
-    <value>Adresse</value>
-  </data>
-  <data name="Amount" xml:space="preserve">
-    <value>Montant</value>
-  </data>
   <data name="ApprovalComment" xml:space="preserve">
     <value>Commentaire d'approbation</value>
   </data>
@@ -135,47 +126,14 @@
   <data name="ApprovedChangesCannotBeRevertedAutomatically2" xml:space="preserve">
     <value>Les modifications approuvées ne peuvent pas être annulées automatiquement</value>
   </data>
-  <data name="AuthorizedPersons" xml:space="preserve">
-    <value>Personnes autorisées</value>
-  </data>
   <data name="BeCautiousOfFraudulentRequests" xml:space="preserve">
     <value>Soyez prudent face aux demandes frauduleuses et assurez-vous que toutes les approbations sont conformes aux politiques de l'entreprise</value>
-  </data>
-  <data name="Branch" xml:space="preserve">
-    <value>Agence</value>
-  </data>
-  <data name="BranchCode" xml:space="preserve">
-    <value>Code de l'agence</value>
-  </data>
-  <data name="BranchID" xml:space="preserve">
-    <value>ID de l'agence</value>
-  </data>
-  <data name="BranchName" xml:space="preserve">
-    <value>Nom de l'agence</value>
   </data>
   <data name="ChangeMemberPhoneNumber" xml:space="preserve">
     <value>Changer le numéro de téléphone du membre</value>
   </data>
   <data name="ChangeMemberPhoneNumberApproval" xml:space="preserve">
     <value>Approbation du changement de numéro de téléphone du membre</value>
-  </data>
-  <data name="CurrentBalance" xml:space="preserve">
-    <value>Solde actuel</value>
-  </data>
-  <data name="CustomerID" xml:space="preserve">
-    <value>ID client</value>
-  </data>
-  <data name="Denominations" xml:space="preserve">
-    <value>Dénominations</value>
-  </data>
-  <data name="Description" xml:space="preserve">
-    <value>Description</value>
-  </data>
-  <data name="Dimensions" xml:space="preserve">
-    <value>Dimensions</value>
-  </data>
-  <data name="DoneBy" xml:space="preserve">
-    <value>Fait par</value>
   </data>
   <data name="EnsureThatTheMemberRequestingThePhoneNumberChangeIsAuthorized" xml:space="preserve">
     <value>Assurez-vous que le membre qui demande le changement de numéro de téléphone est autorisé et que les documents justificatifs (si nécessaire) sont disponibles</value>
@@ -189,17 +147,8 @@
   <data name="EnterApprovalComment" xml:space="preserve">
     <value>Entrez le commentaire d'approbation</value>
   </data>
-  <data name="EnterMemberReference" xml:space="preserve">
-    <value>Entrez la référence du membre</value>
-  </data>
   <data name="EnterNewPhoneNumber" xml:space="preserve">
     <value>Entrez le nouveau numéro de téléphone</value>
-  </data>
-  <data name="EnterOTP" xml:space="preserve">
-    <value>Entrez le code OTP</value>
-  </data>
-  <data name="EnterOTPCode" xml:space="preserve">
-    <value>Entrez le code OTP</value>
   </data>
   <data name="EnterRequestReason" xml:space="preserve">
     <value>Entrez la raison de la demande</value>
@@ -210,23 +159,11 @@
   <data name="IMPORTANTINFORMATION" xml:space="preserve">
     <value>INFORMATIONS IMPORTANTES</value>
   </data>
-  <data name="Inactive" xml:space="preserve">
-    <value>Inactif</value>
-  </data>
   <data name="IrreversibleAction" xml:space="preserve">
     <value>Action irréversible</value>
   </data>
-  <data name="IsActive" xml:space="preserve">
-    <value>Est actif</value>
-  </data>
-  <data name="LastOperation" xml:space="preserve">
-    <value>Dernière opération</value>
-  </data>
   <data name="LastOperationAmount" xml:space="preserve">
     <value>Montant de la dernière opération</value>
-  </data>
-  <data name="Location" xml:space="preserve">
-    <value>Emplacement</value>
   </data>
   <data name="ManageAndApproveMemberPhoneNumberChangeRequests" xml:space="preserve">
     <value>Gérer et approuver les demandes de changement de numéro de téléphone des membres</value>
@@ -234,32 +171,14 @@
   <data name="ManageRequestsForUpdatingMemberPhoneNumbers" xml:space="preserve">
     <value>Gérer les demandes de mise à jour des numéros de téléphone des membres. Utilisez les options ci-dessous pour afficher les demandes en attente ou en soumettre de nouvelles</value>
   </data>
-  <data name="MaximumCapacity" xml:space="preserve">
-    <value>Capacité maximale</value>
-  </data>
   <data name="MEMBERDETAILS" xml:space="preserve">
     <value>DÉTAILS DU MEMBRE</value>
-  </data>
-  <data name="MemberID" xml:space="preserve">
-    <value>ID du membre</value>
-  </data>
-  <data name="MemberName" xml:space="preserve">
-    <value>Nom du membre</value>
-  </data>
-  <data name="MemberReference" xml:space="preserve">
-    <value>Référence du membre</value>
-  </data>
-  <data name="Name" xml:space="preserve">
-    <value>Nom</value>
   </data>
   <data name="NewPhoneNumber" xml:space="preserve">
     <value>Nouveau numéro de téléphone</value>
   </data>
   <data name="NoAdditionalNotesProvided" xml:space="preserve">
     <value>Aucune note supplémentaire fournie</value>
-  </data>
-  <data name="NoAuthorizedPersons" xml:space="preserve">
-    <value>Aucune personne autorisée</value>
   </data>
   <data name="NoOperationsPerformed" xml:space="preserve">
     <value>Aucune opération effectuée</value>
@@ -272,9 +191,6 @@
   </data>
   <data name="OnceApprovedTheChangeWillTakeEffectImmediatelyAndCannotBeUndone" xml:space="preserve">
     <value>Une fois approuvé, le changement prendra effet immédiatement et ne pourra pas être annulé</value>
-  </data>
-  <data name="OperationType" xml:space="preserve">
-    <value>Type d'opération</value>
   </data>
   <data name="PENDINGPHONENUMBERCHANGEREQUESTS" xml:space="preserve">
     <value>DEMANDES DE CHANGEMENT DE NUMÉRO DE TÉLÉPHONE EN ATTENTE</value>
@@ -291,35 +207,14 @@
   <data name="PhoneNumberUpdate" xml:space="preserve">
     <value>Mise à jour du numéro de téléphone</value>
   </data>
-  <data name="PreviousBalance" xml:space="preserve">
-    <value>Solde précédent</value>
-  </data>
   <data name="ProvideAclearAndConciseReasonForApproval" xml:space="preserve">
     <value>Fournissez une raison claire et concise pour l'approbation ou le rejet dans la section des commentaires</value>
-  </data>
-  <data name="Reference" xml:space="preserve">
-    <value>Référence</value>
-  </data>
-  <data name="RequestComment" xml:space="preserve">
-    <value>Commentaire de la demande</value>
-  </data>
-  <data name="RequestDate" xml:space="preserve">
-    <value>Date de la demande</value>
-  </data>
-  <data name="RequestedBy" xml:space="preserve">
-    <value>Demandé par</value>
-  </data>
-  <data name="RequestNote" xml:space="preserve">
-    <value>Note de la demande</value>
   </data>
   <data name="REQUESTPHONENUMBERCHANGE" xml:space="preserve">
     <value>DEMANDER UN CHANGEMENT DE NUMÉRO DE TÉLÉPHONE</value>
   </data>
   <data name="RequestsMustBeApprovedByAnAuthorizedOfficer" xml:space="preserve">
     <value>Les demandes doivent être approuvées par un agent autorisé</value>
-  </data>
-  <data name="Reset" xml:space="preserve">
-    <value>Réinitialiser</value>
   </data>
   <data name="ReviewPendingRequestsAndTakeNecessaryActions" xml:space="preserve">
     <value>Examiner les demandes en attente et prendre les mesures nécessaires pour approuver ou rejeter les changements</value>
@@ -330,44 +225,17 @@
   <data name="SecurityConsideration" xml:space="preserve">
     <value>Considération de sécurité</value>
   </data>
-  <data name="SendOTP" xml:space="preserve">
-    <value>Envoyer OTP</value>
-  </data>
-  <data name="SubmitApproval" xml:space="preserve">
-    <value>Soumettre l'approbation</value>
-  </data>
   <data name="TheOldPhoneNumberWillBeReplacedWithTheNewOneInTheSystemUponApproval" xml:space="preserve">
     <value>L'ancien numéro de téléphone sera remplacé par le nouveau dans le système après approbation</value>
   </data>
-  <data name="TIPS" xml:space="preserve">
-    <value>CONSEILS</value>
-  </data>
   <data name="TIPSFORREQUESTAPPROVAL" xml:space="preserve">
     <value>CONSEILS POUR L'APPROBATION DES DEMANDES</value>
-  </data>
-  <data name="VaultDetails" xml:space="preserve">
-    <value>Détails du coffre</value>
-  </data>
-  <data name="VaultID" xml:space="preserve">
-    <value>ID du coffre</value>
-  </data>
-  <data name="VaultInformations" xml:space="preserve">
-    <value>Informations sur le coffre</value>
-  </data>
-  <data name="VaultOperations" xml:space="preserve">
-    <value>Opérations sur le coffre</value>
-  </data>
-  <data name="Verification" xml:space="preserve">
-    <value>Vérification</value>
   </data>
   <data name="VerifyTheIdentityOfTheRequesterBeforeApproval" xml:space="preserve">
     <value>Vérifiez l'identité du demandeur avant l'approbation</value>
   </data>
   <data name="ViewDetailsAndManagePhoneNumberChangeRequests" xml:space="preserve">
     <value>Afficher les détails et gérer les demandes de changement de numéro de téléphone</value>
-  </data>
-  <data name="ViewMore" xml:space="preserve">
-    <value>Afficher plus</value>
   </data>
   <data name="YouAreAboutToReviewAndApproveAPhoneNumberChangeRequest" xml:space="preserve">
     <value>Vous êtes sur le point d'examiner et d'approuver une demande de changement de numéro de téléphone. Veuillez vous assurer que les détails sont exacts avant de procéder à l'approbation</value>

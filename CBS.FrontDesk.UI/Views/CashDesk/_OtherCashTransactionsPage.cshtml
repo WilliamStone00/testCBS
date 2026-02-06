@@ -21,20 +21,19 @@
                 </h2>
 
                 <p class="mb-1">
-                    Welcome to the Cash Desk of <strong>TSC</strong>.
-                    This interface manages <strong>@opName</strong> transactions posted directly
-                    to the <strong>branch chart of accounts</strong>.
+                    @Html.Raw(@CashDeskRessource.Welcome_to_the_Cash_Desk_of_TSC)
+                    @Html.Raw(@CashDeskRessource.This_interface_manages_opName_transactions_posted_directly_to_the_branch_chart_of_accounts)
                 </p>
 
                 <p class="mb-1">
                     <strong>@opName</strong>
                     @(isOut ? "refers to cash paid out" : "refers to cash received")
-                    at the teller desk, allocated against predefined branch GL accounts.
+                    @CashDeskRessource.at_the_teller_desk_allocated_against_predefined_branch_GL_accounts
                 </p>
 
                 <p class="mb-2 text-muted small">
-                    💡 <strong>Note:</strong> Use this strictly for
-                    <strong>@(isOut ? "cash-out" : "cash-in")</strong> that does not involve member accounts.
+                    💡 <strong>@CashDeskRessource.Note:</strong> @CashDeskRessource.Use_this_strictly_for
+                    <strong>@(isOut ? "cash-out" : "cash-in")</strong> @CashDeskRessource.that_does_not_involve_member_accounts
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -61,48 +60,48 @@
             <ul class="mb-0">
                 <li>
                     <i class="mdi mdi-view-grid-plus-outline text-success me-2"></i>
-                    You can allocate the transaction to <strong>multiple GL accounts</strong>. Use
-                    <em>Add Row</em> to insert additional GL lines.
+                    @Html.Raw(@CashDeskRessource.You_can_allocate_the_transaction_to_multiple_GL_accounts)
+                    @Html.Raw(@CashDeskRessource.Use_Add_Row_to_insert_additional_GL_lines)
                 </li>
 
                 <li>
                     <i class="mdi mdi-check-circle-outline text-primary me-2"></i>
-                    <strong>Confirm the GLs to be impacted</strong> by ticking the <em>Select</em> checkbox on each row
-                    before posting. Only checked rows are included.
+                    @Html.Raw(@CashDeskRessource.Confirm_the_GLs_to_be_impacted_by_ticking_the_Select_checkbox_on_each_row_before_posting)
+                    @CashDeskRessource.Only_checked_rows_are_included
                 </li>
 
                 <li>
                     <i class="mdi mdi-calendar-lock-outline text-secondary me-2"></i>
-                    <strong>Accounting Date</strong> is <em>read-only</em> and uses the current accounting date.
+                    @Html.Raw(@CashDeskRessource.Accounting_Date_is_read_only_and_uses_the_current_accounting_date)
                 </li>
 
                 <li>
                     <i class="mdi mdi-plus-circle-outline text-info me-2"></i>
-                    Click <strong>Add Row</strong> to add a new GL entry (choose GL, enter Note and Amount).
+                    @Html.Raw(@CashDeskRessource.Click_Add_Row_to_add_a_new_GL_entry_choose_GL_enter_Note_and_Amount)
                 </li>
 
                 <li>
                     <i class="mdi mdi-trash-can-outline text-danger me-2"></i>
-                    Click the <strong>Delete</strong> button on a row to remove that GL entry.
+                    @Html.Raw(@CashDeskRessource.Click_the_Delete_button_on_a_row_to_remove_that_GL_entry)
                 </li>
 
                 <li>
                     <i class="mdi mdi-cash-multiple text-warning me-2"></i>
-                    Ensure the sum of all <strong>selected</strong> GL amounts equals the cash <strong>Denominations</strong>.
+                    @Html.Raw(@CashDeskRessource.Ensure_the_sum_of_all_selected_GL_amounts_equals_the_cash_Denominations)
                 </li>
 
                 <li>
                     <i class="mdi mdi-note-text-outline text-muted me-2"></i>
-                    Add a clear <strong>Narration</strong> and capture <strong>Name / CNI / Telephone</strong> for audit.
+                    @Html.Raw(@CashDeskRessource.Add_a_clear_Narration_and_capture_Name_CNI_Telephone_for_audit)
                 </li>
 
                 <li>
                     <i class="mdi mdi-domain text-muted me-2"></i>
-                    If <strong>Inter-Branch</strong> is enabled, select the destination branch before posting.
+                    @Html.Raw(@CashDeskRessource.If_Inter_Branch_is_enabled_select_the_destination_branch_before_posting)
                 </li>
                 <li>
                     <i class="mdi mdi-printer-check text-success me-2"></i>
-                    After posting successfully, click <strong>Re-Print</strong> to print the operation receipt for your records.
+                    @Html.Raw(@CashDeskRessource.After_posting_successfully_click_Re_Print_to_print_the_operation_receipt_for_your_records)
                 </li>
             </ul>
         </div>

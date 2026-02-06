@@ -121,14 +121,14 @@
                 </div>
 
                 <!-- Flags -->
-                <div class="row mb-3">
+                <!--<div class="row mb-3">
                     <div class="col-md-6 d-flex align-items-center">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="acceptSerialNumber" name="AcceptSerialNumber" />
                             <label class="form-check-label fw-bold" for="acceptSerialNumber">Accept Serial Number</label>
                         </div>
                     </div>
-                </div>
+                </div>-->
 
                 <!-- Date Filters (togglable) -->
                 <div id="dateFilters" class="d-none">
@@ -412,9 +412,9 @@
                         { data: 'BranchCodePosition' },
                         { data: 'YearPosition' },
                         {
-                            data: 'AcceptSerialNumber',
+                            data: 'SerialNumberPosition',
                             render: function (data) {
-                                return data ? '<span class="badge bg-success">Yes</span>' : '<span class="badge bg-secondary">No</span>';
+                                return data !== null && data !== undefined ? data : '-';
                             }
                         },
                         {
@@ -598,9 +598,60 @@
                 e.preventDefault();
                 var id = $(this).data('id');
                 if (id) {
-                    DeleteRecordDataTable('NumConfig', id, 'myDataTable', '_DataTable', 0, 'datalistingview', null, 'list');
+                    DeleteRecordDataTable('NumConfig', id, 'myDataTable', '_DataTable', 0, 'datalistingview', null, null);
                 }
             });
+
+            // Delete handler
+            // Delete handler for NumConfig
+            $(document).off('click', '.btn-delete').on('click', '.btn-delete', function (e) {
+                e.preventDefault();
+
+                var raw = $(this).data('id');
+                var name = $(this).data('name') || '';
+                var id = raw ? decodeURIComponent(raw) : null;
+
+                if (!id) {
+                    if (typeof appalert === 'function') {
+                        appalert('Missing id for delete', 0, 1);
+                    }
+                    return;
+                }
+
+                if (!confirm(`Are you sure you want to delete "${name}"?`)) return;
+
+                $.ajax({
+                    url: '/NumConfig/Delete',
+                    type: 'GET', // ton controller est en [HttpGet]
+                    data: { KEY: id },
+                    success: function (res) {
+                        if (res && res.success) {
+
+                            // 🔹 Recharge correctement la DataTable actuelle
+                            if (window.numConfigTable) {
+                                window.numConfigTable.ajax.reload(null, false);
+                            }
+
+                            if (typeof appalert === 'function') {
+                                appalert(res.message || 'Deleted successfully', 3, 1);
+                            }
+                        } else {
+                            if (typeof appalert === 'function') {
+                                appalert(res?.message || 'Delete failed', 0, 1);
+                            }
+                        }
+                    },
+                    error: function (xhr) {
+                        console.error('Delete failed:', xhr);
+
+                        if (typeof appalert === 'function') {
+                            appalert('Delete request failed', 0, 1);
+                        }
+                    }
+                });
+            });
+
+
 
             // Form enter key prevention
             $('#numconfigFilterForm input').off('keypress').on('keypress', function (e) {

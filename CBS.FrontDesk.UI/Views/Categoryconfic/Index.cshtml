@@ -19,14 +19,14 @@
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-account-group me-2"></i> @ChequeManagements.header
+                    <i class="mdi mdi-account-group me-2"></i> @CategoryconficResource.CHEQUE_CATEGORY_CONFIGURATION
                 </h1>
                 <p class="card-text">
-                    @ChequeManagements.headtextconf
+                    @CategoryconficResource.Manage_cheque_categories_Manage_system_users_and_apply_filters_to_search_by_branch_details_user_name
                 </p>
                 <div class="alert alert-info mt-3 py-2">
                     <i class="mdi mdi-information-outline me-1"></i>
-                    @ChequeManagements.ImportantTextcat.
+                    @CategoryconficResource.Use_filters_like_branch_and_to_manage_and_audit_user_access_effectively.
                 </div>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -36,7 +36,7 @@
 
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalUserManagement.TIPS</span>
+        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalShared.TIPS_UC</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -44,9 +44,9 @@
     <div id="collapseTips" class="collapse">
         <div class="card-body">
             <ul>
-                <li><i class="mdi mdi-account-check-outline text-success me-2"></i><strong>@ChequeManagements.Branchtip:</strong>@ChequeManagements.Branchtiptext </li>
-                <li><i class="mdi mdi-calendar-range text-info me-2"></i><strong>@ChequeManagements.CreatedDate:</strong> @GlobalUserManagement.NarrowByRegistrationPeriod.</li>
-                <li><i class="mdi mdi-toggle-switch text-warning me-2"></i><strong>@ChequeManagements.tiptext</strong> </li>
+                <li><i class="mdi mdi-account-check-outline text-success me-2"></i><strong>@GlobalShared.Branch:</strong>@CategoryconficResource.View_Category_by_organizational_branch </li>
+                <li><i class="mdi mdi-calendar-range text-info me-2"></i><strong>@GlobalShared.CreatedDate:</strong> @CategoryconficResource.Narrow_by_registration_period.</li>
+                <li><i class="mdi mdi-toggle-switch text-warning me-2"></i><strong>@CategoryconficResource.Make_sure_category_was_actually_created_if_not_create_one_first</strong> </li>
                 <li><i class="mdi mdi-refresh text-info me-2"></i><strong>@GlobalUserManagement.Refresh:</strong> @GlobalUserManagement.EnsureDataIsUpToDate.</li>
             </ul>
         </div>

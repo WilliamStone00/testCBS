@@ -48,45 +48,48 @@
                             </td>
 
                             <td>
-                                @if (isAvailable)
-                                {
-                                    <button class="btn btn-sm btn-outline-success select-leaf-btn"
-                                            data-leaf-id="@leaf.Id"
-                                            data-serial="@leaf.SerialNumber">
-                                        <i class="mdi mdi-check"></i> Select
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-soft-primary dropdown-toggle d-flex align-items-center gap-1"
+                                            type="button"
+                                            data-bs-toggle="dropdown"
+                                            aria-expanded="false">
+                                        <i class="mdi mdi-cog-outline"></i>
+                                        Actions
                                     </button>
-                                }
-                                else
-                                {
-                                    <div class="dropdown">
-                                        <button class="btn btn-sm btn-soft-primary dropdown-toggle d-flex align-items-center gap-1"
-                                                type="button"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false">
-                                            <i class="mdi mdi-cog-outline"></i>
-                                            Actions
-                                        </button>
 
-                                        <ul class="dropdown-menu dropdown-menu-end shadow-sm animate__animated animate__fadeIn">
-                                          <li>
-                                                <button class="dropdown-item btn-create" data-id="@leaf.Id">
-                                                    <i class="mdi mdi-file-document-outline text-primary me-2"></i>
-                                                    <span>Counter Request</span>
-                                                </button>
-                                          </li>                                           
+                                    <ul class="dropdown-menu dropdown-menu-end shadow-sm animate__animated animate__fadeIn">
 
-                                            <li>
-                                                <button type="button"
-                                                        class="btn btn-sm btn-outline-primary view-leaf-btn"
-                                                        data-leaf-id="@leaf.Id">
-                                                    <i class="mdi mdi-eye"></i> View Details
-                                                </button>
-                                            </li>                                           
-                                        </ul>
-                                    </div>
-                                }
+                                        <!-- Counter Request -->
+                                        <li>
+                                            <button class="dropdown-item btn-create"
+                                                    data-id="@leaf.Id">
+                                                <i class="mdi mdi-file-document-outline text-primary me-2"></i>
+                                                Counter Request
+                                            </button>
+                                        </li>
 
+                                        <!-- Details -->
+                                        <li>
+                                            <button class="dropdown-item view-leaf-btn"
+                                                    data-leaf-id="@leaf.Id">
+                                                <i class="mdi mdi-eye-outline text-info me-2"></i>
+                                                View Details
+                                            </button>
+                                        </li>
+
+                                        <!-- Clearance -->
+                                        <li>
+                                            <button class="dropdown-item btn-clearance"
+                                                    data-id="@leaf.Id">
+                                                <i class="mdi mdi-broom text-danger me-2"></i>
+                                                Clearance
+                                            </button>
+                                        </li>
+
+                                    </ul>
+                                </div>
                             </td>
+
                         </tr>
                     }
                 </tbody>

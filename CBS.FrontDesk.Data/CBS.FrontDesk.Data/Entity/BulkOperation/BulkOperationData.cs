@@ -31,6 +31,7 @@ namespace CBS.FrontDesk.Data.Entity.BulkOperation
         public DateTime CreatedDate { get; set; }
 
         public string CreatedBy { get; set; }
+        public bool? ShouldImpactAccounting { get; set; }
         public DateTime ModifiedDate { get; set; }
         public bool IsDeleted { get; set; }
         public List<BulkOperationDataDetails> BulkOperationSimulationDetails { get; set; }

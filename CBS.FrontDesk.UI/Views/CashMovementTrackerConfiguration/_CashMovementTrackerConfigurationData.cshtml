@@ -5,13 +5,13 @@
     <table class="table table-hover" id="DataTable_CashMovementTrackerConfiguration">
         <thead class="table-light">
             <tr>
-                <th>@GlobalCashMovementTrackerConfiguration.Movement</th>
+                <th>@GlobalShared.Movement</th>
 
-                <th>@GlobalCashMovementTrackerConfiguration.SourceBranch</th>
+                <th>@GlobalShared.Source_branch</th>
 
-                <th>@GlobalCashMovementTrackerConfiguration.Destination</th>
-                <th>@GlobalCashMovementTrackerConfiguration.Duration</th>
-                <th>@GlobalCashMovementTrackerConfiguration.Action</th>
+                <th>@GlobalShared.Destination</th>
+                <th>@GlobalShared.Duration</th>
+                <th>@GlobalShared.Action</th>
             </tr>
         </thead>
         <tbody>
@@ -26,7 +26,7 @@
                         <td style="width:15%">@d.Duration</td>
                         <td style="width:15%">
  
-                            <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashMovementTrackerConfiguration','_ViewCashMovementTrackingConfiguration','cashMovementTrackerConfiguration','CashMovementTrackerConfiguration')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select entry">@GlobalCashMovementTrackerConfiguration.ViewStatus</a>
+                            <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashMovementTrackerConfiguration','_ViewCashMovementTrackingConfiguration','cashMovementTrackerConfiguration','CashMovementTrackerConfiguration')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select entry">@GlobalShared.View_Status</a>
  
 
                         </td>

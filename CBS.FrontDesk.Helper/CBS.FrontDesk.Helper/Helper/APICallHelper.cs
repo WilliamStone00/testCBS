@@ -1355,6 +1355,7 @@ namespace CBS.FrontDesk.Helper
         public const string MarkLeafAsUsed = "/api/v1/Cheque-Book";
         public const string RejectCounBlockChequeLeafterCheque = "/api/v1/Cheque-Book";
         public const string BlockChequeLeaf = "/api/v1/Cheque-Book/{0}";
+        public const string GetCustomerCheckBookStatistics = "/api/v1/customerStats/{0}";
 
         //---------------------- cheque ----------------------------
         public const string GetAllCancellationRequests = "/api/v1/Cheque Book";
@@ -1925,6 +1926,10 @@ namespace CBS.FrontDesk.Helper
         public static string GetLoanDelinquencyData = "/api/v1/loans/delinquency";
         public static string GetTransactionHistoryByAccountNumber2 = "/api/v1/Transaction/GetTransactionsByDatesAndAccountNumber";
         public static string GetTransactionHistoryByAccountNumber3 = "/api/v1/Report/Financial";
+        public static string GetVatReportData = "not availlable";
+        public static string GetPenaltyReportData = "not availlable";
+        public static string GetInterestReportData = "not availlable";
+      
 
     }
 }

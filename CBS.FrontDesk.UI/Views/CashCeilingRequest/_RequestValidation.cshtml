@@ -14,27 +14,27 @@
 
                 <div class="col-md-6">
                     <div class="form-floating form-floating-outline">
-                        <span class="formatted-amount shadow-box float-start">@CashCeilingRequest_RequestValidation.AmountToBeTransfer: @Model.CashoutRequestAmount.ToString("#,##0.0")</span>
+                        <span class="formatted-amount shadow-box float-start">@GlobalShared.Amount_To_be_Transfer: @Model.CashoutRequestAmount.ToString("#,##0.0")</span>
                     </div>
                 </div>
                 <input type="hidden" name="ValidationCashCeilingRequestCommand.Amount" value="@Model.CashoutRequestAmount" />
                 <div class="col-md-6" hidden="hidden">
                     <div class="form-floating form-floating-outline">
-                        <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@CashCeilingRequest_RequestValidation.TotalAmount: @Model.CashoutRequestAmount</span>
+                        <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@GlobalShared.Total_amount: @Model.CashoutRequestAmount</span>
                         <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="@Model.CashoutRequestAmount">
                         <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalProvision" value="@Model.CashoutRequestAmount">
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating form-floating-outline">
-                        <span class="formatted-amount shadow-box" id="lblBalance">@CashCeilingRequest_RequestValidation.Balance: @Model.CashoutRequestAmount.ToString("#,##0.0")</span>
+                        <span class="formatted-amount shadow-box" id="lblBalance">@GlobalShared.Balance: @Model.CashoutRequestAmount.ToString("#,##0.0")</span>
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
                         @Html.TextAreaFor(m => m.Requetcomment, new { @class = "form-control", @style = "height: 70px;", @readonly = "readonly" })
                         @Html.ValidationMessageFor(m => m.Requetcomment, "", new { @class = "text-danger" })
-                        <label for="formValidationDob">@CashCeilingRequest_RequestValidation.RequestNote</label>
+                        <label for="formValidationDob">@GlobalShared.Request_note</label>
                     </div>
                 </div>
 
@@ -44,20 +44,20 @@
                     <div class="d-flex align-items-center">
                         <div class="form-check me-3">
                             @Html.RadioButtonFor(m => m.ValidationCashCeilingRequestCommand.ApprovedStatus, "Approved", new { @class = "form-check-input", id = "Approved" })
-                            <label class="form-check-label" for="Approved">@CashCeilingRequest_RequestValidation.Approved</label>
+                            <label class="form-check-label" for="Approved">@GlobalShared.Approved</label>
                         </div>
                         <div class="form-check me-3">
                             @Html.RadioButtonFor(m => m.ValidationCashCeilingRequestCommand.ApprovedStatus, "Pending", new { @class = "form-check-input", id = "Pending" })
-                            <label class="form-check-label" for="Pending">@CashCeilingRequest_RequestValidation.Pending</label>
+                            <label class="form-check-label" for="Pending">@GlobalShared.Pending</label>
                         </div>
                         <div class="form-check">
                             @Html.RadioButtonFor(m => m.ValidationCashCeilingRequestCommand.ApprovedStatus, "Rejected", new { @class = "form-check-input", id = "Rejected" })
-                            <label class="form-check-label" for="Rejected">@CashCeilingRequest_RequestValidation.Rejected</label>
+                            <label class="form-check-label" for="Rejected">@GlobalShared.Rejected</label>
                         </div>
                     </div>
                     @Html.ValidationMessageFor(m => m.ValidationCashCeilingRequestCommand.ApprovedStatus, "", new { @class = "text-danger" })
                 </div>
-                <h5 class="text-black">@CashCeilingRequest_RequestValidation.DenominationDistributions</h5>
+                <h5 class="text-black">@CashCeilingRequestRessource.DenominationDistributions</h5>
                 <div class="col-md-2">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.ValidationCashCeilingRequestCommand.CurrencyNote.note10000, new { @class = "form-control", @id = "Notes_note10000", @oninput = "calculateBalance()" })
@@ -178,7 +178,7 @@
                     <div class="form-floating form-floating-outline">
                         @Html.TextAreaFor(m => m.ValidationCashCeilingRequestCommand.ApprovedComment, new { @class = "form-control", @style = "height: 120px;" })
                         @Html.ValidationMessageFor(m => m.ValidationCashCeilingRequestCommand.ApprovedComment, "", new { @class = "text-danger " })
-                        <label for="formValidationDob">@CashCeilingRequest_RequestValidation.ApprovalNote</label>
+                        <label for="formValidationDob">@CashCeilingRequestRessource.ApprovalNote</label>
                     </div>
                 </div>
 

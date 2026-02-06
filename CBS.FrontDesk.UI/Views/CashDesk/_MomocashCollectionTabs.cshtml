@@ -9,11 +9,11 @@
             <div class="d-flex align-items-center flex-wrap gap-2">
                 <div class="fw-semibold">
                     <i class="mdi mdi-toggle-switch-outline me-1"></i>
-                    Operation
+                    @GlobalShared.Operation
                 </div>
 
                 <span class="badge rounded-pill bg-light text-dark border d-none d-md-inline">
-                    Cash-In &amp; Loan Repayments (Charges Supported)
+                    @Html.Raw(@CashDeskRessource.Cash_In_Loan_Repayments_Charges_Supported)
                 </span>
             </div>
 
@@ -27,9 +27,9 @@
                    data-target-partial="_MomocashCollectionDesk"
                    data-target-container="datalistingview"
                    data-bs-toggle="tooltip"
-                   title="@CashDesk_MomocashCollectionTabs.PerformCashinOperation">
+                   title="@GlobalShared.Perform_cashin_operation">
                     <i class="mdi mdi-cash-plus"></i>
-                    <span>Cash-In</span>
+                    <span>@GlobalShared.Cash_In</span>
                 </a>
 
                 <!-- Loan repayment button -->
@@ -40,9 +40,9 @@
                    data-target-partial="_MomocashCollectionDesk"
                    data-target-container="datalistingview"
                    data-bs-toggle="tooltip"
-                   title="@CashDesk_MomocashCollectionTabs.PerformLoanRepaymentOperation">
+                   title="@CashDeskRessource.PerformLoanRepaymentOperation">
                     <i class="mdi mdi-hand-coin"></i>
-                    <span>Loan Repayment</span>
+                    <span>@GlobalShared.Loan_Repayment</span>
                 </a>
 
             </div>
@@ -50,7 +50,7 @@
         </div>
 
         <div class="small text-muted mt-1">
-            Select an operation type. Member data will refresh automatically for the selected operation.
+            @CashDeskRessource.Select_an_operation_type_Member_data_will_refresh_automatically_for_the_selected_operation
         </div>
     </div>
 </div>

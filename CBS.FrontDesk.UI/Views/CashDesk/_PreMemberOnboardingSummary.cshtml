@@ -4,7 +4,7 @@
 <!-- Onboarding Summary Section -->
 <div class="card shadow-sm mb-1">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> @CashDesk_PreMemberOnboardingSummary.OnboardingSummaryForPreRegisteredMember</span>
+        <span><i class="mdi mdi-information-outline me-2"></i> @CashDeskRessource.OnboardingSummaryForPreRegisteredMember</span>
         <button class="btn btn-sm btn-light" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOnboardingSummary" aria-expanded="false" aria-controls="collapseOnboardingSummary">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -16,7 +16,7 @@
             <!-- Inner Summary Panel -->
             <div class="card border border-primary mb-3">
                 <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                    <span><i class="mdi mdi-cash-plus me-2"></i> @CashDesk_PreMemberOnboardingSummary.OnboardingBreakdown</span>
+                    <span><i class="mdi mdi-cash-plus me-2"></i> @CashDeskRessource.OnboardingBreakdown</span>
                     <span class="badge bg-light text-primary">@Model.MemberOnboardingDetailDto.CustomerId</span>
                 </div>
 
@@ -24,26 +24,26 @@
                     <div class="row">
                         <!-- Opening Balances -->
                         <div class="col-md-4">
-                            <h6 class="text-dark fw-bold mb-2">@CashDesk_PreMemberOnboardingSummary.MinimumOpeningBalances</h6>
+                            <h6 class="text-dark fw-bold mb-2">@CashDeskRessource.MinimumOpeningBalances</h6>
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item d-flex justify-content-between">
-                                    <span>@CashDesk_PreMemberOnboardingSummary.Savings</span><span>@Model.MemberOnboardingDetailDto.MinSavingsOpening.ToString("N0")</span>
+                                    <span>@GlobalShared.Savings</span><span>@Model.MemberOnboardingDetailDto.MinSavingsOpening.ToString("N0")</span>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between">
-                                    <span>@CashDesk_PreMemberOnboardingSummary.Shares</span><span>@Model.MemberOnboardingDetailDto.MinSharesOpening.ToString("N0")</span>
+                                    <span>@GlobalShared.Shares</span><span>@Model.MemberOnboardingDetailDto.MinSharesOpening.ToString("N0")</span>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between">
-                                    <span>@CashDesk_PreMemberOnboardingSummary.PreferenceShares</span><span>@Model.MemberOnboardingDetailDto.MinPrefSharesOpening.ToString("N0")</span>
+                                    <span>@CashDeskRessource.PreferenceShares</span><span>@Model.MemberOnboardingDetailDto.MinPrefSharesOpening.ToString("N0")</span>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between">
-                                    <span>@CashDesk_PreMemberOnboardingSummary.Deposit</span><span>@Model.MemberOnboardingDetailDto.MinDepositOpening.ToString("N0")</span>
+                                    <span>@GlobalShared.Deposit</span><span>@Model.MemberOnboardingDetailDto.MinDepositOpening.ToString("N0")</span>
                                 </li>
                             </ul>
                         </div>
 
                         <!-- Required Items -->
                         <div class="col-md-8">
-                            <h6 class="text-dark fw-bold mb-2">@CashDesk_PreMemberOnboardingSummary.RequiredOnboardingItems</h6>
+                            <h6 class="text-dark fw-bold mb-2">@CashDeskRessource.RequiredOnboardingItems</h6>
                             <ul class="list-group list-group-flush">
                                 @foreach (var item in Model.MemberOnboardingDetailDto.RequiredItems)
                                 {
@@ -61,15 +61,15 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="d-flex justify-content-between fw-bold mb-1">
-                                <span>@CashDesk_PreMemberOnboardingSummary.TotalAccountOpening:</span>
+                                <span>@CashDeskRessource.TotalAccountOpening:</span>
                                 <span>@Model.MemberOnboardingDetailDto.TotalAccountOpening.ToString("N0")</span>
                             </div>
                             <div class="d-flex justify-content-between fw-bold mb-1">
-                                <span>@CashDesk_PreMemberOnboardingSummary.TotalOnboardingItemCost:</span>
+                                <span>@CashDeskRessource.TotalOnboardingItemCost:</span>
                                 <span>@Model.MemberOnboardingDetailDto.TotalItemCost.ToString("N0")</span>
                             </div>
                             <div class="d-flex justify-content-between fs-5 mt-2">
-                                <span class="text-primary fw-bold">@CashDesk_PreMemberOnboardingSummary.GrandTotal:</span>
+                                <span class="text-primary fw-bold">@GlobalShared.Grand_Total:</span>
                                 <span class="text-primary fw-bold">@Model.MemberOnboardingDetailDto.GrandTotal.ToString("N0")</span>
                             </div>
                         </div>
@@ -79,9 +79,9 @@
 
             <!-- Legal Form Indicator -->
             <div class="alert alert-info d-flex justify-content-between align-items-center mt-3">
-                <span class="fw-bold">@CashDesk_PreMemberOnboardingSummary.OnboardingType:</span>
+                <span class="fw-bold">@CashDeskRessource.OnboardingType:</span>
                 <span class="badge bg-secondary text-white fs-6 px-3">
-                    @(Model.Customer?.LegalForm == "Moral_Person" ? @CashDesk_PreMemberOnboardingSummary.MoralPerson : @CashDesk_PreMemberOnboardingSummary.PhysicalPerson)
+                    @(Model.Customer?.LegalForm == "Moral_Person" ? GlobalShared.Moral_Person : GlobalShared.Physical_Person)
                 </span>
             </div>
 

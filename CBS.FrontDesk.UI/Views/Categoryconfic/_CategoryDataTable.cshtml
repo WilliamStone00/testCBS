@@ -1,18 +1,18 @@
 ﻿
 @using Resources
 <div class="card p-3 shadow mb-4">
-    <h5 class="text-primary mb-3"><i class="mdi mdi-table"></i>@ChequeManagements.CheckBooks</h5>
+    <h5 class="text-primary mb-3"><i class="mdi mdi-table"></i>@CategoryconficResource.Cheque_Books</h5>
     <div class="table-responsive">
         <table id="myDataTable" class="table table-bordered table-striped">
             <thead class="table-light">
                 <tr>
-                    <th>@ChequeManagements.CreatedDate</th>
-                    <th>@ChequeManagements.CategoryName</th>
-                    <th>@ChequeManagements.IsCentralised</th>
-                    <th>@ChequeManagements.BasePrice</th>
-                    <th>@ChequeManagements.NumOfLeaves</th>
-                    <th>@ChequeManagements.Status</th>
-                    <th>@ChequeManagements.Actions</th>
+                    <th>@GlobalShared.Created_Date</th>
+                    <th>@GlobalShared.Category_name</th>
+                    <th>@CategoryconficResource.IsCentralised</th>
+                    <th>@CategoryconficResource.BasePrice</th>
+                    <th>@CategoryconficResource.NumOfLeaves</th>
+                    <th>@GlobalShared.Status</th>
+                    <th>@GlobalShared.Actions</th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -25,19 +25,19 @@
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"><i class="mdi mdi-book-open-page-variant-outline me-1"></i> @ChequeManagements.CategoryDetails</h5>
+                <h5 class="modal-title"><i class="mdi mdi-book-open-page-variant-outline me-1"></i> @GlobalShared.Category_Details</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
             <div class="modal-body">
                 <!-- server partial will be injected here -->
                 <div class="text-center">
-                    <div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div>
+                    <div class="spinner-border" role="status"><span class="visually-hidden">@GlobalShared.Loading...</span></div>
                 </div>
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@ChequeManagements.Close</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@GlobalShared.Close</button>
             </div>
         </div>
     </div>

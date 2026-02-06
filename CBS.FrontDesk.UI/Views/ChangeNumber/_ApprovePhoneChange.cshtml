@@ -9,7 +9,7 @@
     <div class="row mt-3 gy-3">
         <!-- Request Details -->
         <div class="col-md-6">
-            <label class="fw-bold"><i class="mdi mdi-account me-1"></i> @GlobalChangeNumber.MemberName:</label>
+            <label class="fw-bold"><i class="mdi mdi-account me-1"></i> @GlobalShared.Member_name:</label>
             <p class="form-control-static">@Model.PhoneNumberChangeHistory.MemberName</p>
         </div>
 
@@ -24,23 +24,23 @@
         </div>
 
         <div class="col-md-6">
-            <label class="fw-bold"><i class="mdi mdi-account-tie me-1"></i> @GlobalChangeNumber.RequestedBy:</label>
+            <label class="fw-bold"><i class="mdi mdi-account-tie me-1"></i> @GlobalShared.Requested_by:</label>
             <p class="form-control-static">@Model.PhoneNumberChangeHistory.RequestBy</p>
         </div>
 
         <div class="col-md-6">
-            <label class="fw-bold"><i class="mdi mdi-calendar me-1"></i> @GlobalChangeNumber.RequestDate:</label>
+            <label class="fw-bold"><i class="mdi mdi-calendar me-1"></i> @GlobalShared.Request_Date:</label>
             <p class="form-control-static">@Model.PhoneNumberChangeHistory.DateOfRequest</p>
         </div>
 
         <div class="col-md-6">
-            <label class="fw-bold"><i class="mdi mdi-office-building me-1"></i> @GlobalChangeNumber.Branch:</label>
+            <label class="fw-bold"><i class="mdi mdi-office-building me-1"></i> @GlobalShared.Branch:</label>
             <p class="form-control-static">(@Model.PhoneNumberChangeHistory.BranchCode) @Model.PhoneNumberChangeHistory.BranchName</p>
         </div>
 
         <!-- Request Note -->
         <div class="col-md-12">
-            <label class="fw-bold"><i class="mdi mdi-note-text-outline me-1"></i> @GlobalChangeNumber.RequestNote:</label>
+            <label class="fw-bold"><i class="mdi mdi-note-text-outline me-1"></i> @GlobalShared.Request_note:</label>
             <p class="form-control-static text-muted">
                 @(string.IsNullOrWhiteSpace(Model.PhoneNumberChangeHistory.RequestComment) ? @GlobalChangeNumber.NoAdditionalNotesProvided : Model.PhoneNumberChangeHistory.RequestComment)
             </p>
@@ -72,7 +72,7 @@
             <i class="mdi mdi-close"></i> @GlobalShared.Cancel
         </button>
         <button type="submit" class="btn btn-success">
-            <i class="mdi mdi-check"></i> @GlobalChangeNumber.SubmitApproval
+            <i class="mdi mdi-check"></i> @GlobalShared.Submit_Approval
         </button>
     </div>
 }

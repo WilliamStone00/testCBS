@@ -6,10 +6,10 @@
     <div class="card bg-light mb-4 shadow-sm">
         <div class="card-body text-center">
             <h1 class="card-title text-primary fw-bold mb-2">
-                <i class="mdi mdi-book-open-page-variant-outline me-2"></i> @ChequeManagements.CategoryDetails
+                <i class="mdi mdi-book-open-page-variant-outline me-2"></i> @GlobalShared.Category_Details
             </h1>
             <p class="card-text text-muted mb-1">
-                @ChequeManagements.text
+                @CategoryconficResource.Here_are_the_details_of_the_selected_cheque_book_category_with_all_relevant_information
             </p>
         </div>
     </div>
@@ -17,26 +17,26 @@
     <div class="row">
         <!-- Left Column -->
         <div class="col-md-6">
-            <h6 class="text-primary"><i class="mdi mdi-information-outline me-2"></i> @ChequeManagements.BasicInformation</h6>
+            <h6 class="text-primary"><i class="mdi mdi-information-outline me-2"></i> @CategoryconficResource.Basic_Information</h6>
             <table class="table table-sm table-bordered">
-                <tr><td class="fw-bold">@ChequeManagements.CategoryID</td><td>@Model.id</td></tr>
-                <tr><td class="fw-bold">@ChequeManagements.BankId:</td><td>@Model.bankId</td></tr>
-                <tr><td class="fw-bold">@ChequeManagements.Branch Id:</td><td>@(Model.branchID ?? "-")</td></tr>
-                <tr><td class="fw-bold">@ChequeManagements.Name:</td><td>@Model.name</td></tr>
-                <tr><td class="fw-bold">@ChequeManagements.IsCentralised:</td><td>@(Model.isCentralised ? "Yes" : "No")</td></tr>
-                <tr><td class="fw-bold">@ChequeManagements.isactive:</td><td>@(Model.isActive ? "Yes" : "No")</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.Category_ID:</td><td>@Model.id</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.Bank_ID:</td><td>@Model.bankId</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.Branch_ID:</td><td>@(Model.branchID ?? "-")</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.Name:</td><td>@Model.name</td></tr>
+                <tr><td class="fw-bold">@CategoryconficResource.IsCentralised:</td><td>@(Model.isCentralised ? "Yes" : "No")</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.IsActive:</td><td>@(Model.isActive ? "Yes" : "No")</td></tr>
             </table>
         </div>
 
         <!-- Right Column -->
         <div class="col-md-6">
-            <h6 class="text-primary"><i class="mdi mdi-cog-outline me-2"></i> Category Settings</h6>
+            <h6 class="text-primary"><i class="mdi mdi-cog-outline me-2"></i> @CategoryconficResource.Category_Settings</h6>
             <table class="table table-sm table-bordered">
-                <tr><td class="fw-bold">@ChequeManagements.NumberOfCheckBooks:</td><td>@Model.numberofCheckBooks</td></tr>
-                <tr><td class="fw-bold">@ChequeManagements.Numberofpages:</td><td>@Model.numberOfPages</td></tr>
-                <tr><td class="fw-bold">@ChequeManagements.validity</td><td>@Model.validityPeriodInMonths</td></tr>
-                <tr><td class="fw-bold">@ChequeManagements.limit</td><td>@Model.issuanceLimitPerCustomerType</td></tr>
-                <tr><td class="fw-bold">@ChequeManagements.MaxIssuancePerYear</td><td>@Model.maxIssuancePerYear</td></tr>
+                <tr><td class="fw-bold">@CategoryconficResource.Number_Of_Check_Books:</td><td>@Model.numberofCheckBooks</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.Number_of_Pages:</td><td>@Model.numberOfPages</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.validity</td><td>@Model.validityPeriodInMonths</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.limit</td><td>@Model.issuanceLimitPerCustomerType</td></tr>
+                <tr><td class="fw-bold">@CategoryconficResource.Max_Issuance_Per_Year</td><td>@Model.maxIssuancePerYear</td></tr>
             </table>
         </div>
     </div>
@@ -44,11 +44,11 @@
     <!-- Fee Section -->
     <div class="row mt-3">
         <div class="col-12">
-            <h6 class="text-primary"><i class="mdi mdi-currency-usd me-2"></i> Fee Structure</h6>
+            <h6 class="text-primary"><i class="mdi mdi-currency-usd me-2"></i> @GlobalShared.Fee_Structure</h6>
             <table class="table table-sm table-bordered">
-                <tr><td class="fw-bold">@ChequeManagements.BasePrice</td><td>@String.Format("{0:N2}", Model.basePrice)</td></tr>
-                <tr><td class="fw-bold">@ChequeManagements.IssuanceFee:</td><td>@String.Format("{0:N2}", Model.issuanceFee)</td></tr>
-                <tr><td class="fw-bold">@ChequeManagements.RenewalFee:</td><td>@String.Format("{0:N2}", Model.renewalFee)</td></tr>
+                <tr><td class="fw-bold">@CategoryconficResource.BasePrice</td><td>@String.Format("{0:N2}", Model.basePrice)</td></tr>
+                <tr><td class="fw-bold">@CategoryconficResource.Issuance_Fee:</td><td>@String.Format("{0:N2}", Model.issuanceFee)</td></tr>
+                <tr><td class="fw-bold">@CategoryconficResource.Renewal_Fee:</td><td>@String.Format("{0:N2}", Model.renewalFee)</td></tr>
             </table>
         </div>
     </div>
@@ -56,12 +56,12 @@
     <!-- Timeline Section -->
     <div class="row mt-3">
         <div class="col-12">
-            <h6 class="text-primary"><i class="mdi mdi-timeline-clock-outline me-2"></i> Timeline</h6>
+            <h6 class="text-primary"><i class="mdi mdi-timeline-clock-outline me-2"></i> @GlobalShared.Timeline</h6>
             <table class="table table-sm table-bordered">
-                <tr><td class="fw-bold">@ChequeManagements.CreatedDate:</td><td>@Model.createdDate.ToString()</td></tr>
-                <tr><td class="fw-bold">@ChequeManagements.Createdby</td><td>@Model.createdBy</td></tr>
-                <tr><td class="fw-bold">@ChequeManagements.ModifiedDate</td><td>@Model.modifiedDate.ToString()</td></tr>
-                <tr><td class="fw-bold">@ChequeManagements.ModifiedBy</td><td>@Model.modifiedBy</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.CreatedDate:</td><td>@Model.createdDate.ToString()</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.Created_by</td><td>@Model.createdBy</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.Modified_Date</td><td>@Model.modifiedDate.ToString()</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.Modified_By</td><td>@Model.modifiedBy</td></tr>
             </table>
         </div>
     </div>

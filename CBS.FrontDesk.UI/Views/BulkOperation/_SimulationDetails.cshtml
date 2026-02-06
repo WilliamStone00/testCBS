@@ -19,51 +19,88 @@
         <div class="col-md-6">
             <div class="card mb-4">
                 <div class="card-header d-flex align-items-center justify-content-between">
-                    <h5 class="mb-0">@GlobalBulkOperation.OperationInformation</h5>
+                    <h5 class="mb-0">@GlobalShared.Operation_information</h5>
                 </div>
                 <div class="card-body">
                     <div class="row mb-3">
-                        <label class="col-sm-4 col-form-label">@GlobalBulkOperation.SimulationType</label>
+                        <label class="col-sm-4 col-form-label">@GlobalShared.Simulation_type</label>
                         <div class="col-sm-8">
                             <div class="form-control">@(Model.SimulationType?.ToUpper())</div>
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label class="col-sm-4 col-form-label">@GlobalBulkOperation.Branch</label>
+                        <label class="col-sm-4 col-form-label">@GlobalShared.Branch</label>
                         <div class="col-sm-8">
                             <div class="form-control">@(Model.InitiatorBranchName?.ToUpper()) (@Model.InitiatorBranchCode)</div>
                         </div>
                     </div>
-                   @* <div class="row mb-3">
-                        <label class="col-sm-4 col-form-label">@GlobalBulkOperation.Bank</label>
-                        <div class="col-sm-8">
-                            <div class="form-control">@(Model.BankName?.ToUpper()) (@Model.BankCode)</div>
-                        </div>
-                    </div>*@
+                    @* <div class="row mb-3">
+            <label class="col-sm-4 col-form-label">@GlobalBulkOperation.Bank</label>
+            <div class="col-sm-8">
+                <div class="form-control">@(Model.BankName?.ToUpper()) (@Model.BankCode)</div>
+            </div>
+        </div>*@
                     <div class="row mb-3">
-                        <label class="col-sm-4 col-form-label">@GlobalBulkOperation.TotalVolume</label>
+                        <label class="col-sm-4 col-form-label">@GlobalShared.Total_volume</label>
                         <div class="col-sm-8">
                             <div class="form-control">@Model.TotalVolume</div>
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label class="col-sm-4 col-form-label">@GlobalBulkOperation.TotalMembers</label>
+                        <label class="col-sm-4 col-form-label">@GlobalShared.TotalMembers</label>
                         <div class="col-sm-8">
                             <div class="form-control">@Model.TotalMembers</div>
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label class="col-sm-4 col-form-label">@GlobalBulkOperation.Description</label>
+                        <label class="col-sm-4 col-form-label">@GlobalShared.Description</label>
                         <div class="col-sm-8">
                             <div class="form-control">@(Model?.Description)</div>
                         </div>
                     </div>
-                @*    <div class="row mb-3">
-                        <label class="col-sm-4 col-form-label">Destination Account Type</label>
+                    <div class="row mb-3">
+                        <label class="col-sm-4 col-form-label">Accounting Impact</label>
                         <div class="col-sm-8">
-                            <div class="form-control">@(destinationAccountype?.ToUpper())</div>
+                            <div class="form-control">
+
+                                @if (Model?.ShouldImpactAccounting == false)
+                                {
+                                    <span class="text-warning fw-semibold">
+                                        <i class="mdi mdi-alert-outline me-1"></i>
+                                        Accounting impact is <b>DISABLED</b>.
+                                    </span>
+                                    <div class="small text-muted mt-1">
+                                        This simulation was explicitly configured <b>not</b> to generate accounting entries,
+                                        even if approved.
+                                    </div>
+                                }
+                                else if (!string.Equals(Model?.ApprovalStatus, "Approved", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    <span class="text-info fw-semibold">
+                                        <i class="mdi mdi-timer-sand me-1"></i>
+                                        Accounting impact is <b>PENDING</b>.
+                                    </span>
+                                    <div class="small text-muted mt-1">
+                                        This simulation is eligible to impact accounting, but no entries were generated
+                                        because the operation is not yet approved.
+                                    </div>
+                                }
+                                else
+                                {
+                                    <span class="text-success fw-semibold">
+                                        <i class="mdi mdi-check-circle-outline me-1"></i>
+                                        Accounting impact is <b>ENABLED</b>.
+                                    </span>
+                                    <div class="small text-muted mt-1">
+                                        This simulation is approved and will generate accounting entries upon execution.
+                                    </div>
+                                }
+
+                            </div>
                         </div>
-                    </div>*@
+                    </div>
+
+
                 </div>
             </div>
         </div>
@@ -71,11 +108,11 @@
         <div class="col-md-6">
             <div class="card mb-4">
                 <div class="card-header d-flex align-items-center justify-content-between">
-                    <h5 class="mb-0">@GlobalBulkOperation.ApprovalInformation</h5>
+                    <h5 class="mb-0">@GlobalShared.Approval_information</h5>
                 </div>
                 <div class="card-body">
                     <div class="row mb-3">
-                        <label class="col-sm-4 col-form-label">@GlobalBulkOperation.Status</label>
+                        <label class="col-sm-4 col-form-label">@GlobalShared.Status</label>
                         <div class="col-sm-8">
                             <span class="badge @Model.ApprovalStatusBadge">@(Model.ApprovalStatus?.ToUpper())</span>
                         </div>
@@ -83,25 +120,25 @@
 
 
                     <div class="row mb-3">
-                        <label class="col-sm-4 col-form-label">@GlobalBulkOperation.CreatedBy</label>
+                        <label class="col-sm-4 col-form-label">@GlobalShared.Created_by</label>
                         <div class="col-sm-8">
                             <div class="form-control">@(string.IsNullOrEmpty(Model.CreatedBy) ? "N/A" : Model.CreatedBy.ToUpper())</div>
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label class="col-sm-4 col-form-label">@GlobalBulkOperation.ApprovedBy</label>
+                        <label class="col-sm-4 col-form-label">@GlobalShared.Approved_by</label>
                         <div class="col-sm-8">
                             <div class="form-control">@(string.IsNullOrEmpty(Model.ApprovalBy) ? "N/A" : Model.ApprovalBy.ToUpper())</div>
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label class="col-sm-4 col-form-label">@GlobalBulkOperation.ApprovalDate</label>
+                        <label class="col-sm-4 col-form-label">@GlobalShared.Approval_date</label>
                         <div class="col-sm-8">
                             <div class="form-control">@(Model.ApprovalValidationDate == default(DateTime) ? "N/A" : Model.ApprovalValidationDate.ToString("dd/MM/yyyy HH:mm:ss"))</div>
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label class="col-sm-4 col-form-label">@GlobalBulkOperation.Description</label>
+                        <label class="col-sm-4 col-form-label">@GlobalShared.Description</label>
                         <div class="col-sm-8">
                             <div class="form-control">@(string.IsNullOrEmpty(Model.ApprovalValidationDescription) ? "N/A" : Model.ApprovalValidationDescription)</div>
                         </div>
@@ -120,7 +157,7 @@
                         data-bs-target="#collapseMembers"
                         aria-expanded="false"
                         aria-controls="collapseMembers">
-                    <i class="fas fa-users me-2"></i>@GlobalBulkOperation.OperationMembers (@Model.TotalMembers)
+                    <i class="fas fa-users me-2"></i>@GlobalShared.Operation_members (@Model.TotalMembers)
                 </button>
             </h2>
             <div id="collapseMembers" class="accordion-collapse collapse" aria-labelledby="headingMembers">
@@ -138,7 +175,7 @@
                         data-bs-target="#collapseActions"
                         aria-expanded="false"
                         aria-controls="collapseActions">
-                    <i class="fas fa-tasks me-2"></i>@GlobalBulkOperation.AvailableActions
+                    <i class="fas fa-tasks me-2"></i>@GlobalShared.Available_actions
                 </button>
             </h2>
             <div id="collapseActions"
@@ -150,7 +187,7 @@
                         @if (@Model.ApprovalStatus == "Pending" || @Model.ApprovalStatus == "Failed" || @Model.ApprovalStatus == "Reviewed")
                         {
                             <button type="button" class="btn btn-primary" id="approveBulkOperation" data-simulation-id="@Model.Id">
-                                <i class="fas fa-check me-1"></i> @GlobalBulkOperation.PerformActions
+                                <i class="fas fa-check me-1"></i> @GlobalShared.Perform_actions
                             </button>
                             @* <button type="button" class="btn btn-warning" id="reviewBulkOperation" data-simulation-id="@Model.Id">
                                     <i class="fas fa-search me-1"></i> Send for Review
@@ -189,7 +226,7 @@
                     <div class="card bg-light mb-2">
                         <div class="card-body text-center">
                             <h1 class="card-title text-primary">
-                                <i class="mdi mdi-bank-transfer me-2"></i>@GlobalBulkOperation.TransferDetails
+                                <i class="mdi mdi-bank-transfer me-2"></i>@GlobalShared.Transfer_details
                             </h1>
                             <p class="card-text lead">
                                @(string.IsNullOrWhiteSpace(Model.SimulationType)? "N/A" : Model.SimulationType?.ToUpper())
@@ -211,9 +248,9 @@
                 <div id="collapseTransferTips" class="collapse">
                     <div class="card-body">
                         <ul class="mb-0">
-                            <li><i class="mdi mdi-clock-outline text-primary me-2"></i><strong>@GlobalBulkOperation.RealTime:</strong> @GlobalBulkOperation.ShowsTheMostCurrentTransferStatus.</li>
-                            <li><i class="mdi mdi-shield-check-outline text-success me-2"></i><strong>@GlobalBulkOperation.Secure:</strong> @GlobalBulkOperation.AllInformationIsEncrypted.</li>
-                            <li><i class="mdi mdi-history text-warning me-2"></i><strong>@GlobalBulkOperation.CompleteHistory:</strong> @GlobalBulkOperation.ShowsFullTransactionDetails.</li>
+                            <li><i class="mdi mdi-clock-outline text-primary me-2"></i><strong>@GlobalShared.Real_time:</strong> @GlobalBulkOperation.ShowsTheMostCurrentTransferStatus.</li>
+                            <li><i class="mdi mdi-shield-check-outline text-success me-2"></i><strong>@GlobalShared.Secure:</strong> @GlobalBulkOperation.AllInformationIsEncrypted.</li>
+                            <li><i class="mdi mdi-history text-warning me-2"></i><strong>@GlobalShared.Complete_history:</strong> @GlobalBulkOperation.ShowsFullTransactionDetails.</li>
                         </ul>
                     </div>
                 </div>
@@ -225,7 +262,7 @@
                     <!-- Content will be loaded dynamically -->
                     <div class="loading-container text-center">
                         <div class="spinner-border text-primary" role="status">
-                            <span class="visually-hidden">@GlobalBulkOperation.Loading...</span>
+                            <span class="visually-hidden">@GlobalShared.Loading...</span>
                         </div>
                         <p class="mt-2">@GlobalBulkOperation.LoadingTransferDetails...</p>
                     </div>
@@ -236,11 +273,11 @@
             <div class="modal-footer border-0 justify-content-between">
                 <div>
                     <span class="text-muted fw-semibold">
-                        @GlobalBulkOperation.TransactionID: <span class="text-dark" id="transferTransactionId">@Model.Id</span>
+                        @GlobalShared.Transaction_id: <span class="text-dark" id="transferTransactionId">@Model.Id</span>
                     </span>
                 </div>
                 <div class="text-center w-100">
-                    <small class="text-muted">@GlobalBulkOperation.PoweredBy FLX-CBS</small>
+                    <small class="text-muted">@GlobalShared.Powered_by FLX-CBS</small>
                 </div>
                 <div>
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">

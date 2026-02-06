@@ -3,20 +3,20 @@
 
 <div class="form-wrapper">
     <fieldset class="fieldset-custom">
-        <legend>@CashDesk_OtherPaymentForm.OtherPayments</legend>
+        <legend>@CashDeskRessource.OtherPayments</legend>
         <hr />
         <div class="change-group">
             <div class="row mt-2 gy-4">
                 @* Tell JS which screen the user opened: "OtherCashIn" or "OtherCashOut" *@
                 <input type="hidden" id="FormContext" value="@ViewBag.FormContext" /> @* e.g., set in controller *@
 
-                <legend class="text-primary h6 mb-3" id="contextTitle">💰 @CashDesk_OtherTransactionForm.OtherCashIn</legend>
+                <legend class="text-primary h6 mb-3" id="contextTitle">💰 @GlobalShared.Other_Cash_In</legend>
 
-                <label class="fw-semibold mb-2 d-block">@CashDesk_OtherTransactionForm.SelectSource</label>
+                <label class="fw-semibold mb-2 d-block">@GlobalShared.Select_Source</label>
                 <div class="form-check">
                     @Html.RadioButtonFor(m => m.BulkDeposit.OtherTransaction.SourceType, "Cash_Collected",
                       new { @class = "form-check-input", id = "cashCollectionOption" })
-                    <label class="form-check-label" for="cashCollectionOption" id="sourceCollectLabel">Collect Cash</label>
+                    <label class="form-check-label" for="cashCollectionOption" id="sourceCollectLabel">@GlobalShared.Collect_Cash</label>
                 </div>
 
                 <!-- 🔹 Toggle Inter-Branch -->
@@ -24,7 +24,7 @@
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" id="isInterBranchCheck" onchange="toggleBranchDropdown()" />
                         <label class="form-check-label fw-semibold" for="isInterBranchCheck" id="interBranchLabel">
-                            🔄 Enable Inter-Branch Transaction
+                            🔄 @CashDeskRessource.Enable_Inter_Branch_Transaction
                         </label>
                     </div>
                 </div>
@@ -35,21 +35,21 @@
                             new SelectList(ViewBag.Branches, "Id", "Name"),
                             "--- Select Branch ---",
                             new { @class = "form-control select2", @id = "ExternalBranchId" })
-                        <label for="ExternalBranchId">Destination Branch</label>
+                        <label for="ExternalBranchId">@GlobalShared.Destination_Branch</label>
                         @Html.ValidationMessageFor(m => m.BulkDeposit.OtherTransaction.ExternalBranchId, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="input-group mb-3">
-                        <input type="text" id="manualSearchInput" class="form-control shadow-box" placeholder="@CashDesk_OtherPaymentForm.EnterMembersAccountNumber">
+                        <input type="text" id="manualSearchInput" class="form-control shadow-box" placeholder="@CashDeskRessource.EnterMemberAccountNumber">
                         <button class="btn btn-outline-secondary" type="button" id="manualSearchInputbutton" onclick="LoadMembersAccounts('account_number')">
-                            @CashDesk_OtherPaymentForm.Search
+                            @GlobalShared.Search
                         </button>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating form-floating-outline">
-                        <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@CashDesk_OtherPaymentForm.TotalAmount: 0.0</span>
+                        <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@GlobalShared.Total_amount: 0.0</span>
                         <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0">
                     </div>
                 </div>
@@ -58,16 +58,16 @@
                     <div class="col-6">
                         <div class="form-check">
                             @Html.RadioButtonFor(m => m.BulkDeposit.OtherTransaction.SourceType, "Member_Account", new { @class = "form-check-input", id = "memberAccountOption" })
-                            <label class="form-check-label" for="memberAccountOption">@CashDesk_OtherPaymentForm.FromMembersAccount</label>
+                            <label class="form-check-label" for="memberAccountOption">@CashDeskRessource.FromMemberAccount</label>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(m => m.BulkDeposit.OtherTransaction.AccountNumber, new SelectList(ViewBag.MemberAccounts, "Value", "Text"), @CashDesk_OtherPaymentForm.SelectMembersAccount, new { @class = "form-control select2", @id = "account_number", @search = "true" })
+                        @Html.DropDownListFor(m => m.BulkDeposit.OtherTransaction.AccountNumber, new SelectList(ViewBag.MemberAccounts, "Value", "Text"), @CashDeskRessource.SelectMembersAccount, new { @class = "form-control select2", @id = "account_number", @search = "true" })
                         @Html.ValidationMessageFor(m => m.BulkDeposit.OtherTransaction.AccountNumber, "", new { @class = "text-danger " })
-                        <label for="formValidationDob">@CashDesk_OtherPaymentForm.SelectAccountToPerformTheOperation</label>
+                        <label for="formValidationDob">@CashDeskRessource.SelectAccountToPerformTheOperation</label>
                     </div>
                 </div>
 
@@ -79,13 +79,13 @@
                 <input type="hidden" name="OperationType" value="OtherCashIn" id="OperationType" />
                 <input type="hidden" name="customerId" value="" id="customerId" />
                 <button type="submit" id="submit" class="btn btn-primary me-2" onclick="PostOtherCashIn()">
-                    <i class="fas fa-save me-1"></i> @CashDesk_OtherPaymentForm.Post
+                    <i class="fas fa-save me-1"></i> @GlobalShared.Post
                 </button>
                 <button type="submit" id="submit" class="btn btn-secondary me-2" onclick="Reprint()">
-                    <i class="fas fa-print me-1"></i> @CashDesk_OtherPaymentForm.Reprint
+                    <i class="fas fa-print me-1"></i> @GlobalShared.Re_print
                 </button>
                 <button type="reset" class="btn btn-outline-secondary">
-                    <i class="fas fa-sync-alt me-1"></i> @CashDesk_OtherPaymentForm.Reset
+                    <i class="fas fa-sync-alt me-1"></i> @GlobalShared.Reset
                 </button>
             </div>
         </div>

@@ -11,14 +11,14 @@
 <div class="card bg-light mb-4 shadow-sm">
     <div class="card-body text-center">
         <h1 class="card-title text-primary fw-bold mb-2">
-            <i class="mdi mdi-book-open-page-variant-outline me-2"></i> CheckBook Overview
+            <i class="mdi mdi-book-open-page-variant-outline me-2"></i> @ChequeBookResource.CheckBook_Overview
         </h1>
         <p class="card-text text-muted mb-1">
-            Manage all checkbooks and requests here.
+            @ChequeBookResource.Manage_all_checkbooks_and_requests_here
         </p>
         <div class="alert alert-info mt-3 py-2">
             <i class="mdi mdi-information-outline me-1"></i>
-            <strong>Process:</strong> Start by searching for a customer account. The CheckBook request form will appear automatically after a successful search.
+            <strong>@GlobalShared.Process:</strong> @ChequeBookResource.Start_by_searching_for_a_customer_account_The_CheckBook_request_form_will_appear_automatically_after_a_successful_search
         </div>
         <hr style="border-top: 1px solid rgba(0,0,0,0.1);" />
     </div>
@@ -29,7 +29,7 @@
 ================================================== -->
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalUserManagement.TIPS</span>
+        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalShared.TIPS_UC</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -44,9 +44,9 @@
                             <span class="badge bg-primary rounded-circle p-2 me-3">1</span>
                         </div>
                         <div class="flex-grow-1">
-                            <h6 class="text-primary mb-1">Customer Search & Selection</h6>
+                            <h6 class="text-primary mb-1">@ChequeBookResource.Customer_Search_Selection</h6>
                             <p class="text-muted mb-0 small">
-                                Use the search box to find customers by account number or ID. The system will automatically display the CheckBook request form with customer details.
+                                @ChequeBookResource.Use_the_search_box_to_find_customers_by_account_number_or_ID_The_system_will_automatically_display_the_CheckBook_request_form_with_customer_details
                             </p>
                         </div>
                     </div>
@@ -56,9 +56,9 @@
                             <span class="badge bg-success rounded-circle p-2 me-3">2</span>
                         </div>
                         <div class="flex-grow-1">
-                            <h6 class="text-success mb-1">CheckBook Request Creation</h6>
+                            <h6 class="text-success mb-1">@ChequeBookResource.CheckBook_Request_Creation</h6>
                             <p class="text-muted mb-0 small">
-                                Once a customer is selected, fill in the CheckBook request form. Choose the correct category, number of leaves, and account for fee payment.
+                                @ChequeBookResource.Once_a_customer_is_selected_fill_in_the_CheckBook_request_form_Choose_the_correct_category_number_of_leaves_and_account_for_fee_payment
                             </p>
                         </div>
                     </div>
@@ -70,9 +70,9 @@
                             <span class="badge bg-warning rounded-circle p-2 me-3">3</span>
                         </div>
                         <div class="flex-grow-1">
-                            <h6 class="text-warning mb-1">Status & Actions</h6>
+                            <h6 class="text-warning mb-1">@GlobalShared.Status & @GlobalShared.Actions</h6>
                             <p class="text-muted mb-0 small">
-                                View all CheckBook requests in the "All Requests" tab. Actions like Approve, Reject, Review, Mark as Delivered, Block/Unblock, or Mark as Lost are available depending on the current status.
+                                @ChequeBookResource.View_all_CheckBook_requests_in_the_All_Requests_tab_Actions_like_Approve_Reject_Review_Mark_as_Delivered_Block_Unblock_or_Mark_as_Lost_are_available_depending_on_the_current_status
                             </p>
                         </div>
                     </div>
@@ -82,9 +82,9 @@
                             <span class="badge bg-info rounded-circle p-2 me-3">4</span>
                         </div>
                         <div class="flex-grow-1">
-                            <h6 class="text-info mb-1">Notifications & Renewal</h6>
+                            <h6 class="text-info mb-1">@GlobalShared.Notifications & @GlobalShared.Renewal</h6>
                             <p class="text-muted mb-0 small">
-                                Configure notification preferences for customers and enable automatic renewal for recurring CheckBook requests.
+                                @ChequeBookResource.Configure_notification_preferences_for_customers_and_enable_automatic_renewal_for_recurring_CheckBook_requests
                             </p>
                         </div>
                     </div>
@@ -94,36 +94,36 @@
             <!-- Status Guide -->
             <div class="mt-4 pt-3 border-top">
                 <h6 class="text-primary mb-3">
-                    <i class="mdi mdi-progress-clock me-2"></i> Understanding CheckBook Statuses
+                    <i class="mdi mdi-progress-clock me-2"></i> @ChequeBookResource.Understanding_CheckBook_Statuses
                 </h6>
                 <div class="row">
                     <div class="col-md-3 mb-2">
-                        <span class="badge bg-warning text-dark me-2">Pending</span>
-                        <small class="text-muted">New request awaiting review</small>
+                        <span class="badge bg-warning text-dark me-2">@GlobalShared.Pending</span>
+                        <small class="text-muted">@ChequeBookResource.New_request_awaiting_review</small>
                     </div>
                     <div class="col-md-3 mb-2">
-                        <span class="badge bg-secondary me-2">Review</span>
-                        <small class="text-muted">Under additional verification</small>
+                        <span class="badge bg-secondary me-2">@GlobalShared.Review</span>
+                        <small class="text-muted">@ChequeBookResource.Under_additional_verification</small>
                     </div>
                     <div class="col-md-3 mb-2">
-                        <span class="badge bg-success me-2">Approved</span>
-                        <small class="text-muted">Ready for printing/delivery</small>
+                        <span class="badge bg-success me-2">@GlobalShared.Approved</span>
+                        <small class="text-muted">@ChequeBookResource.Ready_for_printing_delivery</small>
                     </div>
                     <div class="col-md-3 mb-2">
-                        <span class="badge bg-danger me-2">Rejected</span>
-                        <small class="text-muted">Request declined</small>
+                        <span class="badge bg-danger me-2">@GlobalShared.Rejected</span>
+                        <small class="text-muted">@ChequeBookResource.Request_declined</small>
                     </div>
                     <div class="col-md-3 mb-2">
-                        <span class="badge bg-info me-2">Delivered</span>
-                        <small class="text-muted">CheckBook handed over to customer</small>
+                        <span class="badge bg-info me-2">@GlobalShared.Delivered</span>
+                        <small class="text-muted">@ChequeBookResource.CheckBook_handed_over_to_customer</small>
                     </div>
                     <div class="col-md-3 mb-2">
-                        <span class="badge bg-dark text-white me-2">Blocked</span>
-                        <small class="text-muted">CheckBook blocked for security reasons</small>
+                        <span class="badge bg-dark text-white me-2">@GlobalShared.Blocked</span>
+                        <small class="text-muted">@ChequeBookResource.CheckBook_blocked_for_security_reasons</small>
                     </div>
                     <div class="col-md-3 mb-2">
-                        <span class="badge bg-danger me-2">Lost</span>
-                        <small class="text-muted">CheckBook reported lost</small>
+                        <span class="badge bg-danger me-2">@GlobalShared.Lost</span>
+                        <small class="text-muted">@ChequeBookResource.CheckBook_reported_lost</small>
                     </div>
                 </div>
             </div>
@@ -133,7 +133,7 @@
 
 
 <div class="card shadow p-3 mb-4">
-    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> Cheque Book Filters</h5>
+    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> @ChequeBookResource.Cheque_Book_Filters</h5>
 
     <form id="chequeFilterForm" autocomplete="off">
         <div class="card p-3 mb-3 bg-light">
@@ -142,21 +142,21 @@
                 <div class="col-md-4">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="toggleBranch" onclick="document.getElementById('branchFilter').classList.toggle('d-none')">
-                        <label class="form-check-label fw-bold" for="toggleBranch">Show Branch Filter</label>
+                        <label class="form-check-label fw-bold" for="toggleBranch">@GlobalShared.Show_Branch_Filter</label>
                     </div>
                 </div>
 
                 <div class="col-md-4">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="toggleDates" onclick="document.getElementById('dateFilters').classList.toggle('d-none')">
-                        <label class="form-check-label fw-bold" for="toggleDates">Show Date Filters</label>
+                        <label class="form-check-label fw-bold" for="toggleDates">@GlobalShared.Show_Date_Filters</label>
                     </div>
                 </div>
 
                 <div class="col-md-4">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="toggleFlags" onclick="document.getElementById('flagFilters').classList.toggle('d-none')">
-                        <label class="form-check-label fw-bold" for="toggleFlags">Show Status Flags</label>
+                        <label class="form-check-label fw-bold" for="toggleFlags">@ChequeBookResource.Show_Status_Flags</label>
                     </div>
                 </div>
             </div>
@@ -164,22 +164,22 @@
             @*Default Filters (always visible)*@
             <div class="row mb-3">
                 <div class="col-md-4">
-                    <label class="form-label fw-bold">Customer Account / ID</label>
+                    <label class="form-label fw-bold">@GlobalShared.Customer_Account / ID</label>
                     <input type="text" id="customerId" name="CustomerId" class="form-control" placeholder="Customer account or ID" />
                 </div>
 
                 <div class="col-md-4">
-                    <label class="form-label fw-bold">Customer Name</label>
+                    <label class="form-label fw-bold">@GlobalShared.Customer_Name</label>
                     <input type="text" id="customerName" name="CustomerName" class="form-control" placeholder="Customer name" />
                 </div>
 
                 <div class="col-md-4">
-                    <label class="form-label fw-bold">Category</label>
+                    <label class="form-label fw-bold">@GlobalShared.Category</label>
                     <select id="category" name="Category" class="form-select">
-                        <option value="">All</option>
-                        <option value="Personal">Personal</option>
-                        <option value="Corporate">Corporate</option>
-                        <option value="Other">Other</option>
+                        <option value="">@GlobalShared.All</option>
+                        <option value="Personal">@GlobalShared.Personal</option>
+                        <option value="Corporate">@GlobalShared.Corporate</option>
+                        <option value="Other">@GlobalShared.Other</option>
                     </select>
                 </div>
             </div>
@@ -188,7 +188,7 @@
             <div id="branchFilter" class="d-none">
                 <div class="row mb-3">
                     <div class="col-md-12">
-                        <label class="form-label fw-bold">Branch</label>
+                        <label class="form-label fw-bold">@GlobalShared.Branch</label>
                         @Html.DropDownList("BranchId", new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"), "--- Select Branch ---", new { @class = "form-control select2", @id = "branchId", @name = "BranchId" })
                     </div>
                 </div>
@@ -198,31 +198,31 @@
             <div id="flagFilters" class="d-none">
                 <div class="row mb-3">
                     <div class="col-md-4">
-                        <label class="form-label fw-bold">Status</label>
+                        <label class="form-label fw-bold">@GlobalShared.Status</label>
                         <select id="status" name="Status" class="form-select">
-                            <option value="">All</option>
-                            <option value="Active">Active</option>
-                            <option value="Closed">Closed</option>
-                            <option value="Pending">Pending</option>
-                            <option value="Cancelled">Cancelled</option>
-                            <option value="Blocked">Blocked</option>
-                            <option value="Used">Used</option>
+                            <option value="">@GlobalShared.All</option>
+                            <option value="Active">@GlobalShared.Active</option>
+                            <option value="Closed">@GlobalShared.Closed</option>
+                            <option value="Pending">@GlobalShared.Pending</option>
+                            <option value="Cancelled">@GlobalShared.Cancelled</option>
+                            <option value="Blocked">@GlobalShared.Blocked</option>
+                            <option value="Used">@GlobalShared.Used</option>
                         </select>
                     </div>
 
                     <div class="col-md-4">
-                        <label class="form-label fw-bold">Number Of Leaves</label>
+                        <label class="form-label fw-bold">@ChequeBookResource.Number_Of_Leaves</label>
                         <input type="number" id="numberOfLeaves" name="NumberOfLeaves" class="form-control" min="0" placeholder="e.g. 25" />
                     </div>
 
                     <div class="col-md-4 d-flex align-items-center">
                         <div class="form-check me-3">
                             <input class="form-check-input" type="checkbox" value="true" id="isLost" name="IsLost" />
-                            <label class="form-check-label fw-bold" for="isLost">Is Lost</label>
+                            <label class="form-check-label fw-bold" for="isLost">@GlobalShared.Is_Lost</label>
                         </div>
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" value="true" id="isBlocked" name="IsBlocked" />
-                            <label class="form-check-label fw-bold" for="isBlocked">Is Blocked</label>
+                            <label class="form-check-label fw-bold" for="isBlocked">@GlobalShared.Is_Blocked</label>
                         </div>
                     </div>
                 </div>
@@ -232,11 +232,11 @@
             <div id="dateFilters" class="d-none">
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">Start Date (Created/Lost From)</label>
+                        <label class="form-label fw-bold">@GlobalShared.Start_Date (@GlobalShared.Created/@GlobalShared.Lost_From)</label>
                         <input type="date" id="startDate" name="StartDate" class="form-control" />
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">End Date (Created/Lost To)</label>
+                        <label class="form-label fw-bold">@GlobalShared.End_Date (@GlobalShared.Created/@GlobalShared.Lost_To)</label>
                         <input type="date" id="endDate" name="EndDate" class="form-control" />
                     </div>
                 </div>
@@ -246,19 +246,19 @@
         <div class="row mt-2">
             <div class="col-md-12 d-flex">
                 <button id="applyFilterBtn" type="button" class="btn btn-primary me-2 w-100">
-                    <i class="mdi mdi-magnify"></i> Apply Filter
+                    <i class="mdi mdi-magnify"></i> @GlobalShared.Apply_Filter
                 </button>
 
                 <button id="resetFilterBtn" type="button" class="btn btn-secondary me-2 w-100">
-                    <i class="mdi mdi-refresh"></i> Reset
+                    <i class="mdi mdi-refresh"></i> @GlobalShared.Reset
                 </button>
 
                 <button id="exportBtn" type="button" class="btn btn-success me-2 w-100">
-                    <i class="mdi mdi-file-export"></i> Export
+                    <i class="mdi mdi-file-export"></i> @GlobalShared.Export
                 </button>
 
                 <button id="printbtn" type="button" class="btn btn-info w-100">
-                    <i class="mdi mdi-printer"></i> Print
+                    <i class="mdi mdi-printer"></i> @GlobalShared.Print
                 </button>
             </div>
         </div>
@@ -276,24 +276,24 @@
         <div class="modal-content">
             <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title" id="chequeDetailsModalLabel">
-                    <i class="mdi mdi-file-document-outline me-2"></i>Cheque Book Details
+                    <i class="mdi mdi-file-document-outline me-2"></i>@ChequeBookResource.Cheque_Book_Details
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="text-center py-4">
                     <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">Loading...</span>
+                        <span class="visually-hidden">@GlobalShared.Loading...</span>
                     </div>
-                    <p class="mt-2">Loading details...</p>
+                    <p class="mt-2">@GlobalShared.Loading_details...</p>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                    <i class="mdi mdi-close me-1"></i>Close
+                    <i class="mdi mdi-close me-1"></i>@GlobalShared.Close
                 </button>
                 <button type="button" class="btn btn-primary btn-print-details">
-                    <i class="mdi mdi-printer me-1"></i>Print
+                    <i class="mdi mdi-printer me-1"></i>@GlobalShared.Print
                 </button>
             </div>
         </div>

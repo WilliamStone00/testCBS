@@ -13,30 +13,30 @@
                     <div class="row mt-2 gy-4">
                         <div class="col-md-6">
                             <div class="form-floating form-floating-outline">
-                                @Html.DropDownListFor(m => m.CashMovementTrackingConfiguration.BankingZoneId, new SelectList(ViewBag.BankingZoneId == null ? "" : ViewBag.BankingZoneId, "Text", "Value"), "---"+@GlobalCashMovementTrackerConfiguration.SelectMovement+"---", new { @class = "form-control select2", @search = "true" })
+                                @Html.DropDownListFor(m => m.CashMovementTrackingConfiguration.BankingZoneId, new SelectList(ViewBag.BankingZoneId == null ? "" : ViewBag.BankingZoneId, "Text", "Value"), "---"+GlobalShared.Select_banking_zone+"---", new { @class = "form-control select2", @search = "true" })
                                 @Html.ValidationMessageFor(m => m.CashMovementTrackingConfiguration.BankingZoneId, "", new { @class = "text-danger" })
-                                <label>@GlobalCashMovementTrackerConfiguration.SelectBankingZone</label>
+                                <label>@GlobalShared.Select_banking_zone</label>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-floating form-floating-outline">
-                                @Html.DropDownListFor(m => m.CashMovementTrackingConfiguration.MovementType, new SelectList(ViewBag.MovementTypes == null ? "" : ViewBag.MovementTypes, "Text", "Value"), "---"+@GlobalCashMovementTrackerConfiguration.SelectMovement+"---", new { @class = "form-control select2", @search = "true" })
+                                @Html.DropDownListFor(m => m.CashMovementTrackingConfiguration.MovementType, new SelectList(ViewBag.MovementTypes == null ? "" : ViewBag.MovementTypes, "Text", "Value"), "---"+GlobalShared.Select_movement_type+"---", new { @class = "form-control select2", @search = "true" })
                                 @Html.ValidationMessageFor(m => m.CashMovementTrackingConfiguration.MovementType, "", new { @class = "text-danger" })
-                                <label>@GlobalCashMovementTrackerConfiguration.SelectMovementType</label>
+                                <label>@GlobalShared.Select_movement_type</label>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-floating form-floating-outline">
-                                @Html.DropDownListFor(m => m.CashMovementTrackingConfiguration.From, new SelectList(ViewBag.Branches == null ? "" : ViewBag.Branches, "Text", "Value"), "---"+ @GlobalCashMovementTrackerConfiguration.SelectBranch+"---", new { @class = "form-control select2", @search = "true" })
+                                @Html.DropDownListFor(m => m.CashMovementTrackingConfiguration.From, new SelectList(ViewBag.Branches == null ? "" : ViewBag.Branches, "Text", "Value"), "---"+ GlobalShared.SelectBranch + "---", new { @class = "form-control select2", @search = "true" })
                                 @Html.ValidationMessageFor(m => m.CashMovementTrackingConfiguration.From, "", new { @class = "text-danger" })
-                                <label>@GlobalCashMovementTrackerConfiguration.SelectSourceBranch</label>
+                                <label>@GlobalShared.Select_source_branch</label>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-floating form-floating-outline">
-                                @Html.DropDownListFor(m => m.CashMovementTrackingConfiguration.To, new SelectList(ViewBag.Branches == null ? "" : ViewBag.Branches, "Text", "Value"), "---"+ @GlobalCashMovementTrackerConfiguration.SelectBranch+"---", new { @class = "form-control select2", @search = "true" })
+                                @Html.DropDownListFor(m => m.CashMovementTrackingConfiguration.To, new SelectList(ViewBag.Branches == null ? "" : ViewBag.Branches, "Text", "Value"), "---"+ GlobalShared.SelectBranch+"---", new { @class = "form-control select2", @search = "true" })
                                 @Html.ValidationMessageFor(m => m.CashMovementTrackingConfiguration.To, "", new { @class = "text-danger" })
-                                <label>@GlobalCashMovementTrackerConfiguration.SelectDestinationBranch</label>
+                                <label>@GlobalShared.Select_destination_branch</label>
                             </div>
                         </div>
 

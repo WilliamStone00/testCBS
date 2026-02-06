@@ -16,10 +16,10 @@
             <!-- Header / Accounting Date -->
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h4 class="fw-bold text-primary mb-0">
-                    <i class="mdi mdi-book-plus-outline me-2"></i> Account Reconciliation
+                    <i class="mdi mdi-book-plus-outline me-2"></i> @CashReconciliationResource.Account_Reconciliation
                 </h4>
                 <div class="col-md-4 text-end">
-                    <label class="form-label fw-bold me-2">Accounting Date</label>
+                    <label class="form-label fw-bold me-2">@GlobalShared.Accounting_Date</label>
                     @Html.TextBoxFor(m => m.AccountingDate, new
                     {
                         @class = "form-control form-control-sm d-inline-block accounting-date",
@@ -61,7 +61,7 @@
                 <div class="col-md-2 mb-2">
                     <div class="form-floating shadow-sm">
                         @Html.TextBoxFor(m => m.CashInHand, new { @class = "form-control", id = "Amount", placeholder = "Enter Cash in Hand", required = "required", type = "text", inputmode = "decimal" })
-                        <label for="Amount">Amount</label>
+                        <label for="Amount">@GlobalShared.Amount</label>
                         @Html.ValidationMessageFor(m => m.CashInHand, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -69,7 +69,7 @@
                 <div class="col-md-2 mb-2">
                     <div class="form-floating shadow-sm">
                         @Html.TextBoxFor(m => m.GlBalance, new { @class = "form-control", @readonly = "readonly", placeholder = "Balance", id = "Balance" })
-                        <label for="Balance">Balance</label>
+                        <label for="Balance">@GlobalShared.Balance</label>
                     </div>
                 </div>
 
@@ -127,7 +127,7 @@
                     <div class="col-md-6 mb-2">
                         <div class="form-floating shadow-sm">
                             @Html.TextBoxFor(m => m.TillName, new { @class = "form-control", id = "TillName", placeholder = "Enter Till name" })
-                            <label for="TillName">Till Name</label>
+                            <label for="TillName">@GlobalShared.Till_Name</label>
                             @Html.ValidationMessageFor(m => m.TillName, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -135,7 +135,7 @@
                     <div class="col-md-6 mb-2">
                         <div class="form-floating shadow-sm">
                             @Html.TextBoxFor(m => m.OwnerName, new { @class = "form-control", id = "NameOfCashier", placeholder = "Enter Cashier name" })
-                            <label for="NameOfCashier">Cashier Name</label>
+                            <label for="NameOfCashier">@GlobalShared.Cashier_Name</label>
                             @Html.ValidationMessageFor(m => m.OwnerName, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -154,7 +154,7 @@
             <!-- Save Button -->
             <div class="row mb-2">
                 <div class="col-md-12 text-end">
-                    <button type="button" class="btn btn-primary" onclick="cashReconciliationSubmitAjax(this.form)">SAVE</button>
+                    <button type="button" class="btn btn-primary" onclick="cashReconciliationSubmitAjax(this.form)">@GlobalShared.SAVE_UC</button>
                 </div>
             </div>
 

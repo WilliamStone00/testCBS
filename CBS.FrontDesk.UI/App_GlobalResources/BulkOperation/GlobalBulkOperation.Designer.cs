@@ -79,51 +79,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Accepted.
-        /// </summary>
-        internal static string AcceptedFilter {
-            get {
-                return ResourceManager.GetString("AcceptedFilter", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Account number.
-        /// </summary>
-        internal static string AccountNumber {
-            get {
-                return ResourceManager.GetString("AccountNumber", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Account type.
-        /// </summary>
-        internal static string AccountType {
-            get {
-                return ResourceManager.GetString("AccountType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Action.
-        /// </summary>
-        internal static string Action {
-            get {
-                return ResourceManager.GetString("Action", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Expected Balance .
-        /// </summary>
-        internal static string ActualBalance {
-            get {
-                return ResourceManager.GetString("ActualBalance", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Advanced User Filters.
         /// </summary>
         internal static string AdvancedUserFilters {
@@ -151,155 +106,71 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to All statuses.
+        ///   Looks up a localized string similar to All bulk cash operations run in &lt;b&gt;SIMULATION&lt;/b&gt; mode first for review and validation before execution..
         /// </summary>
-        internal static string AllStatuses {
+        internal static string All_bulk_cash_operations_run_in_SIMULATION_mode_first_for_review_and_validation_before_execution {
             get {
-                return ResourceManager.GetString("AllStatuses", resourceCulture);
+                return ResourceManager.GetString("All_bulk_cash_operations_run_in_SIMULATION_mode_first_for_review_and_validation_b" +
+                        "efore_execution", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Amount.
+        ///   Looks up a localized string similar to All bulk operations are executed in simulation mode first to allow full review and validation before actual execution..
         /// </summary>
-        internal static string Amount {
+        internal static string All_bulk_operations_are_executed_in_simulation_mode_first_to_allow_full_review_and_validation_before_actual_execution {
             get {
-                return ResourceManager.GetString("Amount", resourceCulture);
+                return ResourceManager.GetString("All_bulk_operations_are_executed_in_simulation_mode_first_to_allow_full_review_an" +
+                        "d_validation_before_actual_execution", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Amount to debit.
+        ///   Looks up a localized string similar to Always open &lt;b&gt;Details&lt;/b&gt; before approval to confirm totals, member count, and simulation type.
         /// </summary>
-        internal static string AmountToDebit {
+        internal static string Always_open_Details_before_approval_to_confirm_totals_member_count_and_simulation_type {
             get {
-                return ResourceManager.GetString("AmountToDebit", resourceCulture);
+                return ResourceManager.GetString("Always_open_Details_before_approval_to_confirm_totals_member_count_and_simulation" +
+                        "_type", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Apply filter.
+        ///   Looks up a localized string similar to Always run simulation and verify the impacted accounts list before execution.
         /// </summary>
-        internal static string ApplyFilter {
+        internal static string Always_run_simulation_and_verify_the_impacted_accounts_list_before_execution {
             get {
-                return ResourceManager.GetString("ApplyFilter", resourceCulture);
+                return ResourceManager.GetString("Always_run_simulation_and_verify_the_impacted_accounts_list_before_execution", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Apply filters.
+        ///   Looks up a localized string similar to Amount must be greater than 0. Verify references carefully—cash operations may require formal reversals.
         /// </summary>
-        internal static string ApplyFilters {
+        internal static string Amount_must_be_greater_than_0_Verify_references_carefully_cash_operations_may_require_formal_reversals {
             get {
-                return ResourceManager.GetString("ApplyFilters", resourceCulture);
+                return ResourceManager.GetString("Amount_must_be_greater_than_0_Verify_references_carefully_cash_operations_may_req" +
+                        "uire_formal_reversals", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Approval by.
+        ///   Looks up a localized string similar to Amount to collect from each eligible account (or per rule, depending on your backend logic).
         /// </summary>
-        internal static string ApprovalBy {
+        internal static string Amount_to_collect_from_each_eligible_account_or_per_rule_depending_on_your_backend_logic {
             get {
-                return ResourceManager.GetString("ApprovalBy", resourceCulture);
+                return ResourceManager.GetString("Amount_to_collect_from_each_eligible_account_or_per_rule_depending_on_your_backen" +
+                        "d_logic", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Approval date.
+        ///   Looks up a localized string similar to Avoid wide ranges (Start/End). Bulk runs are hard to reverse and may require manual correction.
         /// </summary>
-        internal static string ApprovalDate {
+        internal static string Avoid_wide_ranges_Start_End_Bulk_runs_are_hard_to_reverse_and_may_require_manual_correction {
             get {
-                return ResourceManager.GetString("ApprovalDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Approval information.
-        /// </summary>
-        internal static string ApprovalInformation {
-            get {
-                return ResourceManager.GetString("ApprovalInformation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Approval Status.
-        /// </summary>
-        internal static string ApprovalStatus {
-            get {
-                return ResourceManager.GetString("ApprovalStatus", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Approved.
-        /// </summary>
-        internal static string Approved {
-            get {
-                return ResourceManager.GetString("Approved", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Approved by.
-        /// </summary>
-        internal static string ApprovedBy {
-            get {
-                return ResourceManager.GetString("ApprovedBy", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Approved.
-        /// </summary>
-        internal static string ApprovedFilter {
-            get {
-                return ResourceManager.GetString("ApprovedFilter", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Available actions.
-        /// </summary>
-        internal static string AvailableActions {
-            get {
-                return ResourceManager.GetString("AvailableActions", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Balance information.
-        /// </summary>
-        internal static string BalanceInformation {
-            get {
-                return ResourceManager.GetString("BalanceInformation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Bank.
-        /// </summary>
-        internal static string Bank {
-            get {
-                return ResourceManager.GetString("Bank", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Branch.
-        /// </summary>
-        internal static string Branch {
-            get {
-                return ResourceManager.GetString("Branch", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Branch name.
-        /// </summary>
-        internal static string BranchName {
-            get {
-                return ResourceManager.GetString("BranchName", resourceCulture);
+                return ResourceManager.GetString("Avoid_wide_ranges_Start_End_Bulk_runs_are_hard_to_reverse_and_may_require_manual_" +
+                        "correction", resourceCulture);
             }
         }
         
@@ -432,9 +303,9 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Bulk Process Initiated.
         /// </summary>
-        internal static string BulkProcessInitiatedFilter {
+        internal static string BulkProcessInitiated {
             get {
-                return ResourceManager.GetString("BulkProcessInitiatedFilter", resourceCulture);
+                return ResourceManager.GetString("BulkProcessInitiated", resourceCulture);
             }
         }
         
@@ -457,11 +328,119 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cancel.
+        ///   Looks up a localized string similar to Bulk Account Management System.
         /// </summary>
-        internal static string Cancel {
+        internal static string Bulk_Account_Management_System {
             get {
-                return ResourceManager.GetString("Cancel", resourceCulture);
+                return ResourceManager.GetString("Bulk_Account_Management_System", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bulk Cash Management Console.
+        /// </summary>
+        internal static string Bulk_Cash_Management_Console {
+            get {
+                return ResourceManager.GetString("Bulk_Cash_Management_Console", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bulk Operation Details, Verification and Approvals.
+        /// </summary>
+        internal static string Bulk_Operation_Details_Verification_and_Approvals {
+            get {
+                return ResourceManager.GetString("Bulk_Operation_Details_Verification_and_Approvals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bulk Operation File Upload.
+        /// </summary>
+        internal static string Bulk_Operation_File_Upload {
+            get {
+                return ResourceManager.GetString("Bulk_Operation_File_Upload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bulk Operation Workflow.
+        /// </summary>
+        internal static string Bulk_Operation_Workflow {
+            get {
+                return ResourceManager.GetString("Bulk_Operation_Workflow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cash-In = deposit to member accounts. Cash-Out = withdrawal from member accounts.
+        /// </summary>
+        internal static string Cash_In_deposit_to_member_accounts_Cash_Out_withdrawal_from_member_accounts {
+            get {
+                return ResourceManager.GetString("Cash_In_deposit_to_member_accounts_Cash_Out_withdrawal_from_member_accounts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cash Source / Destination Account (COA).
+        /// </summary>
+        internal static string Cash_Source_Destination_Account_COA {
+            get {
+                return ResourceManager.GetString("Cash_Source_Destination_Account_COA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Categorizes the batch for audit and reporting (fees, salary, correction, etc.).
+        /// </summary>
+        internal static string Categorizes_the_batch_for_audit_and_reporting {
+            get {
+                return ResourceManager.GetString("Categorizes_the_batch_for_audit_and_reporting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose a simulation type and write a clear description.
+        /// </summary>
+        internal static string Choose_a_simulation_type_and_write_a_clear_description {
+            get {
+                return ResourceManager.GetString("Choose_a_simulation_type_and_write_a_clear_description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose Cash-In (deposit) or Cash-Out (withdrawal) for correct accounting routing.
+        /// </summary>
+        internal static string Choose_Cash_In_deposit_or_Cash_Out_withdrawal_for_correct_accounting_routing {
+            get {
+                return ResourceManager.GetString("Choose_Cash_In_deposit_or_Cash_Out_withdrawal_for_correct_accounting_routing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose how you will provide account data: manual entry or file upload..
+        /// </summary>
+        internal static string Choose_how_you_will_provide_account_data_manual_entry_or_file_upload {
+            get {
+                return ResourceManager.GetString("Choose_how_you_will_provide_account_data_manual_entry_or_file_upload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose Operation Scope.
+        /// </summary>
+        internal static string Choose_Operation_Scope {
+            get {
+                return ResourceManager.GetString("Choose_Operation_Scope", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to collects from many accounts into a single destination account (GL).
+        /// </summary>
+        internal static string collects_from_many_accounts_into_a_single_destination_account_GL {
+            get {
+                return ResourceManager.GetString("collects_from_many_accounts_into_a_single_destination_account_GL", resourceCulture);
             }
         }
         
@@ -475,29 +454,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Completed.
+        ///   Looks up a localized string similar to Combine filters then sort by &lt;b&gt;Date&lt;/b&gt; descending to see most recent work first..
         /// </summary>
-        internal static string CompletedFilter {
+        internal static string Combine_filters_then_sort_by_Date_descending_to_see_most_recent_work_first {
             get {
-                return ResourceManager.GetString("CompletedFilter", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Complete history.
-        /// </summary>
-        internal static string CompleteHistory {
-            get {
-                return ResourceManager.GetString("CompleteHistory", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Confirm.
-        /// </summary>
-        internal static string Confirm {
-            get {
-                return ResourceManager.GetString("Confirm", resourceCulture);
+                return ResourceManager.GetString("Combine_filters_then_sort_by_Date_descending_to_see_most_recent_work_first", resourceCulture);
             }
         }
         
@@ -511,74 +472,39 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Created by.
+        ///   Looks up a localized string similar to Create a simulation batch.
         /// </summary>
-        internal static string CreatedBy {
+        internal static string Create_a_simulation_batch {
             get {
-                return ResourceManager.GetString("CreatedBy", resourceCulture);
+                return ResourceManager.GetString("Create_a_simulation_batch", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CreatedFrom.
+        ///   Looks up a localized string similar to credits multiple accounts to a target amount.
         /// </summary>
-        internal static string CreatedFrom {
+        internal static string credits_multiple_accounts_to_a_target_amount {
             get {
-                return ResourceManager.GetString("CreatedFrom", resourceCulture);
+                return ResourceManager.GetString("credits_multiple_accounts_to_a_target_amount", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CreatedTo.
+        ///   Looks up a localized string similar to Defines whether accounts are processed within a single branch or across multiple branches.
         /// </summary>
-        internal static string CreatedTo {
+        internal static string Defines_whether_accounts_are_processed_within_a_single_branch_or_across_multiple_branches {
             get {
-                return ResourceManager.GetString("CreatedTo", resourceCulture);
+                return ResourceManager.GetString("Defines_whether_accounts_are_processed_within_a_single_branch_or_across_multiple_" +
+                        "branches", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Current balance.
+        ///   Looks up a localized string similar to Define which accounts are impacted (type, range, min/max balance).
         /// </summary>
-        internal static string CurrentBalance {
+        internal static string Define_which_accounts_are_impacted {
             get {
-                return ResourceManager.GetString("CurrentBalance", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Date.
-        /// </summary>
-        internal static string Date {
-            get {
-                return ResourceManager.GetString("Date", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Delete.
-        /// </summary>
-        internal static string Delete {
-            get {
-                return ResourceManager.GetString("Delete", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Description.
-        /// </summary>
-        internal static string Description {
-            get {
-                return ResourceManager.GetString("Description", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Destination account.
-        /// </summary>
-        internal static string DestinationAccount {
-            get {
-                return ResourceManager.GetString("DestinationAccount", resourceCulture);
+                return ResourceManager.GetString("Define_which_accounts_are_impacted", resourceCulture);
             }
         }
         
@@ -592,11 +518,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Destination type.
+        ///   Looks up a localized string similar to Each row represents one member account entry in the batch..
         /// </summary>
-        internal static string DestinationType {
+        internal static string Each_row_represents_one_member_account_entry_in_the_batch {
             get {
-                return ResourceManager.GetString("DestinationType", resourceCulture);
+                return ResourceManager.GetString("Each_row_represents_one_member_account_entry_in_the_batch", resourceCulture);
             }
         }
         
@@ -637,47 +563,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error.
-        /// </summary>
-        internal static string Error {
-            get {
-                return ResourceManager.GetString("Error", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Execute batch actions on users, roles, or organizational units. Import/export data, update permissions, or modify statuses in bulk.
         /// </summary>
         internal static string ExecuteBatchActionsOnUsersRolesOrOrganizational {
             get {
                 return ResourceManager.GetString("ExecuteBatchActionsOnUsersRolesOrOrganizational", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Executed.
-        /// </summary>
-        internal static string ExecutedFilter {
-            get {
-                return ResourceManager.GetString("ExecutedFilter", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Export data.
-        /// </summary>
-        internal static string ExportData {
-            get {
-                return ResourceManager.GetString("ExportData", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Failed.
-        /// </summary>
-        internal static string FailedFilter {
-            get {
-                return ResourceManager.GetString("FailedFilter", resourceCulture);
             }
         }
         
@@ -700,33 +590,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Filter by between dates.
-        /// </summary>
-        internal static string FilterByBetweenDates {
-            get {
-                return ResourceManager.GetString("FilterByBetweenDates", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Filter by branch name.
-        /// </summary>
-        internal static string FilterByBranchName {
-            get {
-                return ResourceManager.GetString("FilterByBranchName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Filter by status.
-        /// </summary>
-        internal static string FilterByStatus {
-            get {
-                return ResourceManager.GetString("FilterByStatus", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Bulk Operation Filtered.
         /// </summary>
         internal static string FilteredResults {
@@ -745,11 +608,38 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to From date.
+        ///   Looks up a localized string similar to Filter operations initiated from a specific branch (best for audits and follow-up approvals).
         /// </summary>
-        internal static string FromDate {
+        internal static string Filter_operations_initiated_from_a_specific_branch {
             get {
-                return ResourceManager.GetString("FromDate", resourceCulture);
+                return ResourceManager.GetString("Filter_operations_initiated_from_a_specific_branch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Finalize the bulk action.
+        /// </summary>
+        internal static string Finalize_the_bulk_action {
+            get {
+                return ResourceManager.GetString("Finalize_the_bulk_action", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For Contribution: choose a single destination GL + contribution amount.
+        /// </summary>
+        internal static string For_Contribution_choose_a_single_destination_GL_contribution_amount {
+            get {
+                return ResourceManager.GetString("For_Contribution_choose_a_single_destination_GL_contribution_amount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For Top-Up: choose destination account type + target amount.
+        /// </summary>
+        internal static string For_Top_Up_choose_destination_account_type_target_amount {
+            get {
+                return ResourceManager.GetString("For_Top_Up_choose_destination_account_type_target_amount", resourceCulture);
             }
         }
         
@@ -763,29 +653,57 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Important.
+        ///   Looks up a localized string similar to If Simulation Type is &lt;b&gt;Other&lt;/b&gt;, description is required.
         /// </summary>
-        internal static string Important {
+        internal static string If_Simulation_Type_is_Other_description_is_required {
             get {
-                return ResourceManager.GetString("Important", resourceCulture);
+                return ResourceManager.GetString("If_Simulation_Type_is_Other_description_is_required", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Irreversible.
+        ///   Looks up a localized string similar to “Internal” usually means same-branch processing. “External/Inter-Branch” allows per-row branch selection..
         /// </summary>
-        internal static string Irreversible {
+        internal static string Internal_usually_means_same_branch_processing_External_Inter_Branch_allows_per_row_branch_selection {
             get {
-                return ResourceManager.GetString("Irreversible", resourceCulture);
+                return ResourceManager.GetString("Internal_usually_means_same_branch_processing_External_Inter_Branch_allows_per_ro" +
+                        "w_branch_selection", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Loading.
+        ///   Looks up a localized string similar to Keep ranges tight to avoid unintended selections.
         /// </summary>
-        internal static string Loading {
+        internal static string Keep_ranges_tight_to_avoid_unintended_selections {
             get {
-                return ResourceManager.GetString("Loading", resourceCulture);
+                return ResourceManager.GetString("Keep_ranges_tight_to_avoid_unintended_selections", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Limits selection to accounts ending at this member/account reference.
+        /// </summary>
+        internal static string Limits_selection_to_accounts_ending_at_this_member_account_reference {
+            get {
+                return ResourceManager.GetString("Limits_selection_to_accounts_ending_at_this_member_account_reference", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Limits selection to accounts starting from this member/account reference.
+        /// </summary>
+        internal static string Limits_selection_to_accounts_starting_from_this_member_account_reference {
+            get {
+                return ResourceManager.GetString("Limits_selection_to_accounts_starting_from_this_member_account_reference", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loaded based on the selected branch.
+        /// </summary>
+        internal static string Loaded_based_on_the_selected_branch {
+            get {
+                return ResourceManager.GetString("Loaded_based_on_the_selected_branch", resourceCulture);
             }
         }
         
@@ -799,47 +717,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Loads branch COA used for cash routing during simulation.
+        /// </summary>
+        internal static string Loads_branch_COA_used_for_cash_routing_during_simulation {
+            get {
+                return ResourceManager.GetString("Loads_branch_COA_used_for_cash_routing_during_simulation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manual mode is best for small batches; File mode is recommended for large batches.
+        /// </summary>
+        internal static string Manual_mode_is_best_for_small_batches_File_mode_is_recommended_for_large_batches {
+            get {
+                return ResourceManager.GetString("Manual_mode_is_best_for_small_batches_File_mode_is_recommended_for_large_batches", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Maximum account balance.
         /// </summary>
         internal static string MaximumAccountBalance {
             get {
                 return ResourceManager.GetString("MaximumAccountBalance", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Member information.
-        /// </summary>
-        internal static string MemberInformation {
-            get {
-                return ResourceManager.GetString("MemberInformation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Member name.
-        /// </summary>
-        internal static string MemberName {
-            get {
-                return ResourceManager.GetString("MemberName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Member ref.
-        /// </summary>
-        internal static string MemberRef {
-            get {
-                return ResourceManager.GetString("MemberRef", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Member reference.
-        /// </summary>
-        internal static string MemberReference {
-            get {
-                return ResourceManager.GetString("MemberReference", resourceCulture);
             }
         }
         
@@ -853,74 +753,75 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Net balance.
+        ///   Looks up a localized string similar to Must be greater than 0.
         /// </summary>
-        internal static string NetBalance {
+        internal static string Must_be_greater_than_0 {
             get {
-                return ResourceManager.GetString("NetBalance", resourceCulture);
+                return ResourceManager.GetString("Must_be_greater_than_0", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Not provided.
+        ///   Looks up a localized string similar to Must match an open accounting day for the selected branch.
         /// </summary>
-        internal static string NotProvided {
+        internal static string Must_match_an_open_accounting_day_for_the_selected_branch {
             get {
-                return ResourceManager.GetString("NotProvided", resourceCulture);
+                return ResourceManager.GetString("Must_match_an_open_accounting_day_for_the_selected_branch", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No Valid Accounts.
+        ///   Looks up a localized string similar to Narrow by creation date to isolate today’s / last week’s simulations and reduce noise..
         /// </summary>
-        internal static string NoValidAccountsFilter {
+        internal static string Narrow_by_creation_date_to_isolate_todays_last_weeks_simulations_and_reduce_noise {
             get {
-                return ResourceManager.GetString("NoValidAccountsFilter", resourceCulture);
+                return ResourceManager.GetString("Narrow_by_creation_date_to_isolate_todays_last_weeks_simulations_and_reduce_noise" +
+                        "", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Operation information.
+        ///   Looks up a localized string similar to No accounts added yet. Click &lt;b&gt;“Add Account”&lt;/b&gt; to begin..
         /// </summary>
-        internal static string OperationInformation {
+        internal static string No_accounts_added_yet_Click_Add_Account_to_begin {
             get {
-                return ResourceManager.GetString("OperationInformation", resourceCulture);
+                return ResourceManager.GetString("No_accounts_added_yet_Click_Add_Account_to_begin", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Operation members.
+        ///   Looks up a localized string similar to Only accounts with balance &lt;= this amount are included.
         /// </summary>
-        internal static string OperationMembers {
+        internal static string Only_accounts_with_balance_this_amount_are_included {
             get {
-                return ResourceManager.GetString("OperationMembers", resourceCulture);
+                return ResourceManager.GetString("Only_accounts_with_balance_this_amount_are_included", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pending.
+        ///   Looks up a localized string similar to Open details and verify totals.
         /// </summary>
-        internal static string Pending {
+        internal static string Open_details_and_verify_totals {
             get {
-                return ResourceManager.GetString("Pending", resourceCulture);
+                return ResourceManager.GetString("Open_details_and_verify_totals", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pending.
+        ///   Looks up a localized string similar to Perform mass operations across multiple accounts simultaneously.
         /// </summary>
-        internal static string PendingFilter {
+        internal static string Perform_mass_operations_across_multiple_accounts_simultaneously {
             get {
-                return ResourceManager.GetString("PendingFilter", resourceCulture);
+                return ResourceManager.GetString("Perform_mass_operations_across_multiple_accounts_simultaneously", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Perform actions.
+        ///   Looks up a localized string similar to Pick a type that matches the business reason. Use &lt;b&gt;Other&lt;/b&gt; only when none fits..
         /// </summary>
-        internal static string PerformActions {
+        internal static string Pick_a_type_that_matches_the_business_reason_Use_Other_only_when_none_fits {
             get {
-                return ResourceManager.GetString("PerformActions", resourceCulture);
+                return ResourceManager.GetString("Pick_a_type_that_matches_the_business_reason_Use_Other_only_when_none_fits", resourceCulture);
             }
         }
         
@@ -934,92 +835,112 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Powered by.
+        ///   Looks up a localized string similar to Please select an operation scope.
         /// </summary>
-        internal static string PoweredBy {
+        internal static string Please_select_an_operation_scope {
             get {
-                return ResourceManager.GetString("PoweredBy", resourceCulture);
+                return ResourceManager.GetString("Please_select_an_operation_scope", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Processing Approval.
+        ///   Looks up a localized string similar to Please select a cash direction..
         /// </summary>
-        internal static string ProcessingApprovalFilter {
+        internal static string Please_select_a_cash_direction {
             get {
-                return ResourceManager.GetString("ProcessingApprovalFilter", resourceCulture);
+                return ResourceManager.GetString("Please_select_a_cash_direction", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Processing bulk operation.
+        ///   Looks up a localized string similar to Please select a chart of account.
         /// </summary>
-        internal static string ProcessingBulkOperation {
+        internal static string Please_select_a_chart_of_account {
             get {
-                return ResourceManager.GetString("ProcessingBulkOperation", resourceCulture);
+                return ResourceManager.GetString("Please_select_a_chart_of_account", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Real-time.
+        ///   Looks up a localized string similar to Please select a simulation type.
         /// </summary>
-        internal static string RealTime {
+        internal static string Please_select_a_simulation_type {
             get {
-                return ResourceManager.GetString("RealTime", resourceCulture);
+                return ResourceManager.GetString("Please_select_a_simulation_type", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Rejected.
+        ///   Looks up a localized string similar to Please select a valid accounting date.
         /// </summary>
-        internal static string Rejected {
+        internal static string Please_select_a_valid_accounting_date {
             get {
-                return ResourceManager.GetString("Rejected", resourceCulture);
+                return ResourceManager.GetString("Please_select_a_valid_accounting_date", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Rejected.
+        ///   Looks up a localized string similar to Please select a chart of account..
         /// </summary>
-        internal static string RejectedFilter {
+        internal static string Please_select_chart_of_account {
             get {
-                return ResourceManager.GetString("RejectedFilter", resourceCulture);
+                return ResourceManager.GetString("Please_select_chart_of_account", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reviewed.
+        ///   Looks up a localized string similar to Process multiple account cash movements in one operation while maintaining complete audit trails and operational control..
         /// </summary>
-        internal static string Reviewed {
+        internal static string Process_multiple_account_cash_movements_in_one_operation_while_maintaining_complete_audit_trails_and_operational_control {
             get {
-                return ResourceManager.GetString("Reviewed", resourceCulture);
+                return ResourceManager.GetString("Process_multiple_account_cash_movements_in_one_operation_while_maintaining_comple" +
+                        "te_audit_trails_and_operational_control", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reviewed.
+        ///   Looks up a localized string similar to Recommended format: &lt;b&gt;Reason + period + operator&lt;/b&gt;.
         /// </summary>
-        internal static string ReviewedFilter {
+        internal static string Recommended_format_Reason_period_operator {
             get {
-                return ResourceManager.GetString("ReviewedFilter", resourceCulture);
+                return ResourceManager.GetString("Recommended_format_Reason_period_operator", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Secure.
+        ///   Looks up a localized string similar to Recommended: include ticket number, approval reference, or business reason.
         /// </summary>
-        internal static string Secure {
+        internal static string Recommended_include_ticket_number_approval_reference_or_business_reason {
             get {
-                return ResourceManager.GetString("Secure", resourceCulture);
+                return ResourceManager.GetString("Recommended_include_ticket_number_approval_reference_or_business_reason", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select account.
+        ///   Looks up a localized string similar to Required if Simulation Type is &lt;b&gt;Other&lt;/b&gt;.
         /// </summary>
-        internal static string SelectAccount {
+        internal static string Required_if_Simulation_Type_is_Other {
             get {
-                return ResourceManager.GetString("SelectAccount", resourceCulture);
+                return ResourceManager.GetString("Required_if_Simulation_Type_is_Other", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run bulk simulations and approvals safely — filter, preview, then execute.
+        /// </summary>
+        internal static string Run_bulk_simulations_and_approvals_safely_filter_preview_then_execute {
+            get {
+                return ResourceManager.GetString("Run_bulk_simulations_and_approvals_safely_filter_preview_then_execute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save time by processing hundreds of accounts in a single operation while maintaining complete audit trails and operational control..
+        /// </summary>
+        internal static string Save_time_by_processing_hundreds_of_accounts_in_a_single_operation_while_maintaining_complete_audit_trails_and_operational_control {
+            get {
+                return ResourceManager.GetString("Save_time_by_processing_hundreds_of_accounts_in_a_single_operation_while_maintain" +
+                        "ing_complete_audit_trails_and_operational_control", resourceCulture);
             }
         }
         
@@ -1033,29 +954,20 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select branch.
+        ///   Looks up a localized string similar to Select Cash Direction.
         /// </summary>
-        internal static string SelectBranch {
+        internal static string Select_Cash_Direction {
             get {
-                return ResourceManager.GetString("SelectBranch", resourceCulture);
+                return ResourceManager.GetString("Select_Cash_Direction", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select Operation Scope.
+        ///   Looks up a localized string similar to Select the branch GL account used to route this cash batch (e.g., Till, Vault, Cash Control).
         /// </summary>
-        internal static string SelectOperationType {
+        internal static string Select_the_branch_GL_account_used_to_route_this_cash_batch {
             get {
-                return ResourceManager.GetString("SelectOperationType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select status.
-        /// </summary>
-        internal static string SelectStatus {
-            get {
-                return ResourceManager.GetString("SelectStatus", resourceCulture);
+                return ResourceManager.GetString("Select_the_branch_GL_account_used_to_route_this_cash_batch", resourceCulture);
             }
         }
         
@@ -1141,6 +1053,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Simulate and validate Cash-In/Cash-Out batches before execution..
+        /// </summary>
+        internal static string Simulate_and_validate_Cash_In_Cash_Out_batches_before_execution {
+            get {
+                return ResourceManager.GetString("Simulate_and_validate_Cash_In_Cash_Out_batches_before_execution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Contribution Amount.
         /// </summary>
         internal static string SimulationContributionAmount {
@@ -1200,15 +1121,6 @@ namespace Resources {
         internal static string SimulationContributionStartMemberAccount {
             get {
                 return ResourceManager.GetString("SimulationContributionStartMemberAccount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Simulation details.
-        /// </summary>
-        internal static string SimulationDetails {
-            get {
-                return ResourceManager.GetString("SimulationDetails", resourceCulture);
             }
         }
         
@@ -1276,29 +1188,12 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Simulation Title.
+        ///   Looks up a localized string similar to Simulation Type is mandatory for audit classification. If type is “Other”, provide a clear description.
         /// </summary>
-        internal static string SimulationType {
+        internal static string Simulation_Type_is_mandatory_for_audit_classification_If_type_is_Other_provide_a_clear_description {
             get {
-                return ResourceManager.GetString("SimulationType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Simulation volume.
-        /// </summary>
-        internal static string SimulationVolume {
-            get {
-                return ResourceManager.GetString("SimulationVolume", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Source account.
-        /// </summary>
-        internal static string SourceAccount {
-            get {
-                return ResourceManager.GetString("SourceAccount", resourceCulture);
+                return ResourceManager.GetString("Simulation_Type_is_mandatory_for_audit_classification_If_type_is_Other_provide_a_" +
+                        "clear_description", resourceCulture);
             }
         }
         
@@ -1312,47 +1207,30 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Source account type.
+        ///   Looks up a localized string similar to Target account type to be credited during top-up.
         /// </summary>
-        internal static string SourceAccountType {
+        internal static string Target_account_type_to_be_credited_during_top_up {
             get {
-                return ResourceManager.GetString("SourceAccountType", resourceCulture);
+                return ResourceManager.GetString("Target_account_type_to_be_credited_during_top_up", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Source balance.
+        ///   Looks up a localized string similar to The branch defines the accounting scope and the available branch Chart of Accounts.
         /// </summary>
-        internal static string SourceBalance {
+        internal static string The_branch_defines_the_accounting_scope_and_the_available_branch_Chart_of_Accounts {
             get {
-                return ResourceManager.GetString("SourceBalance", resourceCulture);
+                return ResourceManager.GetString("The_branch_defines_the_accounting_scope_and_the_available_branch_Chart_of_Account" +
+                        "s", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Source type.
+        ///   Looks up a localized string similar to The system will credit each eligible account up to this target amount.
         /// </summary>
-        internal static string SourceType {
+        internal static string The_system_will_credit_each_eligible_account_up_to_this_target_amount {
             get {
-                return ResourceManager.GetString("SourceType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Status.
-        /// </summary>
-        internal static string Status {
-            get {
-                return ResourceManager.GetString("Status", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Success.
-        /// </summary>
-        internal static string Success {
-            get {
-                return ResourceManager.GetString("Success", resourceCulture);
+                return ResourceManager.GetString("The_system_will_credit_each_eligible_account_up_to_this_target_amount", resourceCulture);
             }
         }
         
@@ -1375,11 +1253,40 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to TIPS.
+        ///   Looks up a localized string similar to This ID links the simulation to the uploaded batch file..
         /// </summary>
-        internal static string TIPS {
+        internal static string This_ID_links_the_simulation_to_the_uploaded_batch_file {
             get {
-                return ResourceManager.GetString("TIPS", resourceCulture);
+                return ResourceManager.GetString("This_ID_links_the_simulation_to_the_uploaded_batch_file", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This is the member account type that will be filtered and impacted by the bulk run.
+        /// </summary>
+        internal static string This_is_the_member_account_type_that_will_be_filtered_and_impacted_by_the_bulk_run {
+            get {
+                return ResourceManager.GetString("This_is_the_member_account_type_that_will_be_filtered_and_impacted_by_the_bulk_ru" +
+                        "n", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This is the single destination GL that receives the collected contribution amount.
+        /// </summary>
+        internal static string This_is_the_single_destination_GL_that_receives_the_collected_contribution_amount {
+            get {
+                return ResourceManager.GetString("This_is_the_single_destination_GL_that_receives_the_collected_contribution_amount" +
+                        "", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This is what auditors and reports will use to identify the run.
+        /// </summary>
+        internal static string This_is_what_auditors_and_reports_will_use_to_identify_the_run {
+            get {
+                return ResourceManager.GetString("This_is_what_auditors_and_reports_will_use_to_identify_the_run", resourceCulture);
             }
         }
         
@@ -1393,92 +1300,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To date.
+        ///   Looks up a localized string similar to Used to load branch Chart of Accounts for cash source/destination routing..
         /// </summary>
-        internal static string ToDate {
+        internal static string Used_to_load_branch_Chart_of_Accounts_for_cash_source_destination_routing {
             get {
-                return ResourceManager.GetString("ToDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Total accounts.
-        /// </summary>
-        internal static string TotalAccounts {
-            get {
-                return ResourceManager.GetString("TotalAccounts", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Total balance.
-        /// </summary>
-        internal static string TotalBalance {
-            get {
-                return ResourceManager.GetString("TotalBalance", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Total members.
-        /// </summary>
-        internal static string TotalMembers {
-            get {
-                return ResourceManager.GetString("TotalMembers", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Total volume.
-        /// </summary>
-        internal static string TotalVolume {
-            get {
-                return ResourceManager.GetString("TotalVolume", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Transaction id.
-        /// </summary>
-        internal static string TransactionID {
-            get {
-                return ResourceManager.GetString("TransactionID", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Transaction Reference.
-        /// </summary>
-        internal static string TransactionReference {
-            get {
-                return ResourceManager.GetString("TransactionReference", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Transfer date.
-        /// </summary>
-        internal static string TransferDate {
-            get {
-                return ResourceManager.GetString("TransferDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Transfer details.
-        /// </summary>
-        internal static string TransferDetails {
-            get {
-                return ResourceManager.GetString("TransferDetails", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Transfer Status.
-        /// </summary>
-        internal static string TransferStatus {
-            get {
-                return ResourceManager.GetString("TransferStatus", resourceCulture);
+                return ResourceManager.GetString("Used_to_load_branch_Chart_of_Accounts_for_cash_source_destination_routing", resourceCulture);
             }
         }
         
@@ -1492,38 +1318,75 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to View.
+        ///   Looks up a localized string similar to Use &lt;b&gt;Branch&lt;/b&gt; + &lt;b&gt;Status&lt;/b&gt; + &lt;b&gt;Date Range&lt;/b&gt; together to narrow results before opening details or approvals..
         /// </summary>
-        internal static string View {
+        internal static string Use_Branch_Status_Date_Range_together_to_narrow_results_before_opening_details_or_approvals {
             get {
-                return ResourceManager.GetString("View", resourceCulture);
+                return ResourceManager.GetString("Use_Branch_Status_Date_Range_together_to_narrow_results_before_opening_details_or" +
+                        "_approvals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use Simulation Type.
+        /// </summary>
+        internal static string Use_Simulation_Type {
+            get {
+                return ResourceManager.GetString("Use_Simulation_Type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use status to quickly identify what needs action (Pending / ProcessingApproval / Failed)..
+        /// </summary>
+        internal static string Use_status_to_quickly_identify_what_needs_action {
+            get {
+                return ResourceManager.GetString("Use_status_to_quickly_identify_what_needs_action", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use the template. Upload → preview → confirm parameters → run simulation.
+        /// </summary>
+        internal static string Use_the_template_Upload_preview_confirm_parameters_run_simulation {
+            get {
+                return ResourceManager.GetString("Use_the_template_Upload_preview_confirm_parameters_run_simulation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Validate Accounts and Amounts.
+        /// </summary>
+        internal static string Validate_Accounts_and_Amounts {
+            get {
+                return ResourceManager.GetString("Validate_Accounts_and_Amounts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Validate the preview before running simulation.
+        /// </summary>
+        internal static string Validate_the_preview_before_running_simulation {
+            get {
+                return ResourceManager.GetString("Validate_the_preview_before_running_simulation", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to View Bulk Operations.
         /// </summary>
-        internal static string ViewBulkOperations {
+        internal static string View_Bulk_Operations {
             get {
-                return ResourceManager.GetString("ViewBulkOperations", resourceCulture);
+                return ResourceManager.GetString("View_Bulk_Operations", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to View Bulk Operation Details.
         /// </summary>
-        internal static string ViewDetails {
+        internal static string View_Bulk_Operation_Details {
             get {
-                return ResourceManager.GetString("ViewDetails", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Warning.
-        /// </summary>
-        internal static string Warning {
-            get {
-                return ResourceManager.GetString("Warning", resourceCulture);
+                return ResourceManager.GetString("View_Bulk_Operation_Details", resourceCulture);
             }
         }
     }

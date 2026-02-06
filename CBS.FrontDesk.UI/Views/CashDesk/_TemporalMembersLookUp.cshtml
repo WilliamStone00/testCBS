@@ -24,10 +24,10 @@
                         <div class="card bg-light mb-2">
                             <div class="card-body text-center">
                                 <h1 class="card-title text-primary">
-                                    <i class="mdi mdi-account-search-outline me-2"></i> @CashDesk_TemporalMembersLookUp.TemporalMembersLookup
+                                    <i class="mdi mdi-account-search-outline me-2"></i> @CashDeskRessource.TemporalMembersLookup
                                 </h1>
                                 <p class="card-text">
-                                    @CashDesk_TemporalMembersLookUp.ThisPanelAllowsTheCashierToSearchFilterAndSelectTemporarilyRegisteredMembers.
+                                    @CashDeskRessource.ThisPanelAllowsTheCashierToSearchFilterAndSelectTemporarilyRegisteredMembers.
                                 </p>
                                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
                             </div>
@@ -41,7 +41,7 @@
                 <!-- Tips Section -->
                 <div class="card mb-3">
                     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-                        <span><i class="mdi mdi-information-outline me-2"></i> @CashDesk_TemporalMembersLookUp.TipsForUsingThisPanel</span>
+                        <span><i class="mdi mdi-information-outline me-2"></i> @CashDeskRessource.TipsForUsingThisPanel</span>
                         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
                             <i class="mdi mdi-chevron-down"></i>
                         </button>
@@ -49,11 +49,11 @@
                     <div id="collapseTips" class="collapse">
                         <div class="card-body">
                             <ul class="mb-0">
-                                <li><i class="mdi mdi-account-plus-outline text-primary me-2"></i><strong>@CashDesk_TemporalMembersLookUp.TemporaryMembers:</strong> @CashDesk_TemporalMembersLookUp.TemporaryMembersDescription.</li>
-                                <li><i class="mdi mdi-filter text-success me-2"></i><strong>@CashDesk_TemporalMembersLookUp.SearchFilters:</strong> @CashDesk_TemporalMembersLookUp.UseFiltersToNarrowDownYourSearch.</li>
-                                <li><i class="mdi mdi-clipboard-check-outline text-info me-2"></i><strong>@CashDesk_TemporalMembersLookUp.SelectAction:</strong> @CashDesk_TemporalMembersLookUp.SelectActionDescription.</li>
-                                <li><i class="mdi mdi-account-clock-outline text-warning me-2"></i><strong>@CashDesk_TemporalMembersLookUp.MemberStatus:</strong> @CashDesk_TemporalMembersLookUp.MemberStatusDescription.</li>
-                                <li><i class="mdi mdi-alert-outline text-danger me-2"></i><strong>@CashDesk_TemporalMembersLookUp.Note:</strong> @CashDesk_TemporalMembersLookUp.NoteDescription.</li>
+                                <li><i class="mdi mdi-account-plus-outline text-primary me-2"></i><strong>@CashDeskRessource.TemporaryMembers:</strong> @CashDeskRessource.TemporaryMembersDescription.</li>
+                                <li><i class="mdi mdi-filter text-success me-2"></i><strong>@GlobalShared.Search_Filters:</strong> @CashDeskRessource.UseFiltersToNarrowDownYourSearch.</li>
+                                <li><i class="mdi mdi-clipboard-check-outline text-info me-2"></i><strong>@GlobalShared.Select_Action:</strong> @CashDeskRessource.SelectActionDescription.</li>
+                                <li><i class="mdi mdi-account-clock-outline text-warning me-2"></i><strong>@CashDeskRessource.MemberStatus:</strong> @CashDeskRessource.MemberStatusDescription.</li>
+                                <li><i class="mdi mdi-alert-outline text-danger me-2"></i><strong>@CashDeskRessource.Note:</strong> @CashDeskRessource.NoteDescription.</li>
                             </ul>
                         </div>
                     </div>
@@ -61,7 +61,7 @@
 
                 <!-- Advanced Filters -->
                 <div class="card shadow p-3 mb-4">
-                    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> @CashDesk_TemporalMembersLookUp.MemberFilters</h5>
+                    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> @GlobalShared.Member_Filters</h5>
                     <form id="memberFilterForm">
                         <div class="card p-3 mb-3 bg-light">
                             <!-- Toggle switches -->
@@ -69,19 +69,19 @@
                                 <div class="col-md-4">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="toggleDemographics" onclick="document.getElementById('demographicFilters').classList.toggle('d-none')">
-                                        <label class="form-check-label fw-bold" for="toggleDemographics">@CashDesk_TemporalMembersLookUp.ShowDemographicFilters</label>
+                                        <label class="form-check-label fw-bold" for="toggleDemographics">@CashDeskRessource.ShowDemographicFilters</label>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="toggleApproval" onclick="document.getElementById('approvalFilters').classList.toggle('d-none')">
-                                        <label class="form-check-label fw-bold" for="toggleApproval">@CashDesk_TemporalMembersLookUp.ShowApprovalAndLegalFilters</label>
+                                        <label class="form-check-label fw-bold" for="toggleApproval">@CashDeskRessource.ShowApprovalAndLegalFilters</label>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="toggleDates" onclick="document.getElementById('dateFilters').classList.toggle('d-none')">
-                                        <label class="form-check-label fw-bold" for="toggleDates">@CashDesk_TemporalMembersLookUp.ShowDateFilters</label>
+                                        <label class="form-check-label fw-bold" for="toggleDates">@CashDeskRessource.ShowDateFilters</label>
                                     </div>
                                 </div>
                             </div>
@@ -89,21 +89,21 @@
                             <!-- Default Filters -->
                             <div class="row mb-3">
                                 <div class="col-md-3">
-                                    <label class="form-label fw-bold">@CashDesk_TemporalMembersLookUp.MemberAccountNumber</label>
-                                    <input type="text" id="memberReferenceId" class="form-control" placeholder="@CashDesk_TemporalMembersLookUp.MemberAccountTemporalNumber" />
+                                    <label class="form-label fw-bold">@CashDeskRessource.MemberAccountNumber</label>
+                                    <input type="text" id="memberReferenceId" class="form-control" placeholder="@CashDeskRessource.MemberAccountTemporalNumber" />
                                 </div>
                                 <div class="col-md-4">
-                                    <label class="form-label fw-bold">@CashDesk_TemporalMembersLookUp.FirstName</label>
-                                    <input type="text" id="firstName" class="form-control" placeholder="@CashDesk_TemporalMembersLookUp.FirstName" />
+                                    <label class="form-label fw-bold">@GlobalShared.First_Name</label>
+                                    <input type="text" id="firstName" class="form-control" placeholder="@GlobalShared.First_Name" />
                                 </div>
                                 <div class="col-md-5">
-                                    <label class="form-label fw-bold">@CashDesk_TemporalMembersLookUp.LastName</label>
-                                    <input type="text" id="lastName" class="form-control" placeholder="@CashDesk_TemporalMembersLookUp.LastName" />
+                                    <label class="form-label fw-bold">@GlobalShared.Last_Name</label>
+                                    <input type="text" id="lastName" class="form-control" placeholder="@GlobalShared.Last_Name" />
                                 </div>
                             </div>
                             <div class="row mb-3" style="display:none">
                                 <div class="col-md-12">
-                                    <label class="form-label fw-bold">@CashDesk_TemporalMembersLookUp.Branch</label>
+                                    <label class="form-label fw-bold">@GlobalShared.Branch</label>
                                     @*@Html.DropDownList("BranchId", new SelectList(ViewBag.Branches, "Id", "Name"), "--- Select Branch ---", new { @class = "form-control select2", @id = "branchId" })*@
                                 </div>
                             </div>
@@ -112,21 +112,21 @@
                             <div id="demographicFilters" class="d-none">
                                 <div class="row mb-3">
                                     <div class="col-md-4">
-                                        <label class="form-label fw-bold">@CashDesk_TemporalMembersLookUp.GenderOrGroups</label>
+                                        <label class="form-label fw-bold">@GlobalShared.Gender_Or_Groups</label>
                                         <select id="gender" class="form-select">
-                                            <option value="">@CashDesk_TemporalMembersLookUp.All</option>
+                                            <option value="">@GlobalShared.All</option>
                                         </select>
                                     </div>
                                     <div class="col-md-4">
-                                        <label class="form-label fw-bold">@CashDesk_TemporalMembersLookUp.MaritalStatus</label>
+                                        <label class="form-label fw-bold">@GlobalShared.Marital_Status</label>
                                         <select id="maritalStatus" class="form-select">
-                                            <option value="">@CashDesk_TemporalMembersLookUp.All</option>
+                                            <option value="">@GlobalShared.All</option>
                                         </select>
                                     </div>
                                     <div class="col-md-4">
-                                        <label class="form-label fw-bold">@CashDesk_TemporalMembersLookUp.WorkingStatus</label>
+                                        <label class="form-label fw-bold">@GlobalShared.Working_Status</label>
                                         <select id="workingStatus" class="form-select">
-                                            <option value="">@CashDesk_TemporalMembersLookUp.All</option>
+                                            <option value="">@GlobalShared.All</option>
                                         </select>
                                     </div>
                                 </div>
@@ -136,27 +136,27 @@
                             <div id="approvalFilters" class="d-none">
                                 <div class="row mb-3">
                                     <div class="col-md-3">
-                                        <label class="form-label fw-bold">@CashDesk_TemporalMembersLookUp.MembershipApproval</label>
+                                        <label class="form-label fw-bold">@GlobalShared.Membership_Approval</label>
                                         <select id="membershipApprovalStatus" class="form-select">
-                                            <option value="Awaits_Validation">@CashDesk_TemporalMembersLookUp.MembershipStatusAwaitsValidation</option>
+                                            <option value="Awaits_Validation">@CashDeskRessource.MembershipStatusAwaitsValidation</option>
                                         </select>
                                     </div>
                                     <div class="col-md-3">
-                                        <label class="form-label fw-bold">@CashDesk_TemporalMembersLookUp.LegalForm</label>
+                                        <label class="form-label fw-bold">@GlobalShared.Legal_Form</label>
                                         <select id="legalForm" class="form-select">
-                                            <option value="">@CashDesk_TemporalMembersLookUp.All</option>
+                                            <option value="">@GlobalShared.All</option>
                                         </select>
                                     </div>
                                     <div class="col-md-3">
-                                        <label class="form-label fw-bold">@CashDesk_TemporalMembersLookUp.MembersProfile</label>
+                                        <label class="form-label fw-bold">@GlobalShared.Members_Profile</label>
                                         <select id="customerType" class="form-select">
-                                            <option value="PreRegistredMember">@CashDesk_TemporalMembersLookUp.PreRegisteredMembersPRM</option>
+                                            <option value="PreRegistredMember">@CashDeskRessource.PreRegisteredMembersPRM</option>
                                         </select>
                                     </div>
                                     <div class="col-md-3">
-                                        <label class="form-label fw-bold">@CashDesk_TemporalMembersLookUp.AgeCategory</label>
+                                        <label class="form-label fw-bold">@GlobalShared.Age_Category</label>
                                         <select id="ageCategoryStatus" class="form-select">
-                                            <option value="">@CashDesk_TemporalMembersLookUp.All</option>
+                                            <option value="">@GlobalShared.All</option>
                                         </select>
                                     </div>
                                 </div>
@@ -166,21 +166,21 @@
                             <div id="dateFilters" class="d-none">
                                 <div class="row mb-3">
                                     <div class="col-md-6">
-                                        <label class="form-label fw-bold">@CashDesk_TemporalMembersLookUp.DateOfBirthFrom</label>
+                                        <label class="form-label fw-bold">@GlobalShared.Date_of_Birth_From</label>
                                         <input type="date" id="dobFrom" class="form-control" />
                                     </div>
                                     <div class="col-md-6">
-                                        <label class="form-label fw-bold">@CashDesk_TemporalMembersLookUp.DateOfBirthTo</label>
+                                        <label class="form-label fw-bold">@GlobalShared.Date_of_Birth_To</label>
                                         <input type="date" id="dobTo" class="form-control" />
                                     </div>
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-md-6">
-                                        <label class="form-label fw-bold">@CashDesk_TemporalMembersLookUp.CreatedFrom</label>
+                                        <label class="form-label fw-bold">@GlobalShared.Created_From</label>
                                         <input type="date" id="createdFrom" class="form-control" />
                                     </div>
                                     <div class="col-md-6">
-                                        <label class="form-label fw-bold">@CashDesk_TemporalMembersLookUp.CreatedTo</label>
+                                        <label class="form-label fw-bold">@GlobalShared.Created_To</label>
                                         <input type="date" id="createdTo" class="form-control" />
                                     </div>
                                 </div>
@@ -191,10 +191,10 @@
                         <div class="row mt-2">
                             <div class="col-md-12 d-flex">
                                 <button id="applyFilterBtn" type="button" class="btn btn-primary me-2 w-100">
-                                    <i class="mdi mdi-magnify"></i> @CashDesk_TemporalMembersLookUp.ApplyFilter
+                                    <i class="mdi mdi-magnify"></i> @GlobalShared.Apply_Filter
                                 </button>
                                 <button id="resetFilterBtn" type="reset" class="btn btn-secondary w-100">
-                                    <i class="mdi mdi-refresh"></i> @CashDesk_TemporalMembersLookUp.Reset
+                                    <i class="mdi mdi-refresh"></i> @GlobalShared.Reset
                                 </button>
                             </div>
                         </div>
@@ -203,7 +203,7 @@
                 <div id="modalLoader" class="modal-loader-overlay d-none">
                     <div class="text-center">
                         <div class="spinner-border text-primary mb-3" role="status"></div>
-                        <p class="fw-bold text-primary">@CashDesk_TemporalMembersLookUp.LoadingFilteredMembers </p>
+                        <p class="fw-bold text-primary">@CashDeskRessource.LoadingFilteredMembers </p>
                     </div>
                 </div>
 
@@ -213,12 +213,12 @@
                         <table id="tempMembersTable" class="table table-bordered table-striped w-100">
                             <thead class="table-light">
                                 <tr>
-                                    <th>@CashDesk_TemporalMembersLookUp.DateRegistered</th>
-                                    <th>@CashDesk_TemporalMembersLookUp.FullName</th>
-                                    <th>@CashDesk_TemporalMembersLookUp.CustomerID</th>
-                                    <th>@CashDesk_TemporalMembersLookUp.Phone</th>
-                                    <th>@CashDesk_TemporalMembersLookUp.CustomerType</th>
-                                    <th>@CashDesk_TemporalMembersLookUp.Action</th>
+                                    <th>@GlobalShared.Date_Registered</th>
+                                    <th>@GlobalShared.Full_Name</th>
+                                    <th>@GlobalShared.Customer_ID</th>
+                                    <th>@GlobalShared.Phone</th>
+                                    <th>@GlobalShared.Customer_Type</th>
+                                    <th>@GlobalShared.Action</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -230,7 +230,7 @@
             <!-- Modal Footer -->
             <div class="modal-footer justify-content-between">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                    <i class="mdi mdi-close"></i> @CashDesk_TemporalMembersLookUp.Exit
+                    <i class="mdi mdi-close"></i> @GlobalShared.Exit
                 </button>
             </div>
         </div>

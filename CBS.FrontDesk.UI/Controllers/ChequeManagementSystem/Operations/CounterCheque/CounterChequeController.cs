@@ -2,6 +2,7 @@
 using CBS.BusinessService.CheckManagementSystem;
 using CBS.BusinessService.CheckManagementSystem.Operations.CounterCheque;
 using CBS.BusinessService.Config; // Assuming BranchServices is here
+using CBS.FrontDesk.Data.Entity.AccountingV2.MobileMoneyV2;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeBookListing;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheque;
 using CBS.FrontDesk.Data.Message;
@@ -12,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using System.Web.Services.Description;
 
 namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.CounterCheque
 {
@@ -142,7 +144,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.Counter
             else if (path == "new")
             {
 
-                var data = new CounterCheques() {CheckLeafId = KEY };
+                var data = new CounterChecks() {CheckLeafId = KEY };
                 return PartialView(partialView, data);
             }
             else if (path == "action")
@@ -154,12 +156,43 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.Counter
             return HttpNotFound();
         }
 
-        /// <summary>
-        /// Handles the submission of a new counter cheque. Called by 'AjaxPostAndUpdate'.
-        /// </summary>
-        [HttpPost]
-       
-        public async Task<ActionResult> Create(CounterCheques model)
+		[HttpPost]
+		public async Task<ActionResult> Create(CounterChecks model)
+		{
+
+			// Validate the model state
+			if (!ModelState.IsValid)
+			{
+				// If model validation fails, return validation errors as JSON response
+				return Json(new { success = false, message = "Validation failed", errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList() });
+			}
+
+			// If the Id is null, it's a new holiday entry, so call the Create service
+			if (model.Id == null)
+			{
+				// Adding Created Date
+				var data = await _counterChequeService.Create(model);
+				return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+			}
+			else
+			{
+				// If the Id is not null, it's an update, so call the Update method
+				return await Update(model);
+			}
+		}
+
+		[HttpPost]
+		public async Task<ActionResult> Update(CounterChecks model)
+		{
+			var data = await _counterChequeService.Update(model);
+			return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+		}
+
+		/// <summary>
+		/// Handles the submission of a new counter cheque. Called by 'AjaxPostAndUpdate'.
+		/// </summary>
+		[HttpPost]
+        public async Task<ActionResult> CreateT(CounterChecks model)
         {
             if (!ModelState.IsValid)
             {
@@ -190,13 +223,13 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.Counter
                 if (string.IsNullOrEmpty(id))
                 {
                     // return an empty model fragment if id missing
-                    return PartialView("_CounterChequeDetails", new CounterCheques());
+                    return PartialView("_CounterChequeDetails", new CounterChecks());
                 }
 
                 var counterCheque = await _counterChequeService.GetCounterChequeDetailsAsync(id);
 
                 // If null, return empty model to avoid Razor null refs
-                if (counterCheque == null) counterCheque = new CounterCheques();
+                if (counterCheque == null) counterCheque = new CounterChecks();
 
                 return PartialView("_CounterChequeDetails", counterCheque);
             }
@@ -205,7 +238,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.Counter
                 // log (keep your logging approach)
                 System.Diagnostics.Debug.WriteLine($"Error in GetCounterChequeDetails: {ex.Message}");
                 ViewBag.ErrorMessage = "Failed to load counter cheque details. Please try again.";
-                return PartialView("_CounterChequeDetails", new CounterCheques());
+                return PartialView("_CounterChequeDetails", new CounterChecks());
             }
         }
 
@@ -268,7 +301,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.Counter
 
             try
             {
-                var statistics = await _counterChequeService.GetCustomerCheckBookStatisticsAsync(customerId);
+                var statistics = await _counterChequeService.GetCustomerCheckBookStatistics(customerId);
                 if (statistics == null)
                     return HttpNotFound("Customer statistics not found");
 

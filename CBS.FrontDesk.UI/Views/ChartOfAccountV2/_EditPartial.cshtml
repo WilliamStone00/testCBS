@@ -8,7 +8,7 @@
             <div class="card bg-light mb-2">
                 <div class="card-body text-center">
                     <h1 class="card-title text-primary">
-                        <i class="mdi mdi-account-group me-2"></i>Edit Chart Of Account Management
+                        <i class="mdi mdi-account-group me-2"></i>@ChartOfAccountV2Resource.Edit_Chart_Of_Account_Management
                     </h1>
                    @* <p class="card-text">@AccountingV2.AffiliateManagementtext</p>*@
                     <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
@@ -32,11 +32,11 @@
 
                         <div class="row g-2">
                             <div class="col-auto">
-                                <span class="small text-muted">Account Ref</span>
+                                <span class="small text-muted">@GlobalShared.Account_Ref</span>
                                 <div class="fw-medium">@(!string.IsNullOrEmpty(Model.Id) ? Model.Id : "N/A")</div>
                             </div>
                             <div class="col-auto">
-                                <span class="small text-muted">Customer</span>
+                                <span class="small text-muted">@GlobalShared.Customer</span>
                                 <div class="fw-medium">@(!string.IsNullOrEmpty(Model.Name) ? Model.Name : "N/A")</div>
                             </div>
 
@@ -45,22 +45,22 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="accountCode" class="form-label">@AccountingV2.AccountCode</label>
+                        <label for="accountCode" class="form-label">@GlobalShared.AccountCode</label>
                         <input type="text" class="form-control" id="accountCode" name="Code" readonly value="@Model.Code" />
                     </div>
 
                     <div class="mb-3">
-                        <label for="accountNameEn" class="form-label">@AccountingV2.Nameen</label>
+                        <label for="accountNameEn" class="form-label">@GlobalShared.Name (@GlobalShared.English)</label>
                         <input type="text" class="form-control" id="accountNameEn" name="NameEn" value="@Model.NameEn" />
                     </div>
 
                     <div class="mb-3">
-                        <label for="accountNameFr" class="form-label">@AccountingV2.namefr</label>
+                        <label for="accountNameFr" class="form-label">@GlobalShared.Name (@GlobalShared.French)</label>
                         <input type="text" class="form-control" id="accountNameFr" name="NameFr" value="@Model.NameFr" />
                     </div>
 
                     <div class="mb-3">
-                        <label for="accountClass" class="form-label">@AccountingV2.Class</label>
+                        <label for="accountClass" class="form-label">@GlobalShared.Class</label>
                         @*<input type="text" class="form-control" id="accountClass" name="Class" readonly value="@Model.Class" />*@
                         <input type="text" class="form-control" id="accountClass" readonly value="@Model.Class" />
                         <input type="hidden" name="Class" value="@Model.Class" />
@@ -70,13 +70,13 @@
                     <div class="mb-3">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="postingAllowed" name="PostingAllowed" @(Model.PostingAllowed == true ? "checked" : "") disabled />
-                            <label class="form-check-label" for="postingAllowed">@AccountingV2.PostingAllowed</label>
+                            <label class="form-check-label" for="postingAllowed">@GlobalShared.Posting_Allowed</label>
                         </div>
                     </div>
 
                     <div class="mt-auto">
                         <button type="submit" class="btn btn-primary w-100" id="saveButton">
-                            <i class="fas fa-save me-2"></i>@AccountingV2.SaveChanges
+                            <i class="fas fa-save me-2"></i>@GlobalShared.SaveChanges
                         </button>
                     </div>
                 </form>

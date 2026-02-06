@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.BranchCashConfigV.BranchCashConfigManagement
+    @using Resources
 @{
     ViewBag.Title = "Branch Cash Configuration";
 }
@@ -9,20 +10,20 @@
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-cash-multiple me-2"></i> Branch Cash Configuration
+                    <i class="mdi mdi-cash-multiple me-2"></i> @BranchCashConfigRessource.Branch_Cash_Configuration
                 </h1>
 
                 <p class="card-text text-muted">
-                    Configure all branch-level cash-control and financial-routing GL accounts.
+                    @BranchCashConfigRessource.Configure_all_branch_level_cash_control_and_financial_routing_GL_accounts.
                     <strong>
-                        Every GL configured here directly determines how teller, vault,
-                        loan, transfer, Mobile Money and fee posting workflows behave.
+                        @BranchCashConfigRessource.Every_GL_configured_here_directly_determines_how_teller_vault
+                        @BranchCashConfigRessource.loan_transfer_Mobile_Money_and_fee_posting_workflows_behave.
                     </strong>
                 </p>
 
                 <p class="card-text text-muted">
-                    <strong>All Cash-Control, Commission, VAT, MoMoCash and Fee GLs are compulsory.</strong>
-                    Missing mappings will cause posting failures or incorrect accounting routing.
+                    <strong>@BranchCashConfigRessource.All_Cash_Control_Commission_VAT_MoMoCash_and_Fee_GLs_are_compulsory.</strong>
+                    @BranchCashConfigRessource.Missing_mappings_will_cause_posting_failures_or_incorrect_accounting_routing.
                 </p>
 
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
@@ -36,7 +37,7 @@
 <!-- Tips -->
 <div class="card mb-1">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> Tips & Important Notes</span>
+        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalShared.Tips_Important_Notes</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse"
                 data-bs-target="#collapseCashCfgTips" aria-expanded="false"
                 aria-controls="collapseCashCfgTips">
@@ -52,26 +53,22 @@
                 <!-- Branch Selection -->
                 <li>
                     <i class="mdi mdi-check-circle-outline text-success me-2"></i>
-                    Always select the correct <b>Branch</b> before configuring.
-                    Each branch has its own GL structure and balances.
+                    @Html.Raw(@BranchCashConfigRessource.Always_select_the_correct_Branch_before_configuring).
+                    @BranchCashConfigRessource.Each_branch_has_its_own_GL_structure_and_balances.
                 </li>
 
                 <!-- Core Mandatory GLs -->
                 <li>
                     <i class="mdi mdi-alert-circle-outline text-danger me-2"></i>
-                    <b>All core cash-control GLs are mandatory:</b><br />
-                    Cash-In-Hand (Till), Vault, Surplus Income, Shortage Expense, <b>Cash Reversal Account</b>.
-                    Operations such as Cash-In, Cash-Out, Teller Closure, Vault Transfers and delayed cash reversals
-                    will <b>fail immediately</b> if these are missing.
+                    <b> @BranchCashConfigRessource.All_core_cash_control_GLs_are_mandatory:</b><br />
+                    @BranchCashConfigRessource.Cash_In_Hand_Till_Vault_Surplus_Income_Shortage_Expense_Cash_Reversal_Account.
+                    @Html.Raw(@BranchCashConfigRessource.Operations_such_as_Cash_In_Cash_Out_Teller_Closure_Vaul_Transfers_and_delayed_cash_reversals_will_fail_immediately_if_these_are_missing)
                 </li>
                 <li>
                     <i class="mdi mdi-check-circle-outline text-success me-2"></i>
-                    <b>Cash Reversal Account</b> is used for <b>delayed cash reversals</b> when the
-                    <b>accounting day of the incident has already passed</b> (e.g., reversal after 24h).
-                    This ensures reversing historical cash movements does <b>not impact the current Till/Vault cash position</b>.
+                    @Html.Raw(@BranchCashConfigRessource.Cash_Reversal_Account_is_used_for_delayed_cash_reversals_when_the_accounting_day_of_the_incident_has_already_passed_This_ensures_reversing_historical_cash_movements_does_not_impact_the_current_Till_Vault_cash_position)
                     <br />
-                    <b>Note:</b> Same-day reversals are posted directly to the original Till/Vault accounts
-                    and do <em>not</em> use this reversal GL.
+                    <b>@GlobalShared.Note:</b> @BranchCashConfigRessource.Same_day_reversals_are_posted_directly_to_the_original_Till_Vault_accounts_and_do_not_use_this_reversal_GL.
                 </li>
 
 
@@ -79,77 +76,69 @@
                 <li>
                     <i class="mdi mdi-alert-circle-outline text-danger me-2"></i>
                     <b>
-                        All Commission, VAT, MoMoCash, Loan Transit and Interest GLs
-                        are mandatory.
+                        @BranchCashConfigRessource.All_Commission_VAT_MoMoCash_Loan_Transit_and_Interest_GLs_are_mandatory.
                     </b><br />
-                    This includes:
-                    Cash-In Commission, Cash-Out Commission, Transfer Commission,
-                    VAT, Form Fee, Loan Transit, Interest Income Backup,
-                    MoMoCash Settlement & MoMoCash Commission.
+                    @BranchCashConfigRessource.This_includes_Cash_In_Commission_Cash_Out_Commission_Transfer_Commission
                     <br />
-                    If any is missing, related operations cannot post.
+                    @BranchCashConfigRessource.If_any_is_missing_related_operations_cannot_post.
                 </li>
 
                 <!-- Behaviour -->
                 <li>
                     <i class="mdi mdi-check-circle-outline text-success me-2"></i>
-                    <b>Till (Cash In Hand)</b> is debited when receiving cash
-                    and credited when paying out.
-                    Incorrect configuration leads to teller-day mismatches.
+                    @Html.Raw(@BranchCashConfigRessource.Till_Cash_In_Hand_is_debited_when_receiving_cash_and_credited_when_paying_out).
+                    @BranchCashConfigRessource.Incorrect_configuration_leads_to_teller_day_mismatches.
                 </li>
 
                 <!-- Vault -->
                 <li>
                     <i class="mdi mdi-check-circle-outline text-success me-2"></i>
-                    <b>Vault Account</b> represents the branch vault stock.
-                    All teller–vault transfers depend on this mapping.
+                    <b>@GlobalShared.Vault_Account</b> @BranchCashConfigRessource.represents_the_branch_vault_stock.
+                    @BranchCashConfigRessource.All_teller_vault_transfers_depend_on_this_mapping.
                 </li>
 
                 <!-- Surplus/Shortage -->
                 <li>
                     <i class="mdi mdi-check-circle-outline text-success me-2"></i>
-                    <b>SurplusIncomeAccount</b> and <b>ShortageExpenseAccount</b>
-                    are used during balancing (teller, vault, EOD).
-                    They must be correctly set for accurate cash reconciliation.
+                    @BranchCashConfigRessource.SurplusIncomeAccount_and_ShortageExpenseAccount_are_used_during_balancing_teller_vault_EOD.
+                    @BranchCashConfigRessource.They_must_be_correctly_set_for_accurate_cash_reconciliation.
                 </li>
 
                 <!-- Liaison -->
                 <li>
                     <i class="mdi mdi-check-circle-outline text-success me-2"></i>
-                    <b>HeadOfficeLiaisonAccount</b> is essential for inter-branch posting.
-                    If missing, all inter-branch operations will fail.
+                    <b>@BranchCashConfigRessource.Head_Office_Liaison_Account</b> @BranchCashConfigRessource.is_essential_for_inter_branch_posting.
+                    @BranchCashConfigRessource.If_missing_all_inter_branch_operations_will_fail.
                 </li>
 
                 <!-- Loan Transit -->
                 <li>
                     <i class="mdi mdi-check-circle-outline text-success me-2"></i>
-                    <b>LoanTransitAccount</b> stores pending loan disbursements.
-                    Without this mapping, all loan disbursement postings will fail.
+                    <b>@BranchCashConfigRessource.Loan_Transit_Account</b> @BranchCashConfigRessource.stores_pending_loan_disbursements.
+                    @BranchCashConfigRessource.Without_this_mapping_all_loan_disbursement_postings_will_fail.
                 </li>
 
                 <!-- Revenue / Fallback -->
                 <li>
                     <i class="mdi mdi-information-outline text-primary me-2"></i>
-                    Most other GLs (Revenue, Partner, CamCCUL, Fees, VAT, Commissions)
-                    act as <b>fallback accounts</b> when product-specific mappings are not given.
-                    This ensures the accounting engine always finds a routing path.
+                    @Html.Raw(@BranchCashConfigRessource.Most_other_GLs_Revenue_Partner_CamCCUL_Fees_VAT_Commission_sact_as_fallback_accounts)
+                    @BranchCashConfigRessource.This_ensures_the_accounting_engine_always_finds_a_routing_path.
                 </li>
 
                 <!-- Real-time posting -->
                 <li>
                     <i class="mdi mdi-alert-circle-outline text-warning me-2"></i>
-                    When <b>Real-time Cash Posting</b> is enabled, every teller,
-                    vault, loan, MoMo or fee operation posts immediately.
-                    Disable only if your institution uses deferred posting.
+                    @Html.Raw(@BranchCashConfigRessource.When_Real_time_Cash_Posting_is_enabled_every_teller_vault_loan_MoMo_or_fee_operation_posts_immediately)
+                   @BranchCashConfigRessource.Disable_only_if_your_institution_uses_deferred_posting.
                 </li>
 
                 <!-- Security -->
                 <li>
                     <i class="mdi mdi-lock-outline text-danger me-2"></i>
-                    Only authorized officers should modify this configuration.
-                    Wrong mapping may cause <b>
-                        incorrect GL balances, unreconciled vault positions,
-                        interbranch imbalances, or misposted commissions.
+                    @BranchCashConfigRessource.Only_authorized_officers_should_modify_this_configuration.
+                    @BranchCashConfigRessource.Wrong_mapping_may_cause <b>
+                        @BranchCashConfigRessource.incorrect_GL_balances_unreconciled_vault_positions,
+                        @BranchCashConfigRessource.interbranch_imbalances_or_misposted_commissions.
                     </b>
                 </li>
 
@@ -167,7 +156,7 @@
                 <div class="accordion-item active">
                     <h2 class="accordion-header text-body d-flex justify-content-between" id="accordionCashCfgHead">
                         <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordionCashCfgBody" aria-expanded="true" aria-controls="accordionCashCfgBody">
-                            <i class="mdi mdi-cash me-2"></i> Branch Cash Config Management
+                            <i class="mdi mdi-cash me-2"></i> @BranchCashConfigRessource.Branch_Cash_Config_Management
                         </button>
                     </h2>
                     <div id="accordionCashCfgBody" class="accordion-collapse collapse show" data-bs-parent="#accordionPopoutIcon">
@@ -179,13 +168,13 @@
                                            onclick="LoadDataGen('BranchCashConfig','myDataTable','_Data',0,'datalistingview')"
                                            class="btn btn-label-primary btn-sm me-2"
                                            data-bs-toggle="tooltip" title="View list">
-                                            <i class="mdi mdi-view-list mdi-18px"></i> View list
+                                            <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
                                         </a>
                                         <a type="button"
                                            onclick="AddORUpdateGen(null,'datalistingview','_Create','new','BranchCashConfig')"
                                            class="btn btn-label-secondary btn-sm"
-                                           data-bs-toggle="tooltip" title="Add Cash Config">
-                                            <i class="mdi mdi-plus mdi-18px"></i> Add Cash Config
+                                           data-bs-toggle="tooltip" title="@BranchCashConfigRessource.Add_Cash_Config">
+                                            <i class="mdi mdi-plus mdi-18px"></i> @BranchCashConfigRessource.Add_Cash_Config
                                         </a>
                                     </div>
                                 </div>
@@ -210,10 +199,10 @@
             <div class="modal-header p-2">
                 <header class="w-100 text-center">
                     <h4 class="text-primary fw-bold mb-1">
-                        <i class="mdi mdi-cash me-2"></i> Cash Config Details
+                        <i class="mdi mdi-cash me-2"></i> @BranchCashConfigRessource.Cash_Config_Details
                     </h4>
                     <p class="text-muted mb-0">
-                        Review the branch’s mandatory cash GLs and the fallback revenue/fee accounts used
+                        @BranchCashConfigRessource.Review_the_branch_s_mandatory_cash_GLs_and_the_fallback_revenue_fee_accounts_used
                         by the posting engine.
                     </p>
                     <hr style="border: 1px solid rgba(128, 128, 128, 0.5);" />
@@ -223,7 +212,7 @@
                 <div id="cashConfigDetailsContent"><!-- dynamic content --></div>
             </div>
             <div class="modal-footer py-2">
-                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">@GlobalShared.Close</button>
             </div>
         </div>
     </div>

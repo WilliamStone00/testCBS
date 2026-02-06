@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.BranchCashConfigV.BranchCashConfigManagement
+            @using Resources
 @{
     var rows = (IEnumerable<CBS.FrontDesk.Data.Entity.AccountingV2.BranchCashConfigV.BranchCashConfigRowDto>)(ViewBag.Rows ?? Enumerable.Empty<CBS.FrontDesk.Data.Entity.AccountingV2.BranchCashConfigV.BranchCashConfigRowDto>());
 }
@@ -39,12 +40,12 @@
     <table class="table table-hover table-bordered align-middle" id="myDataTable">
         <thead class="table-light">
             <tr>
-                <th style="width:24%;">Branch</th>
-                <th style="width:21%;">Till (Cash in Hand)</th>
-                <th style="width:21%;">Vault</th>
-                <th style="width:21%;">HO Liaison</th>
-                <th style="width:8%;">Real-time</th>
-                <th style="width:5%;">Actions</th>
+                <th style="width:24%;">@GlobalShared.Branch</th>
+                <th style="width:21%;">@GlobalShared.Till_Cash_in_Hand</th>
+                <th style="width:21%;">@GlobalShared.Vault</th>
+                <th style="width:21%;">@GlobalShared.HO_Liaison</th>
+                <th style="width:8%;">@GlobalShared.Real_time</th>
+                <th style="width:5%;">@GlobalShared.Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -74,11 +75,11 @@
                     <td class="text-center">
                         @if (r?.RealTimeCashPosting == true)
                         {
-                            <span class="badge bg-success">Yes</span>
+                            <span class="badge bg-success">@GlobalShared.Yes</span>
                         }
                         else
                         {
-                            <span class="badge bg-secondary">No</span>
+                            <span class="badge bg-secondary">@GlobalShared.No</span>
                         }
                     </td>
 
@@ -88,13 +89,13 @@
                                     class="btn btn-outline-primary btn-details"
                                     data-id="@r.Id"
                                     title="Details">
-                                <i class="mdi mdi-eye" aria-hidden="true"></i><span class="visually-hidden">Details</span>
+                                <i class="mdi mdi-eye" aria-hidden="true"></i><span class="visually-hidden">@GlobalShared.Details</span>
                             </button>
                             <button type="button"
                                     class="btn btn-outline-secondary btn-edit"
                                     data-id="@r.Id"
                                     title="Edit">
-                                <i class="mdi mdi-pencil" aria-hidden="true"></i><span class="visually-hidden">Edit</span>
+                                <i class="mdi mdi-pencil" aria-hidden="true"></i><span class="visually-hidden">@GlobalShared.Edit</span>
                             </button>
                         </div>
                     </td>
