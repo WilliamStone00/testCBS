@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.API.CreateApiKeyRequest
-
+@using Resources
 <form id="createApiKeyForm" method="post" action="@Url.Action("Create", "ApiKey")"
       onsubmit="return handleFormSubmit(this, 'API Key created successfully! Make sure to copy and store the raw key securely.')">
     @Html.AntiForgeryToken()
@@ -8,7 +8,7 @@
         <div class="col-md-6">
             <div class="form-floating">
                 @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", placeholder = "User Name", required = "required" })
-                <label for="UserName">User Name *</label>
+                <label for="UserName">@GlobalShared.User_Name *</label>
                 @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger small" })
             </div>
         </div>
@@ -16,7 +16,7 @@
         <div class="col-md-6">
             <div class="form-floating">
                 @Html.TextBoxFor(m => m.Length, new { @class = "form-control", type = "number", min = "32", max = "256", value = "64", placeholder = "Key Length" })
-                <label for="Length">Key Length (32-256)</label>
+                <label for="Length">@ApiKeyRessource.Key_Length (32-256)</label>
                 @Html.ValidationMessageFor(m => m.Length, "", new { @class = "text-danger small" })
             </div>
         </div>
@@ -29,9 +29,9 @@
     </div>*@
 
     <div class="modal-footer mt-3">
-        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal">@Resources.GlobalShared.Cancel</button>
         <button type="submit" class="btn btn-primary">
-            <i class="mdi mdi-key-plus me-1"></i> Create API Key
+            <i class="mdi mdi-key-plus me-1"></i> @ApiKeyRessource.Create_API_Key
         </button>
     </div>
 </form>

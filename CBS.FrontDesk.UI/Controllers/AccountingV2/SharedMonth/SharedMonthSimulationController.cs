@@ -414,7 +414,6 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.SharedMonth
             try
             {
 
-
                 var data = await _sharedMonthSimulationService.GetShareMonthDataTableAsync(query);
 
 
@@ -462,10 +461,6 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.SharedMonth
 
                 if (string.IsNullOrWhiteSpace(model.BranchId))
                     return Json(new { success = false, message = "Branch is required." });
-
-
-                
-
 
                 // Call service
                 var response = await _sharedMonthSimulationService.SharedMonthUpload(model);

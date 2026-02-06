@@ -46,16 +46,16 @@
                 </h1>
 
                 <p class="card-text text-muted mb-2">
-                    <strong>Bulk Cash Management Console</strong> — Simulate and validate Cash-In/Cash-Out batches before execution.
+                    <strong>@GlobalBulkOperation.Bulk_Cash_Management_Console</strong> — @GlobalBulkOperation.Simulate_and_validate_Cash_In_Cash_Out_batches_before_execution
                     <br />
-                    Process multiple account cash movements in one operation while maintaining complete audit trails and operational control.
+                    @GlobalBulkOperation.Process_multiple_account_cash_movements_in_one_operation_while_maintaining_complete_audit_trails_and_operational_control
                 </p>
 
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.35);" />
 
                 <div class="alert alert-info mt-3 d-flex align-items-center justify-content-center">
                     <i class="mdi mdi-information-outline me-2"></i>
-                    <strong>Important:</strong>&nbsp;All bulk cash operations run in <b>SIMULATION</b> mode first for review and validation before execution.
+                    <strong>@GlobalShared.Important:</strong>&nbsp;@Html.Raw(@GlobalBulkOperation.All_bulk_cash_operations_run_in_SIMULATION_mode_first_for_review_and_validation_before_execution)
                 </div>
             </div>
         </div>
@@ -72,7 +72,7 @@
             <div class="col-md-6 text-md-start">
                 <a href="/BulkOperation/Listing" class="btn btn-outline-secondary btn-sm shadow-sm px-3 w-100 w-md-auto"
                    data-bs-toggle="tooltip" title="@GlobalBulkOperation.GoToExecutedBulkOperationList">
-                    <i class="mdi mdi-view-list me-1"></i> @GlobalBulkOperation.ViewBulkOperations
+                    <i class="mdi mdi-view-list me-1"></i> @GlobalBulkOperation.View_Bulk_Operations
                 </a>
             </div>
         </div>
@@ -89,7 +89,7 @@
                             aria-expanded="true" aria-controls="collapseMethodSelection">
                         <i class="mdi mdi-format-list-bulleted-type me-2"></i>
                         @GlobalBulkOperation.BulkCashSimulationMethod
-                        <span class="badge bg-success ms-2">Simulation</span>
+                        <span class="badge bg-success ms-2">@GlobalShared.Simulation</span>
                     </button>
                 </h2>
 
@@ -103,27 +103,27 @@
                             <div class="col-md-12">
                                 <div class="mb-2">
                                     <label class="form-label fw-semibold">
-                                        Input Method
+                                        @GlobalShared.Input_Method
                                         <i class="mdi mdi-help-circle-outline text-muted"
                                            data-bs-toggle="tooltip"
-                                           title="Choose how you will provide account data: manual entry or file upload."></i>
+                                           title="@GlobalBulkOperation.Choose_how_you_will_provide_account_data_manual_entry_or_file_upload"></i>
                                     </label>
 
                                     <div class="btn-group w-100" role="group" aria-label="Input method">
                                         <input type="radio" class="btn-check" name="InputMethod" id="manualInput" value="manual" checked />
                                         <label class="btn btn-outline-primary" for="manualInput">
-                                            <i class="mdi mdi-keyboard-outline me-2"></i> Manual Entry
+                                            <i class="mdi mdi-keyboard-outline me-2"></i> @GlobalShared.Manual_Entry
                                         </label>
 
                                         <input type="radio" class="btn-check" name="InputMethod" id="fileInput" value="file" />
                                         <label class="btn btn-outline-primary" for="fileInput">
-                                            <i class="mdi mdi-file-import-outline me-2"></i> File Upload
+                                            <i class="mdi mdi-file-import-outline me-2"></i> @GlobalShared.File_Upload
                                         </label>
                                     </div>
 
                                     <small class="text-muted d-block help-hint mt-1">
                                         <i class="mdi mdi-information-outline me-1"></i>
-                                        Manual mode is best for small batches; File mode is recommended for large batches.
+                                        @GlobalBulkOperation.Manual_mode_is_best_for_small_batches_File_mode_is_recommended_for_large_batches.
                                     </small>
                                 </div>
                             </div>
@@ -142,7 +142,7 @@
                                 <!-- TIPS -->
                                 <div class="card shadow-sm mb-2">
                                     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-                                        <span><i class="mdi mdi-information-outline me-2"></i> Tips & Rules (Manual Entry)</span>
+                                        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalShared.Tips & @GlobalShared.Rules (@GlobalShared.Manual_Entry)</span>
                                         <button class="btn btn-light btn-sm" type="button"
                                                 data-bs-toggle="collapse"
                                                 data-bs-target="#collapseUserTipsManual"
@@ -156,20 +156,20 @@
                                         <div class="card-body">
                                             <ol class="list-group list-group-numbered">
                                                 <li class="list-group-item">
-                                                    <div class="fw-bold">Choose Operation Scope</div>
-                                                    “Internal” usually means same-branch processing. “External/Inter-Branch” allows per-row branch selection.
+                                                    <div class="fw-bold">@GlobalBulkOperation.Choose_Operation_Scope</div>
+                                                    @GlobalBulkOperation.Internal_usually_means_same_branch_processing_External_Inter_Branch_allows_per_row_branch_selection
                                                 </li>
                                                 <li class="list-group-item">
-                                                    <div class="fw-bold">Select Cash Direction</div>
-                                                    Choose Cash-In (deposit) or Cash-Out (withdrawal) for correct accounting routing.
+                                                    <div class="fw-bold">@GlobalBulkOperation.Select_Cash_Direction</div>
+                                                    @GlobalBulkOperation.Choose_Cash_In_deposit_or_Cash_Out_withdrawal_for_correct_accounting_routing.
                                                 </li>
                                                 <li class="list-group-item">
-                                                    <div class="fw-bold">Use Simulation Type</div>
-                                                    Simulation Type is mandatory for audit classification. If type is “Other”, provide a clear description.
+                                                    <div class="fw-bold">@GlobalBulkOperation.Use_Simulation_Type</div>
+                                                    @GlobalBulkOperation.Simulation_Type_is_mandatory_for_audit_classification_If_type_is_Other_provide_a_clear_description.
                                                 </li>
                                                 <li class="list-group-item">
-                                                    <div class="fw-bold">Validate Accounts and Amounts</div>
-                                                    Amount must be greater than 0. Verify references carefully—cash operations may require formal reversals.
+                                                    <div class="fw-bold">@GlobalBulkOperation.Validate_Accounts_and_Amounts</div>
+                                                    @GlobalBulkOperation.Amount_must_be_greater_than_0_Verify_references_carefully_cash_operations_may_require_formal_reversals.
                                                 </li>
                                             </ol>
                                         </div>
@@ -184,7 +184,7 @@
                                         <div class="row g-2">
 
                                             <div class="col-md-12">
-                                                @Html.LabelFor(m => m.OperationScope, @GlobalBulkOperation.SelectOperationType, new { @class = "form-label fw-semibold" })
+                                                @Html.LabelFor(m => m.OperationScope, GlobalShared.Select_operation_type, new { @class = "form-label fw-semibold" })
                                                 @Html.DropDownListFor(m => m.OperationScope,
                                                     new SelectList(ViewBag.operationScope, "Value", "Text"),
                                                     "--- Select Operation Scope ---",
@@ -192,10 +192,10 @@
 
                                                 <small class="text-muted d-block help-hint mt-1">
                                                     <i class="mdi mdi-information-outline me-1"></i>
-                                                    Defines whether accounts are processed within a single branch or across multiple branches.
+                                                    @GlobalBulkOperation.Defines_whether_accounts_are_processed_within_a_single_branch_or_across_multiple_branches.
                                                 </small>
 
-                                                <div class="invalid-feedback">Please select an operation scope.</div>
+                                                <div class="invalid-feedback">@GlobalBulkOperation.Please_select_an_operation_scope.</div>
                                             </div>
 
                                         </div>
@@ -206,7 +206,7 @@
                                 <!-- BRANCH -->
                                 <!-- ====================== -->
                                 <div class="mb-3">
-                                    @Html.LabelFor(m => m.BranchId, @GlobalBulkOperation.SelectBranch, new { @class = "form-label fw-semibold" })
+                                    @Html.LabelFor(m => m.BranchId, GlobalShared.SelectBranch, new { @class = "form-label fw-semibold" })
                                     @Html.DropDownListFor(m => m.BranchId,
                                         new SelectList(ViewBag.branches, "Id", "Name"),
                                         "--- Select Branch ---",
@@ -214,9 +214,9 @@
 
                                     <small class="text-muted d-block help-hint mt-1">
                                         <i class="mdi mdi-information-outline me-1"></i>
-                                        Used to load branch Chart of Accounts for cash source/destination routing.
+                                        @GlobalBulkOperation.Used_to_load_branch_Chart_of_Accounts_for_cash_source_destination_routing
                                     </small>
-                                    <div class="invalid-feedback">Please select a branch.</div>
+                                    <div class="invalid-feedback">@GlobalShared.Please_select_a_branch</div>
                                 </div>
 
                                 <!-- ====================== -->
@@ -228,7 +228,7 @@
                                             <button class="accordion-button" type="button" data-bs-toggle="collapse"
                                                     data-bs-target="#collapseAccountList" aria-expanded="true" aria-controls="collapseAccountList">
                                                 <i class="mdi mdi-account-details me-2"></i> @GlobalBulkOperation.BulkCashAccountList
-                                                <span class="badge bg-primary ms-2">Required</span>
+                                                <span class="badge bg-primary ms-2">@GlobalShared.Required</span>
                                             </button>
                                         </h2>
                                         <div id="collapseAccountList" class="accordion-collapse collapse show" aria-labelledby="headingAccountList">
@@ -238,9 +238,9 @@
                                                     <table class="table table-hover mb-0" id="myDataTable">
                                                         <thead class="table-light">
                                                             <tr>
-                                                                <th>Branch</th>
-                                                                <th>Member Reference</th>
-                                                                <th>Account Type</th>
+                                                                <th>@GlobalShared.Branch</th>
+                                                                <th>@GlobalShared.Member_reference</th>
+                                                                <th>@GlobalShared.Account_type</th>
                                                                 <th class="text-end">Amount</th>
                                                                 <th class="text-end">Actions</th>
                                                             </tr>
@@ -249,7 +249,7 @@
                                                             <tr class="empty-row">
                                                                 <td colspan="5" class="text-center text-muted py-4">
                                                                     <i class="mdi mdi-database-remove fs-3 d-block mb-2"></i>
-                                                                    No accounts added yet. Click <b>“Add Account”</b> to begin.
+                                                                    @Html.Raw(@GlobalBulkOperation.No_accounts_added_yet_Click_Add_Account_to_begin)
                                                                 </td>
                                                             </tr>
                                                         </tbody>
@@ -261,13 +261,13 @@
                                                         <i class="mdi mdi-delete-sweep-outline me-1"></i> Clear All
                                                     </button>
                                                     <button type="button" class="btn btn-sm btn-primary" id="addAccountBtn">
-                                                        <i class="mdi mdi-plus-circle-outline me-1"></i> Add Account
+                                                        <i class="mdi mdi-plus-circle-outline me-1"></i> @GlobalShared.Add_Account
                                                     </button>
                                                 </div>
 
                                                 <small class="text-muted">
                                                     <i class="mdi mdi-information-outline me-1"></i>
-                                                    Each row represents one member account entry in the batch.
+                                                    @GlobalBulkOperation.Each_row_represents_one_member_account_entry_in_the_batch
                                                 </small>
 
                                             </div>
@@ -284,8 +284,8 @@
                                             <button class="accordion-button" type="button" data-bs-toggle="collapse"
                                                     data-bs-target="#collapseOperationParamsManual" aria-expanded="true" aria-controls="collapseOperationParamsManual">
                                                 <i class="mdi mdi-cog-outline me-2"></i>
-                                                Operation Parameters
-                                                <span class="badge bg-secondary ms-2">Audit + Accounting</span>
+                                                @GlobalShared.Operation_Parameters
+                                                <span class="badge bg-secondary ms-2">@GlobalShared.Audit + @GlobalShared.Accounting</span>
                                             </button>
                                         </h2>
                                         <div id="collapseOperationParamsManual" class="accordion-collapse collapse show" aria-labelledby="headingOperationParamsManual">
@@ -302,9 +302,9 @@
 
                                                         <small class="text-muted d-block help-hint mt-1">
                                                             <i class="mdi mdi-information-outline me-1"></i>
-                                                            Cash-In = deposit to member accounts. Cash-Out = withdrawal from member accounts.
+                                                            @GlobalBulkOperation.Cash_In_deposit_to_member_accounts_Cash_Out_withdrawal_from_member_accounts.
                                                         </small>
-                                                        <div class="invalid-feedback">Please select a cash direction.</div>
+                                                        <div class="invalid-feedback">@GlobalBulkOperation.Please_select_a_cash_direction</div>
                                                     </div>
 
                                                     <!-- Accounting Date -->
@@ -316,9 +316,9 @@
 
                                                         <small class="text-muted d-block help-hint mt-1">
                                                             <i class="mdi mdi-information-outline me-1"></i>
-                                                            Must match an open accounting day for the selected branch.
+                                                            @GlobalBulkOperation.Must_match_an_open_accounting_day_for_the_selected_branch.
                                                         </small>
-                                                        <div class="invalid-feedback">Please select a valid accounting date.</div>
+                                                        <div class="invalid-feedback">@GlobalBulkOperation.Please_select_a_valid_accounting_date.</div>
                                                     </div>
 
                                                     <!-- Simulation Type -->
@@ -331,9 +331,9 @@
 
                                                         <small class="text-muted d-block help-hint mt-1">
                                                             <i class="mdi mdi-information-outline me-1"></i>
-                                                            Categorizes the batch for audit and reporting (fees, salary, correction, etc.).
+                                                            @GlobalBulkOperation.Categorizes_the_batch_for_audit_and_reporting.
                                                         </small>
-                                                        <div class="invalid-feedback">Please select a simulation type.</div>
+                                                        <div class="invalid-feedback">@GlobalBulkOperation.Please_select_a_simulation_type.</div>
                                                     </div>
 
                                                     <!-- Simulation Description -->
@@ -349,25 +349,49 @@
                                                             })
                                                         <small class="text-muted d-block help-hint mt-1">
                                                             <i class="mdi mdi-information-outline me-1"></i>
-                                                            Recommended: include ticket number, approval reference, or business reason.
+                                                            @GlobalBulkOperation.Recommended_include_ticket_number_approval_reference_or_business_reason.
                                                         </small>
                                                     </div>
+
+                                                    <!-- Impact Accounting -->
+                                                    <div class="col-md-12">
+                                                        <div class="form-check form-switch">
+                                                            @Html.CheckBoxFor(
+                                                                m => m.ShouldImpactAccounting,
+                                                                new
+                                                                {
+                                                                    @class = "form-check-input",
+                                                                    role = "switch",
+                                                                    id = "ShouldImpactAccounting"
+                                                                })
+
+                                                            <label class="form-check-label fw-semibold" for="ShouldImpactAccounting">
+                                                                Impact Accounting
+                                                            </label>
+                                                        </div>
+
+                                                        <small class="text-muted d-block help-hint mt-1">
+                                                            <i class="mdi mdi-information-outline me-1"></i>
+                                                            When enabled, this simulation will generate accounting entries upon execution.
+                                                        </small>
+                                                    </div>
+
 
                                                     <!-- Destination COA -->
                                                     <div class="col-md-12">
                                                         <label class="form-label fw-semibold" id="AccountCartLabel">
-                                                            Cash Source / Destination Account (COA)
+                                                            @GlobalBulkOperation.Cash_Source_Destination_Account_COA
                                                         </label>
 
                                                         @Html.DropDownListFor(m => m.AccountCartId,
                                                             new List<SelectListItem> { new SelectListItem { Text = "--- Select Chart Of Account ---", Value = "" } },
                                                             new { @class = "form-select select2", required = "required", id = "AccountCartId" })
 
-                                                        <small class="text-muted d-block help-hint mt-1">
-                                                            <i class="mdi mdi-information-outline me-1"></i>
-                                                            Select the branch GL account used to route this cash batch (e.g., Till, Vault, Cash Control).
-                                                        </small>
-                                                        <div class="invalid-feedback">Please select a chart of account.</div>
+                                                    <small class="text-muted d-block help-hint mt-1">
+                                                        <i class="mdi mdi-information-outline me-1"></i>
+                                                        @GlobalBulkOperation.Select_the_branch_GL_account_used_to_route_this_cash_batch.
+                                                    </small>
+                                                    <div class="invalid-feedback">@GlobalBulkOperation.Please_select_a_chart_of_account.</div>
                                                     </div>
 
                                                 </div>
@@ -380,7 +404,7 @@
                                 <div class="row mt-3">
                                     <div class="col-md-12 text-end">
                                         <button type="submit" class="btn btn-primary">
-                                            <i class="mdi mdi-play-circle-outline me-2"></i> Run Simulation
+                                            <i class="mdi mdi-play-circle-outline me-2"></i> @GlobalShared.Run_Simulation
                                         </button>
                                     </div>
                                 </div>
@@ -399,7 +423,7 @@
 
                                 <div class="card shadow-sm mb-3">
                                     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-                                        <span><i class="mdi mdi-information-outline me-2"></i> Tips & Rules (File Upload)</span>
+                                        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalShared.Tips & @GlobalShared.Rules (@GlobalShared.File_Upload)</span>
                                         <button class="btn btn-light btn-sm" type="button"
                                                 data-bs-toggle="collapse"
                                                 data-bs-target="#collapseUserTipsFile"
@@ -412,8 +436,8 @@
                                         <div class="card-body">
                                             <div class="alert alert-warning small mb-0">
                                                 <i class="mdi mdi-alert-outline me-2"></i>
-                                                Use the template. Upload → preview → confirm parameters → run simulation.
-                                                If Simulation Type is <b>Other</b>, description is required.
+                                                @GlobalBulkOperation.Use_the_template_Upload_preview_confirm_parameters_run_simulation.
+                                                @Html.Raw(@GlobalBulkOperation.If_Simulation_Type_is_Other_description_is_required).
                                             </div>
                                         </div>
                                     </div>
@@ -424,8 +448,8 @@
                                         <h2 class="accordion-header" id="headingFileUpload">
                                             <button class="accordion-button" type="button" data-bs-toggle="collapse"
                                                     data-bs-target="#collapseFileUpload" aria-expanded="true" aria-controls="collapseFileUpload">
-                                                <i class="mdi mdi-cloud-upload-outline me-2"></i> Bulk Operation File Upload
-                                                <span class="badge bg-primary ms-2">Required</span>
+                                                <i class="mdi mdi-cloud-upload-outline me-2"></i> @GlobalBulkOperation.Bulk_Operation_File_Upload
+                                                <span class="badge bg-primary ms-2"> @GlobalShared.Required</span>
                                             </button>
                                         </h2>
                                         <div id="collapseFileUpload" class="accordion-collapse collapse show" aria-labelledby="headingFileUpload">
@@ -433,14 +457,14 @@
 
                                                 <div class="alert alert-info mb-3">
                                                     <i class="mdi mdi-information-outline me-2"></i>
-                                                    Upload a CSV/Excel containing accounts and amounts. Max size: 10MB.
+                                                    @GlobalShared.Upload_a_CSV_Excel_containing_accounts_and_amounts_Max_size: 10MB.
                                                 </div>
 
                                                 <div class="row g-3 align-items-end">
                                                     <div class="col-lg-8">
                                                         <div class="file-upload-wrapper">
                                                             <label for="bulkOperationFile" class="form-label fw-semibold">
-                                                                Select Operation File
+                                                                @GlobalShared.Select_Operation_File
                                                             </label>
 
                                                             <div class="input-group has-validation">
@@ -454,7 +478,7 @@
                                                                     <i class="mdi mdi-cloud-upload-outline ms-1"></i>
                                                                 </button>
 
-                                                                <div class="invalid-feedback">Please select a valid file (max 10MB).</div>
+                                                                <div class="invalid-feedback">@GlobalShared.Please_select_a_valid_file (max 10MB).</div>
                                                             </div>
 
                                                             <div class="form-text">
@@ -467,7 +491,7 @@
                                                         <a href="/BulkOperation/DownloadBulkOperationFileTemplate"
                                                            class="btn btn-outline-primary d-inline-flex align-items-center">
                                                             <i class="mdi mdi-file-download-outline me-2"></i>
-                                                            <span>Download Template</span>
+                                                            <span>@GlobalShared.Download_Template</span>
                                                         </a>
                                                     </div>
                                                 </div>
@@ -492,7 +516,7 @@
                                             <button class="accordion-button collapsed" type="button"
                                                     data-bs-toggle="collapse" data-bs-target="#collapseFileContent"
                                                     aria-expanded="false" aria-controls="collapseFileContent">
-                                                <i class="mdi mdi-file-document-outline me-2"></i> File Content Preview
+                                                <i class="mdi mdi-file-document-outline me-2"></i> @GlobalShared.File_Content_Preview
                                             </button>
                                         </h2>
                                         <div id="collapseFileContent" class="accordion-collapse collapse" aria-labelledby="headingFileContent">
@@ -501,17 +525,17 @@
                                                     <table class="table table-hover table-bordered align-middle" id="myDataTable2">
                                                         <thead>
                                                             <tr>
-                                                                <th>Branch Code</th>
-                                                                <th>Member Reference</th>
-                                                                <th>Account Type</th>
-                                                                <th>Member Name</th>
-                                                                <th class="text-end">Amount</th>
+                                                                <th>@GlobalShared.Branch_Code</th>
+                                                                <th>@GlobalShared.Member_reference</th>
+                                                                <th>@GlobalShared.Account_type</th>
+                                                                <th>@GlobalShared.Member_name</th>
+                                                                <th class="text-end">@GlobalShared.Amount</th>
                                                             </tr>
                                                         </thead>
                                                     </table>
                                                     <small class="text-muted">
                                                         <i class="mdi mdi-information-outline me-1"></i>
-                                                        Validate the preview before running simulation.
+                                                        @GlobalBulkOperation.Validate_the_preview_before_running_simulation.
                                                     </small>
                                                 </div>
                                             </div>
@@ -534,7 +558,7 @@
                                         <h2 class="accordion-header" id="headingOperationParamsFile">
                                             <button class="accordion-button" type="button" data-bs-toggle="collapse"
                                                     data-bs-target="#collapseOperationParamsFile" aria-expanded="true" aria-controls="collapseOperationParamsFile">
-                                                <i class="mdi mdi-cog-outline me-2"></i> Operation Parameters (File)
+                                                <i class="mdi mdi-cog-outline me-2"></i> @GlobalShared.Operation_Parameters_File
                                             </button>
                                         </h2>
                                         <div id="collapseOperationParamsFile" class="accordion-collapse collapse show" aria-labelledby="headingOperationParamsFile">
@@ -543,28 +567,28 @@
 
                                                     <!-- ✅ NEW: FileUploadId hidden + display -->
                                                     <div class="col-md-12">
-                                                        <label class="form-label fw-semibold">Uploaded File Reference</label>
+                                                        <label class="form-label fw-semibold">@GlobalShared.Uploaded_File_Reference</label>
                                                         <input type="hidden" id="FileUploadId" name="FileUploadId" value="" />
                                                         <input type="text" class="form-control" id="FileUploadIdDisplay"
                                                                value="" readonly placeholder="Upload a file to generate FileUploadId" />
                                                         <small class="text-muted d-block help-hint mt-1">
                                                             <i class="mdi mdi-information-outline me-1"></i>
-                                                            This ID links the simulation to the uploaded batch file.
+                                                            @GlobalBulkOperation.This_ID_links_the_simulation_to_the_uploaded_batch_file
                                                         </small>
                                                     </div>
 
                                                     <div class="col-md-12">
-                                                        @Html.LabelFor(m => m.BranchId2, @GlobalBulkOperation.SelectBranch, new { @class = "form-label fw-semibold" })
+                                                        @Html.LabelFor(m => m.BranchId2, "Select Branch", new { @class = "form-label fw-semibold" })
                                                         @Html.DropDownListFor(m => m.BranchId2,
-                                                            new SelectList(ViewBag.branches, "Id", "Name"),
-                                                            "--- Select Branch ---",
-                                                            new { @class = "form-select select2", required = "required", id = "BranchId2", onchange = "loadBranchAccounts(this.value, 2)" })
+                                         new SelectList(ViewBag.branches, "Id", "Name"),
+                                         "--- Select Branch ---",
+                                         new { @class = "form-select select2", required = "required", id = "BranchId2", onchange = "loadBranchAccounts(this.value, 2)" })
 
                                                         <small class="text-muted d-block help-hint mt-1">
                                                             <i class="mdi mdi-information-outline me-1"></i>
-                                                            Loads branch COA used for cash routing during simulation.
+                                                            @GlobalBulkOperation.Loads_branch_COA_used_for_cash_routing_during_simulation.
                                                         </small>
-                                                        <div class="invalid-feedback">Please select a branch.</div>
+                                                        <div class="invalid-feedback">@GlobalShared.Please_select_a_branch.</div>
                                                     </div>
 
                                                     <div class="col-md-6">
@@ -572,46 +596,72 @@
 
                                                         @* ✅ FIXED: Value/Text mapping was reversed in your code *@
                                                         @Html.DropDownListFor(m => m.TransferType2,
-                                                            new SelectList(ViewBag.transferType, "Value", "Text"),
-                                                            "--- Select Cash Direction ---",
-                                                            new { @class = "form-select select2", required = "required", id = "TransferType2" })
+                                         new SelectList(ViewBag.transferType, "Value", "Text"),
+                                         "--- Select Cash Direction ---",
+                                         new { @class = "form-select select2", required = "required", id = "TransferType2" })
 
-                                                        <div class="invalid-feedback">Please select a cash direction.</div>
+                                                        <div class="invalid-feedback">@GlobalBulkOperation.Please_select_a_cash_direction.</div>
                                                     </div>
 
                                                     <div class="col-md-6">
                                                         @Html.LabelFor(m => m.AccountDate2, "Accounting Date", new { @class = "form-label fw-semibold" })
                                                         @Html.TextBoxFor(m => m.AccountDate2,
-                                                            Model.AccountDate2 == default(DateTime) ? DateTime.Today.ToString("yyyy-MM-dd") : "{0:yyyy-MM-dd}",
-                                                            new { @class = "form-control accounting-date", type = "date", id = "AccountDate2" })
+                                         Model.AccountDate2 == default(DateTime) ? DateTime.Today.ToString("yyyy-MM-dd") : "{0:yyyy-MM-dd}",
+                                         new { @class = "form-control accounting-date", type = "date", id = "AccountDate2" })
 
-                                                        <div class="invalid-feedback">Please select a valid accounting date.</div>
+                                                        <div class="invalid-feedback">@GlobalBulkOperation.Please_select_a_valid_accounting_date.</div>
                                                     </div>
 
                                                     <div class="col-md-12">
                                                         @Html.LabelFor(m => m.SimulationType2, "Simulation Type", new { @class = "form-label fw-semibold" })
                                                         @Html.DropDownListFor(m => m.SimulationType2,
-                                                            new SelectList(ViewBag.SimulationTypes, "Value", "Text"),
-                                                            "--- Select Simulation Type ---",
-                                                            new { @class = "form-select select2", required = "required", id = "SimulationType2" })
+                                         new SelectList(ViewBag.SimulationTypes, "Value", "Text"),
+                                         "--- Select Simulation Type ---",
+                                         new { @class = "form-select select2", required = "required", id = "SimulationType2" })
 
-                                                        <div class="invalid-feedback">Please select a simulation type.</div>
+                                                        <div class="invalid-feedback">@GlobalBulkOperation.Please_select_a_simulation_type</div>
                                                     </div>
 
                                                     <div class="col-12">
                                                         @Html.LabelFor(m => m.SimulationDescription2, "Simulation Description", new { @class = "form-label fw-semibold" })
                                                         @Html.TextAreaFor(m => m.SimulationDescription2,
-                                                            new { @class = "form-control", rows = "3", placeholder = "Provide justification (required if Simulation Type is Other).", id = "SimulationDescription2" })
+                                         new { @class = "form-control", rows = "3", placeholder = "Provide justification (required if Simulation Type is Other).", id = "SimulationDescription2" })
                                                     </div>
+
+                                                    <!-- Impact Accounting -->
+                                                    <div class="col-md-12">
+                                                        <div class="form-check form-switch">
+                                                            @Html.CheckBoxFor(
+                                         m => m.ShouldImpactAccounting,
+                                         new
+                                         {
+                                             @class = "form-check-input",
+                                             role = "switch",
+                                             id = "ShouldImpactAccounting"
+                                         })
+
+                                                            <label class="form-check-label fw-semibold" for="ShouldImpactAccounting">
+                                                                Impact Accounting
+                                                            </label>
+                                                        </div>
+
+                                                        <small class="text-muted d-block help-hint mt-1">
+                                                            <i class="mdi mdi-information-outline me-1"></i>
+                                                            When enabled, this simulation will generate accounting entries upon execution.
+                                                        </small>
+                                                    </div>
+
 
                                                     <div class="col-md-12">
                                                         <label class="form-label fw-semibold" id="AccountCartLabel2">Cash Source / Destination Account (COA)</label>
+                                                    <div class="col-md-12">
+                                                        <label class="form-label fw-semibold" id="AccountCartLabel2">@GlobalShared.Cash_Source / @GlobalShared.Destination_account (COA)</label>
 
                                                         @Html.DropDownListFor(m => m.AccountCartId2,
-                                                            new List<SelectListItem> { new SelectListItem { Text = "--- Select Chart Of Account ---", Value = "" } },
-                                                            new { @class = "form-select select2", required = "required", id = "AccountCartId2" })
+                                         new List<SelectListItem> { new SelectListItem { Text = "--- Select Chart Of Account ---", Value = "" } },
+                                         new { @class = "form-select select2", required = "required", id = "AccountCartId2" })
 
-                                                        <div class="invalid-feedback">Please select a chart of account.</div>
+                                                    <div class="invalid-feedback">@GlobalBulkOperation.Please_select_chart_of_account</div>
                                                     </div>
 
                                                 </div>
@@ -623,19 +673,21 @@
                                 <div class="row mt-2">
                                     <div class="col-md-12 text-end">
                                         <button type="submit" class="btn btn-primary">
-                                            <i class="mdi mdi-play-circle-outline me-2"></i> Run Simulation
+                                            <i class="mdi mdi-play-circle-outline me-2"></i> @GlobalShared.Run_Simulation
                                         </button>
                                     </div>
                                 </div>
-                            }
-                        </div>
+                            
+                            </div>
                         <!-- end file section -->
 
+                        }
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
+        </div>
     </div>
 </div>
 
@@ -895,7 +947,18 @@
             }
 
             if ($(form).valid()) {
-                alertify.confirm("Confirmation", "Are you sure you want to run this cash simulation?",
+
+                const shouldImpactAccounting = $('#ShouldImpactAccounting').is(':checked');
+
+
+                const confirmationMessage = shouldImpactAccounting
+                    ? "Are you sure you want to run this cash simulation?"
+                    : "Are you sure you want to run this cash simulation? <br/>  <b class='text-warning'>⚠ Attention</b><br/>" +
+                    "Accounting will <b>NOT</b> be impacted by this operation.<br/>" +
+                    "Proceed only if this is intentional.";
+
+
+                alertify.confirm("Confirmation", confirmationMessage,
                     function () {
 
                         const accounts = [];
@@ -918,6 +981,7 @@
 
                             SimulationType: $('#SimulationType').val(),
                             SimulationDescription: $('#SimulationDescription').val(),
+                            ShouldImpactAccounting: shouldImpactAccounting,
 
                             BulkCashStrategy: 'ManualEntrying',
                             Accounts: accounts
@@ -1025,7 +1089,17 @@
             }
 
             if ($(form).valid()) {
-                alertify.confirm("Confirmation", "Run simulation using uploaded file entries?",
+
+                const shouldImpactAccounting = $('#ShouldImpactAccounting').is(':checked');
+
+
+                const confirmationMessage = shouldImpactAccounting
+                    ? "Are you sure you want to run this cash simulation?"
+                    : "Are you sure you want to run this cash simulation? <br/>  <b class='text-warning'>⚠ Attention</b><br/>" +
+                    "Accounting will <b>NOT</b> be impacted by this operation.<br/>" +
+                    "Proceed only if this is intentional.";
+
+                alertify.confirm("Confirmation", confirmationMessage,
                     function () {
 
                         const accountIIs = [];
@@ -1048,6 +1122,7 @@
 
                             SimulationType2: $('#SimulationType2').val(),
                             SimulationDescription2: $('#SimulationDescription2').val(),
+                            ShouldImpactAccounting: shouldImpactAccounting,
 
                             BulkCashStrategy: 'FileUpload',
                             FileUploadId: $('#FileUploadId').val(),

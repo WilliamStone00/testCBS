@@ -17,6 +17,8 @@ namespace CBS.FrontDesk.Data.Entity.BulkOperation
         public string MainBranchName { get; set; }
         public string MainBranchCode { get; set; }
         public string MainBranchId { get; set; }
+        public bool ShouldImpactAccounting { get; set; }
+        
         public List<SimulateBulkOperationDetailCommandDto> SimulateBulkOperationDetails { get; set; }
     }
 

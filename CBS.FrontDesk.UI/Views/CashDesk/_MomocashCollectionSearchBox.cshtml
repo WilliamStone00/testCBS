@@ -8,7 +8,7 @@
             <div class="min-w-0">
                 <div class="fw-semibold">
                     <i class="mdi mdi-account-search-outline me-1"></i>
-                    @CashDesk_MomocashCollectionSearchBox.EnterMemberReferenceNumber
+                    @CashDeskRessource.EnterMemberReferenceNumber
                 </div>
                 <div class="small text-muted">
                     Search by member reference number to load member details for Cash-In / Loan Repayment.
@@ -42,7 +42,7 @@
                     <input type="text"
                            id="manualSearchInput"
                            class="form-control shadow-box"
-                           placeholder="@CashDesk_MomocashCollectionSearchBox.EnterMemberReferenceNumber"
+                           placeholder="@CashDeskRessource.EnterMemberReferenceNumber"
                            autocomplete="off"
                            inputmode="numeric" />
                     <small id="manualSearchInputError" class="text-danger d-none">
@@ -55,7 +55,7 @@
                             id="btnSearchMember"
                             onclick="GetMember()">
                         <i class="mdi mdi-magnify me-1"></i>
-                        @CashDesk_MomocashCollectionSearchBox.Search
+                        @GlobalShared.Search
                     </button>
                 </div>
 

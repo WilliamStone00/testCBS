@@ -144,6 +144,12 @@
   <data name="AddNew" xml:space="preserve">
     <value>Ajouter un nouveau</value>
   </data>
+  <data name="All" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Apply_Filter" xml:space="preserve">
+    <value />
+  </data>
   <data name="AddNewRequest" xml:space="preserve">
     <value>Ajouter une nouvelle demande</value>
   </data>
@@ -399,11 +405,11 @@
   <data name="OrGoBackToYourPage" xml:space="preserve">
     <value>Ou revenir à votre page</value>
   </data>
+  <data name="Password" xml:space="preserve">
+    <value>Mot de passe</value>
+  </data>
   <data name="Pending" xml:space="preserve">
     <value>En attente</value>
-  </data>
-  <data name="PendingRequests" xml:space="preserve">
-    <value>Demandes en attente</value>
   </data>
   <data name="PhotoPreview" xml:space="preserve">
     <value>Aperçu de la photo</value>
@@ -542,6 +548,10 @@
   </data>
   <data name="TimeRemaining" xml:space="preserve">
     <value>Temps restant</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="Tips" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="ToDownload" xml:space="preserve">
     <value>Pour télécharger</value>

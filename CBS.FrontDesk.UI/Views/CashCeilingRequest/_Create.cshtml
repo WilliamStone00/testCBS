@@ -1,7 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.CashCeilingManagement.CashCeilingRequest
 @using Resources
 <fieldset class="fieldset-custom">
-    <legend id="select_base">@CashCeilingRequest_Create.CashOutCeilingRequest</legend>
+    <legend id="select_base">@CashCeilingRequestRessource.CashOutCeilingRequest</legend>
     <div class="card-body">
         @using (Html.BeginForm("Create", "CashCeilingRequest", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
         {
@@ -14,7 +14,7 @@
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.AddCashCeilingRequestCommand.CashoutRequestAmount, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.AddCashCeilingRequestCommand.CashoutRequestAmount, "", new { @class = "text-danger" })
-                    <label for="CashoutRequestAmount">@CashCeilingRequest_Create.CashoutRequestAmount</label>
+                    <label for="CashoutRequestAmount">@CashCeilingRequestRessource.CashoutRequestAmount</label>
                 </div>
             </div>
 
@@ -25,14 +25,14 @@
             {
                 <div class="col-md-12">
                     <fieldset class="form-group">
-                        <legend class="form-label">@CashCeilingRequest_Create.RequestType</legend>
+                        <legend class="form-label">@GlobalShared.Request_Type</legend>
                         <div class="form-check">
                             @Html.RadioButtonFor(
                                 m => m.AddCashCeilingRequestCommand.RequestType,
                                 "Cash_To_Vault",
                                 new { @class = "form-check-input", id = "CashToVault" }
                             )
-                            <label class="form-check-label" for="CashToVault">@CashCeilingRequest_Create.CashToVault</label>
+                            <label class="form-check-label" for="CashToVault">@CashCeilingRequestRessource.CashToVault</label>
                         </div>
                         @Html.ValidationMessageFor(m => m.AddCashCeilingRequestCommand.RequestType, "", new { @class = "text-danger" })
                     </fieldset>
@@ -42,14 +42,14 @@
             {
                 <div class="col-md-12">
                     <fieldset class="form-group">
-                        <legend class="form-label">@CashCeilingRequest_Create.RequestType</legend>
+                        <legend class="form-label">@GlobalShared.Request_Type</legend>
                         <div class="form-check">
                             @Html.RadioButtonFor(
                                 m => m.AddCashCeilingRequestCommand.RequestType,
                                 "Subteller_Cash_To_PrimaryTeller",
                                 new { @class = "form-check-input", id = "SubtellerToPrimary" }
                             )
-                            <label class="form-check-label" for="SubtellerToPrimary">@CashCeilingRequest_Create.TransferCashToPrimaryTill.</label>
+                            <label class="form-check-label" for="SubtellerToPrimary">@CashCeilingRequestRessource.TransferCashToPrimaryTill.</label>
                         </div>
                         @Html.ValidationMessageFor(m => m.AddCashCeilingRequestCommand.RequestType, "", new { @class = "text-danger" })
                     </fieldset>
@@ -60,7 +60,7 @@
                 <div class="form-floating form-floating-outline">
                     @Html.TextAreaFor(m => m.AddCashCeilingRequestCommand.Requetcomment, new { @class = "form-control", @style = "height: 200px;" })
                     @Html.ValidationMessageFor(m => m.AddCashCeilingRequestCommand.Requetcomment, "", new { @class = "text-danger" })
-                    <label for="RequestComment">@CashCeilingRequest_Create.RequestComment</label>
+                    <label for="RequestComment">@GlobalShared.Request_Comment</label>
                 </div>
             </div>
         </div>

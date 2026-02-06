@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.API.CreateApiKeyRequest
+    @using Resources
 @{
     ViewBag.Title = "API Key Management - Create";
 }
@@ -8,14 +9,14 @@
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-key-chain me-2"></i>API Key Management
+                    <i class="mdi mdi-key-chain me-2"></i>@ApiKeyRessource.API_Key_Management
                 </h1>
                 <p class="card-text">
-                    Manage and secure your API keys for system integration and external access.
+                    @ApiKeyRessource.Manage_and_secure_your_API_keys_for_system_integration_and_external_access.
                 </p>
                 <div class="alert alert-info mt-3 py-2">
                     <i class="mdi mdi-information-outline me-1"></i>
-                    Create, renew, revoke, and monitor your API keys with comprehensive security controls.
+                    @ApiKeyRessource.Create_renew_revoke_and_monitor_your_API_keys_with_comprehensive_security_controls.
                 </div>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -26,7 +27,7 @@
 <!-- Tips Section -->
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> API Key Creation Tips</span>
+        <span><i class="mdi mdi-information-outline me-2"></i> @ApiKeyRessource.API_Key_Creation_Tips</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseApiKeyTips" aria-expanded="false">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -36,27 +37,27 @@
             <ul>
                 <li>
                     <i class="mdi mdi-account-outline text-success me-2"></i>
-                    <strong>User Name:</strong> Associate API keys with specific users for better tracking and management.
+                    <strong>@GlobalShared.User_Name:</strong> @ApiKeyRessource.Associate_API_keys_with_specific_users_for_better_tracking_and_management.
                 </li>
                 <li>
                     <i class="mdi mdi-key-star text-info me-2"></i>
-                    <strong>Key Security:</strong> Store API keys securely and never expose them in client-side code.
+                    <strong>@GlobalShared.Key_Security:</strong> @ApiKeyRessource.Store_API_keys_securely_and_never_expose_them_in_client_side_code.
                 </li>
                 <li>
                     <i class="mdi mdi-calendar-clock text-warning me-2"></i>
-                    <strong>Expiration:</strong> API keys are created with 5-year expiration by default.
+                    <strong>@GlobalShared.Expiration:</strong> @ApiKeyRessource.API_keys_are_created_with_5_year_expiration_by_default.
                 </li>
                 <li>
                     <i class="mdi mdi-shield-account text-primary me-2"></i>
-                    <strong>Key Length:</strong> Choose appropriate key length (32-256 characters) based on security requirements.
+                    <strong>@ApiKeyRessource.Key_Length:</strong> @ApiKeyRessource.Choose_appropriate_key_length_32_256_characters_based_on_security_requirements.
                 </li>
                 <li>
                     <i class="mdi mdi-alert-octagon text-danger me-2"></i>
-                    <strong>Save Securely:</strong> Copy and store the raw key immediately after creation - it won't be shown again.
+                    <strong>@GlobalShared.Save_Securely:</strong> @ApiKeyRessource.Copy_and_store_the_raw_key_immediately_after_creation_it_wont_be_shown_again.
                 </li>
                 <li>
                     <i class="mdi mdi-content-save text-secondary me-2"></i>
-                    <strong>Management:</strong> Use the list view to manage existing keys, renew, revoke, or change status.
+                    <strong>@GlobalShared.Management:</strong> @ApiKeyRessource.Use_the_list_view_to_manage_existing_keys_renew_revoke_or_change_status.
                 </li>
             </ul>
         </div>
@@ -72,8 +73,8 @@
                     class="btn btn-info btn-sm me-2"
                     id="btnDeveloperGuide"
                     data-bs-toggle="tooltip"
-                    title="View API Integration Guide">
-                <i class="mdi mdi-book-open-page-variant mdi-18px"></i> Developer Guide
+                    title="@ApiKeyRessource.View_API_Integration_Guide">
+                <i class="mdi mdi-book-open-page-variant mdi-18px"></i> @ApiKeyRessource.Developer_Guide
             </button>
 
             <a href="@Url.Action("List", "ApiKey")"
@@ -81,13 +82,13 @@
                id="btnViewList"
                data-bs-toggle="tooltip"
                title="View API Keys List">
-                <i class="mdi mdi-view-list mdi-18px"></i> View List
+                <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
             </a>
         </div>
     </div>
 
     <div class="card-body">
-        <h5 class="text-primary mb-3"><i class="mdi mdi-key-plus me-2"></i>Create New API Key</h5>
+        <h5 class="text-primary mb-3"><i class="mdi mdi-key-plus me-2"></i>@ApiKeyRessource.Create_New_API_Key</h5>
 
         <form id="createApiKeyForm" method="post" action="@Url.Action("Create", "ApiKey")"
               onsubmit="return handleFormSubmit(this, 'API Key created successfully!')">
@@ -96,7 +97,7 @@
             <div class="row g-3">
                 <div class="col-md-6">
                     <div class="mb-3">
-                        <label for="UserName" class="form-label fw-semibold">Select User</label>
+                        <label for="UserName" class="form-label fw-semibold">@GlobalShared.Select_User</label>
                         @Html.DropDownListFor(m => m.UserName,
                             new SelectList(ViewBag.thirdparty ?? new List<SelectListItem>(), "Id", "Name"),
                             "--- Select User ---",
@@ -107,7 +108,7 @@
 
                 <div class="col-md-6">
                     <div class="mb-3">
-                        <label for="Length" class="form-label fw-semibold">Key Length (32-256)</label>
+                        <label for="Length" class="form-label fw-semibold">@ApiKeyRessource.Key_Length (32-256)</label>
                         @Html.TextBoxFor(m => m.Length, new { @class = "form-control", type = "number", min = "32", max = "256", value = "64", placeholder = "Key Length", id = "Length" })
                         @Html.ValidationMessageFor(m => m.Length, "", new { @class = "text-danger small" })
                     </div>
@@ -119,9 +120,9 @@
                 <div class="d-flex justify-content-between align-items-start">
                     <div class="flex-grow-1">
                         <h6 class="alert-heading mb-2">
-                            <i class="mdi mdi-key-success me-1"></i>API Key Generated Successfully!
+                            <i class="mdi mdi-key-success me-1"></i>@ApiKeyRessource.API_Key_Generated_Successfully!
                         </h6>
-                        <p class="mb-2 text-muted small">Copy this key now - it won't be shown again:</p>
+                        <p class="mb-2 text-muted small">@ApiKeyRessource.Copy_this_key_now_it_wont_be_shown_again:</p>
                         <div class="input-group">
                             <input type="text" id="generatedApiKey" class="form-control font-monospace" readonly>
                             <button class="btn btn-outline-secondary" type="button" id="copyApiKeyBtn" data-bs-toggle="tooltip" title="Copy to clipboard">
@@ -131,7 +132,7 @@
                         <div class="mt-2">
                             <small class="text-muted">
                                 <i class="mdi mdi-alert-circle-outline me-1"></i>
-                                Store this key securely. You won't be able to retrieve it again.
+                                @ApiKeyRessource.Store_this_key_securely_You_wont_be_able_to_retrieve_it_again.
                             </small>
                         </div>
                     </div>
@@ -140,9 +141,9 @@
 
             <div class="text-end mt-3">
                 <button type="submit" class="btn btn-primary">
-                    <i class="mdi mdi-key-plus me-1"></i> Create API Key
+                    <i class="mdi mdi-key-plus me-1"></i> @ApiKeyRessource.Create_API_Key
                 </button>
-                <button type="reset" class="btn btn-light" onclick="resetForm()">Reset</button>
+                <button type="reset" class="btn btn-light" onclick="resetForm()">@GlobalShared.Reset</button>
             </div>
         </form>
     </div>
@@ -163,9 +164,9 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@GlobalShared.Close</button>
                 <button type="button" class="btn btn-primary" onclick="printDeveloperGuide()">
-                    <i class="mdi mdi-printer me-1"></i> Print Guide
+                    <i class="mdi mdi-printer me-1"></i> @GlobalShared.Print_Guide
                 </button>
             </div>
         </div>

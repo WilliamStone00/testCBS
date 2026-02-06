@@ -2,13 +2,13 @@
 @using Resources
 <fieldset class="fieldset-custom p-3 rounded shadow-sm">
     <legend class="fw-bold text-primary">
-        <i class="mdi mdi-android me-2"></i> @AndriodAppVersioning_Data.ANDROIDVERSIONLISTING
+        <i class="mdi mdi-android me-2"></i> @AndriodAppVersioning.ANDROIDVERSIONLISTING
     </legend>
 
     @if (!Model.Any())
     {
         <div class="text-center my-3">
-            <p class="text-muted">@AndriodAppVersioning_Data.NoAndroidVersionsHaveBeenConfigured.</p>
+            <p class="text-muted">@AndriodAppVersioning.NoAndroidVersionsHaveBeenConfigured.</p>
         </div>
     }
     else
@@ -17,13 +17,13 @@
             <table class="table table-hover table-bordered align-middle" id="myDataTable">
                 <thead class="table-light">
                     <tr>
-                        <th style="width: 20%;">@AndriodAppVersioning_Data.ApplicationName</th>
-                        <th style="width: 10%;">@AndriodAppVersioning_Data.Version</th>
-                        <th style="width: 15%;">@AndriodAppVersioning_Data.VersionStatus</th>
-                        <th style="width: 25%;">@AndriodAppVersioning_Data.APKURL</th>
-                        <th style="width: 10%;">@AndriodAppVersioning_Data.Environment</th>
-                        <th style="width: 10%;">@AndriodAppVersioning_Data.AppCode</th>
-                        <th style="width: 15%;">@AndriodAppVersioning_Data.Actions</th>
+                        <th style="width: 20%;">@GlobalShared.Application_name</th>
+                        <th style="width: 10%;">@GlobalShared.Version</th>
+                        <th style="width: 15%;">@GlobalShared.Version_status</th>
+                        <th style="width: 25%;">@AndriodAppVersioning.APKURL</th>
+                        <th style="width: 10%;">@GlobalShared.Environment</th>
+                        <th style="width: 10%;">@AndriodAppVersioning.AppCode</th>
+                        <th style="width: 15%;">@GlobalShared.Actions</th>
                     </tr>
                 </thead>
                 <tbody>

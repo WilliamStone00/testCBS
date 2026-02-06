@@ -87,6 +87,13 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
                     };
 
 
+            ViewBag.Status = new List<SelectListItem>
+{
+    new SelectListItem { Value = "APPROVED", Text = "APPROVED" },
+    new SelectListItem { Value = "INITIATED", Text = "INITIATED" },
+    new SelectListItem { Value = "REJECTED", Text = "REJECTED" }
+};
+
 
 
             var filterRequest = new GetFirlterData
@@ -254,7 +261,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
                 switch (model.TicketType?.ToUpperInvariant())
                 {
                     case "SOURCE":
-                        result = await _journalHeadService.ApproveSourceAsync(model);
+                        result = await _journalHeadService. ApproveSourceAsync(model);
                         break;
                     case "SOURCE_EOY":
                         result = await _journalHeadService.ApproveSourceAsync(model);

@@ -55,10 +55,10 @@
             <div class="card bg-light">
                 <div class="card-body text-center py-2">
                     <h5 class="card-title text-primary mb-1">
-                        <i class="mdi mdi-bank-outline me-2"></i> Affiliate Account Node Setup
+                        <i class="mdi mdi-bank-outline me-2"></i> @AffiliateAccount.Affiliate_Account_Node_Setup
                     </h5>
                     <p class="small mb-0">
-                        Create or edit an Affiliate ledger account node under the selected parent.
+                        @AffiliateAccount.Create_or_edit_an_Affiliate_ledger_account_node_under_the_selected_parent.
                     </p>
                 </div>
             </div>
@@ -68,14 +68,14 @@
     <!-- Tips -->
     <div class="card mb-2">
         <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-            <span class="small"><i class="mdi mdi-help-circle-outline me-2"></i> Tips for Affiliate Account</span>
+            <span class="small"><i class="mdi mdi-help-circle-outline me-2"></i> @AffiliateAccount.Tips_for_Affiliate_Account</span>
             <span class="small text-muted">@((isUpdate ? "Update request" : "Create request"))</span>
         </h6>
         <div class="card-body py-2">
             <ul class="mb-0 small">
-                <li><strong>Parent:</strong> inherited from the selected node.</li>
-                <li><strong>Class:</strong> choose the correct account class; PCMF options will filter by class.</li>
-                <li><strong>Update Type:</strong> choose what is changing (Code, Names, or both). Provide the corresponding previous values below.</li>
+                <li><strong>@GlobalShared.Parent:</strong> @AffiliateAccount.inherited_from_the_selected_node.</li>
+                <li><strong>@GlobalShared.Class:</strong> @AffiliateAccount.choose_the_correct_account_class_PCMF_options_will_filter_by_class.</li>
+                <li><strong>@GlobalShared.Update_Type:</strong> @AffiliateAccount.choose_what_is_changing_Provide_the_corresponding_previous_values_below.</li>
             </ul>
         </div>
     </div>
@@ -142,7 +142,7 @@
                                 @data_val_regex = "Account Number must be numeric with at least 12 digits.",
                                 @data_val_regex_pattern = "^\\d{12,}$"
                             })
-                        <div class="form-text small">Numeric only, at least 12 digits. Unique within the Affiliate.</div>
+                        <div class="form-text small">@AffiliateAccount.Numeric_only_at_least_12_digits_Unique_within_the_Affiliate.</div>
                         @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger small" })
                     </div>
 
@@ -167,7 +167,7 @@
                                             }, "Value", "Text", updateType),
                                             "--- Select update type ---",
                                             new { @class = "form-select form-select-sm select2" })
-                                        <div class="form-text small">Choose what is changing.</div>
+                                        <div class="form-text small">@AffiliateAccount.Choose_what_is_changing.</div>
                                         @Html.ValidationMessageFor(m => m.AccountUpdateKind, "", new { @class = "text-danger small" })
                                     </div>
 
@@ -185,7 +185,7 @@
                                                 pattern = "\\d{12,}",
                                                 autocomplete = "off"
                                             })
-                                        <div class="form-text small">Required only if Update Type includes <strong>Code</strong>.</div>
+                                        <div class="form-text small">@AffiliateAccount.Required_only_if_Update_Type_includes <strong>Code</strong>.</div>
                                         @Html.ValidationMessageFor(m => m.CodeOld, "", new { @class = "text-danger small" })
                                     </div>
 
@@ -208,7 +208,7 @@
                                                     @data_val_regex = "New Account Number must be numeric with at least 12 digits.",
                                                     @data_val_regex_pattern = "^\\d{12,}$"
                                                 })
-                                            <div class="form-text small">Required because Update Type includes <strong>Code</strong>.</div>
+                                            <div class="form-text small">@AffiliateAccount.Required_because_Update_Type_includes <strong>Code</strong>.</div>
                                             @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger small" })
                                         </div>
                                     }
@@ -221,7 +221,7 @@
                                             m => m.NameEnOld,
                                             new { @class = "form-control form-control-sm", placeholder = "Previous English name", maxlength = "150" })
                                         <div class="form-text small">
-                                            Required if Update Type is <strong>NameEn</strong>, <strong>Names</strong>, or <strong>CodeAndNames</strong>.
+                                            @AffiliateAccount.Required_if_Update_Type_is <strong>NameEn</strong>, <strong>Names</strong>, @GlobalShared.or <strong>CodeAndNames</strong>.
                                         </div>
                                         @Html.ValidationMessageFor(m => m.NameEnOld, "", new { @class = "text-danger small" })
                                     </div>
@@ -234,15 +234,15 @@
                                             m => m.NameFrOld,
                                             new { @class = "form-control form-control-sm", placeholder = "Ancien nom en français", maxlength = "150" })
                                         <div class="form-text small">
-                                            Required if Update Type is <strong>NameFr</strong>, <strong>Names</strong>, or <strong>CodeAndNames</strong>.
+                                            @AffiliateAccount.Required_if_Update_Type_is <strong>NameFr</strong>, <strong>Names</strong>, @GlobalShared.or <strong>CodeAndNames</strong>.
                                         </div>
                                         @Html.ValidationMessageFor(m => m.NameFrOld, "", new { @class = "text-danger small" })
                                     </div>
                                 </div>
 
                                 <div class="small text-muted mt-1">
-                                    <strong>Note:</strong> For update requests, provide the previous values for each field you’re changing.
-                                    Your server-side validator will enforce requirements based on the selected Update Type.
+                                    <strong>@GlobalShared.Note:</strong> @AffiliateAccount.For_update_requests_provide_the_previous_values_for_each_field_you_re_changing.
+                                    @AffiliateAccount.Your_server_side_validator_will_enforce_requirements_based_on_the_selected_Update_Type.
                                 </div>
                             </div>
                         </div>
@@ -278,18 +278,18 @@
                     @if (string.IsNullOrWhiteSpace(Model?.UpdateReference))
                     {
                         <button type="submit" class="btn btn-primary btn-sm" data-bs-dismiss="modal">
-                            <i class="mdi mdi-content-save me-1"></i> Save
+                            <i class="mdi mdi-content-save me-1"></i> @GlobalShared.Save
                         </button>
                         <button type="reset" class="btn btn-outline-secondary btn-sm">
-                            <i class="mdi mdi-refresh me-1"></i> Reset
+                            <i class="mdi mdi-refresh me-1"></i> @GlobalShared.Reset
                         </button>
                     }
                     else
                     {
-                        <button type="submit" class="btn btn-primary btn-sm">
-                            <i class="mdi mdi-refresh me-1"></i> Update
-                        </button>
-                        <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary btn-sm">
+                    <i class="mdi mdi-refresh me-1"></i> @GlobalShared.Update
+                </button>
+                        <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">@GlobalShared.Close</button>
                     }
                 </div>
             }

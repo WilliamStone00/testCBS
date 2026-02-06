@@ -1,0 +1,454 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Add_Cash_Config" xml:space="preserve">
+    <value>Add Cash Config</value>
+  </data>
+  <data name="Branch_Cash_Config_Management" xml:space="preserve">
+    <value>Branch Cash Config Management</value>
+  </data>
+  <data name="Branch_Cash_GL_Mappings" xml:space="preserve">
+    <value>Branch Cash GL Mappings</value>
+  </data>
+  <data name="Cash_Config_Details" xml:space="preserve">
+    <value>Cash Config Details</value>
+  </data>
+  <data name="Cash_In_Hand_Account" xml:space="preserve">
+    <value>Cash In Hand Account</value>
+  </data>
+  <data name="incorrect_GL_balances_unreconciled_vault_positions" xml:space="preserve">
+    <value>incorrect GL balances, unreconciled vault positions</value>
+  </data>
+  <data name="interbranch_imbalances_or_misposted_commissions" xml:space="preserve">
+    <value>interbranch imbalances, or misposted commissions</value>
+  </data>
+  <data name="Loan_Transit_Account" xml:space="preserve">
+    <value>Loan Transit Account</value>
+  </data>
+  <data name="Only_authorized_officers_should_modify_this_configuration" xml:space="preserve">
+    <value>Only authorized officers should modify this configuration.</value>
+  </data>
+  <data name="Real_Time_Posting" xml:space="preserve">
+    <value>Real-Time Posting</value>
+  </data>
+  <data name="Review_the_branch_s_mandatory_cash_GLs_and_the_fallback_revenue_fee_accounts_used" xml:space="preserve">
+    <value>Review the branch’s mandatory cash GLs and the fallback revenue/fee accounts used</value>
+  </data>
+  <data name="stores_pending_loan_disbursements" xml:space="preserve">
+    <value>stores pending loan disbursements</value>
+  </data>
+  <data name="Wrong_mapping_may_cause" xml:space="preserve">
+    <value>Wrong mapping may cause</value>
+  </data>
+  <data name="Without_this_mapping_all_loan_disbursement_postings_will_fail" xml:space="preserve">
+    <value>Without this mapping, all loan disbursement postings will fail</value>
+  </data>
+  <data name="Most_other_GLs_Revenue_Partner_CamCCUL_Fees_VAT_Commission_sact_as_fallback_accounts" xml:space="preserve">
+    <value>Most other GLs (Revenue, Partner, CamCCUL, Fees, VAT, Commissions)act as &lt;b&gt;fallback accounts&lt;/b&gt; when product-specific mappings are not given.</value>
+  </data>
+  <data name="This_ensures_the_accounting_engine_always_finds_a_routing_path" xml:space="preserve">
+    <value>This ensures the accounting engine always finds a routing path</value>
+  </data>
+  <data name="Disable_only_if_your_institution_uses_deferred_posting" xml:space="preserve">
+    <value>Disable only if your institution uses deferred posting</value>
+  </data>
+  <data name="When_Real_time_Cash_Posting_is_enabled_every_teller_vault_loan_MoMo_or_fee_operation_posts_immediately" xml:space="preserve">
+    <value>When &lt;b&gt;Real-time Cash Posting&lt;/b&gt; is enabled, every teller, vault, loan, MoMo or fee operation posts immediately.</value>
+  </data>
+  <data name="is_essential_for_inter_branch_posting" xml:space="preserve">
+    <value>is essential for inter-branch posting</value>
+  </data>
+  <data name="If_missing_all_inter_branch_operations_will_fail" xml:space="preserve">
+    <value>If missing, all inter-branch operations will fail</value>
+  </data>
+  <data name="Head_Office_Liaison_Account" xml:space="preserve">
+    <value>Head Office Liaison Account</value>
+  </data>
+  <data name="They_must_be_correctly_set_for_accurate_cash_reconciliation" xml:space="preserve">
+    <value>They must be correctly set for accurate cash reconciliation</value>
+  </data>
+  <data name="SurplusIncomeAccount_and_ShortageExpenseAccount_are_used_during_balancing_teller_vault_EOD" xml:space="preserve">
+    <value>&lt;b&gt;Surplus Income Account&lt;/b&gt; and &lt;b&gt;Shortage Expense Account&lt;/b&gt; are used during balancing (teller, vault, EOD)</value>
+  </data>
+  <data name="represents_the_branch_vault_stock" xml:space="preserve">
+    <value>represents the branch vault stock</value>
+  </data>
+  <data name="All_teller_vault_transfers_depend_on_this_mapping" xml:space="preserve">
+    <value>All teller–vault transfers depend on this mapping</value>
+  </data>
+  <data name="Till_Cash_In_Hand_is_debited_when_receiving_cash_and_credited_when_paying_out" xml:space="preserve">
+    <value>&lt;b&gt;Till (Cash In Hand)&lt;/b&gt; is debited when receiving cash and credited when paying out.</value>
+  </data>
+  <data name="Incorrect_configuration_leads_to_teller_day_mismatches" xml:space="preserve">
+    <value>Incorrect configuration leads to teller-day mismatches</value>
+  </data>
+  <data name="If_any_is_missing_related_operations_cannot_post" xml:space="preserve">
+    <value>If any is missing, related operations cannot post</value>
+  </data>
+  <data name="This_includes_Cash_In_Commission_Cash_Out_Commission_Transfer_Commission" xml:space="preserve">
+    <value>This includes: Cash-In Commission, Cash-Out Commission, Transfer Commission,
+VAT, Form Fee, Loan Transit, Interest Income Backup,
+MoMoCash Settlement &amp; MoMoCash Commission.</value>
+  </data>
+  <data name="Always_select_the_correct_Branch_before_configuring" xml:space="preserve">
+    <value>Always select the correct &lt;b&gt;Branch&lt;/b&gt; before configuring</value>
+  </data>
+  <data name="Each_branch_has_its_own_GL_structure_and_balances" xml:space="preserve">
+    <value>Each branch has its own GL structure and balances</value>
+  </data>
+  <data name="All_core_cash_control_GLs_are_mandatory" xml:space="preserve">
+    <value>All core cash-control GLs are mandatory</value>
+  </data>
+  <data name="Operations_such_as_Cash_In_Cash_Out_Teller_Closure_Vaul_Transfers_and_delayed_cash_reversals_will_fail_immediately_if_these_are_missing" xml:space="preserve">
+    <value>Operations such as Cash-In, Cash-Out, Teller Closure, Vault Transfers and delayed cash reversals will &lt;b&gt;fail immediately&lt;/b&gt; if these are missing.</value>
+  </data>
+  <data name="Same_day_reversals_are_posted_directly_to_the_original_Till_Vault_accounts_and_do_not_use_this_reversal_GL" xml:space="preserve">
+    <value>Same - day reversals are posted directly to the original Till / Vault accounts and do not use this reversal GL</value>
+  </data>
+  <data name="Cash_Reversal_Account_is_used_for_delayed_cash_reversals_when_the_accounting_day_of_the_incident_has_already_passed_This_ensures_reversing_historical_cash_movements_does_not_impact_the_current_Till_Vault_cash_position" xml:space="preserve">
+    <value>&lt;b&gt;Cash Reversal Account&lt;/b&gt; is used for &lt;b&gt;delayed cash reversals&lt;/b&gt; when the &lt;b&gt;accounting day of the incident has already passed&lt;/b&gt; (e.g., reversal after 24h).
+This ensures reversing historical cash movements does &lt;b&gt;not impact the current Till/Vault cash position&lt;/b&gt;.</value>
+  </data>
+  <data name="Cash_In_Hand_Till_Vault_Surplus_Income_Shortage_Expense_Cash_Reversal_Account" xml:space="preserve">
+    <value>Cash-In-Hand (Till), Vault, Surplus Income, Shortage Expense, Cash Reversal Account</value>
+  </data>
+  <data name="Missing_mappings_will_cause_posting_failures_or_incorrect_accounting_routing" xml:space="preserve">
+    <value>Missing mappings will cause posting failures or incorrect accounting routing</value>
+  </data>
+  <data name="All_Cash_Control_Commission_VAT_MoMoCash_and_Fee_GLs_are_compulsory" xml:space="preserve">
+    <value>All Cash-Control, Commission, VAT, MoMoCash and Fee GLs are compulsory</value>
+  </data>
+  <data name="All_Commission_VAT_MoMoCash_Loan_Transit_and_Interest_GLs_are_mandatory" xml:space="preserve">
+    <value>All Commission, VAT, MoMoCash, Loan Transit and Interest GLs are mandatory.</value>
+  </data>
+  <data name="Configure_all_branch_level_cash_control_and_financial_routing_GL_accounts" xml:space="preserve">
+    <value>Configure all branch-level cash-control and financial-routing GL accounts</value>
+  </data>
+  <data name="Every_GL_configured_here_directly_determines_how_teller_vault" xml:space="preserve">
+    <value>Every GL configured here directly determines how teller, vault,</value>
+  </data>
+  <data name="loan_transfer_Mobile_Money_and_fee_posting_workflows_behave" xml:space="preserve">
+    <value>loan, transfer, Mobile Money and fee posting workflows behave</value>
+  </data>
+  <data name="Branch_Cash_Configuration" xml:space="preserve">
+    <value>Branch Cash Configuration</value>
+  </data>
+  <data name="Surplus_Income" xml:space="preserve">
+    <value>Surplus Income</value>
+  </data>
+  <data name="Shortage_Expense" xml:space="preserve">
+    <value>Shortage Expense</value>
+  </data>
+  <data name="Cash_Reversal_Account" xml:space="preserve">
+    <value>Cash Reversal Account</value>
+  </data>
+  <data name="Form_Fee_Income" xml:space="preserve">
+    <value>Form Fee Income</value>
+  </data>
+  <data name="Loan_Transit" xml:space="preserve">
+    <value>Loan Transit</value>
+  </data>
+  <data name="MoMoCash_Settlement" xml:space="preserve">
+    <value>MoMoCash Settlement</value>
+  </data>
+  <data name="MoMoCash_Commission" xml:space="preserve">
+    <value>MoMoCash Commission</value>
+  </data>
+  <data name="Fallback_Suspense_GL" xml:space="preserve">
+    <value>Fallback Suspense GL</value>
+  </data>
+  <data name="Review_the_branch_cash_configuration" xml:space="preserve">
+    <value>Review the branch cash configuration</value>
+  </data>
+  <data name="Branch_is_fixed_for_this_configuration" xml:space="preserve">
+    <value>Branch is fixed for this configuration</value>
+  </data>
+  <data name="BRANCH_CASH_CONFIG" xml:space="preserve">
+    <value>BRANCH CASH CONFIG</value>
+  </data>
+  <data name="Mapping_Fallback_Backup_Accounts" xml:space="preserve">
+    <value>Mapping (Fallback / Backup Accounts)</value>
+  </data>
+  <data name="default_backup_accounts" xml:space="preserve">
+    <value>default / backup accounts</value>
+  </data>
+  <data name="Most_of_the_GLs_configured_here_act_as" xml:space="preserve">
+    <value>Most of the GLs configured here act as</value>
+  </data>
+  <data name="When_a_product_operation_type_or_fee_configuration_does_not_provide_a_more_specific_GL_the_system_will_fall_back_to_the_corresponding_mapping_below" xml:space="preserve">
+    <value>When a product, operation type or fee configuration does not provide a more specific GL, the system will fall back to the corresponding mapping below.</value>
+  </data>
+  <data name="Teller_till_GL_Debited_when_cash_is_received_credited_when_cash_is_paid_at_the_counter" xml:space="preserve">
+    <value>Teller till GL. Debited when cash is received, credited when cash is paid at the counter</value>
+  </data>
+  <data name="Branch_vault_GL_used_for_vault_stock_and_vault_till_transfers" xml:space="preserve">
+    <value>Branch vault GL used for vault stock and vault↔till transfers</value>
+  </data>
+  <data name="Temporary_holding_GL_for_loans_in_transit_between_approval_and_final_disbursement_posting" xml:space="preserve">
+    <value>Temporary holding GL for loans in transit between approval and final disbursement / posting.</value>
+  </data>
+  <data name="Inter_branch_bridge_GL_to_HO_used_for_daily_liaison_clearing_between_branch_and_HO" xml:space="preserve">
+    <value>Inter-branch bridge GL to HO; used for daily liaison/clearing between branch and HO.</value>
+  </data>
+  <data name="Generic_backup_income_settlement_GLs_when_the_transaction_or_product_does_not_provide_a_more_specific_GL" xml:space="preserve">
+    <value>Generic backup income/settlement GLs when the transaction or product does not provide a more specific GL.</value>
+  </data>
+  <data name="Default_GLs_to_capture_fees_commissions_VAT_and_interest_when_the_operation_mapping_does_not_specify_them_explicitly" xml:space="preserve">
+    <value>Default GLs to capture fees, commissions, VAT and interest when the operation mapping does not specify them explicitly</value>
+  </data>
+  <data name="Backup_GL_to_capture_application_form_charges_when_not_defined_by_the_product" xml:space="preserve">
+    <value>Backup GL to capture application / form charges when not defined by the product</value>
+  </data>
+  <data name="Used_when_actual_cash_is_below_book_balance_after_reconciliation_shortage" xml:space="preserve">
+    <value>Used when actual cash is below book balance after reconciliation (shortage)</value>
+  </data>
+  <data name="postings_are_made_directly_against_the_original_cash_accounts" xml:space="preserve">
+    <value>postings are made directly against the original cash accounts</value>
+  </data>
+  <data name="Dedicated_GL_used_to_post_delayed_cash_reversals_for_cash_operations_whose_original_accounting_day_has_already_passed_ensuring_that_reversing_historical_cash_movements_does_not_impact_the_current_cash_position_till_or_vault_of_the_branch" xml:space="preserve">
+    <value>Dedicated GL used to post &lt;strong&gt;delayed cash reversals&lt;/strong&gt; for cash operations whose &lt;strong&gt;original accounting day has already passed&lt;/strong&gt;,
+ ensuring that reversing historical cash movements does &lt;strong&gt;not impact the current cash position&lt;/strong&gt;
+ (till or vault) of the branch.</value>
+  </data>
+  <data name="Default_interest_income_GL_when_a_product_loan_mapping_does_not_provide_a_specific_interest_GL" xml:space="preserve">
+    <value>Default interest income GL when a product/loan mapping does not provide a specific interest GL.</value>
+  </data>
+  <data name="Commission_income_GL_used_when_cash_in_operations_do_not_provide_a_specific_commission_GL" xml:space="preserve">
+    <value>Commission income GL used when cash-in operations do not provide a specific commission GL.</value>
+  </data>
+  <data name="Commission_income_GL_used_when_account_to_account_external_transfers_do_not_provide_a_dedicated_commission_GL" xml:space="preserve">
+    <value>Commission income GL used when account-to-account / external transfers do not provide a dedicated commission GL.</value>
+  </data>
+  <data name="Default_VAT_liability_GL_when_a_fee_commission_operation_does_not_specify_a_VAT_GL_explicitly" xml:space="preserve">
+    <value>Default VAT liability GL when a fee/commission operation does not specify a VAT GL explicitly.</value>
+  </data>
+  <data name="Commission_income_GL_used_when_cash_out_operations_do_not_provide_a_specific_commission_GL" xml:space="preserve">
+    <value>Commission income GL used when cash-out operations do not provide a specific commission GL.</value>
+  </data>
+  <data name="Global_Fallback_Suspense_GL" xml:space="preserve">
+    <value>Global Fallback Suspense GL</value>
+  </data>
+  <data name="When_enabled_cash_operations_hit_the_mapped_GLs_immediately_otherwise_postings_can_be_deferred_queued" xml:space="preserve">
+    <value>When enabled, cash operations hit the mapped GLs immediately; otherwise, postings can be deferred/queued.</value>
+  </data>
+  <data name="Enable_Real_time_Cash_Posting" xml:space="preserve">
+    <value>Enable Real-time Cash Posting</value>
+  </data>
+  <data name="Inter_branch_HO_bridge_GL_for_daily_liaison_and_settlement_between_the_branch_and_head_office" xml:space="preserve">
+    <value>Inter-branch / HO bridge GL for daily liaison and settlement between the branch and head office.</value>
+  </data>
+  <data name="Commission_income_GL_for_Mobile_Money_operations_used_when_operation_or_product_configuration_does_not_define_a_more_specific_commission_GL" xml:space="preserve">
+    <value>Commission income GL for Mobile Money operations; used when operation or product configuration does not define a more specific commission GL.</value>
+  </data>
+  <data name="Settlement_GL_for_Mobile_Money_MoMoCash_principal_amounts_cash_in_cash_out_when_no_more_specific_mapping_is_provided" xml:space="preserve">
+    <value>Settlement GL for Mobile Money (MoMoCash) principal amounts (cash-in / cash-out) when no more specific mapping is provided.</value>
+  </data>
+  <data name="Temporary_GL_to_hold_loan_amounts_in_transit_during_approval_disbursement_workflows_when_no_more_specific_transit_GL_exists" xml:space="preserve">
+    <value>Temporary GL to hold loan amounts in transit during approval / disbursement workflows when no more specific transit GL exists.</value>
+  </data>
+  <data name="Income_GL_to_record_application_form_charges_when_not_mapped_at_product_operation_level" xml:space="preserve">
+    <value>Income GL to record application / form charges when not mapped at product/operation level.</value>
+  </data>
+  <data name="Income_GL_to_record_application_form_charges_when_not_mapped_at_product_operation_level1" xml:space="preserve">
+    <value>Income GL to record application / form charges when not mapped at product/operation level.</value>
+  </data>
+  <data name="Income_GL_to_record_application_form_charges_when_not_mapped_at_product_operation_level2" xml:space="preserve">
+    <value>Income GL to record application / form charges when not mapped at product/operation level.</value>
+  </data>
+  <data name="Income_GL_to_record_application_form_charges_when_not_mapped_at_product_operation_level3" xml:space="preserve">
+    <value>Income GL to record application / form charges when not mapped at product/operation level.</value>
+  </data>
+  <data name="Income_GL_to_record_application_form_charges_when_not_mapped_at_product_operation_level4" xml:space="preserve">
+    <value>Income GL to record application / form charges when not mapped at product/operation level.</value>
+  </data>
+  <data name="Teller_cash_holding_GL_for_counter_operations_and_end_of_day_teller_balancing" xml:space="preserve">
+    <value>Teller cash holding GL for counter operations and end-of-day teller balancing.</value>
+  </data>
+  <data name="Main_branch_cash_stock_GL_Used_for_vault_receipts_issues_and_till_vault_transfers" xml:space="preserve">
+    <value>Main branch cash stock GL. Used for vault receipts, issues, and till↔vault transfers.</value>
+  </data>
+  <data name="Used_when_actual_cash_exceeds_book_balance_after_teller_vault_reconciliation_overage" xml:space="preserve">
+    <value>Used when actual cash exceeds book balance after teller/vault reconciliation (overage).</value>
+  </data>
+  <data name="Cash_In_Hand_Till" xml:space="preserve">
+    <value>Cash In Hand (Till)</value>
+  </data>
+  <data name="Selecting_a_branch_reloads_the_account_dropdowns_with_that_branchs_GL_accounts" xml:space="preserve">
+    <value>Selecting a branch reloads the account dropdowns with &lt;em&gt;that branch’s&lt;/em&gt; GL accounts.</value>
+  </data>
+  <data name="Commission_VAT_Interest_Backup" xml:space="preserve">
+    <value>Commission, VAT &amp; Interest Backup</value>
+  </data>
+  <data name="Cash_Surplus_Overage" xml:space="preserve">
+    <value>Cash Surplus (Overage)</value>
+  </data>
+  <data name="Cash_Deficit_Shortage" xml:space="preserve">
+    <value>Cash Deficit (Shortage)</value>
+  </data>
+  <data name="Default_income_GL_for_fees_charges_when_a_product_specific_revenue_GL_is_not_supplied" xml:space="preserve">
+    <value>Default income GL for fees/charges when a product-specific revenue GL is not supplied.</value>
+  </data>
+  <data name="Settlement_GL_for_CamCCUL_network_postings_when_a_more_specific_mapping_is_not_provided" xml:space="preserve">
+    <value>Settlement GL for CamCCUL network postings when a more specific mapping is not provided.</value>
+  </data>
+  <data name="Clearing_settlement_GL_for_partner_transactions_agents_wallets_third_party_processors_when_a_specific_GL_is_not_defined" xml:space="preserve">
+    <value>Clearing / settlement GL for partner transactions (agents, wallets, third-party processors) when a specific GL is not defined.</value>
+  </data>
+  <data name="This_GL_is_used_as_a_last_resort_suspense_account_when_the_system_cannot_resolve_a_more_specific_Branch_GL_missing_Affiliate_Branch_mapping_invalid_config" xml:space="preserve">
+    <value>This GL is used as a &lt;strong&gt;last-resort suspense account&lt;/strong&gt; when the system cannot  resolve a more specific Branch GL (e.g. missing Affiliate→Branch mapping, invalid config, etc.).</value>
+  </data>
+  <data name="Commission_VAT_amp_Fee_Backup_Accounts" xml:space="preserve">
+    <value>Commission, VAT &amp;amp; Fee Backup Accounts</value>
+  </data>
+  <data name="Loan_Transit_And_Interest" xml:space="preserve">
+    <value>Loan Transit &amp;amp; Interest</value>
+  </data>
+  <data name="Inter_branch_Network_and_Partner_Settlement" xml:space="preserve">
+    <value>Inter-branch, Network &amp;amp; Partner Settlement</value>
+  </data>
+  <data name="Income_and_Generi_Backup_Revenue" xml:space="preserve">
+    <value>Income &amp;amp; Generic Backup Revenue</value>
+  </data>
+  <data name="This_GL_is_not_used_for_same_day_reversals" xml:space="preserve">
+    <value>This GL is &lt;em&gt;not used&lt;/em&gt; for same-day reversals</value>
+  </data>
+  <data name="When_a_reversal_is_performed_within_the_same_accounting_day_as_the_original_transaction" xml:space="preserve">
+    <value>When a reversal is performed within the &lt;strong&gt;same accounting day as the original transaction&lt;/strong&gt;</value>
+  </data>
+  <data name="Core_Cash_Control_Till_Vault" xml:space="preserve">
+    <value>Core Cash Control (Till &amp;amp; Vault)</value>
+  </data>
+  <data name="Used_when_physical_cash_book_balance_after_teller_vault_reconciliation" xml:space="preserve">
+    <value>Used when physical cash &amp;gt; book balance after teller/vault reconciliation.</value>
+  </data>
+  <data name="Used_when_physical_cash_book_balance_after_reconciliation" xml:space="preserve">
+    <value>Used when physical cash &amp;lt; book balance after reconciliation.</value>
+  </data>
+  <data name="when_resolution_fails_postings_are_directed_here_instead_of_failing" xml:space="preserve">
+    <value>when resolution fails, postings are directed here instead of failing.</value>
+  </data>
+  <data name="configure_a_single_controlled_suspense_GL_per_branch_here_and_reclassify_its_balance_during_End_of_Day_using_the_fallback_mapping_console" xml:space="preserve">
+    <value>configure a single, controlled suspense GL per branch here and reclassify its balance during End-of-Day using the fallback mapping console.</value>
+  </data>
+  <data name="Each_such_posting_is_logged_for_EOD_review_including_the_supposed_GL_the_actual_suspense_GL_and_the_amount_If_this_field_is_left_empty_the_system_will_attempt_to_auto_create_the_affiliated_GL_at_the_level_of_the_Branch_GL_accounts_and_use_it_but_this_is_not_recommended_because_it_scatters_suspense_balances_across_multiple_GLs" xml:space="preserve">
+    <value>Each such posting is &lt;strong&gt;logged for EOD review&lt;/strong&gt;, including the supposed GL, the actual suspense GL, and the amount. If this field is left empty, the system will attempt to
+&lt;strong&gt;auto-create the affiliated GL at the level of the Branch GL accounts&lt;/strong&gt; and use it,
+but this is &lt;em&gt;not recommended&lt;/em&gt; because it scatters suspense balances across multiple GLs.</value>
+  </data>
+</root>

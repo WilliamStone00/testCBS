@@ -19,6 +19,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -223,11 +224,24 @@ namespace CBS.BusinessService.AccountingV2.SharedMonth
                         errs.Add($"❌ Branch '{branch.Name}' does not belong to bank '{expectedBankName}'.");
                     }
                     // 🔒 Validate branch name and code in Excel
-                    if (!ws.Cell("B2").GetString().Trim()
-                        .Equals(branch.Name, StringComparison.OrdinalIgnoreCase))
+                    //if (!ws.Cell("B2").GetString().Trim()
+                    //    .Equals(branch.Name, StringComparison.OrdinalIgnoreCase))
+                    //{
+                    //    errs.Add("❌ Branch name does not match.");
+                    //}
+
+                    string excelBranch = ws.Cell("B2").GetString();
+                    string dbBranch = branch.Name;
+
+                    excelBranch = Regex.Replace(excelBranch.Trim(), @"\s+", " ");
+                    dbBranch = Regex.Replace(dbBranch.Trim(), @"\s+", " ");
+
+                    if (!excelBranch.Equals(dbBranch, StringComparison.OrdinalIgnoreCase))
                     {
                         errs.Add("❌ Branch name does not match.");
                     }
+
+
 
                     if (!ws.Cell("B3").GetString().Trim()
                         .Equals(branch.BranchCode, StringComparison.OrdinalIgnoreCase))

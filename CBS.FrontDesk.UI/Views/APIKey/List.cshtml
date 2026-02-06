@@ -1,17 +1,17 @@
 ﻿@model List<CBS.FrontDesk.Data.Entity.Accounting_V2.API.ApiKey>
 <!-- _DataTable.cshtml -->
-
+@using Resources
 <div class="row">
     <div class="col-12">
         <!-- Header Card -->
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-key-chain me-2"></i>API Key Management
+                    <i class="mdi mdi-key-chain me-2"></i>@ApiKeyRessource.API_Key_Management
                 </h1>
                 <p class="card-text">
-                    Manage and monitor all API keys for secure access to your application services.
-                    Create, renew, revoke, and track API key usage and expiration.
+                    @ApiKeyRessource.Manage_and_monitor_all_API_keys_for_secure_access_to_your_application_services.
+                    @ApiKeyRessource.Create_renew_revoke_and_track_API_key_usage_and_expiration.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -20,7 +20,7 @@
         <!-- Tips Card -->
         <div class="card mb-3">
             <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-                <span><i class="mdi mdi-information-outline me-2"></i> API Key Management Tips</span>
+                <span><i class="mdi mdi-information-outline me-2"></i> @ApiKeyRessource.API_Key_Management_Tips</span>
                 <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseApiKeyTips" aria-expanded="false" aria-controls="collapseApiKeyTips">
                     <i class="mdi mdi-chevron-down"></i>
                 </button>
@@ -29,12 +29,12 @@
             <div id="collapseApiKeyTips" class="collapse">
                 <div class="card-body">
                     <ul>
-                        <li><i class="mdi mdi-account-outline text-primary me-2"></i> <strong>User Name:</strong> Search for API keys by the associated username to quickly find all keys for a specific user.</li>
-                        <li><i class="mdi mdi-identifier text-info me-2"></i> <strong>Key ID:</strong> Use the unique Key ID to locate a specific API key when you need to manage individual keys.</li>
-                        <li><i class="mdi mdi-shield-check-outline text-success me-2"></i> <strong>Status Monitoring:</strong> Regularly check the status column to ensure all active keys are valid and not revoked.</li>
-                        <li><i class="mdi mdi-calendar-clock text-warning me-2"></i> <strong>Expiration Dates:</strong> Monitor expiration dates closely and renew keys before they expire to avoid service interruptions.</li>
-                        <li><i class="mdi mdi-content-copy text-secondary me-2"></i> <strong>Key Prefix:</strong> Use the copy button next to each key prefix for easy reference when identifying keys in logs.</li>
-                        <li><i class="mdi mdi-toggle-switch-off text-danger me-2"></i> <strong>Security Best Practices:</strong> Regularly rotate API keys and immediately revoke any keys that may be compromised.</li>
+                        <li><i class="mdi mdi-account-outline text-primary me-2"></i> <strong>@GlobalShared.User_Name:</strong> @ApiKeyRessource.Search_for_API_keys_by_the_associated_username_to_quickly_find_all_keys_for_a_specific_user.</li>
+                        <li><i class="mdi mdi-identifier text-info me-2"></i> <strong>@ApiKeyRessource.Key_Id:</strong> @ApiKeyRessource.Use_the_unique_Key_ID_to_locate_a_specific_API_key_when_you_need_to_manage_individual_keys.</li>
+                        <li><i class="mdi mdi-shield-check-outline text-success me-2"></i> <strong>@ApiKeyRessource.Status_Monitoring:</strong> @ApiKeyRessource.Regularly_check_the_status_column_to_ensure_all_active_keys_are_valid_and_not_revoked.</li>
+                        <li><i class="mdi mdi-calendar-clock text-warning me-2"></i> <strong>@GlobalShared.Expiration_Dates:</strong> @ApiKeyRessource.Monitor_expiration_dates_closely_and_renew_keys_before_they_expire_to_avoid_service_interruptions.</li>
+                        <li><i class="mdi mdi-content-copy text-secondary me-2"></i> <strong>@GlobalShared.Key_Prefix:</strong> @ApiKeyRessource.Use_the_copy_button_next_to_each_key_prefix_for_easy_reference_when_identifying_keys_in_logs.</li>
+                        <li><i class="mdi mdi-toggle-switch-off text-danger me-2"></i> <strong>@ApiKeyRessource.Security_Best_Practices:</strong> @ApiKeyRessource.Regularly_rotate_API_keys_and_immediately_revoke_any_keys_that_may_be_compromised.</li>
                     </ul>
                 </div>
             </div>
@@ -43,18 +43,18 @@
         <!-- Filter Card -->
         <div class="card mb-3">
             <div class="card-body">
-                <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> Filter Api Key</h5>
+                <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> @ApiKeyRessource.Filter_Api_Key</h5>
                 <!-- Filters (username + id) -->
                 <div class="mb-3">
                     <form id="apiKeyFilterForm" autocomplete="off" onsubmit="return false;">
                         <div class="row g-2 align-items-end">
                             <div class="col-md-6">
-                                <label class="form-label">User Name</label>
+                                <label class="form-label">@GlobalShared.User_Name</label>
                                 <input type="text" id="filterUserName" name="UserName" class="form-control" placeholder="Search by user name" />
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label">Key Id</label>
+                                <label class="form-label">@ApiKeyRessource.Key_Id</label>
                                 <input type="text" id="filterId" name="Id" class="form-control" placeholder="Search by key id" />
                             </div>
                         </div>
@@ -63,10 +63,10 @@
                         <div class="row mt-2">
                             <div class="col-md-12 d-flex">
                                 <button id="applyApiKeyFilterBtn" type="button" class="btn btn-primary me-2 w-100" onclick="applyApiKeyFilter()">
-                                    <i class="mdi mdi-magnify"></i> Apply Filter
+                                    <i class="mdi mdi-magnify"></i> @GlobalShared.Apply_Filter
                                 </button>
                                 <button id="resetApiKeyFilterBtn" type="button" class="btn btn-secondary me-2 w-100" onclick="resetApiKeyFilter()">
-                                    <i class="mdi mdi-refresh"></i> Reset
+                                    <i class="mdi mdi-refresh"></i> @GlobalShared.Reset
                                 </button>
                             </div>
                         </div>
@@ -79,7 +79,7 @@
         <div class="card">
             <div class="card-body">
 
-                <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> API Keys List</h5>
+                <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> @ApiKeyRessource.API_Keys_List</h5>
                 <div class="table-responsive">
                     <table id="apiKeysTable" class="table table-striped table-hover table-bordered" style="width:100%">
                         <colgroup>
@@ -94,13 +94,13 @@
 
                         <thead class="table-light">
                             <tr>
-                                <th>User Name</th>
-                                <th>Key Prefix</th>
-                                <th>Created At</th>
-                                <th>Expiration Date</th>
-                                <th>Modified Date</th>
-                                <th>Status</th>
-                                <th>Actions</th>
+                                <th>@GlobalShared.User_Name</th>
+                                <th>@GlobalShared.Key_Prefix</th>
+                                <th>@GlobalShared.Created_At</th>
+                                <th>@GlobalShared.Expiration_Date</th>
+                                <th>@GlobalShared.Modified_Date</th>
+                                <th>@GlobalShared.Status</th>
+                                <th>@GlobalShared.Actions</th>
                             </tr>
                         </thead>
                         <tbody id="apiKeysTbody">

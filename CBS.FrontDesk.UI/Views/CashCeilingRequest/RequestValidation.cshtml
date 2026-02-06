@@ -1,7 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.CashCeilingManagement.CashCeilingRequest
     @using Resources
 @{
-    ViewBag.Title = @RequestValidation.CashRequisitionApproval;
+    ViewBag.Title = @CashCeilingRequestRessource.CashRequisitionApproval;
 }
 <div class="row">
     <div class="col-12">
@@ -11,19 +11,19 @@
                 <h1 class="card-title text-primary">
                     @if (Model.RequestType == "Cash_To_Vault")
                     {
-                        <span>@RequestValidation.CashToVaultValidation</span>
+                        <span>@CashCeilingRequestRessource.CashToVaultValidation</span>
                     }
                     else if (Model.RequestType == "Subteller_Cash_To_PrimaryTeller")
                     {
-                        <span>@RequestValidation.SubTillToPrimaryTillValidation</span>
+                        <span>@CashCeilingRequestRessource.SubTillToPrimaryTillValidation</span>
                     }
                     else
                     {
-                        <span>@RequestValidation.CashToVaultValidation</span>
+                        <span>@CashCeilingRequestRessource.CashToVaultValidation</span>
                     }
                 </h1>
                 <p class="card-text text-muted">
-                    @RequestValidation.ValidateAndManageCashCeilingRequests.
+                    @CashCeilingRequestRessource.ValidateAndManageCashCeilingRequests.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -37,7 +37,7 @@
     <!-- Tips Section -->
     <div class="card mb-2">
         <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-            <span><i class="mdi mdi-information-outline me-2"></i> @RequestValidation.TIPS</span>
+            <span><i class="mdi mdi-information-outline me-2"></i> @GlobalShared.TIPS_UC</span>
             <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseApprovalTips" aria-expanded="false" aria-controls="collapseApprovalTips">
                 <i class="mdi mdi-chevron-down"></i>
             </button>
@@ -45,11 +45,11 @@
         <div id="collapseApprovalTips" class="collapse">
             <div class="card-body">
                 <ul class="mb-0">
-                    <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @RequestValidation.EnsureTheRequestDetailsAreAccurate.</li>
-                    <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @RequestValidation.VerifyTheRequestedAmountAlignsWithBranch.</li>
-                    <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> @RequestValidation.IfTheRequestTypeIs <strong>@RequestValidation.Cash_To_Vault</strong>, @RequestValidation.EnsureTheCashIsDeductedFromCashInHand.</li>
-                    <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> @RequestValidation.IfTheRequestTypeIs <strong>@RequestValidation.Subteller_Cash_To_PrimaryTeller</strong>, @RequestValidation.EnsureTheBalanceIsReducedFromTheSubteller.</li>
-                    <li><i class="mdi mdi-information-outline text-primary me-2"></i> @RequestValidation.ApprovalRejectionOrPendingStatusChanges.</li>
+                    <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @CashCeilingRequestRessource.EnsureTheRequestDetailsAreAccurateBeforeValidation.</li>
+                    <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @CashCeilingRequestRessource.VerifyTheRequestedAmountAlignsWithBranch.</li>
+                    <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> @CashCeilingRequestRessource.IfTheRequestTypeIs <strong>@CashCeilingRequestRessource.CashToVault</strong>, @CashCeilingRequestRessource.EnsureTheCashIsDeductedFromCashInHand.</li>
+                    <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> @CashCeilingRequestRessource.IfTheRequestTypeIs <strong>@CashCeilingRequestRessource.Subteller_Cash_To_PrimaryTeller</strong>, @CashCeilingRequestRessource.EnsureTheBalanceIsReducedFromTheSubteller.</li>
+                    <li><i class="mdi mdi-information-outline text-primary me-2"></i> @CashCeilingRequestRessource.ApprovalRejectionOrPendingStatus.</li>
                 </ul>
             </div>
         </div>
@@ -68,7 +68,7 @@
                                     data-bs-target="#accordionPopoutIcon-3"
                                     aria-expanded="true"
                                     aria-controls="accordionPopoutIcon-3">
-                                <i class="mdi mdi-cash-multiple me-2"></i> @RequestValidation.ApprovalManagement
+                                <i class="mdi mdi-cash-multiple me-2"></i> @GlobalShared.Approval_management
                             </button>
                         </h2>
                         <div id="accordionPopoutIcon-3" class="accordion-collapse collapse show" data-bs-parent="#accordionPopoutIcon">
@@ -79,8 +79,8 @@
                                             <div class="card-body d-sm-flex d-block">
                                                 <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0 ms-auto">
                                                     <div class="ms-3">
-                                                        <a type="button" href="/CashCeilingRequest/Validation" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="@RequestValidation.ViewRequests">
-                                                            <i class="mdi mdi-view-list mdi-18px"></i> @RequestValidation.ViewRequests
+                                                        <a type="button" href="/CashCeilingRequest/Validation" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="@GlobalShared.View_requests">
+                                                            <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.View_requests
                                                         </a>
                                                     </div>
                                                 </div>
@@ -88,7 +88,7 @@
                                         </div>
                                         <div class="accordion-body">
                                             <div id="datalistingview">
-                                                @Html.Partial("_RequestValidation")
+                                                @Html.Partial("_CashCeilingRequestRessource")
                                             </div>
                                         </div>
                                     </div>

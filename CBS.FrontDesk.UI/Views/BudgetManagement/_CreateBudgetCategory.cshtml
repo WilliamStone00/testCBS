@@ -30,15 +30,15 @@
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.BudgetCategory.CategoryName, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.BudgetCategory.CategoryName, "", new { @class = "text-danger" })
-                                        <label>@GlobalBudgetManagement.CategoryName</label>
+                                        <label>@GlobalShared.Category_name</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating form-floating-outline">
 
-                                        @Html.DropDownListFor(m => m.BudgetCategory.ChartOfAccountId, new SelectList(ViewBag.ChartOfAccounts == null ? "" : ViewBag.ChartOfAccounts, "Text", "Value"), "---"+ @GlobalBudgetManagement.SelectChartOfAccount +"---", new { @class = "form-control select2", @search = "true" })
+                                        @Html.DropDownListFor(m => m.BudgetCategory.ChartOfAccountId, new SelectList(ViewBag.ChartOfAccounts == null ? "" : ViewBag.ChartOfAccounts, "Text", "Value"), "---"+ GlobalShared.Select_chart_of_account +"---", new { @class = "form-control select2", @search = "true" })
                                         @Html.ValidationMessageFor(model => model.BudgetCategory.ChartOfAccountId, "", new { @class = "text-danger" })
-                                        <label>@GlobalBudgetManagement.ChartOfAccount</label>
+                                        <label>@GlobalShared.Chart_of_Accounts</label>
                                     </div>
                                 </div>
 
@@ -47,7 +47,7 @@
                                         @Html.TextAreaFor(m => m.BudgetCategory.Description, new { @class = "form-control", @style = "height: 200px;" })
                                         @Html.ValidationMessageFor(model => model.BudgetCategory.Description, "", new { @class = "text-danger" })
 
-                                        <label for="Description"> @GlobalBudgetManagement.Description</label>
+                                        <label for="Description"> @GlobalShared.Description</label>
                                     </div>
                                 </div>
                             </div>

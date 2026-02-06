@@ -95,10 +95,10 @@
         <fieldset class="fieldset-custom">
             <legend style="color: green">
                 @(isNewSubscription
-        ? CashDesk_OperationForm.MemberOnboardingDeposit
+        ? CashDeskRessource.MemberOnboardingDeposit
         : (Model.IsDailyCollector
             ? "Daily Collector Cash Clearance"
-            : CashDesk_OperationForm.CashIn))
+            : GlobalShared.Cash_In))
             </legend>
 
 
@@ -117,7 +117,7 @@
                     <div class="col-md-8">
                         <div class="form-floating form-floating-outline">
                             <span class="formatted-amount shadow-box float-start mb-2">
-                                @CashDesk_OperationForm.MemberName : @Model.Customer.name
+                                @GlobalShared.Member_name : @Model.Customer.name
                             </span>
                         </div>
                     </div>
@@ -125,7 +125,7 @@
                     <div class="col-md-4">
                         <div class="form-floating form-floating-outline d-flex justify-content-end">
                             <span class="formatted-amount shadow-box mb-2" id="lblDepositRequest_amount">
-                                @CashDesk_OperationForm.TotalAmount : <b>@Model.MemberOnboardingDetailDto.GrandTotal.ToString("N0")</b>
+                                @GlobalShared.Total_amount : <b>@Model.MemberOnboardingDetailDto.GrandTotal.ToString("N0")</b>
                             </span>
                             <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0" />
                         </div>
@@ -137,7 +137,7 @@
                             <div class="form-check form-switch d-flex align-items-center gap-2 m-0">
                                 <input class="form-check-input" type="checkbox" id="hideBalanceCheckbox" onchange="toggleHideBalance()" />
                                 <label class="form-check-label fw-bold m-0" id="hideBalanceLabel" for="hideBalanceCheckbox" style="font-size:0.95rem;">
-                                    @CashDesk_OperationForm.BalancewWllBeShownOnReceipt
+                                    @CashDeskRessource.BalancewWllBeShownOnReceipt
                                 </label>
                             </div>
 
@@ -156,8 +156,8 @@
                         <div class="col-md-12">
                             <div class="form-floating form-floating-outline mb-3">
                                 <input type="text" class="form-control shadow-input-boxes" id="CustomerAlphaNumber"
-                                       placeholder=" @CashDesk_OperationForm.MemberCustomAccountNumberExample" required />
-                                <label for="CustomerAlphaNumber">@CashDesk_OperationForm.MemberCustomAccountNumber</label>
+                                       placeholder=" @CashDeskRessource.MemberCustomAccountNumberExample" required />
+                                <label for="CustomerAlphaNumber">@CashDeskRessource.MemberCustomAccountNumber</label>
                             </div>
                         </div>
                     }
@@ -227,14 +227,14 @@
                                             </th>
                                         </tr>
                                         <tr>
-                                            <th style="display: none;"> @CashDesk_OperationForm.ProductID</th>
-                                            <th> @CashDesk_OperationForm.Accounts</th>
-                                            <th> @CashDesk_OperationForm.Balance</th>
-                                            <th> @CashDesk_OperationForm.Amount</th>
-                                            <th> @CashDesk_OperationForm.Fee</th>
-                                            <th> @CashDesk_OperationForm.Total</th>
-                                            <th> @CashDesk_OperationForm.Conf</th>
-                                            <th> @CashDesk_OperationForm.Inc</th>
+                                            <th style="display: none;"> @GlobalShared.Product_ID</th>
+                                            <th> @GlobalShared.Accounts</th>
+                                            <th> @GlobalShared.Balance</th>
+                                            <th> @GlobalShared.Amount</th>
+                                            <th> @CashDeskRessource.Fee</th>
+                                            <th> @GlobalShared.Total</th>
+                                            <th> @GlobalShared.Conf</th>
+                                            <th> @GlobalShared.Inc</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -269,7 +269,7 @@
                                             <td colspan="4"></td>
                                         </tr>
                                         <tr>
-                                            <td colspan="3" class="text-end fw-bold"> @CashDesk_OperationForm.Difference:</td>
+                                            <td colspan="3" class="text-end fw-bold"> @GlobalShared.Difference:</td>
                                             <td id="tableBalance">0</td>
                                             <td colspan="4"></td>
                                         </tr>
@@ -601,11 +601,11 @@
                     <input type="hidden" name="customerId" value="@Model.CustomerId" id="customerId" />
 
                     <button type="submit" id="submit" class="btn btn-primary me-2" onclick="PostCashIn()">
-                        <i class="fas fa-money-bill-wave me-1"></i> @CashDesk_OperationForm.CashInB
+                        <i class="fas fa-money-bill-wave me-1"></i> @GlobalShared.Cash_In
                     </button>
 
                     <button type="reset" class="btn btn-outline-secondary">
-                        <i class="fas fa-sync-alt me-1"></i> @CashDesk_OperationForm.Reset
+                        <i class="fas fa-sync-alt me-1"></i> @GlobalShared.Reset
                     </button>
                 </div>
             </div>
@@ -620,19 +620,19 @@ else if (ViewBag.Operation == "withdrawalnotification")
 {
     <div class="form-wrapper">
         <fieldset class="fieldset-custom">
-            <legend style="color: red">S.W.N<small>(@CashDesk_OperationForm.SavingWithdrawalNotification)</small></legend>
+            <legend style="color: red">S.W.N<small>(@CashDeskRessource.SavingWithdrawalNotification)</small></legend>
             <hr style="border: 2px solid red;" />
             <div class="change-group">
                 <div class="row mt-2 gy-4">
                     <div class="col-md-8">
                         <div class="form-floating form-floating-outline">
-                            <span class="formatted-amount shadow-box float-start">@CashDesk_OperationForm.MemberName: @Model.Customer.name</span>
+                            <span class="formatted-amount shadow-box float-start">@GlobalShared.Member_name: @Model.Customer.name</span>
                         </div>
                     </div>
 
                     <div class="col-md-4">
                         <div class="form-floating form-floating-outline">
-                            <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@CashDesk_OperationForm.TotalAmount: 0.0</span>
+                            <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@GlobalShared.Total_amount: 0.0</span>
                             <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0">
                         </div>
                     </div>
@@ -641,7 +641,7 @@ else if (ViewBag.Operation == "withdrawalnotification")
                     {
 
                         <div class="text-center my-3">
-                            <p>@Model.Customer.name @CashDesk_OperationForm.hasNoNotifcationToWithdrawalFromSavingAccount. <br /><i>@CashDesk_OperationForm.NormalwithdrawalChargesFromSavingShallBeAppled.</i> </p>
+                            <p>@Model.Customer.name @CashDeskRessource.hasNoNotifcationToWithdrawalFromSavingAccount. <br /><i>@CashDeskRessource.NormalwithdrawalChargesFromSavingShallBeAppled.</i> </p>
                         </div>
                     }
                     else
@@ -650,14 +650,14 @@ else if (ViewBag.Operation == "withdrawalnotification")
                             <table class="table table-hover" id="myDataTableT">
                                 <thead class="table-light">
                                     <tr>
-                                        <th style="display:none;">@CashDesk_OperationForm.NotificationId</th>
-                                        <th>@CashDesk_OperationForm.RequestedAmount</th>
-                                        <th>@CashDesk_OperationForm.FormCharges</th>
-                                        <th>@CashDesk_OperationForm.Status</th>
-                                        <th>@CashDesk_OperationForm.IDW</th>
-                                        <th>@CashDesk_OperationForm.Grace</th>
-                                        <th>@CashDesk_OperationForm.Total</th>
-                                        <th>@CashDesk_OperationForm.Conf</th>
+                                        <th style="display:none;">@GlobalShared.Notification_Id</th>
+                                        <th>@GlobalShared.Requested_Amount</th>
+                                        <th>@GlobalShared.Form_charges</th>
+                                        <th>@GlobalShared.Status</th>
+                                        <th>@GlobalShared.IDW</th>
+                                        <th>@GlobalShared.Grace</th>
+                                        <th>@GlobalShared.Total</th>
+                                        <th>@GlobalShared.Conf</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -691,12 +691,12 @@ else if (ViewBag.Operation == "withdrawalnotification")
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <td colspan="5" style="text-align: right;"><strong>@CashDesk_OperationForm.Total:</strong></td>
+                                        <td colspan="5" style="text-align: right;"><strong>@GlobalShared.Total:</strong></td>
                                         <td id="tableTotal">0</td>
                                         <td></td> <!-- Empty cell to align with the checkbox column -->
                                     </tr>
                                     <tr>
-                                        <td colspan="6" style="text-align: right;"><strong>@CashDesk_OperationForm.Balance:</strong></td>
+                                        <td colspan="6" style="text-align: right;"><strong>@GlobalShared.Balance:</strong></td>
                                         <td id="tableBalance">0</td>
                                     </tr>
                                 </tfoot>
@@ -706,13 +706,13 @@ else if (ViewBag.Operation == "withdrawalnotification")
                             <input type="hidden" name="OperationType" value="SavingWithdrawalFormFee" id="OperationType" />
                             <input type="hidden" name="customerId" value="@Model.CustomerId" id="customerId" />
                             <button type="submit" id="submit" class="btn btn-danger me-2" onclick="PostWithdrawalFromFee()">
-                                <i class="fas fa-money-bill-wave me-1"></i> @CashDesk_OperationForm.ConfirmPayment
+                                <i class="fas fa-money-bill-wave me-1"></i> @GlobalShared.Confirm_payment
                             </button>
                             <button type="submit" id="submit" class="btn btn-secondary me-2" onclick="Reprint()">
-                                <i class="fas fa-print me-1"></i> @CashDesk_OperationForm.RePrint
+                                <i class="fas fa-print me-1"></i> @GlobalShared.Re_print
                             </button>
                             <button type="reset" class="btn btn-outline-secondary">
-                                <i class="fas fa-sync-alt me-1"></i> @CashDesk_OperationForm.Reset
+                                <i class="fas fa-sync-alt me-1"></i> @GlobalShared.Reset
                             </button>
                         </div>
                         <hr style="border: 2px solid red;" />
@@ -728,19 +728,19 @@ else if (ViewBag.Operation == "cashout")
 {
     <div class="form-wrapper">
         <fieldset class="fieldset-custom">
-            <legend style="color: red"> @CashDesk_OperationForm.CashOut</legend>
+            <legend style="color: red"> @GlobalShared.Cash_out</legend>
             <hr style="border: 2px solid red;" />
             <div class="change-group">
                 <div class="row mt-2 gy-4">
                     <div class="col-md-8">
                         <div class="form-floating form-floating-outline">
-                            <span class="formatted-amount shadow-box float-start"> @CashDesk_OperationForm.MemberName: @Model.Customer.name</span>
+                            <span class="formatted-amount shadow-box float-start"> @GlobalShared.Member_name: @Model.Customer.name</span>
                         </div>
                     </div>
 
                     <div class="col-md-4">
                         <div class="form-floating form-floating-outline">
-                            <span class="formatted-amount shadow-box" id="lblDepositRequest_amount"> @CashDesk_OperationForm.TotalAmount: 0.0</span>
+                            <span class="formatted-amount shadow-box" id="lblDepositRequest_amount"> @GlobalShared.Total_amount: 0.0</span>
                             <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0">
                         </div>
                     </div>
@@ -751,7 +751,7 @@ else if (ViewBag.Operation == "cashout")
                         <div class="form-check form-switch d-flex align-items-center gap-2 mt-1">
                             <input class="form-check-input" type="checkbox" id="hideBalanceCheckbox" onchange="toggleHideBalance()" />
                             <label class="form-check-label fw-bold" id="hideBalanceLabel" for="hideBalanceCheckbox" style="font-size: 0.95rem;">
-                                @CashDesk_OperationForm.BalancewWllBeShownOnReceipt
+                                @CashDeskRessource.BalancewWllBeShownOnReceipt
                             </label>
                         </div>
                     </div>
@@ -761,14 +761,14 @@ else if (ViewBag.Operation == "cashout")
                         <table class="table table-hover" id="myDataTableT">
                             <thead class="table-light">
                                 <tr>
-                                    <th style="display:none;">@CashDesk_OperationForm.ProductID</th>
-                                    <th>@CashDesk_OperationForm.OrdinaryAccounts</th>
-                                    <th>@CashDesk_OperationForm.Balance</th>
-                                    <th>@CashDesk_OperationForm.Amount</th>
-                                    <th>>@CashDesk_OperationForm.FeeCharges</th>
-                                    <th>@CashDesk_OperationForm.Total</th>
-                                    <th>@CashDesk_OperationForm.Conf</th>
-                                    <th>@CashDesk_OperationForm.Inc</th>
+                                    <th style="display:none;">@GlobalShared.Product_ID</th>
+                                    <th>@GlobalShared.Ordinary_accounts</th>
+                                    <th>@GlobalShared.Balance</th>
+                                    <th>@GlobalShared.Amount</th>
+                                    <th>>@GlobalShared.Fee_Charges</th>
+                                    <th>@GlobalShared.Total</th>
+                                    <th>@GlobalShared.Conf</th>
+                                    <th>@GlobalShared.Inc</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -801,12 +801,12 @@ else if (ViewBag.Operation == "cashout")
 
                             <tfoot>
                                 <tr>
-                                    <td colspan="4" style="text-align: right;"><strong>>@CashDesk_OperationForm.Total:</strong></td>
+                                    <td colspan="4" style="text-align: right;"><strong>>@GlobalShared.Total:</strong></td>
                                     <td id="tableTotal">0</td>
                                     <td></td> <!-- Empty cell to align with the checkbox column -->
                                 </tr>
                                 <tr>
-                                    <td colspan="4" style="text-align: right;"><strong>>@CashDesk_OperationForm.Balance:</strong></td>
+                                    <td colspan="4" style="text-align: right;"><strong>>@GlobalShared.Balance:</strong></td>
                                     <td id="tableBalance">0</td>
                                 </tr>
                             </tfoot>
@@ -818,13 +818,13 @@ else if (ViewBag.Operation == "cashout")
                     <input type="hidden" name="OperationType" value="Withdrawal" id="OperationType" />
                     <input type="hidden" name="customerId" value="@Model.CustomerId" id="customerId" />
                     <button type="submit" id="submit" class="btn btn-danger me-2" onclick="PostCashOut()">
-                        <i class="fas fa-money-bill-wave me-1"></i> >@CashDesk_OperationForm.CashOutB
+                        <i class="fas fa-money-bill-wave me-1"></i> >@GlobalShared.Cash_out
                     </button>
                     <button type="submit" id="submit" class="btn btn-secondary me-2" onclick="Reprint()">
-                        <i class="fas fa-print me-1"></i> >@CashDesk_OperationForm.RePrint
+                        <i class="fas fa-print me-1"></i> >@GlobalShared.Re_print
                     </button>
                     <button type="reset" class="btn btn-outline-secondary">
-                        <i class="fas fa-sync-alt me-1"></i> >@CashDesk_OperationForm.Reset
+                        <i class="fas fa-sync-alt me-1"></i> >@GlobalShared.Reset
                     </button>
                 </div>
             </div>
@@ -837,18 +837,18 @@ else if (ViewBag.Operation == "cashoutsws")
 {
     <div class="form-wrapper">
         <fieldset class="fieldset-custom">
-            <legend style="color: red">@CashDesk_OperationForm.CashOutSws</legend>
+            <legend style="color: red">@CashDeskRessource.CashOutSws</legend>
             <hr style="border: 2px solid red;" />
             <div class="change-group">
                 <div class="row mt-2 gy-4">
                     <div class="col-md-8">
                         <div class="form-floating form-floating-outline">
-                            <span class="formatted-amount shadow-box float-start">@CashDesk_OperationForm.MemberName: @Model.Customer.name</span>
+                            <span class="formatted-amount shadow-box float-start">@GlobalShared.Member_name: @Model.Customer.name</span>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-floating form-floating-outline">
-                            <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@CashDesk_OperationForm.TotalAmount: 0.0</span>
+                            <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@GlobalShared.Total_amount: 0.0</span>
                             <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0">
                         </div>
                     </div>
@@ -857,7 +857,7 @@ else if (ViewBag.Operation == "cashoutsws")
                         <div class="form-check form-switch d-flex align-items-center gap-2 mt-1">
                             <input class="form-check-input" type="checkbox" id="hideBalanceCheckbox" onchange="toggleHideBalance()" />
                             <label class="form-check-label fw-bold" id="hideBalanceLabel" for="hideBalanceCheckbox" style="font-size: 0.95rem;">
-                                @CashDesk_OperationForm.BalancewWllBeShownOnReceipt
+                                @CashDeskRessource.BalancewWllBeShownOnReceipt
                             </label>
                         </div>
                     </div>
@@ -867,14 +867,14 @@ else if (ViewBag.Operation == "cashoutsws")
                             <div class="form-floating form-floating-outline">
                                 @Html.TextBoxFor(m => m.BulkDeposit.CheckName, new { @class = "form-control shadow-input-boxes", @id = "CheckName" })
                                 @Html.ValidationMessageFor(m => m.BulkDeposit.CheckName, "", new { @class = "text-danger" })
-                                <label>@CashDesk_OperationForm.CheckName</label>
+                                <label>@GlobalShared.Check_name</label>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-floating form-floating-outline">
                                 @Html.TextBoxFor(m => m.BulkDeposit.CheckNumber, new { @class = "form-control shadow-input-boxes", @id = "CheckNumber" })
                                 @Html.ValidationMessageFor(m => m.BulkDeposit.CheckNumber, "", new { @class = "text-danger" })
-                                <label>@CashDesk_OperationForm.CheckNumber</label>
+                                <label>@GlobalShared.Check_number</label>
                             </div>
                         </div>
                     </div>
@@ -883,14 +883,14 @@ else if (ViewBag.Operation == "cashoutsws")
                             <table class="table table-hover" id="myDataTableT">
                                 <thead class="table-light">
                                     <tr>
-                                        <th style="display:none;">@CashDesk_OperationForm.ProductID</th>
-                                        <th>@CashDesk_OperationForm.OrdinaryAccounts</th>
-                                        <th>@CashDesk_OperationForm.Balance</th>
-                                        <th>@CashDesk_OperationForm.Amount</th>
-                                        <th>@CashDesk_OperationForm.FeeCharges</th>
-                                        <th>@CashDesk_OperationForm.Total</th>
-                                        <th>@CashDesk_OperationForm.Conf</th>
-                                        <th>@CashDesk_OperationForm.Inc</th>
+                                        <th style="display:none;">@GlobalShared.Product_ID</th>
+                                        <th>@GlobalShared.Ordinary_accounts</th>
+                                        <th>@GlobalShared.Balance</th>
+                                        <th>@GlobalShared.Amount</th>
+                                        <th>@GlobalShared.Fee_Charges</th>
+                                        <th>@GlobalShared.Total</th>
+                                        <th>@GlobalShared.Conf</th>
+                                        <th>@GlobalShared.Inc</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -921,12 +921,12 @@ else if (ViewBag.Operation == "cashoutsws")
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <td colspan="3" style="text-align: right;"><strong>@CashDesk_OperationForm.Total:</strong></td>
+                                        <td colspan="3" style="text-align: right;"><strong>@GlobalShared.Total:</strong></td>
                                         <td id="tableTotal">0</td>
                                         <td></td> <!-- Empty cell to align with the checkbox column -->
                                     </tr>
                                     <tr>
-                                        <td colspan="3" style="text-align: right;"><strong>@CashDesk_OperationForm.Balance:</strong></td>
+                                        <td colspan="3" style="text-align: right;"><strong>@GlobalShared.Balance:</strong></td>
                                         <td id="tableBalance">0</td>
                                     </tr>
                                 </tfoot>
@@ -940,13 +940,13 @@ else if (ViewBag.Operation == "cashoutsws")
                     <input type="hidden" name="OperationType" value="WithdrawalSWS" id="OperationType" />
                     <input type="hidden" name="customerId" value="@Model.CustomerId" id="customerId" />
                     <button type="submit" id="submit" class="btn btn-danger me-2" onclick="PostCashOutSWS()">
-                        <i class="fas fa-money-bill-wave me-1"></i> @CashDesk_OperationForm.CashOutB
+                        <i class="fas fa-money-bill-wave me-1"></i> @GlobalShared.Cash_out
                     </button>
                     <button type="submit" id="submit" class="btn btn-secondary me-2" onclick="Reprint()">
-                        <i class="fas fa-print me-1"></i> @CashDesk_OperationForm.RePrint
+                        <i class="fas fa-print me-1"></i> @GlobalShared.Re_print
                     </button>
                     <button type="reset" class="btn btn-outline-secondary">
-                        <i class="fas fa-sync-alt me-1"></i> @CashDesk_OperationForm.Reset
+                        <i class="fas fa-sync-alt me-1"></i> @GlobalShared.Reset
                     </button>
                 </div>
             </div>
@@ -967,7 +967,7 @@ else if (ViewBag.Operation == "repayment")
                     <div class="col-md-8">
                         <div class="form-floating form-floating-outline">
                             <span class="formatted-amount shadow-box float-start">
-                                @CashDesk_OperationForm.MemberName: @Model.Customer.name
+                                @GlobalShared.Member_name: @Model.Customer.name
                             </span>
                         </div>
                     </div>
@@ -975,7 +975,7 @@ else if (ViewBag.Operation == "repayment")
                     <div class="col-md-4">
                         <div class="form-floating form-floating-outline d-flex flex-column align-items-end gap-2">
                             <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">
-                                @CashDesk_OperationForm.TotalAmount: 0.0
+                                @GlobalShared.Total_amount: 0.0
                             </span>
                             <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0" />
                             <input type="hidden" class="form-control vat-input shadow-input-boxes" id="vatRate" value="0" />
@@ -1017,18 +1017,18 @@ else if (ViewBag.Operation == "repayment")
                         <table class="table table-hover" id="myDataTableT">
                             <thead class="table-light">
                                 <tr>
-                                    <th style="display:none;">@CashDesk_OperationForm.LoanId</th>
-                                    <th>@CashDesk_OperationForm.Date</th>
-                                    <th style="display:none;">@CashDesk_OperationForm.Amount</th>
-                                    <th>@CashDesk_OperationForm.Balance</th>
-                                    <th>@CashDesk_OperationForm.Int</th>
-                                    <th style="display:none;">@CashDesk_OperationForm.VRate</th>
-                                    <th style="display:none;">@CashDesk_OperationForm.DueA</th>
-                                    <th>@CashDesk_OperationForm.EnterCapital</th>
-                                    <th>@CashDesk_OperationForm.EnterInterest</th>
-                                    <th>@CashDesk_OperationForm.EnterPenalty</th>
-                                    <th>@CashDesk_OperationForm.Total</th>
-                                    <th>@CashDesk_OperationForm.Conf</th>
+                                    <th style="display:none;">@GlobalShared.LoanId</th>
+                                    <th>@GlobalShared.Date</th>
+                                    <th style="display:none;">@GlobalShared.Amount</th>
+                                    <th>@GlobalShared.Balance</th>
+                                    <th>@GlobalShared.Int</th>
+                                    <th style="display:none;">@GlobalShared.V_Rate</th>
+                                    <th style="display:none;">@GlobalShared.Due_A</th>
+                                    <th>@GlobalShared.EnterCapital</th>
+                                    <th>@GlobalShared.EnterInterest</th>
+                                    <th>@GlobalShared.EnterPenalty</th>
+                                    <th>@GlobalShared.Total</th>
+                                    <th>@GlobalShared.Conf</th>
                                     <th>Vat rate</th>
                                 </tr>
                             </thead>
@@ -1076,19 +1076,19 @@ else if (ViewBag.Operation == "repayment")
                             <tfoot>
                                 <tr>
                                     <td colspan="6" style="text-align: right;">
-                                        <strong>@CashDesk_OperationForm.Total:</strong>
+                                        <strong>@GlobalShared.Total:</strong>
                                     </td>
                                     <td id="tableTotal">0</td>
                                 </tr>
                                 <tr>
                                     <td colspan="6" style="text-align: right;">
-                                        <strong>@CashDesk_OperationForm.Balance:</strong>
+                                        <strong>@GlobalShared.Balance:</strong>
                                     </td>
                                     <td id="tableBalance">0</td>
                                 </tr>
                                 <tr>
                                     <td colspan="6" style="text-align: right;">
-                                        <strong>@CashDesk_OperationForm.CalculatedVAT:</strong>
+                                        <strong>@GlobalShared.Calculated_Vat:</strong>
                                     </td>
                                     <td id="calculatedVat">0</td>
                                 </tr>
@@ -1101,7 +1101,7 @@ else if (ViewBag.Operation == "repayment")
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content shadow-lg border-0">
                                 <div class="modal-header bg-info text-white">
-                                    <h5 class="modal-title" id="loanDetailsModalLabel">📋 @CashDesk_OperationForm.LoanDetails</h5>
+                                    <h5 class="modal-title" id="loanDetailsModalLabel">📋 @GlobalShared.Loan_Details</h5>
                                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body p-4">
@@ -1110,34 +1110,16 @@ else if (ViewBag.Operation == "repayment")
                                         <div class="col-6">
                                             <div class="card bg-light shadow-sm">
                                                 <div class="card-body text-center">
-                                                    <h6 class="card-title text-muted mb-1">@CashDesk_OperationForm.LoanDate</h6>
-                                                    <h4 class="card-text text-dark" id="detailLoanDate">@CashDesk_OperationForm.na</h4>
+                                                    <h6 class="card-title text-muted mb-1">@GlobalShared.Loan_Date</h6>
+                                                    <h4 class="card-text text-dark" id="detailLoanDate">@GlobalShared.N_A</h4>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-6">
                                             <div class="card bg-light shadow-sm">
                                                 <div class="card-body text-center">
-                                                    <h6 class="card-title text-muted mb-1">@CashDesk_OperationForm.Amount</h6>
-                                                    <h4 class="card-text text-dark" id="detailLoanAmount">@CashDesk_OperationForm.xaf 0</h4>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-4">
-                                        <div class="col-6">
-                                            <div class="card bg-light shadow-sm">
-                                                <div class="card-body text-center">
-                                                    <h6 class="card-title text-muted mb-1">@CashDesk_OperationForm.Balance</h6>
-                                                    <h4 class="card-text text-dark" id="detailBalance">@CashDesk_OperationForm.xaf 0</h4>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="card bg-light shadow-sm">
-                                                <div class="card-body text-center">
-                                                    <h6 class="card-title text-muted mb-1">@CashDesk_OperationForm.Interest</h6>
-                                                    <h4 class="card-text text-dark" id="detailInterest">@CashDesk_OperationForm.xaf 0</h4>
+                                                    <h6 class="card-title text-muted mb-1">@GlobalShared.Amount</h6>
+                                                    <h4 class="card-text text-dark" id="detailLoanAmount">@CashDeskRessource.XAF 0</h4>
                                                 </div>
                                             </div>
                                         </div>
@@ -1146,16 +1128,16 @@ else if (ViewBag.Operation == "repayment")
                                         <div class="col-6">
                                             <div class="card bg-light shadow-sm">
                                                 <div class="card-body text-center">
-                                                    <h6 class="card-title text-muted mb-1">@CashDesk_OperationForm.DueAmount</h6>
-                                                    <h4 class="card-text text-dark" id="detailDueAmount">@CashDesk_OperationForm.xaf 0</h4>
+                                                    <h6 class="card-title text-muted mb-1">@GlobalShared.Balance</h6>
+                                                    <h4 class="card-text text-dark" id="detailBalance">@CashDeskRessource.XAF 0</h4>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-6">
                                             <div class="card bg-light shadow-sm">
                                                 <div class="card-body text-center">
-                                                    <h6 class="card-title text-muted mb-1">@CashDesk_OperationForm.Penalty</h6>
-                                                    <h4 class="card-text text-dark" id="detailPenalty">@CashDesk_OperationForm.xaf 0</h4>
+                                                    <h6 class="card-title text-muted mb-1">@GlobalShared.Interest</h6>
+                                                    <h4 class="card-text text-dark" id="detailInterest">@GlobalShared.XAF 0</h4>
                                                 </div>
                                             </div>
                                         </div>
@@ -1164,7 +1146,25 @@ else if (ViewBag.Operation == "repayment")
                                         <div class="col-6">
                                             <div class="card bg-light shadow-sm">
                                                 <div class="card-body text-center">
-                                                    <h6 class="card-title text-muted mb-1">@CashDesk_OperationForm.vat</h6>
+                                                    <h6 class="card-title text-muted mb-1">@GlobalShared.Due_Amount</h6>
+                                                    <h4 class="card-text text-dark" id="detailDueAmount">@CashDeskRessource.XAF 0</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="card bg-light shadow-sm">
+                                                <div class="card-body text-center">
+                                                    <h6 class="card-title text-muted mb-1">@GlobalShared.Penalty</h6>
+                                                    <h4 class="card-text text-dark" id="detailPenalty">@GlobalShared.XAF 0</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <div class="col-6">
+                                            <div class="card bg-light shadow-sm">
+                                                <div class="card-body text-center">
+                                                    <h6 class="card-title text-muted mb-1">@GlobalShared.VAT</h6>
                                                     <h4 class="card-text text-dark" id="vatRate">0 %</h4>
                                                 </div>
                                             </div>
@@ -1172,7 +1172,7 @@ else if (ViewBag.Operation == "repayment")
                                         <div class="col-6">
                                             <div class="card bg-light shadow-sm">
                                                 <div class="card-body text-center">
-                                                    <h6 class="card-title text-muted mb-1">@CashDesk_OperationForm.InterestRate</h6>
+                                                    <h6 class="card-title text-muted mb-1">@GlobalShared.Interest_Rate</h6>
                                                     <h4 class="card-text text-dark" id="interestRate">0 %</h4>
                                                 </div>
                                             </div>
@@ -1181,7 +1181,7 @@ else if (ViewBag.Operation == "repayment")
                                 </div>
                                 <div class="modal-footer d-flex justify-content-between">
                                     <button type="button" class="btn btn-secondary btn-lg shadow-sm" data-bs-dismiss="modal">
-                                        <i class="bi bi-x-circle"></i> @CashDesk_OperationForm.Close
+                                        <i class="bi bi-x-circle"></i> @GlobalShared.Close
                                     </button>
                                 </div>
                             </div>
@@ -1194,13 +1194,13 @@ else if (ViewBag.Operation == "repayment")
                     <input type="hidden" name="OperationType" value="LoanRepayment" id="OperationType" />
                     <input type="hidden" name="customerId" value="@Model.CustomerId" id="customerId" />
                     <button type="submit" id="submit" class="btn btn-primary me-2" onclick="PostLoanRepayment()">
-                        <i class="fas fa-money-bill-wave me-1"></i> @CashDesk_OperationForm.RePay
+                        <i class="fas fa-money-bill-wave me-1"></i> @GlobalShared.Re_Pay
                     </button>
                     <button type="submit" id="submit" class="btn btn-secondary me-2" onclick="ReprintLoan()">
-                        <i class="fas a-print me-1"></i> @CashDesk_OperationForm.RePrint
+                        <i class="fas a-print me-1"></i> @GlobalShared.Re_print
                     </button>
                     <button type="reset" class="btn btn-outline-secondary">
-                        <i class="fas fa-sync-alt me-1"></i> @CashDesk_OperationForm.Reset
+                        <i class="fas fa-sync-alt me-1"></i> @GlobalShared.Reset
                     </button>
                 </div>
 
@@ -1361,18 +1361,18 @@ else if (ViewBag.Operation == "loanapplicationfeepayment")
 {
     <div class="form-wrapper">
         <fieldset class="fieldset-custom">
-            <legend style="color: green">@CashDesk_OperationForm.LoanFee</legend>
+            <legend style="color: green">@GlobalShared.Loan_Fee</legend>
             <hr style="border: 2px solid green;" />
             <div class="change-group">
                 <div class="row mt-2 gy-4">
                     <div class="col-md-8">
                         <div class="form-floating form-floating-outline">
-                            <span class="formatted-amount shadow-box float-start">@CashDesk_OperationForm.MemberName: @Model.Customer.name</span>
+                            <span class="formatted-amount shadow-box float-start">@GlobalShared.Member_name: @Model.Customer.name</span>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-floating form-floating-outline">
-                            <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@CashDesk_OperationForm.TotalAmount: 0.0</span>
+                            <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@GlobalShared.Total_amount: 0.0</span>
                             <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0">
                         </div>
                     </div>
@@ -1382,7 +1382,7 @@ else if (ViewBag.Operation == "loanapplicationfeepayment")
                 {
 
                     <div class="text-center my-3">
-                        <p>@Model.Customer.name @CashDesk_OperationForm.HasNoPendingLoanFee. <br /><i>Oops!!!</i> </p>
+                        <p>@Model.Customer.name @CashDeskRessource.HasNoPendingLoanFee. <br /><i>Oops!!!</i> </p>
                     </div>
                 }
                 else
@@ -1391,14 +1391,14 @@ else if (ViewBag.Operation == "loanapplicationfeepayment")
                     <table class="table table-hover" id="myDataTableT">
                         <thead class="table-light">
                             <tr>
-                                <th style="display:none;">@CashDesk_OperationForm.FeeRangeId</th>
-                                <th style="display:none;">@CashDesk_OperationForm.LoanApplicationId</th>
-                                <th style="display:none;">@CashDesk_OperationForm.Period</th>
-                                <th>@CashDesk_OperationForm.FeeLabel</th>
-                                <th>@CashDesk_OperationForm.Amount</th>
-                                <th style="display:none;">@CashDesk_OperationForm.FeeCharges</th>
-                                <th>@CashDesk_OperationForm.Total</th>
-                                <th>@CashDesk_OperationForm.Conf</th>
+                                <th style="display:none;">@GlobalShared.Fee_Range_Id</th>
+                                <th style="display:none;">@GlobalShared.Loan_Application_Id</th>
+                                <th style="display:none;">@GlobalShared.Period</th>
+                                <th>@CashDeskRessource.Fee</th>
+                                <th>@GlobalShared.Amount</th>
+                                <th style="display:none;">@GlobalShared.Fee_Charges</th>
+                                <th>@GlobalShared.Total</th>
+                                <th>@GlobalShared.Conf</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1444,12 +1444,12 @@ else if (ViewBag.Operation == "loanapplicationfeepayment")
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td colspan="2" style="text-align: right;"><strong>@CashDesk_OperationForm.Total:</strong></td>
+                                <td colspan="2" style="text-align: right;"><strong>@GlobalShared.Total:</strong></td>
                                 <td id="tableTotal">0</td>
                                 <td style="color:blue"><b>G.T: @Model.LoanApplicationFees.Sum(x => x.FeeAmount).ToString("N2")</b></td>
                             </tr>
                             <tr>
-                                <td colspan="2" style="text-align: right;"><strong>@CashDesk_OperationForm.Balance:</strong></td>
+                                <td colspan="2" style="text-align: right;"><strong>@GlobalShared.Balance:</strong></td>
                                 <td id="tableBalance">0</td>
                             </tr>
                         </tfoot>
@@ -1461,13 +1461,13 @@ else if (ViewBag.Operation == "loanapplicationfeepayment")
                 <input type="hidden" name="OperationType" value="LoanFee" id="OperationType" />
                 <input type="hidden" name="customerId" value="@Model.CustomerId" id="customerId" />
                 <button type="submit" id="submit" class="btn btn-primary me-2" onclick="PostFEE()">
-                    <i class="fas fa-money-bill-wave me-1"></i> @CashDesk_OperationForm.PayFee
+                    <i class="fas fa-money-bill-wave me-1"></i> @GlobalShared.PAY_FEE
                 </button>
                 <button type="submit" id="submit" class="btn btn-secondary me-2" onclick="Reprint()">
-                    <i class="fas fa-print me-1"></i> @CashDesk_OperationForm.RePrint
+                    <i class="fas fa-print me-1"></i> @GlobalShared.Re_print
                 </button>
                 <button type="reset" class="btn btn-outline-secondary">
-                    <i class="fas fa-sync-alt me-1"></i> @CashDesk_OperationForm.Reset
+                    <i class="fas fa-sync-alt me-1"></i> @GlobalShared.Reset
                 </button>
             </div>
             <hr style="border: 2px solid green;" />
@@ -1481,10 +1481,10 @@ else if (ViewBag.Operation == "loanapplicationfeepayment")
 
 <div class="col-md-12" style="display:none">
     <div class="form-floating form-floating-outline">
-        <span class="formatted-amount shadow-box" id="lblBalance">@CashDesk_OperationForm.Balance: 0</span>
+        <span class="formatted-amount shadow-box" id="lblBalance">@GlobalShared.Balance: 0</span>
     </div>
     <button type="submit" id="btnSave" class="btn btn-secondary me-2" onclick="Reprint()">
-        <i class="fas fa-print me-1"></i> @CashDesk_OperationForm.RePrint
+        <i class="fas fa-print me-1"></i> @GlobalShared.Re_print
     </button>
 </div>
 

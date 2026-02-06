@@ -48,152 +48,98 @@ namespace CBS.FrontDesk.UI.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> GenerateReport(ReportParameters parameters)
         {
-            try
+            if (parameters == null)
             {
-                // DEBUG: Log all form values
-                System.Diagnostics.Debug.WriteLine("=== FORM DATA RECEIVED ===");
-                foreach (var key in Request.Form.AllKeys)
-                {
-                    System.Diagnostics.Debug.WriteLine($"{key}: {Request.Form[key]}");
-                }
-                System.Diagnostics.Debug.WriteLine("==========================");
-
-                // DEBUG: Log model state
-                if (!ModelState.IsValid)
-                {
-                    var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
-                    System.Diagnostics.Debug.WriteLine("ModelState Errors: " + string.Join(", ", errors));
-                }
-
-                // Log received parameters
-                System.Diagnostics.Debug.WriteLine($"ReportType: {parameters?.ReportType}");
-                System.Diagnostics.Debug.WriteLine($"AccountTypeId: {parameters?.AccountTypeId}");
-                System.Diagnostics.Debug.WriteLine($"LoanId: {parameters?.LoanId}");
-                System.Diagnostics.Debug.WriteLine($"DateFrom: {parameters?.DateFrom}");
-                System.Diagnostics.Debug.WriteLine($"DateTo: {parameters?.DateTo}");
-
-                // Basic validation
-                if (parameters == null)
-                {
-                    return Json(new { success = false, message = "No parameters provided." });
-                }
-
-                if (string.IsNullOrEmpty(parameters.ReportType))
-                {
-                    return Json(new { success = false, message = "Report type is required." });
-                }
-
-                object reportData = null;
-
-                switch (parameters.ReportType)
-                {
-                    case "MemberSituation":
-                        // Validate Member Situation required fields
-                        if (string.IsNullOrEmpty(parameters.AccountTypeId))
-                        {
-                            return Json(new
-                            {
-                                success = false,
-                                message = "Account Type is required for Member Situation report."
-                            });
-                        }
-
-                        if (string.IsNullOrEmpty(parameters.LoanId))
-                        {
-                            return Json(new
-                            {
-                                success = false,
-                                message = "Loan selection is required for Member Situation report."
-                            });
-                        }
-
-
-
-                        reportData = await _reportBuilder.BuildMemberSituationRows(parameters);
-                        break;
-
-                    case "AccountStatement":
-                        // Validate Account Statement required fields
-                        if (string.IsNullOrEmpty(parameters.AccountTypeId))
-                        {
-                            return Json(new
-                            {
-                                success = false,
-                                message = "Account selection is required for Account Statement."
-                            });
-                        }
-                                             
-
-                        reportData = await _reportBuilder.BuildAccountStatementRows(parameters);
-                        break;
-
-                    case "LoanRepayment":
-                        // Validate Loan Repayment required fields
-                        if (string.IsNullOrEmpty(parameters.LoanId))
-                        {
-                            return Json(new
-                            {
-                                success = false,
-                                message = "Loan selection is required for Loan Repayment report."
-                            });
-                        }
-
-                       
-
-                        reportData = await _reportBuilder.BuildLoanRepaymentRows(parameters);
-                        break;
-
-                    case "LoanSituation":
-                        // Validate Loan Situation required fields
-                       
-                        reportData = await _reportBuilder.BuildLoanSituationRows(parameters);
-                        break;
-
-                    case "accountSituation":
-                        // Validate Loan Situation required fields
-                       
-                        reportData = await _reportBuilder.BuildAccountSituationRows(parameters);
-                        break;
-
-                    default:
-                        return Json(new { success = false, message = "Invalid report type selected." });
-                }
-
-                if (reportData == null)
-                {
-                    return Json(new
-                    {
-                        success = false,
-                        message = "No data found for the selected criteria."
-                    });
-                }
-
-                // Store data in session for Crystal Reports
-                Session["rptSource"] = reportData;
-                Session["ReportParameters"] = parameters;
-                Session["ReportItemCount"] = GetItemCount(reportData);
-
-                return Json(new
-                {
-                    success = true,
-                    count = GetItemCount(reportData),
-                    reportType = parameters.ReportType,
-                    message = $"Report generated successfully. Found {GetItemCount(reportData)} records."
-                });
+                return Json(new { success = false, message = "No parameters provided." });
             }
-            catch (Exception ex)
+
+            FinancialReportFilter filter = new FinancialReportFilter
             {
-                System.Diagnostics.Debug.WriteLine($"Report Generation Error: {ex.Message}");
-                System.Diagnostics.Debug.WriteLine($"Stack Trace: {ex.StackTrace}");
+                MemberReference = parameters.CustomerId,
+                AccountIds = parameters.AccountIds,
+                DateFrom = parameters.DateFrom,
+                DateTo = parameters.DateTo,
+                OperationDate = DateTime.Now,
+                InterestVadPenaltyType = parameters.InterestVadPenaltyType
+            };
 
-                return Json(new
-                {
-                    success = false,
-                    message = $"Error generating report: {ex.Message}"
-                });
+            object reportData = null;
+
+            // Single switch statement - handles all report types including mapped ones
+            switch (parameters.ReportType)
+            {
+                case "MemberSituation":
+                    filter.ReportType = (int)FinancialReportType.MemberSituation;
+                    filter.LoanId = parameters.LoanId;
+                    filter.AccountId = parameters.AccountTypeId;
+                    reportData = await _reportBuilder.BuildMemberSituationRows(filter);
+                    break;
+
+                case "AccountSituation":
+                    filter.ReportType = (int)FinancialReportType.AccountSituation;
+                    reportData = await _reportBuilder.BuildAccountSituationRows(filter);
+                    break;
+
+                case "AccountStatement":
+                    filter.ReportType = (int)FinancialReportType.AccountStatement;
+                    filter.AccountNumber = parameters.AccountTypeId;
+                    reportData = await _reportBuilder.BuildAccountStatementRows(filter);
+                    break;
+
+                case "LoanRepayment":
+                    filter.ReportType = (int)FinancialReportType.LoanRepayment;
+                    filter.LoanId = parameters.LoanId;
+                    filter.LoanRepaymentMode = parameters.ByRepayment
+                        ? (int)LoanRepaymentReportMode.ByRepaymentPeriod
+                        : (int)LoanRepaymentReportMode.BySpecificLoan;
+                    reportData = await _reportBuilder.BuildLoanRepaymentRows(filter);
+                    break;
+
+                case "LoanSituation":
+                    filter.ReportType = (int)FinancialReportType.LoanHistory;
+                    filter.LoanStatus = parameters.LoanStatus;
+                    reportData = await _reportBuilder.BuildLoanSituationRows(filter);
+                    break;
+
+                // These come directly from JavaScript mapping
+                case "Interest":
+                    filter.ReportType = (int)FinancialReportType.Interest;
+                    reportData = await _reportBuilder.BuildInterestRows(filter);
+                    break;
+
+                case "VAT":
+                    filter.ReportType = (int)FinancialReportType.VAT;
+                    reportData = await _reportBuilder.BuildVatRows(filter);
+                    break;
+
+                case "Penalty":
+                    filter.ReportType = (int)FinancialReportType.Penalty;
+                    reportData = await _reportBuilder.BuildPenaltyRows(filter);
+                    break;
+
+                default:
+                    return Json(new { success = false, message = "Invalid report type selected." });
             }
+
+            if (reportData == null)
+            {
+                return Json(new { success = false, message = "No data found." });
+            }
+
+            Session["rptSource"] = reportData;
+            Session["ReportFilter"] = filter;
+            Session["ReportParameters"] = parameters;
+            Session["ReportItemCount"] = GetItemCount(reportData);
+
+            return Json(new
+            {
+                success = true,
+                reportType = parameters.ReportType,
+                count = GetItemCount(reportData)
+            });
         }
-       
+
+
         // Helper method to get item count
         private int GetItemCount(object data)
         {
@@ -239,7 +185,7 @@ namespace CBS.FrontDesk.UI.Controllers
                 Session["ReportName"] = reportName;
                 Session["rptpath"] = $"~/AppFiles/Accountingv2Reporting/ReportRPT/{reportName}";
          
-            Session["rpttitle"] = reportTitle;
+                Session["rpttitle"] = reportTitle;
                 Session["DateFrom"] = parameters.DateFrom.ToString("dd/MM/yyyy");
                 Session["DateTo"] = parameters.DateTo.ToString("dd/MM/yyyy");
 
@@ -251,84 +197,6 @@ namespace CBS.FrontDesk.UI.Controllers
             }
         }
 
-        //// GET: Reports/ReportParameterLessCOLL
-        //public void ReportParameterLessCOLL()
-        //{
-        //    ReportDocument rd = new ReportDocument();
-        //    try
-        //    {
-        //        string strReportName = Session["ReportName"]?.ToString();
-        //        var rptSource = Session["rptSource"];
-        //        var rptpath = Session["rptpath"]?.ToString();
-        //        var rpttitle = Session["rpttitle"]?.ToString();
-
-        //        if (string.IsNullOrEmpty(strReportName) || rptSource == null || rptpath == null || rpttitle == null)
-        //        {
-        //            Response.Write("<H2>❌ No Report with such Name found</H2>");
-        //            Response.Write($"<p>ReportName: {strReportName ?? "null"}</p>");
-        //            return;
-        //        }
-
-        //        string strRptPath = Server.MapPath(rptpath);
-
-        //        // Check if report file exists
-        //        if (!System.IO.File.Exists(strRptPath))
-        //        {
-        //            Response.Write($"<H2>❌ Report file not found</H2>");
-        //            Response.Write($"<p>Path: {strRptPath}</p>");
-        //            return;
-        //        }
-
-        //        rd.Load(strRptPath);
-        //        rd.SetDataSource(rptSource);
-
-        //        // Set parameters if available
-        //        string strFromDate = Session["DateFrom"]?.ToString() ?? string.Empty;
-        //        string strToDate = Session["DateTo"]?.ToString() ?? string.Empty;
-
-        //        if (!string.IsNullOrEmpty(strFromDate) && !string.IsNullOrEmpty(strToDate))
-        //        {
-        //            try
-        //            {
-        //                rd.SetParameterValue("DateFrom", strFromDate);
-        //                rd.SetParameterValue("DateTo", strToDate);
-        //            }
-        //            catch
-        //            {
-        //                // Continue without parameters
-        //            }
-        //        }
-
-        //        // Export to PDF
-        //        string savedFileName = $"{rpttitle}-{DateTime.UtcNow:dd_MM_yyyy_HHmmss}";
-        //        rd.ExportToHttpResponse(
-        //            ExportFormatType.PortableDocFormat,
-        //            Response,
-        //            false,
-        //            savedFileName);
-        //    }
-        //    catch (CrystalDecisions.CrystalReports.Engine.LoadSaveReportException loadEx)
-        //    {
-        //        Response.Write($"<H2>❌ Report Loading Error</H2>");
-        //        Response.Write($"<p>{loadEx.Message}</p>");
-        //    }
-        //    catch (CrystalDecisions.CrystalReports.Engine.DataSourceException dataEx)
-        //    {
-        //        Response.Write($"<H2>❌ Data Binding Error</H2>");
-        //        Response.Write($"<p>{dataEx.Message}</p>");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Response.Write($"<H2>❌ An error occurred while generating the report</H2>");
-        //        Response.Write($"<p>{ex.Message}</p>");
-        //    }
-        //    finally
-        //    {
-        //        CleanReport(rd);
-        //    }
-        //}
-
-        // GET: Reports/DebugReportData
         public ActionResult DebugReportData()
         {
             try
@@ -386,6 +254,9 @@ namespace CBS.FrontDesk.UI.Controllers
                 case "LoanSituation":
                     return "LoanSituation.rpt";
 
+                case "AccountSituation":
+                    return "AccountSituation.rpt";
+
                 default:
                     return "FinancialReport.rpt";
             }
@@ -406,6 +277,9 @@ namespace CBS.FrontDesk.UI.Controllers
 
                 case "LoanSituation":
                     return "LoanSituationReport";
+
+                case "AccountSituation":
+                    return "AccountSituation";
 
                 default:
                     return "FinancialReport";

@@ -48,7 +48,7 @@
     <!-- Tips -->
     <div class="card mb-2">
         <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-            <span class="small"><i class="mdi mdi-information-outline me-2"></i>@AccountingV2.Tips</span>
+            <span class="small"><i class="mdi mdi-information-outline me-2"></i>@GlobalShared.Tips</span>
             <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAffiliateTips" aria-expanded="false">
                 <i class="mdi mdi-chevron-down"></i>
             </button>
@@ -56,10 +56,10 @@
         <div id="collapseAffiliateTips" class="collapse">
             <div class="card-body py-2">
                 <ul class="mb-0 small">
-                    <li><i class="mdi mdi-check-circle-outline text-success me-2"></i><strong>@AccountingV2.Code:</strong> @AccountingV2.codetext</li>
-                    <li><i class="mdi mdi-account-box-multiple-outline text-primary me-2"></i><strong>@AccountingV2.Name:</strong> @AccountingV2.Nametext</li>
-                    <li><i class="mdi mdi-filter-outline text-secondary me-2"></i><strong>@AccountingV2.Status:</strong> @AccountingV2.Statustext</li>
-                    <li><i class="mdi mdi-calendar-range text-info me-2"></i><strong>@AccountingV2.CreatedDates:</strong> @AccountingV2.CreatedDatestext</li>
+                    <li><i class="mdi mdi-check-circle-outline text-success me-2"></i><strong>@GlobalShared.Code:</strong> @AccountingV2.codetext</li>
+                    <li><i class="mdi mdi-account-box-multiple-outline text-primary me-2"></i><strong>@GlobalShared.Name:</strong> @AccountingV2.Nametext</li>
+                    <li><i class="mdi mdi-filter-outline text-secondary me-2"></i><strong>@GlobalShared.Status:</strong> @AccountingV2.Statustext</li>
+                    <li><i class="mdi mdi-calendar-range text-info me-2"></i><strong>@GlobalShared.Created_Dates:</strong> @AccountingV2.CreatedDatestext</li>
                 </ul>
             </div>
         </div>
@@ -84,11 +84,11 @@
                         )
                     </div>
                     <div class="col-md-4">
-                        @Html.LabelFor(m => m.Code, @AccountingV2.Code, new { @class = "form-label fw-bold small" })
+                        @Html.LabelFor(m => m.Code, GlobalShared.Code, new { @class = "form-label fw-bold small" })
                         @Html.TextBoxFor(m => m.Code, new { @class = "form-control form-control-sm", placeholder = "Account Number / Code" })
                     </div>
                     <div class="col-md-4">
-                        @Html.LabelFor(m => m.Name, @AccountingV2.Name, new { @class = "form-label fw-bold small" })
+                        @Html.LabelFor(m => m.Name, GlobalShared.Name, new { @class = "form-label fw-bold small" })
                         @Html.TextBoxFor(m => m.Name, new { @class = "form-control form-control-sm", placeholder = "Affiliate name" })
                     </div>
                 </div>
@@ -111,11 +111,11 @@
                @*<div id="createdDateFilters" class="d-none">*@
                     <div class="row g-1 mt-1">
                         <div class="col-md-6">
-                            @Html.LabelFor(m => m.CreatedFromUtc, @AccountingV2.CreatedFrom + " (UTC)", new { @class = "form-label fw-bold small" })
+                            @Html.LabelFor(m => m.CreatedFromUtc, GlobalShared.Created_From + " (UTC)", new { @class = "form-label fw-bold small" })
                             @Html.TextBoxFor(m => m.CreatedFromUtc, new { @class = "form-control form-control-sm", type = "date" })
                         </div>
                         <div class="col-md-6">
-                            @Html.LabelFor(m => m.CreatedToUtc, @AccountingV2.CreatedTo + " (UTC)", new { @class = "form-label fw-bold small" })
+                            @Html.LabelFor(m => m.CreatedToUtc, GlobalShared.Created_To + " (UTC)", new { @class = "form-label fw-bold small" })
                             @Html.TextBoxFor(m => m.CreatedToUtc, new { @class = "form-control form-control-sm", type = "date" })
                         </div>
                     </div>
@@ -135,10 +135,10 @@
             <div class="row mt-2">
                 <div class="col-md-12 d-flex gap-2">
                     <button id="applyAffiliateFilterBtn" type="button" class="btn btn-primary btn-sm flex-fill">
-                        <i class="mdi mdi-magnify"></i> @AccountingV2.ApplyFilter
+                        <i class="mdi mdi-magnify"></i> @GlobalShared.Apply_Filter
                     </button>
                     <button id="resetAffiliateFilterBtn" type="button" class="btn btn-secondary btn-sm flex-fill">
-                        <i class="mdi mdi-refresh"></i> @AccountingV2.Reset
+                        <i class="mdi mdi-refresh"></i> @GlobalShared.Reset
                     </button>
                 </div>
             </div>
@@ -148,7 +148,7 @@
     <!-- Actions -->
     <div class="d-flex justify-content-end mb-2">
         <button id="btnAddRootAffiliate" type="button" class="btn btn-success btn-sm">
-            <i class="mdi mdi-plus-circle-outline me-1"></i> Add Account Number
+            <i class="mdi mdi-plus-circle-outline me-1"></i> @GlobalShared.Add Account Number
         </button>
     </div>
 
@@ -166,7 +166,7 @@
                 </div>
                 <div class="modal-body"></div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">@GlobalShared.Close</button>
                 </div>
             </div>
         </div>

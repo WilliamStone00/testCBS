@@ -33,7 +33,7 @@
         <div class="card-body">
             <ul>
                 <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalAuditTrail.ReviewKeyDetailsIncludingUserActions.</li>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalAuditTrail.UseThe <strong>@GlobalAuditTrail.Copy</strong> @GlobalAuditTrail.ButtonToCopyLogInformation.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalAuditTrail.UseThe <strong>@GlobalShared.Copy</strong> @GlobalAuditTrail.ButtonToCopyLogInformation.</li>
                 <li><i class="mdi mdi-account-outline text-primary me-2"></i> @GlobalAuditTrail.ConfirmTheUserWhoPerformedTheAction.</li>
                 <li><i class="mdi mdi-security-network text-danger me-2"></i> @GlobalAuditTrail.HandleSensitiveDataWithCaution.</li>
                 <li><i class="mdi mdi-shield-check-outline text-warning me-2"></i> @GlobalAuditTrail.AuditEntriesInvolvingCriticalOperations.</li>
@@ -58,7 +58,7 @@
                         <td>@Model.Id</td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold">@GlobalAuditTrail.Action:</td>
+                        <td class="font-weight-bold">@GlobalShared.Action:</td>
                         <td>@Model.Action</td>
                     </tr>
                     <tr>
@@ -66,11 +66,11 @@
                         <td>@Model.Timestamp.ToString("dd/MM/yyyy HH:mm:ss")</td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold">@GlobalAuditTrail.UserName:</td>
+                        <td class="font-weight-bold">@GlobalShared.User_Name:</td>
                         <td>@Model.UserName</td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold">@GlobalAuditTrail.FullName:</td>
+                        <td class="font-weight-bold">@GlobalShared.Full_Name:</td>
                         <td>@Model.FullName</td>
                     </tr>
 
@@ -96,30 +96,30 @@
                         <td>@Model.MicroServiceName</td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold">@GlobalAuditTrail.Level:</td>
+                        <td class="font-weight-bold">@GlobalShared.Level:</td>
                         <td>
                             @if (Model.Level == "Information")
                             {
                                 <span class="badge bg-info text-dark">
-                                    <i class="mdi mdi-information-outline me-1"></i> @GlobalAuditTrail.Information
+                                    <i class="mdi mdi-information-outline me-1"></i> @GlobalShared.Information
                                 </span>
                             }
                             else if (Model.Level == "Warning")
                             {
                         <span class="badge bg-warning text-dark">
-                            <i class="mdi mdi-alert-outline me-1"></i> @GlobalAuditTrail.Warning
+                            <i class="mdi mdi-alert-outline me-1"></i> @GlobalShared.Warning
                         </span>
                             }
                             else if (Model.Level == "Error")
                             {
                         <span class="badge bg-danger text-white">
-                            <i class="mdi mdi-alert-circle-outline me-1"></i> @GlobalAuditTrail.Error
+                            <i class="mdi mdi-alert-circle-outline me-1"></i> @GlobalShared.Error
                         </span>
                             }
                             else
                             {
                         <span class="badge bg-secondary">
-                            <i class="mdi mdi-help-circle-outline me-1"></i> @GlobalAuditTrail.Unknown
+                            <i class="mdi mdi-help-circle-outline me-1"></i> @GlobalShared.Unknown
                         </span>
                             }
                         </td>
@@ -131,19 +131,19 @@
                         <td colspan="2" class="font-weight-bold text-uppercase text-start">@GlobalAuditTrail.BranchInformation</td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold">@GlobalAuditTrail.BranchID:</td>
+                        <td class="font-weight-bold">@GlobalShared.Branch_ID:</td>
                         <td>@Model.BranchID</td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold">@GlobalAuditTrail.BranchName:</td>
+                        <td class="font-weight-bold">@GlobalShared.Branch_Name:</td>
                         <td>@Model.BranchName</td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold">@GlobalAuditTrail.BranchCode:</td>
+                        <td class="font-weight-bold">@GlobalShared.Branch_Code:</td>
                         <td>@Model.BranchCode</td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold">@GlobalAuditTrail.BankID:</td>
+                        <td class="font-weight-bold">@GlobalShared.Bank_ID:</td>
                         <td>@Model.BankID</td>
                     </tr>
 
@@ -165,7 +165,7 @@
                         <td>
                             <div class="d-flex align-items-start">
                                 <button class="btn btn-sm btn-secondary me-2" onclick="copyToClipboard('stringifiedObject')">
-                                    <i class="mdi mdi-content-copy"></i> @GlobalAuditTrail.Copy
+                                    <i class="mdi mdi-content-copy"></i> @GlobalShared.Copy
                                 </button>
                                 <pre id="stringifiedObject" class="bg-light p-2 rounded w-100" style="white-space: pre-wrap; word-wrap: break-word; overflow-wrap: break-word;">@Model.StringifyObject</pre>
                             </div>
@@ -187,7 +187,7 @@
 
             <div class="text-center mt-4">
                 <a class="btn btn-primary" href="/AuditTrail">
-                    <i class="mdi mdi-arrow-left"></i> @GlobalAuditTrail.Back
+                    <i class="mdi mdi-arrow-left"></i> @GlobalShared.Back
                 </a>
             </div>
         </div>

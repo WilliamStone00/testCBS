@@ -1,6 +1,7 @@
 ﻿@{
     ViewBag.Title = "Blacklist Management";
 }
+@using Resources
 <style>
     table#Detail td {
         word-wrap: break-word;
@@ -17,10 +18,10 @@
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-danger">
-                    <i class="mdi mdi-account-cancel-outline me-2"></i> Blacklisted Users
+                    <i class="mdi mdi-account-cancel-outline me-2"></i> @BlacklistUserRessource.Blacklisted_Users_LC
                 </h1>
                 <p class="card-text">
-                    Manage users and IPs that have been blocked due to suspicious or abusive behavior.
+                    @BlacklistUserRessource.Manage_users_and_IPs_that_have_been_blocked_due_to_suspicious_or_abusive_behavior.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -31,7 +32,7 @@
 <!-- Tips -->
 <div class="card mb-1">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> TIPS</span>
+        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalShared.Tips</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -39,9 +40,9 @@
     <div id="collapseTips" class="collapse">
         <div class="card-body">
             <ul class="mb-0">
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Ensure IP or User ID is accurate before applying a block.</li>
-                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> Set a reasonable block duration — long enough to deter abuse.</li>
-                <li><i class="mdi mdi-information-outline text-primary me-2"></i> Monitor location, branch, and timestamp info for investigation.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @BlacklistUserRessource.Ensure_IP_or_User_ID_is_accurate_before_applying_a_block.</li>
+                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> @BlacklistUserRessource.Set_a_reasonable_block_duration_long_enough_to_deter_abuse.</li>
+                <li><i class="mdi mdi-information-outline text-primary me-2"></i> @BlacklistUserRessource.Monitor_location_branch_and_timestamp_info_for_investigation.</li>
             </ul>
         </div>
     </div>
@@ -55,7 +56,7 @@
                 <div class="accordion-item active">
                     <h2 class="accordion-header text-body d-flex justify-content-between" id="accordionPopoutIconThree">
                         <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordionPopoutIcon-3" aria-expanded="true" aria-controls="accordionPopoutIcon-3">
-                            <i class="mdi mdi-lock-alert me-2"></i> Blacklist Configuration
+                            <i class="mdi mdi-lock-alert me-2"></i> @BlacklistUserRessource.Blacklist_Configuration
                         </button>
                     </h2>
                     <div id="accordionPopoutIcon-3" class="accordion-collapse collapse show" data-bs-parent="#accordionPopoutIcon">
@@ -64,10 +65,10 @@
                                 <div class="card mb-4">
                                     <div class="card-body d-flex justify-content-end align-items-center">
                                         <a type="button" onclick="LoadDataGen('BlacklistUser','myDataTable','_Data',0,'datalistingview')" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="View List">
-                                            <i class="mdi mdi-view-list mdi-18px"></i> View List
+                                            <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
                                         </a>
                                         <a href="/BlacklistUser" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="Add New Block">
-                                            <i class="mdi mdi-plus mdi-18px"></i> Add Block
+                                            <i class="mdi mdi-plus mdi-18px"></i> @GlobalShared.Add
                                         </a>
                                     </div>
                                 </div>
@@ -87,7 +88,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="blacklistDetailModalLabel">
-                    <i class="mdi mdi-eye-outline text-primary me-1"></i> Blacklisted User Details
+                    <i class="mdi mdi-eye-outline text-primary me-1"></i> @BlacklistUserRessource.Blacklisted_User_Details
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -95,12 +96,12 @@
             <div class="modal-body" id="blacklistDetailContent">
                 <!-- AJAX-loaded partial view (_Details.cshtml) will appear here -->
                 <div class="text-center text-muted">
-                    <i class="fas fa-spinner fa-spin"></i> Loading details...
+                    <i class="fas fa-spinner fa-spin"></i> @GlobalShared.Loading...
                 </div>
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@GlobalShared.Close</button>
             </div>
         </div>
     </div>
