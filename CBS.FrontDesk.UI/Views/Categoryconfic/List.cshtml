@@ -222,9 +222,9 @@
             }
 
             categoryTable = $('#myDataTable').DataTable({
-                serverSide: true,
-                searching: true,
+                searching: false,
                 responsive: true,
+                serverSide: true,
                 destroy: false,
                 order: [[0, 'desc']], // default sort by createdDate desc
                 ajax: {

@@ -500,7 +500,7 @@ namespace CBS.BusinessService.CheckManagementSystem.Configurations.FeeConfigurat
             {
                 if (!IsHeadOffice())
                 {
-                    query.BranchId = GetBankID();
+                    query.BranchId = GetBranchID();
                 }
                 var response = await _apiCallerHelper.PostAsync<ResponseObject<CustomDataTable>>(
                     APICallHelper.FeeDatatable, query);
@@ -565,11 +565,11 @@ namespace CBS.BusinessService.CheckManagementSystem.Configurations.FeeConfigurat
         {
             try
             {
-                if (model.isCentralized == false)
-                {
-                    model.branchName = GetBranchName();
-                    model.branchCode = GetBankCode();
-                }
+                //if (model.isCentralized == false)
+                //{
+                //    model.branchName = GetBranchName();
+                //    model.branchCode = GetBankCode();
+                //}
 
                 var response = await _apiCallerHelper.PostAsync<ServiceResponse<FeeConfig>>(APICallHelper.CreateFeeConfig, model);
                 if (response != null && (response.IsSuccess))
@@ -616,50 +616,107 @@ namespace CBS.BusinessService.CheckManagementSystem.Configurations.FeeConfigurat
             return ExecutionMessage;
         }
 
-        public async Task<ExecutionMessages> DeleteAsync(string id)
-        {
-            try
-            {
-                if (string.IsNullOrWhiteSpace(id))
-                {
-                    GetExecutionMessages(null, false, $"FeeConfig:{id}", MessagesResults.Failed, ExecutionProcessOption.DeleteObject, SystemMessageStatus.Failed.ToString(), null, "Invalid id.");
-                    return ExecutionMessage;
-                }
-
-                string url = string.Format(APICallHelper.DeleteFeeConfig, id);
-                var response = await _apiCallerHelper.DeleteAsync<ServiceResponse<bool>>(url);
-                if (response != null && (response.IsSuccess))
-                {
-                    GetExecutionMessages(null, true, $"FeeConfig:{id}", MessagesResults.Success, ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData?.Message ?? "Deleted");
-                }
-                else
-                {
-                    GetExecutionMessages(null, false, $"FeeConfig:{id}", MessagesResults.Failed, ExecutionProcessOption.DeleteObject, SystemMessageStatus.Failed.ToString(), null, response?.ApiResponseData?.Message ?? response?.Message);
-                }
-            }
-            catch (Exception ex)
-            {
-                GetExecutionMessages(null, false, $"FeeConfig:{id}", MessagesResults.Error, ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message);
-            }
-            return ExecutionMessage;
-        }
-
-        //#region Mock methods placeholder (delegates to a mock service when needed)
-        //// You can implement these by delegating to MockFeeConfigService in development environment.
-        //public Task<IEnumerable<FeeConfig>> GetConfigsMockAsync(string feeType = null, string branchId = null, bool? centralized = null)
+        //public async Task<ExecutionMessages> DeleteAsync(string id)
         //{
-        //    var mock = new MockFeeConfigService();
-        //    return mock.GetConfigsMockAsync(feeType, branchId, centralized);
+        //    try
+        //    {
+        //        if (string.IsNullOrWhiteSpace(id))
+        //        {
+        //            GetExecutionMessages(null, false, $"FeeConfig:{id}", MessagesResults.Failed, ExecutionProcessOption.DeleteObject, SystemMessageStatus.Failed.ToString(), null, "Invalid id.");
+        //            return ExecutionMessage;
+        //        }
+
+        //        string url = string.Format(APICallHelper.DeleteFeeConfig, id);
+        //        var response = await _apiCallerHelper.DeleteAsync<ServiceResponse<bool>>(url);
+        //        if (response != null && (response.IsSuccess))
+        //        {
+        //            GetExecutionMessages(null, true, $"FeeConfig:{id}", MessagesResults.Success, ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData?.Message ?? "Deleted");
+        //        }
+        //        else
+        //        {
+        //            GetExecutionMessages(null, false, $"FeeConfig:{id}", MessagesResults.Failed, ExecutionProcessOption.DeleteObject, SystemMessageStatus.Failed.ToString(), null, response?.ApiResponseData?.Message ?? response?.Message);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        GetExecutionMessages(null, false, $"FeeConfig:{id}", MessagesResults.Error, ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message);
+        //    }
+        //    return ExecutionMessage;
         //}
 
-        //public Task<IEnumerable<FeeConfig>> GetAllConfigsAsSummaryAsync() => new MockFeeConfigService().GetAllConfigsAsSummaryAsync();
-        //public Task<List<StringValues>> GetFeeTypesMockAsync() => new MockFeeConfigService().GetFeeTypesMockAsync();
-        //public Task<FeeConfig> GetByIdMockAsync(string id) => new MockFeeConfigService().GetByIdMockAsync(id);
-        //public Task<ExecutionMessages> CreateMockAsync(FeeConfig model) => new MockFeeConfigService().CreateMockAsync(model);
-        //public Task<ExecutionMessages> UpdateMockAsync(FeeConfig model) => new MockFeeConfigService().UpdateMockAsync(model);
-        //public Task<ExecutionMessages> DeleteMockAsync(string id) => new MockFeeConfigService().DeleteMockAsync(id);
-        //#endregion
-    }
+
+		public async Task<ExecutionMessages> DelateAsync(string Id)
+		{
+			try
+			{
+				if (string.IsNullOrEmpty(APICallHelper.DeleteFeeConfig))
+					throw new InvalidOperationException("DesactivateChequeBookCategory URL is not configured.");
+
+				string formattedUrl = string.Format(APICallHelper.DeleteFeeConfig, Id);
+
+				if (_apiCallerHelper == null)
+					throw new InvalidOperationException("_apiCallerHelper is not initialized.");
+
+				var response = await _apiCallerHelper
+					.DeleteAsync<ServiceResponse<FeeConfig>>(formattedUrl);
+
+				if (response == null)
+					throw new InvalidOperationException("API returned null response.");
+
+				// 🔹 AJOUT ICI
+				var apiMessage = response.ApiResponseData?.Message ?? response.Message;
+
+				if (response.IsSuccess)
+				{
+					GetExecutionMessages(null, true, null, MessagesResults.Success,
+						ExecutionProcessOption.DefaultSuccessdMessages,
+						SystemMessageStatus.Success.ToString(),
+						null,
+						apiMessage);
+				}
+				else
+				{
+					GetExecutionMessages(null, false, null, MessagesResults.Failed,
+						ExecutionProcessOption.DefaultFailedMessages,
+						SystemMessageStatus.Failed.ToString(),
+						null,
+						apiMessage);
+				}
+			}
+			catch (Exception ex)
+			{
+				GetExecutionMessages(null, false, $"Category ID: {Id}",
+					MessagesResults.Error,
+					ExecutionProcessOption.TryCatch,
+					SystemMessageStatus.Error.ToString(),
+					ex,
+					ex.Message);
+			}
+
+			return ExecutionMessage ?? new ExecutionMessages
+			{
+				MessageString = "No execution message was created.",
+				MessageStatus = MessagesResults.Error.ToString()
+			};
+		}
+
+
+		//#region Mock methods placeholder (delegates to a mock service when needed)
+		//// You can implement these by delegating to MockFeeConfigService in development environment.
+		//public Task<IEnumerable<FeeConfig>> GetConfigsMockAsync(string feeType = null, string branchId = null, bool? centralized = null)
+		//{
+		//    var mock = new MockFeeConfigService();
+		//    return mock.GetConfigsMockAsync(feeType, branchId, centralized);
+		//}
+
+		//public Task<IEnumerable<FeeConfig>> GetAllConfigsAsSummaryAsync() => new MockFeeConfigService().GetAllConfigsAsSummaryAsync();
+		//public Task<List<StringValues>> GetFeeTypesMockAsync() => new MockFeeConfigService().GetFeeTypesMockAsync();
+		//public Task<FeeConfig> GetByIdMockAsync(string id) => new MockFeeConfigService().GetByIdMockAsync(id);
+		//public Task<ExecutionMessages> CreateMockAsync(FeeConfig model) => new MockFeeConfigService().CreateMockAsync(model);
+		//public Task<ExecutionMessages> UpdateMockAsync(FeeConfig model) => new MockFeeConfigService().UpdateMockAsync(model);
+		//public Task<ExecutionMessages> DeleteMockAsync(string id) => new MockFeeConfigService().DeleteMockAsync(id);
+		//#endregion
+	}
 }
 
 

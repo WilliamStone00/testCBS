@@ -11316,6 +11316,7 @@
     <Content Include="Views\TranslationPlaceholder\_TranslationPlaceholderDetailsPartial.cshtml" />
     <Content Include="Views\TranslationPlaceholder\_TranslationPlaceholderForm.cshtml" />
     <Content Include="Views\MembersFSeries\_ReportView.cshtml" />
+    <Content Include="Views\FeeConfig\_FeeConfigDataTable.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

@@ -44,19 +44,19 @@
             <div id="numericPositions" class="row g-2 mb-2" style="display:none;">
                 <div class="col-md-3">
                     <label class="form-label">Bank Code Position</label>
-                    @Html.TextBoxFor(m => m.BankCodePosition, new { type = "number", @class = "form-control", id = "bankCodePosition", min = "0" })
+                    @Html.TextBoxFor(m => m.BankCodePosition, new { @class = "form-control", id = "bankCodePosition", @readonly = "readonly" })
                 </div>
                 <div class="col-md-3">
                     <label class="form-label">Branch Code Position</label>
-                    @Html.TextBoxFor(m => m.BranchCodePosition, new { type = "number", @class = "form-control", id = "branchCodePosition", min = "0" })
+                    @Html.TextBoxFor(m => m.BranchCodePosition, new { @class = "form-control", id = "branchCodePosition", @readonly = "readonly" })
                 </div>
                 <div class="col-md-3">
                     <label class="form-label">Year Position</label>
-                    @Html.TextBoxFor(m => m.YearPosition, new { type = "number", @class = "form-control", id = "yearPosition", min = "0" })
+                    @Html.TextBoxFor(m => m.YearPosition, new { @class = "form-control", id = "yearPosition", @readonly = "readonly" })
                 </div>
                 <div class="col-md-3">
                     <label class="form-label">Serial Number Position</label>
-                    @Html.TextBoxFor(m => m.SeriaNumberPosition, new { type = "number", @class = "form-control", id = "seriaNumberPosition", min = "0" })
+                    @Html.TextBoxFor(m => m.SerialNumberPosition, new { @class = "form-control", id = "seriaNumberPosition", @readonly = "readonly" })
                 </div>
             </div>
 
@@ -127,6 +127,11 @@
     #toggleNumericPositions:checked ~ #numericPositions {
         display: flex; /* or block, depending on your layout */
     }
+    #numericPositions input[readonly] {
+        background-color: #e9ecef;
+        pointer-events: none;
+    }
+
 
 </style>
 
