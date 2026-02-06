@@ -1355,6 +1355,7 @@ namespace CBS.FrontDesk.Helper
         public const string MarkLeafAsUsed = "/api/v1/Cheque-Book";
         public const string RejectCounBlockChequeLeafterCheque = "/api/v1/Cheque-Book";
         public const string BlockChequeLeaf = "/api/v1/Cheque-Book/{0}";
+        public const string GetCustomerCheckBookStatistics = "/api/v1/customerStats/{0}";
 
         //---------------------- cheque ----------------------------
         public const string GetAllCancellationRequests = "/api/v1/Cheque Book";

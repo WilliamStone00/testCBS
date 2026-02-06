@@ -34,12 +34,12 @@
                             <div class="form-control">@(Model.InitiatorBranchName?.ToUpper()) (@Model.InitiatorBranchCode)</div>
                         </div>
                     </div>
-                   @* <div class="row mb-3">
-                        <label class="col-sm-4 col-form-label">@GlobalBulkOperation.Bank</label>
-                        <div class="col-sm-8">
-                            <div class="form-control">@(Model.BankName?.ToUpper()) (@Model.BankCode)</div>
-                        </div>
-                    </div>*@
+                    @* <div class="row mb-3">
+            <label class="col-sm-4 col-form-label">@GlobalBulkOperation.Bank</label>
+            <div class="col-sm-8">
+                <div class="form-control">@(Model.BankName?.ToUpper()) (@Model.BankCode)</div>
+            </div>
+        </div>*@
                     <div class="row mb-3">
                         <label class="col-sm-4 col-form-label">@GlobalShared.Total_volume</label>
                         <div class="col-sm-8">
@@ -58,12 +58,49 @@
                             <div class="form-control">@(Model?.Description)</div>
                         </div>
                     </div>
-                @*    <div class="row mb-3">
-                        <label class="col-sm-4 col-form-label">Destination Account Type</label>
+                    <div class="row mb-3">
+                        <label class="col-sm-4 col-form-label">Accounting Impact</label>
                         <div class="col-sm-8">
-                            <div class="form-control">@(destinationAccountype?.ToUpper())</div>
+                            <div class="form-control">
+
+                                @if (Model?.ShouldImpactAccounting == false)
+                                {
+                                    <span class="text-warning fw-semibold">
+                                        <i class="mdi mdi-alert-outline me-1"></i>
+                                        Accounting impact is <b>DISABLED</b>.
+                                    </span>
+                                    <div class="small text-muted mt-1">
+                                        This simulation was explicitly configured <b>not</b> to generate accounting entries,
+                                        even if approved.
+                                    </div>
+                                }
+                                else if (!string.Equals(Model?.ApprovalStatus, "Approved", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    <span class="text-info fw-semibold">
+                                        <i class="mdi mdi-timer-sand me-1"></i>
+                                        Accounting impact is <b>PENDING</b>.
+                                    </span>
+                                    <div class="small text-muted mt-1">
+                                        This simulation is eligible to impact accounting, but no entries were generated
+                                        because the operation is not yet approved.
+                                    </div>
+                                }
+                                else
+                                {
+                                    <span class="text-success fw-semibold">
+                                        <i class="mdi mdi-check-circle-outline me-1"></i>
+                                        Accounting impact is <b>ENABLED</b>.
+                                    </span>
+                                    <div class="small text-muted mt-1">
+                                        This simulation is approved and will generate accounting entries upon execution.
+                                    </div>
+                                }
+
+                            </div>
                         </div>
-                    </div>*@
+                    </div>
+
+
                 </div>
             </div>
         </div>

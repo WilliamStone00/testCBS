@@ -8049,6 +8049,7 @@
     <None Include="Properties\PublishProfiles\CamCCULAdmin_TB.pubxml" />
     <None Include="Properties\PublishProfiles\CBS-UI_Akum_TB.pubxml" />
     <None Include="Properties\PublishProfiles\Cpcmc_TB.pubxml" />
+    <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\PB.pubxml" />
     <None Include="Properties\PublishProfiles\Prod Vb Deploy.pubxml" />
@@ -10787,6 +10788,7 @@
     <Content Include="Views\TranslationPlaceholder\_TranslationPlaceholderDetailsPartial.cshtml" />
     <Content Include="Views\TranslationPlaceholder\_TranslationPlaceholderForm.cshtml" />
     <Content Include="Views\MembersFSeries\_ReportView.cshtml" />
+    <Content Include="Views\FeeConfig\_FeeConfigDataTable.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

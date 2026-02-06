@@ -23,6 +23,8 @@ namespace CBS.FrontDesk.Data.Entity.BulkOperation
         public string BranchName { get; set; }
         public string CreatedBy { get; set; }
 
+        public bool? ShouldImpactAccounting { get; set; }
+
         public BulkOperationAccountTopupSimulationCommand(SimulateBulkOperation simulate,Branch branch)
         {
             BankCode = branch.Bank.BankCode;
@@ -40,6 +42,7 @@ namespace CBS.FrontDesk.Data.Entity.BulkOperation
             EndAccount = simulate.EndAccount;
             StartAccount = simulate.StartAccount;
             TargetAmount = simulate.TargetAmount;
+            ShouldImpactAccounting = simulate.ShouldImpactAccounting;
         }
     }
 }

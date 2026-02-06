@@ -34,11 +34,7 @@
                         <td class="fw-bold">@ChequeManagements.Type:</td>
                         <td>@(Model?.isCentralized == true ? "Centralized" : "Branch Specific")</td>
                     </tr>
-                    <tr>
-                        <td class="fw-bold">@ChequeManagements.Status:</td>
-                        <td>@(Model?.IsActive == true ? "Active" : "Inactive")</td>
-                    </tr>
-                    <tr>
+                      <tr>
                         <td class="fw-bold">@ChequeManagements.Description:</td>
                         <td>@(Model?.description)</td>
                     </tr>

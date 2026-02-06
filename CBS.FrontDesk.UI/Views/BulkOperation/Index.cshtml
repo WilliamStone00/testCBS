@@ -210,6 +210,30 @@
                                                     </div>
                                                 </div>
 
+                                                <!-- Impact Accounting -->
+                                                <div class="col-md-12">
+                                                    <div class="form-check form-switch">
+                                                        @Html.CheckBoxFor(
+                                                            m => m.ShouldImpactAccounting,
+                                                            new
+                                                            {
+                                                                @class = "form-check-input",
+                                                                role = "switch",
+                                                                id = "ShouldImpactAccounting"
+                                                            })
+
+                                                        <label class="form-check-label fw-semibold" for="ShouldImpactAccounting">
+                                                            Impact Accounting
+                                                        </label>
+                                                    </div>
+
+                                                    <small class="text-muted d-block help-hint mt-1">
+                                                        <i class="mdi mdi-information-outline me-1"></i>
+                                                        When enabled, this simulation will generate accounting entries upon execution.
+                                                    </small>
+                                                </div>
+
+
                                                 <!-- Description -->
                                                 <div class="col-md-12">
                                                     @Html.LabelFor(m => m.Description, @GlobalShared.Description, new { @class = "form-label" })
@@ -640,8 +664,17 @@
             return false;
         }
 
+        const shouldImpactAccounting = $('#ShouldImpactAccounting').is(':checked');
+
+
+        const confirmationMessage = shouldImpactAccounting
+            ? "Are you sure you want to run this cash simulation?"
+            : "Are you sure you want to run this cash simulation? <br/>  <b class='text-warning'>⚠ Attention</b><br/>" +
+            "Accounting will <b>NOT</b> be impacted by this operation.<br/>" +
+            "Proceed only if this is intentional.";
+
         // Confirm + submit
-        alertify.confirm("Confirmation", "Are you sure you want to simulate this bulk operation?",
+        alertify.confirm("Confirmation", confirmationMessage,
             function () {
 
                 const ajaxConfig = {
