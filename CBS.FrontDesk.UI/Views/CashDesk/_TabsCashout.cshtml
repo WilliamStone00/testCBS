@@ -1,7 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
 @using Resources
 @{
-    ViewBag.Title = @CashDesk_TabsCashout.CashDeskCashoutTtl;
+    ViewBag.Title = @CashDeskRessource.CashDeskCashoutTtl;
 }
 <link href="https://cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css" rel="stylesheet">
 
@@ -14,13 +14,13 @@
     @if ((Session["BranchId"]?.ToString()?.ToLower()) == @Model.Branch.Id?.ToLower())
     {
         <span class="badge rounded-pill bg-primary-subtle text-primary fw-semibold px-3 py-2 shadow-sm">
-            <i class="mdi mdi-home-map-marker me-1"></i> @CashDesk_TabsCashout.LocalOperation
+            <i class="mdi mdi-home-map-marker me-1"></i> @CashDeskRessource.LocalOperation
         </span>
     }
     else
     {
         <span class="badge rounded-pill bg-warning-subtle text-warning fw-semibold px-3 py-2 shadow-sm">
-            <i class="mdi mdi-map-marker-path me-1"></i> @CashDesk_TabsCashout.InterBranchOperation
+            <i class="mdi mdi-map-marker-path me-1"></i> @CashDeskRessource.InterBranchOperation
         </span>
     }
 </div>
@@ -28,7 +28,7 @@
 <!-- CASH-OUT PANEL -->
 <fieldset class="fieldset-custom border border-danger p-3 rounded mb-4">
     <legend class="text-danger fw-bold">
-        <i class="fas fa-arrow-up me-1"></i> @CashDesk_TabsCashout.CashOutOperations
+        <i class="fas fa-arrow-up me-1"></i> @CashDeskRessource.CashOutOperations
     </legend>
 
     <div class="d-flex flex-wrap gap-2">
@@ -37,16 +37,16 @@
         <a href="#"
            class="btn btn-sm btn-outline-danger d-flex align-items-center gap-2"
            onclick="GetMemberData('@Model.CustomerId','_OperationDesk','datalistingview','cashout')"
-           data-bs-toggle="tooltip" title="@CashDesk_TabsCashout.InitiateMembersCashWithdrawalFromTheirAccount">
-            <i class="fas fa-money-bill-wave-alt"></i> @CashDesk_TabsCashout.CashOut
+           data-bs-toggle="tooltip" title="@CashDeskRessource.InitiateMembersCashWithdrawalFromTheirAccount">
+            <i class="fas fa-money-bill-wave-alt"></i> @GlobalShared.Cash_out
         </a>
 
         <!-- SWS Withdrawal -->
         <a href="#"
            class="btn btn-sm btn-outline-danger d-flex align-items-center gap-2"
            onclick="GetMemberData('@Model.CustomerId','_OperationDesk','datalistingview','cashoutsws')"
-           data-bs-toggle="tooltip" title="@CashDesk_TabsCashout.ProcessSWSWithdrawalForMember">
-            <i class="fas fa-hand-holding-usd"></i> @CashDesk_TabsCashout.SWSOut
+           data-bs-toggle="tooltip" title="@CashDeskRessource.ProcessSWSWithdrawalForMember">
+            <i class="fas fa-hand-holding-usd"></i> @CashDeskRessource.SWSOut
         </a>
     </div>
 </fieldset>

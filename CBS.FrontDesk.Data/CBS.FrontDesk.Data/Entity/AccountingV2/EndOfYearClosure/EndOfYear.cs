@@ -16,8 +16,8 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.EndOfYearClosure
         public string StartedByUserId { get; set; }
         public string StartedBy { get; set; }
         public string Remarks { get; set; }
+        public string BranchResultGlId { get; set; }
 
-      
 
         public string OperationCode { get; set; }
         public string Year { get; set; }
@@ -110,7 +110,7 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.EndOfYearClosure
         public string HoLiaisonGlId { get; set; }
         public string HoResultGlId { get; set ; }
         public string AccountingYear { get; set; }
-        public DateTime AccountingDate { get; set; }
+        public string BranchResultGlId { get; set; }
 
     }
 

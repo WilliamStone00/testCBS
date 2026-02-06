@@ -57,27 +57,27 @@
                 <div class="upload-panel">
                     <!-- Current logo -->
                     <div class="logo-current">
-                        <div class="mb-2 fw-semibold"><i class="bi bi-eye"></i> Current logo</div>
+                        <div class="mb-2 fw-semibold"><i class="bi bi-eye"></i>  @GlobalShared.Current_logo</div>
                         <div class="img-wrap">
                             <img id="LogoPreview"
                                  src="@Url.Content(Model.Bank.LogoUrl ?? "~/img/placeholder-logo.png")"
                                  alt="@((Model.Bank?.Name ?? "Bank") + " Logo")" />
                         </div>
                         <div class="mt-2 small text-muted">
-                            Recommended: square PNG/JPG, ≥ 512×512.
+                            @GlobalShared.Recommended: square PNG/JPG, ≥ 512×512.
                         </div>
                     </div>
 
                     <!-- Upload area -->
                     <div class="dropzone" id="LogoDropzone" aria-label="Logo upload area">
-                        <div class="mb-2 fw-semibold"><i class="bi bi-cloud-arrow-up"></i> Upload new logo</div>
+                        <div class="mb-2 fw-semibold"><i class="bi bi-cloud-arrow-up"></i>  @GlobalShared.Upload_new_logo</div>
 
                         <div class="dz-actions">
                             <label class="btn btn-outline-primary btn-sm mb-1" for="LogoFile">
                                 <i class="bi bi-folder2-open"></i> @GlobalShared.ChooseLogoImage
                             </label>
                             <button type="button" class="btn btn-outline-secondary btn-sm mb-1" id="BtnClearLogo">
-                                <i class="bi bi-trash"></i> Clear selection
+                                <i class="bi bi-trash"></i>  @GlobalShared.Clear_selection
                             </button>
                         </div>
 
@@ -100,7 +100,7 @@
 
                     <div class="mt-3 help-tips">
                         <i class="bi bi-lightbulb"></i>
-                        The logo appears on receipts, statements, and headers. Use a transparent PNG if possible.
+                         @GlobalShared.The_logo_appears_on_receipts_statements_and_headers_Use_a_transparent_PNG_if_possible.
                     </div>
 
                     <div class="mt-4 d-flex gap-2">

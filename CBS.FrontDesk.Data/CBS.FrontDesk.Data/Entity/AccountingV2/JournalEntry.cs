@@ -38,7 +38,7 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
 
     public class JournalPayload
     {
-        public string Memo { get; set; } = "Manual interbranch treatment (notify destination for completion";
+        public string Memo { get; set; } 
         public bool AllowUnbalanced { get; set; } = false;
         public List<JournalEntryLine> Entries { get; set; } = new List<JournalEntryLine>();
     }
@@ -130,9 +130,10 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public List<WorkflowTicket> WorkflowTickets { get; set; } = null;
         public Receipt Receipt { get; set; } = null;
 
-        public string Status { get; set; } = "RECEIVED";
+        public string Status { get; set; } 
         public decimal TotalDebit { get; set; }
         public decimal TotalCredit { get; set; }
+        public decimal InitiatedAmount { get; set; }
         public string CorrelationId { get; set; } = null;
         public string CounterpartyBranchId { get; set; } = null;
         public string CounterpartyBranchName { get; set; } = null;

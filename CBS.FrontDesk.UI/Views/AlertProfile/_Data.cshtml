@@ -3,10 +3,10 @@
 <table class="table table-hover" id="myDataTable">
     <thead class="table-light">
         <tr>
-            <th>@GlobalAlertProfile.Name</th>
-            <th>@GlobalAlertProfile.Service</th>
-            <th>@GlobalAlertProfile.Alert</th>
-            <th>@GlobalAlertProfile.NotificationLanguage</th>
+            <th>@GlobalShared.Name</th>
+            <th>@GlobalShared.Service</th>
+            <th>@GlobalShared.Alert</th>
+            <th>@GlobalShared.Notification_Language</th>
             <th>@GlobalShared.Action</th>
         </tr>
     </thead>
@@ -16,7 +16,7 @@
             <tr>
                 <td style="width:20%">@d.name</td>
                 <td style="width:15%">@d.serviceId</td>
-                <td style="width:35%">@GlobalShared.SmsNotification: @d.sendSMS, @GlobalShared.EmailNotification: @d.sendEmail</td>
+                <td style="width:35%">@GlobalShared.Sms_Notification: @d.sendSMS, @GlobalShared.Email_Notification: @d.sendEmail</td>
                 <td style="width:10%">@d.language</td>
                 <td style="width:20%">
                     <a href="#" onclick="AddORUpdateGen(@d.id,'datalistingview','_Update','update','AlertProfile')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.name @GlobalShared.ToEdit">@GlobalShared.Edit</a>

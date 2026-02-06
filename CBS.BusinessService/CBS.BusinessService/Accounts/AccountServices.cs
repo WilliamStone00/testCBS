@@ -52,7 +52,7 @@ namespace CBS.BusinessService.Accounts
             _individualProfileServices = individualProfileServices;
             _branchServices = branchServices;
             _BranchConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["BankConfigurationBaseUrl"].ToString());
-            _tellerServices=tellerServices;
+            _tellerServices = tellerServices;
         }
 
         //public async Task<CustomDataTable> GetDataTable(DataTableOptions dataTableOptions, string path)
@@ -322,6 +322,28 @@ namespace CBS.BusinessService.Accounts
                 throw;
             }
         }
+        public async Task<List<MemberAccountVm>> GetMemberAccountsVmByMemberIdAsync(string memberId)
+        {
+            // Reuse your existing function (single source of truth)
+            var dtos = await GetMemberAccountsByMemberIdAsync(memberId);
+
+            if (dtos == null || dtos.Count == 0)
+                return new List<MemberAccountVm>();
+
+            return dtos
+                .Where(a => a != null)
+                .Select(a => new MemberAccountVm
+                {
+                    AccountNumber = (a.AccountNumber ?? "").Trim(),
+                    AccountName = (a.AccountName ?? "").Trim(),
+                    Balance = a.Balance,
+                    BlockedAmount = a.BlockedBalance,
+                    AccountType = (a.AccountType ?? "").Trim()
+                })
+                .Where(x => !string.IsNullOrWhiteSpace(x.AccountNumber))
+                .OrderByDescending(x => x.Balance)
+                .ToList();
+        }
 
         public async Task<List<MemberAccountDto>> GetMemberAccountsByMemberIdAsync(string memberId)
         {
@@ -363,7 +385,7 @@ namespace CBS.BusinessService.Accounts
             try
             {
                 var accounts = await _transactionApiHelper.GetAsync<ResponseObject<List<CustomerAccount>>>(string.Format(APICallHelper.GetAllRemittanceAccounts, branchid));
-                if (accounts.ApiResponseData!=null)
+                if (accounts.ApiResponseData != null)
                 {
                     return accounts.ApiResponseData.Data;
 
@@ -382,13 +404,13 @@ namespace CBS.BusinessService.Accounts
             try
             {
                 var accounts = new List<CustomerAccount>();
-                if (transfterType=="Local_Remittance")
+                if (transfterType == "Local_Remittance")
                 {
-                    accounts=customerAccounts.Where(x => x.accountType==RemittanceTypes.TrustSoftCredit.ToString()).ToList();
+                    accounts = customerAccounts.Where(x => x.accountType == RemittanceTypes.TrustSoftCredit.ToString()).ToList();
                 }
                 else
                 {
-                    accounts=customerAccounts.Where(x => x.accountType!=RemittanceTypes.TrustSoftCredit.ToString()).ToList();
+                    accounts = customerAccounts.Where(x => x.accountType != RemittanceTypes.TrustSoftCredit.ToString()).ToList();
                 }
                 // Filter and map the data to the list of SelectListItem
                 var values = accounts
@@ -421,7 +443,7 @@ namespace CBS.BusinessService.Accounts
         {
             try
             {
-                GetRemittanceAccountByTypeQuery getRemittanceAccountByType = new GetRemittanceAccountByTypeQuery { AccountType=accountType, BranchId=branchid };
+                GetRemittanceAccountByTypeQuery getRemittanceAccountByType = new GetRemittanceAccountByTypeQuery { AccountType = accountType, BranchId = branchid };
                 var apiResponse = await _transactionApiHelper.PostAsync<ResponseObject<CustomerAccount>>(APICallHelper.GetRemittanceAccount, getRemittanceAccountByType);
                 if (apiResponse != null)
                 {
@@ -585,7 +607,7 @@ namespace CBS.BusinessService.Accounts
             try
             {
                 var cusResponseObject = await _transactionApiHelper.GetAsync<ResponseObject<Account>>(string.Format(APICallHelper.GetMemberAccountByAccountID, accountid));
-                if (cusResponseObject.ApiResponseData==null)
+                if (cusResponseObject.ApiResponseData == null)
                 {
                     return new Account();
 
@@ -603,7 +625,7 @@ namespace CBS.BusinessService.Accounts
             try
             {
                 var cusResponseObject = await _transactionApiHelper.GetAsync<ResponseObject<AccountBalance>>(string.Format(APICallHelper.GetAccountBalanceByAccountNumber, accountNumber));
-                if (cusResponseObject.ApiResponseData==null)
+                if (cusResponseObject.ApiResponseData == null)
                 {
                     return new AccountBalance();
 
@@ -657,7 +679,7 @@ namespace CBS.BusinessService.Accounts
                     {
 
                         var closeOfDayRequest = Mapper(cusResponseObject.ApiResponseData.Data, false);
-                        var endofDay = new EndOfTheDay { CloseOfDayRequest = closeOfDayRequest, Teller =teller, CashAtHand = closeOfDayRequest.CashAtHand, HasError = false, ErrorMessage = null, AccountingDay = cusResponseObject.ApiResponseData.Data.OpenedDate };
+                        var endofDay = new EndOfTheDay { CloseOfDayRequest = closeOfDayRequest, Teller = teller, CashAtHand = closeOfDayRequest.CashAtHand, HasError = false, ErrorMessage = null, AccountingDay = cusResponseObject.ApiResponseData.Data.OpenedDate };
                         return endofDay;
                     }
                     else
@@ -978,7 +1000,7 @@ namespace CBS.BusinessService.Accounts
 
                 decimal openingBalance = transactions.FirstOrDefault()?.PreviousBalance ?? 0;
                 List<TransactionReportDS> reports = new List<TransactionReportDS>();
-		   // --- Logo & WaterMark (LOCAL CACHED PATHS) ---
+                // --- Logo & WaterMark (LOCAL CACHED PATHS) ---
                 string logoImagePath = PaymentReceiptMapping.GenerateAndSaveBankLogoImage(b.Bank.LogoUrl, b.Bank.Name);
                 //string waterMarkImagePath = GenerateAndSaveBankWaterMarkImage(branch.Bank.WaterMarkUrl, branch.Name);
 
@@ -1632,6 +1654,7 @@ namespace CBS.BusinessService.Accounts
             return new MemberAccountDto
             {
                 Id = a.id,
+                BlockedBalance = a.blockedAmount,
                 AccountNumber = a.accountNumber,
                 AccountType = a.accountType, // ✅ take exactly what API gives
                 AccountName = a.accountName,

@@ -7,7 +7,7 @@
         {
             <fieldset class="fieldset-custom" id="denominationreceived">
                 <legend class="text-primary">
-                    @GlobalCashChangeManagement.AmountReceived
+                    @GlobalShared.Amount_received
                 </legend>
                 <p class="text-muted">
                     @GlobalCashChangeManagement.EnterTheDenominationsForTheTotalCashAmountReceived.
@@ -18,20 +18,20 @@
                         <div class="form-floating form-floating-outline">
                             @Html.TextBoxFor(m => m.CashChangeCommand.CashReceived, new { @class = "form-control formatted-amount shadow-box", @id = "AmountReceived", @oninput = "updateGivenAndTotal()" })
                             @Html.ValidationMessageFor(m => m.CashChangeCommand.CashReceived, "", new { @class = "text-danger" })
-                            <label for="AmountReceived">@GlobalCashChangeManagement.AmountReceived</label>
+                            <label for="AmountReceived">@GlobalShared.Amount_received</label>
                         </div>
                     </div>
                     <!-- Dynamic Totals Display -->
                     <div class="col-md-6">
                         <div class="form-floating form-floating-outline">
                             <span class="formatted-amount shadow-box float-start" id="balanceBroughtForward_Received">
-                                @GlobalCashChangeManagement.AmountReceived: 0 XAF
+                                @GlobalShared.Amount_received: 0 XAF
                             </span>
                         </div>
                     </div>
                     <div class="col-md-6" style="display:none">
                         <div class="form-floating form-floating-outline">
-                            <span class="formatted-amount shadow-box" id="lblDepositRequest_amount_Received">@GlobalCashChangeManagement.TotalAmount: 0.0</span>
+                            <span class="formatted-amount shadow-box" id="lblDepositRequest_amount_Received">@GlobalShared.Total_amount: 0.0</span>
                             <input type="hidden" id="totalNoteAmount_Received" value="0">
                             <input type="hidden" id="totalProvision_Received" value="0">
                         </div>
@@ -39,7 +39,7 @@
                     <div class="col-md-6">
                         <div class="form-floating form-floating-outline">
                             <span class="formatted-amount shadow-box" id="lblBalance_Received">
-                                @GlobalCashChangeManagement.ControlBalance: 0 XAF
+                                @GlobalShared.Control_balance: 0 XAF
                             </span>
                         </div>
                     </div>
@@ -180,7 +180,7 @@
                     </div>
                     <div class="col-md-6" style="display:none">
                         <div class="form-floating form-floating-outline">
-                            <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@GlobalCashChangeManagement.TotalAmount: 0.0</span>
+                            <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@GlobalShared.Total_amount: 0.0</span>
                             <input type="hidden" id="totalNoteAmount" value="0">
                             <input type="hidden" id="totalProvision" value="0">
                         </div>
@@ -188,7 +188,7 @@
                     <div class="col-md-6">
                         <div class="form-floating form-floating-outline">
                             <span class="formatted-amount shadow-box" id="lblBalance">
-                                @GlobalCashChangeManagement.ControlBalance: FCFA 0
+                                @GlobalShared.Control_balance: FCFA 0
                             </span>
                         </div>
                     </div>
@@ -196,7 +196,7 @@
                         <div class="form-floating form-floating-outline">
                             @Html.TextBoxFor(m => m.CashChangeCommand.CashEntered, new { @class = "form-control formatted-amount shadow-box", @id = "AmountGiven", @readonly = "readonly" })
                             @Html.ValidationMessageFor(m => m.CashChangeCommand.CashEntered, "", new { @class = "text-danger" })
-                            <label for="AmountGiven">@GlobalCashChangeManagement.AmountGiven</label>
+                            <label for="AmountGiven">@GlobalShared.Amount_given</label>
                         </div>
                     </div>
                     <div class="col-md-2">

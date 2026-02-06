@@ -1,20 +1,20 @@
 ﻿@{
     ViewBag.Title = "TSC Advanced Security Shield - Rate Limiting & DDoS Protection";
 }
-
+@using Resources
 <div class="row">
     <div class="col-12">
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-shield-lock-outline me-2"></i> TSC Advanced Security Shield
+                    <i class="mdi mdi-shield-lock-outline me-2"></i> @AdvancedShield.TSC_Advanced_Security_Shield
                 </h1>
                 <p class="card-text">
-                    The TSC Advanced Security Shield enables administrators to define and enforce robust rate-limiting and traffic filtering rules to protect core banking and API services from unauthorized or malicious access. These settings are designed to counter DDoS attacks, brute-force attempts, traffic flooding, and automated exploit scans.
+                    @AdvancedShield.The_TSC_Advanced_Security_Shield_enables_administrators_to_define_and_enforce_robust_rate_limiting.
                     <br /><br />
-                    With support for country-based whitelisting, CIDR filtering, suspicious request inspection, bad User-Agent blocking, and trusted header exemptions, this shield ensures that only verified and geo-authorized clients can interact with your system.
+                    @AdvancedShield.With_support_for_country_based_whitelisting_CIDR_filtering_suspicious_request_inspection.
                     <br /><br />
-                    Fine-tune request thresholds, block durations, and enforce country-IP alignment using white-listed ISO codes and CIDRs. The configuration is globally scoped—only one active security policy is permitted at a time to ensure system integrity.
+                    @AdvancedShield.Fine_tune_request_thresholds_block_durations_and_enforce_countr_IP_alignment_using_white_listed_ISO_codes_and_CIDRs.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -26,16 +26,16 @@
 
 <div class="d-flex justify-content-end mb-2">
     <a type="button" onclick="LoadDataGen('AdvancedSheild','myDataTable','_Data',0,'datalistingview')" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="View Existing Configs">
-        <i class="mdi mdi-view-list mdi-18px"></i> View List
+        <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
     </a>
     <a href="/AdvancedSheild" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="Add New Config">
-        <i class="mdi mdi-plus mdi-18px"></i> Add Config
+        <i class="mdi mdi-plus mdi-18px"></i> @GlobalShared.AddConfig
     </a>
 </div>
 
 <!-- Configuration Notice -->
 <div class="alert alert-info mt-3 mb-2">
-    <strong>Notice:</strong> TSC allows only <u>one global security configuration</u> at a time. Edit or enhance the existing configuration below. Delete to Reset the configuration to default.
+    <strong>@GlobalShared.Notice:</strong> @AdvancedShield.TSC_allows_only <u>@AdvancedShield.one_global_security_configuration</u> @AdvancedShield.at_a_time_Edit_or_enhance_the_existing_configuration_below_Delete_to_Reset_the_configuration_to_default.
 </div>
 
 <!-- Main Config View -->

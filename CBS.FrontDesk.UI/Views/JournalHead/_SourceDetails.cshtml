@@ -85,7 +85,7 @@
     </div>
     return;
 }
-
+<input type="hidden" id="sourceBranchId" value="@Model.BranchId" />
 <!-- ===================== MAIN HEADER ===================== -->
 <div class="header-viewer">
     <h6>
@@ -95,7 +95,8 @@
         Detailed information for the selected journal entry.
     </p>
 </div>
-
+<input type="hidden" id="sourceBranchId" value="@Model.BranchId" />
+<input type="hidden" id="ExcelId" value="@Model.Id" />
 <!-- ===================== MODAL BODY ===================== -->
 <div class="modal-body">
     <h6 class="fw-bold text-primary border-bottom pb-1 mb-2">
@@ -104,7 +105,18 @@
     <table class="table table-sm table-bordered mb-3">
         <tbody>
             <tr><th class="bg-label">Reference</th><td>@(Model?.Reference ?? "")</td></tr>
-            <tr><th class="bg-label">State</th><td>@(Model?.State ?? "")</td></tr>
+            <tr>
+                <th class="bg-label">State</th>
+                <td>
+                    <span class="badge
+            @(Model?.State == "APPROVED" ? "bg-success" :
+              Model?.State == "REJECTED" ? "bg-danger" :
+              "bg-secondary")">
+                        @(Model?.State ?? "")
+                    </span>
+                </td>
+            </tr>
+
             <tr><th class="bg-label">Operation Code</th><td>@(Model?.OperationCode ?? "")</td></tr>
             <tr><th class="bg-label">Branch</th><td>@(Model?.BranchName ?? "")</td></tr>
             <tr><th class="bg-label">Ticket Type</th><td>@(Model?.TicketType ?? "")</td></tr>
@@ -307,159 +319,4 @@
 </style>
 
 
-<script>
-$(document).ready(function () {
 
-    const state = '@(Model?.State ?? "")'.toUpperCase();
-
-    // ============================================
-    // 1. Disable buttons based on the journal state
-    // ============================================
-    if (["APPROVED", "REJECTED", "RECONCILED"].includes(state)) {
-
-        $('#btnApprove')
-            .prop('disabled', true)
-            .addClass('btn-secondary')
-            .removeClass('btn-success');
-
-        $('#btnReject')
-            .prop('disabled', true)
-            .addClass('btn-secondary')
-            .removeClass('btn-danger');
-    }
-
-    // ============================================
-    // 2. Approve Button Click Handler
-    // ============================================
-    $('#btnApprove').on('click', function (e) {
-        e.preventDefault();
-
-        alertify.confirm(
-            "Confirmation",
-            "Are you sure you want to approve this journal entry?",
-            function () {
-
-                var $btn = $('#btnApprove');
-                var $icon = $btn.find('i');
-                var $text = $btn.find('.btn-text');
-
-                $btn.prop('disabled', true);
-                $icon.removeClass('mdi-check-circle-outline')
-                     .addClass('mdi-loading mdi-spin');
-                $text.text('Approving...');
-
-                var payload = {
-                    Reference: '@Model.Reference',
-                    BranchId: '@Model.BranchId',
-                    Approver: '@User.Identity.Name',
-                    TicketType: '@Model.TicketType'
-                };
-
-                $.ajax({
-                    url: '@Url.Action("Approve", "JournalHead")',
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify(payload),
-                    success: function (response) {
-                        if (response && response.success) {
-                            appalert(response.message || "✅ Approved successfully.", 1, 1);
-
-                            $('#btnApprove, #btnReject').prop('disabled', true);
-
-                            $icon.removeClass('mdi-loading mdi-spin')
-                                 .addClass('mdi-check-circle');
-                            $text.text('Approved');
-                        } else {
-                            appalert((response && response.message) || "❌ Approval failed.", 2, 1);
-
-                            $btn.prop('disabled', false);
-                            $icon.removeClass('mdi-loading mdi-spin')
-                                 .addClass('mdi-check-circle-outline');
-                            $text.text('Approve');
-                        }
-                    },
-                    error: function () {
-                        appalert("❌ An error occurred while approving.", 0, 1);
-
-                        $btn.prop('disabled', false);
-                        $icon.removeClass('mdi-loading mdi-spin')
-                             .addClass('mdi-check-circle-outline');
-                        $text.text('Approve');
-                    }
-                });
-            },
-            function () {
-                appalert("🚫 Approval cancelled.", 2, 1);
-            }
-        ).set({
-            labels: { ok: 'Yes', cancel: 'No' }
-        });
-    });
-
-    // ============================================
-    // 3. Export Excel Button
-    // ============================================
-    $('#btnExportExcel').on('click', function () {
-        const id = '@Model.Id';
-
-        if (!id) {
-            appalert("Invalid journal ID!", 3, 1);
-            return;
-        }
-
-        window.location.href =
-            '@Url.Action("DownloadJournalHeadExcel", "JournalHead")' + '?id=' + id;
-    });
-
-    // ============================================
-    // 4. Reject Modal Open
-    // ============================================
-    $('#btnReject').on('click', function () {
-        $('#rejectModal').modal('show');
-    });
-
-    // ============================================
-    // 5. Submit Reject
-    // ============================================
-    $('#btnSubmitReject').on('click', function () {
-
-        const reference = $('#RejectId').val();
-        const reason = $('#RejectReason').val().trim();
-
-        if (reason === "") {
-            appalert("⚠️ Please enter a rejection reason.", 3, 1);
-            return;
-        }
-
-        const payload = {
-            Reference: reference,
-            BranchId: '@Model.BranchId',
-            Approver: '@User.Identity.Name',
-            Approve: false,
-            Reason: reason
-        };
-
-        $.ajax({
-            url: '/JournalHead/Reject',
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(payload),
-            success: function (response) {
-                if (response.success) {
-                    appalert("Journal entry rejected successfully.", 1, 1);
-                    $('#rejectModal').modal('hide');
-
-                    $('#btnReject, #btnApprove').prop('disabled', true);
-                    location.reload();
-                } else {
-                    appalert(response.message || "Rejection failed.", 2, 1);
-                }
-            },
-            error: function () {
-                appalert("An error occurred during rejection.", 2, 1);
-            }
-        });
-    });
-
-});
-</script>

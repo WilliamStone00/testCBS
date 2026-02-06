@@ -15,8 +15,8 @@
                         <div class="row">
                           
                             <div class="mb-3">
-                                @Html.DropDownListFor(model => model.AccountName, new SelectList(ViewBag.AccountNames as System.Collections.IEnumerable, "Value", "Text"), "---"+@GlobalBankingOperations.SelectAccount+"---", new { @class = "form-control select2", id = "account-name" })
-                                <label for="account-name">@GlobalBankingOperations.AccountName</label>
+                                @Html.DropDownListFor(model => model.AccountName, new SelectList(ViewBag.AccountNames as System.Collections.IEnumerable, "Value", "Text"), "---"+GlobalShared.Select_account + "---", new { @class = "form-control select2", id = "account-name" })
+                                <label for="account-name">@GlobalShared.Account_Name</label>
                             </div>
                             @*<div class="mb-3">
                                 @Html.EditorFor(model => model.Debit, new { htmlAttributes = new { @class = "form-control", placeholder = "Debit Amount" } })
@@ -27,8 +27,8 @@
                                 <label for="credit-amount">Credit Amount</label>
                             </div>*@
                             <div class="mb-3">
-                                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", placeholder = @GlobalBankingOperations.Description } })
-                                <label for="description">@GlobalBankingOperations.Description</label>
+                                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", placeholder = @GlobalShared.Description } })
+                                <label for="description">@GlobalShared.Description</label>
                             </div>
                          
                         </div>
@@ -36,7 +36,7 @@
                     </div>
                     <div class="mb-0">
                         <button type="submit" class="btn btn-primary" id="post-entries">
-                            @GlobalBankingOperations.AddEntries <i class="mdi mdi-database-plus"></i>
+                            @GlobalShared.Add_entries <i class="mdi mdi-database-plus"></i>
                         </button>
                     </div>
                 </div>

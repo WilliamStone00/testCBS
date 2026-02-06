@@ -33,14 +33,14 @@
                     <i class="mdi mdi-account-group-outline me-2"></i> @GlobalBulkOperation.BULKRANGEDOPERATIONS
                 </h1>
                 <p class="card-text">
-                    <strong>Bulk Account Management System</strong> — Perform mass operations across multiple accounts simultaneously.
-                    Save time by processing hundreds of accounts in a single operation while maintaining complete audit trails and operational control.
+                    <strong>@GlobalBulkOperation.Bulk_Account_Management_System</strong> — @GlobalBulkOperation.Perform_mass_operations_across_multiple_accounts_simultaneously.
+                    @GlobalBulkOperation.Save_time_by_processing_hundreds_of_accounts_in_a_single_operation_while_maintaining_complete_audit_trails_and_operational_control
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
 
                 <div class="alert alert-info mt-3">
                     <i class="mdi mdi-alert-circle-outline me-2"></i>
-                    <strong>Important:</strong> All bulk operations are executed in simulation mode first to allow full review and validation before actual execution.
+                    <strong>@GlobalShared.Important:</strong> @GlobalBulkOperation.All_bulk_operations_are_executed_in_simulation_mode_first_to_allow_full_review_and_validation_before_actual_execution
                 </div>
             </div>
         </div>
@@ -48,7 +48,7 @@
         <!-- Tips Section -->
         <div class="card shadow-sm mb-4">
             <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-                <span><i class="mdi mdi-information-outline me-2"></i> @GlobalBulkOperation.TIPS</span>
+                <span><i class="mdi mdi-information-outline me-2"></i> @GlobalShared.TIPS_UC</span>
                 <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseUserTips"
                         aria-expanded="false" aria-controls="collapseUserTips">
                     <i class="mdi mdi-chevron-down"></i>
@@ -61,18 +61,18 @@
 
                         <div class="col-md-12">
                             <h5 class="text-primary mb-2">
-                                <i class="mdi mdi-playlist-check me-2"></i> Quick Guide
+                                <i class="mdi mdi-playlist-check me-2"></i> @GlobalShared.Quick_Guide
                             </h5>
 
                             <div class="row g-3">
                                 <div class="col-md-4">
                                     <div class="p-3 border rounded">
                                         <div class="fw-bold text-dark mb-1">
-                                            <i class="mdi mdi-cog-outline me-1"></i> Simulation Details
+                                            <i class="mdi mdi-cog-outline me-1"></i> @GlobalShared.Simulation_details
                                         </div>
                                         <div class="hint">
-                                            Choose a simulation type and write a clear description.
-                                            This is what auditors and reports will use to identify the run.
+                                            @GlobalBulkOperation.Choose_a_simulation_type_and_write_a_clear_description.
+                                            @GlobalBulkOperation.This_is_what_auditors_and_reports_will_use_to_identify_the_run.
                                         </div>
                                     </div>
                                 </div>
@@ -83,8 +83,8 @@
                                             <i class="mdi mdi-database-outline me-1"></i> Source Accounts
                                         </div>
                                         <div class="hint">
-                                            Define which accounts are impacted (type, range, min/max balance).
-                                            Keep ranges tight to avoid unintended selections.
+                                            @GlobalBulkOperation.Define_which_accounts_are_impacted.
+                                            @GlobalBulkOperation.Keep_ranges_tight_to_avoid_unintended_selections.
                                         </div>
                                     </div>
                                 </div>
@@ -95,8 +95,8 @@
                                             <i class="mdi mdi-target-account me-1"></i> Destination
                                         </div>
                                         <div class="hint">
-                                            For Top-Up: choose destination account type + target amount.
-                                            For Contribution: choose a single destination GL + contribution amount.
+                                            @GlobalBulkOperation.For_Top_Up_choose_destination_account_type_target_amount.
+                                            @GlobalBulkOperation.For_Contribution_choose_a_single_destination_GL_contribution_amount.
                                         </div>
                                     </div>
                                 </div>
@@ -104,7 +104,7 @@
 
                             <div class="alert alert-warning mt-3 mb-0 d-flex align-items-center" role="alert">
                                 <i class="mdi mdi-alert-outline me-2"></i>
-                                Always run simulation and verify the impacted accounts list before execution.
+                                @GlobalBulkOperation.Always_run_simulation_and_verify_the_impacted_accounts_list_before_execution.
                             </div>
                         </div>
 
@@ -117,7 +117,7 @@
                         <div class="col-md-6">
                             <div class="alert alert-danger d-flex align-items-center" role="alert">
                                 <i class="mdi mdi-close-circle-outline me-2"></i>
-                                Avoid wide ranges (Start/End). Bulk runs are hard to reverse and may require manual correction.
+                                @GlobalBulkOperation.Avoid_wide_ranges_Start_End_Bulk_runs_are_hard_to_reverse_and_may_require_manual_correction.
                             </div>
                         </div>
 
@@ -135,7 +135,7 @@
             </div>
             <div class="col-md-6 text-md-start">
                 <a href="/BulkOperation/Listing" class="btn btn-outline-secondary btn-sm shadow-sm px-3 w-100 w-md-auto" data-bs-toggle="tooltip" title="@GlobalBulkOperation.GoToExecutedBulkOperationList">
-                    <i class="mdi mdi-cash me-1"></i> @GlobalBulkOperation.ViewBulkOperations
+                    <i class="mdi mdi-cash me-1"></i> @GlobalBulkOperation.View_Bulk_Operations
                 </a>
             </div>
         </div>
@@ -174,7 +174,7 @@
                                     <h2 class="accordion-header" id="headingSimulationType">
                                         <button class="accordion-button" type="button" data-bs-toggle="collapse"
                                                 data-bs-target="#collapseSimulationType" aria-expanded="true" aria-controls="collapseSimulationType">
-                                            <i class="mdi mdi-cog-outline me-2"></i> @GlobalBulkOperation.SimulationDetails
+                                            <i class="mdi mdi-cog-outline me-2"></i> @GlobalShared.Simulation_details
                                         </button>
                                     </h2>
 
@@ -184,7 +184,7 @@
 
                                                 <!-- Simulation Type -->
                                                 <div class="col-md-6">
-                                                    @Html.LabelFor(m => m.SimulationType, @GlobalBulkOperation.SimulationType, new { @class = "form-label" })
+                                                    @Html.LabelFor(m => m.SimulationType, GlobalShared.Simulation_type, new { @class = "form-label" })
                                                     <span class="req-star">*</span>
                                                     @Html.DropDownListFor(
                                                         m => m.SimulationType,
@@ -193,20 +193,20 @@
                                                         new { @class = "form-select select2", required = "required", id = "SimulationType" }
                                                     )
                                                     <div class="hint field-note">
-                                                        Pick a type that matches the business reason. Use <b>Other</b> only when none fits.
+                                                        @Html.Raw(@GlobalBulkOperation.Pick_a_type_that_matches_the_business_reason_Use_Other_only_when_none_fits)
                                                     </div>
                                                 </div>
 
                                                 <!-- Branch -->
                                                 <div class="col-md-6">
-                                                    @Html.LabelFor(m => m.BranchId, @GlobalBulkOperation.SelectBranch, new { @class = "form-label" })
+                                                    @Html.LabelFor(m => m.BranchId, GlobalShared.SelectBranch, new { @class = "form-label" })
                                                     <span class="req-star">*</span>
                                                     @Html.DropDownListFor(m => m.BranchId,
                                                         new SelectList(Model.Branches, "Id", "Name"),
-                                                        "--- " + GlobalBulkOperation.SelectBranch + " ---",
+                                                        "--- " + GlobalShared.SelectBranch + " ---",
                                                         new { @class = "form-select select2", id = "BranchId", onchange = "loadBranchAccounts(this.value, 1)" })
                                                     <div class="hint field-note">
-                                                        The branch defines the accounting scope and the available branch Chart of Accounts.
+                                                        @GlobalBulkOperation.The_branch_defines_the_accounting_scope_and_the_available_branch_Chart_of_Accounts.
                                                     </div>
                                                 </div>
 
@@ -236,7 +236,7 @@
 
                                                 <!-- Description -->
                                                 <div class="col-md-12">
-                                                    @Html.LabelFor(m => m.Description, @GlobalBulkOperation.Description, new { @class = "form-label" })
+                                                    @Html.LabelFor(m => m.Description, @GlobalShared.Description, new { @class = "form-label" })
                                                     <span class="req-star">*</span>
                                                     @Html.TextAreaFor(m => m.Description,
                                                         new
@@ -247,9 +247,9 @@
                                                             id = "Description"
                                                              })
                                                     <div class="hint field-note">
-                                                        Recommended format: <b>Reason + period + operator</b>. Example:
+                                                        @Html.Raw(@GlobalBulkOperation.Recommended_format_Reason_period_operator). Example:
                                                         “Share top-up for Dec 2025 – initiated by Teller A”.
-                                                        Required if Simulation Type is <b>Other</b>.
+                                                        @Html.Raw(@GlobalBulkOperation.Required_if_Simulation_Type_is_Other).
                                                     </div>
                                                 </div>
 
@@ -267,7 +267,7 @@
                                     <h2 class="accordion-header" id="headingOperationType">
                                         <button class="accordion-button" type="button" data-bs-toggle="collapse"
                                                 data-bs-target="#collapseOperationType" aria-expanded="true" aria-controls="collapseOperationType">
-                                            <i class="mdi mdi-format-list-bulleted-type me-2"></i> Operation Mode
+                                            <i class="mdi mdi-format-list-bulleted-type me-2"></i> @GlobalShared.Operation_Mode
                                         </button>
                                     </h2>
 
@@ -277,8 +277,8 @@
 
                                                 <div class="alert alert-light border mb-3">
                                                     <i class="mdi mdi-information-outline me-2"></i>
-                                                    <b>Top-Up</b> credits multiple accounts to a target amount.
-                                                    <b>Contribution</b> collects from many accounts into a single destination account (GL).
+                                                    <b>@GlobalShared.Top_Up</b> @GlobalBulkOperation.credits_multiple_accounts_to_a_target_amount.
+                                                    <b>@GlobalShared.Contribution</b> @GlobalBulkOperation.collects_from_many_accounts_into_a_single_destination_account_GL.
                                                 </div>
 
                                                 <div class="form-check form-check-inline">
@@ -328,7 +328,7 @@
                                                         "--- Select Account Type ---",
                                                         new { @class = "form-select select2", id = "SourceAccountType" })
                                                     <div class="hint field-note">
-                                                        This is the member account type that will be filtered and impacted by the bulk run.
+                                                        @GlobalBulkOperation.This_is_the_member_account_type_that_will_be_filtered_and_impacted_by_the_bulk_run.
                                                     </div>
                                                 </div>
 
@@ -337,7 +337,7 @@
                                                     <span class="req-star">*</span>
                                                     @Html.TextBoxFor(m => m.StartAccount, new { @class = "form-control", id = "StartAccount", placeholder = "e.g. 0000100" })
                                                     <div class="hint field-note">
-                                                        Limits selection to accounts starting from this member/account reference.
+                                                        @GlobalBulkOperation.Limits_selection_to_accounts_starting_from_this_member_account_reference.
                                                     </div>
                                                 </div>
 
@@ -346,7 +346,7 @@
                                                     <span class="req-star">*</span>
                                                     @Html.TextBoxFor(m => m.EndAccount, new { @class = "form-control", id = "EndAccount", placeholder = "e.g. 0000999" })
                                                     <div class="hint field-note">
-                                                        Limits selection to accounts ending at this member/account reference.
+                                                        @GlobalBulkOperation.Limits_selection_to_accounts_ending_at_this_member_account_reference.
                                                     </div>
                                                 </div>
 
@@ -355,7 +355,7 @@
                                                     <span class="req-star">*</span>
                                                     @Html.TextBoxFor(m => m.SourceAccountMinAmount, new { @class = "form-control", id = "SourceAccountMinAmount", type = "number", step = "0.01", min = "0", placeholder = "0" })
                                                     <div class="hint field-note">
-                                                        Only accounts with balance >= this amount are included.
+                                                        @GlobalBulkOperation.Only_accounts_with_balance_this_amount_are_included.
                                                     </div>
                                                 </div>
 
@@ -364,7 +364,7 @@
                                                     <span class="req-star">*</span>
                                                     @Html.TextBoxFor(m => m.SourceAccountMaxAmount, new { @class = "form-control", id = "SourceAccountMaxAmount", type = "number", step = "0.01", min = "0", placeholder = "0 (no limit)" })
                                                     <div class="hint field-note">
-                                                        Only accounts with balance <= this amount are included.
+                                                        @GlobalBulkOperation.Only_accounts_with_balance_this_amount_are_included.
                                                     </div>
                                                 </div>
 
@@ -404,7 +404,7 @@
                                                                     "--- Select Destination Account Type ---",
                                                                     new { @class = "form-select select2", id = "DestinationAccountType" })
                                                                 <div class="hint field-note">
-                                                                    Target account type to be credited during top-up.
+                                                                    @GlobalBulkOperation.Target_account_type_to_be_credited_during_top_up.
                                                                 </div>
                                                             </div>
 
@@ -414,8 +414,8 @@
                                                                 @Html.TextBoxFor(m => m.TargetAmount,
                                                                     new { @class = "form-control", id = "TargetAmount", type = "number", step = "0.01", min = "0", placeholder = "e.g. 5000" })
                                                                 <div class="hint field-note">
-                                                                    The system will credit each eligible account up to this target amount.
-                                                                    Must be greater than 0.
+                                                                    @GlobalBulkOperation.The_system_will_credit_each_eligible_account_up_to_this_target_amount.
+                                                                    @GlobalBulkOperation.Must_be_greater_than_0.
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -431,8 +431,8 @@
                                                                     new List<SelectListItem> { new SelectListItem { Text = "--- Select Chart Of Account ---", Value = "" } },
                                                                     new { @class = "form-select select2", id = "DestinationAccountId" })
                                                                 <div class="hint field-note">
-                                                                    This is the single destination GL that receives the collected contribution amount.
-                                                                    Loaded based on the selected branch.
+                                                                    @GlobalBulkOperation.This_is_the_single_destination_GL_that_receives_the_collected_contribution_amount.
+                                                                    @GlobalBulkOperation.Loaded_based_on_the_selected_branch.
                                                                 </div>
                                                             </div>
 
@@ -442,8 +442,8 @@
                                                                 @Html.TextBoxFor(m => m.ContributionAmount,
                                                                     new { @class = "form-control", id = "ContributionAmount", type = "number", step = "0.01", min = "0", placeholder = "e.g. 1000" })
                                                                 <div class="hint field-note">
-                                                                    Amount to collect from each eligible account (or per rule, depending on your backend logic).
-                                                                    Must be greater than 0.
+                                                                    @GlobalBulkOperation.Amount_to_collect_from_each_eligible_account_or_per_rule_depending_on_your_backend_logic.
+                                                                    @GlobalBulkOperation.Must_be_greater_than_0.
                                                                 </div>
                                                             </div>
                                                         </div>

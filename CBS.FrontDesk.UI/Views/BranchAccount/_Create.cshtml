@@ -21,12 +21,12 @@
         <div class="card bg-light mb-1">
             <div class="card-body text-center py-2">
                 <h1 class="card-title text-primary fs-4 mb-1">
-                    <i class="mdi mdi-bank-outline me-2"></i> Branch Account Node Setup
+                    <i class="mdi mdi-bank-outline me-2"></i> @BranchAccountRessources.Branch_Account_Node_Setup
                 </h1>
 
                 <div class="alert alert-info mt-2 py-1 mb-0">
                     <i class="mdi mdi-information-outline me-1"></i>
-                    Use this form to create branch-specific ledger accounts. Ensure the Account Number is unique within the branch and the Affiliate (Chart of Account) is selected correctly.
+                    @BranchAccountRessources.Use_this_form_to_create_branch_specific_ledger_accounts_Ensure_the_Account_Number.
                 </div>
 
                 <hr class="my-2" style="border: 1px solid rgba(128, 128, 128, 0.4);" />
@@ -37,15 +37,15 @@
 
 <div class="card mb-2">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary py-2">
-        <span><i class="mdi mdi-help-circle-outline me-2"></i> Tips for Branch Account</span>
+        <span><i class="mdi mdi-help-circle-outline me-2"></i> @BranchAccountRessources.Tips_for_Branch_Account</span>
         <span class="small text-muted">@((isUpdate ? "Update request" : "Create request"))</span>
     </h6>
     <div id="collapseBranchAccountTips" class="collapse show">
         <div class="card-body py-2">
             <ul class="mb-0">
-                <li class="mb-1"><i class="mdi mdi-pound-box text-success me-2"></i><strong>Account Number:</strong> Use digits only (e.g. <code>114000000110</code>). Minimum 12 characters.</li>
-                <li class="mb-1"><i class="mdi mdi-form-textbox text-info me-2"></i><strong>Account Name (EN/FR):</strong> Provide both English and Français.</li>
-                <li class="mb-0"><i class="mdi mdi-office-building-marker text-secondary me-2"></i><strong>Affiliate Account:</strong> Link to the correct chart-of-account (affiliate).</li>
+                <li class="mb-1"><i class="mdi mdi-pound-box text-success me-2"></i><strong>@GlobalShared.Account_Number:</strong> @GlobalShared.Use_digits_only (e.g. <code>114000000110</code>). @GlobalShared.Minimum_12_characters.</li>
+                <li class="mb-1"><i class="mdi mdi-form-textbox text-info me-2"></i><strong>@GlobalShared.Account_Name (EN/FR):</strong> @BranchAccountRessources.Provide_both_English_and_Français.</li>
+                <li class="mb-0"><i class="mdi mdi-office-building-marker text-secondary me-2"></i><strong>@GlobalShared.Affiliate_Account:</strong> @BranchAccountRessources.Link_to_the_correct_chart_of_account_affiliate.</li>
             </ul>
         </div>
     </div>
@@ -76,11 +76,11 @@
                 @if (isCreate)
                 {
                     <div class="alert alert-warning py-2 mb-2">
-                        <div class="fw-semibold mb-1"><i class="mdi mdi-alert-circle-outline me-1"></i> Create mode requirements</div>
+                        <div class="fw-semibold mb-1"><i class="mdi mdi-alert-circle-outline me-1"></i> @BranchAccountRessources.Create_mode_requirements</div>
                         <ul class="mb-0 small">
-                            <li><strong>Update Type</strong> must be left empty when creating a new account.</li>
-                            <li><strong>Old values</strong> (<em>Old Account Number / Old Names</em>) are <em>ignored</em> on create.</li>
-                            <li>Provide a unique <strong>Account Number</strong> (digits only, at least 12) and both <strong>English</strong> and <strong>French</strong> names.</li>
+                            <li><strong>@GlobalShared.Update_Type</strong> @BranchAccountRessources.must_be_left_empty_when_creating_a_new_account.</li>
+                            <li><strong>@GlobalShared.Old_values</strong> (<em>@GlobalShared.Old Account Number / @GlobalShared.Old Names</em>) are <em>ignored</em> on create.</li>
+                            <li>@BranchAccountRessources.Provide_a_unique <strong>@GlobalShared.Account_Number</strong> (digits only, at least 12) and both <strong>English</strong> and <strong>French</strong> names.</li>
                         </ul>
                     </div>
 
@@ -88,7 +88,7 @@
                     {
                         <div class="text-danger mb-2 small">
                             <i class="mdi mdi-close-circle-outline me-1"></i>
-                            For create requests, <strong>Update Type</strong> must be empty. Please clear the selection.
+                            @BranchAccountRessources.For_create_requests, <strong>@GlobalShared.Update_Type</strong> @BranchAccountRessources.must_be_empty_Please_clear_the_selection.
                         </div>
                     }
                 }
@@ -157,7 +157,7 @@
                                     "--- Select update type ---",
                                     new { @class = "form-select form-select-sm select2" })
                                 <div class="form-text small">
-                                    Choose what is changing for this update request.
+                                    @BranchAccountRessources.Choose_what_is_changing_for_this_update_request.
                                 </div>
                                 @Html.ValidationMessageFor(m => m.AccountUpdateKind, "", new { @class = "text-danger" })
                             </div>
@@ -173,7 +173,7 @@
                                         @readonly = "readonly"
                                     })
                                 <div class="form-text small">
-                                    Auto-filled from the existing account (read-only).
+                                    @BranchAccountRessources.Auto_filled_from_the_existing_account_read_only.
                                 </div>
                                 @Html.ValidationMessageFor(m => m.CodeOld, "", new { @class = "text-danger" })
                             </div>
@@ -194,7 +194,7 @@
                                         autocomplete = "off"
                                     })
                                 <div class="form-text small">
-                                    Required only if Update Type includes <strong>Code</strong>.
+                                    @BranchAccountRessources.Required_only_if_Update_Type_includes <strong>Code</strong>.
                                 </div>
                                 @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })
                             </div>
@@ -210,7 +210,7 @@
                                         @readonly = "readonly"
                                     })
                                 <div class="form-text small">
-                                   Auto-filled from the existing account (read-only).
+                                    @BranchAccountRessources.Auto_filled_from_the_existing_account_read_only.
                                 </div>
                                 @Html.ValidationMessageFor(m => m.NameEnOld, "", new { @class = "text-danger" })
                             </div>
@@ -226,15 +226,15 @@
                                         @readonly = "readonly"
                                     })
                                 <div class="form-text small">
-                                    Auto-filled from the existing account (read-only).
+                                    @BranchAccountRessources.Auto_filled_from_the_existing_account_read_only.
                                 </div>
                                 @Html.ValidationMessageFor(m => m.NameFrOld, "", new { @class = "text-danger" })
                             </div>
                         </div>
 
                         <div class="small text-muted mt-1">
-                            <strong>Note:</strong> Old values are locked to prevent accidental edits.
-                            Only enter the new values you want to apply.
+                            <strong>Note:</strong> @BranchAccountRessources.Old_values_are_locked_to_prevent_accidental_edits.
+                            @BranchAccountRessources.Only_enter_the_new_values_you_want_to_apply.
                         </div>
                     </div>
                                     }
@@ -264,13 +264,13 @@
                 <div class="text-end">
                     @if (isCreate)
                      {
-                        <button type="submit" class="btn btn-primary btn-sm me-2" data-bs-dismiss="modal"><i class="fas fa-save me-1"></i> Save</button>
-                        <button type="reset" class="btn btn-outline-secondary btn-sm">Reset</button>
+                        <button type="submit" class="btn btn-primary btn-sm me-2" data-bs-dismiss="modal"><i class="fas fa-save me-1"></i> @GlobalShared.Save</button>
+                        <button type="reset" class="btn btn-outline-secondary btn-sm">@GlobalShared.Reset</button>
                     }
                     else
                     {
-                        <button type="submit" class="btn btn-primary btn-sm me-2" data-bs-dismiss="modal"><i class="mdi mdi-refresh"></i> Update</button>
-                        <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary btn-sm me-2" data-bs-dismiss="modal"><i class="mdi mdi-refresh"></i> @GlobalShared.Update</button>
+                        <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">@GlobalShared.Close</button>
                      }
                 </div>
             </div>

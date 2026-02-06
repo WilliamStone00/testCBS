@@ -117,38 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Actions" xml:space="preserve">
-    <value>Actions</value>
-  </data>
-  <data name="Active" xml:space="preserve">
-    <value>Active</value>
-  </data>
-  <data name="AddCashChange" xml:space="preserve">
-    <value>Add cash change</value>
-  </data>
-  <data name="AddNewVault" xml:space="preserve">
-    <value>Add new vault</value>
-  </data>
-  <data name="AmountGiven" xml:space="preserve">
-    <value>Amount given</value>
-  </data>
-  <data name="AmountReceived" xml:space="preserve">
-    <value>Amount received</value>
-  </data>
-  <data name="BCode" xml:space="preserve">
-    <value>B.Code</value>
-  </data>
   <data name="ChangeDenominations" xml:space="preserve">
     <value>Change denominations</value>
   </data>
   <data name="ChangeToBeGiven" xml:space="preserve">
     <value>Change to be given</value>
-  </data>
-  <data name="ControlBalance" xml:space="preserve">
-    <value>Control balance</value>
-  </data>
-  <data name="CurrentBalance" xml:space="preserve">
-    <value>Current balance</value>
   </data>
   <data name="DenominationChangeManagement" xml:space="preserve">
     <value>Denomination change management</value>
@@ -168,9 +141,6 @@
   <data name="EnterTheDenominationsForTheTotalChangeAmount" xml:space="preserve">
     <value>Enter the denominations for the total change amount to be given. These values will reflect the total cash distributed back to the customer</value>
   </data>
-  <data name="Inactive" xml:space="preserve">
-    <value>Inactive</value>
-  </data>
   <data name="ManageDenominationsEfficiently" xml:space="preserve">
     <value>Manage denominations efficiently for vault operations in your branch. Use the options below to update or review denominations</value>
   </data>
@@ -179,9 +149,6 @@
   </data>
   <data name="MANAGEMENTOFDENOMINATIONS" xml:space="preserve">
     <value>MANAGEMENT OF DENOMINATIONS</value>
-  </data>
-  <data name="MaximumCapacity" xml:space="preserve">
-    <value>Maximum capacity</value>
   </data>
   <data name="NoVaultsHaveBeenConfiguredYet" xml:space="preserve">
     <value>No vaults have been configured yet</value>
@@ -192,25 +159,10 @@
   <data name="ReasonForTheCashChange" xml:space="preserve">
     <value>Reason for the cash change</value>
   </data>
-  <data name="Status" xml:space="preserve">
-    <value>Status</value>
-  </data>
-  <data name="TIPS" xml:space="preserve">
-    <value>TIPS</value>
-  </data>
-  <data name="TotalAmount" xml:space="preserve">
-    <value>Total amount</value>
-  </data>
   <data name="UseNumericValuesOnlyForDenominations" xml:space="preserve">
     <value>Use numeric values only for denominations and quantities</value>
   </data>
   <data name="VaultDenominationChangeManagement" xml:space="preserve">
     <value>Vault Denomination Change Management</value>
-  </data>
-  <data name="VaultName" xml:space="preserve">
-    <value>Vault name</value>
-  </data>
-  <data name="VAULTS" xml:space="preserve">
-    <value>VAULTS</value>
   </data>
 </root>

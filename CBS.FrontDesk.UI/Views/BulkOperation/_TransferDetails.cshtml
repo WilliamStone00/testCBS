@@ -40,26 +40,26 @@
     <div class="card mb-4">
         <div class="card-header bg-light">
             <h5 class="card-title mb-0">
-                <i class="mdi mdi-account-circle-outline me-2"></i>@GlobalBulkOperation.MemberInformation
+                <i class="mdi mdi-account-circle-outline me-2"></i>@GlobalShared.Member_Information
             </h5>
         </div>
         <div class="card-body">
             <div class="row">
                 <div class="col-md-4">
                     <div class="detail-item">
-                        <span class="detail-label">@GlobalBulkOperation.MemberName:</span>
+                        <span class="detail-label">@GlobalShared.Member_name:</span>
                         <span class="detail-value fw-semibold">@(Model.MemberName ?? "N/A")</span>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="detail-item">
-                        <span class="detail-label">@GlobalBulkOperation.MemberReference:</span>
+                        <span class="detail-label">@GlobalShared.Member_reference:</span>
                         <span class="detail-value">@(Model.MemberReference ?? "N/A")</span>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="detail-item">
-                        <span class="detail-label">@GlobalBulkOperation.Branch:</span>
+                        <span class="detail-label">@GlobalShared.Branch:</span>
                         <span class="detail-value">@(Model.BranchName ?? "N/A") <small>(@(Model.BranchCode ?? "N/A"))</small></span>
                     </div>
                 </div>
@@ -74,20 +74,20 @@
             <div class="card h-100">
                 <div class="card-header bg-light">
                     <h5 class="card-title mb-0">
-                        <i class="mdi mdi-bank-remove me-2 text-danger"></i>@GlobalBulkOperation.SourceAccount
+                        <i class="mdi mdi-bank-remove me-2 text-danger"></i>@GlobalShared.Source_account
                     </h5>
                 </div>
                 <div class="card-body">
                     <div class="detail-item">
-                        <span class="detail-label">@GlobalBulkOperation.AccountNumber:</span>
+                        <span class="detail-label">@GlobalShared.AccountNumber:</span>
                         <span class="detail-value">@(Model.SourceAccountNumber ?? "N/A")</span>
                     </div>
                     <div class="detail-item">
-                        <span class="detail-label">@GlobalBulkOperation.AccountType:</span>
+                        <span class="detail-label">@GlobalShared.Account_type:</span>
                         <span class="detail-value">@(Model.SourceAccountType ?? "N/A")</span>
                     </div>
                     <div class="detail-item">
-                        <span class="detail-label">@GlobalBulkOperation.CurrentBalance:</span>
+                        <span class="detail-label">@GlobalShared.CurrentBalance:</span>
                         <span class="detail-value fw-bold">@Model.SourceAccountBalance</span>
                     </div>
                 </div>
@@ -99,20 +99,20 @@
             <div class="card h-100">
                 <div class="card-header bg-light">
                     <h5 class="card-title mb-0">
-                        <i class="mdi mdi-bank-plus me-2 text-success"></i>@GlobalBulkOperation.DestinationAccount
+                        <i class="mdi mdi-bank-plus me-2 text-success"></i>@GlobalShared.Destination_account
                     </h5>
                 </div>
                 <div class="card-body">
                     <div class="detail-item">
-                        <span class="detail-label">@GlobalBulkOperation.AccountNumber:</span>
+                        <span class="detail-label">@GlobalShared.AccountNumber:</span>
                         <span class="detail-value">@(Model.DestinationAccountNumber ?? "N/A")</span>
                     </div>
                     <div class="detail-item">
-                        <span class="detail-label">@GlobalBulkOperation.AccountType:</span>
+                        <span class="detail-label">@GlobalShared.Account_type:</span>
                         <span class="detail-value">@(Model.DestinationAccountType ?? "N/A")</span>
                     </div>
                     <div class="detail-item">
-                        <span class="detail-label">@GlobalBulkOperation.CurrentBalance:</span>
+                        <span class="detail-label">@GlobalShared.CurrentBalance:</span>
                         <span class="detail-value fw-bold">@Model.DestinationBalance</span>
                     </div>
                 </div>
@@ -124,20 +124,20 @@
     <div class="card mb-4">
         <div class="card-header bg-light">
             <h5 class="card-title mb-0">
-                <i class="mdi mdi-swap-horizontal me-2 text-primary"></i>@GlobalBulkOperation.TransferDetails
+                <i class="mdi mdi-swap-horizontal me-2 text-primary"></i>@GlobalShared.Transfer_details
             </h5>
         </div>
         <div class="card-body">
             <div class="row">
                 <div class="col-md-4">
                     <div class="detail-item">
-                        <span class="detail-label">@GlobalBulkOperation.Amount:</span>
+                        <span class="detail-label">@GlobalShared.Amount:</span>
                         <span class="detail-value fw-bold text-primary">@Model.AmountToDebit</span>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="detail-item">
-                        <span class="detail-label">@GlobalBulkOperation.Status:</span>
+                        <span class="detail-label">@GlobalShared.Status:</span>
                         <span class="detail-value badge bg-@(Model.TransferStatus == "Completed" ? "success" : "warning")">
                             @(Model.TransferStatus ?? "Not Started")
                         </span>
@@ -145,7 +145,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="detail-item">
-                        <span class="detail-label">@GlobalBulkOperation.TransferDate:</span>
+                        <span class="detail-label">@GlobalShared.Transfer_date:</span>
                         <span class="detail-value">@Model.TransferDate.ToLocalTime().ToString("g")</span>
                     </div>
                 </div>
@@ -153,7 +153,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="detail-item">
-                        <span class="detail-label">@GlobalBulkOperation.ApprovalStatus:</span>
+                        <span class="detail-label">@GlobalShared.Approval_status:</span>
                         <span class="detail-value badge bg-@(Model.ApprovalStatus == "Approved" ? "success" : "warning")">
                             @(Model.ApprovalStatus ?? "N/A")
                         </span>
@@ -171,14 +171,14 @@
             {
                 <div class="alert alert-danger mt-3">
                     <i class="mdi mdi-alert-circle-outline me-2"></i>
-                    <strong>@GlobalBulkOperation.Error:</strong> @Model.TransferMessage
+                    <strong>@GlobalShared.Error:</strong> @Model.TransferMessage
                 </div>
             }
             else
             {
                 <div class="alert alert-primary mt-3">
                     <i class="mdi mdi-alert-circle-outline me-2"></i>
-                    <strong>@GlobalBulkOperation.Success:</strong> @Model.TransferMessage
+                    <strong>@GlobalShared.Success:</strong> @Model.TransferMessage
                 </div>
             }
         </div>
@@ -188,20 +188,20 @@
     <div class="card">
         <div class="card-header bg-light">
             <h5 class="card-title mb-0">
-                <i class="mdi mdi-scale-balance me-2 text-info"></i>@GlobalBulkOperation.BalanceInformation
+                <i class="mdi mdi-scale-balance me-2 text-info"></i>@GlobalShared.Balance_Information
             </h5>
         </div>
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
                     <div class="detail-item">
-                        <span class="detail-label">@GlobalBulkOperation.TotalBalance:</span>
+                        <span class="detail-label">@GlobalShared.Total_balance:</span>
                         <span class="detail-value fw-bold">@Model.TotalBalance</span>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="detail-item">
-                        <span class="detail-label">@GlobalBulkOperation.NetBalance:</span>
+                        <span class="detail-label">@GlobalShared.Net_balance:</span>
                         <span class="detail-value fw-bold">@Model.NetBalance</span>
                     </div>
                 </div>

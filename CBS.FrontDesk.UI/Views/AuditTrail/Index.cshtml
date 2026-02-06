@@ -48,49 +48,49 @@
                     @GlobalAuditTrail.SelectASearchOptionAndEnter
                     <ul>
                         <li>
-                            <strong>@GlobalAuditTrail.UserOrSystemAction:</strong> @GlobalAuditTrail.SelectThisOptionAndEnterTheTypeOfAction <em>@GlobalShared.Create</em>, <em>@GlobalShared.Update</em>, <em>@GlobalShared.Delete,</em>@GlobalAuditTrail.Or <em>@GlobalShared.Login</em>).
-                            <em>@GlobalAuditTrail.Example:</em> @GlobalAuditTrail.Enter <strong>@GlobalShared.Delete</strong> @GlobalAuditTrail.ToViewAllDeleteOperations.
+                            <strong>@GlobalAuditTrail.UserOrSystemAction:</strong> @GlobalAuditTrail.SelectThisOptionAndEnterTheTypeOfAction <em>@GlobalShared.Create</em>, <em>@GlobalShared.Update</em>, <em>@GlobalShared.Delete,</em>@GlobalShared.or <em>@GlobalShared.Login</em>).
+                            <em>@GlobalShared.Example:</em> @GlobalShared.Enter <strong>@GlobalShared.Delete</strong> @GlobalAuditTrail.ToViewAllDeleteOperations.
                         </li>
                         <li>
-                            <strong>@GlobalAuditTrail.UserName:</strong> @GlobalAuditTrail.SelectThisOptionToSearchByAUserFullName.
-                            <em>@GlobalAuditTrail.Example:</em> @GlobalAuditTrail.Enter <strong>John Doe</strong> @GlobalAuditTrail.ToFindLogsInvolvingThatUser.
+                            <strong>@GlobalShared.User_Name:</strong> @GlobalAuditTrail.SelectThisOptionToSearchByAUserFullName.
+                            <em>@GlobalShared.Example:</em> @GlobalShared.Enter <strong>John Doe</strong> @GlobalAuditTrail.ToFindLogsInvolvingThatUser.
                         </li>
                         <li>
-                            <strong>@GlobalAuditTrail.CriticalLevel:</strong> @GlobalAuditTrail.SelectThisOptionToSearchByLog <em>@GlobalAuditTrail.Information</em>, <em>@GlobalAuditTrail.Warning,</em> @GlobalAuditTrail.Or <em>@GlobalAuditTrail.Error</em>.
-                            <em>@GlobalAuditTrail.Example:</em> @GlobalAuditTrail.Enter <strong>@GlobalAuditTrail.Error</strong> @GlobalAuditTrail.ToViewLogsRelatedToFailedOrCriticalEvents.
+                            <strong>@GlobalAuditTrail.CriticalLevel:</strong> @GlobalAuditTrail.SelectThisOptionToSearchByLog <em>@GlobalShared.Information</em>, <em>@GlobalShared.Warning,</em> @GlobalShared.or <em>@GlobalShared.Error</em>.
+                            <em>@GlobalShared.Example:</em> @GlobalShared.Enter <strong>@GlobalShared.Error</strong> @GlobalAuditTrail.ToViewLogsRelatedToFailedOrCriticalEvents.
                         </li>
                         <li>
                             <strong>@GlobalAuditTrail.MicroserviceName:</strong> @GlobalAuditTrail.SelectThisOptionToSearchByTheMicroservice.
-                            <em>@GlobalAuditTrail.Example:</em> @GlobalAuditTrail.Enter <strong>@GlobalAuditTrail.PaymentService</strong> @GlobalAuditTrail.ToFindEventsRelatedToPayments.
+                            <em>@GlobalShared.Example:</em> @GlobalShared.Enter <strong>@GlobalAuditTrail.PaymentService</strong> @GlobalAuditTrail.ToFindEventsRelatedToPayments.
                         </li>
                         <li>
                             <strong>@GlobalAuditTrail.SystemStatusCode:</strong> @GlobalAuditTrail.UseThisOptionToFilterLogsByHTTPStatusCodes.
-                            <em>@GlobalAuditTrail.Example:</em> @GlobalAuditTrail.Enter <strong>500</strong> @GlobalAuditTrail.ToIdentifyServerErrors.
+                            <em>@GlobalShared.Example:</em> @GlobalShared.Enter <strong>500</strong> @GlobalAuditTrail.ToIdentifyServerErrors.
                         </li>
                         <li>
-                            <strong>@GlobalAuditTrail.BranchCode:</strong> @GlobalAuditTrail.SelectThisOptionToSearchLogs.
-                            <em>@GlobalAuditTrail.Example:</em> @GlobalAuditTrail.Enter <strong>001</strong>  @GlobalAuditTrail.ToFindEventsAssociatedWithBranch.
+                            <strong>@GlobalShared.Branch_Code:</strong> @GlobalAuditTrail.SelectThisOptionToSearchLogs.
+                            <em>@GlobalShared.Example:</em> @GlobalShared.Enter <strong>001</strong>  @GlobalAuditTrail.ToFindEventsAssociatedWithBranch.
                         </li>
                         <li>
                             <strong>@GlobalAuditTrail.RequestObject:</strong> @GlobalAuditTrail.SearchLogsContainingSpecificDetails.
-                            <em>@GlobalAuditTrail.Example:</em> EnterPartOfTheRequestObjectOrTransactionDetails (e.g., <strong>@GlobalAuditTrail.Account12345</strong>).
+                            <em>@GlobalShared.Example:</em> EnterPartOfTheRequestObjectOrTransactionDetails (e.g., <strong>@GlobalAuditTrail.Account12345</strong>).
                         </li>
                         <li>
                             <strong>@GlobalAuditTrail.DetailResponseMessage:</strong> @GlobalAuditTrail.FilterLogsContainingSpecificResponseMessages.
-                            <em>@GlobalAuditTrail.Example:</em> @GlobalAuditTrail.Enter <strong>@GlobalAuditTrail.TransactionFailed</strong> @GlobalAuditTrail.ToLocateErrorLogs.
+                            <em>@GlobalShared.Example:</em> @GlobalShared.Enter <strong>@GlobalAuditTrail.TransactionFailed</strong> @GlobalAuditTrail.ToLocateErrorLogs.
                         </li>
                         <li>
-                            <strong>@GlobalAuditTrail.BranchName:</strong> @GlobalAuditTrail.SelectThisOptionToFilterLogsByBranchName.
-                            <em>@GlobalAuditTrail.Example:</em> @GlobalAuditTrail.Enter <strong>@GlobalAuditTrail.DowntownBranch</strong> @GlobalAuditTrail.ToRetrieveLogsForThatBranch.
+                            <strong>@GlobalShared.Branch_Name:</strong> @GlobalAuditTrail.SelectThisOptionToFilterLogsByBranchName.
+                            <em>@GlobalShared.Example:</em> @GlobalShared.Enter <strong>@GlobalAuditTrail.DowntownBranch</strong> @GlobalAuditTrail.ToRetrieveLogsForThatBranch.
                         </li>
                         <li>
                             <strong>@GlobalAuditTrail.CorrelationIDOrTransactionCode:</strong> @GlobalAuditTrail.UseThisOptionToFindLogs.
-                            <em>@GlobalAuditTrail.Example:</em> @GlobalAuditTrail.Enter <strong>CorrID12345</strong> @GlobalAuditTrail.Or <strong>TXN67890</strong> @GlobalAuditTrail.ToLocateLogsForASpecificTransaction.
+                            <em>@GlobalShared.Example:</em> @GlobalShared.Enter <strong>CorrID12345</strong> @GlobalShared.or <strong>TXN67890</strong> @GlobalAuditTrail.ToLocateLogsForASpecificTransaction.
                         </li>
                     </ul>
                 </li>
 
-                <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> @GlobalAuditTrail.MonitorCriticalLogsReviewLogsMarkedAs <em>@GlobalAuditTrail.Error</em> @GlobalAuditTrail.OrWithStatusCodesToDetectAnomalies.</li>
+                <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> @GlobalAuditTrail.MonitorCriticalLogsReviewLogsMarkedAs <em>@GlobalShared.Error</em> @GlobalAuditTrail.OrWithStatusCodesToDetectAnomalies.</li>
 
                 <li><i class="mdi mdi-eye-outline text-info me-2"></i> @GlobalAuditTrail.ViewFullDetailsClickOnALogEntryToOpen.</li>
 
@@ -126,10 +126,10 @@
                         <label for="auditSearchInput" class="form-label fw-bold">@GlobalAuditTrail.SearchAndExportLogs</label>
                         <div class="row">
                             <div class="col-md-3">
-                                <input type="text" id="dateFrom" class="form-control" placeholder="@GlobalAuditTrail.DateFrom (dd/mm/yyyy)">
+                                <input type="text" id="dateFrom" class="form-control" placeholder="@GlobalShared.DateFrom (dd/mm/yyyy)">
                             </div>
                             <div class="col-md-3">
-                                <input type="text" id="dateTo" class="form-control" placeholder="@GlobalAuditTrail.DateTo (dd/mm/yyyy)">
+                                <input type="text" id="dateTo" class="form-control" placeholder="@GlobalShared.DateTo (dd/mm/yyyy)">
                             </div>
                             <div class="col-md-4">
                                 <input type="text" id="auditSearchInput" class="form-control" placeholder="@GlobalAuditTrail.SearchByActionUserOrDetails">
@@ -153,15 +153,15 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="searchOption" id="searchAction" value="@GlobalAuditTrail.Action" checked />
+                                        <input class="form-check-input" type="radio" name="searchOption" id="searchAction" value="@GlobalShared.Action" checked />
                                         <label class="form-check-label" for="searchAction">@GlobalAuditTrail.UserOrSystemAction</label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="searchOption" id="searchFullName" value="@GlobalAuditTrail.FullName" />
-                                        <label class="form-check-label" for="searchFullName">@GlobalAuditTrail.UserName</label>
+                                        <input class="form-check-input" type="radio" name="searchOption" id="searchFullName" value="@GlobalShared.Full_Name" />
+                                        <label class="form-check-label" for="searchFullName">@GlobalShared.User_Name_Full</label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="searchOption" id="searchLevel" value="@GlobalAuditTrail.Level" />
+                                        <input class="form-check-input" type="radio" name="searchOption" id="searchLevel" value="@GlobalShared.Level" />
                                         <label class="form-check-label" for="searchLevel">@GlobalAuditTrail.CriticalLevel</label>
                                     </div>
                                 </div>
@@ -176,8 +176,8 @@
                                         <label class="form-check-label" for="searchCorrolationId">@GlobalAuditTrail.CorrolationIdOrTransCode</label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="searchOption" id="searchBranchCode" value="@GlobalAuditTrail.BranchCode" />
-                                        <label class="form-check-label" for="searchBranchCode">@GlobalAuditTrail.BranchCode</label>
+                                        <input class="form-check-input" type="radio" name="searchOption" id="searchBranchCode" value="@GlobalShared.Branch_Code" />
+                                        <label class="form-check-label" for="searchBranchCode">@GlobalShared.Branch_Code</label>
                                     </div>
                                 </div>
 
@@ -191,8 +191,8 @@
                                         <label class="form-check-label" for="searchDetailMessage">@GlobalAuditTrail.DetailResponseMessage</label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="searchOption" id="searchBranchName" value="@GlobalAuditTrail.BranchName" />
-                                        <label class="form-check-label" for="searchBranchName">@GlobalAuditTrail.BranchName</label>
+                                        <input class="form-check-input" type="radio" name="searchOption" id="searchBranchName" value="@GlobalShared.Branch_Name" />
+                                        <label class="form-check-label" for="searchBranchName">@GlobalShared.Branch_Name</label>
                                     </div>
                                 </div>
 
@@ -219,7 +219,7 @@
                 <!-- Details content will be loaded here dynamically -->
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@GlobalAuditTrail.Close</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@GlobalShared.Close</button>
             </div>
         </div>
     </div>
