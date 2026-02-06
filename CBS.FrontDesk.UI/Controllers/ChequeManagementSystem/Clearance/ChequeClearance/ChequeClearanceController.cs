@@ -29,7 +29,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeCl
         private readonly BranchServices _branchServices;
         private readonly CounterChequeService _counterChequeService;
 
-        public ChequeClearanceController(ChequeClearanceService chequeClearanceService, BranchServices branchServices, CounterChequeService counterChequeService,)
+        public ChequeClearanceController(ChequeClearanceService chequeClearanceService, BranchServices branchServices, CounterChequeService counterChequeService)
         {
             _chequeClearanceService = chequeClearanceService;
             _branchServices = branchServices;
