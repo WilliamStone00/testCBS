@@ -10785,6 +10785,7 @@
     <Content Include="Views\TranslationPlaceholder\_TranslationPlaceholderForm.cshtml" />
     <Content Include="Views\MembersFSeries\_ReportView.cshtml" />
     <Content Include="Views\FeeConfig\_FeeConfigDataTable.cshtml" />
+    <Content Include="Views\Country\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
