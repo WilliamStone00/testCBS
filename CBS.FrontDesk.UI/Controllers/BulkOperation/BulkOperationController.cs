@@ -571,7 +571,8 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
                 SimulateBulkOperationDetails = simulateBulkOperationDetails,
                 MainBranchCode = mainBranch.BranchCode,
                 MainBranchId = mainBranch.Id,
-                MainBranchName = mainBranch.Name
+                MainBranchName = mainBranch.Name,
+                ShouldImpactAccounting = simulateCashOutOrCashIn.ShouldImpactAccounting
 
             };
 
@@ -680,7 +681,8 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
                 SimulateBulkOperationDetails = simulateBulkOperationDetails,
                 MainBranchCode = mainBranch.BranchCode,
                 MainBranchId = mainBranch.Id,
-                MainBranchName = mainBranch.Name
+                MainBranchName = mainBranch.Name,
+                ShouldImpactAccounting=simulateCashOutOrCashIn.ShouldImpactAccounting
 
             };
 

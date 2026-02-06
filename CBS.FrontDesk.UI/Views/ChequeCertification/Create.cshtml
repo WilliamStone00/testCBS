@@ -6,7 +6,7 @@
 @model CBS.FrontDesk.Data.Entity.CheckManagementSystem.ChequeCertification.ChequeCertificationDto
 
 <div class="card-header">
-    <h5 class="card-title mb-0 text-success">Create Cheque Certification</h5>
+    <h5 class="card-title mb-0 text-success">@ChequeCertificationResource.Create_Cheque_Certification</h5>
 </div>
 
 <div class="card-body">
@@ -67,8 +67,8 @@
         </div>
 
         <div class="d-flex justify-content-between">
-            <button type="reset" form="createCertificationForm" class="btn btn-light">Reset</button>
-            <button type="submit" form="createCertificationForm" class="btn btn-primary">Create Certification</button>
+            <button type="reset" form="createCertificationForm" class="btn btn-light">@GlobalShared.Reset</button>
+            <button type="submit" form="createCertificationForm" class="btn btn-primary">@GlobalShared.Create_Certification</button>
         </div>
     }
 </div>

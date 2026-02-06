@@ -50,7 +50,7 @@ namespace CBS.BusinessService.CheckManagementSystem.Configurations.ChequeNumber
             }
         }
 
-        public async Task<CustomDataTable> GetNumConfigDataTableAsync(NumconfogQuery query)
+        public async Task<CustomDataTable> GetNumConfigDataTableAsync(NumConfigQuery query)
         {
             try
             {
@@ -162,49 +162,62 @@ namespace CBS.BusinessService.CheckManagementSystem.Configurations.ChequeNumber
                 return ExecutionMessage;
             }
 
-            public async Task<ExecutionMessages> DelateAsync(string categoryId)
-            {
-                try
-                {
-                    if (string.IsNullOrEmpty(APICallHelper.Delete))
-                        throw new InvalidOperationException("DeactivateChequeBookCategory URL is not configured.");
+		public async Task<ExecutionMessages> DelateAsync(string categoryId)
+		{
+			try
+			{
+				if (string.IsNullOrEmpty(APICallHelper.Delete))
+					throw new InvalidOperationException("DesactivateChequeBookCategory URL is not configured.");
 
-                    string formattedUrl = string.Format(APICallHelper.Delete, categoryId);
+				string formattedUrl = string.Format(APICallHelper.Delete, categoryId);
 
-                    if (_apiCallerHelper == null)
-                        throw new InvalidOperationException("_apiCallerHelper is not initialized.");
+				if (_apiCallerHelper == null)
+					throw new InvalidOperationException("_apiCallerHelper is not initialized.");
 
-                    var response = await _apiCallerHelper.DeleteAsync<ServiceResponse<bool>>(formattedUrl);
+				var response = await _apiCallerHelper
+					.DeleteAsync<ServiceResponse<NumConfig>>(formattedUrl);
 
-                    if (response == null)
-                        throw new InvalidOperationException("API returned null response.");
+				if (response == null)
+					throw new InvalidOperationException("API returned null response.");
 
-                    if (response.IsSuccess)
-                    {
-                        GetExecutionMessages(null, true, $"Category ID: {categoryId}", MessagesResults.Success,
-                            ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null,
-                            response.ApiResponseData?.Message ?? "Category deactivated successfully.");
-                    }
-                    else
-                    {
-                        GetExecutionMessages(null, false, $"Category ID: {categoryId}", MessagesResults.Failed,
-                            ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null,
-                            response.ApiResponseData?.Message ?? response.Message ?? "Unknown error.");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    GetExecutionMessages(null, false, $"Category ID: {categoryId}", MessagesResults.Error,
-                        ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message);
-                }
+				// 🔹 AJOUT ICI
+				var apiMessage = response.ApiResponseData?.Message ?? response.Message;
 
-                return ExecutionMessage ?? new ExecutionMessages
-                {
-                    MessageString = "No execution message was created.",
-                    MessageStatus = MessagesResults.Error.ToString()
-                };
-            }                  
-        }
-    }
+				if (response.IsSuccess)
+				{
+					GetExecutionMessages(null, true, null, MessagesResults.Success,
+						ExecutionProcessOption.DefaultSuccessdMessages,
+						SystemMessageStatus.Success.ToString(),
+						null,
+						apiMessage);
+				}
+				else
+				{
+					GetExecutionMessages(null, false, null, MessagesResults.Failed,
+						ExecutionProcessOption.DefaultFailedMessages,
+						SystemMessageStatus.Failed.ToString(),
+						null,
+						apiMessage);
+				}
+			}
+			catch (Exception ex)
+			{
+				GetExecutionMessages(null, false, $"Category ID: {categoryId}",
+					MessagesResults.Error,
+					ExecutionProcessOption.TryCatch,
+					SystemMessageStatus.Error.ToString(),
+					ex,
+					ex.Message);
+			}
+
+			return ExecutionMessage ?? new ExecutionMessages
+			{
+				MessageString = "No execution message was created.",
+				MessageStatus = MessagesResults.Error.ToString()
+			};
+		}
+
+	}
+}
 
 

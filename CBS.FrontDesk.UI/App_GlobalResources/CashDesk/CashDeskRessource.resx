@@ -282,6 +282,9 @@
   <data name="ChooseEither" xml:space="preserve">
     <value>Choose either</value>
   </data>
+  <data name="Choose_the_correspondent_GL_that_receives_the_loan_repayment_collection" xml:space="preserve">
+    <value>Choose the correspondent GL that receives the loan repayment collection.</value>
+  </data>
   <data name="ClearBeneficiaryInfo" xml:space="preserve">
     <value>Clear Beneficiary Info</value>
   </data>
@@ -320,6 +323,9 @@
   </data>
   <data name="ConfirmAndProceed" xml:space="preserve">
     <value>Confirm &amp; Proceed</value>
+  </data>
+  <data name="Correspondent_account" xml:space="preserve">
+    <value>Correspondent account</value>
   </data>
   <data name="DenominationBreakdown" xml:space="preserve">
     <value>Denomination Breakdown</value>
@@ -401,6 +407,18 @@
   </data>
   <data name="EnterTheCorrectAmountsUnder" xml:space="preserve">
     <value>Enter the correct amounts under</value>
+  </data>
+  <data name="Enter_amount_fee_tick_confirm_and_totals_will_compute" xml:space="preserve">
+    <value>Enter amount + fee, tick confirm, and totals will compute.</value>
+  </data>
+  <data name="Enter_gross_interest_VAT_is_extracted_and_the_field_shows_net" xml:space="preserve">
+    <value>Enter gross interest; VAT is extracted (16.1425%) and the field shows net</value>
+  </data>
+  <data name="Enter_net_interest_VAT_is_added_on_top" xml:space="preserve">
+    <value>Enter net interest; VAT is added on top (19.25%)</value>
+  </data>
+  <data name="Enter_the_collection_fee_Default_is_0" xml:space="preserve">
+    <value>Enter the collection fee (XAF). Default is 0.</value>
   </data>
   <data name="EventItem" xml:space="preserve">
     <value>event item</value>
@@ -545,6 +563,9 @@
   </data>
   <data name="LoanRepaymentSimulationTitle" xml:space="preserve">
     <value>Loan Repayment Simulation</value>
+  </data>
+  <data name="Loan_Repayment_Simulation_Summary" xml:space="preserve">
+    <value>Loan Repayment Simulation — Summary</value>
   </data>
   <data name="LocalOperation" xml:space="preserve">
     <value>Local Operation</value>
@@ -744,6 +765,9 @@
   <data name="OptionallyProvideAReferenceIfTheTransactionIsLinkedToAKnownMember" xml:space="preserve">
     <value>Optionally provide a reference if the transaction is linked to a known member.</value>
   </data>
+  <data name="Optional_fee_charged_for_this_collection_will_be_added_to_totals_if_enabled" xml:space="preserve">
+    <value>Optional fee charged for this collection (will be added to totals if enabled).</value>
+  </data>
   <data name="Or" xml:space="preserve">
     <value>or</value>
   </data>
@@ -816,6 +840,9 @@
   <data name="PermanentProofOfWhoDepositedFunds1" xml:space="preserve">
     <value>Permanent proof of who deposited funds.</value>
   </data>
+  <data name="Pick_the_correspondent_GL_account_that_receives_the_Momocash_collection" xml:space="preserve">
+    <value>Pick the correspondent GL account that receives the Momocash collection.</value>
+  </data>
   <data name="Please_enter_a_positive_integer" xml:space="preserve">
     <value>Please enter a positive integer</value>
   </data>
@@ -863,6 +890,9 @@
   </data>
   <data name="RepresentativesName" xml:space="preserve">
     <value>representative’s name</value>
+  </data>
+  <data name="Representative_Depositor_Info" xml:space="preserve">
+    <value>Representative / Depositor Info</value>
   </data>
   <data name="RequiredForKYCAndAMLRegulations" xml:space="preserve">
     <value>Required for KYC and AML regulations.</value>
@@ -920,6 +950,9 @@
   </data>
   <data name="SelectThe" xml:space="preserve">
     <value>Select the</value>
+  </data>
+  <data name="Select_the_branch_to_load_available_Momocash_GL_accounts" xml:space="preserve">
+    <value>Select the branch to load available Momocash GL accounts.</value>
   </data>
   <data name="ShowApprovalAndLegalFilters" xml:space="preserve">
     <value>Show Approval &amp; Legal Filters</value>
@@ -1031,6 +1064,9 @@
   </data>
   <data name="ThisPanelAllowsTheCashierToSearchFilterAndSelectTemporarilyRegisteredMembers" xml:space="preserve">
     <value>This panel allows the cashier to search, filter, and select temporarily registered members. These members may not have complete registration and often require final processing or conversion.</value>
+  </data>
+  <data name="This_document_is_a_simulation_summary_for_advisory_purposes_only_it_is_not_a_receipt" xml:space="preserve">
+    <value>This document is a &lt;strong&gt;simulation summary&lt;/strong&gt; for advisory purposes only; it is not a receipt.</value>
   </data>
   <data name="ThreeHundredXAFFromPhysical" xml:space="preserve">
     <value>300 XAF for Physical Persons</value>
@@ -1155,6 +1191,9 @@
   <data name="ValidatedVia" xml:space="preserve">
     <value>validated via</value>
   </data>
+  <data name="Values_depend_on_VAT_mode_and_current_inputs_provided_at_simulation_time" xml:space="preserve">
+    <value>Values depend on VAT mode and current inputs provided at simulation time.</value>
+  </data>
   <data name="VATApplicability" xml:space="preserve">
     <value>VAT Applicability: VAT is automatically applied to loans of 2,000,000 XAF or more. Select the VAT-Inclusive checkbox if VAT is already part of the interest entered.</value>
   </data>
@@ -1244,5 +1283,167 @@
   </data>
   <data name="XAF" xml:space="preserve">
     <value>XAF</value>
+  </data>
+  <data name="Add_to_Total_will_include_it_in_the_footer_totals_if_your_JS_uses_it" xml:space="preserve">
+    <value>“Add to Total” will include it in the footer totals (if your JS uses it).</value>
+  </data>
+  <data name="Turn_off_to_ignore_the_charge" xml:space="preserve">
+    <value>Turn off to ignore the charge.</value>
+  </data>
+  <data name="Loans_Repayment_Lines" xml:space="preserve">
+    <value>Loans Repayment Lines</value>
+  </data>
+  <data name="Enter_capital_interest_penalty_VAT_can_be_Inclusive_Exclusive" xml:space="preserve">
+    <value>Enter capital / interest / penalty. VAT can be Inclusive/Exclusive.</value>
+  </data>
+  <data name="Ensure_the_reference_is_correct_before_proceeding" xml:space="preserve">
+    <value>Ensure the reference is correct before proceeding.</value>
+  </data>
+  <data name="Press_Enter_or_click_Search" xml:space="preserve">
+    <value>Press &lt;strong&gt;Enter&lt;/strong&gt; or click &lt;strong&gt;Search&lt;/strong&gt;.</value>
+  </data>
+  <data name="Member_reference_is_required" xml:space="preserve">
+    <value>Member reference is required.</value>
+  </data>
+  <data name="Cash_In_Loan_Repayments_Charges_Supported" xml:space="preserve">
+    <value>Cash-In &amp;amp; Loan Repayments (Charges Supported)</value>
+  </data>
+  <data name="Search_by_member_reference_number_to_load_member_details_for_Cash_In_Loan_Repayment" xml:space="preserve">
+    <value>Search by member reference number to load member details for Cash-In / Loan Repayment.</value>
+  </data>
+  <data name="Select_an_operation_type_Member_data_will_refresh_automatically_for_the_selected_operation" xml:space="preserve">
+    <value>Select an operation type. Member data will refresh automatically for the selected operation.</value>
+  </data>
+  <data name="Approved_Daily_Collector_Batch_Cash_Clearance" xml:space="preserve">
+    <value>Approved Daily Collector Batch (Cash Clearance)</value>
+  </data>
+  <data name="Only_batches_with_Status_Approved_and_not_yet_fully_completed_are_listed" xml:space="preserve">
+    <value>Only batches with &lt;em&gt;Status = Approved&lt;/em&gt; and not yet fully completed are listed.</value>
+  </data>
+  <data name="Load_Members_Loans" xml:space="preserve">
+    <value>Load Member’s Loans</value>
+  </data>
+  <data name="Choose_the_applicable_VAT_mode_below" xml:space="preserve">
+    <value>Choose the applicable &lt;strong&gt;VAT mode&lt;/strong&gt; below.</value>
+  </data>
+  <data name="The_system_will_automatically_recalculate_VAT_and_totals_for_all_rows_in_real_time" xml:space="preserve">
+    <value>The system will automatically recalculate VAT and totals for all rows in real time.</value>
+  </data>
+  <data name="Choose_Manual_to_clear_from_an_approved_uploaded_batch_or_Device_for_C_Money_POS_device_collections" xml:space="preserve">
+    <value>Choose &lt;strong&gt;Manual&lt;/strong&gt; to clear from an approved uploaded batch, or &lt;strong&gt;Device&lt;/strong&gt; for C-Money/POS device collections.</value>
+  </data>
+  <data name="Select_MTN_Or_Orange_GL" xml:space="preserve">
+    <value>Select MTN Or Orange GL</value>
+  </data>
+  <data name="Welcome_to_the_Cash_Desk_of_TSC" xml:space="preserve">
+    <value>Welcome to the Cash Desk of &lt;strong&gt;TSC&lt;/strong&gt;.</value>
+  </data>
+  <data name="This_interface_manages_opName_transactions_posted_directly_to_the_branch_chart_of_accounts" xml:space="preserve">
+    <value>This interface manages &lt;strong&gt;@opName&lt;/strong&gt; transactions posted directly to the &lt;strong&gt;branch chart of accounts&lt;/strong&gt;.</value>
+  </data>
+  <data name="at_the_teller_desk_allocated_against_predefined_branch_GL_accounts" xml:space="preserve">
+    <value>at the teller desk, allocated against predefined branch GL accounts.</value>
+  </data>
+  <data name="Use_this_strictly_for" xml:space="preserve">
+    <value>Use this strictly for</value>
+  </data>
+  <data name="that_does_not_involve_member_accounts" xml:space="preserve">
+    <value>that does not involve member accounts.</value>
+  </data>
+  <data name="If_Inter_Branch_is_enabled_select_the_destination_branch_before_posting" xml:space="preserve">
+    <value>If &lt;strong&gt;Inter-Branch&lt;/strong&gt; is enabled, select the destination branch before posting.</value>
+  </data>
+  <data name="After_posting_successfully_click_Re_Print_to_print_the_operation_receipt_for_your_records" xml:space="preserve">
+    <value>After posting successfully, click &lt;strong&gt;Re-Print&lt;/strong&gt; to print the operation receipt for your records.</value>
+  </data>
+  <data name="Add_a_clear_Narration_and_capture_Name_CNI_Telephone_for_audit" xml:space="preserve">
+    <value>Add a clear &lt;strong&gt;Narration&lt;/strong&gt; and capture &lt;strong&gt;Name / CNI / Telephone&lt;/strong&gt; for audit.</value>
+  </data>
+  <data name="Ensure_the_sum_of_all_selected_GL_amounts_equals_the_cash_Denominations" xml:space="preserve">
+    <value>Ensure the sum of all &lt;strong&gt;selected&lt;/strong&gt; GL amounts equals the cash &lt;strong&gt;Denominations&lt;/strong&gt;.</value>
+  </data>
+  <data name="Click_the_Delete_button_on_a_row_to_remove_that_GL_entry" xml:space="preserve">
+    <value>Click the &lt;strong&gt;Delete&lt;/strong&gt; button on a row to remove that GL entry.</value>
+  </data>
+  <data name="Click_Add_Row_to_add_a_new_GL_entry_choose_GL_enter_Note_and_Amount" xml:space="preserve">
+    <value>Click &lt;strong&gt;Add Row&lt;/strong&gt; to add a new GL entry (choose GL, enter Note and Amount).</value>
+  </data>
+  <data name="Accounting_Date_is_read_only_and_uses_the_current_accounting_date" xml:space="preserve">
+    <value>&lt;strong&gt;Accounting Date&lt;/strong&gt; is &lt;em&gt;read-only&lt;/em&gt; and uses the current accounting date.</value>
+  </data>
+  <data name="Confirm_the_GLs_to_be_impacted_by_ticking_the_Select_checkbox_on_each_row_before_posting" xml:space="preserve">
+    <value>&lt;strong&gt;Confirm the GLs to be impacted&lt;/strong&gt; by ticking the &lt;em&gt;Select&lt;/em&gt; checkbox on each row before posting. </value>
+  </data>
+  <data name="Only_checked_rows_are_included" xml:space="preserve">
+    <value>Only checked rows are included.</value>
+  </data>
+  <data name="Use_Add_Row_to_insert_additional_GL_lines" xml:space="preserve">
+    <value>Use &lt;em&gt;Add Row&lt;/em&gt; to insert additional GL lines.</value>
+  </data>
+  <data name="You_can_allocate_the_transaction_to_multiple_GL_accounts" xml:space="preserve">
+    <value>You can allocate the transaction to &lt;strong&gt;multiple GL accounts&lt;/strong&gt;.</value>
+  </data>
+  <data name="This_GL_will_be_credited_as_the_source_of_funds_for_the_expense" xml:space="preserve">
+    <value>This GL will be credited as the source of funds for the expense.</value>
+  </data>
+  <data name="Use_another_source_GL" xml:space="preserve">
+    <value>Use another source GL (e.g., petty cash)</value>
+  </data>
+  <data name="View_denomination_snapshot" xml:space="preserve">
+    <value>View denomination snapshot</value>
+  </data>
+  <data name="Denomination_snapshot" xml:space="preserve">
+    <value>Denomination snapshot</value>
+  </data>
+  <data name="Loading_current_provisions" xml:space="preserve">
+    <value>Loading current provisions</value>
+  </data>
+  <data name="Cash_at_hand_System" xml:space="preserve">
+    <value>Cash at hand (System)</value>
+  </data>
+  <data name="This_feature_is_only_for_Cash_In_and_Loan_Repayments_both_operations_support_charges" xml:space="preserve">
+    <value>This feature is only for &lt;b&gt;Cash-In&lt;/b&gt; and &lt;b&gt;Loan Repayments&lt;/b&gt; — both operations support &lt;b&gt;charges&lt;/b&gt;.</value>
+  </data>
+  <data name="Verify_the_member_select_the_correct_operation_type_and_review_charges_before_confirming" xml:space="preserve">
+    <value>Verify the member, select the correct operation type, and review charges before confirming.</value>
+  </data>
+  <data name="Where_the_payout_leaves_from_Salary_Payable_GL_Other_Selected_GL" xml:space="preserve">
+    <value>Where the payout leaves from (e.g, Salary Payable GL, Other Selected GL).</value>
+  </data>
+  <data name="Type_the_salary_temp_pay_code_and_click_Find" xml:space="preserve">
+    <value>Type the salary temp pay code and click &lt;b&gt;Find&lt;/b&gt;</value>
+  </data>
+  <data name="Salary_Temp_Pay_Code" xml:space="preserve">
+    <value>Salary Temp Pay Code</value>
+  </data>
+  <data name="Non_Member_Salary_Payout" xml:space="preserve">
+    <value>Non-Member Salary Payout</value>
+  </data>
+  <data name="Tips_for_Non_Member_Salary_Payout" xml:space="preserve">
+    <value>Tips for Non-Member Salary Payout</value>
+  </data>
+  <data name="Cash_out_posted_directly_to_the_branch_chart_of_accounts" xml:space="preserve">
+    <value>Cash-out posted directly to the branch chart of accounts.</value>
+  </data>
+  <data name="Use_only_for_non_member_salary_payouts_from_petty_cash_teller_vault" xml:space="preserve">
+    <value>Use only for non-member salary payouts from petty cash/teller vault.</value>
+  </data>
+  <data name="Confirm_details_carefully_in_the_dialog_before_posting" xml:space="preserve">
+    <value>Confirm details carefully in the dialog before posting.</value>
+  </data>
+  <data name="Denominations_left_must_equal_the_payout_amount" xml:space="preserve">
+    <value>Denominations (left) must equal the payout amount.</value>
+  </data>
+  <data name="After_posting_use_Re_Print_in_the_receipt_view_to_print" xml:space="preserve">
+    <value>After posting, use &lt;b&gt;Re-Print&lt;/b&gt; in the receipt view to print.</value>
+  </data>
+  <data name="Select_the_Source_GL_the_cash_leaves_from" xml:space="preserve">
+    <value>Select the &lt;b&gt;Source GL&lt;/b&gt; the cash leaves from (petty cash, vault…).</value>
+  </data>
+  <data name="Verify_edit_Name_CNI_Telephone_and_add_a_clear_Narration" xml:space="preserve">
+    <value>Verify/edit &lt;b&gt;Name, CNI, Telephone&lt;/b&gt; and add a clear &lt;b&gt;Narration&lt;/b&gt;.</value>
+  </data>
+  <data name="Enter_the_salary_code_then_click_Find" xml:space="preserve">
+    <value>Enter the &lt;b&gt;salary code&lt;/b&gt; then click &lt;b&gt;Find&lt;/b&gt;</value>
   </data>
 </root>

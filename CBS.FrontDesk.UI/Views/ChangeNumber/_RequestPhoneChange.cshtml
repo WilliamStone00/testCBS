@@ -39,7 +39,7 @@
                     <div class="col-md-6">
                         <div class="form-floating form-floating-outline mb-3">
                             @Html.TextBoxFor(m => m.ChangePhoneNumberRequestCommand.CustomerId, new { @class = "form-control", @readonly = "readonly", @id = "CustomerId" })
-                            <label for="CustomerId"><i class="mdi mdi-account me-1"></i> @GlobalChangeNumber.MemberID</label>
+                            <label for="CustomerId"><i class="mdi mdi-account me-1"></i> @GlobalShared.Member_ID</label>
                         </div>
                     </div>
 
@@ -47,7 +47,7 @@
                     <div class="col-md-6">
                         <div class="form-floating form-floating-outline mb-3">
                             @Html.TextBoxFor(m => m.Customer.name, new { @class = "form-control", @readonly = "readonly" })
-                            <label for="MemberName"><i class="mdi mdi-account-circle me-1"></i> @GlobalChangeNumber.MemberName</label>
+                            <label for="MemberName"><i class="mdi mdi-account-circle me-1"></i> @GlobalShared.Member_name</label>
                         </div>
                     </div>
                 </div>
@@ -57,7 +57,7 @@
                     <div class="col-md-12">
                         <div class="form-floating form-floating-outline mb-3">
                             @Html.TextBoxFor(m => m.Customer.branch, new { @class = "form-control", @readonly = "readonly" })
-                            <label for="Branch"><i class="mdi mdi-domain me-1"></i> @GlobalChangeNumber.BranchName</label>
+                            <label for="Branch"><i class="mdi mdi-domain me-1"></i> @GlobalShared.Branch_Name</label>
                         </div>
                     </div>
 
@@ -104,16 +104,16 @@
                         </div>*@
                         <div class="col-md-6">
                             <div class="form-floating form-floating-outline mb-3">
-                                @Html.TextBoxFor(m => m.ChangePhoneNumberRequestCommand.OtpCode, new { @class = "form-control", id = "OtpCode", @placeholder = @GlobalChangeNumber.EnterOTP, required = "required" })
+                                @Html.TextBoxFor(m => m.ChangePhoneNumberRequestCommand.OtpCode, new { @class = "form-control", id = "OtpCode", @placeholder = GlobalShared.EnterOTP, required = "required" })
                                 @Html.ValidationMessageFor(m => m.ChangePhoneNumberRequestCommand.OtpCode, "", new { @class = "text-danger" })
 
-                                <label for="OtpCode"><i class="mdi mdi-phone-classic me-1"></i> @GlobalChangeNumber.EnterOTPCode</label>
+                                <label for="OtpCode"><i class="mdi mdi-phone-classic me-1"></i> @GlobalShared.EnterOTPCode</label>
                             </div>
                         </div>
                         <!-- Send OTP Button -->
                         <div class="col-md-6 d-flex align-items-center">
                             <button type="button" class="btn btn-warning w-100" onclick="sendOTP()">
-                                <i class="mdi mdi-send"></i> @GlobalChangeNumber.SendOTP
+                                <i class="mdi mdi-send"></i> @GlobalShared.SendOTP
                             </button>
                         </div>
                     </div>
@@ -124,7 +124,7 @@
                             <div class="form-floating form-floating-outline mb-3">
                                 @Html.TextAreaFor(m => m.ChangePhoneNumberRequestCommand.RequestComment, new
                                     { @class = "form-control", style = "height: 120px; width: 100%; resize: none;", placeholder = @GlobalChangeNumber.EnterRequestReason, required = "required" })
-                                <label for="RequestComment"><i class="mdi mdi-comment-text me-1"></i> @GlobalChangeNumber.RequestComment</label>
+                                <label for="RequestComment"><i class="mdi mdi-comment-text me-1"></i> @GlobalShared.Request_Comment</label>
                                 <span class="text-danger" id="commentError"></span>
                             </div>
                         </div>

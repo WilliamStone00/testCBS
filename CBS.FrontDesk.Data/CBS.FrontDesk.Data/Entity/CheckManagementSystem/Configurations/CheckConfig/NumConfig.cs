@@ -17,13 +17,13 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem
         public int BankCodePosition { get; set; }
         public int BranchCodePosition { get; set; }
         public int YearPosition { get; set; }
-        public int SeriaNumberPosition { get; set; }
+        public int SerialNumberPosition { get; set; }
         public bool AcceptSerialNumber { get; set; }
         public DateTime? CreatedDate { get; set; }
     }
-    public class NumconfogQuery
+    public class NumConfigQuery
     {
-        public NumconfogQuery()
+        public NumConfigQuery()
         {
             Options = new DataTableOptions();
         }
@@ -36,7 +36,7 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem
         public int BranchCodePosition { get; set; }
         public int YearPosition { get; set; }
         public bool AcceptSerialNumber { get; set; }
-        public int SeriaNumberPosition { get; set; }
+        public int SerialNumberPosition { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
     }

@@ -61,33 +61,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Action.
-        /// </summary>
-        internal static string Action {
-            get {
-                return ResourceManager.GetString("Action", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Amount.
-        /// </summary>
-        internal static string Amount {
-            get {
-                return ResourceManager.GetString("Amount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Approved by.
-        /// </summary>
-        internal static string ApprovedBy {
-            get {
-                return ResourceManager.GetString("ApprovedBy", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Bank cashout.
         /// </summary>
         internal static string BankCashOut {
@@ -106,15 +79,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Branch.
-        /// </summary>
-        internal static string Branch {
-            get {
-                return ResourceManager.GetString("Branch", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Cash movement tracker.
         /// </summary>
         internal static string CashMovementTracker {
@@ -129,69 +93,6 @@ namespace Resources {
         internal static string DistanceToCover {
             get {
                 return ResourceManager.GetString("DistanceToCover", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Done by.
-        /// </summary>
-        internal static string DoneBy {
-            get {
-                return ResourceManager.GetString("DoneBy", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Loading.
-        /// </summary>
-        internal static string Loading {
-            get {
-                return ResourceManager.GetString("Loading", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Message.
-        /// </summary>
-        internal static string Message {
-            get {
-                return ResourceManager.GetString("Message", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Movement.
-        /// </summary>
-        internal static string Movement {
-            get {
-                return ResourceManager.GetString("Movement", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to OperaRetion type.
-        /// </summary>
-        internal static string OperaRetionType {
-            get {
-                return ResourceManager.GetString("OperaRetionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Register by.
-        /// </summary>
-        internal static string RegisterBy {
-            get {
-                return ResourceManager.GetString("RegisterBy", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Requested by.
-        /// </summary>
-        internal static string RequestedBy {
-            get {
-                return ResourceManager.GetString("RequestedBy", resourceCulture);
             }
         }
         

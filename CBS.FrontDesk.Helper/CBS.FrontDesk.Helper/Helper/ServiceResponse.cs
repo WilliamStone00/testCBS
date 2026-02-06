@@ -1,5 +1,5 @@
-﻿using CBS.API.Helper;
-using CBS.FrontDesk.Data.Entity.CMoney;
+﻿//using CBS.API.Helper;
+//using CBS.FrontDesk.Data.Entity.CMoney;
 using System;
 using System.Collections.Generic;
 
@@ -195,10 +195,10 @@ namespace CBS.FrontDesk.Helper
             return new ServiceResponse<T>(403,data,message, "Operation is forbidden.", "FAILED");
         }
 
-        public static implicit operator ServiceResponse<T>(ApiResponse<ServiceResponse<CMoneyMembersActivationAccount>> v)
-        {
-            throw new NotImplementedException();
-        }
+        //public static implicit operator ServiceResponse<T>(ApiResponse<ServiceResponse<CMoneyMembersActivationAccount>> v)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 
     // Represents a generic response object with data, errors, and status information.

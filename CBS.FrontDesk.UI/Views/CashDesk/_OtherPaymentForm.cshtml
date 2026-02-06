@@ -16,7 +16,7 @@
                 <div class="form-check">
                     @Html.RadioButtonFor(m => m.BulkDeposit.OtherTransaction.SourceType, "Cash_Collected",
                       new { @class = "form-check-input", id = "cashCollectionOption" })
-                    <label class="form-check-label" for="cashCollectionOption" id="sourceCollectLabel">Collect Cash</label>
+                    <label class="form-check-label" for="cashCollectionOption" id="sourceCollectLabel">@GlobalShared.Collect_Cash</label>
                 </div>
 
                 <!-- 🔹 Toggle Inter-Branch -->
@@ -24,7 +24,7 @@
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" id="isInterBranchCheck" onchange="toggleBranchDropdown()" />
                         <label class="form-check-label fw-semibold" for="isInterBranchCheck" id="interBranchLabel">
-                            🔄 Enable Inter-Branch Transaction
+                            🔄 @CashDeskRessource.Enable_Inter_Branch_Transaction
                         </label>
                     </div>
                 </div>
@@ -35,7 +35,7 @@
                             new SelectList(ViewBag.Branches, "Id", "Name"),
                             "--- Select Branch ---",
                             new { @class = "form-control select2", @id = "ExternalBranchId" })
-                        <label for="ExternalBranchId">Destination Branch</label>
+                        <label for="ExternalBranchId">@GlobalShared.Destination_Branch</label>
                         @Html.ValidationMessageFor(m => m.BulkDeposit.OtherTransaction.ExternalBranchId, "", new { @class = "text-danger" })
                     </div>
                 </div>

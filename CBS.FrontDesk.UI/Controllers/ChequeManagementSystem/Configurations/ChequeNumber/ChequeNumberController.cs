@@ -59,7 +59,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.ChequeNumber
         }
 
         [HttpPost]
-        public async Task<JsonResult> LoadNumConfigData(NumconfogQuery query)
+        public async Task<JsonResult> LoadNumConfigData(NumConfigQuery query)
         {
             try
             {

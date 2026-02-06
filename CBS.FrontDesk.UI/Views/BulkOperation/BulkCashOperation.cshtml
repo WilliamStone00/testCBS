@@ -241,8 +241,8 @@
                                                                 <th>@GlobalShared.Branch</th>
                                                                 <th>@GlobalShared.Member_reference</th>
                                                                 <th>@GlobalShared.Account_type</th>
-                                                                <th class="text-end">Amount</th>
-                                                                <th class="text-end">Actions</th>
+                                                                <th class="text-end">@GlobalShared.Amount</th>
+                                                                <th class="text-end">@GlobalShared.Actions</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -258,7 +258,7 @@
 
                                                 <div class="d-flex justify-content-between align-items-center mt-2 mb-2">
                                                     <button type="button" class="btn btn-sm btn-outline-danger" id="resetAccountsBtn">
-                                                        <i class="mdi mdi-delete-sweep-outline me-1"></i> Clear All
+                                                        <i class="mdi mdi-delete-sweep-outline me-1"></i> @GlobalShared.Clear_All
                                                     </button>
                                                     <button type="button" class="btn btn-sm btn-primary" id="addAccountBtn">
                                                         <i class="mdi mdi-plus-circle-outline me-1"></i> @GlobalShared.Add_Account
@@ -352,6 +352,30 @@
                                                             @GlobalBulkOperation.Recommended_include_ticket_number_approval_reference_or_business_reason.
                                                         </small>
                                                     </div>
+
+                                                    <!-- Impact Accounting -->
+                                                    <div class="col-md-12">
+                                                        <div class="form-check form-switch">
+                                                            @Html.CheckBoxFor(
+                                                                m => m.ShouldImpactAccounting,
+                                                                new
+                                                                {
+                                                                    @class = "form-check-input",
+                                                                    role = "switch",
+                                                                    id = "ShouldImpactAccounting"
+                                                                })
+
+                                                            <label class="form-check-label fw-semibold" for="ShouldImpactAccounting">
+                                                                @GlobalBulkOperation.Impact_Accounting
+                                                            </label>
+                                                        </div>
+
+                                                        <small class="text-muted d-block help-hint mt-1">
+                                                            <i class="mdi mdi-information-outline me-1"></i>
+                                                            @GlobalBulkOperation.When_enabled_this_simulation_will_generate_accounting_entries_upon_execution
+                                                        </small>
+                                                    </div>
+
 
                                                     <!-- Destination COA -->
                                                     <div class="col-md-12">
@@ -449,7 +473,7 @@
                                                                        required data-max-size="10485760" />
 
                                                                 <button class="btn btn-primary px-4" type="submit" id="uploadButton">
-                                                                    <span class="upload-text">Upload</span>
+                                                                    <span class="upload-text">@GlobalShared.Upload</span>
                                                                     <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
                                                                     <i class="mdi mdi-cloud-upload-outline ms-1"></i>
                                                                 </button>
@@ -458,7 +482,7 @@
                                                             </div>
 
                                                             <div class="form-text">
-                                                                Supported: .csv, .xlsx, .xls
+                                                                @GlobalShared.Supported: .csv, .xlsx, .xls
                                                             </div>
                                                         </div>
                                                     </div>
@@ -556,9 +580,9 @@
                                                     <div class="col-md-12">
                                                         @Html.LabelFor(m => m.BranchId2, "Select Branch", new { @class = "form-label fw-semibold" })
                                                         @Html.DropDownListFor(m => m.BranchId2,
-                                                            new SelectList(ViewBag.branches, "Id", "Name"),
-                                                            "--- Select Branch ---",
-                                                            new { @class = "form-select select2", required = "required", id = "BranchId2", onchange = "loadBranchAccounts(this.value, 2)" })
+                                         new SelectList(ViewBag.branches, "Id", "Name"),
+                                         "--- Select Branch ---",
+                                         new { @class = "form-select select2", required = "required", id = "BranchId2", onchange = "loadBranchAccounts(this.value, 2)" })
 
                                                         <small class="text-muted d-block help-hint mt-1">
                                                             <i class="mdi mdi-information-outline me-1"></i>
@@ -572,9 +596,9 @@
 
                                                         @* ✅ FIXED: Value/Text mapping was reversed in your code *@
                                                         @Html.DropDownListFor(m => m.TransferType2,
-                                                            new SelectList(ViewBag.transferType, "Value", "Text"),
-                                                            "--- Select Cash Direction ---",
-                                                            new { @class = "form-select select2", required = "required", id = "TransferType2" })
+                                         new SelectList(ViewBag.transferType, "Value", "Text"),
+                                         "--- Select Cash Direction ---",
+                                         new { @class = "form-select select2", required = "required", id = "TransferType2" })
 
                                                         <div class="invalid-feedback">@GlobalBulkOperation.Please_select_a_cash_direction.</div>
                                                     </div>
@@ -582,8 +606,8 @@
                                                     <div class="col-md-6">
                                                         @Html.LabelFor(m => m.AccountDate2, "Accounting Date", new { @class = "form-label fw-semibold" })
                                                         @Html.TextBoxFor(m => m.AccountDate2,
-                                                            Model.AccountDate2 == default(DateTime) ? DateTime.Today.ToString("yyyy-MM-dd") : "{0:yyyy-MM-dd}",
-                                                            new { @class = "form-control accounting-date", type = "date", id = "AccountDate2" })
+                                         Model.AccountDate2 == default(DateTime) ? DateTime.Today.ToString("yyyy-MM-dd") : "{0:yyyy-MM-dd}",
+                                         new { @class = "form-control accounting-date", type = "date", id = "AccountDate2" })
 
                                                         <div class="invalid-feedback">@GlobalBulkOperation.Please_select_a_valid_accounting_date.</div>
                                                     </div>
@@ -591,9 +615,9 @@
                                                     <div class="col-md-12">
                                                         @Html.LabelFor(m => m.SimulationType2, "Simulation Type", new { @class = "form-label fw-semibold" })
                                                         @Html.DropDownListFor(m => m.SimulationType2,
-                                                            new SelectList(ViewBag.SimulationTypes, "Value", "Text"),
-                                                            "--- Select Simulation Type ---",
-                                                            new { @class = "form-select select2", required = "required", id = "SimulationType2" })
+                                         new SelectList(ViewBag.SimulationTypes, "Value", "Text"),
+                                         "--- Select Simulation Type ---",
+                                         new { @class = "form-select select2", required = "required", id = "SimulationType2" })
 
                                                         <div class="invalid-feedback">@GlobalBulkOperation.Please_select_a_simulation_type</div>
                                                     </div>
@@ -601,15 +625,41 @@
                                                     <div class="col-12">
                                                         @Html.LabelFor(m => m.SimulationDescription2, "Simulation Description", new { @class = "form-label fw-semibold" })
                                                         @Html.TextAreaFor(m => m.SimulationDescription2,
-                                                            new { @class = "form-control", rows = "3", placeholder = "Provide justification (required if Simulation Type is Other).", id = "SimulationDescription2" })
+                                         new { @class = "form-control", rows = "3", placeholder = "Provide justification (required if Simulation Type is Other).", id = "SimulationDescription2" })
                                                     </div>
 
+                                                    <!-- Impact Accounting -->
+                                                    <div class="col-md-12">
+                                                        <div class="form-check form-switch">
+                                                            @Html.CheckBoxFor(
+                                         m => m.ShouldImpactAccounting,
+                                         new
+                                         {
+                                             @class = "form-check-input",
+                                             role = "switch",
+                                             id = "ShouldImpactAccounting"
+                                         })
+
+                                                            <label class="form-check-label fw-semibold" for="ShouldImpactAccounting">
+                                                                @GlobalBulkOperation.Impact_Accounting
+                                                            </label>
+                                                        </div>
+
+                                                        <small class="text-muted d-block help-hint mt-1">
+                                                            <i class="mdi mdi-information-outline me-1"></i>
+                                                            @GlobalBulkOperation.When_enabled_this_simulation_will_generate_accounting_entries_upon_execution
+                                                        </small>
+                                                    </div>
+
+
+                                                    <div class="col-md-12">
+                                                        <label class="form-label fw-semibold" id="AccountCartLabel2">@GlobalShared.Cash_Source / @GlobalShared.Destination_account (COA)</label>
                                                     <div class="col-md-12">
                                                         <label class="form-label fw-semibold" id="AccountCartLabel2">@GlobalShared.Cash_Source / @GlobalShared.Destination_account (COA)</label>
 
                                                         @Html.DropDownListFor(m => m.AccountCartId2,
-                                                            new List<SelectListItem> { new SelectListItem { Text = "--- Select Chart Of Account ---", Value = "" } },
-                                                            new { @class = "form-select select2", required = "required", id = "AccountCartId2" })
+                                         new List<SelectListItem> { new SelectListItem { Text = "--- Select Chart Of Account ---", Value = "" } },
+                                         new { @class = "form-select select2", required = "required", id = "AccountCartId2" })
 
                                                     <div class="invalid-feedback">@GlobalBulkOperation.Please_select_chart_of_account</div>
                                                     </div>
@@ -627,15 +677,17 @@
                                         </button>
                                     </div>
                                 </div>
-                            }
-                        </div>
+                            
+                            </div>
                         <!-- end file section -->
 
+                        }
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
+        </div>
     </div>
 </div>
 
@@ -895,7 +947,18 @@
             }
 
             if ($(form).valid()) {
-                alertify.confirm("Confirmation", "Are you sure you want to run this cash simulation?",
+
+                const shouldImpactAccounting = $('#ShouldImpactAccounting').is(':checked');
+
+
+                const confirmationMessage = shouldImpactAccounting
+                    ? "Are you sure you want to run this cash simulation?"
+                    : "Are you sure you want to run this cash simulation? <br/>  <b class='text-warning'>⚠ Attention</b><br/>" +
+                    "Accounting will <b>NOT</b> be impacted by this operation.<br/>" +
+                    "Proceed only if this is intentional.";
+
+
+                alertify.confirm("Confirmation", confirmationMessage,
                     function () {
 
                         const accounts = [];
@@ -918,6 +981,7 @@
 
                             SimulationType: $('#SimulationType').val(),
                             SimulationDescription: $('#SimulationDescription').val(),
+                            ShouldImpactAccounting: shouldImpactAccounting,
 
                             BulkCashStrategy: 'ManualEntrying',
                             Accounts: accounts
@@ -1025,7 +1089,17 @@
             }
 
             if ($(form).valid()) {
-                alertify.confirm("Confirmation", "Run simulation using uploaded file entries?",
+
+                const shouldImpactAccounting = $('#ShouldImpactAccounting').is(':checked');
+
+
+                const confirmationMessage = shouldImpactAccounting
+                    ? "Are you sure you want to run this cash simulation?"
+                    : "Are you sure you want to run this cash simulation? <br/>  <b class='text-warning'>⚠ Attention</b><br/>" +
+                    "Accounting will <b>NOT</b> be impacted by this operation.<br/>" +
+                    "Proceed only if this is intentional.";
+
+                alertify.confirm("Confirmation", confirmationMessage,
                     function () {
 
                         const accountIIs = [];
@@ -1048,6 +1122,7 @@
 
                             SimulationType2: $('#SimulationType2').val(),
                             SimulationDescription2: $('#SimulationDescription2').val(),
+                            ShouldImpactAccounting: shouldImpactAccounting,
 
                             BulkCashStrategy: 'FileUpload',
                             FileUploadId: $('#FileUploadId').val(),

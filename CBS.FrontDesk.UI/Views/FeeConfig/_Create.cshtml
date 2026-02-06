@@ -1,21 +1,24 @@
 ﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.Configurations.FeeConfiguration.FeeConfig
 @using Resources
 
-<form id="feeConfigForm" onsubmit="return false;">
+@using (Html.BeginForm("CreateOrUpdate", "FeeConfig",
+    FormMethod.Post,
+    new {  enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+{
     @Html.AntiForgeryToken()
 
-    @* Hidden fields that will be synced with the page level controls before save *@
+    @* Hidden fields synced from page-level controls *@
     @Html.HiddenFor(m => m.id, new { id = "Id" })
-    @Html.HiddenFor(m => m.isCentralized, new { id = "IsCentralized", Name = "IsCentralized" })
-    @Html.HiddenFor(m => m.branchId, new { id = "BranchId", Name = "BranchId" })
-    @Html.HiddenFor(m => m.feeType, new { id = "FeeType", Name = "FeeType" })
-    @Html.HiddenFor(m => m.branchName, new { id = "BranchName", name = "BranchName" })
-
+    @Html.HiddenFor(m => m.isCentralized, new { id = "IsCentralized" })
+    @Html.HiddenFor(m => m.branchId, new { id = "BranchId" })
+    @Html.HiddenFor(m => m.feeType, new { id = "FeeType" })
+    @Html.HiddenFor(m => m.branchName, new { id = "BranchName" })
 
     <div class="card shadow p-3">
         <h5 class="text-primary mb-3">
             <i class="mdi mdi-pencil-box-outline me-2"></i>
-            Manage Configuration for: <span class="text-dark">@Model.feeType</span>
+            Manage Configuration for:
+            <span class="text-dark">@Model.feeType</span>
         </h5>
 
         <div class="form-floating mb-3 bg-light">
@@ -24,16 +27,25 @@
             <label>@ChequeManagements.Description</label>
         </div>
 
+        <!-- STATIC CONFIG -->
         <div class="modal-body bg-light">
             <div class="mb-3">
-                <h5 class="text-primary mb-3"><i class="mdi mdi-pencil-box-outline me-2"></i> @ChequeManagements.StaticConfig</h5>
+                <h5 class="text-primary mb-3">
+                    <i class="mdi mdi-pencil-box-outline me-2"></i>
+                    @ChequeManagements.StaticConfig
+                </h5>
+
                 <div class="form-check form-switch mb-2">
-                    @Html.CheckBoxFor(m => m.acceptStaticAmount, new { id = "AcceptStatus", @class = "form-check-input" })
-                    <label class="form-check-label fw-bold" for="AcceptStatus">@ChequeManagements.EnableStatusFee</label>
+                    @Html.CheckBoxFor(m => m.acceptStaticAmount,
+                        new { id = "AcceptStatus", @class = "form-check-input" })
+                    <label class="form-check-label fw-bold" for="AcceptStatus">
+                        @ChequeManagements.EnableStatusFee
+                    </label>
                 </div>
 
                 <div class="form-floating">
-                    @Html.TextBoxFor(m => m.staticAmount, new { @class = "form-control", type = "number", step = "1", placeholder = "Static " })
+                    @Html.TextBoxFor(m => m.staticAmount,
+                        new { @class = "form-control", type = "number", step = "1", placeholder = "Static" })
                     @Html.ValidationMessageFor(m => m.staticAmount, "", new { @class = "text-danger" })
                     <label>@ChequeManagements.Static</label>
                 </div>
@@ -42,16 +54,25 @@
 
         <hr />
 
+        <!-- PERCENTAGE CONFIG -->
         <div class="modal-body bg-light">
             <div class="mb-3">
-                <h5 class="text-primary mb-3"><i class="mdi mdi-pencil-box-outline me-2"></i>@ChequeManagements.PercentageConfig</h5>
+                <h5 class="text-primary mb-3">
+                    <i class="mdi mdi-pencil-box-outline me-2"></i>
+                    @ChequeManagements.PercentageConfig
+                </h5>
+
                 <div class="form-check form-switch mb-2">
-                    @Html.CheckBoxFor(m => m.acceptPercentage, new { id = "AcceptPercentage", @class = "form-check-input" })
-                    <label class="form-check-label fw-bold" for="AcceptPercentage">@ChequeManagements.EnablePercentageFee</label>
+                    @Html.CheckBoxFor(m => m.acceptPercentage,
+                        new { id = "AcceptPercentage", @class = "form-check-input" })
+                    <label class="form-check-label fw-bold" for="AcceptPercentage">
+                        @ChequeManagements.EnablePercentageFee
+                    </label>
                 </div>
 
                 <div class="form-floating">
-                    @Html.TextBoxFor(m => m.percentageApplied, new { @class = "form-control", type = "number", step = "0.01", placeholder = "Percentage (%)" })
+                    @Html.TextBoxFor(m => m.percentageApplied,
+                        new { @class = "form-control", type = "number", step = "0.01", placeholder = "Percentage (%)" })
                     @Html.ValidationMessageFor(m => m.percentageApplied, "", new { @class = "text-danger" })
                     <label>@ChequeManagements.Percentage (%)</label>
                 </div>
@@ -60,24 +81,37 @@
 
         <hr />
 
+        <!-- RANGE CONFIG -->
         <div class="modal-body bg-light">
             <div class="mb-3">
-                <h5 class="text-primary mb-3"><i class="mdi mdi-pencil-box-outline me-2"></i>@ChequeManagements.RangeConfig</h5>
+                <h5 class="text-primary mb-3">
+                    <i class="mdi mdi-pencil-box-outline me-2"></i>
+                    @ChequeManagements.RangeConfig
+                </h5>
+
                 <div class="form-check form-switch mb-2">
-                    @Html.CheckBoxFor(m => m.acceptRange, new { id = "AcceptRange", @class = "form-check-input" })
-                    <label class="form-check-label fw-bold" for="AcceptRange">@ChequeManagements.EnableRangeBasedFee</label>
+                    @Html.CheckBoxFor(m => m.acceptRange,
+                        new { id = "AcceptRange", @class = "form-check-input" })
+                    <label class="form-check-label fw-bold" for="AcceptRange">
+                        @ChequeManagements.EnableRangeBasedFee
+                    </label>
                 </div>
 
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <h6>@ChequeManagements.FeeRanges</h6>
-                    <button type="button" id="addRangeRowBtn" class="btn btn-sm btn-outline-text-primary"><i class="mdi mdi-plus"></i>@ChequeManagements.AddRow</button>
+                    <button type="button"
+                            id="addRangeRowBtn"
+                            class="btn btn-sm btn-outline-text-primary">
+                        <i class="mdi mdi-plus"></i>
+                        @ChequeManagements.AddRow
+                    </button>
                 </div>
 
                 <div class="table-responsive">
                     <table class="table table-bordered">
                         <thead class="table-light">
                             <tr>
-                                <th style="width: 25%;">@ChequeManagements.Name </th>
+                                <th style="width: 25%;">@ChequeManagements.Name</th>
                                 <th style="width: 20%;">@ChequeManagements.FromAmount</th>
                                 <th style="width: 20%;">@ChequeManagements.ToAmount</th>
                                 <th style="width: 20%;">@ChequeManagements.Fee</th>
@@ -89,7 +123,9 @@
                             {
                                 for (int i = 0; i < Model.feeTypeRanges.Count; i++)
                                 {
-                                    @Html.Partial("_DataTable", Model.feeTypeRanges[i], new ViewDataDictionary { { "index", i } })
+                                    @Html.Partial("_DataTable",
+                                        Model.feeTypeRanges[i],
+                                        new ViewDataDictionary { { "index", i } })
                                 }
                             }
                         </tbody>
@@ -100,23 +136,36 @@
 
         <hr />
 
+        <!-- BUTTONS -->
         <div class="d-flex justify-content-end">
             <div class="col-12 text-end mt-3">
                 @if (string.IsNullOrWhiteSpace(Model?.id))
                 {
-                    <button id="saveConfigBtn" type="button" class="btn btn-primary shadow-sm px-4">
-                        <i class="fas fa-save me-1"></i> @ChequeManagements.Save
+                    <button id="saveConfigBtn" type="submit"
+                            class="btn btn-primary shadow-sm px-4">
+                        <i class="fas fa-save me-1"></i>
+                        @ChequeManagements.Save
                     </button>
-                    <button type="reset" class="btn btn-outline-secondary shadow-sm px-4"> @GlobalShared.Reset </button>
+
+                    <button type="reset"
+                            class="btn btn-outline-secondary shadow-sm px-4">
+                        @GlobalShared.Reset
+                    </button>
                 }
                 else
                 {
-                    <button id="saveConfigBtn" type="button" class="btn btn-primary me-2">@GlobalBank.Update</button>
-                    <button id="deleteConfigBtn" type="button" class="btn btn-danger border-4 border-white text-white fw-bold px-3 py-1">
-                        @ChequeManagements.delete
+                    <button  type="submit"
+                            class="btn btn-primary me-2">
+                        @GlobalBank.Update
+                    </button>
+
+                    <button type="reset"
+                            class="btn btn-outline-secondary shadow-sm px-4">
+                        @GlobalShared.Reset
                     </button>
                 }
             </div>
         </div>
+
     </div>
-</form>
+}

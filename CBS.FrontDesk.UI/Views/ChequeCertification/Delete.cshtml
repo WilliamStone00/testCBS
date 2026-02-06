@@ -1,21 +1,21 @@
 ﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.ChequeCertification.ChequeCertificationDto
-
+@using Resources
 <div class="card">
     <div class="card-header bg-danger text-white">
         <h5 class="card-title mb-0">
-            <i class="mdi mdi-alert-circle me-2"></i> Delete Certification - @Model.ChequeCertificationID
+            <i class="mdi mdi-alert-circle me-2"></i> @ChequeCertificationResource.Delete_Certification - @Model.ChequeCertificationID
         </h5>
     </div>
     <div class="card-body">
         <div class="alert alert-warning d-flex align-items-center mb-4">
             <i class="mdi mdi-alert mdi-24px me-3"></i>
             <div>
-                <h5 class="alert-heading mb-1">Warning: This action cannot be undone!</h5>
-                <p class="mb-0">You are about to permanently delete this cheque certification record. This action will remove all associated data from the system.</p>
+                <h5 class="alert-heading mb-1">@GlobalShared.Warning: @GlobalShared.This_action_cannot_be_undone</h5>
+                <p class="mb-0">@ChequeCertificationResource.You_are_about_to_permanently_delete_this_cheque_certification_record_This_action_will_remove_all_associated_data_from_the_system</p>
             </div>
         </div>
 
-        <h6 class="mb-3 text-muted">Certification Details to be Deleted:</h6>
+        <h6 class="mb-3 text-muted">@ChequeCertificationResource.Certification_Details_to_be_Deleted:</h6>
 
         <div class="row">
             <!-- Cheque Certification ID Card -->
@@ -30,7 +30,7 @@
                             </div>
                             <h5 class="ms-1 mb-0" style="font-size: 1.2rem;">@Model.ChequeCertificationID</h5>
                         </div>
-                        <p class="mb-0 text-heading" style="font-size: 0.85rem;">Cheque Certification ID</p>
+                        <p class="mb-0 text-heading" style="font-size: 0.85rem;">@ChequeCertificationResource.Cheque_Certification_ID</p>
                     </div>
                 </div>
             </div>
@@ -47,7 +47,7 @@
                             </div>
                             <h5 class="ms-1 mb-0" style="font-size: 1.2rem;">@Model.MemberReference</h5>
                         </div>
-                        <p class="mb-0 text-heading" style="font-size: 0.85rem;">Member Reference</p>
+                        <p class="mb-0 text-heading" style="font-size: 0.85rem;">@GlobalShared.Member_reference</p>
                     </div>
                 </div>
             </div>
@@ -64,7 +64,7 @@
                             </div>
                             <h5 class="ms-1 mb-0" style="font-size: 1.2rem;">@Model.AccountNumber</h5>
                         </div>
-                        <p class="mb-0 text-heading" style="font-size: 0.85rem;">Account Number</p>
+                        <p class="mb-0 text-heading" style="font-size: 0.85rem;">@GlobalShared.Account_Number</p>
                     </div>
                 </div>
             </div>
@@ -81,7 +81,7 @@
                             </div>
                             <h5 class="ms-1 mb-0" style="font-size: 1.2rem;">@Model.Amount.ToString("N2")</h5>
                         </div>
-                        <p class="mb-0 text-heading" style="font-size: 0.85rem;">Amount</p>
+                        <p class="mb-0 text-heading" style="font-size: 0.85rem;">@GlobalShared.Amount</p>
                     </div>
                 </div>
             </div>
@@ -122,7 +122,7 @@
                                 <span class="@statusTextClass">@Model.CertificationStatus</span>
                             </h5>
                         </div>
-                        <p class="mb-0 text-heading" style="font-size: 0.85rem;">Certification Status</p>
+                        <p class="mb-0 text-heading" style="font-size: 0.85rem;">@GlobalShared.Certification_Status</p>
                     </div>
                 </div>
             </div>
@@ -139,7 +139,7 @@
                             </div>
                             <h5 class="ms-1 mb-0" style="font-size: 1.2rem;">@Model.CreatedDate.ToString("dd/MM/yyyy HH:mm")</h5>
                         </div>
-                        <p class="mb-0 text-heading" style="font-size: 0.85rem;">Created Date</p>
+                        <p class="mb-0 text-heading" style="font-size: 0.85rem;">@GlobalShared.Created_Date</p>
                     </div>
                 </div>
             </div>
@@ -157,7 +157,7 @@
                                         <i class="mdi mdi-text mdi-16px"></i>
                                     </span>
                                 </div>
-                                <h5 class="mb-0">Description</h5>
+                                <h5 class="mb-0">@GlobalShared.Description</h5>
                             </div>
                             <p class="mb-0">@Model.Description</p>
                         </div>
@@ -173,8 +173,8 @@
                 <div class="d-flex align-items-center">
                     <i class="mdi mdi-alert-octagon mdi-24px me-3"></i>
                     <div>
-                        <h6 class="mb-1">Special Notice: Approved Certification</h6>
-                        <p class="mb-0">This certification has been approved. Deleting it may affect financial records and audit trails.</p>
+                        <h6 class="mb-1">@ChequeCertificationResource.Special_Notice_Approved_Certification</h6>
+                        <p class="mb-0">@ChequeCertificationResource.This_certification_has_been_approved_Deleting_it_may_affect_financial_records_and_audit_trails.</p>
                     </div>
                 </div>
             </div>
@@ -185,19 +185,19 @@
             <button type="button"
                     onclick="LoadDataGen('ChequeCertification', 'myDataTable', '_ChequeCertificationDataTable', 0, 'datalistingview', null, 'list')"
                     class="btn btn-secondary">
-                <i class="mdi mdi-arrow-left me-1"></i> Back to List
+                <i class="mdi mdi-arrow-left me-1"></i> @GlobalShared.Back_to_List
             </button>
 
             <div class="d-flex align-items-center">
-                <span class="text-muted me-3">Confirm deletion by typing:</span>
+                <span class="text-muted me-3">@ChequeCertificationResource.Confirm_deletion_by_typing:</span>
                 <input type="text" id="deleteConfirmationText" class="form-control form-control-sm me-3"
-                       placeholder="Type 'DELETE' to confirm" style="width: 180px;">
+                       placeholder="@GlobalShared.Type_DELETE_to_confirm" style="width: 180px;">
 
                 <button type="button"
                         onclick="DeleteCertification('@Model.ChequeCertificationID')"
                         id="deleteButton"
                         class="btn btn-danger" disabled>
-                    <i class="mdi mdi-delete me-1"></i> Delete Permanently
+                    <i class="mdi mdi-delete me-1"></i> @GlobalShared.Delete_Permanently
                 </button>
             </div>
         </div>

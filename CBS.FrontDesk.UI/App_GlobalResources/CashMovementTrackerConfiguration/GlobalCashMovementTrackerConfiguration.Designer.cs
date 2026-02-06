@@ -70,15 +70,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Action.
-        /// </summary>
-        internal static string Action {
-            get {
-                return ResourceManager.GetString("Action", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Alert time before timespan elapse&apos;s  in minutes.
         /// </summary>
         internal static string AlertTimeBeforeTimespanElapseInMinutes {
@@ -102,15 +93,6 @@ namespace Resources {
         internal static string CashTrackerManagement {
             get {
                 return ResourceManager.GetString("CashTrackerManagement", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Destination.
-        /// </summary>
-        internal static string Destination {
-            get {
-                return ResourceManager.GetString("Destination", resourceCulture);
             }
         }
         
@@ -142,92 +124,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Movement.
-        /// </summary>
-        internal static string Movement {
-            get {
-                return ResourceManager.GetString("Movement", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Sample Message to be send before timespan elapse&apos;s.
         /// </summary>
         internal static string SampleMessageToBeSendBeforeTimespanElapse {
             get {
                 return ResourceManager.GetString("SampleMessageToBeSendBeforeTimespanElapse", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select banking zone.
-        /// </summary>
-        internal static string SelectBankingZone {
-            get {
-                return ResourceManager.GetString("SelectBankingZone", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select branch.
-        /// </summary>
-        internal static string SelectBranch {
-            get {
-                return ResourceManager.GetString("SelectBranch", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select destination branch.
-        /// </summary>
-        internal static string SelectDestinationBranch {
-            get {
-                return ResourceManager.GetString("SelectDestinationBranch", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select movement.
-        /// </summary>
-        internal static string SelectMovement {
-            get {
-                return ResourceManager.GetString("SelectMovement", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select movement type.
-        /// </summary>
-        internal static string SelectMovementType {
-            get {
-                return ResourceManager.GetString("SelectMovementType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select source branch.
-        /// </summary>
-        internal static string SelectSourceBranch {
-            get {
-                return ResourceManager.GetString("SelectSourceBranch", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Source branch.
-        /// </summary>
-        internal static string SourceBranch {
-            get {
-                return ResourceManager.GetString("SourceBranch", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to View status.
-        /// </summary>
-        internal static string ViewStatus {
-            get {
-                return ResourceManager.GetString("ViewStatus", resourceCulture);
             }
         }
     }

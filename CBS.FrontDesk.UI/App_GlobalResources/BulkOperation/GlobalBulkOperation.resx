@@ -555,4 +555,25 @@
   <data name="Run_bulk_simulations_and_approvals_safely_filter_preview_then_execute" xml:space="preserve">
     <value>Run bulk simulations and approvals safely — filter, preview, then execute</value>
   </data>
+  <data name="Accounting_impact_is" xml:space="preserve">
+    <value>Accounting impact is</value>
+  </data>
+  <data name="Accounting_Impact" xml:space="preserve">
+    <value>Accounting Impact</value>
+  </data>
+  <data name="This_simulation_is_approved_and_will_generate_accounting_entries_upon_execution" xml:space="preserve">
+    <value>This simulation is approved and will generate accounting entries upon execution.</value>
+  </data>
+  <data name="This_simulation_is_eligible_to_impact_accounting_but_no_entries_were_generated_because_the_operation_is_not_yet_approved" xml:space="preserve">
+    <value>This simulation is eligible to impact accounting, but no entries were generated because the operation is not yet approved.</value>
+  </data>
+  <data name="This_simulation_was_explicitly_configured_not_to_generate_accounting_entries_even_if_approved" xml:space="preserve">
+    <value>This simulation was explicitly configured &lt;b&gt;not&lt;/b&gt; to generate accounting entries, even if approved.</value>
+  </data>
+  <data name="When_enabled_this_simulation_will_generate_accounting_entries_upon_execution" xml:space="preserve">
+    <value>When enabled, this simulation will generate accounting entries upon execution.</value>
+  </data>
+  <data name="Impact_Accounting" xml:space="preserve">
+    <value>Impact Accounting</value>
+  </data>
 </root>

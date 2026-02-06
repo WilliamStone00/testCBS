@@ -5,29 +5,39 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheque
 {
-	public class CounterCheques
+	public class CounterChecks
 	{
-		[Required]
-		public string AccountNumber { get; set; }
-		[Required]
-		public decimal Amount { get; set; }
-		public string BranchId { get; set; }
-		public string CustomerId { get; set; }
-		// For displaying in the list
-		public string CheckLeafId { get; set; }
 		public string Id { get; set; }
+		public string CustomerId { get; set; }
+		public string CheckBookId { get; set; }
+		public decimal Amount { get; set; }
+		public string AccountNumber { get; set; }
+		public string BranchId { get; set; }
+		public string BranchCode { get; set; }
+		public string CheckLeafId { get; set; }
 		public string CheckNumber { get; set; }
-		public DateTime? IssuedOn { get; set; }
+		public string Reason { get; set; }
+		public string RequestToken { get; set; }
+		public DateTime IssuedOn { get; set; }
 		public string IssuedBy { get; set; }
 		public string Status { get; set; }
-		public string Name { get; set; }
-		public string Catergoryid { get; set; }
-		public string ClientName { get; set; }
-		public int NumberOfPages { get; set; }
-		public string ChequeBookId { get; set; }
-		
-
-}
+		public string CustomerName { get; set; } 
+		public string BranchName { get; set; } 
+		public string ApproveBy { get; set; }
+		public DateTime ApprovalDate { get; set; }
+		public string ApprovalNote { get; set; }
+		public string RejectedNote { get; set; }
+		public string RejectedBy { get; set; }
+		public DateTime RejectedDate { get; set; }
+		public DateTime ReviewDate { get; set; }
+		public string ReviewNote { get; set; }
+		public string ReviewBy { get; set; }
+		public string ExternalFullName { get; set; }
+		public string ExternalAddress { get; set; }
+		public string ExternalCni { get; set; }
+		public string ExternalPhoneNumber { get; set; }
+		public string BeneficiaryType { get; set; }
+	}
 
 	// DTO for the modal action form
 	public class CounterChequeActionDto
@@ -68,7 +78,7 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheq
         public DateTime EndDate { get; set; }
     }
 
-public class CounterChequeDto
+	public class CounterChequeDto
     {
         public string Id { get; set; }              
         public string CustomerId { get; set; }      
@@ -245,128 +255,139 @@ public class CounterChequeDto
 
     public class CustomerCheckBookStatisticsDto
     {
-        // ===============================
-        // CUSTOMER
-        // ===============================
-        public string CustomerId { get; set; }
-        public string CustomerName { get; set; }
-        public string PrimaryAccountNumber { get; set; }
+		// ===============================
+		// CUSTOMER
+		// ===============================
+		public string CustomerId { get; set; }
+		public string CustomerName { get; set; }
 
-        // ===============================
-        // CHECKBOOK COUNTS
-        // ===============================
-        public int TotalCheckBooks { get; set; }
-        public int ActiveCheckBooks { get; set; }
-        public int BlockedCheckBooks { get; set; }
-        public int ExpiredCheckBooks { get; set; }
-        public int ReissuedCheckBooks { get; set; }
-        public int LostCheckBooks { get; set; }
+		// ===============================
+		// CHECKBOOK COUNTS
+		// ===============================
+		public int TotalCheckBooks { get; set; }
+		public int ActiveCheckBooks { get; set; }
+		public int BlockedCheckBooks { get; set; }
+		public int ExpiredCheckBooks { get; set; }
+		public int ReissuedCheckBooks { get; set; }
+		public int LostCheckBooks { get; set; }
 
-        // ===============================
-        // LEAVES / CHEQUES
-        // ===============================
-        public int TotalLeaves { get; set; }
-        public int TotalUsedLeaves { get; set; }
-        public int TotalRemainingLeaves { get; set; }
-        public int CancelledLeaves { get; set; }
-        public int StaleLeaves { get; set; }
+		// ===============================
+		// LEAVES / CHEQUES
+		// ===============================
+		public int TotalLeaves { get; set; }
+		public int TotalUsedLeaves { get; set; }
+		public int TotalRemainingLeaves { get; set; }
+		public int CancelledLeaves { get; set; }
+		public int StaleLeaves { get; set; }
 
-        public double GlobalUsageRate { get; set; }          // %
-        public double RemainingUsageRate { get; set; }       // %
+		public double GlobalUsageRate { get; set; }          // %
+		public double RemainingUsageRate { get; set; }       // %
 
-        // ===============================
-        // FINANCIAL STATISTICS
-        // ===============================
-        public decimal TotalBalance { get; set; }
-        public decimal AverageBalance { get; set; }
+		// ===============================
+		// FINANCIAL STATISTICS
+		// ===============================
+		public decimal TotalBalance { get; set; }
+		public decimal AverageBalance { get; set; }
 
-        public decimal TotalAmountIssued { get; set; }
-        public decimal TotalAmountCleared { get; set; }
-        public decimal TotalAmountPending { get; set; }
-        public decimal TotalAmountRejected { get; set; }
+		public decimal TotalAmountIssued { get; set; }
+		public decimal TotalAmountCleared { get; set; }
+		public decimal TotalAmountPending { get; set; }
+		public decimal TotalAmountRejected { get; set; }
 
-        public decimal HighestChequeAmount { get; set; }
-        public decimal AverageChequeAmount { get; set; }
+		public decimal HighestChequeAmount { get; set; }
+		public decimal AverageChequeAmount { get; set; }
 
-        // ===============================
-        // CLEARANCE & TIMING
-        // ===============================
-        public int PendingClearances { get; set; }
-        public int ClearedWithin24Hours { get; set; }
-        public int ClearedWithin72Hours { get; set; }
-        public int DelayedClearances { get; set; } 
+		// ===============================
+		// CLEARANCE & TIMING
+		// ===============================
+		public int PendingClearances { get; set; }
+		public int ClearedWithin24Hours { get; set; }
+		public int ClearedWithin72Hours { get; set; }
+		public int DelayedClearances { get; set; }
 
 		// ===============================
 		// CLEARANCE BREAKDOWN (HOURS)
 		// ===============================
 
-        public double CounterChecks { get; set; }
-        public double OnBehalfOf { get; set; }
-        public double ByOwner { get; set; }
+		public double CounterChecks { get; set; }
+		public double OnBehalfOf { get; set; }
+		public double ByOwner { get; set; }
 
-        // ===============================
-        // CLEARANCE BREAKDOWN (COUNTS WITHIN 24H)
-        // ===============================
-        public int CounterChecksWithin24h { get; set; }
-        public int OnBehalfOfWithin24h { get; set; }
-        public int ByOwnerWithin24h { get; set; }
+		// ===============================
+		// CLEARANCE BREAKDOWN (COUNTS WITHIN 24H)
+		// ===============================
+		public int CounterChecksWithin24h { get; set; }
+		public int OnBehalfOfWithin24h { get; set; }
+		public int ByOwnerWithin24h { get; set; }
 
 
-        // =========================
-        // BOTTOM SECTION (TOTALS)
-        // =========================
+		// =========================
+		// BOTTOM SECTION (TOTALS)
+		// =========================
 
-        /// <summary>
-        /// Total average clearance time (hours)
-        /// </summary>
-        public double TotalAverageClearanceHours =>
-                CounterChecks + OnBehalfOf + ByOwner;
+		/// <summary>
+		/// Total average clearance time (hours)
+		/// </summary>
+		public double TotalAverageClearanceHours =>
+				CounterChecks + OnBehalfOf + ByOwner;
 
-            /// <summary>
-            /// Total checks cleared within 24 hours
-            /// </summary>
-            public int TotalClearedWithin24h =>
-                CounterChecksWithin24h + OnBehalfOfWithin24h + ByOwnerWithin24h;
-        
-        // ===============================
-        // LIFE CYCLE
-        // ===============================
-        public DateTime? FirstIssuedDate { get; set; }
-        public DateTime? LastIssuedDate { get; set; }
-        public DateTime? LastChequeIssuedDate { get; set; }
-        public DateTime? LastChequeClearedDate { get; set; }
+		/// <summary>
+		/// Total checks cleared within 24 hours
+		/// </summary>
+		public int TotalClearedWithin24h =>
+			CounterChecksWithin24h + OnBehalfOfWithin24h + ByOwnerWithin24h;
 
-        public int ExpiringSoonCheckBooks { get; set; }
-        public bool NeedsRenewal { get; set; }
+		// ===============================
+		// LIFE CYCLE
+		// ===============================
+		public DateTime? FirstIssuedDate { get; set; }
+		public DateTime? LastIssuedDate { get; set; }
+		public DateTime? LastChequeIssuedDate { get; set; }
+		public DateTime? LastChequeClearedDate { get; set; }
 
-        // ===============================
-        // SECURITY & RISK
-        // ===============================
-        public bool HasBlockedCheckBooks { get; set; }
-        public bool HasBouncedCheques { get; set; }
-        public int BouncedChequesCount { get; set; }
+		public int ExpiringSoonCheckBooks { get; set; }
+		public bool NeedsRenewal { get; set; }
 
-        public int StopPaymentRequests { get; set; }
-        public int FraudFlaggedCheques { get; set; }
+		// ===============================
+		// SECURITY & RISK
+		// ===============================
+		public bool HasBlockedCheckBooks { get; set; }
+		public bool HasBouncedCheques { get; set; }
+		public int BouncedChequesCount { get; set; }
 
-        public string RiskLevel { get; set; } // Low | Medium | High
+		public int StopPaymentRequests { get; set; }
+		public int FraudFlaggedCheques { get; set; }
 
-        // ===============================
-        // SERVICE & OPERATIONS
-        // ===============================
-        public int EmergencyClearanceRequests { get; set; }
-        public int ApprovedFastTrackRequests { get; set; }
-        public decimal FastTrackFeesPaid { get; set; }
+		public string RiskLevel { get; set; } // Low | Medium | High
 
-        // ===============================
-        // METADATA
-        // ===============================
-        public DateTime GeneratedAt { get; set; }
+		// ===============================
+		// SERVICE & OPERATIONS
+		// ===============================
+		public int EmergencyClearanceRequests { get; set; }
+		public int ApprovedFastTrackRequests { get; set; }
+		public decimal FastTrackFeesPaid { get; set; }
 
-        public List<CustomerChequeAccountDto> ChequeAccounts { get; set; }
+		// ===============================
+		// METADATA
+		// ===============================
+		public DateTime GeneratedAt { get; set; }
 
-    }
-    public enum ChequeOperationType
+		public List<ChequeAccountDto> ChequeAccounts { get; set; }
+
+	}
+
+	public class ChequeAccountDto
+	{
+		public string AccountId { get; set; }
+		public string AccountType { get; set; }        // Savings, Current, Loan
+		public string AccountNumber { get; set; }
+		public string Chequebook { get; set; }
+		public bool IsActive { get; set; }
+		public decimal BalanceAmount { get; set; }
+	}
+
+
+	public enum ChequeOperationType
     {
         CounterCheque,
         OnBehalfOf,

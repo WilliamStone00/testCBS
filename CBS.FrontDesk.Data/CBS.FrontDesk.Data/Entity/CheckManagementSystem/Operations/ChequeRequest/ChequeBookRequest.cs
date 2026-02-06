@@ -23,6 +23,7 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeReque
         public string CheckBookCategoryId { get; set; }   // maps to CategoryId on entity
         public string CheckBookCategoryName { get; set; }   // maps to CategoryId on entity
         public string RequestNote { get; set; }
+        public string Balance { get; set; }
 
         // Notifications
         public bool NotifyOnApproval { get; set; }

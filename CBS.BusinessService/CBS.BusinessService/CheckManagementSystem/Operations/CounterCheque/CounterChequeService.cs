@@ -1,6 +1,7 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission;
+using CBS.FrontDesk.Data.Entity.AccountingV2.MobileMoneyV2;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeBookListing;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheque;
 using CBS.FrontDesk.Data.Entity.DataTable;
@@ -24,7 +25,7 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.CounterCheque
             _apiHelper = new ApiCallerHelper(baseUrl);
         }
 
-        public async Task<List<CounterCheques>> GetChequeDetails(string CustomerId, string BranchId)
+        public async Task<List<CounterChecks>> GetChequeDetails(string CustomerId, string BranchId)
         {
             try
             {
@@ -32,9 +33,9 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.CounterCheque
                 var url = $"{APICallHelper.GetCustormerchequebook}?customerId={CustomerId}&branchId={BranchId}";
 
                 // Call the API with only 1 argument
-                var response = await _apiHelper.GetAsync<ResponseObject<List<CounterCheques>>>(url);
+                var response = await _apiHelper.GetAsync<ResponseObject<List<CounterChecks>>>(url);
 
-                return response.ApiResponseData?.Data ?? new List<CounterCheques>();
+                return response.ApiResponseData?.Data ?? new List<CounterChecks>();
             }
             catch (Exception)
             {
@@ -42,7 +43,7 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.CounterCheque
             }
         }
 
-        public async Task<ExecutionMessages> IssueCounterChequeAsync(CounterCheques model)
+        public async Task<ExecutionMessages> IssueCounterChequeAsync(CounterChecks model)
         {
             try
             {
@@ -50,7 +51,7 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.CounterCheque
                 //model.BranchId = GetBranchID();
                 model.IssuedBy = GetUserFullName();
 
-                var response = await _apiHelper.PostAsync<ServiceResponse<CounterCheques>>(APICallHelper.IssueCounterCheque, model);
+                var response = await _apiHelper.PostAsync<ServiceResponse<CounterChecks>>(APICallHelper.IssueCounterCheque, model);
 
                 if (response.IsSuccess && response.ApiResponseData?.Data != null)
                 {
@@ -73,11 +74,11 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.CounterCheque
             return ExecutionMessage;
         }
 
-        public async Task<CounterCheques> GetCounterChequeDetailsAsync(string id)
+        public async Task<CounterChecks> GetCounterChequeDetailsAsync(string id)
         {
             try
             {
-                var response = await _apiHelper.GetAsync<ServiceResponse<CounterCheques>>($"{APICallHelper.GetCounterChequeDetails}/{Uri.EscapeDataString(id)}");
+                var response = await _apiHelper.GetAsync<ServiceResponse<CounterChecks>>($"{APICallHelper.GetCounterChequeDetails}/{Uri.EscapeDataString(id)}");
 
                 if (response.IsSuccess && response.ApiResponseData?.Data != null)
                 {
@@ -265,8 +266,6 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.CounterCheque
             {
                 CustomerId = customerId,
                 CustomerName = customerName,
-                PrimaryAccountNumber = "371100" + customerId,
-
                 TotalCheckBooks = totalCheckBooks,
                 ActiveCheckBooks = activeCheckBooks,
                 BlockedCheckBooks = blockedCheckBooks,
@@ -338,11 +337,26 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.CounterCheque
                 ApprovedFastTrackRequests = deterministicRandom.Next(0, 5),
                 FastTrackFeesPaid = Math.Round(deterministicRandom.Next(0, 50000) * 1.00m, 2),
 
-                GeneratedAt = now,
-                ChequeAccounts = chequeAccounts
+                GeneratedAt = now
 
             };
         }
+
+
+
+        public async Task<CustomerCheckBookStatisticsDto> GetCustomerCheckBookStatistics(string customerId)
+        {
+            if (string.IsNullOrEmpty(customerId))
+                throw new ArgumentException("customerId is required.");
+
+			var url = string.Format(APICallHelper.GetCustomerCheckBookStatistics, customerId);
+			var response = await _apiHelper.GetAsync<ResponseObject<CustomerCheckBookStatisticsDto>>(url);
+
+			if (response?.ApiResponseData?.Data == null)
+				return null;
+
+			return response.ApiResponseData.Data;
+		}
 
         public async Task<CustomerData> GetCustomerChequeBooks(string customerId)
         {
@@ -388,6 +402,63 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.CounterCheque
 			var response = await _apiHelper.GetAsync<ResponseObject<CheckBookLeaf>>(url);
 
 			return response.ApiResponseData.Data;
+		}
+
+		public async Task<ExecutionMessages> Create(CounterChecks model)
+		{
+			try
+			{
+				var response = await _apiHelper.PostAsync<ServiceResponse<bool>>(APICallHelper.CreateMobileMoneyV2, model);
+				if (response.IsSuccess)
+				{
+					// Successful creation
+					GetExecutionMessages(response, true, null, MessagesResults.Success,
+						ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+					return ExecutionMessage;
+				}
+				else
+				{
+					// Failed creation
+					GetExecutionMessages(model, false, null, MessagesResults.Failed,
+						ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+				}
+			}
+			catch (Exception ex)
+			{
+				// Log and handle exception
+				GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+					SystemMessageStatus.Failed.ToString(), ex);
+			}
+			return ExecutionMessage;
+		}
+
+		public async Task<ExecutionMessages> Update(CounterChecks model)
+		{
+			try
+			{
+				var response = await _apiHelper.PutAsync<ServiceResponse<CounterChecks>>(string.Format(APICallHelper.UpdateMobileMoneyV2, model.Id), model);
+				if (response.IsSuccess)
+				{
+					// Successful creation
+					GetExecutionMessages(response, true, null, MessagesResults.Success,
+						ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+					return ExecutionMessage;
+				}
+				else
+				{
+					// Failed creation
+					GetExecutionMessages(null, false, "", MessagesResults.Failed,
+						ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+				}
+
+			}
+			catch (Exception ex)
+			{
+				// Log and handle exception
+				GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+					SystemMessageStatus.Failed.ToString(), ex);
+			}
+			return ExecutionMessage;
 		}
 
 	}

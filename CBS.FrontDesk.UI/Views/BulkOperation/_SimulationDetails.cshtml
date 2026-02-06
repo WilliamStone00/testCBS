@@ -34,12 +34,12 @@
                             <div class="form-control">@(Model.InitiatorBranchName?.ToUpper()) (@Model.InitiatorBranchCode)</div>
                         </div>
                     </div>
-                   @* <div class="row mb-3">
-                        <label class="col-sm-4 col-form-label">@GlobalBulkOperation.Bank</label>
-                        <div class="col-sm-8">
-                            <div class="form-control">@(Model.BankName?.ToUpper()) (@Model.BankCode)</div>
-                        </div>
-                    </div>*@
+                    @* <div class="row mb-3">
+            <label class="col-sm-4 col-form-label">@GlobalBulkOperation.Bank</label>
+            <div class="col-sm-8">
+                <div class="form-control">@(Model.BankName?.ToUpper()) (@Model.BankCode)</div>
+            </div>
+        </div>*@
                     <div class="row mb-3">
                         <label class="col-sm-4 col-form-label">@GlobalShared.Total_volume</label>
                         <div class="col-sm-8">
@@ -58,12 +58,47 @@
                             <div class="form-control">@(Model?.Description)</div>
                         </div>
                     </div>
-                @*    <div class="row mb-3">
-                        <label class="col-sm-4 col-form-label">Destination Account Type</label>
+                    <div class="row mb-3">
+                        <label class="col-sm-4 col-form-label">@GlobalBulkOperation.Accounting_Impact</label>
                         <div class="col-sm-8">
-                            <div class="form-control">@(destinationAccountype?.ToUpper())</div>
+                            <div class="form-control">
+
+                                @if (Model?.ShouldImpactAccounting == false)
+                                {
+                                    <span class="text-warning fw-semibold">
+                                        <i class="mdi mdi-alert-outline me-1"></i>
+                                        @GlobalBulkOperation.Accounting_impact_is <b>@GlobalShared.DISABLED</b>.
+                                    </span>
+                                    <div class="small text-muted mt-1">
+                                        @Html.Raw(@GlobalBulkOperation.This_simulation_was_explicitly_configured_not_to_generate_accounting_entries_even_if_approved)
+                                    </div>
+                                }
+                                else if (!string.Equals(Model?.ApprovalStatus, "Approved", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    <span class="text-info fw-semibold">
+                                        <i class="mdi mdi-timer-sand me-1"></i>
+                                        @GlobalBulkOperation.Accounting_impact_is <b>@GlobalShared.PENDING_UC</b>.
+                                    </span>
+                                    <div class="small text-muted mt-1">
+                                        @GlobalBulkOperation.This_simulation_is_eligible_to_impact_accounting_but_no_entries_were_generated_because_the_operation_is_not_yet_approved
+                                    </div>
+                                }
+                                else
+                                {
+                                    <span class="text-success fw-semibold">
+                                        <i class="mdi mdi-check-circle-outline me-1"></i>
+                                        @GlobalBulkOperation.Accounting_impact_is <b>@GlobalShared.ENABLED</b>.
+                                    </span>
+                                    <div class="small text-muted mt-1">
+                                        @GlobalBulkOperation.This_simulation_is_approved_and_will_generate_accounting_entries_upon_execution
+                                    </div>
+                                }
+
+                            </div>
                         </div>
-                    </div>*@
+                    </div>
+
+
                 </div>
             </div>
         </div>
@@ -156,8 +191,8 @@
                                     <i class="fas fa-search me-1"></i> Send for Review
                                 </button>*@
                         }
-                        <button type="button" class="btn btn-info" data-bs-toggle="tooltip" title="Export bulk operation Analysis to Excel" onclick="exportBulkOperation('@Model.Id')">
-                            <i class="fas fa-download me-1"></i> Export Bulk Operation to Excel
+                        <button type="button" class="btn btn-info" data-bs-toggle="tooltip" title="@GlobalShared.Export bulk operation Analysis to Excel" onclick="exportBulkOperation('@Model.Id')">
+                            <i class="fas fa-download me-1"></i> @GlobalShared.Export Bulk Operation to Excel
                         </button>
                       @*  <button type="button" class="btn btn-danger"  data-bs-toggle="tooltip" title="Delete bulk operation Analysis to Excel" onclick="deleteBulkOperation('@Model.Id','@Model.SimulationType')">
                             <i class="fas fa-trash me-1"></i> Delete Simulation 

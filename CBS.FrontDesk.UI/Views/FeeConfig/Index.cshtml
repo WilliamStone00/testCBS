@@ -252,6 +252,7 @@
         function setupDynamicFormHandlers() {
             var container = $('#config-form-container');
 
+
             // Ensure only one fee method active
             container.on('change', '#AcceptStatus', function () {
                 if ($(this).is(':checked')) {
@@ -280,6 +281,7 @@
             });
 
             // Add new range row
+            container.off('click', '#addRangeRowBtn'); 
             container.on('click', '#addRangeRowBtn', function () {
                 var currentCount = $('#range-table-body tr').length;
                 var newHtml = getRangeRowTemplate().replace(/{INDEX}/g, currentCount);
@@ -293,63 +295,33 @@
                 reindexRangeRows();
             });
 
-            // Submit form (save)
-            container.on('click', '#saveConfigBtn', function (e) {
-                e.preventDefault();
-                var form = $('#feeConfigForm');
-                saveConfiguration(form);
-            });
-
             // Delete configuration
             container.on('click', '#deleteConfigBtn', function (e) {
                 e.preventDefault();
                 deleteConfiguration();
             });
-        }
 
-        // Save configuration (POST) - synchronizes top-level controls into form first
-        function saveConfiguration($form) {
-            // Sync top-level controls into form hidden fields
-            var isCentralizedMain = $('#isCentralized').is(':checked');
-            var branchIdMain = isCentralizedMain ? null : $('#branchId').val();
-            var feeTypeMain = $('#feeType').val();
-            var status = $('#AcceptStatus').val();
+            container.off('submit', '#feeConfigForm');
 
-            $form.find('input[name="IsCentralized"]').val(isCentralizedMain);
-            $form.find('input[name="BranchId"]').val(branchIdMain);
-            $form.find('input[name="FeeType"]').val(feeTypeMain);
-            $form.find('input[name="AcceptStatus"]').val(status);
+            $(document).on('submit', '#feeConfigForm', function () {
 
-            // Validate at least one fee method selected
-            if (!$form.find('#AcceptPercentage').is(':checked') && !$form.find('#AcceptRange').is(':checked') && !$form.find('#AcceptStatus').is(':checked')) {
-                appalert('You must enable at least one fee method (Percentage or Range).', 2, 1);
-                return;
-            }
+                var $form = $(this);
 
-            // Reindex before serialization
-            reindexRangeRows();
+                var isCentralizedMain = $('#isCentralized').is(':checked');
+                var branchIdMain = isCentralizedMain ? null : $('#branchId').val();
+                var feeTypeMain = $('#feeType').val();
 
-            var formData = $form.serialize();
-            var token = $('input[name="__RequestVerificationToken"]').val();
+                $form.find('input[name="isCentralized"]').val(isCentralizedMain);
+                $form.find('input[name="branchId"]').val(branchIdMain);
+                $form.find('input[name="feeType"]').val(feeTypeMain);
 
-            $.ajax({
-                url: '@Url.Action("CreateOrUpdate", "FeeConfig")',
-                type: 'POST',
-                data: formData + '&__RequestVerificationToken=' + encodeURIComponent(token),
-                success: function (response) {
-                    if (response.success) {
-                        appalert(response.message, 1, 1);
-                        // Reload the form to reflect saved data
-                        loadConfiguration();
-                    } else {
-                        appalert(response.message, 2, 1);
-                    }
-                },
-                error: function (err) {
-                    appalert('An error occurred while saving: ' + err.statusText, 0, 1);
-                }
+                reindexRangeRows();
+
             });
+
         }
+
+
 
         // Delete configuration (POST, anti-forgery)
         function deleteConfiguration() {

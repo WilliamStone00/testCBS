@@ -80,7 +80,7 @@
                                 <div class="col-md-4">
                                     <div class="p-3 border rounded">
                                         <div class="fw-bold text-dark mb-1">
-                                            <i class="mdi mdi-database-outline me-1"></i> Source Accounts
+                                            <i class="mdi mdi-database-outline me-1"></i> @GlobalShared.Source_Accounts
                                         </div>
                                         <div class="hint">
                                             @GlobalBulkOperation.Define_which_accounts_are_impacted.
@@ -92,7 +92,7 @@
                                 <div class="col-md-4">
                                     <div class="p-3 border rounded">
                                         <div class="fw-bold text-dark mb-1">
-                                            <i class="mdi mdi-target-account me-1"></i> Destination
+                                            <i class="mdi mdi-target-account me-1"></i> @GlobalShared.Destination
                                         </div>
                                         <div class="hint">
                                             @GlobalBulkOperation.For_Top_Up_choose_destination_account_type_target_amount.
@@ -209,6 +209,30 @@
                                                         @GlobalBulkOperation.The_branch_defines_the_accounting_scope_and_the_available_branch_Chart_of_Accounts.
                                                     </div>
                                                 </div>
+
+                                                <!-- Impact Accounting -->
+                                                <div class="col-md-12">
+                                                    <div class="form-check form-switch">
+                                                        @Html.CheckBoxFor(
+                                                            m => m.ShouldImpactAccounting,
+                                                            new
+                                                            {
+                                                                @class = "form-check-input",
+                                                                role = "switch",
+                                                                id = "ShouldImpactAccounting"
+                                                            })
+
+                                                        <label class="form-check-label fw-semibold" for="ShouldImpactAccounting">
+                                                            @GlobalBulkOperation.Impact_Accounting
+                                                        </label>
+                                                    </div>
+
+                                                    <small class="text-muted d-block help-hint mt-1">
+                                                        <i class="mdi mdi-information-outline me-1"></i>
+                                                        @GlobalBulkOperation.When_enabled_this_simulation_will_generate_accounting_entries_upon_execution
+                                                    </small>
+                                                </div>
+
 
                                                 <!-- Description -->
                                                 <div class="col-md-12">
@@ -640,8 +664,17 @@
             return false;
         }
 
+        const shouldImpactAccounting = $('#ShouldImpactAccounting').is(':checked');
+
+
+        const confirmationMessage = shouldImpactAccounting
+            ? "Are you sure you want to run this cash simulation?"
+            : "Are you sure you want to run this cash simulation? <br/>  <b class='text-warning'>⚠ Attention</b><br/>" +
+            "Accounting will <b>NOT</b> be impacted by this operation.<br/>" +
+            "Proceed only if this is intentional.";
+
         // Confirm + submit
-        alertify.confirm("Confirmation", "Are you sure you want to simulate this bulk operation?",
+        alertify.confirm("Confirmation", confirmationMessage,
             function () {
 
                 const ajaxConfig = {

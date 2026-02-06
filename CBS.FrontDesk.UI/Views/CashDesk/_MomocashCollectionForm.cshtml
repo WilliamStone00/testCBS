@@ -246,15 +246,15 @@
     <div class="tsc-form-header mb-3">
         <div class="title text-success">
             <i class="mdi mdi-cash-plus"></i>
-            CASH-IN
+            @GlobalShared.CASH_IN_UC
         </div>
 
         <div class="meta">
-            <span><strong>Member's name:</strong> @Model.Customer.name</span>
+            <span><strong>@GlobalShared.Members_name:</strong> @Model.Customer.name</span>
             <span class="sep">|</span>
-            <span><strong>Branch name:</strong> @Model.Branch.Name</span>
+            <span><strong>@GlobalShared.Branch_Name:</strong> @Model.Branch.Name</span>
             <span class="sep">|</span>
-            <span><strong>Branch code:</strong> @Model.Branch.BranchCode</span>
+            <span><strong>@GlobalShared.Branch_Code:</strong> @Model.Branch.BranchCode</span>
         </div>
     </div>
 
@@ -269,7 +269,7 @@
                         <div class="col-md-8">
                             <label class="fw-semibold text-dark mb-1">
                                 <i class="mdi mdi-cellphone-check me-1"></i>
-                                Source Type
+                                @GlobalShared.Source_type
                             </label>
 
                             <div class="d-flex flex-wrap gap-2">
@@ -288,7 +288,7 @@
                         <div class="col-md-4 text-md-end">
                             <label class="form-label fw-semibold me-2 mb-1 d-block">
                                 <i class="mdi mdi-calendar-clock me-1"></i>
-                                Accounting Date
+                                @GlobalShared.Accounting_Date
                             </label>
 
                             @Html.TextBoxFor(
@@ -329,10 +329,10 @@
                                     "---Select branch---",
                                     new { @class = "form-control shadow-sm select2", id = "branchInput" })
                                 @Html.ValidationMessageFor(m => m.BulkDeposit.BranchId, "", new { @class = "text-danger" })
-                                <label for="branchInput">Branch</label>
+                                <label for="branchInput">@GlobalShared.Branch</label>
                             </div>
                             <div class="form-text">
-                                Select the branch to load available Momocash GL accounts.
+                                @CashDeskRessource.Select_the_branch_to_load_available_Momocash_GL_accounts
                             </div>
                         </div>
 
@@ -347,7 +347,7 @@
                                 <label id="accountNumberLabel" for="account_number">Correspondent account</label>
                             </div>
                             <div class="form-text">
-                                Pick the correspondent GL account that receives the Momocash collection.
+                                @CashDeskRessource.Pick_the_correspondent_GL_account_that_receives_the_Momocash_collection
                             </div>
                         </div>
 
@@ -362,7 +362,7 @@
                                 aria-expanded="false"
                                 aria-controls="repSection">
                             <i class="bi bi-person-vcard me-1"></i>
-                            Add representative
+                            @GlobalShared.Add_representative
                             <span id="repMiniSummary" class="ms-2 text-muted small d-none">–</span>
                         </button>
                     </div>
@@ -373,7 +373,7 @@
                             <div class="border rounded-3 p-3 bg-light-subtle">
                                 <div class="fw-semibold mb-2">
                                     <i class="mdi mdi-account-badge-outline me-1"></i>
-                                    Representative / Depositor Info
+                                    @CashDeskRessource.Representative_Depositor_Info
                                 </div>
 
                                 <div class="row g-2">
@@ -455,10 +455,10 @@
                     <div class="d-flex align-items-center justify-content-between mb-2">
                         <div class="fw-semibold">
                             <i class="mdi mdi-wallet-outline me-1"></i>
-                            Accounts
+                            @GlobalShared.Accounts
                         </div>
                         <div class="small text-muted">
-                            Enter amount + fee, tick confirm, and totals will compute.
+                            @CashDeskRessource.Enter_amount_fee_tick_confirm_and_totals_will_compute
                         </div>
                     </div>
 
@@ -553,15 +553,15 @@ else if (ViewBag.Operation == "repayment_momokash_collection")
     <div class="tsc-form-header mb-3">
         <div class="title text-success">
             <i class="mdi mdi-hand-coin"></i>
-            LOAN REPAYMENT
+            @GlobalShared.LOAN_REPAYMENT_UC
         </div>
 
         <div class="meta">
-            <span><strong>Member's name:</strong> @Model.Customer.name</span>
+            <span><strong>@GlobalShared.Members_name:</strong> @Model.Customer.name</span>
             <span class="sep">|</span>
-            <span><strong>Branch name:</strong> @Model.Branch.Name</span>
+            <span><strong>@GlobalShared.Branch_Name:</strong> @Model.Branch.Name</span>
             <span class="sep">|</span>
-            <span><strong>Branch code:</strong> @Model.Branch.BranchCode</span>
+            <span><strong>@GlobalShared.Branch_Code:</strong> @Model.Branch.BranchCode</span>
         </div>
     </div>
 
@@ -578,7 +578,7 @@ else if (ViewBag.Operation == "repayment_momokash_collection")
                         <div class="col-md-8">
                             <label class="fw-semibold text-dark mb-1">
                                 <i class="mdi mdi-cellphone-check me-1"></i>
-                                Source Type
+                                @GlobalShared.Source_type
                             </label>
 
                             <div class="d-flex flex-wrap gap-2">
@@ -603,7 +603,7 @@ else if (ViewBag.Operation == "repayment_momokash_collection")
                         <div class="col-md-4 text-md-end">
                             <label class="form-label fw-semibold me-2 mb-1 d-block">
                                 <i class="mdi mdi-calendar-clock me-1"></i>
-                                Accounting Date
+                                @GlobalShared.Accounting_Date
                             </label>
 
                             @Html.TextBoxFor(
@@ -642,10 +642,10 @@ else if (ViewBag.Operation == "repayment_momokash_collection")
                                     "---Select branch---",
                                     new { @class = "form-control shadow-sm select2", id = "branchInput" })
                                 @Html.ValidationMessageFor(m => m.BulkDeposit.BranchId, "", new { @class = "text-danger" })
-                                <label for="branchInput">Branch</label>
+                                <label for="branchInput">@GlobalShared.Branch</label>
                             </div>
                             <div class="form-text">
-                                Select the branch to load available Momocash GL accounts.
+                                @CashDeskRessource.Select_the_branch_to_load_available_Momocash_GL_accounts
                             </div>
                         </div>
 
@@ -657,10 +657,10 @@ else if (ViewBag.Operation == "repayment_momokash_collection")
                                     "---GL Account---",
                                     new { @class = "form-control select2", id = "account_number", @search = "true" })
                                 @Html.ValidationMessageFor(m => m.BulkDeposit.ChartOfAccountId, "", new { @class = "text-danger" })
-                                <label id="accountNumberLabel" for="account_number">Correspondent account</label>
+                                <label id="accountNumberLabel" for="account_number">@CashDeskRessource.Correspondent_account</label>
                             </div>
                             <div class="form-text">
-                                Choose the correspondent GL that receives the loan repayment collection.
+                                @CashDeskRessource.Choose_the_correspondent_GL_that_receives_the_loan_repayment_collection
                             </div>
                         </div>
 
@@ -676,10 +676,10 @@ else if (ViewBag.Operation == "repayment_momokash_collection")
                     <div class="d-flex align-items-center justify-content-between mb-2">
                         <div class="fw-semibold">
                             <i class="mdi mdi-cash-plus me-1"></i>
-                            Collection Charge
+                            @GlobalShared.Collection_Charge
                         </div>
                         <div class="small text-muted">
-                            Optional fee charged for this collection (will be added to totals if enabled).
+                            @CashDeskRessource.Optional_fee_charged_for_this_collection_will_be_added_to_totals_if_enabled
                         </div>
                     </div>
 
@@ -694,10 +694,10 @@ else if (ViewBag.Operation == "repayment_momokash_collection")
                                        min="0"
                                        step="1"
                                        placeholder="0" />
-                                <label for="repaymentCollectionCharge">Charge Amount</label>
+                                <label for="repaymentCollectionCharge">@GlobalShared.Charge_Amount</label>
                             </div>
                             <div class="form-text">
-                                Enter the collection fee (XAF). Default is 0.
+                                @CashDeskRessource.Enter_the_collection_fee_Default_is_0
                             </div>
                         </div>
 
@@ -705,12 +705,12 @@ else if (ViewBag.Operation == "repayment_momokash_collection")
                             <div class="form-floating border rounded">
                                 <select class="form-control form-control-sm" id="repaymentChargeMode" name="repaymentChargeMode">
                                     <option value="ADD_TO_TOTAL" selected>Add to Total</option>
-                                    <option value="SEPARATE">Separate (informational)</option>
+                                    <option value="SEPARATE">@GlobalShared.Separate (@GlobalShared.informational)</option>
                                 </select>
-                                <label for="repaymentChargeMode">Charge Mode</label>
+                                <label for="repaymentChargeMode">@GlobalShared.Charge_Mode</label>
                             </div>
                             <div class="form-text">
-                                “Add to Total” will include it in the footer totals (if your JS uses it).
+                                @CashDeskRessource.Add_to_Total_will_include_it_in_the_footer_totals_if_your_JS_uses_it
                             </div>
                         </div>
 
@@ -723,13 +723,13 @@ else if (ViewBag.Operation == "repayment_momokash_collection")
                                            name="repaymentChargeApply"
                                            checked />
                                     <label class="form-check-label fw-semibold" for="repaymentChargeApply">
-                                        Apply charge
+                                        @GlobalShared.Apply_charge
                                     </label>
                                 </div>
                             </div>
 
                             <div class="form-text text-md-end">
-                                Turn off to ignore the charge.
+                                @CashDeskRessource.Turn_off_to_ignore_the_charge
                             </div>
                         </div>
 
@@ -740,7 +740,7 @@ else if (ViewBag.Operation == "repayment_momokash_collection")
                                           name="repaymentChargeNote"
                                           style="height:70px;"
                                           placeholder="Optional note..."></textarea>
-                                <label for="repaymentChargeNote">Charge Note (Optional)</label>
+                                <label for="repaymentChargeNote">@GlobalShared.Charge_Note (@GlobalShared.Optional)</label>
                             </div>
                         </div>
                     </div>
@@ -762,7 +762,7 @@ else if (ViewBag.Operation == "repayment_momokash_collection")
                     aria-expanded="false"
                     aria-controls="repSectionLoan">
                 <i class="bi bi-person-vcard me-1"></i>
-                Add representative
+                @GlobalShared.Add_representative
                 <span id="repMiniSummaryLoan" class="ms-2 text-muted small d-none">–</span>
             </button>
         </div>
@@ -866,10 +866,10 @@ else if (ViewBag.Operation == "repayment_momokash_collection")
                     <div class="d-flex align-items-center justify-content-between mb-2">
                         <div class="fw-semibold">
                             <i class="mdi mdi-file-document-multiple-outline me-1"></i>
-                            Loans Repayment Lines
+                            @CashDeskRessource.Loans_Repayment_Lines
                         </div>
                         <div class="small text-muted">
-                            Enter capital / interest / penalty. VAT can be Inclusive/Exclusive.
+                            @CashDeskRessource.Enter_capital_interest_penalty_VAT_can_be_Inclusive_Exclusive
                         </div>
                     </div>
 
@@ -975,7 +975,7 @@ else if (ViewBag.Operation == "repayment_momokash_collection")
 
                                 <tr>
                                     <td colspan="6" class="text-end">
-                                        <strong>Calculated VAT:</strong>
+                                        <strong>@GlobalShared.Calculated_Vat:</strong>
                                     </td>
 
                                     <!-- aligns under TOTAL column -->

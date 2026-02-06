@@ -120,9 +120,6 @@
   <data name="AccountingConfigurations" xml:space="preserve">
     <value>Configurations comptables</value>
   </data>
-  <data name="Action" xml:space="preserve">
-    <value>Action</value>
-  </data>
   <data name="AlertTimeBeforeTimespanElapseInMinutes" xml:space="preserve">
     <value>Temps d'alerte avant l'expiration du délai en minutes</value>
   </data>
@@ -131,9 +128,6 @@
   </data>
   <data name="CashTrackerManagement" xml:space="preserve">
     <value>Gestion du suivi des espèces</value>
-  </data>
-  <data name="Destination" xml:space="preserve">
-    <value>Destination</value>
   </data>
   <data name="DistanceToCover" xml:space="preserve">
     <value>Distance à parcourir (en kilomètres)</value>
@@ -144,34 +138,7 @@
   <data name="DurationForMovement" xml:space="preserve">
     <value>Durée du mouvement (en minutes)</value>
   </data>
-  <data name="Movement" xml:space="preserve">
-    <value>Mouvement</value>
-  </data>
   <data name="SampleMessageToBeSendBeforeTimespanElapse" xml:space="preserve">
     <value>Exemple de message à envoyer avant l'expiration du délai</value>
-  </data>
-  <data name="SelectBankingZone" xml:space="preserve">
-    <value>Sélectionner une zone bancaire</value>
-  </data>
-  <data name="SelectBranch" xml:space="preserve">
-    <value>Sélectionner une agence</value>
-  </data>
-  <data name="SelectDestinationBranch" xml:space="preserve">
-    <value>Sélectionner l'agence de destination</value>
-  </data>
-  <data name="SelectMovement" xml:space="preserve">
-    <value>Sélectionner un mouvement</value>
-  </data>
-  <data name="SelectMovementType" xml:space="preserve">
-    <value>Sélectionner le type de mouvement</value>
-  </data>
-  <data name="SelectSourceBranch" xml:space="preserve">
-    <value>Sélectionner l'agence source</value>
-  </data>
-  <data name="SourceBranch" xml:space="preserve">
-    <value>Agence source</value>
-  </data>
-  <data name="ViewStatus" xml:space="preserve">
-    <value>Afficher le statut</value>
   </data>
 </root>
