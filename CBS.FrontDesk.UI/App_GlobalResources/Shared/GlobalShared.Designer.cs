@@ -1528,6 +1528,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Clear All.
+        /// </summary>
+        internal static string Clear_All {
+            get {
+                return ResourceManager.GetString("Clear_All", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Clear selection.
         /// </summary>
         internal static string Clear_selection {
@@ -2392,6 +2401,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to DISABLED.
+        /// </summary>
+        internal static string DISABLED {
+            get {
+                return ResourceManager.GetString("DISABLED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Disallow Negative.
         /// </summary>
         internal static string Disallow_Negative {
@@ -2514,6 +2532,15 @@ namespace Resources {
         internal static string Email_Notification {
             get {
                 return ResourceManager.GetString("Email_Notification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ENABLED.
+        /// </summary>
+        internal static string ENABLED {
+            get {
+                return ResourceManager.GetString("ENABLED", resourceCulture);
             }
         }
         
@@ -4985,6 +5012,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to PENDING.
+        /// </summary>
+        internal static string PENDING_UC {
+            get {
+                return ResourceManager.GetString("PENDING_UC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Perform actions.
         /// </summary>
         internal static string Perform_actions {
@@ -6470,6 +6506,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Source Accounts.
+        /// </summary>
+        internal static string Source_Accounts {
+            get {
+                return ResourceManager.GetString("Source_Accounts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Source account type.
         /// </summary>
         internal static string Source_account_type {
@@ -6709,6 +6754,15 @@ namespace Resources {
         internal static string Summary {
             get {
                 return ResourceManager.GetString("Summary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Supported.
+        /// </summary>
+        internal static string Supported {
+            get {
+                return ResourceManager.GetString("Supported", resourceCulture);
             }
         }
         
@@ -7800,6 +7854,15 @@ namespace Resources {
         internal static string WebSite {
             get {
                 return ResourceManager.GetString("WebSite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to When enabled, this simulation will generate accounting entries upon execution..
+        /// </summary>
+        internal static string When_enabled_this_simulation_will_generate_accounting_entries_upon_execution {
+            get {
+                return ResourceManager.GetString("When_enabled_this_simulation_will_generate_accounting_entries_upon_execution", resourceCulture);
             }
         }
         

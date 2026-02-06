@@ -241,8 +241,8 @@
                                                                 <th>@GlobalShared.Branch</th>
                                                                 <th>@GlobalShared.Member_reference</th>
                                                                 <th>@GlobalShared.Account_type</th>
-                                                                <th class="text-end">Amount</th>
-                                                                <th class="text-end">Actions</th>
+                                                                <th class="text-end">@GlobalShared.Amount</th>
+                                                                <th class="text-end">@GlobalShared.Actions</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -258,7 +258,7 @@
 
                                                 <div class="d-flex justify-content-between align-items-center mt-2 mb-2">
                                                     <button type="button" class="btn btn-sm btn-outline-danger" id="resetAccountsBtn">
-                                                        <i class="mdi mdi-delete-sweep-outline me-1"></i> Clear All
+                                                        <i class="mdi mdi-delete-sweep-outline me-1"></i> @GlobalShared.Clear_All
                                                     </button>
                                                     <button type="button" class="btn btn-sm btn-primary" id="addAccountBtn">
                                                         <i class="mdi mdi-plus-circle-outline me-1"></i> @GlobalShared.Add_Account
@@ -366,13 +366,13 @@
                                                                 })
 
                                                             <label class="form-check-label fw-semibold" for="ShouldImpactAccounting">
-                                                                Impact Accounting
+                                                                @GlobalBulkOperation.Impact_Accounting
                                                             </label>
                                                         </div>
 
                                                         <small class="text-muted d-block help-hint mt-1">
                                                             <i class="mdi mdi-information-outline me-1"></i>
-                                                            When enabled, this simulation will generate accounting entries upon execution.
+                                                            @GlobalBulkOperation.When_enabled_this_simulation_will_generate_accounting_entries_upon_execution
                                                         </small>
                                                     </div>
 
@@ -473,7 +473,7 @@
                                                                        required data-max-size="10485760" />
 
                                                                 <button class="btn btn-primary px-4" type="submit" id="uploadButton">
-                                                                    <span class="upload-text">Upload</span>
+                                                                    <span class="upload-text">@GlobalShared.Upload</span>
                                                                     <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
                                                                     <i class="mdi mdi-cloud-upload-outline ms-1"></i>
                                                                 </button>
@@ -482,7 +482,7 @@
                                                             </div>
 
                                                             <div class="form-text">
-                                                                Supported: .csv, .xlsx, .xls
+                                                                @GlobalShared.Supported: .csv, .xlsx, .xls
                                                             </div>
                                                         </div>
                                                     </div>
@@ -641,19 +641,19 @@
                                          })
 
                                                             <label class="form-check-label fw-semibold" for="ShouldImpactAccounting">
-                                                                Impact Accounting
+                                                                @GlobalBulkOperation.Impact_Accounting
                                                             </label>
                                                         </div>
 
                                                         <small class="text-muted d-block help-hint mt-1">
                                                             <i class="mdi mdi-information-outline me-1"></i>
-                                                            When enabled, this simulation will generate accounting entries upon execution.
+                                                            @GlobalBulkOperation.When_enabled_this_simulation_will_generate_accounting_entries_upon_execution
                                                         </small>
                                                     </div>
 
 
                                                     <div class="col-md-12">
-                                                        <label class="form-label fw-semibold" id="AccountCartLabel2">Cash Source / Destination Account (COA)</label>
+                                                        <label class="form-label fw-semibold" id="AccountCartLabel2">@GlobalShared.Cash_Source / @GlobalShared.Destination_account (COA)</label>
                                                     <div class="col-md-12">
                                                         <label class="form-label fw-semibold" id="AccountCartLabel2">@GlobalShared.Cash_Source / @GlobalShared.Destination_account (COA)</label>
 

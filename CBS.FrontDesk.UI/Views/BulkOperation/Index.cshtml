@@ -80,7 +80,7 @@
                                 <div class="col-md-4">
                                     <div class="p-3 border rounded">
                                         <div class="fw-bold text-dark mb-1">
-                                            <i class="mdi mdi-database-outline me-1"></i> Source Accounts
+                                            <i class="mdi mdi-database-outline me-1"></i> @GlobalShared.Source_Accounts
                                         </div>
                                         <div class="hint">
                                             @GlobalBulkOperation.Define_which_accounts_are_impacted.
@@ -92,7 +92,7 @@
                                 <div class="col-md-4">
                                     <div class="p-3 border rounded">
                                         <div class="fw-bold text-dark mb-1">
-                                            <i class="mdi mdi-target-account me-1"></i> Destination
+                                            <i class="mdi mdi-target-account me-1"></i> @GlobalShared.Destination
                                         </div>
                                         <div class="hint">
                                             @GlobalBulkOperation.For_Top_Up_choose_destination_account_type_target_amount.
@@ -223,13 +223,13 @@
                                                             })
 
                                                         <label class="form-check-label fw-semibold" for="ShouldImpactAccounting">
-                                                            Impact Accounting
+                                                            @GlobalBulkOperation.Impact_Accounting
                                                         </label>
                                                     </div>
 
                                                     <small class="text-muted d-block help-hint mt-1">
                                                         <i class="mdi mdi-information-outline me-1"></i>
-                                                        When enabled, this simulation will generate accounting entries upon execution.
+                                                        @GlobalBulkOperation.When_enabled_this_simulation_will_generate_accounting_entries_upon_execution
                                                     </small>
                                                 </div>
 

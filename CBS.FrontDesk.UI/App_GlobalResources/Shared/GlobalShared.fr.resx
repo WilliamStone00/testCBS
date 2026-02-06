@@ -1126,4 +1126,25 @@
   <data name="Certification_Filters" xml:space="preserve">
     <value />
   </data>
+  <data name="DISABLED" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PENDING_UC" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ENABLED" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Clear_All" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Supported" xml:space="preserve">
+    <value />
+  </data>
+  <data name="When_enabled_this_simulation_will_generate_accounting_entries_upon_execution" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Source_Accounts" xml:space="preserve">
+    <value />
+  </data>
 </root>

@@ -79,6 +79,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Accounting Impact.
+        /// </summary>
+        internal static string Accounting_Impact {
+            get {
+                return ResourceManager.GetString("Accounting_Impact", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Accounting impact is.
+        /// </summary>
+        internal static string Accounting_impact_is {
+            get {
+                return ResourceManager.GetString("Accounting_impact_is", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Advanced User Filters.
         /// </summary>
         internal static string AdvancedUserFilters {
@@ -658,6 +676,15 @@ namespace Resources {
         internal static string If_Simulation_Type_is_Other_description_is_required {
             get {
                 return ResourceManager.GetString("If_Simulation_Type_is_Other_description_is_required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Impact Accounting.
+        /// </summary>
+        internal static string Impact_Accounting {
+            get {
+                return ResourceManager.GetString("Impact_Accounting", resourceCulture);
             }
         }
         
@@ -1291,6 +1318,35 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This simulation is approved and will generate accounting entries upon execution..
+        /// </summary>
+        internal static string This_simulation_is_approved_and_will_generate_accounting_entries_upon_execution {
+            get {
+                return ResourceManager.GetString("This_simulation_is_approved_and_will_generate_accounting_entries_upon_execution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This simulation is eligible to impact accounting, but no entries were generated because the operation is not yet approved..
+        /// </summary>
+        internal static string This_simulation_is_eligible_to_impact_accounting_but_no_entries_were_generated_because_the_operation_is_not_yet_approved {
+            get {
+                return ResourceManager.GetString("This_simulation_is_eligible_to_impact_accounting_but_no_entries_were_generated_be" +
+                        "cause_the_operation_is_not_yet_approved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This simulation was explicitly configured &lt;b&gt;not&lt;/b&gt; to generate accounting entries, even if approved..
+        /// </summary>
+        internal static string This_simulation_was_explicitly_configured_not_to_generate_accounting_entries_even_if_approved {
+            get {
+                return ResourceManager.GetString("This_simulation_was_explicitly_configured_not_to_generate_accounting_entries_even" +
+                        "_if_approved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to TIPS FOR Bulk OPERATIONS FILTERING.
         /// </summary>
         internal static string TIPSFORBulkOPERATIONSFILTERING {
@@ -1387,6 +1443,15 @@ namespace Resources {
         internal static string View_Bulk_Operation_Details {
             get {
                 return ResourceManager.GetString("View_Bulk_Operation_Details", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to When enabled, this simulation will generate accounting entries upon execution..
+        /// </summary>
+        internal static string When_enabled_this_simulation_will_generate_accounting_entries_upon_execution {
+            get {
+                return ResourceManager.GetString("When_enabled_this_simulation_will_generate_accounting_entries_upon_execution", resourceCulture);
             }
         }
     }
