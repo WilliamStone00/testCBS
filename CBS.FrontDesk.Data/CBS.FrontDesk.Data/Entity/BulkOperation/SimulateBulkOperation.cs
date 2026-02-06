@@ -51,12 +51,14 @@ namespace CBS.FrontDesk.Data.Entity.BulkOperation
 
         public string BranchId { get; set; }
 
-      /*  public string BankCode { get; set; }
-        public string BranchCode { get; set; }
-        public string BranchId { get; set; }
-        public string BankId { get; set; }
-        public string BankName { get; set; }
-        public string BranchName { get; set; }*/
+        public bool ShouldImpactAccounting { get; set; } = true;
+
+        /*  public string BankCode { get; set; }
+          public string BranchCode { get; set; }
+          public string BranchId { get; set; }
+          public string BankId { get; set; }
+          public string BankName { get; set; }
+          public string BranchName { get; set; }*/
         public List<SavingProduct> SavingProducts { get; set; } = new List<SavingProduct>();
         public List<Branch> Branches { get; set; } = new List<Branch>();
         public BulkOperationSelectionModel BulkOperationSelectionModel { get; set; }

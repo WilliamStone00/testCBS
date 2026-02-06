@@ -34,6 +34,7 @@ namespace CBS.FrontDesk.Data.Entity.BulkOperation
         public string BranchId2 { get; set; }
         public string BulkCashStrategy2 { get; set; }
         public string FileUploadId { get; set; }
+        public bool ShouldImpactAccounting { get; set; } = true;
 
         // Collections
         public List<Branch> Branches { get; set; } = new List<Branch>();

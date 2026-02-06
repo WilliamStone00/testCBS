@@ -353,8 +353,32 @@
                                                         </small>
                                                     </div>
 
+                                                    <!-- Impact Accounting -->
+                                                    <div class="col-md-6">
+                                                        <div class="form-check form-switch">
+                                                            @Html.CheckBoxFor(
+                                                                m => m.ShouldImpactAccounting,
+                                                                new
+                                                                {
+                                                                    @class = "form-check-input",
+                                                                    role = "switch",
+                                                                    id = "ShouldImpactAccounting"
+                                                                })
+
+                                                            <label class="form-check-label fw-semibold" for="ShouldImpactAccounting">
+                                                                Impact Accounting
+                                                            </label>
+                                                        </div>
+
+                                                        <small class="text-muted d-block help-hint mt-1">
+                                                            <i class="mdi mdi-information-outline me-1"></i>
+                                                            When enabled, this simulation will generate accounting entries upon execution.
+                                                        </small>
+                                                    </div>
+
+
                                                     <!-- Destination COA -->
-                                                    <div class="col-md-12">
+                                                    <div class="col-md-6">
                                                         <label class="form-label fw-semibold" id="AccountCartLabel">
                                                             Cash Source / Destination Account (COA)
                                                         </label>
@@ -604,7 +628,31 @@
                                                             new { @class = "form-control", rows = "3", placeholder = "Provide justification (required if Simulation Type is Other).", id = "SimulationDescription2" })
                                                     </div>
 
-                                                    <div class="col-md-12">
+                                                    <!-- Impact Accounting -->
+                                                    <div class="col-md-6">
+                                                        <div class="form-check form-switch">
+                                                            @Html.CheckBoxFor(
+                                                                m => m.ShouldImpactAccounting,
+                                                                new
+                                                                {
+                                                                    @class = "form-check-input",
+                                                                    role = "switch",
+                                                                    id = "ShouldImpactAccounting"
+                                                                })
+
+                                                            <label class="form-check-label fw-semibold" for="ShouldImpactAccounting">
+                                                                Impact Accounting
+                                                            </label>
+                                                        </div>
+
+                                                        <small class="text-muted d-block help-hint mt-1">
+                                                            <i class="mdi mdi-information-outline me-1"></i>
+                                                            When enabled, this simulation will generate accounting entries upon execution.
+                                                        </small>
+                                                    </div>
+
+
+                                                    <div class="col-md-6">
                                                         <label class="form-label fw-semibold" id="AccountCartLabel2">Cash Source / Destination Account (COA)</label>
 
                                                         @Html.DropDownListFor(m => m.AccountCartId2,
@@ -918,6 +966,7 @@
 
                             SimulationType: $('#SimulationType').val(),
                             SimulationDescription: $('#SimulationDescription').val(),
+                            ShouldImpactAccounting: $('#ShouldImpactAccounting').val(),
 
                             BulkCashStrategy: 'ManualEntrying',
                             Accounts: accounts
@@ -1048,6 +1097,7 @@
 
                             SimulationType2: $('#SimulationType2').val(),
                             SimulationDescription2: $('#SimulationDescription2').val(),
+                            ShouldImpactAccounting: $('#ShouldImpactAccounting').val(),
 
                             BulkCashStrategy: 'FileUpload',
                             FileUploadId: $('#FileUploadId').val(),

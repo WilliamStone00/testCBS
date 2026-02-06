@@ -210,6 +210,30 @@
                                                     </div>
                                                 </div>
 
+                                                <!-- Impact Accounting -->
+                                                <div class="col-md-12">
+                                                    <div class="form-check form-switch">
+                                                        @Html.CheckBoxFor(
+                                                            m => m.ShouldImpactAccounting,
+                                                            new
+                                                            {
+                                                                @class = "form-check-input",
+                                                                role = "switch",
+                                                                id = "ShouldImpactAccounting"
+                                                            })
+
+                                                        <label class="form-check-label fw-semibold" for="ShouldImpactAccounting">
+                                                            Impact Accounting
+                                                        </label>
+                                                    </div>
+
+                                                    <small class="text-muted d-block help-hint mt-1">
+                                                        <i class="mdi mdi-information-outline me-1"></i>
+                                                        When enabled, this simulation will generate accounting entries upon execution.
+                                                    </small>
+                                                </div>
+
+
                                                 <!-- Description -->
                                                 <div class="col-md-12">
                                                     @Html.LabelFor(m => m.Description, @GlobalBulkOperation.Description, new { @class = "form-label" })
