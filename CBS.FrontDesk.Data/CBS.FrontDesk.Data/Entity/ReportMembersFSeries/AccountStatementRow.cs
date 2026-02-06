@@ -1,4 +1,5 @@
-﻿using CBS.FrontDesk.Data.Entity.Accounting_V2.Reporting.ReportData;
+﻿using CBS.FrontDesk.Data.Config;
+using CBS.FrontDesk.Data.Entity.Accounting_V2.Reporting.ReportData;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
 using Newtonsoft.Json;
 using System;
@@ -285,7 +286,7 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
         public decimal TotalPortfolioValue { get; set; }
         public decimal AverageInterestRate { get; set; }
         public decimal DelinquencyRate { get; set; }
-
+        public string LoanAccountNumber { get; set; }
         // Loan Details
         public string LoanNumber { get; set; }
         public string CustomerName { get; set; }
@@ -302,6 +303,17 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
         public string RiskCategory { get; set; }
         public decimal CollateralValue { get; set; }
         public string OfficerName { get; set; }
+        public int NumberOfInstallment { get; set; }
+        public DateTime LoanDate { get; set; }
+        public DateTime LastRepaymentDate { get; set; }
+        public decimal LoanBalance { get; set; }
+        public decimal Interest { get; set; }
+        public int DeliquentDays { get; set; }
+        public decimal DeliquentAmount { get; set; }
+        public int DeliquentInterest { get; set; }
+        public decimal AdvancedPaymentAmount { get; set; }
+        public int AdvancedPaymentDays { get; set; }
+        public int AdvancedPaymentDayLeft { get; set; }
     }
 
     public class MemberAccount
@@ -1262,7 +1274,30 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
             public decimal TotalTaxAmount { get; set; }
             public decimal NetInterestAmount { get { return TotalInterestAmount - TotalTaxAmount; } }
         }
+
+    public class MemberSituationMainRpt
+    {
+        public string Logo { get; set; }
+        public string BranchName { get; set; }
+        public string BranchCode { get; set; }
+        public string BranchAddress { get; set; }
+        public string BranchTelephone { get; set; }
+        public string HeadOfficeName { get; set; }
+        public string HeadOfficeAddress { get; set; }
+        public string HeadOfficeTelephone { get; set; }
+        public string HeadOfficeEmail { get; set; }
+        public string HeadOfficeWebSite { get; set; }
+        public string HeadOfficeInitial { get; set; }
+        public string HeadOfficeCode { get; set; }
+        public string MemberName { get; set; }
+        public string MemberReference { get; set; }
+        public string Tel { get; set; }
+        public string Address { get; set; }
+        public string CNI { get; set; }
+        public List<AccountSnapshot> AccountSituations { get; set; }
+        public List<LoanSituationRow> LoanHistories { get; set; }
     }
+}
 
 
 

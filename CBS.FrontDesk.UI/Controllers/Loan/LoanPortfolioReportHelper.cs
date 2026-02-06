@@ -146,15 +146,15 @@ namespace CBS.FrontDesk.UI.Controllers
                     || selectedReports.Contains(name, StringComparer.OrdinalIgnoreCase);
 
                 subReports = new Dictionary<string, object>
-            {
-                { "Flat_AgeAndGenderSubReport", ShouldInclude("Flat_AgeAndGender") ? rptData.Flat_AgeAndGender : null },
-                { "Flat_AgeAndLoanTypeSubReport", ShouldInclude("Flat_AgeAndLoanType") ? rptData.Flat_AgeAndLoanType : null },
-                { "Flat_ByLoanTermSubReport", ShouldInclude("Flat_ByLoanTerm") ? rptData.Flat_ByLoanTerm : null },
-                { "Flat_ByTargetGroupSubReport", ShouldInclude("Flat_ByTargetGroup") ? rptData.Flat_ByTargetGroup : null },
-                { "Flat_ByCategorySubReport", ShouldInclude("Flat_ByCategory") ? rptData.Flat_ByCategory : null },
-                { "Flat_ByZoneSubReport", ShouldInclude("Flat_ByZone") ? rptData.Flat_ByZone : null },
-                { "PortfolioDetailsSubReport", ShouldInclude("PortfolioDetails") ? rptData.PortfolioDetails : null }
-            };
+                {
+                    { "Flat_AgeAndGenderSubReport", ShouldInclude("Flat_AgeAndGender") ? rptData.Flat_AgeAndGender : null },
+                    { "Flat_AgeAndLoanTypeSubReport", ShouldInclude("Flat_AgeAndLoanType") ? rptData.Flat_AgeAndLoanType : null },
+                    { "Flat_ByLoanTermSubReport", ShouldInclude("Flat_ByLoanTerm") ? rptData.Flat_ByLoanTerm : null },
+                    { "Flat_ByTargetGroupSubReport", ShouldInclude("Flat_ByTargetGroup") ? rptData.Flat_ByTargetGroup : null },
+                    { "Flat_ByCategorySubReport", ShouldInclude("Flat_ByCategory") ? rptData.Flat_ByCategory : null },
+                    { "Flat_ByZoneSubReport", ShouldInclude("Flat_ByZone") ? rptData.Flat_ByZone : null },
+                    { "PortfolioDetailsSubReport", ShouldInclude("PortfolioDetails") ? rptData.PortfolioDetails : null }
+                };
             }
             else if (reportType == "delinquentloansummary")
             {
