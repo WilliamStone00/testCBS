@@ -1,0 +1,60 @@
+﻿@using Resources
+
+@model CBS.FrontDesk.Data.Entity.MemberAdjustmentConsole.MemberAdjustmentModel
+
+<!-- Modal Header (standard close only) -->
+<div class="modal-header">
+    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+</div>
+
+@using (Html.BeginForm("MemberAdjustmentRequest", "MemberAdjustmentConsole", FormMethod.Post, new { id = "reexecuteDailySavingForm" }))
+{
+    <div class="modal-body">
+
+        @Html.HiddenFor(m => m.AdjustmentType)
+        <!-- ================= FORM FIELDS ================= -->
+
+        <div class="mb-3">
+            @Html.LabelFor(m => m.BranchId, @GlobalIndividual.Branch, htmlAttributes: new { @class = "form-label fw-bold" })
+            @Html.DropDownListFor(
+                  m => m.BranchId,
+                  new SelectList(ViewBag.Branches, "Id", "Name"),
+                  "---" + GlobalIndividual.SelectBranch + "---",
+                  new { @class = "form-select select2" }
+              )
+        </div>
+        <!-- File ID -->
+        <div class="mb-3">
+            @Html.LabelFor(m => m.DailySavingReExecutionFileId, "Daily Saving ReExecution FileID", htmlAttributes: new { @class = "form -label fw-bold" })
+            @Html.TextBoxFor(m => m.DailySavingReExecutionFileId, new { @class = "form-control", placeholder = "Enter re-execution file ID", required = "required" })
+        </div>
+
+        <!-- Number of Daily Savers -->
+        <div class="mb-3">
+            @Html.LabelFor(m => m.TotalDailySavers, "Total Daily Savers", htmlAttributes: new { @class = "form-label fw-bold" })
+            @Html.TextBoxFor(m => m.TotalDailySavers, new { @class = "form-control", type = "number", min = "1", placeholder = "Enter number of affected savers", required = "required" })
+        </div>
+
+        <!-- Reason -->
+        <div class="mb-3">
+            @Html.LabelFor(m => m.Reason, htmlAttributes: new { @class = "form-label fw-bold" })
+            @Html.TextAreaFor(m => m.Reason, 3, 50, new { @class = "form-control", placeholder = "Provide a clear and detailed reason", required = "required" })
+        </div>
+
+    </div>
+
+    <!-- ================= FOOTER ================= -->
+    <div class="modal-footer">
+        <button type="button"
+                class="btn btn-outline-secondary"
+                data-bs-dismiss="modal">
+            Cancel
+        </button>
+
+        <button type="submit" id="btnReexecuteSubmit"
+                class="btn btn-success">
+            <i class="mdi mdi-check-circle-outline me-1"></i>
+            Re-execute
+        </button>
+    </div>
+}

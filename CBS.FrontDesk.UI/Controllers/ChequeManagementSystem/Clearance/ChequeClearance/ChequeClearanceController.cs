@@ -57,6 +57,17 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeCl
             var categories = await _categoryServices.GetCategories();
             ViewBag.Categories = categories;
 
+            ViewBag.Status = new List<SelectListItem>
+{
+    new SelectListItem { Value = "APPROVED", Text = "APPROVED" },
+    new SelectListItem { Value = "INITIATED", Text = "INITIATED" },
+    new SelectListItem { Value = "REJECTED", Text = "REJECTED" }
+};
+            ViewBag.ChequeType = new List<SelectListItem>
+{
+    new SelectListItem { Value = "Internal", Text = "INTERNAL" },
+    new SelectListItem { Value = "External", Text = "EXTERNAL" }
+};
             return true;
         }
         // Ajax entry point
@@ -132,53 +143,17 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeCl
             return View();
         }
 
-        // Note: use [FromBody] so model binder reads the JSON DataTables sends.
-        [HttpPost]
-        public async Task<JsonResult> LoadcheckbookData(ChequeBookQuery query)
-        {
-            try
-            {
-                var data = await _chequeClearanceService.GetchequebokDataTableAsync(query);
-
-                var chequeBook = JsonConvert.DeserializeObject<List<Data.Entity.CheckManagementSystem.Operations.ChequeBookListing.ChequeBook>>(JsonConvert.SerializeObject(data.data));
-
-                return Json(new
-                {
-                    draw = data.draw,
-                    recordsTotal = data.recordsTotal,
-                    recordsFiltered = data.recordsFiltered,
-                    data = chequeBook
-                });
-            }
-            catch (Exception ex)
-            {
-                // return a DataTables-compatible empty result on error
-                return Json(new
-                {
-                    draw = query?.Options?.draw ?? "1",
-                    recordsTotal = 0,
-                    recordsFiltered = 0,
-                    data = new List<object>(),
-                    error = ex.Message
-                });
-            }
-        }
-
         [HttpGet]
-        public async Task<ActionResult> ChequebookDetail(string KEY)
+        public async Task<ActionResult> LoadExternal()
         {
-            var ChequebookDetail = await _chequeClearanceService.GetChequebookDetail(KEY);
-            if (ChequebookDetail != null)
-            {
-                // You can either:
-                // 1️⃣ return a PartialView (if embedded somewhere)
-                // 2️⃣ return a View if standalone
-
-                return PartialView("_ChequeBookD", ChequebookDetail);
-            }
-
-            return PartialView("_Error", "Checkbook details not found.");
+            //var model = new OptionRequest
+            //{
+            //    External = true
+            //};
+            await loader();
+            return PartialView("_Create");
         }
+
 
 
         [HttpGet]
@@ -198,17 +173,6 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeCl
 
 
 
-        [HttpGet]
-        public ActionResult GetActionForm(string fileUploadId, string mode)
-        {
-            var model = new ClearanceValidation
-            {
-                ChequeClearanceId = fileUploadId,
-                ApprovedBy = Session["FullName"]?.ToString(),
-                Mode = mode // "approve", "review", or "reject",""
-            };
-            return PartialView("_ValidationForm", model);
-        }
 
         [HttpPost]
         public async Task<ActionResult> SubmitAction(ClearanceValidation model)

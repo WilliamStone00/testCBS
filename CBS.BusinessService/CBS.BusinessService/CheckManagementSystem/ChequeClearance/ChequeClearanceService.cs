@@ -90,23 +90,23 @@ namespace CBS.BusinessService.CheckManagementSystem.ChequeClearance
         //        throw new Exception($"Cheque book service unavailable: {ex.Message}", ex);
         //    }
         //}
-        public async Task<CheckbookDetail> GetChequebookDetail(string KEY)
-        {
-            try
-            {
+        //public async Task<CheckbookDetail> GetChequebookDetail(string KEY)
+        //{
+        //    try
+        //    {
 
-                var response = await _apiCallerHelper.GetAsync<ResponseObject<CheckbookDetail>>(
-                   string.Format(APICallHelper.ChequebookDetail, KEY));
-                return response.IsSuccess ? response.ApiResponseData.Data : null;
+        //        var response = await _apiCallerHelper.GetAsync<ResponseObject<CheckbookDetail>>(
+        //           string.Format(APICallHelper.ChequebookDetail, KEY));
+        //        return response.IsSuccess ? response.ApiResponseData.Data : null;
                 
-            }
-            catch (Exception ex)
-            {
-                // Log exception
-                throw ex;
-            }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log exception
+        //        throw ex;
+        //    }
 
-        }
+        //}
 
         public async Task<IEnumerable<OptionRequest>> GetClearanceAsync()
         {

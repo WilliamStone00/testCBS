@@ -1,4 +1,5 @@
 ﻿using CBS.FrontDesk.Data.Entity.CheckManagementSystem.LossManagementSystem;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -38,7 +39,23 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceReq
         public string ChequeImagePath { get; set; }
         public Discount Discount { get; set; }
 
+        public string RequestNote { get; set; }
+        public string ExternalChequeNumber { get; set; }
+        public string ExternalBankName { get; set; }
+        public string Amount { get; set; }
+        public string ChequeType { get; set; }
+        public string CustomerId { get; set; }
 
+        public string ExternalBankCode { get; set; }      // Code banque (SWIFT / BIC)
+        public string ExternalBranchCode { get; set; }    // Code agence
+        public string ExternalAccountNumber { get; set; }
+        public string ExternalBranchName { get; set; }
+        public decimal ToAccountNumber { get; set; }
+
+        public bool UseOverdraft { get; set; }
+
+        public string ImagePath { get; set; }
+        public IFormFile ChequeImage { get; set; }
 
 
     }
@@ -57,15 +74,5 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceReq
 
     }
 
-    public class CheckbookDetail
-    {
-        public string PageNumber { get; set; }
-        public string BranchId { get; set; }
-        public string AccountNumber { get; set; }
-        public string CustomerId { get; set; }
-        public string Status { get; set; }
-        public string CheckBookCategoryId { get; set; }
-        public string Id { get; set; }
-        
-    }
+    
 }
