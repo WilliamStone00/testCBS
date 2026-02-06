@@ -10476,10 +10476,8 @@
     <Content Include="Views\LossManagement\_CheckLeavesTable.cshtml" />
     <Content Include="Views\LossManagement\_LossRequestForm.cshtml" />
     <Content Include="Views\ChequeClearance\Index.cshtml" />
-    <Content Include="Views\ChequeClearance\_ChequeClearanceDataTable.cshtml" />
     <Content Include="Views\ChequeClearance\_ChequeClearanceDetails.cshtml" />
     <Content Include="Views\ChequeClearance\_Edit.cshtml" />
-    <Content Include="Views\ChequeClearance\_ValidationForm.cshtml" />
     <Content Include="Views\ChequeClearance\_MainForm.cshtml" />
     <Content Include="Views\ChequeClearance\_Create.cshtml" />
     <Content Include="Views\AccountingStatements\_JournalEntryData.cshtml" />
@@ -10517,8 +10515,6 @@
     <Content Include="Views\LossManagement\CheckbookDetails.cshtml" />
     <Content Include="Views\LossManagement\LossRequestForm.cshtml" />
     <Content Include="Views\ChequeClearance\List.cshtml" />
-    <Content Include="Views\ChequeClearance\_ChequeBookDataTable.cshtml" />
-    <Content Include="Views\ChequeClearance\_ChequeBookD.cshtml" />
     <Content Include="Views\ManualJournalEntry\Index.cshtml" />
     <Content Include="Views\ManualJournalEntry\_Posting.cshtml" />
     <Content Include="Views\ConfigurationManualEntry\Index.cshtml" />
@@ -10782,7 +10778,7 @@
     <Content Include="Views\Communication\SmsUpload.cshtml" />
     <Content Include="Views\Communication\SmsUploadDetails.cshtml" />
     <Content Include="Views\MemberAdjustmentConsole\_MemberBlockAmountAdjustementModal.cshtml" />
-    <Content Include="Views\MemberAdjustmentConsole\_REexcutionM0dalBody.cshtml" />
+    <Content Include="Views\MemberAdjustmentConsole\_DailyCollectionReExecutionModalBody.cshtml" />
     <Content Include="Views\TranslationPlaceholder\List.cshtml" />
     <Content Include="Views\TranslationPlaceholder\_TranslationPlaceholderDataTable.cshtml" />
     <Content Include="Views\TranslationPlaceholder\_TranslationPlaceholderDetailsPartial.cshtml" />

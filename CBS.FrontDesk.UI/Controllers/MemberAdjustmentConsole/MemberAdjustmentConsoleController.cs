@@ -103,6 +103,15 @@ namespace CBS.FrontDesk.UI.Controllers.MemberAdjustmentConsole
             var request = _memberAdjustmentService.initialiseMemberAdjustmentModel(AdjustmentType.NameAdjustment, model);
             return PartialView("_MemberNameAdjustmentModalBody", request);
         }  
+
+
+        [HttpGet]
+        public async Task<ActionResult> GetBulkDailyCollectionExecutionDetailPartial()
+        {
+            ViewBag.Branches = await _branchServices.GetBranches();
+            var request = _memberAdjustmentService.initialiseMemberAdjustmentModel(AdjustmentType.DailySavingReExecutionAdjustment, null);
+            return PartialView("_DailyCollectionReExecutionModalBody", request);
+        }  
         
         [HttpGet]
         public async Task<ActionResult> GetMemberActiveStatusDetailPartial(string id)
@@ -169,19 +178,15 @@ namespace CBS.FrontDesk.UI.Controllers.MemberAdjustmentConsole
             {
                 return Json(new { success = false, message = "Invalid request data." });
             }
-            if (model.AdjustmentType == AdjustmentType.BlockAmountAdjustment.ToString())
+           
+            if (model.AdjustmentType != AdjustmentType.AccountBalanceAdjustment.ToString())
             {
-                model.OldBalance = null;
-            }
-            if (model.DailySavingReExecutionFileId != null)
-            {
-                model.AdjustmentType = "DailySavingReExecutionAdjustment";
-                //model.AdjustmentType ==  AdjustmentType.BlockAmountAdjustment.ToString();
-            }
+                model.OldBalance = 0;
+            }         
 
 
             model.RequestedBy = Session["FullName"]?.ToString();
-
+            model.IsMemberAccountModified = true;
             var command= _memberAdjustmentService.ConvertMemberAjustmentModel(model);
             var result = await _memberAdjustmentService.SubmitMemberAdjustmentRequestAsync(command);
             return Json(new { success = result.Result, status = result.MessageStatus, message = Messaging.MessageResult(result) });

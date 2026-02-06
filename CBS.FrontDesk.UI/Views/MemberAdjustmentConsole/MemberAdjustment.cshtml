@@ -113,10 +113,10 @@
                     <div class="col-md-12">
                         <label class="form-label fw-bold">@GlobalIndividual.Branch</label>
                         @Html.DropDownList(
-                            "BranchId",
+                            "Branch",
                             new SelectList(ViewBag.Branches, "Id", "Name"),
-                            "---" + @GlobalIndividual.SelectBranch + "---",
-                            new { @class = "form-control select2", @id = "branchId", @name = "BranchId" }
+                            "---" + GlobalIndividual.SelectBranch + "---",
+                            new { @class = "form-select select2", @id= "mainBranchId" }
                         )
                     </div>
                 </div>
@@ -252,7 +252,7 @@
 
 <div class="card mb-3">
     <div class="card-body d-flex justify-content-end align-items-center">
-        <button type="button" id="btnReexecute" class="btn btn-success btn-sm px-2">
+        <button type="button" id="btnReexecute" class="btn btn-success btn-sm px-2"  onclick="openMemberAdjustmentModal('/MemberAdjustmentConsole/GetBulkDailyCollectionExecutionDetailPartial')">
             <i class="mdi mdi-plus-circle-outline me-1"></i> Re execute Daily Saving
         </button>
     </div>
@@ -263,7 +263,7 @@
 
 
 
-<div class="modal fade" id="reexecuteDailySavingModal" tabindex="-1" aria-hidden="true">
+@*<div class="modal fade" id="reexecuteDailySavingModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-md modal-dialog-centered">
         <div class="modal-content">
 
@@ -271,7 +271,7 @@
 
         </div>
     </div>
-</div>
+</div>*@
 
 
 <!-- DataTable Partial -->
@@ -381,7 +381,7 @@
                 CustomerId: $('#customerId').val(),
                 FirstName: $('#firstName').val(),
                 LastName: $('#lastName').val(),
-                BranchId: $('#branchId').val(),
+                BranchId: $('#mainBranchId').val(),
                 Gender: $('#gender').val(),
                 MaritalStatus: $('#maritalStatus').val(),
                 WorkingStatus: $('#workingStatus').val(),
@@ -554,6 +554,10 @@
                     document.getElementById("branchName").textContent = branchName || "N/A";
 
                     contentDiv.innerHTML = html;
+                    const $sel = $('#branchId');
+                    // ===================== Initialize Select2 =====================
+                    if ($.fn.select2 && $sel.hasClass('select2')) $sel.trigger('change.select2');
+
                     modal.show();
                 })
                 .fail(function (_, __, error) {
@@ -835,13 +839,13 @@
              * DAILY SAVING RE-EXECUTION MODAL
              * ============================================================ */
 
-            const reexecuteModalEl = document.getElementById('reexecuteDailySavingModal');
-            const reexecuteModal = new bootstrap.Modal(reexecuteModalEl);
+            /*const reexecuteModalEl = document.getElementById('reexecuteDailySavingModal');
+            const reexecuteModal = new bootstrap.Modal(reexecuteModalEl);*/
 
-            $('#btnReexecute').on('click', function () {
+            /*$('#btnReexecute').on('click', function () {
                 console.log('🟢 Re-execute button clicked');
                 reexecuteModal.show();
-            });
+            });*/
 
             $('#reexecuteDailySavingForm').on('submit', function (e) {
                 e.preventDefault();
@@ -879,7 +883,7 @@
                                 if (response && response.success) {
                                     appalert(response.message || "✅ Re-executed successfully.", 1, 1);
 
-                                    $icon.removeClass('mdi-loading mdi-spin')
+                                   /* $icon.removeClass('mdi-loading mdi-spin')
                                         .addClass('mdi-check-circle');
                                     $text.text('Completed');
 
@@ -887,7 +891,7 @@
                                         bootstrap.Modal.getInstance(
                                             document.getElementById('reexecuteDailySavingModal')
                                         ).hide();
-                                    }, 800);
+                                    }, 800);*/
 
                                 } else {
                                     appalert((response && response.message) || "❌ Re-execution failed.", 2, 1);

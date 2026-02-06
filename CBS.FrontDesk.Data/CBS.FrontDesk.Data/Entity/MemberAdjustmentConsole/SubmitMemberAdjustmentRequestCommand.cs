@@ -36,6 +36,7 @@ namespace CBS.FrontDesk.Data.Entity.MemberAdjustmentConsole
         public bool AccountStatus { get; set; }
         public decimal NewBlockedAmount { get; set; }
         public decimal OldBlockedAmount { get; set; }
+        public string AccountNumber { get; set; }
 
         public string DailySavingReExecutionFileId { get; set; }
         public int TotalDailySavers { get; set; }

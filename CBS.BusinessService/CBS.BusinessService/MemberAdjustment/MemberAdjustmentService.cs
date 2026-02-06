@@ -116,6 +116,11 @@ namespace CBS.BusinessService.MemberP.MemberAdjustment
                         BranchId = model.CustomerList.BranchId,
                         AdjustmentType = AdjustmentType.BlockAmountAdjustment.ToString(),
                     };
+                case AdjustmentType.DailySavingReExecutionAdjustment:
+                    return new MemberAdjustmentModel()
+                    {
+                        AdjustmentType = AdjustmentType.DailySavingReExecutionAdjustment.ToString(),
+                    };
                 default:
                     return null;
             }
@@ -172,6 +177,7 @@ namespace CBS.BusinessService.MemberP.MemberAdjustment
 
                 DailySavingReExecutionFileId = model.DailySavingReExecutionFileId,
                 TotalDailySavers = model.TotalDailySavers,
+                AccountNumber = model.AccountNumber
             };
         }
 
