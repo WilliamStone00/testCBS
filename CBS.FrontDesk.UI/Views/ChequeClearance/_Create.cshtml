@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceRequest.OptionRequest
-
+@using Resources
 
 
 
@@ -16,10 +16,10 @@
                 <div class="col-12">
                     <h6 class="text-success border-bottom pt-2 pb-1">
                         <i class="fas fa-money-check-alt me-1"></i>
-                        External Cheque Clearance Request
+                        @ChequeClearanceResource.External_Cheque_Clearance_Request
                     </h6>
                     <p class="text-muted small mb-0">
-                        Capture cheque details for approval and processing.
+                        @ChequeClearanceResource.Capture_cheque_details_for_approval_and_processing
                     </p>
                 </div>
 
@@ -27,7 +27,7 @@
                 <div class="col-12">
                     <h6 class="text-success border-bottom pt-2 pb-1">
                         <i class="fas fa-file-invoice-dollar me-1"></i>
-                        Cheque Details
+                        @GlobalShared.Cheque_Details
                     </h6>
                 </div>
 
@@ -37,7 +37,7 @@
                      new SelectList(ViewBag.ChequeType, "Value", "Text"),
                      "Select Cheque Type",
                      new { @class = "form-control select2", id = "chequeType" })
-                        <label>Cheque Type</label>
+                        <label>@GlobalShared.Cheque_Type</label>
                     </div>
                 </div>
 
@@ -45,7 +45,7 @@
                     <div class="form-floating shadow-sm">
                         @Html.TextBoxFor(m => m.Amount,
                      new { @class = "form-control", type = "number", step = "0.01", placeholder = "Amount" })
-                        <label>Amount</label>
+                        <label>@GlobalShared.Amount</label>
                     </div>
                 </div>
 
@@ -53,7 +53,7 @@
                     <div class="form-floating shadow-sm">
                         @Html.TextBoxFor(m => m.ExternalChequeNumber,
                      new { @class = "form-control", placeholder = "Cheque Number" })
-                        <label>External Cheque Number</label>
+                        <label>@GlobalShared.External_Cheque_Number</label>
                     </div>
                 </div>
 
@@ -61,7 +61,7 @@
                     <div class="form-floating shadow-sm">
                         @Html.TextBoxFor(m => m.CheckBookPageNumber,
                      new { @class = "form-control", type = "number", placeholder = "Page Number" })
-                        <label>Check Book Page Number</label>
+                        <label>@GlobalShared.Check_Book_Page_Number</label>
                     </div>
                 </div>
 
@@ -69,7 +69,7 @@
                 <div class="col-12">
                     <h6 class="text-success border-bottom pt-2 pb-1">
                         <i class="fas fa-university me-1"></i>
-                        External Bank Details
+                        @GlobalShared.External_Bank_Details
                     </h6>
                 </div>
 
@@ -77,7 +77,7 @@
                     <div class="form-floating shadow-sm">
                         @Html.TextBoxFor(m => m.ExternalBankName,
                      new { @class = "form-control", placeholder = "Bank Name" })
-                        <label>External Bank Name</label>
+                        <label>@GlobalShared.External_Bank_Name</label>
                     </div>
                 </div>
 
@@ -85,7 +85,7 @@
                     <div class="form-floating shadow-sm">
                         @Html.TextBoxFor(m => m.ExternalBankCode,
                      new { @class = "form-control", placeholder = "Bank Code" })
-                        <label>External Bank Code</label>
+                        <label>@GlobalShared.External_Bank_Code</label>
                     </div>
                 </div>
 
@@ -93,7 +93,7 @@
                     <div class="form-floating shadow-sm">
                         @Html.TextBoxFor(m => m.ExternalBranchCode,
                      new { @class = "form-control", placeholder = "Branch Code" })
-                        <label>External Branch Code</label>
+                        <label>@GlobalShared.External_Branch_Code</label>
                     </div>
                 </div>
 
@@ -101,7 +101,7 @@
                     <div class="form-floating shadow-sm">
                         @Html.TextBoxFor(m => m.ExternalBranchName,
                      new { @class = "form-control", placeholder = "Branch Name" })
-                        <label>External Branch Name</label>
+                        <label>@GlobalShared.External_Branch_Name</label>
                     </div>
                 </div>
 
@@ -109,7 +109,7 @@
                     <div class="form-floating shadow-sm">
                         @Html.TextBoxFor(m => m.ExternalAccountNumber,
                      new { @class = "form-control", placeholder = "Account Number" })
-                        <label>External Account Number</label>
+                        <label>@GlobalShared.External_Account_Number</label>
                     </div>
                 </div>
 
@@ -117,7 +117,7 @@
                 <div class="col-12">
                     <h6 class="text-success border-bottom pt-2 pb-1">
                         <i class="fas fa-user-check me-1"></i>
-                        Beneficiary & Notes
+                        @GlobalShared.Beneficiary_Notes
                     </h6>
                 </div>
 
@@ -125,7 +125,7 @@
                     <div class="form-floating shadow-sm">
                         @Html.TextBoxFor(m => m.ToAccountNumber,
                      new { @class = "form-control", placeholder = "Account Number" })
-                        <label>To Account Number</label>
+                        <label>@GlobalShared.To_Account_Number</label>
                     </div>
                 </div>
 
@@ -133,7 +133,7 @@
                     <div class="form-floating shadow-sm">
                         @Html.TextBoxFor(m => m.CustomerId,
                      new { @class = "form-control", placeholder = "Member Reference" })
-                        <label>Member Reference</label>
+                        <label>@GlobalShared.Member_reference</label>
                     </div>
                 </div>
 
@@ -141,7 +141,7 @@
                     <div class="form-floating shadow-sm">
                         @Html.TextAreaFor(m => m.RequestNote, 3, 100,
                      new { @class = "form-control", placeholder = "Note", style = "height:100px" })
-                        <label>Note</label>
+                        <label>@GlobalShared.Note</label>
                     </div>
                 </div>
 
@@ -149,7 +149,7 @@
                 <div class="col-12">
                     <h6 class="text-success border-bottom pt-2 pb-1">
                         <i class="fas fa-cogs me-1"></i>
-                        Clearing Options
+                        @GlobalShared.Clearing_Options
                     </h6>
                 </div>
 
@@ -158,7 +158,7 @@
                         @Html.CheckBoxFor(m => m.UseOverdraft,
                      new { @class = "form-check-input", id = "UseOverdraft" })
                         <label class="form-check-label" for="UseOverdraft">
-                            Use Overdraft
+                            @GlobalShared.Use_Overdraft
                         </label>
                     </div>
                 </div>
@@ -169,7 +169,7 @@
 
                     <div class="section-title text-success mb-3">
                         <i class="fas fa-file-image me-2"></i>
-                        Cheque Image Upload
+                        @GlobalShared.Cheque_Image_Upload
                     </div>
 
                     <div class="image-upload-container row">
@@ -186,10 +186,10 @@
                                     <i class="fas fa-cloud-upload-alt fa-3x"></i>
                                 </div>
 
-                                <h5 class="mb-2">Upload Cheque Image</h5>
+                                <h5 class="mb-2">@GlobalShared.Upload_Cheque_Image</h5>
 
                                 <p class="text-muted mb-1">
-                                    Drag & drop your cheque image here
+                                    @ChequeClearanceResource.Drag_drop_your_cheque_image_here
                                 </p>
 
                                 <p class="small text-muted mb-3">
@@ -200,7 +200,7 @@
                                         class="btn btn-success"
                                         id="browseBtn">
                                     <i class="fas fa-folder-open me-1"></i>
-                                    Browse Files
+                                    @GlobalShared.Browse_Files
                                 </button>
 
                                 @Html.TextBoxFor(m => m.ChequeImage,
@@ -224,10 +224,10 @@
                                 <div class="d-flex justify-content-between mb-2">
                                     <span class="fw-semibold text-success">
                                         <i class="fas fa-eye me-1"></i>
-                                        Cheque Preview
+                                        @GlobalShared.Cheque_Preview
                                     </span>
                                     <span id="fileName" class="small text-muted">
-                                        No file selected
+                                        @GlobalShared.No_file_selected
                                     </span>
                                 </div>
 
@@ -238,7 +238,7 @@
                                     <div id="noImage">
                                         <i class="fas fa-file-invoice fa-3x text-muted mb-2"></i>
                                         <p class="text-muted small">
-                                            Uploaded cheque will appear here
+                                            @ChequeClearanceResource.Uploaded_cheque_will_appear_here
                                         </p>
                                     </div>
 
@@ -251,19 +251,19 @@
                                          class="text-center">
 
                                         <i class="fas fa-file-pdf fa-4x text-danger mb-2"></i>
-                                        <p class="small">PDF Document Uploaded</p>
+                                        <p class="small">@GlobalShared.PDF_Document_Uploaded</p>
                                     </div>
                                 </div>
 
                                 <!-- ================= ACTION BUTTONS ================= -->
                                 <div class="col-12 text-end mt-3">
                                     <button type="button" class="btn btn-outline-secondary shadow-sm px-4">
-                                        Cancel
+                                        @GlobalShared.Cancel
                                     </button>
 
                                     <button type="submit" class="btn btn-success shadow-sm px-4">
                                         <i class="fas fa-paper-plane me-1"></i>
-                                        Submit Request
+                                        @GlobalShared.Submit_Request
                                     </button>
                                 </div>
 

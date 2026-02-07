@@ -6,7 +6,7 @@
             <table class="table table-hover" id="myDataTablex">
                 <thead class="table-light">
                     <tr>
-                        <th>@GlobalChargesWaived.Date</th>
+                        <th>@GlobalShared.Date</th>
                         <th>@GlobalChargesWaived.WaivedAmount</th>
                         <th>@GlobalShared.Status</th>
                         <th>@GlobalShared.Action</th>
@@ -21,17 +21,17 @@
                             <td style="width:10%">
                                 @if (d.IsWaiverDone)
                                 {
-                                    <span class="badge rounded-pill rounded-2 badge-primary bg-label-primary fs-tiny py-1">@GlobalChargesWaived.AlreadyUsed</span>
+                                    <span class="badge rounded-pill rounded-2 badge-primary bg-label-primary fs-tiny py-1">@GlobalShared.Already_Used</span>
                                 }
                                 else
                                 {
-                            <span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">@GlobalChargesWaived.Pending...</span>
+                            <span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">@GlobalShared.Pending...</span>
                                 }
                             </td>
                             <td style="width:20%">
                                 @if (DateTime.Now.Date > d.DateOfWaiverRequest.Date)
                                 {
-                                    <span class="badge rounded-pill rounded-2 badge-danger bg-label-danger fs-tiny py-1">@GlobalChargesWaived.Expired</span>
+                                    <span class="badge rounded-pill rounded-2 badge-danger bg-label-danger fs-tiny py-1">@GlobalShared.Expired</span>
                                 }
                                 else
                                 {

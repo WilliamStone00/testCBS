@@ -1,19 +1,20 @@
 ﻿<!-- Views/ChequeRequest/_CustomerSearch.cshtml -->
+@using Resources
 <div class="fieldset-custom">
     <div class="row g-3">
         <h6 class="text-primary">
-            <i class="mdi mdi-account-search-outline me-2"></i> Customer Search
+            <i class="mdi mdi-account-search-outline me-2"></i> @GlobalShared.Customer_Search
         </h6>
 
         <div class="col-md-12">
-            <label class="form-label fw-bold">Member Reference</label>
+            <label class="form-label fw-bold">@GlobalShared.Member_reference</label>
             <div class="input-group">
-                <input type="text" id="customerIdInput" class="form-control" placeholder="Enter Member Reference">
+                <input type="text" id="customerIdInput" class="form-control" placeholder="@GlobalShared.Enter_member_reference">
                 <button type="button" class="btn btn-primary" id="searchCustomerBtn">
-                    <i class="mdi mdi-magnify"></i> Search
+                    <i class="mdi mdi-magnify"></i> @GlobalShared.Search
                 </button>
             </div>
-            <small class="text-muted">Enter Member Reference and press Search. The request form will appear automatically below.</small>
+            <small class="text-muted">@GlobalShared.Enter_Member_Reference_and_press_Search_The_request_form_will_appear_automatically_below</small>
         </div>
     </div>
 

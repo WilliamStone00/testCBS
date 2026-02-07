@@ -7,18 +7,18 @@
 <div class="card bg-light mb-3">
     <div class="card-body text-center">
         <h1 class="card-title text-primary">
-            <i class="mdi mdi-currency-usd-circle-outline me-2"></i> Cheque Cancellation Request
+            <i class="mdi mdi-currency-usd-circle-outline me-2"></i> @ChequeCancellationResource.Cheque_Cancellation_Request
         </h1>
 
         <div class="alert alert-info mt-3 py-2">
             <i class="mdi mdi-information-outline me-1"></i>
-            Always Verify Credentials
+            @ChequeCancellationResource.Always_Verify_Credentials
         </div>
     </div>
 </div>
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> TIPS FOR CHEQUE CANCELLATION</span>
+        <span><i class="mdi mdi-information-outline me-2"></i> @ChequeCancellationResource.TIPS_FOR_CHEQUE_CANCELLATION</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="true">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -26,13 +26,13 @@
     <div id="collapseTips" class="collapse show">
         <div class="card-body">
             <ul>
-                <li><strong>Verify Cheque Details:</strong> Double-check the cheque number, book ID, and leaf ID before submitting.</li>
-                <li><strong>Select Correct Request Type:</strong> Choose <em>Cheque Book</em>, <em>Cheque Leaf</em>, or <em>Cheque Number</em> according to what you are cancelling.</li>
-                <li><strong>Provide a Valid Reason:</strong> Clearly state why the cheque is being cancelled (e.g., lost, stolen, error, duplicate).</li>
-                <li><strong>Mandatory Fields:</strong> Branch, Account Number, and Customer Name must be filled before submission.</li>
-                <li><strong>Authorization:</strong> Some cancellations may require approval from a supervisor/manager before they take effect.</li>
-                <li><strong>Irreversibility:</strong> Once approved, a cancelled cheque cannot be reinstated — ensure accuracy before confirming.</li>
-                <li><strong>Additional Notes:</strong> Use the notes field to add any special remarks that may help reviewers.</li>
+                <li><strong>@ChequeCancellationResource.Verify_Cheque_Details:</strong> @ChequeCancellationResource.Double_check_the_cheque_number_book_ID_and_leaf_ID_before_submitting</li>
+                <li><strong>@ChequeCancellationResource.Select_Correct_Request_Type:</strong> @Html.Raw(@ChequeCancellationResource.Choose_Cheque_Book_Cheque_Leaf_Or_Cheque_Number_according_to_what_you_are_cancelling)</li>
+                <li><strong>@ChequeCancellationResource.Provide_a_Valid_Reason:</strong> @ChequeCancellationResource.Clearly_state_why_the_cheque_is_being_cancelled.</li>
+                <li><strong>@ChequeCancellationResource.Mandatory_Fields:</strong> @ChequeCancellationResource.Branch_Account_Number_and_Customer_Name_must_be_filled_before_submission</li>
+                <li><strong>@GlobalShared.Authorization:</strong> @ChequeCancellationResource.Some_cancellations_may_require_approval_from_a_supervisor_manager_before_they_take_effect</li>
+                <li><strong>@GlobalShared.Irreversibility:</strong> @ChequeCancellationResource.Once_approved_a_cancelled_cheque_cannot_be_reinstated_ensure_accuracy_before_confirming</li>
+                <li><strong>@GlobalShared.Additional_Notes:</strong> @ChequeCancellationResource.Use_the_notes_field_to_add_any_special_remarks_that_may_help_reviewers</li>
             </ul>
         </div>
     </div>

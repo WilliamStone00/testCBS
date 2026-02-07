@@ -63,7 +63,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.Counter
         public async Task<ActionResult> Search(string customerId)
         {
 			if (string.IsNullOrEmpty(customerId))
-				return new HttpStatusCodeResult(400, "ChequeBookId is required");
+				return new HttpStatusCodeResult(400, "customerId is required");
 
 			try
 			{

@@ -1,15 +1,15 @@
 ﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeRequest.ChequeBookRequest
-
+@using Resources
 <fieldset class="fieldset-custom">
 
     <!-- Header -->
     <div class="card bg-light mb-4 shadow-sm">
         <div class="card-body text-center">
             <h1 class="card-title text-primary fw-bold mb-2">
-                <i class="mdi mdi-book-open-page-variant-outline me-2"></i> Cheque Book Request Details
+                <i class="mdi mdi-book-open-page-variant-outline me-2"></i> @ChequeRequestResource.Cheque_Book_Request_Details
             </h1>
             <p class="card-text text-muted mb-1">
-                Complete details of the cheque book request.
+                @ChequeRequestResource.Complete_details_of_the_cheque_book_request
             </p>
             <hr style="border-top: 1px solid rgba(0,0,0,0.1);" />
         </div>
@@ -20,18 +20,18 @@
         <div class="col-md-6">
             <div class="card shadow-sm h-100">
                 <div class="card-body">
-                    <h5 class="card-title text-primary">Customer & Request Info</h5>
+                    <h5 class="card-title text-primary">@ChequeRequestResource.Customer_And_Request_Info</h5>
                     <hr />
                     <table class="table table-borderless table-sm mb-0">
                         <tbody>
-                            <tr><th>Customer Name</th><td>@Model.CustomerName (@Model.CustomerId)</td></tr>
-                            <tr><th>Branch</th><td>@Model.BranchName (@Model.BranchId)</td></tr>
-                            <tr><th>Bank ID</th><td>@Model.BankId</td></tr>
-                            <tr><th>Cheque Book Category</th><td>@Model.CheckBookCategoryName (@Model.CheckBookCategoryId)</td></tr>
-                            <tr><th>Cheque Book Account</th><td><code>@Model.CheckBookAccount</code></td></tr>
-                            <tr><th>Fee Payment Account</th><td><code>@Model.SubscriptionPaymentAccount</code></td></tr>
-                            <tr><th>Cheque Book Balance</th><td>@Model.Balance</td></tr>
-                            <tr><th>Request Note</th><td>@Model.RequestNote</td></tr>
+                            <tr><th>@GlobalShared.Customer Name</th><td>@Model.CustomerName (@Model.CustomerId)</td></tr>
+                            <tr><th>@GlobalShared.Branch</th><td>@Model.BranchName (@Model.BranchId)</td></tr>
+                            <tr><th>@GlobalShared.Bank_ID</th><td>@Model.BankId</td></tr>
+                            <tr><th>@GlobalShared.Cheque_Book_Category</th><td>@Model.CheckBookCategoryName (@Model.CheckBookCategoryId)</td></tr>
+                            <tr><th>@GlobalShared.Cheque_Book_Account</th><td><code>@Model.CheckBookAccount</code></td></tr>
+                            <tr><th>@GlobalShared.Fee_Payment_Account</th><td><code>@Model.SubscriptionPaymentAccount</code></td></tr>
+                            <tr><th>@GlobalShared.Cheque Book Balance</th><td>@Model.Balance</td></tr>
+                            <tr><th>@GlobalShared.Request_note</th><td>@Model.RequestNote</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -42,19 +42,19 @@
         <div class="col-md-6">
             <div class="card shadow-sm mb-3 h-50">
                 <div class="card-body">
-                    <h5 class="card-title text-primary">Status & Timeline</h5>
+                    <h5 class="card-title text-primary">@GlobalShared.Status_And_Timeline</h5>
                     <hr />
                     <table class="table table-borderless table-sm mb-0">
                         <tbody>
                             <tr>
-                                <th>Current Status</th>
+                                <th>@GlobalShared.Current_Status</th>
                                 <td><span class="badge bg-info">@Model.Status</span></td>
                             </tr>
                             @if (Model.ApprovalDate.HasValue)
                             {
-                                <tr><th>Approval/Review/Rejection Date</th><td>@(Model.ApprovalDate.HasValue ? Model.ApprovalDate.Value.ToString("f") : "N/A")</td></tr>
+                                <tr><th>@GlobalShared.Approval/@GlobalShared.Review/@GlobalShared.Rejection_Date</th><td>@(Model.ApprovalDate.HasValue ? Model.ApprovalDate.Value.ToString("f") : "N/A")</td></tr>
                             }
-                            <tr><th>Approval/Review/Rejection Note</th><td>@Model.ApprovalNote</td></tr>
+                            <tr><th>@GlobalShared.Approval/@GlobalShared.Review/@GlobalShared.Rejection_Note</th><td>@Model.ApprovalNote</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -62,16 +62,16 @@
 
             <div class="card shadow-sm h-50">
                 <div class="card-body">
-                    <h5 class="card-title text-primary">Notification Preferences</h5>
+                    <h5 class="card-title text-primary">@GlobalShared.Notification_Preferences</h5>
                     <hr />
                     <table class="table table-borderless table-sm mb-0">
                         <tbody>
-                            <tr><th>On Approval</th><td>@(Model.NotifyOnApproval ? "Yes" : "No")</td></tr>
-                            <tr><th>On Rejection</th><td>@(Model.NotifyOnRejection ? "Yes" : "No")</td></tr>
-                            <tr><th>On Clearance</th><td>@(Model.NotifyOnClearance ? "Yes" : "No")</td></tr>
-                            <tr><th>On Payment</th><td>@(Model.NotifyOnPayment ? "Yes" : "No")</td></tr>
-                            <tr><th>On Any Transaction</th><td>@(Model.NotifyOnAnyTransaction ? "Yes" : "No")</td></tr>
-                            <tr><th>Automatic Renewal</th><td>@(Model.AutomaticRenewal ? "Yes" : "No")</td></tr>
+                            <tr><th>@GlobalShared.On_Approval</th><td>@(Model.NotifyOnApproval ? "Yes" : "No")</td></tr>
+                            <tr><th>@GlobalShared.On_Rejection</th><td>@(Model.NotifyOnRejection ? "Yes" : "No")</td></tr>
+                            <tr><th>@GlobalShared.On_Clearance</th><td>@(Model.NotifyOnClearance ? "Yes" : "No")</td></tr>
+                            <tr><th>@GlobalShared.On_Payment</th><td>@(Model.NotifyOnPayment ? "Yes" : "No")</td></tr>
+                            <tr><th>@GlobalShared.On_Any_Transaction</th><td>@(Model.NotifyOnAnyTransaction ? "Yes" : "No")</td></tr>
+                            <tr><th>@GlobalShared.Automatic_Renewal</th><td>@(Model.AutomaticRenewal ? "Yes" : "No")</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -84,15 +84,15 @@
         <div class="col-md-12">
             <div class="card shadow-sm">
                 <div class="card-body">
-                    <h5 class="card-title text-primary">Pricing & Subscription</h5>
+                    <h5 class="card-title text-primary">@GlobalShared.Pricing_And_Subscription</h5>
                     <hr />
                     <table class="table table-borderless table-sm mb-0">
                         <tbody>
-                            <tr><th>Subscription Fee</th><td>@Model.BasePrice.ToString("N2")</td></tr>
-                            <tr><th>Number of Pages</th><td>@Model.NumberOfPages</td></tr>
-                            <tr><th>Subscription Duration</th><td>@Model.SubscriptionDurationInMonths months</td></tr>
-                            <tr><th>Recurring Subscription</th><td>@(Model.IsRecurringSubscription ? "Yes" : "No")</td></tr>
-                            <tr><th>Automatic Renewal (amount)</th><td>@(Model.RecurringAmount?.ToString("N2") ?? "N/A")</td></tr>
+                            <tr><th>@GlobalShared.Subscription_Fee</th><td>@Model.BasePrice.ToString("N2")</td></tr>
+                            <tr><th>@GlobalShared.Number_of_Pages</th><td>@Model.NumberOfPages</td></tr>
+                            <tr><th>@GlobalShared.Subscription_Duration</th><td>@Model.SubscriptionDurationInMonths months</td></tr>
+                            <tr><th>@GlobalShared.Recurring_Subscription</th><td>@(Model.IsRecurringSubscription ? "Yes" : "No")</td></tr>
+                            <tr><th>@GlobalShared.Automatic_Renewal (@GlobalShared.Amount)</th><td>@(Model.RecurringAmount?.ToString("N2") ?? "N/A")</td></tr>
                         </tbody>
                     </table>
                 </div>

@@ -1,9 +1,9 @@
 ﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeCancelation.CancellationRequest
-
+@using Resources
 <div class="card shadow-sm border-0">
     <div class="card-body">
         <h6 class="text-success border-bottom pb-2 mb-3">
-            <i class="mdi mdi-file-document-outline me-1"></i> Cheque Cancellation Details
+            <i class="mdi mdi-file-document-outline me-1"></i> @ChequeCancellationResource.Cheque_Cancellation_Details
         </h6>
 
         @using (Html.BeginForm("CreateOrUpdate", "ChequeCancellation", FormMethod.Post,
@@ -22,7 +22,7 @@
                                 : Enumerable.Empty<SelectListItem>(),
                             "--- Select Branch ---",
                             new { @class = "form-select" })
-                        <label>Cheque Branch</label>
+                        <label>@ChequeCancellationResource.Cheque_Branch</label>
                         @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -31,20 +31,20 @@
                 <div class="col-md-6">
                     <div class="form-floating">
                         @Html.TextBoxFor(m => m.Status, new { @class = "form-control", @readonly = "readonly", placeholder = "Status" })
-                        <label>Status</label>
+                        <label>@GlobalShared.Status</label>
                     </div>
                 </div>
 
                 <div class="col-md-6">
                     <div class="form-floating">
                         @Html.TextBoxFor(m => m.ChequeBookId, new { @class = "form-control", placeholder = "Cheque Book Id" })
-                        <label>Cheque Book Id</label>
+                        <label>@ChequeCancellationResource.Cheque_Book_ID</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating">
                         @Html.TextBoxFor(m => m.ChequeLeafId, new { @class = "form-control", placeholder = "Cheque Leaf Id" })
-                        <label>Cheque Leaf Id</label>
+                        <label>@ChequeCancellationResource.Cheque_Leaf_ID</label>
                     </div>
                 </div>
                 <!-- Customer Name -->
@@ -52,7 +52,7 @@
                     <div class="form-floating shadow-sm">
                         @Html.TextBoxFor(m => m.CustomerName, new { @class = "form-control", placeholder = "Enter customer name" })
 
-                        <label for="CustomerName">Customer Name</label>
+                        <label for="CustomerName">@GlobalShared.Customer_Name</label>
                     </div>
                 </div>
 
@@ -62,7 +62,7 @@
                     <div class="form-floating shadow-sm">
                         @Html.TextAreaFor(m => m.Reason, 3, 50, new { @class = "form-control", placeholder = "Enter reason for cancellation", style = "height:100px" })
 
-                        <label for="Reason">Reason for Cancellation</label>
+                        <label for="Reason">@GlobalShared.Reason_for_Cancellation</label>
                     </div>
                 </div>
 
@@ -71,13 +71,13 @@
                     <div class="form-floating shadow-sm">
                         @Html.TextAreaFor(m => m.AdditionalNotes, 2, 50, new { @class = "form-control", placeholder = "Optional additional information", style = "height:80px" })
 
-                        <label for="AdditionalNotes">Additional Notes</label>
+                        <label for="AdditionalNotes">@GlobalShared.Additional_Notes</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating">
                         @Html.TextBoxFor(m => m.CreatedDate, new { @class = "form-control", type = "datetime-local" })
-                        <label>Cheque Creation Date</label>
+                        <label>@ChequeCancellationResource.Cheque_Creation_Date</label>
                     </div>
                 </div>
 
@@ -87,7 +87,7 @@
             <div class="mt-4 text-end">
 
                 <button type="submit" class="btn btn-success px-4 me-2">
-                    <i class="fas fa-save me-1"></i> Update
+                    <i class="fas fa-save me-1"></i> @GlobalShared.Update
                 </button>
 
             </div>
