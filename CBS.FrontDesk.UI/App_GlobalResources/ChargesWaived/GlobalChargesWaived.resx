@@ -117,30 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AccountBalance" xml:space="preserve">
-    <value>Account balance</value>
-  </data>
-  <data name="AccountNumber" xml:space="preserve">
-    <value>Account number</value>
-  </data>
-  <data name="AlreadyPaid" xml:space="preserve">
-    <value>Already paid</value>
-  </data>
-  <data name="AlreadyUsed" xml:space="preserve">
-    <value>Already used</value>
-  </data>
-  <data name="Amount" xml:space="preserve">
-    <value>Amount</value>
-  </data>
-  <data name="ApprovalStatus" xml:space="preserve">
-    <value>Approval status</value>
-  </data>
-  <data name="Branch" xml:space="preserve">
-    <value>Branch</value>
-  </data>
-  <data name="Cashier" xml:space="preserve">
-    <value>Cashier</value>
-  </data>
   <data name="ChargesWaiver" xml:space="preserve">
     <value>Charges waiver</value>
   </data>
@@ -153,32 +129,11 @@
   <data name="ChargeWaiverRequest" xml:space="preserve">
     <value>Charge waiver request</value>
   </data>
-  <data name="Comment" xml:space="preserve">
-    <value>Comment</value>
-  </data>
-  <data name="ConfirmRequest" xml:space="preserve">
-    <value>Confirm request</value>
-  </data>
-  <data name="CustomerCode" xml:space="preserve">
-    <value>Customer code</value>
-  </data>
-  <data name="CustomerNumber" xml:space="preserve">
-    <value>Customer number</value>
-  </data>
-  <data name="Date" xml:space="preserve">
-    <value>Date</value>
-  </data>
   <data name="DateWaived" xml:space="preserve">
     <value>Date waived</value>
   </data>
   <data name="EnterChargeToWaive" xml:space="preserve">
     <value>Enter charge to waive. (Note that this is valid only for a day).</value>
-  </data>
-  <data name="Expired" xml:space="preserve">
-    <value>Expired</value>
-  </data>
-  <data name="ExpiredDate" xml:space="preserve">
-    <value>Expired date</value>
   </data>
   <data name="GDate" xml:space="preserve">
     <value>G Date</value>
@@ -189,35 +144,8 @@
   <data name="InitiateSavingWithdrawalRequest" xml:space="preserve">
     <value>Initiate saving withdrawal request</value>
   </data>
-  <data name="Initiator" xml:space="preserve">
-    <value>Initiator</value>
-  </data>
   <data name="IsWithdrawalDone" xml:space="preserve">
     <value>Is withdrawal done</value>
-  </data>
-  <data name="LoadRequests" xml:space="preserve">
-    <value>Load requests</value>
-  </data>
-  <data name="LoanBalance" xml:space="preserve">
-    <value>Loan balance</value>
-  </data>
-  <data name="Member" xml:space="preserve">
-    <value>Member</value>
-  </data>
-  <data name="MemberAccount" xml:space="preserve">
-    <value>Member account</value>
-  </data>
-  <data name="MemberName" xml:space="preserve">
-    <value>Member's name</value>
-  </data>
-  <data name="MemberRefernce" xml:space="preserve">
-    <value>Member refernce</value>
-  </data>
-  <data name="MembersDetails" xml:space="preserve">
-    <value>Member's details</value>
-  </data>
-  <data name="MembersInformations" xml:space="preserve">
-    <value>Members Informations</value>
   </data>
   <data name="NoDataWasFoundAtTheMoment" xml:space="preserve">
     <value>No Data was found at the moment</value>
@@ -225,23 +153,8 @@
   <data name="NormalCharge" xml:space="preserve">
     <value>Normal charge</value>
   </data>
-  <data name="Note" xml:space="preserve">
-    <value>Note</value>
-  </data>
-  <data name="OK" xml:space="preserve">
-    <value>OK</value>
-  </data>
-  <data name="Pending" xml:space="preserve">
-    <value>Pending</value>
-  </data>
   <data name="PendingWithdrawalNotifications" xml:space="preserve">
     <value>Pending Withdrawal Notifications</value>
-  </data>
-  <data name="Photo" xml:space="preserve">
-    <value>Photo</value>
-  </data>
-  <data name="Reason" xml:space="preserve">
-    <value>Reason</value>
   </data>
   <data name="ReasonForWaivingCharges" xml:space="preserve">
     <value>Reason for waiving charges</value>
@@ -249,26 +162,8 @@
   <data name="ReasonForWithdrawal" xml:space="preserve">
     <value>Reason for withdrawal</value>
   </data>
-  <data name="Reference" xml:space="preserve">
-    <value>Reference</value>
-  </data>
-  <data name="RequestCode" xml:space="preserve">
-    <value>Request code</value>
-  </data>
-  <data name="RequestDate" xml:space="preserve">
-    <value>Request date</value>
-  </data>
-  <data name="RequestedAmount" xml:space="preserve">
-    <value>Requested amount</value>
-  </data>
   <data name="REQUESTINFO" xml:space="preserve">
     <value>REQUEST INFO</value>
-  </data>
-  <data name="SelectApprovalStatus" xml:space="preserve">
-    <value>Select approval status</value>
-  </data>
-  <data name="Telephone" xml:space="preserve">
-    <value>Telephone</value>
   </data>
   <data name="ViewCustomerDetails" xml:space="preserve">
     <value>View customer details</value>

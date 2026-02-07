@@ -5,7 +5,7 @@
 <fieldset class="fieldset-custom">
 
     <h5 class="text-primary mb-3">
-        <i class="mdi mdi-filter-outline me-1"></i> Advanced Request Filters
+        <i class="mdi mdi-filter-outline me-1"></i> @GlobalShared.Advanced_Request_Filters
     </h5>
 
     <div class="card p-3 mb-3 bg-light">
@@ -15,11 +15,11 @@
                 <div class="col-md-3">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="byCustomerToggle" />
-                        <label class="form-check-label" for="byCustomerToggle">Filter by Customer</label>
+                        <label class="form-check-label" for="byCustomerToggle">@GlobalShared.Filter_by_Customer</label>
                     </div>
 
                     <div id="customerFilterSection" class="mt-2" style="display:none;">
-                        <input type="text" id="CustomerId" name="CustomerId" class="form-control" placeholder="Customer name or ID..." />
+                        <input type="text" id="CustomerId" name="CustomerId" class="form-control" placeholder="@ChequeRequestResource.Customer_name_or_ID..." />
                     </div>
                 </div>
 
@@ -27,7 +27,7 @@
                 <div class="col-md-3">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="byCategoryToggle" />
-                        <label class="form-check-label" for="byCategoryToggle">Filter by Category</label>
+                        <label class="form-check-label" for="byCategoryToggle">@GlobalShared.Filter_by_Category</label>
                     </div>
 
                     <div id="categoryFilterSection" class="mt-2" style="display:none;">
@@ -43,17 +43,17 @@
                 <div class="col-md-2">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="byStatusToggle" />
-                        <label class="form-check-label" for="byStatusToggle">Filter by Status</label>
+                        <label class="form-check-label" for="byStatusToggle">@GlobalShared.Filter_by_status</label>
                     </div>
 
                     <div id="statusFilterSection" class="mt-2" style="display:none;">
                         <select id="Status" name="Status" class="form-select">
-                            <option value="">All Statuses</option>
-                            <option value="pending">Pending</option>
-                            <option value="approved">Approved</option>
-                            <option value="rejected">Rejected</option>
-                            <option value="delivered">Delivered</option>
-                            <option value="reviewed">Reviewed</option>
+                            <option value="">@GlobalShared.All_Statuses</option>
+                            <option value="pending">@GlobalShared.Pending</option>
+                            <option value="approved">@GlobalShared.Approved</option>
+                            <option value="rejected">@GlobalShared.Rejected</option>
+                            <option value="delivered">@GlobalShared.Delivered</option>
+                            <option value="reviewed">@GlobalShared.Reviewed</option>
                         </select>
                     </div>
                 </div>
@@ -62,7 +62,7 @@
                 <div class="col-md-2">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="byBranchToggle" />
-                        <label class="form-check-label" for="byBranchToggle">Filter by Branch</label>
+                        <label class="form-check-label" for="byBranchToggle">@GlobalShared.FilterByBranch</label>
                     </div>
 
                     <div id="branchFilterSection" class="mt-2" style="display:none;">
@@ -81,7 +81,7 @@
                 <div class="col-md-3">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="byApprovalDateToggle" />
-                        <label class="form-check-label" for="byApprovalDateToggle">Filter by Approval Date</label>
+                        <label class="form-check-label" for="byApprovalDateToggle">@GlobalShared.Filter_by_Approval_Date</label>
                     </div>
 
                     <div id="approvalDateFilterSection" class="mt-2" style="display:none;">
@@ -93,7 +93,7 @@
                 <div class="col-md-5">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="byNotifyToggle" />
-                        <label class="form-check-label" for="byNotifyToggle">Notification Options</label>
+                        <label class="form-check-label" for="byNotifyToggle">@GlobalShared.Notification_Options</label>
                     </div>
 
                     <div id="notifyFilterSection" class="mt-2" style="display:none;">
@@ -101,42 +101,42 @@
                             <div class="col-6 col-sm-4">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="NotifyOnApproval" name="NotifyOnApproval" />
-                                    <label class="form-check-label small" for="NotifyOnApproval">Notify on Approval</label>
+                                    <label class="form-check-label small" for="NotifyOnApproval">@GlobalShared.Notify_on_Approval</label>
                                 </div>
                             </div>
 
                             <div class="col-6 col-sm-4">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="NotifyOnClearance" name="NotifyOnClearance" />
-                                    <label class="form-check-label small" for="NotifyOnClearance">Notify on Clearance</label>
+                                    <label class="form-check-label small" for="NotifyOnClearance">@GlobalShared.Notify_on_Clearance</label>
                                 </div>
                             </div>
 
                             <div class="col-6 col-sm-4">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="NotifyOnRejection" name="NotifyOnRejection" />
-                                    <label class="form-check-label small" for="NotifyOnRejection">Notify on Rejection</label>
+                                    <label class="form-check-label small" for="NotifyOnRejection">@GlobalShared.Notify_on_Rejection</label>
                                 </div>
                             </div>
 
                             <div class="col-6 col-sm-4 mt-2">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="NotifyOnPayment" name="NotifyOnPayment" />
-                                    <label class="form-check-label small" for="NotifyOnPayment">Notify on Payment</label>
+                                    <label class="form-check-label small" for="NotifyOnPayment">@GlobalShared.Notify_on_Payment</label>
                                 </div>
                             </div>
 
                             <div class="col-6 col-sm-4 mt-2">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="NotifyOnAnyTransaction" name="NotifyOnAnyTransaction" />
-                                    <label class="form-check-label small" for="NotifyOnAnyTransaction">Notify on Any Transaction</label>
+                                    <label class="form-check-label small" for="NotifyOnAnyTransaction">@GlobalShared.Notify_on_Any_Transaction</label>
                                 </div>
                             </div>
 
                             <div class="col-6 col-sm-4 mt-2">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="AutomaticRenewal" name="AutomaticRenewal" />
-                                    <label class="form-check-label small" for="AutomaticRenewal">Automatic Renewal</label>
+                                    <label class="form-check-label small" for="AutomaticRenewal">@GlobalShared.Automatic_Renewal</label>
                                 </div>
                             </div>
                         </div>
@@ -147,7 +147,7 @@
                 <div class="col-md-4">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="byDateToggle" />
-                        <label class="form-check-label" for="byDateToggle">Filter by Date Range</label>
+                        <label class="form-check-label" for="byDateToggle">@GlobalShared.Filter_by_Date_Range</label>
                     </div>
 
                     <div id="dateFilterSection" class="mt-2" style="display:none;">
@@ -166,11 +166,11 @@
             <div class="row mt-2">
                 <div class="col-md-12 d-flex">
                     <button id="applyFilterBtn" type="button" class="btn btn-primary me-2 w-100">
-                        <i class="mdi mdi-magnify"></i> Apply Filter
+                        <i class="mdi mdi-magnify"></i> @GlobalShared.Apply_Filter
                     </button>
 
                     <button id="resetFilterBtn" type="button" class="btn btn-secondary me-2 w-100">
-                        <i class="mdi mdi-refresh"></i> Reset
+                        <i class="mdi mdi-refresh"></i> @GlobalShared.Reset
                     </button>
                 </div>
             </div>
@@ -190,11 +190,11 @@
 
         <thead class="table-light">
             <tr>
-                <th>Customer Name</th>
-                <th>Category</th>
-                <th>Branch Name</th>
-                <th class="text-center">Status</th>
-                <th class="text-center">Actions</th>
+                <th>@GlobalShared.Customer_Name</th>
+                <th>@GlobalShared.Category</th>
+                <th>@GlobalShared.Branch_Name</th>
+                <th class="text-center">@GlobalShared.Status</th>
+                <th class="text-center">@GlobalShared.Actions</th>
             </tr>
         </thead>
     </table>
@@ -209,7 +209,7 @@
 
             </div>
             <div class="modal-footer">
-                <button class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                <button class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@GlobalShared.Close</button>
             </div>
         </div>
     </div>
@@ -225,11 +225,11 @@
                     <div class="card-body text-center">
                         <h5 class="modal-title">
                             <i class="mdi mdi-cog-outline me-2"></i>
-                            <span id="actionModalTitle">Process Request</span>
+                            <span id="actionModalTitle">@GlobalShared.Process_Request</span>
                         </h5>
                         <div class="alert alert-info mt-3 py-2">
                             <i class="mdi mdi-information-outline me-1"></i>
-                            Validate,Reject or Deliver a customers cheque request and manage the lifecycle of a request using this page.
+                            @ChequeRequestResource.Validate_Reject_or_Deliver_a_customers_cheque_request_and_manage_the_lifecycle_of_a_request_using_this_page
                         </div>
                         <hr style="border-top: 1px solid rgba(0,0,0,0.1);" />
                     </div>
@@ -239,21 +239,21 @@
                     <div class="card-body py-3">
                         <div class="row">
                             <div class="col-6">
-                                <label class="form-label small text-muted mb-1">Customer Name</label>
+                                <label class="form-label small text-muted mb-1">@GlobalShared.Customer_Name</label>
                                 <p class="fw-bold text-dark mb-0" id="actionCustomerName">-</p>
                             </div>
                             <div class="col-6">
-                                <label class="form-label small text-muted mb-1">Customer ID</label>
+                                <label class="form-label small text-muted mb-1">@GlobalShared.Customer_ID</label>
                                 <p class="fw-bold text-dark mb-0" id="actionCustomerId">-</p>
                             </div>
                         </div>
                         <div class="row mt-3">
                             <div class="col-6">
-                                <label class="form-label small text-muted mb-1">Request ID</label>
+                                <label class="form-label small text-muted mb-1">@GlobalShared.Request_ID</label>
                                 <p class="fw-bold text-dark mb-0" id="actionRequestIdDisplay">-</p>
                             </div>
                             <div class="col-6">
-                                <label class="form-label small text-muted mb-1">Current Status</label>
+                                <label class="form-label small text-muted mb-1">@GlobalShared.Current_Status</label>
                                 <p class="fw-bold mb-0">
                                     <span id="actionCurrentStatus" class="badge bg-warning">-</span>
                                 </p>
@@ -271,16 +271,16 @@
                     <div class="mb-3">
                         <label for="actionNote" class="form-label fw-bold text-dark">
                             <i class="mdi mdi-text-box-edit-outline me-1"></i>
-                            Action Statement / Reason
+                            @GlobalShared.Action_Statement / @GlobalShared.Reason
                             <span class="text-danger">*</span>
                         </label>
                         <textarea id="actionNote" name="note" class="form-control" rows="5"
-                                  placeholder="Please provide a detailed statement or reason for this action. This information will be recorded in the request history and may be visible to the customer..."
+                                  placeholder="@ChequeRequestResource.Please_provide_a_detailed_statement_or_reason_for_this_action_This_information_will_be_recorded_in_the_request_history_and_may_be_visible_to_the_customer"
                                   required minlength="10"></textarea>
                         <div class="form-text text-muted">
                             <small>
                                 <i class="mdi mdi-information-outline me-1"></i>
-                                Required field. Minimum 10 characters.
+                                @GlobalShared.Required_field_Minimum_10_characters
                             </small>
                         </div>
                     </div>
@@ -288,11 +288,11 @@
             </div>
             <div class="modal-footer bg-light">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                    <i class="mdi mdi-close-circle-outline me-1"></i> Cancel
+                    <i class="mdi mdi-close-circle-outline me-1"></i> @GlobalShared.Cancel
                 </button>
                 <button type="button" class="btn btn-primary" id="actionSubmitBtn">
                     <i class="mdi mdi-check-circle-outline me-1"></i>
-                    <span id="submitButtonText">Submit Action</span>
+                    <span id="submitButtonText">@GlobalShared.Submit_Action</span>
                 </button>
             </div>
         </div>

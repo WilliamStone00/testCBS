@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,67 +117,82 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ChargesWaiver" xml:space="preserve">
-    <value>Exonération de frais</value>
+  <data name="Always_choose_either_Cheque_is_Internal_or_External" xml:space="preserve">
+    <value>Always choose either Cheque is Internal or External.</value>
   </data>
-  <data name="ChargesWaiverRequests" xml:space="preserve">
-    <value>Demandes d'exonération de frais</value>
+  <data name="Be_aware_of_clearance_hold_periods_for_external_cheques_before_confirming_availability_of_funds" xml:space="preserve">
+    <value>Be aware of clearance/hold periods for external cheques before confirming availability of funds.</value>
   </data>
-  <data name="CHARGESWAIVERUC" xml:space="preserve">
-    <value>EXONÉRATION DE FRAIS</value>
+  <data name="Capture_cheque_details_for_approval_and_processing" xml:space="preserve">
+    <value>Capture cheque details for approval and processing.</value>
   </data>
-  <data name="ChargeWaiverRequest" xml:space="preserve">
-    <value>Demande d'exonération de frais</value>
+  <data name="Check_Account_Balance" xml:space="preserve">
+    <value>Check Account Balance</value>
   </data>
-  <data name="DateWaived" xml:space="preserve">
-    <value>Date d'exonération</value>
+  <data name="Cheque_Clearance_Details" xml:space="preserve">
+    <value>Cheque Clearance Details</value>
   </data>
-  <data name="EnterChargeToWaive" xml:space="preserve">
-    <value>Entrez le frais à exonérer. (Remarque que cela n'est valable que pour une journée).</value>
+  <data name="CHEQUE_CLEARANCE_VIEWER" xml:space="preserve">
+    <value>CHEQUE CLEARANCE VIEWER</value>
   </data>
-  <data name="GDate" xml:space="preserve">
-    <value>Date G</value>
+  <data name="Cheque_Creation_Date" xml:space="preserve">
+    <value>Cheque Creation Date</value>
   </data>
-  <data name="IDate" xml:space="preserve">
-    <value>Date I</value>
+  <data name="Cheque_Expiration_Date" xml:space="preserve">
+    <value>Cheque Expiration Date</value>
   </data>
-  <data name="InitiateSavingWithdrawalRequest" xml:space="preserve">
-    <value>Initier une demande de retrait d'épargne</value>
+  <data name="Clearance_Request_Data_Table" xml:space="preserve">
+    <value>Clearance Request Data Table</value>
   </data>
-  <data name="IsWithdrawalDone" xml:space="preserve">
-    <value>Le retrait est-il effectué</value>
+  <data name="Confirm_that_the_issuing_account_has_sufficient_funds_to_avoid_rejection" xml:space="preserve">
+    <value>Confirm that the issuing account has sufficient funds to avoid rejection.</value>
   </data>
-  <data name="NoDataWasFoundAtTheMoment" xml:space="preserve">
-    <value>Aucune donnée trouvée pour le moment</value>
+  <data name="DISCOUNT_APPLICATION_VIEWER" xml:space="preserve">
+    <value>DISCOUNT APPLICATION VIEWER</value>
   </data>
-  <data name="NormalCharge" xml:space="preserve">
-    <value>Frais normal</value>
+  <data name="Drag_drop_your_cheque_image_here" xml:space="preserve">
+    <value>Drag &amp; drop your cheque image here</value>
   </data>
-  <data name="PendingWithdrawalNotifications" xml:space="preserve">
-    <value>Notifications de retrait en attente</value>
+  <data name="Ensure_the_cheque_number_amount_and_account_match_the_customer_s_information_before_processing" xml:space="preserve">
+    <value>Ensure the cheque number, amount, and account match the customer’s information before processing.</value>
   </data>
-  <data name="ReasonForWaivingCharges" xml:space="preserve">
-    <value>Raison de l'exonération de frais</value>
+  <data name="External_Cheque_Clearance_Request" xml:space="preserve">
+    <value>External Cheque Clearance Request</value>
   </data>
-  <data name="ReasonForWithdrawal" xml:space="preserve">
-    <value>Raison du retrait</value>
+  <data name="External_vs_Internal" xml:space="preserve">
+    <value>External vs Internal</value>
   </data>
-  <data name="REQUESTINFO" xml:space="preserve">
-    <value>INFO DE LA DEMANDE</value>
+  <data name="Please_fill_in_the_required_fields_and_load_the_calculated_results_before_proceeding" xml:space="preserve">
+    <value>Please fill in the required fields and load the calculated results before proceeding.</value>
   </data>
-  <data name="ViewCustomerDetails" xml:space="preserve">
-    <value>Afficher les détails du client</value>
+  <data name="Some_clearances_may_require_supervisor_authorization_check_workflow_rules_before_confirming" xml:space="preserve">
+    <value>Some clearances may require supervisor authorization; check workflow rules before confirming.</value>
   </data>
-  <data name="WaivedAmount" xml:space="preserve">
-    <value>Montant exonéré</value>
+  <data name="TIPS_FOR_CHEQUE_CLEARANCE" xml:space="preserve">
+    <value>TIPS FOR CHEQUE CLEARANCE</value>
   </data>
-  <data name="WaivedCharge" xml:space="preserve">
-    <value>Frais exonérés</value>
+  <data name="Uploaded_cheque_will_appear_here" xml:space="preserve">
+    <value>Uploaded cheque will appear here</value>
   </data>
-  <data name="WaivedRequests" xml:space="preserve">
-    <value>Demandes exonérées</value>
+  <data name="Use_External_if_the_cheque_originates_from_another_Microfinance_select_Internal_if_it_s_from_the_same_branch_system" xml:space="preserve">
+    <value>Use &lt;em&gt;External&lt;/em&gt; if the cheque originates from another Microfinance ; select &lt;em&gt;Internal&lt;/em&gt; if it’s from the same branch/system.</value>
   </data>
-  <data name="WithdrawalRequestConfirmation" xml:space="preserve">
-    <value>Confirmation de la demande de retrait</value>
+  <data name="Use_the_Load_button_to_fetch_and_validate_existing_cheque_details_before_clearance" xml:space="preserve">
+    <value>Use the &lt;em&gt;Load&lt;/em&gt; button to fetch and validate existing cheque details before clearance.</value>
+  </data>
+  <data name="Use_this_information_to_validate_or_review_the_clearance" xml:space="preserve">
+    <value>Use this information to validate or review the clearance.</value>
+  </data>
+  <data name="Verify_Cheque_Details" xml:space="preserve">
+    <value>Verify Cheque Details</value>
+  </data>
+  <data name="Verify_that_the_cheque_is_properly_signed_and_endorsed_according_to_Microfinance_policy" xml:space="preserve">
+    <value>Verify that the cheque is properly signed and endorsed according to Microfinance  policy.</value>
+  </data>
+  <data name="You_are_applying_a_discount_to_the_selected_cheque_clearance_request" xml:space="preserve">
+    <value>You are applying a discount to the selected cheque clearance request.</value>
+  </data>
+  <data name="You_are_viewing_a_detailed_summary_of_the_selected_cheque_clearance_request" xml:space="preserve">
+    <value>You are viewing a detailed summary of the selected cheque clearance request.</value>
   </data>
 </root>

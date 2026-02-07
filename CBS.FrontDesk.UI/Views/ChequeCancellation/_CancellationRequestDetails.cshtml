@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeCancelation.CancellationRequest
-
+@using Resources
 <style>
     .section-header {
         font-weight: bold;
@@ -46,10 +46,10 @@
 
 <!-- ✅ New Header Viewer -->
 <div class="header-viewer">
-    <h6><i class="mdi mdi-file-eye-outline"></i> CANCELLATION REQUEST VIEWER</h6>
+    <h6><i class="mdi mdi-file-eye-outline"></i> @ChequeCancellationResource.CANCELLATION_REQUEST_VIEWER</h6>
     <p>
-        You are viewing a detailed summary of the selected cheque cancellation request.
-        Use the details below to guide your validation process.
+        @ChequeCancellationResource.You_are_viewing_a_detailed_summary_of_the_selected_cheque_cancellation_request
+        @ChequeCancellationResource.Use_the_details_below_to_guide_your_validation_process
     </p>
     
 </div>
@@ -58,21 +58,21 @@
 <div class="card shadow-sm mb-4">
     <div class="card-header d-flex justify-content-between align-items-center">
         <h5 class="card-title mb-0 text-primary">
-            <i class="mdi mdi-file-cancel me-1"></i> Cancellation Request (@Model.Id)
+            <i class="mdi mdi-file-cancel me-1"></i> @GlobalShared.Cancellation_Request (@Model.Id)
         </h5>
     </div>
     <div class="card-body px-3 py-2">
 
         <!-- 🔷 Request Info -->
         <h6 class="fw-bold border-bottom text-primary section-header">
-            <i class="mdi mdi-information-outline"></i> Request Information
+            <i class="mdi mdi-information-outline"></i> @GlobalShared.Request_Information
         </h6>
         <table class="table table-sm table-bordered mb-3">
             <tbody>
-                <tr><th class="bg-label">Request Type</th><td>@Model.RequestType</td></tr>
-                <tr><th class="bg-label">Reference</th><td>@(Model.ChequeBookId ?? Model.ChequeLeafId ?? Model.ChequeNumber ?? Model.PageNumber ?? "N/A")</td></tr>
+                <tr><th class="bg-label">@GlobalShared.Request_Type</th><td>@Model.RequestType</td></tr>
+                <tr><th class="bg-label">@GlobalShared.Reference</th><td>@(Model.ChequeBookId ?? Model.ChequeLeafId ?? Model.ChequeNumber ?? Model.PageNumber ?? "N/A")</td></tr>
                 <tr>
-                    <th class="bg-label">Status</th>
+                    <th class="bg-label">@GlobalShared.Status</th>
                     <td>
                         @{
                             var badgeClass = "bg-secondary";
@@ -91,25 +91,25 @@
                         <span class="badge @badgeClass">@Model.Status</span>
                     </td>
                 </tr>
-                <tr><th class="bg-label">Requested Date</th><td>@Model.RequestedDate.ToString("dd/MM/yyyy HH:mm")</td></tr>
+                <tr><th class="bg-label">@GlobalShared.Requested_Date</th><td>@Model.RequestedDate.ToString("dd/MM/yyyy HH:mm")</td></tr>
             </tbody>
         </table>
 
         <!-- 🔷 Customer Info -->
         <h6 class="fw-bold border-bottom text-primary section-header">
-            <i class="mdi mdi-account"></i> Customer Information
+            <i class="mdi mdi-account"></i> @GlobalShared.Customer_Information
         </h6>
         <table class="table table-sm table-bordered mb-3">
             <tbody>
-                <tr><th class="bg-label">Customer Name</th><td>@Model.CustomerName</td></tr>
-                <tr><th class="bg-label">Account Number</th><td>@Model.AccountNumber</td></tr>
-                <tr><th class="bg-label">Branch</th><td>@Model.BranchName</td></tr>
+                <tr><th class="bg-label">@GlobalShared.Customer_Name</th><td>@Model.CustomerName</td></tr>
+                <tr><th class="bg-label">@GlobalShared.Account_Number</th><td>@Model.AccountNumber</td></tr>
+                <tr><th class="bg-label">@GlobalShared.Branch</th><td>@Model.BranchName</td></tr>
             </tbody>
         </table>
 
         <!-- 🔷 Reason -->
         <h6 class="fw-bold border-bottom text-primary section-header">
-            <i class="mdi mdi-comment-alert-outline"></i> Reason for Cancellation
+            <i class="mdi mdi-comment-alert-outline"></i> @GlobalShared.Reason_for_Cancellation
         </h6>
         <div class="border p-3 bg-light mb-3">
             @Model.Reason
@@ -119,7 +119,7 @@
         @if (!string.IsNullOrEmpty(Model.AdditionalNotes))
         {
             <h6 class="fw-bold border-bottom text-primary section-header">
-                <i class="mdi mdi-note-text-outline"></i> Additional Notes
+                <i class="mdi mdi-note-text-outline"></i> @GlobalShared.Additional_Notes
             </h6>
             <div class="border p-3 bg-light mb-3">
                 @Model.AdditionalNotes
@@ -130,13 +130,13 @@
         @if (Model.ReviewedDate.HasValue)
         {
             <h6 class="fw-bold border-bottom text-primary section-header">
-                <i class="mdi mdi-account-check-outline"></i> Review Information
+                <i class="mdi mdi-account-check-outline"></i> @GlobalShared.Review_Information
             </h6>
             <table class="table table-sm table-bordered mb-3">
                 <tbody>
-                    <tr><th class="bg-label">Reviewed By</th><td>@Model.ReviewedByUserName</td></tr>
-                    <tr><th class="bg-label">Reviewed Date</th><td>@Model.ReviewedDate.Value.ToString("dd/MM/yyyy HH:mm")</td></tr>
-                    <tr><th class="bg-label">Comments</th><td>@(Model.ReviewComments ?? "N/A")</td></tr>
+                    <tr><th class="bg-label">@GlobalShared.Reviewed_By</th><td>@Model.ReviewedByUserName</td></tr>
+                    <tr><th class="bg-label">@GlobalShared.Reviewed_Date</th><td>@Model.ReviewedDate.Value.ToString("dd/MM/yyyy HH:mm")</td></tr>
+                    <tr><th class="bg-label">@GlobalShared.Comments</th><td>@(Model.ReviewComments ?? "N/A")</td></tr>
                 </tbody>
             </table>
         }
@@ -144,7 +144,7 @@
         <!-- 🔷 Actions -->
         <div class="text-end mt-3">
             <button class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                <i class="mdi mdi-close me-1"></i> Close
+                <i class="mdi mdi-close me-1"></i> @GlobalShared.Close
             </button>
         </div>
     </div>

@@ -8,7 +8,7 @@
 <div class="card bg-light mb-3">
     <div class="card-body text-center">
         <h1 class="card-title text-primary">
-            <i class="mdi mdi-currency-usd-circle-outline me-2"></i> Clearance Request Data Table
+            <i class="mdi mdi-currency-usd-circle-outline me-2"></i> @ChequeClearanceResource.Clearance_Request_Data_Table
         </h1>
 
         
@@ -17,7 +17,7 @@
 
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> TIPS FOR CHEQUE CLEARANCE</span>
+        <span><i class="mdi mdi-information-outline me-2"></i> @ChequeClearanceResource.TIPS_FOR_CHEQUE_CLEARANCE</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseClearanceTips" aria-expanded="true">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -25,13 +25,13 @@
     <div id="collapseClearanceTips" class="collapse ">
         <div class="card-body">
             <ul>
-                <li><strong>Verify Cheque Details:</strong> Ensure the cheque number, amount, and account match the customer’s information before processing.</li>
-                <li><strong>Check Account Balance:</strong> Confirm that the issuing account has sufficient funds to avoid rejection.</li>
-                <li><strong>Endorsements:</strong> Verify that the cheque is properly signed and endorsed according to Microfinance  policy.</li>
-                <li><strong>External vs Internal:</strong> Use <em>External</em> if the cheque originates from another Microfinance ; select <em>Internal</em> if it’s from the same branch/system.</li>
-                <li><strong>Load Configuration:</strong> Use the <em>Load</em> button to fetch and validate existing cheque details before clearance.</li>
-                <li><strong>Hold Period:</strong> Be aware of clearance/hold periods for external cheques before confirming availability of funds.</li>
-                <li><strong>Final Approval:</strong> Some clearances may require supervisor authorization; check workflow rules before confirming.</li>
+                <li><strong>@ChequeClearanceResource.Verify_Cheque_Details:</strong> @ChequeClearanceResource.Ensure_the_cheque_number_amount_and_account_match_the_customer_s_information_before_processing</li>
+                <li><strong>@ChequeClearanceResource.Check_Account_Balance:</strong> @ChequeClearanceResource.Confirm_that_the_issuing_account_has_sufficient_funds_to_avoid_rejection</li>
+                <li><strong>@GlobalShared.Endorsements:</strong> @ChequeClearanceResource.Verify_that_the_cheque_is_properly_signed_and_endorsed_according_to_Microfinance_policy</li>
+                <li><strong>@ChequeClearanceResource.External_vs_Internal:</strong> @Html.Raw(@ChequeClearanceResource.Use_External_if_the_cheque_originates_from_another_Microfinance_select_Internal_if_it_s_from_the_same_branch_system)</li>
+                <li><strong>@GlobalShared.Load_Configuration:</strong> @Html.Raw(@ChequeClearanceResource.Use_the_Load_button_to_fetch_and_validate_existing_cheque_details_before_clearance)</li>
+                <li><strong>@GlobalShared.Hold_Period:</strong> @ChequeClearanceResource.Be_aware_of_clearance_hold_periods_for_external_cheques_before_confirming_availability_of_funds</li>
+                <li><strong>@GlobalShared.Final_Approval:</strong> @ChequeClearanceResource.Some_clearances_may_require_supervisor_authorization_check_workflow_rules_before_confirming</li>
             </ul>
         </div>
     </div>
@@ -56,7 +56,7 @@
 
 <div class="card shadow p-3 mb-3">
     <h5 class="text-primary mb-2">
-        <i class="mdi mdi-filter-outline me-1"></i> ADVANCE FILTERS
+        <i class="mdi mdi-filter-outline me-1"></i> @GlobalShared.ADVANCE_FILTERS
     </h5>
 
     <form id="ClearanceFilterForm" autocomplete="off" method="post">
@@ -72,7 +72,7 @@
             <!-- 🔹 Row 1: Branch -->
             <div class="row mb-2">
                 <div class="col-md-4">
-                    <label class="form-label fw-bold">Branch</label>
+                    <label class="form-label fw-bold">@GlobalShared.Branch</label>
                     @Html.DropDownList(
                         "BranchId",
                         new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
@@ -85,12 +85,12 @@
             <!-- 🔹 Row 2: Date Range -->
             <div class="row mb-2">
                 <div class="col-md-4">
-                    <label class="form-label fw-bold">Start Date</label>
+                    <label class="form-label fw-bold">@GlobalShared.Start_Date</label>
                     <input type="date" id="startDate" name="StartDate" class="form-control" />
                 </div>
 
                 <div class="col-md-4">
-                    <label class="form-label fw-bold">End Date</label>
+                    <label class="form-label fw-bold">@GlobalShared.End_Date</label>
                     <input type="date" id="endDate" name="EndDate" class="form-control" />
                 </div>
             </div>
@@ -98,7 +98,7 @@
             <!-- 🔹 Row 3: Status -->
             <div class="row mb-3">
                 <div class="col-md-4">
-                    <label class="form-label fw-bold">Status</label>
+                    <label class="form-label fw-bold">@GlobalShared.Status</label>
                     @Html.DropDownList(
                         "Status",
                         new SelectList(ViewBag.Status, "Value", "Text"),
@@ -112,12 +112,12 @@
             <div class="row g-2">
                 <div class="col-12 col-md-6">
                     <button id="applyFilterBtn" type="submit" class="btn btn-primary btn-sm w-100">
-                        <i class="mdi mdi-magnify me-1"></i> Apply Filters
+                        <i class="mdi mdi-magnify me-1"></i> @GlobalShared.Apply_filters
                     </button>
                 </div>
                 <div class="col-12 col-md-6">
                     <button id="resetFilterBtn" type="button" class="btn btn-secondary btn-sm w-100">
-                        <i class="mdi mdi-refresh me-1"></i> Reset Filters
+                        <i class="mdi mdi-refresh me-1"></i> @GlobalShared.Reset_Filters
                     </button>
                 </div>
             </div>

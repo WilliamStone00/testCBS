@@ -1215,10 +1215,20 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ChequeBookResource.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\ChequeCancellation\ChequeCancellationResource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ChequeCancellationResource.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\ChequeCertification\ChequeCertificationResource.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ChequeCertificationResource.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\ChequeClearance\ChequeClearanceResource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ChequeClearanceResource.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\ChequeManagementSystem\ChequeManagements.designer.cs">
       <AutoGen>True</AutoGen>
@@ -1234,6 +1244,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ChequeManagements.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\ChequeRequest\ChequeRequestResource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ChequeRequestResource.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\CMoneyMembership\GlobalCMoneyMembership.fr.designer.cs">
       <AutoGen>True</AutoGen>
@@ -7665,6 +7680,18 @@
     <Content Include="App_GlobalResources\ChequeCertification\ChequeCertificationResource.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>ChequeCertificationResource.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\ChequeCancellation\ChequeCancellationResource.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>ChequeCancellationResource.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\ChequeClearance\ChequeClearanceResource.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>ChequeClearanceResource.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\ChequeRequest\ChequeRequestResource.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>ChequeRequestResource.Designer.cs</LastGenOutput>
     </Content>
     <None Include="AppFiles\Accountingv2Reporting\DataSets\AccountingV2DS.xsd">
       <SubType>Designer</SubType>
