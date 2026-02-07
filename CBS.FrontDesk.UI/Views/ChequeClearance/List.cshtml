@@ -62,7 +62,7 @@
             </div>
 
             <!-- DETAILS BLOCK -->
-            <div id="chequeLeavesContainer" class="mt-3"></div>
+            <div id="chequebookContainer" class="mt-3"></div>
 
         </div>
     </fieldset>
@@ -75,118 +75,170 @@
     @Scripts.Render("~/bundles/jqueryval")
 
     <script>
-(function () {
+        (function () {
 
-    // Prevent multiple initializations (important for partial loads)
-    if (window.chequeUploadInit) return;
-    window.chequeUploadInit = true;
+            // Prevent multiple initializations (important for partial loads)
+            if (window.chequeUploadInit) return;
+            window.chequeUploadInit = true;
 
-    let rotation = 0;
+            let rotation = 0;
 
-    // ================= SAFE FILE PICKER =================
-    function openFilePicker() {
-        const input = document.getElementById("chequeImage");
-        if (!input) return;
+            // ================= SAFE FILE PICKER =================
+            function openFilePicker() {
+                const input = document.getElementById("chequeImage");
+                if (!input) return;
 
-        input.value = "";          // 🔥 reset so change always fires
-        input.click();             // use native click (safer than trigger)
-    }
-
-    // ================= LOAD EXTERNAL PARTIAL =================
-    $(document)
-        .off('click', '#externalBtn')
-        .on('click', '#externalBtn', function (e) {
-            e.preventDefault();
-
-            $('#internalContainer').addClass('d-none');
-            $('#externalContainer').removeClass('d-none');
-
-            $('#externalContainer').load(
-                '@Url.Action("LoadExternal", "ChequeClearance")'
-            );
-        });
-
-    // ================= BROWSE BUTTON =================
-    $(document)
-        .off('click', '#browseBtn')
-        .on('click', '#browseBtn', function () {
-            openFilePicker();
-        });
-
-    // ================= UPLOAD AREA =================
-    $(document)
-        .off('click', '#uploadArea')
-        .on('click', '#uploadArea', function () {
-            openFilePicker();
-        });
-
-    // ================= FILE CHANGE =================
-    $(document)
-        .off('change', '#chequeImage')
-        .on('change', '#chequeImage', function () {
-
-            const file = this.files && this.files[0];
-            if (!file) return;
-
-            $("#fileName").text(file.name);
-            $("#noImage").hide();
-
-            rotation = 0; // reset rotation each time
-
-            if (file.type.startsWith("image/")) {
-
-                $("#pdfPreview").hide();
-                $("#imagePreview").show();
-
-                const reader = new FileReader();
-
-                reader.onload = function (e) {
-                    $("#imagePreview")
-                        .attr("src", e.target.result)
-                        .css("transform", "rotate(0deg)");
-                };
-
-                reader.readAsDataURL(file);
-
-            } else if (file.type === "application/pdf") {
-
-                $("#imagePreview").hide();
-                $("#pdfPreview").show();
+                input.value = "";          // 🔥 reset so change always fires
+                input.click();             // use native click (safer than trigger)
             }
-        });
 
-    // ================= REMOVE IMAGE =================
-    $(document)
-        .off('click', '#removeImage')
-        .on('click', '#removeImage', function () {
+            // ================= LOAD EXTERNAL PARTIAL =================
+            $(document)
+                .off('click', '#externalBtn')
+                .on('click', '#externalBtn', function (e) {
+                    e.preventDefault();
 
-            const input = document.getElementById("chequeImage");
-            if (input) input.value = "";
+                    $('#internalContainer').addClass('d-none');
+                    $('#externalContainer').removeClass('d-none');
 
-            $("#imagePreview").hide().attr("src", "");
-            $("#pdfPreview").hide();
-            $("#noImage").show();
-            $("#fileName").text("No file selected");
+                    $('#externalContainer').load(
+                        '@Url.Action("LoadExternal", "ChequeClearance")'
+                    );
+                });
 
-            rotation = 0;
-        });
+            // ================= BROWSE BUTTON =================
+            $(document)
+                .off('click', '#browseBtn')
+                .on('click', '#browseBtn', function () {
+                    openFilePicker();
+                });
 
-    // ================= ROTATION =================
-    $(document)
-        .off('click', '#rotateLeft')
-        .on('click', '#rotateLeft', function () {
-            rotation -= 90;
-            $("#imagePreview").css("transform", "rotate(" + rotation + "deg)");
-        });
+            // ================= UPLOAD AREA =================
+            $(document)
+                .off('click', '#uploadArea')
+                .on('click', '#uploadArea', function () {
+                    openFilePicker();
+                });
 
-    $(document)
-        .off('click', '#rotateRight')
-        .on('click', '#rotateRight', function () {
-            rotation += 90;
-            $("#imagePreview").css("transform", "rotate(" + rotation + "deg)");
-        });
+            // ================= FILE CHANGE =================
+            $(document)
+                .off('change', '#chequeImage')
+                .on('change', '#chequeImage', function () {
 
-})();
+                    const file = this.files && this.files[0];
+                    if (!file) return;
+
+                    $("#fileName").text(file.name);
+                    $("#noImage").hide();
+
+                    rotation = 0; // reset rotation each time
+
+                    if (file.type.startsWith("image/")) {
+
+                        $("#pdfPreview").hide();
+                        $("#imagePreview").show();
+
+                        const reader = new FileReader();
+
+                        reader.onload = function (e) {
+                            $("#imagePreview")
+                                .attr("src", e.target.result)
+                                .css("transform", "rotate(0deg)");
+                        };
+
+                        reader.readAsDataURL(file);
+
+                    } else if (file.type === "application/pdf") {
+
+                        $("#imagePreview").hide();
+                        $("#pdfPreview").show();
+                    }
+                });
+
+            // ================= REMOVE IMAGE =================
+            $(document)
+                .off('click', '#removeImage')
+                .on('click', '#removeImage', function () {
+
+                    const input = document.getElementById("chequeImage");
+                    if (input) input.value = "";
+
+                    $("#imagePreview").hide().attr("src", "");
+                    $("#pdfPreview").hide();
+                    $("#noImage").show();
+                    $("#fileName").text("No file selected");
+
+                    rotation = 0;
+                });
+
+            // ================= ROTATION =================
+            $(document)
+                .off('click', '#rotateLeft')
+                .on('click', '#rotateLeft', function () {
+                    rotation -= 90;
+                    $("#imagePreview").css("transform", "rotate(" + rotation + "deg)");
+                });
+
+            $(document)
+                .off('click', '#rotateRight')
+                .on('click', '#rotateRight', function () {
+                    rotation += 90;
+                    $("#imagePreview").css("transform", "rotate(" + rotation + "deg)");
+                });
+
+        })();
+
+
+
+            $(document).on("click", "#searchCustomerBtn", function () {
+
+                const customerId = $("#customerIdInput").val().trim();
+
+                if (!customerId) {
+                    appalert("Please enter Member Reference", 0, 1);
+                    return;
+                }
+
+                // Optional loading state
+                $("#chequebookContainer").html(`
+            <div class="text-center p-3">
+                <i class="mdi mdi-loading mdi-spin"></i> Loading cheque books...
+            </div>
+        `);
+
+                $.ajax({
+                    url: '/ChequeClearance/Search',   // ✅ YOUR CONTROLLER
+                    type: 'GET',
+                    data: { customerId: customerId },
+
+                    success: function (partialView) {
+                        $("#chequebookContainer").html(partialView);
+                    },
+
+                    error: function (err) {
+
+                        let errorMsg = "Error loading cheque books: ";
+
+                        if (err.status === 404) {
+                            errorMsg += "Customer not found";
+                        } else if (err.status === 400) {
+                            errorMsg += "Invalid customer reference";
+                        } else if (err.status === 500) {
+                            errorMsg += "Server error occurred";
+                        } else if (err.status === 401) {
+                            window.location.href = '/Authentication/Login';
+                            return;
+                        } else {
+                            errorMsg += "Unexpected error";
+                        }
+
+                        $("#chequebookContainer").html("");
+                        appalert(errorMsg, 3, 1);
+                    }
+                });
+
+            });
+
     </script>
 
 

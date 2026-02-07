@@ -680,6 +680,24 @@
       <DependentUpon>TellerStatement1.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="AppFiles\Reporting\Transactions\UpdatedStatement\MemberSituation\MemberSituationMainRPT.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MemberSituationMainRPT.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AppFiles\Reporting\Transactions\UpdatedStatement\MemberSituation\SubAccountSituationRPT.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SubAccountSituationRPT.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AppFiles\Reporting\Transactions\UpdatedStatement\MemberSituation\SubLoanSituationRPT.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SubLoanSituationRPT.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="App_GlobalResources\AccountCategory\GlobalsAccountCategory.fr.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -729,11 +747,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>AccountingV2.fr.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\Accounting V2\AccountingV23.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AccountingV2.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\AccountingChart\GlobalAccountingChart.fr.designer.cs">
       <AutoGen>True</AutoGen>
@@ -1046,11 +1059,6 @@
       <DependentUpon>AccountOpeningRulePerBranch_Index.fr.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\AdvancedSheild\AdvancedShield.Designer.cs" />
-    <Compile Include="App_GlobalResources\AdvancedSheild\AdvancedShield1.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AdvancedShield.resx</DependentUpon>
-    </Compile>
     <Compile Include="App_GlobalResources\AffiliateAccount\AffiliateAccount2.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1107,11 +1115,6 @@
       <DependentUpon>ApiKeyRessource.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\Authentication\AuthenticationRessource.Designer.cs" />
-    <Compile Include="App_GlobalResources\Authentication\AuthenticationRessource1.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AuthenticationRessource.resx</DependentUpon>
-    </Compile>
     <Compile Include="App_GlobalResources\BankingOperations\GlobalBankingOperations.fr.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1123,11 +1126,6 @@
       <DependentUpon>GlobalBankData.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\BlacklistUser\BlacklistUserRessource.Designer.cs" />
-    <Compile Include="App_GlobalResources\BlacklistUser\BlacklistUserRessource1.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>BlacklistUserRessource.resx</DependentUpon>
-    </Compile>
     <Compile Include="App_GlobalResources\BranchAccount\BranchAccountRessources.Designer.cs">
     </Compile>
     <Compile Include="App_GlobalResources\Bank\GlobalBankData.fr.designer.cs">
@@ -7645,6 +7643,18 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>CashDeskRessource.Designer.cs</LastGenOutput>
     </Content>
+    <EmbeddedResource Include="AppFiles\Reporting\Transactions\UpdatedStatement\MemberSituation\MemberSituationMainRPT.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>MemberSituationMainRPT.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Transactions\UpdatedStatement\MemberSituation\SubAccountSituationRPT.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>SubAccountSituationRPT.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Transactions\UpdatedStatement\MemberSituation\SubLoanSituationRPT.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>SubLoanSituationRPT.cs</LastGenOutput>
+    </EmbeddedResource>
     <Content Include="App_GlobalResources\CashReconciliation\CashReconciliationResource.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>CashReconciliationResource.Designer.cs</LastGenOutput>
@@ -10812,6 +10822,7 @@
     <Content Include="Views\TranslationPlaceholder\_TranslationPlaceholderForm.cshtml" />
     <Content Include="Views\MembersFSeries\_ReportView.cshtml" />
     <Content Include="Views\FeeConfig\_FeeConfigDataTable.cshtml" />
+    <Content Include="Views\Country\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
