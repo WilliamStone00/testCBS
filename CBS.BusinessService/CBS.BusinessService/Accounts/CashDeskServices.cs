@@ -545,7 +545,7 @@ namespace CBS.BusinessService.Accounts
                            ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, errorMessage);
                         return ExecutionMessage;
                     }
-                    var cash = new CashDeskWithdrawalNotificationCommand { Id = bulkDeposits.FirstOrDefault().AccountNumber };
+                    var cash = new CashDeskWithdrawalNotificationCommand { Id = bulkDeposits.FirstOrDefault().AccountNumber, CurrencyNotes= deposit.currencyNotes };
                     var response = await _transactionApiHelper.PutAsync<ServiceResponse<PaymentReceipt>>(string.Format(APICallHelper.PayinSavingWithdrawalNotification, cash.Id), cash);
                     if (response.ApiResponseData != null)
                     {
