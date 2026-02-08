@@ -44,14 +44,107 @@ namespace CBS.FrontDesk.UI.Controllers
             return View();
         }
 
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<ActionResult> GenerateReport(ReportParameters parameters)
+        //{
+        //    if (parameters == null)
+        //    {
+        //        return Json(new { success = false, message = "No parameters provided." });
+        //    }
+
+        //    FinancialReportFilter filter = new FinancialReportFilter
+        //    {
+        //        MemberReference = parameters.CustomerId,
+        //        AccountIds = parameters.AccountIds,
+        //        DateFrom = parameters.DateFrom,
+        //        DateTo = parameters.DateTo,
+        //        OperationDate = DateTime.Now,
+        //        InterestVadPenaltyType = parameters.InterestVadPenaltyType
+        //    };
+
+        //    object reportData = null;
+
+        //    // Single switch statement - handles all report types including mapped ones
+        //    switch (parameters.ReportType)
+        //    {
+        //        case "MemberSituation":
+        //            filter.ReportType = (int)FinancialReportType.MemberSituation;
+        //            filter.LoanId = parameters.LoanId;
+        //            filter.AccountId = parameters.AccountTypeId;
+        //            reportData = await _reportBuilder.BuildMemberSituationRows(filter);
+        //            break;
+
+        //        case "AccountSituation":
+        //            filter.ReportType = (int)FinancialReportType.AccountSituation;
+        //            reportData = await _reportBuilder.BuildAccountSituationRows(filter);
+        //            break;
+
+        //        case "AccountStatement":
+        //            filter.ReportType = (int)FinancialReportType.AccountStatement;
+        //            filter.AccountNumber = parameters.AccountTypeId;
+        //            reportData = await _reportBuilder.BuildAccountStatementRows(filter);
+        //            break;
+
+        //        case "LoanRepayment":
+        //            filter.ReportType = (int)FinancialReportType.LoanRepayment;
+        //            filter.LoanId = parameters.LoanId;
+        //            filter.LoanRepaymentMode = parameters.ByRepayment
+        //                ? (int)LoanRepaymentReportMode.ByRepaymentPeriod
+        //                : (int)LoanRepaymentReportMode.BySpecificLoan;
+        //            reportData = await _reportBuilder.BuildLoanRepaymentRows(filter);
+        //            break;
+
+        //        case "LoanSituation":
+        //            filter.ReportType = (int)FinancialReportType.LoanHistory;
+        //            filter.LoanStatus = parameters.LoanStatus;
+        //            reportData = await _reportBuilder.BuildLoanSituationRows(filter);
+        //            break;
+
+        //        // These come directly from JavaScript mapping
+        //        case "Interest":
+        //            filter.ReportType = (int)FinancialReportType.Interest;
+        //            reportData = await _reportBuilder.BuildInterestRows(filter);
+        //            break;
+
+        //        case "VAT":
+        //            filter.ReportType = (int)FinancialReportType.VAT;
+        //            reportData = await _reportBuilder.BuildVatRows(filter);
+        //            break;
+
+        //        case "Penalty":
+        //            filter.ReportType = (int)FinancialReportType.Penalty;
+        //            reportData = await _reportBuilder.BuildPenaltyRows(filter);
+        //            break;
+
+        //        default:
+        //            return Json(new { success = false, message = "Invalid report type selected." });
+        //    }
+
+        //    if (reportData == null)
+        //    {
+        //        return Json(new { success = false, message = "No data found." });
+        //    }
+
+        //    Session["rptSource"] = reportData;
+        //    Session["ReportFilter"] = filter;
+        //    Session["ReportParameters"] = parameters;
+        //    Session["ReportItemCount"] = GetItemCount(reportData);
+
+        //    return Json(new
+        //    {
+        //        success = true,
+        //        reportType = parameters.ReportType,
+        //        count = GetItemCount(reportData)
+        //    });
+        //}
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> GenerateReport(ReportParameters parameters)
         {
             if (parameters == null)
-            {
                 return Json(new { success = false, message = "No parameters provided." });
-            }
 
             FinancialReportFilter filter = new FinancialReportFilter
             {
@@ -64,26 +157,55 @@ namespace CBS.FrontDesk.UI.Controllers
             };
 
             object reportData = null;
+            Dictionary<string, object> subReports = null;
 
-            // Single switch statement - handles all report types including mapped ones
             switch (parameters.ReportType)
             {
-                case "MemberSituation":
-                    filter.ReportType = (int)FinancialReportType.MemberSituation;
-                    filter.LoanId = parameters.LoanId;
-                    filter.AccountId = parameters.AccountTypeId;
-                    reportData = await _reportBuilder.BuildMemberSituationRows(filter);
-                    break;
+              
+                    case "MemberSituation":
+                    {
+                        filter.ReportType = (int)FinancialReportType.MemberSituation;
+                        filter.LoanId = parameters.LoanId;
+                        filter.AccountId = parameters.AccountTypeId;
 
+                        var memberSituation =
+                            await _reportBuilder.BuildMemberSituationRows(filter);
+
+                        if (memberSituation == null)
+                            return Json(new
+                            {
+                                success = false,
+                                message = "No member situation data found."
+                            });
+
+                        Session["MainData"] = memberSituation;
+
+                        // ===============================
+                        // SUBREPORTS (MANDATORY)
+                        // ===============================
+                        var subReports2 = new Dictionary<string, object>
+                            {
+                                {"SubAccountSituationRPT",memberSituation.AccountSituations},
+                                {"SubLoanSituationRPT",memberSituation.LoanHistories}
+                            };
+
+                        Session["SubReportsData"] = subReports2;
+
+                        break;
+                    }
+
+                // 🔵 EXISTING REPORTS REMAIN UNCHANGED
                 case "AccountSituation":
                     filter.ReportType = (int)FinancialReportType.AccountSituation;
                     reportData = await _reportBuilder.BuildAccountSituationRows(filter);
+                    Session["MainData"] = reportData;
                     break;
 
                 case "AccountStatement":
                     filter.ReportType = (int)FinancialReportType.AccountStatement;
                     filter.AccountNumber = parameters.AccountTypeId;
                     reportData = await _reportBuilder.BuildAccountStatementRows(filter);
+                    Session["MainData"] = reportData;
                     break;
 
                 case "LoanRepayment":
@@ -93,49 +215,45 @@ namespace CBS.FrontDesk.UI.Controllers
                         ? (int)LoanRepaymentReportMode.ByRepaymentPeriod
                         : (int)LoanRepaymentReportMode.BySpecificLoan;
                     reportData = await _reportBuilder.BuildLoanRepaymentRows(filter);
+                    Session["MainData"] = reportData;
                     break;
 
                 case "LoanSituation":
                     filter.ReportType = (int)FinancialReportType.LoanHistory;
                     filter.LoanStatus = parameters.LoanStatus;
                     reportData = await _reportBuilder.BuildLoanSituationRows(filter);
+                    Session["MainData"] = reportData;
                     break;
 
-                // These come directly from JavaScript mapping
                 case "Interest":
                     filter.ReportType = (int)FinancialReportType.Interest;
                     reportData = await _reportBuilder.BuildInterestRows(filter);
+                    Session["MainData"] = reportData;
                     break;
 
                 case "VAT":
                     filter.ReportType = (int)FinancialReportType.VAT;
                     reportData = await _reportBuilder.BuildVatRows(filter);
+                    Session["MainData"] = reportData;
                     break;
 
                 case "Penalty":
                     filter.ReportType = (int)FinancialReportType.Penalty;
                     reportData = await _reportBuilder.BuildPenaltyRows(filter);
+                    Session["MainData"] = reportData;
                     break;
 
                 default:
                     return Json(new { success = false, message = "Invalid report type selected." });
             }
 
-            if (reportData == null)
-            {
-                return Json(new { success = false, message = "No data found." });
-            }
-
-            Session["rptSource"] = reportData;
             Session["ReportFilter"] = filter;
             Session["ReportParameters"] = parameters;
-            Session["ReportItemCount"] = GetItemCount(reportData);
 
             return Json(new
             {
                 success = true,
-                reportType = parameters.ReportType,
-                count = GetItemCount(reportData)
+                reportType = parameters.ReportType
             });
         }
 
@@ -166,6 +284,37 @@ namespace CBS.FrontDesk.UI.Controllers
         }
 
         // POST: Reports/PrepareReport
+        //[HttpPost]
+        //public ActionResult PrepareReport()
+        //{
+        //    try
+        //    {
+        //        var parameters = Session["ReportParameters"] as ReportParameters;
+        //        if (parameters == null)
+        //        {
+        //            return Json(new { success = false, message = "Report parameters not found." });
+        //        }
+
+        //        // Determine which report template to use
+        //        string reportName = GetReportName(parameters.ReportType);
+        //        string reportTitle = GetReportTitle(parameters.ReportType);
+
+        //        Session["rptType"] = "ReportParameterLess";
+        //        Session["ReportName"] = reportName;
+        //        Session["rptpath"] = $"~/AppFiles/Accountingv2Reporting/ReportRPT/{reportName}";
+
+        //        Session["rpttitle"] = reportTitle;
+        //        Session["DateFrom"] = parameters.DateFrom.ToString("dd/MM/yyyy");
+        //        Session["DateTo"] = parameters.DateTo.ToString("dd/MM/yyyy");
+
+        //        return Json(new { success = true });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Json(new { success = false, message = ex.Message });
+        //    }
+        //}
+
         [HttpPost]
         public ActionResult PrepareReport()
         {
@@ -173,18 +322,26 @@ namespace CBS.FrontDesk.UI.Controllers
             {
                 var parameters = Session["ReportParameters"] as ReportParameters;
                 if (parameters == null)
-                {
                     return Json(new { success = false, message = "Report parameters not found." });
+
+                string reportPath;
+                string reportTitle;
+
+                if (parameters.ReportType == "MemberSituation")
+                {
+                    reportPath =
+                        "~/AppFiles/Reporting/Transactions/UpdatedStatement/MemberSituation/MemberSituation.rpt";
+                    reportTitle = "MEMBER SITUATION REPORT";
+                }
+                else
+                {
+                    string reportName = GetReportName(parameters.ReportType);
+                    reportPath = $"~/AppFiles/Accountingv2Reporting/ReportRPT/{reportName}";
+                    reportTitle = GetReportTitle(parameters.ReportType);
                 }
 
-                // Determine which report template to use
-                string reportName = GetReportName(parameters.ReportType);
-                string reportTitle = GetReportTitle(parameters.ReportType);
-
                 Session["rptType"] = "ReportParameterLess";
-                Session["ReportName"] = reportName;
-                Session["rptpath"] = $"~/AppFiles/Accountingv2Reporting/ReportRPT/{reportName}";
-         
+                Session["rptpath"] = reportPath;
                 Session["rpttitle"] = reportTitle;
                 Session["DateFrom"] = parameters.DateFrom.ToString("dd/MM/yyyy");
                 Session["DateTo"] = parameters.DateTo.ToString("dd/MM/yyyy");
@@ -196,6 +353,7 @@ namespace CBS.FrontDesk.UI.Controllers
                 return Json(new { success = false, message = ex.Message });
             }
         }
+
 
         public ActionResult DebugReportData()
         {

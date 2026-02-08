@@ -698,6 +698,12 @@
       <DependentUpon>SubLoanSituationRPT.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="AppFiles\Reporting\Transactions\UpdatedStatement\MemberSituation\SubLoanSituationRPT1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SubLoanSituationRPT.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="App_GlobalResources\AccountCategory\GlobalsAccountCategory.fr.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -7653,7 +7659,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\Transactions\UpdatedStatement\MemberSituation\SubLoanSituationRPT.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>SubLoanSituationRPT.cs</LastGenOutput>
+      <LastGenOutput>SubLoanSituationRPT1.cs</LastGenOutput>
     </EmbeddedResource>
     <Content Include="App_GlobalResources\CashReconciliation\CashReconciliationResource.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
