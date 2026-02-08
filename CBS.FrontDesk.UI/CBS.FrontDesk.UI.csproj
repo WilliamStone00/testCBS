@@ -1244,11 +1244,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ChequeManagements.fr.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\ChequeManagementSystem\ChequeManagements1.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ChequeManagements.resx</DependentUpon>
-    </Compile>
     <Compile Include="App_GlobalResources\ChequeRequest\ChequeRequestResource.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -7673,22 +7668,6 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>ChequeBookResource.Designer.cs</LastGenOutput>
     </Content>
-    <Content Include="App_GlobalResources\AdvancedSheild\AdvancedShield.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>AdvancedShield1.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\Authentication\AuthenticationRessource.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>AuthenticationRessource1.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\BlacklistUser\BlacklistUserRessource.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>BlacklistUserRessource1.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\Accounting V2\AccountingV2.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>AccountingV23.designer.cs</LastGenOutput>
-    </Content>
     <Content Include="App_GlobalResources\ChartOfAccountV2\ChartOfAccountV2Resource.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>ChartOfAccountV2Resource.Designer.cs</LastGenOutput>
@@ -9134,10 +9113,6 @@
     <Content Include="App_GlobalResources\AccountingConfiguration\AccountingConfig_CreateFinancialReferenceCode.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>AccountingConfig_CreateFinancialReferenceCode.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\ChequeManagementSystem\ChequeManagements.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>ChequeManagements1.Designer.cs</LastGenOutput>
     </Content>
     <Content Include="App_GlobalResources\ChequeManagementSystem\ChequeManagements.fr.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
