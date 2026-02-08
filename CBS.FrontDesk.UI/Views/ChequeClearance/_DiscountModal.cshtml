@@ -55,11 +55,11 @@
             <!-- ✅ Custom Header Viewer -->
             <div class="header-viewer bg-light mb-4 px-3 pt-3 pb-2">
                 <h6 class="fw-bold mb-1">
-                    <i class="mdi mdi-file-eye-outline me-1"></i> DISCOUNT APPLICATION VIEWER
+                    <i class="mdi mdi-file-eye-outline me-1"></i> @ChequeClearanceResource.DISCOUNT_APPLICATION_VIEWER
                 </h6>
                 <p class="mb-0">
-                    You are applying a discount to the selected cheque clearance request.
-                    Please fill in the required fields and load the calculated results before proceeding.
+                    @ChequeClearanceResource.You_are_applying_a_discount_to_the_selected_cheque_clearance_request
+                    @ChequeClearanceResource.Please_fill_in_the_required_fields_and_load_the_calculated_results_before_proceeding
                 </p>
             </div>
 
@@ -74,7 +74,7 @@
                     </div>
 
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">Select Fee Type</label>
+                        <label class="form-label fw-bold">@GlobalShared.Select_Fee_Type</label>
                         @Html.DropDownListFor(m => m.FeeType, new SelectList(ViewBag.FeeTypes, "Value", "Text"),
                             "--- Select Fee Type ---", new { @class = "form-control select2", id = "feeType" })
                     </div>
@@ -82,21 +82,21 @@
                     <div class="col-md-6">
                         <div class="form-check form-switch mt-2">
                             @Html.CheckBoxFor(m => m.IsCentralized, new { @class = "form-check-input", id = "isCentralized" })
-                            <label class="form-check-label" for="isCentralized">Is Centralized</label>
+                            <label class="form-check-label" for="isCentralized">@GlobalShared.Is_Centralized</label>
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="form-floating shadow-sm">
                             @Html.TextBoxFor(m => m.IssueAmount, new { @class = "form-control", type = "number" })
-                            <label>Issue Amount</label>
+                            <label>@GlobalShared.Issue_Amount</label>
                         </div>
                     </div>
                 </div>
 
                 <div class="mt-4">
                     <button type="button" class="btn btn-primary w-100" id="btnLoad">
-                        <i class="mdi mdi-refresh me-2"></i> Load
+                        <i class="mdi mdi-refresh me-2"></i> @GlobalShared.Load
                     </button>
                 </div>
 
@@ -104,13 +104,13 @@
                     <div class="col-md-6">
                         <div class="form-floating shadow-sm">
                             @Html.TextBoxFor(m => m.NewAmount, new { @class = "form-control", type = "number", @readonly = "readonly" })
-                            <label>New Amount</label>
+                            <label>@GlobalShared.New_Amount</label>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-floating shadow-sm">
                             @Html.TextBoxFor(m => m.Fees, new { @class = "form-control", type = "number", @readonly = "readonly" })
-                            <label>Fees</label>
+                            <label>@GlobalShared.Fees</label>
                         </div>
                     </div>
                 </div>
@@ -118,7 +118,7 @@
 
             <!-- ✅ Footer -->
             <div class="modal-footer justify-content-start">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@GlobalShared.Cancel</button>
             </div>
         </div>
     </div>

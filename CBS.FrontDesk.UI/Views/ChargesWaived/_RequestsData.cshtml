@@ -6,13 +6,13 @@
         <table class="table table-hover" id="myDataTable">
             <thead class="table-light">
                 <tr>
-                    <th>@GlobalChargesWaived.Date</th>
-                    <th>@GlobalChargesWaived.MemberAccount</th>
+                    <th>@GlobalShared.Date</th>
+                    <th>@GlobalShared.Members_Account</th>
                     <th>@GlobalChargesWaived.WaivedCharge</th>
                     <th>@GlobalChargesWaived.NormalCharge</th>
                     <th>@GlobalShared.Status</th>
-                    <th>@GlobalChargesWaived.ExpiredDate</th>
-                    <th>@GlobalChargesWaived.Reference</th>
+                    <th>@GlobalShared.Expired_Date</th>
+                    <th>@GlobalShared.Reference</th>
                     <th>@GlobalShared.Action</th>
                 </tr>
             </thead>
@@ -27,22 +27,22 @@
                         <td style="width:10%">
                             @if (d.IsWaiverDone)
                             {
-                                <span class="badge rounded-pill rounded-2 badge-primary bg-label-primary fs-tiny py-1">@GlobalChargesWaived.AlreadyPaid</span>
+                                <span class="badge rounded-pill rounded-2 badge-primary bg-label-primary fs-tiny py-1">@GlobalShared.Already_Paid</span>
                             }
                             else
                             {
-                        <span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">@GlobalChargesWaived.Pending...</span>
+                        <span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">@GlobalShared.Pending...</span>
                             }
                         </td>
                         <td style="width:20%">@d.TransactionReference</td>
                         <td style="width:10%">
                             @if (DateTime.Now.Date > d.DateOfWaiverRequest.Date)
                             {
-                                <span class="badge rounded-pill rounded-2 badge-danger bg-label-danger fs-tiny py-1">@GlobalChargesWaived.Expired</span>
+                                <span class="badge rounded-pill rounded-2 badge-danger bg-label-danger fs-tiny py-1">@GlobalShared.Expired</span>
                             }
                             else
                             {
-                        <span class="badge rounded-pill rounded-2 badge-primary bg-label-primary fs-tiny py-1">@GlobalChargesWaived.OK</span>
+                        <span class="badge rounded-pill rounded-2 badge-primary bg-label-primary fs-tiny py-1">@GlobalShared.OK</span>
                             }
                         </td>
                         <td style="width:10%">

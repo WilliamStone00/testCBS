@@ -10,7 +10,7 @@
 
     <div id="cancellationDetailsForm" class="card shadow p-3 mb-4 mt-3">
         <h5 class="text-primary mb-3">
-            <i class="mdi mdi-file-cancel me-1"></i> Cheque Cancellation Request
+            <i class="mdi mdi-file-cancel me-1"></i> @ChequeCancellationResource.Cheque_Cancellation_Request
         </h5>
 
         <div class="row">
@@ -24,7 +24,7 @@
                         new { @class = "form-control", id = "BranchId" }
                     )
                     @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
-                    <label for="BranchId">Branch</label>
+                    <label for="BranchId">@GlobalShared.Branch</label>
                 </div>
             </div>
 
@@ -33,7 +33,7 @@
                 <div class="form-floating shadow-sm">
                     @Html.TextBoxFor(m => m.ChequeBookId, new { @class = "form-control", placeholder = "Enter cheque book ID" })
                     @Html.ValidationMessageFor(m => m.ChequeBookId, "", new { @class = "text-danger" })
-                    <label for="ChequeBookId">Cheque Book ID</label>
+                    <label for="ChequeBookId">@ChequeCancellationResource.Cheque_Book_ID</label>
                 </div>
             </div>
 
@@ -42,7 +42,7 @@
                 <div class="form-floating shadow-sm">
                     @Html.TextBoxFor(m => m.ChequeLeafId, new { @class = "form-control", placeholder = "Enter cheque leaf ID" })
                     @Html.ValidationMessageFor(m => m.ChequeLeafId, "", new { @class = "text-danger" })
-                    <label for="ChequeLeafId">Cheque Leaf ID</label>
+                    <label for="ChequeLeafId">@ChequeCancellationResource.Cheque_Leaf_ID</label>
                 </div>
             </div>
 
@@ -53,7 +53,7 @@
                 <div class="form-floating shadow-sm">
                     @Html.TextBoxFor(m => m.CustomerName, new { @class = "form-control", placeholder = "Enter customer name" })
                     @Html.ValidationMessageFor(m => m.CustomerName, "", new { @class = "text-danger" })
-                    <label for="CustomerName">Customer Name</label>
+                    <label for="CustomerName">@GlobalShared.Customer_Name</label>
                 </div>
             </div>
 
@@ -61,7 +61,7 @@
                 <div class="form-floating shadow-sm">
                     @Html.TextBoxFor(m => m.CreatedDate, new { @class = "form-control", type = "date" })
                     @Html.ValidationMessageFor(m => m.CreatedDate, "", new { @class = "text-danger" })
-                    <label>Cheque Expiration Date</label>
+                    <label>@ChequeCancellationResource.Cheque_Expiration_Date</label>
                 </div>
             </div>
         </div>
@@ -71,7 +71,7 @@
             <div class="form-floating shadow-sm">
                 @Html.TextAreaFor(m => m.Reason, 3, 50, new { @class = "form-control", placeholder = "Enter reason for cancellation", style = "height:100px" })
                 @Html.ValidationMessageFor(m => m.Reason, "", new { @class = "text-danger" })
-                <label for="Reason">Reason for Cancellation</label>
+                <label for="Reason">@GlobalShared.Reason_for_Cancellation</label>
             </div>
         </div>
 
@@ -80,7 +80,7 @@
             <div class="form-floating shadow-sm">
                 @Html.TextAreaFor(m => m.AdditionalNotes, 2, 50, new { @class = "form-control", placeholder = "Optional additional information", style = "height:80px" })
                 @Html.ValidationMessageFor(m => m.AdditionalNotes, "", new { @class = "text-danger" })
-                <label for="AdditionalNotes">Additional Notes</label>
+                <label for="AdditionalNotes">@GlobalShared.Additional_Notes</label>
             </div>
         </div>
 
