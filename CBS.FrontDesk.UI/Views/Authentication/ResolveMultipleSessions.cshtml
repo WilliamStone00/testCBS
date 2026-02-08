@@ -89,7 +89,7 @@
                 <p><strong>@AuthenticationRessource.OpenSessions:</strong> @ViewBag.SessionCount</p>
             </div>
 
-            @using (Html.BeginForm("AuthenticationRessource", "Authentication", FormMethod.Post))
+            @using (Html.BeginForm("ResolveMultipleSessions", "Authentication", FormMethod.Post))
             {
                 @Html.HiddenFor(m => m.UserName)
                 @Html.HiddenFor(m => m.Counts)

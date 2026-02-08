@@ -36,7 +36,7 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.GeneralStatisticReport
 {
-    //[CheckSessionTimeOutAttribute]
+    [CheckSessionTimeOutAttribute]
 
     public class GeneralStatisticReportController : BaseController
     {

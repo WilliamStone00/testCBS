@@ -1,12 +1,11 @@
 ﻿using CBS.BusinessService.CheckManagementSystem;
 using CBS.BusinessService.CheckManagementSystem.ChequeClearance;
-using CBS.BusinessService.CheckManagementSystem.Configurations.FeeConfiguration;
+
+using CBS.BusinessService.CheckManagementSystem.Operations.CounterCheque;
 using CBS.BusinessService.Config;
-using CBS.FrontDesk.Data.Entity.CheckManagementSystem;
+
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceRequest;
-using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Configurations.FeeConfiguration;
-using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeBookListing;
-using CBS.FrontDesk.Data.Entity.ManualDailycollection;
+
 using CBS.FrontDesk.Data.Message;
 using Newtonsoft.Json;
 using System;
@@ -28,17 +27,13 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeCl
 
         private readonly ChequeClearanceService _chequeClearanceService;
         private readonly BranchServices _branchServices;
-       private readonly MockCheckClearanceService _mockCheckClearanceService;
-        private readonly FeeConfigService _feeConfigService;
-        private readonly CategoryConfigService _categoryServices;
+        private readonly CounterChequeService _counterChequeService;
 
-        public ChequeClearanceController(ChequeClearanceService chequeClearanceService,CategoryConfigService categoryConfigService, BranchServices branchServices, FeeConfigService feeConfigService, MockCheckClearanceService mockCheckClearanceService)
+        public ChequeClearanceController(ChequeClearanceService chequeClearanceService, BranchServices branchServices, CounterChequeService counterChequeService)
         {
             _chequeClearanceService = chequeClearanceService;
             _branchServices = branchServices;
-           _mockCheckClearanceService = mockCheckClearanceService;
-            _feeConfigService = feeConfigService;
-            _categoryServices = categoryConfigService;
+            _counterChequeService = counterChequeService;
         }
 
         public async Task<ActionResult> Index()
@@ -51,11 +46,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeCl
             var branches = await _branchServices.GetBranches();
             ViewBag.Branches = branches;
 
-            var feeConfigure = await _feeConfigService.GetFeeTypesAsync();
-            ViewBag.FeeTypes = feeConfigure;
-
-            var categories = await _categoryServices.GetCategories();
-            ViewBag.Categories = categories;
+            
 
             ViewBag.Status = new List<SelectListItem>
 {
@@ -70,72 +61,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeCl
 };
             return true;
         }
-        // Ajax entry point
-        public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
-        {
-            await loader();
-
-            if (path == "list")
-            {
-                // ✅ When loading list view
-                var data = await _mockCheckClearanceService.GetAllAsync();
-                return PartialView(partialView ?? "_ChequeClearanceDataTable", data);
-            }
-            else if (path == "new")
-            {
-
-                OptionRequest model = null;
-                OptionRequest options = new OptionRequest(); // ✅ always initialized
-
-                if (!string.IsNullOrWhiteSpace(serviceOption))
-                {
-                    try
-                    {
-                        options = JsonConvert.DeserializeObject<OptionRequest>(serviceOption)
-                                  ?? new OptionRequest(); // ✅ fallback if null
-                    }
-                    catch
-                    {
-                        options = new OptionRequest(); // ✅ fallback on bad JSON
-                    }
-
-                    // ✅ Now options can never be null
-                    model = await _mockCheckClearanceService.GetByBranchAndBookAsync(
-                        options.External,
-                        options.BranchId,
-                        options.CheckBookNumber,
-                        options.CheckBookPageNumber
-                    );
-
-                    if (model == null)
-                    {
-                        model = new OptionRequest
-                        {
-                            External = options.External,
-                            BranchId = options.BranchId,
-                            CheckBookNumber = options.CheckBookNumber,
-                            CheckBookPageNumber = options.CheckBookPageNumber
-                        };
-                    }
-                }
-
-                if (model == null)
-                    model = new OptionRequest();
-
-                model.ChequeImagePath = "~/AppFiles/Images/noimage.jpg";
-
-                return PartialView(partialView ?? "_Create", model);
-            }
-
-            else
-            {
-                // ✅ Edit existing record
-                await loader();
-                var data = await _mockCheckClearanceService.GetByIdAsync(KEY);
-                return PartialView(partialView ?? "_Edit", data);
-            }
-        }
-
+       
         [HttpGet]
         public async Task<ActionResult> List()
         {
@@ -156,19 +82,44 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeCl
 
 
 
+
+
         [HttpGet]
-        public async Task<ActionResult> Details(string id)
+        public async Task<ActionResult> Search(string customerId)
         {
-            if (string.IsNullOrEmpty(id))
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Missing id");
+            if (string.IsNullOrEmpty(customerId))
+                return new HttpStatusCodeResult(400, "customerId is required");
 
-            var clearance = await _mockCheckClearanceService.GetByIdAsync(id);
+            try
+            {
+                var entry = await _counterChequeService.GetCustomerChequeBooks(customerId);
+                if (entry == null)
+                    return HttpNotFound("customerId details not found");
 
-            if (clearance == null)
-                return HttpNotFound();
-
-            return PartialView("_ChequeClearanceDetails", clearance);
+                return PartialView("_MainForm", entry);
+            }
+            catch (Exception ex)
+            {
+                return new HttpStatusCodeResult(500, ex.Message);
+            }
         }
+
+
+
+
+        //[HttpGet]
+        //public async Task<ActionResult> Details(string id)
+        //{
+        //    if (string.IsNullOrEmpty(id))
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Missing id");
+
+        //    var clearance = await _mockCheckClearanceService.GetByIdAsync(id);
+
+        //    if (clearance == null)
+        //        return HttpNotFound();
+
+        //    return PartialView("_ChequeClearanceDetails", clearance);
+        //}
 
 
 
