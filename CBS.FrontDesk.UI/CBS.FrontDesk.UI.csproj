@@ -1238,11 +1238,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ChequeManagements.fr.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\ChequeManagementSystem\ChequeManagements1.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ChequeManagements.resx</DependentUpon>
-    </Compile>
     <Compile Include="App_GlobalResources\ChequeRequest\ChequeRequestResource.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

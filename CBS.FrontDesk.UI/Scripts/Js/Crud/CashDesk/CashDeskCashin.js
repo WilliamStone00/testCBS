@@ -340,7 +340,7 @@ function confirmTransaction(title, message, ajaxUrl, data, operationType) {
                         Reprint(response.redirectUrl);
                         location.reload();
                         //successCallback(response, operationType);
-                        
+
                     } else {
                         if (!response) {
                             alert("Your session is expired.");
@@ -361,14 +361,14 @@ function confirmTransaction(title, message, ajaxUrl, data, operationType) {
 }
 
 function successCallback(response, operationType) {
-   
+
     // Clean up
     resetDepositorForm();
     $("#depositerModal").modal("hide"); // Hide if not already hidden
     location.reload();
     const customerId = $("#customerId").val();
 
-     //✅ Reload the entire page
+    //✅ Reload the entire page
     location.reload();
 
     const actions = {
@@ -780,8 +780,101 @@ function PostCashIn() {
         }
     ).set('labels', { ok: 'Yes, Continue', cancel: 'Cancel' });
 }
+function ReprintGL() {
+    ReportView("JournalReceipts", null, "GetReport", null, null, "receipts", "ReportParameterLess");
+}
 
+function generateJournalReceipt(options) {
+    const {
+        buttonSelector,
+        reference,
+        receiptId = null,
+        journalHeaderId = null,
+        lang = "en",
+        fromTemp = true,
+        onSuccess,
+        onError,
+        openReport = true,
+        controller = "JournalReceipts",
+        preAjaxCall // optional: fetch reference from session before generating
+    } = options;
 
+    const btn = $(buttonSelector);
+    const originalHtml = btn.html();
+
+    // Disable button + show spinner
+    btn.prop("disabled", true).html(`<span class="spinner-border spinner-border-sm"></span> Processing...`);
+
+    const runAjax = (ref) => {
+        const payload = {
+            receiptId,
+            journalHeaderId,
+            reference: ref || reference,
+            lang,
+            fromTemp
+        };
+
+        $.ajax({
+            url: "/JournalReceipts/GenerateReciept",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(payload),
+            success: function (response) {
+                if (typeof onSuccess === "function") onSuccess(response);
+
+                ReprintGL();
+
+            },
+            error: function (xhr) {
+                console.error("Error generating journal receipt:", xhr);
+                if (typeof onError === "function") onError(xhr);
+            },
+            complete: function () {
+                btn.prop("disabled", false).html(originalHtml);
+            }
+        });
+    };
+
+    if (typeof preAjaxCall === "function") {
+        preAjaxCall(runAjax); // fetch session reference first if needed
+    } else {
+        runAjax(reference);
+    }
+}
+// When the GL Receipt button is clicked
+// When the GL Receipt button is clicked (session-based)
+function handleGLReceiptClickFromSession() {
+    generateJournalReceipt({
+        buttonSelector: "#btnPrintGLReceipt",
+        fromTemp: true,
+        openReport: true,
+        controller: "JournalReceipts",
+        preAjaxCall: function (callback) {
+            // fetch GLReferenceId from session
+            $.ajax({
+                url: "/JournalReceipts/GenerateRecieptFromSession",
+                type: "POST",
+                contentType: "application/json",
+                success: function (response) {
+                    if (response.success) {
+                        ReprintGL();
+                    } else {
+                        appalert(response.message || "❌ No GL reference found in session.", 3, 1);
+                    }
+                },
+                error: function () {
+                    appalert("🚫 Failed to fetch GL reference from session.", 3, 1);
+                }
+            });
+        },
+        onSuccess: function () {
+            appalert("📄 GL receipt generated successfully.", 1, 1);
+        },
+        onError: function () {
+            appalert("❌ Failed to generate GL receipt.", 3, 1);
+        }
+    });
+}
 
 
 
@@ -796,35 +889,103 @@ function PostTransaction(ajaxUrl, data, operationType) {
         contentType: 'application/json',
         data: JSON.stringify(data),
         success: function (response) {
+
             if (response && response.success) {
-                // ✅ Success: hide modal, notify and reprint
-                //$("#depositerModal").modal("hide");
-                //appalert(`✅ ${response.message}`, 1, 2);
-                //successCallback(response, operationType);
-                //Reprint();
+
                 appalert(response.message, 1, 1);
                 resetDepositorForm();
-                $("#depositerModal").modal("hide"); // Hide if not already hidden
-                Reprint(response.redirectUrl);
-                location.reload();
-            } else {
-                // ❌ Failure: show error inside modal
-                const errorMsg = response?.message || "An unknown error occurred.";
-                appalert(`❌ ${errorMsg}`, 3, 1);
+                $("#depositerModal").modal("hide");
 
-                // Keep the modal open and re-enable the confirm button
-                $("#depositorLoader").addClass("d-none");
-                $("#confirmDepositorBtn").prop("disabled", false);
+                // ✅ Call GL / Journal report ONLY when required
+                if (response.isJournalReceipt)
+                {
+
+                    // ⚡ Store values in hidden fields for later printing
+                    $("#currentReferenceId").val(response.referenceId);
+                    $("#currentselectedOperation").val(operationType);
+                    generateJournalReceipt({
+                        buttonSelector: "#btnPrintGLReceipt",
+                        reference: $("#currentReferenceId").val(),
+                        openReport: true, // automatically open the report
+                        controller: "JournalReceipts",
+                        onSuccess: function (resp) {
+                            appalert("📄 GL receipt generated successfully.", 1, 1);
+                        },
+                        onError: function (err) {
+                            appalert("❌ Failed to generate GL receipt.", 3, 1);
+                        }
+                    });
+
+                }
+                else {
+                    appalert(response.message, 1, 1);
+                    resetDepositorForm();
+                    $("#depositerModal").modal("hide"); // Hide if not already hidden
+                    Reprint(response.redirectUrl);
+                }
+
+                // Optional: reload only if needed
+                location.reload();
+                return;
             }
+
+            // ❌ Business failure
+            const errorMsg = response?.message || "An unknown error occurred.";
+            appalert(`❌ ${errorMsg}`, 3, 1);
+
+            $("#depositorLoader").addClass("d-none");
+            $("#confirmDepositorBtn").prop("disabled", false);
         },
-        error: function (xhr, status, error) {
-            // 🔴 AJAX/network error
+        error: function () {
             appalert("🚫 Session expired or a network error occurred. Please try again.", 0, 1);
             $("#depositorLoader").addClass("d-none");
             $("#confirmDepositorBtn").prop("disabled", false);
         }
     });
 }
+
+
+
+//function PostTransaction(ajaxUrl, data, operationType) {
+//    // Show loader and disable confirm
+//    $("#depositorLoader").removeClass("d-none");
+//    $("#confirmDepositorBtn").prop("disabled", true);
+
+//    $.ajax({
+//        url: ajaxUrl,
+//        type: 'POST',
+//        contentType: 'application/json',
+//        data: JSON.stringify(data),
+//        success: function (response) {
+//            if (response && response.success) {
+//                // ✅ Success: hide modal, notify and reprint
+//                //$("#depositerModal").modal("hide");
+//                //appalert(`✅ ${response.message}`, 1, 2);
+//                //successCallback(response, operationType);
+//                //Reprint();
+//                appalert(response.message, 1, 1);
+//                resetDepositorForm();
+//                $("#depositerModal").modal("hide"); // Hide if not already hidden
+//                Reprint(response.redirectUrl);
+//                location.reload();
+//            } else {
+//                // ❌ Failure: show error inside modal
+//                const errorMsg = response?.message || "An unknown error occurred.";
+//                appalert(`❌ ${errorMsg}`, 3, 1);
+
+//                // Keep the modal open and re-enable the confirm button
+//                $("#depositorLoader").addClass("d-none");
+//                $("#confirmDepositorBtn").prop("disabled", false);
+//            }
+//        },
+//        error: function (xhr, status, error) {
+//            // 🔴 AJAX/network error
+//            appalert("🚫 Session expired or a network error occurred. Please try again.", 0, 1);
+//            $("#depositorLoader").addClass("d-none");
+//            $("#confirmDepositorBtn").prop("disabled", false);
+//        }
+//    });
+//}
 
 function validateDepositor(depositor) {
     let isValid = true;
