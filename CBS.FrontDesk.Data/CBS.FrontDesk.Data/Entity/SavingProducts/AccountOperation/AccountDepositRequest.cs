@@ -617,6 +617,9 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public List<string> AccountIds { get; set; } = new List<string>();
 
         public string InterestVadPenaltyType { get; set; }
+
+        public bool IncludeAccountSubreport { get; set; }
+        public bool IncludeLoanSubreport { get; set; }
     }
 
     public class FinancialReportRequest

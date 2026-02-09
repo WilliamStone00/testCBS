@@ -251,7 +251,7 @@
                                         Select Accounts
                                     </label>
                                     <div class="form-floating">
-                                        @Html.ListBox("AccountIds_Member",
+                                        @Html.ListBox("AccountIds",
                                             (IEnumerable<SelectListItem>)ViewBag.Accounts,
                                             new { @class = "form-control select2", id = "memberAccountIds", multiple = "multiple" })
                                         <label for="memberAccountIds">Select multiple accounts</label>
@@ -264,14 +264,14 @@
                                     </div>
                                 </div>
 
-                                 Loan Status Filter 
+                                 @*Loan Status Filter*@ 
                                 <div class="col-md-12">
                                     <label class="fw-medium">
                                         <i class="mdi mdi-hand-coin-outline me-2 text-primary"></i>
                                         Loan Status Filter
                                     </label>
                                     <div class="form-floating">
-                                        <select class="form-control" id="memberLoanStatus" name="LoanStatus_Member">
+                                        <select class="form-control" id="memberLoanStatus" name="LoanStatus">
                                             <option value="" disabled selected>Select Filter</option>
                                             <option value="all">All Loans</option>
                                             <option value="approved">Approved</option>
@@ -291,7 +291,7 @@
                                 </div>
                                 <hr />
 
-                                 Date Range Section 
+                                 @*Date Range Section*@ 
                                 <div id="memberDateSection">
                                     <div class="row g-3">
                                         <div class="col-md-12">
@@ -301,7 +301,7 @@
                                             </label>
                                             <div class="form-floating">
                                                 @Html.TextBox(
-                                                    "DateTo_Member",
+                                                    "DateTo",
                                                     DateTime.Now.ToString("yyyy-MM-dd"),
                                                     new
                                                     {

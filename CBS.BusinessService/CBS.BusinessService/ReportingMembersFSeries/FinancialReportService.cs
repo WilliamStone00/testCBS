@@ -113,10 +113,16 @@ namespace CBS.BusinessService.ReportingMembersFSeries
       
         public async Task<MemberSituationBackendResponse> GetMemberSituationRaw(FinancialReportFilter parameters)
         {
-            var response =
-                await _transactionApiHelper.GetAsync<
-                    ResponseObject<MemberSituationBackendResponse>>(
-                    string.Format(APICallHelper.GetMemberAccounts, parameters));
+
+            var request = new FinancialReportRequest
+            {
+                Filter = parameters
+            };
+
+            string endpoint = APICallHelper.GetTransactionHistoryByAccountNumber3;
+
+            var response = await _transactionApiHelper
+                .PostAsync<ResponseObject<MemberSituationBackendResponse>>(endpoint, request);         
 
             return response.ApiResponseData.Data;
         }

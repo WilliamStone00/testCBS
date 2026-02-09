@@ -24,7 +24,7 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
     [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.DataSet")]
     public partial class Transactions : global::System.Data.DataSet {
         
-        private TransactionDataTable tableTransaction;https://localhost:44346/DataSet/Transaction/TransactionDS.Designer.cs
+        private TransactionDataTable tableTransaction;
         
         private OtherTransactionsDataTable tableOtherTransactions;
         
