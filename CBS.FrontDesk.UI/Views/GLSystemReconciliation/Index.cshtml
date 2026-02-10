@@ -54,16 +54,16 @@
         @Html.AntiForgeryToken()
 
         <!-- DataTable hidden options -->
-        <input type="hidden" name="Options.Page" value="1" />
-        <input type="hidden" name="Options.PageSize" value="10" />
-        <input type="hidden" name="Options.Sort" value="" />
+        <input type="hidden" id="Page" name="DataTableOptions.Page" value="1" />
+        <input type="hidden" id="PageSize" name="DataTableOptions.PageSize" value="10" />
+        <input type="hidden" id="length" name="DataTableOptions.Length" value="10" />
+        <input type="hidden" id="Sort" name="DataTableOptions.Sort" value="" />
 
-        <!-- Main Filters Card -->
-        <div class="card p-3 mb-2 bg-light">
+        <div class="card p-3 mb-3 bg-light">
 
-            <!-- 🔹 Branch & Date Toggles -->
-            <div class="row mb-2 align-items-center">
-                <div class="col-md-6 mb-1">
+            <!-- ================= TOGGLES ================= -->
+            <div class="row mb-3">
+                <div class="col-md-6">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="toggleBranch"
                                onclick="document.getElementById('branchFilter').classList.toggle('d-none')" />
@@ -72,103 +72,115 @@
                         </label>
                     </div>
                 </div>
-                <div class="col-md-6 mb-1">
+
+                <div class="col-md-6">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="toggleDateFilters"
                                onclick="document.getElementById('dateFilters').classList.toggle('d-none')" />
                         <label class="form-check-label fw-bold" for="toggleDateFilters">
-                            Show Accounting / Created Date Filters
+                            Show Date Filters
                         </label>
                     </div>
                 </div>
             </div>
 
-            <!-- 🔹 Hidden Branch Dropdown -->
-            <div id="branchFilter" class="d-none">
-                <div class="row mb-1">
-                    <div class="col-md-12 mb-1">
-                        <label class="form-label fw-bold" for="branchId">Branch</label>
+            <!-- ================= BRANCH FILTER ================= -->
+            <div id="branchFilter" class="d-none mb-3">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label class="form-label fw-bold">Branch</label>
                         @Html.DropDownList("BranchId",
                             new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
                             "--- Select Branch ---",
-                            new { @class = "form-control select2 mb-1", @id = "branchId" })
+                            new { @class = "form-control select2", id = "branchId" })
                     </div>
                 </div>
             </div>
 
-            <!-- 🔹 Hidden Date Filters -->
-            <div id="dateFilters" class="d-none">
-                <div class="row mb-1">
-                    @*<div class="col-md-6 mb-1">
-                            <label class="form-label fw-bold">Start Accounting Date</label>
-                            <input type="date" id="startaccountingDate" name="StartAccountingDate" class="form-control mb-1" />
-
-                        </div>*@
-                    @*<div class="col-md-6 mb-1">
-                            <label class="form-label fw-bold">End Accounting Date</label>
-                            <input type="date" id="endaccountingDate" name="EndAccountingDate" class="form-control mb-1" />
-                        </div>*@
-
-                    <div class="col-md-12 mb-1">
-                        <label class="form-label fw-bold" for="startDate">Start Date</label>
-                        <input type="date" id="startDate" name="StartDate" class="form-control mb-1" />
+            <!-- ================= DATE FILTERS ================= -->
+            <div id="dateFilters" class="d-none mb-3">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Start Date</label>
+                        <input type="date" id="FromDate" name="FromDate" class="form-control" />
                     </div>
 
-                    <div class="col-md-6 mb-1">
-                            <label class="form-label fw-bold" for="endDate">End Date</label>
-                            <input type="date" id="endDate" name="EndDate" class="form-control mb-1" />
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">End Date</label>
+                        <input type="date" id="ToDate" name="ToDate" class="form-control" />
                     </div>
-
-
                 </div>
             </div>
 
-            @*<hr class="my-3" />*@
+            <!-- ================= CORE FILTERS ================= -->
+            <div class="row mb-3">
 
-            <!-- 🔹 Reference, Operation Type & Work Ticket (always visible) -->
-            <div class="row mb-1">
-                <div class="col-md-4 mb-1">
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Member Reference</label>
+                    <input type="text" id="MemberReference" name="MemberReference"
+                           class="form-control"
+                           placeholder="Enter Member Reference" />
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Correlation Id</label>
+                    <input type="text" id="CorrelationId" name="CorrelationId"
+                           class="form-control"
+                           placeholder="Enter Correlation Id" />
+                </div>
+
+                <div class="col-md-4">
                     <label class="form-label fw-bold">Reference</label>
-                    <input type="text" id="reference" name="Reference" class="form-control mb-1" placeholder="Enter Reference" />
+                    <input type="text" id="Reference" name="Reference"
+                           class="form-control"
+                           placeholder="Enter Reference" />
                 </div>
+            </div>
 
-                <div class="col-md-4 mb-1">
+            <!-- ================= STATUS & OPERATION ================= -->
+            <div class="row">
+
+                <div class="col-md-6">
                     <label class="form-label fw-bold">Status</label>
                     @Html.DropDownList("Status",
                         new SelectList(ViewBag.Status, "Value", "Text"),
                         "Select Status",
-                        new { @class = "form-control select2 mb-1", @id = "Status" })
+                        new { @class = "form-control select2", id = "Status" })
                 </div>
 
-                <div class="col-md-4 mb-1">
+                <div class="col-md-6">
                     <label class="form-label fw-bold">Operation Code</label>
                     @Html.DropDownList("OperationCode",
                         new SelectList(ViewBag.OperationCode, "Value", "Text"),
                         "Select Operation Code",
-                        new { @class = "form-control select2 mb-1", @id = "OperationCode" })
+                        new { @class = "form-control select2", id = "OperationCode" })
                 </div>
+
             </div>
         </div>
 
-        <!-- Action Buttons -->
-        <div class="row mt-2">
-            <div class="col-md-12 d-flex">
-                <button id="applyFilterBtn" type="submit" class="btn btn-primary me-2 w-100">
-                    <i class="mdi mdi-magnify"></i> Apply Filters
+        <!-- ================= ACTION BUTTONS ================= -->
+        <div class="row g-2">
+            <div class="col-12 col-md-6">
+                <button id="applyFilterBtn" type="submit"
+                        class="btn btn-primary btn-sm w-100">
+                    <i class="mdi mdi-magnify me-1"></i> Apply Filters
                 </button>
-                <button id="resetFilterBtn" type="button" class="btn btn-secondary w-100"
-                        onclick="document.getElementById('systemReconciliationFilterForm').reset();">
-                    <i class="mdi mdi-refresh"></i> Reset Filters
+            </div>
+
+            <div class="col-12 col-md-6">
+                <button id="resetFilterBtn" type="button"
+                        class="btn btn-secondary btn-sm w-100">
+                    <i class="mdi mdi-refresh me-1"></i> Reset Filters
                 </button>
             </div>
         </div>
-
 
     </form>
 </div>
 
 <div id="datalistingview">
-
+    @Html.Partial("_DataTable")
 </div>
 
 
@@ -219,11 +231,11 @@
                 <textarea id="formattedJson"
                           class="form-control font-monospace"
                           rows="20"
-                          style="resize: vertical; 
-                         overflow-x: auto; 
-                         white-space: pre-wrap; 
+                          style="resize: vertical;
+                         overflow-x: auto;
+                         white-space: pre-wrap;
                          background-color: #f8f9fa;
-                         border: 1px solid #dee2e6; 
+                         border: 1px solid #dee2e6;
                          font-family: 'Courier New', monospace; font-size: 14px;
                          min-height: 400px;"></textarea>
 
@@ -253,7 +265,7 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-<script>
+    <script>
 
 
 
@@ -261,32 +273,35 @@
                 // ==============================
                 // Collect Summary Filters (API expected)
                 // ==============================
-                    function getSummaryFilters() {
-                        return {
-                            branchId: $('#branchId').val(),
-                            StartDate: $('#startDate').val(),
-                            EndDate: $('#endDate').val(),
-                            StartAccountingDate: $('#startaccountingDate').val()
+                    //function getSummaryFilters() {
+                    //    return {
+                    //        branchId: $('#branchId').val(),
+                    //        StartDate: $('#startDate').val(),
+                    //        EndDate: $('#endDate').val(),
+                    //        StartAccountingDate: $('#startaccountingDate').val()
 
-                        };
-                    }
+                    //    };
+                    //}
 
 
                 // ==============================
                 // Collect DataTable Filters
                 // ==============================
-                    function getDataTableFilters() {
-                        return {
-                            BranchId: $('#branchId').val(),
-                            OperationCode: $('#OperationCode').val(),
-                            Reference: $('#reference').val(),
-                            Status: $('#Status').val(),
-                            StartDate: $('#startDate').val(),
-                            EndDate: $('#endDate').val(),
-                            StartAccountingDate: $('#startaccountingDate').val(),
-                            Options: {}
-                        };
-                    }
+    function getDataTableFilters() {
+        return {
+            BranchId: $('#branchId').val(),
+            OperationCode: $('#OperationCode').val(),
+            Reference: $('#Reference').val(),
+            MemberReference: $('#MemberReference').val(),
+            CorrelationId: $('#CorrelationId').val(),
+            Status: $('#Status').val(),
+            FromDate: $('#FromDate').val(),
+            ToDate: $('#ToDate').val(),
+            DataTableOptions: {}
+        };
+    }
+
+
 
 
                 // ==============================
@@ -328,24 +343,24 @@
     //}
 
 
-                function loadSummary() {
-                    const query = getSummaryFilters();
+                //function loadSummary() {
+                //    const query = getSummaryFilters();
 
-                    $.ajax({
-                        url: '/GLSystemReconciliation/LoadRecordsForm',
-                        method: 'POST',
-                        contentType: 'application/json',
-                        data: JSON.stringify(query),
-                        success: function (html) {
-                            $("#datalistingview").html(html);
-                            loadReconciliationData(); // initialize table
-                        },
-                        error: function (xhr, status, err) {
-                            console.error('❌ Load records failed:', status, err);
-                            appalert('❌ Failed to load records. Status: ' + xhr.status, 4, 1);
-                        }
-                    });
-                }
+                //    $.ajax({
+                //        url: '/GLSystemReconciliation/LoadRecordsForm',
+                //        method: 'POST',
+                //        contentType: 'application/json',
+                //        data: JSON.stringify(query),
+                //        success: function (html) {
+                //            $("#datalistingview").html(html);
+                //            loadReconciliationData(); // initialize table
+                //        },
+                //        error: function (xhr, status, err) {
+                //            console.error('❌ Load records failed:', status, err);
+                //            appalert('❌ Failed to load records. Status: ' + xhr.status, 4, 1);
+                //        }
+                //    });
+                //}
 
 
                 // ==============================
@@ -357,7 +372,7 @@
                         destroy: true,
                         responsive: true,
                         searching: false,
-                        order: [[1, 'desc']],
+                        order: [[0, 'desc']],
                         ajax: {
                             url: '/GLSystemReconciliation/LoadReconciliationData',
                             type: 'POST',
@@ -382,17 +397,28 @@
                             }
                         },
                         columns: [
-                            { data: 'Reference', name: 'Reference' },
                             {
-                                data: 'AccountingDate',
-                                name: 'AccountingDate',
+                                data: 'CreatedDate', name: 'CreatedDate',
                                 render: function (data) {
                                     return data ? moment(data).format('DD/MM/YYYY HH:mm:ss') : '';
                                 }
                             },
                             { data: 'OperationCode', name: 'OperationCode' },
+                            { data: 'BranchName', name: 'BranchName' },
+                            { data: 'Reference', name: 'Reference' },
                             { data: 'OperationBy', name: 'OperationBy' },
-                            { data: 'Status', name: 'Status' },
+                            {
+                                data: 'Status', name: 'Status',
+                                render: function (data) {
+                                    if (data === 'Successful') {
+                                        return `<span class="badge bg-success">${data}</span>`;
+                                    } else if (data === 'Exception') {
+                                        return `<span class="badge bg-secondary">${data}</span>`;
+                                    } else {
+                                        return `<span class="badge bg-light">${data}</span>`;
+                                    }
+                                }
+                            },
                             {
                                 data: null,
                                 orderable: false,
@@ -404,10 +430,8 @@
                                             </button>
 
                                             <button class="btn btn-sm btn-success push-details"
-                                                    data-id="${row.Id}"
-                                                    data-branchid="${row.BranchId}"
-                                                    data-branchname="${row.BranchName}"
-                                                    data-branchcode="${row.BranchCode}">
+                                                    data-id="${row.Id}">
+
                                                 <i class="mdi mdi-check-outline me-1"></i> Push
                                             </button>
                                         </div>
@@ -448,7 +472,7 @@
                     // Apply Filters
                     $('#applyFilterBtn').on('click', function (e) {
                         e.preventDefault();
-                        loadSummary();
+                        //loadSummary();
                         loadReconciliationData();
                     });
 
@@ -503,11 +527,11 @@
                                 function () {
 
                                     let payload = {
-                                        trackerId: $(btn).data("id"),
+                                        trackerId: $(btn).data("id")@*,
                                         pusherName: "@User.Identity.Name",
                                         branchId: $(btn).data("branchid"),
                                         branchName: $(btn).data("branchname"),
-                                        branchCode: $(btn).data("branchcode")
+                                        branchCode: $(btn).data("branchcode")*@
                                     };
 
                                     console.log("Send payload:", payload);
@@ -691,5 +715,5 @@
 
 
 
-</script>
+    </script>
 }

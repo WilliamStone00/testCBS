@@ -176,6 +176,7 @@ else
                                                             <li>
                                                                 <button class="dropdown-item d-flex align-items-center btn-cheque-clearance"
                                                                         data-checkbook-id="@entry.CheckBook.Id">
+
                                                                     <i class="mdi mdi-bank-transfer me-2 text-success fs-5"></i>
                                                                     <div class="d-flex flex-column">
                                                                         <span class="fw-semibold">Clearance</span>
@@ -421,3 +422,96 @@ else
         z-index: 1081 !important;
     }
 </style>
+
+
+<script>
+
+
+
+
+    // =============================
+    // CHEQUE BOOK DETAILS VIEW
+    // =============================
+    function handleChequeView(id, name) {
+        if (!id) return;
+
+        var url = '/ChequeClearance/GetChequeBookDetail?id=' + encodeURIComponent(id);
+        window.open(url, '_blank');
+    }
+
+    // Delegated click (works for AJAX-loaded content)
+    $(document).off('click', '.btn-cheque-view' )
+        .on('click', '.btn-cheque-view', function (e) {
+            e.preventDefault();
+
+            var id = $(this).data('id');
+            var name = $(this).data('name') || '';
+
+            handleChequeView(id, name);
+        });
+
+    $(document).off('click', '.btn-cheque-clearance')
+        .on('click', '.btn-cheque-clearance', function (e) {
+            e.preventDefault();
+
+            var checkBookId = $(this).data('checkbook-id');
+
+            if (!checkBookId) return;
+
+            var url = '/ChequeClearance/GetChequeBookDetail?Id='
+                + encodeURIComponent(checkBookId);
+
+            window.open(url, '_blank');
+        });
+
+    // =============================
+    // INITIALIZE CAROUSEL AFTER AJAX LOAD
+    // =============================
+    function initializeCustomerCarousel() {
+
+        var carouselElement = document.getElementById('customerCheckBook');
+        if (!carouselElement) return;
+
+        // Prevent duplicate binding
+        carouselElement.removeEventListener('slid.bs.carousel', carouselElement._carouselHandler);
+
+        var handler = function (event) {
+            var activeIndex = event.to;
+            var pageCounter = document.getElementById('currentPage');
+
+            if (pageCounter) {
+                pageCounter.textContent = activeIndex + 1;
+            }
+        };
+
+        carouselElement.addEventListener('slid.bs.carousel', handler);
+
+        // Store reference so we can remove later
+        carouselElement._carouselHandler = handler;
+    }
+
+
+    // =============================
+    // CLOSE DROPDOWN WHEN CLICKING OUTSIDE
+    // =============================
+    $(document).on('click', function (e) {
+
+        if (!$(e.target).closest('.dropdown').length) {
+
+            $('.dropdown-menu.show').each(function () {
+
+                var toggleBtn = this.previousElementSibling;
+
+                if (toggleBtn) {
+                    var instance = bootstrap.Dropdown.getInstance(toggleBtn);
+                    if (instance) {
+                        instance.hide();
+                    }
+                }
+
+            });
+        }
+
+    });
+
+</script>

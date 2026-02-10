@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceRequest
 {
@@ -20,7 +21,7 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceReq
         public string CheckBookNumber { get; set; } = null ;
 
         [Required(ErrorMessage = "Page number is required")]
-        public string CheckBookPageNumber { get; set; } = null;
+        public int CheckBookPageNumber { get; set; } 
         public string AccountNumber { get; set; }
 
         public bool DepositToAccount { get; set; }
@@ -53,10 +54,10 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceReq
         public decimal ToAccountNumber { get; set; }
 
         public bool UseOverdraft { get; set; }
+        public string CheckBookId { get; set; }
 
-        public string ImagePath { get; set; }
-        public IFormFile ChequeImage { get; set; }
-
+        public decimal CurrentClearanceAmount { get; set; }
+        public decimal RemainingAmount { get; set; }
 
     }
 
@@ -74,5 +75,17 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceReq
 
     }
 
-    
+
+    public class ClearanceRequestImage
+    {
+        public List<HttpPostedFileBase> AttachedFiles { get; set; }
+        public string Id { get; set; }
+        public string UrlPath { get; set; }
+        public string DocumentName { get; set; }
+        public string Extension { get; set; }
+        public string BaseUrl { get; set; }
+        public string DocumentType { get; set; } 
+    }
+
+
 }

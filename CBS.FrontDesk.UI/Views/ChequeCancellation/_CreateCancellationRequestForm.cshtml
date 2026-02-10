@@ -1,153 +1,117 @@
 ﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeCancelation.CancellationRequest
 @using Resources
 
-@* ----------------- Cancellation Form ----------------- *@
-@using (Html.BeginForm("CreateOrUpdate", "ChequeCancellation", FormMethod.Post,
-    new { enctype = "multipart/form-data", onsubmit = "return cancellationSubmitAjax(this);" }))
-{
-    @Html.AntiForgeryToken()
-    @Html.HiddenFor(m => m.Id)
-
-    <div id="cancellationDetailsForm" class="card shadow p-3 mb-4 mt-3">
-        <h5 class="text-primary mb-3">
-            <i class="mdi mdi-file-cancel me-1"></i> Cheque Cancellation Request
-        </h5>
-
-        <div class="row">
-            <!-- Branch -->
-            <div class="col-md-6 mb-3">
-                <div class="form-floating shadow-sm">
-                    @Html.DropDownListFor(
-                        m => m.BranchId,
-                        new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
-                        "Select Branch",
-                        new { @class = "form-control", id = "BranchId" }
-                    )
-                    @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
-                    <label for="BranchId">Branch</label>
-                </div>
-            </div>
-
-            <!-- Cheque Book ID -->
-            <div class="col-md-6 mb-3">
-                <div class="form-floating shadow-sm">
-                    @Html.TextBoxFor(m => m.ChequeBookId, new { @class = "form-control", placeholder = "Enter cheque book ID" })
-                    @Html.ValidationMessageFor(m => m.ChequeBookId, "", new { @class = "text-danger" })
-                    <label for="ChequeBookId">Cheque Book ID</label>
-                </div>
-            </div>
-
-            <!-- Cheque Leaf ID -->
-            <div class="col-md-6 mb-3">
-                <div class="form-floating shadow-sm">
-                    @Html.TextBoxFor(m => m.ChequeLeafId, new { @class = "form-control", placeholder = "Enter cheque leaf ID" })
-                    @Html.ValidationMessageFor(m => m.ChequeLeafId, "", new { @class = "text-danger" })
-                    <label for="ChequeLeafId">Cheque Leaf ID</label>
-                </div>
-            </div>
-
-
-
-            <!-- Customer Name -->
-            <div class="col-md-6 mb-3">
-                <div class="form-floating shadow-sm">
-                    @Html.TextBoxFor(m => m.CustomerName, new { @class = "form-control", placeholder = "Enter customer name" })
-                    @Html.ValidationMessageFor(m => m.CustomerName, "", new { @class = "text-danger" })
-                    <label for="CustomerName">Customer Name</label>
-                </div>
-            </div>
-
-            <div class="col-md-6 mb-3">
-                <div class="form-floating shadow-sm">
-                    @Html.TextBoxFor(m => m.CreatedDate, new { @class = "form-control", type = "date" })
-                    @Html.ValidationMessageFor(m => m.CreatedDate, "", new { @class = "text-danger" })
-                    <label>Cheque Expiration Date</label>
-                </div>
-            </div>
-        </div>
-
-        <!-- Reason -->
-        <div class="mb-3">
-            <div class="form-floating shadow-sm">
-                @Html.TextAreaFor(m => m.Reason, 3, 50, new { @class = "form-control", placeholder = "Enter reason for cancellation", style = "height:100px" })
-                @Html.ValidationMessageFor(m => m.Reason, "", new { @class = "text-danger" })
-                <label for="Reason">Reason for Cancellation</label>
-            </div>
-        </div>
-
-        <!-- Additional Notes -->
-        <div class="mb-3">
-            <div class="form-floating shadow-sm">
-                @Html.TextAreaFor(m => m.AdditionalNotes, 2, 50, new { @class = "form-control", placeholder = "Optional additional information", style = "height:80px" })
-                @Html.ValidationMessageFor(m => m.AdditionalNotes, "", new { @class = "text-danger" })
-                <label for="AdditionalNotes">Additional Notes</label>
-            </div>
-        </div>
-
-        <!-- Save & Reset -->
-        <div class="text-end mt-3">
-            <button type="submit" class="btn btn-success shadow-sm px-4 me-2">
-                <i class="mdi mdi-content-save me-1"></i> @GlobalShared.Save
-            </button>
-            <button type="reset" class="btn btn-outline-secondary shadow-sm px-4">
-                @GlobalShared.Reset
-            </button>
-        </div>
-    </div>
+@{
+    ViewBag.Title = "Cheque Cancellation Request";
 }
 
+<div class="card mb-4">
+    <div class="modal-body">
 
-<script>
+        @using (Html.BeginForm("CreateOrUpdate", "ChequeCancellation", FormMethod.Post,
+            new { id = "cancellationForm", enctype = "multipart/form-data", onsubmit = "return cancellationSubmitAjax(this);" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.Id)
 
+            <div class="row gy-3">
 
-window.cancellationSubmitAjax = function (form) {
-    var $form = $(form);
-    if (!$form.length) return false;
+                <!-- ================= HEADER ================= -->
+                <div class="col-12">
+                    <h6 class="text-success border-bottom pt-2 pb-1">
+                        <i class="mdi mdi-file-cancel me-1"></i>
+                        @(Model != null && Model.Id != null ? "UPDATE CHEQUE CANCELLATION" : "ADD CHEQUE CANCELLATION")
+                    </h6>
+                    <p class="text-muted small mb-0">
+                        @(Model != null && Model.Id != null
+                        ? "Modify the details below and update this cheque cancellation request."
+                        : "Capture cheque cancellation details for processing and approval.")
+                    </p>
+                </div>
 
-    // Basic client-side validation
-    try { $.validator.unobtrusive.parse($form); } catch (e) { }
-    if (!$form.valid()) return false;
+                <!-- ================= BASIC DETAILS ================= -->
+                <div class="col-md-6">
+                    <div class="form-floating shadow-sm">
+                        @Html.TextBoxFor(m => m.RequestedBy,
+                            new { @class = "form-control", placeholder = "Requested By" })
+                        <label>Requested By</label>
+                    </div>
+                </div>
 
-    // Check if the form is multipart (for file uploads)
-    var isMultipart = ($form.attr('enctype') || '').toLowerCase() === 'multipart/form-data';
+                <div class="col-md-6">
+                    <div class="form-floating shadow-sm">
+                        @Html.TextBoxFor(m => m.RequestToken,
+                            new { @class = "form-control", placeholder = "Request Token" })
+                        <label>Request Token</label>
+                    </div>
+                </div>
 
-    // Get anti-forgery token
-    var token = $('input[name="__RequestVerificationToken"]').val();
+                <!-- ================= BRANCH & CUSTOMER ================= -->
+                <div class="col-md-6">
+                    <div class="form-floating shadow-sm">
+                        @Html.DropDownListFor(m => m.BranchId,
+                            new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
+                            "--- Select Branch ---",
+                            new { @class = "form-select select2", required = "required" })
+                        <label>Branch</label>
+                    </div>
+                </div>
 
-    // Disable submit button and show spinner
-    var $submit = $form.find('[type="submit"]').first();
-    var origHtml = $submit.html();
-    $submit.prop('disabled', true)
-        .html('<span class="spinner-border spinner-border-sm me-2" role="status"></span>Saving...');
+                <div class="col-md-6">
+                    <div class="form-floating shadow-sm">
+                        @Html.TextBoxFor(m => m.CustomerId,
+                            new { @class = "form-control", placeholder = "Customer ID" })
+                        <label>Customer ID</label>
+                    </div>
+                </div>
 
-    // Prepare AJAX options
-    var ajaxOptions = {
-        url: $form.attr('action'),
-        type: $form.attr('method') || 'POST',
-        data: isMultipart ? new FormData(form) : $form.serialize(),
-        contentType: isMultipart ? false : 'application/x-www-form-urlencoded; charset=UTF-8',
-        processData: !isMultipart,
-        headers: token ? { 'RequestVerificationToken': token } : {},
-        success: function (res) {
-            if (res && res.success) {
-                appalert(res.message || 'Saved successfully', 1, 1);
-                if (typeof cancellationTable !== 'undefined') cancellationTable.ajax.reload();
-            } else {
-                appalert((res && res.message) ? res.message : 'Save failed', 2, 1);
-            }
-        },
-        error: function () {
-            appalert('An error occurred while processing your request.', 4, 1);
-        },
-        complete: function () {
-            $submit.prop('disabled', false).html(origHtml);
+                <!-- ================= CHEQUE BOOK DETAILS ================= -->
+                <div class="col-12">
+                    <h6 class="text-success border-bottom pt-2 pb-1">
+                        <i class="fas fa-book-open me-1"></i>
+                        Cheque Book Information
+                    </h6>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-floating shadow-sm">
+                        @Html.TextBoxFor(m => m.CheckBookId,
+                            new { @class = "form-control", placeholder = "Cheque Book ID", @readonly = "readonly" })
+                        <label>Cheque Book ID</label>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-floating shadow-sm">
+                        @Html.TextBoxFor(m => m.CheckBookLeaveId,
+                            new { @class = "form-control", placeholder = "Cheque Leaf ID", @readonly = "readonly" })
+                        <label>Cheque Leaf ID</label>
+                    </div>
+                </div>
+
+                <!-- ================= NOTES ================= -->
+                <div class="col-12">
+                    <div class="form-floating shadow-sm">
+                        @Html.TextAreaFor(m => m.Reason, 3, 100,
+                            new { @class = "form-control", placeholder = "Reason for Cancellation", style = "height:100px" })
+                        <label>Reason for Cancellation</label>
+                    </div>
+                </div>
+
+                <!-- ================= ACTION BUTTONS ================= -->
+                <div class="col-12 text-end mt-3">
+                    <button type="reset" class="btn btn-outline-secondary shadow-sm px-4 me-2">
+                        Reset
+                    </button>
+
+                    <button type="submit" class="btn btn-success shadow-sm px-4">
+                        <i class="mdi mdi-content-save me-1"></i>
+                        @(Model != null && Model.Id != null ? "Update" : "Save")
+                    </button>
+                </div>
+
+            </div>
         }
-    };
 
-    // Send AJAX request
-    $.ajax(ajaxOptions);
-
-    return false; // prevent normal form submission
-    };
-
- </script>
+    </div>
+</div>

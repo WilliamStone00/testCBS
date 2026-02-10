@@ -23,7 +23,8 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation
         public DateTime? NextRetryAtUtc { get; set; }
         public string RequestJson { get; set; }
         public string DestinationUrl { get; set; }
-
+        public string BranchName { get; set; }
+        public DateTime? CreatedDate { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
 
@@ -52,26 +53,21 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation
 
     public class ReconciliationQuery
     {
-        public DataTableOptions Options { get; set; }
+        public DataTableOptions DataTableOptions { get; set; }
         public ReconciliationQuery()
         {
-            Options = new DataTableOptions();
+            DataTableOptions = new DataTableOptions();
         }
 
-        public string Reference { get; set; } = null;
+        // 🔍 FILTERS (moved here)
+        public string Reference { get; set; }
+        public string MemberReference { get; set; }
         public string OperationCode { get; set; }
-        public string BranchId { get; set; } = null;
         public string Status { get; set; }
-
-        public DateTime? StartAccountingDate { get; set; }
-
-        public DateTime? EndAccountingDate { get; set; }
-
-        public DateTime? StartDate { get; set; }
-        public DateTime? EndDate { get; set; }
-
-        public bool IsInterBranch { get; set; }
-
+        public string BranchId { get; set; }
+        public string CorrelationId { get; set; }
+        public DateTime? FromDate { get; set; }
+        public DateTime? ToDate { get; set; }
 
     }
     public class ReconciliationQuerys
@@ -127,6 +123,9 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation
 
         public string RequestJson { get; set; } = null;
         public string ResponseJson { get; set; } = null;
+
+        public string UpStatus { get; set; }
+        public string UpStage { get; set; }
     }
 
     public class StatisticsDetails

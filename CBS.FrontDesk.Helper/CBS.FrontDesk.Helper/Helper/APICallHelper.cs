@@ -1813,7 +1813,7 @@ namespace CBS.FrontDesk.Helper
 
         //-------------------------  System Reconciliation ----------------------
 
-        public static string GetReconciliationDataTable = "/api/v1/AccountingOperationTrack/GetUnProcessTrackedJournalDataTable";
+        public static string GetReconciliationDataTable = "/api/v1/AccountingOperationTrackReconciliation/datatable/tracker-reconcilition-vII";
 
         public static string GetReconciliationSummary = "/api/v1/AccountingOperationTrack/GetBranchDailyStaticsQuery";
 

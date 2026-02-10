@@ -203,8 +203,7 @@
                 $("#chequebookContainer").html(`
             <div class="text-center p-3">
                 <i class="mdi mdi-loading mdi-spin"></i> Loading cheque books...
-            </div>
-        `);
+            </div>`);
 
                 $.ajax({
                     url: '/ChequeClearance/Search',   // ✅ YOUR CONTROLLER
@@ -238,6 +237,15 @@
                 });
 
             });
+
+        $('#UseOverdraft').change(function () {
+            if ($(this).is(':checked')) {
+                // show clearance fields
+            } else {
+                // hide clearance fields
+            }
+        });
+
 
     </script>
 
