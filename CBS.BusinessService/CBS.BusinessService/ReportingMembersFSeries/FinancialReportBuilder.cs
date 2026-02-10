@@ -201,7 +201,7 @@ namespace CBS.BusinessService.ReportingMembersFSeries
                     TotalCredit = totalCredit.ToString("N1"),
                     TotalOperation = transactions.Count.ToString(),
                     ClosingBalance = accountStatement.summary.ClosingBalance,
-                    BalanceasOf = $"Balance as of {parameters.DateTo:dd/MM/yyyy}: {runningBalance:N1}",
+                    BalanceasOf = $"Balance as of {parameters.DateTo:dd/MM/yyyy}: <b>{runningBalance:N1}</b>",
 
                     // -------- Report --------
                     Printedfrom = parameters.DateFrom.ToString("dd/MM/yyyy"),

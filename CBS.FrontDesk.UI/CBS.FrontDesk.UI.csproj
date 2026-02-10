@@ -476,13 +476,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MembersFSeries.xsd</DependentUpon>
     </Compile>
-    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\AccountSituation.cs">
+    <Compile Include="AppFiles\Reporting\Transactions\UpdatedStatement\AccountSituation.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>AccountSituation.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\AccountStatement.cs">
+    <Compile Include="AppFiles\Reporting\Transactions\UpdatedStatement\AccountStatement.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>AccountStatement.rpt</DependentUpon>
@@ -7648,7 +7648,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\Transactions\UpdatedStatement\MemberSituation\SubLoanSituationRPT.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>SubLoanSituationRPT1.cs</LastGenOutput>
+      <LastGenOutput>SubLoanSituationRPT2.cs</LastGenOutput>
     </EmbeddedResource>
     <Content Include="App_GlobalResources\CashReconciliation\CashReconciliationResource.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
@@ -8547,11 +8547,11 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalLoanTerm.Designer.cs</LastGenOutput>
     </Content>
-    <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\AccountSituation.rpt">
+    <EmbeddedResource Include="AppFiles\Reporting\Transactions\UpdatedStatement\AccountSituation.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>AccountSituation.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\AccountStatement.rpt">
+    <EmbeddedResource Include="AppFiles\Reporting\Transactions\UpdatedStatement\AccountStatement.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>AccountStatement.cs</LastGenOutput>
     </EmbeddedResource>
