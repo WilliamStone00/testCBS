@@ -195,6 +195,7 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
         // Identification
         public string CNI { get; set; }
         public string Currreccy { get; set; }
+        public string Boldbalance { get; set; }
     }
 
 

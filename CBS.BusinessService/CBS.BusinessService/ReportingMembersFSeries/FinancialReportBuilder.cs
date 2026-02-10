@@ -154,6 +154,7 @@ namespace CBS.BusinessService.ReportingMembersFSeries
             decimal runningBalance = openingBalance;
             decimal totalDebit = 0m;
             decimal totalCredit = 0m;
+      
 
             foreach (var t in transactions)
             {
@@ -201,12 +202,13 @@ namespace CBS.BusinessService.ReportingMembersFSeries
                     TotalCredit = totalCredit.ToString("N1"),
                     TotalOperation = transactions.Count.ToString(),
                     ClosingBalance = accountStatement.summary.ClosingBalance,
-                    BalanceasOf = $"Balance as of {parameters.DateTo:dd/MM/yyyy}: <b>{runningBalance:N1}</b>",
 
+                    BalanceasOf = $"Balance as of {parameters.DateTo:dd/MM/yyyy}: {runningBalance:N1}",
+                    
                     // -------- Report --------
                     Printedfrom = parameters.DateFrom.ToString("dd/MM/yyyy"),
                     PrintedTo = parameters.DateTo.ToString("dd/MM/yyyy"),
-                    Year = DateTime.Now.Year.ToString(),
+                    Year = $"2021 - {DateTime.Now.Year}",
                     PrintedBy = GetUserFullName(),
                     Address = cus?.Address ?? "",
                     HeadOfficeAddress = bra?.Address ?? "",
@@ -244,7 +246,7 @@ namespace CBS.BusinessService.ReportingMembersFSeries
                 HeadOfficeName = GetBankName(),
                 BranchAddress = bra.Address,
                 BranchTelephone = bra.Telephone,
-               // Year = "2021 - " + DateTime.Now.Year.ToString(),
+                Year = $"2021 - {DateTime.Now.Year}",
                 CustomerId = cus.CustomerId,
 
                 Logo = logoPath,
@@ -424,7 +426,7 @@ namespace CBS.BusinessService.ReportingMembersFSeries
                     PrintedTo = situation.OperationDate.ToString("dd/MM/yyyy"),
 
                     Currreccy = "Central African CFA franc",
-                    Address = cus.town,
+                    Address = cus.Address,
 
                     Balance = acc.Balance,
                     NetBalance = acc.ActualBalance,
@@ -433,7 +435,8 @@ namespace CBS.BusinessService.ReportingMembersFSeries
                     TotalBlockedAmount = situation.Summary.TotalBlockedAmount,
                     TotalActualBalance = situation.Summary.TotalActualBalance,
 
-                    Year = DateTime.Now.Year.ToString(),
+                    Year = $"2021 - {DateTime.Now.Year}",
+
 
                     // ===== DETAIL FIELDS =====
                     AccountNumber = acc.AccountNumber,
