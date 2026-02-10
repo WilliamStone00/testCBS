@@ -476,13 +476,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MembersFSeries.xsd</DependentUpon>
     </Compile>
-    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\AccountSituation.cs">
+    <Compile Include="AppFiles\Reporting\Transactions\UpdatedStatement\AccountSituation.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>AccountSituation.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\AccountStatement.cs">
+    <Compile Include="AppFiles\Reporting\Transactions\UpdatedStatement\AccountStatement.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>AccountStatement.rpt</DependentUpon>
@@ -680,10 +680,10 @@
       <DependentUpon>TellerStatement1.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="AppFiles\Reporting\Transactions\UpdatedStatement\MemberSituation\MemberSituationMainRPT.cs">
+    <Compile Include="AppFiles\Reporting\Transactions\UpdatedStatement\MemberSituation\MemberSituation.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>MemberSituationMainRPT.rpt</DependentUpon>
+      <DependentUpon>MemberSituation.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="AppFiles\Reporting\Transactions\UpdatedStatement\MemberSituation\SubAccountSituationRPT.cs">
@@ -693,6 +693,12 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="AppFiles\Reporting\Transactions\UpdatedStatement\MemberSituation\SubLoanSituationRPT.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SubLoanSituationRPT.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AppFiles\Reporting\Transactions\UpdatedStatement\MemberSituation\SubLoanSituationRPT2.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SubLoanSituationRPT.rpt</DependentUpon>
@@ -1213,10 +1219,20 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ChequeBookResource.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\ChequeCancellation\ChequeCancellationResource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ChequeCancellationResource.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\ChequeCertification\ChequeCertificationResource.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ChequeCertificationResource.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\ChequeClearance\ChequeClearanceResource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ChequeClearanceResource.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\ChequeManagementSystem\ChequeManagements.designer.cs">
       <AutoGen>True</AutoGen>
@@ -1227,6 +1243,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ChequeManagements.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\ChequeRequest\ChequeRequestResource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ChequeRequestResource.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\CMoneyMembership\GlobalCMoneyMembership.fr.designer.cs">
       <AutoGen>True</AutoGen>
@@ -7623,9 +7644,9 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>CashDeskRessource.Designer.cs</LastGenOutput>
     </Content>
-    <EmbeddedResource Include="AppFiles\Reporting\Transactions\UpdatedStatement\MemberSituation\MemberSituationMainRPT.rpt">
+    <EmbeddedResource Include="AppFiles\Reporting\Transactions\UpdatedStatement\MemberSituation\MemberSituation.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>MemberSituationMainRPT.cs</LastGenOutput>
+      <LastGenOutput>MemberSituation.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\Transactions\UpdatedStatement\MemberSituation\SubAccountSituationRPT.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
@@ -7633,7 +7654,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\Transactions\UpdatedStatement\MemberSituation\SubLoanSituationRPT.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>SubLoanSituationRPT.cs</LastGenOutput>
+      <LastGenOutput>SubLoanSituationRPT2.cs</LastGenOutput>
     </EmbeddedResource>
     <Content Include="App_GlobalResources\CashReconciliation\CashReconciliationResource.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
@@ -7647,22 +7668,6 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>ChequeBookResource.Designer.cs</LastGenOutput>
     </Content>
-    <Content Include="App_GlobalResources\AdvancedSheild\AdvancedShield.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>AdvancedShield1.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\Authentication\AuthenticationRessource.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>AuthenticationRessource1.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\BlacklistUser\BlacklistUserRessource.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>BlacklistUserRessource1.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\Accounting V2\AccountingV2.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>AccountingV23.designer.cs</LastGenOutput>
-    </Content>
     <Content Include="App_GlobalResources\ChartOfAccountV2\ChartOfAccountV2Resource.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>ChartOfAccountV2Resource.Designer.cs</LastGenOutput>
@@ -7670,6 +7675,18 @@
     <Content Include="App_GlobalResources\ChequeCertification\ChequeCertificationResource.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>ChequeCertificationResource.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\ChequeCancellation\ChequeCancellationResource.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>ChequeCancellationResource.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\ChequeClearance\ChequeClearanceResource.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>ChequeClearanceResource.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\ChequeRequest\ChequeRequestResource.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>ChequeRequestResource.Designer.cs</LastGenOutput>
     </Content>
     <None Include="AppFiles\Accountingv2Reporting\DataSets\AccountingV2DS.xsd">
       <SubType>Designer</SubType>
@@ -8536,11 +8553,11 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalLoanTerm.Designer.cs</LastGenOutput>
     </Content>
-    <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\AccountSituation.rpt">
+    <EmbeddedResource Include="AppFiles\Reporting\Transactions\UpdatedStatement\AccountSituation.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>AccountSituation.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\AccountStatement.rpt">
+    <EmbeddedResource Include="AppFiles\Reporting\Transactions\UpdatedStatement\AccountStatement.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>AccountStatement.cs</LastGenOutput>
     </EmbeddedResource>
@@ -9096,10 +9113,6 @@
     <Content Include="App_GlobalResources\AccountingConfiguration\AccountingConfig_CreateFinancialReferenceCode.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>AccountingConfig_CreateFinancialReferenceCode.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\ChequeManagementSystem\ChequeManagements.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>ChequeManagements1.Designer.cs</LastGenOutput>
     </Content>
     <Content Include="App_GlobalResources\ChequeManagementSystem\ChequeManagements.fr.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>

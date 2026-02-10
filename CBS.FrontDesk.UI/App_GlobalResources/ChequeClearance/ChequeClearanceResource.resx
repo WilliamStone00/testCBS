@@ -1,0 +1,198 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Always_choose_either_Cheque_is_Internal_or_External" xml:space="preserve">
+    <value>Always choose either Cheque is Internal or External.</value>
+  </data>
+  <data name="Be_aware_of_clearance_hold_periods_for_external_cheques_before_confirming_availability_of_funds" xml:space="preserve">
+    <value>Be aware of clearance/hold periods for external cheques before confirming availability of funds.</value>
+  </data>
+  <data name="Capture_cheque_details_for_approval_and_processing" xml:space="preserve">
+    <value>Capture cheque details for approval and processing.</value>
+  </data>
+  <data name="Check_Account_Balance" xml:space="preserve">
+    <value>Check Account Balance</value>
+  </data>
+  <data name="Cheque_Clearance_Details" xml:space="preserve">
+    <value>Cheque Clearance Details</value>
+  </data>
+  <data name="CHEQUE_CLEARANCE_VIEWER" xml:space="preserve">
+    <value>CHEQUE CLEARANCE VIEWER</value>
+  </data>
+  <data name="Cheque_Creation_Date" xml:space="preserve">
+    <value>Cheque Creation Date</value>
+  </data>
+  <data name="Cheque_Expiration_Date" xml:space="preserve">
+    <value>Cheque Expiration Date</value>
+  </data>
+  <data name="Clearance_Request_Data_Table" xml:space="preserve">
+    <value>Clearance Request Data Table</value>
+  </data>
+  <data name="Confirm_that_the_issuing_account_has_sufficient_funds_to_avoid_rejection" xml:space="preserve">
+    <value>Confirm that the issuing account has sufficient funds to avoid rejection.</value>
+  </data>
+  <data name="DISCOUNT_APPLICATION_VIEWER" xml:space="preserve">
+    <value>DISCOUNT APPLICATION VIEWER</value>
+  </data>
+  <data name="Drag_drop_your_cheque_image_here" xml:space="preserve">
+    <value>Drag &amp; drop your cheque image here</value>
+  </data>
+  <data name="Ensure_the_cheque_number_amount_and_account_match_the_customer_s_information_before_processing" xml:space="preserve">
+    <value>Ensure the cheque number, amount, and account match the customer’s information before processing.</value>
+  </data>
+  <data name="External_Cheque_Clearance_Request" xml:space="preserve">
+    <value>External Cheque Clearance Request</value>
+  </data>
+  <data name="External_vs_Internal" xml:space="preserve">
+    <value>External vs Internal</value>
+  </data>
+  <data name="Please_fill_in_the_required_fields_and_load_the_calculated_results_before_proceeding" xml:space="preserve">
+    <value>Please fill in the required fields and load the calculated results before proceeding.</value>
+  </data>
+  <data name="Some_clearances_may_require_supervisor_authorization_check_workflow_rules_before_confirming" xml:space="preserve">
+    <value>Some clearances may require supervisor authorization; check workflow rules before confirming.</value>
+  </data>
+  <data name="TIPS_FOR_CHEQUE_CLEARANCE" xml:space="preserve">
+    <value>TIPS FOR CHEQUE CLEARANCE</value>
+  </data>
+  <data name="Uploaded_cheque_will_appear_here" xml:space="preserve">
+    <value>Uploaded cheque will appear here</value>
+  </data>
+  <data name="Use_External_if_the_cheque_originates_from_another_Microfinance_select_Internal_if_it_s_from_the_same_branch_system" xml:space="preserve">
+    <value>Use &lt;em&gt;External&lt;/em&gt; if the cheque originates from another Microfinance ; select &lt;em&gt;Internal&lt;/em&gt; if it’s from the same branch/system.</value>
+  </data>
+  <data name="Use_the_Load_button_to_fetch_and_validate_existing_cheque_details_before_clearance" xml:space="preserve">
+    <value>Use the &lt;em&gt;Load&lt;/em&gt; button to fetch and validate existing cheque details before clearance.</value>
+  </data>
+  <data name="Use_this_information_to_validate_or_review_the_clearance" xml:space="preserve">
+    <value>Use this information to validate or review the clearance.</value>
+  </data>
+  <data name="Verify_Cheque_Details" xml:space="preserve">
+    <value>Verify Cheque Details</value>
+  </data>
+  <data name="Verify_that_the_cheque_is_properly_signed_and_endorsed_according_to_Microfinance_policy" xml:space="preserve">
+    <value>Verify that the cheque is properly signed and endorsed according to Microfinance  policy.</value>
+  </data>
+  <data name="You_are_applying_a_discount_to_the_selected_cheque_clearance_request" xml:space="preserve">
+    <value>You are applying a discount to the selected cheque clearance request.</value>
+  </data>
+  <data name="You_are_viewing_a_detailed_summary_of_the_selected_cheque_clearance_request" xml:space="preserve">
+    <value>You are viewing a detailed summary of the selected cheque clearance request.</value>
+  </data>
+</root>

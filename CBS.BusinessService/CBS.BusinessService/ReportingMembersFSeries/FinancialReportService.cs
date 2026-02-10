@@ -110,37 +110,25 @@ namespace CBS.BusinessService.ReportingMembersFSeries
             }
         }
 
-        public async Task<MemberSituationData> GetMemberSituationData(string accountTypeId, string loanId, DateTime fromDate, DateTime toDate)
+      
+        public async Task<MemberSituationBackendResponse> GetMemberSituationRaw(FinancialReportFilter parameters)
+        {
+
+            var request = new FinancialReportRequest
             {
-                try
-                {
-                    // Get member accounts
-                    var accountsResponse = await _accountApiHelper.GetAsync<ResponseObject<List<MemberAccount>>>(
-                        string.Format(APICallHelper.GetMemberAccounts, accountTypeId));
+                Filter = parameters
+            };
 
-                    // Get member loans
-                    var loansResponse = await _loanApiHelper.GetAsync<ResponseObject<List<MemberLoan>>>(
-                        string.Format(APICallHelper.GetMemberLoans, loanId));
+            string endpoint = APICallHelper.GetTransactionHistoryByAccountNumber3;
 
-                    // Get transaction summary
-                   /* var transactionSummary = await GetTransactionSummary(accountTypeId, fromDate, toDate)*/;
+            var response = await _transactionApiHelper
+                .PostAsync<ResponseObject<MemberSituationBackendResponse>>(endpoint, request);         
 
-                    return new MemberSituationData
-                    {
-                        MemberAccounts = accountsResponse.ApiResponseData.Data,
-                        MemberLoans = loansResponse.ApiResponseData.Data,
-                        //TransactionSummary = transactionSummary,
-                        ReportPeriod = new ReportParameters { DateFrom = fromDate, DateTo = toDate }
-                    };
-                }
-                catch (Exception ex)
-                {
-                    // Log exception
-                    throw;
-                }
-            }
+            return response.ApiResponseData.Data;
+        }
 
-            public async Task<LoanRepaymentData> GetLoanRepaymentData(string loanId, DateTime fromDate, DateTime toDate)
+
+        public async Task<LoanRepaymentData> GetLoanRepaymentData(string loanId, DateTime fromDate, DateTime toDate)
             {
                 try
                 {

@@ -7,12 +7,12 @@
 <div class="card bg-light mb-3">
     <div class="card-body text-center">
         <h1 class="card-title text-primary">
-            <i class="mdi mdi-bank-outline"></i></i> Clearance Request
+            <i class="mdi mdi-bank-outline"></i></i> @GlobalShared.Clearance_Request
         </h1>
 
         <div class="alert alert-info mt-3 py-2">
             <i class="mdi mdi-information-outline me-1"></i>
-            Always choose either Cheque is Internal  or External .
+            @ChequeClearanceResource.Always_choose_either_Cheque_is_Internal_or_External
         </div>
     </div>
 </div>
@@ -27,7 +27,7 @@
         <div class="col-md-6 mb-3">
             <button id="externalBtn" class="btn btn-outline-primary w-100 py-3">
                 <i class="mdi mdi-earth me-1"></i>
-                External Cheque
+                @GlobalShared.External_Cheque
             </button>
         </div>
 
@@ -35,7 +35,7 @@
             <a href="@Url.Action("List", "ChequeClearance")"
                class="btn btn-outline-success w-100 py-3">
                 <i class="mdi mdi-bank me-1"></i>
-                Internal Cheque
+                @GlobalShared.Internal_Cheque
             </a>
         </div>
     </div>
@@ -47,16 +47,16 @@
         <div class="row g-3">
             <!-- CUSTOMER SEARCH -->
             <h6 class="text-primary">
-                <i class="mdi mdi-account-search-outline me-2"></i> Member Search
+                <i class="mdi mdi-account-search-outline me-2"></i> @GlobalShared.Member_Search
             </h6>
 
             <div class="col-md-12">
-                <label class="form-label fw-bold">Member Reference</label>
+                <label class="form-label fw-bold">@GlobalShared.Member_reference</label>
                 <div class="input-group">
                     <input type="text" name="CustomerId" id="customerIdInput"
                            class="form-control" placeholder="Enter Member Reference">
                     <button type="button" class="btn btn-primary" id="searchCustomerBtn">
-                        <i class="mdi mdi-magnify"></i> Search
+                        <i class="mdi mdi-magnify"></i> @GlobalShared.Search
                     </button>
                 </div>
             </div>

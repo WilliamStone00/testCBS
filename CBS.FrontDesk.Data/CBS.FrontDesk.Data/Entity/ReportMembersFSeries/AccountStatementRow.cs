@@ -195,6 +195,7 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
         // Identification
         public string CNI { get; set; }
         public string Currreccy { get; set; }
+        public string Boldbalance { get; set; }
     }
 
 
@@ -273,6 +274,7 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
     public class LoanSituationRow
     {
         // Header Information
+        
         public string ReportTitle { get; set; }
         public string BankName { get; set; }
         public string BranchName { get; set; }
@@ -280,6 +282,8 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
         public DateTime PeriodTo { get; set; }
         public string PrintedBy { get; set; }
         public DateTime PrintedOn { get; set; }
+
+        public string LoanAccount { get; set; }
 
         // Portfolio Summary
         public int TotalLoans { get; set; }
@@ -314,28 +318,7 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
         public decimal AdvancedPaymentAmount { get; set; }
         public int AdvancedPaymentDays { get; set; }
         public int AdvancedPaymentDayLeft { get; set; }
-    }
-
-    public class MemberAccount
-    {
-        public string AccountNumber { get; set; }
-        public string AccountType { get; set; }
-        public decimal Balance { get; set; }
-    }
-
-    public class MemberLoan
-    {
-        public string LoanNumber { get; set; }
-        public string LoanType { get; set; }
-        public decimal LoanAmount { get; set; }
-        public decimal OutstandingBalance { get; set; }
-    }
-
-    public class TransactionSummary
-    {
-        public decimal TotalDeposits { get; set; }
-        public decimal TotalWithdrawals { get; set; }
-    }
+    }    
 
     public class LoanDetails
     {
@@ -767,17 +750,7 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
         public string OpeningBalance { get; set; }
         public decimal YearOpeningBalance { get; set; }
         public decimal PeriodOpeningBalance { get; set; }
-    }
-
-
-
-    public class MemberSituationData
-    {
-        public List<MemberAccount> MemberAccounts { get; set; }
-        public List<MemberLoan> MemberLoans { get; set; }
-        public TransactionSummary TransactionSummary { get; set; }
-        public ReportParameters ReportPeriod { get; set; }
-    }
+    }   
 
     public class LoanRepaymentData
     {
@@ -853,6 +826,7 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
         public decimal ActualBalance { get; set; }
 
         public DateTime SnapshotDate { get; set; }
+        public DateTime AccountDate { get; set; }
     }
 
     public class AccountSummary
@@ -1152,128 +1126,128 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
     }
 
 
-        public class InterestReportRow
-        {
-            // Header Information
-            public string ReportTitle { get; set; }
-            public string BankName { get; set; }
-            public string BranchName { get; set; }
-            public string BranchCode { get; set; }
-            public string HeadOfficeAddress { get; set; }
-            public string HeadOfficeTelephone { get; set; }
-            public DateTime PeriodFrom { get; set; }
-            public DateTime PeriodTo { get; set; }
-            public string PrintedBy { get; set; }
-            public DateTime PrintedOn { get; set; }
-            public string Currency { get; set; }
-            public string Logo { get; set; }
+    public class InterestReportRow
+    {
+        // Header Information
+        public string ReportTitle { get; set; }
+        public string BankName { get; set; }
+        public string BranchName { get; set; }
+        public string BranchCode { get; set; }
+        public string HeadOfficeAddress { get; set; }
+        public string HeadOfficeTelephone { get; set; }
+        public DateTime PeriodFrom { get; set; }
+        public DateTime PeriodTo { get; set; }
+        public string PrintedBy { get; set; }
+        public DateTime PrintedOn { get; set; }
+        public string Currency { get; set; }
+        public string Logo { get; set; }
 
-            // Customer Information
-            public string CustomerId { get; set; }
-            public string CustomerName { get; set; }
-            public string Telephone { get; set; }
-            public string CustomerAddress { get; set; }
+        // Customer Information
+        public string CustomerId { get; set; }
+        public string CustomerName { get; set; }
+        public string Telephone { get; set; }
+        public string CustomerAddress { get; set; }
 
-            // Account Information
-            public string AccountNumber { get; set; }
-            public string AccountName { get; set; }
-            public string AccountType { get; set; }
+        // Account Information
+        public string AccountNumber { get; set; }
+        public string AccountName { get; set; }
+        public string AccountType { get; set; }
 
-            // Interest Calculation Details
-            public decimal InterestRate { get; set; }
-            public string InterestRateDisplay { get { return InterestRate.ToString("0.00") + "%"; } }
-            public decimal PrincipalAmount { get; set; }
-            public decimal InterestAmount { get; set; }
-            public decimal TotalAmount { get { return PrincipalAmount + InterestAmount; } }
+        // Interest Calculation Details
+        public decimal InterestRate { get; set; }
+        public string InterestRateDisplay { get { return InterestRate.ToString("0.00") + "%"; } }
+        public decimal PrincipalAmount { get; set; }
+        public decimal InterestAmount { get; set; }
+        public decimal TotalAmount { get { return PrincipalAmount + InterestAmount; } }
 
-            // Calculation Period
-            public DateTime CalculatedFrom { get; set; }
-            public DateTime CalculatedTo { get; set; }
-            public int DaysCount { get; set; }
+        // Calculation Period
+        public DateTime CalculatedFrom { get; set; }
+        public DateTime CalculatedTo { get; set; }
+        public int DaysCount { get; set; }
 
-            // Transaction Information
-            public DateTime TransactionDate { get; set; }
-            public string TransactionReference { get; set; }
-            public string TransactionType { get; set; }
-            public string TransactionDescription { get; set; }
+        // Transaction Information
+        public DateTime TransactionDate { get; set; }
+        public string TransactionReference { get; set; }
+        public string TransactionType { get; set; }
+        public string TransactionDescription { get; set; }
 
-            // Status
-            public string Status { get; set; }
-            public bool IsPosted { get; set; }
-            public DateTime? PostingDate { get; set; }
+        // Status
+        public string Status { get; set; }
+        public bool IsPosted { get; set; }
+        public DateTime? PostingDate { get; set; }
 
-            // Loan Information (if applicable)
-            public string LoanNumber { get; set; }
-            public string LoanType { get; set; }
-            public decimal LoanAmount { get; set; }
+        // Loan Information (if applicable)
+        public string LoanNumber { get; set; }
+        public string LoanType { get; set; }
+        public decimal LoanAmount { get; set; }
 
-            // Summary Fields (for footer)
-            public decimal? TotalInterestAmount { get; set; }
-            public decimal? TotalPrincipalAmount { get; set; }
-            public int? TotalTransactions { get; set; }
-            public decimal? AverageInterestRate { get; set; }
+        // Summary Fields (for footer)
+        public decimal? TotalInterestAmount { get; set; }
+        public decimal? TotalPrincipalAmount { get; set; }
+        public int? TotalTransactions { get; set; }
+        public decimal? AverageInterestRate { get; set; }
 
-            // Formatted Display Properties
-            public string PeriodFromDisplay { get { return PeriodFrom.ToString("dd/MM/yyyy"); } }
-            public string PeriodToDisplay { get { return PeriodTo.ToString("dd/MM/yyyy"); } }
-            public string CalculatedFromDisplay { get { return CalculatedFrom.ToString("dd/MM/yyyy"); } }
-            public string CalculatedToDisplay { get { return CalculatedTo.ToString("dd/MM/yyyy"); } }
-            public string TransactionDateDisplay { get { return TransactionDate.ToString("dd/MM/yyyy"); } }
-            public string PrintedOnDisplay { get { return PrintedOn.ToString("dd/MM/yyyy HH:mm:ss"); } }
+        // Formatted Display Properties
+        public string PeriodFromDisplay { get { return PeriodFrom.ToString("dd/MM/yyyy"); } }
+        public string PeriodToDisplay { get { return PeriodTo.ToString("dd/MM/yyyy"); } }
+        public string CalculatedFromDisplay { get { return CalculatedFrom.ToString("dd/MM/yyyy"); } }
+        public string CalculatedToDisplay { get { return CalculatedTo.ToString("dd/MM/yyyy"); } }
+        public string TransactionDateDisplay { get { return TransactionDate.ToString("dd/MM/yyyy"); } }
+        public string PrintedOnDisplay { get { return PrintedOn.ToString("dd/MM/yyyy HH:mm:ss"); } }
 
-            // Amount Display Properties
-            public string PrincipalAmountDisplay { get { return PrincipalAmount.ToString("N1"); } }
-            public string InterestAmountDisplay { get { return InterestAmount.ToString("N1"); } }
-            public string TotalAmountDisplay { get { return TotalAmount.ToString("N1"); } }
-            public string TotalInterestAmountDisplay { get { return TotalInterestAmount?.ToString("N1") ?? "0.0"; } }
-            public string TotalPrincipalAmountDisplay { get { return TotalPrincipalAmount?.ToString("N1") ?? "0.0"; } }
+        // Amount Display Properties
+        public string PrincipalAmountDisplay { get { return PrincipalAmount.ToString("N1"); } }
+        public string InterestAmountDisplay { get { return InterestAmount.ToString("N1"); } }
+        public string TotalAmountDisplay { get { return TotalAmount.ToString("N1"); } }
+        public string TotalInterestAmountDisplay { get { return TotalInterestAmount?.ToString("N1") ?? "0.0"; } }
+        public string TotalPrincipalAmountDisplay { get { return TotalPrincipalAmount?.ToString("N1") ?? "0.0"; } }
 
-            // Additional Fields
-            public string InterestType { get; set; } // Normal, Penalty, Overdue
-            public string CalculationMethod { get; set; } // Simple, Compound, Flat
-            public string Frequency { get; set; } // Daily, Monthly, Quarterly, Annual
-            public bool IsTaxable { get; set; }
-            public decimal? TaxAmount { get; set; }
-            public string TaxAmountDisplay { get { return TaxAmount?.ToString("N1") ?? "0.0"; } }
+        // Additional Fields
+        public string InterestType { get; set; } // Normal, Penalty, Overdue
+        public string CalculationMethod { get; set; } // Simple, Compound, Flat
+        public string Frequency { get; set; } // Daily, Monthly, Quarterly, Annual
+        public bool IsTaxable { get; set; }
+        public decimal? TaxAmount { get; set; }
+        public string TaxAmountDisplay { get { return TaxAmount?.ToString("N1") ?? "0.0"; } }
 
-            // For grouping and sorting
-            public string ProductCode { get; set; }
-            public string ProductName { get; set; }
+        // For grouping and sorting
+        public string ProductCode { get; set; }
+        public string ProductName { get; set; }
         public string Category { get; set; }
-         public List< InterestDetail> InterestDetails { get; set; }
-         public InterestSummary Summary { get; set; }
+        public List<InterestDetail> InterestDetails { get; set; }
+        public InterestSummary Summary { get; set; }
     }
 
     // Supporting classes for interest data
     public class InterestDetail
-        {
-            public string AccountNumber { get; set; }
-            public string AccountName { get; set; }
-            public string CustomerName { get; set; }
-            public string CustomerId { get; set; }
-            public decimal InterestRate { get; set; }
-            public decimal PrincipalAmount { get; set; }
-            public decimal InterestAmount { get; set; }
-            public DateTime CalculatedFrom { get; set; }
-            public DateTime CalculatedTo { get; set; }
-            public int DaysCount { get; set; }
-            public DateTime TransactionDate { get; set; }
-            public string TransactionReference { get; set; }
-            public string TransactionType { get; set; }
-            public string Status { get; set; }
-            public string LoanNumber { get; set; }
-            public string InterestType { get; set; }
-        }
+    {
+        public string AccountNumber { get; set; }
+        public string AccountName { get; set; }
+        public string CustomerName { get; set; }
+        public string CustomerId { get; set; }
+        public decimal InterestRate { get; set; }
+        public decimal PrincipalAmount { get; set; }
+        public decimal InterestAmount { get; set; }
+        public DateTime CalculatedFrom { get; set; }
+        public DateTime CalculatedTo { get; set; }
+        public int DaysCount { get; set; }
+        public DateTime TransactionDate { get; set; }
+        public string TransactionReference { get; set; }
+        public string TransactionType { get; set; }
+        public string Status { get; set; }
+        public string LoanNumber { get; set; }
+        public string InterestType { get; set; }
+    }
 
-        public class InterestSummary
-        {
-            public decimal TotalInterestAmount { get; set; }
-            public decimal TotalPrincipalAmount { get; set; }
-            public int TotalTransactions { get; set; }
-            public decimal AverageInterestRate { get; set; }
-            public decimal TotalTaxAmount { get; set; }
-            public decimal NetInterestAmount { get { return TotalInterestAmount - TotalTaxAmount; } }
-        }
+    public class InterestSummary
+    {
+        public decimal TotalInterestAmount { get; set; }
+        public decimal TotalPrincipalAmount { get; set; }
+        public int TotalTransactions { get; set; }
+        public decimal AverageInterestRate { get; set; }
+        public decimal TotalTaxAmount { get; set; }
+        public decimal NetInterestAmount { get { return TotalInterestAmount - TotalTaxAmount; } }
+    }
 
     public class MemberSituationMainRpt
     {
@@ -1289,14 +1263,91 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
         public string HeadOfficeWebSite { get; set; }
         public string HeadOfficeInitial { get; set; }
         public string HeadOfficeCode { get; set; }
-        public string MemberName { get; set; }
-        public string MemberReference { get; set; }
-        public string Tel { get; set; }
+        public string CustomerName { get; set; }
+        public string CustomerId { get; set; }
+
+        public string Telephone { get; set; }
+        public string PrintedBy { get; set; }
         public string Address { get; set; }
         public string CNI { get; set; }
+        public string Year { get; set; }
         public List<AccountSnapshot> AccountSituations { get; set; }
         public List<LoanSituationRow> LoanHistories { get; set; }
     }
+
+    public class MemberSituationBackendResponse
+    {
+        public int ReportType { get; set; }
+        public DateTime GeneratedAt { get; set; }
+       
+        public string MemberReference { get; set; }
+        public MemberSituationBackend MemberSituation { get; set; }
+    }
+
+    public class MemberSituationBackend
+    {
+        public DateTime OperationDate { get; set; }
+        public List<AccountBackendDto> Accounts { get; set; }
+        public List<LoanBackendDto> Loans { get; set; }
+        public MemberSituationSummary Summary { get; set; }
+    }
+
+    public class AccountBackendDto
+    {
+        public string AccountId { get; set; }
+        public string AccountNumber { get; set; }
+        public string AccountType { get; set; }
+        public decimal Balance { get; set; }
+        public decimal BlockedAmount { get; set; }
+        public decimal ActualBalance { get; set; }
+        public DateTime SnapshotDate { get; set; }
+    }
+
+    public class LoanBackendDto
+    {
+        public string LoanId { get; set; }
+        public string ContractCode { get; set; }
+        public string LoanType { get; set; }
+        public string Status { get; set; }
+        public decimal Balance { get; set; }
+        public decimal Principal { get; set; }
+        public decimal Interest { get; set; }
+        public decimal InterestRate { get; set; }
+        public decimal Penalty { get; set; }
+        public decimal TotalRepayment { get; set; }
+        public decimal LastRepaymentAmount { get; set; }
+        public DateTime LastRepaymentDate { get; set; }
+        public DateTime NextRepaymentDate { get; set; }
+        public DateTime LoanDate { get; set; }
+        public DateTime DisbursementDate { get; set; }
+        public int DelDays { get; set; }
+        public decimal DelAmount { get; set; }
+        public decimal DelInterest { get; set; }
+        public string MemberReference { get; set; }
+        public string MembersName { get; set; }
+        public string MembersBranch { get; set; }
+        public string MemberBranchCode { get; set; }
+    }
+    public class MemberSituationSummary
+    {
+        public decimal TotalBalance { get; set; }
+        public decimal TotalBlockedAmount { get; set; }
+        public decimal TotalLiquidSavings { get; set; }
+
+        public decimal Actual { get; set; }
+
+        public decimal LoanAndCoverageGapAmount { get; set; }
+        public decimal TotalLoanBalance { get; set; }
+
+        public int LoansCount { get; set; }
+        public decimal TotalPaid { get; set; }
+
+        public decimal SavingsAgainstLoanRatio { get; set; }
+
+        public string LoanRiskLevel { get; set; }
+        public string LoanRecommendation { get; set; }
+    }
+
 }
 
 

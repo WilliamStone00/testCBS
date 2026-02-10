@@ -92,121 +92,114 @@ namespace CBS.FrontDesk.UI.Controllers
         public void ReportParameterLessCOLL()
         {
             ReportDocument rd = new ReportDocument();
+
             try
             {
-                string strReportName = System.Web.HttpContext.Current.Session["ReportName"]?.ToString();
-                var rptSource = System.Web.HttpContext.Current.Session["rptSource"];
-                var rptpath = System.Web.HttpContext.Current.Session["rptpath"]?.ToString();
-                var rpttitle = System.Web.HttpContext.Current.Session["rpttitle"]?.ToString();
+                var context = System.Web.HttpContext.Current;
 
-                if (string.IsNullOrEmpty(strReportName) || rptSource == null || rptpath == null || rpttitle == null)
+                var mainData = context.Session["MainData"];
+                var subReports = context.Session["SubReportsData"] as Dictionary<string, object>;
+                var rptPath = context.Session["rptpath"]?.ToString();
+                var rptTitle = context.Session["rpttitle"]?.ToString() ?? "Report";
+                var reportParams = context.Session["ReportParameters"]; // object, not DTO
+
+                if (mainData == null || string.IsNullOrWhiteSpace(rptPath))
                 {
-                    Response.Write("<H2>❌ No Report with such Name found</H2>");
-                    Response.Write($"<p>ReportName: {strReportName ?? "null"}</p>");
-                    Response.Write($"<p>rptSource: {(rptSource == null ? "null" : rptSource.GetType().Name)}</p>");
-                    Response.Write($"<p>rptpath: {rptpath ?? "null"}</p>");
+                    context.Response.Write("<h2>❌ Report data not found</h2>");
                     return;
                 }
 
-                // Log what we're loading
-                System.Diagnostics.Debug.WriteLine($"=== CRYSTAL REPORT LOADING ===");
-                System.Diagnostics.Debug.WriteLine($"Report: {strReportName}");
-                System.Diagnostics.Debug.WriteLine($"Path: {rptpath}");
-                System.Diagnostics.Debug.WriteLine($"Source Type: {rptSource.GetType().FullName}");
+                string physicalPath = Server.MapPath(rptPath);
 
-                // Log DataSet details if it's a DataSet
-                if (rptSource is System.Data.DataSet dataSet)
+                if (!System.IO.File.Exists(physicalPath))
                 {
-                    System.Diagnostics.Debug.WriteLine($"DataSet: {dataSet.DataSetName}, Tables: {dataSet.Tables.Count}");
-                    foreach (DataTable table in dataSet.Tables)
-                    {
-                        System.Diagnostics.Debug.WriteLine($"  Table: '{table.TableName}' ({table.Rows.Count} rows)");
-                    }
-                }
-
-                string strRptPath = Server.MapPath(rptpath);
-
-                // Check if report file exists
-                if (!System.IO.File.Exists(strRptPath))
-                {
-                    Response.Write($"<H2>❌ Report file not found</H2>");
-                    Response.Write($"<p>Path: {strRptPath}</p>");
+                    context.Response.Write($"<h2>❌ Report file not found</h2><p>{physicalPath}</p>");
                     return;
                 }
 
-                rd.Load(strRptPath);
+                /* ================= LOAD MAIN REPORT ================= */
+                rd.Load(physicalPath);
+                rd.SetDataSource(mainData);
 
-                // Set data source
-                rd.SetDataSource(rptSource);
+                System.Diagnostics.Debug.WriteLine("=== MAIN REPORT LOADED ===");
 
-                // Log Crystal's internal table recognition
-                if (rd.Database != null && rd.Database.Tables != null)
+                /* ================= LOAD SUB REPORTS ================= */
+                if (subReports != null && subReports.Any())
                 {
-                    System.Diagnostics.Debug.WriteLine("=== CRYSTAL INTERNAL TABLES ===");
-                    foreach (CrystalDecisions.CrystalReports.Engine.Table table in rd.Database.Tables)
+                    System.Diagnostics.Debug.WriteLine("=== BINDING SUB REPORTS ===");
+
+                    foreach (var sub in subReports)
                     {
-                        System.Diagnostics.Debug.WriteLine($"Crystal Table: {table.Name}");
+                        if (sub.Value == null)
+                        {
+                            System.Diagnostics.Debug.WriteLine($"⚠ Subreport data is null: {sub.Key}");
+                            continue;
+                        }
+
+                        try
+                        {
+                            var crystalSubreport = rd.Subreports
+                                .Cast<ReportDocument>()
+                                .FirstOrDefault(sr => sr.Name == sub.Key);
+
+                            if (crystalSubreport == null)
+                            {
+                                System.Diagnostics.Debug.WriteLine(
+                                    $"❌ Subreport NOT FOUND in report: {sub.Key}");
+                                continue;
+                            }
+
+                            crystalSubreport.SetDataSource(sub.Value);
+
+                            System.Diagnostics.Debug.WriteLine($"✔ Subreport bound: {sub.Key}");
+                        }
+                        catch (Exception ex)
+                        {
+                            System.Diagnostics.Debug.WriteLine(
+                                $"❌ Subreport '{sub.Key}' binding failed: {ex.Message}");
+                        }
                     }
                 }
 
-                // Set parameters if available
-                string strFromDate = System.Web.HttpContext.Current.Session["DateFrom"]?.ToString() ?? string.Empty;
-                string strToDate = System.Web.HttpContext.Current.Session["DateTo"]?.ToString() ?? string.Empty;
 
-                if (!string.IsNullOrEmpty(strFromDate) && !string.IsNullOrEmpty(strToDate))
-                {
-                    try
-                    {
-                        rd.SetParameterValue("DateFrom", strFromDate);
-                        rd.SetParameterValue("DateTo", strToDate);
-                    }
-                    catch (Exception paramEx)
-                    {
-                        System.Diagnostics.Debug.WriteLine($"Parameter Error: {paramEx.Message}");
-                        // Continue without parameters
-                    }
-                }
+                /* ================= SET PARAMETERS ================= */
+                //if (reportParams != null)
+                //{
+                //    foreach (var prop in reportParams.GetType().GetProperties())
+                //    {
+                //        TrySetParameter(rd, prop.Name, prop.GetValue(reportParams));
+                //    }
+                //}
 
-                // Export to PDF
-                string savedFileName = $"{rpttitle}-{DateTime.UtcNow:dd_MM_yyyy_HHmmss}";
+                //TrySetParameter(rd, "ReportTitle", rptTitle);
+                //TrySetParameter(rd, "PrintedOn", DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"));
+
+                /* ================= EXPORT ================= */
+                System.Web.HttpResponse response = context.Response;
+
+                string fileName = $"{rptTitle}-{DateTime.Now:dd_MM_yyyy_HHmmss}";
+
                 rd.ExportToHttpResponse(
                     ExportFormatType.PortableDocFormat,
-                    System.Web.HttpContext.Current.Response,
+                    response,
                     false,
-                    savedFileName);
+                    fileName);
 
                 System.Diagnostics.Debug.WriteLine("✅ Report exported successfully");
             }
-            catch (CrystalDecisions.CrystalReports.Engine.LoadSaveReportException loadEx)
-            {
-                System.Diagnostics.Debug.WriteLine($"CRYSTAL LOAD ERROR: {loadEx.Message}");
-                Response.Write($"<H2>❌ Report Loading Error</H2>");
-                Response.Write($"<p>{loadEx.Message}</p>");
-                if (loadEx.InnerException != null)
-                {
-                    Response.Write($"<p>Inner: {loadEx.InnerException.Message}</p>");
-                }
-            }
-            catch (CrystalDecisions.CrystalReports.Engine.DataSourceException dataEx)
-            {
-                System.Diagnostics.Debug.WriteLine($"CRYSTAL DATA SOURCE ERROR: {dataEx.Message}");
-                Response.Write($"<H2>❌ Data Binding Error</H2>");
-                Response.Write($"<p>{dataEx.Message}</p>");
-                Response.Write($"<p>Check that your DataSet table names match exactly what Crystal expects.</p>");
-            }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"CRYSTAL GENERAL ERROR: {ex.Message}");
-                System.Diagnostics.Debug.WriteLine($"Stack Trace: {ex.StackTrace}");
-                Response.Write($"<H2>❌ An error occurred while generating the report</H2>");
-                Response.Write($"<p>{ex.Message}</p>");
-                Response.Write($"<pre>{ex.StackTrace}</pre>");
+                System.Diagnostics.Debug.WriteLine($"CRYSTAL ERROR: {ex.Message}");
+                System.Web.HttpContext.Current.Response.Write("<h2>❌ Report generation failed</h2>");
+                System.Web.HttpContext.Current.Response.Write($"<p>{ex.Message}</p>");
             }
             finally
             {
                 CleanReport(rd);
             }
         }
+
+
 
         private void SetReportParameters(ReportDocument reportDocument)
         {

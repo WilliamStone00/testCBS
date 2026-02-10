@@ -213,6 +213,9 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Data.SqlClient">
+      <HintPath>..\..\..\..\..\..\Program Files\Microsoft Visual Studio\2022\Professional\Common7\IDE\Extensions\Microsoft\SQLDB\DAC\Microsoft.Data.SqlClient.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Extensions.DependencyInjection, Version=8.0.0.1, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.8.0.1\lib\net462\Microsoft.Extensions.DependencyInjection.dll</HintPath>
     </Reference>
@@ -473,6 +476,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MembersFSeries.xsd</DependentUpon>
     </Compile>
+    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\AccountSituation.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AccountSituation.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\AccountStatement.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -489,12 +498,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>BalanceSheet.rpt</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\CrystalReport1.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CrystalReport1.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\ChequeBook.cs">
@@ -677,6 +680,24 @@
       <DependentUpon>TellerStatement1.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="AppFiles\Reporting\Transactions\UpdatedStatement\MemberSituation\MemberSituationMainRPT.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MemberSituationMainRPT.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AppFiles\Reporting\Transactions\UpdatedStatement\MemberSituation\SubAccountSituationRPT.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SubAccountSituationRPT.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AppFiles\Reporting\Transactions\UpdatedStatement\MemberSituation\SubLoanSituationRPT.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SubLoanSituationRPT.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="App_GlobalResources\AccountCategory\GlobalsAccountCategory.fr.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -726,6 +747,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>AccountingV2.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Accounting V2\AccountingV23.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AccountingV2.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\AccountingChart\GlobalAccountingChart.fr.designer.cs">
       <AutoGen>True</AutoGen>
@@ -1037,19 +1063,105 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AccountOpeningRulePerBranch_Index.fr.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\AdvancedSheild\AdvancedShield.Designer.cs" />
+    <Compile Include="App_GlobalResources\AdvancedSheild\AdvancedShield1.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AdvancedShield.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AffiliateAccount\AffiliateAccount2.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AffiliateAccount.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AffiliateToBranchFallback\AffiliateToBranchFallback2.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AffiliateToBranchFallback.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Affiliate\Affiliate1.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Affiliate.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Affiliate\Affiliate.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Affiliate.fr.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\AlertProfile\GlobalAlertProfile.fr.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalAlertProfile.fr.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning_Create.Designer.cs" />
-    <Compile Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning_Data.Designer.cs" />
-    <Compile Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning_Index.Designer.cs" />
-    <Compile Include="App_GlobalResources\AndriodAppVersioning\AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.Designer.cs" />
+    <Compile Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning1.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AndriodAppVersioning.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning_Create.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AndriodAppVersioning_Create.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning_Data.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AndriodAppVersioning_Data.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning_Index.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AndriodAppVersioning_Index.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AndriodAppVersioning\AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\APIKey\ApiKeyRessource1.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ApiKeyRessource.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Authentication\AuthenticationRessource.Designer.cs" />
+    <Compile Include="App_GlobalResources\Authentication\AuthenticationRessource1.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AuthenticationRessource.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\BankingOperations\GlobalBankingOperations.fr.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalBankingOperations.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Bank\GlobalBankData.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalBankData.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\BlacklistUser\BlacklistUserRessource.Designer.cs" />
+    <Compile Include="App_GlobalResources\BlacklistUser\BlacklistUserRessource1.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BlacklistUserRessource.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\BranchAccount\BranchAccountRessources.Designer.cs">
+    </Compile>
+    <Compile Include="App_GlobalResources\Bank\GlobalBankData.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalBankData.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\BudgetManagement\GlobalBudgetManagement.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BranchAccountRessources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\BranchCashConfig\BranchCashConfigRessource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BranchCashConfigRessource.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\BudgetManagement\GlobalBudgetManagement.fr.designer.cs">
       <AutoGen>True</AutoGen>
@@ -1061,215 +1173,20 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalBulkOperation.fr.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\CashCeilingRequest\CashCeilingRequest_Create.fr.designer.cs">
+    <Compile Include="App_GlobalResources\CashCeilingRequest\CashCeilingRequestRessource.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>CashCeilingRequest_Create.fr.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashCeilingRequest\CashCeilingRequest_Index.fr.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashCeilingRequest_Index.fr.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashCeilingRequest\CashCeilingRequest_InitiatorData.fr.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashCeilingRequest_InitiatorData.fr.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashCeilingRequest\CashCeilingRequest_RequestValidation.fr.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashCeilingRequest_RequestValidation.fr.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashCeilingRequest\CashCeilingRequest_Validation.fr.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashCeilingRequest_Validation.fr.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashCeilingRequest\CashCeilingRequest_VaultDetailsPartial.fr.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashCeilingRequest_VaultDetailsPartial.fr.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashCeilingRequest\CashToVault.fr.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashToVault.fr.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashCeilingRequest\InitiatorListing.fr.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>InitiatorListing.fr.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashCeilingRequest\RequestValidation.fr.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>RequestValidation.fr.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashCeilingRequest\SubTillToPrimaryTill.fr.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SubTillToPrimaryTill.fr.resx</DependentUpon>
+      <DependentUpon>CashCeilingRequestRessource.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\CashChangeManagement\GlobalCashChangeManagement.fr.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalCashChangeManagement.fr.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\CashDeskCashin.fr.designer.cs">
+    <Compile Include="App_GlobalResources\CashDesk\CashDeskRessource.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>CashDeskCashin.fr.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\CashDeskCashout.fr.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashDeskCashout.fr.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\CashDeskNote.fr.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashDeskNote.fr.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\CashDesk_CustomerCard.fr.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashDesk_CustomerCard.fr.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\CashDesk_DenominationBreakDown.fr.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashDesk_DenominationBreakDown.fr.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\CashDesk_DepositerForm.fr.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashDesk_DepositerForm.fr.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\CashDesk_ExpenseOtherPaymentForm.fr.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashDesk_ExpenseOtherPaymentForm.fr.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\CashDesk_ExpenseOtherTransactionForm.fr.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashDesk_ExpenseOtherTransactionForm.fr.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\CashDesk_ExpenseOtherTransactionTabs.fr.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashDesk_ExpenseOtherTransactionTabs.fr.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\CashDesk_LoanRepaymentSimulationForm.fr.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashDesk_LoanRepaymentSimulationForm.fr.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\CashDesk_MemberPayment.fr.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashDesk_MemberPayment.fr.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\CashDesk_MomocashCollectionForm.fr.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashDesk_MomocashCollectionForm.fr.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\CashDesk_MomocashCollectionSearchBox.fr.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashDesk_MomocashCollectionSearchBox.fr.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\CashDesk_MomocashCollectionTabs.fr.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashDesk_MomocashCollectionTabs.fr.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\CashDesk_NoneMemberPayment.fr.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashDesk_NoneMemberPayment.fr.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\CashDesk_OperationForm.fr.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashDesk_OperationForm.fr.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\CashDesk_OtherCashMobileMoneyForm.fr.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashDesk_OtherCashMobileMoneyForm.fr.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\CashDesk_OtherPaymentForm.fr.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashDesk_OtherPaymentForm.fr.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\CashDesk_OtherTransactionForm.fr.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashDesk_OtherTransactionForm.fr.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\CashDesk_OtherTransactionTabs.fr.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashDesk_OtherTransactionTabs.fr.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\CashDesk_PreMemberOnboardingSummary.fr.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashDesk_PreMemberOnboardingSummary.fr.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\CashDesk_SearchBox.fr.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashDesk_SearchBox.fr.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\CashDesk_SearchBoxLoanRepaymentSimulation.fr.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashDesk_SearchBoxLoanRepaymentSimulation.fr.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\CashDesk_Tabs.fr.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashDesk_Tabs.fr.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\CashDesk_TabsCashout.fr.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashDesk_TabsCashout.fr.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\CashDesk_TemporalMembersLookUp.fr.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashDesk_TemporalMembersLookUp.fr.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\ExpenseOtherPayment.fr.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ExpenseOtherPayment.fr.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\LoanRepaymentSimulation.fr.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>LoanRepaymentSimulation.fr.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\MomocashCollection.fr.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MomocashCollection.fr.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\OtherCashMobileMoney.fr.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>OtherCashMobileMoney.fr.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\OtherCashTransactions.fr.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>OtherCashTransactions.fr.resx</DependentUpon>
+      <DependentUpon>CashDeskRessource.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\CashFlowManagement\GlobalCashFlowManagement.fr.designer.cs">
       <AutoGen>True</AutoGen>
@@ -1286,6 +1203,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalCashMovementTracker.fr.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\CashReconciliation\CashReconciliationResource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CashReconciliationResource.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Categoryconfic\CategoryconficResource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CategoryconficResource.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\ChangeNumber\GlobalChangeNumber.fr.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1296,6 +1223,21 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalChargesWaived.fr.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\ChartOfAccountV2\ChartOfAccountV2Resource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ChartOfAccountV2Resource.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\ChequeBook\ChequeBookResource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ChequeBookResource.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\ChequeCertification\ChequeCertificationResource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ChequeCertificationResource.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\ChequeManagementSystem\ChequeManagements.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1305,6 +1247,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ChequeManagements.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\ChequeManagementSystem\ChequeManagements1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ChequeManagements.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\CMoneyMembership\GlobalCMoneyMembership.fr.designer.cs">
       <AutoGen>True</AutoGen>
@@ -1515,6 +1462,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalLoan.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Login\GlobalLogin.fr.Designer.cs">
+      <DependentUpon>GlobalLogin.fr.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="App_GlobalResources\Login\LoginBasic.fr.designer.cs">
       <AutoGen>True</AutoGen>
@@ -2308,6 +2260,7 @@
     <Compile Include="Controllers\MemberNoneCashOperation\MobileMoneyBackOfficeController.cs" />
     <Compile Include="Controllers\LoanApplicationManagement\MemberOperationController.cs" />
     <Compile Include="Controllers\MembersFSerie\MembersFSeriesController.cs" />
+    <Compile Include="Controllers\MembersFSerie\MembersFSeriesReportController.cs" />
     <Compile Include="Controllers\MobileMoneyV2\MobileMoneyConfigV2Controller.cs" />
     <Compile Include="Controllers\Overdraft\OverdraftActivationController.cs" />
     <Compile Include="Controllers\Overdraft\OverdraftFacilityConfigController.cs" />
@@ -4068,16 +4021,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalBank.fr.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\Bank\GlobalBankData.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>GlobalBankData.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\Bank\GlobalBankData.fr.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>GlobalBankData.fr.resx</DependentUpon>
-    </Compile>
     <Compile Include="App_GlobalResources\BranchManagement\GlobalBranchManagement.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -4098,215 +4041,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalBulkOperation.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\CashCeilingRequest\CashCeilingRequest_Create.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashCeilingRequest_Create.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashCeilingRequest\CashCeilingRequest_Index.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashCeilingRequest_Index.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashCeilingRequest\CashCeilingRequest_InitiatorData.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashCeilingRequest_InitiatorData.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashCeilingRequest\CashCeilingRequest_RequestValidation.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashCeilingRequest_RequestValidation.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashCeilingRequest\CashCeilingRequest_Validation.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashCeilingRequest_Validation.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashCeilingRequest\CashCeilingRequest_VaultDetailsPartial.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashCeilingRequest_VaultDetailsPartial.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashCeilingRequest\CashToVault.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashToVault.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashCeilingRequest\InitiatorListing.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>InitiatorListing.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashCeilingRequest\RequestValidation.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>RequestValidation.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashCeilingRequest\SubTillToPrimaryTill.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SubTillToPrimaryTill.resx</DependentUpon>
-    </Compile>
     <Compile Include="App_GlobalResources\CashChangeManagement\GlobalCashChangeManagement.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalCashChangeManagement.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\CashDeskCashin.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashDeskCashin.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\CashDeskCashout.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashDeskCashout.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\CashDeskNote.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashDeskNote.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\CashDesk_CustomerCard.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashDesk_CustomerCard.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\CashDesk_DenominationBreakDown.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashDesk_DenominationBreakDown.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\CashDesk_DepositerForm.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashDesk_DepositerForm.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\CashDesk_ExpenseOtherPaymentForm.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashDesk_ExpenseOtherPaymentForm.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\CashDesk_ExpenseOtherTransactionForm.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashDesk_ExpenseOtherTransactionForm.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\CashDesk_ExpenseOtherTransactionTabs.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashDesk_ExpenseOtherTransactionTabs.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\CashDesk_LoanRepaymentSimulationForm.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashDesk_LoanRepaymentSimulationForm.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\CashDesk_MemberPayment.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashDesk_MemberPayment.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\CashDesk_MomocashCollectionForm.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashDesk_MomocashCollectionForm.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\CashDesk_MomocashCollectionSearchBox.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashDesk_MomocashCollectionSearchBox.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\CashDesk_MomocashCollectionTabs.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashDesk_MomocashCollectionTabs.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\CashDesk_NoneMemberPayment.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashDesk_NoneMemberPayment.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\CashDesk_OperationForm.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashDesk_OperationForm.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\CashDesk_OtherCashMobileMoneyForm.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashDesk_OtherCashMobileMoneyForm.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\CashDesk_OtherPaymentForm.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashDesk_OtherPaymentForm.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\CashDesk_OtherTransactionForm.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashDesk_OtherTransactionForm.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\CashDesk_OtherTransactionTabs.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashDesk_OtherTransactionTabs.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\CashDesk_PreMemberOnboardingSummary.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashDesk_PreMemberOnboardingSummary.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\CashDesk_SearchBox.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashDesk_SearchBox.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\CashDesk_SearchBoxLoanRepaymentSimulation.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashDesk_SearchBoxLoanRepaymentSimulation.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\CashDesk_Tabs.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashDesk_Tabs.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\CashDesk_TabsCashout.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashDesk_TabsCashout.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\CashDesk_TemporalMembersLookUp.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CashDesk_TemporalMembersLookUp.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\ExpenseOtherPayment.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ExpenseOtherPayment.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\LoanRepaymentSimulation.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>LoanRepaymentSimulation.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\MomocashCollection.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MomocashCollection.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\OtherCashMobileMoney.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>OtherCashMobileMoney.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\OtherCashTransactions.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>OtherCashTransactions.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\CashFlowManagement\GlobalCashFlowManagement.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -4487,11 +4225,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalLogin.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\Login\GlobalLogin.fr.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>GlobalLogin.fr.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\Login\LoginBasic.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -7838,23 +7571,6 @@
     <Content Include="Content\bootstrap-grid.rtl.css.map" />
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
-    <Content Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning_Create.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>AndriodAppVersioning_Create1.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning_Data.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>AndriodAppVersioning_Data1.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning_Index.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>AndriodAppVersioning_Index1.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\AndriodAppVersioning\AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial1.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\AccountingConfiguration.zip" />
     <Content Include="AppFiles\ManualDailyCollection\Manualdaillycollectiontemplete.xlsx" />
     <Content Include="AppFiles\AffiliateAccountUpload\BAPCCUL_ACCOUNTS2.xlsx" />
     <Content Include="AppFiles\AffiliateAccountUpload\SampleBalanceSheet2.xlsx" />
@@ -7863,6 +7579,122 @@
     <Content Include="Views\MobileMoneyConfigV2\_Data.cshtml" />
     <Content Include="AppFiles\Accountingv2Reporting\DataSets\AccountingV2DS.xsc">
       <DependentUpon>AccountingV2DS.xsd</DependentUpon>
+    </Content>
+    <Content Include="App_GlobalResources\Login\GlobalLogin.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalLogin.fr.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AndriodAppVersioning1.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning_Create.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AndriodAppVersioning_Create.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning_Data.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AndriodAppVersioning_Data.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning_Index.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AndriodAppVersioning_Index.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AndriodAppVersioning\AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Bank\GlobalBankData.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalBankData.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Bank\GlobalBankData.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalBankData.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Affiliate\Affiliate.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Affiliate1.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AffiliateAccount\AffiliateAccount.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AffiliateAccount2.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AffiliateToBranchFallback\AffiliateToBranchFallback.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AffiliateToBranchFallback2.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\APIKey\ApiKeyRessource.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>ApiKeyRessource1.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\BranchAccount\BranchAccountRessources.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>BranchAccountRessources.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\BranchCashConfig\BranchCashConfigRessource.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>BranchCashConfigRessource.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Affiliate\Affiliate.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Affiliate.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashCeilingRequest\CashCeilingRequestRessource.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CashCeilingRequestRessource.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashDesk\CashDeskRessource.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CashDeskRessource.Designer.cs</LastGenOutput>
+    </Content>
+    <EmbeddedResource Include="AppFiles\Reporting\Transactions\UpdatedStatement\MemberSituation\MemberSituationMainRPT.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>MemberSituationMainRPT.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Transactions\UpdatedStatement\MemberSituation\SubAccountSituationRPT.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>SubAccountSituationRPT.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Transactions\UpdatedStatement\MemberSituation\SubLoanSituationRPT.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>SubLoanSituationRPT.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Content Include="App_GlobalResources\CashReconciliation\CashReconciliationResource.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CashReconciliationResource.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Categoryconfic\CategoryconficResource.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CategoryconficResource.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\ChequeBook\ChequeBookResource.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>ChequeBookResource.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AdvancedSheild\AdvancedShield.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AdvancedShield1.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Authentication\AuthenticationRessource.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AuthenticationRessource1.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\BlacklistUser\BlacklistUserRessource.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>BlacklistUserRessource1.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Accounting V2\AccountingV2.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AccountingV23.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\ChartOfAccountV2\ChartOfAccountV2Resource.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>ChartOfAccountV2Resource.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\ChequeCertification\ChequeCertificationResource.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>ChequeCertificationResource.Designer.cs</LastGenOutput>
     </Content>
     <None Include="AppFiles\Accountingv2Reporting\DataSets\AccountingV2DS.xsd">
       <SubType>Designer</SubType>
@@ -7908,6 +7740,17 @@
     </None>
     <Content Include="AppFiles\Accountingv2Reporting\DataSets\IPS.xss">
       <DependentUpon>IPS.xsd</DependentUpon>
+    </Content>
+    <Content Include="AppFiles\Accountingv2Reporting\DataSets\MembersFSeries.xsc">
+      <DependentUpon>MembersFSeries.xsd</DependentUpon>
+    </Content>
+    <None Include="AppFiles\Accountingv2Reporting\DataSets\MembersFSeries.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>MembersFSeries.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="AppFiles\Accountingv2Reporting\DataSets\MembersFSeries.xss">
+      <DependentUpon>MembersFSeries.xsd</DependentUpon>
     </Content>
     <None Include="DataSet\Loan\DeliquentLoanSummaryDataSet.xsd">
       <SubType>Designer</SubType>
@@ -8234,7 +8077,9 @@
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\Buea_PT.pubxml" />
     <None Include="Properties\PublishProfiles\CamCCULAdmin_TB.pubxml" />
+    <None Include="Properties\PublishProfiles\CBS-UI_Akum_TB.pubxml" />
     <None Include="Properties\PublishProfiles\Cpcmc_TB.pubxml" />
+    <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\PB.pubxml" />
     <None Include="Properties\PublishProfiles\Prod Vb Deploy.pubxml" />
@@ -8271,17 +8116,9 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalBank.Designer.cs</LastGenOutput>
     </Content>
-    <Content Include="App_GlobalResources\Bank\GlobalBankData.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>GlobalBankData.Designer.cs</LastGenOutput>
-    </Content>
     <Content Include="App_GlobalResources\Bank\GlobalBank.fr.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalBank.fr.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\Bank\GlobalBankData.fr.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>GlobalBankData.fr.designer.cs</LastGenOutput>
     </Content>
     <Content Include="App_GlobalResources\AccountCategory\Globals_Update.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
@@ -8370,130 +8207,6 @@
     <Content Include="App_GlobalResources\AccountingConfiguration\GlobalAccountUpload.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalAccountUpload.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\OtherCashTransactions.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>OtherCashTransactions.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\OtherCashMobileMoney.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>OtherCashMobileMoney.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\MomocashCollection.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>MomocashCollection.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\LoanRepaymentSimulation.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>LoanRepaymentSimulation.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\ExpenseOtherPayment.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>ExpenseOtherPayment.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\CashDeskCashout.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashDeskCashout.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\CashDeskCashin.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashDeskCashin.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\CashDesk_TemporalMembersLookUp.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashDesk_TemporalMembersLookUp.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\CashDesk_TabsCashout.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashDesk_TabsCashout.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\CashDesk_Tabs.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashDesk_Tabs.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\CashDesk_SearchBoxLoanRepaymentSimulation.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashDesk_SearchBoxLoanRepaymentSimulation.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\CashDesk_SearchBox.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashDesk_SearchBox.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\CashDesk_PreMemberOnboardingSummary.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashDesk_PreMemberOnboardingSummary.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\CashDesk_OtherTransactionTabs.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashDesk_OtherTransactionTabs.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\CashDesk_OtherTransactionForm.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashDesk_OtherTransactionForm.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\CashDesk_OtherPaymentForm.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashDesk_OtherPaymentForm.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\CashDesk_OtherCashMobileMoneyForm.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashDesk_OtherCashMobileMoneyForm.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\CashDesk_OperationForm.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashDesk_OperationForm.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\CashDeskNote.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashDeskNote.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\CashDesk_NoneMemberPayment.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashDesk_NoneMemberPayment.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\CashDesk_MomocashCollectionTabs.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashDesk_MomocashCollectionTabs.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\CashDesk_MomocashCollectionSearchBox.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashDesk_MomocashCollectionSearchBox.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\CashDesk_MomocashCollectionForm.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashDesk_MomocashCollectionForm.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\CashDesk_MemberPayment.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashDesk_MemberPayment.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\CashDesk_LoanRepaymentSimulationForm.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashDesk_LoanRepaymentSimulationForm.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\CashDesk_ExpenseOtherTransactionTabs.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashDesk_ExpenseOtherTransactionTabs.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\CashDesk_ExpenseOtherTransactionForm.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashDesk_ExpenseOtherTransactionForm.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\CashDesk_ExpenseOtherPaymentForm.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashDesk_ExpenseOtherPaymentForm.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\CashDesk_DepositerForm.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashDesk_DepositerForm.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\CashDesk_DenominationBreakDown.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashDesk_DenominationBreakDown.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\CashDesk_CustomerCard.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashDesk_CustomerCard.Designer.cs</LastGenOutput>
     </Content>
     <Content Include="App_GlobalResources\AccountingConfiguration\AccountingConfig_UpdateStatementModel.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
@@ -8688,46 +8401,6 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalBulkOperation.Designer.cs</LastGenOutput>
     </Content>
-    <Content Include="App_GlobalResources\CashCeilingRequest\CashCeilingRequest_Validation.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashCeilingRequest_Validation.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashCeilingRequest\SubTillToPrimaryTill.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>SubTillToPrimaryTill.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashCeilingRequest\RequestValidation.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>RequestValidation.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashCeilingRequest\InitiatorListing.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>InitiatorListing.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashCeilingRequest\CashCeilingRequest_Index.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashCeilingRequest_Index.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashCeilingRequest\CashToVault.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashToVault.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashCeilingRequest\CashCeilingRequest_VaultDetailsPartial.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashCeilingRequest_VaultDetailsPartial.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashCeilingRequest\CashCeilingRequest_RequestValidation.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashCeilingRequest_RequestValidation.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashCeilingRequest\CashCeilingRequest_InitiatorData.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashCeilingRequest_InitiatorData.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashCeilingRequest\CashCeilingRequest_Create.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashCeilingRequest_Create.Designer.cs</LastGenOutput>
-    </Content>
     <Content Include="App_GlobalResources\CashChangeManagement\GlobalCashChangeManagement.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalCashChangeManagement.Designer.cs</LastGenOutput>
@@ -8888,6 +8561,10 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalLoanTerm.Designer.cs</LastGenOutput>
     </Content>
+    <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\AccountSituation.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>AccountSituation.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\AccountStatement.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>AccountStatement.cs</LastGenOutput>
@@ -8899,10 +8576,6 @@
     <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\BalanceSheet.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>BalanceSheet.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\CrystalReport1.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>CrystalReport1.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\ChequeBook.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
@@ -9265,173 +8938,9 @@
       <LastGenOutput>GlobalBulkOperation.fr.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_GlobalResources\CashCeilingRequest\CashCeilingRequest_Create.fr.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashCeilingRequest_Create.fr.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashCeilingRequest\CashCeilingRequest_Index.fr.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashCeilingRequest_Index.fr.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashCeilingRequest\CashCeilingRequest_InitiatorData.fr.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashCeilingRequest_InitiatorData.fr.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashCeilingRequest\CashCeilingRequest_RequestValidation.fr.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashCeilingRequest_RequestValidation.fr.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashCeilingRequest\CashCeilingRequest_Validation.fr.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashCeilingRequest_Validation.fr.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashCeilingRequest\CashCeilingRequest_VaultDetailsPartial.fr.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashCeilingRequest_VaultDetailsPartial.fr.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashCeilingRequest\CashToVault.fr.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashToVault.fr.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashCeilingRequest\InitiatorListing.fr.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>InitiatorListing.fr.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashCeilingRequest\RequestValidation.fr.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>RequestValidation.fr.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashCeilingRequest\SubTillToPrimaryTill.fr.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>SubTillToPrimaryTill.fr.designer.cs</LastGenOutput>
-    </Content>
     <Content Include="App_GlobalResources\CashChangeManagement\GlobalCashChangeManagement.fr.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalCashChangeManagement.fr.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\CashDesk_CustomerCard.fr.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashDesk_CustomerCard.fr.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\CashDesk_DenominationBreakDown.fr.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashDesk_DenominationBreakDown.fr.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\CashDesk_DepositerForm.fr.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashDesk_DepositerForm.fr.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\CashDesk_ExpenseOtherPaymentForm.fr.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashDesk_ExpenseOtherPaymentForm.fr.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\CashDesk_ExpenseOtherTransactionForm.fr.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashDesk_ExpenseOtherTransactionForm.fr.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\CashDesk_ExpenseOtherTransactionTabs.fr.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashDesk_ExpenseOtherTransactionTabs.fr.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\CashDesk_LoanRepaymentSimulationForm.fr.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashDesk_LoanRepaymentSimulationForm.fr.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\CashDesk_MemberPayment.fr.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashDesk_MemberPayment.fr.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\CashDesk_MomocashCollectionForm.fr.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashDesk_MomocashCollectionForm.fr.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\CashDesk_MomocashCollectionSearchBox.fr.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashDesk_MomocashCollectionSearchBox.fr.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\CashDesk_MomocashCollectionTabs.fr.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashDesk_MomocashCollectionTabs.fr.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\CashDesk_NoneMemberPayment.fr.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashDesk_NoneMemberPayment.fr.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\CashDesk_OperationForm.fr.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashDesk_OperationForm.fr.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\CashDesk_OtherCashMobileMoneyForm.fr.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashDesk_OtherCashMobileMoneyForm.fr.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\CashDesk_OtherPaymentForm.fr.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashDesk_OtherPaymentForm.fr.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\CashDesk_OtherTransactionForm.fr.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashDesk_OtherTransactionForm.fr.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\CashDesk_OtherTransactionTabs.fr.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashDesk_OtherTransactionTabs.fr.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\CashDesk_PreMemberOnboardingSummary.fr.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashDesk_PreMemberOnboardingSummary.fr.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\CashDesk_SearchBox.fr.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashDesk_SearchBox.fr.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\CashDesk_SearchBoxLoanRepaymentSimulation.fr.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashDesk_SearchBoxLoanRepaymentSimulation.fr.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\CashDesk_Tabs.fr.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashDesk_Tabs.fr.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\CashDesk_TabsCashout.fr.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashDesk_TabsCashout.fr.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\CashDesk_TemporalMembersLookUp.fr.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashDesk_TemporalMembersLookUp.fr.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\CashDeskCashin.fr.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashDeskCashin.fr.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\CashDeskCashout.fr.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashDeskCashout.fr.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\CashDeskNote.fr.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CashDeskNote.fr.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\ExpenseOtherPayment.fr.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>ExpenseOtherPayment.fr.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\LoanRepaymentSimulation.fr.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>LoanRepaymentSimulation.fr.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\MomocashCollection.fr.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>MomocashCollection.fr.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\OtherCashMobileMoney.fr.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>OtherCashMobileMoney.fr.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\OtherCashTransactions.fr.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>OtherCashTransactions.fr.designer.cs</LastGenOutput>
     </Content>
     <Content Include="App_GlobalResources\CashFlowManagement\GlobalCashFlowManagement.fr.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
@@ -9649,10 +9158,6 @@
     <EmbeddedResource Include="AppFiles\Reporting\Transactions\Reciepts\TellerStatement1.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>TellerStatement11.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="App_GlobalResources\Login\GlobalLogin.fr.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>GlobalLogin.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <Content Include="App_GlobalResources\TransactionConfiguration\GlobalOrdinaryAccounts.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
@@ -11001,10 +10506,8 @@
     <Content Include="Views\LossManagement\_CheckLeavesTable.cshtml" />
     <Content Include="Views\LossManagement\_LossRequestForm.cshtml" />
     <Content Include="Views\ChequeClearance\Index.cshtml" />
-    <Content Include="Views\ChequeClearance\_ChequeClearanceDataTable.cshtml" />
     <Content Include="Views\ChequeClearance\_ChequeClearanceDetails.cshtml" />
     <Content Include="Views\ChequeClearance\_Edit.cshtml" />
-    <Content Include="Views\ChequeClearance\_ValidationForm.cshtml" />
     <Content Include="Views\ChequeClearance\_MainForm.cshtml" />
     <Content Include="Views\ChequeClearance\_Create.cshtml" />
     <Content Include="Views\AccountingStatements\_JournalEntryData.cshtml" />
@@ -11042,8 +10545,6 @@
     <Content Include="Views\LossManagement\CheckbookDetails.cshtml" />
     <Content Include="Views\LossManagement\LossRequestForm.cshtml" />
     <Content Include="Views\ChequeClearance\List.cshtml" />
-    <Content Include="Views\ChequeClearance\_ChequeBookDataTable.cshtml" />
-    <Content Include="Views\ChequeClearance\_ChequeBookD.cshtml" />
     <Content Include="Views\ManualJournalEntry\Index.cshtml" />
     <Content Include="Views\ManualJournalEntry\_Posting.cshtml" />
     <Content Include="Views\ConfigurationManualEntry\Index.cshtml" />
@@ -11300,6 +10801,20 @@
     <Content Include="Views\StandingOrder\StandingOrderRegistration.cshtml" />
     <Content Include="Views\StandingOrder\_DataStandingOrders.cshtml" />
     <Content Include="Views\StandingOrder\Listing.cshtml" />
+    <Content Include="Views\MembersFSeries\LoanDetails.cshtml" />
+    <Content Include="Views\SalaryUpload\SharedMonthDetails.cshtml" />
+    <Content Include="Views\Communication\Index.cshtml" />
+    <Content Include="Views\Communication\_DataSmsUploads.cshtml" />
+    <Content Include="Views\Communication\SmsUpload.cshtml" />
+    <Content Include="Views\Communication\SmsUploadDetails.cshtml" />
+    <Content Include="Views\MemberAdjustmentConsole\_MemberBlockAmountAdjustementModal.cshtml" />
+    <Content Include="Views\MemberAdjustmentConsole\_DailyCollectionReExecutionModalBody.cshtml" />
+    <Content Include="Views\TranslationPlaceholder\List.cshtml" />
+    <Content Include="Views\TranslationPlaceholder\_TranslationPlaceholderDataTable.cshtml" />
+    <Content Include="Views\TranslationPlaceholder\_TranslationPlaceholderDetailsPartial.cshtml" />
+    <Content Include="Views\TranslationPlaceholder\_TranslationPlaceholderForm.cshtml" />
+    <Content Include="Views\MembersFSeries\_ReportView.cshtml" />
+    <Content Include="Views\FeeConfig\_FeeConfigDataTable.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
@@ -11333,6 +10848,7 @@
     <Folder Include="Views\DaillyCollectorLicense\" />
     <Folder Include="Views\Default\" />
     <Folder Include="Views\Language\" />
+    <Folder Include="Views\MembersFSeriesReport\" />
     <Folder Include="Views\ReportLineMapping\" />
     <Folder Include="Views\ReportLinet\" />
     <Folder Include="Views\ReportSection\" />

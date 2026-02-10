@@ -117,30 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AccountBalance" xml:space="preserve">
-    <value>Solde du compte</value>
-  </data>
-  <data name="AccountNumber" xml:space="preserve">
-    <value>Numéro de compte</value>
-  </data>
-  <data name="AlreadyPaid" xml:space="preserve">
-    <value>Déjà payé</value>
-  </data>
-  <data name="AlreadyUsed" xml:space="preserve">
-    <value>Déjà utilisé</value>
-  </data>
-  <data name="Amount" xml:space="preserve">
-    <value>Montant</value>
-  </data>
-  <data name="ApprovalStatus" xml:space="preserve">
-    <value>Statut d'approbation</value>
-  </data>
-  <data name="Branch" xml:space="preserve">
-    <value>Agence</value>
-  </data>
-  <data name="Cashier" xml:space="preserve">
-    <value>Caissier</value>
-  </data>
   <data name="ChargesWaiver" xml:space="preserve">
     <value>Exonération de frais</value>
   </data>
@@ -153,32 +129,11 @@
   <data name="ChargeWaiverRequest" xml:space="preserve">
     <value>Demande d'exonération de frais</value>
   </data>
-  <data name="Comment" xml:space="preserve">
-    <value>Commentaire</value>
-  </data>
-  <data name="ConfirmRequest" xml:space="preserve">
-    <value>Confirmer la demande</value>
-  </data>
-  <data name="CustomerCode" xml:space="preserve">
-    <value>Code client</value>
-  </data>
-  <data name="CustomerNumber" xml:space="preserve">
-    <value>Numéro de client</value>
-  </data>
-  <data name="Date" xml:space="preserve">
-    <value>Date</value>
-  </data>
   <data name="DateWaived" xml:space="preserve">
     <value>Date d'exonération</value>
   </data>
   <data name="EnterChargeToWaive" xml:space="preserve">
     <value>Entrez le frais à exonérer. (Remarque que cela n'est valable que pour une journée).</value>
-  </data>
-  <data name="Expired" xml:space="preserve">
-    <value>Expiré</value>
-  </data>
-  <data name="ExpiredDate" xml:space="preserve">
-    <value>Date d'expiration</value>
   </data>
   <data name="GDate" xml:space="preserve">
     <value>Date G</value>
@@ -189,35 +144,8 @@
   <data name="InitiateSavingWithdrawalRequest" xml:space="preserve">
     <value>Initier une demande de retrait d'épargne</value>
   </data>
-  <data name="Initiator" xml:space="preserve">
-    <value>Initiateur</value>
-  </data>
   <data name="IsWithdrawalDone" xml:space="preserve">
     <value>Le retrait est-il effectué</value>
-  </data>
-  <data name="LoadRequests" xml:space="preserve">
-    <value>Charger les demandes</value>
-  </data>
-  <data name="LoanBalance" xml:space="preserve">
-    <value>Solde du prêt</value>
-  </data>
-  <data name="Member" xml:space="preserve">
-    <value>Membre</value>
-  </data>
-  <data name="MemberAccount" xml:space="preserve">
-    <value>Compte du membre</value>
-  </data>
-  <data name="MemberName" xml:space="preserve">
-    <value>Nom du membre</value>
-  </data>
-  <data name="MemberRefernce" xml:space="preserve">
-    <value>Référence du membre</value>
-  </data>
-  <data name="MembersDetails" xml:space="preserve">
-    <value>Détails du membre</value>
-  </data>
-  <data name="MembersInformations" xml:space="preserve">
-    <value>Informations sur les membres</value>
   </data>
   <data name="NoDataWasFoundAtTheMoment" xml:space="preserve">
     <value>Aucune donnée trouvée pour le moment</value>
@@ -225,23 +153,8 @@
   <data name="NormalCharge" xml:space="preserve">
     <value>Frais normal</value>
   </data>
-  <data name="Note" xml:space="preserve">
-    <value>Note</value>
-  </data>
-  <data name="OK" xml:space="preserve">
-    <value>OK</value>
-  </data>
-  <data name="Pending" xml:space="preserve">
-    <value>En attente</value>
-  </data>
   <data name="PendingWithdrawalNotifications" xml:space="preserve">
     <value>Notifications de retrait en attente</value>
-  </data>
-  <data name="Photo" xml:space="preserve">
-    <value>Photo</value>
-  </data>
-  <data name="Reason" xml:space="preserve">
-    <value>Raison</value>
   </data>
   <data name="ReasonForWaivingCharges" xml:space="preserve">
     <value>Raison de l'exonération de frais</value>
@@ -249,26 +162,8 @@
   <data name="ReasonForWithdrawal" xml:space="preserve">
     <value>Raison du retrait</value>
   </data>
-  <data name="Reference" xml:space="preserve">
-    <value>Référence</value>
-  </data>
-  <data name="RequestCode" xml:space="preserve">
-    <value>Code de la demande</value>
-  </data>
-  <data name="RequestDate" xml:space="preserve">
-    <value>Date de la demande</value>
-  </data>
-  <data name="RequestedAmount" xml:space="preserve">
-    <value>Montant demandé</value>
-  </data>
   <data name="REQUESTINFO" xml:space="preserve">
     <value>INFO DE LA DEMANDE</value>
-  </data>
-  <data name="SelectApprovalStatus" xml:space="preserve">
-    <value>Sélectionner le statut d'approbation</value>
-  </data>
-  <data name="Telephone" xml:space="preserve">
-    <value>Téléphone</value>
   </data>
   <data name="ViewCustomerDetails" xml:space="preserve">
     <value>Afficher les détails du client</value>

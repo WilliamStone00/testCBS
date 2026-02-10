@@ -3,9 +3,13 @@ using CBS.BusinessService;
 using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
 using CBS.BusinessService.ReportingMembersFSeries;
+using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Reporting;
 using CBS.FrontDesk.Data.Entity.ReportMembersFSeries;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
+using CBS.FrontDesk.Data.ReportDataSetDto.LoanDeliquentAnalysis;
 using CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.ReportRPT;
+using CBS.FrontDesk.UI.AppFiles.Reporting.Loan.PortFolio;
+using CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.UpdatedStatement;
 using CrystalDecisions.CrystalReports.Engine;
 using CrystalDecisions.Shared;
 using CrystalDecisions.Web;
@@ -13,8 +17,10 @@ using DocumentFormat.OpenXml.Bibliography;
 using DocumentFormat.OpenXml.Spreadsheet;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers
@@ -26,34 +32,51 @@ namespace CBS.FrontDesk.UI.Controllers
         private readonly AccountServices _accountServices;
         private readonly LoanServices _loanServices;
 
+
         public MembersFSeriesReportController(
             BranchServices branchServices,
             AccountServices accountServices,
             LoanServices loanServices,
             FinancialReportBuilder reportBuilder)
+
         {
             _branchServices = branchServices;
             _accountServices = accountServices;
             _loanServices = loanServices;
             _reportBuilder = reportBuilder;
         }
-                
+
         public async Task<ActionResult> Index()
         {
-          
+
             return View();
         }
+
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> GenerateReport(ReportParameters parameters)
         {
-            if (parameters == null)
+
+            Session["MainData"] = null;
+            Session["SubReportsData"] = null; // null for single reports
+            Session["ReportParameters"] = null;
+
+            if (parameters.AccountIds != null)
             {
-                return Json(new { success = false, message = "No parameters provided." });
+                parameters.AccountIds = parameters.AccountIds
+                    .SelectMany(id => id.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                    .Select(id => id.Trim())
+                    .Distinct()
+                    .ToList();
             }
 
-            FinancialReportFilter filter = new FinancialReportFilter
+
+            if (parameters == null)
+                return Json(new { success = false, message = "No parameters provided." });
+
+            var filter = new FinancialReportFilter
             {
                 MemberReference = parameters.CustomerId,
                 AccountIds = parameters.AccountIds,
@@ -63,27 +86,71 @@ namespace CBS.FrontDesk.UI.Controllers
                 InterestVadPenaltyType = parameters.InterestVadPenaltyType
             };
 
-            object reportData = null;
+            object mainData = null;
+            var subReports = new Dictionary<string, object>();
 
-            // Single switch statement - handles all report types including mapped ones
+            string reportTitle = string.Empty;
+            string relativePath = string.Empty;
+            var rptparameters = new Dictionary<string, object>
+            {
+                { "DateFrom", filter.DateFrom.ToString("dd/MM/yyyy") },
+                { "DateTo", filter.DateTo.ToString("dd/MM/yyyy") },
+                { "ReportTitle", reportTitle },
+                { "PrintedOn", DateTime.Now.ToString("dd/MM/yyyy, hh:mm:ss") }
+            };
             switch (parameters.ReportType)
             {
+                /* ===================== MULTI / SUB REPORT ===================== */
                 case "MemberSituation":
-                    filter.ReportType = (int)FinancialReportType.MemberSituation;
-                    filter.LoanId = parameters.LoanId;
-                    filter.AccountId = parameters.AccountTypeId;
-                    reportData = await _reportBuilder.BuildMemberSituationRows(filter);
-                    break;
+                    {
+                        filter.ReportType = (int)FinancialReportType.MemberSituation;
+                        filter.LoanId = parameters.LoanId;
+                        filter.AccountId = parameters.AccountTypeId;
 
+                        var memberSituation =
+                            await _reportBuilder.BuildMemberSituationRows(filter);
+
+                        if (memberSituation == null ||
+                            !memberSituation.AccountSituations.Any() ||
+                            !memberSituation.LoanHistories.Any())
+                        {
+                            return Json(new { success = false, message = "No data found." });
+                        }
+                        relativePath =
+                            "Transactions/UpdatedStatement/MemberSituation/MemberSituation.rpt";
+                        reportTitle = "MEMBER SITUATION";
+
+                        if (memberSituation.CustomerName != null)
+                        {
+                            // MAIN REPORT DATA
+                            mainData = new List<MemberSituationMainRpt> { memberSituation };
+                            // SUB REPORTS
+                            subReports = new Dictionary<string, object>
+                            {
+                                { "SubAccountSituationRPT", memberSituation.AccountSituations },
+                                { "SubLoanSituationRPT", memberSituation.LoanHistories }
+                            };
+                           
+                        }
+
+                        break;
+                    }
+
+
+                /* ===================== SINGLE REPORTS ===================== */
                 case "AccountSituation":
                     filter.ReportType = (int)FinancialReportType.AccountSituation;
-                    reportData = await _reportBuilder.BuildAccountSituationRows(filter);
+                    mainData = await _reportBuilder.BuildAccountSituationRows(filter);
+                    relativePath = "Transactions/UpdatedStatement/AccountSituation.rpt";
+                    reportTitle = "ACCOUNT SITUATION";
                     break;
 
                 case "AccountStatement":
                     filter.ReportType = (int)FinancialReportType.AccountStatement;
                     filter.AccountNumber = parameters.AccountTypeId;
-                    reportData = await _reportBuilder.BuildAccountStatementRows(filter);
+                    mainData = await _reportBuilder.BuildAccountStatementRows(filter);
+                    relativePath = "Transactions/UpdatedStatement/AccountStatement.rpt";
+                    reportTitle = "ACCOUNT STATEMENT";
                     break;
 
                 case "LoanRepayment":
@@ -92,55 +159,63 @@ namespace CBS.FrontDesk.UI.Controllers
                     filter.LoanRepaymentMode = parameters.ByRepayment
                         ? (int)LoanRepaymentReportMode.ByRepaymentPeriod
                         : (int)LoanRepaymentReportMode.BySpecificLoan;
-                    reportData = await _reportBuilder.BuildLoanRepaymentRows(filter);
+                    mainData = await _reportBuilder.BuildLoanRepaymentRows(filter);
                     break;
 
                 case "LoanSituation":
                     filter.ReportType = (int)FinancialReportType.LoanHistory;
                     filter.LoanStatus = parameters.LoanStatus;
-                    reportData = await _reportBuilder.BuildLoanSituationRows(filter);
+                    mainData = await _reportBuilder.BuildLoanSituationRows(filter);
                     break;
 
-                // These come directly from JavaScript mapping
                 case "Interest":
                     filter.ReportType = (int)FinancialReportType.Interest;
-                    reportData = await _reportBuilder.BuildInterestRows(filter);
+                    mainData = await _reportBuilder.BuildInterestRows(filter);
                     break;
 
                 case "VAT":
                     filter.ReportType = (int)FinancialReportType.VAT;
-                    reportData = await _reportBuilder.BuildVatRows(filter);
+                    mainData = await _reportBuilder.BuildVatRows(filter);
                     break;
 
                 case "Penalty":
                     filter.ReportType = (int)FinancialReportType.Penalty;
-                    reportData = await _reportBuilder.BuildPenaltyRows(filter);
+                    mainData = await _reportBuilder.BuildPenaltyRows(filter);
                     break;
 
                 default:
                     return Json(new { success = false, message = "Invalid report type selected." });
             }
 
-            if (reportData == null)
-            {
+            if (mainData == null)
                 return Json(new { success = false, message = "No data found." });
-            }
 
-            Session["rptSource"] = reportData;
-            Session["ReportFilter"] = filter;
-            Session["ReportParameters"] = parameters;
-            Session["ReportItemCount"] = GetItemCount(reportData);
+            /* ===================== SESSION BINDING ===================== */
+            Session["MainData"] = mainData;
+            Session["SubReportsData"] = subReports; // null for single reports
+            Session["ReportParameters"] = rptparameters;
+
+            /* ===================== VIEWER ===================== */
+            var viewerUrl = Url.Content(
+                $"/ReportForm/ReportViewer.aspx" +
+                $"?reportPath={HttpUtility.UrlEncode(relativePath)}" +
+                $"&reportName={HttpUtility.UrlEncode(reportTitle)}"
+            );
 
             return Json(new
             {
                 success = true,
+                redirectUrl = viewerUrl,
                 reportType = parameters.ReportType,
-                count = GetItemCount(reportData)
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                //count = GetItemCount(mainData)
             });
+
+
         }
 
 
-        // Helper method to get item count
+        //Helper method to get item count
         private int GetItemCount(object data)
         {
             if (data == null) return 0;
@@ -183,8 +258,14 @@ namespace CBS.FrontDesk.UI.Controllers
 
                 Session["rptType"] = "ReportParameterLess";
                 Session["ReportName"] = reportName;
-                Session["rptpath"] = $"~/AppFiles/Accountingv2Reporting/ReportRPT/{reportName}";
-         
+                if (parameters.ReportType == "MemberSituation")
+                {
+                    Session["rptpath"] = $"~/AppFiles/Reporting/Transactions/UpdatedStatement/MemberSituation/MemberSituation.rpt";
+                }
+                else
+                {
+                    Session["rptpath"] = $"~/AppFiles/Accountingv2Reporting/ReportRPT/{reportName}";
+                }
                 Session["rpttitle"] = reportTitle;
                 Session["DateFrom"] = parameters.DateFrom.ToString("dd/MM/yyyy");
                 Session["DateTo"] = parameters.DateTo.ToString("dd/MM/yyyy");
@@ -196,6 +277,7 @@ namespace CBS.FrontDesk.UI.Controllers
                 return Json(new { success = false, message = ex.Message });
             }
         }
+
 
         public ActionResult DebugReportData()
         {
@@ -287,7 +369,7 @@ namespace CBS.FrontDesk.UI.Controllers
         }
 
 
-      
+
 
         private void CleanReport(ReportDocument rd)
         {

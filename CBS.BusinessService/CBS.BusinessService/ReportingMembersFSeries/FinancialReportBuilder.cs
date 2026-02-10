@@ -6,6 +6,7 @@ using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.CustomerManagement;
 using CBS.FrontDesk.Data.Entity.ReportMembersFSeries;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
+using DocumentFormat.OpenXml.Spreadsheet;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -153,6 +154,7 @@ namespace CBS.BusinessService.ReportingMembersFSeries
             decimal runningBalance = openingBalance;
             decimal totalDebit = 0m;
             decimal totalCredit = 0m;
+      
 
             foreach (var t in transactions)
             {
@@ -172,6 +174,8 @@ namespace CBS.BusinessService.ReportingMembersFSeries
                     Telephone = cus?.Phone ?? "-",
                     Currreccy = "Central African CFA franc",
                     Village = cus?.town ?? "",
+                    BranchAddress = bra.Address,
+                    BranchTelephone = bra.Telephone,
 
                     // -------- Branch --------
                     BranchName = GetBranchName(),
@@ -198,12 +202,13 @@ namespace CBS.BusinessService.ReportingMembersFSeries
                     TotalCredit = totalCredit.ToString("N1"),
                     TotalOperation = transactions.Count.ToString(),
                     ClosingBalance = accountStatement.summary.ClosingBalance,
-                    BalanceasOf = $"Balance as of {parameters.DateTo:dd/MM/yyyy}: {runningBalance:N1}",
 
+                    BalanceasOf = $"Balance as of {parameters.DateTo:dd/MM/yyyy}: {runningBalance:N1}",
+                    
                     // -------- Report --------
                     Printedfrom = parameters.DateFrom.ToString("dd/MM/yyyy"),
                     PrintedTo = parameters.DateTo.ToString("dd/MM/yyyy"),
-                    Year = DateTime.Now.Year.ToString(),
+                    Year = $"2021 - {DateTime.Now.Year}",
                     PrintedBy = GetUserFullName(),
                     Address = cus?.Address ?? "",
                     HeadOfficeAddress = bra?.Address ?? "",
@@ -215,57 +220,80 @@ namespace CBS.BusinessService.ReportingMembersFSeries
         }
 
         // 2. Build Member Situation Rows
-        public async Task<List<MemberSituationRow>> BuildMemberSituationRows(FinancialReportFilter parameters)
+        public async Task<MemberSituationMainRpt> BuildMemberSituationRows(FinancialReportFilter filter)
         {
-            var memberData = await _reportService.GetMemberSituationData(parameters.AccountId,
-                parameters.LoanId,
-                parameters.DateFrom,
-                parameters.DateTo);
+            var backend = await _reportService.GetMemberSituationRaw(filter);
+            var bra = await GetBranchandbank();
+            var cus = await GetCustomer(filter.MemberReference);
 
-            var rows = new List<MemberSituationRow>();
+            // ✅ Generate logo once
+            var logoPath = bra != null
+                ? PaymentReceiptMapping.GenerateAndSaveBankLogoImage(bra.Bank?.LogoUrl, bra.Name)
+                : "";
 
-            // Header
-            rows.Add(new MemberSituationRow
+
+            var situation = backend.MemberSituation;
+            var firstLoan = situation.Loans?.FirstOrDefault();
+
+            return new MemberSituationMainRpt
             {
-                ReportTitle = "MEMBER SITUATION REPORT",
-                BankName = GetBankName(),
+                // ===============================
+                // INSTITUTION / HEADER
+                // ===============================
+
                 BranchName = GetBranchName(),
-                PeriodFrom = parameters.DateFrom,
-                PeriodTo = parameters.DateTo,
+                BranchCode = GetBranchCode(),
+                HeadOfficeName = GetBankName(),
+                BranchAddress = bra.Address,
+                BranchTelephone = bra.Telephone,
+                Year = $"2021 - {DateTime.Now.Year}",
+                CustomerId = cus.CustomerId,
+
+                Logo = logoPath,
+
+                CustomerName = cus != null ? $"{cus.FirstName} {cus.LastName}" : "-",
+                // CNI = cus.Cni ?? "-",
+                Telephone = cus.Phone ?? "-",
                 PrintedBy = GetUserFullName(),
-                PrintedOn = DateTime.Now
-            });
 
-            // Accounts Summary
-            foreach (var account in memberData.MemberAccounts)
-            {
-                rows.Add(new MemberSituationRow
-                {
-                    AccountNumber = account.AccountNumber,
-                    AccountType = account.AccountType,
-                    CurrentBalance = account.Balance,
-                    //AvailableBalance = account.AvailableBalance,
-                    //AccountStatus = account.Status,
-                    //LastTransactionDate = account.LastTransactionDate
-                });
-            }
+                // ===============================
+                // SUBREPORT 1 – ACCOUNTS
+                // ===============================
+                AccountSituations = situation.Accounts
+                    .Select(a => new AccountSnapshot
+                    {
+                        AccountId = a.AccountId,
+                        AccountNumber = a.AccountNumber,
+                        AccountType = a.AccountType,
+                        Balance = a.Balance,
+                        BlockedAmount = a.BlockedAmount,
+                        ActualBalance = a.ActualBalance,
+                        AccountDate = a.SnapshotDate
+                    })
+                    .ToList(),
 
-            // Loans Summary
-            foreach (var loan in memberData.MemberLoans)
-            {
-                rows.Add(new MemberSituationRow
-                {
-                    LoanNumber = loan.LoanNumber,
-                    LoanType = loan.LoanType,
-                    LoanAmount = loan.LoanAmount,
-                    OutstandingBalance = loan.OutstandingBalance,
-                    //NextPaymentDate = loan.NextPaymentDate,
-                    //LoanStatus = loan.Status
-                });
-            }
+                // ===============================
+                // SUBREPORT 2 – LOANS
+                // ===============================
+                LoanHistories = situation.Loans
+                    .Select(l => new LoanSituationRow
+                    {
+                        LoanAccount = l.LoanId,
+                        LoanType = l.LoanType,
+                        LoanBalance = l.Balance,
+                        Interest = l.Interest,
+                        InterestRate = l.InterestRate,
+                        LastRepaymentDate = l.LastRepaymentDate,
+                        LoanDate = l.LoanDate,
+                        DisbursementDate = l.DisbursementDate,
+                        NumberOfInstallment = l.DelDays,
+                        LoanAmount = l.Principal,
 
-            return rows;
+                    })
+                    .ToList()
+            };
         }
+
 
         // 3. Build Loan Repayment Rows
         public async Task<List<LoanRepaymentRow>> BuildLoanRepaymentRows(FinancialReportFilter parameters)
@@ -398,7 +426,7 @@ namespace CBS.BusinessService.ReportingMembersFSeries
                     PrintedTo = situation.OperationDate.ToString("dd/MM/yyyy"),
 
                     Currreccy = "Central African CFA franc",
-                    Address = cus.town,
+                    Address = cus.Address,
 
                     Balance = acc.Balance,
                     NetBalance = acc.ActualBalance,
@@ -407,7 +435,8 @@ namespace CBS.BusinessService.ReportingMembersFSeries
                     TotalBlockedAmount = situation.Summary.TotalBlockedAmount,
                     TotalActualBalance = situation.Summary.TotalActualBalance,
 
-                    Year = DateTime.Now.Year.ToString(),
+                    Year = $"2021 - {DateTime.Now.Year}",
+
 
                     // ===== DETAIL FIELDS =====
                     AccountNumber = acc.AccountNumber,

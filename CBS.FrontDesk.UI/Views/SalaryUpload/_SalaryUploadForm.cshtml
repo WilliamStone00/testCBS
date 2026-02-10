@@ -114,7 +114,7 @@
                             new SelectList(ViewBag.Branches, "Id", "Name"),
                             new { @class = "form-control select2", @search = "true", @required = "required", id = "branchId", aria_describedby = "help-branch" }
                         )
-                        <label for="branchId">@GlobalBranchManagement.BranchName</label>
+                        <label for="branchId">@GlobalShared.Branch_Name</label>
                     </div>
                     <small id="help-branch" class="text-muted d-block mt-1">
                         Choose the branch that owns this upload.

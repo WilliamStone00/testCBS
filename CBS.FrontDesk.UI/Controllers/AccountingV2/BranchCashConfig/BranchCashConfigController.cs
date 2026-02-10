@@ -152,6 +152,9 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingManagement
                     FallbackSuspenseAccountName = NameNo(c.FallbackSuspenseAccountId).name,
                     FallbackSuspenseAccountNumber = NameNo(c.FallbackSuspenseAccountId).number,
 
+                    CashReversalAccountName = NameNo(c.CashReversalAccountId).name,
+                    CashReversalAccountNumber = NameNo(c.CashReversalAccountId).number,
+
                     // --- Status ---
                     RealTimeCashPosting = c.RealTimeCashPosting
                 };
@@ -437,6 +440,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingManagement
                     // 🔹 Global Fallback Suspense GL
                     FallbackSuspenseAccountName = NameNo(c.FallbackSuspenseAccountId).name,
                     FallbackSuspenseAccountNumber = NameNo(c.FallbackSuspenseAccountId).number,
+
 
                     RealTimeCashPosting = c.RealTimeCashPosting
                 };

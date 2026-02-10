@@ -70,33 +70,33 @@
             <div id="datalistingview_inner">
                 <div class="card mb-4 border-2">
                     <div class="card-header">
-                        <h5 class="card-title">@GlobalChargesWaived.MembersDetails</h5>
+                        <h5 class="card-title">@GlobalShared.Members_Details</h5>
                     </div>
                     <div class="mt-3">
 
                         <table class="table">
                             <tr>
-                                <td><strong>@GlobalChargesWaived.CustomerNumber:</strong></td>
+                                <td><strong>@GlobalShared.Customer_Number:</strong></td>
                                 <td>@Model.Customer.CustomerId</td>
                             </tr>
                             <tr>
-                                <td><strong>@GlobalChargesWaived.CustomerCode:</strong></td>
+                                <td><strong>@GlobalShared.Customer_Code:</strong></td>
                                 <td>@Model.Customer.CustomerCode</td>
                             </tr>
                             <tr>
-                                <td><strong>@GlobalChangeNumber.Name</strong></td>
+                                <td><strong>@GlobalShared.Name</strong></td>
                                 <td>@Model.Customer.FirstName @Model.Customer.LastName</td>
                             </tr>
                             <tr>
-                                <td><strong>@GlobalChargesWaived.Telephone</strong></td>
+                                <td><strong>@GlobalShared.Telephone</strong></td>
                                 <td>@Model.Customer.Phone</td>
                             </tr>
                             <tr>
-                                <td><strong>@GlobalChargesWaived.Branch:</strong></td>
+                                <td><strong>@GlobalShared.Branch:</strong></td>
                                 <td>@Model.Customer.BankName</td>
                             </tr>
                             <tr>
-                                <td><strong>@GlobalChargesWaived.ApprovalStatus</strong></td>
+                                <td><strong>@GlobalShared.Approval_status</strong></td>
                                 <td>
                                     @if (Model.Customer.MembershipApprovalStatus == "Approved")
                                     {

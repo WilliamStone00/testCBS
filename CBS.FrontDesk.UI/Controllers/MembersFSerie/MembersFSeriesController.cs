@@ -49,19 +49,35 @@ namespace CBS.FrontDesk.UI.Controllers.Series
             _affiliateAccountService = affiliateAccountService;
         }
 
-        public async Task< bool> LoadMemberAccountsAndLoans(string key, string loanFilter)
+        public async Task<bool> LoadMemberAccountsAndLoans(string key, string loanFilter)
         {
             // 1. Get CashDesk by account number
-            var cashDesk = await _cashDeskService.GetAccountByAccountNumberSearch(key, "F5");
+            var cashDesk = await _cashDeskService
+                .GetAccountByAccountNumberSearch(key, "F5");
 
-            // 2. Prepare Accounts dropdown
-            ViewBag.Accounts = cashDesk.Accounts.Select(a => new SelectListItem
+            // 2. Build comma-separated account IDs for "All Accounts"
+            var allAccountIds = string.Join(
+                ",",
+                cashDesk.Accounts.Select(a => a.id)
+            );
+
+            // 3. Prepare Accounts dropdown
+            var accounts = cashDesk.Accounts.Select(a => new SelectListItem
             {
                 Value = a.id,
                 Text = $"{a.accountNumber} - {a.accountName}"
             }).ToList();
 
-            // 3. Load Loans for the member
+            // 🔹 Add "All Accounts" with ARRAY VALUE (comma-separated)
+            accounts.Insert(0, new SelectListItem
+            {
+                Value = allAccountIds,   // e.g. "110,111,112"
+                Text = "All Accounts"
+            });
+
+            ViewBag.Accounts = accounts;
+
+            // 4. Load Loans
             var loans = await _cashDeskService.GetMembersLoans(
                 cashDesk.CustomerId,
                 loanFilter = "All"
@@ -69,14 +85,14 @@ namespace CBS.FrontDesk.UI.Controllers.Series
 
             cashDesk.Loans = loans;
 
-            // 4. Prepare Loans dropdown
+            // 5. Prepare Loans dropdown
             ViewBag.Loans = loans.Select(l => new SelectListItem
             {
                 Value = l.Id,
                 Text = $"{l.Id} - {l.LoanType} - {l.Balance}"
             }).ToList();
-                 
-                return true;
+
+            return true;
         }
 
         public async Task<ActionResult> LoanDetails(string loanId)

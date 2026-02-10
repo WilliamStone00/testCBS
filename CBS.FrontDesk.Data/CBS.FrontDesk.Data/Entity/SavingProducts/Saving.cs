@@ -1291,6 +1291,8 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
     public class CashDeskWithdrawalNotificationCommand
     {
         public string Id { get; set; }
+        public CurrencyNotes CurrencyNotes { get; set; } = new CurrencyNotes();
+
     }
     public class ChargesWaived
     {

@@ -16,14 +16,14 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.UpdatedStatement.Memb
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class MemberSituationMainRPT : ReportClass {
+    public class SubLoanSituationRPT : ReportClass {
         
-        public MemberSituationMainRPT() {
+        public SubLoanSituationRPT() {
         }
         
         public override string ResourceName {
             get {
-                return "MemberSituationMainRPT.rpt";
+                return "SubLoanSituationRPT.rpt";
             }
             set {
                 // Do nothing
@@ -42,7 +42,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.UpdatedStatement.Memb
         public override string FullResourceName {
             get {
                 return "CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.UpdatedStatement.MemberSituation" +
-                    ".MemberSituationMainRPT.rpt";
+                    ".SubLoanSituationRPT.rpt";
             }
             set {
                 // Do nothing
@@ -67,7 +67,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.UpdatedStatement.Memb
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section PageHeaderSection2 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section3 {
             get {
                 return this.ReportDefinition.Sections[2];
             }
@@ -75,7 +75,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.UpdatedStatement.Memb
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section3 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section4 {
             get {
                 return this.ReportDefinition.Sections[3];
             }
@@ -83,7 +83,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.UpdatedStatement.Memb
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section4 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section5 {
             get {
                 return this.ReportDefinition.Sections[4];
             }
@@ -91,17 +91,25 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.UpdatedStatement.Memb
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section5 {
+        public CrystalDecisions.Shared.IParameterField Parameter_DateFrom {
             get {
-                return this.ReportDefinition.Sections[5];
+                return this.DataDefinition.ParameterFields[0];
+            }
+        }
+        
+        [Browsable(false)]
+        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+        public CrystalDecisions.Shared.IParameterField Parameter_DateTo {
+            get {
+                return this.DataDefinition.ParameterFields[1];
             }
         }
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class CachedMemberSituationMainRPT : Component, ICachedReport {
+    public class CachedSubLoanSituationRPT : Component, ICachedReport {
         
-        public CachedMemberSituationMainRPT() {
+        public CachedSubLoanSituationRPT() {
         }
         
         [Browsable(false)]
@@ -138,7 +146,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.UpdatedStatement.Memb
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            MemberSituationMainRPT rpt = new MemberSituationMainRPT();
+            SubLoanSituationRPT rpt = new SubLoanSituationRPT();
             rpt.Site = this.Site;
             return rpt;
         }
