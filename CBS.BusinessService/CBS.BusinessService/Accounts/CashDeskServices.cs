@@ -6,6 +6,7 @@ using CBS.BusinessService.CustomerManagement;
 using CBS.BusinessService.UserManagement;
 using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.Accounting;
+using CBS.FrontDesk.Data.Entity.AccountingV2;
 using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.CustomerManagement;
 using CBS.FrontDesk.Data.Entity.DailyCollectionEntities;
@@ -546,16 +547,15 @@ namespace CBS.BusinessService.Accounts
                            ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, errorMessage);
                         return ExecutionMessage;
                     }
-                    var cash = new CashDeskWithdrawalNotificationCommand { Id = bulkDeposits.FirstOrDefault().AccountNumber, CurrencyNotes= deposit.currencyNotes };
-                    var response = await _transactionApiHelper.PutAsync<ServiceResponse<PaymentReceipt>>(string.Format(APICallHelper.PayinSavingWithdrawalNotification, cash.Id), cash);
+                    var cash = new CashDeskWithdrawalNotificationCommand { Id = bulkDeposits.FirstOrDefault().AccountNumber, CurrencyNotes = deposit.currencyNotes };
+                    var response = await _transactionApiHelper.PutAsync<ServiceResponse<string>>(string.Format(APICallHelper.PayinSavingWithdrawalNotification, cash.Id), cash);
                     if (response.ApiResponseData != null)
                     {
-                        var transaction = response.ApiResponseData.Data;
-                        Branch branch = RetrieveBranchFromSession();
-                        var rptSource = PaymentReceiptMapping.MapPaymentReceipt(transaction, branch);
-                        HttpContext.Current.Session["rptSource"] = rptSource;
+                        HttpContext.Current.Session["GLReferenceId"] = response.ApiResponseData.Data;
                         GetExecutionMessages(response, true, null, MessagesResults.Success,
                             ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                        ExecutionMessage.ReferenceId = response.ApiResponseData.Data;
+                        ExecutionMessage.IsJournalReceipt = true;
                         return ExecutionMessage;
                     }
                     else
@@ -732,7 +732,7 @@ namespace CBS.BusinessService.Accounts
                 }
                 else if (bulkDeposits.FirstOrDefault().OperationType == "CashInMomocashCollection")
                 {
-                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, IsCashOperation = false, OperationType = "Deposit", DepositType = "CashInMomocashCollection", AccountingDate = bulkDeposits.FirstOrDefault().AccountingDate, LedgerChartOfAccountId= bulkDeposits.FirstOrDefault().ChartOfAccountId };
+                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, IsCashOperation = false, OperationType = "Deposit", DepositType = "CashInMomocashCollection", AccountingDate = bulkDeposits.FirstOrDefault().AccountingDate, LedgerChartOfAccountId = bulkDeposits.FirstOrDefault().ChartOfAccountId };
                     var response = await _transactionApiHelper.PostAsync<ServiceResponse<PaymentReceipt>>(APICallHelper.BulkDeposit, BulkOperation);
                     if (response.ApiResponseData != null)
                     {
@@ -775,7 +775,7 @@ namespace CBS.BusinessService.Accounts
                 // 650207592 Courage.
                 else if (bulkDeposits.FirstOrDefault().OperationType == "LoanRepaymentMomocashCollection")
                 {
-                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, DepositType = "LoanRepaymentMomocashCollection", IsCashOperation = false, OperationType = "Deposit", AccountingDate = bulkDeposits.FirstOrDefault().AccountingDate, LedgerChartOfAccountId= bulkDeposits.FirstOrDefault().ChartOfAccountId,  };
+                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, DepositType = "LoanRepaymentMomocashCollection", IsCashOperation = false, OperationType = "Deposit", AccountingDate = bulkDeposits.FirstOrDefault().AccountingDate, LedgerChartOfAccountId = bulkDeposits.FirstOrDefault().ChartOfAccountId, };
 
                     var response = await _transactionApiHelper.PostAsync<ServiceResponse<PaymentReceipt>>(APICallHelper.BulkDeposit, BulkOperation);
                     if (response.ApiResponseData != null)
@@ -1238,7 +1238,7 @@ namespace CBS.BusinessService.Accounts
                 if (customer == null)
                     return null;
 
-          
+
 
                 var accounts = await GetCustomerAccounts(customerId);
                 if (accounts == null || !accounts.Any())

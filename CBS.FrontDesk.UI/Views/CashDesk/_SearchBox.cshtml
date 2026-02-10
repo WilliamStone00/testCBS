@@ -5,6 +5,10 @@
         <i class="mdi mdi-account-search me-1"></i> @GlobalShared.Search
     </legend>
 
+    <!-- Hidden fields to store transaction info -->
+    <input type="hidden" id="currentReferenceId" value="" />
+    <input type="hidden" id="currentselectedOperation" value="" />
+
     <div class="row">
         <div class="col-md-10 mx-auto">
             <!-- 🔍 Search Input + Button -->
@@ -29,12 +33,22 @@
     </div>
 </fieldset>
 
-<!-- Hidden field to track selected operation -->
-<input type="hidden" id="currentselectedOperation" value="" />
-
-<!-- 🖨 Reprint Button -->
-<div class="text-end mb-3">
+<!-- Buttons on the same line -->
+<div class="text-end mb-3 d-flex justify-content-end gap-2">
+    <!-- 🖨 Reprint Button (existing) -->
     <button type="button" class="btn btn-outline-secondary" onclick="Reprint()">
         <i class="fas fa-print me-1"></i> @GlobalShared.Re_print
     </button>
+
+    <!-- 🖨 GL Receipt Button (new for SWN / Loan Fee) -->
+    <button type="button"
+            id="btnPrintGLReceipt"
+            class="btn btn-outline-primary"
+            style="display:none;"
+            onclick="handleGLReceiptClickFromSession()">
+        <i class="fas fa-receipt me-1"></i> Print GL Receipt
+    </button>
 </div>
+
+
+

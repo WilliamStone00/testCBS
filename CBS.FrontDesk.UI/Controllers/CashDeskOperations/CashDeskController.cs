@@ -5,6 +5,7 @@ using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.BranchAccount;
+using CBS.FrontDesk.Data.Entity.AccountingV2;
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Entity.SalaryManagement;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
@@ -66,7 +67,7 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
         }
         public async Task<ActionResult> MomocashCollection()
         {
-           
+
 
             return View();
         }
@@ -361,7 +362,7 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
                     {
                         string operationtype = deposits.FirstOrDefault().OperationType.ToLower();
                         string viewerUrl = PrepareReport(operationtype);
-                        return Json(new { success = data.Result, redirectUrl = viewerUrl, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+                        return Json(new { success = data.Result, redirectUrl = viewerUrl, referenceId = data.ReferenceId, isJournalReceipt = data.IsJournalReceipt, status = data.MessageStatus, message = Messaging.MessageResult(data) });
                     }
                     return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
 

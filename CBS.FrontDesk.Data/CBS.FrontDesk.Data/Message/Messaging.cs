@@ -160,6 +160,8 @@ namespace CBS.FrontDesk.Data.Message
 
         public string Executionfailed { get; set; }
         public string MessageString { get; set; }
+        public string ReferenceId { get; set; }
+        public bool IsJournalReceipt { get; set; }
         public string SessionID { get; set; }
         public string MessageStatus { get; set; }
         public int attempt { get; set; }
