@@ -1368,7 +1368,7 @@ namespace CBS.FrontDesk.Helper
 
         //-------------------- Cheque Cleance ---------------
         public const string ChequeClearanceRequest = "/api/v1/clearance/request";
-        public const string ChequebookDetail = "/api/v1/checkbook/{0}";
+        public const string ClearanceDataTable = "/api/v1/clearance/data-table";
 
 
         //---------------------- Global Configuration ----------------------------

@@ -31,12 +31,12 @@ namespace CBS.BusinessService.CheckManagementSystem.ChequeClearance
             _apiCallerHelper = new ApiCallerHelper(baseUrl);
         }
 
-        public async Task<CustomDataTable> GetchequebokDataTableAsync(ChequeBookQuery query)
+        public async Task<CustomDataTable> ClearanceDataTableAsync(ClearanceQuery query)
         {
             try
             {
                 var response = await _apiCallerHelper.PostAsync<ResponseObject<CustomDataTable>>(
-                    APICallHelper.GetChequeBooksDataTable, query);
+                    APICallHelper.ClearanceDataTable, query);
 
                 // ⚠️ CRITICAL: If API call fails or returns unsuccessful, THROW exception
                 if (!response.IsSuccess)
@@ -63,27 +63,7 @@ namespace CBS.BusinessService.CheckManagementSystem.ChequeClearance
 
        
 
-        public async Task<CustomDataTable> GetClearanceDataTableAsync(ClearanceQuery query)
-        {
-            try
-            {
-                var response = await _apiCallerHelper.PostAsync<ResponseObject<CustomDataTable>>(
-                    APICallHelper.GetClearanceDataTable, query);
-
-                if (!response.IsSuccess)
-                    throw new Exception($"API call failed: {response.Message}");
-
-                if (response.ApiResponseData == null)
-                    throw new Exception("API returned null data");
-
-                return response.ApiResponseData.Data;
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"Clearance API Error: {ex.Message}");
-                throw new Exception($"Clearance service unavailable: {ex.Message}", ex);
-            }
-        }
+       
 
         //public async Task<ExecutionMessages> CreateAsync(OptionRequest model)
         //{

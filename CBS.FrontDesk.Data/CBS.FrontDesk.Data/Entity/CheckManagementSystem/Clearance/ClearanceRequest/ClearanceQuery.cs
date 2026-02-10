@@ -9,20 +9,24 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceReq
 {
     public class ClearanceQuery
     {
-        public string BranchId { get; set; } = null;
-        public string OperationType { get; set; } = null;
-        public string Status { get; set; } = null;
-        public string StartDate { get; set; } = null;
-        public string EndDate { get; set; } = null;
+        public string BranchId { get; set; } 
+        public string CustomerId { get; set; } 
+        public string Status { get; set; } 
+        public string StartDate { get; set; } 
+        public string EndDate { get; set; }
+        public string CheckBookId { get; set; }
 
-        public DataTableOptions Options { get; set; } = null;
+        public DataTableOptions DataTableOptions { get; set; } 
 
 
         public ClearanceQuery()
         {
-            Options = new DataTableOptions();
+            DataTableOptions = new DataTableOptions();
         }
     }
+
+
+
 
     public class ChequeProcessingRequest1
     {

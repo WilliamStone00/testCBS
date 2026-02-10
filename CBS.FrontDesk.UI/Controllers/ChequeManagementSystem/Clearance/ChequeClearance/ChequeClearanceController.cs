@@ -1,10 +1,14 @@
 ﻿using CBS.BusinessService.Accounting_V2.IPS;
+using CBS.BusinessService.AccountingV2.GLSystemReconciliation;
+using CBS.BusinessService.AccountingV2.JournalHead;
 using CBS.BusinessService.CheckManagementSystem;
 using CBS.BusinessService.CheckManagementSystem.ChequeClearance;
 using CBS.BusinessService.CheckManagementSystem.Operations.ChequeBookListing;
 using CBS.BusinessService.CheckManagementSystem.Operations.CounterCheque;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.IPS;
+using CBS.FrontDesk.Data.Entity.AccountingV2;
+using CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceRequest;
 
 using CBS.FrontDesk.Data.Message;
@@ -22,7 +26,7 @@ using static Microsoft.IO.RecyclableMemoryStreamManager;
 
 namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeClearance
 {
-    
+
     public class ChequeClearanceController : Controller
     {
 
@@ -43,14 +47,14 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeCl
         public async Task<ActionResult> Index()
         {
             await loader();
-            return View(new OptionRequest() { Discount= new Discount()}); // pass categories as model
+            return View(new OptionRequest()); // pass categories as model
         }
         public async Task<bool> loader()
         {
             var branches = await _branchServices.GetBranches();
             ViewBag.Branches = branches;
 
-            
+
 
             ViewBag.Status = new List<SelectListItem>
 {
@@ -65,7 +69,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeCl
 };
             return true;
         }
-       
+
         [HttpGet]
         public async Task<ActionResult> List()
         {
@@ -83,7 +87,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeCl
         [HttpGet]
         public async Task<ActionResult> LoadExternal()
         {
-            
+
             await loader();
             return PartialView("_Create");
         }
@@ -148,8 +152,8 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeCl
 
                     CheckBookId = leaf.CheckBookId,
                     CheckBookPageNumber = leaf.SerialNumber,
-                                                 // adjust if needed
-                                                // You can leave others empty for user input
+                    // adjust if needed
+                    // You can leave others empty for user input
                 };
 
                 return View("_InternalChequeRequest", model);
@@ -163,7 +167,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeCl
 
 
         [HttpPost]
-       // [ValidateAntiForgeryToken]
+        // [ValidateAntiForgeryToken]
         public async Task<ActionResult> CreateOrUpdate(OptionRequest model)
         {
             try
@@ -202,8 +206,42 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeCl
         }
 
 
+       
+
+        public async Task<JsonResult> LoadClearanceData(ClearanceQuery query)
+        {
+            try
+            {
+                var data = await _chequeClearanceService.ClearanceDataTableAsync(query);
+
+                var Request = JsonConvert.DeserializeObject<List<Data.Entity.CheckManagementSystem.Clearance.ClearanceRequest.OptionRequest>>(
+                    JsonConvert.SerializeObject(data.data));
+
+                return Json(new
+                {
+
+                    draw = data.DataTableOptions.draw ?? "1",
+                    recordsTotal = data.DataTableOptions.recordsTotal,
+                    recordsFiltered = data.DataTableOptions.recordsFiltered,
+                    data = Request,
+                    success = true
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    draw = query?.DataTableOptions?.draw ?? "1",
+                    recordsTotal = 0,
+                    recordsFiltered = 0,
+                    data = new List<object>(),
+                    error = ex.Message
+                });
+            }
 
 
+
+        }
     }
 }
 
