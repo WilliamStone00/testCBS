@@ -229,22 +229,22 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.GLSystemReconciliation
             try
             {
                 // 1️⃣ Resolve branch
-                var branches = await _branchServices.GetBranches();
-                var selectedBranch = branches.FirstOrDefault(b => b.Id == model.BranchId);
+                //var branches = await _branchServices.GetBranches();
+                //var selectedBranch = branches.FirstOrDefault(b => b.Id == model.BranchId);
 
-                if (selectedBranch == null)
-                {
-                    return Json(new
-                    {
-                        success = false,
-                        statusCode = 400,
-                        message = "Invalid BranchId. Branch not found."
-                    });
-                }
+                //if (selectedBranch == null)
+                //{
+                //    return Json(new
+                //    {
+                //        success = false,
+                //        statusCode = 400,
+                //        message = "Invalid BranchId. Branch not found."
+                //    });
+                //}
 
-                // 2️⃣ Enrich request (not response)
-                model.BranchName = selectedBranch.Name;
-                model.BranchCode = selectedBranch.BranchCode;
+                //// 2️⃣ Enrich request (not response)
+                //model.BranchName = selectedBranch.Name;
+                //model.BranchCode = selectedBranch.BranchCode;
 
                 // 3️⃣ Call service
                 var response = await _glSystemReconciliationService.PushRecordAsync(model);

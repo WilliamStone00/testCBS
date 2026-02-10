@@ -698,12 +698,6 @@
       <DependentUpon>SubLoanSituationRPT.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="AppFiles\Reporting\Transactions\UpdatedStatement\MemberSituation\SubLoanSituationRPT2.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SubLoanSituationRPT.rpt</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="App_GlobalResources\AccountCategory\GlobalsAccountCategory.fr.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

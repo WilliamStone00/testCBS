@@ -379,7 +379,7 @@
                             contentType: 'application/json',
                             data: function (d) {
                                 const filters = getDataTableFilters();
-                                filters.Options = {
+                                filters.DataTableOptions = {
                                     draw: d.draw,
                                     start: d.start,
                                     length: d.length,
@@ -527,11 +527,7 @@
                                 function () {
 
                                     let payload = {
-                                        trackerId: $(btn).data("id")@*,
-                                        pusherName: "@User.Identity.Name",
-                                        branchId: $(btn).data("branchid"),
-                                        branchName: $(btn).data("branchname"),
-                                        branchCode: $(btn).data("branchcode")*@
+                                        Id: $(btn).data("id")
                                     };
 
                                     console.log("Send payload:", payload);
