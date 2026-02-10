@@ -252,9 +252,21 @@ namespace CBS.BusinessService.ReportingMembersFSeries
                 Logo = logoPath,
 
                 CustomerName = cus != null ? $"{cus.FirstName} {cus.LastName}" : "-",
-                // CNI = cus.Cni ?? "-",
+                CNI = cus.IDNumber ?? "-",
                 Telephone = cus.Phone ?? "-",
                 PrintedBy = GetUserFullName(),
+
+                TotalBalance = backend.MemberSituation.Summary.TotalBalance,
+                TotalBlockedAmount = backend.MemberSituation.Summary.TotalBlockedAmount,
+                TotalLiquidSavings = backend.MemberSituation.Summary.TotalLiquidSavings,
+                Actual = backend.MemberSituation.Summary.Actual,
+                LoanAndCoverageGapAmount = backend.MemberSituation.Summary.LoanAndCoverageGapAmount,
+                TotalLoanBalance = backend.MemberSituation.Summary.TotalLoanBalance,
+                LoanCount = backend.MemberSituation.Summary.LoansCount.ToString(),
+                TotalPaid = backend.MemberSituation.Summary.TotalPaid,
+                SavingsAgainstLoanRatio = backend.MemberSituation.Summary.SavingsAgainstLoanRatio,
+                LoanRecommendation = backend.MemberSituation.Summary.LoanRecommendation,
+                LoanRiskLevel = backend.MemberSituation.Summary.LoanRiskLevel,
 
                 // ===============================
                 // SUBREPORT 1 – ACCOUNTS
@@ -268,7 +280,8 @@ namespace CBS.BusinessService.ReportingMembersFSeries
                         Balance = a.Balance,
                         BlockedAmount = a.BlockedAmount,
                         ActualBalance = a.ActualBalance,
-                        AccountDate = a.SnapshotDate
+                        LastTransactionDate = a.SnapshotDate,
+                        LastTransactedAmount = a.lastTransactedAmount
                     })
                     .ToList(),
 
@@ -278,7 +291,7 @@ namespace CBS.BusinessService.ReportingMembersFSeries
                 LoanHistories = situation.Loans
                     .Select(l => new LoanSituationRow
                     {
-                        LoanAccount = l.LoanId,
+                        LoanAccount = l.LoanAccount,
                         LoanType = l.LoanType,
                         LoanBalance = l.Balance,
                         Interest = l.Interest,
@@ -288,7 +301,10 @@ namespace CBS.BusinessService.ReportingMembersFSeries
                         DisbursementDate = l.DisbursementDate,
                         NumberOfInstallment = l.DelDays,
                         LoanAmount = l.Principal,
-
+                        LoanRepaymentAmount = l.LastRepaymentAmount,
+                        DelInterest = l.DelInterest,
+                        DeliquenceAmount = l.DelAmount,
+                        Deliquencedays = l.DelDays
                     })
                     .ToList()
             };

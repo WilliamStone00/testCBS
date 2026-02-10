@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.Statement {
+namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.UpdatedStatement {
     using System;
     using System.ComponentModel;
     using CrystalDecisions.Shared;
@@ -41,7 +41,8 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.Statement {
         
         public override string FullResourceName {
             get {
-                return "CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.Statement.IAccountStatement.rpt";
+                return "CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.UpdatedStatement.IAccountStateme" +
+                    "nt.rpt";
             }
             set {
                 // Do nothing

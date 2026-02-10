@@ -245,6 +245,8 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
         public string PrintedBy { get; set; }
         public DateTime PrintedOn { get; set; }
 
+        public string LoanAccount { get; set; }
+
         // Loan Information
         public string LoanNumber { get; set; }
         public string CustomerName { get; set; }
@@ -273,8 +275,8 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
 
     public class LoanSituationRow
     {
-        // Header Information
-        
+        // Header Information      
+
         public string ReportTitle { get; set; }
         public string BankName { get; set; }
         public string BranchName { get; set; }
@@ -311,10 +313,11 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
         public DateTime LoanDate { get; set; }
         public DateTime LastRepaymentDate { get; set; }
         public decimal LoanBalance { get; set; }
+        public decimal LoanRepaymentAmount { get; set; }
         public decimal Interest { get; set; }
-        public int DeliquentDays { get; set; }
-        public decimal DeliquentAmount { get; set; }
-        public int DeliquentInterest { get; set; }
+        public int Deliquencedays { get; set; }
+        public decimal DeliquenceAmount { get; set; }
+        public decimal DelInterest { get; set; }
         public decimal AdvancedPaymentAmount { get; set; }
         public int AdvancedPaymentDays { get; set; }
         public int AdvancedPaymentDayLeft { get; set; }
@@ -826,7 +829,8 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
         public decimal ActualBalance { get; set; }
 
         public DateTime SnapshotDate { get; set; }
-        public DateTime AccountDate { get; set; }
+        public DateTime LastTransactionDate { get; set; }
+        public decimal LastTransactedAmount { get; set; }
     }
 
     public class AccountSummary
@@ -1266,6 +1270,18 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
         public string CustomerName { get; set; }
         public string CustomerId { get; set; }
 
+        public decimal TotalBalance { get; set; }
+        public decimal TotalBlockedAmount { get; set; }
+        public decimal TotalLiquidSavings { get; set; }
+        public decimal Actual { get; set; }
+        public decimal LoanAndCoverageGapAmount { get; set; }
+        public decimal TotalLoanBalance { get; set; }
+        public string LoanCount { get; set; }
+        public decimal TotalPaid { get; set; }
+        public decimal SavingsAgainstLoanRatio { get; set; }
+        public string LoanRiskLevel { get; set; }
+        public string LoanRecommendation { get; set; }
+
         public string Telephone { get; set; }
         public string PrintedBy { get; set; }
         public string Address { get; set; }
@@ -1300,6 +1316,7 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
         public decimal Balance { get; set; }
         public decimal BlockedAmount { get; set; }
         public decimal ActualBalance { get; set; }
+        public decimal lastTransactedAmount { get; set; }
         public DateTime SnapshotDate { get; set; }
     }
 
@@ -1310,6 +1327,7 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
         public string LoanType { get; set; }
         public string Status { get; set; }
         public decimal Balance { get; set; }
+        public string LoanAccount { get; set; }
         public decimal Principal { get; set; }
         public decimal Interest { get; set; }
         public decimal InterestRate { get; set; }

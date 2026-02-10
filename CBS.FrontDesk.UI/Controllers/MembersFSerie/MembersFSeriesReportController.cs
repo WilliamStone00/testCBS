@@ -57,7 +57,7 @@ namespace CBS.FrontDesk.UI.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> GenerateReport(ReportParameters parameters)
-        {
+         {
 
             Session["MainData"] = null;
             Session["SubReportsData"] = null; // null for single reports
@@ -110,12 +110,12 @@ namespace CBS.FrontDesk.UI.Controllers
                         var memberSituation =
                             await _reportBuilder.BuildMemberSituationRows(filter);
 
-                        if (memberSituation == null ||
-                            !memberSituation.AccountSituations.Any() ||
-                            !memberSituation.LoanHistories.Any())
-                        {
-                            return Json(new { success = false, message = "No data found." });
-                        }
+                        //if (memberSituation == null ||
+                        //    !memberSituation.AccountSituations.Any() ||
+                        //    !memberSituation.LoanHistories.Any())
+                        //{
+                        //    return Json(new { success = false, message = "No data found." });
+                        //}
                         relativePath =
                             "Transactions/UpdatedStatement/MemberSituation/MemberSituation.rpt";
                         reportTitle = "MEMBER SITUATION";
