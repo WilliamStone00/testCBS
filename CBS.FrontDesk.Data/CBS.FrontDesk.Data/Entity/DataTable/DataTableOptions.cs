@@ -77,7 +77,16 @@ namespace CBS.FrontDesk.Data.Entity.DataTable
         public  object data { get; set; } // Change from object to List<DailyCollectorLicense>
         public DataTableOptions dataTableOptions { get; set; }
 
-        
+        public CustomDataTable3(int draw, int recordsTotal, int recordsFiltered, object data, DataTableOptions dataTableOptions)
+        {
+            this.draw = draw;
+            this.recordsTotal = recordsTotal;
+            this.recordsFiltered = recordsFiltered;
+            this.data = data;
+            this.dataTableOptions = dataTableOptions;
+        }
+
+
     }
 
     public class CustomDataTable<T> : ICustomDataTable<T> where T : class 

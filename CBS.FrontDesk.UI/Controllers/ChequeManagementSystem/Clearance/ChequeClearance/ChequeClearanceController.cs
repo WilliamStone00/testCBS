@@ -1,9 +1,14 @@
-﻿using CBS.BusinessService.CheckManagementSystem;
+﻿using CBS.BusinessService.Accounting_V2.IPS;
+using CBS.BusinessService.AccountingV2.GLSystemReconciliation;
+using CBS.BusinessService.AccountingV2.JournalHead;
+using CBS.BusinessService.CheckManagementSystem;
 using CBS.BusinessService.CheckManagementSystem.ChequeClearance;
-
+using CBS.BusinessService.CheckManagementSystem.Operations.ChequeBookListing;
 using CBS.BusinessService.CheckManagementSystem.Operations.CounterCheque;
 using CBS.BusinessService.Config;
-
+using CBS.FrontDesk.Data.Entity.Accounting_V2.IPS;
+using CBS.FrontDesk.Data.Entity.AccountingV2;
+using CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceRequest;
 
 using CBS.FrontDesk.Data.Message;
@@ -21,32 +26,35 @@ using static Microsoft.IO.RecyclableMemoryStreamManager;
 
 namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeClearance
 {
-    
+
     public class ChequeClearanceController : Controller
     {
 
         private readonly ChequeClearanceService _chequeClearanceService;
         private readonly BranchServices _branchServices;
         private readonly CounterChequeService _counterChequeService;
+        private readonly ChequeBookService _chequeBookService;
 
-        public ChequeClearanceController(ChequeClearanceService chequeClearanceService, BranchServices branchServices, CounterChequeService counterChequeService)
+        public ChequeClearanceController(ChequeClearanceService chequeClearanceService, BranchServices branchServices, CounterChequeService counterChequeService, ChequeBookService chequeBookService)
         {
             _chequeClearanceService = chequeClearanceService;
             _branchServices = branchServices;
             _counterChequeService = counterChequeService;
+            _chequeBookService = chequeBookService;
+
         }
 
         public async Task<ActionResult> Index()
         {
             await loader();
-            return View(new OptionRequest() { Discount= new Discount()}); // pass categories as model
+            return View(new OptionRequest()); // pass categories as model
         }
         public async Task<bool> loader()
         {
             var branches = await _branchServices.GetBranches();
             ViewBag.Branches = branches;
 
-            
+
 
             ViewBag.Status = new List<SelectListItem>
 {
@@ -61,7 +69,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeCl
 };
             return true;
         }
-       
+
         [HttpGet]
         public async Task<ActionResult> List()
         {
@@ -70,18 +78,19 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeCl
         }
 
         [HttpGet]
+        public async Task<ActionResult> ImageUpload()
+        {
+            //await loader();
+            return View();
+        }
+
+        [HttpGet]
         public async Task<ActionResult> LoadExternal()
         {
-            //var model = new OptionRequest
-            //{
-            //    External = true
-            //};
+
             await loader();
             return PartialView("_Create");
         }
-
-
-
 
 
         [HttpGet]
@@ -105,102 +114,134 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeCl
         }
 
 
-
-
-        //[HttpGet]
-        //public async Task<ActionResult> Details(string id)
-        //{
-        //    if (string.IsNullOrEmpty(id))
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Missing id");
-
-        //    var clearance = await _mockCheckClearanceService.GetByIdAsync(id);
-
-        //    if (clearance == null)
-        //        return HttpNotFound();
-
-        //    return PartialView("_ChequeClearanceDetails", clearance);
-        //}
-
-
-
-
-
-        [HttpPost]
-        public async Task<ActionResult> SubmitAction(ClearanceValidation model)
-        {
-            if (!ModelState.IsValid)
-            {
-                // --- THIS IS THE CRITICAL CHANGE ---
-                // We need to return the ModelState errors in a format the client can parse.
-                var errors = new Dictionary<string, string[]>();
-                foreach (var key in ModelState.Keys)
-                {
-                    var state = ModelState[key];
-                    if (state.Errors.Any())
-                    {
-                        errors[key] = state.Errors.Select(e => e.ErrorMessage).ToArray();
-                    }
-                }
-                return Json(new { success = false, message = "Please correct the validation errors.", errors = errors });
-            }
-
-            var result = await _chequeClearanceService.SubmitFileActionAsync(model);
-            // Ensure Messaging.MessageResult returns a string
-            return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
-        }
-        [HttpPost]
-        public async Task<JsonResult> LoadClearanceData(ClearanceQuery query)
+        public async Task<ActionResult> GetChequeBookDetail(string id)
         {
             try
             {
-                var data = await _chequeClearanceService.GetClearanceDataTableAsync(query);
+                // Try main service first
+                var chequeBook = await _chequeBookService.GetChequeBookByIdAsync(id);
+
+
+                return View("_chequeDetails", chequeBook);
+            }
+            catch (Exception ex)
+            {
+                // Final fallback to mock service
+                return HttpNotFound($"Cheque book with ID {id} not found");
+
+            }
+        }
+
+
+
+        [HttpGet]
+        public async Task<ActionResult> GetChequeLeafDetail(string leafId)
+        {
+            if (string.IsNullOrEmpty(leafId))
+                return new HttpStatusCodeResult(400, "LeafId is required");
+
+            try
+            {
+                var leaf = await _counterChequeService.GetChequeLeafDetails(leafId);
+
+                if (leaf == null)
+                    return HttpNotFound("Cheque leaf not found");
+
+                var model = new OptionRequest
+                {
+
+                    CheckBookId = leaf.CheckBookId,
+                    CheckBookPageNumber = leaf.SerialNumber,
+                    // adjust if needed
+                    // You can leave others empty for user input
+                };
+
+                return View("_InternalChequeRequest", model);
+            }
+            catch (Exception ex)
+            {
+                return new HttpStatusCodeResult(500, ex.Message);
+            }
+        }
+
+
+
+        [HttpPost]
+        // [ValidateAntiForgeryToken]
+        public async Task<ActionResult> CreateOrUpdate(OptionRequest model)
+        {
+            try
+            {
+                var result = await _chequeClearanceService.CreateAsync(model);
+
+                if (result.Result)
+                {
+                    var clearance = result.Data as OptionRequest;
+
+                    return Json(new
+                    {
+                        success = true,
+                        message = "Clearance request created successfully!",
+                        clearanceId = clearance?.Id,
+                        uploadUrl = Url.Action("ImageUpload", "ChequeClearance",
+                                        new { clearanceId = clearance?.Id }),
+                        listingUrl = Url.Action("Index", "ChequeClearance")
+                    });
+                }
+
                 return Json(new
                 {
-                    draw = data.draw,
-                    recordsTotal = data.recordsTotal,
-                    recordsFiltered = data.recordsFiltered,
-                    data = data.data
+                    success = false,
+                    message = result.MessageString
                 });
             }
             catch (Exception ex)
             {
                 return Json(new
                 {
-                    draw = query?.Options?.draw,
+                    success = false,
+                    message = "An error occurred while processing clearance: " + ex.Message
+                });
+            }
+        }
+
+
+       
+
+        public async Task<JsonResult> LoadClearanceData(ClearanceQuery query)
+        {
+            try
+            {
+                var data = await _chequeClearanceService.ClearanceDataTableAsync(query);
+
+                var Request = JsonConvert.DeserializeObject<List<Data.Entity.CheckManagementSystem.Clearance.ClearanceRequest.OptionRequest>>(
+                    JsonConvert.SerializeObject(data.data));
+
+                return Json(new
+                {
+
+                    draw = data.DataTableOptions.draw ?? "1",
+                    recordsTotal = data.DataTableOptions.recordsTotal,
+                    recordsFiltered = data.DataTableOptions.recordsFiltered,
+                    data = Request,
+                    success = true
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    draw = query?.DataTableOptions?.draw ?? "1",
                     recordsTotal = 0,
                     recordsFiltered = 0,
                     data = new List<object>(),
                     error = ex.Message
                 });
             }
+
+
+
         }
-
-        [HttpPost]
-        //[ValidateAntiForgeryToken]
-        public async Task<ActionResult> CreateOrUpdate(OptionRequest model)
-       {
-            if (!ModelState.IsValid)
-            {
-                return Json(new { success = false, status = "Failed", message = "Please fill all required fields." });
-            }
-
-            ExecutionMessages data;
-            if (string.IsNullOrWhiteSpace(model.ChequeClearanceId))
-            {
-                data = await _chequeClearanceService.CreateAsync(model);
-            }
-            else
-            {
-                data = await _chequeClearanceService.UpdateAsync(model);
-            }
-
-            return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
-        }
-
-
-
-
-
     }
 }
 

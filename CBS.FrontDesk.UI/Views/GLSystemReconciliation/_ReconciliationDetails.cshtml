@@ -103,6 +103,11 @@
                         {
                             <tr><th class="bg-label">Branch Name</th><td>@Model.BranchName</td></tr>
                         }
+                        @if (!string.IsNullOrWhiteSpace(Model.BranchCode))
+                        {
+                            <tr><th class="bg-label">Branch Code</th><td>@Model.BranchCode</td></tr>
+                        }
+
                         @if (!string.IsNullOrWhiteSpace(Model.MemberReference))
                         {
                             <tr><th class="bg-label">Member Reference</th><td>@Model.MemberReference</td></tr>
@@ -159,6 +164,16 @@
                         {
                             <tr><th class="bg-label">Reconciled Journal ID</th><td>@Model.ReconciledJournalId</td></tr>
                         }
+                        @if (!string.IsNullOrWhiteSpace(Model.UpStatus))
+                        {
+                            <tr><th class="bg-label">Upstream Status</th><td>@Model.UpStatus</td></tr>
+                        }
+
+                        @if (!string.IsNullOrWhiteSpace(Model.UpStage))
+                        {
+                            <tr><th class="bg-label">Upstream Stage</th><td>@Model.UpStage</td></tr>
+                        }
+
                         <tr><th class="bg-label">Total Debit</th><td>@Model.TotalDebit.ToString("N0")</td></tr>
                         <tr><th class="bg-label">Total Credit</th><td>@Model.TotalCredit.ToString("N0")</td></tr>
                         <tr><th class="bg-label">Status</th><td>@Model.Status</td></tr>

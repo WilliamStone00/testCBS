@@ -10488,7 +10488,7 @@
     <Content Include="Views\LossManagement\_CheckLeavesTable.cshtml" />
     <Content Include="Views\LossManagement\_LossRequestForm.cshtml" />
     <Content Include="Views\ChequeClearance\Index.cshtml" />
-    <Content Include="Views\ChequeClearance\_ChequeClearanceDetails.cshtml" />
+    <Content Include="Views\ChequeClearance\_DataTable.cshtml" />
     <Content Include="Views\ChequeClearance\_Edit.cshtml" />
     <Content Include="Views\ChequeClearance\_MainForm.cshtml" />
     <Content Include="Views\ChequeClearance\_Create.cshtml" />
@@ -10517,7 +10517,6 @@
     <Content Include="Views\ChequeCancellation\_CancellationDataTable.cshtml" />
     <Content Include="Views\ChequeCancellation\_CancellationRequestDetails.cshtml" />
     <Content Include="Views\ChequeRequest\_CustomerSearch.cshtml" />
-    <Content Include="Views\ChequeCancellation\_Edit.cshtml" />
     <Content Include="Views\ChequeCancellation\_VerificationForm.cshtml" />
     <Content Include="Views\ChequeClearance\_DiscountModal.cshtml" />
     <Content Include="Views\LossManagement\_CheckbookDetails.cshtml" />
@@ -10798,6 +10797,9 @@
     <Content Include="Views\MembersFSeries\_ReportView.cshtml" />
     <Content Include="Views\FeeConfig\_FeeConfigDataTable.cshtml" />
     <Content Include="Views\Country\Create.cshtml" />
+    <Content Include="Views\ChequeClearance\_chequeDetails.cshtml" />
+    <Content Include="Views\ChequeClearance\_InternalChequeRequest.cshtml" />
+    <Content Include="Views\ChequeClearance\ImageUpload.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

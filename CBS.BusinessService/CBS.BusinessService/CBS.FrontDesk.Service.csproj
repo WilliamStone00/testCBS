@@ -358,7 +358,6 @@
     <Compile Include="CheckManagementSystem\Operations\ChequeBookListing\ChequeBookMockService.cs" />
     <Compile Include="CheckManagementSystem\Operations\ChequeBookListing\ChequeBookReportService.cs" />
     <Compile Include="CheckManagementSystem\Operations\ChequeBookListing\ChequeBookService.cs" />
-    <Compile Include="CheckManagementSystem\Operations\ChequeCancelation\CancellationRequestMockService.cs" />
     <Compile Include="CheckManagementSystem\Operations\ChequeCancelation\CancellationRequestService.cs" />
     <Compile Include="CheckManagementSystem\Operations\ChequeRequestService\ChequeRequestService.cs" />
     <Compile Include="CheckManagementSystem\Operations\CounterCheque\CounterChequeService.cs" />
