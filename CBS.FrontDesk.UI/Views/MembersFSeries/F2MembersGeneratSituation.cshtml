@@ -79,12 +79,12 @@
         </a>
 
         <!-- Operational Receipts Button -->
-        <a href="#"
+        <!--<a href="#"
            onclick="GetTransactionMembersTransactions('@Model.CustomerId','datalistingview','_Transactions','transactions','myDataTable',0)"
            class="btn btn-outline-secondary d-flex align-items-center">
             <i class="fas fa-receipt me-2"></i>
             <span>Member Operational Receipts</span>
-        </a>
+        </a>-->
 
    
     <button type="button"
@@ -870,91 +870,118 @@ function resetForm() {
 // REPORT GENERATION FUNCTIONS
 // ============================================================
 
-function generateReportAjax(form) {
-    console.log("=== STARTING REPORT GENERATION ===");
+        function generateReportAjax(form) {
+            console.log("=== STARTING REPORT GENERATION ===");
 
-    // Get submit button
-    var $submitBtn = $(form).find('button[type="submit"]');
-    var originalBtnText = $submitBtn.html();
+            // Get submit button
+            var $submitBtn = $(form).find('button[type="submit"]');
+            var originalBtnText = $submitBtn.html();
 
-    // Disable button and show loading
-    $submitBtn.prop('disabled', true);
-    $submitBtn.html('<i class="mdi mdi-loading mdi-spin me-2"></i> Processing...');
+            // Disable button and show loading
+            $submitBtn.prop('disabled', true);
+            $submitBtn.html('<i class="mdi mdi-loading mdi-spin me-2"></i> Processing...');
 
-    // Show loading overlay
-    $('#loadingOverlay').removeClass('d-none');
+            // Show loading overlay
+            $('#loadingOverlay').removeClass('d-none');
 
-    // DEBUG: Check ReportType value before validation
-    console.log('DEBUG - ReportType value before validation:', $('#ReportType').val());
-    console.log('DEBUG - Radio button checked:', $('input[name="ReportTypeRadio"]:checked').val());
+            // DEBUG
+            console.log('DEBUG - ReportType value before validation:', $('#ReportType').val());
+            console.log('DEBUG - Radio button checked:', $('input[name="ReportTypeRadio"]:checked').val());
 
-    // Validate form first
-    if (!validateForm()) {
-        appalert('Please fill all required fields', 2, 1);
-        $submitBtn.prop('disabled', false).html(originalBtnText);
-        $('#loadingOverlay').addClass('d-none');
-        return false;
-    }
+            // Validate form
+            if (!validateForm()) {
+                appalert('Please fill all required fields', 2, 1);
+                $submitBtn.prop('disabled', false).html(originalBtnText);
+                $('#loadingOverlay').addClass('d-none');
+                return false;
+            }
 
-    // Build form data based on current report type
-    var formData = buildFormData();
-    console.log("Form data to send:", formData);
+            // Build form data
+            var formData = buildFormData();
+            console.log("Form data to send:", formData);
 
-    // Ask for confirmation
-    alertify.confirm("Confirmation", "Are you sure you want to generate this report?",
-        function() {
-            // AJAX configuration
-            $.ajax({
-                type: 'POST',
-                url: form.action,
-                data: formData,
-                contentType: false,
-                processData: false,
-                success: function(response) {
-                    console.log("=== SERVER RESPONSE ===");
-                    console.log("Full response:", response);
+            // Confirmation dialog
+            alertify.confirm(
+                "Confirmation",
+                "Are you sure you want to generate this report?",
+                function () {
 
-                    if (response.success) {
-                        if (response.status === "Failed") {
-                            appalert(response.message, 2, 1);
-                        } else {
-                            appalert(response.message || 'Report data generated successfully', 1, 1);
-                            console.log("Report count:", response.count);
-                            prepareCrystalReport();
+                    $.ajax({
+                        type: 'POST',
+                        url: '/MembersFSeriesReport/GenerateReport',
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+
+                        success: function (response) {
+                            if (response.success && response.redirectUrl) {
+                                window.open(response.redirectUrl, '_blank');
+                                appalert("✅ Viewer launched in a new tab.", 1, 1);
+                            } else {
+                                appalert(response.message || "❌ Failed to launch report viewer.", 3, 1);
+                            }
+                        },
+
+                        error: function (xhr) {
+                            appalert(
+                                "❌ Server error: " + (xhr.responseText || "Unexpected error."),
+                                3,
+                                1
+                            );
+                        },
+
+                        complete: function () {
+                            // Restore UI state (THIS WAS MISSING BEFORE)
+                            $submitBtn.prop('disabled', false).html(originalBtnText);
+                            $('#loadingOverlay').addClass('d-none');
                         }
-                    } else {
-                        appalert(response.message || 'Failed to generate report', 0, 1);
-                    }
-                },
-                error: function(err) {
-                    console.log("=== AJAX ERROR ===");
-                    console.log("Error object:", err);
 
-                    if (err.status === 401) {
-                        window.location.href = '/Authentication/Login';
-                    } else if (err.status === 500) {
-                        appalert('Server error: ' + (err.responseText || 'Internal server error'), 0, 1);
-                    } else {
-                        appalert(err.statusText || 'Error generating report', 0, 1);
-                    }
+                        // ================== OLD WORKING LOGIC (LEFT COMMENTED) ==================
+                        //success: function(response) {
+                        //    console.log("=== SERVER RESPONSE ===");
+                        //    console.log("Full response:", response);
+                        //
+                        //    if (response.success) {
+                        //        if (response.status === "Failed") {
+                        //            appalert(response.message, 2, 1);
+                        //        } else {
+                        //            appalert(response.message || 'Report data generated successfully', 1, 1);
+                        //            console.log("Report count:", response.count);
+                        //            prepareCrystalReport();
+                        //        }
+                        //    } else {
+                        //        appalert(response.message || 'Failed to generate report', 0, 1);
+                        //    }
+                        //},
+                        //error: function(err) {
+                        //    console.log("=== AJAX ERROR ===");
+                        //    console.log("Error object:", err);
+                        //
+                        //    if (err.status === 401) {
+                        //        window.location.href = '/Authentication/Login';
+                        //    } else if (err.status === 500) {
+                        //        appalert('Server error: ' + (err.responseText || 'Internal server error'), 0, 1);
+                        //    } else {
+                        //        appalert(err.statusText || 'Error generating report', 0, 1);
+                        //    }
+                        //},
+                        //complete: function() {
+                        //    $submitBtn.prop('disabled', false).html(originalBtnText);
+                        //    $('#loadingOverlay').addClass('d-none');
+                        //}
+                    });
                 },
-                complete: function() {
-                    // Re-enable button
+                function () {
+                    // Cancel
+                    appalert('Report generation cancelled', 3, 1);
                     $submitBtn.prop('disabled', false).html(originalBtnText);
                     $('#loadingOverlay').addClass('d-none');
                 }
-            });
-        },
-        function() {
-            // Cancel callback
-            appalert('Report generation cancelled', 3, 1);
-            $submitBtn.prop('disabled', false).html(originalBtnText);
-            $('#loadingOverlay').addClass('d-none');
-        }
-    );
+            );
 
-    return false;
-}
+            return false;
+        }
+
 
 function buildFormData() {
     var reportType = $('#ReportType').val();
@@ -1045,7 +1072,21 @@ function prepareCrystalReport() {
         url: '@Url.Action("PrepareReport", "MembersFSeriesReport")',
         type: 'POST',
         dataType: 'json',
-        success: function(response) {
+        success: function (response) {
+            if (response.success && response.redirectUrl) {
+                window.open(response.redirectUrl, '_blank');
+                appalert("✅ Viewer launched in a new tab.", 1, 1);
+            } else {
+                appalert(response.message || "❌ Failed to launch report viewer.", 3, 1);
+            }
+        },
+        error: function (xhr) {
+            appalert("❌ Server error: " + (xhr.responseText || "Unexpected error."), 3, 1);
+        },
+        complete: function () {
+            btn.prop('disabled', false).html('<i class="mdi mdi-file-chart-outline me-1"></i> Generate Report');
+        }
+        @*success: function(response) {
             console.log('PrepareReport success:', response);
 
             if (response.success) {
@@ -1063,7 +1104,7 @@ function prepareCrystalReport() {
         },
         complete: function() {
             $('#loadingOverlay').addClass('d-none');
-        }
+        }*@
     });
 }
 

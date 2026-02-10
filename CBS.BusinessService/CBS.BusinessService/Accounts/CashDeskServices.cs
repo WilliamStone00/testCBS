@@ -72,6 +72,7 @@ namespace CBS.BusinessService.Accounts
                 throw ex;
             }
         }
+
         public async Task<List<CustomerAccount>> GetCustomerAccounts(string customerID)
         {
             try

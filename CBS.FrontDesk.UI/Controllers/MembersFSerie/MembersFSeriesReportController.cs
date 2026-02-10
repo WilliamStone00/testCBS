@@ -7,6 +7,7 @@ using CBS.FrontDesk.Data.Entity.ReportMembersFSeries;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
 using CBS.FrontDesk.Data.ReportDataSetDto.LoanDeliquentAnalysis;
 using CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.ReportRPT;
+using CBS.FrontDesk.UI.AppFiles.Reporting.Loan.PortFolio;
 using CrystalDecisions.CrystalReports.Engine;
 using CrystalDecisions.Shared;
 using CrystalDecisions.Web;
@@ -28,7 +29,7 @@ namespace CBS.FrontDesk.UI.Controllers
         private readonly BranchServices _branchServices;
         private readonly AccountServices _accountServices;
         private readonly LoanServices _loanServices;
-   
+
 
         public MembersFSeriesReportController(
             BranchServices branchServices,
@@ -40,12 +41,12 @@ namespace CBS.FrontDesk.UI.Controllers
             _branchServices = branchServices;
             _accountServices = accountServices;
             _loanServices = loanServices;
-            _reportBuilder = reportBuilder;            
+            _reportBuilder = reportBuilder;
         }
 
         public async Task<ActionResult> Index()
         {
-          
+
             return View();
         }
 
@@ -55,6 +56,10 @@ namespace CBS.FrontDesk.UI.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> GenerateReport(ReportParameters parameters)
         {
+
+            Session["MainData"] = null;
+            Session["SubReportsData"] = null; // null for single reports
+            Session["ReportParameters"] = null;
 
             if (parameters.AccountIds != null)
             {
@@ -80,11 +85,17 @@ namespace CBS.FrontDesk.UI.Controllers
             };
 
             object mainData = null;
-            Dictionary<string, object> subReports = null;
+            var subReports = new Dictionary<string, object>();
 
             string reportTitle = string.Empty;
             string relativePath = string.Empty;
-
+            var rptparameters = new Dictionary<string, object>
+            {
+                { "DateFrom", filter.DateFrom.ToString("dd/MM/yyyy") },
+                { "DateTo", filter.DateTo.ToString("dd/MM/yyyy") },
+                { "ReportTitle", reportTitle },
+                { "PrintedOn", DateTime.Now.ToString("dd/MM/yyyy, hh:mm:ss") }
+            };
             switch (parameters.ReportType)
             {
                 /* ===================== MULTI / SUB REPORT ===================== */
@@ -103,22 +114,26 @@ namespace CBS.FrontDesk.UI.Controllers
                         {
                             return Json(new { success = false, message = "No data found." });
                         }
-
                         relativePath =
-                            "~/AppFiles/Reporting/Transactions/UpdatedStatement/MemberSituation/MemberSituation.rpt";
-                        reportTitle = "MEMBER SITUATION REPORT";
+                            "Transactions/UpdatedStatement/MemberSituation/MemberSituation.rpt";
+                        reportTitle = "MEMBER SITUATION";
 
-                        // MAIN REPORT DATA
-                        mainData = new List<MemberSituationMainRpt> { memberSituation };
-
-                        // SUB REPORTS
-                        subReports = new Dictionary<string, object>
+                        if (memberSituation.CustomerName != null)
                         {
-                            { "SubAccountSituationRPT", memberSituation.AccountSituations },
-                            { "SubLoanSituationRPT", memberSituation.LoanHistories }
-                        };
+                            // MAIN REPORT DATA
+                            mainData = new List<MemberSituationMainRpt> { memberSituation };
+                            // SUB REPORTS
+                            subReports = new Dictionary<string, object>
+                            {
+                                { "SubAccountSituationRPT", memberSituation.AccountSituations },
+                                { "SubLoanSituationRPT", memberSituation.LoanHistories }
+                            };
+                           
+                        }
+
                         break;
                     }
+
 
                 /* ===================== SINGLE REPORTS ===================== */
                 case "AccountSituation":
@@ -172,9 +187,7 @@ namespace CBS.FrontDesk.UI.Controllers
             /* ===================== SESSION BINDING ===================== */
             Session["MainData"] = mainData;
             Session["SubReportsData"] = subReports; // null for single reports
-            Session["ReportFilter"] = filter;
-            Session["ReportParameters"] = parameters;
-            Session["ReportItemCount"] = GetItemCount(mainData);
+            Session["ReportParameters"] = rptparameters;
 
             /* ===================== VIEWER ===================== */
             var viewerUrl = Url.Content(
@@ -188,8 +201,11 @@ namespace CBS.FrontDesk.UI.Controllers
                 success = true,
                 redirectUrl = viewerUrl,
                 reportType = parameters.ReportType,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
                 //count = GetItemCount(mainData)
             });
+
+
         }
 
 
@@ -347,7 +363,7 @@ namespace CBS.FrontDesk.UI.Controllers
         }
 
 
-      
+
 
         private void CleanReport(ReportDocument rd)
         {

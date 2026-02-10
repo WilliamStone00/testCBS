@@ -173,6 +173,8 @@ namespace CBS.BusinessService.ReportingMembersFSeries
                     Telephone = cus?.Phone ?? "-",
                     Currreccy = "Central African CFA franc",
                     Village = cus?.town ?? "",
+                    BranchAddress = bra.Address,
+                    BranchTelephone = bra.Telephone,
 
                     // -------- Branch --------
                     BranchName = GetBranchName(),
@@ -240,17 +242,17 @@ namespace CBS.BusinessService.ReportingMembersFSeries
                 BranchName = GetBranchName(),
                 BranchCode = GetBranchCode(),
                 HeadOfficeName = GetBankName(),
-                HeadOfficeAddress = bra.Address,
-                HeadOfficeTelephone = bra.Telephone,
-               
+                BranchAddress = bra.Address,
+                BranchTelephone = bra.Telephone,
+               // Year = "2021 - " + DateTime.Now.Year.ToString(),
                 CustomerId = cus.CustomerId,
 
-                Logo = logoPath,          
-         
+                Logo = logoPath,
+
                 CustomerName = cus != null ? $"{cus.FirstName} {cus.LastName}" : "-",
-               // CNI = cus.Cni ?? "-",
-               Telephone = cus.Phone ?? "-",
-               PrintedBy = GetUserFullName(),
+                // CNI = cus.Cni ?? "-",
+                Telephone = cus.Phone ?? "-",
+                PrintedBy = GetUserFullName(),
 
                 // ===============================
                 // SUBREPORT 1 – ACCOUNTS
@@ -278,7 +280,7 @@ namespace CBS.BusinessService.ReportingMembersFSeries
                         LoanType = l.LoanType,
                         LoanBalance = l.Balance,
                         Interest = l.Interest,
-                        InterestRate = l.InterestRate,                
+                        InterestRate = l.InterestRate,
                         LastRepaymentDate = l.LastRepaymentDate,
                         LoanDate = l.LoanDate,
                         DisbursementDate = l.DisbursementDate,

@@ -1269,6 +1269,7 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
         public string PrintedBy { get; set; }
         public string Address { get; set; }
         public string CNI { get; set; }
+        public string Year { get; set; }
         public List<AccountSnapshot> AccountSituations { get; set; }
         public List<LoanSituationRow> LoanHistories { get; set; }
     }
