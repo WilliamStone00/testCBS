@@ -1367,7 +1367,7 @@ namespace CBS.FrontDesk.Helper
         public const string GetCancellationRequestsDataTable = "/api/v1/Cheque-Book";
 
         //-------------------- Cheque Cleance ---------------
-        public const string clearanceData = "/api/v1/cheque-clearance/data-table";
+        public const string ChequeClearanceRequest = "/api/v1/clearance/request";
         public const string ChequebookDetail = "/api/v1/checkbook/{0}";
 
 

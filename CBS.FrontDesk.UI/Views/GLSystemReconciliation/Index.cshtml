@@ -115,21 +115,21 @@
             <!-- ================= CORE FILTERS ================= -->
             <div class="row mb-3">
 
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <label class="form-label fw-bold">Member Reference</label>
                     <input type="text" id="MemberReference" name="MemberReference"
                            class="form-control"
                            placeholder="Enter Member Reference" />
                 </div>
 
-                <div class="col-md-4">
+                @*<div class="col-md-4">
                     <label class="form-label fw-bold">Correlation Id</label>
                     <input type="text" id="CorrelationId" name="CorrelationId"
                            class="form-control"
                            placeholder="Enter Correlation Id" />
-                </div>
+                </div>*@
 
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <label class="form-label fw-bold">Reference</label>
                     <input type="text" id="Reference" name="Reference"
                            class="form-control"
@@ -140,7 +140,7 @@
             <!-- ================= STATUS & OPERATION ================= -->
             <div class="row">
 
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <label class="form-label fw-bold">Status</label>
                     @Html.DropDownList("Status",
                         new SelectList(ViewBag.Status, "Value", "Text"),
@@ -148,13 +148,13 @@
                         new { @class = "form-control select2", id = "Status" })
                 </div>
 
-                <div class="col-md-6">
+                @*<div class="col-md-6">
                     <label class="form-label fw-bold">Operation Code</label>
                     @Html.DropDownList("OperationCode",
                         new SelectList(ViewBag.OperationCode, "Value", "Text"),
                         "Select Operation Code",
                         new { @class = "form-control select2", id = "OperationCode" })
-                </div>
+                </div>*@
 
             </div>
         </div>
@@ -449,7 +449,7 @@
                             }
                         }
                     });
-                }
+        }
 
                 // ==============================
                 // Reset Filters

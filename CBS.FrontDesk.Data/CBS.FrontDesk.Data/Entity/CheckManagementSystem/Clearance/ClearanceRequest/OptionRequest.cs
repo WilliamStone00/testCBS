@@ -12,7 +12,7 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceReq
 {
     public class OptionRequest
     {
-        public string ChequeClearanceId { get; set; }
+        public string Id { get; set; }
         public bool External { get; set; }
         [Required(ErrorMessage = "Branch is required")]
         public string BranchId { get; set; } 

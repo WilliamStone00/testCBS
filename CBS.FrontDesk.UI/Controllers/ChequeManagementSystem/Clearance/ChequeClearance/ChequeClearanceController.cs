@@ -74,6 +74,13 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeCl
         }
 
         [HttpGet]
+        public async Task<ActionResult> ImageUpload()
+        {
+            //await loader();
+            return View();
+        }
+
+        [HttpGet]
         public async Task<ActionResult> LoadExternal()
         {
             
@@ -155,62 +162,45 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeCl
 
 
 
-        //public async Task<ActionResult> CreateOrUpdate(IPSClaimCreate model)
-        //{
-        //    //if (!ModelState.IsValid)
-        //    //{
-        //    //    return Json(new
-        //    //    {
-        //    //        success = false,
-        //    //        message = "Validation failed. Please check all required fields.",
-        //    //        status = "ValidationError",
-        //    //        errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
-        //    //    });
-        //    //}
+        [HttpPost]
+       // [ValidateAntiForgeryToken]
+        public async Task<ActionResult> CreateOrUpdate(OptionRequest model)
+        {
+            try
+            {
+                var result = await _chequeClearanceService.CreateAsync(model);
 
-        //    try
-        //    {
-        //        // Create the claim
-        //        var result = await _ipsClaimService.CreateClaimAsync(model);
+                if (result.Result)
+                {
+                    var clearance = result.Data as OptionRequest;
 
-        //        if (result.Result)
-        //        {
-        //            var claim = result.Data as IPSClaim;
+                    return Json(new
+                    {
+                        success = true,
+                        message = "Clearance request created successfully!",
+                        clearanceId = clearance?.Id,
+                        uploadUrl = Url.Action("ImageUpload", "ChequeClearance",
+                                        new { clearanceId = clearance?.Id }),
+                        listingUrl = Url.Action("Index", "ChequeClearance")
+                    });
+                }
 
-        //            // Prepare success response with claim details
-        //            return Json(new
-        //            {
-        //                success = true,
-        //                message = $"Claim created successfully! Claim ID: {claim?.Id}",
-        //                status = result.MessageStatus,
-        //                claimId = claim?.Id,
-        //                claimType = claim?.ClaimType,
-        //                claimedAmount = claim?.ClaimedAmount,
-        //                redirectUrl = Url.Action("UploadDocuments", "IPSClaim", new { claimId = claim?.Id }),
-        //                detailsUrl = Url.Action("Details", "IPSClaim", new { id = claim?.Id })
-        //            });
-        //        }
-        //        else
-        //        {
-        //            return Json(new
-        //            {
-        //                success = false,
-        //                message = result.MessageString,
-        //                status = result.MessageStatus,
+                return Json(new
+                {
+                    success = false,
+                    message = result.MessageString
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = "An error occurred while processing clearance: " + ex.Message
+                });
+            }
+        }
 
-        //            });
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Json(new
-        //        {
-        //            success = false,
-        //            message = $"An error occurred while creating the claim: {ex.Message}",
-        //            status = "Error"
-        //        });
-        //    }
-        //}
 
 
 
