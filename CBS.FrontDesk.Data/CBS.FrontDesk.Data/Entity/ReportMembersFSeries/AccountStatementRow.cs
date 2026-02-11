@@ -323,6 +323,7 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
         public decimal AdvancedPaymentAmount { get; set; }
 
         public string ContractCode { get; set; }
+        public int NumberOfInstallment { get; set; }
         
         public decimal Balance { get; set; }
         public decimal Principal { get; set; }

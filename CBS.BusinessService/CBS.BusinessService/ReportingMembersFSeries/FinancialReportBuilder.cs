@@ -360,23 +360,23 @@ namespace CBS.BusinessService.ReportingMembersFSeries
 
             var rows = new List<LoanSituationRow>();
 
-            // Loan Portfolio Details
-            foreach (var loan in situationData)
-            {
-                rows.Add(new LoanSituationRow
-                {
-                    LoanNumber = loan.LoanNumber,
-                    CustomerName = loan.CustomerName,
-                    LoanType = loan.LoanType,
-                    LoanAmount = loan.LoanAmount,
-                    OutstandingBalance = loan.OutstandingBalance,
-                    DisbursementDate = loan.DisbursementDate,
-                    MaturityDate = loan.MaturityDate,
-                    InterestRate = loan.InterestRate,
-                    Status = loan.LoanStatus,
-                    DaysPastDue = loan.DaysPastDue
-                });
-            }
+            //// Loan Portfolio Details
+            //foreach (var loan in situationData)
+            //{
+            //    rows.Add(new LoanSituationRow
+            //    {
+            //        LoanNumber = loan.LoanNumber,
+            //        CustomerName = loan.CustomerName,
+            //        LoanType = loan.LoanType,
+            //        LoanAmount = loan.LoanAmount,
+            //        OutstandingBalance = loan.OutstandingBalance,
+            //        DisbursementDate = loan.DisbursementDate,
+            //        MaturityDate = loan.MaturityDate,
+            //        InterestRate = loan.InterestRate,
+            //        Status = loan.LoanStatus,
+            //        DaysPastDue = loan.DaysPastDue
+            //    });
+            //}
 
             return rows;
         }
