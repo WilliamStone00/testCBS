@@ -24,7 +24,7 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.Series
 {
-    [CheckSessionTimeOutAttribute]
+    //[CheckSessionTimeOutAttribute]
 
     public class MembersFSeriesController : BaseController
     {
