@@ -1,4 +1,5 @@
-﻿using CBS.FrontDesk.Data.Entity.DataTable;
+﻿using CBS.FrontDesk.Data.Entity.AccountingV2;
+using CBS.FrontDesk.Data.Entity.DataTable;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,5 +56,18 @@ namespace CBS.FrontDesk.Data.Entity.LoanRepayment
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public bool? CheckPartialFlowRepayment { get; set; }
+    }
+
+
+    public class PushRefundRequest
+    {
+        public List<string> Ids { get; set; }
+    }
+
+    public class ExportJournalRequest
+    {
+        public List<LoanRefundDto> LoanRefund { get; set; }
+        public ExportOptions ExportOptions { get; set; }
+        public LoanRefundQuery Filters { get; set; }
     }
 }
