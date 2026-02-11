@@ -159,37 +159,77 @@ namespace CBS.BusinessService.ReportingMembersFSeries
                 }
             }
 
-            public async Task<LoanSituationData> GetLoanSituationData(DateTime fromDate, DateTime toDate)
+        public async Task<ReportResponse> GetLoanSituationData(FinancialReportFilter parameters)
+        {
+            try
             {
-                try
+                var request = new FinancialReportRequest
                 {
-                    // Get all loans
-                    var loansResponse = await _loanApiHelper.GetAsync<ResponseObject<List<LoanPortfolioItem>>>(
-                        string.Format(APICallHelper.GetLoanPortfolio, fromDate.ToString("yyyy-MM-dd"), toDate.ToString("yyyy-MM-dd")));
+                    Filter = parameters
+                };
 
-                    //// Get portfolio summary
-                    //var summaryResponse = await _loanApiHelper.GetAsync<ResponseObject<LoanPortfolioSummary>>(
-                    //    APICallHelper.GetLoanPortfolioSummary);
+                string endpoint = APICallHelper.GetLoanPortfolio; // Your Loan History endpoint
 
-                    // Get delinquency data
-                    var delinquencyResponse = await _loanApiHelper.GetAsync<ResponseObject<LoanDelinquencyData>>(
-                        APICallHelper.GetLoanDelinquencyData);
+                var response = await _loanApiHelper
+                    .PostAsync<ResponseObject<ReportResponse>>(endpoint, request);
 
-                    return new LoanSituationData
-                    {
-                        LoanPortfolio = loansResponse.ApiResponseData.Data,
-                        //PortfolioSummary = summaryResponse.ApiResponseData.Data,
-                        DelinquencyData = delinquencyResponse.ApiResponseData.Data,
-                        ReportPeriod = new ReportParameters { DateFrom = fromDate, DateTo = toDate }
-                    };
+                // =========================
+                // SUCCESS
+                // =========================
+                if (response != null && response.IsSuccess && response.ApiResponseData?.Data != null)
+                {
+                    GetExecutionMessages(
+                        parameters,
+                        true,
+                        parameters.MemberReference,
+                        MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages,
+                        SystemMessageStatus.Success.ToString(),
+                        null,
+                        response.ApiResponseData.Message
+                    );
+
+                    // ✅ RETURN FULL REPORT RESPONSE
+                    return response.ApiResponseData.Data;
                 }
-                catch (Exception ex)
-                {
-                    // Log exception
-                    throw;
+
+                // =========================
+                // API FAILURE (Handled)
+                // =========================
+                GetExecutionMessages(
+                    parameters,
+                    false,
+                    parameters.MemberReference,
+                    MessagesResults.Failed,
+                    ExecutionProcessOption.DefaultFailedMessages,
+                    SystemMessageStatus.Failed.ToString(),
+                    null,
+                    response?.ApiResponseData?.Message ?? response?.Message
+                );
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                // =========================
+                // EXCEPTION
+                // =========================
+                GetExecutionMessages(
+                    parameters,
+                    false,
+                    parameters.MemberReference,
+                    MessagesResults.Error,
+                    ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Error.ToString(),
+                    ex,
+                    ex.Message
+                );
+
+                return null;
             }
         }
-        
+
+
         public async Task<MemberFinancialReport> GetAccountSituationData(FinancialReportFilter parameters)
         {
             try
