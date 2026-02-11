@@ -680,6 +680,12 @@
       <DependentUpon>TellerStatement1.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="AppFiles\Reporting\Transactions\UpdatedStatement\Loan\LoanSituationRPT.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LoanSituationRPT.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="AppFiles\Reporting\Transactions\UpdatedStatement\MemberSituation\MemberSituation.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -2254,6 +2260,7 @@
     <Compile Include="Controllers\MobileMoneyV2\MobileMoneyConfigV2Controller.cs" />
     <Compile Include="Controllers\Overdraft\OverdraftActivationController.cs" />
     <Compile Include="Controllers\Overdraft\OverdraftFacilityConfigController.cs" />
+    <Compile Include="Controllers\Refundement\RefundController.cs" />
     <Compile Include="Controllers\RemittanceP\RemittanceCashDeskController.cs" />
     <Compile Include="Controllers\RemittanceP\RemittanceController.cs" />
     <Compile Include="Controllers\ReportConfiguration\ReportConfigurationController.cs" />
@@ -7638,6 +7645,10 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>CashDeskRessource.Designer.cs</LastGenOutput>
     </Content>
+    <EmbeddedResource Include="AppFiles\Reporting\Transactions\UpdatedStatement\Loan\LoanSituationRPT.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>LoanSituationRPT.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\Transactions\UpdatedStatement\MemberSituation\MemberSituation.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>MemberSituation.cs</LastGenOutput>
@@ -10800,6 +10811,8 @@
     <Content Include="Views\ChequeClearance\_chequeDetails.cshtml" />
     <Content Include="Views\ChequeClearance\_InternalChequeRequest.cshtml" />
     <Content Include="Views\ChequeClearance\ImageUpload.cshtml" />
+    <Content Include="Views\Refund\Index.cshtml" />
+    <Content Include="Views\Refund\_DataTable.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
@@ -10823,6 +10836,7 @@
     <Folder Include="bin\tr-TR\" />
     <Folder Include="bin\zh-TW\" />
     <Folder Include="bin\zh\" />
+    <Folder Include="Controllers\BulkLoanRepayment\" />
     <Folder Include="Controllers\DailyCollectionManagement\" />
     <Folder Include="Controllers\LoanManagementP\ApplicationP\" />
     <Folder Include="Hub\" />

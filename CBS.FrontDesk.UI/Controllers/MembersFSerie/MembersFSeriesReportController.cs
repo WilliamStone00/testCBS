@@ -10,6 +10,7 @@ using CBS.FrontDesk.Data.ReportDataSetDto.LoanDeliquentAnalysis;
 using CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.ReportRPT;
 using CBS.FrontDesk.UI.AppFiles.Reporting.Loan.PortFolio;
 using CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.UpdatedStatement;
+using CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.UpdatedStatement.Loan;
 using CrystalDecisions.CrystalReports.Engine;
 using CrystalDecisions.Shared;
 using CrystalDecisions.Web;
@@ -57,7 +58,7 @@ namespace CBS.FrontDesk.UI.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> GenerateReport(ReportParameters parameters)
-         {
+        {
 
             Session["MainData"] = null;
             Session["SubReportsData"] = null; // null for single reports
@@ -166,6 +167,8 @@ namespace CBS.FrontDesk.UI.Controllers
                     filter.ReportType = (int)FinancialReportType.LoanHistory;
                     filter.LoanStatus = parameters.LoanStatus;
                     mainData = await _reportBuilder.BuildLoanSituationRows(filter);
+                    relativePath = "Transactions/UpdatedStatement/Loan/LoanSituationRPT.rpt";
+                    reportTitle = "LOAN HISTORY";
                     break;
 
                 case "Interest":

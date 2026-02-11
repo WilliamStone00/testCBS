@@ -1,7 +1,9 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
+using CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.LoanConf;
+using CBS.FrontDesk.Data.Entity.LoanRepayment;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
 using System;
@@ -77,6 +79,35 @@ namespace CBS.BusinessService.Repayment
             catch
             {
                 throw;
+            }
+        }
+
+        public async Task<CustomDataTable> GeRefundDataTableAsync(LoanRefundQuery query)
+        {
+            try
+            {
+                if (!IsHeadOffice() && string.IsNullOrEmpty(query.BranchId))
+                {
+                    query.BranchId = GetBranchID();
+                }
+
+               
+
+                var response = await _loanApiHelper.PostAsync<ResponseObject<CustomDataTable>>(
+                    APICallHelper.GetReconciliationDataTable, query);
+
+                if (!response.IsSuccess)
+                    throw new Exception($"API call failed: {response.Message}");
+
+                if (response.ApiResponseData == null)
+                    throw new Exception("API returned null data");
+
+                return response.ApiResponseData.Data;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"API Error (Reconciliation): {ex.Message}");
+                throw new Exception($"Loan service unavailable: {ex.Message}", ex);
             }
         }
     }

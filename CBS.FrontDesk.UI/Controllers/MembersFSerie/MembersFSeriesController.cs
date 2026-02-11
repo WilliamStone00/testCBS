@@ -24,7 +24,7 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.Series
 {
-    //[CheckSessionTimeOutAttribute]
+    [CheckSessionTimeOutAttribute]
 
     public class MembersFSeriesController : BaseController
     {
@@ -49,52 +49,6 @@ namespace CBS.FrontDesk.UI.Controllers.Series
             _affiliateAccountService = affiliateAccountService;
         }
 
-        //public async Task<bool> LoadMemberAccountsAndLoans(string key, string loanFilter)
-        //{
-        //    // 1. Get CashDesk by account number
-        //    var cashDesk = await _cashDeskService
-        //        .GetAccountByAccountNumberSearch(key, "F5");
-
-        //    // 2. Build comma-separated account IDs for "All Accounts"
-        //    var allAccountIds = string.Join(
-        //        ",",
-        //        cashDesk.Accounts.Select(a => a.id)
-        //    );
-
-        //    // 3. Prepare Accounts dropdown
-        //    var accounts = cashDesk.Accounts.Select(a => new SelectListItem
-        //    {
-        //        Value = a.id,
-        //        Text = $"{a.accountNumber} - {a.accountName}"
-        //    }).ToList();
-
-        //    // 🔹 Add "All Accounts" with ARRAY VALUE (comma-separated)
-        //    accounts.Insert(0, new SelectListItem
-        //    {
-        //        Value = allAccountIds,   // e.g. "110,111,112"
-        //        Text = "All Accounts"
-        //    });
-
-        //    ViewBag.Accounts = accounts;
-        //    ViewBag.Account = cashDesk;
-
-        //    // 4. Load Loans
-        //    var loans = await _cashDeskService.GetMembersLoans(
-        //        cashDesk.CustomerId,
-        //        loanFilter = "All"
-        //    );
-
-        //    cashDesk.Loans = loans;
-
-        //    // 5. Prepare Loans dropdown
-        //    ViewBag.Loans = loans.Select(l => new SelectListItem
-        //    {
-        //        Value = l.Id,
-        //        Text = $"{l.Id} - {l.LoanType} - {l.Balance}"
-        //    }).ToList();
-
-        //    return true;
-        //}
 
         public async Task<bool> LoadMemberAccountsAndLoans(string key, string loanFilter)
         {
@@ -223,30 +177,7 @@ namespace CBS.FrontDesk.UI.Controllers.Series
                 }
             });
         }
-        //[HttpPost]
-        //public async Task<ActionResult> BlockMemberAccount(string loanId, string accountNumber, decimal amount, string comment)
-        //{
-        //    // Load account to validate
-        //    var acct = await _accountService.GetAccountByNumber(accountNumber);
-        //    if (acct == null) return Json(new { ok = false, msg = "Account not found." });
-
-        //    var available = acct.Balance - acct.BlockedAmount;
-        //    if (amount <= 0) return Json(new { ok = false, msg = "Amount must be > 0." });
-        //    if (amount > available) return Json(new { ok = false, msg = "Amount cannot exceed available balance." });
-
-        //    // Call your blocking service / API
-        //    var res = await _accountService.BlockAccount(new BlockAccountCommand
-        //    {
-        //        LoanId = loanId,
-        //        AccountNumber = accountNumber,
-        //        Amount = amount,
-        //        Comment = comment
-        //    });
-
-        //    return Json(new { ok = res.IsSuccess, msg = res.IsSuccess ? "Account blocked successfully." : res.Message });
-        //}
-
-
+      
         public async Task<ActionResult> Index()
         {
             ViewBag.Branches=await _branchServices.GetBranches();

@@ -356,41 +356,27 @@ namespace CBS.BusinessService.ReportingMembersFSeries
         // 4. Build Loan Situation Rows
         public async Task<List<LoanSituationRow>> BuildLoanSituationRows(FinancialReportFilter parameters)
         {
-            var situationData = await _reportService.GetLoanSituationData(
-                parameters.DateFrom,
-                parameters.DateTo);
+            var situationData = await _reportService.GetLoanSituationData(parameters);
 
             var rows = new List<LoanSituationRow>();
 
-            // Header
-            rows.Add(new LoanSituationRow
-            {
-                ReportTitle = "LOAN PORTFOLIO SITUATION REPORT",
-                BankName = GetBankName(),
-                BranchName = GetBranchName(),
-                PeriodFrom = parameters.DateFrom,
-                PeriodTo = parameters.DateTo,
-                PrintedBy = GetUserFullName(),
-                PrintedOn = DateTime.Now
-            });
-
-            // Loan Portfolio Details
-            foreach (var loan in situationData.LoanPortfolio)
-            {
-                rows.Add(new LoanSituationRow
-                {
-                    LoanNumber = loan.LoanNumber,
-                    CustomerName = loan.CustomerName,
-                    LoanType = loan.LoanType,
-                    LoanAmount = loan.LoanAmount,
-                    OutstandingBalance = loan.OutstandingBalance,
-                    DisbursementDate = loan.DisbursementDate,
-                    MaturityDate = loan.MaturityDate,
-                    InterestRate = loan.InterestRate,
-                    LoanStatus = loan.LoanStatus,
-                    DaysPastDue = loan.DaysPastDue
-                });
-            }
+            //// Loan Portfolio Details
+            //foreach (var loan in situationData)
+            //{
+            //    rows.Add(new LoanSituationRow
+            //    {
+            //        LoanNumber = loan.LoanNumber,
+            //        CustomerName = loan.CustomerName,
+            //        LoanType = loan.LoanType,
+            //        LoanAmount = loan.LoanAmount,
+            //        OutstandingBalance = loan.OutstandingBalance,
+            //        DisbursementDate = loan.DisbursementDate,
+            //        MaturityDate = loan.MaturityDate,
+            //        InterestRate = loan.InterestRate,
+            //        Status = loan.LoanStatus,
+            //        DaysPastDue = loan.DaysPastDue
+            //    });
+            //}
 
             return rows;
         }
