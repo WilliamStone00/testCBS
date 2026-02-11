@@ -3886,7 +3886,7 @@
                                         {
                                             foreach (var r in refunds)
                                             {
-                                                var rowTotal = (r.Amount + r.Interest + r.Tax + r.Penalty);
+                                                var rowTotal = (r.Principal + r.Interest + r.Tax + r.Penalty);
 
                                                 <tr>
                                                     <td>
@@ -3901,7 +3901,7 @@
                                                         }
                                                     </td>
 
-                                                    <td class="text-end">@r.Amount.ToString("N0")</td>
+                                                    <td class="text-end">@r.Principal.ToString("N0")</td>
                                                     <td class="text-end">@r.Interest.ToString("N0")</td>
                                                     <td class="text-end">@r.Tax.ToString("N0")</td>
                                                     <td class="text-end">@r.Penalty.ToString("N0")</td>
