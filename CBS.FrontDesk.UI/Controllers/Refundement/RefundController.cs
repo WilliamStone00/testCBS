@@ -42,7 +42,7 @@ namespace CBS.FrontDesk.UI.Controllers.Refundement
         }
 
 
-        public async Task<JsonResult> LoadReconciliationData(LoanRefundQuery query)
+        public async Task<JsonResult> LoadRefundmentData(LoanRefundQuery query)
         {
             try
             {

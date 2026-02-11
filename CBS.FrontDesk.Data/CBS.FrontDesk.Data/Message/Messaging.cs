@@ -16,6 +16,7 @@ namespace CBS.FrontDesk.Data.Message
         Exist = 3,
         NotFound = 4,
         Error = 5,
+        Accepted = 6,
     }
     public enum ExecutionProcessOption
     {
@@ -116,6 +117,7 @@ namespace CBS.FrontDesk.Data.Message
         InvalidFileType = 95,
         ApiResponseNull = 96,
         ProcessingFailed = 97,
+        ReexecuteDailyCollection = 98,
     }
     public enum MessagesResults
     {
@@ -125,7 +127,8 @@ namespace CBS.FrontDesk.Data.Message
         Exist = 4,
         NoteFound = 5,
         SearchFound = 6,
-        Required = 7
+        Required = 7,
+        Accepted = 8
     }
 
     public interface IExecutionMessages
