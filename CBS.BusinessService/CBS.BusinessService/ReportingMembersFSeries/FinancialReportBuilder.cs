@@ -356,26 +356,12 @@ namespace CBS.BusinessService.ReportingMembersFSeries
         // 4. Build Loan Situation Rows
         public async Task<List<LoanSituationRow>> BuildLoanSituationRows(FinancialReportFilter parameters)
         {
-            var situationData = await _reportService.GetLoanSituationData(
-                parameters.DateFrom,
-                parameters.DateTo);
+            var situationData = await _reportService.GetLoanSituationData(parameters);
 
             var rows = new List<LoanSituationRow>();
 
-            // Header
-            rows.Add(new LoanSituationRow
-            {
-                ReportTitle = "LOAN PORTFOLIO SITUATION REPORT",
-                BankName = GetBankName(),
-                BranchName = GetBranchName(),
-                PeriodFrom = parameters.DateFrom,
-                PeriodTo = parameters.DateTo,
-                PrintedBy = GetUserFullName(),
-                PrintedOn = DateTime.Now
-            });
-
             // Loan Portfolio Details
-            foreach (var loan in situationData.LoanPortfolio)
+            foreach (var loan in situationData)
             {
                 rows.Add(new LoanSituationRow
                 {
@@ -387,7 +373,7 @@ namespace CBS.BusinessService.ReportingMembersFSeries
                     DisbursementDate = loan.DisbursementDate,
                     MaturityDate = loan.MaturityDate,
                     InterestRate = loan.InterestRate,
-                    LoanStatus = loan.LoanStatus,
+                    Status = loan.LoanStatus,
                     DaysPastDue = loan.DaysPastDue
                 });
             }
