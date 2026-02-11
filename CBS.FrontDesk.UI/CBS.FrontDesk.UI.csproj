@@ -293,7 +293,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System">
-      <HintPath>..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.dll</HintPath>
     </Reference>
     <Reference Include="System.Buffers, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.6.1\lib\net462\System.Buffers.dll</HintPath>
@@ -476,13 +476,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MembersFSeries.xsd</DependentUpon>
     </Compile>
-    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\AccountSituation.cs">
+    <Compile Include="AppFiles\Reporting\Transactions\UpdatedStatement\AccountSituation.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>AccountSituation.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\AccountStatement.cs">
+    <Compile Include="AppFiles\Reporting\Transactions\UpdatedStatement\AccountStatement.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>AccountStatement.rpt</DependentUpon>
@@ -4715,7 +4715,7 @@
       <DependentUpon>Receipts.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="AppFiles\Reporting\Transactions\Statement\IAccountStatement.cs">
+    <Compile Include="AppFiles\Reporting\Transactions\UpdatedStatement\IAccountStatement.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>IAccountStatement.rpt</DependentUpon>
@@ -7648,7 +7648,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\Transactions\UpdatedStatement\MemberSituation\SubLoanSituationRPT.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>SubLoanSituationRPT1.cs</LastGenOutput>
+      <LastGenOutput>SubLoanSituationRPT2.cs</LastGenOutput>
     </EmbeddedResource>
     <Content Include="App_GlobalResources\CashReconciliation\CashReconciliationResource.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
@@ -8547,11 +8547,11 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalLoanTerm.Designer.cs</LastGenOutput>
     </Content>
-    <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\AccountSituation.rpt">
+    <EmbeddedResource Include="AppFiles\Reporting\Transactions\UpdatedStatement\AccountSituation.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>AccountSituation.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\AccountStatement.rpt">
+    <EmbeddedResource Include="AppFiles\Reporting\Transactions\UpdatedStatement\AccountStatement.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>AccountStatement.cs</LastGenOutput>
     </EmbeddedResource>
@@ -10488,7 +10488,7 @@
     <Content Include="Views\LossManagement\_CheckLeavesTable.cshtml" />
     <Content Include="Views\LossManagement\_LossRequestForm.cshtml" />
     <Content Include="Views\ChequeClearance\Index.cshtml" />
-    <Content Include="Views\ChequeClearance\_ChequeClearanceDetails.cshtml" />
+    <Content Include="Views\ChequeClearance\_DataTable.cshtml" />
     <Content Include="Views\ChequeClearance\_Edit.cshtml" />
     <Content Include="Views\ChequeClearance\_MainForm.cshtml" />
     <Content Include="Views\ChequeClearance\_Create.cshtml" />
@@ -10517,7 +10517,6 @@
     <Content Include="Views\ChequeCancellation\_CancellationDataTable.cshtml" />
     <Content Include="Views\ChequeCancellation\_CancellationRequestDetails.cshtml" />
     <Content Include="Views\ChequeRequest\_CustomerSearch.cshtml" />
-    <Content Include="Views\ChequeCancellation\_Edit.cshtml" />
     <Content Include="Views\ChequeCancellation\_VerificationForm.cshtml" />
     <Content Include="Views\ChequeClearance\_DiscountModal.cshtml" />
     <Content Include="Views\LossManagement\_CheckbookDetails.cshtml" />
@@ -10798,6 +10797,9 @@
     <Content Include="Views\MembersFSeries\_ReportView.cshtml" />
     <Content Include="Views\FeeConfig\_FeeConfigDataTable.cshtml" />
     <Content Include="Views\Country\Create.cshtml" />
+    <Content Include="Views\ChequeClearance\_chequeDetails.cshtml" />
+    <Content Include="Views\ChequeClearance\_InternalChequeRequest.cshtml" />
+    <Content Include="Views\ChequeClearance\ImageUpload.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
@@ -10938,7 +10940,7 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>IAccountStatementGroupByAccounts.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="AppFiles\Reporting\Transactions\Statement\IAccountStatement.rpt">
+    <EmbeddedResource Include="AppFiles\Reporting\Transactions\UpdatedStatement\IAccountStatement.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>IAccountStatement.cs</LastGenOutput>
     </EmbeddedResource>

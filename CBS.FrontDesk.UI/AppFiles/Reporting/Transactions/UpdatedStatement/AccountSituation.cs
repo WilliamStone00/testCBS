@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.ReportRPT {
+namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.UpdatedStatement {
     using System;
     using System.ComponentModel;
     using CrystalDecisions.Shared;
@@ -16,14 +16,14 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.ReportRPT {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class AccountStatement : ReportClass {
+    public class AccountSituation : ReportClass {
         
-        public AccountStatement() {
+        public AccountSituation() {
         }
         
         public override string ResourceName {
             get {
-                return "AccountStatement.rpt";
+                return "AccountSituation.rpt";
             }
             set {
                 // Do nothing
@@ -41,7 +41,8 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.ReportRPT {
         
         public override string FullResourceName {
             get {
-                return "CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.ReportRPT.AccountStatement.rpt";
+                return "CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.UpdatedStatement.AccountSituatio" +
+                    "n.rpt";
             }
             set {
                 // Do nothing
@@ -90,9 +91,9 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.ReportRPT {
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class CachedAccountStatement : Component, ICachedReport {
+    public class CachedAccountSituation : Component, ICachedReport {
         
-        public CachedAccountStatement() {
+        public CachedAccountSituation() {
         }
         
         [Browsable(false)]
@@ -129,7 +130,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.ReportRPT {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            AccountStatement rpt = new AccountStatement();
+            AccountSituation rpt = new AccountSituation();
             rpt.Site = this.Site;
             return rpt;
         }

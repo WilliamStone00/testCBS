@@ -1,4 +1,5 @@
-﻿using CBS.API.Helper;
+﻿using BusinessServices;
+using CBS.API.Helper;
 using CBS.FrontDesk.Data.Entity.Accounting;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Queries;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Reconciliation;
@@ -6,6 +7,7 @@ using CBS.FrontDesk.Data.Entity.Accounting_V2.TrialBalance;
 using CBS.FrontDesk.Data.Entity.AccountingV2;
 using CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation;
 using CBS.FrontDesk.Data.Entity.DataTable;
+using CBS.FrontDesk.Data.ReportDataSetDto;
 using CBS.FrontDesk.Helper;
 using Microsoft.AspNet.SignalR.Hosting;
 using Newtonsoft.Json;
@@ -19,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CBS.BusinessService.AccountingV2.GLSystemReconciliation
 {
-    public class GLSystemReconciliationService
+    public class GLSystemReconciliationService : BaseService
     {
         private readonly ApiCallerHelper _systemReconciliationapiCallerHelper;
         private readonly ApiCallerHelper _ReconciliationapiCallerHelper;
@@ -34,14 +36,24 @@ namespace CBS.BusinessService.AccountingV2.GLSystemReconciliation
         }
 
 
-        public async Task<CustomDataTable2> GetReconciliationDataTableAsync(ReconciliationQuery query)
+        public async Task<CustomDataTable> GetReconciliationDataTableAsync(ReconciliationQuery query)
         {
             try
             {
-                query.Options.sortColumnName = "";
-                query.Options.sortColumnDirection = "";
+                if (!IsHeadOffice() && string.IsNullOrEmpty(query.BranchId))
+                {
+                    query.BranchId = GetBranchID();
+                }
 
-                var response = await _systemReconciliationapiCallerHelper.PostAsync<ResponseObject<CustomDataTable2>>(
+                if (query.Status == null)
+                {
+                    query.Status = "Exception";
+                }
+                
+                query.DataTableOptions.sortColumnName = "CreatedDate";
+                query.DataTableOptions.sortColumnDirection = "DESC";
+
+                var response = await _ReconciliationapiCallerHelper.PostAsync<ResponseObject<CustomDataTable>>(
                     APICallHelper.GetReconciliationDataTable, query);
 
                 if (!response.IsSuccess)
@@ -179,7 +191,7 @@ namespace CBS.BusinessService.AccountingV2.GLSystemReconciliation
             try
             {
                 var apiResponse =
-                    await _systemReconciliationapiCallerHelper
+                    await _ReconciliationapiCallerHelper
                         .PostAsync<ResponseObject<PushRequest>>(
                             APICallHelper.PushRecordReconciliation,
                             model

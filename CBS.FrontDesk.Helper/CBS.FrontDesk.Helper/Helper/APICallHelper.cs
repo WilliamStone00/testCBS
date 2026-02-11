@@ -1367,8 +1367,8 @@ namespace CBS.FrontDesk.Helper
         public const string GetCancellationRequestsDataTable = "/api/v1/Cheque-Book";
 
         //-------------------- Cheque Cleance ---------------
-        public const string clearanceData = "/api/v1/cheque-clearance/data-table";
-        public const string ChequebookDetail = "/api/v1/checkbook/{0}";
+        public const string ChequeClearanceRequest = "/api/v1/clearance/request";
+        public const string ClearanceDataTable = "/api/v1/clearance/data-table";
 
 
         //---------------------- Global Configuration ----------------------------
@@ -1813,12 +1813,12 @@ namespace CBS.FrontDesk.Helper
 
         //-------------------------  System Reconciliation ----------------------
 
-        public static string GetReconciliationDataTable = "/api/v1/AccountingOperationTrack/GetUnProcessTrackedJournalDataTable";
+        public static string GetReconciliationDataTable = "/api/v1/AccountingOperationTrackReconciliation/datatable/tracker-reconcilition-vII";
 
         public static string GetReconciliationSummary = "/api/v1/AccountingOperationTrack/GetBranchDailyStaticsQuery";
 
         public static string GetReconciliationById = "/api/v1/AccountingOperationTrack/GetAccountingOperationByIdQuery/{0}";
-        public static string PushRecordReconciliation = "/api/v1/AccountingOperationTrack/PushJournalExecution";
+        public static string PushRecordReconciliation = "/api/v1/AccountingOperationTrackReconciliation/reconcile";
         public static string SubmitCloseOfDay = "/api/DailyReconciliationStatus/add";
         public static string GetReconciliationDetails = "/api/v1/AccountingOperationTrack/GetOperationJournalDataTableQuery";
         public static string UpdateTillClosePayload = "/api/v1/AccountingOperationTrack/PushJournalExecutionWithModifyCommand";

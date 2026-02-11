@@ -55,15 +55,18 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.GLSystemReconciliation
 
             ViewBag.OperationCode = new List<SelectListItem>
                 {
-                    new SelectListItem { Value = "Cashin", Text = "CASH IN" },
-                    new SelectListItem { Value = "Cashout", Text = "CASH OUT" }
+                    new SelectListItem { Value = "CASH.IN", Text = "CASH IN" },
+                    new SelectListItem { Value = "CASH.OUT", Text = "CASH OUT" },
+                     new SelectListItem { Value = "BULK.OPERATION", Text = "BULK OPERATION" },
+                       new SelectListItem { Value = "SALARY.EXECUTION", Text = "SALARY EXECUTION" },
+                       new SelectListItem { Value = "SWN.FEE", Text = "SWN FEE" }
                 };
 
             ViewBag.Status = new List<SelectListItem>
                 {
-                    new SelectListItem { Value = "EXCEPTION", Text = "EXCEPTION" },
-                    new SelectListItem { Value = "MISSING_IN_JOURNAL", Text = "MISSING IN JOURNAL" },
-                    new SelectListItem { Value = "AMOUNT_MISMATCH", Text = "AMOUNT MISMATCH" }
+                    new SelectListItem { Value = "Exception", Text = "EXCEPTION" },
+                    new SelectListItem { Value = "Successful", Text = "SUCESS" }
+                    
                 };
 
 
@@ -82,11 +85,14 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.GLSystemReconciliation
 
 
 
+                
+
                 return Json(new
                 {
-                    draw = data.Options.draw ?? "1",
-                    recordsTotal = data.Options.recordsTotal,
-                    recordsFiltered = data.Options.recordsFiltered,
+
+                    draw = data.DataTableOptions.draw ?? "1",
+                    recordsTotal = data.DataTableOptions.recordsTotal,
+                    recordsFiltered = data.DataTableOptions.recordsFiltered,
                     data = reconciliations,
                     success = true,
                     message = "Reconciliation DataTable loaded successfully"
@@ -96,7 +102,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.GLSystemReconciliation
             {
                 return Json(new
                 {
-                    draw = query?.Options?.draw ?? "1",
+                    draw = query?.DataTableOptions?.draw ?? "1",
                     recordsTotal = 0,
                     recordsFiltered = 0,
                     data = new List<object>(),
@@ -223,22 +229,22 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.GLSystemReconciliation
             try
             {
                 // 1️⃣ Resolve branch
-                var branches = await _branchServices.GetBranches();
-                var selectedBranch = branches.FirstOrDefault(b => b.Id == model.BranchId);
+                //var branches = await _branchServices.GetBranches();
+                //var selectedBranch = branches.FirstOrDefault(b => b.Id == model.BranchId);
 
-                if (selectedBranch == null)
-                {
-                    return Json(new
-                    {
-                        success = false,
-                        statusCode = 400,
-                        message = "Invalid BranchId. Branch not found."
-                    });
-                }
+                //if (selectedBranch == null)
+                //{
+                //    return Json(new
+                //    {
+                //        success = false,
+                //        statusCode = 400,
+                //        message = "Invalid BranchId. Branch not found."
+                //    });
+                //}
 
-                // 2️⃣ Enrich request (not response)
-                model.BranchName = selectedBranch.Name;
-                model.BranchCode = selectedBranch.BranchCode;
+                //// 2️⃣ Enrich request (not response)
+                //model.BranchName = selectedBranch.Name;
+                //model.BranchCode = selectedBranch.BranchCode;
 
                 // 3️⃣ Call service
                 var response = await _glSystemReconciliationService.PushRecordAsync(model);

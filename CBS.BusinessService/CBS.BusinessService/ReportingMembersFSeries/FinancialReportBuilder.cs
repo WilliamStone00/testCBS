@@ -154,6 +154,7 @@ namespace CBS.BusinessService.ReportingMembersFSeries
             decimal runningBalance = openingBalance;
             decimal totalDebit = 0m;
             decimal totalCredit = 0m;
+      
 
             foreach (var t in transactions)
             {
@@ -201,12 +202,13 @@ namespace CBS.BusinessService.ReportingMembersFSeries
                     TotalCredit = totalCredit.ToString("N1"),
                     TotalOperation = transactions.Count.ToString(),
                     ClosingBalance = accountStatement.summary.ClosingBalance,
-                    BalanceasOf = $"Balance as of {parameters.DateTo:dd/MM/yyyy}: {runningBalance:N1}",
 
+                    BalanceasOf = $"Balance as of {parameters.DateTo:dd/MM/yyyy}: {runningBalance:N1}",
+                    
                     // -------- Report --------
                     Printedfrom = parameters.DateFrom.ToString("dd/MM/yyyy"),
                     PrintedTo = parameters.DateTo.ToString("dd/MM/yyyy"),
-                    Year = DateTime.Now.Year.ToString(),
+                    Year = $"2021 - {DateTime.Now.Year}",
                     PrintedBy = GetUserFullName(),
                     Address = cus?.Address ?? "",
                     HeadOfficeAddress = bra?.Address ?? "",
@@ -244,15 +246,27 @@ namespace CBS.BusinessService.ReportingMembersFSeries
                 HeadOfficeName = GetBankName(),
                 BranchAddress = bra.Address,
                 BranchTelephone = bra.Telephone,
-               // Year = "2021 - " + DateTime.Now.Year.ToString(),
+                Year = $"2021 - {DateTime.Now.Year}",
                 CustomerId = cus.CustomerId,
 
                 Logo = logoPath,
 
                 CustomerName = cus != null ? $"{cus.FirstName} {cus.LastName}" : "-",
-                // CNI = cus.Cni ?? "-",
+                CNI = cus.IDNumber ?? "-",
                 Telephone = cus.Phone ?? "-",
                 PrintedBy = GetUserFullName(),
+
+                TotalBalance = backend.MemberSituation.Summary.TotalBalance,
+                TotalBlockedAmount = backend.MemberSituation.Summary.TotalBlockedAmount,
+                TotalLiquidSavings = backend.MemberSituation.Summary.TotalLiquidSavings,
+                Actual = backend.MemberSituation.Summary.Actual,
+                LoanAndCoverageGapAmount = backend.MemberSituation.Summary.LoanAndCoverageGapAmount,
+                TotalLoanBalance = backend.MemberSituation.Summary.TotalLoanBalance,
+                LoanCount = backend.MemberSituation.Summary.LoansCount.ToString(),
+                TotalPaid = backend.MemberSituation.Summary.TotalPaid,
+                SavingsAgainstLoanRatio = backend.MemberSituation.Summary.SavingsAgainstLoanRatio,
+                LoanRecommendation = backend.MemberSituation.Summary.LoanRecommendation,
+                LoanRiskLevel = backend.MemberSituation.Summary.LoanRiskLevel,
 
                 // ===============================
                 // SUBREPORT 1 – ACCOUNTS
@@ -266,7 +280,8 @@ namespace CBS.BusinessService.ReportingMembersFSeries
                         Balance = a.Balance,
                         BlockedAmount = a.BlockedAmount,
                         ActualBalance = a.ActualBalance,
-                        AccountDate = a.SnapshotDate
+                        LastTransactionDate = a.SnapshotDate,
+                        LastTransactedAmount = a.lastTransactedAmount
                     })
                     .ToList(),
 
@@ -276,7 +291,7 @@ namespace CBS.BusinessService.ReportingMembersFSeries
                 LoanHistories = situation.Loans
                     .Select(l => new LoanSituationRow
                     {
-                        LoanAccount = l.LoanId,
+                        LoanAccount = l.LoanAccount,
                         LoanType = l.LoanType,
                         LoanBalance = l.Balance,
                         Interest = l.Interest,
@@ -286,7 +301,10 @@ namespace CBS.BusinessService.ReportingMembersFSeries
                         DisbursementDate = l.DisbursementDate,
                         NumberOfInstallment = l.DelDays,
                         LoanAmount = l.Principal,
-
+                        LoanRepaymentAmount = l.LastRepaymentAmount,
+                        DelInterest = l.DelInterest,
+                        DeliquenceAmount = l.DelAmount,
+                        Deliquencedays = l.DelDays
                     })
                     .ToList()
             };
@@ -424,7 +442,7 @@ namespace CBS.BusinessService.ReportingMembersFSeries
                     PrintedTo = situation.OperationDate.ToString("dd/MM/yyyy"),
 
                     Currreccy = "Central African CFA franc",
-                    Address = cus.town,
+                    Address = cus.Address,
 
                     Balance = acc.Balance,
                     NetBalance = acc.ActualBalance,
@@ -433,7 +451,8 @@ namespace CBS.BusinessService.ReportingMembersFSeries
                     TotalBlockedAmount = situation.Summary.TotalBlockedAmount,
                     TotalActualBalance = situation.Summary.TotalActualBalance,
 
-                    Year = DateTime.Now.Year.ToString(),
+                    Year = $"2021 - {DateTime.Now.Year}",
+
 
                     // ===== DETAIL FIELDS =====
                     AccountNumber = acc.AccountNumber,

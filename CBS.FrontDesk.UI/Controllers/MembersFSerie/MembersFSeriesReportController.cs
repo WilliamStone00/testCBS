@@ -3,11 +3,13 @@ using CBS.BusinessService;
 using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
 using CBS.BusinessService.ReportingMembersFSeries;
+using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Reporting;
 using CBS.FrontDesk.Data.Entity.ReportMembersFSeries;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
 using CBS.FrontDesk.Data.ReportDataSetDto.LoanDeliquentAnalysis;
 using CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.ReportRPT;
 using CBS.FrontDesk.UI.AppFiles.Reporting.Loan.PortFolio;
+using CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.UpdatedStatement;
 using CrystalDecisions.CrystalReports.Engine;
 using CrystalDecisions.Shared;
 using CrystalDecisions.Web;
@@ -55,7 +57,7 @@ namespace CBS.FrontDesk.UI.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> GenerateReport(ReportParameters parameters)
-        {
+         {
 
             Session["MainData"] = null;
             Session["SubReportsData"] = null; // null for single reports
@@ -108,12 +110,12 @@ namespace CBS.FrontDesk.UI.Controllers
                         var memberSituation =
                             await _reportBuilder.BuildMemberSituationRows(filter);
 
-                        if (memberSituation == null ||
-                            !memberSituation.AccountSituations.Any() ||
-                            !memberSituation.LoanHistories.Any())
-                        {
-                            return Json(new { success = false, message = "No data found." });
-                        }
+                        //if (memberSituation == null ||
+                        //    !memberSituation.AccountSituations.Any() ||
+                        //    !memberSituation.LoanHistories.Any())
+                        //{
+                        //    return Json(new { success = false, message = "No data found." });
+                        //}
                         relativePath =
                             "Transactions/UpdatedStatement/MemberSituation/MemberSituation.rpt";
                         reportTitle = "MEMBER SITUATION";
@@ -139,12 +141,16 @@ namespace CBS.FrontDesk.UI.Controllers
                 case "AccountSituation":
                     filter.ReportType = (int)FinancialReportType.AccountSituation;
                     mainData = await _reportBuilder.BuildAccountSituationRows(filter);
+                    relativePath = "Transactions/UpdatedStatement/AccountSituation.rpt";
+                    reportTitle = "ACCOUNT SITUATION";
                     break;
 
                 case "AccountStatement":
                     filter.ReportType = (int)FinancialReportType.AccountStatement;
                     filter.AccountNumber = parameters.AccountTypeId;
                     mainData = await _reportBuilder.BuildAccountStatementRows(filter);
+                    relativePath = "Transactions/UpdatedStatement/AccountStatement.rpt";
+                    reportTitle = "ACCOUNT STATEMENT";
                     break;
 
                 case "LoanRepayment":
