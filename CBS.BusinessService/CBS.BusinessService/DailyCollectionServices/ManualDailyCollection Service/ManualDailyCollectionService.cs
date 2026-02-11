@@ -273,12 +273,14 @@ using CBS.FrontDesk.Helper;
 using DocumentFormat.OpenXml.Drawing;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using DocumentFormat.OpenXml.Office2010.ExcelAc;
+using Microsoft.AspNet.SignalR.Hosting;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -324,7 +326,7 @@ namespace CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Serv
         //    );
         //}
 
-        public async Task<ApiResponse<ServiceResponse<FileUploadResponse>>> UploadManualEntryFileAsync(HttpPostedFileBase file,string branch,string collectorId,string userId,string AccountingDate)
+        public async Task<ApiResponse<ServiceResponse<FileUploadResponse>>> UploadManualEntryFileAsync(HttpPostedFileBase file, string branch, string collectorId, string userId, string AccountingDate)
         {
             try
             {
@@ -339,11 +341,11 @@ namespace CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Serv
                 }
 
                 ///******* when Accounting date is updated on the endpoint add it to the endpoint beign sent here dont forget man****
-               
-                var endpoint = $"{APICallHelper.ManualEntryUpload}?collectorId={collectorId}&branchId={branch}&userId={userId}&accountingDate={AccountingDate}";
-                var result = await _apiHelper.UploadBulkCashPaymentFileAsync<ServiceResponse<FileUploadResponse>>( file, endpoint);
 
-             
+                var endpoint = $"{APICallHelper.ManualEntryUpload}?collectorId={collectorId}&branchId={branch}&userId={userId}&accountingDate={AccountingDate}";
+                var result = await _apiHelper.UploadBulkCashPaymentFileAsync<ServiceResponse<FileUploadResponse>>(file, endpoint);
+
+
                 return result;
             }
             catch (Exception ex)
@@ -362,51 +364,52 @@ namespace CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Serv
         /// <summary>
         /// Calls the endpoint to process/extract a recently uploaded file.
         /// </summary>
-        public async Task<ExecutionMessages> ExtractFileAsync(string fileUploadId){
-        try
+        public async Task<ExecutionMessages> ExtractFileAsync(string fileUploadId)
         {
-            var url = APICallHelper.ExtractUploadedFile;
-            var payload = new { fileUploadId = fileUploadId };
-
-             var response = await _apiHelper.PostAsync<ServiceResponse<FileDetailsResponse>>(url, payload);
-
-            if (response?.IsSuccess == true && response.ApiResponseData?.Data != null)
+            try
             {
-                var data = response.ApiResponseData.Data;
+                var url = APICallHelper.ExtractUploadedFile;
+                var payload = new { fileUploadId = fileUploadId };
 
-                // do whatever you need with 'data' (e.g. save, render, map to viewmodel)
-                GetExecutionMessages(
-                    data,
-                    true,
-                    fileUploadId,
-                    MessagesResults.Success,
-                    ExecutionProcessOption.DefaultSuccessdMessages,
-                    "Success",
-                    null,
-                    "File extracted successfully."
-                );
+                var response = await _apiHelper.PostAsync<ServiceResponse<FileDetailsResponse>>(url, payload);
+
+                if (response?.IsSuccess == true && response.ApiResponseData?.Data != null)
+                {
+                    var data = response.ApiResponseData.Data;
+
+                    // do whatever you need with 'data' (e.g. save, render, map to viewmodel)
+                    GetExecutionMessages(
+                        data,
+                        true,
+                        fileUploadId,
+                        MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages,
+                        "Success",
+                        null,
+                        "File extracted successfully."
+                    );
+                }
+                else
+                {
+                    GetExecutionMessages(
+                        null,
+                        false,
+                        fileUploadId,
+                        MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages,
+                        "Failed",
+                        null,
+                        response?.ApiResponseData?.Message ?? response?.Message ?? "Extraction failed."
+                    );
+                }
             }
-            else
+            catch (Exception ex)
             {
-                GetExecutionMessages(
-                    null,
-                    false,
-                    fileUploadId,
-                    MessagesResults.Failed,
-                    ExecutionProcessOption.DefaultFailedMessages,
-                    "Failed",
-                    null,
-                    response?.ApiResponseData?.Message ?? response?.Message ?? "Extraction failed."
-                );
+                GetExecutionMessages(null, false, "Extract File", MessagesResults.Error, ExecutionProcessOption.TryCatch, "Error", ex, ex.Message);
             }
-        }
-        catch (Exception ex)
-        {
-            GetExecutionMessages(null, false, "Extract File", MessagesResults.Error, ExecutionProcessOption.TryCatch, "Error", ex, ex.Message);
-        }
 
-        return ExecutionMessage;
-    }
+            return ExecutionMessage;
+        }
 
 
         #endregion
@@ -431,6 +434,98 @@ namespace CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Serv
             }
         }
 
+
+        public async Task<ExecutionMessages> ReExcuteDailyCollection(string fileId, CancellationToken cancellationToken = default)
+        {
+            var executionMessage = new ExecutionMessages();
+
+            try
+            {
+                var url = string.Format( APICallHelper.ExecuteBulkDailySaverCreditByManualCollectorId, fileId);
+
+                // Create the API call task
+                var apiCallTask = _apiHelper.GetAsync<ResponseObject<bool>>(url);
+
+                // Wait max 15 seconds
+                var completedTask = await Task.WhenAny(
+                    apiCallTask,
+                    Task.Delay(TimeSpan.FromSeconds(15), cancellationToken));
+
+                if (completedTask == apiCallTask)
+                {
+                    // ✅ API responded within 15 seconds
+                    var response = await apiCallTask;
+
+                    if (response.IsSuccess)
+                    {
+                        // Handle success scenario
+                        GetExecutionMessages(
+                            true,
+                            true,
+                            $"FileId: {fileId} - Daily collection re-executed successfully",
+                            MessagesResults.Success,
+                            ExecutionProcessOption.UpdateUpject,
+                            SystemMessageStatus.Success.ToString());
+                        return ExecutionMessage;
+                    }
+                    else
+                    {
+                        // Handle failure scenario
+                        GetExecutionMessages(
+                            false,
+                            false,
+                            $"FileId: {fileId} - Failed to re-execute daily collection, Mgs: {response.Message}",
+                            MessagesResults.Failed,
+                            ExecutionProcessOption.UpdateUpject,
+                            SystemMessageStatus.Failed.ToString());
+                        return ExecutionMessage;
+                    }
+                }
+
+                // ⏳ Timeout → fire-and-forget continuation
+                
+                _ = Task.Run(async () =>
+                {
+                    try
+                    {
+                        await apiCallTask; // let it complete in background
+                    }
+                    catch (Exception ex)
+                    {
+                       
+                        // Log audit error if needed
+                        // await LogAuditErrorAsync(fileId, $"Fire-and-forget execution failed: {ex.Message}");
+                    }
+                });
+
+
+                // 🚀 Return immediately with accepted status
+
+                GetExecutionMessages(
+                    true,
+                    true,
+                    $"FileId: {fileId} - Request accepted. Processing continues in background.",
+                    MessagesResults.Accepted,
+                    ExecutionProcessOption.UpdateUpject,
+                    SystemMessageStatus.Accepted.ToString());
+                return ExecutionMessage;
+            }
+            catch (Exception ex)
+            {
+               
+                // Handle exception scenario
+                GetExecutionMessages(
+                    null,
+                    false,
+                    $"FileId: {fileId} - Error: {ex.Message}",
+                    MessagesResults.Error,
+                    ExecutionProcessOption.UpdateUpject,
+                    SystemMessageStatus.Failed.ToString()
+                    );
+                return ExecutionMessage;
+            }
+        }
+
         /// <summary>
         /// Gets the full details of a single file. Used for the read-only Details page/preview.
         /// </summary>
@@ -449,7 +544,7 @@ namespace CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Serv
                 return null;
             }
         }
-                
+
         /// <summary>
         /// Gets data specifically for the server-side validation DataTable.
         /// </summary>
@@ -698,9 +793,9 @@ namespace CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Serv
 
         #region Helpers for Dropdowns
 
-        public async Task<IEnumerable<SelectListItem>> GetCollectorsAsSelectListAsync(string branchId = null,int order=1)
+        public async Task<IEnumerable<SelectListItem>> GetCollectorsAsSelectListAsync(string branchId = null, int order = 1)
         {
-            if (branchId==null)
+            if (branchId == null)
             {
                 branchId = "n/a";
             }
@@ -727,7 +822,7 @@ namespace CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Serv
                     default:
                         break;
                 }
-                
+
             }
 
             return new List<SelectListItem>();
