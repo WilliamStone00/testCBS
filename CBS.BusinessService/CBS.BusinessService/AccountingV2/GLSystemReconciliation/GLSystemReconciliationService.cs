@@ -45,13 +45,13 @@ namespace CBS.BusinessService.AccountingV2.GLSystemReconciliation
                     query.BranchId = GetBranchID();
                 }
 
-                if (query.Status == null)
-                {
-                    query.Status = "Exception";
-                }
+                //if (query.Status == null)
+                //{
+                //    query.Status = "Exception";
+                //}
                 
-                query.DataTableOptions.sortColumnName = "CreatedDate";
-                query.DataTableOptions.sortColumnDirection = "DESC";
+                //query.DataTableOptions.sortColumnName = "CreatedDate";
+                //query.DataTableOptions.sortColumnDirection = "DESC";
 
                 var response = await _ReconciliationapiCallerHelper.PostAsync<ResponseObject<CustomDataTable>>(
                     APICallHelper.GetReconciliationDataTable, query);
@@ -96,62 +96,62 @@ namespace CBS.BusinessService.AccountingV2.GLSystemReconciliation
 
 
 
-        public async Task<ReconciliationData> GetReconciliationSummaryAsyncs(ReconciliationQuery query)
-        {
-            try
-            {
+        //public async Task<ReconciliationData> GetReconciliationSummaryAsyncs(ReconciliationQuery query)
+        //{
+        //    try
+        //    {
                
 
-                var response = await _systemReconciliationapiCallerHelper
-                    .PostAsync<ResponseObject<ReconciliationData>>(
-                        APICallHelper.GetReconciliationSummary, query
-                    );
+        //        var response = await _systemReconciliationapiCallerHelper
+        //            .PostAsync<ResponseObject<ReconciliationData>>(
+        //                APICallHelper.GetReconciliationSummary, query
+        //            );
 
-                if (!response.IsSuccess)
-                    throw new Exception($"API call failed: {response.Message}");
+        //        if (!response.IsSuccess)
+        //            throw new Exception($"API call failed: {response.Message}");
 
-                if (response.ApiResponseData?.Data == null)
-                    throw new Exception("API returned null data");
+        //        if (response.ApiResponseData?.Data == null)
+        //            throw new Exception("API returned null data");
 
-                // Return only the summary data
-                return response.ApiResponseData.Data;
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"Summary Error: {ex.Message}");
-                throw;
-            }
-        }
+        //        // Return only the summary data
+        //        return response.ApiResponseData.Data;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        System.Diagnostics.Debug.WriteLine($"Summary Error: {ex.Message}");
+        //        throw;
+        //    }
+        //}
 
-        public async Task<ReconciliationData> GetReconciliationSummaryAsync(ReconciliationQuerys query)
-        {
-            try
-            {
+        //public async Task<ReconciliationData> GetReconciliationSummaryAsync(ReconciliationQuerys query)
+        //{
+        //    try
+        //    {
 
                 
 
-                // Call API and get raw JSON
-                var jsonResponse = await _systemReconciliationapiCallerHelper
-                    .PostAsync<ServiceResponse<ReconciliationData>>(APICallHelper.GetReconciliationSummary, query);
+        //        // Call API and get raw JSON
+        //        var jsonResponse = await _systemReconciliationapiCallerHelper
+        //            .PostAsync<ServiceResponse<ReconciliationData>>(APICallHelper.GetReconciliationSummary, query);
 
-                // Deserialize the wrapper
-              ///*  var apiResponse = JsonConvert.DeserializeObject<Api*/Response<ReconciliationData>>(jsonResponse);
+        //        // Deserialize the wrapper
+        //      ///*  var apiResponse = JsonConvert.DeserializeObject<Api*/Response<ReconciliationData>>(jsonResponse);
 
-                // check response for success / nulls
-                if (jsonResponse == null || jsonResponse.ApiResponseData == null || jsonResponse.ApiResponseData.Data == null)
-                {
-                    // optionally throw or return null and let caller handle
-                    return null;
-                }
+        //        // check response for success / nulls
+        //        if (jsonResponse == null || jsonResponse.ApiResponseData == null || jsonResponse.ApiResponseData.Data == null)
+        //        {
+        //            // optionally throw or return null and let caller handle
+        //            return null;
+        //        }
 
-                return jsonResponse.ApiResponseData.Data;
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"Summary Error: {ex.Message}");
-                throw;
-            }
-        }
+        //        return jsonResponse.ApiResponseData.Data;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        System.Diagnostics.Debug.WriteLine($"Summary Error: {ex.Message}");
+        //        throw;
+        //    }
+        //}
 
 
         public async Task<ReconciliationDetails> GetReconciliationByIdAsync(string id)
@@ -265,18 +265,17 @@ namespace CBS.BusinessService.AccountingV2.GLSystemReconciliation
             }
         }
         public async Task<ApiResponse<bool>> UpdateTillClosePayloadAsync(
-     string trackerId,
-     string payloadJson)
+     PushRequest request)
         {
-            if (string.IsNullOrWhiteSpace(trackerId))
+            if (request == null || string.IsNullOrWhiteSpace(request.Id))
                 return new ApiResponse<bool>
                 {
                     IsSuccess = false,
-                    Message = "TrackerId is required",
+                    Message = "Id is required",
                     ApiResponseData = false
                 };
 
-            if (string.IsNullOrWhiteSpace(payloadJson))
+            if (string.IsNullOrWhiteSpace(request.Payload))
                 return new ApiResponse<bool>
                 {
                     IsSuccess = false,
@@ -286,20 +285,12 @@ namespace CBS.BusinessService.AccountingV2.GLSystemReconciliation
 
             try
             {
-                var request = new
-                {
-                    trackerId,
-                    payload = payloadJson
-                };
-
-                // ✅ Pass inner type
-                var apiResponse = await _systemReconciliationapiCallerHelper
+                var apiResponse = await _ReconciliationapiCallerHelper
                     .PostAsync<bool>(
-                        APICallHelper.UpdateTillClosePayload,
+                        APICallHelper.PushRecordReconciliation,
                         request
                     );
 
-                // ✅ Return the full ApiResponse<bool>
                 return apiResponse;
             }
             catch (Exception ex)
@@ -312,6 +303,7 @@ namespace CBS.BusinessService.AccountingV2.GLSystemReconciliation
                 };
             }
         }
+
 
 
 
