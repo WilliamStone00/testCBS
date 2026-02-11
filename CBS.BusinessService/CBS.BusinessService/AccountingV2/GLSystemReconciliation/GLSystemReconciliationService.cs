@@ -45,13 +45,7 @@ namespace CBS.BusinessService.AccountingV2.GLSystemReconciliation
                     query.BranchId = GetBranchID();
                 }
 
-                //if (query.Status == null)
-                //{
-                //    query.Status = "Exception";
-                //}
-                
-                //query.DataTableOptions.sortColumnName = "CreatedDate";
-                //query.DataTableOptions.sortColumnDirection = "DESC";
+               
 
                 var response = await _ReconciliationapiCallerHelper.PostAsync<ResponseObject<CustomDataTable>>(
                     APICallHelper.GetReconciliationDataTable, query);

@@ -29,30 +29,30 @@
     <form id="loanRepaymentFilterForm" autocomplete="off" method="post">
         @Html.AntiForgeryToken()
 
-        <!-- ================= TOGGLES ================= -->
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="toggleBranch"
-                           onclick="document.getElementById('branchFilter').classList.toggle('d-none')" />
-                    <label class="form-check-label fw-bold">
-                        Show Branch Filter
-                    </label>
-                </div>
-            </div>
-
-            <div class="col-md-6">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="toggleDateFilters"
-                           onclick="document.getElementById('dateFilters').classList.toggle('d-none')" />
-                    <label class="form-check-label fw-bold">
-                        Show Date Filters
-                    </label>
-                </div>
-            </div>
-        </div>
-
         <div class="card p-3 mb-3 bg-light">
+
+            <!-- ================= TOGGLES ================= -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="toggleBranch"
+                               onclick="document.getElementById('branchFilter').classList.toggle('d-none')" />
+                        <label class="form-check-label fw-bold">
+                            Show Branch Filter
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="toggleDateFilters"
+                               onclick="document.getElementById('dateFilters').classList.toggle('d-none')" />
+                        <label class="form-check-label fw-bold">
+                            Show Date Filters
+                        </label>
+                    </div>
+                </div>
+            </div>
 
             <!-- ================= BRANCH FILTER ================= -->
             <div id="branchFilter" class="d-none mb-3">
@@ -68,11 +68,11 @@
                 <div class="row">
                     <div class="col-md-6">
                         <label class="form-label fw-bold">Start Date</label>
-                        <input type="date" name="StartDate" class="form-control" />
+                        <input type="date" id="StartDate" name="StartDate" class="form-control" />
                     </div>
                     <div class="col-md-6">
                         <label class="form-label fw-bold">End Date</label>
-                        <input type="date" name="EndDate" class="form-control" />
+                        <input type="date" id="EndDate" name="EndDate" class="form-control" />
                     </div>
                 </div>
             </div>
@@ -82,51 +82,55 @@
 
                 <div class="col-md-4">
                     <label class="form-label fw-bold">Loan ID</label>
-                    <input type="text" name="LoanId" class="form-control"
+                    <input type="text" id="LoanId" name="LoanId"
+                           class="form-control"
                            placeholder="Enter Loan ID" />
                 </div>
 
                 <div class="col-md-4">
                     <label class="form-label fw-bold">Member Reference</label>
-                    <input type="text" name="CustomerId" class="form-control"
+                    <input type="text" id="CustomerId" name="CustomerId"
+                           class="form-control"
                            placeholder="Enter Customer ID" />
                 </div>
 
                 <div class="col-md-4">
                     <label class="form-label fw-bold">Transaction Code</label>
-                    <input type="text" name="TransactionCode" class="form-control"
+                    <input type="text" id="TransactionCode" name="TransactionCode"
+                           class="form-control"
                            placeholder="Enter Transaction Code" />
                 </div>
 
             </div>
 
             <!-- ================= PAYMENT INFO ================= -->
-            @*<div class="row mb-3">
+            <div class="row mb-3">
 
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold">Payment Channel</label>
-                        @Html.DropDownList("PaymentChannel",
-                            new SelectList(ViewBag.PaymentChannels ?? new List<object>(), "Value", "Text"),
-                            "Select Payment Channel",
-                            new { @class = "form-control select2" })
-                    </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Payment Channel</label>
+                    @Html.DropDownList("PaymentChannel",
+                        new SelectList(ViewBag.PaymentChannels ?? new List<object>(), "Value", "Text"),
+                        "Select Payment Channel",
+                        new { @class = "form-control select2", id = "PaymentChannel" })
+                </div>
 
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold">Payment Method</label>
-                        @Html.DropDownList("PaymentMethod",
-                            new SelectList(ViewBag.PaymentMethods ?? new List<object>(), "Value", "Text"),
-                            "Select Payment Method",
-                            new { @class = "form-control select2" })
-                    </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Payment Method</label>
+                    @Html.DropDownList("PaymentMethod",
+                        new SelectList(ViewBag.PaymentMethods ?? new List<object>(), "Value", "Text"),
+                        "Select Payment Method",
+                        new { @class = "form-control select2", id = "PaymentMethod" })
+                </div>
 
-                </div>*@
+            </div>
 
             <!-- ================= FLAGS ================= -->
             <div class="row">
 
                 <div class="col-md-4">
                     <div class="form-check mt-4">
-                        @Html.CheckBox("IsCompleted", false, new { @class = "form-check-input", id = "IsCompleted" })
+                        @Html.CheckBox("IsCompleted", false,
+                            new { @class = "form-check-input", id = "IsCompleted" })
                         <label class="form-check-label fw-bold" for="IsCompleted">
                             Completed
                         </label>
@@ -135,7 +139,8 @@
 
                 <div class="col-md-4">
                     <div class="form-check mt-4">
-                        @Html.CheckBox("IsReversal", false, new { @class = "form-check-input", id = "IsReversal" })
+                        @Html.CheckBox("IsReversal", false,
+                            new { @class = "form-check-input", id = "IsReversal" })
                         <label class="form-check-label fw-bold" for="IsReversal">
                             Reversal
                         </label>
@@ -144,7 +149,8 @@
 
                 <div class="col-md-4">
                     <div class="form-check mt-4">
-                        @Html.CheckBox("CheckPartialFlowRepayment", false, new { @class = "form-check-input", id = "CheckPartialFlowRepayment" })
+                        @Html.CheckBox("CheckPartialFlowRepayment", false,
+                            new { @class = "form-check-input", id = "CheckPartialFlowRepayment" })
                         <label class="form-check-label fw-bold" for="CheckPartialFlowRepayment">
                             Partial Flow Repayment
                         </label>
@@ -158,7 +164,7 @@
         <!-- ================= ACTION BUTTONS ================= -->
         <div class="row g-2">
             <div class="col-12 col-md-4">
-                <button type="submit"
+                <button id="applyFilterBtn"  type="submit"
                         class="btn btn-primary btn-sm w-100">
                     <i class="mdi mdi-magnify me-1"></i> Apply Filters
                 </button>
@@ -172,7 +178,8 @@
             </div>
 
             <div class="col-12 col-md-4">
-                <button type="button" id="btnExport" class="btn btn-success btn-sm w-100">
+                <button type="button" id="btnExport"
+                        class="btn btn-success btn-sm w-100">
                     <i class="mdi mdi-export me-1"></i> Export
                 </button>
             </div>
@@ -223,7 +230,7 @@
                 </button>
 
                 <button type="button" class="btn btn-primary btn-sm"
-                        id="applyPartialDateFilter">
+                        id="applyFilterBtn" >
                     Apply Filter
                 </button>
             </div>
@@ -232,3 +239,172 @@
     </div>
 </div>
 
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(document).ready(function () {
+
+
+            $('#applyFilterBtn').on('click', function (e) {
+                e.preventDefault();
+                //loadSummary();
+                loadRefundData();
+            });
+
+            $('#CheckPartialFlowRepayment').on('change', function () {
+
+                if ($(this).is(':checked')) {
+
+                    var modal = new bootstrap.Modal(document.getElementById('partialFlowModal'));
+                    modal.show();
+
+                } else {
+
+                    // Clear dates if unchecked
+                    $('#PartialStartDate').val('');
+                    $('#PartialEndDate').val('');
+
+                }
+
+            });
+
+        });
+
+
+
+        function getDataTableFilters() {
+            return {
+                BranchId: $('#BranchId').val(),
+                LoanId: $('#LoanId').val(),
+                CustomerId: $('#CustomerId').val(),
+                TransactionCode: $('#TransactionCode').val(),
+                PaymentChannel: $('#PaymentChannel').val(),
+                PaymentMethod: $('#PaymentMethod').val(),
+                IsCompleted: $('#IsCompleted').is(':checked'),
+                IsReversal: $('#IsReversal').is(':checked'),
+                CheckPartialFlowRepayment: $('#CheckPartialFlowRepayment').is(':checked'),
+                StartDate: $('#StartDate').val(),
+                EndDate: $('#EndDate').val(),
+                DataTableOptions: {}
+            };
+        }
+
+
+
+        function loadRefundData() {
+            $('#myDataTable').DataTable({
+                serverSide: true,
+                destroy: true,
+                responsive: true,
+                searching: false,
+                order: [[0, 'desc']],
+                ajax: {
+                    url: '/Refund/LoadRefundmentData',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: function (d) {
+                        const filters = getDataTableFilters();
+                        filters.DataTableOptions = {
+                            draw: d.draw,
+                            start: d.start,
+                            length: d.length,
+                            skip: d.start,
+                            pageSize: d.length,
+                            searchValue: d.search?.value || '',
+                            sortColumnName: d.columns[d.order[0].column].data,
+                            sortColumnDirection: d.order[0].dir
+                        };
+                        return JSON.stringify(filters);
+                    },
+                    error: function (xhr, status, err) {
+                        console.error('❌ Load reconciliation failed:', status, err);
+                        appalert('❌ Failed to load Refund data. Status: ' + xhr.status, 4, 1);
+                    }
+                },
+                columns: [
+                    {
+                        data: null,
+                        orderable: false,
+                        searchable: false,
+                        render: function (data, type, row) {
+                            return `
+                                <input type="checkbox" 
+                                       class="row-checkbox" 
+                                       value="${row.Id}" />
+                            `;
+                        }
+                    },
+                    {
+                        data: 'CreatedDate',
+                        name: 'CreatedDate',
+                        render: function (data) {
+                            return data ? moment(data).format('DD/MM/YYYY HH:mm:ss') : '';
+                        }
+                    },
+                    { data: 'TransactionCode', name: 'TransactionCode' },
+                    { data: 'LoanId', name: 'LoanId' },
+                    { data: 'CustomerId', name: 'CustomerId' }, // Member Reference
+                    { data: 'BranchName', name: 'BranchName' },
+                    {
+                        data: 'Amount',
+                        name: 'Amount',
+                        render: function (data) {
+                            return data
+                                ? parseFloat(data).toLocaleString(undefined, {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2
+                                })
+                                : '0.00';
+                        }
+                    },
+                    {
+                        data: null,
+                        name: 'Status',
+                        render: function (data, type, row) {
+
+                            if (row.IsReversal) {
+                                return `<span class="badge bg-danger">Reversed</span>`;
+                            }
+
+                            if (row.IsCompleted) {
+                                return `<span class="badge bg-success">Completed</span>`;
+                            }
+
+                            return `<span class="badge bg-warning text-dark">Pending</span>`;
+                        }
+                    },
+                    {
+                        data: null,
+                        orderable: false,
+                        render: function (_, __, row) {
+                            return `
+                                <div class="text-center d-flex justify-content-between">
+                                    <button class="btn btn-sm btn-info view-details" data-id="${row.Id}">
+                                        <i class="mdi mdi-eye-outline me-1"></i> View
+                                    </button>
+
+                                   
+                                </div>
+                            `;
+                        }
+                    }
+                ],
+                initComplete: function () {
+                    appalert('✅ Table loaded successfully!', 1, 1);
+                },
+                drawCallback: function () {
+                    const api = this.api();
+                    if (api.rows({ page: 'current' }).data().length === 0) {
+                        appalert('⚠️ No Refund data found.', 2, 1);
+                    }
+                }
+            });
+        }
+
+
+
+    </script>
+
+}
