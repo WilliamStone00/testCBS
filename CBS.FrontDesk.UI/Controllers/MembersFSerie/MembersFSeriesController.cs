@@ -24,7 +24,7 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.Series
 {
-    //[CheckSessionTimeOutAttribute]
+    [CheckSessionTimeOutAttribute]
 
     public class MembersFSeriesController : BaseController
     {
@@ -177,30 +177,7 @@ namespace CBS.FrontDesk.UI.Controllers.Series
                 }
             });
         }
-        //[HttpPost]
-        //public async Task<ActionResult> BlockMemberAccount(string loanId, string accountNumber, decimal amount, string comment)
-        //{
-        //    // Load account to validate
-        //    var acct = await _accountService.GetAccountByNumber(accountNumber);
-        //    if (acct == null) return Json(new { ok = false, msg = "Account not found." });
-
-        //    var available = acct.Balance - acct.BlockedAmount;
-        //    if (amount <= 0) return Json(new { ok = false, msg = "Amount must be > 0." });
-        //    if (amount > available) return Json(new { ok = false, msg = "Amount cannot exceed available balance." });
-
-        //    // Call your blocking service / API
-        //    var res = await _accountService.BlockAccount(new BlockAccountCommand
-        //    {
-        //        LoanId = loanId,
-        //        AccountNumber = accountNumber,
-        //        Amount = amount,
-        //        Comment = comment
-        //    });
-
-        //    return Json(new { ok = res.IsSuccess, msg = res.IsSuccess ? "Account blocked successfully." : res.Message });
-        //}
-
-
+      
         public async Task<ActionResult> Index()
         {
             ViewBag.Branches=await _branchServices.GetBranches();

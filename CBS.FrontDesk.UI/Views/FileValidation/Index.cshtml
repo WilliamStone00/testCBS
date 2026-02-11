@@ -254,6 +254,10 @@
                             <li><a class="dropdown-item action-btn" href="#" data-action="approve" data-id="${id}"><i class="mdi mdi-check me-1"></i> Approve</a></li>
                             <li><a class="dropdown-item action-btn" href="#" data-action="reject" data-id="${id}"><i class="mdi mdi-close me-1"></i> Reject</a></li>
                         ` : ''}
+
+                        ${status === 'Approved' ? `
+                            <li><a class="dropdown-item action-btn" href="#" data-action="reexecute" data-id="${id}"><i class="mdi mdi-check me-1"></i>Reexecute Treatment</a></li>
+                           ` : ''}
                     </ul>
                 </div>
             `;
@@ -270,6 +274,57 @@
             if (window.confirm(message)) { if (typeof onOk === 'function') onOk(); } else { if (typeof onCancel === 'function') onCancel(); }
         }
 
+                // ---------------------------
+        // Modal loader + submit handler
+        // ---------------------------
+       function ReExcuteDailyCollection(fileId) {
+
+            if (!fileId) {
+                appalert("❌ Missing file ID.", 2, 1);
+                return false;
+            }
+
+            // Confirmation dialog
+            const confirmationMessage = "Are you sure you want to re-execute the daily collection for this file?<br/>" +
+                "<b class='text-warning'>⚠ Attention</b><br/>" +
+                "This operation will reprocess the collection and may take a few moments.";
+
+            alertify.confirm("Confirmation", confirmationMessage,
+                function () {
+
+                    // Show loading indicator
+                    appalert("⏳ Re-executing daily collection... Please wait.", 1, 1);
+
+                    const ajaxConfig = {
+                        type: 'GET',
+                        url: '/FileValidation/ReExcuteDailyCollection',
+                        data: { id: fileId },
+                        success: function (response) {
+                            if (response.success) {
+                                appalert(response.message || "✅ Daily collection re-executed successfully.", 1, 1);
+                            } else {
+                                                   
+                                appalert(response.message || "❌ Failed to re-execute daily collection.", 2, 1);
+                            }
+                        },
+                        error: function (err) {
+                            console.log(err)
+                            if (err.status === 401 || err.status === 400) appalert("❌ Bad request: " + (err.responseJSON?.message || "Invalid file ID."), 2, 1);
+                            else if (err.status === 404) appalert("❌ File not found.", 2, 1);
+                            else if (err.status === 500) appalert("❌ Server error occurred. Please try again later.", 2, 1);
+                            else appalert("❌ An error occurred while re-executing daily collection.", 2, 1);
+                        }
+                    };
+
+                    $.ajax(ajaxConfig);
+                },
+                function () {
+                    appalert('Operation cancelled.', 3, 1);
+                }
+            );
+
+            return false;
+        }
         // ---------------------------
         // Modal loader + submit handler
         // ---------------------------
@@ -542,6 +597,7 @@
             const action = $btn.data('action');
             const id = $btn.data('id');
             if (action === 'details') viewDetails(id);
+            if (action === 'reexecute') ReExcuteDailyCollection(id);
             else loadActionForm(id, action);
         });
 

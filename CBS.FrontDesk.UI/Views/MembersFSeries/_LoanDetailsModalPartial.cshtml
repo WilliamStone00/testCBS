@@ -3755,7 +3755,7 @@
 
                     @{
                         // totals for quick badges + footer
-                        var totalPaid = refunds?.Sum(x => x.Amount) ?? 0m;
+                        var totalPaid = refunds?.Sum(x => x.Principal) ?? 0m;
                         var totalPaidInterest = refunds?.Sum(x => x.Interest) ?? 0m;
                         var totalPaidVat = refunds?.Sum(x => x.Tax) ?? 0m;
                         var totalPaidPenalty = refunds?.Sum(x => x.Penalty) ?? 0m;
