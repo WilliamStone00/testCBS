@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.UpdatedStatement.MemberSituation {
+namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.UpdatedStatement {
     using System;
     using System.ComponentModel;
     using CrystalDecisions.Shared;
@@ -16,14 +16,14 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.UpdatedStatement.Memb
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class MemberSituation : ReportClass {
+    public class IAccountStatement : ReportClass {
         
-        public MemberSituation() {
+        public IAccountStatement() {
         }
         
         public override string ResourceName {
             get {
-                return "MemberSituation.rpt";
+                return "IAccountStatement.rpt";
             }
             set {
                 // Do nothing
@@ -41,8 +41,8 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.UpdatedStatement.Memb
         
         public override string FullResourceName {
             get {
-                return "CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.UpdatedStatement.MemberSituation" +
-                    ".MemberSituation.rpt";
+                return "CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.UpdatedStatement.IAccountStateme" +
+                    "nt.rpt";
             }
             set {
                 // Do nothing
@@ -67,7 +67,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.UpdatedStatement.Memb
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section PageHeaderSection2 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section3 {
             get {
                 return this.ReportDefinition.Sections[2];
             }
@@ -75,7 +75,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.UpdatedStatement.Memb
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section3 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section4 {
             get {
                 return this.ReportDefinition.Sections[3];
             }
@@ -83,57 +83,17 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.UpdatedStatement.Memb
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section4 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section5 {
             get {
                 return this.ReportDefinition.Sections[4];
-            }
-        }
-        
-        [Browsable(false)]
-        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section ReportFooterSection1 {
-            get {
-                return this.ReportDefinition.Sections[5];
-            }
-        }
-        
-        [Browsable(false)]
-        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section PageFooterSection1 {
-            get {
-                return this.ReportDefinition.Sections[6];
-            }
-        }
-        
-        [Browsable(false)]
-        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section PageFooterSection2 {
-            get {
-                return this.ReportDefinition.Sections[7];
-            }
-        }
-        
-        [Browsable(false)]
-        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_SubLoanSituationRPTrpt_DateFrom {
-            get {
-                return this.DataDefinition.ParameterFields[0];
-            }
-        }
-        
-        [Browsable(false)]
-        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_SubLoanSituationRPTrpt_DateTo {
-            get {
-                return this.DataDefinition.ParameterFields[1];
             }
         }
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class CachedMemberSituation : Component, ICachedReport {
+    public class CachedIAccountStatement : Component, ICachedReport {
         
-        public CachedMemberSituation() {
+        public CachedIAccountStatement() {
         }
         
         [Browsable(false)]
@@ -170,7 +130,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.UpdatedStatement.Memb
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            MemberSituation rpt = new MemberSituation();
+            IAccountStatement rpt = new IAccountStatement();
             rpt.Site = this.Site;
             return rpt;
         }

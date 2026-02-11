@@ -181,7 +181,7 @@
                                    name="ReportTypeRadio"
                                    id="loanRepayment"
                                    value="LoanRepayment"
-                                   @*onclick="switchReport('LoanRepayment')"*@>
+                                   @*onclick="switchReport('LoanRepayment')">*@
                             <label class="form-check-label" for="loanRepayment">
                                 <i class="mdi mdi-cash-multiple me-2"></i>
                                 Loan Repayment
@@ -194,7 +194,7 @@
                                    name="ReportTypeRadio"
                                    id="loanSituation"
                                    value="LoanSituation"
-                                   @*onclick="switchReport('LoanSituation')"*@>
+                                   onclick="switchReport('LoanSituation')">
                             <label class="form-check-label" for="loanSituation">
                                 <i class="mdi mdi-chart-line me-2"></i>
                                 Loan History
@@ -394,7 +394,7 @@
                                     </label>
                                     <div class="form-floating">
                                         @Html.DropDownList("AccountTypeId_Statement",
-                                            (IEnumerable<SelectListItem>)ViewBag.Accounts,
+                                            (IEnumerable<SelectListItem>)ViewBag.Account,
                                             "Select Account",
                                             new { @class = "form-control select2", required = "required", id = "accountStatementAccount" })
                                         <label for="accountStatementAccount">Select account</label>

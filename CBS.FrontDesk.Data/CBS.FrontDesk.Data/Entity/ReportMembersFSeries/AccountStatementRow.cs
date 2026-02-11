@@ -1,5 +1,7 @@
 ﻿using CBS.FrontDesk.Data.Config;
+using CBS.FrontDesk.Data.Entity.Accounting;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Reporting.ReportData;
+using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
 using Newtonsoft.Json;
 using System;
@@ -245,6 +247,8 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
         public string PrintedBy { get; set; }
         public DateTime PrintedOn { get; set; }
 
+        public string LoanAccount { get; set; }
+
         // Loan Information
         public string LoanNumber { get; set; }
         public string CustomerName { get; set; }
@@ -273,17 +277,22 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
 
     public class LoanSituationRow
     {
-        // Header Information
-        
+        // Header Information    
         public string ReportTitle { get; set; }
         public string BankName { get; set; }
         public string BranchName { get; set; }
-        public DateTime PeriodFrom { get; set; }
+        public string BranchId { get; set; }
+        public string BranchCode { get; set; }
+        public DateTime Periodfrom { get; set; }
         public DateTime PeriodTo { get; set; }
         public string PrintedBy { get; set; }
         public DateTime PrintedOn { get; set; }
 
         public string LoanAccount { get; set; }
+
+        public string LoanId { get; set; }
+        public string ContractCodeId { get; set; }
+
 
         // Portfolio Summary
         public int TotalLoans { get; set; }
@@ -300,25 +309,44 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
         public DateTime DisbursementDate { get; set; }
         public DateTime MaturityDate { get; set; }
         public decimal InterestRate { get; set; }
-        public string LoanStatus { get; set; }
-        public int DaysPastDue { get; set; }
-
-        // Risk Indicators
-        public string RiskCategory { get; set; }
-        public decimal CollateralValue { get; set; }
-        public string OfficerName { get; set; }
-        public int NumberOfInstallment { get; set; }
+        public string Status { get; set; }
+        public int DaysPastDue { get; set; }      
+   
         public DateTime LoanDate { get; set; }
         public DateTime LastRepaymentDate { get; set; }
         public decimal LoanBalance { get; set; }
+        public decimal LoanRepaymentAmount { get; set; }
         public decimal Interest { get; set; }
-        public int DeliquentDays { get; set; }
-        public decimal DeliquentAmount { get; set; }
-        public int DeliquentInterest { get; set; }
+        public int Deliquencedays { get; set; }
+        public decimal DeliquenceAmount { get; set; }
+        public decimal DelInterest { get; set; }
         public decimal AdvancedPaymentAmount { get; set; }
-        public int AdvancedPaymentDays { get; set; }
-        public int AdvancedPaymentDayLeft { get; set; }
-    }    
+
+        public string ContractCode { get; set; }
+        public int NumberOfInstallment { get; set; }
+        
+        public decimal Balance { get; set; }
+        public decimal Principal { get; set; }
+        public decimal Penalty { get; set; }
+        public decimal TotalRepayment { get; set; }
+
+        public decimal LastRepaymentAmount { get; set; }
+        public DateTime NextRepaymentDate { get; set; }
+       
+        public int DelDays { get; set; }
+        public decimal DelAmount { get; set; }
+
+        public string MemberReference { get; set; }
+        public string MembersName { get; set; }
+        public string MembersBranch { get; set; }
+        public string MemberBranchCode { get; set; }
+        public string CNI { get; set; }
+        public string Address { get; set; }
+        public string Phone { get; set; }
+       
+        
+
+    }
 
     public class LoanDetails
     {
@@ -435,171 +463,7 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
         public decimal BalanceAfter { get; set; }
     }
 
-
-    public class LoanPortfolioItem
-    {
-        public string LoanNumber { get; set; }
-        public string CustomerId { get; set; }
-        public string CustomerName { get; set; }
-        public string CustomerType { get; set; } // Individual, Corporate, SME
-        public string LoanProductCode { get; set; }
-        public string LoanProductName { get; set; }
-        public string LoanType { get; set; }
-        public string LoanCategory { get; set; } // Short-term, Medium-term, Long-term
-        public decimal LoanAmount { get; set; }
-        public decimal DisbursedAmount { get; set; }
-        public decimal OutstandingBalance { get; set; }
-        public decimal InterestRate { get; set; }
-        public DateTime DisbursementDate { get; set; }
-        public DateTime MaturityDate { get; set; }
-        public int LoanTermMonths { get; set; }
-        public string LoanStatus { get; set; } // Active, Closed, Non-performing, Written-off
-        public string PerformanceStatus { get; set; } // Performing, Watch, Substandard, Doubtful, Loss
-        public int DaysPastDue { get; set; }
-        public decimal ArrearsAmount { get; set; }
-        public string RiskCategory { get; set; } // Low, Medium, High
-        public string RiskGrade { get; set; }
-        public decimal ProvisionRate { get; set; }
-        public decimal ProvisionAmount { get; set; }
-        public string LoanOfficerId { get; set; }
-        public string LoanOfficerName { get; set; }
-        public string BranchCode { get; set; }
-        public string BranchName { get; set; }
-        public string Region { get; set; }
-        public string Sector { get; set; } // Agriculture, Trade, Manufacturing, Services
-        public string CollateralType { get; set; }
-        public decimal CollateralValue { get; set; }
-        public decimal LTVRatio { get; set; } // Loan-to-Value ratio
-        public decimal DSR { get; set; } // Debt Service Ratio
-        public DateTime LastPaymentDate { get; set; }
-        public decimal LastPaymentAmount { get; set; }
-        public decimal TotalRepaid { get; set; }
-        public decimal MonthlyInstallment { get; set; }
-        public int InstallmentsPaid { get; set; }
-        public int InstallmentsRemaining { get; set; }
-        public string Currency { get; set; }
-        public DateTime NextPaymentDate { get; set; }
-        public decimal NextPaymentAmount { get; set; }
-        public bool HasGuarantor { get; set; }
-        public string GuarantorName { get; set; }
-        public string PurposeOfLoan { get; set; }
-        public string SecurityDetails { get; set; }
-        public DateTime LastReviewDate { get; set; }
-        public DateTime NextReviewDate { get; set; }
-        public decimal InterestAccrued { get; set; }
-        public decimal InterestSuspended { get; set; }
-    }
-
-
-    public class LoanDelinquencyData
-    {
-        // Delinquency by Age
-        public int Current { get; set; }
-        public int Days1_30 { get; set; }
-        public int Days31_60 { get; set; }
-        public int Days61_90 { get; set; }
-        public int Days91_180 { get; set; }
-        public int DaysOver180 { get; set; }
-
-        // Delinquency Amounts
-        public decimal CurrentAmount { get; set; }
-        public decimal Days1_30Amount { get; set; }
-        public decimal Days31_60Amount { get; set; }
-        public decimal Days61_90Amount { get; set; }
-        public decimal Days91_180Amount { get; set; }
-        public decimal DaysOver180Amount { get; set; }
-
-        // Totals
-        public int TotalDelinquentLoans { get; set; }
-        public decimal TotalDelinquentAmount { get; set; }
-        public decimal TotalPortfolioAmount { get; set; }
-
-        // Ratios
-        public decimal DelinquencyRateByCount { get; set; }
-        public decimal DelinquencyRateByAmount { get; set; }
-        public decimal PortfolioAtRiskRate { get; set; }
-
-        // Trend Analysis
-        public decimal DelinquencyRate30DaysAgo { get; set; }
-        public decimal DelinquencyRate60DaysAgo { get; set; }
-        public decimal DelinquencyRate90DaysAgo { get; set; }
-        public decimal Change30Days { get; set; }
-        public decimal Change60Days { get; set; }
-        public decimal Change90Days { get; set; }
-
-        // Recovery Performance
-        public int LoansRecoveredThisMonth { get; set; }
-        public decimal AmountRecoveredThisMonth { get; set; }
-        public int LoansWrittenOffThisMonth { get; set; }
-        public decimal AmountWrittenOffThisMonth { get; set; }
-        public int LoansRestructuredThisMonth { get; set; }
-        public decimal AmountRestructuredThisMonth { get; set; }
-
-        // Provision Analysis
-        public decimal RequiredProvision { get; set; }
-        public decimal ActualProvision { get; set; }
-        public decimal ProvisionAdequacyRatio { get; set; }
-
-        // By Product
-        public Dictionary<string, DelinquencyByProduct> DelinquencyByProduct { get; set; }
-
-        // By Branch
-        public Dictionary<string, DelinquencyByBranch> DelinquencyByBranch { get; set; }
-
-        // By Loan Officer
-        public Dictionary<string, DelinquencyByOfficer> DelinquencyByOfficer { get; set; }
-
-        // Top Delinquent Accounts
-        public List<TopDelinquentLoan> TopDelinquentLoans { get; set; }
-    }
-
-    // Supporting classes for LoanDelinquencyData
-    public class DelinquencyByProduct
-    {
-        public string ProductName { get; set; }
-        public int TotalLoans { get; set; }
-        public int DelinquentLoans { get; set; }
-        public decimal DelinquencyRate { get; set; }
-        public decimal TotalAmount { get; set; }
-        public decimal DelinquentAmount { get; set; }
-    }
-
-    public class DelinquencyByBranch
-    {
-        public string BranchName { get; set; }
-        public int TotalLoans { get; set; }
-        public int DelinquentLoans { get; set; }
-        public decimal DelinquencyRate { get; set; }
-        public decimal TotalAmount { get; set; }
-        public decimal DelinquentAmount { get; set; }
-    }
-
-    public class DelinquencyByOfficer
-    {
-        public string OfficerName { get; set; }
-        public int TotalLoans { get; set; }
-        public int DelinquentLoans { get; set; }
-        public decimal DelinquencyRate { get; set; }
-        public decimal TotalAmount { get; set; }
-        public decimal DelinquentAmount { get; set; }
-    }
-
-    public class TopDelinquentLoan
-    {
-        public string LoanNumber { get; set; }
-        public string CustomerName { get; set; }
-        public string LoanOfficer { get; set; }
-        public string Branch { get; set; }
-        public decimal LoanAmount { get; set; }
-        public decimal OutstandingBalance { get; set; }
-        public int DaysPastDue { get; set; }
-        public decimal ArrearsAmount { get; set; }
-        public DateTime LastPaymentDate { get; set; }
-        public string LoanStatus { get; set; }
-        public string RiskCategory { get; set; }
-    }
-
-
+          
     // Simplified DTOs for Quick Implementation
     public class SimpleLoanDetails
     {
@@ -760,12 +624,83 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
         public ReportParameters ReportPeriod { get; set; }
     }
 
-    public class LoanSituationData
+    // Loan History end point response  
+    public class ReportResponse
     {
-        public List<LoanPortfolioItem> LoanPortfolio { get; set; }
-        public LoanDelinquencyData DelinquencyData { get; set; }
-        public ReportParameters ReportPeriod { get; set; }
+        public ReportData Data { get; set; }
+        public int StatusCode { get; set; }
+        public string Message { get; set; }
+        public string Status { get; set; }
+        public string Description { get; set; }
+        public List<string> Errors { get; set; }
+        public bool Success { get; set; }
     }
+
+    public class ReportData
+    {
+        public int ReportType { get; set; }
+        public DateTime GeneratedAt { get; set; }
+        public ReportFilter Filter { get; set; }
+
+        public string MemberReference { get; set; }
+
+        public object MemberSituation { get; set; }
+        public object AccountSituation { get; set; }
+        public object AccountStatement { get; set; }
+        public object LoanRepayment { get; set; }
+
+        public LoanHistory LoanHistory { get; set; }
+    }
+    public class LoanHistory
+    {
+        public DateTime DateFrom { get; set; }
+        public DateTime DateTo { get; set; }
+
+        public LoanMetrics Metrics { get; set; }
+        public List<LoanItem> Loans { get; set; }
+    }
+
+    public class LoanMetrics
+    {
+        public int TotalLoans { get; set; }
+        public decimal TotalOutstanding { get; set; }
+        public int ActiveLoans { get; set; }
+        public int DelinquentLoans { get; set; }
+        public decimal ParAmount { get; set; }
+    }
+    public class LoanItem
+    {
+        public string LoanId { get; set; }
+        public string ContractCode { get; set; }
+        public string LoanType { get; set; }
+        public string Status { get; set; }
+
+        public decimal Balance { get; set; }
+        public decimal Principal { get; set; }
+        public decimal Interest { get; set; }
+        public decimal InterestRate { get; set; }
+        public decimal Penalty { get; set; }
+        public decimal TotalRepayment { get; set; }
+
+        public decimal LastRepaymentAmount { get; set; }
+        public DateTime LastRepaymentDate { get; set; }
+        public DateTime NextRepaymentDate { get; set; }
+        public DateTime LoanDate { get; set; }
+
+        public int DelDays { get; set; }
+        public decimal DelAmount { get; set; }
+        public decimal DelInterest { get; set; }
+
+        public string MemberReference { get; set; }
+        public string MembersName { get; set; }
+        public string MembersBranch { get; set; }
+        public string MemberBranchCode { get; set; }
+
+        public DateTime DisbursementDate { get; set; }
+    }
+
+    // End of Report Response and Loan History 
+
 
     public class ReportFilters
     {
@@ -826,7 +761,8 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
         public decimal ActualBalance { get; set; }
 
         public DateTime SnapshotDate { get; set; }
-        public DateTime AccountDate { get; set; }
+        public DateTime LastTransactionDate { get; set; }
+        public decimal LastTransactedAmount { get; set; }
     }
 
     public class AccountSummary
@@ -1266,6 +1202,18 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
         public string CustomerName { get; set; }
         public string CustomerId { get; set; }
 
+        public decimal TotalBalance { get; set; }
+        public decimal TotalBlockedAmount { get; set; }
+        public decimal TotalLiquidSavings { get; set; }
+        public decimal Actual { get; set; }
+        public decimal LoanAndCoverageGapAmount { get; set; }
+        public decimal TotalLoanBalance { get; set; }
+        public string LoanCount { get; set; }
+        public decimal TotalPaid { get; set; }
+        public decimal SavingsAgainstLoanRatio { get; set; }
+        public string LoanRiskLevel { get; set; }
+        public string LoanRecommendation { get; set; }
+
         public string Telephone { get; set; }
         public string PrintedBy { get; set; }
         public string Address { get; set; }
@@ -1300,6 +1248,7 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
         public decimal Balance { get; set; }
         public decimal BlockedAmount { get; set; }
         public decimal ActualBalance { get; set; }
+        public decimal lastTransactedAmount { get; set; }
         public DateTime SnapshotDate { get; set; }
     }
 
@@ -1310,6 +1259,7 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
         public string LoanType { get; set; }
         public string Status { get; set; }
         public decimal Balance { get; set; }
+        public string LoanAccount { get; set; }
         public decimal Principal { get; set; }
         public decimal Interest { get; set; }
         public decimal InterestRate { get; set; }
