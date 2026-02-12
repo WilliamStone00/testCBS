@@ -1,0 +1,270 @@
+﻿@using Resources
+@{
+    ViewBag.Title = "Salary Upload";
+}
+<div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
+        <div class="card">
+            <!-- Page Header -->
+            <!-- Page Header -->
+            <div class="card-header text-center bg-light">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-file-refresh-outline me-2"></i> Salary Reexecution Management
+                </h1>
+                <p class="card-text text-muted">
+                    Manage, upload, and process salary reexecution files for previously executed salary transactions.
+                    This module allows correction, adjustment, or reprocessing of salary batches in a controlled manner.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+
+            <!-- Tips Section -->
+            <div class="card">
+                <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+                    <span>
+                        <i class="mdi mdi-information-outline me-2"></i> Important Guidelines for Salary Reexecution
+                    </span>
+                    <button class="btn btn-light btn-sm"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseSalaryUploadTips"
+                            aria-expanded="false"
+                            aria-controls="collapseSalaryUploadTips">
+                        <i class="mdi mdi-chevron-down"></i>
+                    </button>
+                </h6>
+
+                <div id="collapseSalaryUploadTips" class="collapse">
+                    <div class="card-body">
+                        <ul class="mb-0">
+
+                            <li>
+                                <i class="mdi mdi-check-circle-outline text-success me-2"></i>
+                                Ensure the reexecution file follows the approved salary reexecution format
+                                (Salary Code, Matricule, Name, Net Salary, etc.).
+                            </li>
+
+                            <li>
+                                <i class="mdi mdi-alert-circle-outline text-warning me-2"></i>
+                                Confirm that the original salary batch was successfully executed before performing reexecution.
+                            </li>
+
+                            <li>
+                                <i class="mdi mdi-bank-outline text-primary me-2"></i>
+                                Select the correct <strong>Branch</strong> and corresponding <strong>GL Account</strong>
+                                before uploading the file.
+                            </li>
+
+                            <li>
+                                <i class="mdi mdi-file-compare-outline text-info me-2"></i>
+                                Review the file carefully to avoid duplicate salary postings or incorrect adjustments.
+                            </li>
+
+                            <li>
+                                <i class="mdi mdi-view-list-outline text-primary me-2"></i>
+                                Use the <strong>View List</strong> button to monitor previously uploaded
+                                reexecution files and their processing status.
+                            </li>
+
+                            <li>
+                                <i class="mdi mdi-clock-outline text-secondary me-2"></i>
+                                Keep track of upload dates and processing results for audit and reconciliation purposes.
+                            </li>
+
+                            <li>
+                                <i class="mdi mdi-plus-circle-outline text-success me-2"></i>
+                                Use the <strong>Upload New File</strong> button to submit a new salary reexecution batch.
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Main Section -->
+            <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
+                <div class="accordion-item active">
+                    <h2 class="accordion-header text-body d-flex justify-content-between"
+                        id="accordionPopoutIconThree">
+                        <button type="button"
+                                class="accordion-button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#accordionPopoutIcon-3"
+                                aria-expanded="true"
+                                aria-controls="accordionPopoutIcon-3">
+                            <i class="mdi mdi-file-upload me-1"></i> Salary Reexecution File Upload
+                        </button>
+                    </h2>
+                    <div id="accordionPopoutIcon-3"
+                         class="accordion-collapse collapse show"
+                         data-bs-parent="#accordionPopoutIcon">
+                        <div class="accordion-body">
+                            <div id="mainviewChange">
+                                <div class="change-group">
+                                    <div class="card mb-3">
+                                        <div class="card-body d-flex justify-content-end align-items-center">
+                                            <a type="button" href="/SalaryUpload/ReexecuteSalaries" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
+                                                <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
+                                            </a>
+                                            <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_ReexecututionUploadForm','new','SalaryUpload')" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="@GlobalSalaryUpload.UploadNewSalaryFile">
+                                                <i class="mdi mdi-plus mdi-18px"></i> @GlobalSalaryUpload.UploadNewFile
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div id="datalistingview">
+                                        @Html.Partial("_SalaryReexecutionUploadForm")
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+
+    <script>
+    $(document).ready(function () {
+        var $branch = $('#branchId');
+        var $account = $('#standingSourceCoa');
+
+        function resetGlDropdown(placeholderText) {
+            $account.empty();
+            $account.append($('<option/>', {
+                value: '',
+                text: placeholderText || '---GL Account---'
+            }));
+            $account.trigger('change.select2');
+        }
+
+        function setGlDisabled(isDisabled) {
+            $account.prop('disabled', isDisabled);
+            if ($.fn.select2) {
+                $account.trigger('change.select2');
+            }
+        }
+
+        // Initialize select2 if not already done elsewhere
+        if ($.fn.select2) {
+            $branch.select2();
+            $account.select2();
+        }
+
+        // Initial state: if no branch selected, disable GL dropdown
+        if (!$branch.val()) {
+            resetGlDropdown('Select a branch first');
+            setGlDisabled(true);
+        }
+
+        $branch.on('change', function () {
+            var branchId = $(this).val();
+            var branchName = $branch.find('option:selected').text().trim();
+
+            if (!branchId) {
+                // No branch selected
+                resetGlDropdown('Select a branch first');
+                setGlDisabled(true);
+                return;
+            }
+
+            // While we fetch GLs, disable dropdown & show loading text
+            setGlDisabled(true);
+            resetGlDropdown('Loading ' + branchName + ' GL accounts...');
+
+            $.ajax({
+                url: '@Url.Action("LoadGLbyBranchId", "MemberNoneCashOperation")', // adjust controller if needed
+                type: 'GET',
+                dataType: 'json',
+                data: { branchid: branchId },
+                success: function (data) {
+                    $account.empty();
+                    $account.append($('<option/>', {
+                        value: '',
+                        text: '---GL Account---'
+                    }));
+
+                    $.each(data, function (i, item) {
+                        $account.append($('<option/>', {
+                            value: item.Value,
+                            text: item.Text
+                        }));
+                    });
+
+                    // Re-enable GL dropdown after loading
+                    setGlDisabled(false);
+                },
+                error: function () {
+                    resetGlDropdown('Error loading ' + branchName + ' GL accounts');
+                    setGlDisabled(false);
+                }
+            });
+        });
+    });
+    </script>
+
+    <script>
+        (function () {
+            const standingWrap = document.getElementById('standingSourceWrap');
+            const standingInput = document.getElementById('standingSourceCoa');
+            const resetBtn = document.getElementById('formResetBtn');
+
+            // Show by default on first load; hide only when user selects CivilServants.
+            let firstRun = true;
+
+            function toggleStandingVisibility() {
+                const selected = document.querySelector('input[name="AddSalaryUploadModelCommand.SalaryType"]:checked');
+                const val = selected ? selected.value : '';
+
+                let showCoa, mustRequire;
+
+                if (firstRun) {
+                    // Visible initially regardless of default radio state
+                    showCoa = true;
+                    mustRequire = (val === 'StandingOrder'); // still enforce required if they landed on Standing Order
+                } else {
+                    // After any user change:
+                    showCoa = (val !== 'CivilServants');     // hide only for CivilServants
+                    mustRequire = (val === 'StandingOrder'); // required only for Standing Order
+                }
+
+                standingWrap.style.display = showCoa ? '' : 'none';
+                standingInput.disabled = !showCoa;
+
+                if (mustRequire) {
+                    standingInput.setAttribute('required', 'required');
+                } else {
+                    standingInput.removeAttribute('required');
+                }
+
+                if (!showCoa) {
+                    if (standingInput.tagName === 'SELECT') standingInput.selectedIndex = 0;
+                    else standingInput.value = '';
+                }
+
+                firstRun = false;
+            }
+
+            // Bind changes on salary type radios
+            document
+                .querySelectorAll('input[name="AddSalaryUploadModelCommand.SalaryType"]')
+                .forEach(r => r.addEventListener('change', toggleStandingVisibility));
+
+            // Recompute on reset: visible by default again
+            if (resetBtn) resetBtn.addEventListener('click', () => {
+                firstRun = true;
+                setTimeout(toggleStandingVisibility, 0);
+            });
+
+            // Initial state (visible)
+            toggleStandingVisibility();
+        })();
+    </script>
+
+
+}

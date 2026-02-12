@@ -153,7 +153,9 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllSalaryUploadByFileUploadId = "/api/v1/SalaryUpload/all";
         public static string GetAllSalaryUploadWithBranchstatisticsByFileUploadId = "/api/v1/SalaryUpload/all/salary-model-withbranchstatistics";
         public static string CreateSalaryUpload = "/api/v1/SalaryUpload/upload";
+        public static string ReexecuteSalaryFileUpload = "/api/v1/SalaryReExecution/re-execute-salary";
         public static string DownloadSalaryUpload = "/api/v1/SalaryUpload/download-salay-file/{0}";
+        public static string DownloadReexecution = "api/v1/SalaryReExecution/process-loan-repayments";
         public static string ActivateSalaryUpload = "/api/v1/SalaryUpload/Activate-salary-file";
         public static string GetAllSalaryUploadByFileBaseOnStatus = "/api/v1/SalaryUpload/salary-file-uploaded";
         public static string GetSalaryFileUploadByFileId = "/api/v1/SalaryUpload/get-file-upload-byid/{0}";

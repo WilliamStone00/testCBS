@@ -62,6 +62,7 @@ namespace CBS.FrontDesk.Data.Entity.SalaryManagement
         public SalaryAnalysisCommand SalaryAnalysisCommand { get; set; }
         public ActivateSalaryFileCommand ActivateSalaryFileCommand { get; set; }
         public List<BranchPayrollSummary> BranchPayrollSummaries { get; set; }
+
         public SalaryUploadModelCarrier()
         {
             SalaryAnalysisCommand=new SalaryAnalysisCommand();
