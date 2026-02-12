@@ -176,285 +176,539 @@
 
 @section Scripts {
     <script>
-        // ---------- Helpers for badges (unchanged) ----------
+    // ---------- Helpers for badges (unchanged) ----------
 
-        function renderApprovalStatusBadge(status) {
-            if (!status) return '<span class="badge bg-secondary text-white">N/A</span>';
+    function renderApprovalStatusBadge(status) {
+        if (!status) return '<span class="badge bg-secondary text-white">N/A</span>';
 
-            const map = {
-                Pending: { class: 'bg-warning text-dark', label: 'Pending' },
-                Approved: { class: 'bg-success text-white', label: 'Approved' },
-                Rejected: { class: 'bg-danger text-white', label: 'Rejected' },
-                Reviewed: { class: 'bg-info text-white', label: 'Reviewed' },
-                InProgress: { class: 'bg-primary text-white', label: 'In Progress' },
-                Completed: { class: 'bg-success text-white', label: 'Completed' },
-                ProcessingApproval: { class: 'bg-secondary text-white', label: 'Processing approval' },
-                Failed: { class: 'bg-danger text-white', label: 'Failed' },
-                Exception: { class: 'bg-danger text-white', label: 'Exception' },
-                Closed: { class: 'bg-dark text-white', label: 'Closed' }
-            };
+        const map = {
+            Pending: { class: 'bg-warning text-dark', label: 'Pending' },
+            Approved: { class: 'bg-success text-white', label: 'Approved' },
+            Rejected: { class: 'bg-danger text-white', label: 'Rejected' },
+            Reviewed: { class: 'bg-info text-white', label: 'Reviewed' },
+            InProgress: { class: 'bg-primary text-white', label: 'In Progress' },
+            Completed: { class: 'bg-success text-white', label: 'Completed' },
+            ProcessingApproval: { class: 'bg-secondary text-white', label: 'Processing approval' },
+            Failed: { class: 'bg-danger text-white', label: 'Failed' },
+            Exception: { class: 'bg-danger text-white', label: 'Exception' },
+            Closed: { class: 'bg-dark text-white', label: 'Closed' }
+        };
 
-            const item = map[status] || {
-                class: 'bg-secondary text-white',
-                label: status.replace(/([a-z])([A-Z])/g, '$1 $2')
-            };
+        const item = map[status] || {
+            class: 'bg-secondary text-white',
+            label: status.replace(/([a-z])([A-Z])/g, '$1 $2')
+        };
 
-            return `<span class="badge ${item.class}">${item.label}</span>`;
+        return `<span class="badge ${item.class}">${item.label}</span>`;
+    }
+
+    function renderTransferStatusBadge(status) {
+        if (!status) return '<span class="badge bg-secondary text-white">NOT STARTED</span>';
+
+        const map = {
+            Pending: { class: 'bg-warning text-dark', label: 'Pending' },
+            InProgress: { class: 'bg-info text-white', label: 'In progress' },
+            Send: { class: 'bg-info text-white', label: 'Sending' },
+            Sent: { class: 'bg-info text-white', label: 'Sent' },
+            Successful: { class: 'bg-success text-white', label: 'Successful' },
+            Completed: { class: 'bg-success text-white', label: 'Completed' },
+            Paid: { class: 'bg-success text-white', label: 'Paid' },
+            Failed: { class: 'bg-danger text-white', label: 'Failed' },
+            Exception: { class: 'bg-danger text-white', label: 'Exception' },
+            Closed: { class: 'bg-dark text-white', label: 'Closed' }
+        };
+
+        const item = map[status] || {
+            class: 'bg-secondary text-white',
+            label: status.replace(/([a-z])([A-Z])/g, '$1 $2')
+        };
+
+        return `<span class="badge ${item.class}">${item.label}</span>`;
+    }
+
+    function formatCurrency(amount) {
+        if (amount == null) return '0.0';
+        return new Intl.NumberFormat('en-NG', {
+            minimumFractionDigits: 1,
+            maximumFractionDigits: 1
+        }).format(amount);
+    }
+
+    function showLoading(modal, contentDiv, message) {
+        // Simple: just show modal for now
+        modal.show();
+    }
+
+    // ---------- Filter UI Helpers ----------
+
+    function setActiveDetailsFiltersBadge() {
+        const hasFilters =
+            ($('#FilterMemberReference').val() || '').length > 0 ||
+            ($('#FilterSourceAccountNumber').val() || '').length > 0 ||
+            ($('#FilterSourceAccountType').val() || '').length > 0 ||
+            ($('#FilterDestinationAccountNumber').val() || '').length > 0 ||
+            ($('#FilterDestinationAccountType').val() || '').length > 0 ||
+            ($('#FilterBranchId').val() || '').length > 0 ||
+            ($('#FilterTransferStatus').val() || '').length > 0 ||
+            ($('#FilterTransferMessage').val() || '').length > 0 ||
+            ($('#FilterApprovalStatus').val() || '').length > 0 ||
+            ($('#FilterTransferDateFrom').val() || '').length > 0 ||
+            ($('#FilterTransferDateTo').val() || '').length > 0 ||
+            ($('#FilterApprovalDateFrom').val() || '').length > 0 ||
+            ($('#FilterApprovalDateTo').val() || '').length > 0;
+
+        $('#activeDetailsFiltersBadge').toggle(hasFilters);
+    }
+
+        function resetDetailsFilterForm() {
+        // Clear all filter inputs
+        $('#FilterMemberReference, #FilterSourceAccountNumber, #FilterDestinationAccountNumber, #FilterTransferMessage').val('');
+            $('#FilterSourceAccountType, #FilterDestinationAccountType, #FilterBranchId, #FilterTransferStatus, #FilterApprovalStatus').val('').trigger('change');
+            $('#FilterTransferDateFrom, #FilterTransferDateTo, #FilterApprovalDateFrom, #FilterApprovalDateTo').val('');
+
+            setActiveDetailsFiltersBadge();
         }
 
-        function renderTransferStatusBadge(status) {
-            if (!status) return '<span class="badge bg-secondary text-white">NOT STARTED</span>';
 
-            const map = {
-                Pending: { class: 'bg-warning text-dark', label: 'Pending' },
-                InProgress: { class: 'bg-info text-white', label: 'In progress' },
-                Send: { class: 'bg-info text-white', label: 'Sending' },
-                Sent: { class: 'bg-info text-white', label: 'Sent' },
-                Successful: { class: 'bg-success text-white', label: 'Successful' },
-                Completed: { class: 'bg-success text-white', label: 'Completed' },
-                Paid: { class: 'bg-success text-white', label: 'Paid' },
-                Failed: { class: 'bg-danger text-white', label: 'Failed' },
-                Exception: { class: 'bg-danger text-white', label: 'Exception' },
-                Closed: { class: 'bg-dark text-white', label: 'Closed' }
-            };
-
-            const item = map[status] || {
-                class: 'bg-secondary text-white',
-                label: status.replace(/([a-z])([A-Z])/g, '$1 $2')
-            };
-
-            return `<span class="badge ${item.class}">${item.label}</span>`;
-        }
-
-        function formatCurrency(amount) {
-            if (amount == null) return '0.0';
-            return new Intl.NumberFormat('en-NG', {
-                minimumFractionDigits: 1,
-                maximumFractionDigits: 1
-            }).format(amount);
-        }
-
-        function showLoading(modal, contentDiv, message) {
-            // Simple: just show modal for now
-            modal.show();
-        }
-
-        // ---------- DataTable helpers ----------
-
-        let bulkDetailsTable = null;
-
-        function collectFilters(d, simulationId) {
-            let sortColumnName = '';
-            let sortColumnDirection = '';
-
-            if (d && d.order && d.order.length > 0) {
-                const order = d.order[0];
-                const colIdx = order.column;
-                sortColumnDirection = order.dir;
-                if (d.columns && d.columns[colIdx]) {
-                    sortColumnName = d.columns[colIdx].data || '';
+        function initFilterToggles() {
+            // Member filters toggle
+            $('#filterByMember').on('change', function () {
+                const isChecked = $(this).is(':checked');
+                $('#memberFiltersSection').toggleClass('d-none', !isChecked);
+                if (!isChecked) {
+                    $('#FilterMemberReference, #FilterMemberName').val('');
                 }
-            }
+                setActiveDetailsFiltersBadge();
+            });
 
-            return {
-                // MUST match property name in GetAllSimulationDetailBySimulationIdRequestQuery
-                simulationId: simulationId || $('#BulkOperationSimulationId').val() || '',
-                Options: {
-                    draw: d.draw,
-                    start: d.start,
-                    length: d.length,
-                    skip: d.start,
-                    pageSize: d.length,
-                    searchValue: d.search ? (d.search.value || '') : '',
-                    sortColumnName: sortColumnName,
-                    sortColumnDirection: sortColumnDirection
+            // Account filters toggle
+            $('#filterByAccount').on('change', function () {
+                const isChecked = $(this).is(':checked');
+                $('#accountFiltersSection').toggleClass('d-none', !isChecked);
+                if (!isChecked) {
+                    $('#FilterSourceAccountNumber, FilterSourceAccountType, FilterDestinationAccountNumber, FilterDestinationAccountType').val('').trigger('change');
                 }
-            };
-        }
+                setActiveDetailsFiltersBadge();
+            });
 
-        function loadBulkOperationDetailsDataTable(simulationId) {
-            const $tbl = $('#myDataTable');
-            if (!$tbl.length) {
-                console.warn('#myDataTable not found – cannot init details DataTable.');
-                return;
-            }
-
-            // Destroy existing table instance if it exists
-            if (bulkDetailsTable && $.fn.DataTable.isDataTable($tbl)) {
-                bulkDetailsTable.destroy();
-                // IMPORTANT: do NOT .empty() the table; keep THEAD/TH
-                // $tbl.find('tbody').empty(); // optional if you want to clear rows
-            }
-
-            bulkDetailsTable = $tbl.DataTable({
-                serverSide: true,
-                destroy: true,
-                searching: true,
-                order: [[0, 'desc']], // 0 = Date
-                ajax: {
-                    url: '/BulkOperation/LoadBulkOperationDetailsData',
-                    type: 'POST',
-                    contentType: 'application/json; charset=utf-8', // ✅ needed for MVC JSON binding
-                    data: function (d) {
-                        const payload = collectFilters(d, simulationId);
-                        console.log('Bulk details payload:', payload);
-                        return JSON.stringify(payload);
-                    },
-                    dataSrc: function (json) {
-                        return json && json.data ? json.data : [];
-                    }
-                },
-                columns: [
-                    {
-                        data: 'CreatedDate',
-                        title: '@GlobalShared.Date',
-                        width: '12%',
-                        render: function (data) {
-                            if (!data) return 'N/A';
-                            return window.moment ? moment(data).format('DD/MM/YYYY HH:mm:ss') : data;
-                        }
-                    },
-                    {
-                        data: 'MemberName',
-                        title: '@GlobalShared.Member_name',
-                        width: '18%',
-                        render: function (data, type, row) {
-                            const ref = row.MemberReference ? ` <small class="text-muted">(${row.MemberReference})</small>` : '';
-                            return (data || 'N/A') + ref;
-                        }
-                    },
-                    {
-                        data: 'BranchName',
-                        title: '@GlobalShared.Branch_Name',
-                        width: '12%',
-                        render: function (data, type, row) {
-                            const code = row.BranchCode ? ` <small class="text-muted">(${row.BranchCode})</small>` : '';
-                            return (data || 'N/A') + code;
-                        }
-                    },
-                    {
-                        data: 'SourceAccountNumber',
-                        title: '@GlobalShared.Source_account',
-                        width: '14%',
-                        render: function (data, type, row) {
-                            const typeText = row.SourceAccountType ? ` <small class="text-muted">[${row.SourceAccountType}]</small>` : '';
-                            return (data || 'N/A') + typeText;
-                        }
-                    },
-                    {
-                        data: 'DestinationAccountNumber',
-                        title: '@GlobalShared.Destination_account',
-                        width: '14%',
-                        render: function (data, type, row) {
-                            const typeText = row.DestinationAccountType ? ` <small class="text-muted">[${row.DestinationAccountType}]</small>` : '';
-                            return (data || 'N/A') + typeText;
-                        }
-                    },
-                    {
-                        data: 'SourceAccountBalance',
-                        title: '@GlobalShared.Source_balance',
-                        width: '8%',
-                        className: 'text-end',
-                        render: function (data) {
-                            return formatCurrency(data);
-                        }
-                    },
-                    {
-                        data: 'AmountToDebit',
-                        title: '@GlobalShared.Amount_to_debit',
-                        width: '8%',
-                        className: 'text-end',
-                        render: function (data) {
-                            return formatCurrency(data);
-                        }
-                    },
-                    {
-                        data: 'NetBalance',
-                        title: '@GlobalShared.Actual_balance',
-                        width: '8%',
-                        className: 'text-end',
-                        render: function (data) {
-                            return formatCurrency(data);
-                        }
-                    },
-                    {
-                        data: 'ApprovalStatus',
-                        title: '@GlobalShared.Approval_status',
-                        width: '8%',
-                        render: function (data) {
-                            return renderApprovalStatusBadge(data || 'Pending');
-                        }
-                    },
-                    {
-                        data: 'TransferStatus',
-                        title: '@GlobalShared.Transfer_Status',
-                        width: '10%',
-                        render: function (data) {
-                            return renderTransferStatusBadge(data);
-                        }
-                    },
-                    {
-                        data: 'Id',
-                        width: '6%',
-                        orderable: false,
-                        searchable: false,
-                        title: 'Action',
-                        render: function (id) {
-                            if (!id) return '';
-                            return `
-                                <div class="text-center">
-                                    <a href="#"
-                                       class="btn btn-sm btn-outline-primary details-btn"
-                                       title="@GlobalShared.ViewDetails"
-                                       data-id="${id}">
-                                        <i class="fas fa-user-cog me-1"></i>@GlobalShared.View
-                                    </a>
-                                </div>`;
-                        }
-                    }
-                ],
-                language: {
-                    emptyTable: "No Bulk Operations details available for this simulation.",
-                    search: "Search :"
-                },
-                initComplete: function () {
-                    $('#myDataTable').on('click', '.details-btn', function (e) {
-                        e.preventDefault();
-                        const KEY = $(this).data('id');
-                        const modalEl = document.getElementById('transferDetailsModal');
-                        const modal = new bootstrap.Modal(modalEl);
-                        const contentDiv = document.getElementById('transferDetailsContent');
-
-                        showLoading(modal, contentDiv, `GetBulkOperationDetails : ${KEY}`);
-
-                        $.ajax({
-                            url: '/BulkOperation/GetBulkOperationDetails',
-                            type: 'GET',
-                            data: { KEY: KEY },
-                            success: function (data) {
-                                contentDiv.innerHTML = data;
-                            },
-                            error: function () {
-                                contentDiv.innerHTML = `
-                                    <div class="alert alert-danger">
-                                        Failed to load transfer details. Please try again.
-                                    </div>`;
-                            }
-                        });
-                    });
+            // Branch filters toggle
+            $('#filterByBranch').on('change', function () {
+                const isChecked = $(this).is(':checked');
+                $('#branchFiltersSection').toggleClass('d-none', !isChecked);
+                if (!isChecked) {
+                    $('#FilterBranchId, #FilterBranchCode').val('').trigger('change');
                 }
+                setActiveDetailsFiltersBadge();
+            });
+
+            // Status filters toggle
+            $('#filterByStatus').on('change', function () {
+                const isChecked = $(this).is(':checked');
+                $('#statusFiltersSection').toggleClass('d-none', !isChecked);
+                if (!isChecked) {
+                    $('#FilterTransferStatus, #FilterApprovalStatus').val('').trigger('change');
+                }
+                setActiveDetailsFiltersBadge();
+            });
+
+            // Date filters toggle
+            $('#filterByDate').on('change', function () {
+                const isChecked = $(this).is(':checked');
+                $('#dateFiltersSection').toggleClass('d-none', !isChecked);
+                if (!isChecked) {
+                    $('#FilterTransferDateFrom, FilterTransferDateTo, FilterApprovalDateFrom, FilterApprovalDateTo, FilterCreatedDateFrom, FilterCreatedDateTo').val('');
+                }
+                setActiveDetailsFiltersBadge();
+            });
+
+            // Message filters toggle
+            $('#filterByMessage').on('change', function () {
+                const isChecked = $(this).is(':checked');
+                $('#messageFiltersSection').toggleClass('d-none', !isChecked);
+                if (!isChecked) {
+                    $('#FilterTransferMessage').val('');
+                }
+                setActiveDetailsFiltersBadge();
             });
         }
+
+        function setActiveDetailsFiltersBadge() {
+            let hasFilters = false;
+
+            // Only check filters from visible sections
+            if (!$('#memberFiltersSection').hasClass('d-none')) {
+                hasFilters = hasFilters ||
+                    ($('#FilterMemberReference').val() || '').length > 0 ||
+                    ($('#FilterMemberName').val() || '').length > 0;
+            }
+
+            if (!$('#accountFiltersSection').hasClass('d-none')) {
+                hasFilters = hasFilters ||
+                    ($('#FilterSourceAccountNumber').val() || '').length > 0 ||
+                    ($('#FilterSourceAccountType').val() || '').length > 0 ||
+                    ($('#FilterDestinationAccountNumber').val() || '').length > 0 ||
+                    ($('#FilterDestinationAccountType').val() || '').length > 0;
+            }
+
+            if (!$('#branchFiltersSection').hasClass('d-none')) {
+                hasFilters = hasFilters ||
+                    ($('#FilterBranchId').val() || '').length > 0 ||
+                    ($('#FilterBranchCode').val() || '').length > 0;
+            }
+
+            if (!$('#statusFiltersSection').hasClass('d-none')) {
+                hasFilters = hasFilters ||
+                    ($('#FilterTransferStatus').val() || '').length > 0 ||
+                    ($('#FilterApprovalStatus').val() || '').length > 0;
+            }
+
+            if (!$('#dateFiltersSection').hasClass('d-none')) {
+                hasFilters = hasFilters ||
+                    ($('#FilterTransferDateFrom').val() || '').length > 0 ||
+                    ($('#FilterTransferDateTo').val() || '').length > 0 ||
+                    ($('#FilterApprovalDateFrom').val() || '').length > 0 ||
+                    ($('#FilterApprovalDateTo').val() || '').length > 0 ||
+                    ($('#FilterCreatedDateFrom').val() || '').length > 0 ||
+                    ($('#FilterCreatedDateTo').val() || '').length > 0;
+            }
+
+            if (!$('#messageFiltersSection').hasClass('d-none')) {
+                hasFilters = hasFilters ||
+                    ($('#FilterTransferMessage').val() || '').length > 0;
+            }
+
+            $('#activeDetailsFiltersBadge').toggle(hasFilters);
+        }
+
+        function resetDetailsFilterForm() {
+            // Clear all filter inputs
+            $('#FilterMemberReference, #FilterMemberName').val('');
+            $('#FilterSourceAccountNumber, FilterDestinationAccountNumber, FilterTransferMessage, FilterBranchCode').val('');
+            $('#FilterSourceAccountType, FilterDestinationAccountType, FilterBranchId, FilterTransferStatus, FilterApprovalStatus').val('').trigger('change');
+            $('#FilterTransferDateFrom, FilterTransferDateTo, FilterApprovalDateFrom, FilterApprovalDateTo, FilterCreatedDateFrom, FilterCreatedDateTo').val('');
+
+            setActiveDetailsFiltersBadge();
+        }
+
+    // ---------- DataTable helpers ----------
+
+    let bulkDetailsTable = null;
+
+        // ---------- Updated collectFilters to include new fields ----------
+
+    function collectFilters(d, simulationId) {
+        let sortColumnName = '';
+        let sortColumnDirection = '';
+
+        if (d && d.order && d.order.length > 0) {
+            const order = d.order[0];
+            const colIdx = order.column;
+            sortColumnDirection = order.dir;
+            if (d.columns && d.columns[colIdx]) {
+                sortColumnName = d.columns[colIdx].data || '';
+            }
+        }
+
+        // Build filter object - only include values from visible sections
+        const filters = {
+            simulationId: simulationId || $('#BulkOperationSimulationId').val() || '',
+            options: {
+                draw: d.draw,
+                start: d.start,
+                length: d.length,
+                skip: d.start,
+                pageSize: d.length,
+                searchValue: d.search ? (d.search.value || '') : '',
+                sortColumnName: sortColumnName,
+                sortColumnDirection: sortColumnDirection
+            }
+        };
+
+        console.log($('#FilterMemberReference').val() || null);
+        // Add member filters if section is visible
+        if (!$('#memberFiltersSection').hasClass('d-none')) {
+            filters.memberReference = $('#FilterMemberReference').val() || null;
+            filters.memberName = $('#FilterMemberName').val() || null;
+        }
+
+        // Add account filters if section is visible
+        if (!$('#accountFiltersSection').hasClass('d-none')) {
+            filters.sourceAccountNumber = $('#FilterSourceAccountNumber').val() || null;
+            filters.sourceAccountType = $('#FilterSourceAccountType').val() || null;
+            filters.destinationAccountNumber = $('#FilterDestinationAccountNumber').val() || null;
+            filters.destinationAccountType = $('#FilterDestinationAccountType').val() || null;
+        }
+
+        // Add branch filters if section is visible
+        if (!$('#branchFiltersSection').hasClass('d-none')) {
+            filters.branchId = $('#FilterBranchId').val() || null;
+            filters.branchCode = $('#FilterBranchCode').val() || null;
+        }
+
+        // Add status filters if section is visible
+        if (!$('#statusFiltersSection').hasClass('d-none')) {
+            filters.transferStatus = $('#FilterTransferStatus').val() || null;
+            filters.approvalStatus = $('#FilterApprovalStatus').val() || null;
+        }
+
+        // Add date filters if section is visible
+        if (!$('#dateFiltersSection').hasClass('d-none')) {
+            filters.transferDateFrom = $('#FilterTransferDateFrom').val() || null;
+            filters.transferDateTo = $('#FilterTransferDateTo').val() || null;
+            filters.approvalDateFrom = $('#FilterApprovalDateFrom').val() || null;
+            filters.approvalDateTo = $('#FilterApprovalDateTo').val() || null;
+            filters.createdDateFrom = $('#FilterCreatedDateFrom').val() || null;
+            filters.createdDateTo = $('#FilterCreatedDateTo').val() || null;
+        }
+
+        // Add message filters if section is visible
+        if (!$('#messageFiltersSection').hasClass('d-none')) {
+            filters.transferMessage = $('#FilterTransferMessage').val() || null;
+        }
+
+        return filters;
+    }
+
+    function loadBulkOperationDetailsDataTable(simulationId) {
+        const $tbl = $('#myDataTable');
+        if (!$tbl.length) {
+            console.warn('#myDataTable not found – cannot init details DataTable.');
+            return;
+        }
+
+        // Destroy existing table instance if it exists
+        if (bulkDetailsTable && $.fn.DataTable.isDataTable($tbl)) {
+            bulkDetailsTable.destroy();
+            // IMPORTANT: do NOT .empty() the table; keep THEAD/TH
+            // $tbl.find('tbody').empty(); // optional if you want to clear rows
+        }
+
+        bulkDetailsTable = $tbl.DataTable({
+            serverSide: true,
+            destroy: true,
+            /*searching: true,*/
+            order: [[0, 'desc']], // 0 = Date
+            ajax: {
+                url: '/BulkOperation/LoadBulkOperationDetailsData',
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8', // ✅ needed for MVC JSON binding
+                data: function (d) {
+                    const payload = collectFilters(d, simulationId);
+                    console.log('Bulk details payload:', payload);
+                    return JSON.stringify(payload);
+                },
+                dataSrc: function (json) {
+                    return json && json.data ? json.data : [];
+                }
+            },
+            columns: [
+                {
+                    data: 'CreatedDate',
+                    title: '@GlobalShared.Date',
+                    width: '12%',
+                    render: function (data) {
+                        if (!data) return 'N/A';
+                        return window.moment ? moment(data).format('DD/MM/YYYY HH:mm:ss') : data;
+                    }
+                },
+                {
+                    data: 'MemberName',
+                    title: '@GlobalShared.Member_name',
+                    width: '18%',
+                    render: function (data, type, row) {
+                        const ref = row.MemberReference ? ` <small class="text-muted">(${row.MemberReference})</small>` : '';
+                        return (data || 'N/A') + ref;
+                    }
+                },
+                {
+                    data: 'BranchName',
+                    title: '@GlobalShared.Branch_Name',
+                    width: '12%',
+                    render: function (data, type, row) {
+                        const code = row.BranchCode ? ` <small class="text-muted">(${row.BranchCode})</small>` : '';
+                        return (data || 'N/A') + code;
+                    }
+                },
+                {
+                    data: 'SourceAccountNumber',
+                    title: '@GlobalShared.Source_account',
+                    width: '14%',
+                    render: function (data, type, row) {
+                        const typeText = row.SourceAccountType ? ` <small class="text-muted">[${row.SourceAccountType}]</small>` : '';
+                        return (data || 'N/A') + typeText;
+                    }
+                },
+                {
+                    data: 'DestinationAccountNumber',
+                    title: '@GlobalShared.Destination_account',
+                    width: '14%',
+                    render: function (data, type, row) {
+                        const typeText = row.DestinationAccountType ? ` <small class="text-muted">[${row.DestinationAccountType}]</small>` : '';
+                        return (data || 'N/A') + typeText;
+                    }
+                },
+                {
+                    data: 'SourceAccountBalance',
+                    title: '@GlobalShared.Source_balance',
+                    width: '8%',
+                    className: 'text-end',
+                    render: function (data) {
+                        return formatCurrency(data);
+                    }
+                },
+                {
+                    data: 'AmountToDebit',
+                    title: '@GlobalShared.Amount_to_debit',
+                    width: '8%',
+                    className: 'text-end',
+                    render: function (data) {
+                        return formatCurrency(data);
+                    }
+                },
+                {
+                    data: 'NetBalance',
+                    title: '@GlobalShared.Actual_balance',
+                    width: '8%',
+                    className: 'text-end',
+                    render: function (data) {
+                        return formatCurrency(data);
+                    }
+                },
+                {
+                    data: 'ApprovalStatus',
+                    title: '@GlobalShared.Approval_status',
+                    width: '8%',
+                    render: function (data) {
+                        return renderApprovalStatusBadge(data || 'Pending');
+                    }
+                },
+                {
+                    data: 'TransferStatus',
+                    title: '@GlobalShared.Transfer_Status',
+                    width: '10%',
+                    render: function (data) {
+                        return renderTransferStatusBadge(data);
+                    }
+                },
+                {
+                    data: 'Id',
+                    width: '6%',
+                    orderable: false,
+                    searchable: false,
+                    title: 'Action',
+                    render: function (id) {
+                        if (!id) return '';
+                        return `
+                            <div class="text-center">
+                                <a href="#"
+                                   class="btn btn-sm btn-outline-primary details-btn"
+                                   title="@GlobalShared.ViewDetails"
+                                   data-id="${id}">
+                                    <i class="fas fa-user-cog me-1"></i>@GlobalShared.View
+                                </a>
+                            </div>`;
+                    }
+                }
+            ],
+            language: {
+                emptyTable: "No Bulk Operations details available for this simulation.",
+                search: "Search :"
+            },
+            initComplete: function () {
+                $('#myDataTable').on('click', '.details-btn', function (e) {
+                    e.preventDefault();
+                    const KEY = $(this).data('id');
+                    const modalEl = document.getElementById('transferDetailsModal');
+                    const modal = new bootstrap.Modal(modalEl);
+                    const contentDiv = document.getElementById('transferDetailsContent');
+
+                    showLoading(modal, contentDiv, `GetBulkOperationDetails : ${KEY}`);
+
+                    $.ajax({
+                        url: '/BulkOperation/GetBulkOperationDetails',
+                        type: 'GET',
+                        data: { KEY: KEY },
+                        success: function (data) {
+                            contentDiv.innerHTML = data;
+                        },
+                        error: function () {
+                            contentDiv.innerHTML = `
+                                <div class="alert alert-danger">
+                                    Failed to load transfer details. Please try again.
+                                </div>`;
+                        }
+                    });
+                });
+            }
+        });
+    }
+
+    function bindDetailsFilterActions(simulationId) {
+        // Apply filters button
+        $('#applyDetailsFilterBtn').on('click', function (e) {
+            e.preventDefault();
+            setActiveDetailsFiltersBadge();
+            if (bulkDetailsTable) {
+                bulkDetailsTable.ajax.reload(null, true);
+            }
+        });
+
+        // Reset filters button
+        $('#resetDetailsFilterBtn').on('click', function (e) {
+            e.preventDefault();
+            resetDetailsFilterForm();
+            if (bulkDetailsTable) {
+                bulkDetailsTable.ajax.reload(null, true);
+            }
+        });
+
+        // Enter key in filter inputs
+        $('#detailsFilterForm input, #detailsFilterForm select').on('keypress', function (e) {
+            if (e.which === 13) {
+                e.preventDefault();
+                setActiveDetailsFiltersBadge();
+                if (bulkDetailsTable) {
+                    bulkDetailsTable.ajax.reload(null, true);
+                }
+            }
+        });
+
+        // Update badge when any filter changes
+        $('#detailsFilterForm input, #detailsFilterForm select').on('change', setActiveDetailsFiltersBadge);
+    }
 
         $(function () {
             const simulationId = $('#BulkOperationSimulationId').val() || '';
             console.log('Executing Datatable for Simulation Id : ' + simulationId);
+
             if (simulationId) {
+                // Initialize Select2 for dropdown filters
+                if ($.fn.select2) {
+                    try {
+                        $('#FilterSourceAccountType, #FilterDestinationAccountType, #FilterBranchId, #FilterTransferStatus, #FilterApprovalStatus').select2({
+                            width: '100%',
+                            placeholder: '--- Select ---',
+                            allowClear: true
+                        });
+                    } catch (e) {
+                        console.warn('select2 init failed', e);
+                    }
+                }
+
+                // Initialize filter toggles
+                initFilterToggles();
+
+                // Initialize filter badge
+                setActiveDetailsFiltersBadge();
+
+                // Bind filter actions
+                bindDetailsFilterActions(simulationId);
+
+                // Load the DataTable
                 loadBulkOperationDetailsDataTable(simulationId);
             }
         });
     </script>
-
     <script src="~/Scripts/Js/Crud/BulkOperation/BulkOperationValidation.js"></script>
 
     <script>

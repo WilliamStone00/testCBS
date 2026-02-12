@@ -8,6 +8,7 @@ using CBS.FrontDesk.Data;
 using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.BulkOperation;
 using CBS.FrontDesk.Data.Entity.DataTable;
+using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
 using DocumentFormat.OpenXml.EMMA;
@@ -61,7 +62,7 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
             var savingOrdinaryProduct = savingProduct.Where(x => x.ProductCategory == "OrdinaryAccount").ToList();
             var Branches = await _branchServices.GetBranches();
 
-            loadSimulationTypes();
+            await loadSimulationTypesAsync();
             return View(new SimulateBulkOperation()
             {
                 BulkOperationSelectionModel = new BulkOperationSelectionModel()
@@ -73,7 +74,7 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
             });
         }
 
-        private void loadSimulationTypes()
+        private async Task loadSimulationTypesAsync()
         {
             ViewBag.SimulationTypes = new List<SelectListItem>
             {
@@ -92,6 +93,23 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
                 new SelectListItem() { Value = "PreferenceShareSharing", Text = "Preference Share Sharing" },
                 new SelectListItem() { Value = "Other", Text = "Other (Specify in Description)" },
             };
+
+            ViewBag.transferType = new List<StringValues>() { new StringValues { Text = "CashIn", Value = "CashIn" }, new StringValues { Text = "CashOut", Value = "CashOut" }, };
+            ViewBag.operationScope = new List<StringValues>() { new StringValues { Text = "Internal", Value = "Internal" }, new StringValues { Text = "InterBranch", Value = "InterBranch" }, };
+
+            var savingProduct = await _bulkOperationService.GetSavingProducts();
+            var savingOrdinaryProduct = savingProduct.Where(x => x.ProductCategory == "OrdinaryAccount").ToList();
+
+            ViewBag.savingProducts = savingOrdinaryProduct;
+
+
+            ViewBag.AccountTypes = savingOrdinaryProduct.Select(x => new StringValues()
+            {
+                Text = x.Name,
+                Value = x.Name
+            });
+                
+               
         }
 
 
@@ -101,15 +119,15 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
             // ViewBag.eventNames = await _accountingServices.GetEventNames(operationType);
             // ViewBag.chartOfAccounts = chartOfAccounts.ToList();
 
-            ViewBag.transferType = new List<StringValues>() { new StringValues { Text = "CashIn", Value = "CashIn" }, new StringValues { Text = "CashOut", Value = "CashOut" }, };
-            ViewBag.operationScope = new List<StringValues>() { new StringValues { Text = "Internal", Value = "Internal" }, new StringValues { Text = "InterBranch", Value = "InterBranch" }, };
-            var Branches = await _branchServices.GetBranches();
-            var savingProduct = await _bulkOperationService.GetSavingProducts();
-            var savingOrdinaryProduct = savingProduct.Where(x => x.ProductCategory == "OrdinaryAccount").ToList();
-            ViewBag.branches = Branches.ToList();
-            ViewBag.savingProducts = savingOrdinaryProduct;
+          
 
-            loadSimulationTypes();
+            var Branches = await _branchServices.GetBranches();
+      /*      var savingProduct = await _bulkOperationService.GetSavingProducts();
+            var savingOrdinaryProduct = savingProduct.Where(x => x.ProductCategory == "OrdinaryAccount").ToList();*/
+            ViewBag.branches = Branches.ToList();
+            //ViewBag.savingProducts = savingOrdinaryProduct;
+
+           await loadSimulationTypesAsync();
             //var chartOfAccounts = await chartOfAccountServices.GetChartOfAccounts();
             return View(new SimulateCashOutOrCashInBulkOperation() { Branches = Branches.ToList() });
 
@@ -330,6 +348,8 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
                     return HttpNotFound();
                 }
 
+                await loadSimulationTypesAsync();
+
                 bulkOperationData.ApprovalStatusBadge = GetBadge(bulkOperationData.ApprovalStatus);
                 /*   var addDetailStatusBadge = bulkOperationData.BulkOperationSimulationDetails?.Select(x =>
                    {
@@ -340,6 +360,8 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
 
                 // bulkOperationData.BulkOperationSimulationDetails = bulkOperationData.BulkOperationSimulationDetails ?? new List<BulkOperationDataDetails>();
                 ViewBag.FullName = _bulkOperationService.GetUserFullName();
+                var Branches = await _branchServices.GetBranches();
+                ViewBag.Branches = Branches;
                 return View(bulkOperationData);
             }
             catch (Exception ex)
