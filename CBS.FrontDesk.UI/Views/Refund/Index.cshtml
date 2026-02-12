@@ -1,5 +1,5 @@
 ﻿
-@model CBS.FrontDesk.Data.Entity.LoanRepayment.LoanRefundDto
+@model   CBS.FrontDesk.Data.Entity.LoanRepayment.LoanRefundDto
 @{
     ViewBag.Title = "Loan Repayment";
 }
@@ -299,6 +299,25 @@ $(document).ready(function () {
         }
     });
 
+
+    // Limit selection to 5
+    $(document).off('change', '.row-checkbox').on('change', '.row-checkbox', function () {
+
+        const checkedCount = $('#myDataTable .row-checkbox:checked').length;
+
+        console.log("✅ Currently checked:", checkedCount);
+
+        if (checkedCount > 5) {
+            // Uncheck the one just clicked
+            $(this).prop('checked', false);
+
+            appalert('⚠️ You can only select a maximum of 5 records at a time.', 2, 1);
+            return;
+        }
+
+    });
+
+
     // ------------------ Load Account Types ------------------
     function loadAccountTypes() {
         if (accountTypesLoaded) return;
@@ -428,11 +447,19 @@ $(document).ready(function () {
                     success: function (response) {
                         console.log("✅ Server response:", response);
 
+                        if (!response) {
+                            appalert('❌ Empty response from server.', 4, 1);
+                            return;
+                        }
+
+                        // Always display backend message
+                        const message = response.message || "No message returned from server.";
+
                         if (response.success) {
-                            appalert('✅ Refund pushed successfully!', 1, 1);
+                            appalert('✅ ' + message, 1, 1);
                             refundTable.ajax.reload(null, false);
                         } else {
-                            appalert('❌ Failed to push refund: ' + response.message, 4, 1);
+                            appalert('❌ ' + message, 4, 1);
                         }
                     },
                     error: function (xhr) {
@@ -536,6 +563,7 @@ $(document).ready(function () {
 
                 // Account Type dropdown (placeholder)
                 {
+                    data: null,
                     orderable: false, className: 'text-start', render: (_, __, row) => {
                         return `<select class="form-select form-select-sm account-type-select" data-rowid="${row.Id}">
                             <option value="">--Select Account Type--</option>

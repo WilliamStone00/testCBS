@@ -76,8 +76,6 @@ namespace CBS.FrontDesk.UI.Controllers.Refundement
                 var Refund = JsonConvert.DeserializeObject<List<LoanRefundDto>>(
                     JsonConvert.SerializeObject(data.data));
 
-                
-
                 return Json(new
                 {
 
@@ -112,7 +110,11 @@ namespace CBS.FrontDesk.UI.Controllers.Refundement
         {
             if (request == null || !request.Any())
             {
-                return Json(new { success = false, message = "No refund operations received." });
+                return Json(new
+                {
+                    success = false,
+                    message = "No refund operations received."
+                });
             }
 
             var result = await _refundServices.PushRefundsAsync(request);
@@ -120,11 +122,11 @@ namespace CBS.FrontDesk.UI.Controllers.Refundement
             return Json(new
             {
                 success = result.IsSuccess,
-                message = result.IsSuccess
-                    ? "Refunds pushed successfully."
-                    : "Failed to push refunds."
+                message = result.Message,              // 🔥 real API message
+                data = result.ApiResponseData          // 🔥 actual returned data
             });
         }
+
 
 
         public async Task<JsonResult> GetProducts()

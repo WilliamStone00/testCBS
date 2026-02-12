@@ -9,18 +9,10 @@ using System.Text;
 using System.Threading.Tasks;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
+using System.IO;
 
 namespace CBS.BusinessService.LoanP.Repayment
 {
-
-
-    using OfficeOpenXml;
-    using OfficeOpenXml.Style;
-    using System;
-    using System.Collections.Generic;
-    using System.Drawing;
-    using System.IO;
-    using System.Linq;
 
     public class RefundDataTableExcelExportGenerator : BaseService
     {
@@ -93,13 +85,11 @@ namespace CBS.BusinessService.LoanP.Repayment
             // ----- GENERAL SUMMARY -----
             worksheet.Cells[$"A{currentRow}:{headerEndColumn}{currentRow}"].Merge = true;
             worksheet.Cells[$"A{currentRow}"].Value = "GENERAL SUMMARY";
-
             worksheet.Cells[$"A{currentRow}"].Style.Font.Bold = true;
             worksheet.Cells[$"A{currentRow}"].Style.Font.Size = 14;
             worksheet.Cells[$"A{currentRow}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
             worksheet.Cells[$"A{currentRow}"].Style.Fill.PatternType = ExcelFillStyle.Solid;
             worksheet.Cells[$"A{currentRow}"].Style.Fill.BackgroundColor.SetColor(Color.LightBlue);
-            //SetSectionHeaderStyle(worksheet[$"A{currentRow}"], Color.LightBlue);
             currentRow += 2;
 
             int totalRefunds = refundData.Count;
@@ -206,7 +196,6 @@ namespace CBS.BusinessService.LoanP.Repayment
             worksheet.Cells[$"A{currentRow}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
             worksheet.Cells[$"A{currentRow}"].Style.Fill.PatternType = ExcelFillStyle.Solid;
             worksheet.Cells[$"A{currentRow}"].Style.Fill.BackgroundColor.SetColor(Color.LightCoral);
-            //SetSectionHeaderStyle(worksheet[$"A{currentRow}"], Color.LightCoral);
             currentRow += 2;
 
             var branchHeaders = new[]
@@ -325,7 +314,6 @@ namespace CBS.BusinessService.LoanP.Repayment
             worksheet.Cells[$"A{currentRow}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
             worksheet.Cells[$"A{currentRow}"].Style.Fill.PatternType = ExcelFillStyle.Solid;
             worksheet.Cells[$"A{currentRow}"].Style.Fill.BackgroundColor.SetColor(Color.LightCoral);
-            //SetSectionHeaderStyle(worksheet[$"A{currentRow}"], Color.LightCoral);
             currentRow += 2;
 
             var headers = new[]
@@ -346,7 +334,8 @@ namespace CBS.BusinessService.LoanP.Repayment
             currentRow++;
 
             int sn = 1;
-            decimal totalAmount = 0, totalPrincipal = 0, totalInterest = 0, totalPenalty = 0, totalTax = 0, totalBalance = 0;
+            decimal totalAmount = 0, totalPrincipal = 0, totalInterest = 0,
+                    totalPenalty = 0, totalTax = 0, totalBalance = 0;
 
             foreach (var refund in refundData.OrderByDescending(x => x.DateOfPayment))
             {
@@ -408,7 +397,7 @@ namespace CBS.BusinessService.LoanP.Repayment
         }
 
         // -----------------------------------------------------------------------
-        // SHEET: INDIVIDUAL BRANCH DETAILS
+        // SHEET: INDIVIDUAL BRANCH DETAILS (UPDATED ORDER + TOTALS ROW)
         // -----------------------------------------------------------------------
         private void CreateBranchSheet(
             ExcelPackage package,
@@ -429,50 +418,9 @@ namespace CBS.BusinessService.LoanP.Repayment
             int currentRow = CreateHeaderSection(worksheet, GetBankName(), branchCode, branchId, branchName,
                 exportedBy, exportOptions, $"BRANCH REFUND REPORT - {branchName}", headerEndColumn);
 
-            worksheet.Cells[$"A{currentRow}:{headerEndColumn}{currentRow}"].Merge = true;
-            worksheet.Cells[$"A{currentRow}"].Value = $"BRANCH SUMMARY - {branchName}";
-            worksheet.Cells[$"A{currentRow}"].Style.Font.Bold = true;
-            worksheet.Cells[$"A{currentRow}"].Style.Font.Size = 14;
-            worksheet.Cells[$"A{currentRow}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
-            worksheet.Cells[$"A{currentRow}"].Style.Fill.PatternType = ExcelFillStyle.Solid;
-            worksheet.Cells[$"A{currentRow}"].Style.Fill.BackgroundColor.SetColor(Color.LightBlue);
-            //SetSectionHeaderStyle(worksheet[$"A{currentRow}"], Color.LightBlue);
-            currentRow += 2;
-
-            int total = branchData.Count;
-            int completed = branchData.Count(x => x.IsCompleted);
-            int pending = total - completed;
-            int reversals = branchData.Count(x => x.IsReversal);
-            decimal totalAmount = branchData.Sum(x => x.Amount);
-            decimal totalPrincipal = branchData.Sum(x => x.Principal);
-            decimal totalInterest = branchData.Sum(x => x.Interest);
-            decimal totalPenalty = branchData.Sum(x => x.Penalty);
-            decimal totalTax = branchData.Sum(x => x.Tax);
-            decimal totalBalance = branchData.Sum(x => x.Balance);
-
-            var summaryItems = new[]
-            {
-            new { Metric = "Total Refund Transactions", Value = total.ToString("N0") },
-            new { Metric = "Completed Refunds", Value = completed.ToString("N0") },
-            new { Metric = "Pending Refunds", Value = pending.ToString("N0") },
-            new { Metric = "Reversal Transactions", Value = reversals.ToString("N0") },
-            new { Metric = "Total Refund Amount", Value = totalAmount.ToString("N2") },
-            new { Metric = "Total Principal", Value = totalPrincipal.ToString("N2") },
-            new { Metric = "Total Interest", Value = totalInterest.ToString("N2") },
-            new { Metric = "Total Penalty", Value = totalPenalty.ToString("N2") },
-            new { Metric = "Total Tax", Value = totalTax.ToString("N2") },
-            new { Metric = "Total Outstanding Balance", Value = totalBalance.ToString("N2") }
-        };
-
-            currentRow = CreateTwoColumnTable(worksheet, currentRow, summaryItems, "Metric", "Value");
-            currentRow += 2;
-
-            var completionStatus = branchData.GroupBy(x => x.IsCompleted ? "Completed" : "Not Completed")
-                .Select(g => new { Status = g.Key, Count = g.Count() }).ToList();
-            currentRow = CreateDistributionSection(worksheet, currentRow, headerEndColumn,
-                "COMPLETION STATUS", completionStatus, total, Color.LightYellow);
-            currentRow += 2;
-
+            // =========================================================================
+            // 1. DETAILED REFUND ENTRIES TABLE (IMMEDIATELY AFTER HEADER)
+            // =========================================================================
             worksheet.Cells[$"A{currentRow}:{headerEndColumn}{currentRow}"].Merge = true;
             worksheet.Cells[$"A{currentRow}"].Value = $"DETAILED REFUND ENTRIES - {branchName}";
             worksheet.Cells[$"A{currentRow}"].Style.Font.Bold = true;
@@ -480,7 +428,6 @@ namespace CBS.BusinessService.LoanP.Repayment
             worksheet.Cells[$"A{currentRow}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
             worksheet.Cells[$"A{currentRow}"].Style.Fill.PatternType = ExcelFillStyle.Solid;
             worksheet.Cells[$"A{currentRow}"].Style.Fill.BackgroundColor.SetColor(Color.LightCoral);
-            //SetSectionHeaderStyle(worksheet[$"A{currentRow}"], Color.LightCoral);
             currentRow += 2;
 
             var branchHeaders = new[]
@@ -500,6 +447,9 @@ namespace CBS.BusinessService.LoanP.Repayment
             currentRow++;
 
             int sn = 1;
+            decimal totalAmount = 0, totalPrincipal = 0, totalInterest = 0,
+                    totalPenalty = 0, totalTax = 0, totalBalance = 0;
+
             foreach (var refund in branchData.OrderByDescending(x => x.DateOfPayment))
             {
                 worksheet.Cells[currentRow, 1].Value = sn++;
@@ -522,10 +472,97 @@ namespace CBS.BusinessService.LoanP.Repayment
 
                 for (int col = 1; col <= headerColumns; col++)
                     worksheet.Cells[currentRow, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                totalAmount += refund.Amount;
+                totalPrincipal += refund.Principal;
+                totalInterest += refund.Interest;
+                totalPenalty += refund.Penalty;
+                totalTax += refund.Tax;
+                totalBalance += refund.Balance;
+
                 currentRow++;
             }
 
-            worksheet.Cells[$"J{headerRow + 1}:O{currentRow}"].Style.Numberformat.Format = "#,##0.00";
+            // ----- Totals row (exactly like the image) -----
+            if (branchData.Any())
+            {
+                worksheet.Cells[currentRow, 1].Value = "TOTAL:";
+                worksheet.Cells[currentRow, 1].Style.Font.Bold = true;
+                worksheet.Cells[currentRow, 10].Value = totalAmount;
+                worksheet.Cells[currentRow, 11].Value = totalPrincipal;
+                worksheet.Cells[currentRow, 12].Value = totalInterest;
+                worksheet.Cells[currentRow, 13].Value = totalPenalty;
+                worksheet.Cells[currentRow, 14].Value = totalTax;
+                worksheet.Cells[currentRow, 15].Value = totalBalance;
+
+                for (int col = 1; col <= headerColumns; col++)
+                {
+                    worksheet.Cells[currentRow, col].Style.Font.Bold = true;
+                    worksheet.Cells[currentRow, col].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    worksheet.Cells[currentRow, col].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
+                    worksheet.Cells[currentRow, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                }
+                currentRow += 2;
+            }
+            else
+            {
+                currentRow += 2;
+            }
+
+            // =========================================================================
+            // 2. BRANCH SUMMARY (TWO-COLUMN METRICS) – now AFTER detailed table
+            // =========================================================================
+            worksheet.Cells[$"A{currentRow}:{headerEndColumn}{currentRow}"].Merge = true;
+            worksheet.Cells[$"A{currentRow}"].Value = $"BRANCH SUMMARY - {branchName}";
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Bold = true;
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Size = 14;
+            worksheet.Cells[$"A{currentRow}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            worksheet.Cells[$"A{currentRow}"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells[$"A{currentRow}"].Style.Fill.BackgroundColor.SetColor(Color.LightBlue);
+            currentRow += 2;
+
+            int total = branchData.Count;
+            int completed = branchData.Count(x => x.IsCompleted);
+            int pending = total - completed;
+            int reversals = branchData.Count(x => x.IsReversal);
+            decimal sumAmount = branchData.Sum(x => x.Amount);
+            decimal sumPrincipal = branchData.Sum(x => x.Principal);
+            decimal sumInterest = branchData.Sum(x => x.Interest);
+            decimal sumPenalty = branchData.Sum(x => x.Penalty);
+            decimal sumTax = branchData.Sum(x => x.Tax);
+            decimal sumBalance = branchData.Sum(x => x.Balance);
+
+            var summaryItems = new[]
+            {
+            new { Metric = "Total Refund Transactions", Value = total.ToString("N0") },
+            new { Metric = "Completed Refunds", Value = completed.ToString("N0") },
+            new { Metric = "Pending Refunds", Value = pending.ToString("N0") },
+            new { Metric = "Reversal Transactions", Value = reversals.ToString("N0") },
+            new { Metric = "Total Refund Amount", Value = sumAmount.ToString("N2") },
+            new { Metric = "Total Principal", Value = sumPrincipal.ToString("N2") },
+            new { Metric = "Total Interest", Value = sumInterest.ToString("N2") },
+            new { Metric = "Total Penalty", Value = sumPenalty.ToString("N2") },
+            new { Metric = "Total Tax", Value = sumTax.ToString("N2") },
+            new { Metric = "Total Outstanding Balance", Value = sumBalance.ToString("N2") }
+        };
+
+            currentRow = CreateTwoColumnTable(worksheet, currentRow, summaryItems, "Metric", "Value");
+            currentRow += 2;
+
+            // =========================================================================
+            // 3. COMPLETION STATUS DISTRIBUTION (shows both Completed/Not Completed)
+            // =========================================================================
+            var completionStatus = branchData
+                .GroupBy(x => x.IsCompleted ? "Completed" : "Not Completed")
+                .Select(g => new { Status = g.Key, Count = g.Count() })
+                .ToList();
+            currentRow = CreateDistributionSection(worksheet, currentRow, headerEndColumn,
+                "COMPLETION STATUS", completionStatus, total, Color.LightYellow);
+            currentRow += 2;
+
+            // ----- Format currency columns (Amount through Balance) -----
+            worksheet.Cells[$"J{headerRow + 1}:O{currentRow - 2}"].Style.Numberformat.Format = "#,##0.00";
+
             worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
             worksheet.View.FreezePanes(headerRow + 1, 1);
         }
@@ -655,25 +692,20 @@ namespace CBS.BusinessService.LoanP.Repayment
             return startRow;
         }
 
-        // FIXED: parameter type changed from List<dynamic> to IEnumerable<dynamic>
         private int CreateDistributionSection(
-    ExcelWorksheet worksheet,
-    int currentRow,
-    string headerEndColumn,
-    string title,
-    IEnumerable<dynamic> distributionData,
-    int total,
-    Color backgroundColor)
+            ExcelWorksheet worksheet,
+            int currentRow,
+            string headerEndColumn,
+            string title,
+            IEnumerable<dynamic> distributionData,
+            int total,
+            Color backgroundColor)
         {
-            // Merge the title cell
             worksheet.Cells[$"A{currentRow}:{headerEndColumn}{currentRow}"].Merge = true;
             worksheet.Cells[$"A{currentRow}"].Value = title;
-
-            // ✅ FIXED: use worksheet.Cells[...]
             SetSectionHeaderStyle(worksheet.Cells[$"A{currentRow}"], backgroundColor);
             currentRow += 2;
 
-            // Headers
             var headers = new[] { "Category", "Count", "Percentage" };
             for (int i = 0; i < headers.Length; i++)
             {
@@ -682,7 +714,6 @@ namespace CBS.BusinessService.LoanP.Repayment
             }
             currentRow++;
 
-            // Data rows
             foreach (var item in distributionData)
             {
                 decimal percentage = total > 0 ? (decimal)item.Count / total : 0;
@@ -735,4 +766,8 @@ namespace CBS.BusinessService.LoanP.Repayment
             return name.Trim();
         }
     }
+
+
+
+
 }
