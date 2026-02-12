@@ -143,19 +143,8 @@
 
                 <!-- Incentives, Daily Collector Share, Total - side by side -->
                 <div class="row mb-2">
-                    <div class="col-md-4">
-                        <label class="form-label">Incentives</label>
-                        @Html.TextBoxFor(m => m.Incentives, new
-                        {
-                            @class = "form-control incentives-input",
-                            type = "text",
-                            placeholder = "Enter incentives",
-                            id = "Incentives",
-                            name = "Incentives" // Ensure name attribute is set
-                        })
-                        @Html.ValidationMessageFor(m => m.Incentives)
-                    </div>
-                    <div class="col-md-4">
+                  
+                    <div class="col-md-6">
                         <label class="form-label">Daily Collector Share</label>
                         @Html.TextBoxFor(m => m.DailyCollectorShare, new
                         {
@@ -167,7 +156,7 @@
                         })
                         @Html.ValidationMessageFor(m => m.DailyCollectorShare)
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <label class="form-label">Total</label>
                         @Html.TextBoxFor(m => m.Total, new
                         {
@@ -182,7 +171,7 @@
 
                 <!-- Branch Share and HO PCMF side by side -->
                 <div class="row mb-2">
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <label class="form-label">Branch Share</label>
                         @Html.TextBoxFor(m => m.BranchShare, new
                         {
@@ -194,7 +183,7 @@
                         })
                         @Html.ValidationMessageFor(m => m.BranchShare)
                     </div>
-                    <div class="col-md-9">
+                    <div class="col-md-8">
                         @Html.LabelFor(m => m.PaymentGl, "Branch Commission Account", new { @class = "form-label" })
                         @Html.DropDownListFor(
                             m => m.PaymentGl,
@@ -202,6 +191,29 @@
                             "--- Branch Commission Account ---",
                             new { @class = "form-select select2", id = "PaymentGl" })
                         @Html.ValidationMessageFor(m => m.PaymentGl, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-md-4">
+                        <label class="form-label">Incentives</label>
+                        @Html.TextBoxFor(m => m.Incentives, new
+                        {
+                            @class = "form-control incentives-input",
+                            type = "text",
+                            placeholder = "Enter incentives",
+                            id = "Incentives",
+                            name = "Incentives" // Ensure name attribute is set
+                        })
+                        @Html.ValidationMessageFor(m => m.Incentives)
+                    </div>
+                    <div class="col-md-8">
+                        @Html.LabelFor(m => m.ExpenseGL, "Expense Commission Account", new { @class = "form-label" })
+                        @Html.DropDownListFor(
+                            m => m.ExpenseGL,
+                            new SelectList(ViewBag.HoPcmfAccounts ?? new List<SelectListItem>(), "Value", "Text"),
+                            "--- Expense Commission Account ---",
+                            new { @class = "form-select select2", id = "ExpenseGL" })
+                        @Html.ValidationMessageFor(m => m.ExpenseGL, "", new { @class = "text-danger" })
                     </div>
                 </div>
 

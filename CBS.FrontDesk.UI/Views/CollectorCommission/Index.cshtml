@@ -370,6 +370,17 @@
             color: #198754;
             font-weight: bold;
         }
+        /* Highlight ExpenseGL field when incentives > 0 and not selected */
+        .incentives-input.positive-value ~ .col-md-8 .select2-selection {
+            border-left: 3px solid #ffc107;
+            transition: border-color 0.3s ease;
+        }
+
+            .incentives-input.positive-value ~ .col-md-8 .select2-selection:focus {
+                border-color: #86b7fe;
+                border-left-color: #dc3545;
+                box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
+            }
     </style>
 
     <script>
@@ -452,6 +463,37 @@
                 if ($.fn.select2) {
                     $('#CollectorId').select2();
                 }
+            }
+        });
+
+        // Real-time validation for incentives and ExpenseGL
+        $('#Incentives').on('input change blur', function () {
+            var incentives = parseFormattedCurrency($(this).val()) || 0;
+            var expenseGL = $('#ExpenseGL').val();
+
+            if (incentives > 0) {
+                $(this).addClass('positive-value');
+
+                if (!expenseGL) {
+                    // Add visual warning
+                    $('.field-warning-expensegl').remove();
+                    $('#ExpenseGL').parent().append(
+                        '<small class="text-warning field-warning-expensegl">' +
+                        '<i class="mdi mdi-alert-circle me-1"></i>Required when incentives is greater than 0</small>'
+                    );
+                } else {
+                    $('.field-warning-expensegl').remove();
+                }
+            } else {
+                $(this).removeClass('positive-value');
+                $('.field-warning-expensegl').remove();
+            }
+        });
+
+        $('#ExpenseGL').on('change', function () {
+            var incentives = parseFormattedCurrency($('#Incentives').val()) || 0;
+            if (incentives > 0 && $(this).val()) {
+                $('.field-warning-expensegl').remove();
             }
         });
 
@@ -1018,8 +1060,9 @@
                     }
 
                     // Populate PCMF dropdown in modal
-                    populatePcmfDropdown(response.accounts);
-
+                   // populatePcmfDropdown(response.accounts);
+                    // Populate ALL PCMF dropdowns in modal
+                    populateAllPcmfDropdowns(response.accounts); // REPLACED: Now populates both dropdowns
                     // Show the modal
                     $('#treatmentModal').modal('show');
                 } else {
@@ -1034,6 +1077,50 @@
             }
         });
     }
+
+        // Function to populate all PCMF dropdowns
+        function populateAllPcmfDropdowns(accounts) {
+            // List of dropdown IDs that need PCMF accounts
+            var dropdownIds = ['PaymentGl', 'ExpenseGL'];
+
+            $.each(dropdownIds, function (index, dropdownId) {
+                var dropdown = $('#' + dropdownId);
+
+                // Skip if dropdown doesn't exist
+                if (dropdown.length === 0) return true;
+
+                // destroy existing instance if any
+                if (dropdown.hasClass('select2-hidden-accessible')) {
+                    dropdown.select2('destroy');
+                }
+
+                // Clear and populate
+                dropdown.empty();
+
+                // Set appropriate placeholder text based on dropdown ID
+                var placeholder = dropdownId === 'PaymentGl'
+                    ? '--- Branch Commission Account ---'
+                    : '--- Expense Commission Account ---';
+
+                dropdown.append('<option value="">' + placeholder + '</option>');
+
+                if (accounts && accounts.length) {
+                    $.each(accounts, function (i, account) {
+                        dropdown.append($('<option>').val(account.Value).text(account.Text));
+                    });
+                } else {
+                    dropdown.append('<option value="">No accounts available</option>');
+                }
+
+                // Re-initialize Select2
+                if ($.fn.select2) {
+                    dropdown.select2({
+                        dropdownParent: $('body'),
+                        width: '100%'
+                    });
+                }
+            });
+        }
 
     // Function to populate PCMF dropdown
     function populatePcmfDropdown(accounts) {
@@ -1066,34 +1153,38 @@
     // TREATMENT MODAL FUNCTIONS - COMPLETE INTEGRATION
     // =========================================================================
 
-    // Initialize treatment modal events when modal is shown
-    $(document).on('shown.bs.modal', '#treatmentModal', function () {
-        initializeTreatmentModal();
+      
 
-        // Initialize Select2 dropdowns with modal as parent
-        if ($.fn.select2) {
-            $('#DailyCollectorAccount').select2({
-                dropdownParent: $('#treatmentModal')
+        $(document).on('shown.bs.modal', '#treatmentModal', function () {
+            initializeTreatmentModal();
+
+            // Initialize Select2 dropdowns with modal as parent
+            if ($.fn.select2) {
+                $('#DailyCollectorAccount').select2({
+                    dropdownParent: $('#treatmentModal')
+                });
+                $('#PaymentGl').select2({
+                    dropdownParent: $('#treatmentModal')
+                });
+                $('#ExpenseGL').select2({  // Add this line
+                    dropdownParent: $('#treatmentModal')
+                });
+            }
+
+            // Add currency formatting to incentives input
+            $('#Incentives').on('input', function () {
+                formatIncentivesInput(this);
             });
-            $('#PaymentGl').select2({
-                dropdownParent: $('#treatmentModal')
+
+            $('#Incentives').on('blur', function () {
+                finalizeIncentivesFormat(this);
             });
-        }
 
-        // Add currency formatting to incentives input
-        $('#Incentives').on('input', function() {
-            formatIncentivesInput(this);
+            // Sync hidden fields when any field changes
+            $(document).on('change keyup', '#Incentives, #DaillyCollectorShare, #BranchShare, #Total, #DailyCollectorAccount', function () {
+                syncHiddenFields();
+            });
         });
-
-        $('#Incentives').on('blur', function() {
-            finalizeIncentivesFormat(this);
-        });
-
-        // Sync hidden fields when any field changes
-        $(document).on('change keyup', '#Incentives, #DaillyCollectorShare, #BranchShare, #Total, #DailyCollectorAccount', function() {
-            syncHiddenFields();
-        });
-    });
 
     // Event delegation for treatment modal elements
     $(document).on('click', '#btnSearchCustomer', function () {
@@ -1424,9 +1515,12 @@
         // Reset Select2 dropdowns
         $('#DailyCollectorAccount').val('').trigger('change');
         $('#PaymentGl').val('').trigger('change');
+        $('#ExpenseGL').val('').trigger('change');  
 
         $('#customerReference').val('');
         $('#Incentives').val('0.00');
+        $('#Incentives').val('0.00').removeClass('positive-value');  
+        $('.field-warning-expensegl').remove(); 
 
         // Clear hidden fields
         $('#CustomerIdHidden').val('');
@@ -1484,6 +1578,19 @@
             appalert('Please enter incentives amount', 3, 1);
             return;
         }
+
+        // NEW CHECK: If incentives > 0, require ExpenseGL selection
+        var incentives = parseFormattedCurrency($('#Incentives').val()) || 0;
+        var expenseGL = $('#ExpenseGL').val();
+
+        if (incentives > 0) {
+            if (!expenseGL) {
+                appalert('Incentives amount is greater than zero. Please select a Branch Commission Account (ExpenseGL)', 4, 1);
+                $('#ExpenseGL').focus();
+                return;
+            }
+        }
+
 
         if (!$('#PaymentGl').val()) {
             appalert('Please select a Branch Commission Account', 3, 1);
