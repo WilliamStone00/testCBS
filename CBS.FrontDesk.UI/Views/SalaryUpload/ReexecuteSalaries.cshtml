@@ -1,0 +1,662 @@
+﻿@{
+    ViewBag.Title = "File Upload Management";
+}
+@using Resources;
+<style>
+    .status-pip {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        vertical-align: middle
+    }
+
+        .status-pip.online {
+            background: #28a745;
+            box-shadow: 0 0 0 2px rgba(40,167,69,.15)
+        }
+
+        .status-pip.offline {
+            background: #6c757d;
+            box-shadow: 0 0 0 2px rgba(108,117,125,.15)
+        }
+
+    .truncate {
+        max-width: 320px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis
+    }
+
+    .truncate-branch {
+        max-width: 120px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis
+    }
+
+    .truncate-user {
+        max-width: 120px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis
+    }
+
+    #myDataTable thead th {
+        white-space: nowrap
+    }
+
+    /* Optional: squeeze a bit more on smaller screens */
+    @@media (max-width: 1400px) {
+        .truncate-branch {
+            max-width: 100px
+        }
+
+        .truncate-user {
+            max-width: 100px
+        }
+    }
+
+    .mode-card {
+        background: #fff;
+        border: 2px solid #e6e9ef;
+        cursor: pointer;
+        transition: .15s
+    }
+
+        .mode-card .title {
+            font-weight: 600
+        }
+
+        .mode-card .desc {
+            font-size: .9rem;
+            color: #6c757d
+        }
+
+        .mode-card:hover {
+            border-color: #b9cdfc;
+            box-shadow: 0 0 0 .15rem rgba(59,130,246,.12)
+        }
+
+        .mode-card.active {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 .25rem rgba(59,130,246,.2)
+        }
+</style>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary fw-bold mb-2">
+                    <i class="mdi mdi-file-upload-outline me-2"></i> Salary Analyses Reexecution
+                </h1>
+                <p class="card-text text-muted mb-1">Search, filter, and manage uploaded files across all branches.</p>
+                <p class="card-text text-warning fw-semibold"><b>
+    <i class="mdi mdi-alert-circle-outline me-1"></i> Use the filters to narrow by date, type, category, privacy, and more.
+</b> </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tips Section -->
+<div class="card mb-2 shadow-sm">
+    <h6 class="card-header d-flex justify-content-between align-items-center bg-light text-info">
+        <span><i class="mdi mdi-lightbulb-outline me-2"></i> Tips for Using Filters Effectively</span>
+        <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseUploadTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseUploadTips" class="collapse">
+        <div class="card-body">
+            <ul class="mb-0">
+                <li><i class="mdi mdi-map-marker-outline text-success me-2"></i> <strong>Branch:</strong> Focus on files uploaded in a specific branch.</li>
+                <li><i class="mdi mdi-calendar-month-outline text-primary me-2"></i> <strong>Date:</strong> Filter by upload date range.</li>
+                <li><i class="mdi mdi-tag-multiple-outline text-info me-2"></i> <strong>Type & Category:</strong> Quickly drill into file types (PDF/CSV/XLSX) and categories (Salary, Standing Orders, etc.).</li>
+                <li><i class="mdi mdi-shield-outline text-dark me-2"></i> <strong>Privacy:</strong> Toggle private/public uploads.</li>
+                <li><i class="mdi mdi-account-outline text-secondary me-2"></i> <strong>Uploader:</strong> See files by a specific user.</li>
+                <li><i class="mdi mdi-file-search-outline text-warning me-2"></i> <strong>Quick Search:</strong> Use the table search to find by file name, code, status, etc.</li>
+                <li><i class="mdi mdi-file-export-outline text-success me-2"></i> <strong>Export:</strong> Export your filtered result to Excel.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-3">
+    <div class="card-body d-flex justify-content-end align-items-center">
+        <a type="button" href="/SalaryUpload/ReexecuteSalaries" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
+            <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
+        </a>
+        <a type="button" href="/SalaryUpload/ReexecuteSalaryFile" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="@GlobalSalaryUpload.UploadNewSalaryFile">
+            <i class="mdi mdi-plus mdi-18px"></i> @GlobalSalaryUpload.UploadNewFile
+        </a>
+    </div>
+</div>
+
+<div id="datalistingview">
+    <!-- Filters Section (minimizable) -->
+    <div class="card mb-2 shadow-sm">
+        <h6 class="card-header d-flex justify-content-between align-items-center bg-light text-primary">
+            <span><i class="mdi mdi-filter-outline me-2"></i> Advanced Filters</span>
+            <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAdvancedFilters" aria-expanded="true" aria-controls="collapseAdvancedFilters">
+                <i class="mdi mdi-chevron-down"></i>
+            </button>
+        </h6>
+
+        <div id="collapseAdvancedFilters" class="collapse show">
+            <div class="card-body">
+
+                <div class="card p-3 mb-2 bg-light">
+                    <!-- Toggle Controls -->
+                    <div class="row mb-3">
+                        <div class="col-md-4 form-check">
+                            <input type="checkbox" class="form-check-input" id="byBranch" />
+                            <label class="form-check-label fw-bold" for="byBranch">Filter by Branch</label>
+                        </div>
+                        <div class="col-md-4 form-check">
+                            <input type="checkbox" class="form-check-input" id="byDate" />
+                            <label class="form-check-label fw-bold" for="byDate">Filter by Date</label>
+                        </div>
+                    </div>
+
+                    <!-- Branch Filter -->
+                    <div id="branchFilterSection" class="row mb-2" style="display:none;">
+                        <div class="col-md-12">
+                            <label class="form-label fw-bold">Select Branch</label>
+                            @Html.DropDownList("branchInput", new SelectList(ViewBag.Branches, "Id", "Name"), "--- Select Branch ---", new { @class = "form-control shadow-sm select2", @id = "branchInput" })
+                        </div>
+                    </div>
+
+                    <!-- Date Range Filter -->
+                    <div id="dateRangeSection" class="row mb-2" style="display:none;">
+                        <div class="col-md-6"><input type="date" id="startDate" class="form-control" placeholder="Start Date" /></div>
+                        <div class="col-md-6"><input type="date" id="endDate" class="form-control" placeholder="End Date" /></div>
+                    </div>
+
+                    <!-- Base Filters -->
+                    <div class="row">
+                        <div class="col-md-4 mb-1"><input type="text" id="fileUploadId" class="form-control" placeholder="File Upload Ref (FileUploadId)" /></div>
+                        <div class="col-md-4 mb-1"><input type="text" id="fileCode" class="form-control" placeholder="File Code" /></div>
+                        <div class="col-md-4 mb-1"><input type="text" id="uploadedBy" class="form-control" placeholder="Uploaded By (User)" /></div>
+                    </div>
+
+                </div>
+
+
+                <!-- Action Buttons -->
+                <div class="row mt-2">
+                    <div class="col-md-12 d-flex">
+                        <button id="applyFilterBtn" type="button" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> Apply Filter</button>
+                        <button id="resetFilterBtn" type="button" class="btn btn-secondary me-2 w-100"><i class="mdi mdi-refresh"></i> Reset</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Filters Section -->
+
+    <div id="fileUploadDataCard" class="card p-3 shadow mb-1" style="display:none">
+        <h5 class="text-primary mb-1"><i class="mdi mdi-table"></i> File Upload Results</h5>
+        <div class="table-responsive">
+            <div class="card-body" id="datalistingview">
+                @Html.Partial("_FileUploadData")
+            </div>
+        </div>
+    </div>
+    </div>
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+        <script>
+
+            $(function () {
+                const $card = $("#fileUploadDataCard");
+                const $tbl = $("#myDataTable"); // table with the 8 headers you showed
+                function buildPayload(d) {
+                    const useBranch = $("#byBranch").is(":checked");
+                    const useDate = $("#byDate").is(":checked");
+                    const useMore = $("#moreOptions").is(":checked");
+
+                    // REQUIRED – set by the Action Mode cards
+                    const actionParam = ($("#actionParam").val() || "").trim();
+
+                    const payload = {
+                        DataTableOptions: {
+                            draw: (d.draw ?? 1).toString(),
+                            start: d.start ?? 0,
+                            length: d.length ?? 10,
+                            searchValue: d.search?.value ?? "",
+                            sortColumnName: d.columns?.[d.order?.[0]?.column]?.data ?? "UploadedOn",
+                            sortColumnDirection: d.order?.[0]?.dir ?? "desc"
+                        },
+
+                        // only via the query object (controller overload not needed)
+                        ActionParam: actionParam,
+
+                        // flags (optional for your backend)
+                        UseBranch: useBranch,
+                        UseDate: useDate,
+                        UseMore: useMore
+
+                    };
+
+                    // ---- attach filters only when enabled & non-empty ----
+
+                    if (useBranch) {
+                        const branchId = ($("#branchInput").val() || "").trim();
+                        if (branchId) payload.BranchId = branchId;
+                    }
+
+                    if (useDate) {
+                        const sd = ($("#startDate").val() || "").trim(); // "YYYY-MM-DD"
+                        const ed = ($("#endDate").val() || "").trim();
+                        // ❗ Don't send null DateTimes – send ISO strings only when present
+                        if (sd) payload.StartDate = sd + "T00:00:00";
+                        if (ed) payload.EndDate = ed + "T23:59:59.999";
+                    }
+
+                    if (useMore) {
+                        const ft = ($("#fileType").val() || "").trim();
+                        if (ft) payload.FileType = ft;
+                        if (fc) payload.FileCategory = fc;
+                    }
+
+                    const uploadedBy = ($("#uploadedBy").val() || "").trim();
+                    const fileUploadId = ($("#fileUploadRef").val() || "").trim();
+                    const fileCode = ($("#fileCode").val() || "").trim();
+                    const fileType = "Analysis";
+                    if (uploadedBy) payload.UploadedBy = uploadedBy;
+                    if (fileUploadId) payload.FileUploadId = fileUploadId;
+                    if (fileCode) payload.FileCode = fileCode;
+                    if (fileType) payload.fileType = fileType;
+
+                    return payload;
+                }
+
+                $(function () {
+                    $('#actionModeCards').on('click', '.mode-card', function () {
+                        $('#actionModeCards .mode-card').removeClass('active').attr('aria-pressed', 'false');
+                        $(this).addClass('active').attr('aria-pressed', 'true');
+                        $('#actionParam').val($(this).data('mode'));            // <-- sets required value
+                        $('#actionModeHelp').addClass('d-none');
+                    });
+                });
+
+                $(function () {
+                    $('#actionModeCards').on('click', '.mode-card', function () {
+                        $('#actionModeCards .mode-card').removeClass('active').attr('aria-pressed', 'false');
+                        $(this).addClass('active').attr('aria-pressed', 'true');
+                        $('#actionParam').val($(this).data('mode'));   // sets required value
+                        $('#actionModeHelp').addClass('d-none');
+
+                        // NEW: load the datatable when an action mode is clicked
+                        $card.hide();
+                        table.ajax.reload(); // (keeps current page; use reload(null, true) to reset to page 1)
+                    });
+                });
+                // --- value → badge/icon maps (MUST be defined before columns use them) ---
+                const statusMap = {
+                    Viewed: { cls: 'bg-secondary', icon: 'mdi-eye-outline', text: 'Viewed' },
+                    Extracted: { cls: 'bg-info text-dark', icon: 'mdi-database-export-outline', text: 'Extracted' },
+                    Completed: { cls: 'bg-success', icon: 'mdi-check-circle-outline', text: 'Completed' },
+                    Pending: { cls: 'bg-warning text-dark', icon: 'mdi-timer-sand', text: 'Pending' },
+                    InProgress: { cls: 'bg-primary', icon: 'mdi-progress-clock', text: 'In Progress' },
+                    Failed: { cls: 'bg-danger', icon: 'mdi-alert-circle-outline', text: 'Failed' }
+                };
+
+                const fileTypeMap = {
+                    BulkCashOperation: { cls: 'bg-dark', icon: 'mdi-cash-multiple', text: 'Bulk Cash Operation' },
+                    CivilServants: { cls: 'bg-primary', icon: 'mdi-account-tie-outline', text: 'Civil Servants' },
+                    PrivateInstitutions: { cls: 'bg-warning text-dark', icon: 'mdi-domain', text: 'Private Institutions' },
+                    ManualEntryDailyCollection: { cls: 'bg-info text-dark', icon: 'mdi-pencil-outline', text: 'Manual Entry Daily Collection' },
+                    StandingOrder: { cls: 'bg-secondary', icon: 'mdi-repeat', text: 'Standing Order' },
+                    Analysed: { cls: 'bg-success', icon: 'mdi-magnify-scan', text: 'Analysed' },
+                    Others: { cls: 'bg-light text-muted', icon: 'mdi-dots-horizontal', text: 'Others' }
+                };
+
+                const table = $tbl.DataTable({
+                    processing: false,
+                    serverSide: true,
+                    searching: false,
+                    ordering: true,
+                    responsive: true,
+                    lengthMenu: [10, 25, 50, 100],
+                    ajax: {
+                        url: "/SalaryUpload/LoadLoanData",
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        data: function (d) { return JSON.stringify(buildPayload(d)); },
+                        dataSrc: function (res) {
+                            if (res?.data?.length)
+                                $("#fileUploadDataCard").show();
+                            return res?.data ?? [];
+                        },
+                        error: function (xhr) {
+                            const msg = xhr?.responseJSON?.message || xhr?.responseText || xhr?.statusText || "Ajax error";
+                            appalert(msg, 3, 1);
+                            console.error("DataTables ajax error:", xhr);
+                        }
+                    },
+
+                    // ⚠️ Map EXACTLY to the 7 fields + Action:
+                    columns: [
+                        // 1) FileName
+                        { data: "FileName", name: "FileName", render: v => v ?? "" },
+
+                        // 2) File Type (styled by map)
+                        {
+                            data: "FileType", name: "FileType",
+                            render: v => {
+                                const key = (v || "").trim();
+                                const m = fileTypeMap[key] || { cls: 'bg-secondary', icon: 'mdi-file-outline', text: (v || 'Unknown') };
+                                return `<span class="badge ${m.cls}"><i class="mdi ${m.icon} me-1"></i>${m.text}</span>`;
+                            }
+                        },
+
+                        // 3) Visibility
+                        {
+                            data: "PrivateView", name: "PrivateView",
+                            render: v => v
+                                ? `<span class="status-pip offline" title="Private"></span><span class="ms-1">Private</span>`
+                                : `<span class="status-pip online" title="Public"></span><span class="ms-1">Public</span>`
+                        },
+
+                        // 4) UploadedBy
+                        { data: "UploadedBy", name: "UploadedBy", render: v => v ?? "" },
+
+                        // 5) UploadedOn — display formatted, but sort by timestamp
+                        {
+                            data: "UploadedOn", name: "UploadedOn",
+                            render: function (v, type) {
+                                const dt = parseUploadedOn(v);
+                                if (type === 'sort' || type === 'type') return dt ? dt.getTime() : 0;   // numeric for correct ordering
+                                return dt ? dt.toLocaleString() : "";                                    // what user sees
+                            }
+                        },
+
+                        // 6) Action — includes Toggle Visibility in MAIN context
+                        {
+
+                            data: null, orderable: false, searchable: false,
+                            render: function (row) {
+                                console.log(row)
+                                const ctx = $("#actionParam").val() || "fileupload_main";
+                                let items = "";
+
+                                if (ctx === "fileupload_main") {
+                                    const toPrivate = !row.PrivateView;
+                                    const toggleText = row.PrivateView ? "Make Public" : "Make Private";
+                                    const toggleIcon = row.PrivateView ? "mdi-earth" : "mdi-lock";
+
+                                    items = `
+                                     <li>
+                                          <a class="dropdown-item"
+                                             href="/SalaryUpload/DownloadFile?fileId=${row.Id}&fileType=${row.FileType}">
+                                            <i class="mdi mdi-download me-2"></i>Download
+                                          </a>
+                                        </li>
+                                     <li>
+                                          <a class="dropdown-item"
+                                             href="/SalaryUpload/DownloadReexecutionFile?fileId=${row.Id}&fileType=${row.FileType}">
+                                            <i class="mdi mdi-download me-2"></i>Download ReExecution File
+                                          </a>
+                                        </li>
+
+                                      <li>
+                                        <a class="dropdown-item" target="_blank" href="/SalaryUpload/Detail?fileUploadid=${row.Id}">
+                                          <i class="mdi mdi-information-outline me-2"></i>Details
+                                        </a>
+                                      </li>  `;
+                                }
+                                else if (ctx === "analyser") {
+                                    items = `
+                                      <li>
+                                        <a class="dropdown-item" target="_blank" href="/SalaryAnalyzer/Detail?fileUploadid=${row.Id}">
+                                          <i class="mdi mdi-chart-line me-2"></i>Detail
+                                        </a>
+                                      </li>`;
+                                } else if (ctx === "executer") {
+                                    items = `
+                                     <li>
+                                      <a class="dropdown-item"
+                                         href="/SalaryUpload/DownloadFile?fileId=${row.Id}&fileType=${row.FileType}">
+                                        <i class="mdi mdi-download me-2"></i>Download
+                                      </a>
+                                    </li>
+
+                                      <li>
+                                        <a class="dropdown-item" target="_blank" href="/SalaryExecution/Detail?fileUploadid=${row.Id}&mode=execute">
+                                          <i class="mdi mdi-play-circle-outline me-2"></i>Execute
+                                        </a>
+                                      </li>
+                                      <li><hr class="dropdown-divider" /></li>
+                                      <li>
+                                        <button type="button" class="dropdown-item text-danger" onclick="deleteUpload('${row.Id}')">
+                                          <i class="mdi mdi-delete-outline me-2"></i>Delete
+                                        </button>
+                                      </li>`;
+                                }
+
+                                return `
+                                    <div class="dropdown">
+                                      <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                        <i class="mdi mdi-cog-outline me-1"></i>Action
+                                      </button>
+                                      <ul class="dropdown-menu dropdown-menu-end">${items}</ul>
+                                    </div>`;
+                            }
+
+                        }
+                    ],
+                    // sort by UploadedOn (index 5) desc by default
+                    order: [[4, "desc"]],
+                    deferLoading: 0 // do not auto-load; wait for Apply
+                });
+                // Robust .NET/ISO date parser
+
+                $("#applyFilterBtn").on("click", function (e) { e.preventDefault(); $card.hide(); table.ajax.reload(); });
+                $("#resetFilterBtn").on("click", function (e) {
+                    e.preventDefault();
+                    $(".form-control, .form-select").val("");
+                    $(".select2").val(null).trigger("change");
+                    $("#byBranch,#byDate,#moreOptions,#byPrivacy").prop("checked", false).trigger("change");
+                    $("#actionParam").val("fileupload_main");
+                    table.clear().draw();
+                    $card.hide();
+                });
+
+                $("#exportBtn").on("click", function (e) { e.preventDefault(); alert("Export not wired yet."); });
+            });
+            function parseUploadedOn(val) {
+                if (!val) return null;
+
+                if (val instanceof Date) return val;
+                if (typeof val === "number") return new Date(val);
+
+                if (typeof val === "string") {
+                    // ISO or locale string
+                    const iso = Date.parse(val);
+                    if (!isNaN(iso)) return new Date(iso);
+
+                    // .NET /Date(1691510400000)/
+                    const m = /\/Date\((\d+)\)\//.exec(val);
+                    if (m) return new Date(parseInt(m[1], 10));
+                }
+                return null;
+            }
+
+            // Controller-backed helpers
+            function escapeHtml(s) {
+                return String(s ?? "")
+                    .replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;")
+                    .replace(/"/g, "&quot;")
+                    .replace(/'/g, "&#39;");
+            }
+
+            // assumes you keep a row cache like: rowById[id] = row; (filled in ajax.dataSrc)
+            function escapeHtml(s) {
+                return String(s ?? "")
+                    .replace(/&/g, "&amp;").replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+            }
+
+            function deleteUpload(id) {
+                const row = (window.rowById && rowById[id]) || {};
+
+                // Prefer FileName, but fall back gracefully if API uses a different key
+                const name = escapeHtml(
+                    row.FileName || row.OriginalFileName || row.File || row.Name || "(unknown)"
+                );
+                const uploader = escapeHtml(row.UploadedBy || "—");
+                const uploadedOn = parseUploadedOn(row.UploadedOn);
+                const vis = row.PrivateView ? "Private (branch-only)" : "Public (all branches)";
+
+                const title = "Delete File & All Related Data";
+                const msg = `
+                <div class="text-start">
+                  You are about to <b class="text-danger">permanently delete</b> this upload.
+                  <ul class="mt-2">
+                    <li><b>File:</b> ${name}</li>
+                    <li><b>Uploaded by:</b> ${uploader}</li>
+                    <li><b>Uploaded on:</b> ${uploadedOn}</li>
+                    <li><b>Visibility:</b> ${vis}</li>
+                  </ul>
+                  <div class="alert alert-danger p-2">
+                    <b>Warning:</b> This action will remove the database record, delete the physical file,
+                    and <u>everything related to this file</u> will be lost forever, including (where applicable):
+                    salary upload rows, analysis results, branch payroll summaries, execution flags,
+                    and any derived reports/exports. <b>This cannot be undone.</b>
+                  </div>
+                  <small class="text-muted">If other records still reference the same physical file, deletion may be skipped for the file itself, but the record and related data will still be removed.</small>
+                </div>`;
+
+                alertify.confirm(
+                    title,
+                    msg,
+                    function onOk() {
+                        $.ajax({
+                            url: "/SalaryUpload/DeletFile",
+                            type: "GET",
+                            data: { KEY: id }
+                        })
+                            .done(function (res) {
+                                if (res && (res.success === true || res.Result === true)) {
+                                    appalert(res.message || "File and related data deleted.", 1, 1);
+                                    $("#myDataTable").DataTable().ajax.reload(null, false);
+                                } else {
+                                    const err = (res && (res.message || res.Message)) || "Delete failed.";
+                                    appalert(err, 3, 1);
+                                }
+                            })
+                            .fail(function (xhr) {
+                                appalert(xhr?.responseText || xhr?.statusText || "Delete failed.", 3, 1);
+                            });
+                    },
+                    function onCancel() {
+                        appalert("Transaction cancelled", 3, 1);
+                    }
+                ).set({ labels: { ok: "Yes, delete everything", cancel: "Cancel" } });
+            }
+
+
+
+            // ===== controller-backed actions (use MVC routes) =====
+            function togglePrivate(id, toPrivate) {
+                var title = toPrivate
+                    ? "Make Private (Branch-only)"
+                    : "Make Public (All Branches)";
+
+                var msg = toPrivate
+                    ? `<div class="text-start">
+                          Setting this file to <b>Private</b> means:
+                          <ul class="mt-2">
+                            <li>Only <b>your branch</b> will see and manage it.</li>
+                            <li>Other branches will <b>not</b> see it in lists, searches, or exports.</li>
+                          </ul>
+                          <small>You can change this later.</small>
+                       </div>`
+                    : `<div class="text-start">
+                          Setting this file to <b>Public</b> means:
+                          <ul class="mt-2">
+                            <li><b>All branches</b> will be able to see it in lists, searches, and exports.</li>
+                            <li>They may also view/download it depending on their permissions.</li>
+                          </ul>
+                          <small>You can change this later.</small>
+                       </div>`;
+
+                alertify
+                    .confirm(
+                        title,
+                        msg,
+                        function onOk() {
+                            $.ajax({
+                                url: "/SalaryUpload/SetPrivate",
+                                type: "POST",
+                                data: { Id: id, PrivateView: toPrivate },
+                                // headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() }, // if needed
+                                success: function (res) {
+                                    if (res && (res.success === true || res.Result === true)) {
+                                        appalert(res.message || (toPrivate ? "File is now Private (branch-only)." : "File is now Public (visible to all branches)."), 1, 1);
+                                        $("#myDataTable").DataTable().ajax.reload(null, false);
+                                    } else {
+                                        var err = (res && (res.message || res.Message)) || "Failed to update visibility.";
+                                        appalert(err, 3, 1);
+                                    }
+                                },
+                                error: function (xhr) {
+                                    var err = xhr?.responseText || xhr?.statusText || "Request failed.";
+                                    appalert(err, 3, 1);
+                                }
+                            });
+                        },
+                        function onCancel() {
+                            appalert("Transaction cancelled", 3, 1);
+                        }
+                    )
+                    .set({ labels: { ok: toPrivate ? "Yes, make Private" : "Yes, make Public", cancel: "Cancel" } });
+            }
+
+
+
+            function toggleExecutable(id, toStatus) {
+                $.post("/SalaryUpload/ChangeFileStaus", { Id: id, Status: toStatus })
+                    .done(() => $("#myDataTable").DataTable().ajax.reload(null, false))
+                    .fail(() => alert("Failed to update availability."));
+            }
+
+            function downloadUpload(id, fileType) {
+                console.log("Downloading:", id, fileType);
+
+                window.location =
+                    "/SalaryUpload/DownloadFile" +
+                    "?fileId=" + encodeURIComponent(id) +
+                    "&fileType=" + encodeURIComponent(fileType);
+            }
+
+
+        </script>
+        <script>
+            // Simple toggles
+            $("#moreOptions").on("change", function () { $("#extraFiltersSection").toggle(this.checked); });
+            $("#byBranch").on("change", function () { $("#branchFilterSection").toggle(this.checked); });
+            $("#byDate").on("change", function () { $("#dateRangeSection").toggle(this.checked); });
+            $("#btnUploadMainFile").on("click", function () {
+                // open modal or navigate to upload form for Salary/Standing Orders
+                window.location.href = "/SalaryUpload";
+            });
+
+            $("#btnUploadAnalysisFile").on("click", function () {
+                // open modal or navigate to Analysis upload form
+                window.location.href = "/SalaryExecution";
+            });
+
+            /*$("#byPrivacy").on("change", function () { $("#privacyFilterSection").toggle(this.checked); });*/
+        </script>
+    }
