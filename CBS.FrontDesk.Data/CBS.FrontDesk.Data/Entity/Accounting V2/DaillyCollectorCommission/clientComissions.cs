@@ -70,6 +70,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission
         public string DailyCollectorAccount { get; set; } = string.Empty;
         public decimal BranchShare { get; set; }
         public string PaymentGl { get; set; }
+        public string ExpenseGL { get; set; }
 
         public string TotalMembersWithActivity { get; set; }
         public string TotalValueCollected { get; set; }

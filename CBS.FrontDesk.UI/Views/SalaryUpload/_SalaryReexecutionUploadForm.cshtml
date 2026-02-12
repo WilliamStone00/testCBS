@@ -1,0 +1,48 @@
+﻿
+@model CBS.FrontDesk.Data.Entity.SalaryManagement.SalaryUploadModelCarrier
+@using Resources
+
+@{
+    // defaults on first load
+}
+
+<fieldset class="fieldset-custom">
+    <legend id="select_base">@GlobalSalaryUpload.SalaryUploadForm</legend>
+
+    <div class="card-body">
+        @using (Html.BeginForm("ReexecuteSalaryFileUpload", "SalaryUpload", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="row mt-2 gy-4">
+                <!-- Salary Type -->
+
+                <!-- File -->
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        <input type="file"
+                               id="file"
+                               name="AddSalaryUploadModelCommand.File"
+                               class="form-control"
+                               accept=".xlsx,.csv"
+                               aria-describedby="help-file"
+                               required />
+                        <label for="file">@GlobalSalaryUpload.SelectSalaryFile</label>
+                    </div>
+                    <small id="help-file" class="text-muted d-block mt-1">
+                        Allowed: <code>.xlsx</code> or <code>.csv</code>. Please use the official template — do not change headers or column order.
+                    </small>
+                    @Html.ValidationMessageFor(m => m.AddSalaryUploadModelCommand.File, "", new { @class = "text-danger" })
+                </div>
+
+               
+            </div>
+
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary me-2">@GlobalShared.Upload</button>
+                <button type="reset" class="btn btn-outline-secondary" id="formResetBtn">@GlobalShared.Reset</button>
+            </div>
+        }
+    </div>
+</fieldset>
+

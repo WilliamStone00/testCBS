@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CBS.FrontDesk.Data.Entity.CustomerManagement;
+using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 
@@ -8,7 +9,7 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations
 
     public class CustomerDataDto
     {
-        public CustomerDto CustomerDto { get; set; }
+        public IndividualProfile CustomerDto { get; set; }
         public List<AccountDto> AccountDtos { get; set; } = new List<AccountDto>();
         public List<SelectListItem> AccountSelectList { get; set; } = new List<SelectListItem>();
 		public string BranchId { get; set; }

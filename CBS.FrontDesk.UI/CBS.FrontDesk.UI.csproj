@@ -10811,6 +10811,10 @@
     <Content Include="Views\ChequeClearance\_chequeDetails.cshtml" />
     <Content Include="Views\ChequeClearance\_InternalChequeRequest.cshtml" />
     <Content Include="Views\ChequeClearance\ImageUpload.cshtml" />
+    <Content Include="Views\SalaryUpload\ReexecuteSalaries.cshtml" />
+    <Content Include="Views\SalaryUpload\ReexecuteSalaryFile.cshtml" />
+    <Content Include="Views\SalaryUpload\_ReexecuteSalaryFileForm.cshtml" />
+    <Content Include="Views\SalaryUpload\_SalaryReexecutionUploadForm.cshtml" />
     <Content Include="Views\Refund\Index.cshtml" />
     <Content Include="Views\Refund\_DataTable.cshtml" />
     <Content Include="Views\Refund\_ExportDatatable.cshtml" />
