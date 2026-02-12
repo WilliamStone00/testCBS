@@ -417,16 +417,16 @@
                     </a>
                 </li>
                 ${reexecutionLink}
-                <li>
-                    <a class="dropdown-item" target="_blank" href="/SalaryUpload/Detail?fileUploadid=${row.Id}">
-                        <i class="mdi mdi-information-outline me-2 text-primary"></i>Details
-                    </a>
-                </li>
-                <li>
-                    <a class="dropdown-item" target="_blank" href="/SalaryExecution/LoanExecutionDetails?fileUploadid=${row.Id}">
-                        <i class="mdi mdi-file-document-outline me-2 text-warning"></i>Loan Execution Details
-                    </a>
-                </li>
+             
+                  <li>
+                        <a class="dropdown-item loan-execution-details"
+                           href="javascript:void(0);"
+                           data-id="${row.Id}">
+                            <i class="mdi mdi-file-document-outline me-2 text-warning"></i>
+                            Loan Execution Details
+                        </a>
+                    </li>
+
             `;
                             } else if (ctx === "analyser") {
                                 items = `
@@ -492,6 +492,22 @@
                 table.clear().draw();
                 $card.hide();
             });
+
+            $(document).on("click", ".loan-execution-details", function (e) {
+                e.preventDefault();
+
+                const fileUploadId = $(this).data("id");
+
+                if (!fileUploadId) {
+                    appalert("FileUpload ID is missing.", 2);
+                    return;
+                }
+
+                const url = `/SalaryUpload/LoanRepaymentListing?id=${fileUploadId}`;
+                window.open(url, '_blank');
+            });
+
+
 
             $("#exportBtn").on("click", function (e) { e.preventDefault(); alert("Export not wired yet."); });
         });
@@ -563,6 +579,8 @@
         function downloadUpload(id, fileType) {
             window.location = `/SalaryUpload/DownloadFile?fileId=${encodeURIComponent(id)}&fileType=${encodeURIComponent(fileType)}`;
         }
+
+     
     </script>
 
     <script>

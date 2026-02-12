@@ -2,14 +2,17 @@
 using CBS.BusinessService.Accounting;
 using CBS.BusinessService.Accounting_V2.AffiliateAccounts;
 using CBS.BusinessService.Accounting_V2.BranchAccountService;
+using CBS.BusinessService.Accounting_V2.MemberReconciliation;
 using CBS.BusinessService.AccountingV2.SharedMonth;
 using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.Accounting;
+using CBS.FrontDesk.Data.Entity.Accounting_V2.Affiliate;
 using CBS.FrontDesk.Data.Entity.AccountingV2.SharedMonth;
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Entity.SalaryManagement;
 using CBS.FrontDesk.Data.Message;
+using CBS.FrontDesk.UI.Controllers.Accounting_V2.Affiliate;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -52,7 +55,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         }
 
         public async Task<ActionResult> ReexecuteSalaryFile()
-        {
+         {
             ViewBag.HeadOffice = "No";
             if (_salaryAnalysisResultServices.IsHeadOffice())
             {
@@ -208,7 +211,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                 }
 
                 // 2️⃣ Allowed file types (must match your system values exactly)
-                var allowedFileTypes = new HashSet<string>(StringComparer.OrdinalIgnoreCase) {"Analysis","SalaryReExecution"};
+                var allowedFileTypes = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "Analysis", "SalaryReExecution" };
 
                 // 3️⃣ Validate FileType value
                 if (!allowedFileTypes.Contains(tableQuery.FileType))
@@ -254,6 +257,90 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             }
         }
 
+        public async Task<ActionResult> LoanRepaymentListing(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "ID is required");
+            }
+
+            var data = await _fileUploadServices.GetFileDetailsByIdAsync(id);
+
+            if (data == null)
+            {
+                return HttpNotFound();
+            }
+
+
+            await PopulateDropdownsAsync(includeChartOfAccounts: false);
+            return View(data);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> LoanRepaymentsExecution(LoanRepaymentsExecutiontDataTableQuery query)
+        {
+            try
+            {
+                var data = await _fileUploadServices.LoanRepayments(query);
+
+                var Fileexecution = JsonConvert.DeserializeObject<List<LoanRepaymentsExecutionDto>>(JsonConvert.SerializeObject(data.data));
+
+                return Json(new
+                {
+                    draw = data.draw,
+                    recordsTotal = data.recordsTotal,
+                    recordsFiltered = data.recordsFiltered,
+                    data = Fileexecution
+                });
+            }
+            catch (Exception ex)
+            {
+                // return a DataTables-compatible empty result on error
+                return Json(new
+                {
+                    draw = query?.DataTableOptions?.draw ?? "1",
+                    recordsTotal = 0,
+                    recordsFiltered = 0,
+                    data = new List<object>(),
+                    error = ex.Message
+                });
+            }
+        }
+
+        public async Task<ActionResult> LoanRepaymentDetails(string id, string partialView = null)
+        {
+            var data = await _fileUploadServices.GetLoanRepaymentByIdAsync(id);
+            if (string.IsNullOrEmpty(partialView))
+            {
+                return View("_LoanRepaymentDetails", data);
+            }
+            return PartialView(partialView, data);
+        }
+
+        //[HttpPost] // Keep as POST to match AJAX call
+        //public async Task<ActionResult> FileDetails(string id, string partialView = null)
+        //{
+        //    if (string.IsNullOrEmpty(id))
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "ID is required");
+        //    }
+
+        //    var data = await _fileUploadServices.GetFileDetailsByIdAsync(id);
+
+        //    if (data == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+
+        //    // If partialView is specified, use that
+        //    if (!string.IsNullOrEmpty(partialView))
+        //    {
+        //        return PartialView(partialView, data);
+        //    }
+
+        //    // Default: return the statistics partial view
+        //    return PartialView("_FileStatistics", data);
+        //}
 
         public async Task<ActionResult> DownloadFile(string fileId = null, string fileType = null)
         {

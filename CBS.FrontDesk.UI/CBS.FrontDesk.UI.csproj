@@ -10817,6 +10817,10 @@
     <Content Include="Views\SalaryUpload\_SalaryReexecutionUploadForm.cshtml" />
     <Content Include="Views\Refund\Index.cshtml" />
     <Content Include="Views\Refund\_DataTable.cshtml" />
+    <Content Include="Views\SalaryUpload\LoanRepaymentListing.cshtml" />
+    <Content Include="Views\SalaryUpload\_LoanRepaymentDataTable.cshtml" />
+    <Content Include="Views\SalaryUpload\_LoanRepaymentDetails.cshtml" />
+    <Content Include="Views\SalaryUpload\_FileStatistics.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

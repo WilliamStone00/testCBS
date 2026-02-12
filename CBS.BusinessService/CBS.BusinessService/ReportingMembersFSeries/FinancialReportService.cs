@@ -159,7 +159,7 @@ namespace CBS.BusinessService.ReportingMembersFSeries
                 }
             }
 
-        public async Task<ReportResponse> GetLoanSituationData(FinancialReportFilter parameters)
+        public async Task<ReportData> GetLoanSituationData(FinancialReportFilter parameters)
         {
             try
             {
@@ -168,10 +168,10 @@ namespace CBS.BusinessService.ReportingMembersFSeries
                     Filter = parameters
                 };
 
-                string endpoint = APICallHelper.GetLoanPortfolio; // Your Loan History endpoint
+                string endpoint = APICallHelper.GetTransactionHistoryByAccountNumber3; // Your Loan History endpoint
 
-                var response = await _loanApiHelper
-                    .PostAsync<ResponseObject<ReportResponse>>(endpoint, request);
+                var response = await _transactionApiHelper
+                    .PostAsync<ResponseObject<ReportData>>(endpoint, request);
 
                 // =========================
                 // SUCCESS
@@ -189,7 +189,7 @@ namespace CBS.BusinessService.ReportingMembersFSeries
                         response.ApiResponseData.Message
                     );
 
-                    // ✅ RETURN FULL REPORT RESPONSE
+                    // ✅ RETURN REPORT DATA DIRECTLY
                     return response.ApiResponseData.Data;
                 }
 
