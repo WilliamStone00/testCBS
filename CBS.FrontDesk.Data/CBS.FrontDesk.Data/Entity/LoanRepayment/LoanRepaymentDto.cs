@@ -59,12 +59,17 @@ namespace CBS.FrontDesk.Data.Entity.LoanRepayment
     }
 
 
-    public class PushRefundRequest
+    public class PartialBulkOperation
     {
-        public List<string> Ids { get; set; }
+        public string RefundId { get; set; }
+        public string SavingProductId { get; set; }
+    }
+    public class BUlkRefundReconcilliation
+    {
+        public List<PartialBulkOperation> RefundCarrierBulkOperations { get; set; }
     }
 
-    public class ExportJournalRequest
+    public class ExportRefundRequest
     {
         public List<LoanRefundDto> LoanRefund { get; set; }
         public ExportOptions ExportOptions { get; set; }

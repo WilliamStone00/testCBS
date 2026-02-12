@@ -10813,6 +10813,7 @@
     <Content Include="Views\ChequeClearance\ImageUpload.cshtml" />
     <Content Include="Views\Refund\Index.cshtml" />
     <Content Include="Views\Refund\_DataTable.cshtml" />
+    <Content Include="Views\Refund\_ExportDatatable.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
