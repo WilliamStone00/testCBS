@@ -94,7 +94,9 @@ namespace CBS.BusinessService.Repayment
                
 
                 var response = await _loanApiHelper.PostAsync<ResponseObject<CustomDataTable>>(
-                    APICallHelper.GetReconciliationDataTable, query);
+                    APICallHelper.GetLoanDataTable, query);
+
+
 
                 if (!response.IsSuccess)
                     throw new Exception($"API call failed: {response.Message}");
@@ -110,6 +112,46 @@ namespace CBS.BusinessService.Repayment
                 throw new Exception($"Loan service unavailable: {ex.Message}", ex);
             }
         }
+
+
+        public async Task<ApiResponse<bool>> PushRefundsAsync(List<string> Ids)
+        {
+            if (Ids == null || !Ids.Any())
+            {
+                return new ApiResponse<bool>
+                {
+                    IsSuccess = false,
+                    Message = "No refund IDs provided.",
+                    ApiResponseData = false // string type for ApiResponseData
+                };
+            }
+
+            try
+            {
+                var request = new PushRefundRequest
+                {
+                    Ids = Ids // pass the list to API
+                };
+
+                var apiResponse = await _loanApiHelper.PostAsync<bool>(
+                    APICallHelper.PushRefund,
+                    request
+                );
+
+                return apiResponse;
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<bool>
+                {
+                    IsSuccess = false,
+                    Message = $"API call failed: {ex.Message}",
+                    ApiResponseData = false
+                };
+            }
+        }
+
+
     }
 
 }
