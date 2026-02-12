@@ -444,6 +444,16 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
             return PartialView("_FileDetails", model);
         }
 
+
+        [HttpGet]
+        public async Task<ActionResult> ReExcuteDailyCollection(string id)
+        {
+            var data = await _manualService.ReExcuteDailyCollection(id);
+
+            var jsonData = new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) };
+            return Json(jsonData, JsonRequestBehavior.AllowGet);
+        }
+
         // Returns JSON for DataTable
         [HttpGet]
         public async Task<ActionResult> GetTransactionDetails(string id)

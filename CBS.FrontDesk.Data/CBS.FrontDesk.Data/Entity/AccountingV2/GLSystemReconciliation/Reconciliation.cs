@@ -157,10 +157,8 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation
         public class PushRequest
         {
             public string Id { get; set; }
-            //public string PusherName { get; set; }
-            //public string BranchId { get; set; }
-            //public string BranchName { get; set; }
-            //public string BranchCode { get; set; }
+         
+        public string Payload { get; set; }
         }
 
 

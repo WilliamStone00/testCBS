@@ -1,7 +1,9 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
+using CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.LoanConf;
+using CBS.FrontDesk.Data.Entity.LoanRepayment;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
 using System;
@@ -79,6 +81,77 @@ namespace CBS.BusinessService.Repayment
                 throw;
             }
         }
+
+        public async Task<CustomDataTable> GeRefundDataTableAsync(LoanRefundQuery query)
+        {
+            try
+            {
+                if (!IsHeadOffice() && string.IsNullOrEmpty(query.BranchId))
+                {
+                    query.BranchId = GetBranchID();
+                }
+
+               
+
+                var response = await _loanApiHelper.PostAsync<ResponseObject<CustomDataTable>>(
+                    APICallHelper.GetLoanDataTable, query);
+
+
+
+                if (!response.IsSuccess)
+                    throw new Exception($"API call failed: {response.Message}");
+
+                if (response.ApiResponseData == null)
+                    throw new Exception("API returned null data");
+
+                return response.ApiResponseData.Data;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"API Error (Reconciliation): {ex.Message}");
+                throw new Exception($"Loan service unavailable: {ex.Message}", ex);
+            }
+        }
+
+
+        public async Task<ApiResponse<bool>> PushRefundsAsync(List<string> Ids)
+        {
+            if (Ids == null || !Ids.Any())
+            {
+                return new ApiResponse<bool>
+                {
+                    IsSuccess = false,
+                    Message = "No refund IDs provided.",
+                    ApiResponseData = false // string type for ApiResponseData
+                };
+            }
+
+            try
+            {
+                var request = new PushRefundRequest
+                {
+                    Ids = Ids // pass the list to API
+                };
+
+                var apiResponse = await _loanApiHelper.PostAsync<bool>(
+                    APICallHelper.PushRefund,
+                    request
+                );
+
+                return apiResponse;
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<bool>
+                {
+                    IsSuccess = false,
+                    Message = $"API call failed: {ex.Message}",
+                    ApiResponseData = false
+                };
+            }
+        }
+
+
     }
 
 }

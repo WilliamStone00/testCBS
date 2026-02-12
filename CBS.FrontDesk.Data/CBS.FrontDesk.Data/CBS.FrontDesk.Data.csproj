@@ -281,6 +281,7 @@
     <Compile Include="Entity\LoanConf\PcmfLoanPurpose.cs" />
     <Compile Include="Entity\LoanConf\PCMFStructure\PCMFLoanProduct.cs" />
     <Compile Include="Entity\LoanManagementP\LoanManagementObject.cs" />
+    <Compile Include="Entity\LoanRepayment\LoanRepaymentDto.cs" />
     <Compile Include="Entity\ManualDailycollection\CollectorDto.cs" />
     <Compile Include="Entity\ManualDailycollection\FileDetailsResponse.cs" />
     <Compile Include="Entity\ManualDailycollection\FileUploadResponse.cs" />

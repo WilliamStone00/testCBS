@@ -814,6 +814,8 @@ namespace CBS.FrontDesk.Helper
         //Refund
         public static string RefundByCustomerId = "/api/v1/Refund/by-customer/{0}";
         public static string RefundById = "/api/v1/Refund/{0}";
+        public static string GetLoanDataTable = "/api/v1/Refund/datatable";
+        public static string PushRefund = "/api/v1/Refund/PushRefund";
 
         //Fee
         public static string Get_Update_Delete_Fee = "/api/v1/Fee/{0}";
@@ -1404,6 +1406,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetextracyedFileDetailsEndpoint = "api/v1/ManualEntryCollector/Extracted/data-table";
         public static string getextracteddetails = "/api/v1/ManualEntryCollector/Extracted/details";
         public static string GetManualEntryCollectorById = "/api/v1/ManualEntryCollector/{0}";
+        public static string ExecuteBulkDailySaverCreditByManualCollectorId = "/api/ExecuteBulkDailySaverCredit/ByManualCollectorId/{0}";
 
         public static string GetManualEntryCollectorDetailsDataTable = "/api/v1/ManualEntryCollector/Extracted/details/data-table";
         //*************************** END MANUAL DAILLY COLLECTIONS ************************

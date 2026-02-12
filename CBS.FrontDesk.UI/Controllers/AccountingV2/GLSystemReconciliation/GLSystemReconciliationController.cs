@@ -111,30 +111,30 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.GLSystemReconciliation
             }
         }
 
-        [HttpPost]
-        public async Task<ActionResult> GetReconciliationSummary(ReconciliationQuerys model)
-        {
+        //[HttpPost]
+        //public async Task<ActionResult> GetReconciliationSummary(ReconciliationQuerys model)
+        //{
 
-            model.EndUtc = model.StartDate;
-            model.StartUtc = model.StartDate;
-            model.EndDate = model.StartDate;
+        //    model.EndUtc = model.StartDate;
+        //    model.StartUtc = model.StartDate;
+        //    model.EndDate = model.StartDate;
             
            
-            try
-            {
-                var summary = await _glSystemReconciliationService.GetReconciliationSummaryAsync(model);
+        //    try
+        //    {
+        //        var summary = await _glSystemReconciliationService.GetReconciliationSummaryAsync(model);
 
-                if (summary == null)
-                    return Json(new { success = false, message = "Empty summary response." });
+        //        if (summary == null)
+        //            return Json(new { success = false, message = "Empty summary response." });
 
-                // Return summary as JSON
-                return Json(new { success = true, data = summary });
-            }
-            catch (Exception ex)
-            {
-                return Json(new { success = false, message = ex.Message });
-            }
-        }
+        //        // Return summary as JSON
+        //        return Json(new { success = true, data = summary });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Json(new { success = false, message = ex.Message });
+        //    }
+        //}
 
         public string GenerateReference()
         {
@@ -169,32 +169,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.GLSystemReconciliation
 
 
 
-        [HttpPost]
-        public async Task<ActionResult> SubmitCloseOfDay(CloseOfDayModel model)
-        {
-
-            try
-            {
-                var result = await _glSystemReconciliationService.SaveCloseOfDay(model);
-
-                if (result == null)
-                    return Json(new { success = false, message = "No response from Close Of Day service." });
-
-                
-
-                // Return summary as JSON
-                return Json(new { success = true, data = result });
-            }
-            catch (Exception ex)
-            {
-                return Json(new
-                {
-                    success = false,
-                    statusCode = 500,
-                    message = $" Close of Day failed: {ex.Message}"
-                });
-            }
-        }
+        
 
 
 
@@ -346,12 +321,11 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.GLSystemReconciliation
         }
 
         [HttpPost]
-        public async Task<ActionResult> UpdatePayload(string payload)
+        public async Task<ActionResult> UpdatePayload(PushRequest request)
         {
             try
             {
-                // 🔹 Validation: payload
-                if (string.IsNullOrWhiteSpace(payload))
+                if (request == null || string.IsNullOrWhiteSpace(request.Payload))
                 {
                     return Json(new
                     {
@@ -361,7 +335,6 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.GLSystemReconciliation
                     });
                 }
 
-                // 🔹 Validation: session
                 var trackerId = Session["ReconciliationId"] as string;
 
                 if (string.IsNullOrWhiteSpace(trackerId))
@@ -374,9 +347,12 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.GLSystemReconciliation
                     });
                 }
 
-                // 🔹 Call service
+                // 🔥 Assign session Id to request
+                request.Id = trackerId;
+
                 var response = await _glSystemReconciliationService
-                    .UpdateTillClosePayloadAsync(trackerId, payload);
+                    .UpdateTillClosePayloadAsync(request);
+
                 if (response == null)
                 {
                     return Json(new
@@ -386,7 +362,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.GLSystemReconciliation
                         message = "No response received from backend service."
                     });
                 }
-                // 🔹 Normalize ALL service responses
+
                 return Json(new
                 {
                     success = response.IsSuccess,
@@ -397,16 +373,16 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.GLSystemReconciliation
             }
             catch (Exception ex)
             {
-                // 🔴 Catch ANY unexpected error
                 return Json(new
                 {
                     success = false,
                     statusCode = 500,
                     message = "An unexpected error occurred while updating the payload.",
-                    error = ex.Message // optional: remove in production
+                    error = ex.Message
                 });
             }
         }
+
 
 
 
