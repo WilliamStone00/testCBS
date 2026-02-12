@@ -18,10 +18,12 @@ namespace CBS.BusinessService.Repayment
     public class RefundServices : BaseService
     {
         private readonly ApiCallerHelper _loanApiHelper;
+        private readonly ApiCallerHelper _TransactionApiHelper;
 
         public RefundServices()
         {
             _loanApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["LoanBaseUrl"].ToString());
+            _TransactionApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["TransactionBaseUrl"].ToString());
         }
 
         /// <summary>
@@ -135,7 +137,7 @@ namespace CBS.BusinessService.Repayment
                 };
 
                 // Call your API helper
-                var apiResponse = await _loanApiHelper.PostAsync<bool>(
+                var apiResponse = await _TransactionApiHelper.PostAsync<bool>(
                     APICallHelper.PushRefund,
                     request
                 );
