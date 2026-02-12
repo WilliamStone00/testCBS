@@ -1,7 +1,7 @@
 ﻿
 @model CBS.FrontDesk.Data.Entity.LoanRepayment.LoanRefundDto
 @{
-    ViewBag.Title = "Loan Refundement";
+    ViewBag.Title = "Loan Repayment";
 }
 
 
@@ -29,33 +29,33 @@
     <form id="loanRepaymentFilterForm" autocomplete="off" method="post">
         @Html.AntiForgeryToken()
 
-        <!-- ================= TOGGLES ================= -->
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="toggleBranch"
-                           onclick="document.getElementById('branchFilter').classList.toggle('d-none')" />
-                    <label class="form-check-label fw-bold">
-                        Show Branch Filter
-                    </label>
-                </div>
-            </div>
-
-            <div class="col-md-6">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="toggleDateFilters"
-                           onclick="document.getElementById('dateFilters').classList.toggle('d-none')" />
-                    <label class="form-check-label fw-bold">
-                        Show Date Filters
-                    </label>
-                </div>
-            </div>
-        </div>
-
         <div class="card p-3 mb-3 bg-light">
 
+            <!-- ================= TOGGLES ================= -->
+            <div class="row mb-1">
+                <div class="col-md-6">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="toggleBranch"
+                               onclick="document.getElementById('branchFilter').classList.toggle('d-none')" />
+                        <label class="form-check-label fw-bold">
+                            Show Branch Filter
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="toggleDateFilters"
+                               onclick="document.getElementById('dateFilters').classList.toggle('d-none')" />
+                        <label class="form-check-label fw-bold">
+                            Show Date Filters
+                        </label>
+                    </div>
+                </div>
+            </div>
+
             <!-- ================= BRANCH FILTER ================= -->
-            <div id="branchFilter" class="d-none mb-3">
+            <div id="branchFilter" class="d-none mb-1">
                 <label class="form-label fw-bold">Branch</label>
                 @Html.DropDownList("BranchId",
                     new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
@@ -64,69 +64,73 @@
             </div>
 
             <!-- ================= DATE FILTERS ================= -->
-            <div id="dateFilters" class="d-none mb-3">
+            <div id="dateFilters" class="d-none mb-1">
                 <div class="row">
                     <div class="col-md-6">
                         <label class="form-label fw-bold">Start Date</label>
-                        <input type="date" name="StartDate" class="form-control" />
+                        <input type="date" id="StartDate" name="StartDate" class="form-control" />
                     </div>
                     <div class="col-md-6">
                         <label class="form-label fw-bold">End Date</label>
-                        <input type="date" name="EndDate" class="form-control" />
+                        <input type="date" id="EndDate" name="EndDate" class="form-control" />
                     </div>
                 </div>
             </div>
 
             <!-- ================= CORE FILTERS ================= -->
-            <div class="row mb-3">
+            <div class="row mb-1">
 
                 <div class="col-md-4">
                     <label class="form-label fw-bold">Loan ID</label>
-                    <input type="text" name="LoanId" class="form-control"
+                    <input type="text" id="LoanId" name="LoanId"
+                           class="form-control"
                            placeholder="Enter Loan ID" />
                 </div>
 
                 <div class="col-md-4">
                     <label class="form-label fw-bold">Member Reference</label>
-                    <input type="text" name="CustomerId" class="form-control"
+                    <input type="text" id="CustomerId" name="CustomerId"
+                           class="form-control"
                            placeholder="Enter Customer ID" />
                 </div>
 
                 <div class="col-md-4">
                     <label class="form-label fw-bold">Transaction Code</label>
-                    <input type="text" name="TransactionCode" class="form-control"
+                    <input type="text" id="TransactionCode" name="TransactionCode"
+                           class="form-control"
                            placeholder="Enter Transaction Code" />
                 </div>
 
             </div>
 
             <!-- ================= PAYMENT INFO ================= -->
-            @*<div class="row mb-3">
+            <div class="row mb-1">
 
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold">Payment Channel</label>
-                        @Html.DropDownList("PaymentChannel",
-                            new SelectList(ViewBag.PaymentChannels ?? new List<object>(), "Value", "Text"),
-                            "Select Payment Channel",
-                            new { @class = "form-control select2" })
-                    </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Payment Method</label>
+                    @Html.DropDownList("PaymentMethod",
+                        new SelectList(ViewBag.PaymentMethods, "Value", "Text"),
+                        "Select Payment Method",
+                        new { @class = "form-control select2", id = "PaymentMethod" })
+                </div>
 
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold">Payment Method</label>
-                        @Html.DropDownList("PaymentMethod",
-                            new SelectList(ViewBag.PaymentMethods ?? new List<object>(), "Value", "Text"),
-                            "Select Payment Method",
-                            new { @class = "form-control select2" })
-                    </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Payment Channel</label>
+                    @Html.DropDownList("PaymentChannel",
+                        new SelectList(ViewBag.PaymentChannels, "Value", "Text"),
+                        "Select Payment Channel",
+                        new { @class = "form-control select2", id = "PaymentChannel" })
+                </div>
 
-                </div>*@
+            </div>
 
             <!-- ================= FLAGS ================= -->
             <div class="row">
 
                 <div class="col-md-4">
                     <div class="form-check mt-4">
-                        @Html.CheckBox("IsCompleted", false, new { @class = "form-check-input", id = "IsCompleted" })
+                        @Html.CheckBox("IsCompleted", false,
+                            new { @class = "form-check-input", id = "IsCompleted" })
                         <label class="form-check-label fw-bold" for="IsCompleted">
                             Completed
                         </label>
@@ -135,7 +139,8 @@
 
                 <div class="col-md-4">
                     <div class="form-check mt-4">
-                        @Html.CheckBox("IsReversal", false, new { @class = "form-check-input", id = "IsReversal" })
+                        @Html.CheckBox("IsReversal", false,
+                            new { @class = "form-check-input", id = "IsReversal" })
                         <label class="form-check-label fw-bold" for="IsReversal">
                             Reversal
                         </label>
@@ -144,7 +149,8 @@
 
                 <div class="col-md-4">
                     <div class="form-check mt-4">
-                        @Html.CheckBox("CheckPartialFlowRepayment", false, new { @class = "form-check-input", id = "CheckPartialFlowRepayment" })
+                        @Html.CheckBox("CheckPartialFlowRepayment", false,
+                            new { @class = "form-check-input", id = "CheckPartialFlowRepayment" })
                         <label class="form-check-label fw-bold" for="CheckPartialFlowRepayment">
                             Partial Flow Repayment
                         </label>
@@ -158,7 +164,7 @@
         <!-- ================= ACTION BUTTONS ================= -->
         <div class="row g-2">
             <div class="col-12 col-md-4">
-                <button type="submit"
+                <button id="applyFilterBtn" type="submit"
                         class="btn btn-primary btn-sm w-100">
                     <i class="mdi mdi-magnify me-1"></i> Apply Filters
                 </button>
@@ -172,7 +178,8 @@
             </div>
 
             <div class="col-12 col-md-4">
-                <button type="button" id="btnExport" class="btn btn-success btn-sm w-100">
+                <button type="button" id="btnExport"
+                        class="btn btn-success btn-sm w-100">
                     <i class="mdi mdi-export me-1"></i> Export
                 </button>
             </div>
@@ -180,6 +187,16 @@
 
     </form>
 </div>
+
+<div class="card mb-1">
+    <div class="card-body d-flex justify-content-end align-items-center">
+        <button id="btnPushRefund" class="btn btn-primary mb-2">
+            <i class="mdi mdi-cash-plus me-1"></i> Push Refund
+        </button>
+    </div>
+</div>
+
+
 
 
 <div id="datalistingview">
@@ -203,14 +220,12 @@
                 <div class="row">
                     <div class="col-md-6">
                         <label class="form-label fw-bold">Start Date</label>
-                        <input type="date" id="PartialStartDate"
-                               name="StartDate" class="form-control" />
+                        <input type="date" id="ModalStartDate" name="ModalStartDate" class="form-control" />
                     </div>
 
                     <div class="col-md-6">
                         <label class="form-label fw-bold">End Date</label>
-                        <input type="date" id="PartialEndDate"
-                               name="EndDate" class="form-control" />
+                        <input type="date" id="ModalEndDate" name="ModalEndDate" class="form-control" />
                     </div>
                 </div>
 
@@ -223,7 +238,7 @@
                 </button>
 
                 <button type="button" class="btn btn-primary btn-sm"
-                        id="applyPartialDateFilter">
+                        id="applyFilterlBtn">
                     Apply Filter
                 </button>
             </div>
@@ -232,3 +247,389 @@
     </div>
 </div>
 
+
+
+<div class="modal fade" id="refundExportModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @Html.Partial("_ExportDatatable")
+
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+<script>
+$(document).ready(function () {
+
+    let filtersApplied = false;
+    let refundTable = null;
+    let accountTypeMap = [];
+    let accountTypesLoaded = false;
+    window.accountTypeSelections = {}; // Store per-row selection
+
+    const $btnPushRefund = $('#btnPushRefund');
+    const $checkbox = $('#CheckPartialFlowRepayment');
+
+    $btnPushRefund.prop('disabled', true);
+
+    // ------------------ Checkbox toggle ------------------
+    $checkbox.on('change', function () {
+        if ($(this).is(':checked')) {
+            $btnPushRefund.prop('disabled', false);
+            new bootstrap.Modal(document.getElementById('partialFlowModal')).show();
+        } else {
+            $btnPushRefund.prop('disabled', true);
+            $('#ModalStartDate, #ModalEndDate').val('');
+        }
+    });
+
+    // ------------------ Column toggles ------------------
+    $(document).on('change', '.column-toggle', function () {
+        if (!refundTable) return;
+        const colIndex = parseInt($(this).data('column'));
+        refundTable.column(colIndex).visible($(this).is(':checked'));
+
+        // Load account types only once
+        if (this.id === 'toggleAcctype' && $(this).is(':checked') && !accountTypesLoaded) {
+            loadAccountTypes();
+        }
+    });
+
+    // ------------------ Load Account Types ------------------
+    function loadAccountTypes() {
+        if (accountTypesLoaded) return;
+
+        console.log('🔹 Starting to load account types...');
+
+        $.ajax({
+            url: '/Refund/GetProducts',
+            type: 'GET',
+            success: function (res) {
+                console.log('🔹 Response from /Refund/GetProducts:', res);
+
+                if (!res.success || !res.data || !res.data.length) {
+                    console.warn('⚠️ No Account Types found in response.');
+                    appalert('⚠️ No Account Types found.', 2, 1);
+                    return;
+                }
+
+                // Map accounts correctly from controller
+                accountTypeMap = res.data.map(a => ({
+                    Id: a.Value,   // this is your SavingProductId
+                    Text: a.Text
+                }));
+
+
+                console.log('🔹 Mapped accountTypeMap:', accountTypeMap);
+
+                accountTypesLoaded = true;
+
+                // Populate dropdowns for existing table rows
+                populateAccountTypeDropdowns();
+
+                appalert('✅ Account Types loaded.', 1, 1);
+            },
+            error: function (xhr, status, error) {
+                console.error('❌ Failed to load Account Types.', status, error, xhr.responseText);
+                appalert('❌ Failed to load Account Types.', 4, 1);
+            }
+        });
+    }
+
+
+    // ------------------ Populate dropdowns ------------------
+    function populateAccountTypeDropdowns() {
+        const options = accountTypeMap
+            .map(a => `<option value="${a.Id}">${a.Text}</option>`)
+            .join('');
+
+
+        $('#myDataTable .account-type-select').each(function () {
+            const $select = $(this);
+
+            if ($select.children('option').length <= 1) {
+                $select.html('<option value="">--Select Account Type--</option>' + options);
+            }
+
+            // Restore previous selection
+            const rowId = $select.data('rowid');
+            if (window.accountTypeSelections[rowId]) {
+                $select.val(window.accountTypeSelections[rowId].Code);
+            }
+
+            // Initialize Select2 if not already
+            if (!$select.hasClass('select2-hidden-accessible')) {
+                $select.select2({
+                    placeholder: '--Select Account Type--',
+                    width: '100%',
+                    allowClear: true,
+                    dropdownParent: $select.closest('td')
+                });
+            }
+        });
+    }
+
+    // ------------------ Push Refund ------------------
+    $btnPushRefund.off('click').on('click', function () {
+        const payload = [];
+
+        console.log("🔎 Selected accountTypeSelections:", window.accountTypeSelections);
+
+        $('#myDataTable .row-checkbox:checked').each(function () {
+            const rowId = $(this).val(); // RefundId
+            const acc = window.accountTypeSelections[rowId]; // selected account type
+
+            console.log("------------------------------------------------");
+            console.log("RowId:", rowId);
+            console.log("Account object for this row:", acc);
+
+            // Validate that account type is selected
+            if (!acc || !acc.Id) {
+                console.warn("❌ Missing account type for row:", rowId);
+                appalert(`⚠️ Please select an account type for refund ${rowId}.`, 2, 1);
+                return false; // stop loop
+            }
+
+            const item = {
+                RefundId: rowId,
+                SavingProductId: acc.Id
+            };
+
+            console.log("✅ Pushing to payload:", item);
+
+            payload.push(item);
+        });
+
+        console.log("📦 Final Payload:", payload);
+        console.log("📦 JSON Being Sent:", JSON.stringify(payload));
+
+        if (payload.length === 0) {
+            console.warn("⚠️ Nothing to send.");
+            return;
+        }
+
+        alertify.confirm(
+            'Confirm Refund Push',
+            `You are about to push <b>${payload.length}</b> refund(s). Proceed?`,
+            function () {
+                $.ajax({
+                    url: '/Refund/PushRefund',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(payload),
+                    beforeSend: () => {
+                        console.log("🚀 Sending to server:", payload);
+                        appalert('⏳ Processing refund push...', 3, 1);
+                    },
+                    success: function (response) {
+                        console.log("✅ Server response:", response);
+
+                        if (response.success) {
+                            appalert('✅ Refund pushed successfully!', 1, 1);
+                            refundTable.ajax.reload(null, false);
+                        } else {
+                            appalert('❌ Failed to push refund: ' + response.message, 4, 1);
+                        }
+                    },
+                    error: function (xhr) {
+                        console.error("❌ AJAX Error:", xhr);
+                        appalert('❌ Error pushing refund. Status: ' + xhr.status, 4, 1);
+                    }
+                });
+            },
+            function () { alertify.message('❌ Refund push canceled.'); }
+        ).set({ labels: { ok: 'Yes, Push', cancel: 'Cancel' }, transition: 'zoom', movable: false });
+    });
+
+
+    // ------------------ DataTable filters ------------------
+    function getDataTableFilters() {
+        return {
+            BranchId: $('#BranchId').val(),
+            LoanId: $('#LoanId').val(),
+            CustomerId: $('#CustomerId').val(),
+            TransactionCode: $('#TransactionCode').val(),
+            PaymentChannel: $('#PaymentChannel').val(),
+            PaymentMethod: $('#PaymentMethod').val(),
+            IsCompleted: $('#IsCompleted').is(':checked'),
+            IsReversal: $('#IsReversal').is(':checked'),
+            CheckPartialFlowRepayment: $checkbox.is(':checked'),
+            StartDate: $checkbox.is(':checked') ? $('#ModalStartDate').val() : $('#StartDate').val(),
+            EndDate: $checkbox.is(':checked') ? $('#ModalEndDate').val() : $('#EndDate').val(),
+            DataTableOptions: {}
+        };
+    }
+
+    // ------------------ Load Refund Data ------------------
+    function loadRefundData() {
+        refundTable = $('#myDataTable').DataTable({
+            serverSide: true,
+            destroy: true,
+            responsive: true,
+            searching: false,
+            order: [[0, 'desc']],
+            pageLength: 10,
+            lengthMenu: [[10, 25, 50, 100, 250, 500, 1000, 2000], [10, 25, 50, 100, 250, 500, 1000, 2000]],
+            columnDefs: [{ targets: [2, 7, 8, 9, 10], visible: false }],
+            ajax: {
+                url: '/Refund/LoadRefundmentData',
+                type: 'POST',
+                contentType: 'application/json',
+                data: function (d) {
+                    const filters = getDataTableFilters();
+                    filters.DataTableOptions = {
+                        draw: d.draw,
+                        start: d.start,
+                        length: d.length,
+                        skip: d.start,
+                        pageSize: d.length,
+                        searchValue: d.search?.value || '',
+                        sortColumnName: d.columns[d.order[0].column].data,
+                        sortColumnDirection: d.order[0].dir
+                    };
+                    return JSON.stringify(filters);
+                },
+                error: function (xhr) { appalert('❌ Failed to load Refund data. Status: ' + xhr.status, 4, 1); }
+            },
+            columns: [
+                // Checkbox
+                { data: null, orderable: false, searchable: false, render: (_, __, row) => `<input type="checkbox" class="row-checkbox" value="${row.Id}"/>` },
+
+                // Entry Date
+                {
+                    data: null, render: (_, __, row) => {
+                        const c = row.CreatedDate ? moment(row.CreatedDate) : null;
+                        const p = row.DateOfPayment ? moment(row.DateOfPayment) : null;
+                        const createdStr = c ? c.format('DD/MM/YYYY HH:mm:ss') : '-';
+                        const paymentStr = p ? p.format('DD/MM/YYYY') : '-';
+                        let cls = (c && p && c.format('YYYY-MM-DD') === p.format('YYYY-MM-DD')) ? 'text-success' : 'text-danger';
+                        return `<div>
+                            <div><small class="text-muted fw-bold">E.Date:</small> <span class="text-info fw-semibold">${createdStr}</span></div>
+                            <div><small class="text-muted fw-bold">Acc.Date:</small> <span class="${cls} fw-semibold">${paymentStr}</span></div>
+                        </div>`;
+                    }
+                },
+
+                // Transaction Code
+                { data: 'TransactionCode', name: 'TransactionCode' },
+
+                // Member Name
+                {
+                    data: 'MemberName', name: 'MemberName', render: (d, __, r) => {
+                        if (!d) return '-';
+                        let display = d.length > 14 ? d.substring(0, 14) + '...' : d;
+                        return `<div title="${d}">${display}</div><small class="text-muted">${r.CustomerId ?? ''}</small>`;
+                    }
+                },
+
+                // Amounts
+                { data: 'Amount', name: 'Amount', className: 'text-end', render: d => d ? parseInt(d).toLocaleString() : '0' },
+                { data: 'Principal', name: 'Principal', className: 'text-end', render: d => d ? parseInt(d).toLocaleString() : '0' },
+                { data: 'Interest', name: 'Interest', className: 'text-end', render: d => d ? parseInt(d).toLocaleString() : '0' },
+                { data: 'Tax', name: 'Tax', className: 'text-end', render: d => d ? parseInt(d).toLocaleString() : '0' },
+                { data: 'Penalty', name: 'Penalty', className: 'text-end', render: d => d ? parseInt(d).toLocaleString() : '0' },
+                { data: 'Balance', name: 'Balance', className: 'text-end', render: d => d ? parseInt(d).toLocaleString() : '0' },
+
+                // Account Type dropdown (placeholder)
+                {
+                    orderable: false, className: 'text-start', render: (_, __, row) => {
+                        return `<select class="form-select form-select-sm account-type-select" data-rowid="${row.Id}">
+                            <option value="">--Select Account Type--</option>
+                        </select>`;
+                    }
+                },
+
+                // Actions
+                { data: null, orderable: false, render: (_, __, row) => `<div class="text-center"><button class="btn btn-sm btn-info view-details" data-id="${row.Id}"><i class="mdi mdi-eye-outline me-1"></i> View</button></div>` }
+            ],
+
+            initComplete: function () { appalert('✅ Table loaded successfully!', 1, 1); },
+            drawCallback: function () {
+                const api = this.api();
+                if (api.rows({ page: 'current' }).data().length === 0) appalert('⚠️ No Refund data found.', 2, 1);
+
+                // Row checkbox change
+                $('#myDataTable .row-checkbox').off('change').on('change', function () {
+                    const allChecked = $('#myDataTable .row-checkbox').length === $('#myDataTable .row-checkbox:checked').length;
+                    $('#selectAll').prop('checked', allChecked);
+                });
+
+                // Populate dropdowns after draw
+                if (accountTypesLoaded) populateAccountTypeDropdowns();
+            }
+        });
+    }
+
+    // ------------------ Handle Account Type selection ------------------
+    $(document).on('change', '.account-type-select', function () {
+        const rowId = $(this).data('rowid');
+        const selectedOption = $(this).find('option:selected');
+        window.accountTypeSelections[rowId] = {
+            Id: $(this).val(),  // this is SavingProductId
+            Name: selectedOption.text()
+        };
+
+    });
+
+    // ------------------ Apply Filters ------------------
+    $('#partialFlowModal #applyFilterlBtn, #applyFilterBtn').on('click', function(e){
+        e.preventDefault();
+        if($(this).closest('#partialFlowModal').length){
+            bootstrap.Modal.getInstance(document.getElementById('partialFlowModal')).hide();
+        }
+        loadRefundData();
+        filtersApplied = true;
+    });
+
+    // ------------------ Export Refund ------------------
+    $('#btnExport').on('click', function(){
+        if(!filtersApplied){ appalert("⚠️ Please apply filters before exporting.", 2,1); return; }
+        bootstrap.Modal.getOrCreateInstance(document.getElementById('refundExportModal')).show();
+    });
+
+    $('#btnConfirmRefundExport').on('click', function(){
+        const filters = getDataTableFilters();
+        const exportOptions = {
+            FileName: $("#refundFileName").val(),
+            Format: $("#refundExportFormat").val(),
+            ReportType: $("#refundReportType").val(),
+            StartDate: $("#refundStartDate").val(),
+            EndDate: $("#refundEndDate").val()
+        };
+        const request = { Filters: filters, ExportOptions: exportOptions };
+
+        $(this).prop("disabled",true).html(`<span class="spinner-border spinner-border-sm"></span> Exporting...`);
+
+        $.ajax({
+            url:'@Url.Action("ExportRefundData","Refund")',
+            type:'POST',
+            contentType:'application/json',
+            data:JSON.stringify(request),
+            xhrFields:{ responseType:'blob' },
+            success:function(data,xhr,status){
+                const disposition = xhr.getResponseHeader("Content-Disposition");
+                let filename = "RefundReport.xlsx";
+                if(disposition && disposition.indexOf("filename=")!==-1) filename = disposition.split("filename=")[1].trim();
+                const blob = new Blob([data]);
+                const link = document.createElement("a");
+                link.href = URL.createObjectURL(blob);
+                link.download = filename;
+                link.click();
+                $("#refundExportModal").modal("hide");
+                appalert("✅ Refund export completed successfully.",1,1);
+            },
+            error:function(){ appalert("❌ Refund export failed. Please try again.",3,1); },
+            complete:function(){ $('#btnConfirmRefundExport').prop("disabled",false).html(`<i class="mdi mdi-cash-refund me-1"></i> Export`); }
+        });
+    });
+
+});
+</script>
+
+
+
+}
