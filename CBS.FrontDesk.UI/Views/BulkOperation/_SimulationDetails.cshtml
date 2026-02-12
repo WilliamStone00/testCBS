@@ -35,11 +35,11 @@
                         </div>
                     </div>
                     @* <div class="row mb-3">
-            <label class="col-sm-4 col-form-label">@GlobalBulkOperation.Bank</label>
-            <div class="col-sm-8">
-                <div class="form-control">@(Model.BankName?.ToUpper()) (@Model.BankCode)</div>
-            </div>
-        </div>*@
+                            <label class="col-sm-4 col-form-label">@GlobalBulkOperation.Bank</label>
+                            <div class="col-sm-8">
+                                <div class="form-control">@(Model.BankName?.ToUpper()) (@Model.BankCode)</div>
+                            </div>
+                        </div>*@
                     <div class="row mb-3">
                         <label class="col-sm-4 col-form-label">@GlobalShared.Total_volume</label>
                         <div class="col-sm-8">
@@ -146,6 +146,264 @@
         </div>
     </div>
 
+
+    <!-- Simulation Details Filter Panel -->
+    <div class="accordion" id="collapsibleSection">
+        <!-- Simulation Details Filter Panel as Accordion Item -->
+        <div class="card accordion-item mb-3">
+            <h2 class="accordion-header" id="headingSimulationDetailsFilters">
+                <button type="button"
+                        class="accordion-button collapsed"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapseSimulationDetailsFilters"
+                        aria-expanded="false"
+                        aria-controls="collapseSimulationDetailsFilters">
+                    <i class="mdi mdi-filter-outline text-primary me-2"></i>
+                    @GlobalBulkOperation.Simulation_Details_Filters
+                    <span class="badge badge-soft small ms-2" id="activeDetailsFiltersBadge" style="display:none;">
+                        <i class="mdi mdi-filter-variant me-1"></i> @GlobalShared.Active_filters_applied
+                    </span>
+                </button>
+            </h2>
+
+            <div id="collapseSimulationDetailsFilters" class="accordion-collapse collapse" aria-labelledby="headingSimulationDetailsFilters">
+                <div class="accordion-body">
+                    <!-- Filter Toggle Checkboxes -->
+                    <div class="d-flex flex-wrap gap-3 align-items-center mb-3 pb-2 border-bottom">
+                        <span class="small fw-bold text-muted"><i class="mdi mdi-eye-settings me-1"></i>@GlobalShared.Show_Filters:</span>
+
+                        <div class="form-check form-check-inline mb-0">
+                            <input class="form-check-input" type="checkbox" id="filterByMember" checked />
+                            <label class="form-check-label small" for="filterByMember">
+                                <i class="mdi mdi-account-circle text-primary me-1"></i>@GlobalShared.Member
+                            </label>
+                        </div>
+
+                        <div class="form-check form-check-inline mb-0">
+                            <input class="form-check-input" type="checkbox" id="filterByAccount" checked />
+                            <label class="form-check-label small" for="filterByAccount">
+                                <i class="mdi mdi-bank text-primary me-1"></i>@GlobalShared.Account
+                            </label>
+                        </div>
+
+                        <div class="form-check form-check-inline mb-0">
+                            <input class="form-check-input" type="checkbox" id="filterByBranch" checked />
+                            <label class="form-check-label small" for="filterByBranch">
+                                <i class="mdi mdi-office-building text-primary me-1"></i>@GlobalShared.Branch
+                            </label>
+                        </div>
+
+                        <div class="form-check form-check-inline mb-0">
+                            <input class="form-check-input" type="checkbox" id="filterByStatus" />
+                            <label class="form-check-label small" for="filterByStatus">
+                                <i class="mdi mdi-toggle-switch text-warning me-1"></i>@GlobalShared.Status
+                            </label>
+                        </div>
+
+                        <div class="form-check form-check-inline mb-0">
+                            <input class="form-check-input" type="checkbox" id="filterByDate" />
+                            <label class="form-check-label small" for="filterByDate">
+                                <i class="mdi mdi-calendar-range text-info me-1"></i>@GlobalShared.Date_Range
+                            </label>
+                        </div>
+
+                        <div class="form-check form-check-inline mb-0">
+                            <input class="form-check-input" type="checkbox" id="filterByMessage" />
+                            <label class="form-check-label small" for="filterByMessage">
+                                <i class="mdi mdi-message-text text-success me-1"></i>@GlobalShared.Message
+                            </label>
+                        </div>
+                    </div>
+
+                    @using (Html.BeginForm(null, null, FormMethod.Get, new { id = "detailsFilterForm", autocomplete = "off" }))
+                    {
+                        <!-- Member Filters Section -->
+                        <div id="memberFiltersSection" class="filter-section mb-3">
+                            <div class="row g-2">
+                                <div class="col-12">
+                                    <h6 class="text-primary small fw-bold mb-2 border-bottom pb-1">
+                                        <i class="mdi mdi-account-circle me-1"></i>@GlobalShared.Member_Information
+                                    </h6>
+                                </div>
+                                <div class="col-md-4">
+                                    @Html.Label("FilterMemberReference", GlobalShared.Enter_member_reference, new { @class = "form-label small fw-bold" })
+                                    @Html.TextBox("FilterMemberReference", null, new { @class = "form-control form-control-sm", placeholder = "Search by member ref..." })
+                                </div>
+                                <div class="col-md-4">
+                                    @Html.Label("FilterMemberName", GlobalShared.Members_name, new { @class = "form-label small fw-bold" })
+                                    @Html.TextBox("FilterMemberName", null, new { @class = "form-control form-control-sm", placeholder = "Search by member name..." })
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Account Filters Section -->
+                        <div id="accountFiltersSection" class="filter-section mb-3">
+                            <div class="row g-2">
+                                <div class="col-12">
+                                    <h6 class="text-primary small fw-bold mb-2 border-bottom pb-1">
+                                        <i class="mdi mdi-bank me-1"></i>@GlobalShared.Account_Information
+                                    </h6>
+                                </div>
+                                <div class="col-md-3">
+                                    @Html.Label("FilterSourceAccountNumber", GlobalShared.Source_account, new { @class = "form-label small fw-bold" })
+                                    @Html.TextBox("FilterSourceAccountNumber", null, new { @class = "form-control form-control-sm", placeholder = "Account number..." })
+                                </div>
+                                <div class="col-md-3">
+                                    @Html.Label("FilterSourceAccountType", GlobalShared.Source_account_type, new { @class = "form-label small fw-bold" })
+                                    @Html.DropDownList("FilterSourceAccountType",
+                                        new SelectList(ViewBag.AccountTypes ?? new List<SelectListItem>(), "Value", "Text"),
+                                        "--- All Types ---",
+                                        new { @class = "form-select form-select-sm" })
+                                </div>
+                                <div class="col-md-3">
+                                    @Html.Label("FilterDestinationAccountNumber", GlobalShared.Destination_account, new { @class = "form-label small fw-bold" })
+                                    @Html.TextBox("FilterDestinationAccountNumber", null, new { @class = "form-control form-control-sm", placeholder = "Account number..." })
+                                </div>
+                                <div class="col-md-3">
+                                    @Html.Label("FilterDestinationAccountType", GlobalShared.Destination_type, new { @class = "form-label small fw-bold" })
+                                    @Html.DropDownList("FilterDestinationAccountType",
+                                        new SelectList(ViewBag.AccountTypes ?? new List<SelectListItem>(), "Value", "Text"),
+                                        "--- All Types ---",
+                                        new { @class = "form-select form-select-sm" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Branch Filters Section -->
+                        <div id="branchFiltersSection" class="filter-section mb-3">
+                            <div class="row g-2">
+                                <div class="col-12">
+                                    <h6 class="text-primary small fw-bold mb-2 border-bottom pb-1">
+                                        <i class="mdi mdi-office-building me-1"></i>@GlobalShared.Branch_Information
+                                    </h6>
+                                </div>
+                                <div class="col-md-6">
+                                    @Html.Label("FilterBranchId", GlobalShared.Branch, new { @class = "form-label small fw-bold" })
+                                    @Html.DropDownList("FilterBranchId",
+                                        new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name"),
+                                        "--- All Branches ---",
+                                        new { @class = "form-select form-select-sm" })
+                                </div>
+                                <div class="col-md-6">
+                                    @Html.Label("FilterBranchCode", GlobalShared.Branch_Code, new { @class = "form-label small fw-bold" })
+                                    @Html.TextBox("FilterBranchCode", null, new { @class = "form-control form-control-sm", placeholder = "Branch code..." })
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Status Filters Section -->
+                        <div id="statusFiltersSection" class="filter-section mb-3 d-none">
+                            <div class="row g-2">
+                                <div class="col-12">
+                                    <h6 class="text-primary small fw-bold mb-2 border-bottom pb-1">
+                                        <i class="mdi mdi-toggle-switch me-1"></i>@GlobalShared.Status_Information
+                                    </h6>
+                                </div>
+                                <div class="col-md-6">
+                                    @Html.Label("FilterTransferStatus", GlobalShared.Transfer_Status, new { @class = "form-label small fw-bold" })
+                                    @Html.DropDownList("FilterTransferStatus",
+                                        new List<SelectListItem>
+                                        {
+                                            new SelectListItem { Value = "", Text = "--- All Statuses ---" },
+                                            new SelectListItem { Value = "Pending", Text = GlobalShared.Pending },
+                                            new SelectListItem { Value = "InProgress", Text = GlobalShared.In_Progress },
+                                            new SelectListItem { Value = "Send", Text = GlobalShared.Send },
+                                            new SelectListItem { Value = "Sent", Text = GlobalShared.Sent },
+                                            new SelectListItem { Value = "Successful", Text = GlobalShared.Successful },
+                                            new SelectListItem { Value = "Completed", Text = GlobalShared.Completed },
+                                            new SelectListItem { Value = "Paid", Text = GlobalShared.Paid },
+                                            new SelectListItem { Value = "Failed", Text = GlobalShared.Failed },
+                                            new SelectListItem { Value = "Exception", Text = GlobalShared.Exception },
+                                            new SelectListItem { Value = "Closed", Text = GlobalShared.Closed }
+                                        },
+                                        new { @class = "form-select form-select-sm" })
+                                </div>
+                                <div class="col-md-6">
+                                    @Html.Label("FilterApprovalStatus", GlobalShared.Approval_status, new { @class = "form-label small fw-bold" })
+                                    @Html.DropDownList("FilterApprovalStatus",
+                                        new List<SelectListItem>
+                                        {
+                                            new SelectListItem { Value = "", Text = "--- All Statuses ---" },
+                                            new SelectListItem { Value = "Pending", Text = GlobalShared.Pending },
+                                            new SelectListItem { Value = "Approved", Text = GlobalShared.Approved },
+                                            new SelectListItem { Value = "Rejected", Text = GlobalShared.Rejected },
+                                            new SelectListItem { Value = "Reviewed", Text = GlobalShared.Reviewed },
+                                            new SelectListItem { Value = "InProgress", Text = GlobalShared.In_Progress },
+                                            new SelectListItem { Value = "Completed", Text = GlobalShared.Completed },
+                                            new SelectListItem { Value = "Failed", Text = GlobalShared.Failed }
+                                        },
+                                        new { @class = "form-select form-select-sm" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Date Range Filters Section -->
+                        <div id="dateFiltersSection" class="filter-section mb-3 d-none">
+                            <div class="row g-2">
+                                <div class="col-12">
+                                    <h6 class="text-primary small fw-bold mb-2 border-bottom pb-1">
+                                        <i class="mdi mdi-calendar-range me-1"></i>@GlobalShared.Date_Range_Information
+                                    </h6>
+                                </div>
+                                <div class="col-md-3">
+                                    @Html.Label("FilterTransferDateFrom", GlobalShared.Transfer_Date_From, new { @class = "form-label small fw-bold" })
+                                    @Html.TextBox("FilterTransferDateFrom", null, new { @class = "form-control form-control-sm", type = "date" })
+                                </div>
+                                <div class="col-md-3">
+                                    @Html.Label("FilterTransferDateTo", GlobalShared.Transfer_Date_To, new { @class = "form-label small fw-bold" })
+                                    @Html.TextBox("FilterTransferDateTo", null, new { @class = "form-control form-control-sm", type = "date" })
+                                </div>
+                                <div class="col-md-3">
+                                    @Html.Label("FilterApprovalDateFrom", GlobalShared.Approval_Date_From, new { @class = "form-label small fw-bold" })
+                                    @Html.TextBox("FilterApprovalDateFrom", null, new { @class = "form-control form-control-sm", type = "date" })
+                                </div>
+                                <div class="col-md-3">
+                                    @Html.Label("FilterApprovalDateTo", GlobalShared.Approval_Date_To, new { @class = "form-label small fw-bold" })
+                                    @Html.TextBox("FilterApprovalDateTo", null, new { @class = "form-control form-control-sm", type = "date" })
+                                </div>
+                                <div class="col-md-3">
+                                    @Html.Label("FilterCreatedDateFrom", GlobalShared.Created_Date_From, new { @class = "form-label small fw-bold" })
+                                    @Html.TextBox("FilterCreatedDateFrom", null, new { @class = "form-control form-control-sm", type = "date" })
+                                </div>
+                                <div class="col-md-3">
+                                    @Html.Label("FilterCreatedDateTo", GlobalShared.Created_Date_To, new { @class = "form-label small fw-bold" })
+                                    @Html.TextBox("FilterCreatedDateTo", null, new { @class = "form-control form-control-sm", type = "date" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Message Filters Section -->
+                        <div id="messageFiltersSection" class="filter-section mb-3 d-none">
+                            <div class="row g-2">
+                                <div class="col-12">
+                                    <h6 class="text-primary small fw-bold mb-2 border-bottom pb-1">
+                                        <i class="mdi mdi-message-text me-1"></i>@GlobalShared.Message_Information
+                                    </h6>
+                                </div>
+                                <div class="col-md-12">
+                                    @Html.Label("FilterTransferMessage", GlobalShared.Transfer_Message, new { @class = "form-label small fw-bold" })
+                                    @Html.TextBox("FilterTransferMessage", null, new { @class = "form-control form-control-sm", placeholder = "Search by transfer message..." })
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="row mt-2">
+                            <div class="col-md-12 d-flex gap-2">
+                                <button id="applyDetailsFilterBtn" type="button" class="btn btn-primary btn-sm flex-fill">
+                                    <i class="mdi mdi-magnify me-1"></i> @GlobalShared.Apply_Filter
+                                </button>
+                                <button id="resetDetailsFilterBtn" type="button" class="btn btn-secondary btn-sm flex-fill">
+                                    <i class="mdi mdi-refresh me-1"></i> @GlobalShared.Reset
+                                </button>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="accordion" id="collapsibleSection">
         <div class="card accordion-item mb-3">
             <h2 class="accordion-header" id="headingMembers">
@@ -158,51 +416,55 @@
                     <i class="fas fa-users me-2"></i>@GlobalShared.Operation_members (@Model.TotalMembers)
                 </button>
             </h2>
+
+
+
             <div id="collapseMembers" class="accordion-collapse collapse" aria-labelledby="headingMembers">
                 <div class="accordion-body">
                     @Html.Partial("_SimulationDetailsDataTable", Model)
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class="card accordion-item mb-3">
-            <h2 class="accordion-header" id="headingActions">
-                <button type="button"
-                        class="accordion-button collapsed"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#collapseActions"
-                        aria-expanded="false"
-                        aria-controls="collapseActions">
-                    <i class="fas fa-tasks me-2"></i>@GlobalShared.Available_actions
-                </button>
-            </h2>
-            <div id="collapseActions"
-                 class="accordion-collapse collapse"
-                 aria-labelledby="headingActions"
-                 data-bs-parent="#collapsibleSection">
-                <div class="accordion-body">
-                    <div class="d-flex gap-2">
-                        @if (@Model.ApprovalStatus == "Pending" || @Model.ApprovalStatus == "Failed" || @Model.ApprovalStatus == "Reviewed")
-                        {
-                            <button type="button" class="btn btn-primary" id="approveBulkOperation" data-simulation-id="@Model.Id">
-                                <i class="fas fa-check me-1"></i> @GlobalShared.Perform_actions
-                            </button>
-                            @* <button type="button" class="btn btn-warning" id="reviewBulkOperation" data-simulation-id="@Model.Id">
-                                    <i class="fas fa-search me-1"></i> Send for Review
-                                </button>*@
-                        }
-                        <button type="button" class="btn btn-info" data-bs-toggle="tooltip" title="@GlobalShared.Export bulk operation Analysis to Excel" onclick="exportBulkOperation('@Model.Id')">
-                            <i class="fas fa-download me-1"></i> @GlobalShared.Export Bulk Operation to Excel
+    <div class="card accordion-item mb-3">
+        <h2 class="accordion-header" id="headingActions">
+            <button type="button"
+                    class="accordion-button collapsed"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapseActions"
+                    aria-expanded="false"
+                    aria-controls="collapseActions">
+                <i class="fas fa-tasks me-2"></i>@GlobalShared.Available_actions
+            </button>
+        </h2>
+        <div id="collapseActions"
+             class="accordion-collapse collapse"
+             aria-labelledby="headingActions"
+             data-bs-parent="#collapsibleSection">
+            <div class="accordion-body">
+                <div class="d-flex gap-2">
+                    @if (@Model.ApprovalStatus == "Pending" || @Model.ApprovalStatus == "Failed" || @Model.ApprovalStatus == "Reviewed")
+                    {
+                        <button type="button" class="btn btn-primary" id="approveBulkOperation" data-simulation-id="@Model.Id">
+                            <i class="fas fa-check me-1"></i> @GlobalShared.Perform_actions
                         </button>
-                      @*  <button type="button" class="btn btn-danger"  data-bs-toggle="tooltip" title="Delete bulk operation Analysis to Excel" onclick="deleteBulkOperation('@Model.Id','@Model.SimulationType')">
-                            <i class="fas fa-trash me-1"></i> Delete Simulation 
+                        @* <button type="button" class="btn btn-warning" id="reviewBulkOperation" data-simulation-id="@Model.Id">
+                                <i class="fas fa-search me-1"></i> Send for Review
+                            </button>*@
+                    }
+                    <button type="button" class="btn btn-info" data-bs-toggle="tooltip" title="@GlobalShared.Export bulk operation Analysis to Excel" onclick="exportBulkOperation('@Model.Id')">
+                        <i class="fas fa-download me-1"></i> @GlobalShared.Export Bulk Operation to Excel
+                    </button>
+                    @*  <button type="button" class="btn btn-danger"  data-bs-toggle="tooltip" title="Delete bulk operation Analysis to Excel" onclick="deleteBulkOperation('@Model.Id','@Model.SimulationType')">
+                            <i class="fas fa-trash me-1"></i> Delete Simulation
                         </button>*@
-                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 
 <!-- Main Modal -->
 <!-- Transfer Details Modal -->

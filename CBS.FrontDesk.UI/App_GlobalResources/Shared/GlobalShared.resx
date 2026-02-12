@@ -3157,4 +3157,55 @@
   <data name="Client_Info" xml:space="preserve">
     <value>Client Info</value>
   </data>
+  <data name="Date_Range_Information" xml:space="preserve">
+    <value>Enter Date  Range</value>
+  </data>
+  <data name="Message_Information" xml:space="preserve">
+    <value>Enter search message</value>
+  </data>
+  <data name="Show_Filters" xml:space="preserve">
+    <value>Show Filters:</value>
+  </data>
+  <data name="In_Progress" xml:space="preserve">
+    <value>In Progress</value>
+  </data>
+  <data name="Send" xml:space="preserve">
+    <value>Send</value>
+  </data>
+  <data name="Sent" xml:space="preserve">
+    <value>Sent</value>
+  </data>
+  <data name="Successful" xml:space="preserve">
+    <value>Successful</value>
+  </data>
+  <data name="Paid" xml:space="preserve">
+    <value>Paid</value>
+  </data>
+  <data name="Exception" xml:space="preserve">
+    <value>Exception</value>
+  </data>
+  <data name="Transfer_Date_From" xml:space="preserve">
+    <value>Transfer Date From</value>
+  </data>
+  <data name="Transfer_Date_To" xml:space="preserve">
+    <value>Transfer Date To</value>
+  </data>
+  <data name="Approval_Date_From" xml:space="preserve">
+    <value>Approval Date From</value>
+  </data>
+  <data name="Approval_Date_To" xml:space="preserve">
+    <value>Approval Date To</value>
+  </data>
+  <data name="Created_Date_From" xml:space="preserve">
+    <value>Created Date From</value>
+  </data>
+  <data name="Created_Date_To" xml:space="preserve">
+    <value>Created Date To</value>
+  </data>
+  <data name="Transfer_Message" xml:space="preserve">
+    <value>Search by transfer message...</value>
+  </data>
+  <data name="Filter" xml:space="preserve">
+    <value>Filter</value>
+  </data>
 </root>
