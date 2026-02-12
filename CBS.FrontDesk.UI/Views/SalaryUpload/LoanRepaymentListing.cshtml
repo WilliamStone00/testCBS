@@ -84,7 +84,7 @@
 
         <div class="card p-3 mb-3 bg-light">
 
-            <!-- Branch (Full Width) -->
+            <!-- Branch (Always Visible) -->
             <div class="row mb-3">
                 <div class="col-md-12">
                     <label class="form-label fw-bold">Branch</label>
@@ -96,6 +96,7 @@
 
             <!-- Toggle Checkboxes -->
             <div class="row mb-3">
+
                 <div class="col-md-3">
                     <div class="form-check">
                         <input class="form-check-input filter-toggle" type="checkbox" data-target="#statusFilter">
@@ -123,21 +124,50 @@
                         <label class="form-check-label fw-bold">Salary Code</label>
                     </div>
                 </div>
+
+                <div class="col-md-3 mt-2">
+                    <div class="form-check">
+                        <input class="form-check-input filter-toggle" type="checkbox" data-target="#memberRefFilter">
+                        <label class="form-check-label fw-bold">Member Reference</label>
+                    </div>
+                </div>
+
+                <div class="col-md-3 mt-2">
+                    <div class="form-check">
+                        <input class="form-check-input filter-toggle" type="checkbox" data-target="#transactionRefFilter">
+                        <label class="form-check-label fw-bold">Transaction Reference</label>
+                    </div>
+                </div>
+
+                <div class="col-md-3 mt-2">
+                    <div class="form-check">
+                        <input class="form-check-input filter-toggle" type="checkbox" data-target="#loanIdFilter">
+                        <label class="form-check-label fw-bold">Loan ID</label>
+                    </div>
+                </div>
+
+                <div class="col-md-3 mt-2">
+                    <div class="form-check">
+                        <input class="form-check-input filter-toggle" type="checkbox" data-target="#amountRangeFilter">
+                        <label class="form-check-label fw-bold">Amount Range</label>
+                    </div>
+                </div>
+
             </div>
 
-            <!-- Dynamic Filters Section -->
+            <!-- Dynamic Filters -->
             <div id="dynamicFilters">
 
                 <!-- Status -->
                 <div id="statusFilter" class="row mb-3 d-none">
                     <div class="col-md-6">
                         <label class="form-label fw-bold">Status</label>
-                        <select id="status" name="Status" class="form-control">
-                            <option value="">All Statuses</option>
-                            <option value="Pending">Pending</option>
-                            <option value="Success">Success</option>
-                            <option value="Failed">Failed</option>
-                            <option value="Refunded">Refunded</option>
+                        <select name="Status" class="form-control">
+                            <option value="">All</option>
+                            <option>Pending</option>
+                            <option>Success</option>
+                            <option>Failed</option>
+                            <option>Refunded</option>
                         </select>
                     </div>
                 </div>
@@ -146,11 +176,11 @@
                 <div id="paymentMethodFilter" class="row mb-3 d-none">
                     <div class="col-md-6">
                         <label class="form-label fw-bold">Payment Method</label>
-                        <select id="paymentMethod" name="PaymentMethod" class="form-control">
-                            <option value="">All Methods</option>
-                            <option value="Bank Transfer">Bank Transfer</option>
-                            <option value="Cash">Cash</option>
-                            <option value="Cheque">Cheque</option>
+                        <select name="PaymentMethod" class="form-control">
+                            <option value="">All</option>
+                            <option>Bank Transfer</option>
+                            <option>Cash</option>
+                            <option>Cheque</option>
                         </select>
                     </div>
                 </div>
@@ -159,11 +189,11 @@
                 <div id="paymentChannelFilter" class="row mb-3 d-none">
                     <div class="col-md-6">
                         <label class="form-label fw-bold">Payment Channel</label>
-                        <select id="paymentChannel" name="PaymentChannel" class="form-control">
-                            <option value="">All Channels</option>
-                            <option value="Online">Online</option>
-                            <option value="Branch">Branch</option>
-                            <option value="Mobile">Mobile</option>
+                        <select name="PaymentChannel" class="form-control">
+                            <option value="">All</option>
+                            <option>Online</option>
+                            <option>Branch</option>
+                            <option>Mobile</option>
                         </select>
                     </div>
                 </div>
@@ -172,7 +202,43 @@
                 <div id="salaryCodeFilter" class="row mb-3 d-none">
                     <div class="col-md-6">
                         <label class="form-label fw-bold">Salary Code</label>
-                        <input type="text" id="salaryCode" name="SalaryCode" class="form-control" />
+                        <input type="text" name="SalaryCode" class="form-control">
+                    </div>
+                </div>
+
+                <!-- Member Reference -->
+                <div id="memberRefFilter" class="row mb-3 d-none">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Member Reference</label>
+                        <input type="text" name="MemberReference" class="form-control">
+                    </div>
+                </div>
+
+                <!-- Transaction Reference -->
+                <div id="transactionRefFilter" class="row mb-3 d-none">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Transaction Reference</label>
+                        <input type="text" name="TransactionReference" class="form-control">
+                    </div>
+                </div>
+
+                <!-- Loan ID -->
+                <div id="loanIdFilter" class="row mb-3 d-none">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Loan ID</label>
+                        <input type="text" name="LoanId" class="form-control">
+                    </div>
+                </div>
+
+                <!-- Amount Range -->
+                <div id="amountRangeFilter" class="row mb-3 d-none">
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Min Amount</label>
+                        <input type="number" name="MinAmount" class="form-control">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Max Amount</label>
+                        <input type="number" name="MaxAmount" class="form-control">
                     </div>
                 </div>
 
@@ -182,7 +248,7 @@
         <!-- Buttons -->
         <div class="row mt-2">
             <div class="col-md-12 d-flex">
-                <button id="applyFilterBtn" type="button" class="btn btn-primary me-2 w-100">
+                <button type="button" class="btn btn-primary w-100 me-2">
                     <i class="mdi mdi-magnify"></i> Apply Filter
                 </button>
                 <button id="resetFilterBtn" type="button" class="btn btn-secondary w-100">
@@ -193,6 +259,7 @@
 
     </form>
 </div>
+
 
 
 <!-- Data Table Partial -->
@@ -501,22 +568,22 @@
                                 var btnId = 'actionDropdown_' + safeId;
 
                                 return `
-                                                <div class="dropdown">
-                                                    <button class="btn btn-sm btn-info dropdown-toggle text-white" type="button"
-                                                            id="${btnId}" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        <i class="mdi mdi-cog-outline"></i> Actions
-                                                    </button>
-                                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="${btnId}">
-                                                        <li>
-                                                            <button type="button" class="dropdown-item btn-details"
-                                                                    data-id="${escapeHtml(row.Id)}"
-                                                                    data-transaction="${escapeHtml(row.TransactionReference || '')}">
-                                                                <i class="mdi mdi-eye me-1 text-primary"></i> View Details
-                                                            </button>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            `;
+                                                    <div class="dropdown">
+                                                        <button class="btn btn-sm btn-info dropdown-toggle text-white" type="button"
+                                                                id="${btnId}" data-bs-toggle="dropdown" aria-expanded="false">
+                                                            <i class="mdi mdi-cog-outline"></i> Actions
+                                                        </button>
+                                                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="${btnId}">
+                                                            <li>
+                                                                <button type="button" class="dropdown-item btn-details"
+                                                                        data-id="${escapeHtml(row.Id)}"
+                                                                        data-transaction="${escapeHtml(row.TransactionReference || '')}">
+                                                                    <i class="mdi mdi-eye me-1 text-primary"></i> View Details
+                                                                </button>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                `;
                             }
                         }
                     ],
@@ -561,11 +628,11 @@
 
                 // Reset file statistics
                 $('#fileStatisticsContainer').html(`
-                                <div class="text-center py-4 text-muted">
-                                    <i class="mdi mdi-file-document-outline mdi-48px"></i>
-                                    <p class="mt-2">Click on "Loan Execution Details" from any file to view statistics</p>
-                                </div>
-                            `);
+                                    <div class="text-center py-4 text-muted">
+                                        <i class="mdi mdi-file-document-outline mdi-48px"></i>
+                                        <p class="mt-2">Click on "Loan Execution Details" from any file to view statistics</p>
+                                    </div>
+                                `);
 
                 loadLoanRepaymentData();
                 showAppAlert('Filters reset', 3);
@@ -586,13 +653,13 @@
 
                 var $modalBody = $('#loanRepaymentDetailsModal .modal-body');
                 $modalBody.html(`
-                                <div class="text-center py-5">
-                                    <div class="spinner-border text-primary" role="status">
-                                        <span class="visually-hidden">Loading...</span>
+                                    <div class="text-center py-5">
+                                        <div class="spinner-border text-primary" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                        <p class="mt-2 text-muted">Loading details...</p>
                                     </div>
-                                    <p class="mt-2 text-muted">Loading details...</p>
-                                </div>
-                            `);
+                                `);
 
                 var modal = new bootstrap.Modal(modalEl);
                 modal.show();
@@ -606,12 +673,12 @@
                     },
                     error: function (xhr) {
                         $modalBody.html(`
-                                        <div class="text-center text-danger py-4">
-                                            <i class="mdi mdi-alert-circle mdi-48px"></i>
-                                            <p class="mt-2">Error loading details. Please try again.</p>
-                                            <small>${xhr.status} - ${xhr.statusText}</small>
-                                        </div>
-                                    `);
+                                            <div class="text-center text-danger py-4">
+                                                <i class="mdi mdi-alert-circle mdi-48px"></i>
+                                                <p class="mt-2">Error loading details. Please try again.</p>
+                                                <small>${xhr.status} - ${xhr.statusText}</small>
+                                            </div>
+                                        `);
                         showAppAlert('Failed to load details', 0);
                         console.error('Details load failed', xhr);
                     }
@@ -623,15 +690,13 @@
                 // Toggle filter visibility
                 $('.filter-toggle').on('change', function () {
 
-                    var target = $(this).data('target');
+                    const target = $(this).data('target');
 
-                    if ($(this).is(':checked')) {
+                    if (this.checked) {
                         $(target).removeClass('d-none').hide().slideDown(200);
                     } else {
                         $(target).slideUp(200, function () {
                             $(this).addClass('d-none');
-
-                            // Optional: clear input values when hidden
                             $(this).find('input, select').val('');
                         });
                     }
@@ -664,11 +729,7 @@
                     e.preventDefault();
                     resetFilters();
                     $('.filter-toggle').prop('checked', false);
-
-                    // Hide all dynamic filters
                     $('#dynamicFilters > div').addClass('d-none');
-
-                    // Clear form
                     $('#loanRepaymentFilterForm')[0].reset();
                 });
 
