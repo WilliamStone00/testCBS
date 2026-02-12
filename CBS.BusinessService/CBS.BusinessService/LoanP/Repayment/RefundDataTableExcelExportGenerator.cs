@@ -322,7 +322,7 @@ namespace CBS.BusinessService.LoanP.Repayment
             "Branch", "Payment Method", "Payment Channel",
             "Completed", "Reversal",
             "Amount", "Principal", "Interest", "Penalty", "Tax", "Balance",
-            "Date of Payment", "Created Date"
+            "Accounting Date", "Created Date"
         };
 
             int headerRow = currentRow;

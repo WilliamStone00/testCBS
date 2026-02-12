@@ -288,16 +288,19 @@ $(document).ready(function () {
     });
 
     // ------------------ Column toggles ------------------
+    // ------------------ Column toggles ------------------
     $(document).on('change', '.column-toggle', function () {
         if (!refundTable) return;
+
         const colIndex = parseInt($(this).data('column'));
         refundTable.column(colIndex).visible($(this).is(':checked'));
 
-        // Load account types only once
-        if (this.id === 'toggleAcctype' && $(this).is(':checked') && !accountTypesLoaded) {
-            loadAccountTypes();
+        // Only trigger loadAccountTypes when the Account Type column is toggled ON
+        if (this.id === 'toggleAcctype' && $(this).is(':checked')) {
+            loadAccountTypes(); // 🔹 call every time
         }
     });
+
 
 
     // Limit selection to 5
@@ -320,7 +323,12 @@ $(document).ready(function () {
 
     // ------------------ Load Account Types ------------------
     function loadAccountTypes() {
-        if (accountTypesLoaded) return;
+        // Only skip AJAX if we already loaded account types once
+        if (accountTypesLoaded) {
+            // But always populate dropdowns for current table rows
+            populateAccountTypeDropdowns();
+            return;
+        }
 
         console.log('🔹 Starting to load account types...');
 
@@ -342,12 +350,11 @@ $(document).ready(function () {
                     Text: a.Text
                 }));
 
-
                 console.log('🔹 Mapped accountTypeMap:', accountTypeMap);
 
                 accountTypesLoaded = true;
 
-                // Populate dropdowns for existing table rows
+                // Populate dropdowns for current table rows
                 populateAccountTypeDropdowns();
 
                 appalert('✅ Account Types loaded.', 1, 1);
@@ -366,29 +373,29 @@ $(document).ready(function () {
             .map(a => `<option value="${a.Id}">${a.Text}</option>`)
             .join('');
 
-
         $('#myDataTable .account-type-select').each(function () {
             const $select = $(this);
 
-            if ($select.children('option').length <= 1) {
-                $select.html('<option value="">--Select Account Type--</option>' + options);
-            }
+            // Always reset options
+            $select.html('<option value="">--Select Account Type--</option>' + options);
 
             // Restore previous selection
             const rowId = $select.data('rowid');
             if (window.accountTypeSelections[rowId]) {
-                $select.val(window.accountTypeSelections[rowId].Code);
+                $select.val(window.accountTypeSelections[rowId].Id);
             }
 
-            // Initialize Select2 if not already
-            if (!$select.hasClass('select2-hidden-accessible')) {
-                $select.select2({
-                    placeholder: '--Select Account Type--',
-                    width: '100%',
-                    allowClear: true,
-                    dropdownParent: $select.closest('td')
-                });
+            // Destroy and re-initialize Select2 to avoid duplicates
+            if ($select.hasClass('select2-hidden-accessible')) {
+                $select.select2('destroy');
             }
+
+            $select.select2({
+                placeholder: '--Select Account Type--',
+                width: '100%',
+                allowClear: true,
+                dropdownParent: $select.closest('td')
+            });
         });
     }
 
@@ -578,7 +585,8 @@ $(document).ready(function () {
             initComplete: function () { appalert('✅ Table loaded successfully!', 1, 1); },
             drawCallback: function () {
                 const api = this.api();
-                if (api.rows({ page: 'current' }).data().length === 0) appalert('⚠️ No Refund data found.', 2, 1);
+                if (api.rows({ page: 'current' }).data().length === 0)
+                    appalert('⚠️ No Refund data found.', 2, 1);
 
                 // Row checkbox change
                 $('#myDataTable .row-checkbox').off('change').on('change', function () {
@@ -586,9 +594,10 @@ $(document).ready(function () {
                     $('#selectAll').prop('checked', allChecked);
                 });
 
-                // Populate dropdowns after draw
-                if (accountTypesLoaded) populateAccountTypeDropdowns();
+                // Populate dropdowns for **all current rows**
+                if (accountTypeMap.length) populateAccountTypeDropdowns();
             }
+
         });
     }
 
@@ -619,7 +628,11 @@ $(document).ready(function () {
         bootstrap.Modal.getOrCreateInstance(document.getElementById('refundExportModal')).show();
     });
 
-    $('#btnConfirmRefundExport').on('click', function(){
+    $('#btnConfirmRefundExport').on('click', function () {
+
+        const $btn = $(this);
+        const originalHtml = $btn.html();
+
         const filters = getDataTableFilters();
         const exportOptions = {
             FileName: $("#refundFileName").val(),
@@ -628,31 +641,48 @@ $(document).ready(function () {
             StartDate: $("#refundStartDate").val(),
             EndDate: $("#refundEndDate").val()
         };
+
         const request = { Filters: filters, ExportOptions: exportOptions };
 
-        $(this).prop("disabled",true).html(`<span class="spinner-border spinner-border-sm"></span> Exporting...`);
+        $btn.prop("disabled", true)
+            .html(`<span class="spinner-border spinner-border-sm"></span> Exporting...`);
 
         $.ajax({
-            url:'@Url.Action("ExportRefundData","Refund")',
-            type:'POST',
-            contentType:'application/json',
-            data:JSON.stringify(request),
-            xhrFields:{ responseType:'blob' },
-            success:function(data,xhr,status){
-                const disposition = xhr.getResponseHeader("Content-Disposition");
-                let filename = "RefundReport.xlsx";
-                if(disposition && disposition.indexOf("filename=")!==-1) filename = disposition.split("filename=")[1].trim();
-                const blob = new Blob([data]);
-                const link = document.createElement("a");
-                link.href = URL.createObjectURL(blob);
-                link.download = filename;
+            url: '/Refund/ExportRefundData',
+            type: 'POST',
+            data: JSON.stringify(request),   // 🔥 IMPORTANT: use request, not getDataTableFilters()
+            contentType: 'application/json',
+            xhrFields: { responseType: 'blob' },
+
+            success: function (blob, status, xhr) {
+
+                const disposition = xhr.getResponseHeader('Content-Disposition');
+                let fileName = "RefundReport.xlsx";
+
+                if (disposition && disposition.indexOf("filename=") !== -1) {
+                    fileName = disposition.split("filename=")[1].replace(/"/g, '').trim();
+                }
+
+                const link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = fileName;
+                document.body.appendChild(link);
                 link.click();
-                $("#refundExportModal").modal("hide");
-                appalert("✅ Refund export completed successfully.",1,1);
+                document.body.removeChild(link);
+
+                window.URL.revokeObjectURL(link.href);
             },
-            error:function(){ appalert("❌ Refund export failed. Please try again.",3,1); },
-            complete:function(){ $('#btnConfirmRefundExport').prop("disabled",false).html(`<i class="mdi mdi-cash-refund me-1"></i> Export`); }
+
+            error: function (xhr) {
+                appalert('❌ Failed to export Refund data. Status: ' + xhr.status, 4, 1);
+            },
+
+            complete: function () {
+                // ✅ ALWAYS restore button
+                $btn.prop("disabled", false).html(originalHtml);
+            }
         });
+
     });
 
 });
