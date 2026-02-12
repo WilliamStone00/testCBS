@@ -58,7 +58,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             {
                 ViewBag.HeadOffice = "Yes";
             }
-            await LoadDroupdowns();
+           // await LoadDroupdowns();
             return View(new SalaryUploadModelCarrier());
         }
 
@@ -86,6 +86,14 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             var branchesTask = await _branchServices.GetBranches();
             var chartOfAccounts = await chartOfAccountServices.GetAllBranchAccountsFromDataTableAsync(_branchServices.GetBranchID());
             ViewBag.StandingOrderSourceAccountOptions = chartOfAccountServices.DropDownGen(chartOfAccounts.ToList());
+            ViewBag.Branches = branchesTask;
+            ViewBag.FileTypes = FileTypeOptions;
+        }
+        private async Task PopulatereexecutionDropdownsAsync(bool includeChartOfAccounts)
+        {
+            var branchesTask = await _branchServices.GetBranches();
+           // var chartOfAccounts = await chartOfAccountServices.GetAllBranchAccountsFromDataTableAsync(_branchServices.GetBranchID());
+          //  ViewBag.StandingOrderSourceAccountOptions = chartOfAccountServices.DropDownGen(chartOfAccounts.ToList());
             ViewBag.Branches = branchesTask;
             ViewBag.FileTypes = FileTypeOptions;
         }
@@ -184,7 +192,69 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Error loading loan data.");
             }
         }
-        
+
+        [HttpPost]
+        public async Task<ActionResult> LoadreexecutionLoanData(GetFileUploadsDataTableQuery tableQuery)
+        {
+            try
+            {
+                // 1️⃣ Validate FileType presence
+                if (string.IsNullOrWhiteSpace(tableQuery.FileType))
+                {
+                    return new HttpStatusCodeResult(
+                        HttpStatusCode.BadRequest,
+                        "Please select file type"
+                    );
+                }
+
+                // 2️⃣ Allowed file types (must match your system values exactly)
+                var allowedFileTypes = new HashSet<string>(StringComparer.OrdinalIgnoreCase) {"Analysis","SalaryReExecution"};
+
+                // 3️⃣ Validate FileType value
+                if (!allowedFileTypes.Contains(tableQuery.FileType))
+                {
+                    return new HttpStatusCodeResult(
+                        HttpStatusCode.BadRequest,
+                        "Invalid file type"
+                    );
+                }
+
+                // 4️⃣ Load data normally
+                var dataTable = await _fileUploadServices.GetDataTableAsync(tableQuery);
+
+                var loanList = JsonConvert.DeserializeObject<List<FileUploadDto>>(
+                    JsonConvert.SerializeObject(dataTable.data)
+                );
+
+                // 5️⃣ Action mode handling
+                if (tableQuery.ActionParam == "analyser")
+                {
+                    loanList = _salaryUploadServices.GetUploadForAnalysis(loanList);
+                }
+                else if (tableQuery.ActionParam == "executer")
+                {
+                    loanList = _salaryUploadServices.GetFileUploads(loanList);
+                }
+
+                // 6️⃣ Return DataTables-compatible response
+                return Json(new
+                {
+                    draw = dataTable.DataTableOptions.draw,
+                    recordsTotal = dataTable.recordsTotal,
+                    recordsFiltered = dataTable.recordsFiltered,
+                    data = loanList
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception)
+            {
+                return new HttpStatusCodeResult(
+                    HttpStatusCode.InternalServerError,
+                    "Error loading loan data."
+                );
+            }
+        }
+
+
         public async Task<ActionResult> DownloadFile(string fileId = null, string fileType = null)
         {
             try
@@ -487,7 +557,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
 
         public async Task<ActionResult> ReexecuteSalaries()
         {
-            await PopulateDropdownsAsync(includeChartOfAccounts: false);
+             await PopulatereexecutionDropdownsAsync(includeChartOfAccounts: false);          
             return View(new SalaryUploadModelCarrier());
         }
 

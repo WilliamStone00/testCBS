@@ -11,10 +11,13 @@
                 <h1 class="card-title text-primary">
                     <i class="mdi mdi-file-refresh-outline me-2"></i> Salary Reexecution Management
                 </h1>
-                <p class="card-text text-muted">
-                    Manage, upload, and process salary reexecution files for previously executed salary transactions.
-                    This module allows correction, adjustment, or reprocessing of salary batches in a controlled manner.
+                <p class="card-text text-danger">
+                    This interface is designated exclusively for the controlled reexecution of previously uploaded
+                    salary batches that did not reach full processing completion due to system, validation,
+                    or transactional interruptions. It serves as a corrective operational environment to ensure
+                    financial accuracy, regulatory compliance, and audit traceability in payroll postings.
                 </p>
+
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
 
@@ -22,7 +25,7 @@
             <div class="card">
                 <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
                     <span>
-                        <i class="mdi mdi-information-outline me-2"></i> Important Guidelines for Salary Reexecution
+                        <i class="mdi mdi-information-outline me-2"></i> Salary Reexecution Compliance Guidelines
                     </span>
                     <button class="btn btn-light btn-sm"
                             type="button"
@@ -39,41 +42,60 @@
                         <ul class="mb-0">
 
                             <li>
-                                <i class="mdi mdi-check-circle-outline text-success me-2"></i>
-                                Ensure the reexecution file follows the approved salary reexecution format
-                                (Salary Code, Matricule, Name, Net Salary, etc.).
+                                <i class="mdi mdi-shield-check-outline text-success me-2"></i>
+                                <strong>Authorized Usage Only:</strong>
+                                Salary reexecution must be performed exclusively by authorized personnel
+                                in compliance with internal payroll controls and segregation-of-duties policies.
                             </li>
 
                             <li>
-                                <i class="mdi mdi-alert-circle-outline text-warning me-2"></i>
-                                Confirm that the original salary batch was successfully executed before performing reexecution.
+                                <i class="mdi mdi-file-document-check-outline text-primary me-2"></i>
+                                <strong>Original Batch Validation:</strong>
+                                Confirm that the salary batch already exists in the system and was only
+                                partially processed. This interface must not be used for new salary uploads.
                             </li>
 
                             <li>
-                                <i class="mdi mdi-bank-outline text-primary me-2"></i>
-                                Select the correct <strong>Branch</strong> and corresponding <strong>GL Account</strong>
-                                before uploading the file.
+                                <i class="mdi mdi-alert-octagon-outline text-warning me-2"></i>
+                                <strong>Duplicate Transaction Prevention:</strong>
+                                Reexecution must be initiated strictly for unprocessed salary records.
+                                Ensure that previously successful postings will not be reposted.
                             </li>
 
                             <li>
-                                <i class="mdi mdi-file-compare-outline text-info me-2"></i>
-                                Review the file carefully to avoid duplicate salary postings or incorrect adjustments.
+                                <i class="mdi mdi-bank-outline text-info me-2"></i>
+                                <strong>Branch and GL Account Verification:</strong>
+                                Select and validate the correct Branch and corresponding General Ledger (GL)
+                                Account to prevent accounting misstatements and reconciliation issues.
                             </li>
 
                             <li>
-                                <i class="mdi mdi-view-list-outline text-primary me-2"></i>
-                                Use the <strong>View List</strong> button to monitor previously uploaded
-                                reexecution files and their processing status.
+                                <i class="mdi mdi-clipboard-text-search-outline text-secondary me-2"></i>
+                                <strong>Reexecution File Integrity:</strong>
+                                The uploaded file must strictly comply with the approved salary reexecution template
+                                (Salary Code, Matricule, Employee Name, Net Salary, etc.).
+                                Any deviation may result in validation failure.
                             </li>
 
                             <li>
-                                <i class="mdi mdi-clock-outline text-secondary me-2"></i>
-                                Keep track of upload dates and processing results for audit and reconciliation purposes.
+                                <i class="mdi mdi-history text-dark me-2"></i>
+                                <strong>Audit Trail & Traceability:</strong>
+                                All reexecution actions are logged for audit purposes.
+                                Users may be required to provide justification for reprocessing during reviews.
                             </li>
 
                             <li>
-                                <i class="mdi mdi-plus-circle-outline text-success me-2"></i>
-                                Use the <strong>Upload New File</strong> button to submit a new salary reexecution batch.
+                                <i class="mdi mdi-scale-balance text-primary me-2"></i>
+                                <strong>Post-Execution Reconciliation:</strong>
+                                Upon completion, reconcile salary totals against approved payroll reports
+                                and accounting balances to ensure financial accuracy.
+                            </li>
+
+                            <li>
+                                <i class="mdi mdi-view-list-outline text-success me-2"></i>
+                                <strong>Processing Status Monitoring:</strong>
+                                Use the <strong>View List</strong> functionality to track execution status,
+                                identify pending records, and confirm successful completion.
                             </li>
 
                         </ul>
