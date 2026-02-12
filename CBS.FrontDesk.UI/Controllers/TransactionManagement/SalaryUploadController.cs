@@ -77,6 +77,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                 new SelectListItem { Value = "PrivateInstitutions", Text = "Private Institution Files" },
                 new SelectListItem { Value = "StandingOrder",       Text = "Standing Order Files" },
                 new SelectListItem { Value = "Analysis",            Text = "Analysed Files" },
+                new SelectListItem { Value = "SalaryReExecution",            Text = "Salary ReExecution Files" },
                 new SelectListItem { Value = "ManualEntryDailyCollection", Text = "Daily Collection Files" },
                 new SelectListItem { Value = "Others",              Text = "Other Files" },
                 new SelectListItem { Value = "ShareMonth",              Text = "Share Month Files" },

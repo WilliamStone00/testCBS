@@ -818,7 +818,7 @@ namespace CBS.FrontDesk.Helper
         public static string RefundByCustomerId = "/api/v1/Refund/by-customer/{0}";
         public static string RefundById = "/api/v1/Refund/{0}";
         public static string GetLoanDataTable = "/api/v1/Refund/datatable";
-        public static string PushRefund = "/api/v1/Refund/PushRefund";
+        public static string PushRefund = "/api/v1/loan-repayment-local-account/reconcilliation";
 
         //Fee
         public static string Get_Update_Delete_Fee = "/api/v1/Fee/{0}";

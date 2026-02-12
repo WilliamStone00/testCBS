@@ -772,6 +772,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Approval Date From.
+        /// </summary>
+        internal static string Approval_Date_From {
+            get {
+                return ResourceManager.GetString("Approval_Date_From", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Approval Date To.
+        /// </summary>
+        internal static string Approval_Date_To {
+            get {
+                return ResourceManager.GetString("Approval_Date_To", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Approval information.
         /// </summary>
         internal static string Approval_information {
@@ -2176,6 +2194,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Created Date From.
+        /// </summary>
+        internal static string Created_Date_From {
+            get {
+                return ResourceManager.GetString("Created_Date_From", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Created Date To.
+        /// </summary>
+        internal static string Created_Date_To {
+            get {
+                return ResourceManager.GetString("Created_Date_To", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Created From.
         /// </summary>
         internal static string Created_From {
@@ -2442,6 +2478,15 @@ namespace Resources {
         internal static string Date_Range {
             get {
                 return ResourceManager.GetString("Date_Range", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter Date  Range.
+        /// </summary>
+        internal static string Date_Range_Information {
+            get {
+                return ResourceManager.GetString("Date_Range_Information", resourceCulture);
             }
         }
         
@@ -3131,6 +3176,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Exception.
+        /// </summary>
+        internal static string Exception {
+            get {
+                return ResourceManager.GetString("Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Exclusive.
         /// </summary>
         internal static string Exclusive {
@@ -3505,6 +3559,15 @@ namespace Resources {
         internal static string File_Upload {
             get {
                 return ResourceManager.GetString("File_Upload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filter.
+        /// </summary>
+        internal static string Filter {
+            get {
+                return ResourceManager.GetString("Filter", resourceCulture);
             }
         }
         
@@ -4109,6 +4172,15 @@ namespace Resources {
         internal static string Internal_Cheque {
             get {
                 return ResourceManager.GetString("Internal_Cheque", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to In Progress.
+        /// </summary>
+        internal static string In_Progress {
+            get {
+                return ResourceManager.GetString("In_Progress", resourceCulture);
             }
         }
         
@@ -4910,6 +4982,15 @@ namespace Resources {
         internal static string Message {
             get {
                 return ResourceManager.GetString("Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter search message.
+        /// </summary>
+        internal static string Message_Information {
+            get {
+                return ResourceManager.GetString("Message_Information", resourceCulture);
             }
         }
         
@@ -5792,6 +5873,15 @@ namespace Resources {
         internal static string Page_Number {
             get {
                 return ResourceManager.GetString("Page_Number", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Paid.
+        /// </summary>
+        internal static string Paid {
+            get {
+                return ResourceManager.GetString("Paid", resourceCulture);
             }
         }
         
@@ -7416,6 +7506,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Send.
+        /// </summary>
+        internal static string Send {
+            get {
+                return ResourceManager.GetString("Send", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Send mail.
         /// </summary>
         internal static string SendMail {
@@ -7439,6 +7538,15 @@ namespace Resources {
         internal static string SendSms {
             get {
                 return ResourceManager.GetString("SendSms", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sent.
+        /// </summary>
+        internal static string Sent {
+            get {
+                return ResourceManager.GetString("Sent", resourceCulture);
             }
         }
         
@@ -7538,6 +7646,15 @@ namespace Resources {
         internal static string Show_Date_Filters {
             get {
                 return ResourceManager.GetString("Show_Date_Filters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show Filters:.
+        /// </summary>
+        internal static string Show_Filters {
+            get {
+                return ResourceManager.GetString("Show_Filters", resourceCulture);
             }
         }
         
@@ -7943,6 +8060,15 @@ namespace Resources {
         internal static string Success {
             get {
                 return ResourceManager.GetString("Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Successful.
+        /// </summary>
+        internal static string Successful {
+            get {
+                return ResourceManager.GetString("Successful", resourceCulture);
             }
         }
         
@@ -8453,11 +8579,38 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Transfer Date From.
+        /// </summary>
+        internal static string Transfer_Date_From {
+            get {
+                return ResourceManager.GetString("Transfer_Date_From", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transfer Date To.
+        /// </summary>
+        internal static string Transfer_Date_To {
+            get {
+                return ResourceManager.GetString("Transfer_Date_To", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Transfer details.
         /// </summary>
         internal static string Transfer_details {
             get {
                 return ResourceManager.GetString("Transfer_details", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search by transfer message....
+        /// </summary>
+        internal static string Transfer_Message {
+            get {
+                return ResourceManager.GetString("Transfer_Message", resourceCulture);
             }
         }
         

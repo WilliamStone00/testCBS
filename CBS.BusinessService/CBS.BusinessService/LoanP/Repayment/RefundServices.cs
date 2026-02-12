@@ -18,10 +18,12 @@ namespace CBS.BusinessService.Repayment
     public class RefundServices : BaseService
     {
         private readonly ApiCallerHelper _loanApiHelper;
+        private readonly ApiCallerHelper _TransactionApiHelper;
 
         public RefundServices()
         {
             _loanApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["LoanBaseUrl"].ToString());
+            _TransactionApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["TransactionBaseUrl"].ToString());
         }
 
         /// <summary>
@@ -114,26 +116,28 @@ namespace CBS.BusinessService.Repayment
         }
 
 
-        public async Task<ApiResponse<bool>> PushRefundsAsync(List<string> Ids)
+        public async Task<ApiResponse<bool>> PushRefundsAsync(List<PartialBulkOperation> operations)
         {
-            if (Ids == null || !Ids.Any())
+            if (operations == null || !operations.Any())
             {
                 return new ApiResponse<bool>
                 {
                     IsSuccess = false,
-                    Message = "No refund IDs provided.",
-                    ApiResponseData = false // string type for ApiResponseData
+                    Message = "No refund operations provided.",
+                    ApiResponseData = false
                 };
             }
 
             try
             {
-                var request = new PushRefundRequest
+                // Prepare the API request payload
+                var request = new BUlkRefundReconcilliation
                 {
-                    Ids = Ids // pass the list to API
+                    RefundCarrierBulkOperations = operations
                 };
 
-                var apiResponse = await _loanApiHelper.PostAsync<bool>(
+                // Call your API helper
+                var apiResponse = await _TransactionApiHelper.PostAsync<bool>(
                     APICallHelper.PushRefund,
                     request
                 );

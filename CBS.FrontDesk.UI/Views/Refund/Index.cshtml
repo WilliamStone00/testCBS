@@ -1,5 +1,5 @@
 ﻿
-@model CBS.FrontDesk.Data.Entity.LoanRepayment.LoanRefundDto
+@model   CBS.FrontDesk.Data.Entity.LoanRepayment.LoanRefundDto
 @{
     ViewBag.Title = "Loan Repayment";
 }
@@ -199,398 +199,495 @@
 
 
 
-    <div id="datalistingview">
-        @Html.Partial("_DataTable")
-    </div>
+<div id="datalistingview">
+    @Html.Partial("_DataTable")
+</div>
 
-    <div class="modal fade" id="partialFlowModal" tabindex="-1">
-        <div class="modal-dialog modal-md">
-            <div class="modal-content">
+<div class="modal fade" id="partialFlowModal" tabindex="-1">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
 
-                <div class="modal-header">
-                    <h5 class="modal-title text-primary">
-                        <i class="mdi mdi-calendar-range me-2"></i>
-                        Partial Flow Date Filter
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
+            <div class="modal-header">
+                <h5 class="modal-title text-primary">
+                    <i class="mdi mdi-calendar-range me-2"></i>
+                    Partial Flow Date Filter
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
 
-                <div class="modal-body">
+            <div class="modal-body">
 
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label class="form-label fw-bold">Start Date</label>
-                            <input type="date" id="ModalStartDate" name="ModalStartDate" class="form-control" />
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="form-label fw-bold">End Date</label>
-                            <input type="date" id="ModalEndDate" name="ModalEndDate" class="form-control" />
-                        </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Start Date</label>
+                        <input type="date" id="ModalStartDate" name="ModalStartDate" class="form-control" />
                     </div>
 
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary btn-sm"
-                            data-bs-dismiss="modal">
-                        Cancel
-                    </button>
-
-                    <button type="button" class="btn btn-primary btn-sm"
-                            id="applyFilterlBtn">
-                        Apply Filter
-                    </button>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">End Date</label>
+                        <input type="date" id="ModalEndDate" name="ModalEndDate" class="form-control" />
+                    </div>
                 </div>
 
             </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm"
+                        data-bs-dismiss="modal">
+                    Cancel
+                </button>
+
+                <button type="button" class="btn btn-primary btn-sm"
+                        id="applyFilterlBtn">
+                    Apply Filter
+                </button>
+            </div>
+
         </div>
     </div>
-
-
-    @section Scripts {
-        @Scripts.Render("~/bundles/jqueryval")
-
-        <script>
-            $(document).ready(function () {
-                const $btnPushRefund = $('#btnPushRefund');
-                const $checkbox = $('#CheckPartialFlowRepayment');
-
-                // Initially disable the button
-                $btnPushRefund.prop('disabled', true);
-
-                // Toggle enable/disable based on checkbox
-                $checkbox.on('change', function () {
-                    if ($(this).is(':checked')) {
-                        $btnPushRefund.prop('disabled', false); // enable
-
-                        // Show modal for partial flow if checked
-                        var modal = new bootstrap.Modal(document.getElementById('partialFlowModal'));
-                        modal.show();
-                    } else {
-                        $btnPushRefund.prop('disabled', true);  // disable
-
-                        // Clear dates if unchecked
-                        $('#ModalStartDate').val('');
-                        $('#ModalEndDate').val('');
-                    }
-                });
-                // Toggle column visibility
-                $('.column-toggle').off('change').on('change', function () {
-                    const columnIndex = $(this).data('column');
-                    const column = refundTable.column(columnIndex);
-
-                    column.visible(!column.visible());
-                });
-                $(document).on('change', '.column-toggle', function () {
-
-                    if (!refundTable) return;
-
-                    const columnIndex = parseInt($(this).data('column'));
-                    const isChecked = $(this).is(':checked');
-
-                    refundTable.column(columnIndex).visible(isChecked);
-                });
-                // Handle Apply Filter buttons (both modal and main)
-                $('#partialFlowModal #applyFilterlBtn, #applyFilterBtn').on('click', function (e) {
-                    e.preventDefault();
-
-                    // Close modal if clicked inside modal
-                    if ($(this).closest('#partialFlowModal').length) {
-                        const modal = bootstrap.Modal.getInstance(document.getElementById('partialFlowModal'));
-                        modal.hide();
-                    }
-
-                    // Load DataTable with filters
-                    loadRefundData();
-
-                   
-
-                });
-            });
+</div>
 
 
 
-            // Handle "Push Refund" button click
-            $('#btnPushRefund').off('click').on('click', function () {
-                // Get selected IDs
-                const selectedIds = $('#myDataTable .row-checkbox:checked')
-                    .map(function () { return $(this).val(); })
-                    .get();
+<div class="modal fade" id="refundExportModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @Html.Partial("_ExportDatatable")
 
-                if (selectedIds.length === 0) {
-                    appalert('⚠️ Please select at least one refund entry to push.', 2, 1); // warning
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+<script>
+$(document).ready(function () {
+
+    let filtersApplied = false;
+    let refundTable = null;
+    let accountTypeMap = [];
+    let accountTypesLoaded = false;
+    window.accountTypeSelections = {}; // Store per-row selection
+
+    const $btnPushRefund = $('#btnPushRefund');
+    const $checkbox = $('#CheckPartialFlowRepayment');
+
+    $btnPushRefund.prop('disabled', true);
+
+    // ------------------ Checkbox toggle ------------------
+    $checkbox.on('change', function () {
+        if ($(this).is(':checked')) {
+            $btnPushRefund.prop('disabled', false);
+            new bootstrap.Modal(document.getElementById('partialFlowModal')).show();
+        } else {
+            $btnPushRefund.prop('disabled', true);
+            $('#ModalStartDate, #ModalEndDate').val('');
+        }
+    });
+
+    // ------------------ Column toggles ------------------
+    // ------------------ Column toggles ------------------
+    $(document).on('change', '.column-toggle', function () {
+        if (!refundTable) return;
+
+        const colIndex = parseInt($(this).data('column'));
+        refundTable.column(colIndex).visible($(this).is(':checked'));
+
+        // Only trigger loadAccountTypes when the Account Type column is toggled ON
+        if (this.id === 'toggleAcctype' && $(this).is(':checked')) {
+            loadAccountTypes(); // 🔹 call every time
+        }
+    });
+
+
+
+    // Limit selection to 5
+    $(document).off('change', '.row-checkbox').on('change', '.row-checkbox', function () {
+
+        const checkedCount = $('#myDataTable .row-checkbox:checked').length;
+
+        console.log("✅ Currently checked:", checkedCount);
+
+        if (checkedCount > 5) {
+            // Uncheck the one just clicked
+            $(this).prop('checked', false);
+
+            appalert('⚠️ You can only select a maximum of 5 records at a time.', 2, 1);
+            return;
+        }
+
+    });
+
+
+    // ------------------ Load Account Types ------------------
+    function loadAccountTypes() {
+        // Only skip AJAX if we already loaded account types once
+        if (accountTypesLoaded) {
+            // But always populate dropdowns for current table rows
+            populateAccountTypeDropdowns();
+            return;
+        }
+
+        console.log('🔹 Starting to load account types...');
+
+        $.ajax({
+            url: '/Refund/GetProducts',
+            type: 'GET',
+            success: function (res) {
+                console.log('🔹 Response from /Refund/GetProducts:', res);
+
+                if (!res.success || !res.data || !res.data.length) {
+                    console.warn('⚠️ No Account Types found in response.');
+                    appalert('⚠️ No Account Types found.', 2, 1);
                     return;
                 }
 
-                // Confirm before pushing refunds using appalert + browser confirm
-                if (confirm(`You are about to push ${selectedIds.length} refund(s). Proceed?`)) {
-                    // User clicked OK → send AJAX
-                    $.ajax({
-                        url: '/Refund/PushRefund',  // your server endpoint
-                        type: 'POST',
-                        contentType: 'application/json',
-                        data: JSON.stringify({ Ids: selectedIds }), // match server-side
-                        success: function (response) {
-                            if (response.success) {
-                                appalert('✅ Refund pushed successfully!', 1, 1); // success
-                                // Reload DataTable without resetting pagination
-                                $('#myDataTable').DataTable().ajax.reload(null, false);
-                            } else {
-                                appalert('❌ Failed to push refund: ' + response.message, 4, 1); // error
-                            }
-                        },
-                        error: function (xhr, status, err) {
-                            console.error('❌ Push refund failed:', status, err);
-                            appalert('❌ Error pushing refund. Status: ' + xhr.status, 4, 1); // error
-                        }
-                    });
-                } else {
-                    // User clicked Cancel
-                    appalert('❌ Refund push canceled.', 3, 1); // info/cancel
-                }
-            });
+                // Map accounts correctly from controller
+                accountTypeMap = res.data.map(a => ({
+                    Id: a.Value,   // this is your SavingProductId
+                    Text: a.Text
+                }));
+
+                console.log('🔹 Mapped accountTypeMap:', accountTypeMap);
+
+                accountTypesLoaded = true;
+
+                // Populate dropdowns for current table rows
+                populateAccountTypeDropdowns();
+
+                appalert('✅ Account Types loaded.', 1, 1);
+            },
+            error: function (xhr, status, error) {
+                console.error('❌ Failed to load Account Types.', status, error, xhr.responseText);
+                appalert('❌ Failed to load Account Types.', 4, 1);
+            }
+        });
+    }
 
 
+    // ------------------ Populate dropdowns ------------------
+    function populateAccountTypeDropdowns() {
+        const options = accountTypeMap
+            .map(a => `<option value="${a.Id}">${a.Text}</option>`)
+            .join('');
 
+        $('#myDataTable .account-type-select').each(function () {
+            const $select = $(this);
 
-            function getDataTableFilters() {
-                return {
-                    BranchId: $('#BranchId').val(),
-                    LoanId: $('#LoanId').val(),
-                    CustomerId: $('#CustomerId').val(),
-                    TransactionCode: $('#TransactionCode').val(),
-                    PaymentChannel: $('#PaymentChannel').val(),
-                    PaymentMethod: $('#PaymentMethod').val(),
-                    IsCompleted: $('#IsCompleted').is(':checked'),
-                    IsReversal: $('#IsReversal').is(':checked'),
-                    CheckPartialFlowRepayment: $('#CheckPartialFlowRepayment').is(':checked'),
-                    StartDate: $('#CheckPartialFlowRepayment').is(':checked') ? $('#ModalStartDate').val() : $('#StartDate').val(),
-                    EndDate: $('#CheckPartialFlowRepayment').is(':checked') ? $('#ModalEndDate').val() : $('#EndDate').val(),
-                    DataTableOptions: {}
-                };
+            // Always reset options
+            $select.html('<option value="">--Select Account Type--</option>' + options);
+
+            // Restore previous selection
+            const rowId = $select.data('rowid');
+            if (window.accountTypeSelections[rowId]) {
+                $select.val(window.accountTypeSelections[rowId].Id);
             }
 
+            // Destroy and re-initialize Select2 to avoid duplicates
+            if ($select.hasClass('select2-hidden-accessible')) {
+                $select.select2('destroy');
+            }
 
+            $select.select2({
+                placeholder: '--Select Account Type--',
+                width: '100%',
+                allowClear: true,
+                dropdownParent: $select.closest('td')
+            });
+        });
+    }
 
+    // ------------------ Push Refund ------------------
+    $btnPushRefund.off('click').on('click', function () {
+        const payload = [];
 
+        console.log("🔎 Selected accountTypeSelections:", window.accountTypeSelections);
 
-            let refundTable = null;
+        $('#myDataTable .row-checkbox:checked').each(function () {
+            const rowId = $(this).val(); // RefundId
+            const acc = window.accountTypeSelections[rowId]; // selected account type
 
+            console.log("------------------------------------------------");
+            console.log("RowId:", rowId);
+            console.log("Account object for this row:", acc);
 
+            // Validate that account type is selected
+            if (!acc || !acc.Id) {
+                console.warn("❌ Missing account type for row:", rowId);
+                appalert(`⚠️ Please select an account type for refund ${rowId}.`, 2, 1);
+                return false; // stop loop
+            }
 
+            const item = {
+                RefundId: rowId,
+                SavingProductId: acc.Id
+            };
 
+            console.log("✅ Pushing to payload:", item);
 
-            function loadRefundData() {
-                refundTable = $('#myDataTable').DataTable({
-                    serverSide: true,
-                    destroy: true,
-                    responsive: true,
-                    searching: false,
-                    order: [[0, 'desc']],
+            payload.push(item);
+        });
 
-                    pageLength: 10, // default page size
+        console.log("📦 Final Payload:", payload);
+        console.log("📦 JSON Being Sent:", JSON.stringify(payload));
 
-                    lengthMenu: [
-                        [10, 25, 50, 100, 250, 500, 1000, 2000],
-                        [10, 25, 50, 100, 250, 500, 1000, 2000]
-                    ],
-                    columnDefs: [
-                        { targets: [2,7, 8, 9], visible: false } // VAT, Penalty, Balance hidden initially
-                    ],
+        if (payload.length === 0) {
+            console.warn("⚠️ Nothing to send.");
+            return;
+        }
 
-                    ajax: {
-                        url: '/Refund/LoadRefundmentData',
-                        type: 'POST',
-                        contentType: 'application/json',
-                        data: function (d) {
-                            const filters = getDataTableFilters();
-                            filters.DataTableOptions = {
-                                draw: d.draw,
-                                start: d.start,
-                                length: d.length,
-                                skip: d.start,
-                                pageSize: d.length,
-                                searchValue: d.search?.value || '',
-                                sortColumnName: d.columns[d.order[0].column].data,
-                                sortColumnDirection: d.order[0].dir
-                            };
-                            return JSON.stringify(filters);
-                        },
-                        error: function (xhr, status, err) {
-                            console.error('❌ Load reconciliation failed:', status, err);
-                            appalert('❌ Failed to load Refund data. Status: ' + xhr.status, 4, 1);
+        alertify.confirm(
+            'Confirm Refund Push',
+            `You are about to push <b>${payload.length}</b> refund(s). Proceed?`,
+            function () {
+                $.ajax({
+                    url: '/Refund/PushRefund',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(payload),
+                    beforeSend: () => {
+                        console.log("🚀 Sending to server:", payload);
+                        appalert('⏳ Processing refund push...', 3, 1);
+                    },
+                    success: function (response) {
+                        console.log("✅ Server response:", response);
+
+                        if (!response) {
+                            appalert('❌ Empty response from server.', 4, 1);
+                            return;
+                        }
+
+                        // Always display backend message
+                        const message = response.message || "No message returned from server.";
+
+                        if (response.success) {
+                            appalert('✅ ' + message, 1, 1);
+                            refundTable.ajax.reload(null, false);
+                        } else {
+                            appalert('❌ ' + message, 4, 1);
                         }
                     },
-
-                    columns: [
-                        {
-                            data: null,
-                            orderable: false,
-                            searchable: false,
-                            render: function (data, type, row) {
-                                return `<input type="checkbox" class="row-checkbox" value="${row.Id}" />`;
-                            }
-                        },
-                        {
-                            data: null,
-                            name: 'Dates',
-                            render: function (_, __, row) {
-
-                                const createdMoment = row.CreatedDate ? moment(row.CreatedDate) : null;
-                                const paymentMoment = row.DateOfPayment ? moment(row.DateOfPayment) : null;
-
-                                const createdDate = createdMoment
-                                    ? createdMoment.format('DD/MM/YYYY HH:mm:ss')
-                                    : '-';
-
-                                const paymentDate = paymentMoment
-                                    ? paymentMoment.format('DD/MM/YYYY')
-                                    : '-';
-
-                                let paymentClass = 'text-danger'; // default = red
-
-                                if (createdMoment && paymentMoment) {
-
-                                    // ✅ Compare only date part (exclude time completely)
-                                    const createdOnlyDate = createdMoment.format('YYYY-MM-DD');
-                                    const paymentOnlyDate = paymentMoment.format('YYYY-MM-DD');
-
-                                    if (createdOnlyDate === paymentOnlyDate) {
-                                        paymentClass = 'text-success'; // green if same date
-                                    }
-                                }
-
-                                return `
-            <div>
-                <div>
-                    <small class="text-muted fw-bold">E.Date:</small>
-                    <span class="text-info fw-semibold">${createdDate}</span>
-                </div>
-                <div>
-                    <small class="text-muted fw-bold">Acc.Date:</small>
-                    <span class="${paymentClass} fw-semibold">
-                        ${paymentDate}
-                    </span>
-                </div>
-            </div>
-        `;
-                            }
-                        },
-
-                        { data: 'TransactionCode', name: 'TransactionCode' },
-                        {
-                            data: 'MemberName',
-                            name: 'MemberName',
-                            render: function (data, type, row) {
-
-                                if (!data) return '-';
-
-                                let displayName = data.length > 14
-                                    ? data.substring(0, 14) + '...'
-                                    : data;
-
-                                return `
-            <div title="${data}">
-                ${displayName}
-            </div>
-            <small class="text-muted">${row.CustomerId ?? ''}</small>
-        `;
-                            }
-                        },
-
-                        {
-                            data: 'Amount',
-                            name: 'Amount',
-                            className: 'text-end',
-                            render: function (data) {
-                                return data ? parseInt(data).toLocaleString() : '0';
-                            }
-                        },
-                        {
-                            data: 'Principal',
-                            name: 'Principal',
-                            className: 'text-end',
-                            render: function (data) {
-                                return data ? parseInt(data).toLocaleString() : '0';
-                            }
-                        },
-                        {
-                            data: 'Interest',
-                            name: 'Interest',
-                            className: 'text-end',
-                            render: function (data) {
-                                return data ? parseInt(data).toLocaleString() : '0';
-                            }
-                        },
-                        {
-                            data: 'Tax',
-                            name: 'Tax',
-                            className: 'text-end',
-                            render: function (data) {
-                                return data ? parseInt(data).toLocaleString() : '0';
-                            }
-                        },
-                        {
-                            data: 'Penalty',
-                            name: 'Penalty',
-                            className: 'text-end',
-                            render: function (data) {
-                                return data ? parseInt(data).toLocaleString() : '0';
-                            }
-                        },
-                        {
-                            data: 'Balance',
-                            name: 'Balance',
-                            className: 'text-end',
-                            render: function (data) {
-                                return data ? parseInt(data).toLocaleString() : '0';
-                            }
-                        },
-                        {
-                            data: null,
-                            orderable: false,
-                            render: function (_, __, row) {
-                                return `
-                <div class="text-center">
-                    <button class="btn btn-sm btn-info view-details" data-id="${row.Id}">
-                        <i class="mdi mdi-eye-outline me-1"></i> View
-                    </button>
-                </div>
-            `;
-                            }
-                        }
-                    ],
-
-                   
-
-                    initComplete: function () {
-                        appalert('✅ Table loaded successfully!', 1, 1);
-                    },
-                    drawCallback: function () {
-                        const api = this.api();
-                        if (api.rows({ page: 'current' }).data().length === 0) {
-                            appalert('⚠️ No Refund data found.', 2, 1);
-                        }
-
-                        // Rebind row-checkbox change to update selectAll checkbox
-                        $('#myDataTable .row-checkbox').off('change').on('change', function () {
-                            const allChecked = $('#myDataTable .row-checkbox').length === $('#myDataTable .row-checkbox:checked').length;
-                            $('#selectAll').prop('checked', allChecked);
-                        });
+                    error: function (xhr) {
+                        console.error("❌ AJAX Error:", xhr);
+                        appalert('❌ Error pushing refund. Status: ' + xhr.status, 4, 1);
                     }
                 });
+            },
+            function () { alertify.message('❌ Refund push canceled.'); }
+        ).set({ labels: { ok: 'Yes, Push', cancel: 'Cancel' }, transition: 'zoom', movable: false });
+    });
 
-                // Handle "Select All" checkbox
-                $('#selectAll').off('change').on('change', function () {
-                    const isChecked = $(this).is(':checked');
-                    const rows = refundTable.rows({ page: 'current' }).nodes();
-                    $('input.row-checkbox', rows).prop('checked', isChecked);
+
+    // ------------------ DataTable filters ------------------
+    function getDataTableFilters() {
+        return {
+            BranchId: $('#BranchId').val(),
+            LoanId: $('#LoanId').val(),
+            CustomerId: $('#CustomerId').val(),
+            TransactionCode: $('#TransactionCode').val(),
+            PaymentChannel: $('#PaymentChannel').val(),
+            PaymentMethod: $('#PaymentMethod').val(),
+            IsCompleted: $('#IsCompleted').is(':checked'),
+            IsReversal: $('#IsReversal').is(':checked'),
+            CheckPartialFlowRepayment: $checkbox.is(':checked'),
+            StartDate: $checkbox.is(':checked') ? $('#ModalStartDate').val() : $('#StartDate').val(),
+            EndDate: $checkbox.is(':checked') ? $('#ModalEndDate').val() : $('#EndDate').val(),
+            DataTableOptions: {}
+        };
+    }
+
+    // ------------------ Load Refund Data ------------------
+    function loadRefundData() {
+        refundTable = $('#myDataTable').DataTable({
+            serverSide: true,
+            destroy: true,
+            responsive: true,
+            searching: false,
+            order: [[0, 'desc']],
+            pageLength: 10,
+            lengthMenu: [[10, 25, 50, 100, 250, 500, 1000, 2000], [10, 25, 50, 100, 250, 500, 1000, 2000]],
+            columnDefs: [{ targets: [2, 7, 8, 9, 10], visible: false }],
+            ajax: {
+                url: '/Refund/LoadRefundmentData',
+                type: 'POST',
+                contentType: 'application/json',
+                data: function (d) {
+                    const filters = getDataTableFilters();
+                    filters.DataTableOptions = {
+                        draw: d.draw,
+                        start: d.start,
+                        length: d.length,
+                        skip: d.start,
+                        pageSize: d.length,
+                        searchValue: d.search?.value || '',
+                        sortColumnName: d.columns[d.order[0].column].data,
+                        sortColumnDirection: d.order[0].dir
+                    };
+                    return JSON.stringify(filters);
+                },
+                error: function (xhr) { appalert('❌ Failed to load Refund data. Status: ' + xhr.status, 4, 1); }
+            },
+            columns: [
+                // Checkbox
+                { data: null, orderable: false, searchable: false, render: (_, __, row) => `<input type="checkbox" class="row-checkbox" value="${row.Id}"/>` },
+
+                // Entry Date
+                {
+                    data: null, render: (_, __, row) => {
+                        const c = row.CreatedDate ? moment(row.CreatedDate) : null;
+                        const p = row.DateOfPayment ? moment(row.DateOfPayment) : null;
+                        const createdStr = c ? c.format('DD/MM/YYYY HH:mm:ss') : '-';
+                        const paymentStr = p ? p.format('DD/MM/YYYY') : '-';
+                        let cls = (c && p && c.format('YYYY-MM-DD') === p.format('YYYY-MM-DD')) ? 'text-success' : 'text-danger';
+                        return `<div>
+                            <div><small class="text-muted fw-bold">E.Date:</small> <span class="text-info fw-semibold">${createdStr}</span></div>
+                            <div><small class="text-muted fw-bold">Acc.Date:</small> <span class="${cls} fw-semibold">${paymentStr}</span></div>
+                        </div>`;
+                    }
+                },
+
+                // Transaction Code
+                { data: 'TransactionCode', name: 'TransactionCode' },
+
+                // Member Name
+                {
+                    data: 'MemberName', name: 'MemberName', render: (d, __, r) => {
+                        if (!d) return '-';
+                        let display = d.length > 14 ? d.substring(0, 14) + '...' : d;
+                        return `<div title="${d}">${display}</div><small class="text-muted">${r.CustomerId ?? ''}</small>`;
+                    }
+                },
+
+                // Amounts
+                { data: 'Amount', name: 'Amount', className: 'text-end', render: d => d ? parseInt(d).toLocaleString() : '0' },
+                { data: 'Principal', name: 'Principal', className: 'text-end', render: d => d ? parseInt(d).toLocaleString() : '0' },
+                { data: 'Interest', name: 'Interest', className: 'text-end', render: d => d ? parseInt(d).toLocaleString() : '0' },
+                { data: 'Tax', name: 'Tax', className: 'text-end', render: d => d ? parseInt(d).toLocaleString() : '0' },
+                { data: 'Penalty', name: 'Penalty', className: 'text-end', render: d => d ? parseInt(d).toLocaleString() : '0' },
+                { data: 'Balance', name: 'Balance', className: 'text-end', render: d => d ? parseInt(d).toLocaleString() : '0' },
+
+                // Account Type dropdown (placeholder)
+                {
+                    data: null,
+                    orderable: false, className: 'text-start', render: (_, __, row) => {
+                        return `<select class="form-select form-select-sm account-type-select" data-rowid="${row.Id}">
+                            <option value="">--Select Account Type--</option>
+                        </select>`;
+                    }
+                },
+
+                // Actions
+                { data: null, orderable: false, render: (_, __, row) => `<div class="text-center"><button class="btn btn-sm btn-info view-details" data-id="${row.Id}"><i class="mdi mdi-eye-outline me-1"></i> View</button></div>` }
+            ],
+
+            initComplete: function () { appalert('✅ Table loaded successfully!', 1, 1); },
+            drawCallback: function () {
+                const api = this.api();
+                if (api.rows({ page: 'current' }).data().length === 0)
+                    appalert('⚠️ No Refund data found.', 2, 1);
+
+                // Row checkbox change
+                $('#myDataTable .row-checkbox').off('change').on('change', function () {
+                    const allChecked = $('#myDataTable .row-checkbox').length === $('#myDataTable .row-checkbox:checked').length;
+                    $('#selectAll').prop('checked', allChecked);
                 });
+
+                // Populate dropdowns for **all current rows**
+                if (accountTypeMap.length) populateAccountTypeDropdowns();
             }
 
-
-
-        </script>
-
+        });
     }
+
+    // ------------------ Handle Account Type selection ------------------
+    $(document).on('change', '.account-type-select', function () {
+        const rowId = $(this).data('rowid');
+        const selectedOption = $(this).find('option:selected');
+        window.accountTypeSelections[rowId] = {
+            Id: $(this).val(),  // this is SavingProductId
+            Name: selectedOption.text()
+        };
+
+    });
+
+    // ------------------ Apply Filters ------------------
+    $('#partialFlowModal #applyFilterlBtn, #applyFilterBtn').on('click', function(e){
+        e.preventDefault();
+        if($(this).closest('#partialFlowModal').length){
+            bootstrap.Modal.getInstance(document.getElementById('partialFlowModal')).hide();
+        }
+        loadRefundData();
+        filtersApplied = true;
+    });
+
+    // ------------------ Export Refund ------------------
+    $('#btnExport').on('click', function(){
+        if(!filtersApplied){ appalert("⚠️ Please apply filters before exporting.", 2,1); return; }
+        bootstrap.Modal.getOrCreateInstance(document.getElementById('refundExportModal')).show();
+    });
+
+    $('#btnConfirmRefundExport').on('click', function () {
+
+        const $btn = $(this);
+        const originalHtml = $btn.html();
+
+        const filters = getDataTableFilters();
+        const exportOptions = {
+            FileName: $("#refundFileName").val(),
+            Format: $("#refundExportFormat").val(),
+            ReportType: $("#refundReportType").val(),
+            StartDate: $("#refundStartDate").val(),
+            EndDate: $("#refundEndDate").val()
+        };
+
+        const request = { Filters: filters, ExportOptions: exportOptions };
+
+        $btn.prop("disabled", true)
+            .html(`<span class="spinner-border spinner-border-sm"></span> Exporting...`);
+
+        $.ajax({
+            url: '/Refund/ExportRefundData',
+            type: 'POST',
+            data: JSON.stringify(request),   // 🔥 IMPORTANT: use request, not getDataTableFilters()
+            contentType: 'application/json',
+            xhrFields: { responseType: 'blob' },
+
+            success: function (blob, status, xhr) {
+
+                const disposition = xhr.getResponseHeader('Content-Disposition');
+                let fileName = "RefundReport.xlsx";
+
+                if (disposition && disposition.indexOf("filename=") !== -1) {
+                    fileName = disposition.split("filename=")[1].replace(/"/g, '').trim();
+                }
+
+                const link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = fileName;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+                window.URL.revokeObjectURL(link.href);
+            },
+
+            error: function (xhr) {
+                appalert('❌ Failed to export Refund data. Status: ' + xhr.status, 4, 1);
+            },
+
+            complete: function () {
+                // ✅ ALWAYS restore button
+                $btn.prop("disabled", false).html(originalHtml);
+            }
+        });
+
+    });
+
+});
+</script>
+
+
+
+}

@@ -1,18 +1,10 @@
-﻿
-
-
-
-
-
-
-
-<div class="card p-3 shadow mb-2">
+﻿<div class="card p-3 shadow mb-2">
     <div class="table-responsive">
 
-
-
+        <!-- Column toggles -->
         <div class="mb-2">
             <label class="fw-bold me-2">Add Columns:</label>
+
             <div class="form-check form-check-inline">
                 <input class="form-check-input column-toggle" type="checkbox" data-column="2" id="toggleTCode">
                 <label class="form-check-label" for="toggleTCode">Transaction code</label>
@@ -33,6 +25,10 @@
                 <label class="form-check-label" for="toggleBalance">Balance</label>
             </div>
 
+            <div class="form-check form-check-inline">
+                <input class="form-check-input column-toggle" type="checkbox" data-column="10" id="toggleAcctype">
+                <label class="form-check-label" for="toggleAcctype">Account Type</label>
+            </div>
         </div>
 
         <table id="myDataTable" class="table table-bordered table-striped align-middle">
@@ -50,6 +46,7 @@
                     <th class="text-end">VAT</th>
                     <th class="text-end">Penalty</th>
                     <th class="text-end">Balance</th>
+                    <th class="text-start">Account Type</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -57,5 +54,3 @@
         </table>
     </div>
 </div>
-
-
