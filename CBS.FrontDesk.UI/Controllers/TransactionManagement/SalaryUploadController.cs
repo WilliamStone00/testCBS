@@ -279,7 +279,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
 
         [HttpPost]
         public async Task<JsonResult> LoanRepaymentsExecution(LoanRepaymentsExecutiontDataTableQuery query)
-        {
+         {
             try
             {
                 var data = await _fileUploadServices.LoanRepayments(query);

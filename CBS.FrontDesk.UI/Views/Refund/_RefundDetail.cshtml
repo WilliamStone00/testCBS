@@ -6,7 +6,7 @@
 
 <!DOCTYPE html>
 <html>
-<head>
+@*<head>
     <meta charset="utf-8" />
     <title>Refund Detail</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
@@ -15,91 +15,208 @@
     <style>
         /* Keep your CSS from previous design */
     </style>
-</head>
+</head>*@
 <body>
 
     <div class="detail-panel">
 
+        <div class="card bg-light mb-3">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-file-document-outline me-2"></i>Loan Repayment
+                </h1>
+                <p class="card-text">
+                    Use this page to View details .
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+
         <!-- ================= REFUND HEADER ================= -->
         <div class="refund-card">
 
-            <div class="refund-header">
-                <div class="title-group">
-                    <span class="refund-id">
-                        <i class="fas fa-rotate-left"></i>
-                        @Model.Id
-                    </span>
+            <table class="table table-bordered table-sm">
 
-                    <span class="badge @(Model.IsCompleted ? "badge-success" : "badge-light")">
-                        @(Model.IsCompleted ? "completed" : "pending")
-                    </span>
+                <!-- ================= REFUND INFORMATION ================= -->
+                <tr class="table-light">
+                    <td colspan="2" class="fw-bold text-uppercase">Refund Information</td>
+                </tr>
 
-                    <span class="badge badge-light">
-                        reversal: @(Model.IsReversal ? "yes" : "no")
-                    </span>
-                </div>
+                <tr>
+                    <td class="fw-bold">Refund ID</td>
+                    <td>@Model.Id</td>
+                </tr>
 
-                <span class="badge-light">
-                    <i class="fas fa-calendar"></i>
-                    @Model.DateOfPayment.ToString("yyyy-MM-dd")
-                </span>
-            </div>
+                <tr>
+                    <td class="fw-bold">Payment Date</td>
+                    <td>@Model.DateOfPayment.ToString("dd/MM/yyyy")</td>
+                </tr>
 
-            <!-- ================= CORE META ================= -->
-            <div class="refund-meta">
+                <tr>
+                    <td class="fw-bold">Completed</td>
+                    <td>
+                        @if (Model.IsCompleted)
+                        {
+                            <span class="badge bg-success">Completed</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-warning text-dark">Pending</span>
+                        }
+                    </td>
+                </tr>
 
-                <div class="meta-item">
-                    <span class="meta-label"><i class="fas fa-landmark"></i> Loan ID</span>
-                    <span class="meta-value">@Model.LoanId</span>
-                </div>
+                <tr>
+                    <td class="fw-bold">Reversal</td>
+                    <td>
+                        @if (Model.IsReversal)
+                        {
+                            <span class="badge bg-danger">Yes</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">No</span>
+                        }
+                    </td>
+                </tr>
 
-                <div class="meta-item">
-                    <span class="meta-label"><i class="fas fa-user"></i> Customer ID</span>
-                    <span class="meta-value">@Model.CustomerId</span>
-                </div>
 
-                <div class="meta-item">
-                    <span class="meta-label"><i class="fas fa-credit-card"></i> Payment Method</span>
-                    <span class="meta-value">@Model.PaymentMethod</span>
-                </div>
 
-                <div class="meta-item">
-                    <span class="meta-label"><i class="fas fa-globe"></i> Channel</span>
-                    <span class="meta-value">@Model.PaymentChannel</span>
-                </div>
+                <!-- ================= CUSTOMER & LOAN INFORMATION ================= -->
+                <tr class="table-light">
+                    <td colspan="2" class="fw-bold text-uppercase">Customer & Loan Information</td>
+                </tr>
 
-                <div class="meta-item">
-                    <span class="meta-label"><i class="fas fa-tag"></i> Repayment Type</span>
-                    <span class="meta-value">@Model.RepaymentType</span>
-                </div>
+                <tr>
+                    <td class="fw-bold">Loan ID</td>
+                    <td>@Model.LoanId</td>
+                </tr>
 
-                <div class="meta-item">
-                    <span class="meta-label"><i class="fas fa-store"></i> Branch</span>
-                    <span class="meta-value">@Model.BranchId</span>
-                </div>
+                <tr>
+                    <td class="fw-bold">Customer ID</td>
+                    <td>@Model.CustomerId</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Customer Name</td>
+                    <td>@Model.CustomerName</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Branch</td>
+                    <td>@Model.BranchName</td>
+                </tr>
 
-                <div class="meta-item">
-                    <span class="meta-label"><i class="fas fa-university"></i> Bank</span>
-                    <span class="meta-value">@Model.BankId</span>
-                </div>
+                <tr>
+                    <td class="fw-bold">Bank</td>
+                    <td>@Model.BankName</td>
+                </tr>
 
-            </div>
 
-            <!-- ================= FINANCIAL STRIP ================= -->
-            <div class="amount-strip">
-                <span class="stat"><i class="fas fa-coins"></i> total <strong>@Model.Amount.ToString("N2")</strong></span>
-                <span class="stat"><i class="fas fa-layer-group"></i> principal <strong>@Model.Principal.ToString("N2")</strong></span>
-                <span class="stat"><i class="fas fa-percent"></i> interest <strong>@Model.Interest.ToString("N2")</strong></span>
-                <span class="stat"><i class="fas fa-file-invoice"></i> tax <strong>@Model.Tax.ToString("N2")</strong></span>
-                <span class="stat"><i class="fas fa-exclamation-triangle"></i> penalty <strong>@Model.Penalty.ToString("N2")</strong></span>
-                <span class="stat"><i class="fas fa-check-double"></i> paid <strong>@Model.Paid.ToString("N2")</strong></span>
-                <span class="stat"><i class="fas fa-balance-scale"></i> balance <strong>@Model.Balance.ToString("N2")</strong></span>
+                <!-- ================= PAYMENT INFORMATION ================= -->
+                <tr class="table-light">
+                    <td colspan="2" class="fw-bold text-uppercase">Payment Information</td>
+                </tr>
+
+                <tr>
+                    <td class="fw-bold">Payment Method</td>
+                    <td>@Model.PaymentMethod</td>
+                </tr>
+
+                <tr>
+                    <td class="fw-bold">Channel</td>
+                    <td>@Model.PaymentChannel</td>
+                </tr>
+
+                @*<tr>
+            <td class="fw-bold">Repayment Type</td>
+            <td>@Model.RepaymentType</td>
+        </tr>*@
+                <!-- ================= LOAN DETAILS ================= -->
+                <tr class="table-light">
+                    <td colspan="2" class="fw-bold text-uppercase">Loan Details</td>
+                </tr>
+
+                <!-- 🔥 MOST IMPORTANT FIRST -->
+                <tr>
+                    <td class="fw-bold">Loan Contract Code</td>
+                    <td>@Model.Loan.LoanContractCode</td>
+                </tr>
+
+                <tr>
+                    <td class="fw-bold">Loan Amount</td>
+                    <td>@Model.Loan.LoanAmount.ToString("N2")</td>
+                </tr>
+
+                <tr>
+                    <td class="fw-bold">Date Contracted</td>
+                    <td>@Model.Loan.LoanDate.ToString("dd/MM/yyyy")</td>
+                </tr>
+
+                <tr>
+                    <td class="fw-bold">Total Amount Paid</td>
+                    <td>@Model.Loan.Paid.ToString("N2")</td>
+                </tr>
+
+                <tr>
+                    <td class="fw-bold">Current Balance</td>
+                    <td>@Model.Loan.Balance.ToString("N2")</td>
+                </tr>
+
+                <tr>
+                    <td class="fw-bold">Amount Left (Due)</td>
+                    <td>@Model.Loan.DueAmount.ToString("N2")</td>
+                </tr>
+
+
+                <!-- ================= FINANCIAL BREAKDOWN ================= -->
+                <tr class="table-light">
+                    <td colspan="2" class="fw-bold text-uppercase">Financial Breakdown</td>
+                </tr>
+
+                <tr>
+                    <td class="fw-bold">Total Amount</td>
+                    <td>@Model.Amount.ToString("N2")</td>
+                </tr>
+
+                <tr>
+                    <td class="fw-bold">Principal</td>
+                    <td>@Model.Principal.ToString("N2")</td>
+                </tr>
+
+                <tr>
+                    <td class="fw-bold">Interest</td>
+                    <td>@Model.Interest.ToString("N2")</td>
+                </tr>
+
+                <tr>
+                    <td class="fw-bold">Tax</td>
+                    <td>@Model.Tax.ToString("N2")</td>
+                </tr>
+
+                <tr>
+                    <td class="fw-bold">Penalty</td>
+                    <td>@Model.Penalty.ToString("N2")</td>
+                </tr>
+
+                <tr>
+                    <td class="fw-bold">Paid</td>
+                    <td>@Model.Paid.ToString("N2")</td>
+                </tr>
+
+                <tr>
+                    <td class="fw-bold">Balance</td>
+                    <td>@Model.Balance.ToString("N2")</td>
+                </tr>
 
                 @if (!string.IsNullOrWhiteSpace(Model.Comment))
                 {
-                    <span class="comment"><i class="fas fa-pen"></i> @Model.Comment</span>
+                    <tr>
+                        <td class="fw-bold">Comment</td>
+                        <td>@Model.Comment</td>
+                    </tr>
                 }
-            </div>
+
+            </table>
+
 
             <!-- Loan Product -->
             @*@if (Model.LoanProduct != null)
@@ -125,6 +242,7 @@
                     <tr>
                         <th>Amortization ID</th>
                         <th class="numeric">Collected</th>
+                        <th class="numeric">T.Code</th>
                         <th class="numeric">Principal</th>
                         <th class="numeric">Interest</th>
                         <th class="numeric">Penalty</th>
@@ -138,6 +256,7 @@
                         {
                             <tr>
                                 <td>@d.LoanAmortizationId</td>
+                                <td>@d.TransactonCode</td>
                                 <td class="numeric">@d.CollectedAmount.ToString("N2")</td>
                                 <td class="numeric">@d.PrincipalAmount.ToString("N2")</td>
                                 <td class="numeric">@d.Interest.ToString("N2")</td>
@@ -176,7 +295,7 @@
                         {
                             <tr>
                                 <td>@a.Sno</td>
-                                <td>@a.DateOfPayment.ToString("yyyy-MM-dd")</td>
+                                <td>@a.DateOfPayment.ToString("dd-MM-yyyy")</td>
                                 <td class="numeric">@a.TotalDue.ToString("N2")</td>
                                 <td class="numeric">@a.Paid.ToString("N2")</td>
                                 <td class="numeric">@a.Balance.ToString("N2")</td>

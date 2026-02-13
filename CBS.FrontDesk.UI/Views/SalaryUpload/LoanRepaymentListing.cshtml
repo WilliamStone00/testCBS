@@ -83,16 +83,32 @@
     <form id="loanRepaymentFilterForm" autocomplete="off">
 
         <div class="card p-3 mb-3 bg-light">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label">Branch</label>
+                    <div class="form-floating shadow-sm">
+                        @Html.DropDownListFor(
+                            m => m.BranchId,
+                            new SelectList(ViewBag.Branches, "Id", "name"),
+                            "--- All Branches ---",
+                            new { @class = "form-control select2", id = "branchId" }
+                        )
+                    </div>
+                </div>
 
-            <!-- Branch (Always Visible) -->
-            <div class="row mb-3">
-                <div class="col-md-12">
-                    <label class="form-label fw-bold">Branch</label>
-                    <select id="branchId" name="BranchId" class="form-control">
-                        <option value="">All Branches</option>
-                    </select>
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">File Upload ID</label>
+                    <input type="text"
+                           id="fileUploadId"
+                           name="FileUploadId"
+                           class="form-control bg-light"
+                           value="@Model.FileUploadId"
+                           readonly />
                 </div>
             </div>
+
+
+            <hr />
 
             <!-- Toggle Checkboxes -->
             <div class="row mb-3">
@@ -156,99 +172,87 @@
             </div>
 
             <!-- Dynamic Filters -->
-            <div id="dynamicFilters">
+            <div id="dynamicFilters" class="row g-3">
 
                 <!-- Status -->
-                <div id="statusFilter" class="row mb-3 d-none">
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold">Status</label>
-                        <select name="Status" class="form-control">
-                            <option value="">All</option>
-                            <option>Pending</option>
-                            <option>Success</option>
-                            <option>Failed</option>
-                            <option>Refunded</option>
-                        </select>
-                    </div>
+                <div id="statusFilter" class="col-md-4 d-none">
+                    <label class="form-label fw-bold">Status</label>
+                    <select name="Status" class="form-control">
+                        <option value="">All</option>
+                        <option>Pending</option>
+                        <option>Success</option>
+                        <option>Failed</option>
+                        <option>Refunded</option>
+                    </select>
                 </div>
 
                 <!-- Payment Method -->
-                <div id="paymentMethodFilter" class="row mb-3 d-none">
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold">Payment Method</label>
-                        <select name="PaymentMethod" class="form-control">
-                            <option value="">All</option>
-                            <option>Bank Transfer</option>
-                            <option>Cash</option>
-                            <option>Cheque</option>
-                        </select>
-                    </div>
+                <div id="paymentMethodFilter" class="col-md-4 d-none">
+                    <label class="form-label fw-bold">Payment Method</label>
+                    <select name="PaymentMethod" class="form-control">
+                        <option value="">All</option>
+                        <option>Bank Transfer</option>
+                        <option>Cash</option>
+                        <option>Cheque</option>
+                    </select>
                 </div>
 
                 <!-- Payment Channel -->
-                <div id="paymentChannelFilter" class="row mb-3 d-none">
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold">Payment Channel</label>
-                        <select name="PaymentChannel" class="form-control">
-                            <option value="">All</option>
-                            <option>Online</option>
-                            <option>Branch</option>
-                            <option>Mobile</option>
-                        </select>
-                    </div>
+                <div id="paymentChannelFilter" class="col-md-4 d-none">
+                    <label class="form-label fw-bold">Payment Channel</label>
+                    <select name="PaymentChannel" class="form-control">
+                        <option value="">All</option>
+                        <option>Online</option>
+                        <option>Branch</option>
+                        <option>Mobile</option>
+                    </select>
                 </div>
 
                 <!-- Salary Code -->
-                <div id="salaryCodeFilter" class="row mb-3 d-none">
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold">Salary Code</label>
-                        <input type="text" name="SalaryCode" class="form-control">
-                    </div>
+                <div id="salaryCodeFilter" class="col-md-4 d-none">
+                    <label class="form-label fw-bold">Salary Code</label>
+                    <input type="text" name="SalaryCode" class="form-control">
                 </div>
 
                 <!-- Member Reference -->
-                <div id="memberRefFilter" class="row mb-3 d-none">
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold">Member Reference</label>
-                        <input type="text" name="MemberReference" class="form-control">
-                    </div>
+                <div id="memberRefFilter" class="col-md-4 d-none">
+                    <label class="form-label fw-bold">Member Reference</label>
+                    <input type="text" name="MemberReference" class="form-control">
                 </div>
 
                 <!-- Transaction Reference -->
-                <div id="transactionRefFilter" class="row mb-3 d-none">
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold">Transaction Reference</label>
-                        <input type="text" name="TransactionReference" class="form-control">
-                    </div>
+                <div id="transactionRefFilter" class="col-md-4 d-none">
+                    <label class="form-label fw-bold">Transaction Reference</label>
+                    <input type="text" name="TransactionReference" class="form-control">
                 </div>
 
                 <!-- Loan ID -->
-                <div id="loanIdFilter" class="row mb-3 d-none">
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold">Loan ID</label>
-                        <input type="text" name="LoanId" class="form-control">
-                    </div>
+                <div id="loanIdFilter" class="col-md-4 d-none">
+                    <label class="form-label fw-bold">Loan ID</label>
+                    <input type="text" name="LoanId" class="form-control">
                 </div>
 
                 <!-- Amount Range -->
-                <div id="amountRangeFilter" class="row mb-3 d-none">
-                    <div class="col-md-3">
-                        <label class="form-label fw-bold">Min Amount</label>
-                        <input type="number" name="MinAmount" class="form-control">
-                    </div>
-                    <div class="col-md-3">
-                        <label class="form-label fw-bold">Max Amount</label>
-                        <input type="number" name="MaxAmount" class="form-control">
+                <div id="amountRangeFilter" class="col-md-6 d-none">
+                    <label class="form-label fw-bold">Amount Range</label>
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <input type="number" name="MinAmount" class="form-control" placeholder="Min">
+                        </div>
+                        <div class="col-6">
+                            <input type="number" name="MaxAmount" class="form-control" placeholder="Max">
+                        </div>
                     </div>
                 </div>
 
             </div>
+
         </div>
 
         <!-- Buttons -->
         <div class="row mt-2">
             <div class="col-md-12 d-flex">
-                <button type="button" class="btn btn-primary w-100 me-2">
+                <button type="button" id="applyFilterBtn" class="btn btn-primary w-100 me-2">
                     <i class="mdi mdi-magnify"></i> Apply Filter
                 </button>
                 <button id="resetFilterBtn" type="button" class="btn btn-secondary w-100">
