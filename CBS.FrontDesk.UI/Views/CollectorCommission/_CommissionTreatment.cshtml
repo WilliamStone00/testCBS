@@ -121,18 +121,18 @@
                             <div class="input-group" style="width:260px; max-width:100%;">
                                 <span class="input-group-text">📅 Acc. Date</span>
                                 @Html.TextBox(
-                                     "AccountingDate",
-                                     DateTime.Now.ToString("yyyy-MM-dd"),
-                                     new
-                                     {
-                                         @class = "form-control accounting-date",
-                                         type = "date",
-                                         id = "AccountingDay",
-                                         required = "required",
-                                         max = todayIso,
-                                         style = "min-width:0;"
-                                     }
-                                 )
+                          "AccountingDate",
+                          DateTime.Now.ToString("yyyy-MM-dd"),
+                          new
+                          {
+                              @class = "form-control accounting-date",
+                              type = "date",
+                              id = "AccountingDay",
+                              required = "required",
+                              max = todayIso,
+                              style = "min-width:0;"
+                          }
+                      )
 
                             </div>
                         </div>
@@ -142,29 +142,29 @@
 
                 <!-- Incentives, Daily Collector Share, Total - side by side -->
                 <div class="row mb-2">
-                  
+
                     <div class="col-md-6">
                         <label class="form-label">Daily Collector Share</label>
                         @Html.TextBoxFor(m => m.DailyCollectorShare, new
-                        {
-                            @class = "form-control",
-                            @readonly = "readonly",
-                            placeholder = "Auto-filled",
-                            id = "DaillyCollectorShare",
-                            name = "DailyCollectorShare" // Ensure name matches model property
-                        })
+                   {
+                       @class = "form-control",
+                       @readonly = "readonly",
+                       placeholder = "Auto-filled",
+                       id = "DaillyCollectorShare",
+                       name = "DailyCollectorShare" // Ensure name matches model property
+                   })
                         @Html.ValidationMessageFor(m => m.DailyCollectorShare)
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Total</label>
                         @Html.TextBoxFor(m => m.Total, new
-                        {
-                            @class = "form-control",
-                            @readonly = "readonly",
-                            placeholder = "Calculated total",
-                            id = "Total",
-                            name = "Total" // Ensure name attribute is set
-                        })
+                   {
+                       @class = "form-control",
+                       @readonly = "readonly",
+                       placeholder = "Calculated total",
+                       id = "Total",
+                       name = "Total" // Ensure name attribute is set
+                   })
                     </div>
                 </div>
 
@@ -173,22 +173,22 @@
                     <div class="col-md-4">
                         <label class="form-label">Branch Share</label>
                         @Html.TextBoxFor(m => m.BranchShare, new
-                        {
-                            @class = "form-control",
-                            @readonly = "readonly",
-                            placeholder = "Auto-filled",
-                            id = "BranchShare",
-                            name = "BranchShare" // Ensure name attribute is set
-                        })
+                   {
+                       @class = "form-control",
+                       @readonly = "readonly",
+                       placeholder = "Auto-filled",
+                       id = "BranchShare",
+                       name = "BranchShare" // Ensure name attribute is set
+                   })
                         @Html.ValidationMessageFor(m => m.BranchShare)
                     </div>
                     <div class="col-md-8">
                         @Html.LabelFor(m => m.PaymentGl, "Branch Commission Account", new { @class = "form-label" })
                         @Html.DropDownListFor(
-                            m => m.PaymentGl,
-                            new SelectList(ViewBag.HoPcmfAccounts ?? new List<SelectListItem>(), "Value", "Text"),
-                            "--- Branch Commission Account ---",
-                            new { @class = "form-select select2", id = "PaymentGl" })
+                         m => m.PaymentGl,
+                         new SelectList(ViewBag.HoPcmfAccounts ?? new List<SelectListItem>(), "Value", "Text"),
+                         "--- Branch Commission Account ---",
+                         new { @class = "form-select select2", id = "PaymentGl" })
                         @Html.ValidationMessageFor(m => m.PaymentGl, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -196,23 +196,51 @@
                     <div class="col-md-4">
                         <label class="form-label">Incentives</label>
                         @Html.TextBoxFor(m => m.Incentives, new
-                        {
-                            @class = "form-control incentives-input",
-                            type = "text",
-                            placeholder = "Enter incentives",
-                            id = "Incentives",
-                            name = "Incentives" // Ensure name attribute is set
-                        })
+                   {
+                       @class = "form-control incentives-input",
+                       type = "text",
+                       placeholder = "Enter incentives",
+                       id = "Incentives",
+                       name = "Incentives" // Ensure name attribute is set
+                   })
                         @Html.ValidationMessageFor(m => m.Incentives)
                     </div>
                     <div class="col-md-8">
                         @Html.LabelFor(m => m.ExpenseGL, "Expense Commission Account", new { @class = "form-label" })
                         @Html.DropDownListFor(
-                            m => m.ExpenseGL,
-                            new SelectList(ViewBag.HoPcmfAccounts ?? new List<SelectListItem>(), "Value", "Text"),
-                            "--- Expense Commission Account ---",
-                            new { @class = "form-select select2", id = "ExpenseGL" })
+                         m => m.ExpenseGL,
+                         new SelectList(ViewBag.HoPcmfAccounts ?? new List<SelectListItem>(), "Value", "Text"),
+                         "--- Expense Commission Account ---",
+                         new { @class = "form-select select2", id = "ExpenseGL" })
                         @Html.ValidationMessageFor(m => m.ExpenseGL, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-floating">
+                        @Html.TextAreaFor(m => m.MemoIncentive, new
+                           {
+                               @class = "form-control",
+                               placeholder = "Enter Incentive Memo",
+                               rows = "3",
+                               maxlength = "500",
+                               id = "MemoIncentive"
+                           })
+                        <label>Incentive's Memo</label>
+                        @Html.ValidationMessageFor(m => m.MemoIncentive, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-floating">
+                        @Html.TextAreaFor(m => m.Memo, new
+                           {
+                               @class = "form-control",
+                               placeholder = "Enter Memo",
+                               rows = "3",
+                               maxlength = "500",
+                               id = "Memo"
+                           })
+                        <label>Memo</label>
+                        @Html.ValidationMessageFor(m => m.Memo, "", new { @class = "text-danger" })
                     </div>
                 </div>
 

@@ -59,6 +59,9 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission
         //post
         public int Year { get; set; }
 
+        public string Memo { get; set; }
+        public string MemoIncentive { get; set; }
+        public string Remark { get; set; }
         //payment
         public string BranchCommisionGLId { get; set; } = string.Empty;
         public string AccountNumber { get; set; } = string.Empty;
@@ -101,6 +104,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission
 
     public class MemberStat
     {
+        public string JobId { get; set; } = string.Empty;
         public string MemberId { get; set; } = string.Empty;
         public string AccountId { get; set; }
         public string PaymentStatus { get; set; } = string.Empty;
@@ -141,6 +145,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission
         public int Month { get; set; }
         public int Year { get; set; }
         public string ExpenseGL { get; set; }
+        public string Memo { get; set; }
+        public string MemoIncentive { get; set; }
     }
 
     public class SharedAmount

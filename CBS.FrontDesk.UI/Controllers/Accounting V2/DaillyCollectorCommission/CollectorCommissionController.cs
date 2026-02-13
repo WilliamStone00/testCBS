@@ -435,6 +435,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
                     Month = int.Parse(model.Month), // Month is now properly extracted as string "11"
                     Year = model.Year,
                     ExpenseGL = model.ExpenseGL,
+                    Memo = model.Memo,
+                    MemoIncentive = model.MemoIncentive,
                     SharedAmounts = (model.SharedAmounts ?? new List<StakeholderShare>())
                         .Select(s => new SharedAmount
                         {

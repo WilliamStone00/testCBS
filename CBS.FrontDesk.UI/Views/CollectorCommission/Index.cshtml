@@ -269,7 +269,8 @@
                             <th>Member Name</th>
                             <th>Total Activity Amount</th>
                             <th>Fee Charged</th>
-                            <th>Payment Status</th> <!-- Add this column -->
+                            <th>Payment Status</th>
+                            <th>Remark</th> <!-- Add this column -->
                         </tr>
                     </thead>
                     <tbody>
@@ -788,6 +789,7 @@
             $('#summaryBranchName').text(data.BranchName || 'N/A');
             $('#summaryPeriod').text(data.Month || 'N/A');
             $('#status').text(data.Status || 'N/A');
+            $('#Remark').text(data.Remark || 'N/A');
 
             // Update payment status with colored bubble
             var paymentStatus = data.PaymentStatus || 'Pending';
@@ -1530,6 +1532,8 @@
         $('#DailyCollectorAccount').val('').trigger('change');
         $('#PaymentGl').val('').trigger('change');
         $('#ExpenseGL').val('').trigger('change');
+        $('#MemoIncentive').val('').trigger('change');
+        $('#Memo').val('').trigger('change');
 
         $('#customerReference').val('');
         $('#Incentives').val('0.00');
@@ -1596,11 +1600,26 @@
     // NEW CHECK: If incentives > 0, require ExpenseGL selection
     var incentives = parseFormattedCurrency($('#Incentives').val()) || 0;
     var expenseGL = $('#ExpenseGL').val();
+    var memo = $('#Memo').val();
+     var memoinsentive = $('#MemoIncentive').val();
 
     if (incentives > 0) {
         if (!expenseGL) {
-            appalert('Incentives amount is greater than zero. Please select a Branch Commission Account (ExpenseGL)', 4, 1);
+            appalert('Incentives amount is greater than zero. Please select a Expense General Ledger Account (ExpenseGL)', 4, 1);
             $('#ExpenseGL').focus();
+            return;
+        }
+    }
+    if (memo == null) {
+        appalert('Please enter description for Memo', 4, 1);
+            $('#Memo').focus();
+            return;
+        
+    }
+       if (memoinsentive == null) {
+        if (!expenseGL) {
+            appalert('Please Enter description for Memo Insentives', 4, 1);
+            $('#MemoIncentive').focus();
             return;
         }
     }
@@ -1686,6 +1705,8 @@
         DailyCollectorAccount: $('#DailyCollectorAccount').val(),
         Month: month.toString(),
         Year: parseInt(year),
+        Memo: $('#Memo').val(),
+        MemoIncentive: $('#MemoIncentive').val(),
         SharedAmounts: sharedAmounts
     };
 
@@ -1738,8 +1759,15 @@
        summaryMessage += '<tr><td style="padding: 3px 0;"><strong>Accounting Date:</strong></td><td style="padding: 3px 0;">'
            + formatDateToDMY(accountingDate)
            + '</td></tr>';
-
     summaryMessage += '</table></div>';
+
+       // Memo Section
+       summaryMessage += '<div style="background-color: #f8f9fa; padding: 10px; border-radius: 5px; margin-bottom: 15px;">';
+       summaryMessage += '<strong style="color: #495057;">📝 MEMO DETAILS</strong><hr style="margin: 5px 0; opacity: 0.2;">';
+       summaryMessage += '<table style="width: 100%; border-collapse: collapse;">';
+       summaryMessage += '<tr><td style="padding: 3px 0;"><strong>Memo:</strong></td><td style="padding: 3px 0;">' + $('#Memo').val() + '</td></tr>';
+       summaryMessage += '<tr><td style="padding: 3px 0;"><strong>Memo Incentive:</strong></td><td style="padding: 3px 0;">' + $('#MemoIncentive').val() + '</td></tr>';
+       summaryMessage += '</table></div>';
 
     summaryMessage += '</div>';
 
