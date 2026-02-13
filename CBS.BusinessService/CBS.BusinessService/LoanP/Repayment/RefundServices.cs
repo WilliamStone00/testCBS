@@ -73,11 +73,11 @@ namespace CBS.BusinessService.Repayment
             {
                 var url = string.Format(APICallHelper.RefundById, Uri.EscapeDataString(id));
                 var resp = await _loanApiHelper.GetAsync<ResponseObject<Refund>>(url);
-                
+                resp.ApiResponseData.Data.BankName = GetBankName();
                 if (resp?.IsSuccess == true)
                     return resp.ApiResponseData?.Data;
 
-                resp.ApiResponseData.Data.BankName = GetBankName();
+                
 
                 return null;
             }

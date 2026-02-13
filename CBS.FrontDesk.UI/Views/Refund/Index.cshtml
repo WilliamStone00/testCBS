@@ -431,25 +431,27 @@
 
             function loadRefundDetails(id) {
 
-                $('#refundDetailsBody').html(
-                    `<div class="text-center">
-                <div class="spinner-border text-info"></div>
-            </div>`
-                );
-
                 $.ajax({
                     url: '/Refund/GetDetails',
                     type: 'GET',
                     data: { id: id },
+
                     success: function (response) {
+
+                        // Inject response
                         $('#refundDetailsBody').html(response);
-                    },
-                    error: function () {
-                        $('#refundDetailsBody').html(
-                            `<div class="alert alert-danger">
-                        Failed to load details.
-                    </div>`
+
+                        // Show modal ONLY after content loads
+                        const modal = new bootstrap.Modal(
+                            document.getElementById('refundDetailsModal')
                         );
+
+                        modal.show();
+                    },
+
+                    error: function () {
+
+                        appalert("❌ Failed to load refund details.", 3, 1);
                     }
                 });
             }
