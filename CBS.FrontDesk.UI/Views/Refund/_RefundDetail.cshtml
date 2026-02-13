@@ -4,18 +4,27 @@
     Layout = null; // remove if using shared layout
 }
 
+
+
+<style>
+    @@media print {
+        .no-print {
+            display: none !important;
+        }
+
+        body {
+            background: #fff;
+        }
+
+        .refund-card {
+            box-shadow: none !important;
+        }
+    }
+</style>
+
 <!DOCTYPE html>
 <html>
-@*<head>
-    <meta charset="utf-8" />
-    <title>Refund Detail</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <style>
-        /* Keep your CSS from previous design */
-    </style>
-</head>*@
 <body>
 
     <div class="detail-panel">
@@ -49,19 +58,23 @@
 
                 <tr>
                     <td class="fw-bold">Payment Date</td>
-                    <td>@Model.DateOfPayment.ToString("dd/MM/yyyy")</td>
+                    <td>
+                        @Model.DateOfPayment.ToString("dd/MM/yyyy HH:mm:ss")
+                    </td>
                 </tr>
+
+
 
                 <tr>
                     <td class="fw-bold">Completed</td>
                     <td>
                         @if (Model.IsCompleted)
                         {
-                            <span class="badge bg-success">Completed</span>
+                            <span class="badge bg-success">Fully Paid</span>
                         }
                         else
                         {
-                            <span class="badge bg-warning text-dark">Pending</span>
+                            <span class="badge bg-warning text-dark">Partial </span>
                         }
                     </td>
                 </tr>
@@ -84,21 +97,17 @@
 
                 <!-- ================= CUSTOMER & LOAN INFORMATION ================= -->
                 <tr class="table-light">
-                    <td colspan="2" class="fw-bold text-uppercase">Customer & Loan Information</td>
+                    <td colspan="2" class="fw-bold text-uppercase">Member Information</td>
                 </tr>
 
-                <tr>
-                    <td class="fw-bold">Loan ID</td>
-                    <td>@Model.LoanId</td>
-                </tr>
 
                 <tr>
-                    <td class="fw-bold">Customer ID</td>
-                    <td>@Model.CustomerId</td>
+                    <td class="fw-bold">Member Reference</td>
+                    <td>@Model.Loan.CustomerId</td>
                 </tr>
                 <tr>
-                    <td class="fw-bold">Customer Name</td>
-                    <td>@Model.CustomerName</td>
+                    <td class="fw-bold">Member Name</td>
+                    <td>@Model.Loan.CustomerName</td>
                 </tr>
                 <tr>
                     <td class="fw-bold">Branch</td>
@@ -109,47 +118,52 @@
                     <td class="fw-bold">Bank</td>
                     <td>@Model.BankName</td>
                 </tr>
-
-
-                <!-- ================= PAYMENT INFORMATION ================= -->
                 <tr class="table-light">
-                    <td colspan="2" class="fw-bold text-uppercase">Payment Information</td>
+                    <td class="fw-bold text-uppercase">
+                        Loan Details
+                    </td>
+                    <td class="text-end">
+                        <a href="/MembersFSeries/LoanDetails?loanId=@Model.Loan.Id"
+                           target="_blank"
+                           class="btn btn-sm btn-primary">
+                            <i class="mdi mdi-open-in-new me-1"></i>
+                            Open Full Loan
+                        </a>
+                    </td>
                 </tr>
 
                 <tr>
-                    <td class="fw-bold">Payment Method</td>
-                    <td>@Model.PaymentMethod</td>
-                </tr>
-
-                <tr>
-                    <td class="fw-bold">Channel</td>
-                    <td>@Model.PaymentChannel</td>
-                </tr>
-
-                @*<tr>
-            <td class="fw-bold">Repayment Type</td>
-            <td>@Model.RepaymentType</td>
-        </tr>*@
-                <!-- ================= LOAN DETAILS ================= -->
-                <tr class="table-light">
-                    <td colspan="2" class="fw-bold text-uppercase">Loan Details</td>
+                    <td class="fw-bold">Loan ID</td>
+                    <td>@Model.Loan.Id</td>
                 </tr>
 
                 <!-- 🔥 MOST IMPORTANT FIRST -->
-                <tr>
+                @*<tr>
                     <td class="fw-bold">Loan Contract Code</td>
                     <td>@Model.Loan.LoanContractCode</td>
-                </tr>
+                </tr>*@
 
                 <tr>
                     <td class="fw-bold">Loan Amount</td>
                     <td>@Model.Loan.LoanAmount.ToString("N2")</td>
                 </tr>
-
+                <tr>
+                    <td class="fw-bold">Interest Rate</td>
+                    <td>@Model.Loan.InterestRate.ToString("N2")</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">VAT</td>
+                    <td>@Model.Loan.Tax.ToString("N2")</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Accrual Interest</td>
+                    <td>@Model.Loan.AccrualInterest.ToString("N2")</td>
+                </tr>
                 <tr>
                     <td class="fw-bold">Date Contracted</td>
-                    <td>@Model.Loan.LoanDate.ToString("dd/MM/yyyy")</td>
+                    <td>@Model.Loan.LoanDate.ToString("dd/MM/yyyy HH:mm:ss")</td>
                 </tr>
+
 
                 <tr>
                     <td class="fw-bold">Total Amount Paid</td>
@@ -167,13 +181,31 @@
                 </tr>
 
 
-                <!-- ================= FINANCIAL BREAKDOWN ================= -->
+
+                <!-- ================= PAYMENT INFORMATION ================= -->
                 <tr class="table-light">
-                    <td colspan="2" class="fw-bold text-uppercase">Financial Breakdown</td>
+                    <td colspan="2" class="fw-bold text-uppercase">Payment Information</td>
                 </tr>
 
                 <tr>
-                    <td class="fw-bold">Total Amount</td>
+                    <td class="fw-bold">Payment Method</td>
+                    <td>@Model.PaymentMethod</td>
+                </tr>
+
+                <tr>
+                    <td class="fw-bold">Channel</td>
+                    <td>@Model.PaymentChannel</td>
+                </tr>
+
+
+
+                <!-- ================= FINANCIAL BREAKDOWN ================= -->
+                <tr class="table-light">
+                    <td colspan="2" class="fw-bold text-uppercase">Cash Breakdown</td>
+                </tr>
+
+                <tr>
+                    <td class="fw-bold">Amount Collected</td>
                     <td>@Model.Amount.ToString("N2")</td>
                 </tr>
 
@@ -188,7 +220,7 @@
                 </tr>
 
                 <tr>
-                    <td class="fw-bold">Tax</td>
+                    <td class="fw-bold">VAT</td>
                     <td>@Model.Tax.ToString("N2")</td>
                 </tr>
 
@@ -197,10 +229,7 @@
                     <td>@Model.Penalty.ToString("N2")</td>
                 </tr>
 
-                <tr>
-                    <td class="fw-bold">Paid</td>
-                    <td>@Model.Paid.ToString("N2")</td>
-                </tr>
+
 
                 <tr>
                     <td class="fw-bold">Balance</td>
@@ -218,95 +247,94 @@
             </table>
 
 
-            <!-- Loan Product -->
-            @*@if (Model.LoanProduct != null)
-            {
-                <div style="margin-top:6px;font-size:0.75rem;">
-                    <i class="fas fa-briefcase"></i>
-                    Product: @Model.LoanProduct.Name
-                </div>
-            }*@
 
+
+        </div>
+
+
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary no-print" onclick="window.print();">Print</button>
         </div>
 
         <!-- ================= REFUND DETAILS ================= -->
-        <div class="refund-card">
+        <!--<div class="refund-card">
 
-            <div class="section-sub">
-                <i class="fas fa-list-ul"></i>
-                Refund Allocations · @(Model.RefundDetails?.Count ?? 0)
-            </div>
-
-            <table class="mini-table">
-                <thead>
-                    <tr>
-                        <th>Amortization ID</th>
-                        <th class="numeric">Collected</th>
-                        <th class="numeric">T.Code</th>
-                        <th class="numeric">Principal</th>
-                        <th class="numeric">Interest</th>
-                        <th class="numeric">Penalty</th>
-                        <th class="numeric">Balance</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (Model.RefundDetails != null)
-                    {
-                        foreach (var d in Model.RefundDetails)
-                        {
-                            <tr>
-                                <td>@d.LoanAmortizationId</td>
-                                <td>@d.TransactonCode</td>
-                                <td class="numeric">@d.CollectedAmount.ToString("N2")</td>
-                                <td class="numeric">@d.PrincipalAmount.ToString("N2")</td>
-                                <td class="numeric">@d.Interest.ToString("N2")</td>
-                                <td class="numeric">@d.PenaltyAmount.ToString("N2")</td>
-                                <td class="numeric">@d.Balance.ToString("N2")</td>
-                            </tr>
-                        }
-                    }
-                </tbody>
-            </table>
+        <div class="section-sub">
+            <i class="fas fa-list-ul"></i>
+            Refund Allocations · @(Model.RefundDetails?.Count ?? 0)
         </div>
 
+        <table class="mini-table">
+            <thead>
+                <tr>
+                    <th>Amortization ID</th>
+                    <th class="numeric">Collected</th>
+
+                    <th class="numeric">Principal</th>
+                    <th class="numeric">Interest</th>
+                    <th class="numeric">Penalty</th>
+                    <th class="numeric">Balance</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.RefundDetails != null)
+                {
+                    foreach (var d in Model.RefundDetails)
+                    {
+                        <tr>
+                            <td>@d.LoanAmortizationId</td>
+
+                            <td class="numeric">@d.CollectedAmount.ToString("N2")</td>
+                            <td class="numeric">@d.PrincipalAmount.ToString("N2")</td>
+                            <td class="numeric">@d.Interest.ToString("N2")</td>
+                            <td class="numeric">@d.PenaltyAmount.ToString("N2")</td>
+                            <td class="numeric">@d.Balance.ToString("N2")</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>-->
         <!-- ================= AMORTIZATION PREVIEW ================= -->
-        <div class="refund-card">
+        <!--<div class="refund-card">
 
-            <div class="section-sub">
-                <i class="fas fa-table"></i>
-                Amortization Schedule
-            </div>
-
-            <table class="mini-table">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Due Date</th>
-                        <th class="numeric">Total Due</th>
-                        <th class="numeric">Paid</th>
-                        <th class="numeric">Balance</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (Model.LoanAmortizations != null)
-                    {
-                        foreach (var a in Model.LoanAmortizations.OrderBy(x => x.Sno))
-                        {
-                            <tr>
-                                <td>@a.Sno</td>
-                                <td>@a.DateOfPayment.ToString("dd-MM-yyyy")</td>
-                                <td class="numeric">@a.TotalDue.ToString("N2")</td>
-                                <td class="numeric">@a.Paid.ToString("N2")</td>
-                                <td class="numeric">@a.Balance.ToString("N2")</td>
-                                <td>@a.Status</td>
-                            </tr>
-                        }
-                    }
-                </tbody>
-            </table>
-
+        <div class="section-sub">
+            <i class="fas fa-table"></i>
+            Amortization Schedule
         </div>
+
+        <table class="mini-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Due Date</th>
+                    <th class="numeric">Total Due</th>
+
+                    <th class="numeric">Balance</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.LoanAmortizations != null)
+                {
+                    foreach (var a in Model.LoanAmortizations.OrderBy(x => x.Sno))
+                    {
+                        <tr>
+                            <td>@a.Sno</td>
+                            <td>@a.DateOfPayment.ToString("dd-MM-yyyy")</td>
+                            <td class="numeric">@a.TotalDue.ToString("N2")</td>
+
+                            <td class="numeric">@a.Balance.ToString("N2")</td>
+                            <td>@a.Status</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+
+    </div>-->
 
     </div>
 
