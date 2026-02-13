@@ -2728,6 +2728,8 @@ function AjaxPostAndUpdateChangePassword(form) {
 //    fetchIdleTimeout();
 //})();
 
+// added by c
+
 function ShowModal(key, partialView, controller, path) {
     var url = '/' + controller + '/InitializeData?KEY=' + encodeURIComponent(key || '') +
         '&partialView=' + encodeURIComponent(partialView) +
@@ -2770,3 +2772,43 @@ function initSelect2(container) {
     });
 }
 
+function formatCurrency(amount) {
+    try {
+        // If amount is a string with commas, remove them for parsing
+        if (typeof amount === 'string') {
+            amount = parseFloat(amount.replace(/,/g, '')) || 0;
+        }
+
+        // Format with commas for thousands separators (1 decimal place)
+        return new Intl.NumberFormat('en-US', {
+            minimumFractionDigits: 1,
+            maximumFractionDigits: 1
+        }).format(amount || 0);
+
+    } catch (e) {
+        // Fallback formatting
+        var num = parseFloat(amount) || 0;
+        return num.toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+    }
+}
+
+// date format
+////  | Input        | Output        |
+//| ------------ | ------------- |
+//| `2026-02-13` | `13 Feb 2026` |
+//| `2026-12-01` | `01 Dec 2026` |
+
+function formatDateToDMY(dateString) {
+    if (!dateString) return '';
+
+    const date = new Date(dateString);
+
+    return date.toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric'
+    });
+}
+
+
+// end of c 

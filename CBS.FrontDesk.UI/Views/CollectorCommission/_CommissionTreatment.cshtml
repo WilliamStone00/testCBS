@@ -120,21 +120,20 @@
                         <div class="d-flex justify-content-end">
                             <div class="input-group" style="width:260px; max-width:100%;">
                                 <span class="input-group-text">📅 Acc. Date</span>
-                                @Html.TextBoxFor(m => m.AccountingDate,
-                                    new
-                                    {
-                                        @class = "form-control accounting-date",
-                                        type = "date",
-                                        id = "AccountingDay",
-                                        required = "required",
-                                        data_val = "true",
-                                        data_val_required = "Accounting date is required",
-                                        value = todayIso,
-                                        max = todayIso,
-                                        placeholder = "yyyy-MM-dd",
-                                        style = "min-width:0;"
-                                    }
-                                )
+                                @Html.TextBox(
+                                     "AccountingDate",
+                                     DateTime.Now.ToString("yyyy-MM-dd"),
+                                     new
+                                     {
+                                         @class = "form-control accounting-date",
+                                         type = "date",
+                                         id = "AccountingDay",
+                                         required = "required",
+                                         max = todayIso,
+                                         style = "min-width:0;"
+                                     }
+                                 )
+
                             </div>
                         </div>
                         @Html.ValidationMessageFor(m => m.AccountingDate, "", new { @class = "text-danger d-block mt-1", id = "AccountingDateValidationMessage" })

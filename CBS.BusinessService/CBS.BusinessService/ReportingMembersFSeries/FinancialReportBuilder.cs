@@ -356,30 +356,87 @@ namespace CBS.BusinessService.ReportingMembersFSeries
         // 4. Build Loan Situation Rows
         public async Task<List<LoanSituationRow>> BuildLoanSituationRows(FinancialReportFilter parameters)
         {
-            var situationData = await _reportService.GetLoanSituationData(parameters);
+            // Get branch and customer info for headers
+            var bra = await GetBranchandbank();
+            var cus = await GetCustomer(parameters.MemberReference);
+
+            // Fetch loan history report - now returns ReportData directly
+            var reportData = await _reportService.GetLoanSituationData(parameters);
+            var loanHistory = reportData?.LoanHistory;
 
             var rows = new List<LoanSituationRow>();
 
-            //// Loan Portfolio Details
-            //foreach (var loan in situationData)
-            //{
-            //    rows.Add(new LoanSituationRow
-            //    {
-            //        LoanNumber = loan.LoanNumber,
-            //        CustomerName = loan.CustomerName,
-            //        LoanType = loan.LoanType,
-            //        LoanAmount = loan.LoanAmount,
-            //        OutstandingBalance = loan.OutstandingBalance,
-            //        DisbursementDate = loan.DisbursementDate,
-            //        MaturityDate = loan.MaturityDate,
-            //        InterestRate = loan.InterestRate,
-            //        Status = loan.LoanStatus,
-            //        DaysPastDue = loan.DaysPastDue
-            //    });
-            //}
+            if (loanHistory?.Loans != null)
+            {
+                var metrics = loanHistory.Metrics;
+                foreach (var loan in loanHistory.Loans)
+                {
+                    rows.Add(new LoanSituationRow
+                    {
+                        // Header info
+                        BranchName = GetBankName(),
+                        BranchCode = GetBranchCode() ?? "-",
+                        BankName = GetBankName() ?? "-",
+                        PrintedBy = GetUserFullName(),
+                        PrintedOn = DateTime.Now,
+                        Periodfrom = parameters.DateFrom,
+                        PeriodTo = parameters.DateTo,
+
+                        LoanNumber = loan.AccountNumber,
+                        // Loan identifiers
+                        LoanId = loan.LoanId,
+                        ContractCode = loan.ContractCode,
+                        LoanType = loan.LoanType,
+                        Status = loan.Status,
+
+                        // Loan amounts and balances
+                        Balance = loan.Balance,
+                        Principal = loan.Principal,
+                        Interest = loan.Interest,
+                        InterestRate = loan.InterestRate,
+                        Penalty = loan.Penalty,
+                        TotalRepayment = loan.TotalRepayment,
+
+                        LastRepaymentAmount = loan.LastRepaymentAmount,
+                        LastRepaymentDate = loan.LastRepaymentDate,
+                        NextRepaymentDate = loan.NextRepaymentDate,
+                        LoanDate = loan.LoanDate,
+
+                        DelDays = loan.DelDays,
+                        DelAmount = loan.DelAmount,
+                        DelInterest = loan.DelInterest,
+
+                        // Member info
+                        MemberReference = loan.MemberReference,
+                        MembersName = loan.MembersName,
+                        MembersBranch = loan.MembersBranch,
+                        MemberBranchCode = loan.MemberBranchCode,
+
+                        // Loan timeline
+                        DisbursementDate = loan.DisbursementDate,
+
+                        // Portfolio summary (from metrics)
+                        TotalLoans = metrics?.TotalLoans ?? 0,
+                        TotalOutstanding = metrics?.TotalOutstanding ?? 0,
+                        ActiveLoans = metrics?.ActiveLoans ?? 0,
+                        DelinquentLoans = metrics?.DelinquentLoans ?? 0,
+                        ParAmount = metrics?.ParAmount ?? 0,
+
+                        TotalPortfolioValue = metrics?.TotalOutstanding ?? 0m,
+                        AverageInterestRate = metrics != null && metrics.TotalLoans > 0
+                            ? metrics.ParAmount / metrics.TotalLoans
+                            : 0m,
+                        DelinquencyRate = metrics != null && metrics.TotalLoans > 0
+                            ? (decimal)metrics.DelinquentLoans / metrics.TotalLoans * 100
+                            : 0m
+                    });
+                }
+            }
 
             return rows;
         }
+
+
 
         // 5. Build Account Situation Rows
         public async Task<List<TransactionStaement>> BuildAccountSituationRows(FinancialReportFilter parameters)

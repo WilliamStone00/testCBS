@@ -370,6 +370,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
                 if (string.IsNullOrWhiteSpace(model.Month))
                     ModelState.AddModelError(nameof(model.Month), "Month is required.");
 
+                if (model.Incentives > 0 && model.ExpenseGL == null)
+                    ModelState.AddModelError(nameof(model.Month), "Expense Gl is required when Incentive Greater than zero (0).");
+
                 if (model.Year == 0)
                     ModelState.AddModelError(nameof(model.Year), "Year is required.");
 
@@ -431,6 +434,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
                     TotalAmountToShare = model.CollectorTotalCommision,
                     Month = int.Parse(model.Month), // Month is now properly extracted as string "11"
                     Year = model.Year,
+                    ExpenseGL = model.ExpenseGL,
                     SharedAmounts = (model.SharedAmounts ?? new List<StakeholderShare>())
                         .Select(s => new SharedAmount
                         {

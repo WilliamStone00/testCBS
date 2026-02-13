@@ -1,0 +1,781 @@
+﻿@model CBS.FrontDesk.Data.Entity.SalaryManagement.FileDetailsDto
+
+
+@{
+    ViewBag.Title = "Loan Repayment Execution";
+}
+
+<!-- Header Card -->
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-3">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-cash-multiple me-2"></i>Loan Repayment Execution
+                </h1>
+                <p class="card-text">
+                    View and manage loan repayment executions, filter by various criteria and track execution status
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tips Card -->
+<div class="card mb-3">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> Tips</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLoanRepaymentTips" aria-expanded="false" aria-controls="collapseLoanRepaymentTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+
+    <div id="collapseLoanRepaymentTips" class="collapse">
+        <div class="card-body">
+            <ul>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>Status:</strong> Filter executions by their current status (Pending, Success, Failed, Refunded)</li>
+                <li><i class="mdi mdi-cash text-primary me-2"></i> <strong>Amount Range:</strong> Filter by principal or total repayment amount</li>
+                <li><i class="mdi mdi-calendar-range text-info me-2"></i> <strong>Execution Date:</strong> Filter by date range when the execution occurred</li>
+                <li><i class="mdi mdi-bank text-secondary me-2"></i> <strong>Branch:</strong> Filter by specific branch or view all</li>
+                <li><i class="mdi mdi-file-document-outline text-warning me-2"></i> <strong>File Upload ID:</strong> Auto-populated from the clicked loan execution details</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- File Statistics Collapsible Card -->
+<div class="card mb-3">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-chart-bar me-2"></i> File Statistics</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFileStatistics" aria-expanded="true" aria-controls="collapseFileStatistics">
+            <i class="mdi mdi-chevron-up"></i>
+        </button>
+    </h6>
+
+    <div id="collapseFileStatistics" class="collapse show">
+        <div class="card-body" id="fileStatisticsContainer">
+            @*  File statistics will be loaded here*@
+
+            @if (Model == null)
+            {
+                <div class="text-center py-4 text-muted">
+                    <i class="mdi mdi-file-document-outline mdi-48px"></i>
+                    <p class="mt-2">Click on "Loan Execution Details" from any file to view statistics</p>
+                </div>
+            }
+            else
+            {
+                @Html.Partial("_FileStatistics", Model)
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Filters Card -->
+<div class="card shadow p-3 mb-4">
+    <h5 class="text-primary mb-3">
+        <i class="mdi mdi-filter-outline me-1"></i> Loan Repayment Filters
+    </h5>
+
+    <form id="loanRepaymentFilterForm" autocomplete="off">
+
+        <div class="card p-3 mb-3 bg-light">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label">Branch</label>
+                    <div class="form-floating shadow-sm">
+                        @Html.DropDownListFor(
+                            m => m.BranchId,
+                            new SelectList(ViewBag.Branches, "Id", "name"),
+                            "--- All Branches ---",
+                            new { @class = "form-control select2", id = "branchId" }
+                        )
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">File Upload ID</label>
+                    <input type="text"
+                           id="fileUploadId"
+                           name="FileUploadId"
+                           class="form-control bg-light"
+                           value="@Model.FileUploadId"
+                           readonly />
+                </div>
+            </div>
+
+
+            <hr />
+
+            <!-- Toggle Checkboxes -->
+            <div class="row mb-3">
+
+                <div class="col-md-3">
+                    <div class="form-check">
+                        <input class="form-check-input filter-toggle" type="checkbox" data-target="#statusFilter">
+                        <label class="form-check-label fw-bold">Status</label>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-check">
+                        <input class="form-check-input filter-toggle" type="checkbox" data-target="#paymentMethodFilter">
+                        <label class="form-check-label fw-bold">Payment Method</label>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-check">
+                        <input class="form-check-input filter-toggle" type="checkbox" data-target="#paymentChannelFilter">
+                        <label class="form-check-label fw-bold">Payment Channel</label>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-check">
+                        <input class="form-check-input filter-toggle" type="checkbox" data-target="#salaryCodeFilter">
+                        <label class="form-check-label fw-bold">Salary Code</label>
+                    </div>
+                </div>
+
+                <div class="col-md-3 mt-2">
+                    <div class="form-check">
+                        <input class="form-check-input filter-toggle" type="checkbox" data-target="#memberRefFilter">
+                        <label class="form-check-label fw-bold">Member Reference</label>
+                    </div>
+                </div>
+
+                <div class="col-md-3 mt-2">
+                    <div class="form-check">
+                        <input class="form-check-input filter-toggle" type="checkbox" data-target="#transactionRefFilter">
+                        <label class="form-check-label fw-bold">Transaction Reference</label>
+                    </div>
+                </div>
+
+                <div class="col-md-3 mt-2">
+                    <div class="form-check">
+                        <input class="form-check-input filter-toggle" type="checkbox" data-target="#loanIdFilter">
+                        <label class="form-check-label fw-bold">Loan ID</label>
+                    </div>
+                </div>
+
+                <div class="col-md-3 mt-2">
+                    <div class="form-check">
+                        <input class="form-check-input filter-toggle" type="checkbox" data-target="#amountRangeFilter">
+                        <label class="form-check-label fw-bold">Amount Range</label>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Dynamic Filters -->
+            <div id="dynamicFilters" class="row g-3">
+
+                <!-- Status -->
+                <div id="statusFilter" class="col-md-4 d-none">
+                    <label class="form-label fw-bold">Status</label>
+                    <select name="Status" class="form-control">
+                        <option value="">All</option>
+                        <option>Pending</option>
+                        <option>Success</option>
+                        <option>Failed</option>
+                        <option>Refunded</option>
+                    </select>
+                </div>
+
+                <!-- Payment Method -->
+                <div id="paymentMethodFilter" class="col-md-4 d-none">
+                    <label class="form-label fw-bold">Payment Method</label>
+                    <select name="PaymentMethod" class="form-control">
+                        <option value="">All</option>
+                        <option>Bank Transfer</option>
+                        <option>Cash</option>
+                        <option>Cheque</option>
+                    </select>
+                </div>
+
+                <!-- Payment Channel -->
+                <div id="paymentChannelFilter" class="col-md-4 d-none">
+                    <label class="form-label fw-bold">Payment Channel</label>
+                    <select name="PaymentChannel" class="form-control">
+                        <option value="">All</option>
+                        <option>Online</option>
+                        <option>Branch</option>
+                        <option>Mobile</option>
+                    </select>
+                </div>
+
+                <!-- Salary Code -->
+                <div id="salaryCodeFilter" class="col-md-4 d-none">
+                    <label class="form-label fw-bold">Salary Code</label>
+                    <input type="text" name="SalaryCode" class="form-control">
+                </div>
+
+                <!-- Member Reference -->
+                <div id="memberRefFilter" class="col-md-4 d-none">
+                    <label class="form-label fw-bold">Member Reference</label>
+                    <input type="text" name="MemberReference" class="form-control">
+                </div>
+
+                <!-- Transaction Reference -->
+                <div id="transactionRefFilter" class="col-md-4 d-none">
+                    <label class="form-label fw-bold">Transaction Reference</label>
+                    <input type="text" name="TransactionReference" class="form-control">
+                </div>
+
+                <!-- Loan ID -->
+                <div id="loanIdFilter" class="col-md-4 d-none">
+                    <label class="form-label fw-bold">Loan ID</label>
+                    <input type="text" name="LoanId" class="form-control">
+                </div>
+
+                <!-- Amount Range -->
+                <div id="amountRangeFilter" class="col-md-6 d-none">
+                    <label class="form-label fw-bold">Amount Range</label>
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <input type="number" name="MinAmount" class="form-control" placeholder="Min">
+                        </div>
+                        <div class="col-6">
+                            <input type="number" name="MaxAmount" class="form-control" placeholder="Max">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Buttons -->
+        <div class="row mt-2">
+            <div class="col-md-12 d-flex">
+                <button type="button" id="applyFilterBtn" class="btn btn-primary w-100 me-2">
+                    <i class="mdi mdi-magnify"></i> Apply Filter
+                </button>
+                <button id="resetFilterBtn" type="button" class="btn btn-secondary w-100">
+                    <i class="mdi mdi-refresh"></i> Reset
+                </button>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+
+
+<!-- Data Table Partial -->
+@Html.Partial("_LoanRepaymentDataTable")
+
+<!-- Details Modal -->
+<div class="modal fade" id="loanRepaymentDetailsModal" tabindex="-1" aria-labelledby="loanRepaymentDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-body p-0">
+                <!-- Content will be loaded here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        (function () {
+            'use strict';
+
+            // Configuration - FIXED URLs
+            const fileDetailsUrl = '/SalaryUpload/FileDetails';
+            const loanRepaymentsDataUrl = '/SalaryUpload/LoanRepaymentsExecution';
+            const loanRepaymentDetailsUrl = '/SalaryUpload/LoanRepaymentDetails';
+            const getBranchesUrl = '/SalaryUpload/GetBranches';
+            const tableSelector = '#myDataTable'; // CHANGED TO myDataTable
+
+            // Global table reference
+            window.loanRepaymentTable = window.loanRepaymentTable || null;
+
+            // Flag to prevent double initialization
+            let isDataTableInitialized = false;
+
+            // Get fileUploadId from URL parameter
+            function getUrlParameter(name) {
+                const urlParams = new URLSearchParams(window.location.search);
+                return urlParams.get(name);
+            }
+
+            // Helper functions
+            function emptyToNull(v) {
+                return (v === undefined || v === null || v === '') ? null : v;
+            }
+
+            function escapeHtml(str) {
+                if (str === undefined || str === null) return '';
+                return String(str)
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#39;');
+            }
+
+            function formatCurrency(amount) {
+                if (amount === null || amount === undefined) return '-';
+                return new Intl.NumberFormat('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }).format(amount);
+            }
+
+            function formatDate(dateString) {
+                if (!dateString) return '-';
+                try {
+                    const date = new Date(dateString);
+                    if (isNaN(date.getTime())) return dateString;
+                    return date.toLocaleString('en-US', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                } catch (e) {
+                    return dateString;
+                }
+            }
+
+            function showAppAlert(msg, type) {
+                if (typeof appalert === 'function') {
+                    appalert(msg, type === 3 ? 3 : 0, 1);
+                } else {
+                    try { alert(msg); } catch (e) { console.log((type === 3 ? 'SUCCESS: ' : 'INFO: ') + msg); }
+                }
+            }
+
+            // Collect filter values
+            function collectLoanRepaymentFilters() {
+                return {
+                    BranchId: emptyToNull($('#branchId').val()),
+                    SalaryCode: emptyToNull($('#salaryCode').val()),
+                    Status: emptyToNull($('#status').val()),
+                    FileUploadId: emptyToNull($('#fileUploadId').val()),
+                    LoanId: emptyToNull($('#loanId').val()),
+                    MemberReference: emptyToNull($('#memberReference').val()),
+                    TransactionReference: emptyToNull($('#transactionReference').val()),
+                    FromExecutionDate: emptyToNull($('#fromExecutionDate').val()),
+                    ToExecutionDate: emptyToNull($('#toExecutionDate').val()),
+                    IsBGBuilder: $('#isBGBuilder').is(':checked') ? true : null,
+                    SalaryDebitPatched: $('#salaryDebitPatched').is(':checked') ? true : null,
+                    PaymentMethod: emptyToNull($('#paymentMethod').val()),
+                    PaymentChannel: emptyToNull($('#paymentChannel').val()),
+                    MinAmount: emptyToNull($('#minAmount').val()),
+                    MaxAmount: emptyToNull($('#maxAmount').val()),
+                    DataTableOptions: {}
+                };
+            }
+
+            // Load file statistics - FIXED to use partial view
+            //window.loadFileStatistics = function (fileUploadId) {
+            //    if (!fileUploadId) return;
+
+            //    $('#fileUploadId').val(fileUploadId);
+
+            //    // Show loading state
+            //    $('#fileStatisticsContainer').html(`
+            //                <div class="text-center py-4">
+            //                    <div class="spinner-border text-primary" role="status">
+            //                        <span class="visually-hidden">Loading...</span>
+            //                    </div>
+            //                    <p class="mt-2 text-muted">Loading file statistics...</p>
+            //                </div>
+            //            `);
+
+            //    $.ajax({
+            //        url: fileDetailsUrl,
+            //        type: 'GET',
+            //        data: {
+            //            id: fileUploadId,
+            //            partialView: '_FileStatistics' // Specify the partial view
+            //        },
+            //        success: function (response) {
+            //            // Response is HTML from the partial view
+            //            $('#fileStatisticsContainer').html(response);
+
+            //            // Reload table with new fileUploadId filter
+            //            if (window.loanRepaymentTable) {
+            //                window.loanRepaymentTable.ajax.reload(null, false);
+            //            }
+            //        },
+            //        error: function (xhr, status, error) {
+            //            $('#fileStatisticsContainer').html(`
+            //                        <div class="alert alert-danger mb-0">
+            //                            <i class="mdi mdi-alert-circle me-2"></i>
+            //                            Failed to load file statistics. Please try again.
+            //                            <br/><small>${error}</small>
+            //                        </div>
+            //                    `);
+            //            console.error('File statistics error:', error);
+            //        }
+            //    });
+            //};
+
+            // Initialize DataTable - FIXED to prevent double initialization
+            function initLoanRepaymentDataTable() {
+                if (isDataTableInitialized && $.fn.DataTable.isDataTable(tableSelector)) {
+                    window.loanRepaymentTable = $(tableSelector).DataTable();
+                    return;
+                }
+
+                if (!$(tableSelector).length) {
+                    console.warn(tableSelector + ' not found');
+                    return;
+                }
+
+                // Destroy existing DataTable if it exists
+                if ($.fn.DataTable.isDataTable(tableSelector)) {
+                    $(tableSelector).DataTable().destroy();
+                }
+
+                window.loanRepaymentTable = $(tableSelector).DataTable({
+                    serverSide: true,
+                    searching: false,
+                    responsive: true,
+                    autoWidth: false,
+                    order: [[0, 'desc']],
+                    ajax: {
+                        url: loanRepaymentsDataUrl,
+                        type: 'POST',
+                        contentType: 'application/json',
+                        dataType: 'json',
+                        data: function (d) {
+                            var payload = collectLoanRepaymentFilters();
+
+                            // Safely get sort column
+                            let sortColumnName = 'CreatedDate';
+                            let sortColumnDirection = 'desc';
+
+                            if (d.order && d.order.length > 0 && d.columns) {
+                                const colIndex = d.order[0].column;
+                                if (d.columns[colIndex]) {
+                                    sortColumnName = d.columns[colIndex].name || d.columns[colIndex].data || 'CreatedDate';
+                                    sortColumnDirection = d.order[0].dir || 'desc';
+                                }
+                            }
+
+                            payload.DataTableOptions = {
+                                draw: d.draw,
+                                start: d.start,
+                                length: d.length,
+                                skip: d.start,
+                                pageSize: d.length,
+                                searchValue: d.search && d.search.value ? d.search.value : '',
+                                sortColumnName: sortColumnName,
+                                sortColumnDirection: sortColumnDirection
+                            };
+
+                            return JSON.stringify(payload);
+                        },
+                        error: function (xhr, status, err) {
+                            var msg = 'Failed to load loan repayment data. Please try again.';
+                            showAppAlert(msg, 0);
+                            console.error('LoanRepaymentsExecution error', xhr, status, err);
+                        }
+                    },
+                    columns: [
+                        {
+                            data: 'CreatedDate',
+                            render: function (data) {
+                                return data ? (window.moment ? moment(data).format('DD/MM/YYYY HH:mm:ss') : data) : '-';
+                            }
+                        },
+                        {
+                            data: 'BranchName',
+                            name: 'BranchName',
+                            render: function (data, type, row) {
+                                if (!data) return '-';
+                                return `${escapeHtml(data)}<br/><small class="text-muted">${escapeHtml(row.BranchCode || '')}</small>`;
+                            }
+                        },
+                        {
+                            data: 'MemberReference',
+                            name: 'MemberReference',
+                            defaultContent: '-'
+                        },
+                        {
+                            data: 'SalaryCode',
+                            name: 'SalaryCode',
+                            defaultContent: '-'
+                        },
+                        {
+                            data: 'Status',
+                            name: 'Status',
+                            render: function (data) {
+                                let badgeClass = 'bg-secondary';
+                                if (data === 'Successful') badgeClass = 'bg-success';
+                                else if (data === 'Failed') badgeClass = 'bg-danger';
+                                else if (data === 'Pending') badgeClass = 'bg-warning text-dark';
+                                else if (data === 'Refunded') badgeClass = 'bg-info';
+                                else if (data === 'Processing') badgeClass = 'bg-primary';
+
+                                return `<span class="badge ${badgeClass}">${escapeHtml(data || '-')}</span>`;
+                            }
+                        },
+                        {
+                            data: 'PrincipalAmount',
+                            name: 'PrincipalAmount',
+                            className: 'text-end',
+                            render: function (data) {
+                                return formatCurrency(data);
+                            }
+                        },
+                        {
+                            data: 'Interest',
+                            name: 'Interest',
+                            className: 'text-end',
+                            render: function (data) {
+                                return formatCurrency(data);
+                            }
+                        },
+                        {
+                            data: 'ChargeAmount',
+                            name: 'ChargeAmount',
+                            className: 'text-end',
+                            render: function (data) {
+                                return formatCurrency(data);
+                            }
+                        },
+                        {
+                            data: 'TaxAmount',
+                            name: 'TaxAmount',
+                            className: 'text-end',
+                            render: function (data) {
+                                return formatCurrency(data);
+                            }
+                        },
+                        {
+                            data: 'TotalRepaymentAmount',
+                            name: 'TotalRepaymentAmount',
+                            className: 'text-end',
+                            render: function (data) {
+                                return `<strong>${formatCurrency(data)}</strong>`;
+                            }
+                        },
+                        {
+                            data: 'Id',
+                            name: 'Actions',
+                            orderable: false,
+                            searchable: false,
+                            className: 'text-center',
+                            width: '100px',
+                            render: function (data, type, row) {
+                                var safeId = (row.Id || '').replace(/[^a-zA-Z0-9_-]/g, '') || 'x';
+                                var btnId = 'actionDropdown_' + safeId;
+
+                                return `
+                                                    <div class="dropdown">
+                                                        <button class="btn btn-sm btn-info dropdown-toggle text-white" type="button"
+                                                                id="${btnId}" data-bs-toggle="dropdown" aria-expanded="false">
+                                                            <i class="mdi mdi-cog-outline"></i> Actions
+                                                        </button>
+                                                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="${btnId}">
+                                                            <li>
+                                                                <button type="button" class="dropdown-item btn-details"
+                                                                        data-id="${escapeHtml(row.Id)}"
+                                                                        data-transaction="${escapeHtml(row.TransactionReference || '')}">
+                                                                    <i class="mdi mdi-eye me-1 text-primary"></i> View Details
+                                                                </button>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                `;
+                            }
+                        }
+                    ],
+                    lengthMenu: [10, 25, 50, 100],
+                    pageLength: 10,
+                    language: {
+                        emptyTable: 'No loan repayment records found',
+                        zeroRecords: 'No matching loan repayment records found',
+                        processing: '<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>'
+                    },
+                    drawCallback: function () {
+                        // Initialize tooltips
+                        if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
+                            document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) {
+                                try {
+                                    new bootstrap.Tooltip(el);
+                                } catch (e) { }
+                            });
+                        }
+                    }
+                });
+
+                isDataTableInitialized = true;
+            }
+
+            // Load data
+            function loadLoanRepaymentData() {
+                initLoanRepaymentDataTable();
+                if (window.loanRepaymentTable) {
+                    window.loanRepaymentTable.ajax.reload(null, false);
+                }
+            }
+
+            // Reset filters
+            function resetFilters() {
+                var form = document.getElementById('loanRepaymentFilterForm');
+                if (form) form.reset();
+
+                $('#executionDateFilters').addClass('d-none');
+                $('#toggleExecutionDates').prop('checked', false);
+                $('#fileUploadId').val('');
+
+                // Reset file statistics
+                $('#fileStatisticsContainer').html(`
+                                    <div class="text-center py-4 text-muted">
+                                        <i class="mdi mdi-file-document-outline mdi-48px"></i>
+                                        <p class="mt-2">Click on "Loan Execution Details" from any file to view statistics</p>
+                                    </div>
+                                `);
+
+                loadLoanRepaymentData();
+                showAppAlert('Filters reset', 3);
+            }
+
+            // Show details modal
+            function showLoanRepaymentDetails(id) {
+                if (!id) {
+                    showAppAlert('Missing ID for details', 0);
+                    return;
+                }
+
+                var modalEl = document.getElementById('loanRepaymentDetailsModal');
+                if (!modalEl) {
+                    showAppAlert('Details modal not found', 0);
+                    return;
+                }
+
+                var $modalBody = $('#loanRepaymentDetailsModal .modal-body');
+                $modalBody.html(`
+                                    <div class="text-center py-5">
+                                        <div class="spinner-border text-primary" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                        <p class="mt-2 text-muted">Loading details...</p>
+                                    </div>
+                                `);
+
+                var modal = new bootstrap.Modal(modalEl);
+                modal.show();
+
+                $.ajax({
+                    url: loanRepaymentDetailsUrl,
+                    type: 'GET',
+                    data: { id: id },
+                    success: function (html) {
+                        $modalBody.html(html || '<div class="text-center text-muted py-4">No details available.</div>');
+                    },
+                    error: function (xhr) {
+                        $modalBody.html(`
+                                            <div class="text-center text-danger py-4">
+                                                <i class="mdi mdi-alert-circle mdi-48px"></i>
+                                                <p class="mt-2">Error loading details. Please try again.</p>
+                                                <small>${xhr.status} - ${xhr.statusText}</small>
+                                            </div>
+                                        `);
+                        showAppAlert('Failed to load details', 0);
+                        console.error('Details load failed', xhr);
+                    }
+                });
+            }
+
+            // Event handlers
+            $(document).ready(function () {
+                // Toggle filter visibility
+                $('.filter-toggle').on('change', function () {
+
+                    const target = $(this).data('target');
+
+                    if (this.checked) {
+                        $(target).removeClass('d-none').hide().slideDown(200);
+                    } else {
+                        $(target).slideUp(200, function () {
+                            $(this).addClass('d-none');
+                            $(this).find('input, select').val('');
+                        });
+                    }
+                });
+
+                // Get fileUploadId from URL parameter
+                var fileUploadId = getUrlParameter('fileUploadId');
+
+                // If fileUploadId exists in URL, load file statistics
+                if (fileUploadId) {
+                    $('#fileUploadId').val(fileUploadId);
+                    if (typeof window.loadFileStatistics === 'function') {
+                        window.loadFileStatistics(fileUploadId);
+                    }
+                }
+
+                // Toggle execution date filters
+                $('#toggleExecutionDates').change(function () {
+                    $('#executionDateFilters').toggleClass('d-none');
+                });
+
+                // Apply filter button
+                $('#applyFilterBtn').off('click').on('click', function (e) {
+                    e.preventDefault();
+                    loadLoanRepaymentData();
+                });
+
+                // Reset filter button
+                $('#resetFilterBtn').off('click').on('click', function (e) {
+                    e.preventDefault();
+                    resetFilters();
+                    $('.filter-toggle').prop('checked', false);
+                    $('#dynamicFilters > div').addClass('d-none');
+                    $('#loanRepaymentFilterForm')[0].reset();
+                });
+
+                // Enter key to apply filters
+                $(document).off('keypress', '#loanRepaymentFilterForm input').on('keypress', '#loanRepaymentFilterForm input', function (e) {
+                    if (e.which === 13) {
+                        e.preventDefault();
+                        loadLoanRepaymentData();
+                    }
+                });
+
+                // Details button handler
+                $(document).off('click', '.btn-details').on('click', '.btn-details', function (e) {
+                    e.preventDefault();
+                    var id = $(this).data('id');
+                    showLoanRepaymentDetails(id);
+                });
+
+                // Load initial data
+                loadLoanRepaymentData();
+
+                // Populate branches dropdown - FIXED URL
+                $.ajax({
+                    url: getBranchesUrl,
+                    type: 'GET',
+                    success: function (data) {
+                        var $dropdown = $('#branchId');
+                        $dropdown.find('option:not(:first)').remove();
+                        if (data && data.length) {
+                            $.each(data, function (i, branch) {
+                                $dropdown.append($('<option>', {
+                                    value: branch.Id || branch.id,
+                                    text: branch.Name || branch.name
+                                }));
+                            });
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.warn('Failed to load branches:', error);
+                    }
+                });
+            });
+        })();
+    </script>
+}

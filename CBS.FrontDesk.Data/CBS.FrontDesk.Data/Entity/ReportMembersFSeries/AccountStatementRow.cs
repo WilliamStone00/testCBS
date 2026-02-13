@@ -277,6 +277,11 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
 
     public class LoanSituationRow
     {
+        public decimal TotalOutstanding { get; set; }
+        public decimal ActiveLoans { get; set; }
+        public decimal DelinquentLoans { get; set; }
+        public decimal ParAmount { get; set; }
+
         // Header Information    
         public string ReportTitle { get; set; }
         public string BankName { get; set; }
@@ -419,6 +424,10 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
         public string ReceiptNumber { get; set; }
         public string PaymentMethod { get; set; }
         public decimal PaidAmount { get; set; }
+        public decimal TotalOutstanding { get; set; }
+        public decimal ActiveLoans { get; set; }
+        public decimal DelinquentLoans { get; set; }
+        public decimal parAmount { get; set; }
         public DateTime ActualPaymentDate { get; set; }
         public string CollectedBy { get; set; }
         public string Remarks { get; set; }
@@ -640,7 +649,7 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
     {
         public int ReportType { get; set; }
         public DateTime GeneratedAt { get; set; }
-        public ReportFilter Filter { get; set; }
+       
 
         public string MemberReference { get; set; }
 
@@ -674,6 +683,7 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
         public string ContractCode { get; set; }
         public string LoanType { get; set; }
         public string Status { get; set; }
+        public string AccountNumber { get; set; }
 
         public decimal Balance { get; set; }
         public decimal Principal { get; set; }
@@ -699,31 +709,9 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
         public DateTime DisbursementDate { get; set; }
     }
 
-    // End of Report Response and Loan History 
 
 
-    public class ReportFilters
-    {
-        public int ReportType { get; set; }
-        public string MemberReference { get; set; }
 
-        public List<string> AccountIds { get; set; }
-        public List<string> AccountNumbers { get; set; }
-
-        public string AccountId { get; set; }
-        public string AccountNumber { get; set; }
-        public string LoanId { get; set; }
-        public string LoanStatus { get; set; }
-
-        public int LoanRepaymentMode { get; set; }
-
-        public DateTime OperationDate { get; set; }
-        public DateTime DateFrom { get; set; }
-        public DateTime DateTo { get; set; }
-
-        public string BranchId { get; set; }
-        public string BankId { get; set; }
-    }
 
 
     // loanrepayment - Account Statement - Loan History
@@ -731,7 +719,7 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
     {
         public int ReportType { get; set; }
         public DateTime GeneratedAt { get; set; }
-        public ReportFilters Filter { get; set; }
+        
 
         public string MemberReference { get; set; }
         public object MemberSituation { get; set; }   // null in JSON
