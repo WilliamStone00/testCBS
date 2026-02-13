@@ -1022,8 +1022,11 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public string RepaymentType { get; set; }
         public decimal Paid { get; set; }
         public string BranchId { get; set; }
+        public string BranchName { get; set; }
         public decimal Balance { get; set; }
         public string BankId { get; set; }
+        public string BankName { get; set; }
+        public string CustomerName { get; set; }
         public DateTime DateOfPayment { get; set; }
         public bool IsCompleted { get; set; }
         public bool IsReversal { get; set; }
@@ -1053,7 +1056,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public decimal Balance { get; set; }
         public string BranchId { get; set; }
         public string BankId { get; set; }
-
+        public string TransactonCode { get; set; }
         public Refund Refund { get; set; }
     }
     public class LoanAmortization

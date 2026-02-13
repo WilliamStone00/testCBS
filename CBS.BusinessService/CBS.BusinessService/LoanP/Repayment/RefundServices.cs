@@ -6,6 +6,7 @@ using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Entity.LoanRepayment;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
+using Microsoft.AspNet.SignalR.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -72,9 +73,11 @@ namespace CBS.BusinessService.Repayment
             {
                 var url = string.Format(APICallHelper.RefundById, Uri.EscapeDataString(id));
                 var resp = await _loanApiHelper.GetAsync<ResponseObject<Refund>>(url);
-
+                
                 if (resp?.IsSuccess == true)
                     return resp.ApiResponseData?.Data;
+
+                resp.ApiResponseData.Data.BankName = GetBankName();
 
                 return null;
             }

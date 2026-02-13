@@ -1,5 +1,6 @@
 ﻿using CBS.BusinessService.AccountingV2.GLSystemReconciliation;
 using CBS.BusinessService.AccountingV2.InterestProductConfig;
+using CBS.BusinessService.AccountingV2.JournalHead;
 using CBS.BusinessService.Config;
 using CBS.BusinessService.LoanP.Repayment;
 using CBS.BusinessService.Repayment;
@@ -7,6 +8,7 @@ using CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Entity.LoanRepayment;
+using DocumentFormat.OpenXml.Drawing;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
@@ -102,6 +104,30 @@ namespace CBS.FrontDesk.UI.Controllers.Refundement
 
 
 
+        public async Task<ActionResult> GetDetails(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+                return new HttpStatusCodeResult(400, "Journal Entry ID is required");
+
+            Data.Entity.LoanConf.Refund refund = null;
+
+            try
+            {
+                // 1️⃣ Get Journal Entry
+                refund = await _refundServices.GetRefundById(id);
+
+                var counterpartyBranch = await _branchServices.GetBranch(refund.BranchId);
+                refund.BranchName = counterpartyBranch?.Name ?? "—";
+
+                
+            }
+            catch (Exception ex)
+            {
+                return new HttpStatusCodeResult(404, ex.Message);
+            }
+
+            return PartialView("_RefundDetail", refund);
+        }
 
 
 
@@ -223,7 +249,7 @@ namespace CBS.FrontDesk.UI.Controllers.Refundement
                 if (!Directory.Exists(directoryPath))
                     Directory.CreateDirectory(directoryPath);
 
-                string filePath = Path.Combine(directoryPath, fileName);
+                string filePath = System.IO.Path.Combine(directoryPath, fileName);
                 string exportedBy = Session["FullName"]?.ToString() ?? "System";
 
                 // ✅ Generate Excel
