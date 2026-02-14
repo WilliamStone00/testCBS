@@ -7571,6 +7571,8 @@
     <Content Include="AppFiles\ManualDailyCollection\Manualdaillycollectiontemplete.xlsx" />
     <Content Include="AppFiles\AffiliateAccountUpload\BAPCCUL_ACCOUNTS2.xlsx" />
     <Content Include="AppFiles\AffiliateAccountUpload\SampleBalanceSheet2.xlsx" />
+    <Content Include="Scripts\Js\Crud\DailyCollection\ManualDailyCollection\ManualDailyCollection.js" />
+    <Content Include="Scripts\Js\Crud\FileUpload\FileUploadQuery.js" />
     <Content Include="Views\MobileMoneyConfigV2\Index.cshtml" />
     <Content Include="Views\MobileMoneyConfigV2\_Create.cshtml" />
     <Content Include="Views\MobileMoneyConfigV2\_Data.cshtml" />
@@ -10823,6 +10825,7 @@
     <Content Include="Views\SalaryUpload\_LoanRepaymentDataTable.cshtml" />
     <Content Include="Views\SalaryUpload\_LoanRepaymentDetails.cshtml" />
     <Content Include="Views\SalaryUpload\_FileStatistics.cshtml" />
+    <None Include="Scripts\Js\Crud\FeeRange\.editorconfig" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

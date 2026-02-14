@@ -167,87 +167,143 @@
 
             // 6) Action — includes Toggle Visibility in MAIN context
             {
-                
-                data: null, orderable: false, searchable: false,
+                data: null,
+                orderable: false,
+                searchable: false,
                 render: function (row) {
-                    console.log(row)
+
+                    console.log(row);
+
                     const ctx = $("#actionParam").val() || "fileupload_main";
                     let items = "";
 
+                    // ✅ Check if file type is Analysis OR SalaryReExecution
+                    const isReExecutionType =
+                        row.FileType === "Analysis" ||
+                        row.FileType === "SalaryReExecution";
+
                     if (ctx === "fileupload_main") {
+
                         const toPrivate = !row.PrivateView;
                         const toggleText = row.PrivateView ? "Make Public" : "Make Private";
                         const toggleIcon = row.PrivateView ? "mdi-earth" : "mdi-lock";
 
                         items = `
-                         <li>
-                              <a class="dropdown-item"
-                                 href="/SalaryUpload/DownloadFile?fileId=${row.Id}&fileType=${row.FileType}">
-                                <i class="mdi mdi-download me-2"></i>Download
-                              </a>
-                            </li>
+                <li>
+                    <a class="dropdown-item"
+                       href="/SalaryUpload/DownloadFile?fileId=${row.Id}&fileType=${row.FileType}">
+                        <i class="mdi mdi-download me-2"></i>Download
+                    </a>
+                </li>
 
-                          <li>
-                            <a class="dropdown-item" target="_blank" href="/SalaryUpload/Detail?fileUploadid=${row.Id}">
-                              <i class="mdi mdi-information-outline me-2"></i>Details
-                            </a>
-                          </li>
-                          <li>
-                            <button type="button" class="dropdown-item" onclick="togglePrivate('${row.Id}', ${toPrivate})">
-                              <i class="mdi ${toggleIcon} me-2"></i>${toggleText}
-                            </button>
-                          </li>
-                          <li>
-                            <button type="button" class="dropdown-item text-danger" onclick="deleteUpload('${row.Id}')">
-                              <i class="mdi mdi-delete-outline me-2"></i>Delete
-                            </button>
-                          </li>`;
+                <li>
+                    <a class="dropdown-item" target="_blank"
+                       href="/SalaryUpload/Detail?fileUploadid=${row.Id}">
+                        <i class="mdi mdi-information-outline me-2"></i>Details
+                    </a>
+                </li>`;
+
+                        // ✅ Show Loan Execution Details only for allowed file types
+                        if (isReExecutionType) {
+                            items += `
+                    <li>
+                        <a class="dropdown-item loan-execution-details"
+                           href="javascript:void(0);"
+                           data-id="${row.Id}">
+                            <i class="mdi mdi-file-document-outline me-2 text-warning"></i>
+                            Loan Execution Details
+                        </a>
+                    </li>`;
+                        }
+
+                        items += `
+                <li>
+                    <button type="button" class="dropdown-item"
+                            onclick="togglePrivate('${row.Id}', ${toPrivate})">
+                        <i class="mdi ${toggleIcon} me-2"></i>${toggleText}
+                    </button>
+                </li>
+
+                <li>
+                    <button type="button" class="dropdown-item text-danger"
+                            onclick="deleteUpload('${row.Id}')">
+                        <i class="mdi mdi-delete-outline me-2"></i>Delete
+                    </button>
+                </li>`;
                     }
-                    else if (ctx === "analyser") {
-                        items = `
-                          <li>
-                            <a class="dropdown-item" target="_blank" href="/SalaryAnalyzer/Detail?fileUploadid=${row.Id}">
-                              <i class="mdi mdi-chart-line me-2"></i>Detail
-                            </a>
-                          </li>`;
-                    } else if (ctx === "executer") {
-                        items = `
-                         <li>
-                          <a class="dropdown-item"
-                             href="/SalaryUpload/DownloadFile?fileId=${row.Id}&fileType=${row.FileType}">
-                            <i class="mdi mdi-download me-2"></i>Download
-                          </a>
-                        </li>
 
-                          <li>
-                            <a class="dropdown-item" target="_blank" href="/SalaryExecution/Detail?fileUploadid=${row.Id}&mode=execute">
-                              <i class="mdi mdi-play-circle-outline me-2"></i>Execute
-                            </a>
-                          </li>
-                          <li><hr class="dropdown-divider" /></li>
-                          <li>
-                            <button type="button" class="dropdown-item text-danger" onclick="deleteUpload('${row.Id}')">
-                              <i class="mdi mdi-delete-outline me-2"></i>Delete
-                            </button>
-                          </li>`;
+                    else if (ctx === "analyser") {
+
+                        items = `
+                <li>
+                    <a class="dropdown-item" target="_blank"
+                       href="/SalaryAnalyzer/Detail?fileUploadid=${row.Id}">
+                        <i class="mdi mdi-chart-line me-2"></i>Detail
+                    </a>
+                </li>`;
+                    }
+
+                    else if (ctx === "executer") {
+
+                        items = `
+                <li>
+                    <a class="dropdown-item"
+                       href="/SalaryUpload/DownloadFile?fileId=${row.Id}&fileType=${row.FileType}">
+                        <i class="mdi mdi-download me-2"></i>Download
+                    </a>
+                </li>
+
+                <li>
+                    <a class="dropdown-item" target="_blank"
+                       href="/SalaryExecution/Detail?fileUploadid=${row.Id}&mode=execute">
+                        <i class="mdi mdi-play-circle-outline me-2"></i>Execute
+                    </a>
+                </li>
+
+                <li><hr class="dropdown-divider" /></li>
+
+                <li>
+                    <button type="button" class="dropdown-item text-danger"
+                            onclick="deleteUpload('${row.Id}')">
+                        <i class="mdi mdi-delete-outline me-2"></i>Delete
+                    </button>
+                </li>`;
                     }
 
                     return `
-                        <div class="dropdown">
-                          <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                            <i class="mdi mdi-cog-outline me-1"></i>Action
-                          </button>
-                          <ul class="dropdown-menu dropdown-menu-end">${items}</ul>
-                        </div>`;
+            <div class="dropdown">
+                <button class="btn btn-sm btn-outline-secondary dropdown-toggle"
+                        type="button"
+                        data-bs-toggle="dropdown">
+                    <i class="mdi mdi-cog-outline me-1"></i>Action
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    ${items}
+                </ul>
+            </div>`;
                 }
-            
             }
+
         ],
         // sort by UploadedOn (index 5) desc by default
         order: [[4, "desc"]],
         deferLoading: 0 // do not auto-load; wait for Apply
     });
     // Robust .NET/ISO date parser
+
+    $(document).on("click", ".loan-execution-details", function (e) {
+        e.preventDefault();
+
+        const fileUploadId = $(this).data("id");
+
+        if (!fileUploadId) {
+            appalert("FileUpload ID is missing.", 2);
+            return;
+        }
+
+        const url = `/SalaryUpload/LoanRepaymentListing?id=${fileUploadId}`;
+        window.open(url, '_blank');
+    });
  
     $("#applyFilterBtn").on("click", function (e) { e.preventDefault(); $card.hide(); table.ajax.reload(); });
     $("#resetFilterBtn").on("click", function (e) {
