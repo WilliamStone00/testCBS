@@ -62,7 +62,12 @@
                         @Model.DateOfPayment.ToString("dd/MM/yyyy HH:mm:ss")
                     </td>
                 </tr>
-
+                <tr>
+                    <td class="fw-bold">Payment Date</td>
+                    <td>
+                        @Model.TransactionReference
+                    </td>
+                </tr>
 
 
                 <tr>
@@ -139,9 +144,9 @@
 
                 <!-- 🔥 MOST IMPORTANT FIRST -->
                 @*<tr>
-                    <td class="fw-bold">Loan Contract Code</td>
-                    <td>@Model.Loan.LoanContractCode</td>
-                </tr>*@
+            <td class="fw-bold">Loan Contract Code</td>
+            <td>@Model.Loan.LoanContractCode</td>
+        </tr>*@
 
                 <tr>
                     <td class="fw-bold">Loan Amount</td>
