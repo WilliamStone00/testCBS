@@ -126,11 +126,11 @@ namespace CBS.BusinessService.BulkOperations
 
             // Return an empty DataTable if the request fails
             return new CustomDataTable<List<BulkOperationData>>(
-                draw: Convert.ToInt32(loansDataTableQuery.DataTableOptions.draw),
+                draw: Convert.ToInt32(loansDataTableQuery.Options.draw),
                 recordsTotal: 0,
                 recordsFiltered: 0,
                 data: new List<BulkOperationData>(), // No data
-                dataTableOptions: loansDataTableQuery.DataTableOptions
+                dataTableOptions: loansDataTableQuery.Options
             );
         }
 

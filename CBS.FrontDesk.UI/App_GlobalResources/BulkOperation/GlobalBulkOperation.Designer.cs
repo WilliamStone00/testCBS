@@ -599,6 +599,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Filter.
+        /// </summary>
+        internal static string Filter {
+            get {
+                return ResourceManager.GetString("Filter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Filter by active, inactive,completed, or suspended accounts.
         /// </summary>
         internal static string FilterByActiveInactiveCompletedOrSuspendedAccounts {
@@ -953,6 +962,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Review.
+        /// </summary>
+        internal static string Review {
+            get {
+                return ResourceManager.GetString("Review", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Run bulk simulations and approvals safely — filter, preview, then execute.
         /// </summary>
         internal static string Run_bulk_simulations_and_approvals_safely_filter_preview_then_execute {
@@ -1031,6 +1049,15 @@ namespace Resources {
         internal static string ShowsTheMostCurrentTransferStatus {
             get {
                 return ResourceManager.GetString("ShowsTheMostCurrentTransferStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Simulate.
+        /// </summary>
+        internal static string Simulate {
+            get {
+                return ResourceManager.GetString("Simulate", resourceCulture);
             }
         }
         
@@ -1215,6 +1242,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Simulation Details Filters.
+        /// </summary>
+        internal static string Simulation_Details_Filters {
+            get {
+                return ResourceManager.GetString("Simulation_Details_Filters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Simulation Type is mandatory for audit classification. If type is “Other”, provide a clear description.
         /// </summary>
         internal static string Simulation_Type_is_mandatory_for_audit_classification_If_type_is_Other_provide_a_clear_description {
@@ -1374,7 +1410,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Use &lt;b&gt;Branch&lt;/b&gt; + &lt;b&gt;Status&lt;/b&gt; + &lt;b&gt;Date Range&lt;/b&gt; together to narrow results before opening details or approvals..
+        ///   Looks up a localized string similar to Use Branch + Status + Date Range together to narrow results before opening details or approvals..
         /// </summary>
         internal static string Use_Branch_Status_Date_Range_together_to_narrow_results_before_opening_details_or_approvals {
             get {

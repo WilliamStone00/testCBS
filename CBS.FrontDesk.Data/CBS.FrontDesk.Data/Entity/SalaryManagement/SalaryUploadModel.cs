@@ -11,6 +11,146 @@ using System.Web.UI.WebControls;
 
 namespace CBS.FrontDesk.Data.Entity.SalaryManagement
 {
+    public class LoanRepaymentsExecutionDto
+    {
+        public string Id { get; set; }
+        public string BranchId { get; set; }
+        public string SalaryCode { get; set; }
+        public string TransactionReference { get; set; }
+        public string Status { get; set; }
+        public string FileUploadId { get; set; }
+
+        public DateTimeOffset? ExecutionDate { get; set; }
+        public DateTimeOffset? RefundDate { get; set; }
+
+        public string Description { get; set; }
+        public string LoanId { get; set; }
+        public string Error { get; set; }
+
+        public decimal? PrincipalAmount { get; set; }
+        public decimal? Interest { get; set; }
+        public decimal? ChargeAmount { get; set; }
+        public decimal? TaxAmount { get; set; }
+        public decimal? TotalRepaymentAmount { get; set; }
+
+        public string MemberReference { get; set; }
+        public string BranchName { get; set; }
+        public string BranchCode { get; set; }
+
+        public string PaymentMethod { get; set; }
+        public string PaymentChannel { get; set; }
+
+        public bool? IsBGBuilder { get; set; }
+        public bool? SalaryDebitPatched { get; set; }
+
+        public DateTimeOffset? SalaryDebitPatchedAtUtc { get; set; }
+        public string SalaryDebitPatchNote { get; set; }
+
+        public DateTimeOffset? CreatedDate { get; set; }
+        public string SalaryDebitPatchRef { get; set; }
+    }
+
+    public class FileDetailsDto
+    {
+        public string Id { get; set; }
+        public string FileName { get; set; }
+        public string FilePath { get; set; }
+        public string FileHash { get; set; }
+
+        public string BranchId { get; set; }
+        public string BranchName { get; set; }
+
+        public string UploadedBy { get; set; }
+        public DateTimeOffset UploadedOn { get; set; }
+
+        public string FileUploadId { get; set; }
+        public string FileCategory { get; set; }
+        public string SalaryProcessingStatus { get; set; }
+
+        public bool IsAvalaibleForExecution { get; set; }
+
+        public string FileCode { get; set; }
+        public string StandingOrderSourceChartOfAccountId { get; set; }
+
+        public bool PrivateView { get; set; }
+        public string FileType { get; set; }
+
+        public int TotalBranchesThatHaveExecutedPayrol { get; set; }
+        public int TotalBranchesInvolvedInPayrolProcessing { get; set; }
+    }
+
+
+    public class LoanRepaymentDetailsDto
+    {
+        public string Id { get; set; }
+        public string BranchId { get; set; }
+        public string SalaryCode { get; set; }
+        public string TransactionReference { get; set; }
+        public string Status { get; set; }
+        public string FileUploadId { get; set; }
+
+        public DateTimeOffset? ExecutionDate { get; set; }
+        public DateTimeOffset? RefundDate { get; set; }
+
+        public string Description { get; set; }
+        public string LoanId { get; set; }
+        public string Error { get; set; }
+
+        public decimal PrincipalAmount { get; set; }
+        public decimal Interest { get; set; }
+        public decimal ChargeAmount { get; set; }
+        public decimal TaxAmount { get; set; }
+        public decimal TotalRepaymentAmount { get; set; }
+
+        public string MemberReference { get; set; }
+        public string BranchName { get; set; }
+        public string BranchCode { get; set; }
+
+        public string PaymentMethod { get; set; }
+        public string PaymentChannel { get; set; }
+
+        public bool IsBGBuilder { get; set; }
+        public bool SalaryDebitPatched { get; set; }
+
+        public DateTimeOffset? SalaryDebitPatchedAtUtc { get; set; }
+        public string SalaryDebitPatchNote { get; set; }
+
+        public DateTimeOffset? CreatedDate { get; set; }
+        public string SalaryDebitPatchRef { get; set; }
+    }
+
+
+
+    public class LoanRepaymentsExecutiontDataTableQuery
+    {
+        public DataTableOptions DataTableOptions { get; set; }
+        public LoanRepaymentsExecutiontDataTableQuery() { DataTableOptions = new DataTableOptions(); }
+
+        public string BranchId { get; set; }
+        public string BranchCode { get; set; }
+        public string SalaryCode { get; set; }
+        public string Status { get; set; }
+        public string FileUploadId { get; set; }
+        public string LoanId { get; set; }
+        public string MemberReference { get; set; }
+        public string TransactionReference { get; set; }
+
+        public DateTime? FromExecutionDate { get; set; }
+        public DateTime? ToExecutionDate { get; set; }
+
+        public bool? IsBGBuilder { get; set; }
+        public bool? SalaryDebitPatched { get; set; }
+
+        public string PaymentMethod { get; set; }
+        public string PaymentChannel { get; set; }
+
+        public decimal? MinAmount { get; set; }
+        public decimal? MaxAmount { get; set; }
+    }
+
+
+
+
     public class SalaryUploadModel
     {
         public string Id { get; set; }
@@ -62,6 +202,7 @@ namespace CBS.FrontDesk.Data.Entity.SalaryManagement
         public SalaryAnalysisCommand SalaryAnalysisCommand { get; set; }
         public ActivateSalaryFileCommand ActivateSalaryFileCommand { get; set; }
         public List<BranchPayrollSummary> BranchPayrollSummaries { get; set; }
+
         public SalaryUploadModelCarrier()
         {
             SalaryAnalysisCommand=new SalaryAnalysisCommand();

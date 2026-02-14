@@ -49,35 +49,61 @@ namespace CBS.FrontDesk.UI.Controllers.Series
             _affiliateAccountService = affiliateAccountService;
         }
 
-        public async Task< bool> LoadMemberAccountsAndLoans(string key, string loanFilter)
-        {
-            // 1. Get CashDesk by account number
-            var cashDesk = await _cashDeskService.GetAccountByAccountNumberSearch(key, "F5");
 
-            // 2. Prepare Accounts dropdown
-            ViewBag.Accounts = cashDesk.Accounts.Select(a => new SelectListItem
+        public async Task<bool> LoadMemberAccountsAndLoans(string key, string loanFilter)
+        {
+            var cashDesk = await _cashDeskService
+                .GetAccountByAccountNumberSearch(key, "F5");
+
+            if (cashDesk == null)
+                return false;
+
+            /* ===================== ACCOUNTS ===================== */
+
+            var accounts = cashDesk.Accounts.ToList();
+
+            // 🔹 Multi-select list (with "All Accounts")
+            var allAccountIds = string.Join(",", accounts.Select(a => a.id));
+
+            var accountMultiSelectList = accounts.Select(a => new SelectListItem
             {
                 Value = a.id,
                 Text = $"{a.accountNumber} - {a.accountName}"
             }).ToList();
 
-            // 3. Load Loans for the member
+            accountMultiSelectList.Insert(0, new SelectListItem
+            {
+                Value = allAccountIds,
+                Text = "All Accounts"
+            });
+
+            ViewBag.Accounts = accountMultiSelectList;
+
+            // 🔹 Single-select list (NO "All Accounts")
+            ViewBag.Account = accounts.Select(a => new SelectListItem
+            {
+                Value = a.id,
+                Text = $"{a.accountNumber} - {a.accountName}"
+            }).ToList();
+
+
+            /* ===================== LOANS (SINGLE SELECT) ===================== */
+
             var loans = await _cashDeskService.GetMembersLoans(
                 cashDesk.CustomerId,
-                loanFilter = "All"
+                "All"
             );
 
-            cashDesk.Loans = loans;
-
-            // 4. Prepare Loans dropdown
             ViewBag.Loans = loans.Select(l => new SelectListItem
             {
                 Value = l.Id,
                 Text = $"{l.Id} - {l.LoanType} - {l.Balance}"
             }).ToList();
-                 
-                return true;
+
+            return true;
         }
+
+
 
         public async Task<ActionResult> LoanDetails(string loanId)
         {
@@ -151,30 +177,7 @@ namespace CBS.FrontDesk.UI.Controllers.Series
                 }
             });
         }
-        //[HttpPost]
-        //public async Task<ActionResult> BlockMemberAccount(string loanId, string accountNumber, decimal amount, string comment)
-        //{
-        //    // Load account to validate
-        //    var acct = await _accountService.GetAccountByNumber(accountNumber);
-        //    if (acct == null) return Json(new { ok = false, msg = "Account not found." });
-
-        //    var available = acct.Balance - acct.BlockedAmount;
-        //    if (amount <= 0) return Json(new { ok = false, msg = "Amount must be > 0." });
-        //    if (amount > available) return Json(new { ok = false, msg = "Amount cannot exceed available balance." });
-
-        //    // Call your blocking service / API
-        //    var res = await _accountService.BlockAccount(new BlockAccountCommand
-        //    {
-        //        LoanId = loanId,
-        //        AccountNumber = accountNumber,
-        //        Amount = amount,
-        //        Comment = comment
-        //    });
-
-        //    return Json(new { ok = res.IsSuccess, msg = res.IsSuccess ? "Account blocked successfully." : res.Message });
-        //}
-
-
+      
         public async Task<ActionResult> Index()
         {
             ViewBag.Branches=await _branchServices.GetBranches();

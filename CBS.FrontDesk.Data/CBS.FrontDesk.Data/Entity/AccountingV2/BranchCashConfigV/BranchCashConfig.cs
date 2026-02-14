@@ -70,6 +70,8 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.BranchCashConfigV
         [Required(ErrorMessage = "Cash reversal account is required.")]
         public string CashReversalAccountId { get; set; }
 
+        public string SmsExpenseAccountId { get; set; }
+
     }
 
 

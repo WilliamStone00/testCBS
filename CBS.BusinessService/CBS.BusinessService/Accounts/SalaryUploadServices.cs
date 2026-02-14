@@ -2,6 +2,7 @@
 using BusinessServices;
 using CBS.API.Helper;
 using CBS.FrontDesk.Data.Entity;
+using CBS.FrontDesk.Data.Entity.Accounting_V2.FileUpload;
 using CBS.FrontDesk.Data.Entity.AccountingDayObject;
 using CBS.FrontDesk.Data.Entity.CashCeilingManagement;
 using CBS.FrontDesk.Data.Entity.DataTable;
@@ -116,6 +117,25 @@ namespace CBS.BusinessService.Accounts
                     return couApiResponse.ApiResponseData.Data;
                 }
                 return new FileDownloadDto { ErrorMessage = couApiResponse.Message };
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public async Task<FileDownloadDto> DownloadExecutionFile(string fileId)
+        {
+            try
+            {
+                var couApiResponse = await _transactionApiHelper.PostAsync<ResponseObject<FileDownloadDto>>(APICallHelper.DownloadReexecution,new { fileUploadId = fileId});
+
+                if (couApiResponse.IsSuccess)
+                {
+                    // FileDownloadDto should contain file data and metadata
+                    return couApiResponse.ApiResponseData.Data;
+                }
+                return null;
 
             }
             catch (Exception ex)
@@ -384,6 +404,37 @@ namespace CBS.BusinessService.Accounts
                     .UploadFileAsync<ServiceResponse<SalaryUploadModelSummaryDto>>(
                         file: model.File,
                         apiUrl: APICallHelper.CreateSalaryUpload,
+                        fields: fields
+                    );
+
+                if (response.IsSuccess)
+                {
+                    GetExecutionMessages(response, true, null, MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                    return ExecutionMessage;
+                }
+
+                GetExecutionMessages(model, false, null, MessagesResults.Failed,
+                    ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+            }
+            catch (Exception ex)
+            {
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
+        public async Task<ExecutionMessages> ReexecuteSalaryUploadFile(AddSalaryUploadModelCommand model)
+        {
+            try
+            {
+                var fields = new Dictionary<string, string>  { };
+
+                var response = await _transactionApiHelper
+                    .UploadFileAsync<ServiceResponse<bool>>(
+                        file: model.File,
+                        apiUrl: APICallHelper.ReexecuteSalaryFileUpload,
+                        fileFieldName:"formFile",
                         fields: fields
                     );
 

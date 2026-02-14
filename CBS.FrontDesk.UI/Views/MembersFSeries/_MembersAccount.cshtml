@@ -31,6 +31,7 @@
                 <table class="table table-hover" id="myDataTableT">
                     <thead class="table-light">
                         <tr>
+                            <th>S.N</th>
                             <th>Account number</th>
                             <th>Ordinary accounts</th>
                             <th>Balance</th>
@@ -39,14 +40,18 @@
                             <th style="display:none">Balance</th>
                             <th style="display:none">Blocked</th>
                             <th>Account Status</th>
-                            <th>Print</th>
+                            @*<th>Print</th>*@
                         </tr>
                     </thead>
                     <tbody>
+                        @{
+                            int index = 1;
+                        }
                         @foreach (var d in Model.Accounts.OrderBy(t => t.accountType))
                         {
                             decimal ActualBalance = d.balance - d.blockedAmount;
                             <tr>
+                                <td style="width:5%" class="text-center">@index</td>
                                 <td style="width: 15%">@d.accountNumber</td>
                                 <td style="width: 37%">@d.product.Name</td>
                                 <td style="width: 10%" class="text-end">@d.balance.ToString("N2")</td>
@@ -61,30 +66,95 @@
                                     <input type="number" class="form-control blocked-input shadow-input-boxes" readonly value="@d.blockedAmount">
                                 </td>
 
-                                <td style="width: 8%" class="text-center">@d.status</td>
-                                <td style="width: 10%" class="text-center">
+                                <!-- In your table cell, use inline logic -->
+                                <td style="width: 8%" class="text-center">
+                                    @{
+                                        var status = d.status ?? "";
+                                        var badgeClass = "";
+                                        var icon = "";
+
+                                        if (!string.IsNullOrWhiteSpace(status))
+                                        {
+                                            switch (status.Trim().ToLowerInvariant())
+                                            {
+                                                case "active":
+                                                    badgeClass = "bg-primary text-white";
+                                                    icon = "✔️";
+                                                    break;
+
+                                                case "inactive":
+                                                    badgeClass = "bg-light text-dark border";
+                                                    icon = "⏸️";
+                                                    break;
+
+                                                case "closed":
+                                                    badgeClass = "bg-secondary text-white";
+                                                    icon = "🔒";
+                                                    break;
+
+                                                case "blocked":
+                                                    badgeClass = "bg-danger text-white";
+                                                    icon = "⛔";
+                                                    break;
+
+                                                case "suspended":
+                                                    badgeClass = "bg-warning text-dark";
+                                                    icon = "⚠️";
+                                                    break;
+
+                                                case "dormant":
+                                                    badgeClass = "bg-info text-dark";
+                                                    icon = "💤";
+                                                    break;
+
+                                                case "inprogress":
+                                                    badgeClass = "bg-secondary text-white";
+                                                    icon = "🔄";
+                                                    break;
+
+                                                case "pending":
+                                                    badgeClass = "bg-purple text-white";
+                                                    icon = "⏳";
+                                                    break;
+
+                                                default:
+                                                    badgeClass = "bg-light text-muted border";
+                                                    icon = "❓";
+                                                    break;
+                                            }
+                                        }
+
+                                    }
+                                    <span class="badge rounded-pill @badgeClass">
+                                        @icon @d.status
+                                    </span>
+                                </td>
+
+                                @*<td style="width: 10%" class="text-center">
                                     <a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space"
                                        onclick="PrintSingleObject('MembersFSeries', '@d.accountNumber','customer_account_transaction_rpt','ReportParameterLess')"
                                        data-bs-toggle="tooltip" title="Print statement for @d.accountNumber">
                                         <span class="tf-icons mdi mdi-printer mdi-18px"></span>
                                     </a>
-                                </td>
+                                </td>*@
                             </tr>
-                        }
 
+                             index++; 
+                                }
                     </tbody>
                     <tfoot>
                         <tr class="table-light fw-bold text-end">
+                            <td  class="text-end"></td>
                             <td colspan="2" class="text-end">Total:</td>
                             <td class="text-black text-end">@totalBalance.ToString("N2")</td>
                             <td class="text-warning text-end">@totalBlocked.ToString("N2")</td>
                             <td class="text-info text-end">@totalActual.ToString("N2")</td>
                             <td></td>
-                            <td class="text-center">
+                            @*<td class="text-center">
                                 <button class="btn btn-outline-primary btn-sm" onclick="ModalShowUp()" title="Print all account statements">
                                     <i class="mdi mdi-printer"></i> PRINT ALL
                                 </button>
-                            </td>
+                            </td>*@
                         </tr>
                     </tfoot>
                 </table>

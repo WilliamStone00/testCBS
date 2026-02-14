@@ -2,6 +2,7 @@
 using BusinessServices;
 using CBS.API.Helper;
 using CBS.FrontDesk.Data.Entity;
+using CBS.FrontDesk.Data.Entity.Accounting_V2.Reconciliation;
 using CBS.FrontDesk.Data.Entity.AccountingDayObject;
 using CBS.FrontDesk.Data.Entity.CashCeilingManagement;
 using CBS.FrontDesk.Data.Entity.DataTable;
@@ -27,10 +28,12 @@ namespace CBS.BusinessService.Accounts
     public class FileUploadServices : BaseService
     {
         private readonly ApiCallerHelper _transactionApiHelper;
+        private readonly ApiCallerHelper _LoanApiHelper;
 
         public FileUploadServices()
         {
             _transactionApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["TransactionBaseUrl"].ToString());
+            _LoanApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["LoanBaseUrl"].ToString());
 
         }
         public async Task<ExecutionMessages> Delete(string id)
@@ -89,6 +92,85 @@ namespace CBS.BusinessService.Accounts
                 dataTableOptions: query.DataTableOptions
             );
         }
+        public async Task<CustomDataTable> LoanRepayments(LoanRepaymentsExecutiontDataTableQuery query)
+        {
+
+            if (!IsHeadOffice())
+            {
+                query.BranchId = GetBranchID();
+            }
+            // Make API call to fetch the DataTable result
+            var executionResponse = await _LoanApiHelper.PostAsync<ResponseObject<CustomDataTable>>(
+                APICallHelper.LoanRepayments,
+                query
+            );
+
+            // Return response if successful
+            if (executionResponse.IsSuccess && executionResponse.ApiResponseData != null)
+            {
+                return executionResponse.ApiResponseData.Data;
+            }
+
+
+
+            // Return an empty DataTable if the request fails
+            return new CustomDataTable(
+                draw: Convert.ToInt32(query.DataTableOptions.draw),
+                recordsTotal: 0,
+                recordsFiltered: 0,
+                data: new List<object>(), // No data
+                dataTableOptions: query.DataTableOptions
+            );
+        }
+
+        public async Task<LoanRepaymentDetailsDto> GetLoanRepaymentByIdAsync(string id)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(id))
+                    throw new ArgumentException("id is required", nameof(id));
+
+                var encodedId = Uri.EscapeDataString(id);
+                string formattedUrl = string.Format(APICallHelper.LoanRepaymentsDetails, encodedId);
+
+                var response = await _LoanApiHelper.GetAsync<ServiceResponse<LoanRepaymentDetailsDto>>(formattedUrl);
+
+                if (response.IsSuccess)
+                {
+                    return response.ApiResponseData?.Data;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public async Task<FileDetailsDto> GetFileDetailsByIdAsync(string id)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(id))
+                    throw new ArgumentException("id is required", nameof(id));
+
+                var encodedId = Uri.EscapeDataString(id);
+                string formattedUrl = string.Format(APICallHelper.LoanRepayFileDetails, encodedId);
+
+                var response = await _transactionApiHelper.GetAsync<ServiceResponse<FileDetailsDto>>(formattedUrl);
+
+                if (response.IsSuccess)
+                {
+                    return response.ApiResponseData?.Data;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
         public async Task<ExecutionMessages> SetPrivatePublicStatus(SetFileUploadPrivateViewCommand model)
         {
             try

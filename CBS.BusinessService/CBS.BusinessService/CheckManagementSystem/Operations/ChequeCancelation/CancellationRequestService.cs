@@ -66,7 +66,7 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeCancelation
             }
         }
 
-        public async Task<ExecutionMessages> CreateCancellationRequestAsync(CancellationRequest model)
+        public async Task<ExecutionMessages> CreateAsync(CancellationRequest model)
         {
             try
             {
@@ -91,7 +91,7 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeCancelation
             return ExecutionMessage;
         }
 
-        public async Task<ExecutionMessages> UpdateCancellationRequestAsync(CancellationRequest model)
+        public async Task<ExecutionMessages> UpdateAsync(CancellationRequest model)
         {
             try
             {

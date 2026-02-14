@@ -1,0 +1,183 @@
+﻿<div class="card">
+    <div class="card-body">
+        <!-- Column Visibility Controls with improved styling -->
+        <div class="mb-4">
+            <div class="d-flex align-items-center gap-2 flex-wrap">
+                <span class="fw-bold text-muted me-2">
+                    <i class="mdi mdi-view-column me-1"></i>
+                    Show/Hide Columns:
+                </span>
+                <div class="d-flex gap-2 flex-wrap">
+                    <!-- Branch Column -->
+                    <div class="form-check form-switch">
+                        <input class="form-check-input column-toggle" type="checkbox" role="switch"
+                               id="colBranch" checked data-column="1" style="cursor: pointer;">
+                        <label class="form-check-label fw-medium" for="colBranch" style="cursor: pointer;">Branch</label>
+                    </div>
+
+                    <!-- Member Reference Column -->
+                    <div class="form-check form-switch">
+                        <input class="form-check-input column-toggle" type="checkbox" role="switch"
+                               id="colMemberRef" checked data-column="2" style="cursor: pointer;">
+                        <label class="form-check-label fw-medium" for="colMemberRef" style="cursor: pointer;">Member Ref</label>
+                    </div>
+
+                    <!-- Salary Code Column -->
+                    <div class="form-check form-switch">
+                        <input class="form-check-input column-toggle" type="checkbox" role="switch"
+                               id="colSalaryCode" checked data-column="3" style="cursor: pointer;">
+                        <label class="form-check-label fw-medium" for="colSalaryCode" style="cursor: pointer;">Salary Code</label>
+                    </div>
+
+                    <!-- Status Column -->
+                    <div class="form-check form-switch">
+                        <input class="form-check-input column-toggle" type="checkbox" role="switch"
+                               id="colStatus" checked data-column="4" style="cursor: pointer;">
+                        <label class="form-check-label fw-medium" for="colStatus" style="cursor: pointer;">Status</label>
+                    </div>
+
+                    <!-- Principal Column -->
+                    <div class="form-check form-switch">
+                        <input class="form-check-input column-toggle" type="checkbox" role="switch"
+                               id="colPrincipal" checked data-column="5" style="cursor: pointer;">
+                        <label class="form-check-label fw-medium" for="colPrincipal" style="cursor: pointer;">Principal</label>
+                    </div>
+
+                    <!-- Interest Column -->
+                    <div class="form-check form-switch">
+                        <input class="form-check-input column-toggle" type="checkbox" role="switch"
+                               id="colInterest" checked data-column="6" style="cursor: pointer;">
+                        <label class="form-check-label fw-medium" for="colInterest" style="cursor: pointer;">Interest</label>
+                    </div>
+
+                    <!-- Charge Column -->
+                    <div class="form-check form-switch">
+                        <input class="form-check-input column-toggle" type="checkbox" role="switch"
+                               id="colCharge" checked data-column="7" style="cursor: pointer;">
+                        <label class="form-check-label fw-medium" for="colCharge" style="cursor: pointer;">Charge</label>
+                    </div>
+
+                    <!-- Tax Column (Hidden by default) -->
+                    <div class="form-check form-switch">
+                        <input class="form-check-input column-toggle" type="checkbox" role="switch"
+                               id="colTax" data-column="8" style="cursor: pointer;">
+                        <label class="form-check-label fw-medium text-muted" for="colTax" style="cursor: pointer;">Tax</label>
+                    </div>
+
+                    <!-- Total Column (Hidden by default) -->
+                    <div class="form-check form-switch">
+                        <input class="form-check-input column-toggle" type="checkbox" role="switch"
+                               id="colTotal" data-column="9" style="cursor: pointer;">
+                        <label class="form-check-label fw-medium text-muted" for="colTotal" style="cursor: pointer;">Total</label>
+                    </div>
+
+                    <!-- Actions Column -->
+                    <div class="form-check form-switch">
+                        <input class="form-check-input column-toggle" type="checkbox" role="switch"
+                               id="colActions" checked data-column="10" style="cursor: pointer;">
+                        <label class="form-check-label fw-medium" for="colActions" style="cursor: pointer;">Actions</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="d-flex gap-2 mt-2">
+                <button type="button" class="btn btn-sm btn-outline-primary" id="showAllColumns">
+                    <i class="mdi mdi-eye me-1"></i>Show All
+                </button>
+                <button type="button" class="btn btn-sm btn-outline-secondary" id="resetColumns">
+                    <i class="mdi mdi-refresh me-1"></i>Reset to Default
+                </button>
+            </div>
+
+            <small class="text-muted mt-2 d-block">
+                <i class="mdi mdi-information-outline"></i>
+                <span class="fw-medium">First 7 columns + Actions shown by default.</span>
+                Use the switches above to customize your view. Hidden columns appear dimmed.
+            </small>
+        </div>
+
+        <div class="table-responsive">
+            <table id="myDataTable" class="table table-striped table-hover table-bordered" style="width:100%">
+                <colgroup>
+                    <col style="width:10%" />
+                    <col style="width:12%" />
+                    <col style="width:10%" />
+                    <col style="width:10%" />
+                    <col style="width:8%" />
+                    <col style="width:8%" />
+                    <col style="width:8%" />
+                    <col style="width:8%" />
+                    <col style="width:8%" />
+                    <col style="width:8%" />
+                    <col style="width:10%" />
+                </colgroup>
+                <thead class="table-light">
+                    <tr>
+                        <th>Created Date</th>
+                        <th>Branch</th>
+                        <th>Member Reference</th>
+                        <th>Salary Code</th>
+                        <th>Status</th>
+                        <th class="text-end">Principal</th>
+                        <th class="text-end">Interest</th>
+                        <th class="text-end">Charge</th>
+                        <th class="text-end">Tax</th>
+                        <th class="text-end">Total</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    /* Custom styles for column toggles */
+    .form-check.form-switch {
+        padding-left: 2.5em;
+        margin-bottom: 0;
+        min-width: 100px;
+    }
+
+        .form-check.form-switch .form-check-input {
+            width: 2.5em;
+            margin-left: -2.5em;
+            float: left;
+        }
+
+            .form-check.form-switch .form-check-input:checked {
+                background-color: #0d6efd;
+                border-color: #0d6efd;
+            }
+
+            .form-check.form-switch .form-check-input:not(:checked) ~ .form-check-label {
+                color: #6c757d !important;
+                opacity: 0.7;
+            }
+
+        .form-check.form-switch .form-check-label {
+            transition: color 0.2s ease;
+            white-space: nowrap;
+        }
+
+    /* Table column resize animation */
+    .table-responsive {
+        transition: all 0.3s ease;
+    }
+
+    /* Quick action buttons */
+    .btn-sm {
+        padding: 0.25rem 0.75rem;
+        font-size: 0.875rem;
+    }
+
+    /* Gap between checkboxes */
+    .gap-2 {
+        gap: 0.75rem !important;
+    }
+</style>
+

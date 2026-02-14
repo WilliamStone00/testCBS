@@ -103,6 +103,11 @@
                         {
                             <tr><th class="bg-label">Branch Name</th><td>@Model.BranchName</td></tr>
                         }
+                        @if (!string.IsNullOrWhiteSpace(Model.BranchCode))
+                        {
+                            <tr><th class="bg-label">Branch Code</th><td>@Model.BranchCode</td></tr>
+                        }
+
                         @if (!string.IsNullOrWhiteSpace(Model.MemberReference))
                         {
                             <tr><th class="bg-label">Member Reference</th><td>@Model.MemberReference</td></tr>
@@ -159,6 +164,16 @@
                         {
                             <tr><th class="bg-label">Reconciled Journal ID</th><td>@Model.ReconciledJournalId</td></tr>
                         }
+                        @if (!string.IsNullOrWhiteSpace(Model.UpStatus))
+                        {
+                            <tr><th class="bg-label">Upstream Status</th><td>@Model.UpStatus</td></tr>
+                        }
+
+                        @if (!string.IsNullOrWhiteSpace(Model.UpStage))
+                        {
+                            <tr><th class="bg-label">Upstream Stage</th><td>@Model.UpStage</td></tr>
+                        }
+
                         <tr><th class="bg-label">Total Debit</th><td>@Model.TotalDebit.ToString("N0")</td></tr>
                         <tr><th class="bg-label">Total Credit</th><td>@Model.TotalCredit.ToString("N0")</td></tr>
                         <tr><th class="bg-label">Status</th><td>@Model.Status</td></tr>
@@ -179,13 +194,7 @@
 
         <!-- Modal Footer -->
         <div class="modal-footer">
-            <button class="btn btn-success btn-sm push-details"
-                    data-id="@Model.Id"
-                    data-branchid="@Model.BranchId"
-                    data-branchname="@Model.BranchName"
-                    data-branchcode="@Model.BranchCode">
-                <i class="mdi mdi-check-outline me-1"></i> Push
-            </button>
+
 
             <button type="button"
                     class="btn btn-secondary btn-sm"
@@ -194,101 +203,110 @@
             </button>
 
 
+            <button class="btn btn-success btn-sm push-details"
+                    data-id="@Model.Id">
+
+                <i class="mdi mdi-check-outline me-1"></i> Push
+            </button>
+
+
+
+
             <button type="button" id="btnUpdatePayload" class="btn btn-outline-primary me-2">
                 <i class="mdi mdi-pencil-outline"></i> Update Payload
             </button>
 
         </div>
     </div>
+    
 }
 
 
 <script>
-    document.getElementById('btnUpdatePayload').addEventListener('click', function () {
+                   let editor;
+        let isJsonValid = false;
 
-        const rawJson = `@Html.Raw(
-            (Model.RequestJson ?? "").Replace("\\", "\\\\").Replace("`", "\\`")
-        )`;
+        document.getElementById('btnUpdatePayload').addEventListener('click', function () {
 
-        if (!rawJson) {
-            alert('No payload available.');
-            return;
-        }
+            const rawJson = `@Html.Raw(
+                (Model.RequestJson ?? "").Replace("\\", "\\\\").Replace("`", "\\`")
+            )`;
 
-        try {
-            const parsed = JSON.parse(rawJson);
-            const pretty = JSON.stringify(parsed, null, 4);
+            if (!rawJson) {
+                alert('No payload available.');
+                return;
+            }
 
-            document.getElementById('formattedJson').textContent = pretty;
+            const container = document.getElementById("jsonEditor");
 
-            const modal = new bootstrap.Modal(
-                document.getElementById('payloadModal')
-            );
-            modal.show();
+            if (editor) {
+                editor.destroy();
+            }
 
-        } catch (e) {
-            document.getElementById('formattedJson').textContent =
-                'Invalid JSON format:\n\n' + rawJson;
-
-            const modal = new bootstrap.Modal(
-                document.getElementById('payloadModal')
-            );
-            modal.show();
-        }
-    });
-
-
-    // Save edited payload
-    document.getElementById('btnSavePayload').addEventListener('click', function () {
-
-        const editedJson = document.getElementById('formattedJson').value;
-
-        try {
-            // ✅ Validate JSON only (do NOT convert)
-            JSON.parse(editedJson);
-
-            alertify.confirm(
-                "Confirmation",
-                "Are you sure you want to save the updated payload?",
-                async function () {
+            editor = new JSONEditor(container, {
+                mode: 'code',
+                // code mode gives syntax highlight
+                modes: ['code', 'tree'],
+                onChangeText: function (jsonString) {
 
                     try {
-                        const response = await fetch('/GLSystemReconciliation/UpdatePayload', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/x-www-form-urlencoded'
-                            },
-                            body: new URLSearchParams({
-                                payload: editedJson // ✅ sent as STRING
-                            })
-                        });
+                        JSON.parse(jsonString);
+                        isJsonValid = true;
 
-                        const result = await response.json();
-
-                        if (result.success) {
-                            appalert(result.message, 1, 1);
-                            bootstrap.Modal
-                                .getInstance(document.getElementById('payloadModal'))
-                                .hide();
-                        } else {
-                            appalert(result.message, 3, 1);
-                        }
+                        document.getElementById("jsonError").classList.add("d-none");
+                        document.getElementById("btnSavePayload").disabled = false;
 
                     } catch (err) {
-                        console.error("Request failed:", err);
-                        appalert("❌ Failed to save payload. Please try again.", 3, 1);
+
+                        isJsonValid = false;
+                        document.getElementById("btnSavePayload").disabled = true;
+
+                        const errorDiv = document.getElementById("jsonError");
+                        errorDiv.classList.remove("d-none");
+                        errorDiv.innerText = err.message;
                     }
                 },
-                function () {
-                    // ❌ User cancelled
-                    console.log("Payload update cancelled");
+                onPaste: function () {
+                    setTimeout(() => {
+                        try {
+                            const formatted = editor.get();
+                            editor.set(formatted);
+                        } catch { }
+                    }, 100);
                 }
-            );
 
-        } catch (e) {
-            appalert("❌ Invalid JSON format. Please fix before saving.", 3, 1);
-            console.error(e);
-        }
-    });
+            });
+
+            try {
+                editor.set(JSON.parse(rawJson));
+                isJsonValid = true;
+                document.getElementById("btnSavePayload").disabled = false;
+            } catch (e) {
+                editor.setText(rawJson);
+                document.getElementById("btnSavePayload").disabled = true;
+            }
+
+            const modal = new bootstrap.Modal(
+                document.getElementById('payloadModal')
+            );
+            modal.show();
+        });
+document.getElementById("btnBeautify").addEventListener("click", function () {
+
+    if (!editor) return;
+
+    try {
+        const json = editor.get();
+        editor.set(json); // re-set formats automatically
+        appalert("✅ JSON Beautified", 1, 1);
+    } catch (err) {
+        appalert("❌ Cannot beautify invalid JSON", 3, 1);
+    }
+});
+
+
+
+     // Save edited payload
+
 
 </script>

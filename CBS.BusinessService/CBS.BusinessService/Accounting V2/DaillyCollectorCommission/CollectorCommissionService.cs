@@ -1,5 +1,7 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
+using CBS.BusinessService.CustomerManagement;
+using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Affiliate;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.AffiliateAccount;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.BranchAccount;
@@ -32,8 +34,9 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
         private readonly ApiCallerHelper _apiCallerHelper;
         private readonly ApiCallerHelper _apiCallerHelper1;
         private readonly ApiCallerHelper _apiCallerHelper2;
+        private readonly IndividualProfileServices _individualProfileServices;
 
-        public CollectorCommissionService()
+        public CollectorCommissionService(IndividualProfileServices individualProfileServices)
         {
             //change the base url to the actual base url
             string baseUrl = ConfigurationManager.AppSettings["TransactionBaseUrl"];
@@ -56,6 +59,7 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
                 throw new ConfigurationErrorsException("The baseUrl is missing or empty in Web.config.");
             }
             _apiCallerHelper2 = new ApiCallerHelper(baseUrl2);
+            _individualProfileServices = individualProfileServices;
         }
 
         public async Task<CustomDataTable2> CustomerDataTableAsync(customerQuery query)
@@ -140,27 +144,22 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
             if (string.IsNullOrWhiteSpace(customerId))
                 throw new ArgumentException(nameof(customerId));
 
-            var url = string.Format(APICallHelper.getcustomerdata, Uri.EscapeDataString(customerId));
-            var response = await _apiCallerHelper2.GetAsync<ServiceResponse<CustomerDataDto>>(url);
-
-            if (response == null || !response.IsSuccess || response.ApiResponseData?.Data == null)
-                throw new Exception(response?.ApiResponseData?.Message ?? response?.Message ?? "Failed to fetch customer data.");
-
-            var data = response.ApiResponseData.Data;
-
+            var agrAggregates = await _individualProfileServices.GetAggregates();
+            var customerProfile = await _individualProfileServices.GetCustomer(customerId, agrAggregates);
+          
             // Defensive: ensure accounts list exists
-            var accounts = data.AccountDtos ?? new List<AccountDto>();
+            var accounts = customerProfile.CustomerAccounts ?? new List<CustomerAccount>();
 
             var vm = new CustomerDataDto
             {
-                CustomerDto = data.CustomerDto,
+                CustomerDto = customerProfile.CustomerList,
                 AccountSelectList = accounts
                     .Select(a => new SelectListItem
                     {
-                        Value = a.AccountNumber ?? string.Empty, // sent back to backend when selected
-                        Text = string.IsNullOrWhiteSpace(a.AccountName)
-                            ? $"{a.AccountNumber} ({a.Balance:N2})"
-                            : $"{a.AccountNumber} - {a.AccountName} ({a.Balance:N2})"
+                        Value = a.accountNumber ?? string.Empty, // sent back to backend when selected
+                        Text = string.IsNullOrWhiteSpace(a.accountName)
+                            ? $"{a.accountNumber} ({a.balance:N2})"
+                            : $"{a.accountNumber} - {a.accountName} ({a.balance:N2})"
                     })
                     .OrderBy(x => x.Value)
                     .ToList()

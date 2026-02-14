@@ -40,8 +40,45 @@ namespace CBS.FrontDesk.Data.Entity.BulkOperation
 
     public class GetAllSimulationDetailBySimulationIdRequestQuery
     {
+        // Required
         public DataTableOptions Options { get; set; }
         public string SimulationId { get; set; }
+
+        // Member Information
+        public string MemberReference { get; set; }
+        public string MemberName { get; set; }
+
+        // Account Information
+        public string SourceAccountNumber { get; set; }
+        public string SourceAccountType { get; set; }
+        public string DestinationAccountNumber { get; set; }
+        public string DestinationAccountType { get; set; }
+
+        // Branch Information
+        public string BranchId { get; set; }
+        public string BranchCode { get; set; }
+
+        // Status Information
+        public string TransferStatus { get; set; }
+        public string ApprovalStatus { get; set; }
+
+        // Date Range Information
+        public DateTime? TransferDateFrom { get; set; }
+        public DateTime? TransferDateTo { get; set; }
+        public DateTime? ApprovalDateFrom { get; set; }
+        public DateTime? ApprovalDateTo { get; set; }
+        public DateTime? CreatedDateFrom { get; set; }
+        public DateTime? CreatedDateTo { get; set; }
+
+        // Message Information
+        public string TransferMessage { get; set; }
+
+        // Additional helpful filters
+        public string AccountType { get; set; } // For filtering both source and destination
+        public decimal? MinAmount { get; set; }
+        public decimal? MaxAmount { get; set; }
+        public bool? IsSuccessful { get; set; }
+        public string ExceptionCode { get; set; }
     }
 
     /// <summary>
@@ -52,7 +89,7 @@ namespace CBS.FrontDesk.Data.Entity.BulkOperation
         /// <summary>
         /// DataTable options containing pagination, sorting, and search parameters.
         /// </summary>
-        public DataTableOptions DataTableOptions { get; set; }
+        public DataTableOptions Options { get; set; }
 
         /// <summary>
         /// Optional filter to retrieve bulk operations from a specific branch.

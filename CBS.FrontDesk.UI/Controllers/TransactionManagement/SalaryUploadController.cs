@@ -2,14 +2,17 @@
 using CBS.BusinessService.Accounting;
 using CBS.BusinessService.Accounting_V2.AffiliateAccounts;
 using CBS.BusinessService.Accounting_V2.BranchAccountService;
+using CBS.BusinessService.Accounting_V2.MemberReconciliation;
 using CBS.BusinessService.AccountingV2.SharedMonth;
 using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.Accounting;
+using CBS.FrontDesk.Data.Entity.Accounting_V2.Affiliate;
 using CBS.FrontDesk.Data.Entity.AccountingV2.SharedMonth;
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Entity.SalaryManagement;
 using CBS.FrontDesk.Data.Message;
+using CBS.FrontDesk.UI.Controllers.Accounting_V2.Affiliate;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -20,7 +23,7 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
 {
-    [CheckSessionTimeOutAttribute]
+    //[CheckSessionTimeOutAttribute]
     public class SalaryUploadController : BaseController
     {
         // GET: SalaryUpload
@@ -33,21 +36,32 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         public SalaryUploadController(SalaryUploadServices salaryUploadServices, SalaryAnalysisResultServices salaryAnalysisResultServices, BranchServices branchServices, BranchAccountService chartOfAccountServices, FileUploadServices fileUploadServices, SharedMonthSimulationService sharedMonthSimulationService)
         {
             _salaryUploadServices = salaryUploadServices;
-            _salaryAnalysisResultServices=salaryAnalysisResultServices;
-            _branchServices=branchServices;
-            this.chartOfAccountServices=chartOfAccountServices;
-            _fileUploadServices=fileUploadServices;
+            _salaryAnalysisResultServices = salaryAnalysisResultServices;
+            _branchServices = branchServices;
+            this.chartOfAccountServices = chartOfAccountServices;
+            _fileUploadServices = fileUploadServices;
             _sharedMonthSimulationService = sharedMonthSimulationService;
         }
 
         public async Task<ActionResult> Index()
         {
-            ViewBag.HeadOffice="No";
+            ViewBag.HeadOffice = "No";
             if (_salaryAnalysisResultServices.IsHeadOffice())
             {
-                ViewBag.HeadOffice="Yes";
+                ViewBag.HeadOffice = "Yes";
             }
             await LoadDroupdowns();
+            return View(new SalaryUploadModelCarrier());
+        }
+
+        public async Task<ActionResult> ReexecuteSalaryFile()
+         {
+            ViewBag.HeadOffice = "No";
+            if (_salaryAnalysisResultServices.IsHeadOffice())
+            {
+                ViewBag.HeadOffice = "Yes";
+            }
+           // await LoadDroupdowns();
             return View(new SalaryUploadModelCarrier());
         }
 
@@ -63,6 +77,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                 new SelectListItem { Value = "PrivateInstitutions", Text = "Private Institution Files" },
                 new SelectListItem { Value = "StandingOrder",       Text = "Standing Order Files" },
                 new SelectListItem { Value = "Analysis",            Text = "Analysed Files" },
+                new SelectListItem { Value = "SalaryReExecution",            Text = "Salary ReExecution Files" },
                 new SelectListItem { Value = "ManualEntryDailyCollection", Text = "Daily Collection Files" },
                 new SelectListItem { Value = "Others",              Text = "Other Files" },
                 new SelectListItem { Value = "ShareMonth",              Text = "Share Month Files" },
@@ -75,8 +90,16 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             var branchesTask = await _branchServices.GetBranches();
             var chartOfAccounts = await chartOfAccountServices.GetAllBranchAccountsFromDataTableAsync(_branchServices.GetBranchID());
             ViewBag.StandingOrderSourceAccountOptions = chartOfAccountServices.DropDownGen(chartOfAccounts.ToList());
-            ViewBag.Branches = branchesTask;                
-            ViewBag.FileTypes = FileTypeOptions;                    
+            ViewBag.Branches = branchesTask;
+            ViewBag.FileTypes = FileTypeOptions;
+        }
+        private async Task PopulatereexecutionDropdownsAsync(bool includeChartOfAccounts)
+        {
+            var branchesTask = await _branchServices.GetBranches();
+           // var chartOfAccounts = await chartOfAccountServices.GetAllBranchAccountsFromDataTableAsync(_branchServices.GetBranchID());
+          //  ViewBag.StandingOrderSourceAccountOptions = chartOfAccountServices.DropDownGen(chartOfAccounts.ToList());
+            ViewBag.Branches = branchesTask;
+            ViewBag.FileTypes = FileTypeOptions;
         }
 
         // Actions
@@ -117,7 +140,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                 var type = fileUpload.FileType;
 
                 var memberShareMonthUpload = await _sharedMonthSimulationService.GetFileDetailSharedmonth(fileUpload.FileUploadId, type);
-               
+
 
                 return View("SharedMonthDetails", memberShareMonthUpload);
 
@@ -142,8 +165,8 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         public async Task<ActionResult> Analysis(string fileUploadid)
         {
             var salaryUploadModels = await _salaryUploadServices.GetSalaryUploads(fileUploadid);
-            var salaryUploadModelSummary = new SalaryUploadModelSummaryDto { FileUploadId=fileUploadid, TotalMembers=salaryUploadModels.Count(), TotalNetSalary=salaryUploadModels.Sum(x => x.NetSalary) };
-            return View(new SalaryUploadModelCarrier { SalaryUploadModels=salaryUploadModels.ToList(), SalaryUploadModelSummaryDto=salaryUploadModelSummary });
+            var salaryUploadModelSummary = new SalaryUploadModelSummaryDto { FileUploadId = fileUploadid, TotalMembers = salaryUploadModels.Count(), TotalNetSalary = salaryUploadModels.Sum(x => x.NetSalary) };
+            return View(new SalaryUploadModelCarrier { SalaryUploadModels = salaryUploadModels.ToList(), SalaryUploadModelSummaryDto = salaryUploadModelSummary });
         }
         [HttpPost]
         public async Task<ActionResult> LoadLoanData(GetFileUploadsDataTableQuery tableQuery)
@@ -152,11 +175,11 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             {
                 var dataTable = await _fileUploadServices.GetDataTableAsync(tableQuery);
                 var loanList = JsonConvert.DeserializeObject<List<FileUploadDto>>(JsonConvert.SerializeObject(dataTable.data));
-                if (tableQuery.ActionParam=="analyser")
+                if (tableQuery.ActionParam == "analyser")
                 {
                     loanList = _salaryUploadServices.GetUploadForAnalysis(loanList);
                 }
-                else if (tableQuery.ActionParam=="executer")
+                else if (tableQuery.ActionParam == "executer")
                 {
                     loanList = _salaryUploadServices.GetFileUploads(loanList);
                 }
@@ -173,6 +196,153 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Error loading loan data.");
             }
         }
+
+        [HttpPost]
+        public async Task<ActionResult> LoadreexecutionLoanData(GetFileUploadsDataTableQuery tableQuery)
+        {
+            try
+            {
+                // 1️⃣ Validate FileType presence
+                if (string.IsNullOrWhiteSpace(tableQuery.FileType))
+                {
+                    return new HttpStatusCodeResult(
+                        HttpStatusCode.BadRequest,
+                        "Please select file type"
+                    );
+                }
+
+                // 2️⃣ Allowed file types (must match your system values exactly)
+                var allowedFileTypes = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "Analysis", "SalaryReExecution" };
+
+                // 3️⃣ Validate FileType value
+                if (!allowedFileTypes.Contains(tableQuery.FileType))
+                {
+                    return new HttpStatusCodeResult(
+                        HttpStatusCode.BadRequest,
+                        "Invalid file type"
+                    );
+                }
+
+                // 4️⃣ Load data normally
+                var dataTable = await _fileUploadServices.GetDataTableAsync(tableQuery);
+
+                var loanList = JsonConvert.DeserializeObject<List<FileUploadDto>>(
+                    JsonConvert.SerializeObject(dataTable.data)
+                );
+
+                // 5️⃣ Action mode handling
+                if (tableQuery.ActionParam == "analyser")
+                {
+                    loanList = _salaryUploadServices.GetUploadForAnalysis(loanList);
+                }
+                else if (tableQuery.ActionParam == "executer")
+                {
+                    loanList = _salaryUploadServices.GetFileUploads(loanList);
+                }
+
+                // 6️⃣ Return DataTables-compatible response
+                return Json(new
+                {
+                    draw = dataTable.DataTableOptions.draw,
+                    recordsTotal = dataTable.recordsTotal,
+                    recordsFiltered = dataTable.recordsFiltered,
+                    data = loanList
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception)
+            {
+                return new HttpStatusCodeResult(
+                    HttpStatusCode.InternalServerError,
+                    "Error loading loan data."
+                );
+            }
+        }
+
+        public async Task<ActionResult> LoanRepaymentListing(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "ID is required");
+            }
+
+            var data = await _fileUploadServices.GetFileDetailsByIdAsync(id);
+
+            if (data == null)
+            {
+                return HttpNotFound();
+            }
+
+
+            await PopulateDropdownsAsync(includeChartOfAccounts: false);
+            return View(data);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> LoanRepaymentsExecution(LoanRepaymentsExecutiontDataTableQuery query)
+         {
+            try
+            {
+                var data = await _fileUploadServices.LoanRepayments(query);
+
+                var Fileexecution = JsonConvert.DeserializeObject<List<LoanRepaymentsExecutionDto>>(JsonConvert.SerializeObject(data.data));
+
+                return Json(new
+                {
+                    draw = data.draw,
+                    recordsTotal = data.recordsTotal,
+                    recordsFiltered = data.recordsFiltered,
+                    data = Fileexecution
+                });
+            }
+            catch (Exception ex)
+            {
+                // return a DataTables-compatible empty result on error
+                return Json(new
+                {
+                    draw = query?.DataTableOptions?.draw ?? "1",
+                    recordsTotal = 0,
+                    recordsFiltered = 0,
+                    data = new List<object>(),
+                    error = ex.Message
+                });
+            }
+        }
+
+        public async Task<ActionResult> LoanRepaymentDetails(string id, string partialView = null)
+        {
+            var data = await _fileUploadServices.GetLoanRepaymentByIdAsync(id);
+            if (string.IsNullOrEmpty(partialView))
+            {
+                return View("_LoanRepaymentDetails", data);
+            }
+            return PartialView(partialView, data);
+        }
+
+        //[HttpPost] // Keep as POST to match AJAX call
+        //public async Task<ActionResult> FileDetails(string id, string partialView = null)
+        //{
+        //    if (string.IsNullOrEmpty(id))
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "ID is required");
+        //    }
+
+        //    var data = await _fileUploadServices.GetFileDetailsByIdAsync(id);
+
+        //    if (data == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+
+        //    // If partialView is specified, use that
+        //    if (!string.IsNullOrEmpty(partialView))
+        //    {
+        //        return PartialView(partialView, data);
+        //    }
+
+        //    // Default: return the statistics partial view
+        //    return PartialView("_FileStatistics", data);
+        //}
+
         public async Task<ActionResult> DownloadFile(string fileId = null, string fileType = null)
         {
             try
@@ -243,11 +413,59 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             }
         }
 
+        public async Task<ActionResult> DownloadReexecutionFile(string fileId = null, string fileType = null)
+        {
+            try
+            {
+                // 🔹 Allow download ONLY for Analysis files
+                if (!string.Equals(fileType, "Analysis", StringComparison.OrdinalIgnoreCase))
+                {
+                    return View(
+                        "Error",
+                        new HandleErrorInfo(
+                            new Exception("Only Analysis files are allowed for download."),
+                            "SalaryUpload",
+                            "DownloadReexecutionFile"
+                        )
+                    );
+                }
+
+                var response = await _salaryUploadServices.DownloadExecutionFile(fileId);
+
+                if (response != null && response.FileData != null)
+                {
+                    return File(
+                        response.FileData,
+                        response.ContentType,
+                        response.FileName
+                    );
+                }
+
+                return View(
+                    "Error",
+                    new HandleErrorInfo(
+                        new Exception(response?.ErrorMessage ?? "File download failed"),
+                        "SalaryUpload",
+                        "DownloadReexecutionFile"
+                    )
+                );
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error downloading file: {ex.Message}");
+
+                return View(
+                    "Error",
+                    new HandleErrorInfo(ex, "SalaryUpload", "DownloadReexecutionFile")
+                );
+            }
+        }
+
 
         public async Task<ActionResult> SalaryAnalysisResultSummary(string fileUploadid)
         {
             var salaryAnalysisResult = await _salaryAnalysisResultServices.GetSalaryAnalysisResultByFileUploadId(fileUploadid);
-            return View(new SalaryUploadModelCarrier { SalaryAnalysisResultSummary=salaryAnalysisResult, SalaryAnalysisResultDetails=salaryAnalysisResult.salaryAnalysisResultDetails.ToList(), FileUpload=salaryAnalysisResult.FileUpload});
+            return View(new SalaryUploadModelCarrier { SalaryAnalysisResultSummary = salaryAnalysisResult, SalaryAnalysisResultDetails = salaryAnalysisResult.salaryAnalysisResultDetails.ToList(), FileUpload = salaryAnalysisResult.FileUpload });
         }
 
         [HttpPost]
@@ -289,11 +507,49 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             }
         }
         [HttpPost]
+        public async Task<ActionResult> ReexecuteSalaryFileUpload(SalaryUploadModelCarrier model)
+        {
+            try
+            {
+                // Check if the file is null or not uploaded
+                if (model?.AddSalaryUploadModelCommand?.File == null || model.AddSalaryUploadModelCommand.File.ContentLength == 0)
+                {
+                    return Json(new
+                    {
+                        success = false,
+                        message = "Please upload a valid file."
+                    });
+                }
+
+                // Process the file upload
+                var data = await _salaryUploadServices.ReexecuteSalaryUploadFile(model.AddSalaryUploadModelCommand);
+
+                return Json(new
+                {
+                    success = data.Result,
+                    status = data.MessageStatus,
+                    message = Messaging.MessageResult(data)
+                });
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                Console.WriteLine($"Error: {ex.Message}");
+
+                // Handle the error gracefully, possibly return a meaningful error message
+                return Json(new
+                {
+                    success = false,
+                    message = "An error occurred while queuing the background job."
+                });
+            }
+        }
+        [HttpPost]
         public async Task<ActionResult> ExecuteAnalysis(SalaryAnalysisCommand model)
         {
             try
             {
-              
+
                 var data = await _salaryAnalysisResultServices.ExecuteSalaryAnalysis(model);
 
                 return Json(new
@@ -386,7 +642,13 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             var data = await _fileUploadServices.Delete(KEY);
             return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
         }
-      
+
+        public async Task<ActionResult> ReexecuteSalaries()
+        {
+             await PopulatereexecutionDropdownsAsync(includeChartOfAccounts: false);          
+            return View(new SalaryUploadModelCarrier());
+        }
+
     }
 
 }

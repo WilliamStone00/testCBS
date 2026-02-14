@@ -38,14 +38,40 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.Receipts
             return View();
         }
 
-        /// <summary>
-        /// Generates a Journal Receipt dataset for printing based on the selected filters.
-        /// </summary>
         [HttpPost]
         public async Task<ActionResult> GenerateReciept(ReceiptV2Filter filter)
         {
+            if (filter == null)
+                return Json(new { success = false, message = "Filter is required." }, JsonRequestBehavior.AllowGet);
+
+            var (success, message) = await GenerateReceiptInternal(filter);
+            return Json(new { success, message }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public async Task<ActionResult> GenerateRecieptFromSession()
+        {
+            var glReferenceId = Session["GLReferenceId"] as string;
+            if (string.IsNullOrWhiteSpace(glReferenceId))
+                return Json(new { success = false, message = "GL Reference ID not found in session." },
+                            JsonRequestBehavior.AllowGet);
+
+            var filter = new ReceiptV2Filter
+            {
+                Reference = glReferenceId,
+                FromTemp = true
+            };
+
+            var (success, message) = await GenerateReceiptInternal(filter);
+            return Json(new { success, message }, JsonRequestBehavior.AllowGet);
+        }
+
+        private async Task<(bool Success, string Message)> GenerateReceiptInternal(ReceiptV2Filter filter)
+        {
             try
             {
+                if (filter == null)
+                    return (false, "Filter cannot be null.");
+
                 // STEP 1 — Retrieve dataset
                 var response = await _journalReceiptsService.GetReceiptAsync(filter);
 
@@ -53,8 +79,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.Receipts
                 {
                     Session["rptSource"] = null;
                     Session["BranchInfo"] = null;
-                    return Json(new { success = false, message = "No data found for the selected filters." },
-                        JsonRequestBehavior.AllowGet);
+                    return (false, "No data found for the selected filters.");
                 }
 
                 // STEP 2 — Retrieve branch + bank metadata
@@ -77,7 +102,6 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.Receipts
                     BankRegistrationNumber = BranchInformation.Bank.RegistrationNumber,
                     BankImmatriculationNumber = BranchInformation.Bank.ImmatriculationNumber,
                     BankPBox = BranchInformation.Bank.PBox,
-
                     BranchId = BranchInformation.Id,
                     BranchCode = BranchInformation.BranchCode,
                     BranchName = BranchInformation.Name,
@@ -97,8 +121,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.Receipts
                 // STEP 3 — Flatten receipt rows for Crystal Reports
                 var data = response.Entries.Select(x =>
                 {
-                    var entry = response.IssuedAtLocal.ToString("MMM dd yyyy hh:mm:ss.fff tt");
-                    
+                    var entryDate = response.IssuedAtLocal.ToString("MMM dd yyyy hh:mm:ss.fff tt");
 
                     var item = new ReceiptFlatItems
                     {
@@ -132,7 +155,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.Receipts
                         AuxiliaryRef = response.IssuedBy.ToUpper(),
                         TotalDebit = response.TotalDebit,
                         TotalCredit = response.TotalCredit,
-                        CashInAmount = response.CashInAmount  ?? 0,
+                        CashInAmount = response.CashInAmount ?? 0,
                         CashOutAmount = response.CashOutAmount ?? 0,
                         NetAmount = response.NetAmount ?? 0,
                         IsInterBranch = response.IsInterBranch,
@@ -142,39 +165,31 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.Receipts
                         PrintedCount = response.PrintedCount,
                         IsReprint = response.IsReprint,
                         AmountInWords = words,
-                      
                         EntryDate = response.IssuedAtLocal,
                         TCredit = tcredit,
                         TDebit = tdebit,
-                        ReadableDate = entry,
-                       
-                        // Movement line
+                        ReadableDate = entryDate,
                         AccountNumber = x.AccountNumber ?? "N/A",
                         AccountName = x.AccountName,
                         Dr = x.Dr,
                         Cr = x.Cr,
                         Description = x.Description,
-
                         PrintedBy = _journalReceiptsService.GetUserFullName()
                     };
 
-                    // Attach bank & branch header
                     ApplyHeader(item, header);
                     return item;
                 }).ToList();
-
 
                 // STEP 4 — Save dataset to session
                 Session["rptSource"] = data;
                 Session["BranchInfo"] = BranchInformation;
 
-
-                return Json(new { success = true, message = "Report generated successfully." },
-                    JsonRequestBehavior.AllowGet);
+                return (true, "Report generated successfully.");
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
+                return (false, ex.Message);
             }
         }
 

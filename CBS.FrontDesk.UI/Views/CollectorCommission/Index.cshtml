@@ -269,7 +269,8 @@
                             <th>Member Name</th>
                             <th>Total Activity Amount</th>
                             <th>Fee Charged</th>
-                            <th>Payment Status</th> <!-- Add this column -->
+                            <th>Payment Status</th>
+                            <th>Remark</th> <!-- Add this column -->
                         </tr>
                     </thead>
                     <tbody>
@@ -370,6 +371,17 @@
             color: #198754;
             font-weight: bold;
         }
+        /* Highlight ExpenseGL field when incentives > 0 and not selected */
+        .incentives-input.positive-value ~ .col-md-8 .select2-selection {
+            border-left: 3px solid #ffc107;
+            transition: border-color 0.3s ease;
+        }
+
+            .incentives-input.positive-value ~ .col-md-8 .select2-selection:focus {
+                border-color: #86b7fe;
+                border-left-color: #dc3545;
+                box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
+            }
     </style>
 
     <script>
@@ -452,6 +464,37 @@
                 if ($.fn.select2) {
                     $('#CollectorId').select2();
                 }
+            }
+        });
+
+        // Real-time validation for incentives and ExpenseGL
+        $('#Incentives').on('input change blur', function () {
+            var incentives = parseFormattedCurrency($(this).val()) || 0;
+            var expenseGL = $('#ExpenseGL').val();
+
+            if (incentives > 0) {
+                $(this).addClass('positive-value');
+
+                if (!expenseGL) {
+                    // Add visual warning
+                    $('.field-warning-expensegl').remove();
+                    $('#ExpenseGL').parent().append(
+                        '<small class="text-warning field-warning-expensegl">' +
+                        '<i class="mdi mdi-alert-circle me-1"></i>Required when incentives is greater than 0</small>'
+                    );
+                } else {
+                    $('.field-warning-expensegl').remove();
+                }
+            } else {
+                $(this).removeClass('positive-value');
+                $('.field-warning-expensegl').remove();
+            }
+        });
+
+        $('#ExpenseGL').on('change', function () {
+            var incentives = parseFormattedCurrency($('#Incentives').val()) || 0;
+            if (incentives > 0 && $(this).val()) {
+                $('.field-warning-expensegl').remove();
             }
         });
 
@@ -544,24 +587,38 @@
     // CURRENCY FORMATTING FUNCTIONS
     // =========================================================================
 
-    function formatCurrency(amount) {
-        try {
-            // If amount is a string with commas, remove them for parsing
-            if (typeof amount === 'string') {
-                amount = parseFloat(amount.replace(/,/g, '')) || 0;
-            }
+        function formatCurrency(amount) {
+            try {
+                // If amount is a string with commas, remove them for parsing
+                if (typeof amount === 'string') {
+                    amount = parseFloat(amount.replace(/,/g, '')) || 0;
+                }
 
-            // Format with commas for thousands separators
-            return new Intl.NumberFormat('en-US', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            }).format(amount || 0);
-        } catch (e) {
-            // Fallback formatting
-            var num = parseFloat(amount) || 0;
-            return num.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                // Format with commas for thousands separators (1 decimal place)
+                return new Intl.NumberFormat('en-US', {
+                    minimumFractionDigits: 1,
+                    maximumFractionDigits: 1
+                }).format(amount || 0);
+
+            } catch (e) {
+                // Fallback formatting
+                var num = parseFloat(amount) || 0;
+                return num.toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+            }
         }
-    }
+
+        function formatDateToDMY(dateString) {
+            if (!dateString) return '';
+
+            const date = new Date(dateString);
+
+            return date.toLocaleDateString('en-GB', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric'
+            });
+        }
+
 
     function parseFormattedCurrency(formattedValue) {
         if (!formattedValue) return 0;
@@ -732,6 +789,7 @@
             $('#summaryBranchName').text(data.BranchName || 'N/A');
             $('#summaryPeriod').text(data.Month || 'N/A');
             $('#status').text(data.Status || 'N/A');
+            $('#Remark').text(data.Remark || 'N/A');
 
             // Update payment status with colored bubble
             var paymentStatus = data.PaymentStatus || 'Pending';
@@ -1018,8 +1076,9 @@
                     }
 
                     // Populate PCMF dropdown in modal
-                    populatePcmfDropdown(response.accounts);
-
+                   // populatePcmfDropdown(response.accounts);
+                    // Populate ALL PCMF dropdowns in modal
+                    populateAllPcmfDropdowns(response.accounts); // REPLACED: Now populates both dropdowns
                     // Show the modal
                     $('#treatmentModal').modal('show');
                 } else {
@@ -1034,6 +1093,50 @@
             }
         });
     }
+
+        // Function to populate all PCMF dropdowns
+        function populateAllPcmfDropdowns(accounts) {
+            // List of dropdown IDs that need PCMF accounts
+            var dropdownIds = ['PaymentGl', 'ExpenseGL'];
+
+            $.each(dropdownIds, function (index, dropdownId) {
+                var dropdown = $('#' + dropdownId);
+
+                // Skip if dropdown doesn't exist
+                if (dropdown.length === 0) return true;
+
+                // destroy existing instance if any
+                if (dropdown.hasClass('select2-hidden-accessible')) {
+                    dropdown.select2('destroy');
+                }
+
+                // Clear and populate
+                dropdown.empty();
+
+                // Set appropriate placeholder text based on dropdown ID
+                var placeholder = dropdownId === 'PaymentGl'
+                    ? '--- Branch Commission Account ---'
+                    : '--- Expense Commission Account ---';
+
+                dropdown.append('<option value="">' + placeholder + '</option>');
+
+                if (accounts && accounts.length) {
+                    $.each(accounts, function (i, account) {
+                        dropdown.append($('<option>').val(account.Value).text(account.Text));
+                    });
+                } else {
+                    dropdown.append('<option value="">No accounts available</option>');
+                }
+
+                // Re-initialize Select2
+                if ($.fn.select2) {
+                    dropdown.select2({
+                        dropdownParent: $('body'),
+                        width: '100%'
+                    });
+                }
+            });
+        }
 
     // Function to populate PCMF dropdown
     function populatePcmfDropdown(accounts) {
@@ -1066,34 +1169,38 @@
     // TREATMENT MODAL FUNCTIONS - COMPLETE INTEGRATION
     // =========================================================================
 
-    // Initialize treatment modal events when modal is shown
-    $(document).on('shown.bs.modal', '#treatmentModal', function () {
-        initializeTreatmentModal();
 
-        // Initialize Select2 dropdowns with modal as parent
-        if ($.fn.select2) {
-            $('#DailyCollectorAccount').select2({
-                dropdownParent: $('#treatmentModal')
+
+        $(document).on('shown.bs.modal', '#treatmentModal', function () {
+            initializeTreatmentModal();
+
+            // Initialize Select2 dropdowns with modal as parent
+            if ($.fn.select2) {
+                $('#DailyCollectorAccount').select2({
+                    dropdownParent: $('#treatmentModal')
+                });
+                $('#PaymentGl').select2({
+                    dropdownParent: $('#treatmentModal')
+                });
+                $('#ExpenseGL').select2({  // Add this line
+                    dropdownParent: $('#treatmentModal')
+                });
+            }
+
+            // Add currency formatting to incentives input
+            $('#Incentives').on('input', function () {
+                formatIncentivesInput(this);
             });
-            $('#PaymentGl').select2({
-                dropdownParent: $('#treatmentModal')
+
+            $('#Incentives').on('blur', function () {
+                finalizeIncentivesFormat(this);
             });
-        }
 
-        // Add currency formatting to incentives input
-        $('#Incentives').on('input', function() {
-            formatIncentivesInput(this);
+            // Sync hidden fields when any field changes
+            $(document).on('change keyup', '#Incentives, #DaillyCollectorShare, #BranchShare, #Total, #DailyCollectorAccount', function () {
+                syncHiddenFields();
+            });
         });
-
-        $('#Incentives').on('blur', function() {
-            finalizeIncentivesFormat(this);
-        });
-
-        // Sync hidden fields when any field changes
-        $(document).on('change keyup', '#Incentives, #DaillyCollectorShare, #BranchShare, #Total, #DailyCollectorAccount', function() {
-            syncHiddenFields();
-        });
-    });
 
     // Event delegation for treatment modal elements
     $(document).on('click', '#btnSearchCustomer', function () {
@@ -1424,9 +1531,14 @@
         // Reset Select2 dropdowns
         $('#DailyCollectorAccount').val('').trigger('change');
         $('#PaymentGl').val('').trigger('change');
+        $('#ExpenseGL').val('').trigger('change');
+        $('#MemoIncentive').val('').trigger('change');
+        $('#Memo').val('').trigger('change');
 
         $('#customerReference').val('');
         $('#Incentives').val('0.00');
+        $('#Incentives').val('0.00').removeClass('positive-value');
+        $('.field-warning-expensegl').remove();
 
         // Clear hidden fields
         $('#CustomerIdHidden').val('');
@@ -1468,149 +1580,261 @@
         return `${month}/${day}/${year} ${hours}:${minutes}:${seconds} ${ampm}`;
     }
 
-    function processPayment() {
-        // Validate form
-        if (!$('#DailyCollectorAccount').val()) {
-            appalert('Please select a Daily Collector Account', 3, 1);
-            return;
-        }
-
-        if (!dailyCollectorId) {
-            appalert('Please search and select a customer first', 3, 1);
-            return;
-        }
-
-        if (!$('#Incentives').val()) {
-            appalert('Please enter incentives amount', 3, 1);
-            return;
-        }
-
-        if (!$('#PaymentGl').val()) {
-            appalert('Please select a Branch Commission Account', 3, 1);
-            return;
-        }
-
-        if (!$('#AccountingDay').val()) {
-            appalert('Please select accounting date', 3, 1);
-            return;
-        }
-
-        // Get month and year from hidden fields
-        var month = $('#MonthHidden').val();
-        var year = $('#YearHidden').val();
-
-        if (!month || !year) {
-            appalert('Month and Year information is missing', 3, 1);
-            return;
-        }
-
-        // Calculate amounts
-        var incentives = parseFormattedCurrency($('#Incentives').val()) || 0;
-        var dailyCollectorShare = parseFormattedCurrency($('#DaillyCollectorShare').val()) || 0;
-        var branchShare = parseFormattedCurrency($('#BranchShare').val()) || 0;
-
-        // Calculate totals according to business logic
-        var collectorTotalCommision = dailyCollectorShare + branchShare;
-        var totalAmountToShare = incentives + dailyCollectorShare;
-
-        // Prepare SharedAmounts data - use the actual data from commission
-        var sharedAmounts = [];
-        if (treatmentCommissionData && treatmentCommissionData.SharedAmounts) {
-            sharedAmounts = treatmentCommissionData.SharedAmounts.map(function (item) {
-                return {
-                    StakeHolderId: item.StakeHolderId || dailyCollectorId,
-                    Stakeholder: item.Stakeholder || 'Daily Collector',
-                    Percentage: item.Percentage || 0,
-                    Amount: item.Amount || 0
-                };
-            });
-        } else {
-            // Fallback: create shared amounts based on calculated values
-            sharedAmounts = [
-                {
-                    StakeHolderId: dailyCollectorId,
-                    Stakeholder: 'Daily Collector',
-                    Percentage: 60,
-                    Amount: dailyCollectorShare
-                },
-                {
-                    StakeHolderId: 'branch',
-                    Stakeholder: 'Branch',
-                    Percentage: 40,
-                    Amount: branchShare
-                }
-            ];
-        }
-
-        // Format date to match target format: "MM/dd/yyyy hh:mm:ss AM"
-        var accountingDate = $('#AccountingDay').val();
-        var dateObj = new Date(accountingDate);
-        var formattedDate = formatDateForPayload(dateObj);
-
-        // Prepare payload to match CollectorComissionResponse model
-        var payload = {
-            // Map to CollectorComissionResponse properties
-            CustomerId: dailyCollectorId,
-            AccountNumber: selectedAccountNumber,
-            BranchCommisionGLId: $('#BranchCommisionGLIdHidden').val(),
-            Incentives: incentives,
-            CollectorTotalCommision: collectorTotalCommision,
-            AccountingDate: formattedDate,
-            BranchId: $('#BranchIdHidden').val(),
-            Total: totalAmountToShare,
-            DailyCollectorShare: dailyCollectorShare,
-            BranchShare: branchShare,
-            CollectorId: $('#CollectorIdHidden').val(),
-            CollectorName: $('#CollectorNameHidden').val(),
-            DailyCollectorAccount: $('#DailyCollectorAccount').val(),
-            Month: month.toString(),
-            Year: parseInt(year),
-            SharedAmounts: sharedAmounts
-        };
-
-        console.log('Submitting payment payload (CollectorComissionResponse):', payload);
-
-        $.ajax({
-            url: '@Url.Action("ProcessPayment", "CollectorCommission")',
-            type: 'POST',
-            data: JSON.stringify(payload),
-            contentType: 'application/json',
-            beforeSend: function () {
-                $('#btnPostPayment').prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin"></i> Processing...');
-            },
-            success: function (response) {
-                if (response.success) {
-                    appalert('Payment processed successfully!', 1, 1);
-                    $('#treatmentModal').modal('hide');
-                    resetPaymentForm();
-                    collectorReference = null;
-                    dailyCollectorId = null;
-                    selectedAccountNumber = null;
-                    if (typeof getCommissionData === 'function') {
-                        getCommissionData();
-                    }
-                } else {
-                    if (response.errors) {
-                        var errorMessages = [];
-                        for (var field in response.errors) {
-                            if (response.errors.hasOwnProperty(field)) {
-                                errorMessages = errorMessages.concat(response.errors[field]);
-                            }
-                        }
-                        appalert('Validation errors: ' + errorMessages.join(', '), 4, 1);
-                    } else {
-                        appalert('Error processing payment: ' + response.message, 4, 1);
-                    }
-                }
-            },
-            error: function (xhr, status, error) {
-                appalert('Error processing payment: ' + error, 4, 1);
-            },
-            complete: function () {
-                $('#btnPostPayment').prop('disabled', false).html('<i class="mdi mdi-check-circle me-1"></i> Post');
-            }
-        });
+   function processPayment() {
+    // Validate form
+    if (!$('#DailyCollectorAccount').val()) {
+        appalert('Please select a Daily Collector Account', 3, 1);
+        return;
     }
+
+    if (!dailyCollectorId) {
+        appalert('Please search and select a customer first', 3, 1);
+        return;
+    }
+
+    if (!$('#Incentives').val()) {
+        appalert('Please enter incentives amount', 3, 1);
+        return;
+    }
+
+    // NEW CHECK: If incentives > 0, require ExpenseGL selection
+    var incentives = parseFormattedCurrency($('#Incentives').val()) || 0;
+    var expenseGL = $('#ExpenseGL').val();
+    var memo = $('#Memo').val();
+     var memoinsentive = $('#MemoIncentive').val();
+
+    if (incentives > 0) {
+        if (!expenseGL) {
+            appalert('Incentives amount is greater than zero. Please select a Expense General Ledger Account (ExpenseGL)', 4, 1);
+            $('#ExpenseGL').focus();
+            return;
+        }
+    }
+    if (memo == null) {
+        appalert('Please enter description for Memo', 4, 1);
+            $('#Memo').focus();
+            return;
+        
+    }
+       if (memoinsentive == null) {
+        if (!expenseGL) {
+            appalert('Please Enter description for Memo Insentives', 4, 1);
+            $('#MemoIncentive').focus();
+            return;
+        }
+    }
+
+    if (!$('#PaymentGl').val()) {
+        appalert('Please select a Branch Commission Account', 3, 1);
+        return;
+    }
+
+    if (!$('#AccountingDay').val()) {
+        appalert('Please select accounting date', 3, 1);
+        return;
+    }
+
+    // Get month and year from hidden fields
+    var month = $('#MonthHidden').val();
+    var year = $('#YearHidden').val();
+
+    if (!month || !year) {
+        appalert('Month and Year information is missing', 3, 1);
+        return;
+    }
+
+    // Calculate amounts
+    var incentives = parseFormattedCurrency($('#Incentives').val()) || 0;
+    var dailyCollectorShare = parseFormattedCurrency($('#DaillyCollectorShare').val()) || 0;
+    var branchShare = parseFormattedCurrency($('#BranchShare').val()) || 0;
+
+    // Calculate totals according to business logic
+    var collectorTotalCommision = dailyCollectorShare + branchShare;
+    var totalAmountToShare = incentives + dailyCollectorShare;
+
+    // Prepare SharedAmounts data - use the actual data from commission
+    var sharedAmounts = [];
+    if (treatmentCommissionData && treatmentCommissionData.SharedAmounts) {
+        sharedAmounts = treatmentCommissionData.SharedAmounts.map(function (item) {
+            return {
+                StakeHolderId: item.StakeHolderId || dailyCollectorId,
+                Stakeholder: item.Stakeholder || 'Daily Collector',
+                Percentage: item.Percentage || 0,
+                Amount: item.Amount || 0
+            };
+        });
+    } else {
+        // Fallback: create shared amounts based on calculated values
+        sharedAmounts = [
+            {
+                StakeHolderId: dailyCollectorId,
+                Stakeholder: 'Daily Collector',
+                Percentage: 60,
+                Amount: dailyCollectorShare
+            },
+            {
+                StakeHolderId: 'branch',
+                Stakeholder: 'Branch',
+                Percentage: 40,
+                Amount: branchShare
+            }
+        ];
+    }
+
+    // Format date to match target format: "MM/dd/yyyy hh:mm:ss AM"
+    var accountingDate = $('#AccountingDay').val();
+    var dateObj = new Date(accountingDate);
+    var formattedDate = formatDateForPayload(dateObj);
+
+    // Prepare payload to match CollectorComissionResponse model
+    var payload = {
+        // Map to CollectorComissionResponse properties
+        CustomerId: dailyCollectorId,
+        AccountNumber: selectedAccountNumber,
+        BranchCommisionGLId: $('#BranchCommisionGLIdHidden').val(),
+        ExpenseGL: $('#ExpenseGL').val(), // ADDED: Include ExpenseGL in payload
+        Incentives: incentives,
+        CollectorTotalCommision: collectorTotalCommision,
+        AccountingDate: formattedDate,
+        BranchId: $('#BranchIdHidden').val(),
+        Total: totalAmountToShare,
+        DailyCollectorShare: dailyCollectorShare,
+        BranchShare: branchShare,
+        CollectorId: $('#CollectorIdHidden').val(),
+        CollectorName: $('#CollectorNameHidden').val(),
+        DailyCollectorAccount: $('#DailyCollectorAccount').val(),
+        Month: month.toString(),
+        Year: parseInt(year),
+        Memo: $('#Memo').val(),
+        MemoIncentive: $('#MemoIncentive').val(),
+        SharedAmounts: sharedAmounts
+    };
+
+    console.log('Submitting payment payload (CollectorComissionResponse):', payload);
+
+    // --- NEW: Show confirmation dialog with payment summary ---
+
+    // Get account names for better display
+    var dailyCollectorAccountText = $('#DailyCollectorAccount option:selected').text() || 'Not selected';
+    var paymentGlText = $('#PaymentGl option:selected').text() || 'Not selected';
+    var expenseGLText = $('#ExpenseGL option:selected').text() || 'Not selected';
+    var collectorName = $('#CollectorNameHidden').val() || $('#customerName').text() || 'N/A';
+
+    // Build summary message
+    var summaryMessage = '';
+    summaryMessage += '<div style="text-align: left; font-size: 14px;">';
+    summaryMessage += '<h4 style="margin-bottom: 15px; color: #0d6efd;">📋 Payment Summary</h4>';
+
+    // Collector Information
+    summaryMessage += '<div style="background-color: #f8f9fa; padding: 10px; border-radius: 5px; margin-bottom: 15px;">';
+    summaryMessage += '<strong style="color: #495057;">👤 COLLECTOR INFORMATION</strong><hr style="margin: 5px 0; opacity: 0.2;">';
+    summaryMessage += '<table style="width: 100%; border-collapse: collapse;">';
+    summaryMessage += '<tr><td style="padding: 3px 0;"><strong>Name:</strong></td><td style="padding: 3px 0;">' + collectorName + '</td></tr>';
+    summaryMessage += '<tr><td style="padding: 3px 0;"><strong>Account:</strong></td><td style="padding: 3px 0;">' + dailyCollectorAccountText + '</td></tr>';
+    summaryMessage += '</table></div>';
+
+    // Commission Details
+    summaryMessage += '<div style="background-color: #f8f9fa; padding: 10px; border-radius: 5px; margin-bottom: 15px;">';
+    summaryMessage += '<strong style="color: #495057;">💰 COMMISSION DETAILS</strong><hr style="margin: 5px 0; opacity: 0.2;">';
+    summaryMessage += '<table style="width: 100%; border-collapse: collapse;">';
+    summaryMessage += '<tr><td style="padding: 3px 0;"><strong>Daily Collector Share:</strong></td><td style="padding: 3px 0; text-align: right; color: #198754;">' + formatCurrency(dailyCollectorShare) + '</td></tr>';
+    summaryMessage += '<tr><td style="padding: 3px 0;"><strong>Branch Share:</strong></td><td style="padding: 3px 0; text-align: right; color: #0d6efd;">' + formatCurrency(branchShare) + '</td></tr>';
+    summaryMessage += '<tr><td style="padding: 3px 0;"><strong>Incentives:</strong></td><td style="padding: 3px 0; text-align: right; color: ' + (incentives > 0 ? '#dc3545' : '#6c757d') + ';">' + formatCurrency(incentives) + '</td></tr>';
+    summaryMessage += '<tr style="border-top: 1px solid #dee2e6;"><td style="padding: 5px 0 0 0;"><strong>Total to Post:</strong></td><td style="padding: 5px 0 0 0; text-align: right; color: #0d6efd;"><strong>' + formatCurrency(totalAmountToShare) + '</strong></td></tr>';
+    summaryMessage += '</table></div>';
+
+    // GL Accounts
+    summaryMessage += '<div style="background-color: #f8f9fa; padding: 10px; border-radius: 5px; margin-bottom: 15px;">';
+    summaryMessage += '<strong style="color: #495057;">🏦 GL ACCOUNTS</strong><hr style="margin: 5px 0; opacity: 0.2;">';
+    summaryMessage += '<table style="width: 100%; border-collapse: collapse;">';
+    summaryMessage += '<tr><td style="padding: 3px 0;"><strong>Branch Commission GL:</strong></td><td style="padding: 3px 0;">' + paymentGlText + '</td></tr>';
+    summaryMessage += '<tr><td style="padding: 3px 0;"><strong>Expense GL:</strong></td><td style="padding: 3px 0;">' + expenseGLText + (incentives > 0 ? '' : ' <span style="color: #6c757d;">(not required - incentives=0)</span>') + '</td></tr>';
+    summaryMessage += '</table></div>';
+
+    // Period Information
+    summaryMessage += '<div style="background-color: #f8f9fa; padding: 10px; border-radius: 5px;">';
+    summaryMessage += '<strong style="color: #495057;">📅 PERIOD</strong><hr style="margin: 5px 0; opacity: 0.2;">';
+    summaryMessage += '<table style="width: 100%; border-collapse: collapse;">';
+    summaryMessage += '<tr><td style="padding: 3px 0;"><strong>Month/Year:</strong></td><td style="padding: 3px 0;">' + month + '/' + year + '</td></tr>';
+       summaryMessage += '<tr><td style="padding: 3px 0;"><strong>Accounting Date:</strong></td><td style="padding: 3px 0;">'
+           + formatDateToDMY(accountingDate)
+           + '</td></tr>';
+    summaryMessage += '</table></div>';
+
+       // Memo Section
+       summaryMessage += '<div style="background-color: #f8f9fa; padding: 10px; border-radius: 5px; margin-bottom: 15px;">';
+       summaryMessage += '<strong style="color: #495057;">📝 MEMO DETAILS</strong><hr style="margin: 5px 0; opacity: 0.2;">';
+       summaryMessage += '<table style="width: 100%; border-collapse: collapse;">';
+       summaryMessage += '<tr><td style="padding: 3px 0;"><strong>Memo:</strong></td><td style="padding: 3px 0;">' + $('#Memo').val() + '</td></tr>';
+       summaryMessage += '<tr><td style="padding: 3px 0;"><strong>Memo Incentive:</strong></td><td style="padding: 3px 0;">' + $('#MemoIncentive').val() + '</td></tr>';
+       summaryMessage += '</table></div>';
+
+    summaryMessage += '</div>';
+
+    // Show confirmation dialog using alertify
+    alertify.confirm(
+        'Confirm Payment Posting',
+        summaryMessage,
+        function() {
+            // Proceed with payment - User clicked OK
+            executePayment(payload);
+        },
+        function() {
+            // Cancel - User clicked Cancel
+            appalert('Payment posting cancelled', 2, 1);
+            $('#btnPostPayment').prop('disabled', false).html('<i class="mdi mdi-check-circle me-1"></i> Post');
+        }
+    ).set('labels', {ok: '✅ Proceed', cancel: '❌ Cancel'})
+     .set('closable', false)
+     .set('movable', false)
+     .set('resizable', false)
+     .set('transition', 'fade')
+     .set('pinnable', false);
+}
+
+// --- NEW: Extract the AJAX call to a separate function ---
+function executePayment(payload) {
+    $.ajax({
+        url: '@Url.Action("ProcessPayment", "CollectorCommission")',
+        type: 'POST',
+        data: JSON.stringify(payload),
+        contentType: 'application/json',
+        beforeSend: function () {
+            $('#btnPostPayment').prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin"></i> Processing...');
+        },
+        success: function (response) {
+            if (response.success) {
+                appalert('Payment processed successfully!', 1, 1);
+                $('#treatmentModal').modal('hide');
+                resetPaymentForm();
+                collectorReference = null;
+                dailyCollectorId = null;
+                selectedAccountNumber = null;
+                if (typeof getCommissionData === 'function') {
+                    getCommissionData();
+                }
+            } else {
+                if (response.errors) {
+                    var errorMessages = [];
+                    for (var field in response.errors) {
+                        if (response.errors.hasOwnProperty(field)) {
+                            errorMessages = errorMessages.concat(response.errors[field]);
+                        }
+                    }
+                    appalert('Validation errors: ' + errorMessages.join(', '), 4, 1);
+                } else {
+                    appalert('Error processing payment: ' + response.message, 4, 1);
+                }
+            }
+        },
+        error: function (xhr, status, error) {
+            appalert('Error processing payment: ' + error, 4, 1);
+        },
+        complete: function () {
+            $('#btnPostPayment').prop('disabled', false).html('<i class="mdi mdi-check-circle me-1"></i> Post');
+        }
+    });
+}
 
     // Function to set commission data from main form
     function setCommissionData(data) {

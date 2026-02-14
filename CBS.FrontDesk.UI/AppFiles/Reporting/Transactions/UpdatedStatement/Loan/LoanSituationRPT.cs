@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.ReportRPT {
+namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.UpdatedStatement.Loan {
     using System;
     using System.ComponentModel;
     using CrystalDecisions.Shared;
@@ -16,14 +16,14 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.ReportRPT {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class AccountSituation : ReportClass {
+    public class LoanSituationRPT : ReportClass {
         
-        public AccountSituation() {
+        public LoanSituationRPT() {
         }
         
         public override string ResourceName {
             get {
-                return "AccountSituation.rpt";
+                return "LoanSituationRPT.rpt";
             }
             set {
                 // Do nothing
@@ -41,7 +41,8 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.ReportRPT {
         
         public override string FullResourceName {
             get {
-                return "CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.ReportRPT.AccountSituation.rpt";
+                return "CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.UpdatedStatement.Loan.LoanSituat" +
+                    "ionRPT.rpt";
             }
             set {
                 // Do nothing
@@ -90,9 +91,9 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.ReportRPT {
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class CachedAccountSituation : Component, ICachedReport {
+    public class CachedLoanSituationRPT : Component, ICachedReport {
         
-        public CachedAccountSituation() {
+        public CachedLoanSituationRPT() {
         }
         
         [Browsable(false)]
@@ -129,7 +130,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.ReportRPT {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            AccountSituation rpt = new AccountSituation();
+            LoanSituationRPT rpt = new LoanSituationRPT();
             rpt.Site = this.Site;
             return rpt;
         }

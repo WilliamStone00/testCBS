@@ -1,9 +1,12 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
+using CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.LoanConf;
+using CBS.FrontDesk.Data.Entity.LoanRepayment;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
+using Microsoft.AspNet.SignalR.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -16,10 +19,12 @@ namespace CBS.BusinessService.Repayment
     public class RefundServices : BaseService
     {
         private readonly ApiCallerHelper _loanApiHelper;
+        private readonly ApiCallerHelper _TransactionApiHelper;
 
         public RefundServices()
         {
             _loanApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["LoanBaseUrl"].ToString());
+            _TransactionApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["TransactionBaseUrl"].ToString());
         }
 
         /// <summary>
@@ -68,9 +73,11 @@ namespace CBS.BusinessService.Repayment
             {
                 var url = string.Format(APICallHelper.RefundById, Uri.EscapeDataString(id));
                 var resp = await _loanApiHelper.GetAsync<ResponseObject<Refund>>(url);
-
+                resp.ApiResponseData.Data.BankName = GetBankName();
                 if (resp?.IsSuccess == true)
                     return resp.ApiResponseData?.Data;
+
+                
 
                 return null;
             }
@@ -79,6 +86,79 @@ namespace CBS.BusinessService.Repayment
                 throw;
             }
         }
+
+        public async Task<CustomDataTable> GeRefundDataTableAsync(LoanRefundQuery query)
+        {
+            try
+            {
+                if (!IsHeadOffice() && string.IsNullOrEmpty(query.BranchId))
+                {
+                    query.BranchId = GetBranchID();
+                }
+
+               
+
+                var response = await _loanApiHelper.PostAsync<ResponseObject<CustomDataTable>>(
+                    APICallHelper.GetLoanDataTable, query);
+
+
+
+                if (!response.IsSuccess)
+                    throw new Exception($"API call failed: {response.Message}");
+
+                if (response.ApiResponseData == null)
+                    throw new Exception("API returned null data");
+
+                return response.ApiResponseData.Data;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"API Error (Reconciliation): {ex.Message}");
+                throw new Exception($"Loan service unavailable: {ex.Message}", ex);
+            }
+        }
+
+
+        public async Task<ApiResponse<bool>> PushRefundsAsync(List<PartialBulkOperation> operations)
+        {
+            if (operations == null || !operations.Any())
+            {
+                return new ApiResponse<bool>
+                {
+                    IsSuccess = false,
+                    Message = "No refund operations provided.",
+                    ApiResponseData = false
+                };
+            }
+
+            try
+            {
+                // Prepare the API request payload
+                var request = new BUlkRefundReconcilliation
+                {
+                    RefundCarrierBulkOperations = operations
+                };
+
+                // Call your API helper
+                var apiResponse = await _TransactionApiHelper.PostAsync<bool>(
+                    APICallHelper.PushRefund,
+                    request
+                );
+
+                return apiResponse;
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<bool>
+                {
+                    IsSuccess = false,
+                    Message = $"API call failed: {ex.Message}",
+                    ApiResponseData = false
+                };
+            }
+        }
+
+
     }
 
 }

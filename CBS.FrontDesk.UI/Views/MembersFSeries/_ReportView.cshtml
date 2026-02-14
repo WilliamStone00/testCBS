@@ -142,7 +142,7 @@
                                    id="memberSituation"
                                    value="MemberSituation"
                                    checked
-                                   @*onclick="switchReport('MemberSituation')"*@>
+                                  onclick="switchReport('MemberSituation')">
                             <label class="form-check-label" for="memberSituation">
                                 <i class="mdi mdi-account-multiple-outline me-2"></i>
                                 Member Situation
@@ -181,7 +181,7 @@
                                    name="ReportTypeRadio"
                                    id="loanRepayment"
                                    value="LoanRepayment"
-                                   @*onclick="switchReport('LoanRepayment')"*@>
+                                   @*onclick="switchReport('LoanRepayment')">*@
                             <label class="form-check-label" for="loanRepayment">
                                 <i class="mdi mdi-cash-multiple me-2"></i>
                                 Loan Repayment
@@ -194,7 +194,7 @@
                                    name="ReportTypeRadio"
                                    id="loanSituation"
                                    value="LoanSituation"
-                                   @*onclick="switchReport('LoanSituation')"*@>
+                                   onclick="switchReport('LoanSituation')">
                             <label class="form-check-label" for="loanSituation">
                                 <i class="mdi mdi-chart-line me-2"></i>
                                 Loan History
@@ -240,18 +240,18 @@
                 @Html.Hidden("SelectedAccountIds", "", new { id = "SelectedAccountIds" })
 
                 <!-- Member Situation Form (Default) -->
-                <!--<div id="memberSituationForm" class="report-form-section">
+                <div id="memberSituationForm" class="report-form-section">
                     <div class="card border-primary">
                         <div class="card-body">
-                            <div class="row g-3">-->
-                                <!-- Account Selection (Multiple) -->
-                                <!--<div class="col-md-12">
+                            <div class="row g-3">
+                                 Account Selection (Multiple) 
+                                <div class="col-md-12">
                                     <label class="fw-medium">
                                         <i class="mdi mdi-account-card-outline me-2 text-primary"></i>
                                         Select Accounts
                                     </label>
                                     <div class="form-floating">
-                                        @Html.ListBox("AccountIds_Member",
+                                        @Html.ListBox("AccountIds",
                                             (IEnumerable<SelectListItem>)ViewBag.Accounts,
                                             new { @class = "form-control select2", id = "memberAccountIds", multiple = "multiple" })
                                         <label for="memberAccountIds">Select multiple accounts</label>
@@ -262,16 +262,16 @@
                                             Select one or multiple member accounts for the report
                                         </div>
                                     </div>
-                                </div>-->
+                                </div>
 
-                                <!-- Loan Status Filter -->
-                                <!--<div class="col-md-12">
+                                 @*Loan Status Filter*@ 
+                                <div class="col-md-12">
                                     <label class="fw-medium">
                                         <i class="mdi mdi-hand-coin-outline me-2 text-primary"></i>
                                         Loan Status Filter
                                     </label>
                                     <div class="form-floating">
-                                        <select class="form-control" id="memberLoanStatus" name="LoanStatus_Member">
+                                        <select class="form-control" id="memberLoanStatus" name="LoanStatus">
                                             <option value="" disabled selected>Select Filter</option>
                                             <option value="all">All Loans</option>
                                             <option value="approved">Approved</option>
@@ -289,10 +289,10 @@
                                         </div>
                                     </div>
                                 </div>
-                                <hr />-->
+                                <hr />
 
-                                <!-- Date Range Section -->
-                                <!--<div id="memberDateSection">
+                                 @*Date Range Section*@ 
+                                <div id="memberDateSection">
                                     <div class="row g-3">
                                         <div class="col-md-12">
                                             <label class="fw-medium">
@@ -301,7 +301,7 @@
                                             </label>
                                             <div class="form-floating">
                                                 @Html.TextBox(
-                                                    "DateTo_Member",
+                                                    "DateTo",
                                                     DateTime.Now.ToString("yyyy-MM-dd"),
                                                     new
                                                     {
@@ -322,7 +322,7 @@
                             </div>
                         </div>
                     </div>
-                </div>-->
+                </div>
 
                 <!-- Account Situation Form -->
                 <div id="accountSituationForm" class="report-form-section d-none">
@@ -394,7 +394,7 @@
                                     </label>
                                     <div class="form-floating">
                                         @Html.DropDownList("AccountTypeId_Statement",
-                                            (IEnumerable<SelectListItem>)ViewBag.Accounts,
+                                            (IEnumerable<SelectListItem>)ViewBag.Account,
                                             "Select Account",
                                             new { @class = "form-control select2", required = "required", id = "accountStatementAccount" })
                                         <label for="accountStatementAccount">Select account</label>

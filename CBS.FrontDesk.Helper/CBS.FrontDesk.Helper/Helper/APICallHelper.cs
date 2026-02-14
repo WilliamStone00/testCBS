@@ -139,6 +139,9 @@ namespace CBS.FrontDesk.Helper
         public static string UploadStandingOrderMemberRegistrationPreview = "/api/v1/StandingOrder/member-registration/file-upload/preview";
         public static string MemberBulkStandingOrderRegistration = "/api/v1/StandingOrder/member-registration/bulk-create";
         public static string StandingOrder_Listing = "/api/v1/StandingOrder/member-registration/data-table";
+        public static string LoanRepayments = "/api/v1/LoanRepayments/DataTable";
+        public static string LoanRepaymentsDetails = "/api/v1/LoanRepayments/{0}";
+        public static string LoanRepayFileDetails = "/api/v1/FileUpload/{0}";
 
         //FileUpload
         public static string SetPrivatePublicStatus = "/api/v1/FileUpload/set-private";
@@ -153,7 +156,9 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllSalaryUploadByFileUploadId = "/api/v1/SalaryUpload/all";
         public static string GetAllSalaryUploadWithBranchstatisticsByFileUploadId = "/api/v1/SalaryUpload/all/salary-model-withbranchstatistics";
         public static string CreateSalaryUpload = "/api/v1/SalaryUpload/upload";
+        public static string ReexecuteSalaryFileUpload = "/api/v1/SalaryReExecution/re-execute-salary";
         public static string DownloadSalaryUpload = "/api/v1/SalaryUpload/download-salay-file/{0}";
+        public static string DownloadReexecution = "api/v1/SalaryReExecution/process-loan-repayments";
         public static string ActivateSalaryUpload = "/api/v1/SalaryUpload/Activate-salary-file";
         public static string GetAllSalaryUploadByFileBaseOnStatus = "/api/v1/SalaryUpload/salary-file-uploaded";
         public static string GetSalaryFileUploadByFileId = "/api/v1/SalaryUpload/get-file-upload-byid/{0}";
@@ -812,6 +817,8 @@ namespace CBS.FrontDesk.Helper
         //Refund
         public static string RefundByCustomerId = "/api/v1/Refund/by-customer/{0}";
         public static string RefundById = "/api/v1/Refund/{0}";
+        public static string GetLoanDataTable = "/api/v1/Refund/datatable";
+        public static string PushRefund = "/api/v1/loan-repayment-local-account/reconcilliation";
 
         //Fee
         public static string Get_Update_Delete_Fee = "/api/v1/Fee/{0}";
@@ -1367,8 +1374,8 @@ namespace CBS.FrontDesk.Helper
         public const string GetCancellationRequestsDataTable = "/api/v1/Cheque-Book";
 
         //-------------------- Cheque Cleance ---------------
-        public const string clearanceData = "/api/v1/cheque-clearance/data-table";
-        public const string ChequebookDetail = "/api/v1/checkbook/{0}";
+        public const string ChequeClearanceRequest = "/api/v1/clearance/request";
+        public const string ClearanceDataTable = "/api/v1/clearance/data-table";
 
 
         //---------------------- Global Configuration ----------------------------
@@ -1402,6 +1409,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetextracyedFileDetailsEndpoint = "api/v1/ManualEntryCollector/Extracted/data-table";
         public static string getextracteddetails = "/api/v1/ManualEntryCollector/Extracted/details";
         public static string GetManualEntryCollectorById = "/api/v1/ManualEntryCollector/{0}";
+        public static string ExecuteBulkDailySaverCreditByManualCollectorId = "/api/ExecuteBulkDailySaverCredit/ByManualCollectorId/{0}";
 
         public static string GetManualEntryCollectorDetailsDataTable = "/api/v1/ManualEntryCollector/Extracted/details/data-table";
         //*************************** END MANUAL DAILLY COLLECTIONS ************************
@@ -1813,12 +1821,12 @@ namespace CBS.FrontDesk.Helper
 
         //-------------------------  System Reconciliation ----------------------
 
-        public static string GetReconciliationDataTable = "/api/v1/AccountingOperationTrack/GetUnProcessTrackedJournalDataTable";
+        public static string GetReconciliationDataTable = "/api/v1/AccountingOperationTrackReconciliation/datatable/tracker-reconcilition-vII";
 
         public static string GetReconciliationSummary = "/api/v1/AccountingOperationTrack/GetBranchDailyStaticsQuery";
 
         public static string GetReconciliationById = "/api/v1/AccountingOperationTrack/GetAccountingOperationByIdQuery/{0}";
-        public static string PushRecordReconciliation = "/api/v1/AccountingOperationTrack/PushJournalExecution";
+        public static string PushRecordReconciliation = "/api/v1/AccountingOperationTrackReconciliation/reconcile";
         public static string SubmitCloseOfDay = "/api/DailyReconciliationStatus/add";
         public static string GetReconciliationDetails = "/api/v1/AccountingOperationTrack/GetOperationJournalDataTableQuery";
         public static string UpdateTillClosePayload = "/api/v1/AccountingOperationTrack/PushJournalExecutionWithModifyCommand";
