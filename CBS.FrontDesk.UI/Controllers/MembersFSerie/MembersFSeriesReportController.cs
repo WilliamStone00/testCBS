@@ -161,6 +161,8 @@ namespace CBS.FrontDesk.UI.Controllers
                         ? (int)LoanRepaymentReportMode.ByRepaymentPeriod
                         : (int)LoanRepaymentReportMode.BySpecificLoan;
                     mainData = await _reportBuilder.BuildLoanRepaymentRows(filter);
+                relativePath = "Transactions/UpdatedStatement/Loan/LoanRepaymentRPT.rpt";
+                    reportTitle = "LOAN REPAYMENT";
                     break;
 
                 case "LoanSituation":

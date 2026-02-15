@@ -680,6 +680,12 @@
       <DependentUpon>TellerStatement1.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="AppFiles\Reporting\Transactions\UpdatedStatement\Loan\LoanRepaymentRPT.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LoanRepaymentRPT.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="AppFiles\Reporting\Transactions\UpdatedStatement\Loan\LoanSituationRPT.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -7571,6 +7577,8 @@
     <Content Include="AppFiles\ManualDailyCollection\Manualdaillycollectiontemplete.xlsx" />
     <Content Include="AppFiles\AffiliateAccountUpload\BAPCCUL_ACCOUNTS2.xlsx" />
     <Content Include="AppFiles\AffiliateAccountUpload\SampleBalanceSheet2.xlsx" />
+    <Content Include="Scripts\Js\Crud\DailyCollection\ManualDailyCollection\ManualDailyCollection.js" />
+    <Content Include="Scripts\Js\Crud\FileUpload\FileUploadQuery.js" />
     <Content Include="Views\MobileMoneyConfigV2\Index.cshtml" />
     <Content Include="Views\MobileMoneyConfigV2\_Create.cshtml" />
     <Content Include="Views\MobileMoneyConfigV2\_Data.cshtml" />
@@ -7645,6 +7653,10 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>CashDeskRessource.Designer.cs</LastGenOutput>
     </Content>
+    <EmbeddedResource Include="AppFiles\Reporting\Transactions\UpdatedStatement\Loan\LoanRepaymentRPT.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>LoanRepaymentRPT.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\Transactions\UpdatedStatement\Loan\LoanSituationRPT.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>LoanSituationRPT.cs</LastGenOutput>
@@ -10823,6 +10835,7 @@
     <Content Include="Views\SalaryUpload\_LoanRepaymentDataTable.cshtml" />
     <Content Include="Views\SalaryUpload\_LoanRepaymentDetails.cshtml" />
     <Content Include="Views\SalaryUpload\_FileStatistics.cshtml" />
+    <None Include="Scripts\Js\Crud\FeeRange\.editorconfig" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

@@ -1030,7 +1030,8 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public DateTime DateOfPayment { get; set; }
         public bool IsCompleted { get; set; }
         public bool IsReversal { get; set; }
-        public string ReversesRefundId { get; set; } = "n/a";
+        public string ReversesRefundId { get; set; }= "n/a";
+        public string TransactionReference { get; set; }
         public virtual Loan Loan { get; set; }
         public bool IsComplete { get; set; }
         public List<RefundDetail> RefundDetails { get; set; }

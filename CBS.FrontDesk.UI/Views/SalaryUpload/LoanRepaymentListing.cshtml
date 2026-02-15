@@ -290,7 +290,7 @@
             const loanRepaymentsDataUrl = '/SalaryUpload/LoanRepaymentsExecution';
             const loanRepaymentDetailsUrl = '/SalaryUpload/LoanRepaymentDetails';
             const getBranchesUrl = '/SalaryUpload/GetBranches';
-            const tableSelector = '#myDataTable'; // CHANGED TO myDataTable
+            const tableSelector = '#myDataTable';
 
             // Global table reference
             window.loanRepaymentTable = window.loanRepaymentTable || null;
@@ -374,52 +374,117 @@
                 };
             }
 
-            // Load file statistics - FIXED to use partial view
-            //window.loadFileStatistics = function (fileUploadId) {
-            //    if (!fileUploadId) return;
+            // Adjust column widths dynamically
+            function adjustColumnWidths() {
+                if (!window.loanRepaymentTable) return;
 
-            //    $('#fileUploadId').val(fileUploadId);
+                // Get the table and adjust column widths based on visible columns
+                const table = $(tableSelector);
+                const visibleColumns = window.loanRepaymentTable.columns().visible().filter(v => v === true).length;
 
-            //    // Show loading state
-            //    $('#fileStatisticsContainer').html(`
-            //                <div class="text-center py-4">
-            //                    <div class="spinner-border text-primary" role="status">
-            //                        <span class="visually-hidden">Loading...</span>
-            //                    </div>
-            //                    <p class="mt-2 text-muted">Loading file statistics...</p>
-            //                </div>
-            //            `);
+                // Adjust colgroup widths based on visible columns
+                const colgroup = table.find('colgroup');
+                const cols = colgroup.find('col');
 
-            //    $.ajax({
-            //        url: fileDetailsUrl,
-            //        type: 'GET',
-            //        data: {
-            //            id: fileUploadId,
-            //            partialView: '_FileStatistics' // Specify the partial view
-            //        },
-            //        success: function (response) {
-            //            // Response is HTML from the partial view
-            //            $('#fileStatisticsContainer').html(response);
+                // Reset widths - distribute evenly among visible columns
+                const baseWidth = Math.floor(100 / visibleColumns);
+                cols.css('width', 'auto');
 
-            //            // Reload table with new fileUploadId filter
-            //            if (window.loanRepaymentTable) {
-            //                window.loanRepaymentTable.ajax.reload(null, false);
-            //            }
-            //        },
-            //        error: function (xhr, status, error) {
-            //            $('#fileStatisticsContainer').html(`
-            //                        <div class="alert alert-danger mb-0">
-            //                            <i class="mdi mdi-alert-circle me-2"></i>
-            //                            Failed to load file statistics. Please try again.
-            //                            <br/><small>${error}</small>
-            //                        </div>
-            //                    `);
-            //            console.error('File statistics error:', error);
-            //        }
-            //    });
-            //};
+                // Apply smooth transition
+                table.css('transition', 'all 0.3s ease');
+                setTimeout(() => {
+                    table.css('transition', '');
+                }, 300);
+            }
 
-            // Initialize DataTable - FIXED to prevent double initialization
+            // Initialize column visibility toggles
+            function initColumnToggles() {
+                if (!window.loanRepaymentTable) return;
+
+                // Set initial state - first 7 columns checked (excluding Created Date which is column 0)
+                // Columns: Branch(1), MemberRef(2), SalaryCode(3), Status(4), Principal(5), Interest(6), Charge(7)
+                // Hide columns: Tax(8), Total(9), Actions(10) is kept checked
+
+                for (let i = 1; i <= 10; i++) {
+                    const $checkbox = $(`input.column-toggle[data-column="${i}"]`);
+                    if (i <= 7 || i === 10) { // Show first 7 data columns + Actions
+                        window.loanRepaymentTable.column(i).visible(true);
+                        $checkbox.prop('checked', true);
+                        $checkbox.next('label').removeClass('text-muted');
+                    } else {
+                        window.loanRepaymentTable.column(i).visible(false);
+                        $checkbox.prop('checked', false);
+                        $checkbox.next('label').addClass('text-muted');
+                    }
+                }
+
+                adjustColumnWidths();
+            }
+
+            // Handle column toggle clicks
+            function setupColumnToggleHandlers() {
+                $('input.column-toggle').off('change').on('change', function () {
+                    if (!window.loanRepaymentTable) return;
+
+                    const columnIndex = parseInt($(this).data('column'));
+                    const isChecked = $(this).is(':checked');
+                    const $label = $(this).next('label');
+
+                    // Toggle column visibility
+                    window.loanRepaymentTable.column(columnIndex).visible(isChecked);
+
+                    // Update label styling
+                    if (isChecked) {
+                        $label.removeClass('text-muted');
+                    } else {
+                        $label.addClass('text-muted');
+                    }
+
+                    // Adjust column widths
+                    adjustColumnWidths();
+
+                    // Optional: Show a message when columns are toggled
+                    const columnName = $label.text().trim();
+                    showAppAlert(`${columnName} column ${isChecked ? 'shown' : 'hidden'}`, 3);
+                });
+            }
+
+            // Show all columns
+            function showAllColumns() {
+                if (!window.loanRepaymentTable) return;
+
+                for (let i = 1; i <= 10; i++) {
+                    window.loanRepaymentTable.column(i).visible(true);
+                    const $checkbox = $(`input.column-toggle[data-column="${i}"]`);
+                    $checkbox.prop('checked', true);
+                    $checkbox.next('label').removeClass('text-muted');
+                }
+
+                adjustColumnWidths();
+                showAppAlert('All columns are now visible', 3);
+            }
+
+            // Reset to default columns
+            function resetToDefaultColumns() {
+                if (!window.loanRepaymentTable) return;
+
+                for (let i = 1; i <= 10; i++) {
+                    if (i <= 7 || i === 10) { // Show first 7 data columns + Actions
+                        window.loanRepaymentTable.column(i).visible(true);
+                        $(`input.column-toggle[data-column="${i}"]`).prop('checked', true);
+                        $(`input.column-toggle[data-column="${i}"]`).next('label').removeClass('text-muted');
+                    } else {
+                        window.loanRepaymentTable.column(i).visible(false);
+                        $(`input.column-toggle[data-column="${i}"]`).prop('checked', false);
+                        $(`input.column-toggle[data-column="${i}"]`).next('label').addClass('text-muted');
+                    }
+                }
+
+                adjustColumnWidths();
+                showAppAlert('Columns reset to default view', 3);
+            }
+
+            // Initialize DataTable
             function initLoanRepaymentDataTable() {
                 if (isDataTableInitialized && $.fn.DataTable.isDataTable(tableSelector)) {
                     window.loanRepaymentTable = $(tableSelector).DataTable();
@@ -439,7 +504,7 @@
                 window.loanRepaymentTable = $(tableSelector).DataTable({
                     serverSide: true,
                     searching: false,
-                    responsive: true,
+                    responsive: false, // Disable responsive to allow custom column widths
                     autoWidth: false,
                     order: [[0, 'desc']],
                     ajax: {
@@ -572,22 +637,22 @@
                                 var btnId = 'actionDropdown_' + safeId;
 
                                 return `
-                                                    <div class="dropdown">
-                                                        <button class="btn btn-sm btn-info dropdown-toggle text-white" type="button"
-                                                                id="${btnId}" data-bs-toggle="dropdown" aria-expanded="false">
-                                                            <i class="mdi mdi-cog-outline"></i> Actions
+                                            <div class="dropdown">
+                                                <button class="btn btn-sm btn-info dropdown-toggle text-white" type="button"
+                                                        id="${btnId}" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="mdi mdi-cog-outline"></i> Actions
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="${btnId}">
+                                                    <li>
+                                                        <button type="button" class="dropdown-item btn-details"
+                                                                data-id="${escapeHtml(row.Id)}"
+                                                                data-transaction="${escapeHtml(row.TransactionReference || '')}">
+                                                            <i class="mdi mdi-eye me-1 text-primary"></i> View Details
                                                         </button>
-                                                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="${btnId}">
-                                                            <li>
-                                                                <button type="button" class="dropdown-item btn-details"
-                                                                        data-id="${escapeHtml(row.Id)}"
-                                                                        data-transaction="${escapeHtml(row.TransactionReference || '')}">
-                                                                    <i class="mdi mdi-eye me-1 text-primary"></i> View Details
-                                                                </button>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                `;
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        `;
                             }
                         }
                     ],
@@ -607,6 +672,18 @@
                                 } catch (e) { }
                             });
                         }
+
+                        // Adjust column widths after each draw
+                        adjustColumnWidths();
+                    },
+                    initComplete: function () {
+                        // Initialize column visibility after table is fully loaded
+                        initColumnToggles();
+                        setupColumnToggleHandlers();
+
+                        // Setup quick action buttons
+                        $('#showAllColumns').off('click').on('click', showAllColumns);
+                        $('#resetColumns').off('click').on('click', resetToDefaultColumns);
                     }
                 });
 
@@ -632,11 +709,11 @@
 
                 // Reset file statistics
                 $('#fileStatisticsContainer').html(`
-                                    <div class="text-center py-4 text-muted">
-                                        <i class="mdi mdi-file-document-outline mdi-48px"></i>
-                                        <p class="mt-2">Click on "Loan Execution Details" from any file to view statistics</p>
-                                    </div>
-                                `);
+                            <div class="text-center py-4 text-muted">
+                                <i class="mdi mdi-file-document-outline mdi-48px"></i>
+                                <p class="mt-2">Click on "Loan Execution Details" from any file to view statistics</p>
+                            </div>
+                        `);
 
                 loadLoanRepaymentData();
                 showAppAlert('Filters reset', 3);
@@ -657,13 +734,13 @@
 
                 var $modalBody = $('#loanRepaymentDetailsModal .modal-body');
                 $modalBody.html(`
-                                    <div class="text-center py-5">
-                                        <div class="spinner-border text-primary" role="status">
-                                            <span class="visually-hidden">Loading...</span>
-                                        </div>
-                                        <p class="mt-2 text-muted">Loading details...</p>
-                                    </div>
-                                `);
+                            <div class="text-center py-5">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <p class="mt-2 text-muted">Loading details...</p>
+                            </div>
+                        `);
 
                 var modal = new bootstrap.Modal(modalEl);
                 modal.show();
@@ -677,12 +754,12 @@
                     },
                     error: function (xhr) {
                         $modalBody.html(`
-                                            <div class="text-center text-danger py-4">
-                                                <i class="mdi mdi-alert-circle mdi-48px"></i>
-                                                <p class="mt-2">Error loading details. Please try again.</p>
-                                                <small>${xhr.status} - ${xhr.statusText}</small>
-                                            </div>
-                                        `);
+                                    <div class="text-center text-danger py-4">
+                                        <i class="mdi mdi-alert-circle mdi-48px"></i>
+                                        <p class="mt-2">Error loading details. Please try again.</p>
+                                        <small>${xhr.status} - ${xhr.statusText}</small>
+                                    </div>
+                                `);
                         showAppAlert('Failed to load details', 0);
                         console.error('Details load failed', xhr);
                     }
@@ -693,7 +770,6 @@
             $(document).ready(function () {
                 // Toggle filter visibility
                 $('.filter-toggle').on('change', function () {
-
                     const target = $(this).data('target');
 
                     if (this.checked) {

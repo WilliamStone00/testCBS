@@ -438,23 +438,23 @@
             `;
                             } else if (ctx === "executer") {
                                 items = `
-                <li>
-                    <a class="dropdown-item" href="/SalaryUpload/DownloadFile?fileId=${row.Id}&fileType=${row.FileType}">
-                        <i class="mdi mdi-download me-2 text-success"></i>Download
-                    </a>
-                </li>
-                <li>
-                    <a class="dropdown-item" target="_blank" href="/SalaryExecution/Detail?fileUploadid=${row.Id}&mode=execute">
-                        <i class="mdi mdi-play-circle-outline me-2 text-primary"></i>Execute
-                    </a>
-                </li>
-                <li><hr class="dropdown-divider"/></li>
-                <li>
-                    <button type="button" class="dropdown-item" onclick="deleteUpload('${row.Id}')">
-                        <i class="mdi mdi-delete-outline me-2 text-danger"></i>Delete
-                    </button>
-                </li>
-            `;
+                                        <li>
+                                            <a class="dropdown-item" href="/SalaryUpload/DownloadFile?fileId=${row.Id}&fileType=${row.FileType}">
+                                                <i class="mdi mdi-download me-2 text-success"></i>Download
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" target="_blank" href="/SalaryExecution/Detail?fileUploadid=${row.Id}&mode=execute">
+                                                <i class="mdi mdi-play-circle-outline me-2 text-primary"></i>Execute
+                                            </a>
+                                        </li>
+                                        <li><hr class="dropdown-divider"/></li>
+                                        <li>
+                                            <button type="button" class="dropdown-item" onclick="deleteUpload('${row.Id}')">
+                                                <i class="mdi mdi-delete-outline me-2 text-danger"></i>Delete
+                                            </button>
+                                        </li>
+                                    `;
                             }
 
                             return `

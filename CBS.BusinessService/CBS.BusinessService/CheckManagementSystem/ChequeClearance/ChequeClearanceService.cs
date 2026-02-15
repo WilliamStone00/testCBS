@@ -61,62 +61,8 @@ namespace CBS.BusinessService.CheckManagementSystem.ChequeClearance
             }
         }
 
-       
 
-       
 
-        //public async Task<ExecutionMessages> CreateAsync(OptionRequest model)
-        //{
-        //    try
-        //    {
-        //        var response = await _apiCallerHelper
-        //            .PostAsync<ServiceResponse<OptionRequest>>(
-        //                APICallHelper.ChequeClearanceRequest,  // ✅ Correct endpoint
-        //                model);
-
-        //        if (response != null && response.IsSuccess)
-        //        {
-        //            GetExecutionMessages(
-        //                response.ApiResponseData?.Data,
-        //                true,
-        //                model?.Id ?? "ChequeClearance",
-        //                MessagesResults.Success,
-        //                ExecutionProcessOption.InsertObject,
-        //                SystemMessageStatus.Success.ToString(),
-        //                null,
-        //                response.ApiResponseData?.Message
-        //            );
-        //        }
-        //        else
-        //        {
-        //            GetExecutionMessages(
-        //                model,
-        //                false,
-        //                model?.Id ?? "ChequeClearance",
-        //                MessagesResults.Failed,
-        //                ExecutionProcessOption.InsertObject,
-        //                SystemMessageStatus.Failed.ToString(),
-        //                null,
-        //                response?.ApiResponseData?.Message ?? response?.Message
-        //            );
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        GetExecutionMessages(
-        //            model,
-        //            false,
-        //            model?.Id ?? "ChequeClearance",
-        //            MessagesResults.Error,
-        //            ExecutionProcessOption.TryCatch,
-        //            SystemMessageStatus.Error.ToString(),
-        //            ex,
-        //            ex.Message
-        //        );
-        //    }
-
-        //    return ExecutionMessage;
-        //}
 
 
         public async Task<ExecutionMessages> CreateAsync(OptionRequest model)
@@ -125,38 +71,92 @@ namespace CBS.BusinessService.CheckManagementSystem.ChequeClearance
             {
                 var response = await _apiCallerHelper
                     .PostAsync<ServiceResponse<OptionRequest>>(
-                        APICallHelper.UpdateFeeConfig,
+                        APICallHelper.ChequeClearanceRequest,  // ✅ Correct endpoint
                         model);
 
-                // ⚠ Force success regardless of API response
-                GetExecutionMessages(
-                    response?.ApiResponseData?.Data ?? model,
-                    true, // ALWAYS TRUE
-                    model?.Id ?? "ChequeClearance",
-                    MessagesResults.Success,
-                    ExecutionProcessOption.InsertObject,
-                    SystemMessageStatus.Success.ToString(),
-                    null,
-                    response?.ApiResponseData?.Message ?? "Processed (forced success)"
-                );
+                if (response != null && response.IsSuccess)
+                {
+                    GetExecutionMessages(
+                        response.ApiResponseData?.Data,
+                        true,
+                        model?.Id ?? "ChequeClearance",
+                        MessagesResults.Success,
+                        ExecutionProcessOption.InsertObject,
+                        SystemMessageStatus.Success.ToString(),
+                        null,
+                        response.ApiResponseData?.Message
+                    );
+                }
+                else
+                {
+                    GetExecutionMessages(
+                        model,
+                        false,
+                        model?.Id ?? "ChequeClearance",
+                        MessagesResults.Failed,
+                        ExecutionProcessOption.InsertObject,
+                        SystemMessageStatus.Failed.ToString(),
+                        null,
+                        response?.ApiResponseData?.Message ?? response?.Message
+                    );
+                }
             }
             catch (Exception ex)
             {
-                // ⚠ Even on exception — still return success
                 GetExecutionMessages(
                     model,
-                    true, // STILL TRUE
+                    false,
                     model?.Id ?? "ChequeClearance",
-                    MessagesResults.Success,
+                    MessagesResults.Error,
                     ExecutionProcessOption.TryCatch,
-                    SystemMessageStatus.Success.ToString(),
-                    null,
-                    "Processed with internal error but forced success"
+                    SystemMessageStatus.Error.ToString(),
+                    ex,
+                    ex.Message
                 );
             }
 
             return ExecutionMessage;
         }
+
+
+        //public async Task<ExecutionMessages> CreateAsync(OptionRequest model)
+        //{
+        //    try
+        //    {
+        //        var response = await _apiCallerHelper
+        //            .PostAsync<ServiceResponse<OptionRequest>>(
+        //                APICallHelper.UpdateFeeConfig,
+        //                model);
+
+        //        // ⚠ Force success regardless of API response
+        //        GetExecutionMessages(
+        //            response?.ApiResponseData?.Data ?? model,
+        //            true, // ALWAYS TRUE
+        //            model?.Id ?? "ChequeClearance",
+        //            MessagesResults.Success,
+        //            ExecutionProcessOption.InsertObject,
+        //            SystemMessageStatus.Success.ToString(),
+        //            null,
+        //            response?.ApiResponseData?.Message ?? "Processed (forced success)"
+        //        );
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // ⚠ Even on exception — still return success
+        //        GetExecutionMessages(
+        //            model,
+        //            true, // STILL TRUE
+        //            model?.Id ?? "ChequeClearance",
+        //            MessagesResults.Success,
+        //            ExecutionProcessOption.TryCatch,
+        //            SystemMessageStatus.Success.ToString(),
+        //            null,
+        //            "Processed with internal error but forced success"
+        //        );
+        //    }
+
+        //    return ExecutionMessage;
+        //}
 
 
 
