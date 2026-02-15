@@ -181,7 +181,7 @@
                                    name="ReportTypeRadio"
                                    id="loanRepayment"
                                    value="LoanRepayment"
-                                   @*onclick="switchReport('LoanRepayment')">*@
+                                   onclick="switchReport('LoanRepayment')">
                             <label class="form-check-label" for="loanRepayment">
                                 <i class="mdi mdi-cash-multiple me-2"></i>
                                 Loan Repayment
@@ -488,25 +488,23 @@
                                 </div>
 
                                 <!-- Loan Selection Section -->
-                                <div id="loanSelectionSection">
-                                    <div class="col-md-12">
-                                        <label class="fw-medium">
-                                            <i class="mdi mdi-hand-coin-outline me-2 text-primary"></i>
-                                            Loan Selection
-                                        </label>
-                                        <div class="form-floating">
-                                            @Html.DropDownList("LoanId_Repayment",
-                                                (IEnumerable<SelectListItem>)ViewBag.Loans,
-                                                "Select Loan",
-                                                new { @class = "form-control select2", id = "loanRepaymentLoan" })
-                                            <label for="loanRepaymentLoan">Select loan</label>
-                                            <div class="invalid-feedback">
-                                                Please select a loan
-                                            </div>
+                                <!-- Loan Selection Section -->
+                                <div id="loanSelectionSection" class="col-md-12">
+                                    <label class="fw-medium">
+                                        <i class="mdi mdi-hand-coin-outline me-2 text-primary"></i>
+                                        Loan Selection
+                                    </label>
+                                    <div class="form-floating">
+                                        @Html.DropDownList("LoanId_Repayment",
+                                            (IEnumerable<SelectListItem>)ViewBag.Loans,
+                                            "Select Loan",
+                                            new { @class = "form-control select2", id = "loanRepaymentLoan" })
+                                        <label for="loanRepaymentLoan">Select loan</label>
+                                        <div class="invalid-feedback">
+                                            Please select a loan
                                         </div>
                                     </div>
                                 </div>
-
                                 <!-- Date Range Section - ALWAYS VISIBLE -->
                                 <div id="loanRepaymentDateSection" class="mt-3">
                                     <div class="row g-3">
@@ -562,9 +560,34 @@
 
                 <!-- Loan Situation Form -->
                 <div id="loanSituationForm" class="report-form-section d-none">
-                    <div class="card border-primary">
+                    <div class="card border-primary">                       
                         <div class="card-body">
                             <div class="row g-3">
+                                <div class="col-md-12">
+                                    <label class="fw-medium">
+                                        <i class="mdi mdi-hand-coin-outline me-2 text-primary"></i>
+                                        Loan Status Filter
+                                    </label>
+                                    <div class="form-floating">
+                                        <select class="form-control" id="LoanHistoryStatus" name="LoanStatus">
+                                            <option value="" disabled selected>Select Filter</option>
+                                            <option value="all">All Loans</option>
+                                            <option value="approved">Approved</option>
+                                            <option value="rescheduled">Rescheduled</option>
+                                            <option value="refinanced">Refinanced</option>
+                                            <option value="restructured">Restructured</option>
+                                            <option value="current">Current</option>
+                                        </select>
+                                        <label for="memberLoanStatus">Filter by loan status</label>
+                                        <div class="invalid-feedback">
+                                            Please select a loan status filter
+                                        </div>
+                                        <div class="mt-1 small text-muted">
+                                            Filter loans by their current status
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <!-- From Date -->
                                 <div class="col-md-6">
                                     <label class="fw-medium">
