@@ -1700,6 +1700,7 @@ namespace CBS.FrontDesk.Helper
         public static string Customerdatatable = "/api/v1/customers/datatable";
         public static string DaillyCollectorCommission = "/api/v1/DailySavingsBackOffice/CollectorCommissionSummary";
         public static string getcustomerbyid = "/api/v1/Customer/{id}";
+        public static string comnisionJob = "/api/v1/Jobs/{0}/snapshot";
         public static string PostPayment = "/api/v1/DailySavingsBackOffice/PayDailyCollectorCommission";
         public static string DailyCollectorcommissiondata = "/api/v1/DailySavingsBackOffice/Dashboard/GetDailyCollectorCommissionPaymentsDataTable";
         public static string DaillyCollectorGetbyId = "not yet Availlable";

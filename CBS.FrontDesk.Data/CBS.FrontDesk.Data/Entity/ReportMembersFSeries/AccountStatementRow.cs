@@ -254,6 +254,8 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
         public string LoanAccountNumber { get; set; }
         public string Id { get; set; }
         public string LoanId { get; set; }
+        public string LoanType { get; set; }
+        public decimal LoanAmount { get; set; }
         public string MembersReference { get; set; }
         public string MembersName { get; set; }
         public string Address { get; set; }
@@ -326,15 +328,18 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
         public decimal AverageInterestRate { get; set; }
         public decimal DelinquencyRate { get; set; }
         public string LoanAccountNumber { get; set; }
+        public decimal LoanAmount { get; set; }
         // Loan Details
         public string LoanNumber { get; set; }
         public string CustomerName { get; set; }
         public string LoanType { get; set; }
-        public decimal LoanAmount { get; set; }
+        
         public decimal OutstandingBalance { get; set; }
         public DateTime DisbursementDate { get; set; }
         public DateTime MaturityDate { get; set; }
         public decimal InterestRate { get; set; }
+        public decimal Tax { get; set; }
+        public decimal Vat { get; set; }
         public string Status { get; set; }
         public int DaysPastDue { get; set; }      
    
@@ -347,6 +352,7 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
         public decimal DeliquenceAmount { get; set; }
         public decimal DelInterest { get; set; }
         public decimal AdvancedPaymentAmount { get; set; }
+        public decimal DueAmount { get; set; }
 
         public string ContractCode { get; set; }
         public int Instalment { get; set; }
@@ -707,11 +713,14 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
         public string LoanType { get; set; }
         public string Status { get; set; }
         public string AccountNumber { get; set; }
+        public string loanAccountNumber { get; set; }
+        public decimal  LoanAmount { get; set; }
 
         public decimal Balance { get; set; }
         public decimal Principal { get; set; }
         public decimal Interest { get; set; }
         public decimal InterestRate { get; set; }
+        public decimal Vat { get; set; }
         public decimal Penalty { get; set; }
         public decimal TotalRepayment { get; set; }
 
@@ -724,6 +733,7 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
         public int Installment { get; set; }
         public decimal DelAmount { get; set; }
         public decimal DelInterest { get; set; }
+        public decimal DueAmount { get; set; }
 
         public string MemberReference { get; set; }
         public string MembersName { get; set; }
@@ -777,10 +787,14 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
         public decimal Interest { get; set; }
         public decimal Penalty { get; set; }
         public decimal Tax { get; set; }
+        public decimal LoanAmount { get; set; }
+        public string LoanAccountNumber { get; set; }
+        public string LoanType { get; set; }
 
         public string BranchId { get; set; }
         public string BankId { get; set; }
 
+        public string completeStatus { get; set; }
         public decimal Balance { get; set; }
         public bool IsComplete { get; set; }
 

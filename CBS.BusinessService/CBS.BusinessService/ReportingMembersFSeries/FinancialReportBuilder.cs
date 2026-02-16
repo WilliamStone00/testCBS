@@ -359,6 +359,9 @@ namespace CBS.BusinessService.ReportingMembersFSeries
                         Tax = trx.Tax,
                 
                         LoanId = trx.LoanId,
+                        LoanAccountNumber = trx.LoanAccountNumber,
+                        LoanType = trx.LoanType,
+                        LoanAmount = trx.LoanAmount,
                         //  LoanAccountNumber = trx.AccountNumber,
 
                         Date = trx.DateOfPayment.ToString("dd/MM/yyyy HH:mm:ss"),
@@ -370,7 +373,7 @@ namespace CBS.BusinessService.ReportingMembersFSeries
                         Balance = trx.Balance,
                         Amount = trx.Amount,
                         Year = $"2021 - {DateTime.Now.Year}",
-                        Status = trx.IsComplete ? "COMPLETED" : "PENDING",
+                        Status = trx.completeStatus,
                         TotalPrincipal = repaymentData.Summary.TotalPrincipal,
                         TotalInterest = repaymentData.Summary.TotalInterest,
                         TotalPenalty = repaymentData.Summary.TotalPenalty,
@@ -428,7 +431,7 @@ namespace CBS.BusinessService.ReportingMembersFSeries
                         ContractCode = loan.ContractCode,
                         LoanType = loan.LoanType,
                         Status = loan.Status,
-
+                        LoanAmount = loan.LoanAmount,
                         // Loan amounts and balances
                         Balance = loan.Balance,
                         Principal = loan.Principal,
@@ -436,7 +439,9 @@ namespace CBS.BusinessService.ReportingMembersFSeries
                         InterestRate = loan.InterestRate,
                         Penalty = loan.Penalty,
                         TotalRepayment = loan.TotalRepayment,
-
+                        Tax = loan.Vat,
+                        Vat = loan.Vat,
+                        DueAmount = loan.DueAmount,
                         LastRepaymentAmount = loan.LastRepaymentAmount,
                         LastRepaymentDate = loan.LastRepaymentDate,
                         NextRepaymentDate = loan.NextRepaymentDate,
@@ -446,13 +451,13 @@ namespace CBS.BusinessService.ReportingMembersFSeries
                         DelDays = loan.DelDays,
                         DelAmount = loan.DelAmount,
                         DelInterest = loan.DelInterest,
-
+                        LoanAccount = loan.AccountNumber,
                         // Member info
                         MemberReference = loan.MemberReference,
                         MembersName = loan.MembersName,
                         MembersBranch = loan.MembersBranch,
                         MemberBranchCode = loan.MemberBranchCode,
-
+                                           
                         // Loan timeline
                         DisbursementDate = loan.DisbursementDate,
 
