@@ -82,6 +82,10 @@
                     <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
                 </div>
             </div>
+           <input type="hidden"
+       id="requestJsonData"
+       value='@Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.RequestJson ?? ""))' />
+
 
             <!-- Details Table -->
             <div class="table-responsive">
@@ -222,91 +226,7 @@
 }
 
 
-<script>
-                   let editor;
-        let isJsonValid = false;
-
-        document.getElementById('btnUpdatePayload').addEventListener('click', function () {
-
-            const rawJson = `@Html.Raw(
-                (Model.RequestJson ?? "").Replace("\\", "\\\\").Replace("`", "\\`")
-            )`;
-
-            if (!rawJson) {
-                alert('No payload available.');
-                return;
-            }
-
-            const container = document.getElementById("jsonEditor");
-
-            if (editor) {
-                editor.destroy();
-            }
-
-            editor = new JSONEditor(container, {
-                mode: 'code',
-                // code mode gives syntax highlight
-                modes: ['code', 'tree'],
-                onChangeText: function (jsonString) {
-
-                    try {
-                        JSON.parse(jsonString);
-                        isJsonValid = true;
-
-                        document.getElementById("jsonError").classList.add("d-none");
-                        document.getElementById("btnSavePayload").disabled = false;
-
-                    } catch (err) {
-
-                        isJsonValid = false;
-                        document.getElementById("btnSavePayload").disabled = true;
-
-                        const errorDiv = document.getElementById("jsonError");
-                        errorDiv.classList.remove("d-none");
-                        errorDiv.innerText = err.message;
-                    }
-                },
-                onPaste: function () {
-                    setTimeout(() => {
-                        try {
-                            const formatted = editor.get();
-                            editor.set(formatted);
-                        } catch { }
-                    }, 100);
-                }
-
-            });
-
-            try {
-                editor.set(JSON.parse(rawJson));
-                isJsonValid = true;
-                document.getElementById("btnSavePayload").disabled = false;
-            } catch (e) {
-                editor.setText(rawJson);
-                document.getElementById("btnSavePayload").disabled = true;
-            }
-
-            const modal = new bootstrap.Modal(
-                document.getElementById('payloadModal')
-            );
-            modal.show();
-        });
-document.getElementById("btnBeautify").addEventListener("click", function () {
-
-    if (!editor) return;
-
-    try {
-        const json = editor.get();
-        editor.set(json); // re-set formats automatically
-        appalert("✅ JSON Beautified", 1, 1);
-    } catch (err) {
-        appalert("❌ Cannot beautify invalid JSON", 3, 1);
-    }
-});
+                  
 
 
-
-     // Save edited payload
-
-
-</script>
+   
