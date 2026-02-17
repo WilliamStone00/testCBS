@@ -177,17 +177,23 @@
 
         <!-- ================= ACTION BUTTONS ================= -->
         <div class="row g-2">
-            <div class="col-12 col-md-6">
+            <div class="col-12 col-md-4">
                 <button id="applyFilterBtn" type="submit"
                         class="btn btn-primary btn-sm w-100">
                     <i class="mdi mdi-magnify me-1"></i> Apply Filters
                 </button>
             </div>
 
-            <div class="col-12 col-md-6">
+            <div class="col-12 col-md-4">
                 <button id="resetFilterBtn" type="button"
                         class="btn btn-secondary btn-sm w-100">
                     <i class="mdi mdi-refresh me-1"></i> Reset Filters
+                </button>
+            </div>
+
+            <div class="col-12 col-md-4">
+                <button type="button" id="btnExportReconciliation" class="btn btn-success btn-sm w-100">
+                    <i class="mdi mdi-export me-1"></i> Export
                 </button>
             </div>
         </div>
@@ -197,6 +203,18 @@
 
 <div id="datalistingview">
     @Html.Partial("_DataTable")
+</div>
+
+
+
+
+<div class="modal fade" id="reconciliationExportModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @Html.Partial("_ExportDatatable")
+
+        </div>
+    </div>
 </div>
 
 
@@ -258,6 +276,11 @@
 
             <div class="modal-footer">
 
+                <button class="btn btn-primary btn-sm" id="btnCopyPayload">
+                    <i class="mdi mdi-content-copy me-1"></i> Copy
+                </button>
+
+
                 <button class="btn btn-info btn-sm" id="btnBeautify">
                     <i class="mdi mdi-format-align-left me-1"></i> Beautify
                 </button>
@@ -285,10 +308,16 @@
 
     <script>
 
+        // =====================================================
+        // GLOBAL VARIABLES
+        // =====================================================
+        let reconciliationTableLoaded = false;
+        let editor = null;
+        let isJsonValid = false;
 
-        // ==============================
-        // Collect DataTable Filters
-        // ==============================
+        // =====================================================
+        // FILTER HELPERS
+        // =====================================================
         function getDataTableFilters() {
             return {
                 BranchId: $('#branchId').val(),
@@ -303,23 +332,32 @@
             };
         }
 
+        function resetReconciliationFilters() {
+            $('#systemReconciliationFilterForm').trigger('reset');
+            $('.select2').val('').trigger('change');
+            appalert('🧹 Filters reset.', 1, 1);
+        }
 
-        // ==============================
-        // Load Reconciliation Data (DataTable)
-        // ==============================
+        // =====================================================
+        // LOAD DATATABLE
+        // =====================================================
         function loadReconciliationData() {
+
             $('#myDataTable').DataTable({
                 serverSide: true,
                 destroy: true,
                 responsive: true,
                 searching: false,
                 order: [[0, 'desc']],
+
                 ajax: {
                     url: '/GLSystemReconciliation/LoadReconciliationData',
                     type: 'POST',
                     contentType: 'application/json',
                     data: function (d) {
+
                         const filters = getDataTableFilters();
+
                         filters.DataTableOptions = {
                             draw: d.draw,
                             start: d.start,
@@ -330,6 +368,7 @@
                             sortColumnName: d.columns[d.order[0].column].data,
                             sortColumnDirection: d.order[0].dir
                         };
+
                         return JSON.stringify(filters);
                     },
                     error: function (xhr, status, err) {
@@ -337,27 +376,24 @@
                         appalert('❌ Failed to load reconciliation data. Status: ' + xhr.status, 4, 1);
                     }
                 },
+
                 columns: [
                     {
-                        data: 'CreatedDate', name: 'CreatedDate',
-                        render: function (data) {
-                            return data ? moment(data).format('DD/MM/YYYY HH:mm:ss') : '';
-                        }
+                        data: 'CreatedDate',
+                        render: data => data ? moment(data).format('DD/MM/YYYY HH:mm:ss') : ''
                     },
-                    { data: 'OperationCode', name: 'OperationCode' },
-                    { data: 'BranchName', name: 'BranchName' },
-                    { data: 'Reference', name: 'Reference' },
-                    { data: 'OperationBy', name: 'OperationBy' },
+                    { data: 'OperationCode' },
+                    { data: 'BranchName' },
+                    { data: 'Reference' },
+                    { data: 'OperationBy' },
                     {
-                        data: 'Status', name: 'Status',
+                        data: 'Status',
                         render: function (data) {
-                            if (data === 'Successful') {
+                            if (data === 'Successful')
                                 return `<span class="badge bg-success">${data}</span>`;
-                            } else if (data === 'Exception') {
+                            if (data === 'Exception')
                                 return `<span class="badge bg-secondary">${data}</span>`;
-                            } else {
-                                return `<span class="badge bg-light">${data}</span>`;
-                            }
+                            return `<span class="badge bg-light">${data}</span>`;
                         }
                     },
                     {
@@ -365,182 +401,199 @@
                         orderable: false,
                         render: function (_, __, row) {
                             return `
-                                            <div class="text-center d-flex justify-content-between">
-                                                <button class="btn btn-sm btn-info view-details" data-id="${row.Id}">
-                                                    <i class="mdi mdi-eye-outline me-1"></i> View
-                                                </button>
-
-                                                <button class="btn btn-sm btn-success push-details"
-                                                        data-id="${row.Id}">
-
-                                                    <i class="mdi mdi-check-outline me-1"></i> Push
-                                                </button>
-                                            </div>
-                                        `;
+                                <div class="text-center d-flex justify-content-between">
+                                    <button class="btn btn-sm btn-info view-details" data-id="${row.Id}">
+                                        <i class="mdi mdi-eye-outline me-1"></i> View
+                                    </button>
+                                    <button class="btn btn-sm btn-success push-details" data-id="${row.Id}">
+                                        <i class="mdi mdi-check-outline me-1"></i> Push
+                                    </button>
+                                </div>`;
                         }
                     }
                 ],
+
                 initComplete: function () {
+                    reconciliationTableLoaded = true;
                     appalert('✅ Table loaded successfully!', 1, 1);
                 },
+
                 drawCallback: function () {
-                    const api = this.api();
-                    if (api.rows({ page: 'current' }).data().length === 0) {
+                    if (!this.api().rows({ page: 'current' }).data().length) {
                         appalert('⚠️ No reconciliation data found.', 2, 1);
                     }
                 }
             });
         }
 
-        // ==============================
-        // Reset Filters
-        // ==============================
-        function resetReconciliationFilters() {
-            $('#systemReconciliationFilterForm').trigger('reset');
-            $('.select2').val('').trigger('change');
-
-            //loadSummary();
-            //loadReconciliationData();
-
-            appalert('🧹 Filters reset.', 1, 1);
-        }
-
-        // ==============================
-        // Init Events
-        // ==============================
+        // =====================================================
+        // DOCUMENT READY
+        // =====================================================
         $(document).ready(function () {
 
-            // Apply Filters
+            // ---------------- APPLY / RESET FILTERS ----------------
             $('#applyFilterBtn').on('click', function (e) {
                 e.preventDefault();
-                //loadSummary();
+                reconciliationTableLoaded = false;
                 loadReconciliationData();
             });
 
-            // Reset Filters
             $('#resetFilterBtn').on('click', function (e) {
                 e.preventDefault();
                 resetReconciliationFilters();
             });
 
-            // ==============================
-            // View Details Modal
-            // ==============================
+            // ---------------- VIEW DETAILS ----------------
             $(document).on("click", ".view-details", function () {
+
                 const id = $(this).data("id");
                 if (!id) return;
 
-                $.ajax({
-                    url: `/GLSystemReconciliation/GetDetails?id=${encodeURIComponent(id)}`,
-                    type: "GET",
-                    dataType: "html",
-                    success: function (html) {
+                $.get(`/GLSystemReconciliation/GetDetails?id=${encodeURIComponent(id)}`)
+                    .done(function (html) {
                         $("#ReconciliationDetailsModal .modal-content").html(html);
-                        bootstrap.Modal.getOrCreateInstance(document.getElementById('ReconciliationDetailsModal')).show();
-                    },
-                    error: function (xhr) {
+                        bootstrap.Modal
+                            .getOrCreateInstance(document.getElementById('ReconciliationDetailsModal'))
+                            .show();
+                    })
+                    .fail(function (xhr) {
                         $("#ReconciliationDetailsModal .modal-content").html(`
-                                        <div class="modal-body">
-                                            <div class="alert alert-danger">
-                                                Failed to load reconciliation details. Status: ${xhr.status}
-                                            </div>
-                                        </div>`);
-                        bootstrap.Modal.getOrCreateInstance(document.getElementById('ReconciliationDetailsModal')).show();
-                    }
-                });
+                            <div class="modal-body">
+                                <div class="alert alert-danger">
+                                    Failed to load reconciliation details. Status: ${xhr.status}
+                                </div>
+                            </div>`);
+                    });
             });
 
-            // ==============================
-            // PUSH RECORD ACTION
-            // ==============================
+            // ---------------- PUSH RECORD ----------------
             $(document).on("click", ".push-details", function () {
 
-                let btn = this;
+                const btn = this;
+                const form = $("#pushForm");
 
-                // OPTIONAL: if this action depends on a form, reference it here
-                let form = $("#pushForm"); // change if needed
+                if (form.length && !form.valid()) return;
 
-                if (!form.length || form.valid()) {
+                alertify.confirm(
+                    "Confirmation",
+                    "Are you sure you want to perform this action?",
+                    function () {
 
-                    alertify.confirm(
-                        "Confirmation",
-                        "Are you sure you want to perform this action?",
-                        function () {
+                        const payload = { Id: $(btn).data("id") };
 
-                            let payload = {
-                                Id: $(btn).data("id")
-                            };
+                        $.ajax({
+                            type: 'POST',
+                            url: '/GLSystemReconciliation/PushRecord',
+                            data: JSON.stringify(payload),
+                            contentType: "application/json",
+                            success: function (response) {
 
-                            console.log("Send payload:", payload);
-
-                            $.ajax({
-                                type: 'POST',
-                                url: '/GLSystemReconciliation/PushRecord',
-                                data: JSON.stringify(payload),
-                                contentType: "application/json",
-                                success: function (response) {
-
-                                    console.log("Response:", response);
-
-                                    if (response.success) {
-
-                                        if (response.status === "Exist") {
-                                            appalert(response.message, 3, 1);
-                                        }
-                                        else if (response.status === "Failed") {
-                                            appalert(response.message, 2, 1);
-                                        }
-                                        else {
-                                            appalert(response.message || "✅ Record pushed successfully!", 1, 1);
-                                        }
-
-                                    } else {
-                                        appalert(response.message || "⚠️ Push completed with warnings.", 3, 1);
-                                    }
-                                },
-                                error: function (err) {
-
-                                    console.log("Error:", err);
-
-                                    if (err.status === 401) {
-                                        // Session expired
-                                        window.location.href = '/Authentication/Login';
-                                    } else {
-                                        appalert(err.statusText || "❌ Push failed.", 0, 1);
-                                    }
+                                if (!response.success) {
+                                    appalert(response.message || "⚠️ Push completed with warnings.", 3, 1);
+                                    return;
                                 }
-                            });
-                        },
-                        function () {
-                            // Cancel action
-                            console.log("Push cancelled by user");
+
+                                if (response.status === "Exist")
+                                    appalert(response.message, 3, 1);
+                                else if (response.status === "Failed")
+                                    appalert(response.message, 2, 1);
+                                else
+                                    appalert(response.message || "✅ Record pushed successfully!", 1, 1);
+                            },
+                            error: function (err) {
+                                if (err.status === 401)
+                                    window.location.href = '/Authentication/Login';
+                                else
+                                    appalert(err.statusText || "❌ Push failed.", 0, 1);
+                            }
+                        });
+                    },
+                    function () { }
+                );
+            });
+
+            // =====================================================
+            // JSON EDITOR SECTION
+            // =====================================================
+
+            $(document).on('click', '#btnUpdatePayload', function () {
+                console.log("Update clicked");
+                //const rawJson = document.getElementById("requestJsonData")?.value;
+                const rawJson = JSON.parse(
+                    document.getElementById("requestJsonData")?.value || '""'
+                );
+
+                if (!rawJson) {
+                    appalert("No payload available.", 2, 1);
+                    return;
+                }
+
+                const container = document.getElementById("jsonEditor");
+
+                if (editor) editor.destroy();
+
+                editor = new JSONEditor(container, {
+                    mode: 'code',
+                    modes: ['code', 'tree'],
+                    onChangeText: function (jsonString) {
+                        try {
+                            JSON.parse(jsonString);
+                            isJsonValid = true;
+                            $("#jsonError").addClass("d-none");
+                            $("#btnSavePayload").prop("disabled", false);
+                        } catch (err) {
+                            isJsonValid = false;
+                            $("#btnSavePayload").prop("disabled", true);
+                            $("#jsonError").removeClass("d-none").text(err.message);
                         }
-                    );
+                    }
+                });
+
+                try {
+                    editor.set(JSON.parse(rawJson));
+                    isJsonValid = true;
+                    $("#btnSavePayload").prop("disabled", false);
+                } catch {
+                    editor.setText(rawJson);
+                    $("#btnSavePayload").prop("disabled", true);
+                }
+
+                bootstrap.Modal
+                    .getOrCreateInstance(document.getElementById('payloadModal'))
+                    .show();
+            });
+
+            $(document).on('click', '#btnBeautify', function () {
+
+                if (!editor) return;
+
+                try {
+                    const formatted = editor.get();
+                    editor.set(formatted); // this re-formats properly
+                    appalert("✅ JSON Beautified", 1, 1);
+                } catch {
+                    appalert("❌ Cannot beautify invalid JSON", 3, 1);
                 }
             });
 
-            document.getElementById('btnSavePayload').addEventListener('click', async function () {
+            $(document).on('click', '#btnSavePayload', function () {
 
-                if (!editor || !isJsonValid) {
+                if (!editor) {
+                    appalert("❌ Editor not initialized.", 3, 1);
+                    return;
+                }
+
+                if (!isJsonValid) {
                     appalert("❌ Fix JSON errors before posting.", 3, 1);
                     return;
                 }
 
-                const editedJson = JSON.stringify(editor.get());
+                alertify.confirm(
+                    "Confirm Update",
+                    "Are you sure you want to update this payload?",
+                    async function () {
 
-                alertify.confirm()
-                    .setHeader('<span class="text-primary fw-bold"><i class="mdi mdi-alert-circle-outline me-2"></i>Confirm Payload Update</span>')
-                    .setContent(`
-        <div style="font-size:14px;">
-            <p>You're about to <strong>post the updated payload</strong>.</p>
-            <p class="text-muted mb-0">Please confirm that the JSON is correct before proceeding.</p>
-        </div>
-    `)
-                    .set('labels', { ok: 'Yes, Post It', cancel: 'Cancel' })
-                    .set('closable', false)
-                    .set('reverseButtons', true)
-                    .set('transition', 'zoom')
-                    .set('onok', async function () {
+                        const editedJson = JSON.stringify(editor.get());
 
                         try {
 
@@ -557,38 +610,67 @@
                             const result = await response.json();
 
                             if (result.success) {
-                                appalert(result.message, 1, 1);
+
+                                appalert(result.message || "✅ Payload updated successfully.", 1, 1);
+
                                 bootstrap.Modal
                                     .getInstance(document.getElementById('payloadModal'))
-                                    .hide();
+                                    ?.hide();
+
                             } else {
-                                appalert(result.message, 3, 1);
+
+                                appalert(result.message || "❌ Update failed.", 3, 1);
                             }
 
                         } catch (err) {
-                            console.error("Request failed:", err);
+
+                            console.error("Save error:", err);
                             appalert("❌ Failed to save payload.", 3, 1);
                         }
+                    },
+                    function () {
+                        // Cancel clicked
+                        appalert("Update cancelled.", 2, 1);
+                    }
+                ).set('labels', { ok: 'Yes, Update', cancel: 'Cancel' });
 
-                    })
-                    .show();
             });
 
-            document.getElementById("btnBeautify").addEventListener("click", function () {
 
-                if (!editor) return;
+            $(document).on('click', '#btnCopyPayload', async function () {
 
                 try {
-                    const json = editor.get();
-                    editor.set(json); // re-set formats automatically
-                    appalert("✅ JSON Beautified", 1, 1);
+
+                    let jsonToCopy = "";
+
+                    // If JSONEditor exists, get formatted JSON
+                    if (editor) {
+                        jsonToCopy = JSON.stringify(editor.get(), null, 2);
+                    }
+                    // Fallback to textarea if editor not initialized
+                    else {
+                        jsonToCopy = document.getElementById("requestJsonData")?.value || "";
+                    }
+
+                    if (!jsonToCopy) {
+                        appalert("❌ No payload available to copy.", 3, 1);
+                        return;
+                    }
+
+                    await navigator.clipboard.writeText(jsonToCopy);
+
+                    appalert("✅ Payload copied to clipboard.", 1, 1);
+
                 } catch (err) {
-                    appalert("❌ Cannot beautify invalid JSON", 3, 1);
+                    console.error("Copy error:", err);
+                    appalert("❌ Failed to copy payload.", 3, 1);
                 }
+
             });
 
         });
 
     </script>
+
 
 }
