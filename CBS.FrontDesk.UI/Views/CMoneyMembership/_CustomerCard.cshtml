@@ -4,9 +4,9 @@
     <div class="card">
         <div class="card-body">
             <h4 class="group-title">
-                @GlobalCMoneyMembership.MEMBERREFERENCE # <span class="highlight-text">@Model.Customer.CustomerId</span><br />
+                @GlobalShared.MEMBER_REFERENCE_UC # <span class="highlight-text">@Model.Customer.CustomerId</span><br />
                 <hr />
-                <small>@GlobalCMoneyMembership.BranchCode: @Session["BranchCode"].ToString()</small>
+                <small>@GlobalShared.Branch_Code: @Session["BranchCode"].ToString()</small>
             </h4>
         </div>
     </div>
@@ -14,7 +14,7 @@
     <div class="card">
         <div class="card-body">
             <h4 class="group-title">
-                @GlobalCMoneyMembership.MEMBERSTATUS
+                @GlobalShared.MEMBER_STATUS_UC
                 <hr />
                 @if (Model.Customer.MembershipApprovalStatus == "Approved")
                 {
@@ -35,7 +35,7 @@
             <!-- Aligning the card title and Member text in the same row -->
             <div class="d-flex justify-content-between align-items-center">
                 <!-- Card title aligned to the left -->
-                <h5 class="card-title text-left mb-0">@GlobalCMoneyMembership.Member: @Model.Customer.name</h5>
+                <h5 class="card-title text-left mb-0">@GlobalShared.Member: @Model.Customer.name</h5>
                 <hr />
                 <!-- Member name aligned to the right -->
                 <!--<span class="text-end"></span>-->
@@ -70,7 +70,7 @@
     </div>
     <div class="card mt-3">
         <div class="card-body">
-            <h5 class="card-title">@GlobalCMoneyMembership.Signature</h5>
+            <h5 class="card-title">@GlobalShared.Signature</h5>
             <div class="image-upload-container">
                 <!-- Image for signature -->
                 @if (Model.Customer.signatureUrl != null)

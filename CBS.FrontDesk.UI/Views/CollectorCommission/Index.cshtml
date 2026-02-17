@@ -1,18 +1,18 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission.CollectorComissionResponse
-
+@using Resources
 <div class="row">
     <div class="col-12">
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-account-cash me-2"></i>Collector Commission Management
+                    <i class="mdi mdi-account-cash me-2"></i>@GlobalCollectorCommission.Collector_Commission_Management
                 </h1>
                 <p class="card-text">
                     @*CollectorCommissionText*@
                 </p>
                 <div class="alert alert-info mt-3 py-2">
                     <i class="mdi mdi-information-outline me-1"></i>
-                    we are going to manage Dailly Collector Commissions on this page
+                    @GlobalCollectorCommission.we_are_going_to_manage_Dailly_Collector_Commissions_on_this_page
                 </div>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -23,7 +23,7 @@
 <!-- Tips -->
 <div class="card mb-2">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> Tips</span>
+        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalShared.Tips</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCommissionTips" aria-expanded="false">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -37,23 +37,23 @@
                 </li>
                 <li>
                     <i class="mdi mdi-account-group text-info me-2"></i>
-                    <strong>Collector:</strong> CollectorText1 <code>SelectCollector</code> CollectorText2.
+                    <strong>@GlobalShared.Collector:</strong> CollectorText1 <code>SelectCollector</code> CollectorText2.
                 </li>
                 <li>
                     <i class="mdi mdi-office-building text-warning me-2"></i>
-                    <strong>Branch:</strong> BranchText
+                    <strong>@GlobalShared.Branch:</strong> BranchText
                 </li>
                 <li>
                     <i class="mdi mdi-cash-sync text-primary me-2"></i>
-                    <strong>OperationType:</strong> OperationTypeText
+                    <strong>@GlobalShared.Operation_type:</strong> OperationTypeText
                 </li>
                 <li>
                     <i class="mdi mdi-download-box text-secondary me-2"></i>
-                    <strong>Export:</strong> Click <strong>Export</strong> ExportText
+                    <strong>@GlobalShared.Export:</strong> Click <strong>Export</strong> ExportText
                 </li>
                 <li>
                     <i class="mdi mdi-cash-check text-success me-2"></i>
-                    <strong>Treatment:</strong> TreatmentText
+                    <strong>@GlobalShared.Treatment:</strong> TreatmentText
                 </li>
             </ul>
         </div>
@@ -63,7 +63,7 @@
 <!-- Commission Filter Card -->
 <div class="card mb-2">
     <div class="card-header d-flex justify-content-between align-items-center">
-        <h6 class="text-primary mb-0"><i class="mdi mdi-card-account-details-outline me-1"></i> Get Commission</h6>
+        <h6 class="text-primary mb-0"><i class="mdi mdi-card-account-details-outline me-1"></i> @GlobalShared.Get_Commission</h6>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCommissionFilter" aria-expanded="true">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -74,14 +74,14 @@
             <div class="row mb-2">
                 <div class="col-md-12">
                     <div class="form-group mb-2">
-                        <label for="BranchId" class="form-label fw-semibold">🏢 Select Branch</label>
+                        <label for="BranchId" class="form-label fw-semibold">🏢 @GlobalShared.SelectBranch</label>
                         @Html.DropDownListFor(m => m.BranchId,
                             new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name"),
                             "--- Select Branch ---",
                             new { @class = "form-control select2", id = "BranchId" })
                         @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
                         <div class="mt-1 small text-muted">
-                            Choose a branch to continue and load branch accounts.
+                            @GlobalCollectorCommission.Choose_a_branch_to_continue_and_load_branch_accounts
                         </div>
                     </div>
                 </div>
@@ -91,19 +91,19 @@
             <div class="row mb-2">
                 <div class="col-md-6 mb-2">
                     <div class="form-group mb-2">
-                        <label for="CollectorId" class="form-label fw-semibold">👤 Collector</label>
+                        <label for="CollectorId" class="form-label fw-semibold">👤 @GlobalShared.Collector</label>
                         @Html.DropDownList("CollectorId",
                             new List<SelectListItem> { new SelectListItem { Text = "--- Select Collector ---", Value = "" } },
                             new { @class = "form-control select2", id = "CollectorId" })
                         <span id="accountTypeLoading" class="text-info d-none">
-                            <i class="mdi mdi-loading mdi-spin me-1"></i>Loading Collector account ...
+                            <i class="mdi mdi-loading mdi-spin me-1"></i>@GlobalCollectorCommission.Loading_Collector_account ...
                         </span>
                     </div>
                 </div>
 
                 <div class="col-md-6 mb-2">
                     <div class="form-group mb-2">
-                        <label for="MonthYear" class="form-label fw-semibold">📅 Month / Year</label>
+                        <label for="MonthYear" class="form-label fw-semibold">📅 @GlobalShared.Month / @GlobalShared.Year</label>
                         <input type="month" id="MonthYear" name="MonthYear" class="form-control" />
                     </div>
                 </div>
@@ -113,10 +113,10 @@
             <div class="row mb-2">
                 <div class="col-12 text-end">
                     <button type="button" id="btnGetCommission" class="btn btn-primary me-2">
-                        <i class="mdi mdi-search me-1"></i> Get Commission
+                        <i class="mdi mdi-search me-1"></i> @GlobalShared.Get_Commission
                     </button>
                     <button type="button" id="btnReset" class="btn btn-secondary">
-                        <i class="mdi mdi-refresh me-1"></i> Reset
+                        <i class="mdi mdi-refresh me-1"></i> @GlobalShared.Reset
                     </button>
                 </div>
             </div>
@@ -128,7 +128,7 @@
     <!-- Commission Summary Card -->
     <div id="commissionSummary" class="card mb-4 d-none">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h6 class="text-primary mb-0"><i class="mdi mdi-card-account-details-outline me-1"></i> Commission Summary</h6>
+            <h6 class="text-primary mb-0"><i class="mdi mdi-card-account-details-outline me-1"></i> @GlobalShared.Commission_Summary</h6>
             <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCommissionSummary" aria-expanded="true">
                 <i class="mdi mdi-chevron-down"></i>
             </button>
@@ -140,24 +140,24 @@
                     <div class="col-md-4 mb-3">
                         <div class="card h-100 border">
                             <div class="card-header bg-light">
-                                <h6 class="mb-0"><i class="mdi mdi-account-group me-2"></i>Collector Information</h6>
+                                <h6 class="mb-0"><i class="mdi mdi-account-group me-2"></i>@GlobalShared.Collector_Information</h6>
                             </div>
                             <div class="card-body">
                                 <div class="d-flex justify-content-between mb-2">
-                                    <span class="fw-medium">Collector:</span>
+                                    <span class="fw-medium">@GlobalShared.Collector:</span>
                                     <span id="summaryCollectorName">-</span>
                                 </div>
                                 <div class="d-flex justify-content-between mb-2">
-                                    <span class="fw-medium">Branch:</span>
+                                    <span class="fw-medium">@GlobalShared.Branch:</span>
                                     <span id="summaryBranchName">-</span>
                                 </div>
                                 <div class="d-flex justify-content-between mb-2">
-                                    <span class="fw-medium">Period:</span>
+                                    <span class="fw-medium">@GlobalShared.Period:</span>
                                     <span id="summaryPeriod">-</span>
                                 </div>                               
                           
                                 <div class="d-flex justify-content-between">
-                                    <span class="fw-medium">Payment Status:</span>
+                                    <span class="fw-medium">@GlobalShared.Payment_Status:</span>
                                     <span id="summaryPaymentStatus">-</span>
                                 </div>
                             </div>
@@ -167,32 +167,32 @@
                     <div class="col-md-8">
                         <div class="card h-100 border">
                             <div class="card-header bg-light">
-                                <h6 class="mb-0"><i class="mdi mdi-chart-bar me-2"></i>Activity Overview</h6>
+                                <h6 class="mb-0"><i class="mdi mdi-chart-bar me-2"></i>@GlobalShared.Activity_Overview</h6>
                             </div>
                             <div class="card-body">
                                 <div class="row text-center">
                                     <div class="col-md-3 mb-2">
                                         <div class="border rounded p-3">
                                             <h5 class="text-primary mb-1" id="summaryTotalMembers">0</h5>
-                                            <small class="text-muted">Total Savers with Activity</small>
+                                            <small class="text-muted">@GlobalCollectorCommission.Total_Savers_with_Activity</small>
                                         </div>
                                     </div>
                                     <div class="col-md-3 mb-2">
                                         <div class="border rounded p-3">
                                             <h5 class="text-primary mb-1" id="summaryTotalValue">0.00</h5>
-                                            <small class="text-muted">Total Savings Collected</small>
+                                            <small class="text-muted">@GlobalCollectorCommission.Total_Savings_Collected</small>
                                         </div>
                                     </div>
                                     <div class="col-md-3 mb-2">
                                         <div class="border rounded p-3">
                                             <h5 class="text-primary mb-1" id="summaryTotalFee">0.00</h5>
-                                            <small class="text-muted">Total Charged</small>
+                                            <small class="text-muted">@GlobalShared.Total_Charged</small>
                                         </div>
                                     </div>
                                     <div class="col-md-3 mb-2">
                                         <div class="border rounded p-3">
                                             <h5 class="text-primary mb-1" id="summaryTotalToDistribute">0.00</h5>
-                                            <small class="text-muted">Amount to Distribute</small>
+                                            <small class="text-muted">@GlobalShared.Amount to Distribute</small>
                                         </div>
                                     </div>
                                 </div>
@@ -206,7 +206,7 @@
                     <div class="col-12">
                         <div class="card border">
                             <div class="card-header bg-light">
-                                <h6 class="mb-0"><i class="mdi mdi-cash-multiple me-2"></i>Distribution Breakdown</h6>
+                                <h6 class="mb-0"><i class="mdi mdi-cash-multiple me-2"></i>@GlobalShared.Distribution_Breakdown</h6>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -214,8 +214,8 @@
                                         <thead class="table-light">
                                             <tr>
                                                 <th>Stakeholder</th>
-                                                <th class="text-end">Percentage</th>
-                                                <th class="text-end">Amount</th>
+                                                <th class="text-end">@GlobalShared.Percentage</th>
+                                                <th class="text-end">@GlobalShared.Amount</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -231,20 +231,20 @@
                 <div class="row mt-3">
                     <div class="col-12 text-end">
                         <button type="button" id="btnList" class="btn btn-success me-2">
-                            <i class="mdi mdi-cash-multiple me-1"></i> Collector List
+                            <i class="mdi mdi-cash-multiple me-1"></i> @GlobalShared.Collector_List
                         </button>
 
                         <button type="button" id="btnExport" class="btn btn-success me-2">
-                            <i class="mdi mdi-export me-1"></i>Export
+                            <i class="mdi mdi-export me-1"></i>@GlobalShared.Export
                         </button>
 
                         <!-- Dynamic Treatment/Retreat Button -->
                         <button type="button" id="btnTreatment" class="btn btn-warning d-none">
-                            <i class="mdi mdi-cash-check me-1"></i>Treatment
+                            <i class="mdi mdi-cash-check me-1"></i>@GlobalShared.Treatment
                         </button>
 
                         <button type="button" id="btnRetreat" class="btn btn-danger d-none">
-                            <i class="mdi mdi-cash-remove me-1"></i>Retreat
+                            <i class="mdi mdi-cash-remove me-1"></i>@GlobalShared.Retreat
                         </button>
                     </div>
                 </div>
@@ -255,7 +255,7 @@
     <!-- Commission Details Table -->
     <div id="commissionDetails" class="card d-none">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h6 class="text-primary mb-0"><i class="mdi mdi-card-account-details-outline me-1"></i> Savers Details</h6>
+            <h6 class="text-primary mb-0"><i class="mdi mdi-card-account-details-outline me-1"></i> @GlobalShared.Savers_Details</h6>
             <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCommissionDetails" aria-expanded="true">
                 <i class="mdi mdi-chevron-down"></i>
             </button>
@@ -265,12 +265,12 @@
                 <table id="commissionTable" class="table table-striped table-bordered" style="width:100%">
                     <thead>
                         <tr>
-                            <th>Member Id</th>
-                            <th>Member Name</th>
-                            <th>Total Activity Amount</th>
-                            <th>Fee Charged</th>
-                            <th>Payment Status</th>
-                            <th>Remark</th> <!-- Add this column -->
+                            <th>@GlobalShared.Member_ID</th>
+                            <th>@GlobalShared.Member_name</th>
+                            <th>@GlobalShared.Total_Activity_Amount</th>
+                            <th>@GlobalShared.Fee_Charged</th>
+                            <th>@GlobalShared.Payment_Status</th>
+                            <th>@GlobalShared.Remark</th> <!-- Add this column -->
                         </tr>
                     </thead>
                     <tbody>

@@ -117,38 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ActiveAccounts" xml:space="preserve">
-    <value>Active accounts</value>
-  </data>
-  <data name="ActiveMembers" xml:space="preserve">
-    <value>Active members</value>
-  </data>
-  <data name="April" xml:space="preserve">
-    <value>April</value>
-  </data>
-  <data name="August" xml:space="preserve">
-    <value>August</value>
-  </data>
-  <data name="Branch_Code" xml:space="preserve">
-    <value>Branch Code</value>
-  </data>
-  <data name="Branch_Name" xml:space="preserve">
-    <value>Branch Name</value>
-  </data>
-  <data name="CashIn" xml:space="preserve">
-    <value>Cash in</value>
-  </data>
-  <data name="CashInBank" xml:space="preserve">
-    <value>Cash in bank</value>
-  </data>
   <data name="CashInDailyCollections" xml:space="preserve">
     <value>Cash in daily collections</value>
   </data>
   <data name="CashInHand" xml:space="preserve">
     <value>Cash in hand</value>
-  </data>
-  <data name="CashInHandAccount" xml:space="preserve">
-    <value>Cash in hand account</value>
   </data>
   <data name="CashInMTN" xml:space="preserve">
     <value>Cash in MTN</value>
@@ -170,9 +143,6 @@
   </data>
   <data name="CashOperationsSummaries" xml:space="preserve">
     <value>Cash operations summaries</value>
-  </data>
-  <data name="CashOut" xml:space="preserve">
-    <value>Cash out</value>
   </data>
   <data name="CashOutDailyCollections" xml:space="preserve">
     <value>Cash out daily collections</value>
@@ -213,18 +183,6 @@
   <data name="DailyOperations" xml:space="preserve">
     <value>Daily operations</value>
   </data>
-  <data name="Date" xml:space="preserve">
-    <value>Date</value>
-  </data>
-  <data name="December" xml:space="preserve">
-    <value>December</value>
-  </data>
-  <data name="Deposits" xml:space="preserve">
-    <value>Deposits</value>
-  </data>
-  <data name="February" xml:space="preserve">
-    <value>February</value>
-  </data>
   <data name="FINANCIALANALITICDASHBOARD" xml:space="preserve">
     <value>FINANCIAL ANALITIC DASHBOARD (HEAD OFFICE)</value>
   </data>
@@ -240,18 +198,6 @@
   <data name="InitialDeposits" xml:space="preserve">
     <value>Initial deposits</value>
   </data>
-  <data name="January" xml:space="preserve">
-    <value>January</value>
-  </data>
-  <data name="July" xml:space="preserve">
-    <value>July</value>
-  </data>
-  <data name="June" xml:space="preserve">
-    <value>June</value>
-  </data>
-  <data name="Loan" xml:space="preserve">
-    <value>Loan</value>
-  </data>
   <data name="LoanDeliquencies" xml:space="preserve">
     <value>Loan deliquencies</value>
   </data>
@@ -260,12 +206,6 @@
   </data>
   <data name="LOANUC" xml:space="preserve">
     <value>LOAN</value>
-  </data>
-  <data name="March" xml:space="preserve">
-    <value>March</value>
-  </data>
-  <data name="May" xml:space="preserve">
-    <value>May</value>
   </data>
   <data name="MEMBERSHIP" xml:space="preserve">
     <value>MEMBERSHIP</value>
@@ -285,20 +225,11 @@
   <data name="MTNMobileMoneyBalance" xml:space="preserve">
     <value>MTN mobile money Balance</value>
   </data>
-  <data name="NewMembers" xml:space="preserve">
-    <value>New members</value>
-  </data>
-  <data name="November" xml:space="preserve">
-    <value>November</value>
-  </data>
   <data name="NumberOfLoans" xml:space="preserve">
     <value>Number of loans</value>
   </data>
   <data name="NumberOfOnlineBranches" xml:space="preserve">
     <value>Number of online branches</value>
-  </data>
-  <data name="October" xml:space="preserve">
-    <value>October</value>
   </data>
   <data name="OnlineBranches" xml:space="preserve">
     <value>Online branches</value>
@@ -321,20 +252,8 @@
   <data name="PreferenceShares" xml:space="preserve">
     <value>Preference shares</value>
   </data>
-  <data name="Refund" xml:space="preserve">
-    <value>Refund</value>
-  </data>
   <data name="RemainingVolume" xml:space="preserve">
     <value>Remaining Volume</value>
-  </data>
-  <data name="Savings" xml:space="preserve">
-    <value>Savings</value>
-  </data>
-  <data name="SeeAll" xml:space="preserve">
-    <value>See all</value>
-  </data>
-  <data name="September" xml:space="preserve">
-    <value>September</value>
   </data>
   <data name="Sub_Till_Balance" xml:space="preserve">
     <value>Sub Till Balance</value>
@@ -348,9 +267,6 @@
   <data name="TillBalance" xml:space="preserve">
     <value>Till balance</value>
   </data>
-  <data name="TotalBalance" xml:space="preserve">
-    <value>Total balance</value>
-  </data>
   <data name="TotalBlockedAmount" xml:space="preserve">
     <value>Total blocked amount</value>
   </data>
@@ -360,32 +276,14 @@
   <data name="TotalExpenseBalance" xml:space="preserve">
     <value>Total expense balance</value>
   </data>
-  <data name="TotalExpenses" xml:space="preserve">
-    <value>Total expenses</value>
-  </data>
   <data name="TotalIncome" xml:space="preserve">
     <value>Total income</value>
   </data>
   <data name="TotalIncomeBalance" xml:space="preserve">
     <value>Total income balance</value>
   </data>
-  <data name="TotalLiquidity" xml:space="preserve">
-    <value>Total liquidity</value>
-  </data>
-  <data name="TotalMembers" xml:space="preserve">
-    <value>Total members</value>
-  </data>
-  <data name="TotalSavings" xml:space="preserve">
-    <value>Total savings</value>
-  </data>
-  <data name="TotalShares" xml:space="preserve">
-    <value>Total shares</value>
-  </data>
   <data name="TotalSharesBalance" xml:space="preserve">
     <value>Total shares balance</value>
-  </data>
-  <data name="Transfer" xml:space="preserve">
-    <value>Transfer</value>
   </data>
   <data name="TRIALBALANCE" xml:space="preserve">
     <value>TRIAL BALANCE</value>

@@ -117,13 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Document" xml:space="preserve">
-    <value>Document</value>
-  </data>
   <data name="ManageDifferentDocumentsForLoan" xml:space="preserve">
     <value>Gérer différents documents pour le prêt</value>
-  </data>
-  <data name="Name" xml:space="preserve">
-    <value>Nom</value>
   </data>
 </root>

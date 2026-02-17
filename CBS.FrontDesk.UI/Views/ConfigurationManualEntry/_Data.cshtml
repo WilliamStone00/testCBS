@@ -20,10 +20,10 @@
                     <tr>
                         <th style="display:none;">Id</th> <!-- Hidden Id column -->
                         <th class="py-2">Type</th>
-                        <th class="py-2">@GlobalConfigurationManualEntry.Command</th>
-                        <th class="py-2">@GlobalConfigurationManualEntry.Description</th>
+                        <th class="py-2">@GlobalShared.Command</th>
+                        <th class="py-2">@GlobalShared.Description</th>
                         <th class="py-2">@GlobalConfigurationManualEntry.UserReqiredApproval</th>
-                        <th class="py-2">@GlobalConfigurationManualEntry.Status</th>
+                        <th class="py-2">@GlobalShared.Status</th>
                         <th class="py-2">Actions</th>
                     </tr>
                 </thead>
@@ -40,21 +40,21 @@
                                 @if (d.UserRequiredApproval)
                                 {
                                    
-                                    <span class="badge bg-success bg-opacity-75 px-3">@GlobalConfigurationManualEntry.Yes</span>
+                                    <span class="badge bg-success bg-opacity-75 px-3">@GlobalShared.Yes</span>
                                 }
                                 else
                                 {
-                            <span class="badge bg-secondary bg-opacity-75 px-3">@GlobalConfigurationManualEntry.No</span>
+                            <span class="badge bg-secondary bg-opacity-75 px-3">@GlobalShared.No</span>
                                 }
                             </td>
                             <td class="text-center">
                                 @if (d.Status == "Active")
                                 {
-                                    <span class="badge bg-success bg-opacity-75 px-3">@GlobalConfigurationManualEntry.Active</span>
+                                    <span class="badge bg-success bg-opacity-75 px-3">@GlobalShared.Active</span>
                                 }
                                 else
                                 {
-                            <span class="badge bg-secondary bg-opacity-75 px-3">@GlobalConfigurationManualEntry.Inactive</span>
+                            <span class="badge bg-secondary bg-opacity-75 px-3">@GlobalShared.InActive</span>
                                 }
                             </td>
 
@@ -62,7 +62,7 @@
                                 <button type="button"
                                         class="btn btn-outline-primary btn-sm px-3 btn-edit-config"
                                         data-id="@d.Id">
-                                    @GlobalConfigurationManualEntry.Edit
+                                    @GlobalShared.Edit
                                 </button>
                             </td>
 

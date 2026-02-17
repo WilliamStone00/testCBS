@@ -1,10 +1,10 @@
 ﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheque.CustomerData
-
+@using Resources
 @if (Model == null || Model.CheckBooks == null || !Model.CheckBooks.Any())
 {
     <div class="alert alert-warning text-center">
         <i class="mdi mdi-alert-outline me-1"></i>
-        No cheque books found for this customer.
+        @GlobalShared.No cheque books found for this customer.
     </div>
 }
 else
@@ -39,26 +39,26 @@ else
 
                                                 @if (disabled)
                                                 {
-                                                    <span class="badge bg-danger">Exhausted</span>
+                                                    <span class="badge bg-danger">@GlobalShared.Exhausted</span>
                                                 }
                                                 else
                                                 {
-                                                    <span class="badge bg-success">Available</span>
+                                                    <span class="badge bg-success">@GlobalShared.Available</span>
                                                 }
                                             </div>
 
                                             <!-- ACCOUNT INFO -->
                                             <div class="mb-3">
                                                 <div class="d-flex justify-content-between mb-1">
-                                                    <small class="text-muted">Cheque Book Identifier:</small>
+                                                    <small class="text-muted">@GlobalShared.Cheque Book Identifier:</small>
                                                     <strong>@entry.CheckBook.Id</strong>
                                                 </div>
                                                 <div class="d-flex justify-content-between mb-1">
-                                                    <small class="text-muted">Account:</small>
+                                                    <small class="text-muted">@GlobalShared.Account:</small>
                                                     <strong>@entry.CheckBook.AccountNumber</strong>
                                                 </div>
                                                 <div class="d-flex justify-content-between mb-1">
-                                                    <small class="text-muted">Balance:</small>
+                                                    <small class="text-muted">@GlobalShared.Balance:</small>
                                                     <strong class="@(entry.Account.Balance < 0 ? "text-danger" : "text-success")">
                                                         @entry.Account.Balance.ToString("N2")
                                                     </strong>
@@ -75,15 +75,15 @@ else
                                             <div class="bg-light p-2 rounded mb-3 flex-grow-1">
                                                 <div class="row text-center">
                                                     <div class="col-4">
-                                                        <div class="small text-muted">Total</div>
+                                                        <div class="small text-muted">@GlobalShared.Total</div>
                                                         <div class="fw-bold">@entry.CheckBook.NumberOfLeaves</div>
                                                     </div>
                                                     <div class="col-4">
-                                                        <div class="small text-muted">Used</div>
+                                                        <div class="small text-muted">@GlobalShared.Used</div>
                                                         <div class="fw-bold">@entry.CheckBook.UsedLeaves</div>
                                                     </div>
                                                     <div class="col-4">
-                                                        <div class="small text-muted">Remaining</div>
+                                                        <div class="small text-muted">@GlobalShared.Remaining</div>
                                                         <div class="fw-bold @(disabled ? "text-danger" : "text-success")">
                                                             @remaining
                                                         </div>
@@ -104,7 +104,7 @@ else
                                                                 aria-expanded="false"
                                                                 data-bs-offset="0,10">
                                                             <i class="mdi mdi-cog-outline"></i>
-                                                            <span class="fw-semibold">Actions</span>
+                                                            <span class="fw-semibold">@GlobalShared.Actions</span>
                                                         </button>
 
                                                         <!-- Dropdown Menu -->
@@ -119,8 +119,8 @@ else
                                                                         data-name="@entry.CheckBook.CheckBookCategory.Name">
                                                                     <i class="mdi mdi-eye-outline me-2 text-primary fs-5"></i>
                                                                     <div class="d-flex flex-column">
-                                                                        <span class="fw-semibold">Details</span>
-                                                                        <small class="text-muted">View cheque book details</small>
+                                                                        <span class="fw-semibold">@GlobalShared.Details</span>
+                                                                        <small class="text-muted">@GlobalCounterCheque.View_cheque_book_details</small>
                                                                     </div>
                                                                 </button>
                                                             </li>
@@ -132,7 +132,7 @@ else
                                                                         data-view="grid"
                                                                         data-checkbook-id="@entry.CheckBook.Id">
                                                                     <i class="mdi mdi-view-grid-outline me-1"></i>
-                                                                    View Grid
+                                                                    @GlobalShared.View_Grid
                                                                 </button>
                                                             </li>
 
@@ -142,7 +142,7 @@ else
                                                                         data-view="list"
                                                                         data-checkbook-id="@entry.CheckBook.Id">
                                                                     <i class="mdi mdi-format-list-bulleted me-1"></i>
-                                                                    View List
+                                                                    @GlobalShared.View_List
                                                                 </button>
                                                             </li>
 
@@ -153,8 +153,8 @@ else
                                                                 <button class="dropdown-item d-flex align-items-center btn-cheque-resubscribe">
                                                                     <i class="mdi mdi-refresh me-2 text-info fs-5"></i>
                                                                     <div class="d-flex flex-column">
-                                                                        <span class="fw-semibold">Resubscription</span>
-                                                                        <small class="text-muted">Renew cheque book</small>
+                                                                        <span class="fw-semibold">@GlobalShared.Resubscription</span>
+                                                                        <small class="text-muted">@GlobalCounterCheque.Renew_cheque_book</small>
                                                                     </div>
                                                                 </button>
                                                             </li>
@@ -164,8 +164,8 @@ else
                                                                 <button class="dropdown-item d-flex align-items-center btn-cheque-toggle-status">
                                                                     <i class="mdi mdi-lock-outline me-2 text-warning fs-5"></i>
                                                                     <div class="d-flex flex-column">
-                                                                        <span class="fw-semibold">Activate/Deactivate</span>
-                                                                        <small class="text-muted">Change cheque book status</small>
+                                                                        <span class="fw-semibold">@GlobalShared.Activate/Deactivate</span>
+                                                                        <small class="text-muted">@GlobalCounterCheque.Change_cheque_book_status</small>
                                                                     </div>
                                                                 </button>
                                                             </li>
@@ -190,8 +190,8 @@ else
                                                                     data-checkbook-id="@entry.CheckBook.Id">
                                                                     <i class="mdi mdi-close-circle-outline me-2 text-danger fs-5"></i>
                                                                     <div class="d-flex flex-column">
-                                                                        <span class="fw-semibold">Cancellation</span>
-                                                                        <small class="text-muted">Cancel this cheque book</small>
+                                                                        <span class="fw-semibold">@GlobalShared.Cancellation</span>
+                                                                        <small class="text-muted">@GlobalCounterCheque.Cancel_this_cheque_book</small>
                                                                     </div>
                                                                 </button>
                                                             </li>
@@ -217,12 +217,12 @@ else
             <button class="carousel-control-prev" type="button"
                     data-bs-target="#customerCheckBookCarousel" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
+                <span class="visually-hidden">@GlobalShared.Previous</span>
             </button>
             <button class="carousel-control-next" type="button"
                     data-bs-target="#customerCheckBookCarousel" data-bs-slide="next">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
+                <span class="visually-hidden">@GlobalShared.Next</span>
             </button>
 
             <!-- INDICATORS -->
@@ -244,7 +244,7 @@ else
     if (totalPages > 1)
     {
         <div class="text-center mt-2 text-muted small">
-            Page <span id="currentPage">1</span> of @totalPages
+            @GlobalShared.Page <span id="currentPage">1</span> of @totalPages
         </div>
     }
 

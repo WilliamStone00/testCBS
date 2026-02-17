@@ -3,7 +3,7 @@
     ViewBag.Title = "DailyCollectionSettings";
 
 }
-
+@using Resources
 
 <div class="row">
     <div class="col-12">
@@ -12,7 +12,7 @@
             <div class="card-header d-flex justify-content-between align-items-center text-primary bg-light">
                 <span>
                     <i class="mdi mdi-information-outline me-2"></i>
-                    COMMISSION CONFIGURATION GUIDE
+                    @DailyCollectionSettingRessource.COMMISSION_CONFIGURATION_GUIDE
                 </span>
                 <button class="btn btn-outline-primary btn-sm"
                         type="button"
@@ -27,14 +27,14 @@
                 <div class="card-body">
                     <!-- Quick Start Tip -->
                     <div class="alert alert-info mb-4">
-                        <strong><i class="mdi mdi-lightbulb-on-outline me-2"></i>Quick Start:</strong>
-                        Select Transction operation type → Choose commission provider → Configure commission structure → Set scope
+                        <strong><i class="mdi mdi-lightbulb-on-outline me-2"></i>@GlobalShared.Quick_Start:</strong>
+                        @DailyCollectionSettingRessource.Select_Transction_operation_type_Choose_commission_provider_Configure_commission_structure_Set_scope
                     </div>
 
                     <!-- Configuration Types Section -->
                     <h5 class="text-primary mb-3 border-bottom pb-2">
                         <i class="mdi mdi-cog-outline me-2"></i>
-                        COMMISSION TYPES
+                        @DailyCollectionSettingRessource.COMMISSION_TYPES
                     </h5>
 
                     <div class="row g-3 mb-4">
@@ -43,22 +43,22 @@
                             <div class="card border-success h-100">
                                 <div class="card-header bg-light-success text-success d-flex align-items-center">
                                     <i class="mdi mdi-percent me-2"></i>
-                                    <strong>Proportional</strong>
+                                    <strong>@DailyCollectionSettingRessource.Proportional</strong>
                                 </div>
                                 <div class="card-body">
-                                    <p class="small mb-2"><strong>When to use:</strong> Percentage-based commissions</p>
+                                    <p class="small mb-2"><strong>@DailyCollectionSettingRessource.When_to_use:</strong> @DailyCollectionSettingRessource.Percentage_based_commissions</p>
                                     <ul class="small ps-3 mb-3">
-                                        <li>For revenue sharing models</li>
-                                        <li>When transaction amounts vary</li>
-                                        <li>For stakeholder profit distribution</li>
+                                        <li>@DailyCollectionSettingRessource.For_revenue_sharing_models</li>
+                                        <li>@DailyCollectionSettingRessource.When_transaction_amounts_vary</li>
+                                        <li>@DailyCollectionSettingRessource.For_stakeholder_profit_distribution</li>
                                     </ul>
                                     <div class="alert alert-sm alert-light-success">
-                                        <strong>How to configure:</strong>
+                                        <strong>@DailyCollectionSettingRessource.How_to_configure:</strong>
                                         <ol class="mb-0 ps-3">
-                                            <li>Select <span class="badge bg-success">Proportional</span></li>
+                                            <li>Select <span class="badge bg-success">@DailyCollectionSettingRessource.Proportional</span></li>
                                             <li>Set provider share (e.g., 70%)</li>
                                             <li>Set agent share (e.g., 30%)</li>
-                                            <li class="text-danger">Total must equal 100%</li>
+                                            <li class="text-danger">@DailyCollectionSettingRessource.Total_must_equal_100 %</li>
                                         </ol>
                                     </div>
                                     <div class="alert alert-sm alert-warning mt-2 mb-0">
@@ -73,21 +73,21 @@
                             <div class="card border-warning h-100">
                                 <div class="card-header bg-light-warning text-warning d-flex align-items-center">
                                     <i class="mdi mdi-cash me-2"></i>
-                                    <strong>Fixed Amount</strong>
+                                    <strong>@GlobalShared.Fixed_Amount</strong>
                                 </div>
                                 <div class="card-body">
-                                    <p class="small mb-2"><strong>When to use:</strong> Flat-rate commissions</p>
+                                    <p class="small mb-2"><strong>@DailyCollectionSettingRessource.When_to_use:</strong> @DailyCollectionSettingRessource.Flat_rate_commissions</p>
                                     <ul class="small ps-3 mb-3">
-                                        <li>For standardized fees</li>
-                                        <li>When transaction amount doesn't matter</li>
-                                        <li>For simple commission structures</li>
+                                        <li>@DailyCollectionSettingRessource.For_standardized_fees</li>
+                                        <li>@DailyCollectionSettingRessource.When_transaction_amount_doesnt_matter</li>
+                                        <li>@DailyCollectionSettingRessource.For_simple_commission_structures</li>
                                     </ul>
                                     <div class="alert alert-sm alert-light-warning">
-                                        <strong>How to configure:</strong>
+                                        <strong>@DailyCollectionSettingRessource.How_to_configure:</strong>
                                         <ol class="mb-0 ps-3">
-                                            <li>Select <span class="badge bg-warning text-dark">Fixed</span></li>
-                                            <li>Enter fixed amount (e.g., ₦50)</li>
-                                            <li>Same amount applies per transaction</li>
+                                            <li>@GlobalShared.Select <span class="badge bg-warning text-dark">@GlobalShared.Fixed</span></li>
+                                            <li>@DailyCollectionSettingRessource.Enter_fixed_amount (e.g., ₦50)</li>
+                                            <li>@DailyCollectionSettingRessource.Same_amount_applies_per_transaction</li>
                                         </ol>
                                     </div>
                                     <div class="alert alert-sm alert-warning mt-2 mb-0">
@@ -102,21 +102,21 @@
                             <div class="card border-info h-100">
                                 <div class="card-header bg-light-info text-info d-flex align-items-center">
                                     <i class="mdi mdi-bank-transfer me-2"></i>
-                                    <strong>Interbranch</strong>
+                                    <strong>@DailyCollectionSettingRessource.Interbranch</strong>
                                 </div>
                                 <div class="card-body">
-                                    <p class="small mb-2"><strong>When to use:</strong> Cross-branch transactions</p>
+                                    <p class="small mb-2"><strong>@DailyCollectionSettingRessource.When_to_use:</strong> @DailyCollectionSettingRessource.Cross_branch_transactions</p>
                                     <ul class="small ps-3 mb-3">
-                                        <li>For branch-to-branch transfers</li>
-                                        <li>When revenue sharing between branches</li>
-                                        <li>Special commission arrangements</li>
+                                        <li>@DailyCollectionSettingRessource.For_branch_to_branch_transfers</li>
+                                        <li>@DailyCollectionSettingRessource.When_revenue_sharing_between_branches</li>
+                                        <li>@DailyCollectionSettingRessource.Special_commission_arrangements</li>
                                     </ul>
                                     <div class="alert alert-sm alert-light-info">
-                                        <strong>How to configure:</strong>
+                                        <strong>@DailyCollectionSettingRessource.How_to_configure:</strong>
                                         <ol class="mb-0 ps-3">
-                                            <li>Enable <span class="badge bg-info">Interbranch</span></li>
-                                            <li>Set source/destination rules</li>
-                                            <li>Configure special rates if needed</li>
+                                            <li>@GlobalShared.Enable <span class="badge bg-info">@DailyCollectionSettingRessource.Interbranch</span></li>
+                                            <li>@DailyCollectionSettingRessource.Set_source_destination_rules</li>
+                                            <li>@DailyCollectionSettingRessource.Configure_special_rates_if_needed</li>
                                         </ol>
                                     </div>
                                     <div class="alert alert-sm alert-warning mt-2 mb-0">
@@ -130,7 +130,7 @@
                     <!-- Scope Configuration Section -->
                     <h5 class="text-primary mb-3 border-bottom pb-2">
                         <i class="mdi mdi-target me-2"></i>
-                        SCOPE CONFIGURATION
+                        @DailyCollectionSettingRessource.SCOPE_CONFIGURATION
                     </h5>
 
                     <div class="row g-3 mb-4">
@@ -139,21 +139,21 @@
                             <div class="card border-primary h-100">
                                 <div class="card-header bg-light-primary text-primary d-flex align-items-center">
                                     <i class="mdi mdi-earth me-2"></i>
-                                    <strong>Global</strong>
+                                    <strong>@GlobalShared.Global</strong>
                                 </div>
                                 <div class="card-body">
-                                    <p class="small mb-2"><strong>When to use:</strong> Organization-wide defaults</p>
+                                    <p class="small mb-2"><strong>@DailyCollectionSettingRessource.When_to_use:</strong> @DailyCollectionSettingRessource.Organization_wide_defaults</p>
                                     <ul class="small ps-3 mb-3">
-                                        <li>Base configuration for all</li>
-                                        <li>Fallback for specific cases</li>
-                                        <li>Standard commission rules</li>
+                                        <li>@DailyCollectionSettingRessource.Base_configuration_for_all</li>
+                                        <li>@DailyCollectionSettingRessource.Fallback_for_specific_cases</li>
+                                        <li>@DailyCollectionSettingRessource.Standard_commission_rules</li>
                                     </ul>
                                     <div class="alert alert-sm alert-light-primary">
-                                        <strong>How to set:</strong>
+                                        <strong>@DailyCollectionSettingRessource.How_to_set:</strong>
                                         <ol class="mb-0 ps-3">
-                                            <li>Select <span class="badge bg-primary">Global</span></li>
-                                            <li>Applies to all branches/agents</li>
-                                            <li>Overridden by specific settings</li>
+                                            <li>@GlobalShared.Select <span class="badge bg-primary">@GlobalShared.Global</span></li>
+                                            <li>@DailyCollectionSettingRessource.Applies_to_all_branches_agents</li>
+                                            <li>@DailyCollectionSettingRessource.Overridden_by_specific_settings</li>
                                         </ol>
                                     </div>
                                 </div>
@@ -165,21 +165,21 @@
                             <div class="card border-warning h-100">
                                 <div class="card-header bg-light-warning text-warning d-flex align-items-center">
                                     <i class="mdi mdi-bank-circle-outline me-2"></i>
-                                    <strong>Branch</strong>
+                                    <strong>@GlobalShared.Branch</strong>
                                 </div>
                                 <div class="card-body">
-                                    <p class="small mb-2"><strong>When to use:</strong> Branch-specific rules</p>
+                                    <p class="small mb-2"><strong>@DailyCollectionSettingRessource.When_to_use:</strong> @DailyCollectionSettingRessource.Branch_specific_rules</p>
                                     <ul class="small ps-3 mb-3">
-                                        <li>Regional variations</li>
-                                        <li>Special branch arrangements</li>
-                                        <li>Override global settings</li>
+                                        <li>@DailyCollectionSettingRessource.Regional_variations</li>
+                                        <li>@DailyCollectionSettingRessource.Special_branch_arrangements</li>
+                                        <li>@DailyCollectionSettingRessource.Override_global_settings</li>
                                     </ul>
                                     <div class="alert alert-sm alert-light-warning">
-                                        <strong>How to set:</strong>
+                                        <strong>@DailyCollectionSettingRessource.How_to_set:</strong>
                                         <ol class="mb-0 ps-3">
-                                            <li>Select <span class="badge bg-warning text-dark">Branch</span></li>
-                                            <li>Choose branch from dropdown</li>
-                                            <li>Applies to all agents in branch</li>
+                                            <li>@GlobalShared.Select <span class="badge bg-warning text-dark">@GlobalShared.Branch</span></li>
+                                            <li>@DailyCollectionSettingRessource.Choose_branch_from_dropdown</li>
+                                            <li>@DailyCollectionSettingRessource.Applies_to_all_agents_in_branch</li>
                                         </ol>
                                     </div>
                                 </div>
@@ -191,21 +191,21 @@
                             <div class="card border-info h-100">
                                 <div class="card-header bg-light-info text-info d-flex align-items-center">
                                     <i class="mdi mdi-account-circle me-2"></i>
-                                    <strong>Agent</strong>
+                                    <strong>@GlobalShared.Agent</strong>
                                 </div>
                                 <div class="card-body">
-                                    <p class="small mb-2"><strong>When to use:</strong> Individual exceptions</p>
+                                    <p class="small mb-2"><strong>@DailyCollectionSettingRessource.When_to_use:</strong> @DailyCollectionSettingRessource.Individual_exceptions</p>
                                     <ul class="small ps-3 mb-3">
-                                        <li>Special agent agreements</li>
-                                        <li>Performance-based commissions</li>
-                                        <li>Override all other settings</li>
+                                        <li>@DailyCollectionSettingRessource.Special_agent_agreements</li>
+                                        <li>@DailyCollectionSettingRessource.Performance_based_commissions</li>
+                                        <li>@DailyCollectionSettingRessource.Override_all_other_settings</li>
                                     </ul>
                                     <div class="alert alert-sm alert-light-info">
-                                        <strong>How to set:</strong>
+                                        <strong>@DailyCollectionSettingRessource.How_to_set:</strong>
                                         <ol class="mb-0 ps-3">
-                                            <li>Select <span class="badge bg-info">Agent</span></li>
-                                            <li>Choose agent from dropdown</li>
-                                            <li>Applies only to this agent</li>
+                                            <li>@GlobalShared.Select <span class="badge bg-info">@GlobalShared.Agent</span></li>
+                                            <li>@DailyCollectionSettingRessource.Choose_agent_from_dropdown</li>
+                                            <li>@DailyCollectionSettingRessource.Applies_only_to_this_agent</li>
                                         </ol>
                                     </div>
                                 </div>
@@ -216,13 +216,13 @@
                     <!-- Best Practices -->
                     <div class="alert alert-light mt-3">
                         <h6 class="alert-heading text-primary">
-                            <i class="mdi mdi-lightbulb-on-outline me-2"></i> Best Practices
+                            <i class="mdi mdi-lightbulb-on-outline me-2"></i> @GlobalShared.Best_Practices
                         </h6>
                         <ul class="mb-0 ps-3">
-                            <li><strong>Test first:</strong> Use Preview before saving</li>
-                            <li><strong>Hierarchy:</strong> Global → Branch → Agent</li>
-                            <li><strong>Document:</strong> Note special arrangements</li>
-                            <li><strong>Review:</strong> Audit quarterly for updates</li>
+                            <li><strong>@GlobalShared.Test first:</strong> @DailyCollectionSettingRessource.Use_Preview_before_saving</li>
+                            <li><strong>@GlobalShared.Hierarchy:</strong> @GlobalShared.Global → @GlobalShared.Branch → @GlobalShared.Agent</li>
+                            <li><strong>@GlobalShared.Document:</strong> @DailyCollectionSettingRessource.Note_special_arrangements</li>
+                            <li><strong>@GlobalShared.Review:</strong> @DailyCollectionSettingRessource.Audit_quarterly_for_updates</li>
                         </ul>
                     </div>
                 </div>
@@ -235,7 +235,7 @@
                 <h2 class="accordion-header">
                     <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCommission" aria-expanded="true" aria-controls="collapseCommission">
                         <i class="mdi mdi-book-account-outline me-2"></i>
-                        COMMISSION MANAGEMENT
+                        @DailyCollectionSettingRessource.COMMISSION_MANAGEMENT
                     </button>
                 </h2>
                 <div id="collapseCommission" class="accordion-collapse collapse show" data-bs-parent="#commissionAccordion">
@@ -245,11 +245,11 @@
                             <div class="btn-group">
                                 <button class="btn btn-outline-primary btn-sm"
                                         onclick="LoadDataGeneration('DailyCollectionSetting','myDataTable','_CommissionSettingData','datalistingview_CommissionSetting',0,'commissionSetting','list')">
-                                    <i class="mdi mdi-view-list me-1"></i> View List
+                                    <i class="mdi mdi-view-list me-1"></i> @GlobalShared.View_List
                                 </button>
                                 <button class="btn btn-outline-success btn-sm"
                                         onclick="AddORUpdateGen(null,'datalistingview_CommissionSetting','_CreateCommissionSetting','new','DailyCollectionSetting','commissionSetting')">
-                                    <i class="mdi mdi-plus me-1"></i> Add New
+                                    <i class="mdi mdi-plus me-1"></i> @GlobalShared.Add_New_LC
                                 </button>
                             </div>
                         </div>

@@ -7,10 +7,10 @@
             <div class="card bg-light mb-2 shadow-sm">
                 <div class="card-body text-center">
                     <h1 class="card-title text-primary fw-bold">
-                        <i class="mdi mdi-format-list-bulleted me-2"></i> Daily Collector Licenses
+                        <i class="mdi mdi-format-list-bulleted me-2"></i> @GlobalDailyCollectorLicense.Daily_Collector_Licenses
                     </h1>
                     <p class="card-text">
-                        Manage and monitor all daily collector licenses with advanced filtering and actions.
+                        @GlobalDailyCollectorLicense.Manage_and_monitor_all_daily_collector_licenses_with_advanced_filtering_and_actions
                     </p>
                     <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
                 </div>
@@ -35,7 +35,7 @@
 
     <!-- Filters Section -->
     <div class="card shadow p-3 mb-4" id="filtersSection">
-        <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i>Filters</h5>
+        <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i>@GlobalShared.Filters</h5>
 
         <form id="licenseFilterForm" autocomplete="off">
             <div class="row g-3">
@@ -47,28 +47,28 @@
 
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label fw-bold">User Name</label>
-                    <input type="text" id="userName" name="UserName" class="form-control" placeholder="Enter user name..." />
+                    <label class="form-label fw-bold">@GlobalShared.User_Name</label>
+                    <input type="text" id="userName" name="UserName" class="form-control" placeholder="@GlobalShared.Enter_user_name..." />
                 </div>
 
                 <div class="col-md-4">
                     <label class="form-label fw-bold">Status</label>
                     <select id="status" name="Status" class="form-control">
-                        <option value="">--- All Status ---</option>
-                        <option value="Active">Active</option>
-                        <option value="Inactive">Inactive</option>
-                        <option value="Revoked">Revoked</option>
-                        <option value="Expired">Expired</option>
+                        <option value="">--- @GlobalShared.All_status ---</option>
+                        <option value="Active">@GlobalShared.Active</option>
+                        <option value="Inactive">@GlobalShared.InActive</option>
+                        <option value="Revoked">@GlobalShared.Revoked</option>
+                        <option value="Expired">@GlobalShared.Expired</option>
                     </select>
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label fw-bold">Expiry From</label>
+                    <label class="form-label fw-bold">@GlobalShared.Expiry_From</label>
                     <input type="datetime-local" id="expiryFrom" name="ExpiryFrom" class="form-control" />
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label fw-bold">Expiry To</label>
+                    <label class="form-label fw-bold">@GlobalShared.Expiry_To</label>
                     <input type="datetime-local" id="expiryTo" name="ExpiryTo" class="form-control" />
                 </div>
             </div>
@@ -76,10 +76,10 @@
             <div class="row mt-3">
                 <div class="col-12 d-flex">
                     <button id="applyFilterBtn" type="button" class="btn btn-primary me-2 w-100">
-                        <i class="mdi mdi-magnify"></i> Apply Filters
+                        <i class="mdi mdi-magnify"></i> @GlobalShared.Apply_filters
                     </button>
                     <button id="resetFilterBtn" type="button" class="btn btn-secondary w-100">
-                        <i class="mdi mdi-refresh"></i> Reset
+                        <i class="mdi mdi-refresh"></i> @GlobalShared.Reset
                     </button>
                 </div>
             </div>

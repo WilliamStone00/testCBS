@@ -1029,6 +1029,20 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>LiaisonLedger.fr.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\ConfigurationManualEntry\GlobalConfigurationManualEntry.Designer.cs" />
+    <Compile Include="App_GlobalResources\ConfigurationManualEntry\GlobalConfigurationManualEntry.fr.Designer.cs" />
+    <Compile Include="App_GlobalResources\ConfigurationManualEntry\GlobalConfigurationManualEntry.fr1.designer.cs" />
+    <Compile Include="App_GlobalResources\ConfigurationManualEntry\GlobalConfigurationManualEntry.fr2.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalConfigurationManualEntry.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\ConfigurationManualEntry\GlobalConfigurationManualEntry1.designer.cs" />
+    <Compile Include="App_GlobalResources\ConfigurationManualEntry\GlobalConfigurationManualEntry2.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalConfigurationManualEntry.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\AccountingV2\ManaulJournalEntryV2\ManualEntry.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1259,20 +1273,70 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalCollateral.fr.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\CollectorCommission\GlobalCollectorCommission.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalCollectorCommission.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CollectorDevice\GlobalCollectorDevice.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalCollectorDevice.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Communication\GlobalCommunication.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalCommunication.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\CorrespondingBankManagement\GlobalCorrespondingBankManagement.fr.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalCorrespondingBankManagement.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CounterCheque\GlobalCounterCheque.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalCounterCheque.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\Country\GlobalCountry.fr.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalCountry.fr.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\CustomeReports\GlobalCustomeReports.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalCustomeReports.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\DailyAgentManagement\GlobalDailyAgentManagement.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalDailyAgentManagement.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\DailyCollectionDashboard\GlobalDailyCollectionDashboard.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalDailyCollectionDashboard.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\DailyCollectionSetting\DailyCollectionSettingRessource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DailyCollectionSettingRessource.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\DailyCollectorLicense\GlobalDailyCollectorLicense.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalDailyCollectorLicense.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\DailyCollectorManagement\GlobalDailyCollectorManagement.fr.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalDailyCollectorManagement.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\DailySaverManagement\GlobalDailySaverManagement.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalDailySaverManagement.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\DailyTellerAssignation\GlobalDailyTellerAssignation.fr.designer.cs">
       <AutoGen>True</AutoGen>
@@ -7694,6 +7758,54 @@
     <Content Include="App_GlobalResources\ChequeRequest\ChequeRequestResource.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>ChequeRequestResource.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CollectorCommission\GlobalCollectorCommission.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalCollectorCommission.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CollectorDevice\GlobalCollectorDevice.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalCollectorDevice.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Communication\GlobalCommunication.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalCommunication.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\ConfigurationManualEntry\GlobalConfigurationManualEntry.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalConfigurationManualEntry.fr2.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\ConfigurationManualEntry\GlobalConfigurationManualEntry.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalConfigurationManualEntry2.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CounterCheque\GlobalCounterCheque.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalCounterCheque.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CustomeReports\GlobalCustomeReports.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalCustomeReports.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\DailyAgentManagement\GlobalDailyAgentManagement.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalDailyAgentManagement.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\DailyCollectionDashboard\GlobalDailyCollectionDashboard.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalDailyCollectionDashboard.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\DailyCollectionSetting\DailyCollectionSettingRessource.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>DailyCollectionSettingRessource.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\DailyCollectorLicense\GlobalDailyCollectorLicense.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalDailyCollectorLicense.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\DailySaverManagement\GlobalDailySaverManagement.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalDailySaverManagement.Designer.cs</LastGenOutput>
     </Content>
     <None Include="AppFiles\Accountingv2Reporting\DataSets\AccountingV2DS.xsd">
       <SubType>Designer</SubType>

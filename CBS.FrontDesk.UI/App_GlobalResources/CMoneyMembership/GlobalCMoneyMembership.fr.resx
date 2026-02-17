@@ -120,20 +120,8 @@
   <data name="ActivateAmemberAccountByVerifyingTheirPhoneNumber" xml:space="preserve">
     <value>Activer un compte de membre en vérifiant son numéro de téléphone et en complétant les détails requis</value>
   </data>
-  <data name="Activated" xml:space="preserve">
-    <value>Activé</value>
-  </data>
-  <data name="ActivatedBy" xml:space="preserve">
-    <value>Activé par</value>
-  </data>
   <data name="ActivatedByUser" xml:space="preserve">
     <value>Activé par (utilisateur)</value>
-  </data>
-  <data name="ActivationDateFrom" xml:space="preserve">
-    <value>Date d'activation de</value>
-  </data>
-  <data name="ActivationDateTo" xml:space="preserve">
-    <value>Date d'activation à</value>
   </data>
   <data name="ACTIVATIONFORM" xml:space="preserve">
     <value>FORMULAIRE D'ACTIVATION</value>
@@ -141,17 +129,8 @@
   <data name="ACTIVATIONPROCEDURE" xml:space="preserve">
     <value>PROCÉDURE D'ACTIVATION</value>
   </data>
-  <data name="ACTIVE" xml:space="preserve">
-    <value>ACTIF</value>
-  </data>
-  <data name="ActiveLc" xml:space="preserve">
-    <value>Actif</value>
-  </data>
   <data name="ADate" xml:space="preserve">
     <value>Date A</value>
-  </data>
-  <data name="AdvancedFilters" xml:space="preserve">
-    <value>Filtres avancés</value>
   </data>
   <data name="AdviseTheMemberToChangeTheDefaultPIN" xml:space="preserve">
     <value>Conseillez au membre de changer le code PIN par défaut. Les membres n'auront pas accès tant que le code PIN n'est pas changé</value>
@@ -161,15 +140,6 @@
   </data>
   <data name="AfterTheMemberConfirmsTheOTP" xml:space="preserve">
     <value>Après que le membre ait confirmé l'OTP avec son numéro de téléphone, toute autre instance du même numéro de téléphone utilisé par un autre membre dans le système sera écrasée</value>
-  </data>
-  <data name="AllStatus" xml:space="preserve">
-    <value>Tous les statuts</value>
-  </data>
-  <data name="ApplyFilter" xml:space="preserve">
-    <value>Appliquer le filtre</value>
-  </data>
-  <data name="BranchCode" xml:space="preserve">
-    <value>Code de l'agence</value>
   </data>
   <data name="bySendingAoneTimePassword" xml:space="preserve">
     <value>en envoyant un mot de passe à usage unique (OTP)</value>
@@ -195,20 +165,8 @@
   <data name="CMONEYPROFILE" xml:space="preserve">
     <value>PROFIL C-MONEY</value>
   </data>
-  <data name="CustomerID" xml:space="preserve">
-    <value>ID client</value>
-  </data>
-  <data name="CustomerName" xml:space="preserve">
-    <value>Nom du client</value>
-  </data>
-  <data name="DateRange" xml:space="preserve">
-    <value>Plage de dates</value>
-  </data>
   <data name="DEACTIVATEACCOUNT" xml:space="preserve">
     <value>DÉSACTIVER LE COMPTE</value>
-  </data>
-  <data name="Deactivated" xml:space="preserve">
-    <value>Désactivé</value>
   </data>
   <data name="DEFAULTPHONENUMBER" xml:space="preserve">
     <value>NUMÉRO DE TÉLÉPHONE PAR DÉFAUT</value>
@@ -237,77 +195,29 @@
   <data name="FilterByActivationUser" xml:space="preserve">
     <value>Filtrer par utilisateur d'activation</value>
   </data>
-  <data name="FilterByBranch" xml:space="preserve">
-    <value>Filtrer par agence</value>
-  </data>
-  <data name="FilterByDateRange" xml:space="preserve">
-    <value>Filtrer par plage de dates</value>
-  </data>
   <data name="FilterBySubscriptionOrPINChangeState" xml:space="preserve">
     <value>Filtrer par statut d'abonnement ou de changement de code PIN</value>
-  </data>
-  <data name="FilterByUser" xml:space="preserve">
-    <value>Filtrer par utilisateur</value>
   </data>
   <data name="FollowTheseStepsToActivateAMember" xml:space="preserve">
     <value>Suivez ces étapes pour activer un membre pour l'utilisation de l'application mobile C-MONEY</value>
   </data>
-  <data name="Login" xml:space="preserve">
-    <value>Connexion</value>
-  </data>
-  <data name="LOGINID" xml:space="preserve">
-    <value>ID DE CONNEXION</value>
-  </data>
   <data name="LoginIDIsAutomaticallyGeneratedByTheSystem" xml:space="preserve">
     <value>L'ID de connexion est automatiquement généré par le système et communiqué au membre</value>
-  </data>
-  <data name="LoginIDLc" xml:space="preserve">
-    <value>ID de connexion</value>
   </data>
   <data name="LoginIDWillBeAutomaticallyGeneratedByTheSystem" xml:space="preserve">
     <value>L'ID de connexion sera automatiquement généré par le système, en combinant le code de l'agence et les 4 derniers chiffres de la référence du membre. Si des doublons existent, il peut s'étendre à 5 chiffres pour l'unicité</value>
   </data>
-  <data name="MaxAttempts" xml:space="preserve">
-    <value>Nombre maximal de tentatives</value>
-  </data>
-  <data name="Member" xml:space="preserve">
-    <value>Membre</value>
-  </data>
   <data name="MemberIs" xml:space="preserve">
     <value>Le membre est</value>
   </data>
-  <data name="MEMBERREFERENCE" xml:space="preserve">
-    <value>RÉFÉRENCE DU MEMBRE</value>
-  </data>
   <data name="MemberShouldProvideAValidPhoneNumber" xml:space="preserve">
     <value>Le membre doit fournir un numéro de téléphone valide</value>
-  </data>
-  <data name="MembersName" xml:space="preserve">
-    <value>Nom du membre</value>
-  </data>
-  <data name="MEMBERSTATUS" xml:space="preserve">
-    <value>STATUT DU MEMBRE</value>
-  </data>
-  <data name="MinAttempts" xml:space="preserve">
-    <value>Nombre minimal de tentatives</value>
   </data>
   <data name="MobileAccountActivation" xml:space="preserve">
     <value>Activation du compte mobile</value>
   </data>
   <data name="MReference" xml:space="preserve">
     <value>Référence M</value>
-  </data>
-  <data name="Name" xml:space="preserve">
-    <value>Nom</value>
-  </data>
-  <data name="No" xml:space="preserve">
-    <value>Non</value>
-  </data>
-  <data name="NoSearchResultWasFound" xml:space="preserve">
-    <value>Aucun résultat de recherche n'a été trouvé</value>
-  </data>
-  <data name="NotActivated" xml:space="preserve">
-    <value>Non activé</value>
   </data>
   <data name="NoteDeactivatingAnAccountWillRestrictTheMembersAccess" xml:space="preserve">
     <value>Remarque : La désactivation d'un compte restreindra l'accès du membre aux services C-Money</value>
@@ -330,59 +240,17 @@
   <data name="NoteUseSecurityQuestionsAndAnswersToResetThePINSecurely" xml:space="preserve">
     <value>Remarque : Utilisez les questions de sécurité et les réponses pour réinitialiser le code PIN en toute sécurité</value>
   </data>
-  <data name="NotSubscribed" xml:space="preserve">
-    <value>Non abonné</value>
-  </data>
   <data name="OnceActivatedTheMemberWillHaveAccessTo" xml:space="preserve">
     <value>Une fois activé, le membre aura accès aux fonctionnalités de l'application mobile C-MONEY, permettant des transactions financières fluides</value>
-  </data>
-  <data name="OTPCODE" xml:space="preserve">
-    <value>CODE OTP</value>
-  </data>
-  <data name="phone" xml:space="preserve">
-    <value>téléphone</value>
-  </data>
-  <data name="PhoneNumber" xml:space="preserve">
-    <value>Numéro de téléphone</value>
-  </data>
-  <data name="PHONENUMBERUC" xml:space="preserve">
-    <value>NUMÉRO DE TÉLÉPHONE</value>
   </data>
   <data name="PleaseEnterTheMembersDefaultPhoneNumber" xml:space="preserve">
     <value>Veuillez entrer le numéro de téléphone par défaut du membre pour recevoir des OTP et des communications</value>
   </data>
-  <data name="REACTIVATEACCOUNT" xml:space="preserve">
-    <value>RÉACTIVER LE COMPTE</value>
-  </data>
   <data name="ReasonForDeactivatingAccount" xml:space="preserve">
     <value>Raison de la désactivation du compte</value>
   </data>
-  <data name="RefreshOften" xml:space="preserve">
-    <value>Actualiser souvent</value>
-  </data>
-  <data name="RESETPIN" xml:space="preserve">
-    <value>RÉINITIALISER LE CODE PIN</value>
-  </data>
   <data name="RESETPINWITHSECURITYQUESTIONS" xml:space="preserve">
     <value>RÉINITIALISER LE CODE PIN AVEC LES QUESTIONS DE SÉCURITÉ</value>
-  </data>
-  <data name="SAVESECURITYQUESTION" xml:space="preserve">
-    <value>ENREGISTRER LA QUESTION DE SÉCURITÉ</value>
-  </data>
-  <data name="SearchByUser" xml:space="preserve">
-    <value>Rechercher par utilisateur</value>
-  </data>
-  <data name="SECRETANSWER" xml:space="preserve">
-    <value>RÉPONSE SECRÈTE</value>
-  </data>
-  <data name="SECRETQUESTION" xml:space="preserve">
-    <value>QUESTION SECRÈTE</value>
-  </data>
-  <data name="SelectBranch" xml:space="preserve">
-    <value>Sélectionner une agence</value>
-  </data>
-  <data name="SelectLanguage" xml:space="preserve">
-    <value>Sélectionner la langue</value>
   </data>
   <data name="SelectMemberPreferredLanguageForSMS" xml:space="preserve">
     <value>Sélectionner la langue préférée du membre pour les SMS</value>
@@ -390,35 +258,17 @@
   <data name="SendAnOTPCodeToTheMemberDefaultPhoneNumber" xml:space="preserve">
     <value>Envoyer un code OTP au numéro de téléphone par défaut du membre pour vérification</value>
   </data>
-  <data name="SENDOTPCODE" xml:space="preserve">
-    <value>ENVOYER LE CODE OTP</value>
-  </data>
   <data name="SendOTPTo" xml:space="preserve">
     <value>Envoyer l'OTP à</value>
   </data>
   <data name="SETSECURITYQUESTIONANSWER" xml:space="preserve">
     <value>DÉFINIR LA QUESTION DE SÉCURITÉ &amp; RÉPONSE</value>
   </data>
-  <data name="Signature" xml:space="preserve">
-    <value>Signature</value>
-  </data>
   <data name="SubmitTheFormToFinalizeTheActivationProcess" xml:space="preserve">
     <value>Soumettre le formulaire pour finaliser le processus d'activation</value>
   </data>
-  <data name="SUBSCRIBED" xml:space="preserve">
-    <value>ABONNÉ</value>
-  </data>
-  <data name="SubscribedLc" xml:space="preserve">
-    <value>Abonné</value>
-  </data>
-  <data name="SubscriptionFee" xml:space="preserve">
-    <value>Frais d'abonnement</value>
-  </data>
   <data name="SubscriptionPINStatus" xml:space="preserve">
     <value>Statut d'abonnement &amp; code PIN</value>
-  </data>
-  <data name="SubscriptionStatus" xml:space="preserve">
-    <value>Statut d'abonnement</value>
   </data>
   <data name="TheMemberServiceWillAssistMembersThroughTheLoginProcess" xml:space="preserve">
     <value>Le service aux membres aidera les membres tout au long du processus de connexion</value>
@@ -452,8 +302,5 @@
   </data>
   <data name="VerifyTheMemberPhoneNumber" xml:space="preserve">
     <value>Vérifiez le numéro de téléphone du membre</value>
-  </data>
-  <data name="Yes" xml:space="preserve">
-    <value>Oui</value>
   </data>
 </root>

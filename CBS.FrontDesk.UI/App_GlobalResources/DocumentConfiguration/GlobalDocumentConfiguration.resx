@@ -123,12 +123,6 @@
   <data name="DeleteReferenceCode" xml:space="preserve">
     <value>Delete reference code</value>
   </data>
-  <data name="Description" xml:space="preserve">
-    <value>Description</value>
-  </data>
-  <data name="Document" xml:space="preserve">
-    <value>Document</value>
-  </data>
   <data name="DocumentManagement" xml:space="preserve">
     <value>Document management</value>
   </data>
@@ -153,9 +147,6 @@
   <data name="GrossAccounts" xml:space="preserve">
     <value>Gross accounts</value>
   </data>
-  <data name="Name" xml:space="preserve">
-    <value>Name</value>
-  </data>
   <data name="OperationEvent" xml:space="preserve">
     <value>Operation event</value>
   </data>
@@ -167,11 +158,5 @@
   </data>
   <data name="SelectDocument" xml:space="preserve">
     <value>Select document</value>
-  </data>
-  <data name="Type" xml:space="preserve">
-    <value>Type</value>
-  </data>
-  <data name="userAccount" xml:space="preserve">
-    <value>user account</value>
   </data>
 </root>

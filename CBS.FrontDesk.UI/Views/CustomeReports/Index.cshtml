@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.TrialBalance.CustomeResportItemS
-
+@using Resources
 <style>
     .custom-report-table {
         border-radius: 8px;
@@ -134,11 +134,11 @@
         <div class="card bg-light shadow-sm">
             <div class="card-body text-center py-3">
                 <h2 class="card-title text-primary mb-1">
-                    <i class="mdi mdi-file-chart-outline me-2"></i> Custom Trial Balance Report
+                    <i class="mdi mdi-file-chart-outline me-2"></i> @GlobalCustomeReports.Custom_Trial_Balance_Report
                 </h2>
                 <p class="card-text small mb-2">
-                    Generate a custom trial balance based on branch, report type, source mode and date range.
-                    Use this tool to extract targeted data for reconciliation, analysis and auditing.
+                    @GlobalCustomeReports.Generate_a_custom_trial_balance_based_on_branch_report_type_source_mode_and_date_range
+                    @GlobalCustomeReports.Use_this_tool_to_extract_targeted_data_for_reconciliation_analysis_and_auditing
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.4);" />
             </div>
@@ -150,7 +150,7 @@
 <div class="card shadow-sm mb-3 border-0">
     <div class="card-header d-flex justify-content-between align-items-center text-primary py-2 bg-light">
         <span class="fw-semibold">
-            <i class="mdi mdi-information-outline me-2"></i> Tips &amp; Usage Guide
+            <i class="mdi mdi-information-outline me-2"></i> @GlobalShared.Tips &amp; @GlobalShared.Usage_Guide
         </span>
         <button class="btn btn-sm btn-light" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips">
             <i class="mdi mdi-chevron-down"></i>
@@ -162,30 +162,28 @@
             <ul class="list-unstyled mb-2">
                 <li>
                     <i class="mdi mdi-checkbox-marked-outline text-success me-1"></i>
-                    Select a <strong>branch</strong> first – other filters will appear after a branch is chosen.
+                    @Html.Raw(@GlobalCustomeReports.Select_a_branch_first_other_filters_will_appear_after_a_branch_is_chosen)
                 </li>
                 <li>
                     <i class="mdi mdi-calendar-range text-primary me-1"></i>
-                    Choose a clear <strong>start date</strong> and <strong>end date</strong> for precise results.
+                    @Html.Raw(@GlobalCustomeReports.Choose_a_clear_start_date_and_end_date_for_precise_results)
                 </li>
                 <li>
                     <i class="mdi mdi-format-list-bulleted-square text-primary me-1"></i>
-                    Select a <strong>Report Type</strong>. Accounts are only used for <strong>JE</strong> and
-                    <strong>Account Statement</strong>.
+                    @Html.Raw(@GlobalCustomeReports.Select_a_Report_Type_Accounts_are_only_used_for_JE_and_Account_Statement)
                 </li>
                 <li>
                     <i class="mdi mdi-database-search text-warning me-1"></i>
-                    Choose a <strong>Source Mode</strong> (Temporary, Reconciled, Auto, or RealTime).
+                    @Html.Raw(@GlobalCustomeReports.Choose_a_Source_Mode_Temporary_Reconciled_Auto_or_RealTime)
                 </li>
                 <li>
                     <i class="mdi mdi-calendar-clock text-info me-1"></i>
-                    Enable <strong>Accounting Year</strong> only if you want to filter by a specific year.
+                    @Html.Raw(@GlobalCustomeReports.Enable_Accounting_Year_only_if_you_want_to_filter_by_a_specific_year)
                 </li>
                 <li>
                     <i class="mdi mdi-shield-check-outline text-success me-1"></i>
-                    The filter becomes active when <strong>dates</strong>, <strong>branch</strong>,
-                    <strong>report type</strong> and <strong>source mode</strong> are selected.
-                    Accounts and accounting year are optional.
+                    @Html.Raw(@GlobalCustomeReports.The_filter_becomes_active_when_dates_branch_report_type_and_source_mode_are_selected)
+                    @GlobalCustomeReports.Accounts_and_accounting_year_are_optional
                 </li>
             </ul>
         </div>
@@ -202,10 +200,10 @@
             <div class="form-check mt-3 mt-md-0">
                 <input class="form-check-input" type="checkbox" id="ToggleAccountingYear" />
                 <label class="form-check-label fw-semibold" for="ToggleAccountingYear">
-                    Filter by Accounting Year
+                    @GlobalCustomeReports.Filter_by_Accounting_Year
                 </label>
                 <small class="text-muted d-block">
-                    Check to enable the accounting year dropdown.
+                    @GlobalCustomeReports.Check_to_enable_the_accounting_year_dropdown
                 </small>
             </div>
         </div>
@@ -230,7 +228,7 @@
     <!-- ROW 2: Branch -->
     <div class="row g-3 mb-3">
         <div class="col-md-12">
-            <label class="form-label fw-semibold" for="BranchId">🏢 Select Branch</label>
+            <label class="form-label fw-semibold" for="BranchId">🏢 @GlobalShared.SelectBranch</label>
 
             @Html.DropDownListFor(m => m.BranchId,
                 new SelectList(ViewBag.Branches, "Id", "Name"),
@@ -241,9 +239,9 @@
                     multiple = "multiple",
                     id = "BranchId"
                 })
-            <small class="text-muted">
-                Select one or more branches. Other filters will appear after a branch is selected.
-            </small>
+        <small class="text-muted">
+            @GlobalCustomeReports.Select_one_or_more_branches_Other_filters_will_appear_after_a_branch_is_selected
+        </small>
         </div>
     </div>
 
@@ -263,7 +261,7 @@
                         id = "ReportType"
                     })
                 <small class="text-muted">
-                    Choose <strong>JE</strong> or <strong>Account Statement</strong> to enable account selection.
+                    @Html.Raw(@GlobalCustomeReports.Choose_JE_or_Account_Statement_to_enable_account_selection)
                 </small>
             </div>
 
@@ -284,7 +282,7 @@
                         id = "SourceMode"
                     })
                 <small class="text-muted">
-                    Select the transaction source you want to report on.
+                    @GlobalCustomeReports.Select_the_transaction_source_you_want_to_report_on
                 </small>
             </div>
         </div>
@@ -294,22 +292,22 @@
             <div class="col-md-8 d-flex align-items-center gap-4">
                 <div class="form-check" hidden>
                     <input type="checkbox" id="IsInterbranch" class="form-check-input" />
-                    <label class="form-check-label" for="IsInterbranch">Laison</label>
+                    <label class="form-check-label" for="IsInterbranch">@GlobalShared.Laison</label>
                 </div>
 
                 <div class="form-check d-none include_zero_group">
                     <input type="checkbox" id="IncludingZero" class="form-check-input" />
-                    <label class="form-check-label" for="IncludingZero">Include Zero Balance On TB</label>
+                    <label class="form-check-label" for="IncludingZero">@GlobalCustomeReports.Include_Zero_Balance_On_TB</label>
                 </div>
 
                 <div class="form-check">
                     <input type="checkbox" id="IsConsolidated" class="form-check-input" />
-                    <label class="form-check-label" for="IsConsolidated">Consolidated</label>
+                    <label class="form-check-label" for="IsConsolidated">@GlobalShared.Consolidated</label>
                 </div>
 
                 <div class="form-check">
                     <input type="checkbox" id="IncludeAllAccountsInTB" class="form-check-input" checked />
-                    <label class="form-check-label" for="IncludeAllAccountsInTB">Include All Accounts InTB</label>
+                    <label class="form-check-label" for="IncludeAllAccountsInTB">@GlobalCustomeReports.Include_All_Accounts_InTB</label>
                 </div>
             </div>
         </div>
@@ -318,7 +316,7 @@
         <div class="row">
             <div class="col-md-12 account account_group d-none">
                 <label class="form-label fw-semibold" for="AccountId">
-                    Select Accounts <span class="text-muted">(optional)</span>
+                    @GlobalShared.Select_Accounts <span class="text-muted">(@GlobalShared.Optional)</span>
                 </label>
                 @Html.DropDownList(
                     "AccountId",
@@ -331,7 +329,7 @@
                         id = "AccountId"
                     })
                 <small class="text-muted">
-                    Accounts are only required for <strong>JE</strong> and <strong>Account Statement</strong> reports.
+                    @Html.Raw(@GlobalCustomeReports.Accounts_are_only_required_for_JE_and_Account_Statement_reports)
                 </small>
             </div>
         </div>
@@ -339,12 +337,12 @@
         <!-- ROW 6: Date Range (requires branch) -->
         <div class="row date_range_group d-none">
             <div class="col-md-6">
-                <label class="form-label fw-semibold" for="StartDate">📆 Start Date</label>
+                <label class="form-label fw-semibold" for="StartDate">📆 @GlobalShared.Start_Date</label>
                 <input type="date" id="StartDate" class="form-control select-gray required-field" />
             </div>
 
             <div class="col-md-6">
-                <label class="form-label fw-semibold" for="EndDate">📆 End Date</label>
+                <label class="form-label fw-semibold" for="EndDate">📆 @GlobalShared.End_Date</label>
                 <input type="date" id="EndDate" class="form-control select-gray required-field" />
             </div>
         </div>
@@ -357,12 +355,12 @@
                     style="background:green"
                     id="btnGetCommission"
                     class="btn btn-success w-100 disabled">
-                <i class="mdi mdi-search me-1"></i> Apply Filter
+                <i class="mdi mdi-search me-1"></i> @GlobalShared.Apply_Filter
             </button>
         </div>
         <div class="col-md-6">
             <button type="button" id="btnReset" class="btn btn-secondary w-100">
-                <i class="mdi mdi-refresh me-1"></i> Reset
+                <i class="mdi mdi-refresh me-1"></i> @GlobalShared.Reset
             </button>
         </div>
     </div>
@@ -374,11 +372,11 @@
 
     <div class="table-responsive">
         <div class="d-flex justify-content-between align-items-center">
-            <h5 class="text-primary mb-3"><i class="mdi mdi-table"></i>Donwload Reports In Excel / PDF</h5>
+            <h5 class="text-primary mb-3"><i class="mdi mdi-table"></i>@GlobalShared.Donwload_Reports_In Excel / PDF</h5>
 
             <div>
                 <button id="clearGeneratedReports" type="button" class="btn btn-danger d-none">
-                    Clear Generated Reports
+                    @GlobalShared.Clear_Generated_Reports
                 </button>
             </div>
         </div>
@@ -387,10 +385,10 @@
         <table style="width: 100%" id="myDataTable" class="table table-hover table-bordered mt-3 mb-0 custom-report-table">
             <thead>
                 <tr>
-                    <th class="report-name-column">NAME</th>
-                    <th class="report-name-column">REPORT TYPE</th>
-                    <th class="report-name-column">SOURCE MODE</th>
-                    <th class="actions-cell text-center">ACTIONS</th>
+                    <th class="report-name-column">@GlobalShared.NAME_UC</th>
+                    <th class="report-name-column">@GlobalShared.REPORT_TYPE_UC</th>
+                    <th class="report-name-column">@GlobalShared.SOURCE_MODE</th>
+                    <th class="actions-cell text-center">@GlobalShared.ACTIONS_UC</th>
                 </tr>
             </thead>
             <tbody id="reportTableBody">

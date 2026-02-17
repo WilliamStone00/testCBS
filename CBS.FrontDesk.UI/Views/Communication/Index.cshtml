@@ -40,10 +40,10 @@
             <div class="card bg-light">
                 <div class="card-body text-center py-2">
                     <h5 class="card-title text-primary mb-1">
-                        <i class="mdi mdi-message-text-outline me-2"></i> SMS Upload Listing
+                        <i class="mdi mdi-message-text-outline me-2"></i> @GlobalCommunication.SMS_Upload_Listing
                     </h5>
                     <p class="card-text small mb-0">
-                        Track uploaded SMS files, filter by branch/user/status/type and download by ID.
+                        @GlobalCommunication.Track_uploaded_SMS_files_filter_by_branch_user_status_type_and_download_by_ID
                     </p>
                 </div>
             </div>
@@ -53,7 +53,7 @@
     <!-- Tips -->
     <div class="card mb-2">
         <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-            <span class="small"><i class="mdi mdi-information-outline me-2"></i>Tips</span>
+            <span class="small"><i class="mdi mdi-information-outline me-2"></i>@GlobalShared.Tips</span>
             <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSmsTips" aria-expanded="false">
                 <i class="mdi mdi-chevron-down"></i>
             </button>
@@ -61,9 +61,9 @@
         <div id="collapseSmsTips" class="collapse">
             <div class="card-body py-2">
                 <ul class="mb-0 small">
-                    <li><i class="mdi mdi-check-circle-outline text-success me-2"></i>Use filters before loading to reduce payload.</li>
-                    <li><i class="mdi mdi-filter-outline text-secondary me-2"></i>Date range filters by created/uploaded date.</li>
-                    <li><i class="mdi mdi-download-outline text-info me-2"></i>Use Actions → Download to export the uploaded Excel.</li>
+                    <li><i class="mdi mdi-check-circle-outline text-success me-2"></i>@GlobalCommunication.Use_filters_before_loading_to_reduce_payload</li>
+                    <li><i class="mdi mdi-filter-outline text-secondary me-2"></i>@GlobalCommunication.Date_range_filters_by_created_uploaded_date</li>
+                    <li><i class="mdi mdi-download-outline text-info me-2"></i>@GlobalCommunication.Use_Actions_Download_to_export_the_uploaded_Excel</li>
                 </ul>
             </div>
         </div>
@@ -71,7 +71,7 @@
 
     <!-- Filters -->
     <div class="card shadow-sm p-2 mb-2">
-        <h6 class="text-primary mb-2"><i class="mdi mdi-filter-outline me-1"></i>Filters</h6>
+        <h6 class="text-primary mb-2"><i class="mdi mdi-filter-outline me-1"></i>@GlobalShared.Filters</h6>
 
         @using (Html.BeginForm("SmsUploadListing", "Communication", FormMethod.Get, new { id = "smsFilterForm", autocomplete = "off" }))
         {
@@ -80,7 +80,7 @@
                 <div class="row g-1">
                     <div class="col-md-4">
                         <label class="form-label fw-bold small">
-                            Branch
+                            @GlobalShared.Branch
                         </label>
 
                         @Html.DropDownListFor(m => m.BranchId,
@@ -91,7 +91,7 @@
 
                     <div class="col-md-4">
                         <label class="form-label fw-bold small">
-                            Uploaded By
+                            @GlobalShared.Uploaded_By
                         </label>
                         @Html.TextBoxFor(m => m.UploadedBy,
                             new { @class = "form-control form-control-sm", id = "UploadedBy", placeholder = "e.g. user" })
@@ -99,7 +99,7 @@
 
                     <div class="col-md-4">
                         <label class="form-label fw-bold small">
-                            File Type
+                            @GlobalShared.File_Type
                         </label>
 
                         @Html.DropDownListFor(m => m.FileType,
@@ -115,7 +115,7 @@
                 <div class="row g-1 mt-1">
                     <div class="col-md-4">
                         <label class="form-label fw-bold small">
-                            Status
+                            @GlobalShared.Status
                         </label>
 
                         @Html.DropDownListFor(m => m.FileStatus,
@@ -133,7 +133,7 @@
 
                     <div class="col-md-4">
                         <label class="form-label fw-bold small">
-                            Start Date @*<span class="req-star">*</span>*@
+                            @GlobalShared.Start_Date @*<span class="req-star">*</span>*@
                         </label>
                         @Html.TextBoxFor(m => m.StartDate,
                             "{0:yyyy-MM-dd}",
@@ -142,7 +142,7 @@
 
                     <div class="col-md-4">
                         <label class="form-label fw-bold small">
-                            End Date
+                            @GlobalShared.End_Date
                         </label>
                         @Html.TextBoxFor(m => m.EndDate,
                             "{0:yyyy-MM-dd}",
@@ -153,7 +153,7 @@
                 <div class="row g-1 mt-1">
                     <div class="col-md-12">
                         <label class="form-label fw-bold small">
-                            Search Term
+                            @GlobalShared.Search_Term
                         </label>
                         @Html.TextBoxFor(m => m.SearchTerm,
                             new { @class = "form-control form-control-sm", id = "SearchTerm", placeholder = "file name, branch, code, uploaded by, purpose..." })
@@ -164,10 +164,10 @@
             <div class="row mt-2">
                 <div class="col-md-12 d-flex gap-2">
                     <button id="applySmsFilterBtn" type="button" class="btn btn-primary btn-sm flex-fill">
-                        <i class="mdi mdi-magnify"></i> Apply Filter
+                        <i class="mdi mdi-magnify"></i> @GlobalShared.Apply_Filter
                     </button>
                     <button id="resetSmsFilterBtn" type="button" class="btn btn-secondary btn-sm flex-fill">
-                        <i class="mdi mdi-refresh"></i> Reset
+                        <i class="mdi mdi-refresh"></i> @GlobalShared.Reset
                     </button>
                 </div>
             </div>
@@ -178,7 +178,7 @@
     <div class="d-flex justify-content-end mb-2">
         <a href="/Communication/SmsUpload" class="btn btn-success btn-sm">
             <i class="mdi mdi-plus-circle-outline me-1"></i>
-            <span>New SMS Upload</span>
+            <span>@GlobalShared.New_SMS_Upload</span>
         </a>
     </div>
 

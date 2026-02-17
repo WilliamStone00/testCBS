@@ -117,94 +117,58 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Active" xml:space="preserve">
-    <value>Actif</value>
+  <data name="Accounts_and_accounting_year_are_optional" xml:space="preserve">
+    <value>Accounts and accounting year are optional.</value>
   </data>
-  <data name="Alwaysvalidateentriesbeforesavingorupdatingtoensureintegrityacrossbranches" xml:space="preserve">
-    <value>Toujours valider les entrées avant de les enregistrer ou de les mettre à jour afin de garantir l'intégrité entre les branches.</value>
+  <data name="Accounts_are_only_required_for_JE_and_Account_Statement_reports" xml:space="preserve">
+    <value>Accounts are only required for &lt;strong&gt;JE&lt;/strong&gt; and &lt;strong&gt;Account Statement&lt;/strong&gt; reports.</value>
   </data>
-  <data name="ChoosewhethertheconfigurationappliestoLocalorInterbranchoperations" xml:space="preserve">
-    <value> Choisissez si la configuration s'applique aux opérations locales ou inter-succursales</value>
+  <data name="Check_to_enable_the_accounting_year_dropdown" xml:space="preserve">
+    <value>Check to enable the accounting year dropdown.</value>
   </data>
-  <data name="Command" xml:space="preserve">
-    <value>Commande</value>
+  <data name="Choose_a_clear_start_date_and_end_date_for_precise_results" xml:space="preserve">
+    <value>Choose a clear &lt;strong&gt;start date&lt;/strong&gt; and &lt;strong&gt;end date&lt;/strong&gt; for precise results.</value>
   </data>
-  <data name="DefinehowtheprocessrunsoptionsincludeAutoAutoApprovalandotherautomationmodes" xml:space="preserve">
-    <value>Définissez le déroulement du processus — les options disponibles sont Auto, Approbation automatique et d'autres modes d'automatisation</value>
+  <data name="Choose_a_Source_Mode_Temporary_Reconciled_Auto_or_RealTime" xml:space="preserve">
+    <value>Choose a &lt;strong&gt;Source Mode&lt;/strong&gt; (Temporary, Reconciled, Auto, or RealTime).</value>
   </data>
-  <data name="Description" xml:space="preserve">
-    <value>Description</value>
+  <data name="Choose_JE_or_Account_Statement_to_enable_account_selection" xml:space="preserve">
+    <value>Choose &lt;strong&gt;JE&lt;/strong&gt; or &lt;strong&gt;Account Statement&lt;/strong&gt; to enable account selection.</value>
   </data>
-  <data name="EditConfiguration" xml:space="preserve">
-    <value>Modifier la configuration</value>
+  <data name="Custom_Trial_Balance_Report" xml:space="preserve">
+    <value>Custom Trial Balance Report</value>
   </data>
-  <data name="Enablethisiftheinitiatingusermustalsoapprovethetransaction" xml:space="preserve">
-    <value>Activez cette option si l'utilisateur initiateur doit également approuver la transaction</value>
+  <data name="Enable_Accounting_Year_only_if_you_want_to_filter_by_a_specific_year" xml:space="preserve">
+    <value>Enable &lt;strong&gt;Accounting Year&lt;/strong&gt; only if you want to filter by a specific year.</value>
   </data>
-  <data name="Inactive" xml:space="preserve">
-    <value>Inactif</value>
+  <data name="Filter_by_Accounting_Year" xml:space="preserve">
+    <value>Filter by Accounting Year</value>
   </data>
-  <data name="InterbranchLocalConfiguration" xml:space="preserve">
-    <value>Configuration inter-branches / locale</value>
+  <data name="Generate_a_custom_trial_balance_based_on_branch_report_type_source_mode_and_date_range" xml:space="preserve">
+    <value>Generate a custom trial balance based on branch, report type, source mode and date range.</value>
   </data>
-  <data name="Keepconfigurationdataalignedwithcurrentbranchrulesandapprovalworkflows" xml:space="preserve">
-    <value> Assurez-vous que les données de configuration sont conformes aux règles actuelles de la branche et aux workflows d'approbation</value>
+  <data name="Include_All_Accounts_InTB" xml:space="preserve">
+    <value>Include All Accounts InTB</value>
   </data>
-  <data name="No" xml:space="preserve">
-    <value>Non</value>
+  <data name="Include_Zero_Balance_On_TB" xml:space="preserve">
+    <value>Include Zero Balance On TB</value>
   </data>
-  <data name="Noconfigurationshavebeendefinedyet" xml:space="preserve">
-    <value>Aucune configuration n'a encore été définie</value>
+  <data name="Select_a_branch_first_other_filters_will_appear_after_a_branch_is_chosen" xml:space="preserve">
+    <value>Select a &lt;strong&gt;branch&lt;/strong&gt; first – other filters will appear after a branch is chosen.</value>
   </data>
-  <data name="Provideashortsummaryexplainingtheconfigurationpurposeorbehavior" xml:space="preserve">
-    <value>Fournissez un bref résumé expliquant l'objectif ou le comportement de la configuration</value>
+  <data name="Select_a_Report_Type_Accounts_are_only_used_for_JE_and_Account_Statement" xml:space="preserve">
+    <value>Select a &lt;strong&gt;Report Type&lt;/strong&gt;. Accounts are only used for &lt;strong&gt;JE&lt;/strong&gt; and &lt;strong&gt;@GlobalCustomeReports.Account Statement&lt;/strong&gt;.</value>
   </data>
-  <data name="ReviewRegularly" xml:space="preserve">
-    <value>Réviser régulièrement</value>
+  <data name="Select_one_or_more_branches_Other_filters_will_appear_after_a_branch_is_selected" xml:space="preserve">
+    <value>Select one or more branches. Other filters will appear after a branch is selected.</value>
   </data>
-  <data name="SaveChanges" xml:space="preserve">
-    <value>Enregistrer les modifications</value>
+  <data name="Select_the_transaction_source_you_want_to_report_on" xml:space="preserve">
+    <value>Select the transaction source you want to report on.</value>
   </data>
-  <data name="Status" xml:space="preserve">
-    <value>Statut</value>
+  <data name="The_filter_becomes_active_when_dates_branch_report_type_and_source_mode_are_selected" xml:space="preserve">
+    <value>The filter becomes active when &lt;strong&gt;dates&lt;/strong&gt;, &lt;strong&gt;branch&lt;/strong&gt;, &lt;strong&gt;report type&lt;/strong&gt; and &lt;strong&gt;source mode&lt;/strong&gt; are selected.</value>
   </data>
-  <data name="TIPSFORCONFIGURATIONSETUP" xml:space="preserve">
-    <value>CONSEILS POUR LA CONFIGURATION</value>
-  </data>
-  <data name="TypeSelection" xml:space="preserve">
-    <value>Sélection du type</value>
-  </data>
-  <data name="UserReqiredApproval" xml:space="preserve">
-    <value>Approbation requise par l'utilisateur</value>
-  </data>
-  <data name="UserApproval" xml:space="preserve">
-    <value>Approbation de l'utilisateur</value>
-  </data>
-  <data name="Usethistoggletoactivateordeactivateaconfigurationwithoutdeletingit" xml:space="preserve">
-    <value>Use this toggle to activate or deactivate a configuration without deleting it</value>
-  </data>
-  <data name="Yes" xml:space="preserve">
-    <value>Oui</value>
-  </data>
-  <data name="Edit" xml:space="preserve">
-    <value>Modifier</value>
-  </data>
-  <data name="CONFIGURATIONDETAILS" xml:space="preserve">
-    <value>DÉTAILS DE CONFIGURATION</value>
-  </data>
-  <data name="ConfigurationsetbyHeadOfficeRevieworupdatetheworkflowsetup" xml:space="preserve">
-    <value>Configuration définie par le siège social. Vérifiez ou mettez à jour la configuration du flux de travail</value>
-  </data>
-  <data name="Cantheinitiatorvalidateorapprove" xml:space="preserve">
-    <value>L'initiateur peut-il valider ou approuver ?</value>
-  </data>
-  <data name="Update" xml:space="preserve">
-    <value>Mise à jour</value>
-  </data>
-  <data name="ConfigurationPanel" xml:space="preserve">
-    <value>Panneau de configuration</value>
-  </data>
-  <data name="Unknownconfigurationtype" xml:space="preserve">
-    <value>Type de configuration inconnu</value>
+  <data name="Use_this_tool_to_extract_targeted_data_for_reconciliation_analysis_and_auditing" xml:space="preserve">
+    <value>Use this tool to extract targeted data for reconciliation, analysis and auditing.</value>
   </data>
 </root>

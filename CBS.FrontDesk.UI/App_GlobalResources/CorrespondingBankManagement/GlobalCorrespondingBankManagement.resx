@@ -132,29 +132,14 @@
   <data name="AddNewCorrespondingBank" xml:space="preserve">
     <value>Add new corresponding bank</value>
   </data>
-  <data name="BankCode" xml:space="preserve">
-    <value>Bank code</value>
-  </data>
   <data name="BankingZoneManagement" xml:space="preserve">
     <value>Banking zone management</value>
   </data>
   <data name="BankingZoneName" xml:space="preserve">
     <value>Banking zone name</value>
   </data>
-  <data name="BankName" xml:space="preserve">
-    <value>Bank name</value>
-  </data>
-  <data name="BranchName" xml:space="preserve">
-    <value>Branch name</value>
-  </data>
-  <data name="Code" xml:space="preserve">
-    <value>Code</value>
-  </data>
   <data name="CorrespondingBankManagement" xml:space="preserve">
     <value>Corresponding bank management</value>
-  </data>
-  <data name="Division" xml:space="preserve">
-    <value>Division</value>
   </data>
   <data name="FinancialInstitution" xml:space="preserve">
     <value>Financial institution</value>
@@ -177,26 +162,8 @@
   <data name="HeadOfficeTelephone" xml:space="preserve">
     <value>Head office telephone</value>
   </data>
-  <data name="Institution" xml:space="preserve">
-    <value>Institution</value>
-  </data>
-  <data name="Location" xml:space="preserve">
-    <value>Location</value>
-  </data>
-  <data name="LocationLevel" xml:space="preserve">
-    <value>Location level</value>
-  </data>
   <data name="ManagementOfBankingZoneBranches" xml:space="preserve">
     <value>Management of banking zone branches</value>
-  </data>
-  <data name="Name" xml:space="preserve">
-    <value>Name</value>
-  </data>
-  <data name="Region" xml:space="preserve">
-    <value>Region</value>
-  </data>
-  <data name="SelectBank" xml:space="preserve">
-    <value>Select bank</value>
   </data>
   <data name="SelectBankingZone" xml:space="preserve">
     <value>Select banking zone</value>
@@ -225,9 +192,6 @@
   <data name="SubDivision" xml:space="preserve">
     <value>Sub division</value>
   </data>
-  <data name="Telephone" xml:space="preserve">
-    <value>Telephone</value>
-  </data>
   <data name="TownId" xml:space="preserve">
     <value>TownId</value>
   </data>
@@ -236,9 +200,6 @@
   </data>
   <data name="txt3ppBankManagement" xml:space="preserve">
     <value>3pp Bank management</value>
-  </data>
-  <data name="Type" xml:space="preserve">
-    <value>Type</value>
   </data>
   <data name="ZoneCode" xml:space="preserve">
     <value>Zone code</value>
