@@ -122,18 +122,18 @@
                             <div class="input-group" style="width:260px; max-width:100%;">
                                 <span class="input-group-text">📅 Acc. Date</span>
                                 @Html.TextBox(
-                          "AccountingDate",
-                          DateTime.Now.ToString("yyyy-MM-dd"),
-                          new
-                          {
-                              @class = "form-control accounting-date",
-                              type = "date",
-                              id = "AccountingDay",
-                              required = "required",
-                              max = todayIso,
-                              style = "min-width:0;"
-                          }
-                      )
+    "AccountingDate",
+    DateTime.Now.ToString("yyyy-MM-dd"),
+    new
+    {
+        @class = "form-control accounting-date",
+        type = "date",
+        id = "AccountingDay",
+        required = "required",
+        max = todayIso,
+        style = "min-width:0;"
+    }
+)
 
                             </div>
                         </div>
@@ -186,10 +186,10 @@
                     <div class="col-md-8">
                         @Html.LabelFor(m => m.PaymentGl, "Branch Commission Account", new { @class = "form-label" })
                         @Html.DropDownListFor(
-                         m => m.PaymentGl,
-                         new SelectList(ViewBag.HoPcmfAccounts ?? new List<SelectListItem>(), "Value", "Text"),
-                         "--- Branch Commission Account ---",
-                         new { @class = "form-select select2", id = "PaymentGl" })
+                   m => m.PaymentGl,
+                   new SelectList(ViewBag.HoPcmfAccounts ?? new List<SelectListItem>(), "Value", "Text"),
+                   "--- Branch Commission Account ---",
+                   new { @class = "form-select select2", id = "PaymentGl" })
                         @Html.ValidationMessageFor(m => m.PaymentGl, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -209,10 +209,10 @@
                     <div class="col-md-8">
                         @Html.LabelFor(m => m.ExpenseGL, "Expense Commission Account", new { @class = "form-label" })
                         @Html.DropDownListFor(
-                         m => m.ExpenseGL,
-                         new SelectList(ViewBag.HoPcmfAccounts ?? new List<SelectListItem>(), "Value", "Text"),
-                         "--- Expense Commission Account ---",
-                         new { @class = "form-select select2", id = "ExpenseGL" })
+                   m => m.ExpenseGL,
+                   new SelectList(ViewBag.HoPcmfAccounts ?? new List<SelectListItem>(), "Value", "Text"),
+                   "--- Expense Commission Account ---",
+                   new { @class = "form-select select2", id = "ExpenseGL" })
                         @Html.ValidationMessageFor(m => m.ExpenseGL, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -233,17 +233,19 @@
                 <div class="col-md-12">
                     <div class="form-floating">
                         @Html.TextAreaFor(m => m.Memo, new
-                           {
-                               @class = "form-control",
-                               placeholder = "Enter Memo",
-                               rows = "3",
-                               maxlength = "500",
-                               id = "Memo"
-                           })
+                   {
+                       @class = "form-control",
+                       placeholder = "Enter Memo",
+                       rows = "3",
+                       maxlength = "500",
+                       id = "Memo"
+                   })
                         <label>Memo</label>
                         @Html.ValidationMessageFor(m => m.Memo, "", new { @class = "text-danger" })
                     </div>
                 </div>
+
+                <hr />
 
                 <div class="row">
                     <div class="col-12 text-end">

@@ -128,36 +128,78 @@ namespace CBS.BusinessService.ReportingMembersFSeries
         }
 
 
-        public async Task<LoanRepaymentData> GetLoanRepaymentData(string loanId, DateTime fromDate, DateTime toDate)
+
+
+        public async Task<LoanRepaymentReportDto> GetLoanRepaymentData(FinancialReportFilter parameters)
+        {
+            try
             {
-                try
+                var request = new FinancialReportRequest
                 {
-                    // Get loan details
-                    var loanResponse = await _loanApiHelper.GetAsync<ResponseObject<LoanDetails>>(
-                        string.Format(APICallHelper.GetLoanDetails, loanId));
+                    Filter = parameters
+                };
 
-                    // Get repayment schedule
-                    var scheduleResponse = await _loanApiHelper.GetAsync<ResponseObject<List<RepaymentSchedule>>>(
-                        string.Format(APICallHelper.GetLoanRepaymentSchedule, loanId));
+                string endpoint = APICallHelper.GetTransactionHistoryByAccountNumber3;
 
-                    // Get actual repayments
-                    var repaymentsResponse = await _loanApiHelper.GetAsync<ResponseObject<List<LoanRepayment>>>(
-                        string.Format(APICallHelper.GetLoanRepayments, loanId, fromDate.ToString("yyyy-MM-dd"), toDate.ToString("yyyy-MM-dd")));
+                // 🔥 IMPORTANT CHANGE HERE
+                var response = await _transactionApiHelper
+                    .PostAsync<ResponseObject<LoanSituationReportDto>>(endpoint, request);
 
-                    return new LoanRepaymentData
-                    {
-                        LoanDetails = loanResponse.ApiResponseData.Data,
-                        RepaymentSchedule = scheduleResponse.ApiResponseData.Data,
-                        ActualRepayments = repaymentsResponse.ApiResponseData.Data,
-                        ReportPeriod = new ReportParameters { DateFrom = fromDate, DateTo = toDate }
-                    };
-                }
-                catch (Exception ex)
+                // =========================
+                // SUCCESS
+                // =========================
+                if (response != null &&
+                    response.IsSuccess &&
+                    response.ApiResponseData?.Data?.LoanRepayment != null)
                 {
-                    // Log exception
-                    throw;
+                    GetExecutionMessages(
+                        parameters,
+                        true,
+                        parameters.MemberReference,
+                        MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages,
+                        SystemMessageStatus.Success.ToString(),
+                        null,
+                        response.ApiResponseData.Message
+                    );
+
+                    // ✅ RETURN ONLY LoanRepayment SECTION
+                    return response.ApiResponseData.Data.LoanRepayment;
                 }
+
+                // =========================
+                // API FAILURE
+                // =========================
+                GetExecutionMessages(
+                    parameters,
+                    false,
+                    parameters.MemberReference,
+                    MessagesResults.Failed,
+                    ExecutionProcessOption.DefaultFailedMessages,
+                    SystemMessageStatus.Failed.ToString(),
+                    null,
+                    response?.ApiResponseData?.Message ?? response?.Message
+                );
+
+                return null;
             }
+            catch (Exception ex)
+            {
+                GetExecutionMessages(
+                    parameters,
+                    false,
+                    parameters.MemberReference,
+                    MessagesResults.Error,
+                    ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Error.ToString(),
+                    ex,
+                    ex.Message
+                );
+
+                return null;
+            }
+        }
+
 
         public async Task<ReportData> GetLoanSituationData(FinancialReportFilter parameters)
         {

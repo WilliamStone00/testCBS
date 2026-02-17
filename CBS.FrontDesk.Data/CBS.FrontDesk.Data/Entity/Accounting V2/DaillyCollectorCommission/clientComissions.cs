@@ -54,6 +54,34 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission
         public bool IsLinkToUser { get; set; }
     }
 
+    public class JobSnapshotDto
+    {
+        public string Id { get; set; } = string.Empty;
+        public string JobType { get; set; } = string.Empty;
+        public string Title { get; set; } = string.Empty;
+        public string BranchId { get; set; } = string.Empty;
+        public string BranchCode { get; set; } = string.Empty;
+        public string BranchName { get; set; } = string.Empty;
+        public string OwnerName { get; set; } = string.Empty;
+        public string OwnerUserId { get; set; } = string.Empty;
+        public string CorrelationId { get; set; } = string.Empty;
+        public int Status { get; set; }
+        public string Phase { get; set; } = string.Empty;
+        public int TotalItems { get; set; }
+        public int ProcessedItems { get; set; }
+        public int SucceededItems { get; set; }
+        public int FailedItems { get; set; }
+        public int SkippedItems { get; set; }
+        public decimal TotalAmount { get; set; }
+        public decimal ProcessedAmount { get; set; }
+        public int Percent { get; set; }
+        public DateTime? StartedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
+        public DateTime? CompletedAt { get; set; }
+        public string LastMessage { get; set; } = string.Empty;
+        public List<string> Tags { get; set; } = new List<string>();
+    }
+
     public class CollectorComissionResponse
     {
         //post
@@ -91,6 +119,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission
         public string Month { get; set; } = string.Empty;
         public string OperationType { get; set; } = string.Empty;
         public List<MemberStat> MemberStats { get; set; } = new List<MemberStat>();
+        public string JobId { get; set; } = string.Empty;
         public List<StakeholderShare> SharedAmounts { get; set; } = new List<StakeholderShare>();
     }
 

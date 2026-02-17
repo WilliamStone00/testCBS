@@ -242,37 +242,56 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
     {
         // Header Information
         public string ReportTitle { get; set; }
+        public string Logo { get; set; }
         public string BankName { get; set; }
         public string BranchName { get; set; }
+        public string BranchCode { get; set; }
         public string PrintedBy { get; set; }
         public DateTime PrintedOn { get; set; }
+        public DateTime PeriodFrom { get; set; }
+        public DateTime PeriodTo { get; set; }
 
-        public string LoanAccount { get; set; }
-
-        // Loan Information
-        public string LoanNumber { get; set; }
-        public string CustomerName { get; set; }
+        public string LoanAccountNumber { get; set; }
+        public string Id { get; set; }
+        public string LoanId { get; set; }
+        public string LoanType { get; set; }
         public decimal LoanAmount { get; set; }
-        public decimal InterestRate { get; set; }
-        public DateTime LoanDate { get; set; }
-        public DateTime MaturityDate { get; set; }
+        public string MembersReference { get; set; }
+        public string MembersName { get; set; }
+        public string Address { get; set; }
+        public string Phone { get; set; }
+        public string BranchAddress { get; set; }
+        public string BranchTellephone { get; set; }
+        public string repaymentparameterAccount { get; set; }
 
-        // Repayment Details
-        public int InstallmentNumber { get; set; }
-        public DateTime DueDate { get; set; }
-        public decimal PrincipalDue { get; set; }
-        public decimal InterestDue { get; set; }
-        public decimal TotalDue { get; set; }
-        public DateTime ActualPaymentDate { get; set; }
-        public decimal AmountPaid { get; set; }
-        public string PaymentStatus { get; set; }
-        public decimal OutstandingBalance { get; set; }
+        public string Comment { get; set; }
+        public string Date { get; set; }
+
+        public string PaymentMethod { get; set; }
+        public string PaymentChannel { get; set; }
+
+        public decimal Amount { get; set; }
+        public decimal Principal { get; set; }
+        public decimal Interest { get; set; }
+        public decimal Penalty { get; set; }
+        public decimal Tax { get; set; }
+
+        public string BranchId { get; set; }
+        public string BankId { get; set; }
+        public string Status { get; set; }
+        public string Year { get; set; }
+
+        public decimal Balance { get; set; }
+        public bool IsComplete { get; set; }
+
+        public DateTimeOffset DateOfPayment { get; set; }
 
         // Summary
-        public decimal TotalPrincipalPaid { get; set; }
-        public decimal TotalInterestPaid { get; set; }
-        public decimal TotalAmountPaid { get; set; }
-        public decimal RemainingBalance { get; set; }
+        public decimal TotalPrincipal { get; set; }
+        public decimal TotalInterest { get; set; }
+        public decimal TotalVat { get; set; }
+        public decimal TotalPenalty { get; set; }
+        public decimal TotalPaid { get; set; }
     }
 
     public class LoanSituationRow
@@ -280,19 +299,23 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
         public decimal TotalOutstanding { get; set; }
         public decimal ActiveLoans { get; set; }
         public decimal DelinquentLoans { get; set; }
-        public decimal ParAmount { get; set; }
+        public decimal PerAmount { get; set; }
 
         // Header Information    
         public string ReportTitle { get; set; }
         public string BankName { get; set; }
+        public string Logo { get; set; }
+        public string Year { get; set; }
         public string BranchName { get; set; }
         public string BranchId { get; set; }
         public string BranchCode { get; set; }
-        public DateTime Periodfrom { get; set; }
-        public DateTime PeriodTo { get; set; }
+        public string Periodfrom { get; set; }
+        public string PeriodTo { get; set; }
         public string PrintedBy { get; set; }
-        public DateTime PrintedOn { get; set; }
+        public string PrintedOn { get; set; }
 
+        public string BranchTellephone { get; set; }
+        public string BranchAddress { get; set; }
         public string LoanAccount { get; set; }
 
         public string LoanId { get; set; }
@@ -305,15 +328,18 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
         public decimal AverageInterestRate { get; set; }
         public decimal DelinquencyRate { get; set; }
         public string LoanAccountNumber { get; set; }
+        public decimal LoanAmount { get; set; }
         // Loan Details
         public string LoanNumber { get; set; }
         public string CustomerName { get; set; }
         public string LoanType { get; set; }
-        public decimal LoanAmount { get; set; }
+        
         public decimal OutstandingBalance { get; set; }
         public DateTime DisbursementDate { get; set; }
         public DateTime MaturityDate { get; set; }
         public decimal InterestRate { get; set; }
+        public decimal Tax { get; set; }
+        public decimal Vat { get; set; }
         public string Status { get; set; }
         public int DaysPastDue { get; set; }      
    
@@ -326,8 +352,10 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
         public decimal DeliquenceAmount { get; set; }
         public decimal DelInterest { get; set; }
         public decimal AdvancedPaymentAmount { get; set; }
+        public decimal DueAmount { get; set; }
 
         public string ContractCode { get; set; }
+        public int Instalment { get; set; }
         public int NumberOfInstallment { get; set; }
         
         public decimal Balance { get; set; }
@@ -400,6 +428,7 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
         public decimal LastPaymentAmount { get; set; }
         public int DaysPastDue { get; set; }
         public decimal ArrearsAmount { get; set; }
+        
     }
 
     public class RepaymentSchedule
@@ -684,11 +713,14 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
         public string LoanType { get; set; }
         public string Status { get; set; }
         public string AccountNumber { get; set; }
+        public string loanAccountNumber { get; set; }
+        public decimal  LoanAmount { get; set; }
 
         public decimal Balance { get; set; }
         public decimal Principal { get; set; }
         public decimal Interest { get; set; }
         public decimal InterestRate { get; set; }
+        public decimal Vat { get; set; }
         public decimal Penalty { get; set; }
         public decimal TotalRepayment { get; set; }
 
@@ -698,8 +730,10 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
         public DateTime LoanDate { get; set; }
 
         public int DelDays { get; set; }
+        public int Installment { get; set; }
         public decimal DelAmount { get; set; }
         public decimal DelInterest { get; set; }
+        public decimal DueAmount { get; set; }
 
         public string MemberReference { get; set; }
         public string MembersName { get; set; }
@@ -709,7 +743,74 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
         public DateTime DisbursementDate { get; set; }
     }
 
+    //Loan Repayment
+    public class LoanSituationReportDto
+    {
+        public int ReportType { get; set; }
 
+        public DateTimeOffset GeneratedAt { get; set; }
+
+        public string MemberReference { get; set; }
+
+        public LoanRepaymentReportDto LoanRepayment { get; set; }
+    }
+
+    public class LoanRepaymentReportDto
+    {
+        public int Mode { get; set; }
+
+        public string LoanId { get; set; }
+
+        public DateTimeOffset DateFrom { get; set; }
+        public DateTimeOffset DateTo { get; set; }
+
+        public object Loan { get; set; }
+
+        public List<LoanRepaymentTransactionDto> RepaymentLines { get; set; }
+
+        public LoanRepaymentSummaryDto Summary { get; set; }
+    }
+
+    public class LoanRepaymentTransactionDto
+    {
+        public string Id { get; set; }
+        public string LoanId { get; set; }
+        public string CustomerId { get; set; }
+
+        public string Comment { get; set; }
+
+        public string PaymentMethod { get; set; }
+        public string PaymentChannel { get; set; }
+
+        public decimal Amount { get; set; }
+        public decimal Principal { get; set; }
+        public decimal Interest { get; set; }
+        public decimal Penalty { get; set; }
+        public decimal Tax { get; set; }
+        public decimal LoanAmount { get; set; }
+        public string LoanAccountNumber { get; set; }
+        public string LoanType { get; set; }
+
+        public string BranchId { get; set; }
+        public string BankId { get; set; }
+
+        public string completeStatus { get; set; }
+        public decimal Balance { get; set; }
+        public bool IsComplete { get; set; }
+
+        public DateTimeOffset DateOfPayment { get; set; }
+    }
+
+    public class LoanRepaymentSummaryDto
+    {
+        public decimal TotalPrincipal { get; set; }
+        public decimal TotalInterest { get; set; }
+        public decimal TotalVat { get; set; }
+        public decimal TotalPenalty { get; set; }
+        public decimal TotalPaid { get; set; }
+    }
+
+    // end of loan repayment 
 
 
 

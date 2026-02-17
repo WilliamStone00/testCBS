@@ -32,10 +32,10 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
     public class CollectorCommissionService : BaseService
     {
         private readonly ApiCallerHelper _apiCallerHelper;
-        private readonly ApiCallerHelper _apiCallerHelper1;
-        private readonly ApiCallerHelper _apiCallerHelper2;
+        private readonly ApiCallerHelper _CustomerApiCallerHelper;
+        private readonly ApiCallerHelper _CheckbookApiCallerHelper;
         private readonly IndividualProfileServices _individualProfileServices;
-
+        
         public CollectorCommissionService(IndividualProfileServices individualProfileServices)
         {
             //change the base url to the actual base url
@@ -51,14 +51,14 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
             {
                 throw new ConfigurationErrorsException("The baseUrl is missing or empty in Web.config.");
             }
-            _apiCallerHelper1 = new ApiCallerHelper(baseUrl1);
+            _CustomerApiCallerHelper = new ApiCallerHelper(baseUrl1);
 
             string baseUrl2 = ConfigurationManager.AppSettings["CheckbookServiceBaseUrl"];
             if (string.IsNullOrEmpty(baseUrl2))
             {
                 throw new ConfigurationErrorsException("The baseUrl is missing or empty in Web.config.");
             }
-            _apiCallerHelper2 = new ApiCallerHelper(baseUrl2);
+            _CheckbookApiCallerHelper = new ApiCallerHelper(baseUrl2);
             _individualProfileServices = individualProfileServices;
         }
 
@@ -67,7 +67,7 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
             try
             {
 
-                var response = await _apiCallerHelper1.PostAsync<ResponseObject<CustomDataTable2>>(
+                var response = await _CustomerApiCallerHelper.PostAsync<ResponseObject<CustomDataTable2>>(
                     APICallHelper.Customerdatatable, query);
 
                 // ⚠️ CRITICAL: If API call fails or returns unsuccessful, THROW exception
@@ -92,7 +92,7 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
                 throw new Exception($"service unavailable: {ex.Message}", ex);
             }
         }
-
+           
 
         public async Task<CollectorComissionResponse> GetCommissionAsync(CollectorComissionResponse model)
         {
@@ -123,7 +123,7 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
                 string formattedUrl = string.Format(APICallHelper.getcustomerbyid, encodedId);
                 // formattedUrl => "/api/v1/get-checkbook-category/123" (no colon)
 
-                var response = await _apiCallerHelper1.GetAsync<ServiceResponse<Customer>>(formattedUrl);
+                var response = await _CustomerApiCallerHelper.GetAsync<ServiceResponse<Customer>>(formattedUrl);
 
                 // CORRECTED: Access the final payload via .ApiResponseData.Data
                 if (response.IsSuccess)
@@ -198,7 +198,7 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
         //public async Task<CollectorComissionResponse> CreateAsync(CollectorComissionResponse model)
         //{
 
-        //    var response = await _apiCallerHelper2.PostAsync<ServiceResponse<CollectorComissionResponse>>(APICallHelper.Reconciliation, model);
+        //    var response = await _CheckbookApiCallerHelper.PostAsync<ServiceResponse<CollectorComissionResponse>>(APICallHelper.Reconciliation, model);
 
         //    if (response == null || response.ApiResponseData == null || response.ApiResponseData.Data == null)
         //    {

@@ -647,7 +647,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public DateTime? OperationDate { get; set; }
         public DateTime DateFrom { get; set; }
         public DateTime DateTo { get; set; }
-
+  
         public string BranchId { get; set; }
         public string BankId { get; set; }
         public string InterestVadPenaltyType { get; set; }

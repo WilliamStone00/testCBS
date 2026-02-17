@@ -680,6 +680,12 @@
       <DependentUpon>TellerStatement1.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="AppFiles\Reporting\Transactions\UpdatedStatement\Loan\LoanRepaymentRPT.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LoanRepaymentRPT.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="AppFiles\Reporting\Transactions\UpdatedStatement\Loan\LoanSituationRPT.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -7697,6 +7703,10 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>CashDeskRessource.Designer.cs</LastGenOutput>
     </Content>
+    <EmbeddedResource Include="AppFiles\Reporting\Transactions\UpdatedStatement\Loan\LoanRepaymentRPT.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>LoanRepaymentRPT.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\Transactions\UpdatedStatement\Loan\LoanSituationRPT.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>LoanSituationRPT.cs</LastGenOutput>
@@ -10767,7 +10777,6 @@
     <Content Include="Views\CollectorCommission\_Details.cshtml" />
     <Content Include="Views\GLSystemReconciliation\Index.cshtml" />
     <Content Include="Views\GLSystemReconciliation\_DataTable.cshtml" />
-    <Content Include="Views\GLSystemReconciliation\_RecordsForm.cshtml" />
     <Content Include="Views\FileListing\_DetailsGLH.cshtml" />
     <Content Include="Views\CollectorCommission\_CommissionRetreat.cshtml" />
     <Content Include="Views\FileUpload\_CorrespondanceRequestDetails.cshtml" />
@@ -10802,11 +10811,8 @@
     <Content Include="Views\AffiliateToBranchFallback\_FallbackDetails.cshtml" />
     <Content Include="Views\AffiliateToBranchFallback\_ReconcileFallback.cshtml" />
     <Content Include="Views\AffiliateToBranchFallback\_FallbackDataTable.cshtml" />
-    <Content Include="Views\GLSystemReconciliation\_OperationDetail.cshtml" />
-    <Content Include="Views\GLSystemReconciliation\_StatisticsDataTable.cshtml" />
     <Content Include="Views\JournalHead\_ExportJournalHeadDataTable.cshtml" />
     <Content Include="Views\CounterCheque\_CounterRequest.cshtml" />
-    <Content Include="Views\GLSystemReconciliation\_StatisticsDetails.cshtml" />
     <Content Include="Views\EndOfYearClosure\Index.cshtml" />
     <Content Include="Views\EndOfYearClosure\_Initiation.cshtml" />
     <Content Include="Views\EndOfYearClosure\_Adjustment.cshtml" />
@@ -10916,6 +10922,7 @@
     <Content Include="Views\SalaryUpload\_LoanRepaymentDetails.cshtml" />
     <Content Include="Views\SalaryUpload\_FileStatistics.cshtml" />
     <None Include="Scripts\Js\Crud\FeeRange\.editorconfig" />
+    <Content Include="Views\GLSystemReconciliation\_ExportDataTable.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

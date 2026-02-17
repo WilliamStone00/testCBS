@@ -1,5 +1,6 @@
 ﻿using CBS.FrontDesk.Data.Entity.Accounting_V2.TrialBalance;
 using CBS.FrontDesk.Data.Entity.DataTable;
+using CBS.FrontDesk.Data.Entity.LoanRepayment;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation
         public string OperationBy { get; set; }
         public string OperationCode { get; set; }
         public string BranchId { get; set; }
-        public DateTime AccountingDate { get; set; }
+        public DateTime? AccountingDate { get; set; }
         public string PostMode { get; set; }
         public string Status { get; set; }
         public int Attempts { get; set; }
@@ -24,14 +25,13 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation
         public string RequestJson { get; set; }
         public string DestinationUrl { get; set; }
         public string BranchName { get; set; }
+       
         public DateTime? CreatedDate { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
 
         public bool IsInterBranch { get; set; }
-        public DateTime? StartAccountingDate { get; set; }
-
-        public DateTime? EndAccountingDate { get; set; }
+       
 
     }
 
@@ -161,15 +161,20 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation
         public string Payload { get; set; }
         }
 
+    public class ExportReconciliation
+    {
+        public List<Reconciliation> Reconciliation { get; set; }
+        public ExportOptions ExportOptions { get; set; }
+        public ReconciliationQuery Filters { get; set; }
+    }
 
-    
 
 
 
 
-        //************************************ RESPONSE summary ********************************************//
+    //************************************ RESPONSE summary ********************************************//
 
-        public class ReconciliationData
+    public class ReconciliationData
         {
             public bool Success { get; set; }
             public string AccountingDate { get; set; }

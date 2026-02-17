@@ -266,7 +266,10 @@ window.ClearanceSubmitAjax = function(form) {
     }
 
     const fields = {
-       
+
+        "Branch": $form.find('#BranchId option:selected').text() || "---",
+        "Branch Id": $form.find('#BranchId').val() || "---",
+
         "Amount": $form.find('#Amount').val() || "---",
         "External Cheque Number": $form.find('#ExternalChequeNumber').val() || "---",
         "Page Number": $form.find('#CheckBookPageNumber').val() || "---",
@@ -275,12 +278,13 @@ window.ClearanceSubmitAjax = function(form) {
         "Branch Code": $form.find('#ExternalBranchCode').val() || "---",
         "Branch Name": $form.find('#ExternalBranchName').val() || "---",
         "External Account": $form.find('#ExternalAccountNumber').val() || "---",
-        "To Account": $form.find('#ToAccountNumber').val() || "---",
+
         "Member Reference": $form.find('#CustomerId').val() || "---",
-        "Use Overdraft": $form.find('#UseOverdraft').is(':checked') ? "Yes" : "No",
+        "Use Overdraft": $form.find('#UseOverdraft').is(':checked') ? "True" : "False",
         "Clear Now": $form.find('#CurrentClearanceAmount').val() || "---",
         "Remaining": $form.find('#RemainingAmount').val() || "---"
     };
+
 
     let tableRows = '';
     for (const key in fields) {

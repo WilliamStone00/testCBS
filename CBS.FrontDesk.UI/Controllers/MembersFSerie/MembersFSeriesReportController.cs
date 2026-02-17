@@ -58,7 +58,7 @@ namespace CBS.FrontDesk.UI.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> GenerateReport(ReportParameters parameters)
-        {
+         {
 
             Session["MainData"] = null;
             Session["SubReportsData"] = null; // null for single reports
@@ -161,6 +161,8 @@ namespace CBS.FrontDesk.UI.Controllers
                         ? (int)LoanRepaymentReportMode.ByRepaymentPeriod
                         : (int)LoanRepaymentReportMode.BySpecificLoan;
                     mainData = await _reportBuilder.BuildLoanRepaymentRows(filter);
+                relativePath = "Transactions/UpdatedStatement/Loan/LoanRepaymentRPT.rpt";
+                    reportTitle = "LOAN REPAYMENT";
                     break;
 
                 case "LoanSituation":
