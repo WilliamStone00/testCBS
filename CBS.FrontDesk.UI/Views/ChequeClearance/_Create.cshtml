@@ -8,158 +8,170 @@
         {
             @Html.AntiForgeryToken() <!-- important -->
 
-            <div class="row gy-3">
+        <div class="row gy-3">
 
-                <!-- ================= HEADER ================= -->
-                <div class="col-12">
-                    <h6 class="text-success border-bottom pt-2 pb-1">
-                        <i class="fas fa-money-check-alt me-1"></i>
-                        @ChequeClearanceResource.External_Cheque_Clearance_Request
-                    </h6>
-                    <p class="text-muted small mb-0">
-                        @ChequeClearanceResource.Capture_cheque_details_for_approval_and_processing
-                    </p>
-                </div>
+            <!-- ================= HEADER ================= -->
+            <div class="col-12">
+                <h6 class="text-success border-bottom pt-2 pb-1">
+                    <i class="fas fa-money-check-alt me-1"></i>
+                    @ChequeClearanceResource.External_Cheque_Clearance_Request
+                </h6>
+                <p class="text-muted small mb-0">
+                    @ChequeClearanceResource.Capture_cheque_details_for_approval_and_processing
+                </p>
+            </div>
 
-                <!-- ================= CHEQUE DETAILS ================= -->
-                @*<div class="col-md-6">
-                    <div class="form-floating shadow-sm">
-                        @Html.DropDownListFor(m => m.ChequeType,
-                             new SelectList(ViewBag.ChequeType, "Value", "Text"),
-                             "--- Select Cheque Type ---",
-                             new { @class = "form-control select2", id = "chequeType" })
-                        <label>@GlobalShared.Cheque_Type</label>
-                    </div>
-                </div>*@
+            <!-- ================= CHEQUE DETAILS ================= -->
+            @*<div class="col-md-6">
+            <div class="form-floating shadow-sm">
+                @Html.DropDownListFor(m => m.ChequeType,
+                     new SelectList(ViewBag.ChequeType, "Value", "Text"),
+                     "--- Select Cheque Type ---",
+                     new { @class = "form-control select2", id = "chequeType" })
+                <label>@GlobalShared.Cheque_Type</label>
+            </div>
+        </div>*@
 
-                <div class="col-md-6">
-                    <div class="form-floating shadow-sm">
-                        @Html.TextBoxFor(m => m.Amount,
-                             new { @class = "form-control", type = "number", step = "0.01", placeholder = "Amount", id = "Amount" })
-                        <label>@GlobalShared.Amount</label>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="form-floating shadow-sm">
-                        @Html.TextBoxFor(m => m.ExternalChequeNumber,
-                             new { @class = "form-control", placeholder = "Cheque Number", id = "ExternalChequeNumber" })
-                        <label>@GlobalShared.External_Cheque_Number</label>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="form-floating shadow-sm">
-                        @Html.TextBoxFor(m => m.CheckBookPageNumber,
-                             new { @class = "form-control", type = "number", placeholder = "Page Number", id = "CheckBookPageNumber" })
-                        <label>@GlobalShared.Check_Book_Page_Number</label>
-                    </div>
-                </div>
-
-                <!-- ================= EXTERNAL BANK ================= -->
-                <div class="col-md-6">
-                    <div class="form-floating shadow-sm">
-                        @Html.TextBoxFor(m => m.ExternalBankName,
-                             new { @class = "form-control", placeholder = "Bank Name", id = "ExternalBankName" })
-                        <label>@GlobalShared.External_Bank_Name</label>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="form-floating shadow-sm">
-                        @Html.TextBoxFor(m => m.ExternalBankCode,
-                             new { @class = "form-control", placeholder = "Bank Code", id = "ExternalBankCode" })
-                        <label>@GlobalShared.External_Bank_Code</label>
-                    </div>
-                </div>
-
-                <div class="col-md-4">
-                    <div class="form-floating shadow-sm">
-                        @Html.TextBoxFor(m => m.ExternalBranchCode,
-                             new { @class = "form-control", placeholder = "Branch Code", id = "ExternalBranchCode" })
-                        <label>@GlobalShared.External_Branch_Code</label>
-                    </div>
-                </div>
-
-                <div class="col-md-4">
-                    <div class="form-floating shadow-sm">
-                        @Html.TextBoxFor(m => m.ExternalBranchName,
-                             new { @class = "form-control", placeholder = "Branch Name", id = "ExternalBranchName" })
-                        <label>@GlobalShared.External_Branch_Name</label>
-                    </div>
-                </div>
-
-                <div class="col-md-4">
-                    <div class="form-floating shadow-sm">
-                        @Html.TextBoxFor(m => m.ExternalAccountNumber,
-                             new { @class = "form-control", placeholder = "Account Number", id = "ExternalAccountNumber" })
-                        <label>@GlobalShared.External_Account_Number</label>
-                    </div>
-                </div>
-
-                <!-- ================= BENEFICIARY ================= -->
-                <div class="col-md-6">
-                    <div class="form-floating shadow-sm">
-                        @Html.TextBoxFor(m => m.ToAccountNumber,
-                             new { @class = "form-control", placeholder = "Account Number", id = "ToAccountNumber" })
-                        <label>@GlobalShared.To_Account_Number</label>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="form-floating shadow-sm">
-                        @Html.TextBoxFor(m => m.CustomerId,
-                             new { @class = "form-control", placeholder = "Member Reference", id = "CustomerId" })
-                        <label>@GlobalShared.Member_reference</label>
-                    </div>
-                </div>
-
-                <div class="col-12">
-                    <div class="form-floating shadow-sm">
-                        @Html.TextAreaFor(m => m.RequestNote, 3, 100,
-                             new { @class = "form-control", placeholder = "Note", style = "height:100px", id = "RequestNote" })
-                        <label>@GlobalShared.Note</label>
-                    </div>
-                </div>
-
-                <!-- ================= CLEARING OPTIONS ================= -->
-                <div class="col-12">
-                    <div class="form-check ps-2">
-                        @Html.CheckBoxFor(m => m.UseOverdraft,
-                             new { @class = "form-check-input", id = "UseOverdraft" })
-                        <label class="form-check-label" for="UseOverdraft">
-                            @GlobalShared.Use_Overdraft
-                        </label>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="form-floating shadow-sm">
-                        @Html.TextBoxFor(m => m.CurrentClearanceAmount,
-                             new { @class = "form-control", type = "number", step = "0.01", placeholder = "Amount to Clear Now", id = "CurrentClearanceAmount" })
-                        <label>Amount to Clear Now</label>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="form-floating shadow-sm">
-                        @Html.TextBoxFor(m => m.RemainingAmount,
-                             new { @class = "form-control", type = "number", step = "0.01", placeholder = "Remaining Amount", @readonly = "readonly", id = "RemainingAmount" })
-                        <label>Remaining Amount</label>
-                    </div>
-                </div>
-
-                <!-- ================= ACTION BUTTONS ================= -->
-                <div class="col-12 text-end mt-3">
-                    <button type="button" class="btn btn-outline-secondary shadow-sm px-4">
-                        Cancel
-                    </button>
-                    <button type="submit" class="btn btn-success shadow-sm px-4">
-                        <i class="fas fa-paper-plane me-1"></i>
-                        Submit Request
-                    </button>
+            <div class="row mb-2 align-items-end">
+                <div class="col-md-12 mb-2">
+                    @Html.Label("BranchId", "Branch", new { @class = "form-label fw-bold", @for = "BranchId" })
+                    @Html.DropDownList(
+                        "BranchId",
+                        new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
+                        "--- Select Branch ---",
+                        new { @class = "form-control select2 mb-2", id = "BranchId", required = "required" }
+                    )
                 </div>
             </div>
+
+            <div class="col-md-6">
+                <div class="form-floating shadow-sm">
+                    @Html.TextBoxFor(m => m.Amount,
+                         new { @class = "form-control", type = "number", step = "0.01", placeholder = "Amount", id = "Amount" })
+                    <label>@GlobalShared.Amount</label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-floating shadow-sm">
+                    @Html.TextBoxFor(m => m.ExternalChequeNumber,
+                         new { @class = "form-control", placeholder = "Cheque Number", id = "ExternalChequeNumber" })
+                    <label>@GlobalShared.External_Cheque_Number</label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-floating shadow-sm">
+                    @Html.TextBoxFor(m => m.CheckBookPageNumber,
+                         new { @class = "form-control", type = "number", placeholder = "Page Number", id = "CheckBookPageNumber" })
+                    <label>@GlobalShared.Check_Book_Page_Number</label>
+                </div>
+            </div>
+
+            <!-- ================= EXTERNAL BANK ================= -->
+            <div class="col-md-6">
+                <div class="form-floating shadow-sm">
+                    @Html.TextBoxFor(m => m.ExternalBankName,
+                         new { @class = "form-control", placeholder = "Bank Name", id = "ExternalBankName" })
+                    <label>@GlobalShared.External_Bank_Name</label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-floating shadow-sm">
+                    @Html.TextBoxFor(m => m.ExternalBankCode,
+                         new { @class = "form-control", placeholder = "Bank Code", id = "ExternalBankCode" })
+                    <label>@GlobalShared.External_Bank_Code</label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-floating shadow-sm">
+                    @Html.TextBoxFor(m => m.ExternalBranchCode,
+                         new { @class = "form-control", placeholder = "Branch Code", id = "ExternalBranchCode" })
+                    <label>@GlobalShared.External_Branch_Code</label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-floating shadow-sm">
+                    @Html.TextBoxFor(m => m.ExternalBranchName,
+                         new { @class = "form-control", placeholder = "Branch Name", id = "ExternalBranchName" })
+                    <label>@GlobalShared.External_Branch_Name</label>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+            <div class="form-floating shadow-sm">
+                @Html.TextBoxFor(m => m.ExternalAccountNumber,
+                     new { @class = "form-control", placeholder = "Account Number", id = "ExternalAccountNumber" })
+                <label>@GlobalShared.External_Account_Number</label>
+            </div>
+        </div>
+
+            <!-- ================= BENEFICIARY ================= -->
+            @*<div class="col-md-6">
+                <div class="form-floating shadow-sm">
+                    @Html.TextBoxFor(m => m.ToAccountNumber,
+                         new { @class = "form-control", placeholder = "Account Number", id = "ToAccountNumber" })
+                    <label>@GlobalShared.To_Account_Number</label>
+                </div>
+            </div>*@
+
+            <div class="col-md-6">
+                <div class="form-floating shadow-sm">
+                    @Html.TextBoxFor(m => m.CustomerId,
+                         new { @class = "form-control", placeholder = "Member Reference", id = "CustomerId" })
+                    <label>@GlobalShared.Member_reference</label>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="form-floating shadow-sm">
+                    @Html.TextAreaFor(m => m.RequestNote, 3, 100,
+                         new { @class = "form-control", placeholder = "Note", style = "height:100px", id = "RequestNote" })
+                    <label>@GlobalShared.Note</label>
+                </div>
+            </div>
+
+            <!-- ================= CLEARING OPTIONS ================= -->
+            <div class="col-12">
+                <div class="form-check ps-2">
+                    @Html.CheckBoxFor(m => m.UseOverdraft,
+                         new { @class = "form-check-input", id = "UseOverdraft" })
+                    <label class="form-check-label" for="UseOverdraft">
+                        @GlobalShared.Use_Overdraft
+                    </label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-floating shadow-sm">
+                    @Html.TextBoxFor(m => m.CurrentClearanceAmount,
+                         new { @class = "form-control", type = "number", step = "0.01", placeholder = "Amount to Clear Now", id = "CurrentClearanceAmount" })
+                    <label>Amount to Clear Now</label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-floating shadow-sm">
+                    @Html.TextBoxFor(m => m.RemainingAmount,
+                         new { @class = "form-control", type = "number", step = "0.01", placeholder = "Remaining Amount", id = "RemainingAmount" })
+                    <label>Remaining Amount</label>
+                </div>
+            </div>
+
+            <!-- ================= ACTION BUTTONS ================= -->
+            <div class="col-12 text-end mt-3">
+                <button type="button" class="btn btn-outline-secondary shadow-sm px-4">
+                    Cancel
+                </button>
+                <button type="submit" class="btn btn-success shadow-sm px-4">
+                    <i class="fas fa-paper-plane me-1"></i>
+                    Submit Request
+                </button>
+            </div>
+        </div>
         }
     </div>
 </div>

@@ -10826,6 +10826,7 @@
     <Content Include="Views\SalaryUpload\_LoanRepaymentDetails.cshtml" />
     <Content Include="Views\SalaryUpload\_FileStatistics.cshtml" />
     <None Include="Scripts\Js\Crud\FeeRange\.editorconfig" />
+    <Content Include="Views\GLSystemReconciliation\_ExportDataTable.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

@@ -5,10 +5,12 @@ using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceRequest
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Configurations.FeeConfiguration;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.LossManagementSystem;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeBookListing;
+using CBS.FrontDesk.Data.Entity.CustomerManagement;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.ManualDailycollection;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
+using DocumentFormat.OpenXml.Office2010.Excel;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -21,12 +23,14 @@ namespace CBS.BusinessService.CheckManagementSystem.ChequeClearance
     public class ChequeClearanceService : BaseService
     {
         private readonly ApiCallerHelper _apiCallerHelper;
+        private readonly ApiCallerHelper _identityServerBaseUrl;
 
         public ChequeClearanceService()
         {
             string baseUrl = ConfigurationManager.AppSettings["CheckbookServiceBaseUrl"];
             if (string.IsNullOrWhiteSpace(baseUrl))
                 throw new ConfigurationErrorsException("The 'CheckbookServiceBaseUrl' appSetting is missing or empty in Web.config.");
+            _identityServerBaseUrl = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
 
             _apiCallerHelper = new ApiCallerHelper(baseUrl);
         }
@@ -67,24 +71,28 @@ namespace CBS.BusinessService.CheckManagementSystem.ChequeClearance
 
         public async Task<ExecutionMessages> CreateAsync(OptionRequest model)
         {
+            if(model.ExternalChequeNumber != null)
+            {
+                model.ChequeType = 2;
+            }
             try
             {
                 var response = await _apiCallerHelper
-                    .PostAsync<ServiceResponse<OptionRequest>>(
+                    .PostAsync<ServiceResponse<ClearanceResponce>>(
                         APICallHelper.ChequeClearanceRequest,  // ✅ Correct endpoint
                         model);
 
-                if (response != null && response.IsSuccess)
+                if (response != null && response.IsSuccess && response.ApiResponseData?.Data != null)
                 {
                     GetExecutionMessages(
-                        response.ApiResponseData?.Data,
+                        response.ApiResponseData.Data,
                         true,
-                        model?.Id ?? "ChequeClearance",
+                        response.ApiResponseData.Data.Id,
                         MessagesResults.Success,
                         ExecutionProcessOption.InsertObject,
                         SystemMessageStatus.Success.ToString(),
                         null,
-                        response.ApiResponseData?.Message
+                        response.ApiResponseData.Message
                     );
                 }
                 else
@@ -100,6 +108,7 @@ namespace CBS.BusinessService.CheckManagementSystem.ChequeClearance
                         response?.ApiResponseData?.Message ?? response?.Message
                     );
                 }
+
             }
             catch (Exception ex)
             {
@@ -188,7 +197,51 @@ namespace CBS.BusinessService.CheckManagementSystem.ChequeClearance
             return ExecutionMessage;
         }
 
+        public async Task<ExecutionMessages> UploadFiles(ClearanceRequestImage documentRequest)
+        {
+            try
+            {
+                // Check if files are attached
+                if (documentRequest.AttachedFiles[0] == null)
+                {
+                    // Handle case where no files are attached
+                    return GetExecutionMessages(documentRequest, false, "File", MessagesResults.Failed,
+                  ExecutionProcessOption.NoFileWasSelected, SystemMessageStatus.Failed.ToString(), null,
+              null);
+                }
 
+
+
+                var url = $"/api/v1/clearance/{documentRequest.Id}/document";
+                var additionalParams = new Dictionary<string, string>
+                {
+                    { "OperationID", documentRequest.Id},
+                    { "DocumentId", "N/A" },
+                    { "DocumentType", documentRequest.DocumentType },
+                    { "ServiceType", "ChequeManagement" },
+                    { "CallBackBaseUrl",ConfigurationManager.AppSettings["CheckbookServiceBaseUrl"].ToString()},
+                    { "CallBackEndPoint", url },
+                    { "RemoteFilePath", $"ChequeImages/{documentRequest.DocumentType}" },
+                };
+                var response = await _identityServerBaseUrl.PostFilesAndParamsAsync<DocumentUploadResponse>(APICallHelper.AttachedDocuments, additionalParams, documentRequest.AttachedFiles);
+                if (response.IsSuccess)
+                {
+                    GetExecutionMessages(response, true, null, MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null,
+                        response.Message);
+                    return ExecutionMessage;
+                }
+                GetExecutionMessages(documentRequest, false, null, MessagesResults.Failed,
+                    ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+
+            }
+            catch (Exception ex)
+            {
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
 
     }
 }

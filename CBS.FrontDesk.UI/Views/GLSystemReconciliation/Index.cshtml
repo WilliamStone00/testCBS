@@ -177,17 +177,23 @@
 
         <!-- ================= ACTION BUTTONS ================= -->
         <div class="row g-2">
-            <div class="col-12 col-md-6">
+            <div class="col-12 col-md-4">
                 <button id="applyFilterBtn" type="submit"
                         class="btn btn-primary btn-sm w-100">
                     <i class="mdi mdi-magnify me-1"></i> Apply Filters
                 </button>
             </div>
 
-            <div class="col-12 col-md-6">
+            <div class="col-12 col-md-4">
                 <button id="resetFilterBtn" type="button"
                         class="btn btn-secondary btn-sm w-100">
                     <i class="mdi mdi-refresh me-1"></i> Reset Filters
+                </button>
+            </div>
+
+            <div class="col-12 col-md-4">
+                <button type="button" id="btnExportReconciliation" class="btn btn-success btn-sm w-100">
+                    <i class="mdi mdi-export me-1"></i> Export
                 </button>
             </div>
         </div>
@@ -197,6 +203,18 @@
 
 <div id="datalistingview">
     @Html.Partial("_DataTable")
+</div>
+
+
+
+
+<div class="modal fade" id="reconciliationExportModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @Html.Partial("_ExportDatatable")
+
+        </div>
+    </div>
 </div>
 
 
@@ -258,6 +276,11 @@
 
             <div class="modal-footer">
 
+                <button class="btn btn-primary btn-sm" id="btnCopyPayload">
+                    <i class="mdi mdi-content-copy me-1"></i> Copy
+                </button>
+
+
                 <button class="btn btn-info btn-sm" id="btnBeautify">
                     <i class="mdi mdi-format-align-left me-1"></i> Beautify
                 </button>
@@ -284,6 +307,7 @@
     <script src="https://cdn.jsdelivr.net/npm/jsoneditor@9.10.0/dist/jsoneditor.min.js"></script>
 
     <script>
+        let reconciliationTableLoaded = false;
 
 
         // ==============================
@@ -365,22 +389,23 @@
                         orderable: false,
                         render: function (_, __, row) {
                             return `
-                                            <div class="text-center d-flex justify-content-between">
-                                                <button class="btn btn-sm btn-info view-details" data-id="${row.Id}">
-                                                    <i class="mdi mdi-eye-outline me-1"></i> View
-                                                </button>
+                                                <div class="text-center d-flex justify-content-between">
+                                                    <button class="btn btn-sm btn-info view-details" data-id="${row.Id}">
+                                                        <i class="mdi mdi-eye-outline me-1"></i> View
+                                                    </button>
 
-                                                <button class="btn btn-sm btn-success push-details"
-                                                        data-id="${row.Id}">
+                                                    <button class="btn btn-sm btn-success push-details"
+                                                            data-id="${row.Id}">
 
-                                                    <i class="mdi mdi-check-outline me-1"></i> Push
-                                                </button>
-                                            </div>
-                                        `;
+                                                        <i class="mdi mdi-check-outline me-1"></i> Push
+                                                    </button>
+                                                </div>
+                                            `;
                         }
                     }
                 ],
                 initComplete: function () {
+                    reconciliationTableLoaded = true; // ✅ mark table as loaded
                     appalert('✅ Table loaded successfully!', 1, 1);
                 },
                 drawCallback: function () {
@@ -413,6 +438,7 @@
             // Apply Filters
             $('#applyFilterBtn').on('click', function (e) {
                 e.preventDefault();
+                reconciliationTableLoaded = false; // will reload table
                 //loadSummary();
                 loadReconciliationData();
             });
@@ -440,11 +466,11 @@
                     },
                     error: function (xhr) {
                         $("#ReconciliationDetailsModal .modal-content").html(`
-                                        <div class="modal-body">
-                                            <div class="alert alert-danger">
-                                                Failed to load reconciliation details. Status: ${xhr.status}
-                                            </div>
-                                        </div>`);
+                                            <div class="modal-body">
+                                                <div class="alert alert-danger">
+                                                    Failed to load reconciliation details. Status: ${xhr.status}
+                                                </div>
+                                            </div>`);
                         bootstrap.Modal.getOrCreateInstance(document.getElementById('ReconciliationDetailsModal')).show();
                     }
                 });
@@ -531,11 +557,11 @@
                 alertify.confirm()
                     .setHeader('<span class="text-primary fw-bold"><i class="mdi mdi-alert-circle-outline me-2"></i>Confirm Payload Update</span>')
                     .setContent(`
-        <div style="font-size:14px;">
-            <p>You're about to <strong>post the updated payload</strong>.</p>
-            <p class="text-muted mb-0">Please confirm that the JSON is correct before proceeding.</p>
-        </div>
-    `)
+            <div style="font-size:14px;">
+                <p>You're about to <strong>post the updated payload</strong>.</p>
+                <p class="text-muted mb-0">Please confirm that the JSON is correct before proceeding.</p>
+            </div>
+        `)
                     .set('labels', { ok: 'Yes, Post It', cancel: 'Cancel' })
                     .set('closable', false)
                     .set('reverseButtons', true)
@@ -586,6 +612,118 @@
                     appalert("❌ Cannot beautify invalid JSON", 3, 1);
                 }
             });
+
+
+            document.getElementById("btnCopyPayload").addEventListener("click", async function () {
+
+                if (!editor) {
+                    appalert("❌ Editor not ready.", 3, 1);
+                    return;
+                }
+
+                try {
+                    const jsonString = JSON.stringify(editor.get(), null, 2);
+
+                    await navigator.clipboard.writeText(jsonString);
+
+                    appalert("✅ JSON copied to clipboard", 1, 1);
+
+                } catch (err) {
+                    console.error("Copy failed:", err);
+                    appalert("❌ Failed to copy JSON", 3, 1);
+                }
+            });
+
+
+            $('#btnExportReconciliation').on('click', function () {
+
+                if (!reconciliationTableLoaded) {
+                    appalert("⚠️ Please load the reconciliation table before exporting.", 2, 1);
+                    return; // stop execution if table not loaded
+                }
+
+                bootstrap.Modal
+                    .getOrCreateInstance(document.getElementById('reconciliationExportModal'))
+                    .show();
+            });
+
+            $('#btnConfirmReconExport').on('click', function () {
+
+
+               
+
+
+                const $btn = $(this);
+                const originalHtml = $btn.html();
+
+                const filters = getDataTableFilters();
+                const exportOptions = {
+                    FileName: $("#reconFileName").val(),
+                    Format: $("#reconExportFormat").val(),
+                    ReportType: $("#reconReportType").val(),
+                    StartDate: $("#reconStartDate").val(),
+                    EndDate: $("#reconEndDate").val()
+                };
+
+                const request = { Filters: filters, ExportOptions: exportOptions };
+
+                $btn.prop("disabled", true)
+                    .html(`<span class="spinner-border spinner-border-sm"></span> Exporting...`);
+
+                $.ajax({
+                    url: '/GLSystemReconciliation/ExportReconciliationData',
+                    type: 'POST',
+                    data: JSON.stringify(request),   // 🔥 IMPORTANT: send full request object
+                    contentType: 'application/json',
+                    xhrFields: { responseType: 'blob' },
+
+                    success: function (blob, status, xhr) {
+
+                        const disposition = xhr.getResponseHeader('Content-Disposition');
+                        let fileName = "ReconciliationReport.xlsx";
+
+                        if (disposition && disposition.indexOf("filename=") !== -1) {
+                            fileName = disposition.split("filename=")[1]
+                                .replace(/"/g, '')
+                                .trim();
+                        }
+
+                        const link = document.createElement('a');
+                        link.href = window.URL.createObjectURL(blob);
+                        link.download = fileName;
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+
+                        window.URL.revokeObjectURL(link.href);
+                    },
+
+                    error: function (xhr) {
+
+                        // 🔎 If server returns JSON instead of file
+                        if (xhr.response && xhr.response.type === "application/json") {
+                            const reader = new FileReader();
+                            reader.onload = function () {
+                                try {
+                                    const json = JSON.parse(reader.result);
+                                    appalert('❌ ' + json.message, 4, 1);
+                                } catch {
+                                    appalert('❌ Failed to export reconciliation data.', 4, 1);
+                                }
+                            };
+                            reader.readAsText(xhr.response);
+                        } else {
+                            appalert('❌ Failed to export reconciliation data. Status: ' + xhr.status, 4, 1);
+                        }
+                    },
+
+                    complete: function () {
+                        $btn.prop("disabled", false).html(originalHtml);
+                    }
+                });
+
+            });
+
 
         });
 
