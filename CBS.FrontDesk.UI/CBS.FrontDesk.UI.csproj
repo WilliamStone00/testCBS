@@ -1029,20 +1029,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>LiaisonLedger.fr.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\ConfigurationManualEntry\GlobalConfigurationManualEntry.Designer.cs" />
-    <Compile Include="App_GlobalResources\ConfigurationManualEntry\GlobalConfigurationManualEntry.fr.Designer.cs" />
-    <Compile Include="App_GlobalResources\ConfigurationManualEntry\GlobalConfigurationManualEntry.fr1.designer.cs" />
-    <Compile Include="App_GlobalResources\ConfigurationManualEntry\GlobalConfigurationManualEntry.fr2.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>GlobalConfigurationManualEntry.fr.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\ConfigurationManualEntry\GlobalConfigurationManualEntry1.designer.cs" />
-    <Compile Include="App_GlobalResources\ConfigurationManualEntry\GlobalConfigurationManualEntry2.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>GlobalConfigurationManualEntry.resx</DependentUpon>
-    </Compile>
     <Compile Include="App_GlobalResources\AccountingV2\ManaulJournalEntryV2\ManualEntry.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -7770,14 +7756,6 @@
     <Content Include="App_GlobalResources\Communication\GlobalCommunication.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalCommunication.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\ConfigurationManualEntry\GlobalConfigurationManualEntry.fr.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>GlobalConfigurationManualEntry.fr2.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\ConfigurationManualEntry\GlobalConfigurationManualEntry.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>GlobalConfigurationManualEntry2.designer.cs</LastGenOutput>
     </Content>
     <Content Include="App_GlobalResources\CounterCheque\GlobalCounterCheque.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
