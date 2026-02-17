@@ -1,0 +1,207 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission.JobSnapshotDto
+
+<!-- Job Information Cards -->
+<div id="jobContent">
+    <!-- Job Header -->
+    <div class="row g-2 mb-2">
+        <div class="col-md-8">
+            <div class="d-flex align-items-center">
+                <span class="badge bg-info me-2" id="jobType">@Model.JobType</span>
+                <h6 class="mb-0 fw-semibold" id="jobTitle">@Model.Title</h6>
+            </div>
+        </div>
+        <div class="col-md-4 text-end">
+            <span class="badge" id="jobStatusBadge" data-status="@Model.Status">@GetStatusText(Model.Status)</span>
+        </div>
+    </div>
+
+    <!-- Job Details Grid -->
+    <div class="row g-2 mb-3">
+        <div class="col-md-3 col-6">
+            <div class="bg-light rounded p-2 text-center">
+                <small class="text-muted d-block">Job ID</small>
+                <span class="fw-bold small" id="jobId">@Model.Id</span>
+            </div>
+        </div>
+        <div class="col-md-3 col-6">
+            <div class="bg-light rounded p-2 text-center">
+                <small class="text-muted d-block">Phase</small>
+                <span class="fw-bold" id="jobPhase">@Model.Phase</span>
+            </div>
+        </div>
+        <div class="col-md-3 col-6">
+            <div class="bg-light rounded p-2 text-center">
+                <small class="text-muted d-block">Owner</small>
+                <span class="fw-bold small" id="jobOwner">@Model.OwnerName</span>
+            </div>
+        </div>
+        <div class="col-md-3 col-6">
+            <div class="bg-light rounded p-2 text-center">
+                <small class="text-muted d-block">Branch</small>
+                <span class="fw-bold small" id="jobBranch">@Model.BranchName</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Progress Section -->
+    <div class="row g-2 mb-3">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="fw-semibold small">Overall Progress</span>
+                <span class="badge bg-primary" id="jobPercent">@Model.Percent.ToString("F1")%</span>
+            </div>
+            <div class="progress" style="height: 20px;">
+                <div class="progress-bar progress-bar-striped progress-bar-animated"
+                     id="jobProgressBar"
+                     role="progressbar"
+                     style="width: @Model.Percent%; @GetProgressBarColor(Model.Status)"
+                     aria-valuenow="@Model.Percent"
+                     aria-valuemin="0"
+                     aria-valuemax="100">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row g-2 mb-3">
+        <div class="col-md-2 col-4">
+            <div class="card border-0 bg-light">
+                <div class="card-body p-2 text-center">
+                    <i class="mdi mdi-format-list-bulleted text-primary d-block mb-1" style="font-size: 1.2rem;"></i>
+                    <span class="h6 mb-0 d-block" id="jobTotalItems">@Model.TotalItems</span>
+                    <small class="text-muted">Total</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 col-4">
+            <div class="card border-0 bg-light">
+                <div class="card-body p-2 text-center">
+                    <i class="mdi mdi-progress-check text-info d-block mb-1" style="font-size: 1.2rem;"></i>
+                    <span class="h6 mb-0 d-block" id="jobProcessedItems">@Model.ProcessedItems</span>
+                    <small class="text-muted">Processed</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 col-4">
+            <div class="card border-0 bg-light">
+                <div class="card-body p-2 text-center">
+                    <i class="mdi mdi-check-circle text-success d-block mb-1" style="font-size: 1.2rem;"></i>
+                    <span class="h6 mb-0 d-block" id="jobSucceededItems">@Model.SucceededItems</span>
+                    <small class="text-muted">Success</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 col-4">
+            <div class="card border-0 bg-light">
+                <div class="card-body p-2 text-center">
+                    <i class="mdi mdi-alert-circle text-danger d-block mb-1" style="font-size: 1.2rem;"></i>
+                    <span class="h6 mb-0 d-block" id="jobFailedItems">@Model.FailedItems</span>
+                    <small class="text-muted">Failed</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 col-4">
+            <div class="card border-0 bg-light">
+                <div class="card-body p-2 text-center">
+                    <i class="mdi mdi-skip-forward text-warning d-block mb-1" style="font-size: 1.2rem;"></i>
+                    <span class="h6 mb-0 d-block" id="jobSkippedItems">@Model.SkippedItems</span>
+                    <small class="text-muted">Skipped</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 col-4">
+            <div class="card border-0 bg-light">
+                <div class="card-body p-2 text-center">
+                    <i class="mdi mdi-cash text-success d-block mb-1" style="font-size: 1.2rem;"></i>
+                    <span class="h6 mb-0 d-block" id="jobTotalAmount">@Model.TotalAmount.ToString("N2")</span>
+                    <small class="text-muted">Amount</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Timeline & Message -->
+    <div class="row g-2">
+        <div class="col-md-8">
+            <div class="bg-light rounded p-2">
+                <div class="d-flex flex-wrap gap-3">
+                    <div>
+                        <small class="text-muted d-block">Started</small>
+                        <span class="fw-semibold small" id="jobStartedAt">@FormatDateTime(Model.StartedAt)</span>
+                    </div>
+                    <div>
+                        <small class="text-muted d-block">Updated</small>
+                        <span class="fw-semibold small" id="jobUpdatedAt">@FormatDateTime(Model.UpdatedAt)</span>
+                    </div>
+                    <div>
+                        <small class="text-muted d-block">Completed</small>
+                        <span class="fw-semibold small" id="jobCompletedAt">@FormatDateTime(Model.CompletedAt)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="bg-light rounded p-2">
+                <small class="text-muted d-block">Last Message</small>
+                <span class="fw-semibold small text-truncate d-block" id="jobLastMessage" title="@Model.LastMessage">@(Model.LastMessage ?? "-")</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tags -->
+    <div class="row g-2 mt-2">
+        <div class="col-12">
+            <div class="bg-light rounded p-2">
+                <small class="text-muted d-block mb-1">Tags</small>
+                <div id="jobTags" class="d-flex flex-wrap gap-1">
+                    @if (Model.Tags != null && Model.Tags.Any())
+                    {
+                        foreach (var tag in Model.Tags)
+                        {
+                            <span class="badge bg-light text-dark me-1">@tag</span>
+                        }
+                    }
+                    else
+                    {
+                        <span class="text-muted small">No tags</span>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@functions {
+
+    string GetStatusText(int status)
+    {
+        switch (status)
+        {
+            case 0: return "Pending";
+            case 1: return "Running";
+            case 2: return "Completed";
+            case 3: return "Failed";
+            case 4: return "Cancelled";
+            default: return "Unknown";
+        }
+    }
+
+    string GetProgressBarColor(int status)
+    {
+        switch (status)
+        {
+            case 2: return "background-color: #198754;"; // Completed
+            case 3: return "background-color: #dc3545;"; // Failed
+            case 4: return "background-color: #6c757d;"; // Cancelled
+            default: return "background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);";
+        }
+    }
+
+    string FormatDateTime(DateTime? dateTime)
+    {
+        return dateTime.HasValue
+            ? dateTime.Value.ToString("dd MMM HH:mm")
+            : "-";
+    }
+}

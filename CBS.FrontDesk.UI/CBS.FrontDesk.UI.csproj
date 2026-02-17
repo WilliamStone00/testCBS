@@ -10836,6 +10836,9 @@
     <Content Include="Views\SalaryUpload\_LoanRepaymentDetails.cshtml" />
     <Content Include="Views\SalaryUpload\_FileStatistics.cshtml" />
     <None Include="Scripts\Js\Crud\FeeRange\.editorconfig" />
+    <Content Include="Views\CollectorCommission\_JobMonitor.cshtml" />
+    <Content Include="Views\CollectorCommission\_JobMonitorData.cshtml" />
+    <Content Include="Views\CollectorCommission\_JobMonitorNoData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

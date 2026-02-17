@@ -1704,6 +1704,7 @@ namespace CBS.FrontDesk.Helper
         public static string PostPayment = "/api/v1/DailySavingsBackOffice/PayDailyCollectorCommission";
         public static string DailyCollectorcommissiondata = "/api/v1/DailySavingsBackOffice/Dashboard/GetDailyCollectorCommissionPaymentsDataTable";
         public static string DaillyCollectorGetbyId = "not yet Availlable";
+        public const string GetJobSnapshot = "/api/v1/Jobs/{0}/snapshot";
 
         //--------------------------- API KEY MANAGEMENT ----------------------------------------  
         public const string GetAllApiKeys = "/api/apikeys";

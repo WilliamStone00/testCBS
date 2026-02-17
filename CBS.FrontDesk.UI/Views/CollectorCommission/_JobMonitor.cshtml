@@ -1,0 +1,54 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission.JobMonitorViewModel
+
+<!-- Background Job Monitoring Dashboard -->
+<div class="card mb-3 border-0 shadow-sm">
+    <div class="card-header bg-gradient-primary text-white py-2" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+        <div class="d-flex justify-content-between align-items-center">
+            <h6 class="mb-0 fw-bold">
+                <i class="mdi mdi-progress-clock me-2"></i>Background Job Monitor
+            </h6>
+            <div>
+                <span class="badge bg-light text-dark me-2" id="jobLastUpdated">
+                    <i class="mdi mdi-clock-outline me-1"></i>
+                    @(Model?.LastUpdated != null ? Model.LastUpdated.ToString() : "Never")
+                </span>
+                <button class="btn btn-sm btn-light" id="refreshJobStatus" title="Refresh Job Status">
+                    <i class="mdi mdi-refresh" id="refreshIcon"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body p-3" id="jobDashboardContent">
+        @if (Model?.HasActiveJob == true && Model.JobData != null)
+        {
+            @Html.Partial("_JobMonitorData", Model.JobData)
+        }
+        else
+        {
+            @Html.Partial("_JobMonitorNoData")
+        }
+    </div>
+
+    <!-- Auto-refresh Controls -->
+    <div class="card-footer bg-transparent py-1 px-3">
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="autoRefreshToggle"
+                       @(Model?.AutoRefreshEnabled == true ? "checked" : "")>
+                <label class="form-check-label small" for="autoRefreshToggle">Auto-refresh (30s)</label>
+            </div>
+            <div id="countdownTimer" class="small text-muted @(Model?.AutoRefreshEnabled == true ? "" : "d-none")">
+                <i class="mdi mdi-timer-outline me-1"></i>
+                <span id="countdownSeconds">@(Model?.CountdownSeconds ?? 30)</span>s
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Initialize job monitor with server-side data
+    $(document).ready(function() {
+        initializeJobMonitor(@Html.Raw(Json.Encode(Model)));
+    });
+</script>
