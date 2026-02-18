@@ -2261,6 +2261,7 @@
     <Compile Include="Controllers\MemberNoneCashOperation\MemberNoneCashOperationController.cs" />
     <Compile Include="Controllers\MemberNoneCashOperation\MobileMoneyBackOfficeController.cs" />
     <Compile Include="Controllers\LoanApplicationManagement\MemberOperationController.cs" />
+    <Compile Include="Controllers\MembersFSerie\MemberAccountManController.cs" />
     <Compile Include="Controllers\MembersFSerie\MembersFSeriesController.cs" />
     <Compile Include="Controllers\MembersFSerie\MembersFSeriesReportController.cs" />
     <Compile Include="Controllers\MobileMoneyV2\MobileMoneyConfigV2Controller.cs" />
@@ -10836,6 +10837,8 @@
     <Content Include="Views\CollectorCommission\_JobMonitorData.cshtml" />
     <Content Include="Views\CollectorCommission\_JobMonitorNoData.cshtml" />
     <Content Include="Views\GLSystemReconciliation\_ExportDataTable.cshtml" />
+    <Content Include="Views\MembersFSeries\_MemberAccMana.cshtml" />
+    <Content Include="Views\MemberAccountMan\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

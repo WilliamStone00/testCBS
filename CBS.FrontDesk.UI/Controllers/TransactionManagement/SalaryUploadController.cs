@@ -277,6 +277,8 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             return View(data);
         }
 
+
+
         [HttpPost]
         public async Task<JsonResult> LoanRepaymentsExecution(LoanRepaymentsExecutiontDataTableQuery query)
          {

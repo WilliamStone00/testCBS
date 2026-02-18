@@ -20,6 +20,141 @@
         border-top: 1px dashed #e5e7eb;
         margin: 1rem 0;
     }
+
+    /* Modal styles */
+    .modal-custom .modal-header {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .modal-custom .modal-title {
+        color: #0d6efd;
+        font-weight: 600;
+    }
+
+    .fieldset-custom {
+        background-color: #f8f9fa;
+        transition: all 0.3s ease;
+    }
+
+        .fieldset-custom:hover {
+            border-color: #0d6efd !important;
+        }
+
+    #accountSelection {
+        transition: all 0.3s ease;
+    }
+
+    .select2-container--default .select2-selection--single {
+        height: 38px;
+        border: 1px solid #ced4da;
+        border-radius: 0.375rem;
+    }
+
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: 36px;
+            padding-left: 12px;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 36px;
+        }
+
+    /* Modal animations */
+    .modal.fade .modal-dialog {
+        transition: transform 0.3s ease-out;
+        transform: translate(0, -50px);
+    }
+
+    .modal.show .modal-dialog {
+        transform: none;
+    }
+
+    /* Fieldset styles */
+    .fieldset-custom {
+        background: linear-gradient(to bottom, #ffffff, #f8f9fa);
+        transition: all 0.3s ease;
+    }
+
+        .fieldset-custom:focus-within {
+            border-color: #0d6efd !important;
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+        }
+
+    /* Alert styles */
+    #searchResultInfo {
+        transition: all 0.3s ease;
+        border-left: 4px solid;
+    }
+
+        #searchResultInfo.alert-success {
+            border-left-color: #198754;
+        }
+
+        #searchResultInfo.alert-warning {
+            border-left-color: #ffc107;
+        }
+
+        #searchResultInfo.alert-danger {
+            border-left-color: #dc3545;
+        }
+
+        #searchResultInfo.alert-info {
+            border-left-color: #0dcaf0;
+        }
+
+    /* Select2 custom styles */
+    .select2-container--default .select2-selection--single {
+        border: 1px solid #ced4da;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+        .select2-container--default .select2-selection--single:focus,
+        .select2-container--default .select2-selection--single:hover {
+            border-color: #86b7fe;
+            outline: 0;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+
+    /* Confirmation dialog styles */
+    .alertify .dialog {
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    }
+
+        .alertify .dialog .msg {
+            padding: 1.5rem;
+            margin: 0;
+            text-align: left;
+        }
+
+        .alertify .dialog .btn {
+            border-radius: 4px;
+            padding: 0.5rem 1.5rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .alertify .dialog .btn-ok {
+            background-color: #0d6efd;
+            color: white;
+            border: none;
+        }
+
+            .alertify .dialog .btn-ok:hover {
+                background-color: #0b5ed7;
+            }
+
+        .alertify .dialog .btn-cancel {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+        }
+
+            .alertify .dialog .btn-cancel:hover {
+                background-color: #5c636a;
+            }
 </style>
 
 <div class="so-wrap">
@@ -77,7 +212,7 @@
                     </div>
 
                     @using (Html.BeginForm("Create", "StandingOrder", FormMethod.Post,
-                        new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                        new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate2(this);" }))
                     {
                         @Html.HiddenFor(model => model.AddOrUpdateStandingOrderCommand.Id)
 
@@ -183,7 +318,7 @@
                                     <div class="col-md-6">
                                         <div class="form-floating">
                                             @Html.TextBoxFor(m => m.AddOrUpdateStandingOrderCommand.ExternalAccountNumber,
-                                                new { @class = "form-control shadow-input-boxes" })
+                                                new { @class = "form-control shadow-input-boxes", @readonly = true, id = "ExternalAccountNumber" })
                                             <label>@GlobalStandingOrder.ExternalAccountNumber</label>
                                         </div>
                                         @Html.ValidationMessageFor(m => m.AddOrUpdateStandingOrderCommand.ExternalAccountNumber, "", new { @class = "text-danger" })
@@ -191,10 +326,15 @@
                                     <div class="col-md-6">
                                         <div class="form-floating">
                                             @Html.TextBoxFor(m => m.AddOrUpdateStandingOrderCommand.ExternalAccountHolderName,
-                                                new { @class = "form-control shadow-input-boxes" })
+                                                new { @class = "form-control shadow-input-boxes", @readonly = true, id = "ExternalAccountHolderName" })
                                             <label>@GlobalStandingOrder.ExternalAccountHolderName</label>
                                         </div>
                                         @Html.ValidationMessageFor(m => m.AddOrUpdateStandingOrderCommand.ExternalAccountHolderName, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-12">
+                                        <button type="button" class="btn btn-outline-primary btn-sm" id="changeExternalAccountBtn">
+                                            <i class="mdi mdi-account-switch me-1"></i> Change External Account
+                                        </button>
                                     </div>
                                 </div>
 
@@ -210,7 +350,7 @@
                                         @foreach (var purpose in new[] { "Loan_Repayment", "Cashin_to_Savings", "Cashin_to_OShare", "Payment_to_Ex_Account" })
                                         {
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input"
+                                                <input class="form-check-input purpose-radio"
                                                        type="radio"
                                                        id="purpose_@purpose"
                                                        name="AddOrUpdateStandingOrderCommand.Purpose"
@@ -253,13 +393,15 @@
 
                                 <!-- FREQUENCY + PRIORITY -->
                                 <div class="row g-3">
+
                                     <div class="col-md-6">
                                         <div class="section-title text-primary mb-2">
                                             <i class="mdi mdi-timer-outline me-2"></i> @GlobalStandingOrder.Frequency
                                         </div>
+
                                         <div class="bg-light rounded p-2">
                                             <div class="d-flex flex-wrap">
-                                                @foreach (var frequency in new[] { "Monthly", "Weekly" })
+                                                @foreach (var frequency in new[] { "Daily", "Weekly", "Monthly", "Yearly" })
                                                 {
                                                     <div class="form-check form-check-inline">
                                                         <input class="form-check-input"
@@ -268,13 +410,23 @@
                                                                name="AddOrUpdateStandingOrderCommand.Frequency"
                                                                value="@frequency"
                                                                @(Model.AddOrUpdateStandingOrderCommand.Frequency == frequency ? "checked" : "") />
-                                                        <label class="form-check-label" for="frequency_@frequency">@frequency</label>
+
+                                                        <label class="form-check-label" for="frequency_@frequency">
+                                                            @frequency
+                                                        </label>
                                                     </div>
                                                 }
                                             </div>
-                                            @Html.ValidationMessageFor(m => m.AddOrUpdateStandingOrderCommand.Frequency, "", new { @class = "text-danger" })
+
+                                            @Html.ValidationMessageFor(
+                                                m => m.AddOrUpdateStandingOrderCommand.Frequency,
+                                                "",
+                                                new { @class = "text-danger" }
+                                            )
                                         </div>
                                     </div>
+
+
 
                                     <div class="col-md-6">
                                         <div class="section-title text-primary mb-2">
@@ -373,26 +525,217 @@
     </div>
 </div>
 
+<!-- External Account Search Modal -->
+<div class="modal fade modal-custom" id="externalAccountModal" tabindex="-1" aria-labelledby="externalAccountModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="externalAccountModalLabel">
+                    <i class="mdi mdi-bank-transfer me-2"></i> Search External Account
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <fieldset class="fieldset-custom p-4 border border-secondary rounded shadow-sm">
+                    <div class="row align-items-center">
+                        <div class="col-md-12 mx-auto">
+                            <input type="hidden" class="form-control shadow-sm" value="activation" id="currentselectedOperation" />
+                            <div class="input-group mb-3">
+                                <input type="text" id="manualSearchInput" class="form-control shadow-sm"
+                                       placeholder="@GlobalStandingOrder.EnterMemberReferenceNumber (e.g., 0120050001001)"
+                                       aria-label="@GlobalStandingOrder.SearchMemberReference"
+                                       aria-describedby="searchButton">
+                                <button class="btn btn-primary shadow-sm" id="searchButton" type="button" onclick="GetMember()">
+                                    <i class="mdi mdi-account-check"></i> @GlobalShared.Search
+                                </button>
+                            </div>
+
+                            <!-- Search results info -->
+                            <div id="searchResultInfo" class="alert alert-info d-none">
+                                <i class="mdi mdi-information-outline me-2"></i> <span id="searchResultMessage"></span>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- Daily Collector Account (appears after successful customer search) -->
+                <div id="accountSelection" class="mt-3 d-none">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label class="form-label fw-bold">Select Account for Standing Order</label>
+                            <select class="form-control select2" id="DailyCollectorAccount">
+                                <option value="">--- Select Account ---</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <i class="mdi mdi-close me-1"></i> Cancel
+                </button>
+                <button type="button" class="btn btn-primary" id="confirmExternalAccountBtn" disabled>
+                    <i class="mdi mdi-check me-1"></i> Confirm Selection
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Include Bootstrap JS if not already included -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
 <script>
     $(document).ready(function () {
+        console.log('Document ready - initializing components');
+
+        // Ensure Bootstrap modal is properly initialized
+        if (typeof bootstrap !== 'undefined') {
+            console.log('Bootstrap is available');
+            // Initialize modal with Bootstrap 5
+            var modalElement = document.getElementById('externalAccountModal');
+            if (modalElement) {
+                window.externalAccountModal = new bootstrap.Modal(modalElement, {
+                    backdrop: 'static',
+                    keyboard: false
+                });
+                console.log('Modal initialized with Bootstrap');
+            }
+        } else {
+            console.error('Bootstrap not found!');
+        }
+
         initStandingOrderUI();
         initDatePickers();
+        initSelect2();
     });
 
     function initStandingOrderUI() {
+        console.log('Initializing Standing Order UI');
         toggleExternalAccountSection();
+        setupPurposeSync();
 
         $('#externalAccountCheckbox').on('change', function () {
-            toggleExternalAccountSection();
+            const isChecked = $(this).is(':checked');
+            console.log('External account checkbox changed to:', isChecked);
+
+            if (isChecked) {
+                // Open modal to search for external account
+                if (window.externalAccountModal) {
+                    console.log('Opening modal');
+                    window.externalAccountModal.show();
+                } else {
+                    console.error('Modal not initialized, trying fallback');
+                    // Fallback to jQuery modal if Bootstrap fails
+                    $('#externalAccountModal').modal('show');
+                }
+
+                // Auto-check the Payment_to_Ex_Account purpose
+                $('input[name="AddOrUpdateStandingOrderCommand.Purpose"][value="Payment_to_Ex_Account"]').prop('checked', true);
+            } else {
+                // Hide external section and show destination section
+                $('#externalAccountSection').hide();
+                $('#destinationAccountSection').slideDown(120);
+
+                // Uncheck Payment_to_Ex_Account purpose
+                $('input[name="AddOrUpdateStandingOrderCommand.Purpose"][value="Payment_to_Ex_Account"]').prop('checked', false);
+
+                // Clear external account fields
+                $('#ExternalAccountNumber').val('');
+                $('#ExternalAccountHolderName').val('');
+            }
+        });
+
+        // Change external account button
+        $('#changeExternalAccountBtn').on('click', function () {
+            console.log('Change external account button clicked');
+            if (window.externalAccountModal) {
+                window.externalAccountModal.show();
+            } else {
+                $('#externalAccountModal').modal('show');
+            }
+        });
+
+        // Confirm account selection
+        $('#confirmExternalAccountBtn').on('click', function () {
+            console.log('Confirm account selection clicked');
+            const selectedOption = $('#DailyCollectorAccount').find(':selected');
+
+            if (selectedOption.val()) {
+                // Get account details from data attributes
+                const accountNumber = selectedOption.data('account-number');
+                const accountName = selectedOption.data('account-name');
+                const accountType = selectedOption.data('account-type');
+
+                console.log('Selected account:', { accountNumber, accountName, accountType });
+
+                // Set external account fields
+                $('#ExternalAccountNumber').val(accountNumber);
+                $('#ExternalAccountHolderName').val(accountName);
+
+                // Set destination account type radio based on account type
+                $(`input[name="AddOrUpdateStandingOrderCommand.DestinationAccountType"][value="${accountType}"]`).prop('checked', true);
+
+                // Show external section and hide destination section
+                $('#externalAccountSection').show();
+                $('#destinationAccountSection').hide();
+
+                // Close modal
+                if (window.externalAccountModal) {
+                    window.externalAccountModal.hide();
+                } else {
+                    $('#externalAccountModal').modal('hide');
+                }
+
+                // Reset modal for next use
+                resetModal();
+            } else {
+                appalert('Please select an account', 3, 1);
+            }
+        });
+
+        // Handle modal hidden event
+        $('#externalAccountModal').on('hidden.bs.modal', function () {
+            console.log('Modal hidden');
+            // If no account was selected and checkbox is checked, uncheck it
+            if ($('#externalAccountCheckbox').is(':checked') && !$('#ExternalAccountNumber').val()) {
+                $('#externalAccountCheckbox').prop('checked', false).trigger('change');
+            }
+        });
+    }
+
+    function setupPurposeSync() {
+        console.log('Setting up purpose sync');
+        // When purpose changes, update external checkbox if needed
+        $('.purpose-radio').on('change', function () {
+            const purpose = $(this).val();
+            console.log('Purpose changed to:', purpose);
+
+            if (purpose === 'Payment_to_Ex_Account') {
+                if (!$('#externalAccountCheckbox').is(':checked')) {
+                    $('#externalAccountCheckbox').prop('checked', true).trigger('change');
+                }
+            } else {
+                if ($('#externalAccountCheckbox').is(':checked') && purpose !== 'Payment_to_Ex_Account') {
+                    $('#externalAccountCheckbox').prop('checked', false).trigger('change');
+                }
+            }
         });
     }
 
     function toggleExternalAccountSection() {
         const isExternal = $('#externalAccountCheckbox').is(':checked');
+        console.log('Toggling external section, isExternal:', isExternal);
 
         if (isExternal) {
-            $('#externalAccountSection').slideDown(120);
-            $('#destinationAccountSection').hide(); // external payment doesn't need internal destination selection
+            // Only show external section if we have account data
+            if ($('#ExternalAccountNumber').val()) {
+                $('#externalAccountSection').show();
+                $('#destinationAccountSection').hide();
+            } else {
+                $('#externalAccountSection').hide();
+                $('#destinationAccountSection').hide();
+            }
         } else {
             $('#externalAccountSection').hide();
             $('#destinationAccountSection').slideDown(120);
@@ -404,11 +747,309 @@
         if (!els || els.length === 0) return;
 
         els.forEach(function (el) {
-            flatpickr(el, {
-                dateFormat: "Y-m-d",
-                allowInput: true
-                // IMPORTANT: do not use mode:'range' since StartDate and EndDate are separate inputs
-            });
+            if (typeof flatpickr !== 'undefined') {
+                flatpickr(el, {
+                    dateFormat: "Y-m-d",
+                    allowInput: true
+                });
+            }
         });
+    }
+
+    function initSelect2() {
+        if ($.fn.select2) {
+            $('#DailyCollectorAccount').select2({
+                dropdownParent: $('#externalAccountModal'),
+                placeholder: '--- Select Account ---',
+                allowClear: true,
+                width: '100%'
+            });
+        }
+    }
+
+    function resetModal() {
+        console.log('Resetting modal');
+        $('#manualSearchInput').val('');
+        $('#searchResultInfo').addClass('d-none');
+        $('#accountSelection').addClass('d-none');
+
+        // Reset select2
+        if ($.fn.select2) {
+            $('#DailyCollectorAccount').empty().append('<option value="">--- Select Account ---</option>').trigger('change');
+        } else {
+            $('#DailyCollectorAccount').empty().append('<option value="">--- Select Account ---</option>');
+        }
+
+        $('#confirmExternalAccountBtn').prop('disabled', true);
+    }
+
+    // GetMember function to search for customer accounts
+    window.GetMember = function() {
+        const customerId = $('#manualSearchInput').val().trim();
+        console.log('Searching for customer:', customerId);
+
+        if (!customerId) {
+            appalert('Please enter a member reference number', 3, 1);
+            return;
+        }
+
+        // Show loading
+        $('#searchButton').html('<i class="mdi mdi-loading mdi-spin me-1"></i> Searching...').prop('disabled', true);
+        $('#searchResultInfo').addClass('d-none');
+
+        $.ajax({
+            type: 'GET',
+            url: '/StandingOrder/GetCustomerAccounts',
+            data: { customerId: customerId },
+            success: function(response) {
+                console.log('Search response:', response);
+
+                if (response.success) {
+                    // Update account dropdown
+                    const accountSelect = $('#DailyCollectorAccount');
+
+                    // Clear existing options
+                    if ($.fn.select2) {
+                        accountSelect.empty().trigger('change');
+                    } else {
+                        accountSelect.empty();
+                    }
+
+                    accountSelect.append('<option value="">--- Select Account ---</option>');
+
+                    if (response.accounts && response.accounts.length > 0) {
+                        $.each(response.accounts, function(i, account) {
+                            // Determine account type from account text
+                            let accountType = determineAccountType(account.Text);
+
+                            let option = $('<option></option>')
+                                .val(account.Value)
+                                .text(account.Text)
+                                .attr('data-account-number', account.Value)
+                                .attr('data-account-name', account.Text.split(' - ')[1] || account.Text.split(' (')[0])
+                                .attr('data-account-type', accountType);
+
+                            accountSelect.append(option);
+                        });
+
+                        // Refresh select2 if available
+                        if ($.fn.select2) {
+                            accountSelect.trigger('change');
+                        }
+
+                        // Show account selection
+                        $('#accountSelection').removeClass('d-none');
+                        $('#confirmExternalAccountBtn').prop('disabled', false);
+
+                        // Show success message
+                        $('#searchResultMessage').text(`Found ${response.accounts.length} account(s) for customer`);
+                        $('#searchResultInfo').removeClass('d-none alert-info').addClass('alert-success').removeClass('d-none');
+                    } else {
+                        $('#searchResultMessage').text('No accounts found for this customer');
+                        $('#searchResultInfo').removeClass('d-none alert-info').addClass('alert-warning').removeClass('d-none');
+                        $('#confirmExternalAccountBtn').prop('disabled', true);
+                    }
+                } else {
+                    appalert(response.message || 'Error searching for customer', 2, 1);
+                    $('#searchResultMessage').text(response.message || 'Error searching for customer');
+                    $('#searchResultInfo').removeClass('d-none alert-info').addClass('alert-danger').removeClass('d-none');
+                }
+            },
+            error: function(err) {
+                console.error('Search error:', err);
+                appalert('Error searching for customer: ' + (err.responseJSON?.message || err.statusText), 2, 1);
+
+                if (err.status === 401) {
+                    window.location.href = '/Authentication/Login';
+                }
+            },
+            complete: function() {
+                $('#searchButton').html('<i class="mdi mdi-account-check"></i> @GlobalShared.Search').prop('disabled', false);
+            }
+        });
+    };
+
+    // Helper function to determine account type from account text
+    function determineAccountType(accountText) {
+        if (!accountText) return 'None';
+        accountText = accountText.toLowerCase();
+        if (accountText.includes('loan')) return 'Loan';
+        if (accountText.includes('saving')) return 'Savings';
+        if (accountText.includes('ordinary') || accountText.includes('share')) return 'OrdinaryShares';
+        if (accountText.includes('preference')) return 'PreferenceShare';
+        return 'None';
+    }
+
+    function AjaxPostAndUpdate2(form) {
+        console.log("Form Action:", form.action);
+        console.log("Form Method:", form.method);
+
+        var formData = new FormData(form);
+        for (var pair of formData.entries()) {
+            console.log(pair[0] + ', ' + pair[1]);
+        }
+
+        // Get the submit button
+        var $submitBtn = $(form).find('button[type="submit"]');
+
+        // 🔒 Disable button immediately
+        $submitBtn.prop('disabled', true);
+        var originalText = $submitBtn.html();
+        $submitBtn.html('<i class="mdi mdi-loading mdi-spin me-1"></i> Processing...');
+
+        // Parse form data for confirmation message
+        var formDataObj = {};
+        formData.forEach(function (value, key) {
+            formDataObj[key] = value;
+        });
+
+        // Build confirmation message
+        var confirmationMessage = buildConfirmationMessage(formDataObj);
+
+        $.validator.unobtrusive.parse(form);
+        if ($(form).valid()) {
+            alertify.confirm(
+                "Confirm Standing Order",
+                confirmationMessage,
+                function () {
+                    var ajaxConfig = {
+                        type: 'POST',
+                        url: form.action,
+                        data: new FormData(form),
+                        success: function (response) {
+                            console.log("Response:", response);
+
+                            // Re-enable button
+                            $submitBtn.prop('disabled', false);
+                            $submitBtn.html(originalText);
+
+                            if (response.success) {
+                                if (response.status === "Exist") {
+                                    appalert(response.message, 3, 1);
+                                }
+                                else if (response.status === "Failed") {
+                                    appalert(response.message, 2, 1);
+                                }
+                                else {
+                                    appalert(response.message, 1, 1);
+                                }
+
+                                if (response.option === 'Update' && response.reloadDataView === "Yes") {
+                                    if (typeof LoadDataMain === 'function') {
+                                        LoadDataMain(response.controllerName, response.option, response.divLoaderList, response.tableName, response.dataLoaderActionName, "KEY", "List");
+                                    }
+                                }
+                                else if (response.optype === 'Insert' && response.reloadDataView === "Yes") {
+                                    if (typeof EditResetMain === 'function') {
+                                        EditResetMain("KEY", response.option, response.divLoaderCreator, response.controllerName, response.reinitializedActionName, response.groupID);
+                                    }
+                                }
+                                else if (response.reloadDataView === "Yes") {
+                                    if (typeof LoadDataMain === 'function') {
+                                        LoadDataMain(response.controllerName, response.option, response.divLoaderList, response.tableName, response.dataLoaderActionName, "KEY", "List");
+                                    }
+                                }
+
+                                // Reset external account fields if needed
+                                if (response.resetExternal) {
+                                    $('#ExternalAccountNumber').val('');
+                                    $('#ExternalAccountHolderName').val('');
+                                    $('#externalAccountCheckbox').prop('checked', false).trigger('change');
+                                }
+                            } else {
+                                if (response.Status === "Exist") {
+                                    appalert(response.message, 3, 1);
+                                } else {
+                                    appalert(response.message, 2, 1);
+                                }
+                            }
+                        },
+                        error: function (err) {
+                            console.log("Error:", err);
+
+                            // Re-enable button
+                            $submitBtn.prop('disabled', false);
+                            $submitBtn.html(originalText);
+
+                            if (err.status === 401) { // Unauthorized
+                                // Session has expired, redirect to the login page
+                                window.location.href = '/Authentication/Login'; // Adjust the URL as needed
+                            } else {
+                                appalert(err.statusText, 0, 1);
+                            }
+                        }
+                    };
+
+                    if ($(form).attr('enctype') === "multipart/form-data") {
+                        ajaxConfig.contentType = false;
+                        ajaxConfig.processData = false;
+                    }
+
+                    console.log("AJAX Config:", ajaxConfig);
+                    $.ajax(ajaxConfig);
+                },
+                function () {
+                    // Re-enable button on cancel
+                    $submitBtn.prop('disabled', false);
+                    $submitBtn.html(originalText);
+                    appalert('Transaction cancelled', 3, 1);
+                }
+            );
+        } else {
+            // Re-enable button if validation fails
+            $submitBtn.prop('disabled', false);
+            $submitBtn.html(originalText);
+        }
+        return false;
+    }
+
+    // Helper function to build confirmation message
+    function buildConfirmationMessage(formData) {
+        let message = '<div class="text-start">';
+        message += '<h6 class="mb-3">Please confirm the following standing order details:</h6>';
+
+        // Extract values from form data
+        const amount = formData['AddOrUpdateStandingOrderCommand.Amount'] || 'Not specified';
+        const sourceType = formData['AddOrUpdateStandingOrderCommand.SourceAccountType'] || 'Not specified';
+        const isExternal = formData['AddOrUpdateStandingOrderCommand.ExternalAccount'] === 'true';
+        const purpose = formData['AddOrUpdateStandingOrderCommand.Purpose'] || 'Not specified';
+        const frequency = formData['AddOrUpdateStandingOrderCommand.Frequency'] || 'Not specified';
+        const priority = formData['AddOrUpdateStandingOrderCommand.Priority'] || 'Not specified';
+        const startDate = formData['AddOrUpdateStandingOrderCommand.StartDate'] || 'Not specified';
+        const endDate = formData['AddOrUpdateStandingOrderCommand.EndDate'] || 'Not specified';
+        const isActive = formData['AddOrUpdateStandingOrderCommand.IsActive'] === 'true' ? 'Yes' : 'No';
+        const isAutomatic = formData['AddOrUpdateStandingOrderCommand.IsAutomatic'] === 'true' ? 'Yes' : 'No';
+
+        message += '<table class="table table-sm table-borderless">';
+        message += '<tr><td><strong>Amount:</strong></td><td>' + amount + '</td></tr>';
+        message += '<tr><td><strong>Source Account:</strong></td><td>' + sourceType + '</td></tr>';
+
+        if (isExternal) {
+            const externalNumber = formData['AddOrUpdateStandingOrderCommand.ExternalAccountNumber'] || 'Not specified';
+            const externalName = formData['AddOrUpdateStandingOrderCommand.ExternalAccountHolderName'] || 'Not specified';
+            message += '<tr><td><strong>External Account:</strong></td><td>' + externalNumber + ' - ' + externalName + '</td></tr>';
+        } else {
+            const destType = formData['AddOrUpdateStandingOrderCommand.DestinationAccountType'] || 'Not specified';
+            message += '<tr><td><strong>Destination Account:</strong></td><td>' + destType + '</td></tr>';
+        }
+
+        message += '<tr><td><strong>Purpose:</strong></td><td>' + purpose.replace(/_/g, ' ') + '</td></tr>';
+        message += '<tr><td><strong>Frequency:</strong></td><td>' + frequency + '</td></tr>';
+        message += '<tr><td><strong>Priority:</strong></td><td>' + priority + '</td></tr>';
+        message += '<tr><td><strong>Start Date:</strong></td><td>' + startDate + '</td></tr>';
+        message += '<tr><td><strong>End Date:</strong></td><td>' + endDate + '</td></tr>';
+        message += '<tr><td><strong>Active:</strong></td><td>' + isActive + '</td></tr>';
+        message += '<tr><td><strong>Automatic Execution:</strong></td><td>' + isAutomatic + '</td></tr>';
+
+        const personalNote = formData['AddOrUpdateStandingOrderCommand.PersonalNote'];
+        if (personalNote) {
+            message += '<tr><td><strong>Personal Note:</strong></td><td>' + personalNote + '</td></tr>';
+        }
+
+        message += '</table>';
+        message += '<p class="text-muted mt-2 mb-0"><small>Are you sure you want to proceed?</small></p>';
+        message += '</div>';
+
+        return message;
     }
 </script>
