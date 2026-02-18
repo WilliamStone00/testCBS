@@ -61,7 +61,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission
             public JobSnapshotDto JobData { get; set; }
             public DateTime? LastUpdated { get; set; }
             public bool AutoRefreshEnabled { get; set; }
-            public int CountdownSeconds { get; set; } = 30;
+            public int CountdownSeconds { get; set; } = 10;
             public string CurrentJobId { get; set; }
         }
     

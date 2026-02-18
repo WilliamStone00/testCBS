@@ -1,8 +1,15 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission.CollectorComissionResponse
 @{
-    // Cast ViewBag.JobMonitor to the correct type
-    var jobMonitorModel = ViewBag.JobMonitor as CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission.JobMonitorViewModel;
+    var jobMonitorModel = ViewBag.JobMonitor as CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission.JobMonitorViewModel
+        ?? new CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission.JobMonitorViewModel
+        {
+            LastUpdated = DateTime.Now,
+            AutoRefreshEnabled = false,
+            HasActiveJob = false,
+            CountdownSeconds = 10
+        };
 }
+
 
 <div class="row">
     <div class="col-12">
@@ -257,17 +264,7 @@
     </div>
 
     <!-- Background Job Monitoring Dashboard - Using the partial view -->
-    @if (jobMonitorModel != null)
-    {
-        @Html.Partial("_JobMonitor", jobMonitorModel)
-    }
-    else
-    {
-        <!-- Fallback if model is null -->
-        <div class="alert alert-warning">
-            Job monitor data not available.
-        </div>
-    }
+    @Html.Partial("_JobMonitor", jobMonitorModel)
 
     <!-- Commission Details Table -->
     <div id="commissionDetails" class="card d-none">
@@ -667,7 +664,7 @@
 
     let autoRefreshInterval;
     let countdownInterval;
-    let countdownValue = 30;
+    let countdownValue = 10;
     let isAutoRefreshEnabled = $('#autoRefreshToggle').is(':checked');
 
     // Initialize job monitor with server-side data
@@ -726,7 +723,7 @@
     function startAutoRefresh() {
         stopAutoRefresh();
 
-        countdownValue = 30;
+        countdownValue = 10;
         $('#countdownSeconds').text(countdownValue);
         $('#countdownTimer').removeClass('d-none');
         isAutoRefreshEnabled = true;
@@ -736,13 +733,13 @@
             $('#countdownSeconds').text(countdownValue);
 
             if (countdownValue <= 0) {
-                countdownValue = 30;
+                countdownValue = 10;
                 refreshJobMonitor();
             }
         }, 1000);
 
         autoRefreshInterval = setInterval(function() {
-            countdownValue = 30;
+            countdownValue = 10;
         }, 30000);
     }
 
