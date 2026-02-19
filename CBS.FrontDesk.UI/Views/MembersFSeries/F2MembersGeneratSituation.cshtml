@@ -85,15 +85,17 @@
             <i class="fas fa-receipt me-2"></i>
             <span>Member Operational Receipts</span>
         </a>-->
-
-
         <button type="button"
                 onclick="showCreateModal('@Model.CustomerId')"
                 class="btn btn-label-primary btn-info me-2">
             <i class="mdi mdi-plus mdi-18px"></i> Generate Reports
         </button>
 
-
+        <button type="button"
+                onclick="showMemberAccountManagement('@Model.CustomerId')"
+                class="btn btn-primary me-2">
+            <i class="mdi mdi-account-cog-outline mdi-18px me-1"></i> Account Management
+        </button>
     </div>
 </div>
 
@@ -385,11 +387,83 @@
     </script>
 
     <script>
-
         function showCreateModal(id) {
             ShowModal(id, '_ReportView', 'MembersFSeries', 'Report');
         }
+
+        function showMemberAccountManagement(id) {
+            ShowModal(id, '_MemberAccMana', 'MembersFSeries', 'Membermanag');
+        }
+
+        // ============================================================
+        // ACCOUNT MANAGEMENT - BLOCKED AMOUNT TOGGLE
+        // ============================================================
+        function toggleBlockedAmount() {
+            console.log('toggleBlockedAmount() called');
+
+            // Use setTimeout to ensure modal content is loaded
+            setTimeout(function () {
+                var $actionType = $('#ActionType');
+                var $blockSection = $('#partialBlockSection');
+                var $blockedAmount = $('#BlockedAmount');
+
+                if (!$actionType.length) {
+                    console.log('ActionType dropdown not found in DOM yet');
+                    return;
+                }
+
+                var selectedAction = $actionType.val();
+                console.log('Selected action:', selectedAction);
+
+                if (selectedAction === 'BlockAmount') {
+                    console.log('Showing Block Amount section');
+                    $blockSection.slideDown();
+                    $blockedAmount.attr('required', 'required');
+                } else {
+                    console.log('Hiding Block Amount section');
+                    $blockSection.slideUp();
+                    $blockedAmount.removeAttr('required');
+                    $blockedAmount.val('');
+                }
+            }, 100);
+        }
+
+        // Global function to initialize account management modal
+        window.initializeAccountManagement = function () {
+            console.log('Initializing Account Management');
+
+            setTimeout(function () {
+                var $actionType = $('#ActionType');
+
+                if ($actionType.length) {
+                    console.log('Found ActionType dropdown, setting up handlers');
+
+                    // Initial check
+                    toggleBlockedAmount();
+
+                    // Remove any existing handlers and attach new ones
+                    $actionType.off('change').on('change', function () {
+                        console.log('ActionType changed to:', $(this).val());
+                        toggleBlockedAmount();
+                    });
+
+                    // Handle Select2 if present
+                    if ($.fn.select2) {
+                        $actionType.off('select2:select').on('select2:select', function () {
+                            console.log('Select2 selection changed');
+                            toggleBlockedAmount();
+                        });
+                    }
+                } else {
+                    console.log('ActionType dropdown not found, will retry');
+                    setTimeout(window.initializeAccountManagement, 200);
+                }
+            }, 200);
+        };
+
     </script>
+
+   
 
     <script>
 // ============================================================
@@ -399,7 +473,37 @@
 // ============================================================
 
 // Global variables
-var ReportGenerator = {};
+        var ReportGenerator = {};
+
+        function toggleBlockedAmount() {
+            console.log('------------------------------');
+            console.log('toggleBlockedAmount() called');
+
+            var selectedAction = $('#ActionType').val();
+            console.log('Raw selected value:', selectedAction);
+            console.log('Type of value:', typeof selectedAction);
+
+            if (selectedAction === 'BlockAmount') {
+                console.log('✅ Condition met: BlockAmount selected');
+
+                console.log('Showing #partialBlockSection');
+                $('#partialBlockSection').slideDown();
+
+                console.log('Adding required attribute to #BlockedAmount');
+                $('#BlockedAmount').attr('required', 'required');
+            } else {
+                console.log('❌ Condition NOT met (current value:', selectedAction, ')');
+
+                console.log('Hiding #partialBlockSection');
+                $('#partialBlockSection').slideUp();
+
+                console.log('Removing required attribute from #BlockedAmount');
+                $('#BlockedAmount').removeAttr('required');
+
+                console.log('Clearing value of #BlockedAmount');
+                $('#BlockedAmount').val('');
+            }
+        }
 
 // ============================================================
 // GLOBAL FUNCTIONS
@@ -1543,7 +1647,8 @@ function validateForm() {
 // ============================================================
 // DOCUMENT READY INITIALIZATION
 // ============================================================
-$(document).ready(function() {
+    $(document).ready(function () {
+         
     console.log('Document ready - Initializing Report Generator with Enhanced Loan Handler...');
 
     // Remove inline onclick handlers from radio buttons

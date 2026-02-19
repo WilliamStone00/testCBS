@@ -1939,7 +1939,14 @@ namespace CBS.FrontDesk.Helper
         public static string GetVatReportData = "not availlable";
         public static string GetPenaltyReportData = "not availlable";
         public static string GetInterestReportData = "not availlable";
-      
+
+        //------------------------ Member Account Management -----------------------------
+        public static string GetAllMAM = "not availlable";
+        public static string MAMdatatable = "not availlable";
+        public static string GetMAMById = "not availlable";
+        public static string CreateMAM = "not availlable";
+        public static string UpdateMAM = "not availlable";
+        public static string DeactivateMAM = "not availlable";        
 
     }
 }

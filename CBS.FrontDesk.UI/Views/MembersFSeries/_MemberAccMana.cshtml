@@ -1,0 +1,137 @@
+﻿@model CBS.FrontDesk.Data.Entity.MemberAccountManagement.ManageAccountStatusCommand
+@using Resources
+
+<div class="card shadow-lg border-0">
+    <div class="card-body">
+
+        @using (Html.BeginForm(
+            "CreateOrUpdate",
+            " MemberAccountMan",
+            FormMethod.Post,
+            new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+        {
+            <!-- ============================== -->
+            <!-- HEADER -->
+            <!-- ============================== -->
+            <div class="col-12">
+                <div class="card bg-light mb-2 shadow-sm">
+                    <div class="card-body text-center">
+                        <h1 class="card-title text-primary fw-bold">
+                            <i class="mdi mdi-format-list-bulleted-type me-2"></i> Member Account Management
+                        </h1>
+                        <p class="card-text">
+                            Memeber account management request form
+                            <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+                    </div>
+                </div>
+            </div>
+
+
+            <fieldset class="fieldset-custom mb-4">
+
+                <legend class="text-primary fw-bold">
+                    <i class="mdi mdi-cog-outline me-1"></i> Action Selection
+                </legend>
+
+                <div class="row gy-3">
+
+                    <!-- ===================== -->
+                    <!-- Branch Dropdown -->
+                    <!-- ===================== -->
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            @Html.DropDownListFor(
+                                m => m.AccountId,
+                                new SelectList(ViewBag.Account, "Value", "Text"),
+                                "--- Select Account ---",
+                                new { @class = "form-control select2" })
+                            <label>Member Account</label>
+                            @Html.ValidationMessageFor(m => m.AccountId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <!-- ===================== -->
+                    <!-- Action Dropdown -->
+                    <!-- ===================== -->
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            @Html.DropDownListFor(
+                                m => m.ActionType,
+                                new List<SelectListItem>
+                                {
+                                    new SelectListItem { Text = "Activate Account", Value = "Activate" },
+                                    new SelectListItem { Text = "Freeze / Suspend", Value = "Freeze" },
+                                    new SelectListItem { Text = "Unfreeze", Value = "Unfreeze" },
+                                    new SelectListItem { Text = "Block Withdrawal", Value = "BlockWithdrawal" },
+                                    new SelectListItem { Text = "Block Cash In", Value = "BlockCashIn" },
+                                    new SelectListItem { Text = "Block Transfer", Value = "BlockTransfer" },
+                                    new SelectListItem { Text = "Block Amount", Value = "BlockAmount" },
+                                    new SelectListItem { Text = "Unblock", Value = "Unblock" },
+                                    new SelectListItem { Text = "Close Account", Value = "Close" },
+                                    new SelectListItem { Text = "Reopen Account", Value = "Reopen" },
+                                    new SelectListItem { Text = "Mark as Dormant", Value = "MarkDormant" },
+                                    new SelectListItem { Text = "Reactivate Dormant", Value = "ReactivateDormant" }
+                                },
+                                "--- Select Action ---",
+                                new
+                                {
+                                    @class = "form-control select2",
+                                    @id = "ActionType",   // 👈 IMPORTANT
+                                    @required = "required"
+                                })
+                            <label>Select Action</label>
+                            @Html.ValidationMessageFor(m => m.ActionType, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+
+                    <!-- ===================== -->
+                    <!-- Blocked Amount -->
+                    <!-- ===================== -->
+                    <div class="col-md-12" id="partialBlockSection" style="display:none;">
+                        <div class="form-floating">
+                            @Html.TextBoxFor(m => m.BlockedAmount, new
+                            {
+                                @class = "form-control",
+                                type = "number",
+                                placeholder = "Enter blocked amount",
+                                @id = "BlockedAmount"  // 👈 ADD THIS LINE
+                            })
+                            <label>Blocked Amount</label>
+                            @Html.ValidationMessageFor(m => m.BlockedAmount, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <!-- ✅ Remark -->
+                    <div class="col-md-12">
+                        <div class="form-floating">
+                            @Html.TextBoxFor(m => m.Reason, new
+                            {
+                                @class = "form-control",
+                                placeholder = "Enter remark",
+                                maxlength = "250",
+                                @required = "required"
+                            })
+                            <label>Reason</label>
+                            @Html.ValidationMessageFor(m => m.Reason, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                </div>
+
+            </fieldset>
+
+            <!-- ============================== -->
+            <!-- ACTION BUTTONS -->
+            <!-- ============================== -->
+            <div class="text-end mt-4">
+                <button type="submit" class="btn btn-primary me-2">
+                    <i class="mdi mdi-check-circle-outline me-1"></i> Save
+                </button>
+                <button type="reset" class="btn btn-outline-secondary">
+                    @GlobalShared.Reset
+                </button>
+            </div>
+        }
+    </div>
+</div>
+
