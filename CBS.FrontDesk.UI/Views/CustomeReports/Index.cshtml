@@ -124,7 +124,6 @@
         font-size: 0.92rem;
         table-layout: fixed; /* ✅ forces fixed column widths */
     }
-
 </style>
 
 
@@ -334,6 +333,33 @@
                     Accounts are only required for <strong>JE</strong> and <strong>Account Statement</strong> reports.
                 </small>
             </div>
+
+
+            <!-- ROW: Export Type (only for JE & General Ledger) -->
+            <div class="row g-3 mb-3 export_group d-none">
+                <div class="col-md-6">
+                    @Html.Label("ExportType", "Export Format", new { @class = "form-label fw-semibold" })
+                    @Html.DropDownList(
+                        "ExportType",
+                        new List<SelectListItem>
+                        {
+                            new SelectListItem { Text = "Excel", Value = "Excel" },
+                            new SelectListItem { Text = "PDF", Value = "PDF" }
+                        },
+                        "--- Select Export Format ---",
+                        new
+                        {
+                            @class = "form-select select2",
+                            id = "ExportType"
+                        })
+                    <small class="text-muted">
+                        Choose format to export the report immediately.
+                    </small>
+                </div>
+            </div>
+
+
+
         </div>
 
         <!-- ROW 6: Date Range (requires branch) -->
@@ -350,6 +376,9 @@
         </div>
     </div>
 
+
+
+
     <!-- ROW 7: Buttons (requires branch) -->
     <div class="row mt-3 requires-branch d-none">
         <div class="col-md-6">
@@ -365,6 +394,9 @@
                 <i class="mdi mdi-refresh me-1"></i> Reset
             </button>
         </div>
+
+
+
     </div>
 
 </div>
@@ -478,7 +510,7 @@
 
         //    // Excel: download using file from response
         //    $('.btnExcel').off().on('click', function () {
-                
+
         //        if (response && response.downloadFile) {
 
         //            if (controllerName == "TrialBalance4Columns") {
@@ -512,12 +544,12 @@
 
             if (!files.length) {
                 $('#reportTableBody').html(`
-            <tr>
-                <td colspan="4" class="text-center">
-                    No files available
-                </td>
-            </tr>
-        `);
+                <tr>
+                    <td colspan="4" class="text-center">
+                        No files available
+                    </td>
+                </tr>
+            `);
                 $('#clearGeneratedReports').addClass('d-none');
                 return;
             }
@@ -549,30 +581,30 @@
             // ✅ One row per file
             files.forEach(file => {
                 rowsHtml += `
-            <tr>
-                <td class="report-name-column">${file}</td>
-                <td>${reportName}</td>
-                <td>${sourceMode}</td>
-                <td class="actions-cell text-center">
-                    <div class="actions-container">
-                        <a href="javascript:void(0)"
-                           class="report-action-link btnExcel"
-                           data-controller="${controllerName}"
-                           data-file="${file}">
-                            <i class="mdi mdi-file-excel-outline"></i> Excel
-                        </a>
+                <tr>
+                    <td class="report-name-column">${file}</td>
+                    <td>${reportName}</td>
+                    <td>${sourceMode}</td>
+                    <td class="actions-cell text-center">
+                        <div class="actions-container">
+                            <a href="javascript:void(0)"
+                               class="report-action-link btnExcel"
+                               data-controller="${controllerName}"
+                               data-file="${file}">
+                                <i class="mdi mdi-file-excel-outline"></i> Excel
+                            </a>
 
-                        <span class="action-separator"></span>
+                            <span class="action-separator"></span>
 
-                        <a href="javascript:void(0)"
-                           class="report-action-link btnPdf"
-                           data-controller="${controllerName}">
-                            <i class="mdi mdi-file-pdf-box"></i> PDF
-                        </a>
-                    </div>
-                </td>
-            </tr>
-        `;
+                            <a href="javascript:void(0)"
+                               class="report-action-link btnPdf"
+                               data-controller="${controllerName}">
+                                <i class="mdi mdi-file-pdf-box"></i> PDF
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            `;
             });
 
             $('#reportTableBody').html(rowsHtml);
@@ -619,6 +651,8 @@
                 const ok = branchSelected && hasReportType && hasSource && hasStartDate && hasEndDate;
 
                 $btn.prop('disabled', !ok).toggleClass('disabled', !ok);
+
+                return ok;
             }
 
             // Show/hide rows that depend on branch selection
@@ -859,6 +893,80 @@
                 toggleBranchDependentFields();
                 validateFilters();
             });
+
+
+            $(document).on("change", "#ReportType", function () {
+                var selected = $(this).val();
+
+                if (selected === "JE" || selected === "Account Statement") {
+                    $(".export_group").removeClass("d-none");
+                } else {
+                    $(".export_group").addClass("d-none");
+                    $("#ExportType").val("").trigger("change");
+                }
+            });
+
+
+            $(document).on("change", "#ExportType", function () {
+                var exportType = $(this).val();
+                console.log(exportType)// Excel or PDF
+                var reportType = $("#ReportType").val();
+
+                if (!exportType || !reportType) return;
+
+                // Only allow if filters are valid
+                if (!validateFilters()) return;
+
+                const payload = buildReportPayload();
+                let controller = '';
+
+                switch (reportType) {
+                    case "JE":
+                        controller = 'JournalEntries';
+                        break;
+                    case "Account Statement":
+                        controller = 'AccntStatement';
+                        break;
+                    default:
+                        return; // do nothing for other types
+                }
+
+                if (exportType === "Excel") {
+                    try {
+                        // Create a temporary form to submit POST request to controller
+                        const form = $('<form>', {
+                            method: 'GET',
+                            action: `/${controller}/DownloadExcel`
+                        });
+
+                        // Append payload as hidden inputs
+                        for (const key in payload) {
+                            if (payload.hasOwnProperty(key)) {
+                                // For arrays, join them with comma
+                                const value = Array.isArray(payload[key]) ? payload[key].join(',') : payload[key];
+                                form.append($('<input>', { type: 'hidden', name: key, value: value }));
+                            }
+                        }
+
+                        $('body').append(form);
+                        form.submit();
+                        form.remove();
+                    } catch (err) {
+                        appalert('⚠️ Error exporting Excel: ' + err.message, 2, 1);
+                    }
+                }
+
+                if (exportType === "PDF") {
+                    // Call existing Reprint function
+                    Reprint(controller);
+                }
+
+                // Optional: reset ExportType after trigger
+                $(this).val("").trigger("change");
+            });
+
+
+
         });
     </script>
 }

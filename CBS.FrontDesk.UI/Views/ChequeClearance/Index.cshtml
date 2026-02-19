@@ -225,6 +225,7 @@
                 columns: [
                     { data: 'CreatedDate' },
                     { data: 'BranchName' },
+                    { data: 'AccountNumber' },
                     { data: 'CustomerId' },
                     { data: 'Amount' },
                     { data: 'Status' },
@@ -313,7 +314,7 @@
         $('#resetFilterBtn').on('click', function (e) {
             e.preventDefault();
             resetclearanceFilters();
-            initializeClearanceTable();
+           // initializeClearanceTable();
         });
 
     });
