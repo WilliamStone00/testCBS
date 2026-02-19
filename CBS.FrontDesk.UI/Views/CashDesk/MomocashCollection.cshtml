@@ -80,34 +80,29 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 <script>
-    // ------------------------------------------------------------
-    // ✅ Momocash Collection - Member Reference (10 digits) control
-    //    - Digits only
-    //    - Max length = 10
-    //    - Auto-search when length reaches 10
-    //    - Does NOT break manual Search button / Enter behavior
-    // ------------------------------------------------------------
     (function () {
         var $input = $("#manualSearchInput");
         if (!$input.length) return;
 
         var $err = $("#manualSearchInputError");
+
         function showErr(msg) {
             if (!$err.length) return;
             $err.text(msg || "Member reference is required.").removeClass("d-none");
         }
+
         function hideErr() {
             if (!$err.length) return;
             $err.addClass("d-none");
         }
 
-        function digitsOnlyMax10(val) {
-            val = (val || "").toString().replace(/\D/g, "");
+        // Allow only letters and numbers, max 10 characters
+        function alphaNumericMax10(val) {
+            val = (val || "").toString().replace(/[^a-zA-Z0-9]/g, "");
             if (val.length > 10) val = val.substring(0, 10);
             return val;
         }
 
-        // Wrap your GetMember safely (do not change your existing function body)
         window.TSC_TrySearchMember = function () {
             var raw = ($input.val() || "").trim();
 
@@ -117,31 +112,28 @@
                 return false;
             }
 
-            var v = digitsOnlyMax10(raw);
+            var v = alphaNumericMax10(raw);
             $input.val(v);
 
             if (v.length !== 10) {
-                showErr("Member reference must be exactly 10 digits.");
+                showErr("Member reference must be exactly 10 characters (letters and numbers only).");
                 $input.focus();
                 return false;
             }
 
             hideErr();
 
-            // call your existing search
             if (typeof window.GetMember === "function") window.GetMember();
             else if (typeof GetMember === "function") GetMember();
 
             return true;
         };
 
-        // Ensure UX: typing clears error
         $input.off(".tscReq10")
             .on("input.tscReq10", function () {
-                var v = digitsOnlyMax10($input.val());
+                var v = alphaNumericMax10($input.val());
                 if ($input.val() !== v) $input.val(v);
                 if (v.length > 0) hideErr();
-                // Auto-search when reaches 10 digits
                 if (v.length === 10) window.TSC_TrySearchMember();
             })
             .on("keydown.tscReq10", function (e) {
@@ -151,9 +143,7 @@
                 }
             });
 
-        // Button click: prevent empty/invalid searches even if onclick exists
         $("#btnSearchMember").off(".tscReq10").on("click.tscReq10", function (e) {
-            // stop the inline onclick from running if invalid
             if (!window.TSC_TrySearchMember()) {
                 e.preventDefault();
                 e.stopImmediatePropagation();
