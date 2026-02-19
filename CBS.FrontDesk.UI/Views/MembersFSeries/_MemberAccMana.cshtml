@@ -6,7 +6,7 @@
 
         @using (Html.BeginForm(
             "CreateOrUpdate",
-            " MemberAccountMan",
+            "MemberAccountMan",
             FormMethod.Post,
             new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
         {
@@ -26,12 +26,23 @@
                 </div>
             </div>
 
+            <div class="card mb-1">
+                <div class="card-body d-flex justify-content-end align-items-center">
+                    <a href="@Url.Action("List", "MemberAccountMan")"
+                       class="btn btn-label-primary btn-sm me-2"
+                       id="btnViewList"
+                       data-bs-toggle="tooltip"
+                       title="@GlobalShared.ViewList">
+                        <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
+                    </a>                   
+                </div>
+            </div>
 
             <fieldset class="fieldset-custom mb-4">
 
-                <legend class="text-primary fw-bold">
+                <h5 class="text-primary fw-bold">
                     <i class="mdi mdi-cog-outline me-1"></i> Action Selection
-                </legend>
+                </h5>
 
                 <div class="row gy-3">
 
@@ -56,33 +67,46 @@
                     <div class="col-md-6">
                         <div class="form-floating">
                             @Html.DropDownListFor(
-                                m => m.ActionType,
+                                m => m.Action,
                                 new List<SelectListItem>
                                 {
                                     new SelectListItem { Text = "Activate Account", Value = "Activate" },
-                                    new SelectListItem { Text = "Freeze / Suspend", Value = "Freeze" },
-                                    new SelectListItem { Text = "Unfreeze", Value = "Unfreeze" },
-                                    new SelectListItem { Text = "Block Withdrawal", Value = "BlockWithdrawal" },
-                                    new SelectListItem { Text = "Block Cash In", Value = "BlockCashIn" },
-                                    new SelectListItem { Text = "Block Transfer", Value = "BlockTransfer" },
-                                    new SelectListItem { Text = "Block Amount", Value = "BlockAmount" },
-                                    new SelectListItem { Text = "Unblock", Value = "Unblock" },
+                                    new SelectListItem { Text = "Freeze Account", Value = "Freeze" },
+                                    new SelectListItem { Text = "Unfreeze Account", Value = "Unfreeze" },
+
+                                    new SelectListItem { Text = "Block Full Account", Value = "BlockFull" },
+                                    new SelectListItem { Text = "Unblock Full Account", Value = "UnblockFull" },
+
+                                    new SelectListItem { Text = "Block Partial (Amount)", Value = "BlockPartial" },
+                                    new SelectListItem { Text = "Unblock Partial (Amount)", Value = "UnblockPartial" },
+
                                     new SelectListItem { Text = "Close Account", Value = "Close" },
                                     new SelectListItem { Text = "Reopen Account", Value = "Reopen" },
+
                                     new SelectListItem { Text = "Mark as Dormant", Value = "MarkDormant" },
-                                    new SelectListItem { Text = "Reactivate Dormant", Value = "ReactivateDormant" }
+                                    new SelectListItem { Text = "Reactivate Dormant", Value = "ReactivateDormant" },
+
+                                    new SelectListItem { Text = "Block Cash In", Value = "BlockCashIn" },
+                                    new SelectListItem { Text = "Open Cash In", Value = "OpenCashIn" },
+
+                                    new SelectListItem { Text = "Block Withdrawal", Value = "BlockWithdrawal" },
+                                    new SelectListItem { Text = "Open Withdrawal", Value = "OpenWithdrawal" },
+
+                                    new SelectListItem { Text = "Block Transfer", Value = "BlockTransfer" },
+                                    new SelectListItem { Text = "Open Transfer", Value = "OpenTransfer" }
                                 },
                                 "--- Select Action ---",
                                 new
                                 {
                                     @class = "form-control select2",
-                                    @id = "ActionType",   // 👈 IMPORTANT
+                                    @id = "ActionType",
                                     @required = "required"
                                 })
                             <label>Select Action</label>
-                            @Html.ValidationMessageFor(m => m.ActionType, "", new { @class = "text-danger" })
+                            @Html.ValidationMessageFor(m => m.Action, "", new { @class = "text-danger" })
                         </div>
                     </div>
+
 
 
                     <!-- ===================== -->
@@ -90,7 +114,7 @@
                     <!-- ===================== -->
                     <div class="col-md-12" id="partialBlockSection" style="display:none;">
                         <div class="form-floating">
-                            @Html.TextBoxFor(m => m.BlockedAmount, new
+                            @Html.TextBoxFor(m => m.Amount, new
                             {
                                 @class = "form-control",
                                 type = "number",
@@ -98,21 +122,52 @@
                                 @id = "BlockedAmount"  // 👈 ADD THIS LINE
                             })
                             <label>Blocked Amount</label>
-                            @Html.ValidationMessageFor(m => m.BlockedAmount, "", new { @class = "text-danger" })
+                            @Html.ValidationMessageFor(m => m.Amount, "", new { @class = "text-danger" })
                         </div>
                     </div>
+
+                    <div class="row g-3">
+
+                        <!-- Block Reason -->
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                @Html.TextBoxFor(m => m.BlockReason,
+                                    new { @class = "form-control", placeholder = "Enter block reason" })
+                                @Html.LabelFor(m => m.BlockReason)
+                                @Html.ValidationMessageFor(m => m.BlockReason, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <!-- Effective Date -->
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                @Html.TextBoxFor(m => m.EffectiveDate,
+                                    "{0:yyyy-MM-dd}",   // Important for proper date format
+                                    new
+                                         {
+                                        @class = "form-control",
+                                        type = "date"
+                                    })
+                                @Html.LabelFor(m => m.EffectiveDate)
+                                @Html.ValidationMessageFor(m => m.EffectiveDate, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                    </div>
+
+
                     <!-- ✅ Remark -->
                     <div class="col-md-12">
                         <div class="form-floating">
-                            @Html.TextBoxFor(m => m.Reason, new
+                            @Html.TextBoxFor(m => m.RequestReason, new
                             {
                                 @class = "form-control",
-                                placeholder = "Enter remark",
+                                placeholder = "Enter Request Reason",
                                 maxlength = "250",
                                 @required = "required"
                             })
-                            <label>Reason</label>
-                            @Html.ValidationMessageFor(m => m.Reason, "", new { @class = "text-danger" })
+                            <label>Request Reason</label>
+                            @Html.ValidationMessageFor(m => m.RequestReason, "", new { @class = "text-danger" })
                         </div>
                     </div>
 

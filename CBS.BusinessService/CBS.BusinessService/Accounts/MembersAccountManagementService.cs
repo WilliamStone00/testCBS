@@ -110,13 +110,13 @@ namespace CBS.BusinessService.Accounts.MemberReceiptsP
 
                 if (response.IsSuccess)
                 {
-                    GetExecutionMessages(response.ApiResponseData.Data, true, null, MessagesResults.Success,
-                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData.Message);
+                    GetExecutionMessages(null, true, null, MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, null);
                 }
                 else
                 {
-                    GetExecutionMessages(model, false, null, MessagesResults.Failed,
-                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.ApiResponseData?.Message ?? response.Message);
+                    GetExecutionMessages(null, false, null, MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, null);
                 }
             }
             catch (Exception ex)
@@ -139,6 +139,32 @@ namespace CBS.BusinessService.Accounts.MemberReceiptsP
                 {
                     GetExecutionMessages(response.ApiResponseData.Data, true, null, MessagesResults.Success,
                     ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData?.Message);
+                }
+                else
+                {
+                    GetExecutionMessages(model, false,null, MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.ApiResponseData?.Message ?? response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                GetExecutionMessages(model, false, null, MessagesResults.Error,
+                    ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message);
+            }
+            return ExecutionMessage;
+        }
+        public async Task<ExecutionMessages> MakeDecisionAsync(Decission model)
+        {
+            try
+            {
+                
+                string formattedUrl = string.Format(APICallHelper.UpdateMAM);
+                var response = await _transactionApiHelper.PutAsync<ServiceResponse<Decission>>(formattedUrl, model);
+
+                if (response.IsSuccess)
+                {
+                    GetExecutionMessages(response.ApiResponseData.Data, true, null, MessagesResults.Success,
+                    ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, null);
                 }
                 else
                 {

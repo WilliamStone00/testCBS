@@ -1,7 +1,567 @@
-﻿
+﻿@model CBS.FrontDesk.Data.Entity.MemberAccountManagement.ManageAccountmanaQuery
 @{
-    ViewBag.Title = "List";
+    ViewBag.Title = "Account Status Management";
 }
+@using Resources;
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2 shadow-sm">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary fw-bold">
+                    <i class="mdi mdi-account-cog me-2"></i> Member Account Management
+                </h1>
+                <p class="card-text">
+                    Manage account status changes, approvals, and track workflow history
+                </p>
+                <div class="alert alert-info mt-3 py-2">
+                    <i class="mdi mdi-information-outline me-1"></i>
+                    View and manage account status requests. Approve, reject, or monitor account status changes.
+                </div>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
 
-<h2>List</h2>
+<div class="card mb-3 shadow-sm">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-lightbulb-on-outline me-2"></i> Tips & Guidelines</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapseTips" aria-expanded="false">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseTips" class="collapse">
+        <div class="card-body">
+            <ul class="mb-0">
+                <li>
+                    <i class="mdi mdi-home-city text-success me-2"></i>
+                    <strong>Branch Filter:</strong> Filter requests by specific branch to focus on your location
+                </li>
+                <li>
+                    <i class="mdi mdi-tag-text text-info me-2"></i>
+                    <strong>Member Reference:</strong> Search using member ID or account number
+                </li>
+                <li>
+                    <i class="mdi mdi-playlist-check text-warning me-2"></i>
+                    <strong>Status Tracking:</strong> Monitor requests from Pending to Applied status
+                </li>
+                <li>
+                    <i class="mdi mdi-clock-outline text-primary me-2"></i>
+                    <strong>Effective Date:</strong> Changes take effect on the specified date
+                </li>
+                <li>
+                    <i class="mdi mdi-refresh text-info me-2"></i>
+                    <strong>Refresh:</strong> Always refresh data to ensure you're viewing the latest requests
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
 
+<div class="card shadow p-3 mb-4" id="filtersSection">
+    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i>Account Status Filters</h5>
+
+    <form id="accountStatusFilterForm" autocomplete="off">
+        <div class="card p-3 mb-3 bg-light">
+            <div class="row mb-3">
+
+                <div class="col-md-12">
+                    <label>@GlobalUserManagement.Branch</label>
+                    <div class="form-floating shadow-sm">
+                        @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "Id", "name"), "---" + @GlobalUserManagement.SelectBranch + "---", new { @class = "form-control select2", id = "branchId" })
+                        @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
+
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+
+                    <hr />
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Status</label>
+                        <select id="status" name="Status" class="form-control">
+                            <option value="">-- All Statuses --</option>
+                            <option value="PendingApproval">Pending Approval</option>
+                            <option value="Approved">Approved</option>
+                            <option value="Rejected">Rejected</option>
+                            <option value="Applied">Applied</option>
+                            <option value="Failed">Failed</option>
+                            <option value="Cancelled">Cancelled</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Action Type</label>
+                        <select id="action" name="Action" class="form-control">
+                            <option value="">-- All Actions --</option>
+                            <option value="Block">Block</option>
+                            <option value="Unblock">Unblock</option>
+                            <option value="BlockPartial">Block Partial</option>
+                            <option value="Freeze">Freeze</option>
+                            <option value="Close">Close</option>
+                            <option value="Reopen">Reopen</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Member Reference</label>
+                        <input type="text" id="memberReference" name="MemberReference" class="form-control" placeholder="Account/Member ID" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-2">
+                <div class="col-md-12 d-flex">
+                    <button id="applyFilterBtn" type="button" class="btn btn-primary me-2 w-100">
+                        <i class="mdi mdi-magnify"></i> Apply Filter
+                    </button>
+
+                    <button id="resetFilterBtn" type="button" class="btn btn-secondary me-2 w-100">
+                        <i class="mdi mdi-refresh"></i> Reset
+                    </button>
+
+                </div>
+            </div>
+    </form>
+</div>
+
+<!-- DataTable Section -->
+<div id="datalistingview">
+    @Html.Partial("_AccountStatusDataTable")
+</div>
+
+<!-- Action Modal -->
+<div class="modal fade" id="actionModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body p-0">
+                <!-- Partial view will be loaded here dynamically -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Details Modal -->
+<div class="modal fade" id="accountDetailsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center">
+                    <div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Generic Modal for dynamic content -->
+<div class="modal fade" id="genericModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <!-- Content will be loaded dynamically -->
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        var accountStatusTable = null;
+
+        // Utility functions
+        function emptyToNull(v) {
+            return (v === undefined || v === null || v === '') ? null : v;
+        }
+
+        function getStatusBadgeClass(status) {
+            switch (status) {
+                case 'PendingApproval': return 'bg-warning';
+                case 'Approved': return 'bg-info';
+                case 'Rejected': return 'bg-danger';
+                case 'Applied': return 'bg-success';
+                case 'Failed': return 'bg-dark';
+                case 'Cancelled': return 'bg-secondary';
+                default: return 'bg-secondary';
+            }
+        }
+
+        function getActionBadgeClass(action) {
+            switch (action) {
+                case 'Block':
+                case 'BlockPartial':
+                case 'Freeze':
+                case 'Close':
+                    return 'bg-danger';
+                case 'Unblock':
+                case 'Reopen':
+                    return 'bg-success';
+                default: return 'bg-info';
+            }
+        }
+
+        function formatDate(date) {
+            if (!date) return '-';
+            return moment(date).format('DD/MM/YYYY HH:mm:ss');
+        }
+
+        // Collect filter values
+        function collectFilters() {
+            return {
+                BranchId: emptyToNull($('#branchId').val()),
+                Status: emptyToNull($('#status').val()),
+                Action: emptyToNull($('#action').val()),
+                MemberReference: emptyToNull($('#memberReference').val()),
+                DataTableOptions: {}
+            };
+        }
+
+        // Initialize DataTable
+        function initDataTable() {
+            if ($.fn.DataTable.isDataTable('#myDataTable')) {
+                $('#myDataTable').DataTable().destroy();
+            }
+
+            accountStatusTable = $('#myDataTable').DataTable({
+                searching: false,
+                responsive: true,
+                serverSide: true,
+                processing: false,
+                order: [[0, 'desc']],
+                ajax: {
+                    url: '/MemberAccountMan/LoadData',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: function (d) {
+                        var filters = collectFilters();
+                        filters.DataTableOptions = {
+                            draw: d.draw,
+                            start: d.start,
+                            length: d.length,
+                            skip: d.start,
+                            pageSize: d.length,
+                            searchValue: d.search?.value || '',
+                            sortColumnName: d.columns[d.order[0].column].data || 'requestedOn',
+                            sortColumnDirection: d.order[0].dir || 'desc'
+                        };
+                        return JSON.stringify(filters);
+                    },
+                    error: function (xhr, status, error) {
+                        handleAjaxError(xhr, status, error);
+                    }
+                },
+                columns: [
+                    {
+                        data: 'RequestedOn',
+                        render: function (data) { return formatDate(data); }
+                    },
+                    { data: 'MemberReference' },
+                    { data: 'MemberName' },
+                    { data: 'AccountNumber' },
+                    { data: 'AccountType' },
+                    {
+                        data: 'Action',
+                        render: function (data) {
+                            return `<span class="badge ${getActionBadgeClass(data)}">${data || '-'}</span>`;
+                        }
+                    },
+                    {
+                        data: 'Status',
+                        render: function (data) {
+                            return `<span class="badge ${getStatusBadgeClass(data)}">${data || '-'}</span>`;
+                        }
+                    },
+                    { data: 'BranchName' },
+                    { data: 'RequestedByName' },
+                    {
+                        data: 'Id',
+                        orderable: false,
+                        searchable: false,
+                        render: function (data, type, row) {
+                            return renderActionButtons(data, row);
+                        }
+                    }
+                ],
+                language: {
+                    emptyTable: 'No account status requests found',
+                    info: 'Showing _START_ to _END_ of _TOTAL_ requests',
+                    infoEmpty: 'Showing 0 to 0 of 0 requests',
+                    infoFiltered: '(filtered from _MAX_ total requests)',
+                    processing: '<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>'
+                },
+                lengthMenu: [10, 25, 50, 100],
+                pageLength: 25
+            });
+        }
+
+        // Render action buttons
+        function renderActionButtons(data, row) {
+            var recordId = encodeURIComponent(data);
+            var safeId = (data || '').replace(/[^a-zA-Z0-9_-]/g, '') || 'x';
+            var btnId = 'actionDropdown_' + safeId;
+
+            var status = row.Status || '';
+            var canApprove = status === 'PendingApproval';
+            var hasBeenProcessed = status === 'Approved' || status === 'Rejected' || status === 'Applied';
+
+            var detailsBtn = `<button type="button" class="dropdown-item btn-details" data-id="${recordId}">
+                                    <i class="mdi mdi-eye me-1 text-primary"></i> Details
+                                </button>`;
+
+            var approveBtn = canApprove ?
+                `<button type="button" class="dropdown-item btn-approve text-success" data-id="${recordId}">
+                        <i class="mdi mdi-check-circle me-1 text-success"></i> Approve
+                    </button>` : '';
+
+            var rejectBtn = canApprove ?
+                `<button type="button" class="dropdown-item btn-reject text-danger" data-id="${recordId}">
+                        <i class="mdi mdi-close-circle me-1 text-danger"></i> Reject
+                    </button>` : '';
+
+            var disabledMsg = hasBeenProcessed ?
+                '<li><span class="dropdown-item-text text-muted"><i class="mdi mdi-lock me-1"></i> Already Processed</span></li>' : '';
+
+            return `
+                    <div class="dropdown text-center">
+                        <button class="btn btn-sm btn-info dropdown-toggle text-white" type="button"
+                                id="${btnId}" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="mdi mdi-cog-outline"></i> Actions
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="${btnId}">
+                            <li>${detailsBtn}</li>
+                            ${disabledMsg}
+                            ${approveBtn ? '<li><hr class="dropdown-divider"></li>' : ''}
+                            ${approveBtn ? '<li>' + approveBtn + '</li>' : ''}
+                            ${rejectBtn ? '<li>' + rejectBtn + '</li>' : ''}
+                        </ul>
+                    </div>
+                `;
+        }
+
+        // Handle AJAX errors
+        function handleAjaxError(xhr, status, error) {
+            var msg = 'Failed to load data. Please try again.';
+            try {
+                if (xhr.responseJSON && xhr.responseJSON.message) {
+                    msg = xhr.responseJSON.message;
+                }
+            } catch (e) { }
+            appalert(msg, 0, 1);
+        }
+
+        // Load/reload data
+        function loadData() {
+            if (accountStatusTable) {
+                accountStatusTable.ajax.reload(null, false);
+            } else {
+                initDataTable();
+            }
+        }
+
+        // Reset filters
+        function resetFilters() {
+            $('#accountStatusFilterForm')[0].reset();
+
+            if ($.fn.select2 && $('#branchId').hasClass('select2-hidden-accessible')) {
+                $('#branchId').val(null).trigger('change');
+            }
+
+            loadData();
+            appalert('Filters reset', 3, 1);
+        }
+
+        // Show Modal function
+        function ShowModal(key, partialView, controller, path) {
+            var url = '/' + controller + '/InitializeData?KEY=' + encodeURIComponent(key || '') +
+                '&partialView=' + encodeURIComponent(partialView) +
+                '&path=' + encodeURIComponent(path);
+
+            $.get(url).done(function (html) {
+                const modalEl = document.getElementById('genericModal');
+                const modalBody = modalEl.querySelector('.modal-content');
+                modalBody.innerHTML = html;
+                const modal = new bootstrap.Modal(modalEl);
+
+                // Initialize Select2 after HTML injection
+                if ($.fn.select2) {
+                    try {
+                        $(modalEl).find('select.select2').select2({
+                            width: '100%',
+                            dropdownParent: $(modalEl)
+                        });
+                    } catch (err) {
+                        console.warn('select2 init failed', err);
+                    }
+                }
+
+                modal.show();
+
+                // If this is the decision modal, set up the decision value and event handlers
+                if (partialView === '_Decission') {
+                    // Set the decision value if it was passed in the path parameter
+                    if (path === 'Approve' || path === 'Reject') {
+                        $('#decision').val(path);
+                        $('#actionModalTitle').text(path === 'Approve' ? 'Approve Request' : 'Reject Request');
+                    }
+
+                    // Attach event handlers for approve/reject buttons
+                    setupDecisionModalHandlers();
+                }
+            }).fail(function () {
+                appalert('Failed to load content', 0, 1);
+            });
+        }
+
+        // Setup decision modal handlers
+        function setupDecisionModalHandlers() {
+            $('#actionApproveBtn').off('click').on('click', function () {
+                $('#decision').val('Approve');
+                submitDecision();
+            });
+
+            $('#actionRejectBtn').off('click').on('click', function () {
+                $('#decision').val('Reject');
+                submitDecision();
+            });
+        }
+
+        // Submit decision
+        function submitDecision() {
+            var workflowId = $('#workflowId').val();
+            var decision = $('#decision').val();
+            var decisionNote = $('#decisionNote').val().trim();
+
+            // Validate decision value is set
+            if (!decision) {
+                appalert('Decision type not specified', 0, 1);
+                return;
+            }
+
+            if (!decisionNote || decisionNote.length < 10) {
+                appalert('Please provide a detailed reason (minimum 10 characters)', 0, 1);
+                return;
+            }
+
+            // Create the command object that matches your ManageAccountStatusCommand
+            var command = {
+                Id: workflowId,
+                Decision: decision,
+                DecisionNote: decisionNote
+            };
+
+            // Get anti-forgery token
+            var token = $('input[name="__RequestVerificationToken"]').val();
+
+            $.ajax({
+                url: '/MemberAccountMan/MakeDecision',
+                type: 'POST',
+                data: JSON.stringify(command),
+                contentType: 'application/json',
+                headers: {
+                    'RequestVerificationToken': token
+                },
+                beforeSend: function () {
+                    $('#actionApproveBtn, #actionRejectBtn').prop('disabled', true);
+                },
+                success: function (response) {
+                    if (response.success) {
+                        $('#genericModal').modal('hide');
+                        appalert(`Request ${decision.toLowerCase()}ed successfully`, 1, 1);
+                        loadData(); // Reload table
+                    } else {
+                        appalert(response.message || 'Failed to process decision', 0, 1);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', xhr.responseText);
+                    appalert('An error occurred while processing your decision', 0, 1);
+                },
+                complete: function () {
+                    $('#actionApproveBtn, #actionRejectBtn').prop('disabled', false);
+                }
+            });
+        }
+
+        // Load details modal
+        function loadDetails(id) {
+            ShowModal(id, '_AccountStatusDetails', 'MemberAccountMan', 'details');
+        }
+
+        // Open action modal for approve/reject
+        function openActionModal(id, decision) {
+            ShowModal(id, '_Decission', 'MemberAccountMan', decision);
+        }
+
+        // Document ready
+        $(document).ready(function () {
+            // Initialize select2 for main page filters
+            if ($.fn.select2) {
+                try {
+                    $('#branchId').select2({
+                        width: '100%',
+                        placeholder: 'Select Branch',
+                        allowClear: true
+                    });
+                } catch (err) {
+                    console.warn('select2 init failed', err);
+                }
+            }
+
+            // Initialize DataTable
+            initDataTable();
+
+            // Filter button click
+            $('#applyFilterBtn').on('click', function (e) {
+                e.preventDefault();
+                loadData();
+            });
+
+            // Reset button click
+            $('#resetFilterBtn').on('click', function (e) {
+                e.preventDefault();
+                resetFilters();
+            });
+
+            // Enter key press in filter inputs
+            $('#accountStatusFilterForm input').on('keypress', function (e) {
+                if (e.which === 13) {
+                    e.preventDefault();
+                    loadData();
+                }
+            });
+
+            // Event delegation for dynamic buttons
+            $(document)
+                .off('click', '.btn-details')
+                .on('click', '.btn-details', function (e) {
+                    e.preventDefault();
+                    var id = decodeURIComponent($(this).data('id'));
+                    loadDetails(id);
+                })
+                .off('click', '.btn-approve')
+                .on('click', '.btn-approve', function (e) {
+                    e.preventDefault();
+                    var id = decodeURIComponent($(this).data('id'));
+                    openActionModal(id, 'Approve');
+                })
+                .off('click', '.btn-reject')
+                .on('click', '.btn-reject', function (e) {
+                    e.preventDefault();
+                    var id = decodeURIComponent($(this).data('id'));
+                    openActionModal(id, 'Reject');
+                });
+
+            // Clean up modal when hidden
+            $('#genericModal').on('hidden.bs.modal', function () {
+                $(this).find('.modal-content').empty();
+            });
+        });
+    </script>
+}

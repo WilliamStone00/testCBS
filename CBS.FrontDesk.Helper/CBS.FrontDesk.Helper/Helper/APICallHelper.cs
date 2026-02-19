@@ -1942,9 +1942,9 @@ namespace CBS.FrontDesk.Helper
 
         //------------------------ Member Account Management -----------------------------
         public static string GetAllMAM = "not availlable";
-        public static string MAMdatatable = "not availlable";
-        public static string GetMAMById = "not availlable";
-        public static string CreateMAM = "not availlable";
+        public static string MAMdatatable = "/api/v1/AccountManagement/datatable";
+        public static string GetMAMById = "/api/v1/AccountManagement/workflow/{0}";
+        public static string CreateMAM = "/api/v1/AccountManagement/submit";
         public static string UpdateMAM = "not availlable";
         public static string DeactivateMAM = "not availlable";        
 

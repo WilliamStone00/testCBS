@@ -1,5 +1,8 @@
-﻿using CBS.BusinessService.Accounts;
+﻿using CBS.BusinessService.Accounting_V2.Affiliate;
+using CBS.BusinessService.Accounting_V2.AffiliateAccounts;
+using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Accounts.MemberReceiptsP;
+using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Affiliate;
 using CBS.FrontDesk.Data.Entity.MemberAccountManagement;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
@@ -18,12 +21,13 @@ namespace CBS.FrontDesk.UI.Controllers.MembersFSerie
 {
     public class MemberAccountManController : Controller
     {
-
+        private readonly BranchServices _branchServices;
         private readonly AccountManagementService _accountManagementService;
 
-        public MemberAccountManController(AccountManagementService accountManagementService)
+        public MemberAccountManController(AccountManagementService accountManagementService, BranchServices branchServices)
         {
             _accountManagementService = accountManagementService;
+            _branchServices = branchServices;
         }
 
         public ActionResult Index()
@@ -35,33 +39,42 @@ namespace CBS.FrontDesk.UI.Controllers.MembersFSerie
         [HttpGet]
         public async Task<ActionResult> List()
         {
+            await loader();
             return View();
         }
 
+        public async Task<bool> loader()
+        {
+            var branches = await _branchServices.GetBranches();
+            ViewBag.Branches = branches;
+            return true;
+
+        }
 
         [HttpPost]
         public async Task<JsonResult> LoadData(ManageAccountmanaQuery query)
         {
             try
             {
-                var data = await _accountManagementService.GetDataTableAsync(query);
+                var result = await _accountManagementService.GetDataTableAsync(query);
 
-                var Response = JsonConvert.DeserializeObject<List<ManageAccountStatusCommand>>(JsonConvert.SerializeObject(data.data));
+                // 🔥 Deserialize ONLY the array of records
+                var response = JsonConvert.DeserializeObject<List<ManageAccountStatusCommand>>(JsonConvert.SerializeObject(result.data)
+                );
 
                 return Json(new
                 {
-                    draw = data.draw,
-                    recordsTotal = data.recordsTotal,
-                    recordsFiltered = data.recordsFiltered,
-                    data = Response
+                    draw = result.data,
+                    recordsTotal = result.data,
+                    recordsFiltered = result.data,
+                    data = response
                 });
             }
             catch (Exception ex)
             {
-                // return a DataTables-compatible empty result on error
                 return Json(new
                 {
-                    draw = query?.Options?.draw ?? "1",
+                    draw = query?.DataTableOptions?.draw ?? "1",
                     recordsTotal = 0,
                     recordsFiltered = 0,
                     data = new List<object>(),
@@ -69,6 +82,7 @@ namespace CBS.FrontDesk.UI.Controllers.MembersFSerie
                 });
             }
         }
+
 
 
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
@@ -127,6 +141,17 @@ namespace CBS.FrontDesk.UI.Controllers.MembersFSerie
             var result = await _accountManagementService.UpdateAsync(model);
             return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
         }
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<ActionResult> MakeDecision(ManageAccountStatusCommand model)
+        //{
+        //    if (!ModelState.IsValid)
+        //        return Json(new { success = false, message = "Validation failed." });
+
+        //    var result = await _accountManagementService.MakeDecisionAsync(model);
+        //    return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
+        //}
 
         [HttpGet]
         // [ValidateAntiForgeryToken]
