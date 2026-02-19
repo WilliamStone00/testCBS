@@ -248,7 +248,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeCl
             {
                 var data = await _chequeClearanceService.ClearanceDataTableAsync(query);
 
-                var Request = JsonConvert.DeserializeObject<List<Data.Entity.CheckManagementSystem.Clearance.ClearanceRequest.OptionRequest>>(
+                var Request = JsonConvert.DeserializeObject<List<Data.Entity.CheckManagementSystem.Clearance.ClearanceRequest.ClearanceResponce>>(
                     JsonConvert.SerializeObject(data.data));
 
                 return Json(new
