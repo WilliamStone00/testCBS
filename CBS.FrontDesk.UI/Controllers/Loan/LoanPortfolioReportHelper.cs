@@ -65,7 +65,6 @@ namespace CBS.FrontDesk.UI.Controllers
                         };
                     break;
                
-
                 case "loansituations":
                     relativePath = "Loan/LoanSituationAlpha/LoanSituationAlphaRPT.rpt";
                     reportTitle = "LOANS SITUATION REPORT";
