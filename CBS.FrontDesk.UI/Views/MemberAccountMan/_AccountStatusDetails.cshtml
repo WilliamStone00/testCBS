@@ -1,5 +1,19 @@
 ﻿@model CBS.FrontDesk.Data.Entity.MemberAccountManagement.ManageAccountStatusCommand
 
+@functions {
+    string FormatDate(DateTime date)
+    {
+        return date != DateTime.MinValue ? date.ToString("dd/MM/yyyy") : string.Empty;
+    }
+
+    string FormatNullableDate(DateTime? date)
+    {
+        return date.HasValue && date.Value != DateTime.MinValue
+            ? date.Value.ToString("dd/MM/yyyy")
+            : string.Empty;
+    }
+}
+
 <fieldset class="fieldset-custom">
     <!-- Header Card -->
     <div class="card bg-light mb-4 shadow-sm">
@@ -47,7 +61,7 @@
                 <tr><td class="fw-bold" style="width: 20%;">Action:</td><td>@Model.Action</td></tr>
                 <tr><td class="fw-bold">Status:</td><td>@Model.Status</td></tr>
                 <tr><td class="fw-bold">Amount:</td><td>@Model.Amount.ToString("N2")</td></tr>
-                <tr><td class="fw-bold">Effective Date:</td><td>@(Model.EffectiveDate?.ToString("dd/MM/yyyy HH:mm:ss"))</td></tr>
+                <tr><td class="fw-bold">Effective Date:</td><td>@FormatNullableDate(Model.EffectiveDate)</td></tr>
                 <tr><td class="fw-bold">Request Reason:</td><td>@Model.RequestReason</td></tr>
                 @if (!string.IsNullOrEmpty(Model.DecisionNote))
                 {
@@ -70,7 +84,7 @@
                     <td class="fw-bold" style="width: 20%;">Requested By:</td>
                     <td>@Model.RequestedByName</td>
                     <td class="fw-bold" style="width: 20%;">Requested On:</td>
-                    <td>@Model.RequestedOn.ToString()</td>
+                    <td>@FormatNullableDate(Model.RequestedOn)</td>
                 </tr>
                 @if (!string.IsNullOrEmpty(Model.DecidedByName))
                 {
@@ -78,14 +92,14 @@
                         <td class="fw-bold">Decided By:</td>
                         <td>@Model.DecidedByName</td>
                         <td class="fw-bold">Decided On:</td>
-                        <td>@Model.DecidedOn?.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                        <td>@FormatNullableDate(Model.DecidedOn)</td>
                     </tr>
                 }
                 @if (Model.AppliedOn > DateTime.MinValue)
                 {
                     <tr>
                         <td class="fw-bold">Applied On:</td>
-                        <td colspan="3">@Model.AppliedOn?.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                        <td colspan="3">@FormatNullableDate(Model.AppliedOn)</td>
                     </tr>
                 }
                 @if (!string.IsNullOrEmpty(Model.ApplyError))
@@ -95,7 +109,7 @@
                         <td colspan="3" class="text-danger">@Model.ApplyError</td>
                     </tr>
                 }
-                
+
             </table>
         </div>
     </div>
