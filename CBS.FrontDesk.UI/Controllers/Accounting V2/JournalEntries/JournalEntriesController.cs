@@ -14,6 +14,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.JournalEntries
 {
@@ -353,7 +354,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.JournalEntries
                 InterbranchStatus = e.InterbranchStatus,
                 CounterpartyBranchId = e.CounterpartyBranchId,
                 TimeOfOperation = e.TimeOfOperation,
-                time = TimeSpan.Zero, // Set default; adjust if you have actual time info
+                 time = TimeSpan.TryParse(e.TimeOfOperation, out var ts)
+                                    ? TimeSpan.Parse(ts.ToString(@"hh\:mm\:ss"))
+                                    : TimeSpan.Zero, // Set default; adjust if you have actual time info
                 Entime = TimeSpan.Zero,
                 OpeningBalance = e.OpeningBalance,
                 EndingBalance = e.EndingBalance,

@@ -163,11 +163,11 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
         // SHEET: BRANCH SUMMARY
         // -----------------------------------------------------------------------
         private void CreateBranchSummarySheet(
-            ExcelPackage package,
-            List<AccountStatementFlatItems> data,
-            BankHeaderInformation headerInfo,
-            string exportedBy,
-            AccountingV2ReportsFilter filter)
+     ExcelPackage package,
+     List<AccountStatementFlatItems> data,
+     BankHeaderInformation headerInfo,
+     string exportedBy,
+     AccountingV2ReportsFilter filter)
         {
             var worksheet = package.Workbook.Worksheets.Add("Branch Summary");
             ApplyDefaultStyle(worksheet);
@@ -184,9 +184,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
 
             var branchHeaders = new[]
             {
-                "Branch ID", "Branch Code", "Branch Name",
-                "# Transactions", "Total Debit (DR)", "Total Credit (CR)", "Net Movement"
-            };
+        "Branch ID", "Branch Code", "Branch Name",
+        "# Transactions", "Total Debit (DR)", "Total Credit (CR)", "Net Movement"
+    };
 
             for (int i = 0; i < branchHeaders.Length; i++)
             {
@@ -195,23 +195,27 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
             }
             currentRow++;
 
+            // Use headerInfo for branch details instead of data values
+            string branchId = headerInfo.BranchId ?? "Unknown";
+            string branchCode = headerInfo.BranchCode ?? "";
+            string branchName = headerInfo.BranchName ?? "Unknown Branch";
+
             var branchSummary = data
                 .GroupBy(x => new
                 {
-                    BranchId = x.BranchId ?? "Unknown",
-                    BranchCode = x.BranchCode ?? "",
-                    BranchName = string.IsNullOrWhiteSpace(x.BranchName) ? "Unknown Branch" : x.BranchName
+                    BranchId = branchId,
+                    BranchCode = branchCode,
+                    BranchName = branchName
                 })
                 .Select(g => new
                 {
-                    g.Key.BranchId,
-                    g.Key.BranchCode,
-                    g.Key.BranchName,
+                    BranchId = branchId,
+                    BranchCode = branchCode,
+                    BranchName = branchName,
                     TransactionCount = g.Count(),
                     TotalDebit = g.Sum(x => x.DebitAmount),
                     TotalCredit = g.Sum(x => x.CreditAmount)
                 })
-                .OrderByDescending(x => x.TotalCredit + x.TotalDebit)
                 .ToList();
 
             foreach (var branch in branchSummary)
@@ -398,7 +402,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
             int headerColumns = 10;
             string headerEndColumn = GetColumnLetter(headerColumns);
             int currentRow = CreateHeaderSection(worksheet, headerInfo, exportedBy, filter,
-                $"BRANCH ACCOUNT STATEMENT - {safeBranchName}", headerEndColumn);
+                $"GENERAL ACCOUNTING JOURNAL - {safeBranchName}", headerEndColumn);
 
             // ----- DETAILED ENTRIES HEADER -----
             worksheet.Cells[$"A{currentRow}:{headerEndColumn}{currentRow}"].Merge = true;
@@ -410,15 +414,15 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
             var branchHeaders = new[]
             {
                 "SN",
-                "Accounting Date",
-                "Time",
-                "Account Number",
-                "Account Name",
-                "Member Reference",
+                "DATE",
+                "TIME",
+                "ACCOUNT No",
+                "ACCOUNT NAME",
+                "AUX.REF",
                 "Reference",
-                "Description",
-                "Debit (DR)",
-                "Credit (CR)"
+                "NARATION",
+                "DEBIT (DR)",
+                "CREDIT (CR)"
             };
 
             int headerColumnsCount = branchHeaders.Length;
@@ -568,16 +572,15 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
             worksheet.Cells["A3"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
             worksheet.Row(3).Height = 18;
 
-            // Row 4 now contains both Export Date and Date Range (if available)
+            // Row 4 - Export Date and Date Range
             worksheet.Cells[$"A4:{headerEndColumn}4"].Merge = true;
-
             string exportDateText = $"Export Date: {DateTime.Now:dd-MM-yyyy HH:mm:ss}";
 
             if (filter != null &&
                 filter.DateFrom != default(DateTime) &&
                 filter.DateTo != default(DateTime))
             {
-                worksheet.Cells["A4"].Value = $"{exportDateText} | Date Range: {filter.DateFrom:dd/MM/yyyy} to {filter.DateTo:dd/MM/yyyy}";
+                worksheet.Cells["A4"].Value = $"{exportDateText} | PERIOD : {filter.DateFrom:dd/MM/yyyy}  To   {filter.DateTo:dd/MM/yyyy}";
             }
             else
             {
@@ -589,18 +592,35 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
             worksheet.Cells["A4"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
             worksheet.Row(4).Height = 18;
 
+            // Row 5 - Address and Phone
             worksheet.Cells[$"A5:{headerEndColumn}5"].Merge = true;
-            worksheet.Cells["A5"].Value = reportTitle;
+
+            string address = !string.IsNullOrEmpty(header.BranchAddress) ? header.BranchAddress : "N/A";
+            string phone = !string.IsNullOrEmpty(header.BranchTelephone) ? header.BranchTelephone : "N/A";
+
+            worksheet.Cells["A5"].Value = $"Address: {address} | Tel: {phone}";
             worksheet.Cells["A5"].Style.Font.Bold = true;
-            worksheet.Cells["A5"].Style.Font.Size = 14;
+            worksheet.Cells["A5"].Style.Font.Size = 11;
             worksheet.Cells["A5"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
             worksheet.Cells["A5"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-            worksheet.Row(5).Height = 25;
+            worksheet.Row(5).Height = 18;
             worksheet.Cells["A5"].Style.Font.Color.SetColor(Color.Black);
             worksheet.Cells["A5"].Style.Fill.PatternType = ExcelFillStyle.Solid;
-            worksheet.Cells["A5"].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(255, 215, 0));
+            worksheet.Cells["A5"].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(240, 240, 240)); // Light gray background
 
-            return 6; // Header ends at row 5, so next row is 6
+            // Row 6 - Report Title
+            worksheet.Cells[$"A6:{headerEndColumn}6"].Merge = true;
+            worksheet.Cells["A6"].Value = reportTitle;
+            worksheet.Cells["A6"].Style.Font.Bold = true;
+            worksheet.Cells["A6"].Style.Font.Size = 14;
+            worksheet.Cells["A6"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            worksheet.Cells["A6"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+            worksheet.Row(6).Height = 25;
+            worksheet.Cells["A6"].Style.Font.Color.SetColor(Color.Black);
+            worksheet.Cells["A6"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells["A6"].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(255, 215, 0)); // Gold color
+
+            return 7; // Header ends at row 6, so next row is 7
         }
 
         private void SetSectionHeaderStyle(ExcelRange cell, Color backgroundColor)
