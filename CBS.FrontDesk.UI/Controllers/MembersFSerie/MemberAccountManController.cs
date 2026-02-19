@@ -142,16 +142,37 @@ namespace CBS.FrontDesk.UI.Controllers.MembersFSerie
             return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
         }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<ActionResult> MakeDecision(ManageAccountStatusCommand model)
-        //{
-        //    if (!ModelState.IsValid)
-        //        return Json(new { success = false, message = "Validation failed." });
+        [HttpPost]
+        public async Task<ActionResult> MakeDecision(Decission model)
+        {
+            if (!ModelState.IsValid)
+                return Json(new { success = false, message = "Validation failed." });
 
-        //    var result = await _accountManagementService.MakeDecisionAsync(model);
-        //    return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
-        //}
+            // Convert string to enum
+            if (!Enum.TryParse<AccountWorkflowStatus>(
+                    model.Decision,
+                    true,
+                    out var workflowStatus))
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = $"Invalid decision value: {model.Decision}"
+                });
+            }
+
+            // Replace string value with numeric string (if backend expects int)
+            model.Decision = ((int)workflowStatus).ToString();
+
+            // Send whole object
+            var result = await _accountManagementService.MakeDecisionAsync(model);
+
+            return Json(new
+            {
+                success = result.Result,
+                message = Messaging.MessageResult(result)
+            });
+        }
 
         [HttpGet]
         // [ValidateAntiForgeryToken]

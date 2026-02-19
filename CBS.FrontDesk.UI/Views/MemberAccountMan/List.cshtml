@@ -59,6 +59,18 @@
     </div>
 </div>
 
+
+
+<div class="card mb-1">
+    <div class="card-body d-flex justify-content-end align-items-center">
+        <button type="button"
+                onclick="showMemberAccountManagement()"
+                class="btn btn-light me-2">
+            <i class="mdi mdi-account-cog-outline mdi-18px me-1"></i> Member Account Management
+        </button>
+    </div>
+</div>
+
 <div class="card shadow p-3 mb-4" id="filtersSection">
     <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i>Account Status Filters</h5>
 
@@ -123,6 +135,7 @@
 
                 </div>
             </div>
+            </div>
     </form>
 </div>
 
@@ -175,6 +188,11 @@
     @Scripts.Render("~/bundles/jqueryval")
     <script>
         var accountStatusTable = null;
+        var isSubmitting = false; // Global flag to prevent double submission
+
+        function showMemberAccountManagement() {
+            ShowModal(id, '_MemberAccMana', 'MembersFSeries', 'Membermanag');
+        }
 
         // Utility functions
         function emptyToNull(v) {
@@ -193,17 +211,59 @@
             }
         }
 
+        function getActionName(actionValue) {
+            switch (actionValue) {
+                case 0: return 'Activate';
+                case 1: return 'Freeze';
+                case 2: return 'Unfreeze';
+                case 3: return 'BlockFull';
+                case 4: return 'UnblockFull';
+                case 5: return 'BlockPartial';
+                case 6: return 'UnblockPartial';
+                case 7: return 'Close';
+                case 8: return 'Reopen';
+                case 9: return 'MarkDormant';
+                case 10: return 'ReactivateDormant';
+                case 11: return 'BlockCashIn';
+                case 12: return 'OpenCashIn';
+                case 13: return 'BlockWithdrawal';
+                case 14: return 'OpenWithdrawal';
+                case 15: return 'BlockTransfer';
+                case 16: return 'OpenTransfer';
+                default: return '-';
+            }
+        }
+
         function getActionBadgeClass(action) {
             switch (action) {
-                case 'Block':
-                case 'BlockPartial':
+                // 🔴 Negative / Restrictive Actions
                 case 'Freeze':
                 case 'Close':
+                case 'BlockFull':
+                case 'BlockPartial':
+                case 'BlockCashIn':
+                case 'BlockWithdrawal':
+                case 'BlockTransfer':
                     return 'bg-danger';
-                case 'Unblock':
+
+                // 🟢 Positive / Opening Actions
+                case 'Activate':
+                case 'Unfreeze':
                 case 'Reopen':
+                case 'UnblockFull':
+                case 'UnblockPartial':
+                case 'OpenCashIn':
+                case 'OpenWithdrawal':
+                case 'OpenTransfer':
+                case 'ReactivateDormant':
                     return 'bg-success';
-                default: return 'bg-info';
+
+                // 🟡 Neutral
+                case 'MarkDormant':
+                    return 'bg-warning';
+
+                default:
+                    return 'bg-info';
             }
         }
 
@@ -230,7 +290,7 @@
             }
 
             accountStatusTable = $('#myDataTable').DataTable({
-                searching: false,
+                searching: true,
                 responsive: true,
                 serverSide: true,
                 processing: false,
@@ -269,7 +329,10 @@
                     {
                         data: 'Action',
                         render: function (data) {
-                            return `<span class="badge ${getActionBadgeClass(data)}">${data || '-'}</span>`;
+                            const actionName = getActionName(data);
+                            return `<span class="badge ${getActionBadgeClass(actionName)}">
+                                    ${actionName}
+                                </span>`;
                         }
                     },
                     {
@@ -307,42 +370,36 @@
             var safeId = (data || '').replace(/[^a-zA-Z0-9_-]/g, '') || 'x';
             var btnId = 'actionDropdown_' + safeId;
 
-            var status = row.Status || '';
+            var status = row?.Status || '';
             var canApprove = status === 'PendingApproval';
-            var hasBeenProcessed = status === 'Approved' || status === 'Rejected' || status === 'Applied';
+            var hasBeenProcessed = status === 'Approved' || status === 'Rejected' || status === 'Applied' || status === 'Failed' || status === 'Cancelled';
 
             var detailsBtn = `<button type="button" class="dropdown-item btn-details" data-id="${recordId}">
-                                    <i class="mdi mdi-eye me-1 text-primary"></i> Details
-                                </button>`;
+                                                        <i class="mdi mdi-eye me-1 text-primary"></i> Details
+                                                    </button>`;
 
             var approveBtn = canApprove ?
                 `<button type="button" class="dropdown-item btn-approve text-success" data-id="${recordId}">
-                        <i class="mdi mdi-check-circle me-1 text-success"></i> Approve
-                    </button>` : '';
-
-            var rejectBtn = canApprove ?
-                `<button type="button" class="dropdown-item btn-reject text-danger" data-id="${recordId}">
-                        <i class="mdi mdi-close-circle me-1 text-danger"></i> Reject
-                    </button>` : '';
+                                            <i class="mdi mdi-check-circle me-1 text-success"></i> Make Decision
+                                            </button>` : '';
 
             var disabledMsg = hasBeenProcessed ?
                 '<li><span class="dropdown-item-text text-muted"><i class="mdi mdi-lock me-1"></i> Already Processed</span></li>' : '';
 
             return `
-                    <div class="dropdown text-center">
-                        <button class="btn btn-sm btn-info dropdown-toggle text-white" type="button"
-                                id="${btnId}" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="mdi mdi-cog-outline"></i> Actions
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="${btnId}">
-                            <li>${detailsBtn}</li>
-                            ${disabledMsg}
-                            ${approveBtn ? '<li><hr class="dropdown-divider"></li>' : ''}
-                            ${approveBtn ? '<li>' + approveBtn + '</li>' : ''}
-                            ${rejectBtn ? '<li>' + rejectBtn + '</li>' : ''}
-                        </ul>
-                    </div>
-                `;
+                                <div class="dropdown text-center">
+                                    <button class="btn btn-sm btn-info dropdown-toggle text-white" type="button"
+                                            id="${btnId}" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="mdi mdi-cog-outline"></i> Actions
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="${btnId}">
+                                        <li>${detailsBtn}</li>
+                                        ${disabledMsg}
+                                        ${approveBtn ? '<li><hr class="dropdown-divider"></li>' : ''}
+                                        ${approveBtn ? '<li>' + approveBtn + '</li>' : ''}
+                                    </ul>
+                                </div>
+                            `;
         }
 
         // Handle AJAX errors
@@ -377,70 +434,57 @@
             appalert('Filters reset', 3, 1);
         }
 
-        // Show Modal function
-        function ShowModal(key, partialView, controller, path) {
-            var url = '/' + controller + '/InitializeData?KEY=' + encodeURIComponent(key || '') +
-                '&partialView=' + encodeURIComponent(partialView) +
-                '&path=' + encodeURIComponent(path);
-
-            $.get(url).done(function (html) {
-                const modalEl = document.getElementById('genericModal');
-                const modalBody = modalEl.querySelector('.modal-content');
-                modalBody.innerHTML = html;
-                const modal = new bootstrap.Modal(modalEl);
-
-                // Initialize Select2 after HTML injection
-                if ($.fn.select2) {
-                    try {
-                        $(modalEl).find('select.select2').select2({
-                            width: '100%',
-                            dropdownParent: $(modalEl)
-                        });
-                    } catch (err) {
-                        console.warn('select2 init failed', err);
-                    }
-                }
-
-                modal.show();
-
-                // If this is the decision modal, set up the decision value and event handlers
-                if (partialView === '_Decission') {
-                    // Set the decision value if it was passed in the path parameter
-                    if (path === 'Approve' || path === 'Reject') {
-                        $('#decision').val(path);
-                        $('#actionModalTitle').text(path === 'Approve' ? 'Approve Request' : 'Reject Request');
-                    }
-
-                    // Attach event handlers for approve/reject buttons
-                    setupDecisionModalHandlers();
-                }
-            }).fail(function () {
-                appalert('Failed to load content', 0, 1);
-            });
-        }
-
         // Setup decision modal handlers
         function setupDecisionModalHandlers() {
-            $('#actionApproveBtn').off('click').on('click', function () {
-                $('#decision').val('Approve');
-                submitDecision();
-            });
+            console.log('Setting up decision modal handlers');
 
-            $('#actionRejectBtn').off('click').on('click', function () {
-                $('#decision').val('Reject');
-                submitDecision();
+            // Reset submission flag when modal opens
+            isSubmitting = false;
+
+            // Initialize select2 for the dropdown
+            if ($.fn.select2) {
+                try {
+                    $('#decisionStatus').select2({
+                        width: '100%',
+                        placeholder: '-- Select New Status --',
+                        allowClear: true,
+                        dropdownParent: $('#genericModal')
+                    });
+                } catch (err) {
+                    console.warn('select2 init failed', err);
+                }
+            }
+
+            // Character counter for decision note
+            $('#decisionNote').off('input').on('input', function () {
+                var length = $(this).val().length;
+                $('#noteCharCount').text(length);
+
+                if (length > 500) {
+                    $(this).val($(this).val().substring(0, 500));
+                    $('#noteCharCount').text(500);
+                }
             });
         }
 
-        // Submit decision
+        // Submit decision with dropdown value - WITH DOUBLE SUBMISSION PREVENTION
         function submitDecision() {
+            console.log('submitDecision called, isSubmitting:', isSubmitting);
+
+            // CRITICAL: Check if already submitting
+            if (isSubmitting) {
+                console.log('Submission already in progress - preventing double click');
+                appalert('Please wait, your request is being processed...', 2, 1);
+                return false;
+            }
+
             var workflowId = $('#workflowId').val();
-            var decision = $('#decision').val();
+            var decisionStatus = $('#decisionStatus').val();
             var decisionNote = $('#decisionNote').val().trim();
 
-            // Validate decision value is set
-            if (!decision) {
-                appalert('Decision type not specified', 0, 1);
+            // Validate dropdown selection
+            if (!decisionStatus) {
+                appalert('Please select a new status', 0, 1);
                 return;
             }
 
@@ -449,15 +493,32 @@
                 return;
             }
 
+            // Set submitting flag to true
+            isSubmitting = true;
+
+            // Get button references
+            var $submitBtn = $('#actionSubmitBtn');
+            var $cancelBtn = $('[data-bs-dismiss="modal"]');
+
+            // Store original button text
+            var originalBtnText = $submitBtn.html();
+
+            // Disable buttons
+            $submitBtn.prop('disabled', true);
+            $submitBtn.html('<i class="mdi mdi-loading mdi-spin me-1"></i> Submitting...');
+            $cancelBtn.prop('disabled', true);
+
             // Create the command object that matches your ManageAccountStatusCommand
             var command = {
-                Id: workflowId,
-                Decision: decision,
+                WorkflowId: workflowId,
+                Decision: decisionStatus,
                 DecisionNote: decisionNote
             };
 
             // Get anti-forgery token
             var token = $('input[name="__RequestVerificationToken"]').val();
+
+            console.log('Submitting decision:', command);
 
             $.ajax({
                 url: '/MemberAccountMan/MakeDecision',
@@ -467,26 +528,50 @@
                 headers: {
                     'RequestVerificationToken': token
                 },
-                beforeSend: function () {
-                    $('#actionApproveBtn, #actionRejectBtn').prop('disabled', true);
-                },
                 success: function (response) {
+                    console.log('Success response:', response);
                     if (response.success) {
                         $('#genericModal').modal('hide');
-                        appalert(`Request ${decision.toLowerCase()}ed successfully`, 1, 1);
-                        loadData(); // Reload table
+                        appalert(`Status updated to ${decisionStatus} successfully`, 1, 1);
+                        loadData();
                     } else {
-                        appalert(response.message || 'Failed to process decision', 0, 1);
+                        appalert(response.message || 'Failed to update status', 0, 1);
+                        resetButtonState();
                     }
                 },
                 error: function (xhr, status, error) {
                     console.error('Error:', xhr.responseText);
-                    appalert('An error occurred while processing your decision', 0, 1);
+
+                    var errorMessage = 'An error occurred while updating status';
+                    try {
+                        var response = JSON.parse(xhr.responseText);
+                        if (response.message) {
+                            errorMessage = response.message;
+                        }
+                    } catch (e) {
+                        // Use default message
+                    }
+
+                    appalert(errorMessage, 0, 1);
+                    resetButtonState();
                 },
                 complete: function () {
-                    $('#actionApproveBtn, #actionRejectBtn').prop('disabled', false);
+                    console.log('AJAX complete');
                 }
             });
+
+            // Helper function to reset button state
+            function resetButtonState() {
+                $submitBtn.prop('disabled', false);
+                $submitBtn.html(originalBtnText);
+                $cancelBtn.prop('disabled', false);
+                isSubmitting = false;
+            }
+        }
+
+        // Open action modal for status update
+        function openActionModal(id) {
+            ShowModal(id, '_Decission', 'MemberAccountMan', 'update');
         }
 
         // Load details modal
@@ -494,10 +579,24 @@
             ShowModal(id, '_AccountStatusDetails', 'MemberAccountMan', 'details');
         }
 
-        // Open action modal for approve/reject
-        function openActionModal(id, decision) {
-            ShowModal(id, '_Decission', 'MemberAccountMan', decision);
-        }
+        // Override ShowModal to setup handlers after modal loads
+        var originalShowModal = window.ShowModal;
+        window.ShowModal = function (id, partialView, controller, method) {
+            console.log('ShowModal called:', controller, method);
+
+            // Call the original function
+            if (originalShowModal) {
+                originalShowModal(id, partialView, controller, method);
+            }
+
+            // If this is the decision modal, setup handlers after content loads
+            if (method === 'update') {
+                console.log('Decision modal detected, scheduling setup');
+                setTimeout(function () {
+                    setupDecisionModalHandlers();
+                }, 300);
+            }
+        };
 
         // Document ready
         $(document).ready(function () {
@@ -549,18 +648,20 @@
                 .on('click', '.btn-approve', function (e) {
                     e.preventDefault();
                     var id = decodeURIComponent($(this).data('id'));
-                    openActionModal(id, 'Approve');
-                })
-                .off('click', '.btn-reject')
-                .on('click', '.btn-reject', function (e) {
-                    e.preventDefault();
-                    var id = decodeURIComponent($(this).data('id'));
-                    openActionModal(id, 'Reject');
+                    openActionModal(id);
                 });
 
-            // Clean up modal when hidden
+            // FIXED: Use event delegation for the submit button (handles dynamically loaded content)
+            $(document).on('click', '#actionSubmitBtn', function (e) {
+                e.preventDefault();
+                submitDecision();
+            });
+
+            // Clean up modal when hidden - RESET SUBMISSION FLAG
             $('#genericModal').on('hidden.bs.modal', function () {
+                console.log('Modal closed - resetting state');
                 $(this).find('.modal-content').empty();
+                isSubmitting = false; // Reset submission flag
             });
         });
     </script>

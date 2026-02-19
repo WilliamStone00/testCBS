@@ -1945,6 +1945,7 @@ namespace CBS.FrontDesk.Helper
         public static string MAMdatatable = "/api/v1/AccountManagement/datatable";
         public static string GetMAMById = "/api/v1/AccountManagement/workflow/{0}";
         public static string CreateMAM = "/api/v1/AccountManagement/submit";
+        public static string DecissionMAM = "/api/v1/AccountManagement/decide";
         public static string UpdateMAM = "not availlable";
         public static string DeactivateMAM = "not availlable";        
 

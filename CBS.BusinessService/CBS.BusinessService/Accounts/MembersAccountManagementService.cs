@@ -111,12 +111,12 @@ namespace CBS.BusinessService.Accounts.MemberReceiptsP
                 if (response.IsSuccess)
                 {
                     GetExecutionMessages(null, true, null, MessagesResults.Success,
-                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, null);
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData?.Message ?? response.Message);
                 }
                 else
                 {
                     GetExecutionMessages(null, false, null, MessagesResults.Failed,
-                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, null);
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.ApiResponseData?.Message ?? response.Message);
                 }
             }
             catch (Exception ex)
@@ -138,11 +138,11 @@ namespace CBS.BusinessService.Accounts.MemberReceiptsP
                 if (response.IsSuccess)
                 {
                     GetExecutionMessages(response.ApiResponseData.Data, true, null, MessagesResults.Success,
-                    ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData?.Message);
+                    ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData?.Message ?? response.Message);
                 }
                 else
                 {
-                    GetExecutionMessages(model, false,null, MessagesResults.Failed,
+                    GetExecutionMessages(model, false, null, MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.ApiResponseData?.Message ?? response.Message);
                 }
             }
@@ -153,22 +153,23 @@ namespace CBS.BusinessService.Accounts.MemberReceiptsP
             }
             return ExecutionMessage;
         }
-        public async Task<ExecutionMessages> MakeDecisionAsync(Decission model)
+
+        public async Task<ExecutionMessages>MakeDecisionAsync(Decission model)
         {
             try
             {
                 
-                string formattedUrl = string.Format(APICallHelper.UpdateMAM);
-                var response = await _transactionApiHelper.PutAsync<ServiceResponse<Decission>>(formattedUrl, model);
+                string formattedUrl = string.Format(APICallHelper.DecissionMAM);
+                var response = await _transactionApiHelper.PostAsync<ServiceResponse<Decission>>(formattedUrl, model);
 
                 if (response.IsSuccess)
                 {
-                    GetExecutionMessages(response.ApiResponseData.Data, true, null, MessagesResults.Success,
-                    ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, null);
+                    GetExecutionMessages(null, true, null, MessagesResults.Success,
+                    ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData?.Message ?? response.Message);
                 }
                 else
                 {
-                    GetExecutionMessages(model, false,null, MessagesResults.Failed,
+                    GetExecutionMessages(null, false,null, MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.ApiResponseData?.Message ?? response.Message);
                 }
             }
@@ -191,7 +192,7 @@ namespace CBS.BusinessService.Accounts.MemberReceiptsP
                 {
                     GetExecutionMessages(null, true,null, MessagesResults.Success,
                         ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null,
-                        response.ApiResponseData?.Message );
+                        response.ApiResponseData?.Message ?? response.Message );
                 }
                 else
                 {
