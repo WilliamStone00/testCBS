@@ -339,6 +339,7 @@
     <Compile Include="Accounting\ProductAccountingHelper.cs" />
     <Compile Include="Accounting\TransactionTracker.cs" />
     <Compile Include="Accounts\FileUploadServices.cs" />
+    <Compile Include="Accounts\MembersAccountManagementService.cs" />
     <Compile Include="CheckManagementSystem\ChequeCertificationServices\ChequeCertificationService.cs" />
     <Compile Include="CheckManagementSystem\ChequeCertificationServices\GetChequeCertificationsDataTableQuery.cs" />
     <Compile Include="CheckManagementSystem\ChequeCertificationServices\MockChequeCertificationService.cs" />

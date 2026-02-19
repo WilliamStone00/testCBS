@@ -1704,6 +1704,7 @@ namespace CBS.FrontDesk.Helper
         public static string PostPayment = "/api/v1/DailySavingsBackOffice/PayDailyCollectorCommission";
         public static string DailyCollectorcommissiondata = "/api/v1/DailySavingsBackOffice/Dashboard/GetDailyCollectorCommissionPaymentsDataTable";
         public static string DaillyCollectorGetbyId = "not yet Availlable";
+        public const string GetJobSnapshot = "/api/v1/Jobs/{0}/snapshot";
 
         //--------------------------- API KEY MANAGEMENT ----------------------------------------  
         public const string GetAllApiKeys = "/api/apikeys";
@@ -1938,7 +1939,14 @@ namespace CBS.FrontDesk.Helper
         public static string GetVatReportData = "not availlable";
         public static string GetPenaltyReportData = "not availlable";
         public static string GetInterestReportData = "not availlable";
-      
+
+        //------------------------ Member Account Management -----------------------------
+        public static string GetAllMAM = "not availlable";
+        public static string MAMdatatable = "not availlable";
+        public static string GetMAMById = "not availlable";
+        public static string CreateMAM = "not availlable";
+        public static string UpdateMAM = "not availlable";
+        public static string DeactivateMAM = "not availlable";        
 
     }
 }

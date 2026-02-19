@@ -54,33 +54,59 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission
         public bool IsLinkToUser { get; set; }
     }
 
+
+        public class JobMonitorViewModel
+        {
+            public bool HasActiveJob { get; set; }
+            public JobSnapshotDto JobData { get; set; }
+            public DateTime? LastUpdated { get; set; }
+            public bool AutoRefreshEnabled { get; set; }
+            public int CountdownSeconds { get; set; } = 10;
+            public string CurrentJobId { get; set; }
+        }
+    
     public class JobSnapshotDto
     {
-        public string Id { get; set; } = string.Empty;
-        public string JobType { get; set; } = string.Empty;
-        public string Title { get; set; } = string.Empty;
-        public string BranchId { get; set; } = string.Empty;
-        public string BranchCode { get; set; } = string.Empty;
-        public string BranchName { get; set; } = string.Empty;
-        public string OwnerName { get; set; } = string.Empty;
-        public string OwnerUserId { get; set; } = string.Empty;
-        public string CorrelationId { get; set; } = string.Empty;
+        public string Id { get; set; }
+        public string JobType { get; set; }
+        public string Title { get; set; }
+
+        public string BranchId { get; set; }
+        public string BranchCode { get; set; }
+        public string BranchName { get; set; }
+
+        public string OwnerName { get; set; }          // nullable
+        public string OwnerUserId { get; set; }
+
+        public string CorrelationId { get; set; }
+
         public int Status { get; set; }
-        public string Phase { get; set; } = string.Empty;
+        public string Phase { get; set; }
+
         public int TotalItems { get; set; }
         public int ProcessedItems { get; set; }
         public int SucceededItems { get; set; }
         public int FailedItems { get; set; }
         public int SkippedItems { get; set; }
+
         public decimal TotalAmount { get; set; }
         public decimal ProcessedAmount { get; set; }
-        public int Percent { get; set; }
+
+        // 🔥 FIXED HERE
+        public decimal Percent { get; set; }
+
         public DateTime? StartedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public DateTime? CompletedAt { get; set; }
-        public string LastMessage { get; set; } = string.Empty;
+
+        public string LastMessage { get; set; }        // nullable
+
         public List<string> Tags { get; set; } = new List<string>();
+
+        // 🔥 You were missing this field
+        public string PayloadJson { get; set; }
     }
+
 
     public class CollectorComissionResponse
     {

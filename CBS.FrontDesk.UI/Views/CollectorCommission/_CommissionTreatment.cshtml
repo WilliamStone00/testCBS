@@ -121,18 +121,18 @@
                             <div class="input-group" style="width:260px; max-width:100%;">
                                 <span class="input-group-text">📅 Acc. Date</span>
                                 @Html.TextBox(
-    "AccountingDate",
-    DateTime.Now.ToString("yyyy-MM-dd"),
-    new
-    {
-        @class = "form-control accounting-date",
-        type = "date",
-        id = "AccountingDay",
-        required = "required",
-        max = todayIso,
-        style = "min-width:0;"
-    }
-)
+                        "AccountingDate",
+                        DateTime.Now.ToString("yyyy-MM-dd"),
+                        new
+                        {
+                            @class = "form-control accounting-date",
+                            type = "date",
+                            id = "AccountingDay",
+                            required = "required",
+                            max = todayIso,
+                            style = "min-width:0;"
+                        }
+                    )
 
                             </div>
                         </div>

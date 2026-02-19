@@ -1,5 +1,6 @@
 ﻿using CBS.API.Helper;
 using CBS.BusinessService;
+using CBS.BusinessService.Accounting_V2.Affiliate;
 using CBS.BusinessService.Accounting_V2.AffiliateAccounts;
 using CBS.BusinessService.Accounts;
 using CBS.BusinessService.BulkOperations;
@@ -135,6 +136,27 @@ namespace CBS.FrontDesk.UI.Controllers.StandingOrderP
             var errorMessage = string.Join("<br />", errors);
 
             return Json(new { success = false, status = false, message = errorMessage });
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> GetCustomerAccounts(string customerId)
+        {
+            try
+            {
+                var customerData = await _standingOrderServices.GetCustomerAccountDropdownAsync(customerId);
+                // var customerData = await _ipsClaimService.GetinfoAsync(customerId);
+
+                return Json(new
+                {
+                    success = true,
+                    customer = customerData.CustomerDto,
+                    accounts = customerData.AccountSelectList
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
         }
 
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
