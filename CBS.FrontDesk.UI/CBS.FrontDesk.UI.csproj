@@ -2101,6 +2101,7 @@
       <DependentUpon>GlobalWithdrawalNotification.fr.resx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\UnityMvcActivator.cs" />
+    <Compile Include="Controllers\Accounting V2\AccntStatement\AccountStatementExcelExportGenerator.cs" />
     <Compile Include="Controllers\Accounting V2\AccntStatement\AccountStatementFlatItems.cs" />
     <Compile Include="Controllers\Accounting V2\AccountBlackListing\AccountBlancklistController.cs" />
     <Compile Include="Controllers\Accounting V2\AccountTypeDefinition\AccountTypeDefinition.cs" />
