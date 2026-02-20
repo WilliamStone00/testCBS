@@ -73,7 +73,7 @@ namespace CBS.BusinessService.CheckManagementSystem.ChequeClearance
         {
             if(model.ExternalChequeNumber != null)
             {
-                model.ChequeType = 2;
+                model.ChequeType = true;
             }
             try
             {

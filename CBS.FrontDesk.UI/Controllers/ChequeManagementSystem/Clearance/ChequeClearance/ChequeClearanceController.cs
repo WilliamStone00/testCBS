@@ -273,10 +273,31 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeCl
                 });
             }
 
-            
-            
-            
         }
+
+
+        //[HttpGet]
+        //public async Task<ActionResult> GetClearanceDetails(string Id)
+        //{
+        //    if (string.IsNullOrEmpty(Id))
+        //        return new HttpStatusCodeResult(400, "LeafId is required");
+
+        //    try
+        //    {
+        //        var leaf = await _counterChequeService.GetChequeLeafDetails(Id);
+
+        //        if (leaf == null)
+        //            return HttpNotFound("Cheque leaf not found");
+
+               
+
+        //        return View("_InternalChequeRequest", model);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return new HttpStatusCodeResult(500, ex.Message);
+        //    }
+        //}
     }
 }
 

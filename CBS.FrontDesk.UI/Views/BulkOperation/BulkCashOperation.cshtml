@@ -310,13 +310,35 @@
                                                     <!-- Accounting Date -->
                                                     <div class="col-md-6">
                                                         @Html.LabelFor(m => m.AccountDate, "Accounting Date", new { @class = "form-label fw-semibold" })
+                                                        @{
+                                                            // Calculate the minimum date (60 days back from today)
+                                                            var minDate = DateTime.Today.AddDays(-60).ToString("yyyy-MM-dd");
+                                                            var maxDate = DateTime.Today.ToString("yyyy-MM-dd");
+
+                                                            // Set the default value
+                                                            var defaultValue = Model.AccountDate == default(DateTime)
+                                                                ? DateTime.Today.ToString("yyyy-MM-dd")
+                                                                : Model.AccountDate.ToString("yyyy-MM-dd");
+                                                        }
+
                                                         @Html.TextBoxFor(m => m.AccountDate,
-                                                            Model.AccountDate == default(DateTime) ? DateTime.Today.ToString("yyyy-MM-dd") : "{0:yyyy-MM-dd}",
-                                                            new { @class = "form-control accounting-date", type = "date", id = "AccountDate" })
+                                                            defaultValue,
+                                                            new
+                                                                {
+                                                                    @class = "form-control accounting-date",
+                                                                type = "date",
+                                                                id = "AccountDate",
+                                                                min = minDate,
+                                                                max = maxDate
+                                                            })
 
                                                         <small class="text-muted d-block help-hint mt-1">
                                                             <i class="mdi mdi-information-outline me-1"></i>
                                                             @GlobalBulkOperation.Must_match_an_open_accounting_day_for_the_selected_branch.
+                                                            <span class="text-info d-block mt-1">
+                                                                <i class="mdi mdi-calendar-range"></i>
+                                                                Select a date between @minDate and @maxDate
+                                                            </span>
                                                         </small>
                                                         <div class="invalid-feedback">@GlobalBulkOperation.Please_select_a_valid_accounting_date.</div>
                                                     </div>
@@ -387,11 +409,11 @@
                                                             new List<SelectListItem> { new SelectListItem { Text = "--- Select Chart Of Account ---", Value = "" } },
                                                             new { @class = "form-select select2", required = "required", id = "AccountCartId" })
 
-                                                    <small class="text-muted d-block help-hint mt-1">
-                                                        <i class="mdi mdi-information-outline me-1"></i>
-                                                        @GlobalBulkOperation.Select_the_branch_GL_account_used_to_route_this_cash_batch.
-                                                    </small>
-                                                    <div class="invalid-feedback">@GlobalBulkOperation.Please_select_a_chart_of_account.</div>
+                                                        <small class="text-muted d-block help-hint mt-1">
+                                                            <i class="mdi mdi-information-outline me-1"></i>
+                                                            @GlobalBulkOperation.Select_the_branch_GL_account_used_to_route_this_cash_batch.
+                                                        </small>
+                                                        <div class="invalid-feedback">@GlobalBulkOperation.Please_select_a_chart_of_account.</div>
                                                     </div>
 
                                                 </div>
@@ -605,10 +627,36 @@
 
                                                     <div class="col-md-6">
                                                         @Html.LabelFor(m => m.AccountDate2, "Accounting Date", new { @class = "form-label fw-semibold" })
-                                                        @Html.TextBoxFor(m => m.AccountDate2,
-                                         Model.AccountDate2 == default(DateTime) ? DateTime.Today.ToString("yyyy-MM-dd") : "{0:yyyy-MM-dd}",
-                                         new { @class = "form-control accounting-date", type = "date", id = "AccountDate2" })
+                                                        @{
+                                                            // Calculate the minimum date (60 days back from today)
+                                                            var minDate = DateTime.Today.AddDays(-60).ToString("yyyy-MM-dd");
+                                                            var maxDate = DateTime.Today.ToString("yyyy-MM-dd");
 
+                                                            // Set the default value
+                                                            var defaultValue = Model.AccountDate2 == default(DateTime)
+                                                                ? DateTime.Today.ToString("yyyy-MM-dd")
+                                                                : Model.AccountDate2.ToString("yyyy-MM-dd");
+                                                        }
+
+                                                        @Html.TextBoxFor(m => m.AccountDate2,
+                                                            defaultValue,
+                                                            new
+                                                                {
+                                                                    @class = "form-control accounting-date",
+                                                                type = "date",
+                                                                id = "AccountDate2",
+                                                                min = minDate,
+                                                                max = maxDate
+                                                            })
+
+                                                        <small class="text-muted d-block help-hint mt-1">
+                                                            <i class="mdi mdi-information-outline me-1"></i>
+                                                            @GlobalBulkOperation.Must_match_an_open_accounting_day_for_the_selected_branch.
+                                                            <span class="text-info d-block mt-1">
+                                                                <i class="mdi mdi-calendar-range"></i>
+                                                                Select a date between @minDate and @maxDate
+                                                            </span>
+                                                        </small>
                                                         <div class="invalid-feedback">@GlobalBulkOperation.Please_select_a_valid_accounting_date.</div>
                                                     </div>
 
