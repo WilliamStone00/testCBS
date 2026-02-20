@@ -1,5 +1,5 @@
 ﻿@model  CBS.FrontDesk.Data.Entity.SalaryManagement.StandingOrderDataTableQuery
-    @* create a simple query model OR reuse your existing query *@
+@* create a simple query model OR reuse your existing query *@
 @using Resources
 @{
     ViewBag.Title = "Standing Orders - Filters";
@@ -73,10 +73,13 @@
 
         @using (Html.BeginForm("Index", "StandingOrder", FormMethod.Get, new { id = "soFilterForm", autocomplete = "off" }))
         {
-            <div class="card p-2 mb-2 bg-light">
+            <div class="card p-3 mb-3 bg-light">
 
-                <div class="row g-1">
-                    <div class="col-md-4">
+                <!-- ============================= -->
+                <!-- ALWAYS VISIBLE SECTION -->
+                <!-- ============================= -->
+                <div class="row g-2">
+                    <div class="col-md-6">
                         <label class="form-label fw-bold small">Branch</label>
                         @Html.DropDownList("BranchId",
                             new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name"),
@@ -84,63 +87,151 @@
                             new { @class = "form-select form-select-sm select2", id = "BranchId" })
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <label class="form-label fw-bold small">Member Reference</label>
-                        <input id="MemberId" class="form-control form-control-sm" placeholder="e.g. 5467" />
-                    </div>
-
-                    <div class="col-md-4">
-                        <label class="form-label fw-bold small">Member Name</label>
-                        <input id="MemberName" class="form-control form-control-sm" placeholder="Member name" />
+                        <input id="MemberId" name="MemberId"
+                               class="form-control form-control-sm"
+                               placeholder="e.g. 5467" />
                     </div>
                 </div>
 
-                <div class="row g-1 mt-1">
-                    <div class="col-md-4">
+                <hr />
+
+                <!-- ============================= -->
+                <!-- FILTER CHECKBOXES -->
+                <!-- ============================= -->
+                <div class="row g-2">
+
+                    <div class="col-md-3">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input filter-toggle" data-target="#MemberNameDiv" id="chkMemberName">
+                            <label class="form-check-label small" for="chkMemberName">Member Name</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input filter-toggle" data-target="#SourceAccountTypeDiv" id="chkSource">
+                            <label class="form-check-label small" for="chkSource">Source Account Type</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input filter-toggle" data-target="#DestinationAccountTypeDiv" id="chkDestination">
+                            <label class="form-check-label small" for="chkDestination">Destination Account Type</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input filter-toggle" data-target="#FrequencyDiv" id="chkFrequency">
+                            <label class="form-check-label small" for="chkFrequency">Frequency</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 mt-2">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input filter-toggle" data-target="#StatusDiv" id="chkStatus">
+                            <label class="form-check-label small" for="chkStatus">Status</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 mt-2">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input filter-toggle" data-target="#StartDateDiv" id="chkStartDate">
+                            <label class="form-check-label small" for="chkStartDate">Start Date</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 mt-2">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input filter-toggle" data-target="#EndDateDiv" id="chkEndDate">
+                            <label class="form-check-label small" for="chkEndDate">End Date</label>
+                        </div>
+                    </div>
+
+                </div>
+
+                <hr />
+
+                <!-- ============================= -->
+                <!-- HIDDEN FILTER FIELDS -->
+                <!-- ============================= -->
+                <!-- Member Name -->
+                <div id="MemberNameDiv" class="row mt-2 d-none">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold small">Member Name</label>
+                        <input id="MemberName" name="MemberName"
+                               class="form-control form-control-sm" />
+                    </div>
+                </div>
+
+                <!-- Source Account Type -->
+                <div id="SourceAccountTypeDiv" class="row mt-2 d-none">
+                    <div class="col-md-6">
                         <label class="form-label fw-bold small">Source Account Type</label>
                         @Html.DropDownList("SourceAccountType",
                             new SelectList(ViewBag.SourceAccountTypes ?? new List<SelectListItem>(), "Value", "Text"),
                             "--- Any ---",
-                            new { @class = "form-select form-select-sm select2", id = "SourceAccountType" })
+                            new { @class = "form-select form-select-sm select2" })
                     </div>
+                </div>
 
-                    <div class="col-md-4">
+                <!-- Destination Account Type -->
+                <div id="DestinationAccountTypeDiv" class="row mt-2 d-none">
+                    <div class="col-md-6">
                         <label class="form-label fw-bold small">Destination Account Type</label>
                         @Html.DropDownList("DestinationAccountType",
                             new SelectList(ViewBag.DestinationAccountTypes ?? new List<SelectListItem>(), "Value", "Text"),
                             "--- Any ---",
-                            new { @class = "form-select form-select-sm select2", id = "DestinationAccountType" })
+                            new { @class = "form-select form-select-sm select2" })
                     </div>
+                </div>
 
-                    <div class="col-md-4">
+                <!-- Frequency -->
+                <div id="FrequencyDiv" class="row mt-2 d-none">
+                    <div class="col-md-6">
                         <label class="form-label fw-bold small">Frequency</label>
                         @Html.DropDownList("Frequency",
                             new SelectList(ViewBag.Frequencies ?? new List<SelectListItem>(), "Value", "Text"),
                             "--- Any ---",
-                            new { @class = "form-select form-select-sm select2", id = "Frequency" })
+                            new { @class = "form-select form-select-sm select2" })
                     </div>
                 </div>
 
-                <div class="row g-1 mt-1">
-                    <div class="col-md-4">
+                <!-- Status -->
+                <div id="StatusDiv" class="row mt-2 d-none">
+                    <div class="col-md-6">
                         <label class="form-label fw-bold small">Status</label>
-                        <select id="IsActive" class="form-select form-select-sm select2">
+                        <select id="IsActive" name="IsActive" class="form-select form-select-sm select2">
                             <option value="">--- Any ---</option>
                             <option value="true">Active</option>
                             <option value="false">Inactive</option>
                         </select>
                     </div>
+                </div>
 
-                    <div class="col-md-4">
+                <!-- Start Date -->
+                <div id="StartDateDiv" class="row mt-2 d-none">
+                    <div class="col-md-6">
                         <label class="form-label fw-bold small">Start Date</label>
-                        <input id="StartDate" type="date" class="form-control form-control-sm" />
-                    </div>
-
-                    <div class="col-md-4">
-                        <label class="form-label fw-bold small">End Date</label>
-                        <input id="EndDate" type="date" class="form-control form-control-sm" />
+                        <input id="StartDate" name="StartDate"
+                               type="date"
+                               class="form-control form-control-sm" />
                     </div>
                 </div>
+
+                <!-- End Date -->
+                <div id="EndDateDiv" class="row mt-2 d-none">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold small">End Date</label>
+                        <input id="EndDate" name="EndDate"
+                               type="date"
+                               class="form-control form-control-sm" />
+                    </div>
+                </div>
+
             </div>
 
             <div class="row mt-2">
@@ -163,7 +254,11 @@
             </button>
         </div>*@
 
-    <div class="d-flex justify-content-end mb-2">
+    <!-- In the Actions section, replace or add this -->
+    <div class="d-flex justify-content-end mb-2 gap-2">
+        <button id="btnExportSO" type="button" class="btn btn-info btn-sm">
+            <i class="mdi mdi-export me-1"></i> Export Data
+        </button>
         <a href="/StandingOrder/StandingOrderRegistration"
            class="btn btn-success btn-sm">
             <i class="mdi mdi-plus-circle-outline me-1"></i>
@@ -171,6 +266,7 @@
         </a>
     </div>
 
+  
     <!-- Data -->
     <div id="datalistingview">
         @Html.Partial("_DataStandingOrders")  @* ✅ create this partial *@
@@ -251,20 +347,20 @@
 
                 <!-- Footer -->
                 @*<div class="modal-footer border-0 justify-content-between">
-                    <div>
-                        <span class="text-muted fw-semibold">
-                            Standing Order ID: <span class="text-dark" id="soDetailsIdDisplay">N/A</span>
-                        </span>
-                    </div>
-                    <div class="text-center w-100">
-                        <small class="text-muted">Powered by FLX-CBS</small>
-                    </div>
-                    <div>
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                            <i class="mdi mdi-close"></i> Close
-                        </button>
-                    </div>
-                </div>*@
+                        <div>
+                            <span class="text-muted fw-semibold">
+                                Standing Order ID: <span class="text-dark" id="soDetailsIdDisplay">N/A</span>
+                            </span>
+                        </div>
+                        <div class="text-center w-100">
+                            <small class="text-muted">Powered by FLX-CBS</small>
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                <i class="mdi mdi-close"></i> Close
+                            </button>
+                        </div>
+                    </div>*@
 
             </div>
         </div>
@@ -363,9 +459,8 @@
                         <button type="button" class="btn btn-outline-secondary me-2" data-bs-dismiss="modal">
                             <i class="mdi mdi-close"></i> Cancel
                         </button>-->
-
-                        <!-- If you prefer the button to be inside the injected form, you can remove this -->
-                        <!--<button type="button" class="btn btn-primary" id="soEditSaveBtn">
+                <!-- If you prefer the button to be inside the injected form, you can remove this -->
+                <!--<button type="button" class="btn btn-primary" id="soEditSaveBtn">
                             <i class="mdi mdi-content-save-outline"></i> Save
                         </button>
                     </div>
@@ -389,8 +484,11 @@
   const dataUrl   = '@Url.Action("LoadStandingOrderData", "StandingOrder")';
   const detailUrl = '@Url.Action("InitializeData", "StandingOrder")';
   const initUrl   = '@Url.Action("InitializeData", "StandingOrder")';
+  const exportModalUrl = '@Url.Action("", "StandingOrder")';
+  const exportDataUrl = '@Url.Action("ExportStandingOrderData", "StandingOrder")';
 
   let table = null, tableInitialized = false;
+  let exportModal = null;
 
   function getFilters(){
     const isActiveVal = $('#IsActive').val();
@@ -550,6 +648,216 @@
     }
   }
 
+  // ========== EXPORT FUNCTIONALITY ==========
+    // Helper function to check if Alertify is available
+    function initExportModal() {
+        if (!exportModal) {
+            const modalEl = document.getElementById('exportModal');
+            if (modalEl) {
+                exportModal = new bootstrap.Modal(modalEl, {
+                    backdrop: 'static',
+                    keyboard: false
+                });
+            }
+        }
+    }
+
+    function resetExportButton($btn, originalText) {
+        $btn.html(originalText).prop('disabled', false);
+        $('#exportProgress .progress-bar').css('width', '0%');
+        $('#exportProgress').addClass('d-none');
+    }
+
+    function showExportWarning(message) {
+        appalert(message, 2, 1); // Using warning state (2) for warnings
+    }
+
+    function showExportError(message) {
+        appalert(message, 2, 1); // Using warning state (2) for errors
+    }
+
+    function showExportSuccess(message) {
+        appalert(message, 1, 1); // Using success state (1) for success
+    }
+
+    // Handle export button click
+    $(document).on('click', '#btnExportSO', function () {
+        // Check if table is initialized and has data
+        if (!tableInitialized) {
+            showExportWarning('Please load the table data first by clicking "Apply Filter" before exporting.');
+            return;
+        }
+
+        // Check if table has data
+        if (table && table.data() && table.data().count() === 0) {
+            showExportWarning('No data available to export. Please apply filters to load data first.');
+            return;
+        }
+
+        // Load export modal content
+        $.get(exportModalUrl, function (html) {
+            // Remove existing modal if any
+            $('#exportModal').remove();
+
+            // Append new modal to body
+            $('body').append(html);
+
+            // Initialize modal
+            initExportModal();
+
+            // Show modal
+            exportModal.show();
+        }).fail(function (xhr, status, error) {
+            console.error('Failed to load export modal:', error);
+            showExportError('Failed to load export options. Please try again.');
+        });
+    });
+
+    // Handle export confirmation
+    $(document).on('click', '#btnConfirmExport', function () {
+        const $btn = $(this);
+        const originalText = $btn.html();
+
+        // Get all data from DataTable (including paginated)
+        let tableData = [];
+        let totalRecords = 0;
+
+        if (table && table.rows) {
+            // Get all data from the table (across all pages)
+            tableData = table.rows({ search: 'applied' }).data().toArray();
+            totalRecords = table.data().count();
+        }
+
+        if (!tableData || tableData.length === 0) {
+            showExportWarning('No data available to export. Please apply filters to load data first.');
+            return;
+        }
+
+        // Get export options
+        const exportOptions = {
+            fileName: $('#fileName').val() || 'StandingOrders_Report',
+            format: $('#exportFormat').val(),
+            startDate: $('#startDate').val(),
+            endDate: $('#endDate').val(),
+            includeSummary: $('#includeSummary').is(':checked'),
+            exportType: $('#exportType').val()
+        };
+
+        // Prepare request
+        const request = {
+            Data: tableData,
+            TotalRecords: totalRecords,
+            ExportOptions: exportOptions
+        };
+
+        // Show progress
+        $('#exportProgress').removeClass('d-none');
+        $btn.html('<span class="spinner-border spinner-border-sm me-1"></span> Exporting...').prop('disabled', true);
+
+        // Make export request
+        $.ajax({
+            url: exportDataUrl,
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(request),
+            xhr: function () {
+                var xhr = new window.XMLHttpRequest();
+                xhr.addEventListener('progress', function (evt) {
+                    if (evt.lengthComputable) {
+                        var percentComplete = Math.round(evt.loaded / evt.total * 100);
+                        $('#exportProgress .progress-bar').css('width', percentComplete + '%');
+                        $('#progressText').text('Exporting... ' + percentComplete + '%');
+                    }
+                }, false);
+                return xhr;
+            },
+            success: function (response, status, xhr) {
+                // Check if response is a file (binary) or JSON error
+                const contentType = xhr.getResponseHeader('Content-Type') || '';
+
+                if (contentType.includes('application/json')) {
+                    // This is an error response
+                    if (response.success === false) {
+                        showExportError(response.message || 'Unknown error occurred');
+                    } else {
+                        showExportError('Unexpected response format');
+                    }
+                    resetExportButton($btn, originalText);
+                    return;
+                }
+
+                if (contentType.includes('application/vnd.openxmlformats-officedocument')) {
+                    // Handle file download
+                    const blob = new Blob([response], {
+                        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                    });
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = exportOptions.fileName + '_' + new Date().toISOString().slice(0, 10) + '.xlsx';
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    document.body.removeChild(a);
+
+                    // Close modal
+                    if (exportModal) {
+                        exportModal.hide();
+                    }
+
+                    showExportSuccess('Your file has been downloaded successfully.');
+                } else {
+                    showExportError('Unexpected response type: ' + contentType);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('Export error:', error);
+                let errorMsg = 'An error occurred during export. Please try again.';
+
+                try {
+                    const response = JSON.parse(xhr.responseText);
+                    if (response.message) {
+                        errorMsg = response.message;
+                    }
+                } catch (e) {
+                    // Not JSON, use default message
+                }
+
+                showExportError(errorMsg);
+            },
+            complete: function () {
+                resetExportButton($btn, originalText);
+            }
+        });
+    });
+
+    // Handle export type change
+    $(document).on('change', '#exportType', function () {
+        if ($(this).val() === 'all') {
+            appalert('This will export all standing orders regardless of current filters. This may take longer if there are many records.', 3, 1); // Info state (3)
+        }
+    });
+
+    // Handle date range validation
+    $(document).on('change', '#startDate, #endDate', function () {
+        const startDate = $('#startDate').val();
+        const endDate = $('#endDate').val();
+
+        if (startDate && endDate && startDate > endDate) {
+            appalert('Start date cannot be after end date.', 2, 1); // Warning state (2)
+            $(this).val('');
+        }
+    });
+
+    // Handle format change
+    $(document).on('change', '#exportFormat', function () {
+        const format = $(this).val();
+        if (format === 'pdf') {
+            appalert('PDF export will include formatted tables and summaries.', 3, 1); // Info state (3)
+        }
+    });
+  // ========== END EXPORT FUNCTIONALITY ==========
+
   $(function(){
     if ($.fn.select2){
       try { $('.select2').select2({ width:'100%' }); } catch(e){ console.warn('select2 init failed', e); }
@@ -583,6 +891,21 @@
     });
   });
 
+  $(document).ready(function () {
+    $(".filter-toggle").change(function () {
+      var target = $(this).data("target");
+
+      if ($(this).is(":checked")) {
+        $(target).removeClass("d-none");
+      } else {
+        $(target).addClass("d-none");
+
+        // Clear values when unchecked
+        $(target).find("input").val("");
+        $(target).find("select").val("").trigger("change");
+      }
+    });
+  });
 })(jQuery, window);
     </script>
 }

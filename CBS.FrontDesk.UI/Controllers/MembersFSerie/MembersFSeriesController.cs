@@ -108,22 +108,9 @@ namespace CBS.FrontDesk.UI.Controllers.Series
                 .Select(e => new SelectListItem
                 {
                     Text = e.ToString(),
-                    Value = e.ToString()
-                }).ToList();
-
-            // Load LoanTermKind enum values
-            var LtGroupOptions = Enum.GetValues(typeof(PcmfPurposeKey))
-                .Cast<PcmfPurposeKey>()
-                .Select(e => new SelectListItem
-                {
-                    Value = e.ToString(),
-                    Text = e.ToString()
-                })
-                .ToList();
-            ViewBag.LtGroupOptions = LtGroupOptions;
-            return true;
-
-
+                    Value = ((int)e).ToString()
+                }).ToList();            
+          
             var branches = await _branchServices.GetBranches();
             ViewBag.Branches = branches;
             return true;
@@ -356,6 +343,11 @@ namespace CBS.FrontDesk.UI.Controllers.Series
                    
                     return PartialView(partialView);
                 }
+                else if (path == "GetaccountById")
+                {
+                   var data = await _accountServices.GetaccountByIdAsync(KEY);
+                    return PartialView(partialView, data);
+                }
                 ViewBag.message = "Invalid option selected";
                 return PartialView("_NoRecordFound", new CashDesk());
 
@@ -392,7 +384,7 @@ namespace CBS.FrontDesk.UI.Controllers.Series
                         var receiptRptSource = receiptTransactionReports.ToList();
 
                         SetSessionVariables(receiptRptSource, "Receipts.rpt", "~/AppFiles/Reporting/Transactions/Reciepts/Receipts.rpt", $"{receiptTransaction.TransactionReference}");
-                        break;
+                    break;
 
                     case "customer_account_transaction_rpt":
                         var accountTransactionHistories = await _accountServices.GetCustomerTransactionsByAccountNumber(KEY);
@@ -430,9 +422,9 @@ namespace CBS.FrontDesk.UI.Controllers.Series
 
                         SetSessionVariables(datefrom, dateto); // Set date range session variables
 
-                        break;
+                    break;
 
-                    default:
+                default:
                         break;
                 }
 
@@ -459,6 +451,7 @@ namespace CBS.FrontDesk.UI.Controllers.Series
             this.HttpContext.Session["DateFrom"] = datefrom;
             this.HttpContext.Session["DateTo"] = dateto;
         }
+
         [HttpGet]
         //GetMembersLoans(string customerId, string queryParameter)
         //public async Task<ActionResult> GetFilteredLoans(string filter, string memberId)
