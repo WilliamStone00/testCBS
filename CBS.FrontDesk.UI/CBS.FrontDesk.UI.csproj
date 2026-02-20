@@ -10840,6 +10840,9 @@
     <Content Include="Views\GLSystemReconciliation\_ExportDataTable.cshtml" />
     <Content Include="Views\MembersFSeries\_MemberAccMana.cshtml" />
     <Content Include="Views\MemberAccountMan\List.cshtml" />
+    <Content Include="Views\MemberAccountMan\_AccountStatusDataTable.cshtml" />
+    <Content Include="Views\MemberAccountMan\_AccountStatusDetails.cshtml" />
+    <Content Include="Views\MemberAccountMan\_Decission.cshtml" />
     <Content Include="Views\ChequeClearance\_Details.cshtml" />
   </ItemGroup>
   <ItemGroup>

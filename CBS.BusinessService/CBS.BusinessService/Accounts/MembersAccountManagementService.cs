@@ -110,12 +110,12 @@ namespace CBS.BusinessService.Accounts.MemberReceiptsP
 
                 if (response.IsSuccess)
                 {
-                    GetExecutionMessages(response.ApiResponseData.Data, true, null, MessagesResults.Success,
-                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData.Message);
+                    GetExecutionMessages(null, true, null, MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData?.Message ?? response.Message);
                 }
                 else
                 {
-                    GetExecutionMessages(model, false, null, MessagesResults.Failed,
+                    GetExecutionMessages(null, false, null, MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.ApiResponseData?.Message ?? response.Message);
                 }
             }
@@ -138,11 +138,38 @@ namespace CBS.BusinessService.Accounts.MemberReceiptsP
                 if (response.IsSuccess)
                 {
                     GetExecutionMessages(response.ApiResponseData.Data, true, null, MessagesResults.Success,
-                    ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData?.Message);
+                    ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData?.Message ?? response.Message);
                 }
                 else
                 {
-                    GetExecutionMessages(model, false,null, MessagesResults.Failed,
+                    GetExecutionMessages(model, false, null, MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.ApiResponseData?.Message ?? response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                GetExecutionMessages(model, false, null, MessagesResults.Error,
+                    ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message);
+            }
+            return ExecutionMessage;
+        }
+
+        public async Task<ExecutionMessages>MakeDecisionAsync(Decission model)
+        {
+            try
+            {
+                
+                string formattedUrl = string.Format(APICallHelper.DecissionMAM);
+                var response = await _transactionApiHelper.PostAsync<ServiceResponse<Decission>>(formattedUrl, model);
+
+                if (response.IsSuccess)
+                {
+                    GetExecutionMessages(null, true, null, MessagesResults.Success,
+                    ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData?.Message ?? response.Message);
+                }
+                else
+                {
+                    GetExecutionMessages(null, false,null, MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.ApiResponseData?.Message ?? response.Message);
                 }
             }
@@ -165,7 +192,7 @@ namespace CBS.BusinessService.Accounts.MemberReceiptsP
                 {
                     GetExecutionMessages(null, true,null, MessagesResults.Success,
                         ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null,
-                        response.ApiResponseData?.Message );
+                        response.ApiResponseData?.Message ?? response.Message );
                 }
                 else
                 {
