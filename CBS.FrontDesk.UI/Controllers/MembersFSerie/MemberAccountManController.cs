@@ -148,21 +148,21 @@ namespace CBS.FrontDesk.UI.Controllers.MembersFSerie
             if (!ModelState.IsValid)
                 return Json(new { success = false, message = "Validation failed." });
 
-            // Convert string to enum
-            if (!Enum.TryParse<AccountWorkflowStatus>(
-                    model.Decision,
-                    true,
-                    out var workflowStatus))
-            {
-                return Json(new
-                {
-                    success = false,
-                    message = $"Invalid decision value: {model.Decision}"
-                });
-            }
+            //// Convert string to enum
+            //if (!Enum.TryParse<AccountWorkflowStatus>(
+            //        model.Decisionf,
+            //        true,
+            //        out var workflowStatus))
+            //{
+            //    return Json(new
+            //    {
+            //        success = false,
+            //        message = $"Invalid decision value: {model.Decision}"
+            //    });
+            //}
 
-            // Replace string value with numeric string (if backend expects int)
-            model.Decision = ((int)workflowStatus).ToString();
+            //// Replace string value with numeric string (if backend expects int)
+            //model.Decision = ((int)workflowStatus);
 
             // Send whole object
             var result = await _accountManagementService.MakeDecisionAsync(model);

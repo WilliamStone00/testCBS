@@ -59,18 +59,6 @@
     </div>
 </div>
 
-
-
-<div class="card mb-1">
-    <div class="card-body d-flex justify-content-end align-items-center">
-        <button type="button"
-                onclick="showMemberAccountManagement()"
-                class="btn btn-light me-2">
-            <i class="mdi mdi-account-cog-outline mdi-18px me-1"></i> Member Account Management
-        </button>
-    </div>
-</div>
-
 <div class="card shadow p-3 mb-4" id="filtersSection">
     <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i>Account Status Filters</h5>
 
@@ -135,7 +123,7 @@
 
                 </div>
             </div>
-            </div>
+        </div>
     </form>
 </div>
 
@@ -183,6 +171,59 @@
         </div>
     </div>
 </div>
+
+<style>
+    /* Custom styles for column toggles */
+    .form-check.form-switch {
+        padding-left: 2.5em;
+        margin-bottom: 0;
+        min-width: 100px;
+    }
+
+        .form-check.form-switch .form-check-input {
+            width: 2.5em;
+            margin-left: -2.5em;
+            float: left;
+        }
+
+            .form-check.form-switch .form-check-input:checked {
+                background-color: #0d6efd;
+                border-color: #0d6efd;
+            }
+
+            .form-check.form-switch .form-check-input:not(:checked) ~ .form-check-label {
+                color: #6c757d !important;
+                opacity: 0.7;
+            }
+
+        .form-check.form-switch .form-check-label {
+            transition: color 0.2s ease;
+            white-space: nowrap;
+        }
+
+    /* Table column resize animation */
+    .table-responsive {
+        transition: all 0.3s ease;
+        overflow-x: auto;
+    }
+
+    #myDataTable {
+        transition: all 0.3s ease;
+        table-layout: auto !important; /* Override any fixed table layout */
+        width: 100% !important;
+    }
+
+    /* Quick action buttons */
+    .btn-sm {
+        padding: 0.25rem 0.75rem;
+        font-size: 0.875rem;
+    }
+
+    /* Gap between checkboxes */
+    .gap-2 {
+        gap: 0.75rem !important;
+    }
+</style>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
@@ -272,6 +313,147 @@
             return moment(date).format('DD/MM/YYYY HH:mm:ss');
         }
 
+        // Adjust column widths dynamically to fill the table without empty spaces
+        function adjustColumnWidths() {
+            if (!accountStatusTable) return;
+
+            const table = $('#myDataTable');
+            const visibleColumns = accountStatusTable.columns().visible().filter(v => v === true).length;
+
+            if (visibleColumns === 0) return;
+
+            // Get the colgroup
+            const colgroup = table.find('colgroup');
+            const cols = colgroup.find('col');
+
+            // Define base weights for each column (higher number = wider column)
+            const columnWeights = {
+                0: 15, // Requested On
+                1: 10, // Member Ref
+                2: 15, // Member Name
+                3: 12, // Account Number
+                4: 10, // Account Type
+                5: 8,  // Action
+                6: 8,  // Status
+                7: 10, // Branch
+                8: 10, // Requested By
+                9: 12  // Actions
+            };
+
+            // Calculate total weight of visible columns
+            let totalWeight = 0;
+            for (let i = 0; i <= 9; i++) {
+                if (accountStatusTable.column(i).visible()) {
+                    totalWeight += columnWeights[i];
+                }
+            }
+
+            // Redistribute widths proportionally to fill 100%
+            if (totalWeight > 0) {
+                for (let i = 0; i <= 9; i++) {
+                    if (accountStatusTable.column(i).visible()) {
+                        // Calculate percentage based on weight proportion
+                        const percentage = (columnWeights[i] / totalWeight) * 100;
+                        $(cols[i]).css('width', percentage + '%');
+                    } else {
+                        $(cols[i]).css('width', '0%');
+                    }
+                }
+            }
+
+            // Apply smooth transition
+            table.css('transition', 'all 0.3s ease');
+            setTimeout(() => {
+                table.css('transition', '');
+            }, 300);
+        }
+        // Initialize column visibility toggles
+        function initColumnToggles() {
+            if (!accountStatusTable) return;
+
+            // Set initial state - first 5 columns checked (indices 0-4) + Actions column (index 9)
+            for (let i = 0; i <= 9; i++) {
+                const $checkbox = $(`input.column-toggle[data-column="${i}"]`);
+                if (i <= 4 || i === 9) { // Show first 5 data columns + Actions
+                    accountStatusTable.column(i).visible(true);
+                    $checkbox.prop('checked', true);
+                    $checkbox.next('label').removeClass('text-muted');
+                } else {
+                    accountStatusTable.column(i).visible(false);
+                    $checkbox.prop('checked', false);
+                    $checkbox.next('label').addClass('text-muted');
+                }
+            }
+
+            // Add table-layout: fixed for better control
+            $('#myDataTable').css('table-layout', 'fixed');
+
+            adjustColumnWidths();
+        }
+
+        // Handle column toggle clicks
+        function setupColumnToggleHandlers() {
+            $('input.column-toggle').off('change').on('change', function () {
+                if (!accountStatusTable) return;
+
+                const columnIndex = parseInt($(this).data('column'));
+                const isChecked = $(this).is(':checked');
+                const $label = $(this).next('label');
+
+                // Toggle column visibility
+                accountStatusTable.column(columnIndex).visible(isChecked);
+
+                // Update label styling
+                if (isChecked) {
+                    $label.removeClass('text-muted');
+                } else {
+                    $label.addClass('text-muted');
+                }
+
+                // Adjust column widths
+                adjustColumnWidths();
+
+                // Show a message when columns are toggled
+                const columnName = $label.text().trim();
+                appalert(`${columnName} column ${isChecked ? 'shown' : 'hidden'}`, 3, 1);
+            });
+        }
+
+        // Show all columns
+        function showAllColumns() {
+            if (!accountStatusTable) return;
+
+            for (let i = 0; i <= 9; i++) {
+                accountStatusTable.column(i).visible(true);
+                const $checkbox = $(`input.column-toggle[data-column="${i}"]`);
+                $checkbox.prop('checked', true);
+                $checkbox.next('label').removeClass('text-muted');
+            }
+
+            adjustColumnWidths();
+            appalert('All columns are now visible', 3, 1);
+        }
+
+        // Reset to default columns
+        function resetToDefaultColumns() {
+            if (!accountStatusTable) return;
+
+            for (let i = 0; i <= 9; i++) {
+                if (i <= 4 || i === 9) { // Show first 5 data columns + Actions
+                    accountStatusTable.column(i).visible(true);
+                    $(`input.column-toggle[data-column="${i}"]`).prop('checked', true);
+                    $(`input.column-toggle[data-column="${i}"]`).next('label').removeClass('text-muted');
+                } else {
+                    accountStatusTable.column(i).visible(false);
+                    $(`input.column-toggle[data-column="${i}"]`).prop('checked', false);
+                    $(`input.column-toggle[data-column="${i}"]`).next('label').addClass('text-muted');
+                }
+            }
+
+            adjustColumnWidths();
+            appalert('Columns reset to default view', 3, 1);
+        }
+
         // Collect filter values
         function collectFilters() {
             return {
@@ -291,7 +473,8 @@
 
             accountStatusTable = $('#myDataTable').DataTable({
                 searching: true,
-                responsive: true,
+                responsive: false, // Disable responsive to allow custom column widths
+                autoWidth: false,
                 serverSide: true,
                 processing: false,
                 order: [[0, 'desc']],
@@ -331,8 +514,8 @@
                         render: function (data) {
                             const actionName = getActionName(data);
                             return `<span class="badge ${getActionBadgeClass(actionName)}">
-                                    ${actionName}
-                                </span>`;
+                                        ${actionName}
+                                    </span>`;
                         }
                     },
                     {
@@ -360,7 +543,20 @@
                     processing: '<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>'
                 },
                 lengthMenu: [10, 25, 50, 100],
-                pageLength: 25
+                pageLength: 25,
+                drawCallback: function () {
+                    // Adjust column widths after each draw
+                    adjustColumnWidths();
+                },
+                initComplete: function () {
+                    // Initialize column visibility after table is fully loaded
+                    initColumnToggles();
+                    setupColumnToggleHandlers();
+
+                    // Setup quick action buttons
+                    $('#showAllColumns').off('click').on('click', showAllColumns);
+                    $('#resetColumns').off('click').on('click', resetToDefaultColumns);
+                }
             });
         }
 
@@ -375,31 +571,31 @@
             var hasBeenProcessed = status === 'Approved' || status === 'Rejected' || status === 'Applied' || status === 'Failed' || status === 'Cancelled';
 
             var detailsBtn = `<button type="button" class="dropdown-item btn-details" data-id="${recordId}">
-                                                        <i class="mdi mdi-eye me-1 text-primary"></i> Details
-                                                    </button>`;
+                                                            <i class="mdi mdi-eye me-1 text-primary"></i> Details
+                                                        </button>`;
 
             var approveBtn = canApprove ?
                 `<button type="button" class="dropdown-item btn-approve text-success" data-id="${recordId}">
-                                            <i class="mdi mdi-check-circle me-1 text-success"></i> Make Decision
-                                            </button>` : '';
+                                                <i class="mdi mdi-check-circle me-1 text-success"></i> Make Decision
+                                                </button>` : '';
 
             var disabledMsg = hasBeenProcessed ?
                 '<li><span class="dropdown-item-text text-muted"><i class="mdi mdi-lock me-1"></i> Already Processed</span></li>' : '';
 
             return `
-                                <div class="dropdown text-center">
-                                    <button class="btn btn-sm btn-info dropdown-toggle text-white" type="button"
-                                            id="${btnId}" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="mdi mdi-cog-outline"></i> Actions
-                                    </button>
-                                    <ul class="dropdown-menu" aria-labelledby="${btnId}">
-                                        <li>${detailsBtn}</li>
-                                        ${disabledMsg}
-                                        ${approveBtn ? '<li><hr class="dropdown-divider"></li>' : ''}
-                                        ${approveBtn ? '<li>' + approveBtn + '</li>' : ''}
-                                    </ul>
-                                </div>
-                            `;
+                                    <div class="dropdown text-center">
+                                        <button class="btn btn-sm btn-info dropdown-toggle text-white" type="button"
+                                                id="${btnId}" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="mdi mdi-cog-outline"></i> Actions
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="${btnId}">
+                                            <li>${detailsBtn}</li>
+                                            ${disabledMsg}
+                                            ${approveBtn ? '<li><hr class="dropdown-divider"></li>' : ''}
+                                            ${approveBtn ? '<li>' + approveBtn + '</li>' : ''}
+                                        </ul>
+                                    </div>
+                                `;
         }
 
         // Handle AJAX errors

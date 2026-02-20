@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.MemberAccountManagement.ManageAccountStatusCommand
+@using CBS.FrontDesk.Data.Entity.MemberAccountManagement
 
 <div class="card shadow-lg border-0">
 
@@ -104,6 +105,38 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Request Details Section -->
+                <div class="row g-3 mt-2">
+
+                    <!-- Request Reason -->
+                    <div class="col-md-6">
+                        <div class="bg-white p-3 rounded shadow-sm">
+                            <label class="text-muted small text-uppercase mb-1">Request Reason</label>
+                            <p class="fw-bold text-dark mb-0 fs-5">
+                                @(string.IsNullOrEmpty(Model.RequestReason) ? "N/A" : Model.RequestReason)
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Conditional Amount (Only for Partial Block/Unblock) -->
+                    @if (Model.Action == AccountManagementAction.BlockPartial ||
+                    Model.Action == AccountManagementAction.UnblockPartial)
+                    {
+                        <div class="col-md-6">
+                            <div class="bg-white p-3 rounded shadow-sm">
+                                <label class="text-muted small text-uppercase mb-1">Amount</label>
+                                <p class="fw-bold text-dark mb-0 fs-5">
+                                    @Model.Amount.ToString("N1")
+                                </p>
+                            </div>
+                        </div>
+                    }
+
+
+                </div>
+
+
             </div>
         </div>
 
@@ -122,16 +155,16 @@
                     <div class="mb-4">
                         <label for="decisionStatus" class="form-label fw-bold text-dark">
                             <i class="mdi mdi-format-list-bulleted me-1 text-primary"></i>
-                            New Status
+                            Decision
                             <span class="text-danger">*</span>
                         </label>
                         <select id="decisionStatus" name="decisionStatus" class="form-control select2" required>
                             <option value="">-- Select New Status --</option>
                             <option value="Draft">Draft</option>
                             <option value="PendingApproval">Pending Approval</option>
-                            <option value="Approved">Approved</option>
-                            <option value="Rejected">Rejected</option>
-                            <option value="Cancelled">Cancelled</option>
+                            <option value="Approve">Approved</option>
+                            <option value="Reject">Rejected</option>
+                            <option value="Cancel">Cancelled</option>
                             <option value="Applied">Applied</option>
                             <option value="Failed">Failed</option>
                         </select>

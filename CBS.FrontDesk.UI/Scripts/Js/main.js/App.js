@@ -1569,83 +1569,87 @@ function submitChequeRequestForm(form) {
 
 
 //collins added this
-// Setup decision modal handlers
-function setupDecisionModalHandlers() {
-    // Initialize select2 for the dropdown
-    if ($.fn.select2) {
-        try {
-            $('#decisionStatus').select2({
-                width: '100%',
-                placeholder: '-- Select New Status --',
-                allowClear: true,
-                dropdownParent: $('#genericModal')
-            });
-        } catch (err) {
-            console.warn('select2 init failed', err);
-        }
+function AjaxPostAndUpdate(form) {
+    console.log("Form Action:", form.action);
+    console.log("Form Methodss:", form.method);
+
+
+
+    var formData = new FormData(form);
+    for (var pair of formData.entries()) {
+        console.log(pair[0] + ', ' + pair[1]);
     }
 
-    // Remove any existing handlers and attach new one for submit button
-    $('#actionSubmitBtn').off('click').on('click', function () {
-        submitDecision();
-    });
-}
+    //update to be tested 
+    // 🔒 Disable button immediately
+    $submitBtn.prop('disabled', true);
+    $submitBtn.html('<i class="mdi mdi-loading mdi-spin me-1"></i> Processing...');
 
-// Submit decision with dropdown value
-function submitDecision() {
-    var workflowId = $('#workflowId').val();
-    var decisionStatus = $('#decisionStatus').val();
-    var decisionNote = $('#decisionNote').val().trim();
 
-    // Validate dropdown selection
-    if (!decisionStatus) {
-        appalert('Please select a new status', 0, 1);
-        return;
-    }
+    $.validator.unobtrusive.parse(form);
+    if ($(form).valid()) {
+        alertify.confirm("Confirmation", "Are you sure you want to perform this action? ",
+            function () {
+                var ajaxConfig = {
+                    type: 'POST',
+                    url: form.action,
+                    data: new FormData(form),
+                    success: function (response) {
+                        console.log("Response:", response);
+                        if (response.success) {
+                            if (response.status === "Exist") {
+                                appalert(response.message, 3, 1);
+                            }
+                            else if (response.status === "Failed") {
+                                appalert(response.message, 2, 1);
+                            }
+                            else {
+                                appalert(response.message, 1, 1);
+                            }
 
-    if (!decisionNote || decisionNote.length < 10) {
-        appalert('Please provide a detailed reason (minimum 10 characters)', 0, 1);
-        return;
-    }
+                            if (response.option === 'Update' && response.reloadDataView === "Yes") {
+                                LoadDataMain(response.controllerName, response.option, response.divLoaderList, response.tableName, response.dataLoaderActionName, "KEY", "List");
+                            }
+                            else if (response.optype === 'Insert' && response.reloadDataView === "Yes") {
+                                EditResetMain("KEY", response.option, response.divLoaderCreator, response.controllerName, response.reinitializedActionName, response.groupID);
+                            }
+                            else if (response.reloadDataView === "Yes") {
+                                LoadDataMain(response.controllerName, response.option, response.divLoaderList, response.tableName, response.dataLoaderActionName, "KEY", "List");
+                            }
+                        } else {
+                            if (response.Status === "Exist") {
+                                appalert(response.message, 3, 1);
+                            } else {
+                                appalert(response.message, 2, 1);
+                            }
+                        }
+                    },
+                    error: function (err) {
+                        console.log("Error:", err);
 
-    // Create the command object that matches your ManageAccountStatusCommand
-    var command = {
-        Id: workflowId,
-        Decision: decisionStatus,
-        DecisionNote: decisionNote
-    };
+                        if (err.status === 401) { // Unauthorized
+                            // Session has expired, redirect to the login page
+                            window.location.href = '/Authentication/Login'; // Adjust the URL as needed
+                        } else {
+                            appalert(err.statusText, 0, 1);
+                        }
+                    }
+                };
 
-    // Get anti-forgery token
-    var token = $('input[name="__RequestVerificationToken"]').val();
+                if ($(form).attr('enctype') === "multipart/form-data") {
+                    ajaxConfig.contentType = false;
+                    ajaxConfig.processData = false;
+                }
 
-    $.ajax({
-        url: '/MemberAccountMan/MakeDecision',
-        type: 'POST',
-        data: JSON.stringify(command),
-        contentType: 'application/json',
-        headers: {
-            'RequestVerificationToken': token
-        },
-        beforeSend: function () {
-            $('#actionSubmitBtn').prop('disabled', true);
-        },
-        success: function (response) {
-            if (response.success) {
-                $('#genericModal').modal('hide');
-                appalert(`Status updated to ${decisionStatus} successfully`, 1, 1);
-                loadData();
-            } else {
-                appalert(response.message || 'Failed to update status', 0, 1);
+                console.log("AJAX Config:", ajaxConfig);
+                $.ajax(ajaxConfig);
+            },
+            function () {
+                appalert('Transaction cancelled', 3, 1);
             }
-        },
-        error: function (xhr, status, error) {
-            console.error('Error:', xhr.responseText);
-            appalert('An error occurred while updating status', 0, 1);
-        },
-        complete: function () {
-            $('#actionSubmitBtn').prop('disabled', false);
-        }
-    });
+        );
+    }
+    return false;
 }
 
 function AjaxPostAndUpdateValidationDecision(form) {

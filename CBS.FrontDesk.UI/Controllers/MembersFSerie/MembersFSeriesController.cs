@@ -104,6 +104,34 @@ namespace CBS.FrontDesk.UI.Controllers.Series
             }).ToList();
 
 
+            ViewBag.AccountActions = new List<SelectListItem>
+            {
+                                 new SelectListItem { Text = "Activate Account", Value = "Activate" },
+                                    new SelectListItem { Text = "Freeze Account", Value = "Freeze" },
+                                    new SelectListItem { Text = "Unfreeze Account", Value = "Unfreeze" },
+
+                                    new SelectListItem { Text = "Block Full Account", Value = "BlockFull" },
+                                    new SelectListItem { Text = "Unblock Full Account", Value = "UnblockFull" },
+
+                                    new SelectListItem { Text = "Block Partial (Amount)", Value = "BlockPartial" },
+                                    new SelectListItem { Text = "Unblock Partial (Amount)", Value = "UnblockPartial" },
+
+                                    new SelectListItem { Text = "Close Account", Value = "Close" },
+                                    new SelectListItem { Text = "Reopen Account", Value = "Reopen" },
+
+                                    new SelectListItem { Text = "Mark as Dormant", Value = "MarkDormant" },
+                                    new SelectListItem { Text = "Reactivate Dormant", Value = "ReactivateDormant" },
+
+                                    new SelectListItem { Text = "Block Cash In", Value = "BlockCashIn" },
+                                    new SelectListItem { Text = "UnBlock Cash In", Value = "OpenCashIn" },
+
+                                    new SelectListItem { Text = "Block Withdrawal", Value = "BlockWithdrawal" },
+                                    new SelectListItem { Text = "UnBlock Withdrawal", Value = "OpenWithdrawal" },
+
+                                    new SelectListItem { Text = "Block Transfer", Value = "BlockTransfer" },
+                                    new SelectListItem { Text = "UnBlock Transfer", Value = "OpenTransfer" }
+            };
+
             var branches = await _branchServices.GetBranches();
             ViewBag.Branches = branches;
             return true;
