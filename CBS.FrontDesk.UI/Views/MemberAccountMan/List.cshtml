@@ -64,51 +64,90 @@
 
     <form id="accountStatusFilterForm" autocomplete="off">
         <div class="card p-3 mb-3 bg-light">
+
             <div class="row mb-3">
 
+                <!-- Branch (Always Visible) -->
                 <div class="col-md-12">
                     <label>@GlobalUserManagement.Branch</label>
                     <div class="form-floating shadow-sm">
-                        @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "Id", "name"), "---" + @GlobalUserManagement.SelectBranch + "---", new { @class = "form-control select2", id = "branchId" })
+                        @Html.DropDownListFor(
+                            m => m.BranchId,
+                            new SelectList(ViewBag.Branches, "Id", "name"),
+                            "---" + @GlobalUserManagement.SelectBranch + "---",
+                            new { @class = "form-control select2", id = "branchId" })
                         @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
 
+            <hr />
+
+            <!-- FILTER CHECKBOXES -->
+            <div class="row mb-3">
+
+                <div class="col-md-4">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input filter-toggle" id="chkStatus" data-target="#statusContainer">
+                        <label class="form-check-label fw-bold">Filter by Status</label>
                     </div>
                 </div>
 
-                <div class="row mb-3">
-
-                    <hr />
-                    <div class="col-md-4">
-                        <label class="form-label fw-bold">Status</label>
-                        <select id="status" name="Status" class="form-control">
-                            <option value="">-- All Statuses --</option>
-                            <option value="PendingApproval">Pending Approval</option>
-                            <option value="Approved">Approved</option>
-                            <option value="Rejected">Rejected</option>
-                            <option value="Applied">Applied</option>
-                            <option value="Failed">Failed</option>
-                            <option value="Cancelled">Cancelled</option>
-                        </select>
-                    </div>
-
-                    <div class="col-md-4">
-                        <label class="form-label fw-bold">Action Type</label>
-                        <select id="action" name="Action" class="form-control">
-                            <option value="">-- All Actions --</option>
-                            <option value="Block">Block</option>
-                            <option value="Unblock">Unblock</option>
-                            <option value="BlockPartial">Block Partial</option>
-                            <option value="Freeze">Freeze</option>
-                            <option value="Close">Close</option>
-                            <option value="Reopen">Reopen</option>
-                        </select>
-                    </div>
-
-                    <div class="col-md-4">
-                        <label class="form-label fw-bold">Member Reference</label>
-                        <input type="text" id="memberReference" name="MemberReference" class="form-control" placeholder="Account/Member ID" />
+                <div class="col-md-4">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input filter-toggle" id="chkAction" data-target="#actionContainer">
+                        <label class="form-check-label fw-bold">Filter by Action</label>
                     </div>
                 </div>
+
+                <div class="col-md-4">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input filter-toggle" id="chkMember">
+                        <label class="form-check-label fw-bold">Filter by Member</label>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- FILTER INPUTS (Hidden by Default) -->
+            <div class="row mb-3">
+
+                <!-- Status -->
+                <div class="col-md-4 d-none" id="statusContainer">
+                    <label class="form-label fw-bold">Status</label>
+                    <select id="status" name="Status" class="form-control">
+                        <option value="">-- All Statuses --</option>
+                        <option value="PendingApproval">Pending Approval</option>
+                        <option value="Approved">Approved</option>
+                        <option value="Rejected">Rejected</option>
+                        <option value="Applied">Applied</option>
+                        <option value="Failed">Failed</option>
+                        <option value="Cancelled">Cancelled</option>
+                    </select>
+                </div>
+
+                <!-- Action -->
+                <div class="col-md-4 d-none" id="actionContainer">
+                    <label class="form-label fw-bold">Action Type</label>
+                    <select id="action" name="Action" class="form-control">
+                        <option value="">-- All Actions --</option>
+                        <option value="BlockFull">Block Full</option>
+                        <option value="UnblockFull">Unblock Full</option>
+                        <option value="BlockPartial">Block Partial</option>
+                        <option value="UnblockPartial">Unblock Partial</option>
+                        <option value="Freeze">Freeze</option>
+                        <option value="Close">Close</option>
+                        <option value="Reopen">Reopen</option>
+                    </select>
+                </div>
+
+                <!-- Member Reference -->
+                <div class="col-md-4 d-none" id="memberContainer">
+                    <label class="form-label fw-bold">Member Reference</label>
+                    <input type="text" id="memberReference" name="MemberReference"
+                           class="form-control" placeholder="Account/Member ID" />
+                </div>
+
             </div>
 
             <div class="row mt-2">
@@ -890,8 +929,21 @@
                 }
             }
 
+
+            $("#chkStatus").change(function () {
+                $("#statusContainer").toggleClass("d-none", !this.checked);
+            });
+
+            $("#chkAction").change(function () {
+                $("#actionContainer").toggleClass("d-none", !this.checked);
+            });
+
+            $("#chkMember").change(function () {
+                $("#memberContainer").toggleClass("d-none", !this.checked);
+            });
+
             // Initialize DataTable
-            initDataTable();
+            //initDataTable();
 
             // Filter button click
             $('#applyFilterBtn').on('click', function (e) {
