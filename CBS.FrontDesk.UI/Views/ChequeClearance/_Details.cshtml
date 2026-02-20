@@ -1,1 +1,1164 @@
-﻿
+﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceRequest.OptionRequest
+@using System.Linq
+@using System.Text.RegularExpressions
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card bg-light mb-2">
+                <div class="card-body text-center">
+                    <h1 class="card-title text-primary mb-1">
+                        <i class="mdi mdi-checkbook me-2"></i>
+                        Cheque Details
+                    </h1>
+                    <p class="card-text">
+                        Below we have details of a cheque management request
+                    </p>
+                    <div class="alert alert-info mt-3 py-2">
+                        Cheque ID: <strong>@Model.Id</strong> |
+                        Status: <span class="badge @GetStatusBadgeClass(Model.Status)">@Model.Status</span> |
+                        Payment Status: <span class="badge @GetPaymentStatusBadgeClass(Model.PaymentStatus)">@Model.PaymentStatus</span>
+                    </div>
+                    <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-1">
+        <div class="card-body d-flex justify-content-end align-items-center">
+            <a href="@Url.Action("Index", "ChequeManagement")" class="btn btn-outline-secondary">
+                <i class="mdi mdi-arrow-left me-1"></i> Back to List
+            </a>
+            <button type="button" class="btn btn-outline-info" onclick="showPrintModal()">
+                <i class="mdi mdi-printer-outline me-1"></i> Print Details
+            </button>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0 text-primary"><i class="mdi mdi-timeline-outline me-2"></i>Cheque Status Timeline</h5>
+                </div>
+                <div class="card-body">
+                    <div class="timeline">
+                        <div class="timeline-item completed">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <h6>Submitted</h6>
+                                <small>@Model.SubmissionDate.ToString("dd MMM yyyy HH:mm")</small>
+                                <p>Cheque was submitted</p>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item @(Model.Status == "UNDER_OVERDRAFT" ? "active" : (Model.Status == "APPROVED" || Model.Status == "PROCESSED" || Model.Status == "REJECTED") ? "completed" : "")">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <h6>Under Review</h6>
+                                <small>
+                                    @if (Model.Status == "UNDER_OVERDRAFT")
+                                    {
+                                        @:In Progress
+                                    }
+                                    else if (Model.ProcessedDate.HasValue)
+                                    {
+                                        @Model.ProcessedDate.Value.ToString("dd MMM yyyy HH:mm")
+                                    }
+                                    else
+                                    {
+                                        @:Pending
+                                    }
+                                </small>
+                                <p>Cheque is being reviewed for approval</p>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item @(Model.Status == "APPROVED" ? "active" : (Model.Status == "PROCESSED") ? "completed" : "")">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <h6>Approved</h6>
+                                <small>
+                                    @if (Model.Status == "APPROVED" || Model.Status == "PROCESSED")
+                                    {
+                                        @(Model.ProcessedDate?.ToString("dd MMM yyyy HH:mm") ?? "Pending")
+                                    }
+                                    else
+                                    {
+                                        @:Pending
+                                    }
+                                </small>
+                                @if (Model.Status == "APPROVED" || Model.Status == "PROCESSED")
+                                {
+                                    <p>Cheque approved by @(Model.ApprovedBy ?? "System")</p>
+                                }
+                                else
+                                {
+                                    <p>Awaiting approval</p>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="timeline-item @(Model.Status == "PROCESSED" || Model.PaymentStatus == "PAID" ? "active" : "")">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <h6>Processed</h6>
+                                <small>@(Model.ProcessedDate?.ToString("dd MMM yyyy HH:mm") ?? "Pending")</small>
+                                @if (Model.PaymentStatus == "PAID")
+                                {
+                                    <p>Cheque processed and payment completed</p>
+                                }
+                                else if (Model.PaymentStatus == "PENDING")
+                                {
+                                    <p>Awaiting payment processing</p>
+                                }
+                            </div>
+                        </div>
+
+                        @if (Model.Status == "REJECTED")
+                        {
+                            <div class="timeline-item active">
+                                <div class="timeline-marker bg-danger"></div>
+                                <div class="timeline-content">
+                                    <h6 class="text-danger">Rejected</h6>
+                                    <small>@(Model.RejectionDate?.ToString("dd MMM yyyy HH:mm") ?? "N/A")</small>
+                                    <p class="text-danger">@(Model.RejectionNote ?? "Cheque was rejected")</p>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-header bg-light text-primary">
+                    <h5 class="mb-0"><i class="mdi mdi-account-details me-2 text-primary"></i>Customer & Cheque Details</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-sm">
+                        <tr>
+                            <th width="40%">Customer ID:</th>
+                            <td>@Model.CustomerId</td>
+                        </tr>
+                        <tr>
+                            <th>Account Number:</th>
+                            <td>@(Model.AccountNumber ?? "N/A")</td>
+                        </tr>
+                        <tr>
+                            <th>Cheque Type:</th>
+                            <td>
+                                <span class="badge bg-info">
+                                    @(Model.ChequeType ? "Internal Cheque" : "External Cheque")
+                                </span>
+                            </td>
+                        </tr>
+                        @if (!string.IsNullOrEmpty(Model.CheckBookNumber))
+                        {
+                            <tr>
+                                <th>Checkbook Number:</th>
+                                <td>@Model.CheckBookNumber</td>
+                            </tr>
+                        }
+                        @if (Model.CheckBookPageNumber.HasValue)
+                        {
+                            <tr>
+                                <th>Page Number:</th>
+                                <td>@Model.CheckBookPageNumber</td>
+                            </tr>
+                        }
+                        <tr>
+                            <th>Request Note:</th>
+                            <td>@(Model.RequestNote ?? "No notes provided")</td>
+                        </tr>
+                        <tr>
+                            <th>Branch:</th>
+                            <td>@Model.BranchName (Code: @Model.BranchCode)</td>
+                        </tr>
+                        <tr>
+                            <th>Submission Date:</th>
+                            <td>@Model.SubmissionDate.ToString("dd MMM yyyy HH:mm")</td>
+                        </tr>
+                        <tr>
+                            <th>Created Date:</th>
+                            <td>@Model.CreatedDate.ToString("dd MMM yyyy HH:mm")</td>
+                        </tr>
+                        @if (!string.IsNullOrEmpty(Model.ApprovalNote))
+                        {
+                            <tr>
+                                <th>Approval Note:</th>
+                                <td>@Model.ApprovalNote</td>
+                            </tr>
+                        }
+                        @if (!string.IsNullOrEmpty(Model.ReviewNote))
+                        {
+                            <tr>
+                                <th>Review Note:</th>
+                                <td>@Model.ReviewNote</td>
+                            </tr>
+                        }
+                        @if (!string.IsNullOrEmpty(Model.RejectionNote))
+                        {
+                            <tr>
+                                <th>Rejection Note:</th>
+                                <td class="text-danger">@Model.RejectionNote</td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0 text-primary"><i class="mdi mdi-cash-multiple me-2 text-primary"></i>Financial Details</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-sm">
+                        <tr>
+                            <th width="40%">Amount:</th>
+                            <td class="fw-bold text-primary">
+                                @Model.Amount.ToString("N0") XAF
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Deductions:</th>
+                            <td class="text-danger">
+                                @Model.DeduceAmount.ToString("N0") XAF
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Net Amount:</th>
+                            <td class="fw-bold text-success">
+                                @((Model.Amount - Model.DeduceAmount).ToString("N0")) XAF
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Charges:</th>
+                            <td>
+                                @Model.Charges.ToString("N0") XAF
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Receive Amount:</th>
+                            <td class="fw-bold text-success">
+                                @Model.ReceiveAmount.ToString("N0") XAF
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Current Clearance:</th>
+                            <td>@Model.CurrentClearanceAmount.ToString("N0") XAF</td>
+                        </tr>
+                        <tr>
+                            <th>Remaining Amount:</th>
+                            <td>@Model.RemainingAmount.ToString("N0") XAF</td>
+                        </tr>
+                        <tr>
+                            <th>Use Overdraft:</th>
+                            <td>
+                                @if (Model.UseOverdraft)
+                                {
+                                    <span class="badge bg-warning">Yes</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">No</span>
+                                }
+                            </td>
+                        </tr>
+                        @if (Model.ToAccountNumber > 0)
+                        {
+                            <tr>
+                                <th>To Account Number:</th>
+                                <td>@Model.ToAccountNumber</td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (!Model.ChequeType) // External Cheque
+    {
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0 text-primary"><i class="mdi mdi-bank me-2 text-primary"></i>External Bank Details</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="border p-3 rounded">
+                                    <small class="text-muted d-block">Bank Name</small>
+                                    <strong>@(Model.ExternalBankName ?? "N/A")</strong>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="border p-3 rounded">
+                                    <small class="text-muted d-block">Bank Code</small>
+                                    <strong>@(Model.ExternalBankCode ?? "N/A")</strong>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="border p-3 rounded">
+                                    <small class="text-muted d-block">Branch Name</small>
+                                    <strong>@(Model.ExternalBranchName ?? "N/A")</strong>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="border p-3 rounded">
+                                    <small class="text-muted d-block">Branch Code</small>
+                                    <strong>@(Model.ExternalBranchCode ?? "N/A")</strong>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mt-3">
+                                <div class="border p-3 rounded">
+                                    <small class="text-muted d-block">Cheque Number</small>
+                                    <strong>@(Model.ExternalChequeNumber ?? "N/A")</strong>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mt-3">
+                                <div class="border p-3 rounded">
+                                    <small class="text-muted d-block">Account Number</small>
+                                    <strong>@(Model.ExternalAccountNumber ?? "N/A")</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <!-- Cheque Images Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 text-primary">
+                        <i class="mdi mdi-image-multiple me-2 text-primary"></i>Cheque Images
+                        <span class="badge bg-secondary ms-2">@(Model.Documents?.Count ?? 0)</span>
+                    </h5>
+                </div>
+
+                <div class="card-body">
+                    @{
+                        var documents = Model.Documents ?? new List<CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceRequest.ClearanceRequestImage>();
+                    }
+
+                    @if (!documents.Any())
+                    {
+                        <div class="text-center py-4">
+                            <i class="mdi mdi-image-remove-outline display-4 text-muted"></i>
+                            <p class="mt-2 text-muted">No cheque images uploaded</p>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="row">
+                            @foreach (var document in documents)
+                            {
+                                <div class="col-md-6 col-lg-4 mb-4">
+                                    <div class="card document-card h-100">
+                                        <div class="card-header bg-light">
+                                            <h6 class="mb-0">
+                                                <i class="mdi mdi-image me-2"></i>Cheque Image
+                                            </h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <!-- Image Preview -->
+                                            <div class="text-center mb-3">
+                                                <div class="cheque-image-container" style="height: 200px; overflow: hidden; border-radius: 8px; cursor: pointer; border: 1px solid #dee2e6;"
+                                                     onclick="viewImage('@document.UrlPath', '@document.DocumentName', '@document.Id', '@document.Extension')">
+                                                    <img src="@document.UrlPath"
+                                                         alt="@document.DocumentName"
+                                                         class="img-fluid"
+                                                         style="width: 100%; height: 100%; object-fit: cover;"
+                                                         onerror="this.onerror=null; this.src='https://via.placeholder.com/300x200?text=Image+Not+Found';" />
+                                                </div>
+                                            </div>
+
+                                            <!-- Image Info -->
+                                            <div class="text-center mb-3">
+                                                <h6 class="mb-1">@document.DocumentName@document.Extension</h6>
+                                                <small class="text-muted">
+                                                    <i class="mdi mdi-format-size"></i> @document.DocumentType Image
+                                                </small>
+                                            </div>
+
+                                            <!-- Action Buttons -->
+                                            <div class="d-flex justify-content-center gap-2">
+                                                <button class="btn btn-sm btn-outline-primary"
+                                                        onclick="viewImage('@document.UrlPath', '@document.DocumentName', '@document.Id', '@document.Extension')">
+                                                    <i class="mdi mdi-eye me-1"></i> View
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-success"
+                                                        onclick="downloadImage('@document.UrlPath', '@document.DocumentName', '@document.Extension')">
+                                                    <i class="mdi mdi-download me-1"></i> Download
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+
+                        if (documents.Count > 1)
+                        {
+                            <div class="alert alert-info mt-3 mb-0">
+                                <i class="mdi mdi-information-outline me-2"></i>
+                                Multiple cheque images available. Click on any image to view in full-screen mode with navigation.
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Preview Modal -->
+    <div class="modal fade" id="imagePreviewModal" tabindex="-1" aria-labelledby="imagePreviewModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-light">
+                    <h5 class="modal-title" id="imagePreviewModalLabel">
+                        <i class="mdi mdi-image me-2"></i>Cheque Image Preview
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-0 bg-dark">
+                    <div class="position-relative">
+                        <!-- Image Navigation -->
+                        <div id="imageNavigationPrev" class="d-none position-absolute top-50 start-0 translate-middle-y z-3">
+                            <button class="btn btn-dark btn-lg rounded-circle ms-3" onclick="navigateImage('prev')" style="opacity: 0.7;">
+                                <i class="mdi mdi-chevron-left"></i>
+                            </button>
+                        </div>
+                        <div id="imageNavigationNext" class="d-none position-absolute top-50 end-0 translate-middle-y z-3">
+                            <button class="btn btn-dark btn-lg rounded-circle me-3" onclick="navigateImage('next')" style="opacity: 0.7;">
+                                <i class="mdi mdi-chevron-right"></i>
+                            </button>
+                        </div>
+
+                        <!-- Image Display -->
+                        <div class="text-center p-3">
+                            <img id="previewImage" src="" alt="Cheque Image" class="img-fluid" style="max-height: 80vh;">
+                        </div>
+
+                        <!-- Image Counter -->
+                        <div id="imageCounter" class="position-absolute bottom-0 start-50 translate-middle-x mb-3 d-none">
+                            <span class="badge bg-dark px-3 py-2"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="me-auto">
+                        <span id="imageFileName" class="text-muted"></span>
+                    </div>
+                    <button type="button" class="btn btn-outline-primary" onclick="downloadCurrentImage()" id="downloadImageBtn">
+                        <i class="mdi mdi-download me-1"></i> Download
+                    </button>
+                    <a id="imageFullViewLink" href="#" target="_blank" class="btn btn-outline-primary">
+                        <i class="mdi mdi-open-in-new me-1"></i> Open in New Tab
+                    </a>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Print Modal -->
+    <div class="modal fade" id="printModal" tabindex="-1" aria-labelledby="printModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-light">
+                    <h5 class="modal-title" id="printModalLabel">Print Cheque Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header bg-light">
+                                    <h6 class="mb-0">Content Selection</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" id="printCustomerDetails" checked>
+                                        <label class="form-check-label" for="printCustomerDetails">
+                                            Customer & Cheque Details
+                                        </label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" id="printFinancialDetails" checked>
+                                        <label class="form-check-label" for="printFinancialDetails">
+                                            Financial Details
+                                        </label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" id="printTimeline" checked>
+                                        <label class="form-check-label" for="printTimeline">
+                                            Status Timeline
+                                        </label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" id="printChequeImages" checked>
+                                        <label class="form-check-label" for="printChequeImages">
+                                            Include Cheque Images
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header bg-light">
+                                    <h6 class="mb-0">Print Options</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <label for="printOrientation" class="form-label">Orientation</label>
+                                        <select class="form-select" id="printOrientation">
+                                            <option value="portrait">Portrait</option>
+                                            <option value="landscape">Landscape</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="printHeader" class="form-label">Header Text</label>
+                                        <input type="text" class="form-control" id="printHeader" value="Cheque Management Details">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="printFooter" class="form-label">Footer Text</label>
+                                        <input type="text" class="form-control" id="printFooter" value="Confidential - Internal Use Only">
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="printTimestamp" checked>
+                                        <label class="form-check-label" for="printTimestamp">
+                                            Include timestamp
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header bg-light">
+                                    <h6 class="mb-0">Preview</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div id="printPreview" class="border p-3" style="min-height: 300px; max-height: 500px; overflow-y: auto; background: white;">
+                                        <div class="text-center text-muted">
+                                            <i class="mdi mdi-printer-outline display-4 mb-3"></i>
+                                            <p>Print preview will appear here...</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" onclick="updatePrintPreview()">
+                        <i class="mdi mdi-eye me-1"></i> Update Preview
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="generatePrint()">
+                        <i class="mdi mdi-printer me-1"></i> Print Now
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: 20px;
+        }
+
+            .timeline-item:last-child {
+                padding-bottom: 0;
+            }
+
+        .timeline-marker {
+            position: absolute;
+            left: -30px;
+            top: 0;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #ddd;
+            border: 3px solid #fff;
+        }
+
+        .timeline-item.completed .timeline-marker {
+            background: #198754;
+        }
+
+        .timeline-item.active .timeline-marker {
+            background: #0d6efd;
+            animation: pulse 2s infinite;
+        }
+
+        .timeline-content {
+            padding-left: 10px;
+        }
+
+        .document-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+            .document-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            }
+
+        .cheque-image-container {
+            transition: opacity 0.2s;
+        }
+
+            .cheque-image-container:hover {
+                opacity: 0.9;
+            }
+
+            .cheque-image-container img {
+                transition: transform 0.3s;
+            }
+
+        .document-card:hover .cheque-image-container img {
+            transform: scale(1.05);
+        }
+
+        @@keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(13, 110, 253, 0.7);
+            }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(13, 110, 253, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(13, 110, 253, 0);
+            }
+        }
+
+        .modal-body.bg-dark {
+            background-color: #1a1a1a !important;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        // Global variables for image navigation
+        let imageSet = [];
+        let currentImageIndex = -1;
+        let currentImageId = '';
+
+        // Show print modal
+        function showPrintModal() {
+            var printModal = new bootstrap.Modal(document.getElementById('printModal'));
+            printModal.show();
+            updatePrintPreview();
+        }
+
+        // View single image
+        function viewImage(url, fileName, id, extension) {
+            if (!url || url.trim() === '') {
+                alert('No image available');
+                return;
+            }
+
+            // Collect all images for navigation
+            imageSet = [];
+            @if(Model.Documents != null)
+            {
+                foreach (var doc in Model.Documents)
+                {
+                    <text>
+                    imageSet.push({
+                        id: '@doc.Id',
+                        url: '@doc.UrlPath',
+                        name: '@doc.DocumentName',
+                        extension: '@doc.Extension'
+                    });
+                    if ('@doc.Id' === id) {
+                        currentImageIndex = imageSet.length - 1;
+                    }
+                    </text>
+                }
+            }
+
+            currentImageId = id;
+
+            // Load the selected image
+            loadImage(currentImageIndex);
+
+            // Show/hide navigation
+            var navPrev = document.getElementById('imageNavigationPrev');
+            var navNext = document.getElementById('imageNavigationNext');
+            var counter = document.getElementById('imageCounter');
+
+            if (imageSet.length > 1) {
+                navPrev.classList.remove('d-none');
+                navNext.classList.remove('d-none');
+                counter.classList.remove('d-none');
+                updateImageCounter();
+            } else {
+                navPrev.classList.add('d-none');
+                navNext.classList.add('d-none');
+                counter.classList.add('d-none');
+            }
+
+            // Show modal
+            var modal = new bootstrap.Modal(document.getElementById('imagePreviewModal'));
+            modal.show();
+        }
+
+        // Load image into preview modal
+        function loadImage(index) {
+            if (index < 0 || index >= imageSet.length) return;
+
+            var img = imageSet[index];
+            currentImageIndex = index;
+
+            // Update modal title
+            document.getElementById('imagePreviewModalLabel').innerHTML =
+                '<i class="mdi mdi-image me-2"></i>Cheque Image Preview (' + (index + 1) + ' of ' + imageSet.length + ')';
+
+            // Update image
+            var previewImage = document.getElementById('previewImage');
+            previewImage.src = img.url;
+
+            // Update file name
+            document.getElementById('imageFileName').textContent = 'File: ' + img.name + img.extension;
+
+            // Update full view link
+            document.getElementById('imageFullViewLink').href = img.url;
+
+            // Update counter
+            updateImageCounter();
+
+            // Handle image load error
+            previewImage.onerror = function() {
+                this.src = 'https://via.placeholder.com/800x600?text=Image+Not+Found';
+            };
+        }
+
+        // Navigate between images
+        function navigateImage(direction) {
+            if (direction === 'prev' && currentImageIndex > 0) {
+                loadImage(currentImageIndex - 1);
+            } else if (direction === 'next' && currentImageIndex < imageSet.length - 1) {
+                loadImage(currentImageIndex + 1);
+            }
+        }
+
+        // Update image counter
+        function updateImageCounter() {
+            var counter = document.getElementById('imageCounter');
+            if (counter) {
+                counter.querySelector('.badge').textContent = currentImageIndex + 1 + ' of ' + imageSet.length;
+            }
+        }
+
+        // Download current image
+        function downloadCurrentImage() {
+            if (currentImageIndex < 0 || currentImageIndex >= imageSet.length) return;
+
+            var img = imageSet[currentImageIndex];
+            var fileName = 'cheque_' + img.name + '_@Model.Id' + img.extension;
+            downloadFile(img.url, fileName);
+        }
+
+        // Download single image
+        function downloadImage(url, fileName, extension) {
+            if (!url || url.trim() === '') {
+                alert('No image available for download');
+                return;
+            }
+
+            var safeFileName = fileName.replace(/[^a-z0-9.]/gi, '_');
+            var downloadName = 'cheque_' + safeFileName + '_@Model.Id' + (extension || '');
+            downloadFile(url, downloadName);
+        }
+
+        // Helper function to download a file
+        function downloadFile(url, fileName) {
+            var downloadLink = document.createElement('a');
+            downloadLink.href = url;
+            downloadLink.download = fileName;
+            downloadLink.style.display = 'none';
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+        }
+
+        // Update print preview
+        function updatePrintPreview() {
+            var previewDiv = document.getElementById('printPreview');
+            var includeImages = document.getElementById('printChequeImages').checked;
+
+            var previewHTML = `
+                <div style="font-family: Arial, sans-serif; padding: 15px; font-size: 12px;">
+                    <div style="text-align: center; margin-bottom: 10px;">
+                        <div style="font-size: 18px; font-weight: bold; color: #2c3e50;">
+                            @Model.BranchName
+                        </div>
+                        <div style="font-size: 12px; margin-top: 2px;">
+                            <strong>Branch Code:</strong> @Model.BranchCode
+                            &nbsp; | &nbsp;
+                            <strong>Generated:</strong> ${new Date().toLocaleString()}
+                        </div>
+                    </div>
+
+                    <div style="text-align: center; border-top: 2px solid #333; padding-top: 8px; margin-top: 10px;">
+                        <h2 style="margin: 5px 0; color: #2c3e50;">
+                            ${document.getElementById('printHeader').value || 'Cheque Management Details'}
+                        </h2>
+                        <p style="margin: 4px 0; color: #7f8c8d;">
+                            <strong>Cheque ID:</strong> @Model.Id
+                            &nbsp; | &nbsp;
+                            <strong>Customer:</strong> @Model.CustomerId
+                        </p>
+                    </div>
+            `;
+
+            // Customer & Cheque Details
+            if (document.getElementById('printCustomerDetails').checked) {
+                previewHTML += `
+                    <div style="margin-bottom: 20px; margin-top: 20px;">
+                        <h3 style="color: #3498db; border-bottom: 1px solid #eee; padding-bottom: 5px; font-size: 14px;">Customer & Cheque Details</h3>
+                        <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+                            <tr><td style="padding: 6px; border: 1px solid #ddd;"><strong>Customer ID:</strong></td><td style="padding: 6px; border: 1px solid #ddd;">@Model.CustomerId</td></tr>
+                            <tr><td style="padding: 6px; border: 1px solid #ddd;"><strong>Account Number:</strong></td><td style="padding: 6px; border: 1px solid #ddd;">@(Model.AccountNumber ?? "N/A")</td></tr>
+                            <tr><td style="padding: 6px; border: 1px solid #ddd;"><strong>Cheque Type:</strong></td><td style="padding: 6px; border: 1px solid #ddd;">@(Model.ChequeType ? "Internal" : "External")</td></tr>
+                            <tr><td style="padding: 6px; border: 1px solid #ddd;"><strong>Status:</strong></td><td style="padding: 6px; border: 1px solid #ddd;">@Model.Status</td></tr>
+                            <tr><td style="padding: 6px; border: 1px solid #ddd;"><strong>Payment Status:</strong></td><td style="padding: 6px; border: 1px solid #ddd;">@Model.PaymentStatus</td></tr>
+                        </table>
+                    </div>
+                `;
+            }
+
+            // Financial Details
+            if (document.getElementById('printFinancialDetails').checked) {
+                previewHTML += `
+                    <div style="margin-bottom: 20px;">
+                        <h3 style="color: #3498db; border-bottom: 1px solid #eee; padding-bottom: 5px; font-size: 14px;">Financial Details</h3>
+                        <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+                            <tr><td style="padding: 6px; border: 1px solid #ddd;"><strong>Amount:</strong></td><td style="padding: 6px; border: 1px solid #ddd;">@Model.Amount.ToString("N0") XAF</td></tr>
+                            <tr><td style="padding: 6px; border: 1px solid #ddd;"><strong>Deductions:</strong></td><td style="padding: 6px; border: 1px solid #ddd;">@Model.DeduceAmount.ToString("N0") XAF</td></tr>
+                            <tr><td style="padding: 6px; border: 1px solid #ddd;"><strong>Net Amount:</strong></td><td style="padding: 6px; border: 1px solid #ddd;">@((Model.Amount - Model.DeduceAmount).ToString("N0")) XAF</td></tr>
+                            <tr><td style="padding: 6px; border: 1px solid #ddd;"><strong>Charges:</strong></td><td style="padding: 6px; border: 1px solid #ddd;">@Model.Charges.ToString("N0") XAF</td></tr>
+                        </table>
+                    </div>
+                `;
+            }
+
+            // External Bank Details (if applicable)
+            @if (!Model.ChequeType)
+            {
+                <text>
+                previewHTML += `
+                    <div style="margin-bottom: 20px;">
+                        <h3 style="color: #3498db; border-bottom: 1px solid #eee; padding-bottom: 5px; font-size: 14px;">External Bank Details</h3>
+                        <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+                            <tr><td style="padding: 6px; border: 1px solid #ddd;"><strong>Bank Name:</strong></td><td style="padding: 6px; border: 1px solid #ddd;">@(Model.ExternalBankName ?? "N/A")</td></tr>
+                            <tr><td style="padding: 6px; border: 1px solid #ddd;"><strong>Branch Name:</strong></td><td style="padding: 6px; border: 1px solid #ddd;">@(Model.ExternalBranchName ?? "N/A")</td></tr>
+                            <tr><td style="padding: 6px; border: 1px solid #ddd;"><strong>Cheque Number:</strong></td><td style="padding: 6px; border: 1px solid #ddd;">@(Model.ExternalChequeNumber ?? "N/A")</td></tr>
+                        </table>
+                    </div>
+                `;
+                </text>
+            }
+
+            // Status Timeline
+            if (document.getElementById('printTimeline').checked) {
+                previewHTML += `
+                    <div style="margin-bottom: 20px;">
+                        <h3 style="color: #3498db; border-bottom: 1px solid #eee; padding-bottom: 5px; font-size: 14px;">Status Timeline</h3>
+                        <div style="padding-left: 10px; margin-top: 10px;">
+                            <p><strong>Submission Date:</strong> @Model.SubmissionDate.ToString("dd MMM yyyy HH:mm")</p>
+                            <p><strong>Processed Date:</strong> @(Model.ProcessedDate?.ToString("dd MMM yyyy HH:mm") ?? "Pending")</p>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Cheque Images
+            if (includeImages && @((Model.Documents?.Any() == true).ToString().ToLower())) {
+                previewHTML += `
+                    <div style="margin-bottom: 20px;">
+                        <h3 style="color: #3498db; border-bottom: 1px solid #eee; padding-bottom: 5px; font-size: 14px;">Cheque Images</h3>
+                `;
+
+                @if(Model.Documents != null)
+                {
+                    foreach (var document in Model.Documents)
+                    {
+                        <text>
+                        previewHTML += `
+                            <div style="margin-bottom: 15px; page-break-inside: avoid; text-align: center;">
+                                <h4 style="font-size: 12px; margin-bottom: 5px;">${'@document.DocumentName@document.Extension'}</h4>
+                                <img src="@document.UrlPath" alt="Cheque Image" style="max-width: 100%; max-height: 300px; border: 1px solid #ddd; padding: 5px;">
+                            </div>
+                        `;
+                        </text>
+                    }
+                }
+
+                previewHTML += `</div>`;
+            }
+
+            // Signature Section
+            previewHTML += `
+                <div style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #333;">
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <h3 style="border-bottom: 1px solid #ccc; padding-bottom: 10px; font-size: 14px; color: #2c3e50;">AUTHORIZATION SIGNATURES</h3>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-top: 30px;">
+                        <div style="flex: 1; text-align: center; margin: 0 10px; min-height: 150px;">
+                            <div style="height: 70px; border-bottom: 1px solid #000; margin-bottom: 10px;"></div>
+                            <p style="margin: 5px 0;"><strong>Prepared By</strong></p>
+                            <p style="font-size: 11px; margin: 3px 0;">Name: _________________________</p>
+                            <p style="font-size: 11px; margin: 3px 0;">Signature: ___________________</p>
+                            <p style="font-size: 11px; margin: 3px 0;">Date: ________________________</p>
+                        </div>
+                        <div style="flex: 1; text-align: center; margin: 0 10px; min-height: 150px;">
+                            <div style="height: 70px; border-bottom: 1px solid #000; margin-bottom: 10px;"></div>
+                            <p style="margin: 5px 0;"><strong>Reviewed By</strong></p>
+                            <p style="font-size: 11px; margin: 3px 0;">Name: _________________________</p>
+                            <p style="font-size: 11px; margin: 3px 0;">Signature: ___________________</p>
+                            <p style="font-size: 11px; margin: 3px 0;">Date: ________________________</p>
+                        </div>
+                        <div style="flex: 1; text-align: center; margin: 0 10px; min-height: 150px;">
+                            <div style="height: 70px; border-bottom: 1px solid #000; margin-bottom: 10px;"></div>
+                            <p style="margin: 5px 0;"><strong>Approved By</strong></p>
+                            <p style="font-size: 11px; margin: 3px 0;">Name: _________________________</p>
+                            <p style="font-size: 11px; margin: 3px 0;">Signature: ___________________</p>
+                            <p style="font-size: 11px; margin: 3px 0;">Date: ________________________</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 30px; padding-top: 10px; border-top: 1px solid #333; text-align: center; font-size: 10px; color: #7f8c8d;">
+                    <p>${document.getElementById('printFooter').value || 'Confidential - Internal Use Only'}</p>
+                    ${document.getElementById('printTimestamp').checked ? '<p>Printed on: ' + new Date().toLocaleString() + '</p>' : ''}
+                </div>
+            </div>
+        `;
+
+            previewDiv.innerHTML = previewHTML;
+        }
+
+        // Generate and print final document
+        function generatePrint() {
+            var printWindow = window.open('', '_blank');
+            var orientation = document.getElementById('printOrientation').value;
+
+            var previewContent = document.getElementById('printPreview').innerHTML;
+
+            var printDoc = `
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cheque Details - @Model.Id</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            font-size: 12pt;
+            line-height: 1.5;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+        }
+        th, td {
+            padding: 8px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+        .print-image {
+            max-width: 100%;
+            max-height: 300px;
+            border: 1px solid #ddd;
+            padding: 5px;
+            margin: 10px auto;
+            display: block;
+        }
+        .signature-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+        .signature-box {
+            flex: 1;
+            text-align: center;
+            margin: 0 10px;
+            min-height: 180px;
+        }
+        .signature-line {
+            height: 80px;
+            border-bottom: 1px solid #000;
+            margin-bottom: 15px;
+        }
+        .print-controls {
+            display: block;
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+        .print-btn {
+            padding: 12px 24px;
+            font-size: 16px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        .close-btn {
+            padding: 12px 24px;
+            font-size: 16px;
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        @@media print {
+            @@page {
+                size: A4 ${orientation};
+                margin: 15mm;
+            }
+            body {
+                font-size: 11pt;
+                padding: 0;
+            }
+            .print-controls {
+                display: none !important;
+            }
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    ${previewContent}
+
+    <div class="print-controls">
+        <h3>Print Controls</h3>
+        <p>Use the buttons below to print or close this window.</p>
+        <button onclick="window.print()" class="print-btn">
+            <i class="mdi mdi-printer"></i> Print Now
+        </button>
+        <button onclick="window.close()" class="close-btn">
+            <i class="mdi mdi-close"></i> Close Window
+        </button>
+    </div>
+
+    <script>
+        setTimeout(function() {
+            window.print();
+        }, 500);
+    <\/script>
+</body>
+</html>`;
+
+            printWindow.document.write(printDoc);
+            printWindow.document.close();
+
+            var printModal = bootstrap.Modal.getInstance(document.getElementById('printModal'));
+            if (printModal) {
+                printModal.hide();
+            }
+        }
+
+        // Event listeners for print options
+        document.addEventListener('DOMContentLoaded', function() {
+            var printOptions = [
+                'printCustomerDetails',
+                'printFinancialDetails',
+                'printTimeline',
+                'printChequeImages',
+                'printHeader',
+                'printFooter',
+                'printTimestamp',
+                'printOrientation'
+            ];
+
+            printOptions.forEach(function(optionId) {
+                var element = document.getElementById(optionId);
+                if (element) {
+                    if (element.type === 'checkbox' || element.type === 'text' || element.tagName === 'SELECT') {
+                        element.addEventListener('change', updatePrintPreview);
+                    }
+                }
+            });
+        });
+    </script>
+}
+
+@functions {
+    public string GetStatusBadgeClass(string status)
+    {
+        switch (status?.ToUpper())
+        {
+            case "UNDER_OVERDRAFT":
+                return "bg-warning";
+            case "APPROVED":
+                return "bg-success";
+            case "REJECTED":
+                return "bg-danger";
+            case "PROCESSED":
+                return "bg-primary";
+            default:
+                return "bg-secondary";
+        }
+    }
+
+    public string GetPaymentStatusBadgeClass(string paymentStatus)
+    {
+        switch (paymentStatus?.ToUpper())
+        {
+            case "PENDING":
+                return "bg-warning";
+            case "PAID":
+                return "bg-success";
+            case "FAILED":
+                return "bg-danger";
+            default:
+                return "bg-secondary";
+        }
+    }
+}

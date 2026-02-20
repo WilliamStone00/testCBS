@@ -10843,6 +10843,7 @@
     <Content Include="Views\MemberAccountMan\_AccountStatusDataTable.cshtml" />
     <Content Include="Views\MemberAccountMan\_AccountStatusDetails.cshtml" />
     <Content Include="Views\MemberAccountMan\_Decission.cshtml" />
+    <Content Include="Views\ChequeClearance\_Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
