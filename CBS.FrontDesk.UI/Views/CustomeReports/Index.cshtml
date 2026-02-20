@@ -602,49 +602,51 @@
             });
 
             // Validate Filter button state
-            function validateFilters() {
-                const branchSelected = $branch.val() && $branch.val().length > 0;
-                const hasReportType = $reportType.val();
-                const hasSource = $('#SourceMode').val();
-                const startDateVal = $('#StartDate').val();
-                const endDateVal = $('#EndDate').val();
+                    function validateFilters() {
+                        const branchSelected = $branch.val() && $branch.val().length > 0;
+                        const hasReportType = $reportType.val();
+                        const hasSource = $('#SourceMode').val();
+                        const startDateVal = $('#StartDate').val();
+                        const endDateVal = $('#EndDate').val();
 
-                let dateValid = true;
+                        let dateValid = true;
 
-                if (startDateVal && endDateVal) {
-                    const fromDate = new Date(startDateVal);
-                    const toDate = new Date(endDateVal);
-                    const today = new Date();
+                        if (startDateVal && endDateVal) {
 
-                    today.setHours(0, 0, 0, 0); // remove time part
+                            const fromDate = new Date(startDateVal);
+                            const toDate = new Date(endDateVal);
+                            const today = new Date();
 
-                    // ❌ FromDate > ToDate
-                    if (fromDate > toDate) {
-                        appalert('⚠️ Invalid Date: From Date cannot be greater than To Date.', 2, 1);
-                        dateValid = false;
-                    }
+                            // 🔹 Remove time from ALL dates
+                            fromDate.setHours(0, 0, 0, 0);
+                            toDate.setHours(0, 0, 0, 0);
+                            today.setHours(0, 0, 0, 0);
 
-                    // ❌ ToDate > Today
-                    else if (toDate > today) {
-                        appalert('⚠️ Invalid Date: To Date cannot be greater than today.', 2, 1);
-                        dateValid = false;
-                    }
+                            // ❌ FromDate > ToDate
+                            if (fromDate > toDate) {
+                                appalert('⚠️ From Date cannot be greater than To Date.', 2, 1);
+                                dateValid = false;
+                            }
 
-                    
-                    // ❌ Dates must NOT be before 2025
-                    else if (fromDate.getFullYear() < 2025 || toDate.getFullYear() < 2025) {
-                        appalert('⚠️ Invalid Date: Dates cannot be earlier than year 2025.', 2, 1);
-                        dateValid = false;
-                    }
-                }
+                            // ❌ ToDate in the future (BUT today is allowed)
+                            else if (toDate > today) {
+                                appalert('⚠️ To Date cannot be greater than today.', 2, 1);
+                                dateValid = false;
+                            }
 
-                const ok = branchSelected && hasReportType && hasSource && startDateVal && endDateVal && dateValid;
+                            // ❌ Dates must NOT be before 2025
+                            else if (fromDate.getFullYear() < 2025 || toDate.getFullYear() < 2025) {
+                                appalert('⚠️ Dates cannot be earlier than year 2025.', 2, 1);
+                                dateValid = false;
+                            }
+                        }
 
-                $btn.prop('disabled', !ok).toggleClass('disabled', !ok);
+                        const ok = branchSelected && hasReportType && hasSource && startDateVal && endDateVal && dateValid;
 
-                return ok;
-            }
-            // Show/hide rows that depend on branch selection
+                        $btn.prop('disabled', !ok).toggleClass('disabled', !ok);
+
+                        return ok;
+                    }            // Show/hide rows that depend on branch selection
             function toggleBranchDependentFields() {
                 const hasBranch = $branch.val() && $branch.val().length > 0;
 
@@ -914,7 +916,7 @@
                         controller = 'JournalEntries';
                         break;
                     case "Account Statement":
-                        controller = 'AccntStatement';
+                        controller = 'JournalEntries';
                         break;
                     default:
                         return; // do nothing for other types
