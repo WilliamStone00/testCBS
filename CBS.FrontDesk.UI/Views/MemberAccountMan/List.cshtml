@@ -173,6 +173,32 @@
 </div>
 
 <style>
+
+    /* Ensure the table fills the container */
+    .table-responsive {
+        overflow-x: auto;
+        width: 100%;
+    }
+
+    #myDataTable {
+        table-layout: fixed !important;
+        width: 100% !important;
+    }
+
+        #myDataTable th,
+        #myDataTable td {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+            /* Actions column should not wrap */
+            #myDataTable td:last-child,
+            #myDataTable th:last-child {
+                white-space: nowrap;
+                text-align: center;
+            }
+
     /* Custom styles for column toggles */
     .form-check.form-switch {
         padding-left: 2.5em;
@@ -314,6 +340,7 @@
         }
 
         // Adjust column widths dynamically to fill the table without empty spaces
+        // Adjust column widths dynamically to fill the table without empty spaces
         function adjustColumnWidths() {
             if (!accountStatusTable) return;
 
@@ -322,51 +349,90 @@
 
             if (visibleColumns === 0) return;
 
-            // Get the colgroup
+            // Get the table container width
+            const containerWidth = table.closest('.table-responsive').width() || table.width();
+
+            // Define minimum widths for each column (in pixels)
+            const minColumnWidths = {
+                0: 150, // Requested On
+                1: 100, // Member Ref
+                2: 150, // Member Name
+                3: 120, // Account Number
+                4: 100, // Account Type
+                5: 80,  // Action
+                6: 80,  // Status
+                7: 100, // Branch
+                8: 100, // Requested By
+                9: 100  // Actions (fixed width)
+            };
+
+            // Calculate total minimum width of visible columns
+            let totalMinWidth = 0;
+            const visibleIndices = [];
+
+            for (let i = 0; i <= 9; i++) {
+                if (accountStatusTable.column(i).visible()) {
+                    totalMinWidth += minColumnWidths[i];
+                    visibleIndices.push(i);
+                }
+            }
+
+            // Calculate remaining space to distribute
+            const remainingSpace = Math.max(0, containerWidth - totalMinWidth);
+
+            // Define flexibility weights (columns that can grow more)
+            const flexibilityWeights = {
+                0: 1.5, // Requested On (can grow more)
+                1: 1.0, // Member Ref
+                2: 1.5, // Member Name (can grow more)
+                3: 1.2, // Account Number
+                4: 1.0, // Account Type
+                5: 0.8, // Action (doesn't need much space)
+                6: 0.8, // Status (doesn't need much space)
+                7: 1.0, // Branch
+                8: 1.0, // Requested By
+                9: 1.2  // Actions (needs space for buttons)
+            };
+
+            // Calculate total flexibility weight of visible columns
+            let totalFlexibility = 0;
+            visibleIndices.forEach(i => {
+                totalFlexibility += flexibilityWeights[i];
+            });
+
+            // Apply widths
             const colgroup = table.find('colgroup');
             const cols = colgroup.find('col');
 
-            // Define base weights for each column (higher number = wider column)
-            const columnWeights = {
-                0: 15, // Requested On
-                1: 10, // Member Ref
-                2: 15, // Member Name
-                3: 12, // Account Number
-                4: 10, // Account Type
-                5: 8,  // Action
-                6: 8,  // Status
-                7: 10, // Branch
-                8: 10, // Requested By
-                9: 12  // Actions
-            };
+            visibleIndices.forEach(i => {
+                // Base width + proportional share of remaining space
+                const extraWidth = (flexibilityWeights[i] / totalFlexibility) * remainingSpace;
+                const totalWidth = minColumnWidths[i] + extraWidth;
 
-            // Calculate total weight of visible columns
-            let totalWeight = 0;
+                // Apply width in pixels for precise control
+                $(cols[i]).css('width', totalWidth + 'px');
+            });
+
+            // Hide columns that are not visible
             for (let i = 0; i <= 9; i++) {
-                if (accountStatusTable.column(i).visible()) {
-                    totalWeight += columnWeights[i];
+                if (!accountStatusTable.column(i).visible()) {
+                    $(cols[i]).css('width', '0px');
                 }
             }
 
-            // Redistribute widths proportionally to fill 100%
-            if (totalWeight > 0) {
-                for (let i = 0; i <= 9; i++) {
-                    if (accountStatusTable.column(i).visible()) {
-                        // Calculate percentage based on weight proportion
-                        const percentage = (columnWeights[i] / totalWeight) * 100;
-                        $(cols[i]).css('width', percentage + '%');
-                    } else {
-                        $(cols[i]).css('width', '0%');
-                    }
-                }
-            }
+            // Ensure the table uses fixed layout
+            table.css('table-layout', 'fixed');
 
-            // Apply smooth transition
-            table.css('transition', 'all 0.3s ease');
-            setTimeout(() => {
-                table.css('transition', '');
-            }, 300);
+            // Log for debugging
+            console.log('Container width:', containerWidth, 'Visible columns:', visibleIndices, 'Remaining space:', remainingSpace);
         }
+
+        // Also add a resize handler to adjust when window size changes
+        $(window).on('resize', function () {
+            if (accountStatusTable) {
+                adjustColumnWidths();
+            }
+        });
         // Initialize column visibility toggles
         function initColumnToggles() {
             if (!accountStatusTable) return;
@@ -392,6 +458,7 @@
         }
 
         // Handle column toggle clicks
+        // Handle column toggle clicks
         function setupColumnToggleHandlers() {
             $('input.column-toggle').off('change').on('change', function () {
                 if (!accountStatusTable) return;
@@ -410,12 +477,14 @@
                     $label.addClass('text-muted');
                 }
 
-                // Adjust column widths
+                // CRITICAL: Adjust column widths immediately
                 adjustColumnWidths();
 
                 // Show a message when columns are toggled
                 const columnName = $label.text().trim();
-                appalert(`${columnName} column ${isChecked ? 'shown' : 'hidden'}`, 3, 1);
+                if (typeof appalert === 'function') {
+                    appalert(`${columnName} column ${isChecked ? 'shown' : 'hidden'}`, 3, 1);
+                }
             });
         }
 
@@ -466,15 +535,19 @@
         }
 
         // Initialize DataTable
+        // Initialize DataTable
         function initDataTable() {
             if ($.fn.DataTable.isDataTable('#myDataTable')) {
                 $('#myDataTable').DataTable().destroy();
             }
 
+            // Set table layout to fixed for better column width control
+            $('#myDataTable').css('table-layout', 'fixed');
+
             accountStatusTable = $('#myDataTable').DataTable({
                 searching: true,
-                responsive: false, // Disable responsive to allow custom column widths
-                autoWidth: false,
+                responsive: false,
+                autoWidth: false, // CRITICAL: disable autoWidth
                 serverSide: true,
                 processing: false,
                 order: [[0, 'desc']],
@@ -514,8 +587,8 @@
                         render: function (data) {
                             const actionName = getActionName(data);
                             return `<span class="badge ${getActionBadgeClass(actionName)}">
-                                        ${actionName}
-                                    </span>`;
+                                ${actionName}
+                            </span>`;
                         }
                     },
                     {
@@ -530,6 +603,7 @@
                         data: 'Id',
                         orderable: false,
                         searchable: false,
+                        className: 'text-center',
                         render: function (data, type, row) {
                             return renderActionButtons(data, row);
                         }
@@ -546,7 +620,9 @@
                 pageLength: 25,
                 drawCallback: function () {
                     // Adjust column widths after each draw
-                    adjustColumnWidths();
+                    setTimeout(function () {
+                        adjustColumnWidths();
+                    }, 100);
                 },
                 initComplete: function () {
                     // Initialize column visibility after table is fully loaded
@@ -556,6 +632,11 @@
                     // Setup quick action buttons
                     $('#showAllColumns').off('click').on('click', showAllColumns);
                     $('#resetColumns').off('click').on('click', resetToDefaultColumns);
+
+                    // Initial width adjustment
+                    setTimeout(function () {
+                        adjustColumnWidths();
+                    }, 200);
                 }
             });
         }
