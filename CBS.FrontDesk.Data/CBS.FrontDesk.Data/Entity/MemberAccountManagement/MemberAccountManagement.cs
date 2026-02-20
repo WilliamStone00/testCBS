@@ -52,6 +52,8 @@ namespace CBS.FrontDesk.Data.Entity.MemberAccountManagement
         public string AppliedByName { get; set; }
         [Timestamp]
         public byte[] RowVersion { get; set; }
+
+
     }
     public class Decission
     {

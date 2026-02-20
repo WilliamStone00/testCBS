@@ -71,15 +71,15 @@
                         <div class="form-floating form-floating-outline">
                             @Html.DropDownListFor(
                                 m => m.Action,
-                                  (IEnumerable<SelectListItem>)ViewBag.AccountActions,
+                                (IEnumerable<SelectListItem>)ViewBag.AccountActions,
                                 "--- Select Action ---",
                                 new { @class = "form-control select2", @id = "ActionType" })
-                            <label>Actions</label>
+                            <label for="ActionType">Actions</label>
                             @Html.ValidationMessageFor(m => m.Action, "", new { @class = "text-danger" })
                         </div>
                     </div>
+                                    
 
-                  
                     <!-- ===================== -->
                     <!-- Blocked Amount -->
                     <!-- ===================== -->
