@@ -71,11 +71,11 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
         // SHEET: SUMMARY & OVERVIEW
         // -----------------------------------------------------------------------
         private void CreateSummarySheet(
-            ExcelPackage package,
-            List<AccountStatementFlatItems> data,
-            BankHeaderInformation headerInfo,
-            string exportedBy,
-            AccountingV2ReportsFilter filter)
+      ExcelPackage package,
+      List<AccountStatementFlatItems> data,
+      BankHeaderInformation headerInfo,
+      string exportedBy,
+      AccountingV2ReportsFilter filter)
         {
             var worksheet = package.Workbook.Worksheets.Add("Summary & Overview");
             ApplyDefaultStyle(worksheet);
@@ -85,11 +85,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
             int currentRow = CreateHeaderSection(worksheet, headerInfo, exportedBy, filter,
                 "GENERAL ACCOUNTING JOURNAL SUMMARY", headerEndColumn);
 
-            // ----- GENERAL SUMMARY -----
-            worksheet.Cells[$"A{currentRow}:{headerEndColumn}{currentRow}"].Merge = true;
-            worksheet.Cells[$"A{currentRow}"].Value = "GENERAL SUMMARY";
-            SetSectionHeaderStyle(worksheet.Cells[$"A{currentRow}"], Color.LightBlue);
-            currentRow += 2;
+            // Add a small gap after header
+            currentRow += 1;
 
             int totalTransactions = data.Count;
             int totalBranches = data.Select(x => x.BranchId).Distinct().Count();
@@ -100,16 +97,16 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
 
             var summaryData = new[]
             {
-                new { Metric = "Total Transactions", Value = totalTransactions.ToString("N0"), Description = "Number of journal movements" },
-                new { Metric = "Branches Involved", Value = totalBranches.ToString("N0"), Description = "Distinct branches" },
-                new { Metric = "Total Debit (DR)", Value = totalDebit.ToString("N2"), Description = "Sum of all debit amounts" },
-                new { Metric = "Total Credit (CR)", Value = totalCredit.ToString("N2"), Description = "Sum of all credit amounts" },
-                new { Metric = "Net Movement", Value = netMovement.ToString("N2"), Description = "Credit - Debit" }
-                //new { Metric = "Closing Balance", Value = closingBalance.ToString("N2"), Description = "Balance of last transaction" }
-            };
+        new { Metric = "Total Transactions", Value = totalTransactions.ToString("N0"), Description = "Number of journal movements" },
+        new { Metric = "Branches Involved", Value = totalBranches.ToString("N0"), Description = "Distinct branches" },
+        new { Metric = "Total Debit (DR)", Value = totalDebit.ToString("N2"), Description = "Sum of all debit amounts" },
+        new { Metric = "Total Credit (CR)", Value = totalCredit.ToString("N2"), Description = "Sum of all credit amounts" },
+        new { Metric = "Net Movement", Value = netMovement.ToString("N2"), Description = "Credit - Debit" }
+        //new { Metric = "Closing Balance", Value = closingBalance.ToString("N2"), Description = "Balance of last transaction" }
+    };
 
             currentRow = CreateTwoColumnTable(worksheet, currentRow, summaryData, "Metric", "Value", "Description");
-            currentRow += 2;
+            currentRow += 1;
 
             // ----- TRANSACTION TYPE DISTRIBUTION (DR/CR) -----
             var typeDistribution = data
@@ -120,25 +117,31 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
 
             currentRow = CreateDistributionSection(worksheet, currentRow, headerEndColumn,
                 "TRANSACTION TYPE DISTRIBUTION", typeDistribution, totalTransactions, Color.LightYellow);
-            currentRow += 2;
+            currentRow += 1;
 
-            // ----- TOP ACCOUNTS BY VOLUME -----
-            var topAccounts = data
+            // ----- ALL GL ACCOUNTS IMPACTED -----
+            var allAccounts = data
                 .Where(x => !string.IsNullOrEmpty(x.AccountNumber))
                 .GroupBy(x => new { x.AccountNumber, x.AccountName })
-                .Select(g => new { Account = $"{g.Key.AccountNumber} - {g.Key.AccountName}", Count = g.Count() })
+                .Select(g => new {
+                    Account = $"{g.Key.AccountNumber} - {g.Key.AccountName}",
+                    Count = g.Count(),
+                    TotalDebit = g.Sum(x => x.DebitAmount),
+                    TotalCredit = g.Sum(x => x.CreditAmount)
+                })
                 .OrderByDescending(x => x.Count)
-                .Take(10)
                 .ToList();
 
-            if (topAccounts.Any())
+            if (allAccounts.Any())
             {
                 worksheet.Cells[$"A{currentRow}:{headerEndColumn}{currentRow}"].Merge = true;
-                worksheet.Cells[$"A{currentRow}"].Value = "GL ACCOUNT IMPACTED";
+                worksheet.Cells[$"A{currentRow}"].Value = "GL ACCOUNTS IMPACTED";
                 SetSectionHeaderStyle(worksheet.Cells[$"A{currentRow}"], Color.LightGreen);
                 currentRow += 2;
 
-                var headers = new[] { "Account", "Transaction Count" };
+                // Expanded headers to include debit/credit totals
+                var headers = new[] { "Account", "Transaction Count", "Total Debit", "Total Credit" };
+
                 for (int i = 0; i < headers.Length; i++)
                 {
                     worksheet.Cells[currentRow, i + 1].Value = headers[i];
@@ -146,14 +149,41 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
                 }
                 currentRow++;
 
-                foreach (var acc in topAccounts)
+                decimal grandTotalDebit = 0;
+                decimal grandTotalCredit = 0;
+
+                foreach (var acc in allAccounts)
                 {
                     worksheet.Cells[currentRow, 1].Value = acc.Account;
                     worksheet.Cells[currentRow, 2].Value = acc.Count;
-                    for (int col = 1; col <= 2; col++)
+                    worksheet.Cells[currentRow, 3].Value = acc.TotalDebit;
+                    worksheet.Cells[currentRow, 4].Value = acc.TotalCredit;
+
+                    for (int col = 1; col <= 4; col++)
                         worksheet.Cells[currentRow, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                    grandTotalDebit += acc.TotalDebit;
+                    grandTotalCredit += acc.TotalCredit;
                     currentRow++;
                 }
+
+                // Add grand totals row
+                worksheet.Cells[currentRow, 1].Value = "GRAND TOTALS:";
+                worksheet.Cells[currentRow, 1].Style.Font.Bold = true;
+                worksheet.Cells[currentRow, 2].Value = allAccounts.Sum(x => x.Count);
+                worksheet.Cells[currentRow, 3].Value = grandTotalDebit;
+                worksheet.Cells[currentRow, 4].Value = grandTotalCredit;
+
+                for (int col = 1; col <= 4; col++)
+                {
+                    worksheet.Cells[currentRow, col].Style.Font.Bold = true;
+                    worksheet.Cells[currentRow, col].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    worksheet.Cells[currentRow, col].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
+                    worksheet.Cells[currentRow, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                }
+
+                // Format the debit/credit columns
+                worksheet.Cells[$"C{currentRow - allAccounts.Count}:D{currentRow}"].Style.Numberformat.Format = "#,##0.00";
             }
 
             worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
@@ -163,11 +193,11 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
         // SHEET: BRANCH SUMMARY
         // -----------------------------------------------------------------------
         private void CreateBranchSummarySheet(
-     ExcelPackage package,
-     List<AccountStatementFlatItems> data,
-     BankHeaderInformation headerInfo,
-     string exportedBy,
-     AccountingV2ReportsFilter filter)
+      ExcelPackage package,
+      List<AccountStatementFlatItems> data,
+      BankHeaderInformation headerInfo,
+      string exportedBy,
+      AccountingV2ReportsFilter filter)
         {
             var worksheet = package.Workbook.Worksheets.Add("Branch Summary");
             ApplyDefaultStyle(worksheet);
@@ -177,10 +207,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
             int currentRow = CreateHeaderSection(worksheet, headerInfo, exportedBy, filter,
                 "BRANCH SUMMARY REPORT", headerEndColumn);
 
-            worksheet.Cells[$"A{currentRow}:{headerEndColumn}{currentRow}"].Merge = true;
-            worksheet.Cells[$"A{currentRow}"].Value = "BRANCH SUMMARY";
-            SetSectionHeaderStyle(worksheet.Cells[$"A{currentRow}"], Color.LightCoral);
-            currentRow += 2;
+            // Add a small gap after header
+            currentRow += 1;
 
             var branchHeaders = new[]
             {
@@ -259,11 +287,11 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
         // SHEET: ACCOUNT DETAILS (ALL TRANSACTIONS) - UPDATED COLUMN ORDER
         // -----------------------------------------------------------------------
         private void CreateAccountDetailsSheet(
-            ExcelPackage package,
-            List<AccountStatementFlatItems> data,
-            BankHeaderInformation headerInfo,
-            string exportedBy,
-            AccountingV2ReportsFilter filter)
+     ExcelPackage package,
+     List<AccountStatementFlatItems> data,
+     BankHeaderInformation headerInfo,
+     string exportedBy,
+     AccountingV2ReportsFilter filter)
         {
             var worksheet = package.Workbook.Worksheets.Add("Account Details");
             ApplyDefaultStyle(worksheet);
@@ -272,37 +300,25 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
             int headerColumns = 10;
             string headerEndColumn = GetColumnLetter(headerColumns);
             int currentRow = CreateHeaderSection(worksheet, headerInfo, exportedBy, filter,
-                "GENERAL ACCOUNTING JOURNAL ", headerEndColumn);
+                "GENERAL ACCOUNTING JOURNAL", headerEndColumn);
 
-            int totalTransactions = data.Count;
-            var typeDist = data
-                .GroupBy(x => string.IsNullOrEmpty(x.DrCr) ? "Unknown" : x.DrCr)
-                .Select(g => new { Status = g.Key, Count = g.Count() })
-                .ToList();
+            // Add a small gap after header
+            currentRow += 1;
 
-            currentRow = CreateDistributionSection(worksheet, currentRow, headerEndColumn,
-                "TRANSACTION TYPE OVERVIEW", typeDist, totalTransactions, Color.LightYellow);
-            currentRow += 2;
-
-            worksheet.Cells[$"A{currentRow}:{headerEndColumn}{currentRow}"].Merge = true;
-            worksheet.Cells[$"A{currentRow}"].Value = "DETAILED TRANSACTIONS";
-            SetSectionHeaderStyle(worksheet.Cells[$"A{currentRow}"], Color.LightCoral);
-            currentRow += 2;
-
-            // NEW HEADER ORDER as requested
+            // NEW HEADER ORDER as requested - updated column names
             var headers = new[]
             {
-                "SN",
-                "Accounting Date",
-                "Time",
-                "Account Number",
-                "Account Name",
-                "Member Reference",
-                "Reference",
-                "Description",
-                "Debit (DR)",
-                "Credit (CR)"
-            };
+        "SN",
+        "DATE",
+        "TIME",
+        "ACCOUNT No",
+        "ACCOUNT NAME",
+        "AUX.REF",
+        "REFERENCE",
+        "NARATION",
+        "DEBIT (DR)",
+        "CREDIT (CR)"
+    };
 
             int headerColumnsCount = headers.Length;
             headerEndColumn = GetColumnLetter(headerColumnsCount);
@@ -312,6 +328,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
             {
                 worksheet.Cells[headerRow, i + 1].Value = headers[i];
                 SetHeaderStyle(worksheet.Cells[headerRow, i + 1], Color.LightGreen);
+
+                // Enable wrap text for header cells as well (optional)
+                worksheet.Cells[headerRow, i + 1].Style.WrapText = true;
             }
             currentRow++;
 
@@ -325,6 +344,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
                 x.DebitAmount != 0 ||
                 x.CreditAmount != 0).ToList();
 
+            int firstDataRow = currentRow;
+
             foreach (var item in validData.OrderBy(x => x.Seq))
             {
                 worksheet.Cells[currentRow, 1].Value = sn++;
@@ -332,18 +353,33 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
                 worksheet.Cells[currentRow, 3].Value = item.time.ToString(@"hh\:mm\:ss");
                 worksheet.Cells[currentRow, 4].Value = item.AccountNumber;
                 worksheet.Cells[currentRow, 5].Value = item.AccountName;
-                worksheet.Cells[currentRow, 6].Value = item.AuxiliaryRef; // Member Reference
-                worksheet.Cells[currentRow, 7].Value = item.ReferenceNumber;
-                worksheet.Cells[currentRow, 8].Value = item.Description;
-                worksheet.Cells[currentRow, 9].Value = item.DebitAmount;
-                worksheet.Cells[currentRow, 10].Value = item.CreditAmount;
+                worksheet.Cells[currentRow, 6].Value = item.AuxiliaryRef; // AUX.REF
+                worksheet.Cells[currentRow, 7].Value = item.ReferenceNumber; // REFERENCE
+                worksheet.Cells[currentRow, 8].Value = item.Description; // DESCRIPTION
+                worksheet.Cells[currentRow, 9].Value = item.DebitAmount; // DEBIT (DR)
+                worksheet.Cells[currentRow, 10].Value = item.CreditAmount; // CREDIT (CR)
+
+                // Set vertical alignment to top for better readability with wrapped text
+                worksheet.Cells[currentRow, 8].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
 
                 for (int col = 1; col <= headerColumnsCount; col++)
+                {
                     worksheet.Cells[currentRow, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                    // Set vertical alignment to center for non-description columns
+                    if (col != 8)
+                        worksheet.Cells[currentRow, col].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                }
 
                 totalDebit += item.DebitAmount;
                 totalCredit += item.CreditAmount;
                 currentRow++;
+            }
+
+            // Apply text wrapping to all description cells in one go
+            if (validData.Any())
+            {
+                string descriptionColumnRange = $"H{firstDataRow}:H{currentRow - 1}";
+                worksheet.Cells[descriptionColumnRange].Style.WrapText = true;
             }
 
             if (validData.Any())
@@ -359,11 +395,32 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
                     worksheet.Cells[currentRow, col].Style.Fill.PatternType = ExcelFillStyle.Solid;
                     worksheet.Cells[currentRow, col].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
                     worksheet.Cells[currentRow, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                    worksheet.Cells[currentRow, col].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                }
+            }
+
+            // Set column widths for optimal display
+            worksheet.Column(1).Width = 6;   // SN
+            worksheet.Column(2).Width = 12;  // DATE
+            worksheet.Column(3).Width = 10;  // TIME
+            worksheet.Column(4).Width = 18;  // ACCOUNT No
+            worksheet.Column(5).Width = 35;  // ACCOUNT NAME
+            worksheet.Column(6).Width = 18;  // AUX.REF
+            worksheet.Column(7).Width = 22;  // REFERENCE
+            worksheet.Column(8).Width = 40;  // DESCRIPTION (with wrap)
+            worksheet.Column(9).Width = 15;  // DEBIT (DR)
+            worksheet.Column(10).Width = 15; // CREDIT (CR)
+
+            // Enable auto-fit for rows to accommodate wrapped text
+            if (validData.Any())
+            {
+                for (int row = firstDataRow; row <= currentRow; row++)
+                {
+                    worksheet.Row(row).Height = -1; // Auto-fit row height
                 }
             }
 
             worksheet.Cells[$"I{headerRow + 1}:J{currentRow}"].Style.Numberformat.Format = "#,##0.00";
-            worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
             worksheet.View.FreezePanes(headerRow + 1, 1);
         }
 
@@ -371,14 +428,14 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
         // SHEET: INDIVIDUAL BRANCH DETAILS - UPDATED COLUMN ORDER
         // -----------------------------------------------------------------------
         private void CreateBranchSheet(
-            ExcelPackage package,
-            List<AccountStatementFlatItems> branchData,
-            BankHeaderInformation headerInfo,
-            string branchId,
-            string branchName,
-            string branchCode,
-            string exportedBy,
-            AccountingV2ReportsFilter filter)
+    ExcelPackage package,
+    List<AccountStatementFlatItems> branchData,
+    BankHeaderInformation headerInfo,
+    string branchId,
+    string branchName,
+    string branchCode,
+    string exportedBy,
+    AccountingV2ReportsFilter filter)
         {
             // Use header's branch name if the data's branch name is missing or "Unknown Branch"
             string safeBranchName;
@@ -413,17 +470,17 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
             // NEW HEADER ORDER as requested
             var branchHeaders = new[]
             {
-                "SN",
-                "DATE",
-                "TIME",
-                "ACCOUNT No",
-                "ACCOUNT NAME",
-                "AUX.REF",
-                "Reference",
-                "NARATION",
-                "DEBIT (DR)",
-                "CREDIT (CR)"
-            };
+        "SN",
+        "DATE",
+        "TIME",
+        "ACCOUNT No",
+        "ACCOUNT NAME",
+        "AUX.REF",
+        "REFERENCE",
+        "NARATION",
+        "DEBIT (DR)",
+        "CREDIT (CR)"
+    };
 
             int headerColumnsCount = branchHeaders.Length;
             headerEndColumn = GetColumnLetter(headerColumnsCount);
@@ -433,6 +490,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
             {
                 worksheet.Cells[headerRow, i + 1].Value = branchHeaders[i];
                 SetHeaderStyle(worksheet.Cells[headerRow, i + 1], Color.LightGreen);
+                // Enable wrap text for header cells as well
+                worksheet.Cells[headerRow, i + 1].Style.WrapText = true;
             }
             currentRow++;
 
@@ -446,6 +505,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
                 x.DebitAmount != 0 ||
                 x.CreditAmount != 0).ToList();
 
+            int firstDataRow = currentRow;
+
             foreach (var item in validData.OrderBy(x => x.Seq))
             {
                 worksheet.Cells[currentRow, 1].Value = sn++;
@@ -453,18 +514,33 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
                 worksheet.Cells[currentRow, 3].Value = item.time.ToString(@"hh\:mm\:ss");
                 worksheet.Cells[currentRow, 4].Value = item.AccountNumber;
                 worksheet.Cells[currentRow, 5].Value = item.AccountName;
-                worksheet.Cells[currentRow, 6].Value = item.AuxiliaryRef; // Member Reference
-                worksheet.Cells[currentRow, 7].Value = item.ReferenceNumber;
-                worksheet.Cells[currentRow, 8].Value = item.Description;
-                worksheet.Cells[currentRow, 9].Value = item.DebitAmount;
-                worksheet.Cells[currentRow, 10].Value = item.CreditAmount;
+                worksheet.Cells[currentRow, 6].Value = item.AuxiliaryRef; // AUX.REF
+                worksheet.Cells[currentRow, 7].Value = item.ReferenceNumber; // REFERENCE
+                worksheet.Cells[currentRow, 8].Value = item.Description; // NARATION
+                worksheet.Cells[currentRow, 9].Value = item.DebitAmount; // DEBIT (DR)
+                worksheet.Cells[currentRow, 10].Value = item.CreditAmount; // CREDIT (CR)
+
+                // Set vertical alignment to top for description cells
+                worksheet.Cells[currentRow, 8].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
 
                 for (int col = 1; col <= headerColumnsCount; col++)
+                {
                     worksheet.Cells[currentRow, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                    // Set vertical alignment to center for non-description columns
+                    if (col != 8)
+                        worksheet.Cells[currentRow, col].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                }
 
                 totalDebit += item.DebitAmount;
                 totalCredit += item.CreditAmount;
                 currentRow++;
+            }
+
+            // Apply text wrapping to all description cells in one go
+            if (validData.Any())
+            {
+                string descriptionColumnRange = $"H{firstDataRow}:H{currentRow - 1}";
+                worksheet.Cells[descriptionColumnRange].Style.WrapText = true;
             }
 
             // Totals row
@@ -481,6 +557,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
                     worksheet.Cells[currentRow, col].Style.Fill.PatternType = ExcelFillStyle.Solid;
                     worksheet.Cells[currentRow, col].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
                     worksheet.Cells[currentRow, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                    worksheet.Cells[currentRow, col].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
                 }
                 currentRow += 2;
             }
@@ -503,12 +580,11 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
 
             var summaryItems = new[]
             {
-                new { Metric = "Total Entries", Value = total.ToString("N0") },
-                new { Metric = "Total Debit", Value = sumDebit.ToString("N2") },
-                new { Metric = "Total Credit", Value = sumCredit.ToString("N2") },
-                new { Metric = "Net Movement", Value = net.ToString("N2") }
-                //new { Metric = "Closing Balance", Value = closingBal.ToString("N2") }
-            };
+        new { Metric = "Total Entries", Value = total.ToString("N0") },
+        new { Metric = "Total Debit", Value = sumDebit.ToString("N2") },
+        new { Metric = "Total Credit", Value = sumCredit.ToString("N2") },
+        new { Metric = "Net Movement", Value = net.ToString("N2") }
+    };
 
             currentRow = CreateTwoColumnTable(worksheet, currentRow, summaryItems, "Metric", "Value");
             currentRow += 2;
@@ -522,8 +598,33 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
             currentRow = CreateDistributionSection(worksheet, currentRow, headerEndColumn,
                 "TRANSACTION TYPE DISTRIBUTION", typeDist, total, Color.LightYellow);
 
+            // Set column widths for optimal display
+            worksheet.Column(1).Width = 6;   // SN
+            worksheet.Column(2).Width = 12;  // DATE
+            worksheet.Column(3).Width = 10;  // TIME
+            worksheet.Column(4).Width = 18;  // ACCOUNT No
+            worksheet.Column(5).Width = 35;  // ACCOUNT NAME (increased to match Account Details)
+            worksheet.Column(6).Width = 18;  // AUX.REF
+            worksheet.Column(7).Width = 22;  // REFERENCE
+            worksheet.Column(8).Width = 40;  // NARATION (with wrap) - reduced from 50 to 40
+            worksheet.Column(9).Width = 15;  // DEBIT (DR)
+            worksheet.Column(10).Width = 15; // CREDIT (CR)
+
+            // Enable auto-fit for rows to accommodate wrapped text
+            if (validData.Any())
+            {
+                // Auto-fit all data rows including the totals row
+                for (int row = firstDataRow; row <= currentRow - 1; row++)
+                {
+                    worksheet.Row(row).Height = -1; // Auto-fit row height
+                }
+            }
+
+            // Format currency columns
             worksheet.Cells[$"I{headerRow + 1}:J{currentRow}"].Style.Numberformat.Format = "#,##0.00";
-            worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+
+            // REMOVED: worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns(); - This was the problem!
+
             worksheet.View.FreezePanes(headerRow + 1, 1);
         }
 
