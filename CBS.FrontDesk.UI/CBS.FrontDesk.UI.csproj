@@ -680,12 +680,6 @@
       <DependentUpon>TellerStatement1.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="AppFiles\Reporting\Transactions\UpdatedStatement\Loan\LoanRepaymentRPT.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>LoanRepaymentRPT.rpt</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="AppFiles\Reporting\Transactions\UpdatedStatement\Loan\LoanSituationRPT.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -2262,7 +2256,6 @@
     <Compile Include="Controllers\MemberNoneCashOperation\MemberNoneCashOperationController.cs" />
     <Compile Include="Controllers\MemberNoneCashOperation\MobileMoneyBackOfficeController.cs" />
     <Compile Include="Controllers\LoanApplicationManagement\MemberOperationController.cs" />
-    <Compile Include="Controllers\MembersFSerie\MemberAccountManController.cs" />
     <Compile Include="Controllers\MembersFSerie\MembersFSeriesController.cs" />
     <Compile Include="Controllers\MembersFSerie\MembersFSeriesReportController.cs" />
     <Compile Include="Controllers\MobileMoneyV2\MobileMoneyConfigV2Controller.cs" />
@@ -7579,8 +7572,6 @@
     <Content Include="AppFiles\ManualDailyCollection\Manualdaillycollectiontemplete.xlsx" />
     <Content Include="AppFiles\AffiliateAccountUpload\BAPCCUL_ACCOUNTS2.xlsx" />
     <Content Include="AppFiles\AffiliateAccountUpload\SampleBalanceSheet2.xlsx" />
-    <Content Include="Scripts\Js\Crud\DailyCollection\ManualDailyCollection\ManualDailyCollection.js" />
-    <Content Include="Scripts\Js\Crud\FileUpload\FileUploadQuery.js" />
     <Content Include="Views\MobileMoneyConfigV2\Index.cshtml" />
     <Content Include="Views\MobileMoneyConfigV2\_Create.cshtml" />
     <Content Include="Views\MobileMoneyConfigV2\_Data.cshtml" />
@@ -7655,10 +7646,6 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>CashDeskRessource.Designer.cs</LastGenOutput>
     </Content>
-    <EmbeddedResource Include="AppFiles\Reporting\Transactions\UpdatedStatement\Loan\LoanRepaymentRPT.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>LoanRepaymentRPT.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\Transactions\UpdatedStatement\Loan\LoanSituationRPT.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>LoanSituationRPT.cs</LastGenOutput>
