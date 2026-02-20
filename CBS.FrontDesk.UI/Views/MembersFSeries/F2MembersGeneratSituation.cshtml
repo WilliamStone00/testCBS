@@ -93,7 +93,7 @@
 
         <button type="button"
                 onclick="showMemberAccountManagement('@Model.CustomerId')"
-                class="btn btn-primary me-2">
+                class="btn btn-info me-2">
             <i class="mdi mdi-account-cog-outline mdi-18px me-1"></i> Account Management
         </button>
     </div>
@@ -394,6 +394,8 @@
         function showMemberAccountManagement(id) {
             ShowModal(id, '_MemberAccMana', 'MembersFSeries', 'Membermanag');
         }
+
+       
 
         function toggleBlockedAmount() {
             console.log('=== toggleBlockedAmount START ===');
@@ -889,6 +891,99 @@ function validateLoanSituation() {
     console.log('Loan Situation validation result:', isValid ? 'VALID' : 'INVALID');
     return isValid;
 }
+
+        function AjaxPostAndUpdate2(form) {
+            console.log("Form Action:", form.action);
+            console.log("Form Method:", form.method);
+
+            var $submitBtn = $(form).find('button[type="submit"], input[type="submit"]');
+
+            var formData = new FormData(form);
+            for (var pair of formData.entries()) {
+                console.log(pair[0] + ', ' + pair[1]);
+            }
+
+            // 🔒 Disable button immediately
+            $submitBtn.prop('disabled', true);
+            var originalBtnHtml = $submitBtn.html();
+            $submitBtn.html('<i class="mdi mdi-loading mdi-spin me-1"></i> Processing...');
+
+            $.validator.unobtrusive.parse(form);
+            if ($(form).valid()) {
+                alertify.confirm(
+                    "Confirmation",
+                    "Are you sure you want to perform this action?",
+                    function () {
+                        var ajaxConfig = {
+                            type: 'POST',
+                            url: form.action,
+                            data: new FormData(form),
+                            success: function (response) {
+                                console.log("Response:", response);
+                                if (response.success) {
+                                    if (response.status === "Exist") {
+                                        appalert(response.message, 3, 1);
+                                    } else if (response.status === "Failed") {
+                                        appalert(response.message, 2, 1);
+                                    } else {
+                                        appalert(response.message, 1, 1);
+                                    }
+
+                                    if (response.option === 'Update' && response.reloadDataView === "Yes") {
+                                        LoadDataMain(response.controllerName, response.option, response.divLoaderList, response.tableName, response.dataLoaderActionName, "KEY", "List");
+                                    } else if (response.optype === 'Insert' && response.reloadDataView === "Yes") {
+                                        EditResetMain("KEY", response.option, response.divLoaderCreator, response.controllerName, response.reinitializedActionName, response.groupID);
+                                    } else if (response.reloadDataView === "Yes") {
+                                        LoadDataMain(response.controllerName, response.option, response.divLoaderList, response.tableName, response.dataLoaderActionName, "KEY", "List");
+                                    }
+                                } else {
+                                    if (response.Status === "Exist") {
+                                        appalert(response.message, 3, 1);
+                                    } else {
+                                        appalert(response.message, 2, 1);
+                                    }
+                                }
+                            },
+                            error: function (err) {
+                                console.log("Error:", err);
+
+                                if (err.status === 401) {
+                                    window.location.href = '/Authentication/Login';
+                                } else {
+                                    appalert(err.statusText, 0, 1);
+                                }
+                            },
+                            complete: function () {
+                                // 🔓 Re-enable button when request finishes
+                                $submitBtn.prop('disabled', false);
+                                $submitBtn.html(originalBtnHtml);
+                            }
+                        };
+
+                        if ($(form).attr('enctype') === "multipart/form-data") {
+                            ajaxConfig.contentType = false;
+                            ajaxConfig.processData = false;
+                        }
+
+                        console.log("AJAX Config:", ajaxConfig);
+                        $.ajax(ajaxConfig);
+                    },
+                    function () {
+                        appalert('Transaction cancelled', 3, 1);
+                        // Re-enable button if user cancels confirmation
+                        $submitBtn.prop('disabled', false);
+                        $submitBtn.html(originalBtnHtml);
+                    }
+                );
+            } else {
+                // Re-enable button if form is invalid
+                $submitBtn.prop('disabled', false);
+                $submitBtn.html(originalBtnHtml);
+            }
+
+            return false;
+        }
+
 
 // ============================================================
 // ENHANCED BUILD FORM DATA FOR LOAN REPAYMENT

@@ -8,7 +8,7 @@
             "CreateOrUpdate",
             "MemberAccountMan",
             FormMethod.Post,
-            new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+            new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate2(this);" }))
         {
             <!-- ============================== -->
             <!-- HEADER -->
@@ -17,7 +17,7 @@
                 <div class="card bg-light mb-2 shadow-sm">
                     <div class="card-body text-center">
                         <h1 class="card-title text-primary fw-bold">
-                            <i class="mdi mdi-format-list-bulleted-type me-2"></i> Member Account Management
+                            <i class="mdi mdi-format-list-bulleted-type me-2"></i> Account Management Request
                         </h1>
                         <p class="card-text">
                             Memeber account management request form
@@ -26,17 +26,20 @@
                 </div>
             </div>
 
-            <div class="card mb-1">
-                <div class="card-body d-flex justify-content-end align-items-center">
-                    <a href="@Url.Action("List", "MemberAccountMan")"
-                       class="btn btn-label-primary btn-sm me-2"
-                       id="btnViewList"
-                       data-bs-toggle="tooltip"
-                       title="@GlobalShared.ViewList">
-                        <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
-                    </a>                   
-                </div>
-            </div>
+       <div class="card mb-1">
+    <div class="card-body d-flex justify-content-end align-items-center">
+        <a href="@Url.Action("List", "MemberAccountMan")"
+           class="btn btn-label-primary btn-sm me-2"
+           id="btnViewList"
+           target="_blank"
+           rel="noopener noreferrer"
+           data-bs-toggle="tooltip"
+           title="@GlobalShared.ViewList">
+            <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
+        </a>                   
+    </div>
+</div>
+
 
             <fieldset class="fieldset-custom mb-4">
 
@@ -65,50 +68,18 @@
                     <!-- Action Dropdown -->
                     <!-- ===================== -->
                     <div class="col-md-6">
-                        <div class="form-floating">
+                        <div class="form-floating form-floating-outline">
                             @Html.DropDownListFor(
                                 m => m.Action,
-                                new List<SelectListItem>
-                                {
-                                    new SelectListItem { Text = "Activate Account", Value = "Activate" },
-                                    new SelectListItem { Text = "Freeze Account", Value = "Freeze" },
-                                    new SelectListItem { Text = "Unfreeze Account", Value = "Unfreeze" },
-
-                                    new SelectListItem { Text = "Block Full Account", Value = "BlockFull" },
-                                    new SelectListItem { Text = "Unblock Full Account", Value = "UnblockFull" },
-
-                                    new SelectListItem { Text = "Block Partial (Amount)", Value = "BlockPartial" },
-                                    new SelectListItem { Text = "Unblock Partial (Amount)", Value = "UnblockPartial" },
-
-                                    new SelectListItem { Text = "Close Account", Value = "Close" },
-                                    new SelectListItem { Text = "Reopen Account", Value = "Reopen" },
-
-                                    new SelectListItem { Text = "Mark as Dormant", Value = "MarkDormant" },
-                                    new SelectListItem { Text = "Reactivate Dormant", Value = "ReactivateDormant" },
-
-                                    new SelectListItem { Text = "Block Cash In", Value = "BlockCashIn" },
-                                    new SelectListItem { Text = "Open Cash In", Value = "OpenCashIn" },
-
-                                    new SelectListItem { Text = "Block Withdrawal", Value = "BlockWithdrawal" },
-                                    new SelectListItem { Text = "Open Withdrawal", Value = "OpenWithdrawal" },
-
-                                    new SelectListItem { Text = "Block Transfer", Value = "BlockTransfer" },
-                                    new SelectListItem { Text = "Open Transfer", Value = "OpenTransfer" }
-                                },
+                                  (IEnumerable<SelectListItem>)ViewBag.AccountActions,
                                 "--- Select Action ---",
-                                new
-                                {
-                                    @class = "form-control select2",
-                                    @id = "ActionType",
-                                    @required = "required"
-                                })
-                            <label>Select Action</label>
+                                new { @class = "form-control select2", @id = "ActionType" })
+                            <label>Actions</label>
                             @Html.ValidationMessageFor(m => m.Action, "", new { @class = "text-danger" })
                         </div>
                     </div>
 
-
-
+                  
                     <!-- ===================== -->
                     <!-- Blocked Amount -->
                     <!-- ===================== -->
@@ -121,7 +92,7 @@
                                 placeholder = "Enter blocked amount",
                                 @id = "BlockedAmount"  // 👈 ADD THIS LINE
                             })
-                            <label>Blocked Amount</label>
+                            <label>Amount</label>
                             @Html.ValidationMessageFor(m => m.Amount, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -180,7 +151,7 @@
             <!-- ============================== -->
             <div class="text-end mt-4">
                 <button type="submit" class="btn btn-primary me-2">
-                    <i class="mdi mdi-check-circle-outline me-1"></i> Save
+                    <i class="mdi mdi-check-circle-outline me-1"></i> Create Request
                 </button>
                 <button type="reset" class="btn btn-outline-secondary">
                     @GlobalShared.Reset

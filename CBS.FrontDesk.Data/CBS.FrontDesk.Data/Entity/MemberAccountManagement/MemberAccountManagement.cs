@@ -1,6 +1,7 @@
 ﻿using CBS.FrontDesk.Data.Entity.DataTable;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -44,6 +45,13 @@ namespace CBS.FrontDesk.Data.Entity.MemberAccountManagement
         public string ApplyError { get; set; }
         public string TraceLog { get; set; }
         public string CorrelationId { get; set; }
+        public string RequestPayloadJson { get; set; }
+
+        public string RequestedByUserId { get; set; }
+
+        public string AppliedByName { get; set; }
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
     }
     public class Decission
     {
