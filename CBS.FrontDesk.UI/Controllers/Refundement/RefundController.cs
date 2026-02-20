@@ -50,20 +50,20 @@ namespace CBS.FrontDesk.UI.Controllers.Refundement
 
 
             ViewBag.PaymentMethods = new List<SelectListItem>
-{
-    new SelectListItem { Value = "Cash", Text = "Cash" },
-    new SelectListItem { Value = "Cash_Desk_JointDeposit", Text = "Cash Desk Joint Deposit" },
-    new SelectListItem { Value = "Back-Office Recovery", Text = "Back-Office Recovery" },
-    new SelectListItem { Value = "Salary Deduction", Text = "Salary Deduction" }
-};
+            {
+                new SelectListItem { Value = "Cash", Text = "Cash" },
+                new SelectListItem { Value = "Cash_Desk_JointDeposit", Text = "Cash Desk Joint Deposit" },
+                new SelectListItem { Value = "Back-Office Recovery", Text = "Back-Office Recovery" },
+                new SelectListItem { Value = "Salary Deduction", Text = "Salary Deduction" }
+            };
 
             // Payment Channels dropdown
             ViewBag.PaymentChannels = new List<SelectListItem>
-{
-    new SelectListItem { Value = "Web_Portal", Text = "Web Portal" },
-    new SelectListItem { Value = "Back-Office loan Repayment", Text = "Back-Office Loan Repayment" },
-    new SelectListItem { Value = "Standing Order", Text = "Standing Order" }
-};
+            {
+                new SelectListItem { Value = "Web_Portal", Text = "Web Portal" },
+                new SelectListItem { Value = "Back-Office loan Repayment", Text = "Back-Office Loan Repayment" },
+                new SelectListItem { Value = "Standing Order", Text = "Standing Order" }
+            };
 
             return true;
         }

@@ -290,6 +290,7 @@
     <Compile Include="Entity\ManualDailycollection\ManualDailyCollectionFileDetail.cs" />
     <Compile Include="Entity\ManualDailycollection\TransactionDetailDto.cs" />
     <Compile Include="Entity\ManualDailycollection\ValidationFormViewModel.cs" />
+    <Compile Include="Entity\MemberAccountManagement\MemberAccountManagement.cs" />
     <Compile Include="Entity\MemberAdjustmentConsole\ApproveMemberAdjustmentRequestCommand.cs" />
     <Compile Include="Entity\MemberAdjustmentConsole\GetMemberAdjustmentRequestsDataTableQuery.cs" />
     <Compile Include="Entity\MemberAdjustmentConsole\MemberAdjustmentModel.cs" />

@@ -1,0 +1,20 @@
+﻿<!-- Loading State -->
+<div id="jobLoading" class="text-center py-4 d-none">
+    <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-2 text-muted">Fetching job status...</p>
+</div>
+
+<!-- Error State -->
+<div id="jobError" class="alert alert-danger py-2 d-none">
+    <i class="mdi mdi-alert-circle me-2"></i>
+    <span id="jobErrorMessage"></span>
+</div>
+
+<!-- No Active Job State -->
+<div id="noActiveJob" class="text-center py-4">
+    <i class="mdi mdi-progress-clock text-muted" style="font-size: 3rem;"></i>
+    <p class="mt-2 text-muted">No active background job monitoring</p>
+    <small class="text-muted">Click refresh to check for running jobs</small>
+</div>

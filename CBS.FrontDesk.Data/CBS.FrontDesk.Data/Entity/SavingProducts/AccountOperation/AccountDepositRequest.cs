@@ -664,7 +664,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         Interest = 6,
         VAT = 7,
         Penalty = 8
-        
+
     }
 
     public enum LoanRepaymentReportMode

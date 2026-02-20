@@ -132,7 +132,6 @@ namespace CBS.BusinessService.Config
             }
         }
 
-
         public async Task<SelectList> GetBranchesByBankId(string id)
         {
             try

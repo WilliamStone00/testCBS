@@ -1,4 +1,15 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission.CollectorComissionResponse
+@{
+    var jobMonitorModel = ViewBag.JobMonitor as CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission.JobMonitorViewModel
+        ?? new CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission.JobMonitorViewModel
+        {
+            LastUpdated = DateTime.Now,
+            AutoRefreshEnabled = false,
+            HasActiveJob = false,
+            CountdownSeconds = 10
+        };
+}
+
 
 <div class="row">
     <div class="col-12">
@@ -154,8 +165,8 @@
                                 <div class="d-flex justify-content-between mb-2">
                                     <span class="fw-medium">Period:</span>
                                     <span id="summaryPeriod">-</span>
-                                </div>                               
-                          
+                                </div>
+
                                 <div class="d-flex justify-content-between">
                                     <span class="fw-medium">Payment Status:</span>
                                     <span id="summaryPaymentStatus">-</span>
@@ -252,6 +263,9 @@
         </div>
     </div>
 
+    <!-- Background Job Monitoring Dashboard - Using the partial view -->
+    @Html.Partial("_JobMonitor", jobMonitorModel)
+
     <!-- Commission Details Table -->
     <div id="commissionDetails" class="card d-none">
         <div class="card-header d-flex justify-content-between align-items-center">
@@ -270,7 +284,7 @@
                             <th>Total Activity Amount</th>
                             <th>Fee Charged</th>
                             <th>Payment Status</th>
-                            <th>Remark</th> <!-- Add this column -->
+                            <th>Remark</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -282,7 +296,7 @@
                             <td colspan="2" class="text-end">Totals:</td>
                             <td id="totalActivityAmount">0.00</td>
                             <td id="totalFeeAmount">0.00</td>
-                            <td></td> <!-- Empty cell for payment status column -->
+                            <td></td>
                         </tr>
                     </tfoot>
                 </table>
@@ -333,11 +347,11 @@
 
         /* safe global rules to prevent flex children from causing overflow */
         .input-group .form-control {
-            min-width: 0; /* allow the input to shrink inside a flex container */
+            min-width: 0;
         }
 
         .input-group {
-            max-width: 260px; /* limit width but allow shrink on small screens */
+            max-width: 260px;
             width: 100%;
             box-sizing: border-box;
         }
@@ -382,6 +396,67 @@
                 border-left-color: #dc3545;
                 box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
             }
+
+
+        /* Job Monitor Dashboard Styles */
+        .bg-gradient-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        #jobDashboardContent .card {
+            transition: all 0.3s ease;
+        }
+
+            #jobDashboardContent .card:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            }
+
+        #jobProgressBar {
+            transition: width 0.5s ease-in-out;
+        }
+
+        #refreshIcon {
+            transition: transform 0.3s ease;
+        }
+
+            #refreshIcon.fa-spin {
+                animation: fa-spin 2s infinite linear;
+            }
+
+        @@keyframes fa-spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(359deg);
+            }
+        }
+
+        /* Status badge animations */
+        .badge {
+            transition: all 0.3s ease;
+        }
+
+        /* Countdown timer styling */
+        #countdownTimer {
+            font-feature-settings: "tnum";
+        }
+
+        /* Responsive adjustments */
+        @@media (max-width: 768px) {
+            #jobDashboardContent .col-4,
+            #jobDashboardContent .col-6 {
+                margin-bottom: 8px;
+            }
+
+            #jobDashboardContent .bg-light {
+                padding: 8px 4px;
+            }
+        }
+        /* End  Job monitoring*/
+
     </style>
 
     <script>
@@ -583,42 +658,247 @@
         });
     });
 
+        // =========================================================================
+        // BACKGROUND JOB MONITORING DASHBOARD - UPDATED FOR PARTIAL VIEW         //
+        // =========================================================================
+
+let autoRefreshInterval;
+let countdownInterval;
+let countdownValue = 10;
+let isAutoRefreshEnabled = false; // Initialize as false, will be set by initializeJobMonitor
+
+// Initialize job monitor with server-side data
+function initializeJobMonitor(serverModel) {
+    console.log('Initializing job monitor with model:', serverModel);
+
+    // Automatically enable auto-refresh if there's an active job
+    if (serverModel && serverModel.HasActiveJob) {
+        console.log('Active job detected - automatically enabling auto-refresh');
+
+        // Check if job is already completed before starting
+        if (serverModel.JobData && serverModel.JobData.Status === 2) {
+            console.log('Job already completed - not starting auto-refresh');
+            // Show completion message
+            if (typeof appalert === 'function') {
+                appalert('Treatment completed successfully!', 1, 1);
+            }
+        } else {
+            // Enable auto-refresh automatically
+            $('#autoRefreshToggle').prop('checked', true);
+            startAutoRefresh();
+        }
+    } else {
+        console.log('No active job detected - auto-refresh not enabled');
+    }
+}
+
+// Call initialize when document is ready
+$(document).ready(function() {
+    // The initializeJobMonitor function will be called from the partial view's script
+    // No need to call it here as it's in the partial view
+});
+
+// Refresh button click handler (using event delegation)
+$(document).on('click', '#refreshJobStatus', function() {
+    refreshJobMonitor();
+});
+
+// Auto-refresh toggle (using event delegation)
+$(document).on('change', '#autoRefreshToggle', function() {
+    if ($(this).is(':checked')) {
+        startAutoRefresh();
+    } else {
+        stopAutoRefresh();
+    }
+});
+
+function refreshJobMonitor() {
+    // Rotate refresh icon
+    $('#refreshIcon').addClass('fa-spin');
+
+    $.ajax({
+        url: '@Url.Action("RefreshJobMonitor", "CollectorCommission")',
+        type: 'GET',
+        success: function (html) {
+            // Extract just the job dashboard content and replace it
+            var newContent = $(html).find('#jobDashboardContent').html();
+            $('#jobDashboardContent').html(newContent);
+
+            // Update last updated time
+            $('#jobLastUpdated').html('<i class="mdi mdi-clock-outline me-1"></i>' + new Date().toLocaleTimeString());
+
+            // Check job status from the new content
+            checkJobStatus(newContent);
+        },
+        error: function (xhr, status, error) {
+            console.error('Error refreshing job monitor:', error);
+        },
+        complete: function () {
+            $('#refreshIcon').removeClass('fa-spin');
+        }
+    });
+}
+
+// Function to check job status from the HTML content
+function checkJobStatus(html) {
+    // Create a temporary DOM element to parse the HTML
+    var tempDiv = document.createElement('div');
+    tempDiv.innerHTML = html;
+
+    // Look for job status badge
+    var statusBadge = tempDiv.querySelector('#jobStatusBadge');
+
+    if (statusBadge) {
+        var statusText = statusBadge.textContent.trim().toLowerCase();
+        var statusValue = statusBadge.getAttribute('data-status');
+
+        console.log('Job status detected:', statusText, 'Status value:', statusValue);
+
+        // Check if job is completed (status 2 = Completed, or text contains 'completed')
+        if (statusValue === '2' || statusText === 'completed' || statusText.includes('complete')) {
+            // Job is completed - stop auto-refresh and show alert
+            stopAutoRefresh();
+
+            // Show appalert
+            if (typeof appalert === 'function') {
+                appalert('Treatment completed successfully!', 1, 1);
+            } else {
+                alert('Treatment completed successfully!');
+            }
+
+            // Uncheck the toggle to reflect that auto-refresh is off
+            $('#autoRefreshToggle').prop('checked', false);
+
+            console.log('Job completed - auto-refresh stopped');
+        }
+        // Check for failed status
+        else if (statusValue === '3' || statusText === 'failed') {
+            stopAutoRefresh();
+            if (typeof appalert === 'function') {
+                appalert('Treatment failed. Please check the details.', 4, 1);
+            } else {
+                alert('Treatment failed. Please check the details.');
+            }
+            $('#autoRefreshToggle').prop('checked', false);
+        }
+        // Check for cancelled status
+        else if (statusValue === '4' || statusText === 'cancelled') {
+            stopAutoRefresh();
+            if (typeof appalert === 'function') {
+                appalert('Treatment was cancelled.', 2, 1);
+            } else {
+                alert('Treatment was cancelled.');
+            }
+            $('#autoRefreshToggle').prop('checked', false);
+        }
+    }
+}
+
+function startAutoRefresh() {
+    stopAutoRefresh();
+
+    countdownValue = 10;
+    $('#countdownSeconds').text(countdownValue);
+    $('#countdownTimer').removeClass('d-none');
+    isAutoRefreshEnabled = true;
+
+    countdownInterval = setInterval(function() {
+        countdownValue--;
+        $('#countdownSeconds').text(countdownValue);
+
+        if (countdownValue <= 0) {
+            countdownValue = 10;
+            refreshJobMonitor();
+        }
+    }, 1000);
+
+    autoRefreshInterval = setInterval(function() {
+        countdownValue = 10;
+    }, 10000);
+}
+
+function stopAutoRefresh() {
+    if (autoRefreshInterval) {
+        clearInterval(autoRefreshInterval);
+        autoRefreshInterval = null;
+    }
+    if (countdownInterval) {
+        clearInterval(countdownInterval);
+        countdownInterval = null;
+    }
+    $('#countdownTimer').addClass('d-none');
+    isAutoRefreshEnabled = false;
+}
+
+// Additional function to manually trigger auto-refresh from treatment success
+function enableAutoRefreshAfterTreatment() {
+    console.log('Treatment successful - enabling auto-refresh');
+
+    // Small delay to allow the job to be created
+    setTimeout(function() {
+        // Check if there's an active job
+        $.ajax({
+            url: '@Url.Action("GetCurrentJob", "CollectorCommission")',
+            type: 'GET',
+            success: function(response) {
+                if (response.success && response.data) {
+                    var jobData = response.data;
+
+                    // Only enable auto-refresh if job is not already completed
+                    if (jobData.Status !== 2) {
+                        $('#autoRefreshToggle').prop('checked', true);
+                        startAutoRefresh();
+                        console.log('Auto-refresh enabled after treatment');
+                    } else {
+                        console.log('Job already completed - not enabling auto-refresh');
+                        if (typeof appalert === 'function') {
+                            appalert('Treatment completed successfully!', 1, 1);
+                        }
+                    }
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error checking job after treatment:', error);
+            }
+        });
+    }, 1000); // Wait 1 second for job to be created
+}
+
     // =========================================================================
     // CURRENCY FORMATTING FUNCTIONS
     // =========================================================================
 
-        function formatCurrency(amount) {
-            try {
-                // If amount is a string with commas, remove them for parsing
-                if (typeof amount === 'string') {
-                    amount = parseFloat(amount.replace(/,/g, '')) || 0;
-                }
-
-                // Format with commas for thousands separators (1 decimal place)
-                return new Intl.NumberFormat('en-US', {
-                    minimumFractionDigits: 1,
-                    maximumFractionDigits: 1
-                }).format(amount || 0);
-
-            } catch (e) {
-                // Fallback formatting
-                var num = parseFloat(amount) || 0;
-                return num.toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+    function formatCurrency(amount) {
+        try {
+            // If amount is a string with commas, remove them for parsing
+            if (typeof amount === 'string') {
+                amount = parseFloat(amount.replace(/,/g, '')) || 0;
             }
+
+            // Format with commas for thousands separators (1 decimal place)
+            return new Intl.NumberFormat('en-US', {
+                minimumFractionDigits: 1,
+                maximumFractionDigits: 1
+            }).format(amount || 0);
+
+        } catch (e) {
+            // Fallback formatting
+            var num = parseFloat(amount) || 0;
+            return num.toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$&,');
         }
+    }
 
-        function formatDateToDMY(dateString) {
-            if (!dateString) return '';
+    function formatDateToDMY(dateString) {
+        if (!dateString) return '';
 
-            const date = new Date(dateString);
+        const date = new Date(dateString);
 
-            return date.toLocaleDateString('en-GB', {
-                day: '2-digit',
-                month: 'short',
-                year: 'numeric'
-            });
-        }
-
+        return date.toLocaleDateString('en-GB', {
+            day: '2-digit',
+            month: 'short',
+            year: 'numeric'
+        });
+    }
 
     function parseFormattedCurrency(formattedValue) {
         if (!formattedValue) return 0;
@@ -765,6 +1045,9 @@
                     currentCommissionData = response.data;
                     displayCommissionData(response.data);
                     appalert('Commission data loaded successfully!', 1, 1);
+
+                    // Refresh job monitor after successful commission data load
+                    refreshJobMonitor();
                 } else {
                     appalert(response.message || 'Error loading commission data', 4, 1);
                 }
@@ -776,178 +1059,178 @@
         });
     }
 
-        function displayCommissionData(data) {
-            console.log('Displaying commission data:', data);
+    function displayCommissionData(data) {
+        console.log('Displaying commission data:', data);
 
-            if (!data) {
-                appalert('No commission data available', 3, 1);
-                return;
-            }
-
-            // Update basic information
-            $('#summaryCollectorName').text(data.CollectorName || 'N/A');
-            $('#summaryBranchName').text(data.BranchName || 'N/A');
-            $('#summaryPeriod').text(data.Month || 'N/A');
-            $('#status').text(data.Status || 'N/A');
-            $('#Remark').text(data.Remark || 'N/A');
-
-            // Update payment status with colored bubble
-            var paymentStatus = data.PaymentStatus || 'Pending';
-            var statusColor = '#6c757d'; // Default gray
-
-            if (paymentStatus.toLowerCase() === 'pending') statusColor = '#ffc107';
-            else if (paymentStatus.toLowerCase() === 'completed' || paymentStatus.toLowerCase() === 'success') statusColor = '#198754';
-            else if (['failed', 'error', 'danger'].includes(paymentStatus.toLowerCase())) statusColor = '#dc3545';
-
-            $('#summaryPaymentStatus').html(
-                '<span style="display: inline-block; padding: 0.25rem 0.75rem; border-radius: 50rem; font-size: 0.875rem; font-weight: 500; color: white; background-color: ' + statusColor + ';">' + paymentStatus + '</span>'
-            );
-
-            // Update activity overview
-            $('#summaryTotalMembers').text(data.TotalMembersWithActivity || 0);
-            $('#summaryTotalValue').text(formatCurrency(data.TotalValueCollected || 0));
-            $('#summaryTotalFee').text(formatCurrency(data.TotalFeeCharged || 0));
-            $('#summaryTotalToDistribute').text(formatCurrency(data.TotalAmountToDistribute || 0));
-
-            // Update distribution table
-            var distributionTable = $('#distributionTable tbody');
-            distributionTable.empty();
-
-            if (data.SharedAmounts && data.SharedAmounts.length > 0) {
-                $.each(data.SharedAmounts, function (index, item) {
-                    var row = '<tr>' +
-                        '<td>' + (item.Stakeholder || 'N/A') + '</td>' +
-                        '<td class="text-end">' + (item.Percentage ? item.Percentage.toFixed(1) + '%' : 'N/A') + '</td>' +
-                        '<td class="text-end">' + formatCurrency(item.Amount || 0) + '</td>' +
-                        '</tr>';
-                    distributionTable.append(row);
-                });
-            } else {
-                distributionTable.append('<tr><td colspan="3" class="text-center">No distribution data available</td></tr>');
-            }
-
-            $('#commissionSummary').removeClass('d-none');
-
-            // Update table - safely handle DataTable operations
-            try {
-                if (commissionTable && typeof commissionTable.clear === 'function') {
-                    // Use DataTable API if available
-                    commissionTable.clear();
-
-                    if (data.MemberStats && data.MemberStats.length > 0) {
-                        var totalActivity = 0;
-                        var totalFee = 0;
-                        var hasNotDebitedMembers = false;
-                        var hasDebitedMembers = false;
-
-                        $.each(data.MemberStats, function (index, member) {
-                            var activityAmount = member.TotalActivityAmount || 0;
-                            var feeAmount = member.FeeCharged || 0;
-                            var paymentStatus = member.PaymentStatus || 'NOT_DEBITED';
-
-                            // Check payment status for button logic
-                            if (paymentStatus === 'NOT_DEBITED') {
-                                hasNotDebitedMembers = true;
-                            } else if (paymentStatus === 'DEBITED') {
-                                hasDebitedMembers = true;
-                            }
-
-                            totalActivity += activityAmount;
-                            totalFee += feeAmount;
-
-                            // Create styled status cell
-                            var statusClass = 'status-' + paymentStatus.toLowerCase().replace('_', '-');
-                            var statusCell = '<span class="' + statusClass + '">' + paymentStatus + '</span>';
-
-                            commissionTable.row.add([
-                                member.MemberId || '-',
-                                member.MemberName || '-',
-                                formatCurrency(activityAmount),
-                                formatCurrency(feeAmount),
-                                statusCell
-                            ]);
-                        });
-
-                        // Update totals in footer
-                        $('#totalActivityAmount').text(formatCurrency(totalActivity));
-                        $('#totalFeeAmount').text(formatCurrency(totalFee));
-
-                        // Determine which button to show based on payment status
-                        updateTreatmentButton(data.PaymentStatus, hasNotDebitedMembers, hasDebitedMembers);
-
-                    } else {
-                        // Add a "no data" row if memberStats is empty
-                        commissionTable.row.add([
-                            'No data', 'No data', 'No data', 'No data', 'No data'
-                        ]);
-                        // Hide both buttons if no data
-                        $('#btnTreatment').addClass('d-none');
-                        $('#btnRetreat').addClass('d-none');
-                    }
-
-                    commissionTable.draw();
-                } else {
-                    // Fallback: manual table update if DataTable not available
-                    console.warn('DataTable not available, using manual table update');
-                    var tbody = $('#commissionTable tbody');
-                    tbody.empty();
-
-                    if (data.MemberStats && data.MemberStats.length > 0) {
-                        var totalActivity = 0;
-                        var totalFee = 0;
-                        var hasNotDebitedMembers = false;
-                        var hasDebitedMembers = false;
-
-                        $.each(data.MemberStats, function (index, member) {
-                            var activityAmount = member.TotalActivityAmount || 0;
-                            var feeAmount = member.FeeCharged || 0;
-                            var paymentStatus = member.PaymentStatus || 'NOT_DEBITED';
-
-                            // Check payment status for button logic
-                            if (paymentStatus === 'NOT_DEBITED') {
-                                hasNotDebitedMembers = true;
-                            } else if (paymentStatus === 'DEBITED') {
-                                hasDebitedMembers = true;
-                            }
-
-                            totalActivity += activityAmount;
-                            totalFee += feeAmount;
-
-                            // Create styled status cell
-                            var statusClass = 'status-' + paymentStatus.toLowerCase().replace('_', '-');
-                            var statusCell = '<span class="' + statusClass + '">' + paymentStatus + '</span>';
-
-                            var row = '<tr>' +
-                                '<td>' + (member.MemberId || '-') + '</td>' +
-                                '<td>' + (member.MemberName || '-') + '</td>' +
-                                '<td>' + formatCurrency(activityAmount) + '</td>' +
-                                '<td>' + formatCurrency(feeAmount) + '</td>' +
-                                '<td>' + statusCell + '</td>' +
-                                '</tr>';
-                            tbody.append(row);
-                        });
-
-                        // Update totals in footer
-                        $('#totalActivityAmount').text(formatCurrency(totalActivity));
-                        $('#totalFeeAmount').text(formatCurrency(totalFee));
-
-                        // Determine which button to show
-                        updateTreatmentButton(data.PaymentStatus, hasNotDebitedMembers, hasDebitedMembers);
-
-                    } else {
-                        tbody.append('<tr><td colspan="5" class="text-center">No commission data available</td></tr>');
-                        // Hide both buttons if no data
-                        $('#btnTreatment').addClass('d-none');
-                        $('#btnRetreat').addClass('d-none');
-                    }
-                }
-            } catch (error) {
-                console.error('Error updating commission table:', error);
-                appalert('Commission data loaded but could not display table. Check console for details.', 4, 1);
-            }
-
-            $('#commissionDetails').removeClass('d-none');
+        if (!data) {
+            appalert('No commission data available', 3, 1);
+            return;
         }
+
+        // Update basic information
+        $('#summaryCollectorName').text(data.CollectorName || 'N/A');
+        $('#summaryBranchName').text(data.BranchName || 'N/A');
+        $('#summaryPeriod').text(data.Month || 'N/A');
+        $('#status').text(data.Status || 'N/A');
+        $('#Remark').text(data.Remark || 'N/A');
+
+        // Update payment status with colored bubble
+        var paymentStatus = data.PaymentStatus || 'Pending';
+        var statusColor = '#6c757d'; // Default gray
+
+        if (paymentStatus.toLowerCase() === 'pending') statusColor = '#ffc107';
+        else if (paymentStatus.toLowerCase() === 'completed' || paymentStatus.toLowerCase() === 'success') statusColor = '#198754';
+        else if (['failed', 'error', 'danger'].includes(paymentStatus.toLowerCase())) statusColor = '#dc3545';
+
+        $('#summaryPaymentStatus').html(
+            '<span style="display: inline-block; padding: 0.25rem 0.75rem; border-radius: 50rem; font-size: 0.875rem; font-weight: 500; color: white; background-color: ' + statusColor + ';">' + paymentStatus + '</span>'
+        );
+
+        // Update activity overview
+        $('#summaryTotalMembers').text(data.TotalMembersWithActivity || 0);
+        $('#summaryTotalValue').text(formatCurrency(data.TotalValueCollected || 0));
+        $('#summaryTotalFee').text(formatCurrency(data.TotalFeeCharged || 0));
+        $('#summaryTotalToDistribute').text(formatCurrency(data.TotalAmountToDistribute || 0));
+
+        // Update distribution table
+        var distributionTable = $('#distributionTable tbody');
+        distributionTable.empty();
+
+        if (data.SharedAmounts && data.SharedAmounts.length > 0) {
+            $.each(data.SharedAmounts, function (index, item) {
+                var row = '<tr>' +
+                    '<td>' + (item.Stakeholder || 'N/A') + '</td>' +
+                    '<td class="text-end">' + (item.Percentage ? item.Percentage.toFixed(1) + '%' : 'N/A') + '</td>' +
+                    '<td class="text-end">' + formatCurrency(item.Amount || 0) + '</td>' +
+                    '</tr>';
+                distributionTable.append(row);
+            });
+        } else {
+            distributionTable.append('<tr><td colspan="3" class="text-center">No distribution data available</td></tr>');
+        }
+
+        $('#commissionSummary').removeClass('d-none');
+
+        // Update table - safely handle DataTable operations
+        try {
+            if (commissionTable && typeof commissionTable.clear === 'function') {
+                // Use DataTable API if available
+                commissionTable.clear();
+
+                if (data.MemberStats && data.MemberStats.length > 0) {
+                    var totalActivity = 0;
+                    var totalFee = 0;
+                    var hasNotDebitedMembers = false;
+                    var hasDebitedMembers = false;
+
+                    $.each(data.MemberStats, function (index, member) {
+                        var activityAmount = member.TotalActivityAmount || 0;
+                        var feeAmount = member.FeeCharged || 0;
+                        var paymentStatus = member.PaymentStatus || 'NOT_DEBITED';
+
+                        // Check payment status for button logic
+                        if (paymentStatus === 'NOT_DEBITED') {
+                            hasNotDebitedMembers = true;
+                        } else if (paymentStatus === 'DEBITED') {
+                            hasDebitedMembers = true;
+                        }
+
+                        totalActivity += activityAmount;
+                        totalFee += feeAmount;
+
+                        // Create styled status cell
+                        var statusClass = 'status-' + paymentStatus.toLowerCase().replace('_', '-');
+                        var statusCell = '<span class="' + statusClass + '">' + paymentStatus + '</span>';
+
+                        commissionTable.row.add([
+                            member.MemberId || '-',
+                            member.MemberName || '-',
+                            formatCurrency(activityAmount),
+                            formatCurrency(feeAmount),
+                            statusCell
+                        ]);
+                    });
+
+                    // Update totals in footer
+                    $('#totalActivityAmount').text(formatCurrency(totalActivity));
+                    $('#totalFeeAmount').text(formatCurrency(totalFee));
+
+                    // Determine which button to show based on payment status
+                    updateTreatmentButton(data.PaymentStatus, hasNotDebitedMembers, hasDebitedMembers);
+
+                } else {
+                    // Add a "no data" row if memberStats is empty
+                    commissionTable.row.add([
+                        'No data', 'No data', 'No data', 'No data', 'No data'
+                    ]);
+                    // Hide both buttons if no data
+                    $('#btnTreatment').addClass('d-none');
+                    $('#btnRetreat').addClass('d-none');
+                }
+
+                commissionTable.draw();
+            } else {
+                // Fallback: manual table update if DataTable not available
+                console.warn('DataTable not available, using manual table update');
+                var tbody = $('#commissionTable tbody');
+                tbody.empty();
+
+                if (data.MemberStats && data.MemberStats.length > 0) {
+                    var totalActivity = 0;
+                    var totalFee = 0;
+                    var hasNotDebitedMembers = false;
+                    var hasDebitedMembers = false;
+
+                    $.each(data.MemberStats, function (index, member) {
+                        var activityAmount = member.TotalActivityAmount || 0;
+                        var feeAmount = member.FeeCharged || 0;
+                        var paymentStatus = member.PaymentStatus || 'NOT_DEBITED';
+
+                        // Check payment status for button logic
+                        if (paymentStatus === 'NOT_DEBITED') {
+                            hasNotDebitedMembers = true;
+                        } else if (paymentStatus === 'DEBITED') {
+                            hasDebitedMembers = true;
+                        }
+
+                        totalActivity += activityAmount;
+                        totalFee += feeAmount;
+
+                        // Create styled status cell
+                        var statusClass = 'status-' + paymentStatus.toLowerCase().replace('_', '-');
+                        var statusCell = '<span class="' + statusClass + '">' + paymentStatus + '</span>';
+
+                        var row = '<tr>' +
+                            '<td>' + (member.MemberId || '-') + '</td>' +
+                            '<td>' + (member.MemberName || '-') + '</td>' +
+                            '<td>' + formatCurrency(activityAmount) + '</td>' +
+                            '<td>' + formatCurrency(feeAmount) + '</td>' +
+                            '<td>' + statusCell + '</td>' +
+                            '</tr>';
+                        tbody.append(row);
+                    });
+
+                    // Update totals in footer
+                    $('#totalActivityAmount').text(formatCurrency(totalActivity));
+                    $('#totalFeeAmount').text(formatCurrency(totalFee));
+
+                    // Determine which button to show
+                    updateTreatmentButton(data.PaymentStatus, hasNotDebitedMembers, hasDebitedMembers);
+
+                } else {
+                    tbody.append('<tr><td colspan="5" class="text-center">No commission data available</td></tr>');
+                    // Hide both buttons if no data
+                    $('#btnTreatment').addClass('d-none');
+                    $('#btnRetreat').addClass('d-none');
+                }
+            }
+        } catch (error) {
+            console.error('Error updating commission table:', error);
+            appalert('Commission data loaded but could not display table. Check console for details.', 4, 1);
+        }
+
+        $('#commissionDetails').removeClass('d-none');
+    }
 
     function resetForm() {
         $('#BranchId').val('');
@@ -1075,10 +1358,8 @@
                         searchCustomer(collectorReference);
                     }
 
-                    // Populate PCMF dropdown in modal
-                   // populatePcmfDropdown(response.accounts);
                     // Populate ALL PCMF dropdowns in modal
-                    populateAllPcmfDropdowns(response.accounts); // REPLACED: Now populates both dropdowns
+                    populateAllPcmfDropdowns(response.accounts);
                     // Show the modal
                     $('#treatmentModal').modal('show');
                 } else {
@@ -1094,113 +1375,84 @@
         });
     }
 
-        // Function to populate all PCMF dropdowns
-        function populateAllPcmfDropdowns(accounts) {
-            // List of dropdown IDs that need PCMF accounts
-            var dropdownIds = ['PaymentGl', 'ExpenseGL'];
+    // Function to populate all PCMF dropdowns
+    function populateAllPcmfDropdowns(accounts) {
+        // List of dropdown IDs that need PCMF accounts
+        var dropdownIds = ['PaymentGl', 'ExpenseGL'];
 
-            $.each(dropdownIds, function (index, dropdownId) {
-                var dropdown = $('#' + dropdownId);
+        $.each(dropdownIds, function (index, dropdownId) {
+            var dropdown = $('#' + dropdownId);
 
-                // Skip if dropdown doesn't exist
-                if (dropdown.length === 0) return true;
+            // Skip if dropdown doesn't exist
+            if (dropdown.length === 0) return true;
 
-                // destroy existing instance if any
-                if (dropdown.hasClass('select2-hidden-accessible')) {
-                    dropdown.select2('destroy');
-                }
+            // destroy existing instance if any
+            if (dropdown.hasClass('select2-hidden-accessible')) {
+                dropdown.select2('destroy');
+            }
 
-                // Clear and populate
-                dropdown.empty();
+            // Clear and populate
+            dropdown.empty();
 
-                // Set appropriate placeholder text based on dropdown ID
-                var placeholder = dropdownId === 'PaymentGl'
-                    ? '--- Branch Commission Account ---'
-                    : '--- Expense Commission Account ---';
+            // Set appropriate placeholder text based on dropdown ID
+            var placeholder = dropdownId === 'PaymentGl'
+                ? '--- Branch Commission Account ---'
+                : '--- Expense Commission Account ---';
 
-                dropdown.append('<option value="">' + placeholder + '</option>');
+            dropdown.append('<option value="">' + placeholder + '</option>');
 
-                if (accounts && accounts.length) {
-                    $.each(accounts, function (i, account) {
-                        dropdown.append($('<option>').val(account.Value).text(account.Text));
-                    });
-                } else {
-                    dropdown.append('<option value="">No accounts available</option>');
-                }
+            if (accounts && accounts.length) {
+                $.each(accounts, function (i, account) {
+                    dropdown.append($('<option>').val(account.Value).text(account.Text));
+                });
+            } else {
+                dropdown.append('<option value="">No accounts available</option>');
+            }
 
-                // Re-initialize Select2
-                if ($.fn.select2) {
-                    dropdown.select2({
-                        dropdownParent: $('body'),
-                        width: '100%'
-                    });
-                }
-            });
-        }
-
-    // Function to populate PCMF dropdown
-    function populatePcmfDropdown(accounts) {
-        var dropdown = $('#PaymentGl');
-
-        // destroy existing instance if any
-        if (dropdown.hasClass('select2-hidden-accessible')) {
-            dropdown.select2('destroy');
-        }
-
-        dropdown.empty().append('<option value="">--- Select Payment Account ---</option>');
-        if (accounts && accounts.length) {
-            $.each(accounts, function (index, account) {
-                dropdown.append($('<option>').val(account.Value).text(account.Text));
-            });
-        } else {
-            dropdown.append('<option value="">No accounts available</option>');
-        }
-
-        if ($.fn.select2) {
-            // append to body to avoid transform/overflow issues inside modal
-            dropdown.select2({
-                dropdownParent: $('body'),
-                width: '100%'
-            });
-        }
+            // Re-initialize Select2
+            if ($.fn.select2) {
+                dropdown.select2({
+                    dropdownParent: $('body'),
+                    width: '100%'
+                });
+            }
+        });
     }
 
     // =========================================================================
     // TREATMENT MODAL FUNCTIONS - COMPLETE INTEGRATION
     // =========================================================================
 
+    $(document).on('shown.bs.modal', '#treatmentModal', function () {
+        initializeTreatmentModal();
 
-
-        $(document).on('shown.bs.modal', '#treatmentModal', function () {
-            initializeTreatmentModal();
-
-            // Initialize Select2 dropdowns with modal as parent
-            if ($.fn.select2) {
-                $('#DailyCollectorAccount').select2({
-                    dropdownParent: $('#treatmentModal')
-                });
-                $('#PaymentGl').select2({
-                    dropdownParent: $('#treatmentModal')
-                });
-                $('#ExpenseGL').select2({  // Add this line
-                    dropdownParent: $('#treatmentModal')
-                });
-            }
-
-            // Add currency formatting to incentives input
-            $('#Incentives').on('input', function () {
-                formatIncentivesInput(this);
+        // Initialize Select2 dropdowns with modal as parent
+        if ($.fn.select2) {
+            $('#DailyCollectorAccount').select2({
+                dropdownParent: $('#treatmentModal')
             });
-
-            $('#Incentives').on('blur', function () {
-                finalizeIncentivesFormat(this);
+            $('#PaymentGl').select2({
+                dropdownParent: $('#treatmentModal')
             });
-
-            // Sync hidden fields when any field changes
-            $(document).on('change keyup', '#Incentives, #DaillyCollectorShare, #BranchShare, #Total, #DailyCollectorAccount', function () {
-                syncHiddenFields();
+            $('#ExpenseGL').select2({
+                dropdownParent: $('#treatmentModal')
             });
+        }
+
+        // Add currency formatting to incentives input
+        $('#Incentives').on('input', function () {
+            formatIncentivesInput(this);
         });
+
+        $('#Incentives').on('blur', function () {
+            finalizeIncentivesFormat(this);
+        });
+
+        // Sync hidden fields when any field changes
+        $(document).on('change keyup', '#Incentives, #DaillyCollectorShare, #BranchShare, #Total, #DailyCollectorAccount', function () {
+            syncHiddenFields();
+        });
+    });
 
     // Event delegation for treatment modal elements
     $(document).on('click', '#btnSearchCustomer', function () {
@@ -1577,223 +1829,217 @@
         var seconds = '00';
         var ampm = 'AM';
 
-        return `${month}/${day}/${year} ${hours}:${minutes}:${seconds} ${ampm}`;
+        return month + '/' + day + '/' + year + ' ' + hours + ':' + minutes + ':' + seconds + ' ' + ampm;
     }
 
-   function processPayment() {
-    // Validate form
-    if (!$('#DailyCollectorAccount').val()) {
-        appalert('Please select a Daily Collector Account', 3, 1);
-        return;
-    }
-
-    if (!dailyCollectorId) {
-        appalert('Please search and select a customer first', 3, 1);
-        return;
-    }
-
-    if (!$('#Incentives').val()) {
-        appalert('Please enter incentives amount', 3, 1);
-        return;
-    }
-
-    // NEW CHECK: If incentives > 0, require ExpenseGL selection
-    var incentives = parseFormattedCurrency($('#Incentives').val()) || 0;
-    var expenseGL = $('#ExpenseGL').val();
-    var memo = $('#Memo').val();
-     var memoinsentive = $('#MemoIncentive').val();
-
-    if (incentives > 0) {
-        if (!expenseGL) {
-            appalert('Incentives amount is greater than zero. Please select a Expense General Ledger Account (ExpenseGL)', 4, 1);
-            $('#ExpenseGL').focus();
+    function processPayment() {
+        // Validate form
+        if (!$('#DailyCollectorAccount').val()) {
+            appalert('Please select a Daily Collector Account', 3, 1);
             return;
         }
-    }
-    if (memo == null) {
-        appalert('Please enter description for Memo', 4, 1);
+
+        if (!dailyCollectorId) {
+            appalert('Please search and select a customer first', 3, 1);
+            return;
+        }
+
+        if (!$('#Incentives').val()) {
+            appalert('Please enter incentives amount', 3, 1);
+            return;
+        }
+
+        // NEW CHECK: If incentives > 0, require ExpenseGL selection
+        var incentives = parseFormattedCurrency($('#Incentives').val()) || 0;
+        var expenseGL = $('#ExpenseGL').val();
+        var memo = $('#Memo').val();
+        var memoinsentive = $('#MemoIncentive').val();
+
+        if (incentives > 0) {
+            if (!expenseGL) {
+                appalert('Incentives amount is greater than zero. Please select a Expense General Ledger Account (ExpenseGL)', 4, 1);
+                $('#ExpenseGL').focus();
+                return;
+            }
+        }
+        if (memo == null || memo === '') {
+            appalert('Please enter description for Memo', 4, 1);
             $('#Memo').focus();
             return;
-        
-    }
-       if (memoinsentive == null) {
-        if (!expenseGL) {
+        }
+        if (memoinsentive == null || memoinsentive === '') {
             appalert('Please Enter description for Memo Insentives', 4, 1);
             $('#MemoIncentive').focus();
             return;
         }
-    }
 
-    if (!$('#PaymentGl').val()) {
-        appalert('Please select a Branch Commission Account', 3, 1);
-        return;
-    }
-
-    if (!$('#AccountingDay').val()) {
-        appalert('Please select accounting date', 3, 1);
-        return;
-    }
-
-    // Get month and year from hidden fields
-    var month = $('#MonthHidden').val();
-    var year = $('#YearHidden').val();
-
-    if (!month || !year) {
-        appalert('Month and Year information is missing', 3, 1);
-        return;
-    }
-
-    // Calculate amounts
-    var incentives = parseFormattedCurrency($('#Incentives').val()) || 0;
-    var dailyCollectorShare = parseFormattedCurrency($('#DaillyCollectorShare').val()) || 0;
-    var branchShare = parseFormattedCurrency($('#BranchShare').val()) || 0;
-
-    // Calculate totals according to business logic
-    var collectorTotalCommision = dailyCollectorShare + branchShare;
-    var totalAmountToShare = incentives + dailyCollectorShare;
-
-    // Prepare SharedAmounts data - use the actual data from commission
-    var sharedAmounts = [];
-    if (treatmentCommissionData && treatmentCommissionData.SharedAmounts) {
-        sharedAmounts = treatmentCommissionData.SharedAmounts.map(function (item) {
-            return {
-                StakeHolderId: item.StakeHolderId || dailyCollectorId,
-                Stakeholder: item.Stakeholder || 'Daily Collector',
-                Percentage: item.Percentage || 0,
-                Amount: item.Amount || 0
-            };
-        });
-    } else {
-        // Fallback: create shared amounts based on calculated values
-        sharedAmounts = [
-            {
-                StakeHolderId: dailyCollectorId,
-                Stakeholder: 'Daily Collector',
-                Percentage: 60,
-                Amount: dailyCollectorShare
-            },
-            {
-                StakeHolderId: 'branch',
-                Stakeholder: 'Branch',
-                Percentage: 40,
-                Amount: branchShare
-            }
-        ];
-    }
-
-    // Format date to match target format: "MM/dd/yyyy hh:mm:ss AM"
-    var accountingDate = $('#AccountingDay').val();
-    var dateObj = new Date(accountingDate);
-    var formattedDate = formatDateForPayload(dateObj);
-
-    // Prepare payload to match CollectorComissionResponse model
-    var payload = {
-        // Map to CollectorComissionResponse properties
-        CustomerId: dailyCollectorId,
-        AccountNumber: selectedAccountNumber,
-        BranchCommisionGLId: $('#BranchCommisionGLIdHidden').val(),
-        ExpenseGL: $('#ExpenseGL').val(), // ADDED: Include ExpenseGL in payload
-        Incentives: incentives,
-        CollectorTotalCommision: collectorTotalCommision,
-        AccountingDate: formattedDate,
-        BranchId: $('#BranchIdHidden').val(),
-        Total: totalAmountToShare,
-        DailyCollectorShare: dailyCollectorShare,
-        BranchShare: branchShare,
-        CollectorId: $('#CollectorIdHidden').val(),
-        CollectorName: $('#CollectorNameHidden').val(),
-        DailyCollectorAccount: $('#DailyCollectorAccount').val(),
-        Month: month.toString(),
-        Year: parseInt(year),
-        Memo: $('#Memo').val(),
-        MemoIncentive: $('#MemoIncentive').val(),
-        SharedAmounts: sharedAmounts
-    };
-
-    console.log('Submitting payment payload (CollectorComissionResponse):', payload);
-
-    // --- NEW: Show confirmation dialog with payment summary ---
-
-    // Get account names for better display
-    var dailyCollectorAccountText = $('#DailyCollectorAccount option:selected').text() || 'Not selected';
-    var paymentGlText = $('#PaymentGl option:selected').text() || 'Not selected';
-    var expenseGLText = $('#ExpenseGL option:selected').text() || 'Not selected';
-    var collectorName = $('#CollectorNameHidden').val() || $('#customerName').text() || 'N/A';
-
-    // Build summary message
-    var summaryMessage = '';
-    summaryMessage += '<div style="text-align: left; font-size: 14px;">';
-    summaryMessage += '<h4 style="margin-bottom: 15px; color: #0d6efd;">📋 Payment Summary</h4>';
-
-    // Collector Information
-    summaryMessage += '<div style="background-color: #f8f9fa; padding: 10px; border-radius: 5px; margin-bottom: 15px;">';
-    summaryMessage += '<strong style="color: #495057;">👤 COLLECTOR INFORMATION</strong><hr style="margin: 5px 0; opacity: 0.2;">';
-    summaryMessage += '<table style="width: 100%; border-collapse: collapse;">';
-    summaryMessage += '<tr><td style="padding: 3px 0;"><strong>Name:</strong></td><td style="padding: 3px 0;">' + collectorName + '</td></tr>';
-    summaryMessage += '<tr><td style="padding: 3px 0;"><strong>Account:</strong></td><td style="padding: 3px 0;">' + dailyCollectorAccountText + '</td></tr>';
-    summaryMessage += '</table></div>';
-
-    // Commission Details
-    summaryMessage += '<div style="background-color: #f8f9fa; padding: 10px; border-radius: 5px; margin-bottom: 15px;">';
-    summaryMessage += '<strong style="color: #495057;">💰 COMMISSION DETAILS</strong><hr style="margin: 5px 0; opacity: 0.2;">';
-    summaryMessage += '<table style="width: 100%; border-collapse: collapse;">';
-    summaryMessage += '<tr><td style="padding: 3px 0;"><strong>Daily Collector Share:</strong></td><td style="padding: 3px 0; text-align: right; color: #198754;">' + formatCurrency(dailyCollectorShare) + '</td></tr>';
-    summaryMessage += '<tr><td style="padding: 3px 0;"><strong>Branch Share:</strong></td><td style="padding: 3px 0; text-align: right; color: #0d6efd;">' + formatCurrency(branchShare) + '</td></tr>';
-    summaryMessage += '<tr><td style="padding: 3px 0;"><strong>Incentives:</strong></td><td style="padding: 3px 0; text-align: right; color: ' + (incentives > 0 ? '#dc3545' : '#6c757d') + ';">' + formatCurrency(incentives) + '</td></tr>';
-    summaryMessage += '<tr style="border-top: 1px solid #dee2e6;"><td style="padding: 5px 0 0 0;"><strong>Total to Post:</strong></td><td style="padding: 5px 0 0 0; text-align: right; color: #0d6efd;"><strong>' + formatCurrency(totalAmountToShare) + '</strong></td></tr>';
-    summaryMessage += '</table></div>';
-
-    // GL Accounts
-    summaryMessage += '<div style="background-color: #f8f9fa; padding: 10px; border-radius: 5px; margin-bottom: 15px;">';
-    summaryMessage += '<strong style="color: #495057;">🏦 GL ACCOUNTS</strong><hr style="margin: 5px 0; opacity: 0.2;">';
-    summaryMessage += '<table style="width: 100%; border-collapse: collapse;">';
-    summaryMessage += '<tr><td style="padding: 3px 0;"><strong>Branch Commission GL:</strong></td><td style="padding: 3px 0;">' + paymentGlText + '</td></tr>';
-    summaryMessage += '<tr><td style="padding: 3px 0;"><strong>Expense GL:</strong></td><td style="padding: 3px 0;">' + expenseGLText + (incentives > 0 ? '' : ' <span style="color: #6c757d;">(not required - incentives=0)</span>') + '</td></tr>';
-    summaryMessage += '</table></div>';
-
-    // Period Information
-    summaryMessage += '<div style="background-color: #f8f9fa; padding: 10px; border-radius: 5px;">';
-    summaryMessage += '<strong style="color: #495057;">📅 PERIOD</strong><hr style="margin: 5px 0; opacity: 0.2;">';
-    summaryMessage += '<table style="width: 100%; border-collapse: collapse;">';
-    summaryMessage += '<tr><td style="padding: 3px 0;"><strong>Month/Year:</strong></td><td style="padding: 3px 0;">' + month + '/' + year + '</td></tr>';
-       summaryMessage += '<tr><td style="padding: 3px 0;"><strong>Accounting Date:</strong></td><td style="padding: 3px 0;">'
-           + formatDateToDMY(accountingDate)
-           + '</td></tr>';
-    summaryMessage += '</table></div>';
-
-       // Memo Section
-       summaryMessage += '<div style="background-color: #f8f9fa; padding: 10px; border-radius: 5px; margin-bottom: 15px;">';
-       summaryMessage += '<strong style="color: #495057;">📝 MEMO DETAILS</strong><hr style="margin: 5px 0; opacity: 0.2;">';
-       summaryMessage += '<table style="width: 100%; border-collapse: collapse;">';
-       summaryMessage += '<tr><td style="padding: 3px 0;"><strong>Memo:</strong></td><td style="padding: 3px 0;">' + $('#Memo').val() + '</td></tr>';
-       summaryMessage += '<tr><td style="padding: 3px 0;"><strong>Memo Incentive:</strong></td><td style="padding: 3px 0;">' + $('#MemoIncentive').val() + '</td></tr>';
-       summaryMessage += '</table></div>';
-
-    summaryMessage += '</div>';
-
-    // Show confirmation dialog using alertify
-    alertify.confirm(
-        'Confirm Payment Posting',
-        summaryMessage,
-        function() {
-            // Proceed with payment - User clicked OK
-            executePayment(payload);
-        },
-        function() {
-            // Cancel - User clicked Cancel
-            appalert('Payment posting cancelled', 2, 1);
-            $('#btnPostPayment').prop('disabled', false).html('<i class="mdi mdi-check-circle me-1"></i> Post');
+        if (!$('#PaymentGl').val()) {
+            appalert('Please select a Branch Commission Account', 3, 1);
+            return;
         }
-    ).set('labels', {ok: '✅ Proceed', cancel: '❌ Cancel'})
-     .set('closable', false)
-     .set('movable', false)
-     .set('resizable', false)
-     .set('transition', 'fade')
-     .set('pinnable', false);
-}
 
-// --- NEW: Extract the AJAX call to a separate function ---
-function executePayment(payload) {
+        if (!$('#AccountingDay').val()) {
+            appalert('Please select accounting date', 3, 1);
+            return;
+        }
+
+        // Get month and year from hidden fields
+        var month = $('#MonthHidden').val();
+        var year = $('#YearHidden').val();
+
+        if (!month || !year) {
+            appalert('Month and Year information is missing', 3, 1);
+            return;
+        }
+
+        // Calculate amounts
+        var incentives = parseFormattedCurrency($('#Incentives').val()) || 0;
+        var dailyCollectorShare = parseFormattedCurrency($('#DaillyCollectorShare').val()) || 0;
+        var branchShare = parseFormattedCurrency($('#BranchShare').val()) || 0;
+
+        // Calculate totals according to business logic
+        var collectorTotalCommision = dailyCollectorShare + branchShare;
+        var totalAmountToShare = incentives + dailyCollectorShare;
+
+        // Prepare SharedAmounts data - use the actual data from commission
+        var sharedAmounts = [];
+        if (treatmentCommissionData && treatmentCommissionData.SharedAmounts) {
+            sharedAmounts = treatmentCommissionData.SharedAmounts.map(function (item) {
+                return {
+                    StakeHolderId: item.StakeHolderId || dailyCollectorId,
+                    Stakeholder: item.Stakeholder || 'Daily Collector',
+                    Percentage: item.Percentage || 0,
+                    Amount: item.Amount || 0
+                };
+            });
+        } else {
+            // Fallback: create shared amounts based on calculated values
+            sharedAmounts = [
+                {
+                    StakeHolderId: dailyCollectorId,
+                    Stakeholder: 'Daily Collector',
+                    Percentage: 60,
+                    Amount: dailyCollectorShare
+                },
+                {
+                    StakeHolderId: 'branch',
+                    Stakeholder: 'Branch',
+                    Percentage: 40,
+                    Amount: branchShare
+                }
+            ];
+        }
+
+        // Format date to match target format: "MM/dd/yyyy hh:mm:ss AM"
+        var accountingDate = $('#AccountingDay').val();
+        var dateObj = new Date(accountingDate);
+        var formattedDate = formatDateForPayload(dateObj);
+
+        // Prepare payload to match CollectorComissionResponse model
+        var payload = {
+            // Map to CollectorComissionResponse properties
+            CustomerId: dailyCollectorId,
+            AccountNumber: selectedAccountNumber,
+            BranchCommisionGLId: $('#BranchCommisionGLIdHidden').val(),
+            ExpenseGL: $('#ExpenseGL').val(), // ADDED: Include ExpenseGL in payload
+            Incentives: incentives,
+            CollectorTotalCommision: collectorTotalCommision,
+            AccountingDate: formattedDate,
+            BranchId: $('#BranchIdHidden').val(),
+            Total: totalAmountToShare,
+            DailyCollectorShare: dailyCollectorShare,
+            BranchShare: branchShare,
+            CollectorId: $('#CollectorIdHidden').val(),
+            CollectorName: $('#CollectorNameHidden').val(),
+            DailyCollectorAccount: $('#DailyCollectorAccount').val(),
+            Month: month.toString(),
+            Year: parseInt(year),
+            Memo: $('#Memo').val(),
+            MemoIncentive: $('#MemoIncentive').val(),
+            SharedAmounts: sharedAmounts
+        };
+
+        console.log('Submitting payment payload (CollectorComissionResponse):', payload);
+
+        // --- NEW: Show confirmation dialog with payment summary ---
+
+        // Get account names for better display
+        var dailyCollectorAccountText = $('#DailyCollectorAccount option:selected').text() || 'Not selected';
+        var paymentGlText = $('#PaymentGl option:selected').text() || 'Not selected';
+        var expenseGLText = $('#ExpenseGL option:selected').text() || 'Not selected';
+        var collectorName = $('#CollectorNameHidden').val() || $('#customerName').text() || 'N/A';
+
+        // Build summary message
+        var summaryMessage = '';
+        summaryMessage += '<div style="text-align: left; font-size: 14px;">';
+        summaryMessage += '<h4 style="margin-bottom: 15px; color: #0d6efd;">📋 Payment Summary</h4>';
+
+        // Collector Information
+        summaryMessage += '<div style="background-color: #f8f9fa; padding: 10px; border-radius: 5px; margin-bottom: 15px;">';
+        summaryMessage += '<strong style="color: #495057;">👤 COLLECTOR INFORMATION</strong><hr style="margin: 5px 0; opacity: 0.2;">';
+        summaryMessage += '<table style="width: 100%; border-collapse: collapse;">';
+        summaryMessage += '<tr><td style="padding: 3px 0;"><strong>Name:</strong></td><td style="padding: 3px 0;">' + collectorName + '</td></tr>';
+        summaryMessage += '<tr><td style="padding: 3px 0;"><strong>Account:</strong></td><td style="padding: 3px 0;">' + dailyCollectorAccountText + '</td></tr>';
+        summaryMessage += '</table></div>';
+
+        // Commission Details
+        summaryMessage += '<div style="background-color: #f8f9fa; padding: 10px; border-radius: 5px; margin-bottom: 15px;">';
+        summaryMessage += '<strong style="color: #495057;">💰 COMMISSION DETAILS</strong><hr style="margin: 5px 0; opacity: 0.2;">';
+        summaryMessage += '<table style="width: 100%; border-collapse: collapse;">';
+        summaryMessage += '<tr><td style="padding: 3px 0;"><strong>Daily Collector Share:</strong></td><td style="padding: 3px 0; text-align: right; color: #198754;">' + formatCurrency(dailyCollectorShare) + '</td></tr>';
+        summaryMessage += '<tr><td style="padding: 3px 0;"><strong>Branch Share:</strong></td><td style="padding: 3px 0; text-align: right; color: #0d6efd;">' + formatCurrency(branchShare) + '</td></tr>';
+        summaryMessage += '<tr><td style="padding: 3px 0;"><strong>Incentives:</strong></td><td style="padding: 3px 0; text-align: right; color: ' + (incentives > 0 ? '#dc3545' : '#6c757d') + ';">' + formatCurrency(incentives) + '</td></tr>';
+        summaryMessage += '<tr style="border-top: 1px solid #dee2e6;"><td style="padding: 5px 0 0 0;"><strong>Total to Post:</strong></td><td style="padding: 5px 0 0 0; text-align: right; color: #0d6efd;"><strong>' + formatCurrency(totalAmountToShare) + '</strong></td></tr>';
+        summaryMessage += '</table></div>';
+
+        // GL Accounts
+        summaryMessage += '<div style="background-color: #f8f9fa; padding: 10px; border-radius: 5px; margin-bottom: 15px;">';
+        summaryMessage += '<strong style="color: #495057;">🏦 GL ACCOUNTS</strong><hr style="margin: 5px 0; opacity: 0.2;">';
+        summaryMessage += '<table style="width: 100%; border-collapse: collapse;">';
+        summaryMessage += '<tr><td style="padding: 3px 0;"><strong>Branch Commission GL:</strong></td><td style="padding: 3px 0;">' + paymentGlText + '</td></tr>';
+        summaryMessage += '<tr><td style="padding: 3px 0;"><strong>Expense GL:</strong></td><td style="padding: 3px 0;">' + expenseGLText + (incentives > 0 ? '' : ' <span style="color: #6c757d;">(not required - incentives=0)</span>') + '</td></tr>';
+        summaryMessage += '</table></div>';
+
+        // Period Information
+        summaryMessage += '<div style="background-color: #f8f9fa; padding: 10px; border-radius: 5px;">';
+        summaryMessage += '<strong style="color: #495057;">📅 PERIOD</strong><hr style="margin: 5px 0; opacity: 0.2;">';
+        summaryMessage += '<table style="width: 100%; border-collapse: collapse;">';
+        summaryMessage += '<tr><td style="padding: 3px 0;"><strong>Month/Year:</strong></td><td style="padding: 3px 0;">' + month + '/' + year + '</td></tr>';
+        summaryMessage += '<tr><td style="padding: 3px 0;"><strong>Accounting Date:</strong></td><td style="padding: 3px 0;">' + formatDateToDMY(accountingDate) + '</td></tr>';
+        summaryMessage += '</table></div>';
+
+        // Memo Section
+        summaryMessage += '<div style="background-color: #f8f9fa; padding: 10px; border-radius: 5px; margin-bottom: 15px;">';
+        summaryMessage += '<strong style="color: #495057;">📝 MEMO DETAILS</strong><hr style="margin: 5px 0; opacity: 0.2;">';
+        summaryMessage += '<table style="width: 100%; border-collapse: collapse;">';
+        summaryMessage += '<tr><td style="padding: 3px 0;"><strong>Memo:</strong></td><td style="padding: 3px 0;">' + $('#Memo').val() + '</td></tr>';
+        summaryMessage += '<tr><td style="padding: 3px 0;"><strong>Memo Incentive:</strong></td><td style="padding: 3px 0;">' + $('#MemoIncentive').val() + '</td></tr>';
+        summaryMessage += '</table></div>';
+
+        summaryMessage += '</div>';
+
+        // Show confirmation dialog using alertify
+        alertify.confirm(
+            'Confirm Payment Posting',
+            summaryMessage,
+            function() {
+                // Proceed with payment - User clicked OK
+                executePayment(payload);
+            },
+            function() {
+                // Cancel - User clicked Cancel
+                appalert('Payment posting cancelled', 2, 1);
+                $('#btnPostPayment').prop('disabled', false).html('<i class="mdi mdi-check-circle me-1"></i> Post');
+            }
+        ).set('labels', {ok: '✅ Proceed', cancel: '❌ Cancel'})
+         .set('closable', false)
+         .set('movable', false)
+         .set('resizable', false)
+         .set('transition', 'fade')
+         .set('pinnable', false);
+    }
+
+    function executePayment(payload) {
     $.ajax({
         url: '@Url.Action("ProcessPayment", "CollectorCommission")',
         type: 'POST',
@@ -1810,9 +2056,17 @@ function executePayment(payload) {
                 collectorReference = null;
                 dailyCollectorId = null;
                 selectedAccountNumber = null;
+
+                // Refresh commission data
                 if (typeof getCommissionData === 'function') {
                     getCommissionData();
                 }
+
+                // Refresh job monitor
+                refreshJobMonitor();
+
+                // AUTOMATICALLY ENABLE AUTO-REFRESH AFTER TREATMENT
+                enableAutoRefreshAfterTreatment();
             } else {
                 if (response.errors) {
                     var errorMessages = [];
@@ -1901,22 +2155,26 @@ function executePayment(payload) {
 
                 // CRITICAL: Ensure SharedAmounts is properly structured
                 SharedAmounts: exportData.commissionData.SharedAmounts ?
-                    exportData.commissionData.SharedAmounts.map(item => ({
-                        Stakeholder: item.Stakeholder,
-                        Percentage: item.Percentage,
-                        Amount: item.Amount
-                    })) : [],
+                    exportData.commissionData.SharedAmounts.map(function(item) {
+                        return {
+                            Stakeholder: item.Stakeholder,
+                            Percentage: item.Percentage,
+                            Amount: item.Amount
+                        };
+                    }) : [],
 
                 // Member stats
                 MemberStats: exportData.commissionData.MemberStats ?
-                    exportData.commissionData.MemberStats.map(member => ({
-                        MemberId: member.MemberId,
-                        MemberName: member.MemberName,
-                        TotalActivityAmount: member.TotalActivityAmount,
-                        FeeCharged: member.FeeCharged,
-                        PaymentStatus: member.PaymentStatus,
-                        lastTransactionDate: member.lastTransactionDate // ✅ camelCase
-                    })) : []
+                    exportData.commissionData.MemberStats.map(function(member) {
+                        return {
+                            MemberId: member.MemberId,
+                            MemberName: member.MemberName,
+                            TotalActivityAmount: member.TotalActivityAmount,
+                            FeeCharged: member.FeeCharged,
+                            PaymentStatus: member.PaymentStatus,
+                            lastTransactionDate: member.lastTransactionDate // ✅ camelCase
+                        };
+                    }) : []
             },
             ExportOptions: {
                 Format: exportData.format,

@@ -310,6 +310,7 @@
     <Compile Include="AccountingV2\EndOfYearClosure\EndOfYearClosureService.cs" />
     <Compile Include="AccountingV2\EndOfYearClosure\YearEndChecklistDefinitionService.cs" />
     <Compile Include="AccountingV2\GLSystemReconciliation\GLSystemReconciliationService.cs" />
+    <Compile Include="AccountingV2\GLSystemReconciliation\ReconciliationExcelExportGenerator.cs" />
     <Compile Include="AccountingV2\InterestProductConfig\InterestProductConfigService.cs" />
     <Compile Include="AccountingV2\JournalHead\JournalHeadExcelExportGenerator.cs" />
     <Compile Include="AccountingV2\LiaisonMappingV2\LiaisonMappingServices.cs" />
@@ -338,6 +339,7 @@
     <Compile Include="Accounting\ProductAccountingHelper.cs" />
     <Compile Include="Accounting\TransactionTracker.cs" />
     <Compile Include="Accounts\FileUploadServices.cs" />
+    <Compile Include="Accounts\MembersAccountManagementService.cs" />
     <Compile Include="CheckManagementSystem\ChequeCertificationServices\ChequeCertificationService.cs" />
     <Compile Include="CheckManagementSystem\ChequeCertificationServices\GetChequeCertificationsDataTableQuery.cs" />
     <Compile Include="CheckManagementSystem\ChequeCertificationServices\MockChequeCertificationService.cs" />

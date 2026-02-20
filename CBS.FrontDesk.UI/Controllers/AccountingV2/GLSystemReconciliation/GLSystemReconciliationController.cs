@@ -6,10 +6,12 @@ using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.AccountingV2;
 using CBS.FrontDesk.Data.Entity.AccountingV2.CashReconciliation;
 using CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation;
+using CBS.FrontDesk.Data.Entity.DataTable;
 using DocumentFormat.OpenXml.EMMA;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -111,6 +113,107 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.GLSystemReconciliation
             }
         }
 
+
+
+
+        //[HttpPost]
+        public async Task<ActionResult> ExportReconciliationData(ExportReconciliation request)
+        {
+            try
+            {
+                // ✅ Build ReconciliationQuery from Filters
+                var query = new ReconciliationQuery
+                {
+                    DataTableOptions = new DataTableOptions
+                    {
+                        draw = "1",
+                        start = 0,
+                        length = int.MaxValue // fetch all filtered rows
+                    },
+
+                    Reference = request.Filters?.Reference,
+                    MemberReference = request.Filters?.MemberReference,
+                    OperationCode = request.Filters?.OperationCode,
+                    Status = request.Filters?.Status,
+                    BranchId = request.Filters?.BranchId,
+                    CorrelationId = request.Filters?.CorrelationId,
+                    FromDate = request.Filters?.FromDate,
+                    ToDate = request.Filters?.ToDate
+                };
+
+                // ✅ Fetch data from service
+                // ✅ Fetch data from service
+                var data = await _glSystemReconciliationService
+                    .GetReconciliationDataTableAsync(query);
+
+                var reconciliationList = JsonConvert.DeserializeObject<List<Reconciliation>>(
+                    JsonConvert.SerializeObject(data.data));
+
+                // ✅ Populate branch info using branchName
+                
+
+                // ✅ Convert data for Excel (same pattern as Refund)
+                var reconciliationDataForExcel =
+                    ReconciliationExcelExportGenerator.ConvertToReconciliationData(reconciliationList);
+
+
+                if (!reconciliationDataForExcel.Any())
+                    return Json(new
+                    {
+                        success = false,
+                        message = "No valid reconciliation data could be processed for export."
+                    });
+
+                // ✅ Prepare file name
+                string timestamp = DateTime.Now.ToString("ddMMyyyyHHmmss");
+                string fileName =
+                    $"{request.ExportOptions?.FileName ?? "Reconciliation_Report"}_{timestamp}.xlsx";
+
+                string directoryPath = Server.MapPath("~/TempFiles");
+
+                if (!Directory.Exists(directoryPath))
+                    Directory.CreateDirectory(directoryPath);
+
+                string filePath = System.IO.Path.Combine(directoryPath, fileName);
+                string exportedBy = Session["FullName"]?.ToString() ?? "System";
+
+                // ✅ Generate Excel
+                var generator = new ReconciliationExcelExportGenerator();
+                generator.GenerateReconciliationExcel(
+                    reconciliationDataForExcel,
+                    filePath,
+                    exportedBy,
+                    request.ExportOptions
+                );
+
+                if (!System.IO.File.Exists(filePath))
+                    return Json(new
+                    {
+                        success = false,
+                        message = "Failed to generate reconciliation Excel file."
+                    });
+
+                // ✅ Return file
+                byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+                System.IO.File.Delete(filePath);
+
+                return File(
+                    fileBytes,
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    fileName
+                );
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = $"An error occurred while exporting reconciliation data: {ex.Message}"
+                });
+            }
+        }
+
+
         //[HttpPost]
         //public async Task<ActionResult> GetReconciliationSummary(ReconciliationQuerys model)
         //{
@@ -118,8 +221,8 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.GLSystemReconciliation
         //    model.EndUtc = model.StartDate;
         //    model.StartUtc = model.StartDate;
         //    model.EndDate = model.StartDate;
-            
-           
+
+
         //    try
         //    {
         //        var summary = await _glSystemReconciliationService.GetReconciliationSummaryAsync(model);

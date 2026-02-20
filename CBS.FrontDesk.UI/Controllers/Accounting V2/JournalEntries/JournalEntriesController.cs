@@ -4,13 +4,17 @@ using CBS.BusinessService.Config;
 
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Queries;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Reporting.FlatBaseE;
+using CBS.FrontDesk.Data.Entity.Accounting_V2.TrialBalance;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement;
 using Microsoft.AspNet.SignalR.Hosting;
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.JournalEntries
 {
@@ -226,5 +230,147 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.JournalEntries
                 message = "Report parameters set successfully."
             }, JsonRequestBehavior.AllowGet);
         }
+
+        [HttpGet]
+        public async Task<ActionResult> DownloadExcel(AccountingV2ReportsFilter model)
+        {
+            try
+            {
+                // 1. Fetch the journal entries based on the filter
+                var entries = await _journalEntriesService.GetJournalEntriesAsync(model);
+                if (entries == null || !entries.Any())
+                {
+                    return Json(new
+                    {
+                        success = false,
+                        message = "No data available for export."
+                    }, JsonRequestBehavior.AllowGet);
+                }
+
+                // 2. Get branch information (for report header)
+                var branchInfo = await _branchServices.GetBranch(model.BranchId);
+                if (branchInfo == null)
+                {
+                    return Json(new
+                    {
+                        success = false,
+                        message = "Branch information not found."
+                    }, JsonRequestBehavior.AllowGet);
+                }
+
+                // 3. Build BankHeaderInformation from branch data
+                var headerInfo = new BankHeaderInformation
+                {
+                    BankId = branchInfo.Bank?.Id,
+                    BankBankCode = branchInfo.Bank?.BankCode,
+                    BankCode = branchInfo.Bank?.BankCode,
+                    BankName = branchInfo.Bank?.Name,
+                    BankTelephone = branchInfo.Bank?.Telephone,
+                    BankEmail = branchInfo.Bank?.Email,
+                    BankAddress = branchInfo.Bank?.Address,
+                    BankLogoUrl = branchInfo.Bank?.LogoUrl,
+                    BankMotto = branchInfo.Bank?.Motto,
+                    BankRegistrationNumber = branchInfo.Bank?.RegistrationNumber,
+                    BankImmatriculationNumber = branchInfo.Bank?.ImmatriculationNumber,
+                    BankPBox = branchInfo.Bank?.PBox ?? "",
+                    BranchId = branchInfo.Id,
+                    BranchCode = branchInfo.BranchCode,
+                    BranchName = branchInfo.Name,
+                    BranchTelephone = branchInfo.Telephone,
+                    BranchEmail = branchInfo.Email,
+                    BranchAddress = branchInfo.Address,
+                    BranchLogoUrl = branchInfo.LogoUrl,
+                    BranchCapital = branchInfo.Capital,
+                    BranchRegistrationNumber = branchInfo.RegistrationNumber,
+                    BranchImmatriculationNumber = branchInfo.ImmatriculationNumber,
+                    BranchPBox = branchInfo.PBox ?? ""
+                };
+
+                // 4. Get the name of the user who exported the report
+                string exportedBy = Session["FullName"]?.ToString() ?? "System";
+
+                // 5. Prepare a temporary file path
+                string timestamp = DateTime.Now.ToString("ddMMyyyyHHmmss");
+                string fileName = $"AccountStatement_{timestamp}.xlsx";
+                string directoryPath = Server.MapPath("~/TempFiles");
+                if (!Directory.Exists(directoryPath))
+                    Directory.CreateDirectory(directoryPath);
+                string filePath = Path.Combine(directoryPath, fileName);
+
+                var flatItems = MapJournalEntriesToFlatItems(entries);
+
+                // 6. Generate the Excel workbook using the custom generator
+                var generator = new AccountStatementExcelExportGenerator();
+                generator.GenerateAccountStatementExcel(
+                    flatItems,          // List<AccountStatementFlatItems>
+                    filePath,
+                    exportedBy,
+                    model,            // AccountingV2ReportsFilter (contains date range)
+                    headerInfo
+                );
+
+                // 7. Verify file creation and return it to the client
+                if (!System.IO.File.Exists(filePath))
+                    return Json(new { success = false, message = "Failed to generate Excel file." });
+
+                byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+                System.IO.File.Delete(filePath);
+
+                return File(
+                    fileBytes,
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    fileName
+                );
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = ex.Message
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        private List<AccountStatementFlatItems> MapJournalEntriesToFlatItems(List<JournalDtoEntriesV2Dto> entries)
+        {
+            return entries.Select(e => new AccountStatementFlatItems
+            {
+                AccountingDate = e.AccountingDate.ToString("dd/MM/yyyy"),
+                ReferenceNumber = e.Reference,
+                BranchId = e.BranchId,
+                AccountNumber = e.AccountNumber,
+                AccountName = e.AccountName,
+                DebitAmount = e.DR,
+                CreditAmount = e.CR,
+                Description = e.Narration,
+                DrCr = e.DrCr,
+                Amount = e.Amount,
+                Balance = e.Balance,
+                Seq = e.Seq,
+                AuxiliaryRef = e.AuxiliaryRef,
+                EntryDate = e.EntryDate,
+                UserName = e.UserName,
+                InterbranchStatus = e.InterbranchStatus,
+                CounterpartyBranchId = e.CounterpartyBranchId,
+                TimeOfOperation = e.TimeOfOperation,
+                 time = TimeSpan.TryParse(e.TimeOfOperation, out var ts)
+                                    ? TimeSpan.Parse(ts.ToString(@"hh\:mm\:ss"))
+                                    : TimeSpan.Zero, // Set default; adjust if you have actual time info
+                Entime = TimeSpan.Zero,
+                OpeningBalance = e.OpeningBalance,
+                EndingBalance = e.EndingBalance,
+                TotalDR = e.TotalDR,
+                TotalCR = e.TotalCR,
+                TotalDifference = e.TotalDifference
+                // Any additional AccountStatementFlatItems fields can be initialized here
+            }).ToList();
+        }
+
+
+
+
+       
+
     }
 }

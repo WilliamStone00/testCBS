@@ -124,7 +124,6 @@
         font-size: 0.92rem;
         table-layout: fixed; /* ✅ forces fixed column widths */
     }
-
 </style>
 
 
@@ -195,11 +194,10 @@
 <!-- ▬▬▬ FILTER UI ▬▬▬ -->
 <div class="card p-4 card-flat-gray shadow">
 
-    <!-- ROW 1: Accounting Year toggle + dropdown -->
-    <div class="row g-3 mb-3 align-items-end">
-
+    <!-- ROW 1: Accounting Year -->
+    @*<div class="row g-3 mb-3 align-items-end">
         <div class="col-md-6">
-            <div class="form-check mt-3 mt-md-0">
+            <div class="form-check">
                 <input class="form-check-input" type="checkbox" id="ToggleAccountingYear" />
                 <label class="form-check-label fw-semibold" for="ToggleAccountingYear">
                     Filter by Accounting Year
@@ -225,141 +223,136 @@
                 new { @class = "form-select select2 accountingyear_custome", id = "AccountingYear" }
             )
         </div>
-    </div>
+    </div>*@
 
     <!-- ROW 2: Branch -->
     <div class="row g-3 mb-3">
-        <div class="col-md-12">
+        <div class="col-12">
             <label class="form-label fw-semibold" for="BranchId">🏢 Select Branch</label>
-
             @Html.DropDownListFor(m => m.BranchId,
                 new SelectList(ViewBag.Branches, "Id", "Name"),
                 "--- Select Branch ---",
                 new
-                {
+                     {
                     @class = "form-control branches_custome select2 required-field",
                     multiple = "multiple",
                     id = "BranchId"
                 })
             <small class="text-muted">
-                Select one or more branches. Other filters will appear after a branch is selected.
+                Select one or more branches.
             </small>
         </div>
     </div>
 
-    @*==================== group controls one =======================*@
-    <div>
-        <!-- ROW 3: Report Type + Source Mode (requires branch) -->
-        <div class="row g-3 mb-3 requires-branch d-none">
-            <div class="col-md-6">
-                @Html.Label("ReportType", "Report Type", new { @class = "form-label fw-semibold" })
-                @Html.DropDownList(
-                    "ReportType",
-                    (IEnumerable<SelectListItem>)ViewBag.ReportTypes,
-                    "--- Select Report Type ---",
-                    new
-                    {
-                        @class = "form-select select2 reportype_custome required-field",
-                        id = "ReportType"
-                    })
-                <small class="text-muted">
-                    Choose <strong>JE</strong> or <strong>Account Statement</strong> to enable account selection.
-                </small>
-            </div>
-
-            <div class="col-md-6">
-                @Html.Label("SourceMode", "Source Mode", new { @class = "form-label fw-semibold" })
-                @Html.DropDownList(
-                    "SourceMode",
-                    new List<SelectListItem> {
-                        new SelectListItem { Text = "Temporary", Value = "Temp" },
-                        new SelectListItem { Text = "Reconciled", Value = "Reconciled" },
-                        new SelectListItem { Text = "Auto", Value = "Auto" },
-                        new SelectListItem { Text = "RealTime", Value = "RealTime" }
-                    },
-                    "--- Select Source Mode ---",
-                    new
-                    {
-                        @class = "form-select select2 source_custome required-field",
-                        id = "SourceMode"
-                    })
-                <small class="text-muted">
-                    Select the transaction source you want to report on.
-                </small>
-            </div>
+    <!-- ROW 3: Report Type + Source -->
+    <div class="row g-3 mb-3 requires-branch d-none">
+        <div class="col-md-6">
+            @Html.Label("ReportType", "Report Type", new { @class = "form-label fw-semibold" })
+            @Html.DropDownList(
+                "ReportType",
+                (IEnumerable<SelectListItem>)ViewBag.ReportTypes,
+                "--- Select Report Type ---",
+                new { @class = "form-select select2 required-field", id = "ReportType" })
         </div>
 
-        <!-- ROW 4: Flags (requires branch) -->
-        <div class="row g-3 mb-3 requires-branch d-none">
-            <div class="col-md-8 d-flex align-items-center gap-4">
-                <div class="form-check" hidden>
-                    <input type="checkbox" id="IsInterbranch" class="form-check-input" />
-                    <label class="form-check-label" for="IsInterbranch">Laison</label>
-                </div>
-
-                <div class="form-check d-none include_zero_group">
-                    <input type="checkbox" id="IncludingZero" class="form-check-input" />
-                    <label class="form-check-label" for="IncludingZero">Include Zero Balance On TB</label>
-                </div>
-
-                <div class="form-check">
-                    <input type="checkbox" id="IsConsolidated" class="form-check-input" />
-                    <label class="form-check-label" for="IsConsolidated">Consolidated</label>
-                </div>
-
-                <div class="form-check">
-                    <input type="checkbox" id="IncludeAllAccountsInTB" class="form-check-input" checked />
-                    <label class="form-check-label" for="IncludeAllAccountsInTB">Include All Accounts InTB</label>
-                </div>
-            </div>
+        <div class="col-md-6">
+            @Html.Label("SourceMode", "Source Mode", new { @class = "form-label fw-semibold" })
+            @Html.DropDownList(
+                "SourceMode",
+                new List<SelectListItem> {
+                    new SelectListItem { Text = "Temporary", Value = "Temp" },
+                    new SelectListItem { Text = "Reconciled", Value = "Reconciled" }
+                },
+                "--- Select Source Mode ---",
+                new { @class = "form-select select2 required-field", id = "SourceMode" })
         </div>
+    </div>
 
-        <!-- ROW 5: Accounts (optional) -->
-        <div class="row">
-            <div class="col-md-12 account account_group d-none">
-                <label class="form-label fw-semibold" for="AccountId">
-                    Select Accounts <span class="text-muted">(optional)</span>
+    <!-- ROW 4: Flags -->
+    <div class="row g-3 mb-3 requires-branch d-none">
+        <div class="col-12 d-flex flex-wrap gap-4">
+            <div class="form-check d-none include_zero_group">
+                <input type="checkbox" id="IncludingZero" class="form-check-input" />
+                <label class="form-check-label" for="IncludingZero">
+                    Include Zero Balance On TB
                 </label>
-                @Html.DropDownList(
-                    "AccountId",
-                    new List<SelectListItem>(),
-                    "--- Select Account ---",
-                    new
-                    {
-                        @class = "select2 select-gray branches_accounts",
-                        multiple = "multiple",
-                        id = "AccountId"
-                    })
-                <small class="text-muted">
-                    Accounts are only required for <strong>JE</strong> and <strong>Account Statement</strong> reports.
-                </small>
-            </div>
-        </div>
-
-        <!-- ROW 6: Date Range (requires branch) -->
-        <div class="row date_range_group d-none">
-            <div class="col-md-6">
-                <label class="form-label fw-semibold" for="StartDate">📆 Start Date</label>
-                <input type="date" id="StartDate" class="form-control select-gray required-field" />
             </div>
 
-            <div class="col-md-6">
-                <label class="form-label fw-semibold" for="EndDate">📆 End Date</label>
-                <input type="date" id="EndDate" class="form-control select-gray required-field" />
+            <div class="form-check">
+                <input type="checkbox" id="IsConsolidated" class="form-check-input" />
+                <label class="form-check-label" for="IsConsolidated">
+                    Consolidated
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input type="checkbox" id="IncludeAllAccountsInTB" class="form-check-input" checked />
+                <label class="form-check-label" for="IncludeAllAccountsInTB">
+                    Include All Accounts In TB
+                </label>
             </div>
         </div>
     </div>
 
-    <!-- ROW 7: Buttons (requires branch) -->
-    <div class="row mt-3 requires-branch d-none">
+    <!-- ROW 5: Accounts -->
+    <div class="row mb-3 account_group d-none">
+        <div class="col-12">
+            <label class="form-label fw-semibold" for="AccountId">
+                Select Accounts <span class="text-muted">(optional)</span>
+            </label>
+            @Html.DropDownList(
+                "AccountId",
+                new List<SelectListItem>(),
+                "--- Select Account ---",
+                new
+                     {
+                    @class = "select2 select-gray branches_accounts",
+                    multiple = "multiple",
+                    id = "AccountId"
+                })
+        </div>
+    </div>
+
+    <!-- ROW 6: Export Format (FIXED spacing issue here) -->
+    <!-- ROW 7: Date Range -->
+    <div class="row g-3 mb-3 date_range_group d-none">
+        <div class="col-md-6">
+            <label class="form-label fw-semibold" for="StartDate">📆 Start Date</label>
+            <input type="date" id="StartDate" class="form-control required-field" />
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label fw-semibold" for="EndDate">📆 End Date</label>
+            <input type="date" id="EndDate" class="form-control required-field" />
+        </div>
+    </div>
+
+
+    <div class="row g-3 mb-3 export_group d-none">
+        <div class="col-md-6">
+            @Html.Label("ExportType", "Export Format", new { @class = "form-label fw-semibold" })
+            @Html.DropDownList(
+                "ExportType",
+                new List<SelectListItem>
+                {
+                    new SelectListItem { Text = "Excel", Value = "Excel" },
+                    new SelectListItem { Text = "PDF", Value = "PDF" }
+                },
+                "--- Select Export Format ---",
+                new { @class = "form-select select2", id = "ExportType" })
+        </div>
+    </div>
+
+    <!-- ROW 8: Buttons -->
+    <div class="row g-3 mt-3 requires-branch d-none">
         <div class="col-md-6">
             <button type="button"
-                    style="background:green"
                     id="btnGetCommission"
                     class="btn btn-success w-100 disabled">
                 <i class="mdi mdi-search me-1"></i> Apply Filter
             </button>
         </div>
+
         <div class="col-md-6">
             <button type="button" id="btnReset" class="btn btn-secondary w-100">
                 <i class="mdi mdi-refresh me-1"></i> Reset
@@ -478,7 +471,7 @@
 
         //    // Excel: download using file from response
         //    $('.btnExcel').off().on('click', function () {
-                
+
         //        if (response && response.downloadFile) {
 
         //            if (controllerName == "TrialBalance4Columns") {
@@ -512,12 +505,12 @@
 
             if (!files.length) {
                 $('#reportTableBody').html(`
-            <tr>
-                <td colspan="4" class="text-center">
-                    No files available
-                </td>
-            </tr>
-        `);
+                    <tr>
+                        <td colspan="4" class="text-center">
+                            No files available
+                        </td>
+                    </tr>
+                `);
                 $('#clearGeneratedReports').addClass('d-none');
                 return;
             }
@@ -549,30 +542,30 @@
             // ✅ One row per file
             files.forEach(file => {
                 rowsHtml += `
-            <tr>
-                <td class="report-name-column">${file}</td>
-                <td>${reportName}</td>
-                <td>${sourceMode}</td>
-                <td class="actions-cell text-center">
-                    <div class="actions-container">
-                        <a href="javascript:void(0)"
-                           class="report-action-link btnExcel"
-                           data-controller="${controllerName}"
-                           data-file="${file}">
-                            <i class="mdi mdi-file-excel-outline"></i> Excel
-                        </a>
+                    <tr>
+                        <td class="report-name-column">${file}</td>
+                        <td>${reportName}</td>
+                        <td>${sourceMode}</td>
+                        <td class="actions-cell text-center">
+                            <div class="actions-container">
+                                <a href="javascript:void(0)"
+                                   class="report-action-link btnExcel"
+                                   data-controller="${controllerName}"
+                                   data-file="${file}">
+                                    <i class="mdi mdi-file-excel-outline"></i> Excel
+                                </a>
 
-                        <span class="action-separator"></span>
+                                <span class="action-separator"></span>
 
-                        <a href="javascript:void(0)"
-                           class="report-action-link btnPdf"
-                           data-controller="${controllerName}">
-                            <i class="mdi mdi-file-pdf-box"></i> PDF
-                        </a>
-                    </div>
-                </td>
-            </tr>
-        `;
+                                <a href="javascript:void(0)"
+                                   class="report-action-link btnPdf"
+                                   data-controller="${controllerName}">
+                                    <i class="mdi mdi-file-pdf-box"></i> PDF
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                `;
             });
 
             $('#reportTableBody').html(rowsHtml);
@@ -613,14 +606,44 @@
                 const branchSelected = $branch.val() && $branch.val().length > 0;
                 const hasReportType = $reportType.val();
                 const hasSource = $('#SourceMode').val();
-                const hasStartDate = $('#StartDate').val();
-                const hasEndDate = $('#EndDate').val();
+                const startDateVal = $('#StartDate').val();
+                const endDateVal = $('#EndDate').val();
 
-                const ok = branchSelected && hasReportType && hasSource && hasStartDate && hasEndDate;
+                let dateValid = true;
+
+                if (startDateVal && endDateVal) {
+                    const fromDate = new Date(startDateVal);
+                    const toDate = new Date(endDateVal);
+                    const today = new Date();
+
+                    today.setHours(0, 0, 0, 0); // remove time part
+
+                    // ❌ FromDate > ToDate
+                    if (fromDate > toDate) {
+                        appalert('⚠️ Invalid Date: From Date cannot be greater than To Date.', 2, 1);
+                        dateValid = false;
+                    }
+
+                    // ❌ ToDate > Today
+                    else if (toDate > today) {
+                        appalert('⚠️ Invalid Date: To Date cannot be greater than today.', 2, 1);
+                        dateValid = false;
+                    }
+
+                    
+                    // ❌ Dates must NOT be before 2025
+                    else if (fromDate.getFullYear() < 2025 || toDate.getFullYear() < 2025) {
+                        appalert('⚠️ Invalid Date: Dates cannot be earlier than year 2025.', 2, 1);
+                        dateValid = false;
+                    }
+                }
+
+                const ok = branchSelected && hasReportType && hasSource && startDateVal && endDateVal && dateValid;
 
                 $btn.prop('disabled', !ok).toggleClass('disabled', !ok);
-            }
 
+                return ok;
+            }
             // Show/hide rows that depend on branch selection
             function toggleBranchDependentFields() {
                 const hasBranch = $branch.val() && $branch.val().length > 0;
@@ -859,6 +882,65 @@
                 toggleBranchDependentFields();
                 validateFilters();
             });
+
+
+            $(document).on("change", "#ReportType", function () {
+                var selected = $(this).val();
+
+                if (selected === "JE" || selected === "Account Statement") {
+                    $(".export_group").removeClass("d-none");
+                } else {
+                    $(".export_group").addClass("d-none");
+                    $("#ExportType").val("").trigger("change");
+                }
+            });
+
+
+            $(document).on("change", "#ExportType", function () {
+                var exportType = $(this).val();
+                console.log(exportType)// Excel or PDF
+                var reportType = $("#ReportType").val();
+
+                if (!exportType || !reportType) return;
+
+                // Only allow if filters are valid
+                if (!validateFilters()) return;
+
+                const payload = buildReportPayload();
+                let controller = '';
+
+                switch (reportType) {
+                    case "JE":
+                        controller = 'JournalEntries';
+                        break;
+                    case "Account Statement":
+                        controller = 'AccntStatement';
+                        break;
+                    default:
+                        return; // do nothing for other types
+                }
+
+                if (exportType === "Excel") {
+                    try {
+                        const queryString = $.param(payload);
+                        window.location = `/${controller}/DownloadExcel?${queryString}`;
+                    }
+                    catch (err) {
+                        appalert('⚠️ Error exporting Excel: ' + err.message, 2, 1);
+                    }
+                }
+
+                if (exportType === "PDF") {
+                    // Call existing Reprint function
+                    Reprint(controller);
+                }
+
+                // Optional: reset ExportType after trigger
+                $(this).val("").trigger("change");
+            });
+
+
+
         });
     </script>
 }

@@ -77,11 +77,24 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeCl
             return View();
         }
 
+        //[HttpGet]
+        //public async Task<ActionResult> ImageUpload(string clearanceId)
+        //{
+        //    ViewBag.Clearance = clearanceId;
+        //    return View();
+        //}
+
         [HttpGet]
-        public async Task<ActionResult> ImageUpload()
+        public async Task<ActionResult> ImageUpload(string clearanceId)
         {
-            //await loader();
-            return View();
+            ViewBag.ClearanceId = clearanceId;
+
+            var model = new ClearanceRequestImage
+            {
+                Id = clearanceId
+            };
+
+            return View(model);
         }
 
         [HttpGet]
@@ -176,7 +189,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeCl
 
                 if (result.Result)
                 {
-                    var clearance = result.Data as OptionRequest;
+                    var clearance = result.Data as ClearanceResponce;
 
                     return Json(new
                     {
@@ -205,8 +218,29 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeCl
             }
         }
 
+        public async Task<ActionResult> ImageUploads(ClearanceRequestImage model)
+        {
+            if (model.AttachedFiles == null || !model.AttachedFiles.Any())
+            {
+                return Json(new
+                {
+                    success = false,
+                    status = "Failed",
+                    message = "No files were uploaded."
+                });
+            }
 
-       
+            var data = await _chequeClearanceService.UploadFiles(model);
+
+            return Json(new
+            {
+                success = data.Result,
+                status = data.MessageStatus ?? "Insert",
+                message = Messaging.MessageResult(data),
+                reloadDataView = "Yes"
+            });
+        }
+
 
         public async Task<JsonResult> LoadClearanceData(ClearanceQuery query)
         {
@@ -214,7 +248,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeCl
             {
                 var data = await _chequeClearanceService.ClearanceDataTableAsync(query);
 
-                var Request = JsonConvert.DeserializeObject<List<Data.Entity.CheckManagementSystem.Clearance.ClearanceRequest.OptionRequest>>(
+                var Request = JsonConvert.DeserializeObject<List<Data.Entity.CheckManagementSystem.Clearance.ClearanceRequest.ClearanceResponce>>(
                     JsonConvert.SerializeObject(data.data));
 
                 return Json(new
@@ -239,11 +273,15 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeCl
                 });
             }
 
-
-
+            
+            
+            
         }
     }
 }
+
+
+
 
 
 

@@ -86,7 +86,7 @@ namespace CBS.FrontDesk.Data.Entity.SalaryManagement
         [Required(ErrorMessage = "Source Account Type is required.")]
         public string SourceAccountType { get; set; } // Radio buttons
 
-        [Required(ErrorMessage = "Destination Account Type is required.")]
+        //[Required(ErrorMessage = "Destination Account Type is required.")]
         public string DestinationAccountType { get; set; } // Radio buttons
 
         [Required(ErrorMessage = "Purpose is required.")]

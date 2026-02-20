@@ -1,0 +1,997 @@
+﻿@model CBS.FrontDesk.Data.Entity.MemberAccountManagement.ManageAccountmanaQuery
+@{
+    ViewBag.Title = "Account Status Management";
+}
+@using Resources;
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2 shadow-sm">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary fw-bold">
+                    <i class="mdi mdi-account-cog me-2"></i> Member Account Management
+                </h1>
+                <p class="card-text">
+                    Manage account status changes, approvals, and track workflow history
+                </p>
+                <div class="alert alert-info mt-3 py-2">
+                    <i class="mdi mdi-information-outline me-1"></i>
+                    View and manage account status requests. Approve, reject, or monitor account status changes.
+                </div>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-3 shadow-sm">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-lightbulb-on-outline me-2"></i> Tips & Guidelines</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapseTips" aria-expanded="false">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseTips" class="collapse">
+        <div class="card-body">
+            <ul class="mb-0">
+                <li>
+                    <i class="mdi mdi-home-city text-success me-2"></i>
+                    <strong>Branch Filter:</strong> Filter requests by specific branch to focus on your location
+                </li>
+                <li>
+                    <i class="mdi mdi-tag-text text-info me-2"></i>
+                    <strong>Member Reference:</strong> Search using member ID or account number
+                </li>
+                <li>
+                    <i class="mdi mdi-playlist-check text-warning me-2"></i>
+                    <strong>Status Tracking:</strong> Monitor requests from Pending to Applied status
+                </li>
+                <li>
+                    <i class="mdi mdi-clock-outline text-primary me-2"></i>
+                    <strong>Effective Date:</strong> Changes take effect on the specified date
+                </li>
+                <li>
+                    <i class="mdi mdi-refresh text-info me-2"></i>
+                    <strong>Refresh:</strong> Always refresh data to ensure you're viewing the latest requests
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow p-3 mb-4" id="filtersSection">
+    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i>Account Status Filters</h5>
+
+    <form id="accountStatusFilterForm" autocomplete="off">
+        <div class="card p-3 mb-3 bg-light">
+
+            <div class="row mb-3">
+
+                <!-- Branch (Always Visible) -->
+                <div class="col-md-12">
+                    <label>@GlobalUserManagement.Branch</label>
+                    <div class="form-floating shadow-sm">
+                        @Html.DropDownListFor(
+                            m => m.BranchId,
+                            new SelectList(ViewBag.Branches, "Id", "name"),
+                            "---" + @GlobalUserManagement.SelectBranch + "---",
+                            new { @class = "form-control select2", id = "branchId" })
+                        @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <hr />
+
+            <!-- FILTER CHECKBOXES -->
+            <div class="row mb-3">
+
+                <div class="col-md-4">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input filter-toggle" id="chkStatus" data-target="#statusContainer">
+                        <label class="form-check-label fw-bold">Filter by Status</label>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input filter-toggle" id="chkAction" data-target="#actionContainer">
+                        <label class="form-check-label fw-bold">Filter by Action</label>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input filter-toggle" id="chkMember">
+                        <label class="form-check-label fw-bold">Filter by Member</label>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- FILTER INPUTS (Hidden by Default) -->
+            <div class="row mb-3">
+
+                <!-- Status -->
+                <div class="col-md-4 d-none" id="statusContainer">
+                    <label class="form-label fw-bold">Status</label>
+                    <select id="status" name="Status" class="form-control">
+                        <option value="">-- All Statuses --</option>
+                        <option value="PendingApproval">Pending Approval</option>
+                        <option value="Approved">Approved</option>
+                        <option value="Rejected">Rejected</option>
+                        <option value="Applied">Applied</option>
+                        <option value="Failed">Failed</option>
+                        <option value="Cancelled">Cancelled</option>
+                    </select>
+                </div>
+
+                <!-- Action -->
+                <div class="col-md-4 d-none" id="actionContainer">
+                    <label class="form-label fw-bold">Action Type</label>
+                    <select id="action" name="Action" class="form-control">
+                        <option value="">-- All Actions --</option>
+                        <option value="BlockFull">Block Full</option>
+                        <option value="UnblockFull">Unblock Full</option>
+                        <option value="BlockPartial">Block Partial</option>
+                        <option value="UnblockPartial">Unblock Partial</option>
+                        <option value="Freeze">Freeze</option>
+                        <option value="Close">Close</option>
+                        <option value="Reopen">Reopen</option>
+                    </select>
+                </div>
+
+                <!-- Member Reference -->
+                <div class="col-md-4 d-none" id="memberContainer">
+                    <label class="form-label fw-bold">Member Reference</label>
+                    <input type="text" id="memberReference" name="MemberReference"
+                           class="form-control" placeholder="Account/Member ID" />
+                </div>
+
+            </div>
+
+            <div class="row mt-2">
+                <div class="col-md-12 d-flex">
+                    <button id="applyFilterBtn" type="button" class="btn btn-primary me-2 w-100">
+                        <i class="mdi mdi-magnify"></i> Apply Filter
+                    </button>
+
+                    <button id="resetFilterBtn" type="button" class="btn btn-secondary me-2 w-100">
+                        <i class="mdi mdi-refresh"></i> Reset
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- DataTable Section -->
+<div id="datalistingview">
+    @Html.Partial("_AccountStatusDataTable")
+</div>
+
+<!-- Action Modal -->
+<div class="modal fade" id="actionModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body p-0">
+                <!-- Partial view will be loaded here dynamically -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Details Modal -->
+<div class="modal fade" id="accountDetailsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center">
+                    <div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Generic Modal for dynamic content -->
+<div class="modal fade" id="genericModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <!-- Content will be loaded dynamically -->
+        </div>
+    </div>
+</div>
+
+<style>
+
+    /* Ensure the table fills the container */
+    .table-responsive {
+        overflow-x: auto;
+        width: 100%;
+    }
+
+    #myDataTable {
+        table-layout: fixed !important;
+        width: 100% !important;
+    }
+
+        #myDataTable th,
+        #myDataTable td {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+            /* Actions column should not wrap */
+            #myDataTable td:last-child,
+            #myDataTable th:last-child {
+                white-space: nowrap;
+                text-align: center;
+            }
+
+    /* Custom styles for column toggles */
+    .form-check.form-switch {
+        padding-left: 2.5em;
+        margin-bottom: 0;
+        min-width: 100px;
+    }
+
+        .form-check.form-switch .form-check-input {
+            width: 2.5em;
+            margin-left: -2.5em;
+            float: left;
+        }
+
+            .form-check.form-switch .form-check-input:checked {
+                background-color: #0d6efd;
+                border-color: #0d6efd;
+            }
+
+            .form-check.form-switch .form-check-input:not(:checked) ~ .form-check-label {
+                color: #6c757d !important;
+                opacity: 0.7;
+            }
+
+        .form-check.form-switch .form-check-label {
+            transition: color 0.2s ease;
+            white-space: nowrap;
+        }
+
+    /* Table column resize animation */
+    .table-responsive {
+        transition: all 0.3s ease;
+        overflow-x: auto;
+    }
+
+    #myDataTable {
+        transition: all 0.3s ease;
+        table-layout: auto !important; /* Override any fixed table layout */
+        width: 100% !important;
+    }
+
+    /* Quick action buttons */
+    .btn-sm {
+        padding: 0.25rem 0.75rem;
+        font-size: 0.875rem;
+    }
+
+    /* Gap between checkboxes */
+    .gap-2 {
+        gap: 0.75rem !important;
+    }
+</style>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        var accountStatusTable = null;
+        var isSubmitting = false; // Global flag to prevent double submission
+
+        function showMemberAccountManagement() {
+            ShowModal(id, '_MemberAccMana', 'MembersFSeries', 'Membermanag');
+        }
+
+        // Utility functions
+        function emptyToNull(v) {
+            return (v === undefined || v === null || v === '') ? null : v;
+        }
+
+        function getStatusBadgeClass(status) {
+            switch (status) {
+                case 'PendingApproval': return 'bg-warning';
+                case 'Approved': return 'bg-info';
+                case 'Rejected': return 'bg-danger';
+                case 'Applied': return 'bg-success';
+                case 'Failed': return 'bg-dark';
+                case 'Cancelled': return 'bg-secondary';
+                default: return 'bg-secondary';
+            }
+        }
+
+        function getActionName(actionValue) {
+            switch (actionValue) {
+                case 0: return 'Activate';
+                case 1: return 'Freeze';
+                case 2: return 'Unfreeze';
+                case 3: return 'BlockFull';
+                case 4: return 'UnblockFull';
+                case 5: return 'BlockPartial';
+                case 6: return 'UnblockPartial';
+                case 7: return 'Close';
+                case 8: return 'Reopen';
+                case 9: return 'MarkDormant';
+                case 10: return 'ReactivateDormant';
+                case 11: return 'BlockCashIn';
+                case 12: return 'OpenCashIn';
+                case 13: return 'BlockWithdrawal';
+                case 14: return 'OpenWithdrawal';
+                case 15: return 'BlockTransfer';
+                case 16: return 'OpenTransfer';
+                default: return '-';
+            }
+        }
+
+        function getActionBadgeClass(action) {
+            switch (action) {
+                // 🔴 Negative / Restrictive Actions
+                case 'Freeze':
+                case 'Close':
+                case 'BlockFull':
+                case 'BlockPartial':
+                case 'BlockCashIn':
+                case 'BlockWithdrawal':
+                case 'BlockTransfer':
+                    return 'bg-danger';
+
+                // 🟢 Positive / Opening Actions
+                case 'Activate':
+                case 'Unfreeze':
+                case 'Reopen':
+                case 'UnblockFull':
+                case 'UnblockPartial':
+                case 'OpenCashIn':
+                case 'OpenWithdrawal':
+                case 'OpenTransfer':
+                case 'ReactivateDormant':
+                    return 'bg-success';
+
+                // 🟡 Neutral
+                case 'MarkDormant':
+                    return 'bg-warning';
+
+                default:
+                    return 'bg-info';
+            }
+        }
+
+        function formatDate(date) {
+            if (!date) return '-';
+            return moment(date).format('DD/MM/YYYY HH:mm:ss');
+        }
+
+        // Adjust column widths dynamically to fill the table without empty spaces
+        // Adjust column widths dynamically to fill the table without empty spaces
+        function adjustColumnWidths() {
+            if (!accountStatusTable) return;
+
+            const table = $('#myDataTable');
+            const visibleColumns = accountStatusTable.columns().visible().filter(v => v === true).length;
+
+            if (visibleColumns === 0) return;
+
+            // Get the table container width
+            const containerWidth = table.closest('.table-responsive').width() || table.width();
+
+            // Define minimum widths for each column (in pixels)
+            const minColumnWidths = {
+                0: 150, // Requested On
+                1: 100, // Member Ref
+                2: 150, // Member Name
+                3: 120, // Account Number
+                4: 100, // Account Type
+                5: 80,  // Action
+                6: 80,  // Status
+                7: 100, // Branch
+                8: 100, // Requested By
+                9: 100  // Actions (fixed width)
+            };
+
+            // Calculate total minimum width of visible columns
+            let totalMinWidth = 0;
+            const visibleIndices = [];
+
+            for (let i = 0; i <= 9; i++) {
+                if (accountStatusTable.column(i).visible()) {
+                    totalMinWidth += minColumnWidths[i];
+                    visibleIndices.push(i);
+                }
+            }
+
+            // Calculate remaining space to distribute
+            const remainingSpace = Math.max(0, containerWidth - totalMinWidth);
+
+            // Define flexibility weights (columns that can grow more)
+            const flexibilityWeights = {
+                0: 1.5, // Requested On (can grow more)
+                1: 1.0, // Member Ref
+                2: 1.5, // Member Name (can grow more)
+                3: 1.2, // Account Number
+                4: 1.0, // Account Type
+                5: 0.8, // Action (doesn't need much space)
+                6: 0.8, // Status (doesn't need much space)
+                7: 1.0, // Branch
+                8: 1.0, // Requested By
+                9: 1.2  // Actions (needs space for buttons)
+            };
+
+            // Calculate total flexibility weight of visible columns
+            let totalFlexibility = 0;
+            visibleIndices.forEach(i => {
+                totalFlexibility += flexibilityWeights[i];
+            });
+
+            // Apply widths
+            const colgroup = table.find('colgroup');
+            const cols = colgroup.find('col');
+
+            visibleIndices.forEach(i => {
+                // Base width + proportional share of remaining space
+                const extraWidth = (flexibilityWeights[i] / totalFlexibility) * remainingSpace;
+                const totalWidth = minColumnWidths[i] + extraWidth;
+
+                // Apply width in pixels for precise control
+                $(cols[i]).css('width', totalWidth + 'px');
+            });
+
+            // Hide columns that are not visible
+            for (let i = 0; i <= 9; i++) {
+                if (!accountStatusTable.column(i).visible()) {
+                    $(cols[i]).css('width', '0px');
+                }
+            }
+
+            // Ensure the table uses fixed layout
+            table.css('table-layout', 'fixed');
+
+            // Log for debugging
+            console.log('Container width:', containerWidth, 'Visible columns:', visibleIndices, 'Remaining space:', remainingSpace);
+        }
+
+        // Also add a resize handler to adjust when window size changes
+        $(window).on('resize', function () {
+            if (accountStatusTable) {
+                adjustColumnWidths();
+            }
+        });
+        // Initialize column visibility toggles
+        function initColumnToggles() {
+            if (!accountStatusTable) return;
+
+            // Set initial state - first 5 columns checked (indices 0-4) + Actions column (index 9)
+            for (let i = 0; i <= 9; i++) {
+                const $checkbox = $(`input.column-toggle[data-column="${i}"]`);
+                if (i <= 4 || i === 9) { // Show first 5 data columns + Actions
+                    accountStatusTable.column(i).visible(true);
+                    $checkbox.prop('checked', true);
+                    $checkbox.next('label').removeClass('text-muted');
+                } else {
+                    accountStatusTable.column(i).visible(false);
+                    $checkbox.prop('checked', false);
+                    $checkbox.next('label').addClass('text-muted');
+                }
+            }
+
+            // Add table-layout: fixed for better control
+            $('#myDataTable').css('table-layout', 'fixed');
+
+            adjustColumnWidths();
+        }
+
+        // Handle column toggle clicks
+        // Handle column toggle clicks
+        function setupColumnToggleHandlers() {
+            $('input.column-toggle').off('change').on('change', function () {
+                if (!accountStatusTable) return;
+
+                const columnIndex = parseInt($(this).data('column'));
+                const isChecked = $(this).is(':checked');
+                const $label = $(this).next('label');
+
+                // Toggle column visibility
+                accountStatusTable.column(columnIndex).visible(isChecked);
+
+                // Update label styling
+                if (isChecked) {
+                    $label.removeClass('text-muted');
+                } else {
+                    $label.addClass('text-muted');
+                }
+
+                // CRITICAL: Adjust column widths immediately
+                adjustColumnWidths();
+
+                // Show a message when columns are toggled
+                const columnName = $label.text().trim();
+                if (typeof appalert === 'function') {
+                    appalert(`${columnName} column ${isChecked ? 'shown' : 'hidden'}`, 3, 1);
+                }
+            });
+        }
+
+        // Show all columns
+        function showAllColumns() {
+            if (!accountStatusTable) return;
+
+            for (let i = 0; i <= 9; i++) {
+                accountStatusTable.column(i).visible(true);
+                const $checkbox = $(`input.column-toggle[data-column="${i}"]`);
+                $checkbox.prop('checked', true);
+                $checkbox.next('label').removeClass('text-muted');
+            }
+
+            adjustColumnWidths();
+            appalert('All columns are now visible', 3, 1);
+        }
+
+        // Reset to default columns
+        function resetToDefaultColumns() {
+            if (!accountStatusTable) return;
+
+            for (let i = 0; i <= 9; i++) {
+                if (i <= 4 || i === 9) { // Show first 5 data columns + Actions
+                    accountStatusTable.column(i).visible(true);
+                    $(`input.column-toggle[data-column="${i}"]`).prop('checked', true);
+                    $(`input.column-toggle[data-column="${i}"]`).next('label').removeClass('text-muted');
+                } else {
+                    accountStatusTable.column(i).visible(false);
+                    $(`input.column-toggle[data-column="${i}"]`).prop('checked', false);
+                    $(`input.column-toggle[data-column="${i}"]`).next('label').addClass('text-muted');
+                }
+            }
+
+            adjustColumnWidths();
+            appalert('Columns reset to default view', 3, 1);
+        }
+
+        // Collect filter values
+        function collectFilters() {
+            return {
+                BranchId: emptyToNull($('#branchId').val()),
+                Status: emptyToNull($('#status').val()),
+                Action: emptyToNull($('#action').val()),
+                MemberReference: emptyToNull($('#memberReference').val()),
+                DataTableOptions: {}
+            };
+        }
+
+        // Initialize DataTable
+        // Initialize DataTable
+        function initDataTable() {
+            if ($.fn.DataTable.isDataTable('#myDataTable')) {
+                $('#myDataTable').DataTable().destroy();
+            }
+
+            // Set table layout to fixed for better column width control
+            $('#myDataTable').css('table-layout', 'fixed');
+
+            accountStatusTable = $('#myDataTable').DataTable({
+                searching: true,
+                responsive: false,
+                autoWidth: false, // CRITICAL: disable autoWidth
+                serverSide: true,
+                processing: false,
+                order: [[0, 'desc']],
+                ajax: {
+                    url: '/MemberAccountMan/LoadData',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: function (d) {
+                        var filters = collectFilters();
+                        filters.DataTableOptions = {
+                            draw: d.draw,
+                            start: d.start,
+                            length: d.length,
+                            skip: d.start,
+                            pageSize: d.length,
+                            searchValue: d.search?.value || '',
+                            sortColumnName: d.columns[d.order[0].column].data || 'requestedOn',
+                            sortColumnDirection: d.order[0].dir || 'desc'
+                        };
+                        return JSON.stringify(filters);
+                    },
+                    error: function (xhr, status, error) {
+                        handleAjaxError(xhr, status, error);
+                    }
+                },
+                columns: [
+                    {
+                        data: 'RequestedOn',
+                        render: function (data) { return formatDate(data); }
+                    },
+                    { data: 'MemberReference' },
+                    { data: 'MemberName' },
+                    { data: 'AccountNumber' },
+                    { data: 'AccountType' },
+                    {
+                        data: 'Action',
+                        render: function (data) {
+                            const actionName = getActionName(data);
+                            return `<span class="badge ${getActionBadgeClass(actionName)}">
+                                ${actionName}
+                            </span>`;
+                        }
+                    },
+                    {
+                        data: 'Status',
+                        render: function (data) {
+                            return `<span class="badge ${getStatusBadgeClass(data)}">${data || '-'}</span>`;
+                        }
+                    },
+                    { data: 'BranchName' },
+                    { data: 'RequestedByName' },
+                    {
+                        data: 'Id',
+                        orderable: false,
+                        searchable: false,
+                        className: 'text-center',
+                        render: function (data, type, row) {
+                            return renderActionButtons(data, row);
+                        }
+                    }
+                ],
+                language: {
+                    emptyTable: 'No account status requests found',
+                    info: 'Showing _START_ to _END_ of _TOTAL_ requests',
+                    infoEmpty: 'Showing 0 to 0 of 0 requests',
+                    infoFiltered: '(filtered from _MAX_ total requests)',
+                    processing: '<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>'
+                },
+                lengthMenu: [10, 25, 50, 100],
+                pageLength: 25,
+                drawCallback: function () {
+                    // Adjust column widths after each draw
+                    setTimeout(function () {
+                        adjustColumnWidths();
+                    }, 100);
+                },
+                initComplete: function () {
+                    // Initialize column visibility after table is fully loaded
+                    initColumnToggles();
+                    setupColumnToggleHandlers();
+
+                    // Setup quick action buttons
+                    $('#showAllColumns').off('click').on('click', showAllColumns);
+                    $('#resetColumns').off('click').on('click', resetToDefaultColumns);
+
+                    // Initial width adjustment
+                    setTimeout(function () {
+                        adjustColumnWidths();
+                    }, 200);
+                }
+            });
+        }
+
+        // Render action buttons
+        function renderActionButtons(data, row) {
+            var recordId = encodeURIComponent(data);
+            var safeId = (data || '').replace(/[^a-zA-Z0-9_-]/g, '') || 'x';
+            var btnId = 'actionDropdown_' + safeId;
+
+            var status = row?.Status || '';
+            var canApprove = status === 'PendingApproval';
+            var hasBeenProcessed = status === 'Approved' || status === 'Rejected' || status === 'Applied' || status === 'Failed' || status === 'Cancelled';
+
+            var detailsBtn = `<button type="button" class="dropdown-item btn-details" data-id="${recordId}">
+                                                            <i class="mdi mdi-eye me-1 text-primary"></i> Details
+                                                        </button>`;
+
+            var approveBtn = canApprove ?
+                `<button type="button" class="dropdown-item btn-approve text-success" data-id="${recordId}">
+                                                <i class="mdi mdi-check-circle me-1 text-success"></i> Make Decision
+                                                </button>` : '';
+
+            var disabledMsg = hasBeenProcessed ?
+                '<li><span class="dropdown-item-text text-muted"><i class="mdi mdi-lock me-1"></i> Already Processed</span></li>' : '';
+
+            return `
+                                    <div class="dropdown text-center">
+                                        <button class="btn btn-sm btn-info dropdown-toggle text-white" type="button"
+                                                id="${btnId}" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="mdi mdi-cog-outline"></i> Actions
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="${btnId}">
+                                            <li>${detailsBtn}</li>
+                                            ${disabledMsg}
+                                            ${approveBtn ? '<li><hr class="dropdown-divider"></li>' : ''}
+                                            ${approveBtn ? '<li>' + approveBtn + '</li>' : ''}
+                                        </ul>
+                                    </div>
+                                `;
+        }
+
+        // Handle AJAX errors
+        function handleAjaxError(xhr, status, error) {
+            var msg = 'Failed to load data. Please try again.';
+            try {
+                if (xhr.responseJSON && xhr.responseJSON.message) {
+                    msg = xhr.responseJSON.message;
+                }
+            } catch (e) { }
+            appalert(msg, 0, 1);
+        }
+
+        // Load/reload data
+        function loadData() {
+            if (accountStatusTable) {
+                accountStatusTable.ajax.reload(null, false);
+            } else {
+                initDataTable();
+            }
+        }
+
+        // Reset filters
+        function resetFilters() {
+            $('#accountStatusFilterForm')[0].reset();
+
+            if ($.fn.select2 && $('#branchId').hasClass('select2-hidden-accessible')) {
+                $('#branchId').val(null).trigger('change');
+            }
+
+            loadData();
+            appalert('Filters reset', 3, 1);
+        }
+
+        // Setup decision modal handlers
+        function setupDecisionModalHandlers() {
+            console.log('Setting up decision modal handlers');
+
+            // Reset submission flag when modal opens
+            isSubmitting = false;
+
+            // Initialize select2 for the dropdown
+            if ($.fn.select2) {
+                try {
+                    $('#decisionStatus').select2({
+                        width: '100%',
+                        placeholder: '-- Select New Status --',
+                        allowClear: true,
+                        dropdownParent: $('#genericModal')
+                    });
+                } catch (err) {
+                    console.warn('select2 init failed', err);
+                }
+            }
+
+            // Character counter for decision note
+            $('#decisionNote').off('input').on('input', function () {
+                var length = $(this).val().length;
+                $('#noteCharCount').text(length);
+
+                if (length > 500) {
+                    $(this).val($(this).val().substring(0, 500));
+                    $('#noteCharCount').text(500);
+                }
+            });
+        }
+
+        // Submit decision with dropdown value - WITH DOUBLE SUBMISSION PREVENTION
+        function submitDecision() {
+            console.log('submitDecision called, isSubmitting:', isSubmitting);
+
+            // CRITICAL: Check if already submitting
+            if (isSubmitting) {
+                console.log('Submission already in progress - preventing double click');
+                appalert('Please wait, your request is being processed...', 2, 1);
+                return false;
+            }
+
+            var workflowId = $('#workflowId').val();
+            var decisionStatus = $('#decisionStatus').val();
+            var decisionNote = $('#decisionNote').val().trim();
+
+            // Validate dropdown selection
+            if (!decisionStatus) {
+                appalert('Please select a new status', 0, 1);
+                return;
+            }
+
+            if (!decisionNote || decisionNote.length < 10) {
+                appalert('Please provide a detailed reason (minimum 10 characters)', 0, 1);
+                return;
+            }
+
+            // Set submitting flag to true
+            isSubmitting = true;
+
+            // Get button references
+            var $submitBtn = $('#actionSubmitBtn');
+            var $cancelBtn = $('[data-bs-dismiss="modal"]');
+
+            // Store original button text
+            var originalBtnText = $submitBtn.html();
+
+            // Disable buttons
+            $submitBtn.prop('disabled', true);
+            $submitBtn.html('<i class="mdi mdi-loading mdi-spin me-1"></i> Submitting...');
+            $cancelBtn.prop('disabled', true);
+
+            // Create the command object that matches your ManageAccountStatusCommand
+            var command = {
+                WorkflowId: workflowId,
+                Decision: decisionStatus,
+                DecisionNote: decisionNote
+            };
+
+            // Get anti-forgery token
+            var token = $('input[name="__RequestVerificationToken"]').val();
+
+            console.log('Submitting decision:', command);
+
+            $.ajax({
+                url: '/MemberAccountMan/MakeDecision',
+                type: 'POST',
+                data: JSON.stringify(command),
+                contentType: 'application/json',
+                headers: {
+                    'RequestVerificationToken': token
+                },
+                success: function (response) {
+                    console.log('Success response:', response);
+                    if (response.success) {
+                        $('#genericModal').modal('hide');
+                        appalert(`Status updated to ${decisionStatus} successfully`, 1, 1);
+                        loadData();
+                    } else {
+                        appalert(response.message || 'Failed to update status', 0, 1);
+                        resetButtonState();
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', xhr.responseText);
+
+                    var errorMessage = 'An error occurred while updating status';
+                    try {
+                        var response = JSON.parse(xhr.responseText);
+                        if (response.message) {
+                            errorMessage = response.message;
+                        }
+                    } catch (e) {
+                        // Use default message
+                    }
+
+                    appalert(errorMessage, 0, 1);
+                    resetButtonState();
+                },
+                complete: function () {
+                    console.log('AJAX complete');
+                }
+            });
+
+            // Helper function to reset button state
+            function resetButtonState() {
+                $submitBtn.prop('disabled', false);
+                $submitBtn.html(originalBtnText);
+                $cancelBtn.prop('disabled', false);
+                isSubmitting = false;
+            }
+        }
+
+        // Open action modal for status update
+        function openActionModal(id) {
+            ShowModal(id, '_Decission', 'MemberAccountMan', 'update');
+        }
+
+        // Load details modal
+        function loadDetails(id) {
+            ShowModal(id, '_AccountStatusDetails', 'MemberAccountMan', 'details');
+        }
+
+        // Override ShowModal to setup handlers after modal loads
+        var originalShowModal = window.ShowModal;
+        window.ShowModal = function (id, partialView, controller, method) {
+            console.log('ShowModal called:', controller, method);
+
+            // Call the original function
+            if (originalShowModal) {
+                originalShowModal(id, partialView, controller, method);
+            }
+
+            // If this is the decision modal, setup handlers after content loads
+            if (method === 'update') {
+                console.log('Decision modal detected, scheduling setup');
+                setTimeout(function () {
+                    setupDecisionModalHandlers();
+                }, 300);
+            }
+        };
+
+        // Document ready
+        $(document).ready(function () {
+            // Initialize select2 for main page filters
+            if ($.fn.select2) {
+                try {
+                    $('#branchId').select2({
+                        width: '100%',
+                        placeholder: 'Select Branch',
+                        allowClear: true
+                    });
+                } catch (err) {
+                    console.warn('select2 init failed', err);
+                }
+            }
+
+
+            $("#chkStatus").change(function () {
+                $("#statusContainer").toggleClass("d-none", !this.checked);
+            });
+
+            $("#chkAction").change(function () {
+                $("#actionContainer").toggleClass("d-none", !this.checked);
+            });
+
+            $("#chkMember").change(function () {
+                $("#memberContainer").toggleClass("d-none", !this.checked);
+            });
+
+            // Initialize DataTable
+            //initDataTable();
+
+            // Filter button click
+            $('#applyFilterBtn').on('click', function (e) {
+                e.preventDefault();
+                loadData();
+            });
+
+            // Reset button click
+            $('#resetFilterBtn').on('click', function (e) {
+                e.preventDefault();
+                resetFilters();
+            });
+
+            // Enter key press in filter inputs
+            $('#accountStatusFilterForm input').on('keypress', function (e) {
+                if (e.which === 13) {
+                    e.preventDefault();
+                    loadData();
+                }
+            });
+
+            // Event delegation for dynamic buttons
+            $(document)
+                .off('click', '.btn-details')
+                .on('click', '.btn-details', function (e) {
+                    e.preventDefault();
+                    var id = decodeURIComponent($(this).data('id'));
+                    loadDetails(id);
+                })
+                .off('click', '.btn-approve')
+                .on('click', '.btn-approve', function (e) {
+                    e.preventDefault();
+                    var id = decodeURIComponent($(this).data('id'));
+                    openActionModal(id);
+                });
+
+            // FIXED: Use event delegation for the submit button (handles dynamically loaded content)
+            $(document).on('click', '#actionSubmitBtn', function (e) {
+                e.preventDefault();
+                submitDecision();
+            });
+
+            // Clean up modal when hidden - RESET SUBMISSION FLAG
+            $('#genericModal').on('hidden.bs.modal', function () {
+                console.log('Modal closed - resetting state');
+                $(this).find('.modal-content').empty();
+                isSubmitting = false; // Reset submission flag
+            });
+        });
+    </script>
+}
