@@ -10840,6 +10840,7 @@
     <Content Include="Views\GLSystemReconciliation\_ExportDataTable.cshtml" />
     <Content Include="Views\MembersFSeries\_MemberAccMana.cshtml" />
     <Content Include="Views\MemberAccountMan\List.cshtml" />
+    <Content Include="Views\ChequeClearance\_Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

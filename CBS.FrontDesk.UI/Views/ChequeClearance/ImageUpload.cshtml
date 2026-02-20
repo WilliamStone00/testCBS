@@ -400,8 +400,7 @@
 
 
 
-@using (Html.BeginForm("ImageUploads", "ChequeClearance", FormMethod.Post,
-    new { enctype = "multipart/form-data", id = "imageForm" }))
+@using (Html.BeginForm("ImageUploads", "ChequeClearance", FormMethod.Post,new { enctype = "multipart/form-data", id = "imageForm" }))
 {
     @Html.AntiForgeryToken()
 

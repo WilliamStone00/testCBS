@@ -83,7 +83,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
             int headerColumns = 4;
             string headerEndColumn = GetColumnLetter(headerColumns);
             int currentRow = CreateHeaderSection(worksheet, headerInfo, exportedBy, filter,
-                "ACCOUNT STATEMENT SUMMARY", headerEndColumn);
+                "GENERAL ACCOUNTING JOURNAL SUMMARY", headerEndColumn);
 
             // ----- GENERAL SUMMARY -----
             worksheet.Cells[$"A{currentRow}:{headerEndColumn}{currentRow}"].Merge = true;
@@ -104,8 +104,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
                 new { Metric = "Branches Involved", Value = totalBranches.ToString("N0"), Description = "Distinct branches" },
                 new { Metric = "Total Debit (DR)", Value = totalDebit.ToString("N2"), Description = "Sum of all debit amounts" },
                 new { Metric = "Total Credit (CR)", Value = totalCredit.ToString("N2"), Description = "Sum of all credit amounts" },
-                new { Metric = "Net Movement", Value = netMovement.ToString("N2"), Description = "Credit - Debit" },
-                new { Metric = "Closing Balance", Value = closingBalance.ToString("N2"), Description = "Balance of last transaction" }
+                new { Metric = "Net Movement", Value = netMovement.ToString("N2"), Description = "Credit - Debit" }
+                //new { Metric = "Closing Balance", Value = closingBalance.ToString("N2"), Description = "Balance of last transaction" }
             };
 
             currentRow = CreateTwoColumnTable(worksheet, currentRow, summaryData, "Metric", "Value", "Description");
@@ -134,7 +134,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
             if (topAccounts.Any())
             {
                 worksheet.Cells[$"A{currentRow}:{headerEndColumn}{currentRow}"].Merge = true;
-                worksheet.Cells[$"A{currentRow}"].Value = "TOP 10 ACCOUNTS BY TRANSACTION COUNT";
+                worksheet.Cells[$"A{currentRow}"].Value = "GL ACCOUNT IMPACTED";
                 SetSectionHeaderStyle(worksheet.Cells[$"A{currentRow}"], Color.LightGreen);
                 currentRow += 2;
 
@@ -272,7 +272,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
             int headerColumns = 10;
             string headerEndColumn = GetColumnLetter(headerColumns);
             int currentRow = CreateHeaderSection(worksheet, headerInfo, exportedBy, filter,
-                "ACCOUNT STATEMENT DETAILS", headerEndColumn);
+                "GENERAL ACCOUNTING JOURNAL ", headerEndColumn);
 
             int totalTransactions = data.Count;
             var typeDist = data
@@ -503,11 +503,11 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
 
             var summaryItems = new[]
             {
-                new { Metric = "Total Transactions", Value = total.ToString("N0") },
+                new { Metric = "Total Entries", Value = total.ToString("N0") },
                 new { Metric = "Total Debit", Value = sumDebit.ToString("N2") },
                 new { Metric = "Total Credit", Value = sumCredit.ToString("N2") },
-                new { Metric = "Net Movement", Value = net.ToString("N2") },
-                new { Metric = "Closing Balance", Value = closingBal.ToString("N2") }
+                new { Metric = "Net Movement", Value = net.ToString("N2") }
+                //new { Metric = "Closing Balance", Value = closingBal.ToString("N2") }
             };
 
             currentRow = CreateTwoColumnTable(worksheet, currentRow, summaryItems, "Metric", "Value");
@@ -536,12 +536,12 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
         }
 
         private int CreateHeaderSection(
-    ExcelWorksheet worksheet,
-    BankHeaderInformation header,
-    string exportedBy,
-    AccountingV2ReportsFilter filter,
-    string reportTitle,
-    string headerEndColumn)
+     ExcelWorksheet worksheet,
+     BankHeaderInformation header,
+     string exportedBy,
+     AccountingV2ReportsFilter filter,
+     string reportTitle,
+     string headerEndColumn)
         {
             worksheet.Cells[$"A1:{headerEndColumn}1"].Merge = true;
             worksheet.Cells["A1"].Value = header.BankName;
@@ -572,55 +572,90 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
             worksheet.Cells["A3"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
             worksheet.Row(3).Height = 18;
 
-            // Row 4 - Export Date and Date Range
+            // Row 4 - Export Date
             worksheet.Cells[$"A4:{headerEndColumn}4"].Merge = true;
             string exportDateText = $"Export Date: {DateTime.Now:dd-MM-yyyy HH:mm:ss}";
-
-            if (filter != null &&
-                filter.DateFrom != default(DateTime) &&
-                filter.DateTo != default(DateTime))
-            {
-                worksheet.Cells["A4"].Value = $"{exportDateText} | PERIOD : {filter.DateFrom:dd/MM/yyyy}  To   {filter.DateTo:dd/MM/yyyy}";
-            }
-            else
-            {
-                worksheet.Cells["A4"].Value = exportDateText;
-            }
-
+            worksheet.Cells["A4"].Value = exportDateText;
             worksheet.Cells["A4"].Style.Font.Bold = true;
             worksheet.Cells["A4"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
             worksheet.Cells["A4"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
             worksheet.Row(4).Height = 18;
 
-            // Row 5 - Address and Phone
-            worksheet.Cells[$"A5:{headerEndColumn}5"].Merge = true;
+            // Row 5 - PERIOD (if available)
+            if (filter != null &&
+                filter.DateFrom != default(DateTime) &&
+                filter.DateTo != default(DateTime))
+            {
+                worksheet.Cells[$"A5:{headerEndColumn}5"].Merge = true;
+                worksheet.Cells["A5"].Value = $"PERIOD : {filter.DateFrom:dd/MM/yyyy}  To   {filter.DateTo:dd/MM/yyyy}";
+                worksheet.Cells["A5"].Style.Font.Bold = true;
+                worksheet.Cells["A5"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                worksheet.Cells["A5"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                worksheet.Row(5).Height = 18;
 
-            string address = !string.IsNullOrEmpty(header.BranchAddress) ? header.BranchAddress : "N/A";
-            string phone = !string.IsNullOrEmpty(header.BranchTelephone) ? header.BranchTelephone : "N/A";
+                // Row 6 - Address and Phone (moved down one row)
+                worksheet.Cells[$"A6:{headerEndColumn}6"].Merge = true;
 
-            worksheet.Cells["A5"].Value = $"Address: {address} | Tel: {phone}";
-            worksheet.Cells["A5"].Style.Font.Bold = true;
-            worksheet.Cells["A5"].Style.Font.Size = 11;
-            worksheet.Cells["A5"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
-            worksheet.Cells["A5"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-            worksheet.Row(5).Height = 18;
-            worksheet.Cells["A5"].Style.Font.Color.SetColor(Color.Black);
-            worksheet.Cells["A5"].Style.Fill.PatternType = ExcelFillStyle.Solid;
-            worksheet.Cells["A5"].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(240, 240, 240)); // Light gray background
+                string address = !string.IsNullOrEmpty(header.BranchAddress) ? header.BranchAddress : "N/A";
+                string phone = !string.IsNullOrEmpty(header.BranchTelephone) ? header.BranchTelephone : "N/A";
 
-            // Row 6 - Report Title
-            worksheet.Cells[$"A6:{headerEndColumn}6"].Merge = true;
-            worksheet.Cells["A6"].Value = reportTitle;
-            worksheet.Cells["A6"].Style.Font.Bold = true;
-            worksheet.Cells["A6"].Style.Font.Size = 14;
-            worksheet.Cells["A6"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
-            worksheet.Cells["A6"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-            worksheet.Row(6).Height = 25;
-            worksheet.Cells["A6"].Style.Font.Color.SetColor(Color.Black);
-            worksheet.Cells["A6"].Style.Fill.PatternType = ExcelFillStyle.Solid;
-            worksheet.Cells["A6"].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(255, 215, 0)); // Gold color
+                worksheet.Cells["A6"].Value = $"Address: {address} | Tel: {phone}";
+                worksheet.Cells["A6"].Style.Font.Bold = true;
+                worksheet.Cells["A6"].Style.Font.Size = 11;
+                worksheet.Cells["A6"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                worksheet.Cells["A6"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                worksheet.Row(6).Height = 18;
+                worksheet.Cells["A6"].Style.Font.Color.SetColor(Color.Black);
+                worksheet.Cells["A6"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells["A6"].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(240, 240, 240)); // Light gray background
 
-            return 7; // Header ends at row 6, so next row is 7
+                // Row 7 - Report Title
+                worksheet.Cells[$"A7:{headerEndColumn}7"].Merge = true;
+                worksheet.Cells["A7"].Value = reportTitle;
+                worksheet.Cells["A7"].Style.Font.Bold = true;
+                worksheet.Cells["A7"].Style.Font.Size = 14;
+                worksheet.Cells["A7"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                worksheet.Cells["A7"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                worksheet.Row(7).Height = 25;
+                worksheet.Cells["A7"].Style.Font.Color.SetColor(Color.Black);
+                worksheet.Cells["A7"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells["A7"].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(255, 215, 0)); // Gold color
+
+                return 8; // Header ends at row 7, so next row is 8
+            }
+            else
+            {
+                // No period, so address goes on row 5
+                // Row 5 - Address and Phone
+                worksheet.Cells[$"A5:{headerEndColumn}5"].Merge = true;
+
+                string address = !string.IsNullOrEmpty(header.BranchAddress) ? header.BranchAddress : "N/A";
+                string phone = !string.IsNullOrEmpty(header.BranchTelephone) ? header.BranchTelephone : "N/A";
+
+                worksheet.Cells["A5"].Value = $"Address: {address} | Tel: {phone}";
+                worksheet.Cells["A5"].Style.Font.Bold = true;
+                worksheet.Cells["A5"].Style.Font.Size = 11;
+                worksheet.Cells["A5"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                worksheet.Cells["A5"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                worksheet.Row(5).Height = 18;
+                worksheet.Cells["A5"].Style.Font.Color.SetColor(Color.Black);
+                worksheet.Cells["A5"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells["A5"].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(240, 240, 240)); // Light gray background
+
+                // Row 6 - Report Title
+                worksheet.Cells[$"A6:{headerEndColumn}6"].Merge = true;
+                worksheet.Cells["A6"].Value = reportTitle;
+                worksheet.Cells["A6"].Style.Font.Bold = true;
+                worksheet.Cells["A6"].Style.Font.Size = 14;
+                worksheet.Cells["A6"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                worksheet.Cells["A6"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                worksheet.Row(6).Height = 25;
+                worksheet.Cells["A6"].Style.Font.Color.SetColor(Color.Black);
+                worksheet.Cells["A6"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells["A6"].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(255, 215, 0)); // Gold color
+
+                return 7; // Header ends at row 6, so next row is 7
+            }
         }
 
         private void SetSectionHeaderStyle(ExcelRange cell, Color backgroundColor)
