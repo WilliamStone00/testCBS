@@ -10676,7 +10676,6 @@
     <Content Include="Views\CollectorCommission\_Details.cshtml" />
     <Content Include="Views\GLSystemReconciliation\Index.cshtml" />
     <Content Include="Views\GLSystemReconciliation\_DataTable.cshtml" />
-    <Content Include="Views\GLSystemReconciliation\_RecordsForm.cshtml" />
     <Content Include="Views\FileListing\_DetailsGLH.cshtml" />
     <Content Include="Views\CollectorCommission\_CommissionRetreat.cshtml" />
     <Content Include="Views\FileUpload\_CorrespondanceRequestDetails.cshtml" />
@@ -10711,11 +10710,8 @@
     <Content Include="Views\AffiliateToBranchFallback\_FallbackDetails.cshtml" />
     <Content Include="Views\AffiliateToBranchFallback\_ReconcileFallback.cshtml" />
     <Content Include="Views\AffiliateToBranchFallback\_FallbackDataTable.cshtml" />
-    <Content Include="Views\GLSystemReconciliation\_OperationDetail.cshtml" />
-    <Content Include="Views\GLSystemReconciliation\_StatisticsDataTable.cshtml" />
     <Content Include="Views\JournalHead\_ExportJournalHeadDataTable.cshtml" />
     <Content Include="Views\CounterCheque\_CounterRequest.cshtml" />
-    <Content Include="Views\GLSystemReconciliation\_StatisticsDetails.cshtml" />
     <Content Include="Views\EndOfYearClosure\Index.cshtml" />
     <Content Include="Views\EndOfYearClosure\_Initiation.cshtml" />
     <Content Include="Views\EndOfYearClosure\_Adjustment.cshtml" />
