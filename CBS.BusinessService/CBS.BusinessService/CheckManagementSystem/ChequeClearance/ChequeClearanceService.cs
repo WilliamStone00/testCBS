@@ -73,7 +73,7 @@ namespace CBS.BusinessService.CheckManagementSystem.ChequeClearance
         {
             if(model.ExternalChequeNumber != null)
             {
-                model.ChequeType = true;
+                model.IsExternalCheck = true;
             }
             try
             {
@@ -128,44 +128,36 @@ namespace CBS.BusinessService.CheckManagementSystem.ChequeClearance
         }
 
 
-        //public async Task<ExecutionMessages> CreateAsync(OptionRequest model)
-        //{
-        //    try
-        //    {
-        //        var response = await _apiCallerHelper
-        //            .PostAsync<ServiceResponse<OptionRequest>>(
-        //                APICallHelper.UpdateFeeConfig,
-        //                model);
 
-        //        // ⚠ Force success regardless of API response
-        //        GetExecutionMessages(
-        //            response?.ApiResponseData?.Data ?? model,
-        //            true, // ALWAYS TRUE
-        //            model?.Id ?? "ChequeClearance",
-        //            MessagesResults.Success,
-        //            ExecutionProcessOption.InsertObject,
-        //            SystemMessageStatus.Success.ToString(),
-        //            null,
-        //            response?.ApiResponseData?.Message ?? "Processed (forced success)"
-        //        );
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // ⚠ Even on exception — still return success
-        //        GetExecutionMessages(
-        //            model,
-        //            true, // STILL TRUE
-        //            model?.Id ?? "ChequeClearance",
-        //            MessagesResults.Success,
-        //            ExecutionProcessOption.TryCatch,
-        //            SystemMessageStatus.Success.ToString(),
-        //            null,
-        //            "Processed with internal error but forced success"
-        //        );
-        //    }
 
-        //    return ExecutionMessage;
-        //}
+
+
+        public async Task<OptionRequest> ClearanceDetails(string id)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(id))
+                    throw new ArgumentException("Clearance ID cannot be null or empty.", nameof(id));
+                // ✅ Make API call
+                var response = await _apiCallerHelper.GetAsync<ResponseObject<OptionRequest>>(string.Format(APICallHelper.GetClearanceDetails, id));
+
+                // ✅ Validate response
+                if (!response.IsSuccess)
+                    throw new Exception($"API call failed: {response.Message}");
+
+
+                var entry = response.ApiResponseData?.Data;
+                if (entry == null)
+                    throw new Exception("Clearance  Details not found.");
+
+                return entry;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[GetJournalEntryByIdAsync] Error: {ex.Message}");
+                throw;
+            }
+        }
 
 
 
@@ -209,7 +201,7 @@ namespace CBS.BusinessService.CheckManagementSystem.ChequeClearance
                   ExecutionProcessOption.NoFileWasSelected, SystemMessageStatus.Failed.ToString(), null,
               null);
                 }
-
+                documentRequest.Id = "CLR574384137304312";
 
 
                 var url = $"/api/v1/clearance/{documentRequest.Id}/document";

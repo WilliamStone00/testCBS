@@ -92,6 +92,33 @@
                 input.click();             // use native click (safer than trigger)
             }
 
+                   // ================= OVERDRAFT TOGGLE =================
+            function toggleOverdraftSection() {
+
+                if ($('#UseOverdraft').is(':checked')) {
+                    $('#overdraftSection').slideDown();
+                } else {
+                    $('#overdraftSection').slideUp();
+
+                    // Optional: clear values
+                    $('#CurrentClearanceAmount').val('');
+                    $('#RemainingAmount').val('');
+                    $('#DeduceAmount').val('');
+                    $('#Charges').val('');
+                    $('#ReceiveAmount').val('');
+                }
+            }
+
+// Run on initial load
+            toggleOverdraftSection();
+
+// Bind checkbox change (delegated because partials may reload)
+        $(document)
+            .off('change', '#UseOverdraft')
+            .on('change', '#UseOverdraft', function () {
+                toggleOverdraftSection();
+            });
+
             // ================= LOAD EXTERNAL PARTIAL =================
             $(document)
                 .off('click', '#externalBtn')
