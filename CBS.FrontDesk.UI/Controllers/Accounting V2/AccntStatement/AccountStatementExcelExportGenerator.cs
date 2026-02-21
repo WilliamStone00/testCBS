@@ -303,7 +303,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
                 "GENERAL ACCOUNTING JOURNAL", headerEndColumn);
 
             // Add a small gap after header
-            currentRow += 1;
+            
 
             // NEW HEADER ORDER as requested - updated column names
             var headers = new[]
@@ -428,14 +428,14 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
         // SHEET: INDIVIDUAL BRANCH DETAILS - UPDATED COLUMN ORDER
         // -----------------------------------------------------------------------
         private void CreateBranchSheet(
-    ExcelPackage package,
-    List<AccountStatementFlatItems> branchData,
-    BankHeaderInformation headerInfo,
-    string branchId,
-    string branchName,
-    string branchCode,
-    string exportedBy,
-    AccountingV2ReportsFilter filter)
+     ExcelPackage package,
+     List<AccountStatementFlatItems> branchData,
+     BankHeaderInformation headerInfo,
+     string branchId,
+     string branchName,
+     string branchCode,
+     string exportedBy,
+     AccountingV2ReportsFilter filter)
         {
             // Use header's branch name if the data's branch name is missing or "Unknown Branch"
             string safeBranchName;
@@ -461,11 +461,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
             int currentRow = CreateHeaderSection(worksheet, headerInfo, exportedBy, filter,
                 $"GENERAL ACCOUNTING JOURNAL - {safeBranchName}", headerEndColumn);
 
-            // ----- DETAILED ENTRIES HEADER -----
-            worksheet.Cells[$"A{currentRow}:{headerEndColumn}{currentRow}"].Merge = true;
-            worksheet.Cells[$"A{currentRow}"].Value = $"DETAILED TRANSACTIONS - {safeBranchName}";
-            SetSectionHeaderStyle(worksheet.Cells[$"A{currentRow}"], Color.LightCoral);
-            currentRow += 2;
+            // Add a small gap after header (instead of the removed DETAILED TRANSACTIONS header)
+           
 
             // NEW HEADER ORDER as requested
             var branchHeaders = new[]
@@ -603,10 +600,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
             worksheet.Column(2).Width = 12;  // DATE
             worksheet.Column(3).Width = 10;  // TIME
             worksheet.Column(4).Width = 18;  // ACCOUNT No
-            worksheet.Column(5).Width = 35;  // ACCOUNT NAME (increased to match Account Details)
+            worksheet.Column(5).Width = 35;  // ACCOUNT NAME
             worksheet.Column(6).Width = 18;  // AUX.REF
             worksheet.Column(7).Width = 22;  // REFERENCE
-            worksheet.Column(8).Width = 40;  // NARATION (with wrap) - reduced from 50 to 40
+            worksheet.Column(8).Width = 40;  // NARATION (with wrap)
             worksheet.Column(9).Width = 15;  // DEBIT (DR)
             worksheet.Column(10).Width = 15; // CREDIT (CR)
 
@@ -623,8 +620,6 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
             // Format currency columns
             worksheet.Cells[$"I{headerRow + 1}:J{currentRow}"].Style.Numberformat.Format = "#,##0.00";
 
-            // REMOVED: worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns(); - This was the problem!
-
             worksheet.View.FreezePanes(headerRow + 1, 1);
         }
 
@@ -637,12 +632,12 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
         }
 
         private int CreateHeaderSection(
-     ExcelWorksheet worksheet,
-     BankHeaderInformation header,
-     string exportedBy,
-     AccountingV2ReportsFilter filter,
-     string reportTitle,
-     string headerEndColumn)
+    ExcelWorksheet worksheet,
+    BankHeaderInformation header,
+    string exportedBy,
+    AccountingV2ReportsFilter filter,
+    string reportTitle,
+    string headerEndColumn)
         {
             worksheet.Cells[$"A1:{headerEndColumn}1"].Merge = true;
             worksheet.Cells["A1"].Value = header.BankName;
@@ -655,6 +650,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
             worksheet.Cells["A1"].Style.Fill.PatternType = ExcelFillStyle.Solid;
             worksheet.Cells["A1"].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(0, 100, 0));
 
+            // Row 2 - Branch Information
             worksheet.Cells[$"A2:{headerEndColumn}2"].Merge = true;
             worksheet.Cells["A2"].Value = $"Branch Code: {header.BranchCode} | Branch: {header.BranchName} | Branch ID: {header.BranchId}";
             worksheet.Cells["A2"].Style.Font.Bold = true;
@@ -666,97 +662,74 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
             worksheet.Cells["A2"].Style.Fill.PatternType = ExcelFillStyle.Solid;
             worksheet.Cells["A2"].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(70, 130, 180));
 
-            worksheet.Cells[$"A3:{headerEndColumn}3"].Merge = true;
-            worksheet.Cells["A3"].Value = $"Exported By: {exportedBy}";
-            worksheet.Cells["A3"].Style.Font.Bold = true;
-            worksheet.Cells["A3"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
-            worksheet.Cells["A3"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-            worksheet.Row(3).Height = 18;
-
-            // Row 4 - Export Date
-            worksheet.Cells[$"A4:{headerEndColumn}4"].Merge = true;
-            string exportDateText = $"Export Date: {DateTime.Now:dd-MM-yyyy HH:mm:ss}";
-            worksheet.Cells["A4"].Value = exportDateText;
-            worksheet.Cells["A4"].Style.Font.Bold = true;
-            worksheet.Cells["A4"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
-            worksheet.Cells["A4"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-            worksheet.Row(4).Height = 18;
-
-            // Row 5 - PERIOD (if available)
+            // Row 3 - PERIOD (if available)
             if (filter != null &&
                 filter.DateFrom != default(DateTime) &&
                 filter.DateTo != default(DateTime))
             {
-                worksheet.Cells[$"A5:{headerEndColumn}5"].Merge = true;
-                worksheet.Cells["A5"].Value = $"PERIOD : {filter.DateFrom:dd/MM/yyyy}  To   {filter.DateTo:dd/MM/yyyy}";
-                worksheet.Cells["A5"].Style.Font.Bold = true;
-                worksheet.Cells["A5"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
-                worksheet.Cells["A5"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-                worksheet.Row(5).Height = 18;
-
-                // Row 6 - Address and Phone (moved down one row)
-                worksheet.Cells[$"A6:{headerEndColumn}6"].Merge = true;
-
-                string address = !string.IsNullOrEmpty(header.BranchAddress) ? header.BranchAddress : "N/A";
-                string phone = !string.IsNullOrEmpty(header.BranchTelephone) ? header.BranchTelephone : "N/A";
-
-                worksheet.Cells["A6"].Value = $"Address: {address} | Tel: {phone}";
-                worksheet.Cells["A6"].Style.Font.Bold = true;
-                worksheet.Cells["A6"].Style.Font.Size = 11;
-                worksheet.Cells["A6"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
-                worksheet.Cells["A6"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-                worksheet.Row(6).Height = 18;
-                worksheet.Cells["A6"].Style.Font.Color.SetColor(Color.Black);
-                worksheet.Cells["A6"].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                worksheet.Cells["A6"].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(240, 240, 240)); // Light gray background
-
-                // Row 7 - Report Title
-                worksheet.Cells[$"A7:{headerEndColumn}7"].Merge = true;
-                worksheet.Cells["A7"].Value = reportTitle;
-                worksheet.Cells["A7"].Style.Font.Bold = true;
-                worksheet.Cells["A7"].Style.Font.Size = 14;
-                worksheet.Cells["A7"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
-                worksheet.Cells["A7"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-                worksheet.Row(7).Height = 25;
-                worksheet.Cells["A7"].Style.Font.Color.SetColor(Color.Black);
-                worksheet.Cells["A7"].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                worksheet.Cells["A7"].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(255, 215, 0)); // Gold color
-
-                return 8; // Header ends at row 7, so next row is 8
+                worksheet.Cells[$"A3:{headerEndColumn}3"].Merge = true;
+                worksheet.Cells["A3"].Value = $"PRINTING PERIOD : {filter.DateFrom:dd-MM-yyyy}  To   {filter.DateTo:dd-MM-yyyy}";
+                worksheet.Cells["A3"].Style.Font.Size = 14;
+                worksheet.Cells["A3"].Style.Font.Bold = true;
+                worksheet.Cells["A3"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                worksheet.Cells["A3"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                worksheet.Row(3).Height = 18;
+                worksheet.Cells["A3"].Style.Font.Color.SetColor(Color.Black);
             }
             else
             {
-                // No period, so address goes on row 5
-                // Row 5 - Address and Phone
-                worksheet.Cells[$"A5:{headerEndColumn}5"].Merge = true;
-
-                string address = !string.IsNullOrEmpty(header.BranchAddress) ? header.BranchAddress : "N/A";
-                string phone = !string.IsNullOrEmpty(header.BranchTelephone) ? header.BranchTelephone : "N/A";
-
-                worksheet.Cells["A5"].Value = $"Address: {address} | Tel: {phone}";
-                worksheet.Cells["A5"].Style.Font.Bold = true;
-                worksheet.Cells["A5"].Style.Font.Size = 11;
-                worksheet.Cells["A5"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
-                worksheet.Cells["A5"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-                worksheet.Row(5).Height = 18;
-                worksheet.Cells["A5"].Style.Font.Color.SetColor(Color.Black);
-                worksheet.Cells["A5"].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                worksheet.Cells["A5"].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(240, 240, 240)); // Light gray background
-
-                // Row 6 - Report Title
-                worksheet.Cells[$"A6:{headerEndColumn}6"].Merge = true;
-                worksheet.Cells["A6"].Value = reportTitle;
-                worksheet.Cells["A6"].Style.Font.Bold = true;
-                worksheet.Cells["A6"].Style.Font.Size = 14;
-                worksheet.Cells["A6"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
-                worksheet.Cells["A6"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-                worksheet.Row(6).Height = 25;
-                worksheet.Cells["A6"].Style.Font.Color.SetColor(Color.Black);
-                worksheet.Cells["A6"].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                worksheet.Cells["A6"].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(255, 215, 0)); // Gold color
-
-                return 7; // Header ends at row 6, so next row is 7
+                // If no period, leave row 3 blank or show a message
+                worksheet.Cells[$"A3:{headerEndColumn}3"].Merge = true;
+                worksheet.Cells["A3"].Value = "";
+                worksheet.Row(3).Height = 18;
             }
+
+            // Row 4 - Exported By
+            worksheet.Cells[$"A4:{headerEndColumn}4"].Merge = true;
+            worksheet.Cells["A4"].Value = $"Exported By: {exportedBy}";
+            worksheet.Cells["A4"].Style.Font.Bold = true;
+            worksheet.Cells["A4"].Style.Font.Size = 12;
+            worksheet.Cells["A4"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            worksheet.Cells["A4"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+            worksheet.Row(4).Height = 18;
+
+            // Row 5 - Export Date
+            worksheet.Cells[$"A5:{headerEndColumn}5"].Merge = true;
+            string exportDateText = $"Export Date: {DateTime.Now:dd-MM-yyyy HH:mm:ss}";
+            worksheet.Cells["A5"].Value = exportDateText;
+            worksheet.Cells["A5"].Style.Font.Bold = true;
+            worksheet.Cells["A5"].Style.Font.Size = 12;
+            worksheet.Cells["A5"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            worksheet.Cells["A5"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+            worksheet.Row(5).Height = 18;
+
+            // Row 6 - Address and Phone
+            worksheet.Cells[$"A6:{headerEndColumn}6"].Merge = true;
+            string address = !string.IsNullOrEmpty(header.BranchAddress) ? header.BranchAddress : "N/A";
+            string phone = !string.IsNullOrEmpty(header.BranchTelephone) ? header.BranchTelephone : "N/A";
+            worksheet.Cells["A6"].Value = $"Address: {address} | Tel: {phone}";
+            worksheet.Cells["A6"].Style.Font.Bold = true;
+            worksheet.Cells["A6"].Style.Font.Size = 11;
+            worksheet.Cells["A6"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            worksheet.Cells["A6"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+            worksheet.Row(6).Height = 18;
+            worksheet.Cells["A6"].Style.Font.Color.SetColor(Color.Black);
+            worksheet.Cells["A6"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells["A6"].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(240, 240, 240)); // Light gray background
+
+            // Row 7 - Report Title
+            worksheet.Cells[$"A7:{headerEndColumn}7"].Merge = true;
+            worksheet.Cells["A7"].Value = reportTitle;
+            worksheet.Cells["A7"].Style.Font.Bold = true;
+            worksheet.Cells["A7"].Style.Font.Size = 14;
+            worksheet.Cells["A7"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            worksheet.Cells["A7"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+            worksheet.Row(7).Height = 25;
+            worksheet.Cells["A7"].Style.Font.Color.SetColor(Color.Black);
+            worksheet.Cells["A7"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells["A7"].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(255, 215, 0)); // Gold color
+
+            return 8; // Header ends at row 7, so next row is 8
         }
 
         private void SetSectionHeaderStyle(ExcelRange cell, Color backgroundColor)

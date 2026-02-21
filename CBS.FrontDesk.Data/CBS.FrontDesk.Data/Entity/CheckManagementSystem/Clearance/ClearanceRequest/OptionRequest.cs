@@ -80,9 +80,29 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceReq
 
         public string CheckBook { get; set; }
 
+
+
+        public bool IsExternalCheck { get; set; }
+
         
 
+       
 
+        public int? ExternalCheckLeaf { get; set; }
+
+       
+
+        public string ExternalAccountName { get; set; }
+
+        
+
+        public string ExternalPlaceIssue { get; set; }
+
+        public DateTime? ExternalDateIssue { get; set; }
+
+        public string ExternalLocation { get; set; }
+
+    
         public List<ClearanceRequestImage> Documents { get; set; }
 
     }
@@ -158,7 +178,25 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceReq
 
         public string CheckBook { get; set; }
 
-      
+        public bool IsExternalCheck { get; set; }
+
+        
+        public int? ExternalCheckLeaf { get; set; }
+
+       
+
+        public string ExternalAccountName { get; set; }
+
+       
+
+        public string ExternalPlaceIssue { get; set; }
+
+        public DateTime? ExternalDateIssue { get; set; }
+
+        public string ExternalLocation { get; set; }
+
+     
+
     }
 
 

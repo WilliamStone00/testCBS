@@ -12,6 +12,7 @@ using CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceRequest;
 
 using CBS.FrontDesk.Data.Message;
+using DocumentFormat.OpenXml.EMMA;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -276,28 +277,28 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeCl
         }
 
 
-        //[HttpGet]
-        //public async Task<ActionResult> GetClearanceDetails(string Id)
-        //{
-        //    if (string.IsNullOrEmpty(Id))
-        //        return new HttpStatusCodeResult(400, "LeafId is required");
+        [HttpGet]
+        public async Task<ActionResult> GetClearanceDetails(string Id)
+        {
+            if (string.IsNullOrEmpty(Id))
+                return new HttpStatusCodeResult(400, "clearance Id is required");
 
-        //    try
-        //    {
-        //        var leaf = await _counterChequeService.GetChequeLeafDetails(Id);
+            try
+            {
+                var model = await _chequeClearanceService.ClearanceDetails(Id);
 
-        //        if (leaf == null)
-        //            return HttpNotFound("Cheque leaf not found");
+                if (model == null)
+                    return HttpNotFound(" Not found");
 
-               
 
-        //        return View("_InternalChequeRequest", model);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return new HttpStatusCodeResult(500, ex.Message);
-        //    }
-        //}
+
+                return View("_Details", model);
+            }
+            catch (Exception ex)
+            {
+                return new HttpStatusCodeResult(500, ex.Message);
+            }
+        }
     }
 }
 
