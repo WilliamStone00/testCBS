@@ -1454,6 +1454,7 @@ namespace CBS.FrontDesk.Helper
         public static string RejectLossRequest = "api/lossmanagement/requests/reject";
 
         public static string LossRequestDetails = "api/lossmanagement/requests/details";
+        public static string accoubtbyid = "/api/v1/Account/{0}";
 
 
 

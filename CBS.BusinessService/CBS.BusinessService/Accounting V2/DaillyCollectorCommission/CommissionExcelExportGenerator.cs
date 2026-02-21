@@ -965,7 +965,7 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
             worksheet.Cells["A2"].Value = "Exported By:";
             worksheet.Cells["B2"].Value = exportedBy;
             worksheet.Cells["A3"].Value = "Export Date:";
-            worksheet.Cells["B3"].Value = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            worksheet.Cells["B3"].Value = DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss");
 
             if (exportOptions != null && !string.IsNullOrEmpty(exportOptions.StartDate) && !string.IsNullOrEmpty(exportOptions.EndDate))
             {
@@ -1261,7 +1261,7 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
         // Helper method to format date for Excel display
         private static string FormatTransactionDateForExcel(DateTime date)
         {
-            return date.ToString("yyyy-MM-dd");
+            return date.ToString("dd-MM-yyyy");
         }
     }
 

@@ -40,6 +40,7 @@
                             <th style="display:none">Balance</th>
                             <th style="display:none">Blocked</th>
                             <th>Account Status</th>
+                            <th>Action</th>
                             @*<th>Print</th>*@
                         </tr>
                     </thead>
@@ -49,6 +50,7 @@
                         }
                         @foreach (var d in Model.Accounts.OrderBy(t => t.accountType))
                         {
+                           
                             decimal ActualBalance = d.balance - d.blockedAmount;
                             <tr>
                                 <td style="width:5%" class="text-center">@index</td>
@@ -128,6 +130,17 @@
                                     <span class="badge rounded-pill @badgeClass">
                                         @icon @d.status
                                     </span>
+                                </td>
+
+                                <td style="width: 10%" class="text-center">
+                                    <a href="#"
+                                       class="btn btn-sm btn-label-primary"
+                                       onclick="ShowModal(@d.id,'_AccountDetails', 'MembersFSeries', 'GetaccountById');"
+                                       data-bs-toggle="tooltip"
+                                       title="View details for @d.accountNumber">
+
+                                        <i class="mdi mdi-eye-outline me-1"></i> Details
+                                    </a>
                                 </td>
 
                                 @*<td style="width: 10%" class="text-center">
