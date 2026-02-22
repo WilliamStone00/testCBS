@@ -2328,6 +2328,7 @@
       <DependentUpon>GeneralStatisticsDataSet.xsd</DependentUpon>
     </Compile>
     <Compile Include="Filter\MaliciousContentScannerService.cs" />
+    <Compile Include="Helper\DateHelper.cs" />
     <Compile Include="Helper\HtmlHelperExtensions.cs" />
     <Compile Include="Helper\FileUploadHelper.cs" />
     <Compile Include="Helper\ReportLogoHelper.cs" />

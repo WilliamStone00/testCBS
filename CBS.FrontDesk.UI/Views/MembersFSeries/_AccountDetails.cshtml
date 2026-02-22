@@ -1,20 +1,6 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accountgetid
 @using Resources
-
-@functions {
-    string FormatDate(DateTime date)
-    {
-        return date != DateTime.MinValue ? date.ToString("dd/MM/yyyy") : string.Empty;
-    }
-
-    string FormatNullableDate(DateTime? date)
-    {
-        return date.HasValue && date.Value != DateTime.MinValue
-            ? date.Value.ToString("dd/MM/yyyy")
-            : string.Empty;
-    }
-}
-
+@using CBS.FrontDesk.UI.Helper;
 
 <fieldset class="fieldset-custom">
 
@@ -110,8 +96,8 @@
                 <tr><td class="fw-bold">Interest Rate:</td><td>@Model.InterestRate %</td></tr>
                 <tr><td class="fw-bold">Penalty Rate:</td><td>@Model.PenaltyRate %</td></tr>
                 <tr><td class="fw-bold">Auto Recover:</td><td>@(Model.AutoRecoverOnDeposit ? "Yes" : "No")</td></tr>
-                <tr><td class="fw-bold">Activation Date:</td><td>@FormatNullableDate(Model.OverdraftActivationDate)</td></tr>
-                <tr><td class="fw-bold">Expiry Date:</td><td>@FormatNullableDate(Model.OverdraftExpiryDate)</td></tr>
+                <tr><td class="fw-bold">Activation Date:</td><td>@DateHelper.FormatNullableDate(Model.OverdraftActivationDate)</td></tr>
+                <tr><td class="fw-bold">Expiry Date:</td><td>@DateHelper.FormatNullableDate(Model.OverdraftExpiryDate)</td></tr>
                 <tr><td class="fw-bold">Activated By:</td><td>@(Model.ActivatedBy ?? "-")</td></tr>
                 <tr><td class="fw-bold">Salary OD Account:</td><td>@(Model.IsSalaryOverdraftAccount ? "Yes" : "No")</td></tr>
             </table>
@@ -126,11 +112,11 @@
             </h6>
 
             <table class="table table-sm table-bordered">
-                <tr><td class="fw-bold">Date Blocked:</td><td>@FormatNullableDate(Model.DateBlocked)</td></tr>
-                <tr><td class="fw-bold">Date Released:</td><td>@FormatNullableDate(Model.DateReleased)</td></tr>
-                <tr><td class="fw-bold">Last Interest Calculated:</td><td>@FormatNullableDate(Model.LastInterestCalculatedDate)</td></tr>
-                <tr><td class="fw-bold">Date Of Last Operation:</td><td>@FormatNullableDate(Model.DateOfLastOperation)</td></tr>
-                <tr><td class="fw-bold">Closed On:</td><td>@FormatNullableDate(Model.ClosedOn)</td></tr>
+                <tr><td class="fw-bold">Date Blocked:</td><td>@DateHelper.FormatNullableDate(Model.DateBlocked)</td></tr>
+                <tr><td class="fw-bold">Date Released:</td><td>@DateHelper.FormatNullableDate(Model.DateReleased)</td></tr>
+                <tr><td class="fw-bold">Last Interest Calculated:</td><td>@DateHelper.FormatNullableDate(Model.LastInterestCalculatedDate)</td></tr>
+                <tr><td class="fw-bold">Date Of Last Operation:</td><td>@DateHelper.FormatNullableDate(Model.DateOfLastOperation)</td></tr>
+                <tr><td class="fw-bold">Closed On:</td><td>@DateHelper.FormatNullableDate(Model.ClosedOn)</td></tr>
                 <tr><td class="fw-bold">Last Closure Reason:</td><td>@(Model.LastClosureReason ?? "-")</td></tr>
             </table>
         </div>

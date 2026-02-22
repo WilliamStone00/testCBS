@@ -461,6 +461,260 @@
 
     <script>
     // =========================================================================
+    // BACKGROUND JOB MONITORING DASHBOARD - STANDALONE VERSION
+    // This script handles job monitoring without using the generic AJAX handlers
+    // =========================================================================
+
+    (function() {
+        // Private variables
+        let autoRefreshInterval;
+        let countdownInterval;
+        let countdownValue = 5;
+        let isAutoRefreshEnabled = false;
+
+        // Initialize when document is ready
+        $(document).ready(function() {
+            console.log('Job Monitor: Initializing...');
+
+            // Check server model passed from ViewBag
+            var serverModel = @Html.Raw(Json.Encode(jobMonitorModel));
+            initializeJobMonitor(serverModel);
+
+            // Set up event handlers
+            setupEventHandlers();
+
+            // IMMEDIATELY refresh job monitor on page load to get latest status
+            setTimeout(function() {
+                refreshJobMonitor();
+            }, 500); // Small delay to ensure DOM is ready
+        });
+
+        // Setup event handlers
+        function setupEventHandlers() {
+            // Refresh button click
+            $('#refreshJobStatus').off('click').on('click', function() {
+                refreshJobMonitor();
+            });
+
+            // Auto-refresh toggle
+            $('#autoRefreshToggle').off('change').on('change', function() {
+                if ($(this).is(':checked')) {
+                    startAutoRefresh();
+                } else {
+                    stopAutoRefresh();
+                }
+            });
+        }
+
+        // Initialize job monitor with server-side data
+        function initializeJobMonitor(serverModel) {
+            console.log('Job Monitor: Initializing with model:', serverModel);
+
+            // Don't automatically enable auto-refresh here - we'll let refreshJobMonitor handle it
+            // based on actual job status from the server
+        }
+
+        // Refresh job monitor without using generic AJAX
+        function refreshJobMonitor() {
+            console.log('Job Monitor: Refreshing job status...');
+
+            // Rotate refresh icon
+            $('#refreshIcon').addClass('fa-spin');
+
+            // Use native fetch instead of jQuery AJAX to avoid generic handlers
+            fetch('@Url.Action("RefreshJobMonitor", "CollectorCommission")', {
+                method: 'GET',
+                headers: {
+                    'Accept': 'text/html',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(html => {
+                // Extract just the job dashboard content and replace it
+                var tempDiv = document.createElement('div');
+                tempDiv.innerHTML = html;
+                var newContent = tempDiv.querySelector('#jobDashboardContent');
+
+                if (newContent) {
+                    $('#jobDashboardContent').html(newContent.innerHTML);
+                }
+
+                // Update last updated time
+                $('#jobLastUpdated').html('<i class="mdi mdi-clock-outline me-1"></i>' + new Date().toLocaleTimeString());
+
+                // Check job status from the new content and manage auto-refresh
+                checkJobStatusAndManageAutoRefresh(html);
+            })
+            .catch(error => {
+                console.error('Job Monitor: Error refreshing:', error);
+            })
+            .finally(() => {
+                $('#refreshIcon').removeClass('fa-spin');
+            });
+        }
+
+        // Function to check job status from the HTML content and manage auto-refresh
+        function checkJobStatusAndManageAutoRefresh(html) {
+            // Create a temporary DOM element to parse the HTML
+            var tempDiv = document.createElement('div');
+            tempDiv.innerHTML = html;
+
+            // Look for job status badge
+            var statusBadge = tempDiv.querySelector('#jobStatusBadge');
+            var hasActiveJob = tempDiv.querySelector('#jobDashboardContent')?.getAttribute('data-has-active-job') === 'true';
+
+            if (statusBadge) {
+                var statusText = statusBadge.textContent.trim().toLowerCase();
+                var statusValue = statusBadge.getAttribute('data-status');
+
+                console.log('Job Monitor: Status detected:', statusText, 'Value:', statusValue, 'HasActiveJob:', hasActiveJob);
+
+                // Check if job is completed (status 2 = Completed, or text contains 'completed')
+                if (statusValue === '2' || statusText === 'completed' || statusText.includes('complete')) {
+                    // Job is completed - stop auto-refresh and show alert
+                    if (isAutoRefreshEnabled) {
+                        stopAutoRefresh();
+
+                        // Show completion message only if auto-refresh was running
+                        if (typeof appalert === 'function') {
+                            appalert('Treatment completed successfully!', 1, 1);
+                        }
+                    }
+
+                    // Uncheck the toggle to reflect that auto-refresh is off
+                    $('#autoRefreshToggle').prop('checked', false);
+                    console.log('Job Monitor: Job completed - auto-refresh stopped');
+                }
+                // Check for failed status
+                else if (statusValue === '3' || statusText === 'failed') {
+                    if (isAutoRefreshEnabled) {
+                        stopAutoRefresh();
+                        if (typeof appalert === 'function') {
+                            appalert('Treatment failed. Please check the details.', 4, 1);
+                        }
+                    }
+                    $('#autoRefreshToggle').prop('checked', false);
+                }
+                // Check for cancelled status
+                else if (statusValue === '4' || statusText === 'cancelled') {
+                    if (isAutoRefreshEnabled) {
+                        stopAutoRefresh();
+                        if (typeof appalert === 'function') {
+                            appalert('Treatment was cancelled.', 2, 1);
+                        }
+                    }
+                    $('#autoRefreshToggle').prop('checked', false);
+                }
+                // Check for active job (Pending or Processing)
+                else if (hasActiveJob && (statusValue === '0' || statusValue === '1' || statusText.includes('pending') || statusText.includes('processing'))) {
+                    // Active job detected - enable auto-refresh if not already enabled
+                    if (!isAutoRefreshEnabled) {
+                        console.log('Job Monitor: Active job detected - enabling auto-refresh');
+                        $('#autoRefreshToggle').prop('checked', true);
+                        startAutoRefresh();
+                    }
+                }
+            }
+        }
+
+        // Start auto-refresh functionality
+        function startAutoRefresh() {
+            stopAutoRefresh();
+
+            countdownValue = 5;
+            $('#countdownSeconds').text(countdownValue);
+            $('#countdownTimer').removeClass('d-none');
+            isAutoRefreshEnabled = true;
+
+            console.log('Job Monitor: Auto-refresh started');
+
+            countdownInterval = setInterval(function() {
+                countdownValue--;
+                $('#countdownSeconds').text(countdownValue);
+
+                if (countdownValue <= 0) {
+                    countdownValue = 5;
+                    refreshJobMonitor();
+                }
+            }, 1000);
+
+            autoRefreshInterval = setInterval(function() {
+                countdownValue = 5;
+            }, 10000);
+        }
+
+        // Stop auto-refresh functionality
+        function stopAutoRefresh() {
+            if (autoRefreshInterval) {
+                clearInterval(autoRefreshInterval);
+                autoRefreshInterval = null;
+            }
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+                countdownInterval = null;
+            }
+            $('#countdownTimer').addClass('d-none');
+            isAutoRefreshEnabled = false;
+            console.log('Job Monitor: Auto-refresh stopped');
+        }
+
+        // Public method to enable auto-refresh after treatment
+        window.enableAutoRefreshAfterTreatment = function() {
+            console.log('Job Monitor: Treatment successful - checking job status');
+
+            // Small delay to allow the job to be created
+            setTimeout(function() {
+                // First, immediately refresh to get the job status
+                refreshJobMonitor();
+
+                // Then check if auto-refresh should be enabled
+                fetch('@Url.Action("GetCurrentJob", "CollectorCommission")', {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => response.json())
+                .then(response => {
+                    if (response.success && response.data) {
+                        var jobData = response.data;
+
+                        // Only enable auto-refresh if job is not already completed
+                        if (jobData.Status !== 2) {
+                            $('#autoRefreshToggle').prop('checked', true);
+                            startAutoRefresh();
+                            console.log('Job Monitor: Auto-refresh enabled after treatment');
+                        } else {
+                            console.log('Job Monitor: Job already completed - not enabling auto-refresh');
+                            if (typeof appalert === 'function') {
+                                appalert('Treatment completed successfully!', 1, 1);
+                            }
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Job Monitor: Error checking job after treatment:', error);
+                });
+            }, 1000); // Wait 1 second for job to be created
+        };
+
+        // EXPOSE REFRESH FUNCTION GLOBALLY
+        window.refreshJobMonitor = refreshJobMonitor;
+        window.startAutoRefresh = startAutoRefresh;
+        window.stopAutoRefresh = stopAutoRefresh;
+
+    })();
+    </script>
+
+    <script>
+    // =========================================================================
     // GLOBAL VARIABLES                                                       //
     // =========================================================================
     var commissionTable = null;
@@ -658,7 +912,7 @@
         });
     });
 
-        // =========================================================================
+        @*// =========================================================================
         // BACKGROUND JOB MONITORING DASHBOARD - UPDATED FOR PARTIAL VIEW         //
         // =========================================================================
 
@@ -862,7 +1116,7 @@ function enableAutoRefreshAfterTreatment() {
             }
         });
     }, 1000); // Wait 1 second for job to be created
-}
+}*@
 
     // =========================================================================
     // CURRENCY FORMATTING FUNCTIONS
@@ -1002,62 +1256,62 @@ function enableAutoRefreshAfterTreatment() {
         });
     }
 
-    function getCommissionData() {
-        var monthYear = $('#MonthYear').val();
-        if (!monthYear) {
-            appalert('Please select Month and Year', 3, 1);
-            return;
-        }
+    // In your main script, update the getCommissionData success handler:
 
-        var parts = monthYear.split('-');
-        var year = parseInt(parts[0]);
-        var month = parseInt(parts[1]);
-
-        var model = {
-            Year: year,
-            Month: month,  // Send as number (11)
-            CollectorId: $('#CollectorId').val(),
-            BranchId: $('#BranchId').val()
-        };
-
-        console.log('Sending request with model:', model);
-        console.log('Month (as number):', month);
-        console.log('Year (as number):', year);
-
-        $.ajax({
-            url: '@Url.Action("GetCommissionData", "CollectorCommission")',
-            type: 'POST',
-            data: JSON.stringify(model),
-            contentType: 'application/json',
-            beforeSend: function () {
-                $('#commissionSummary').addClass('d-none');
-                $('#commissionDetails').addClass('d-none');
-            },
-            success: function (response) {
-                console.log('Full Commission response:', response);
-                console.log('Month from response:', response.data?.Month);
-                console.log('Year from response:', response.data?.Year);
-                console.log('SharedAmounts from response:', response.data?.SharedAmounts);
-                console.log('PaymentStatus from response:', response.data?.PaymentStatus);
-
-                if (response && response.success) {
-                    // Store the complete response data
-                    currentCommissionData = response.data;
-                    displayCommissionData(response.data);
-                    appalert('Commission data loaded successfully!', 1, 1);
-
-                    // Refresh job monitor after successful commission data load
-                    refreshJobMonitor();
-                } else {
-                    appalert(response.message || 'Error loading commission data', 4, 1);
-                }
-            },
-            error: function (xhr, status, error) {
-                console.error('Error loading commission data:', error);
-                appalert('Error loading commission data: ' + error, 4, 1);
-            }
-        });
+function getCommissionData() {
+    var monthYear = $('#MonthYear').val();
+    if (!monthYear) {
+        appalert('Please select Month and Year', 3, 1);
+        return;
     }
+
+    var parts = monthYear.split('-');
+    var year = parseInt(parts[0]);
+    var month = parseInt(parts[1]);
+
+    var model = {
+        Year: year,
+        Month: month,
+        CollectorId: $('#CollectorId').val(),
+        BranchId: $('#BranchId').val()
+    };
+
+    console.log('Sending request with model:', model);
+
+    $.ajax({
+        url: '@Url.Action("GetCommissionData", "CollectorCommission")',
+        type: 'POST',
+        data: JSON.stringify(model),
+        contentType: 'application/json',
+        beforeSend: function () {
+            $('#commissionSummary').addClass('d-none');
+            $('#commissionDetails').addClass('d-none');
+        },
+        success: function (response) {
+            console.log('Full Commission response:', response);
+
+            if (response && response.success) {
+                currentCommissionData = response.data;
+                displayCommissionData(response.data);
+                appalert('Commission data loaded successfully!', 1, 1);
+
+                // Refresh job monitor after successful commission data load
+                // Check if the global function exists and call it
+                if (typeof window.refreshJobMonitor === 'function') {
+                    window.refreshJobMonitor();
+                } else {
+                    console.warn('refreshJobMonitor function not available');
+                }
+            } else {
+                appalert(response.message || 'Error loading commission data', 4, 1);
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error('Error loading commission data:', error);
+            appalert('Error loading commission data: ' + error, 4, 1);
+        }
+    });
+}
 
     function displayCommissionData(data) {
         console.log('Displaying commission data:', data);
@@ -1633,7 +1887,7 @@ function enableAutoRefreshAfterTreatment() {
     function finalizeIncentivesFormat(input) {
         var value = input.value.replace(/,/g, '');
         if (value === '') {
-            input.value = '0.00';
+            input.value = '0.0';
         } else {
             var numberValue = parseFloat(value);
             if (!isNaN(numberValue)) {
@@ -1788,8 +2042,8 @@ function enableAutoRefreshAfterTreatment() {
         $('#Memo').val('').trigger('change');
 
         $('#customerReference').val('');
-        $('#Incentives').val('0.00');
-        $('#Incentives').val('0.00').removeClass('positive-value');
+        $('#Incentives').val('0.0');
+        $('#Incentives').val('0.0').removeClass('positive-value');
         $('.field-warning-expensegl').remove();
 
         // Clear hidden fields
@@ -2012,8 +2266,8 @@ function enableAutoRefreshAfterTreatment() {
         summaryMessage += '<div style="background-color: #f8f9fa; padding: 10px; border-radius: 5px; margin-bottom: 15px;">';
         summaryMessage += '<strong style="color: #495057;">📝 MEMO DETAILS</strong><hr style="margin: 5px 0; opacity: 0.2;">';
         summaryMessage += '<table style="width: 100%; border-collapse: collapse;">';
-        summaryMessage += '<tr><td style="padding: 3px 0;"><strong>Memo:</strong></td><td style="padding: 3px 0;">' + $('#Memo').val() + '</td></tr>';
         summaryMessage += '<tr><td style="padding: 3px 0;"><strong>Memo Incentive:</strong></td><td style="padding: 3px 0;">' + $('#MemoIncentive').val() + '</td></tr>';
+        summaryMessage += '<tr><td style="padding: 3px 0;"><strong>Memo:</strong></td><td style="padding: 3px 0;">' + $('#Memo').val() + '</td></tr>';
         summaryMessage += '</table></div>';
 
         summaryMessage += '</div>';

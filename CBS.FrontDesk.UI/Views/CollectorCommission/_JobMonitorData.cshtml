@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission.JobSnapshotDto
-
+@using CBS.FrontDesk.UI.Helper;
 <!-- Job Information Cards -->
 <div id="jobContent">
     <!-- Job Header -->
@@ -128,15 +128,15 @@
                 <div class="d-flex flex-wrap gap-3">
                     <div>
                         <small class="text-muted d-block">Started</small>
-                        <span class="fw-semibold small" id="jobStartedAt">@FormatDateTime(Model.StartedAt)</span>
+                        <span class="fw-semibold small" id="jobStartedAt">@DateHelper.FormatNullableDateTime(Model.StartedAt)</span>
                     </div>
                     <div>
                         <small class="text-muted d-block">Updated</small>
-                        <span class="fw-semibold small" id="jobUpdatedAt">@FormatDateTime(Model.UpdatedAt)</span>
+                        <span class="fw-semibold small" id="jobUpdatedAt">@DateHelper.FormatNullableDateTime(Model.UpdatedAt)</span>
                     </div>
                     <div>
                         <small class="text-muted d-block">Completed</small>
-                        <span class="fw-semibold small" id="jobCompletedAt">@FormatDateTime(Model.CompletedAt)</span>
+                        <span class="fw-semibold small" id="jobCompletedAt">@DateHelper.FormatNullableDateTime(Model.CompletedAt)</span>
                     </div>
                 </div>
             </div>
@@ -198,10 +198,5 @@
         }
     }
 
-    string FormatDateTime(DateTime? dateTime)
-    {
-        return dateTime.HasValue
-            ? dateTime.Value.ToString("dd MMM HH:mm")
-            : "-";
-    }
+   
 }
