@@ -103,35 +103,14 @@ namespace CBS.FrontDesk.UI.Controllers.Series
                 Text = $"{l.Id} - {l.LoanType} - {l.Balance}"
             }).ToList();
 
-
-            ViewBag.AccountActions = new List<SelectListItem>
-            {
-                                 new SelectListItem { Text = "Activate Account", Value = "Activate" },
-                                    new SelectListItem { Text = "Freeze Account", Value = "Freeze" },
-                                    new SelectListItem { Text = "Unfreeze Account", Value = "Unfreeze" },
-
-                                    new SelectListItem { Text = "Block Full Account", Value = "BlockFull" },
-                                    new SelectListItem { Text = "Unblock Full Account", Value = "UnblockFull" },
-
-                                    new SelectListItem { Text = "Block Partial (Amount)", Value = "BlockPartial" },
-                                    new SelectListItem { Text = "Unblock Partial (Amount)", Value = "UnblockPartial" },
-
-                                    new SelectListItem { Text = "Close Account", Value = "Close" },
-                                    new SelectListItem { Text = "Reopen Account", Value = "Reopen" },
-
-                                    new SelectListItem { Text = "Mark as Dormant", Value = "MarkDormant" },
-                                    new SelectListItem { Text = "Reactivate Dormant", Value = "ReactivateDormant" },
-
-                                    new SelectListItem { Text = "Block Cash In", Value = "BlockCashIn" },
-                                    new SelectListItem { Text = "UnBlock Cash In", Value = "OpenCashIn" },
-
-                                    new SelectListItem { Text = "Block Withdrawal", Value = "BlockWithdrawal" },
-                                    new SelectListItem { Text = "UnBlock Withdrawal", Value = "OpenWithdrawal" },
-
-                                    new SelectListItem { Text = "Block Transfer", Value = "BlockTransfer" },
-                                    new SelectListItem { Text = "UnBlock Transfer", Value = "OpenTransfer" }
-            };
-
+            ViewBag.AccountActions = Enum.GetValues(typeof(AccountManagementAction))
+                .Cast<AccountManagementAction>()
+                .Select(e => new SelectListItem
+                {
+                    Text = e.ToString(),
+                    Value = ((int)e).ToString()
+                }).ToList();            
+          
             var branches = await _branchServices.GetBranches();
             ViewBag.Branches = branches;
             return true;
@@ -364,6 +343,11 @@ namespace CBS.FrontDesk.UI.Controllers.Series
                    
                     return PartialView(partialView);
                 }
+                else if (path == "GetaccountById")
+                {
+                   var data = await _accountServices.GetaccountByIdAsync(KEY);
+                    return PartialView(partialView, data);
+                }
                 ViewBag.message = "Invalid option selected";
                 return PartialView("_NoRecordFound", new CashDesk());
 
@@ -400,7 +384,7 @@ namespace CBS.FrontDesk.UI.Controllers.Series
                         var receiptRptSource = receiptTransactionReports.ToList();
 
                         SetSessionVariables(receiptRptSource, "Receipts.rpt", "~/AppFiles/Reporting/Transactions/Reciepts/Receipts.rpt", $"{receiptTransaction.TransactionReference}");
-                        break;
+                    break;
 
                     case "customer_account_transaction_rpt":
                         var accountTransactionHistories = await _accountServices.GetCustomerTransactionsByAccountNumber(KEY);
@@ -438,9 +422,9 @@ namespace CBS.FrontDesk.UI.Controllers.Series
 
                         SetSessionVariables(datefrom, dateto); // Set date range session variables
 
-                        break;
+                    break;
 
-                    default:
+                default:
                         break;
                 }
 
@@ -467,6 +451,7 @@ namespace CBS.FrontDesk.UI.Controllers.Series
             this.HttpContext.Session["DateFrom"] = datefrom;
             this.HttpContext.Session["DateTo"] = dateto;
         }
+
         [HttpGet]
         //GetMembersLoans(string customerId, string queryParameter)
         //public async Task<ActionResult> GetFilteredLoans(string filter, string memberId)

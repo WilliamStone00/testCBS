@@ -80,22 +80,25 @@
 
         <!-- Operational Receipts Button -->
         <!--<a href="#"
-           onclick="GetTransactionMembersTransactions('@Model.CustomerId','datalistingview','_Transactions','transactions','myDataTable',0)"
-           class="btn btn-outline-secondary d-flex align-items-center">
-            <i class="fas fa-receipt me-2"></i>
-            <span>Member Operational Receipts</span>
-        </a>-->
+       onclick="GetTransactionMembersTransactions('@Model.CustomerId','datalistingview','_Transactions','transactions','myDataTable',0)"
+       class="btn btn-outline-secondary d-flex align-items-center">
+        <i class="fas fa-receipt me-2"></i>
+        <span>Member Operational Receipts</span>
+       </a>-->
         <button type="button"
                 onclick="showCreateModal('@Model.CustomerId')"
                 class="btn btn-label-primary btn-info me-2">
             <i class="mdi mdi-plus mdi-18px"></i> Generate Reports
         </button>
-
         <button type="button"
                 onclick="showMemberAccountManagement('@Model.CustomerId')"
-                class="btn btn-info me-2">
-            <i class="mdi mdi-account-cog-outline mdi-18px me-1"></i> Account Management
-        </button>
+                class="btn btn-label-primary btn-info me-2">
+            <i class="mdi mdi-account-cog-outline mdi-18px me-1"></i>Member Account Manag.
+        </button>       
+        <a href="@Url.Action("List", "MemberAccountMan")" class="btn btn-label-primary btn-sm me-2" id="btnViewList" target="_blank"
+                   rel="noopener noreferrer" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">    <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList For Mem. Acc. Manag.
+         </a>   
+
     </div>
 </div>
 
@@ -394,116 +397,44 @@
         function showMemberAccountManagement(id) {
             ShowModal(id, '_MemberAccMana', 'MembersFSeries', 'Membermanag');
         }
+        // ==========================
+        // GLOBAL FUNCTION (must be global!)
+        // ==========================
+        function handleActionChange(value) {
+            console.log("handleActionChange called with:", value);
 
-       
+            var section = document.getElementById("partialBlockSection");
+            var input = document.getElementById("BlockedAmount");
 
-        function toggleBlockedAmount() {
-            console.log('=== toggleBlockedAmount START ===');
-            console.log('ActionType element exists:', $('#ActionType').length > 0);
-            console.log('ActionType value:', $('#ActionType').val());
-
-            var selectedAction = $('#ActionType').val();
-            var $blockSection = $('#partialBlockSection');
-            var $blockedAmount = $('#BlockedAmount'); // Changed from BlockPartial to BlockedAmount
-            var $blockedAmountLabel = $('label[for="BlockedAmount"]'); // Changed to match input id
-
-            console.log('Selected action:', selectedAction);
-            console.log('Block section exists:', $blockSection.length > 0);
-
-            // Actions that require showing the block amount field
-            var amountActions = ['BlockPartial', 'UnblockPartial'];
-
-            if (amountActions.includes(selectedAction)) {
-                console.log('Condition met - showing section for action:', selectedAction);
-                $blockSection.slideDown();
-                $blockedAmount.prop('required', true);
-
-                // Customize based on action
-                if (selectedAction === 'BlockPartial') {
-                    $blockedAmountLabel.text('Amount to Block');
-                    $blockedAmount.attr('placeholder', 'Enter amount to block');
-                    // Add any block-specific styling or behavior
-                    $blockedAmount.removeClass('unblock-field').addClass('block-field');
-                } else if (selectedAction === 'UnblockPartial') {
-                    $blockedAmountLabel.text('Amount to Unblock');
-                    $blockedAmount.attr('placeholder', 'Enter amount to unblock');
-                    // Add any unblock-specific styling or behavior
-                    $blockedAmount.removeClass('block-field').addClass('unblock-field');
-                }
-            } else {
-                console.log('Condition not met - hiding section');
-                $blockSection.slideUp();
-                $blockedAmount.prop('required', false);
-                $blockedAmount.val('');
-                // Reset to default label
-                $blockedAmountLabel.text('Amount');
-                $blockedAmount.attr('placeholder', 'Enter amount');
+            if (!value) {
+                section.style.display = "none";
+                input.value = "";
+                return;
             }
-            console.log('=== toggleBlockedAmount END ===');
+
+            var selectedNum = parseInt(value);
+
+            // Adjust these numbers if your enum changes
+            var blockPartial = 5;
+            var unblockPartial = 6;
+
+            if (selectedNum === blockPartial || selectedNum === unblockPartial) {
+                section.style.display = "block";
+                input.placeholder = selectedNum === blockPartial
+                    ? "Enter amount to block"
+                    : "Enter amount to unblock";
+                input.focus();
+            } else {
+                section.style.display = "none";
+                input.value = "";
+            }
         }
 
-        // Remove the setInterval for debugging once it's working
-        // setInterval(function () {
-        //     console.log('Checking dropdown value...');
-        //     toggleBlockedAmount();
-        // }, 1000);
-
-        // Enhanced initialization function
-        window.initializeAccountManagement = function () {
-            console.log('Initializing Account Management');
-
-            setTimeout(function () {
-                var $actionType = $('#ActionType');
-
-                if ($actionType.length) {
-                    console.log('Found ActionType dropdown, setting up handlers');
-
-                    // Initial check
-                    toggleBlockedAmount();
-
-                    // Remove any existing handlers and attach new ones
-                    $actionType.off('change').on('change', function () {
-                        console.log('ActionType changed to:', $(this).val());
-                        toggleBlockedAmount();
-                    });
-
-                    // Handle Select2 specifically
-                    if ($.fn.select2) {
-                        // Handle Select2 change events
-                        $actionType.off('select2:select').on('select2:select', function (e) {
-                            console.log('Select2 selection changed to:', e.params.data.id);
-                            toggleBlockedAmount();
-                        });
-
-                        // Also handle select2:clear event if applicable
-                        $actionType.off('select2:clear').on('select2:clear', function () {
-                            console.log('Select2 cleared');
-                            toggleBlockedAmount();
-                        });
-                    }
-
-                    // Add a direct click handler for the dropdown items as a fallback
-                    $(document).on('click', '.select2-results__option', function () {
-                        // Small delay to let Select2 update the value
-                        setTimeout(function () {
-                            console.log('Select2 option clicked, checking value...');
-                            toggleBlockedAmount();
-                        }, 100);
-                    });
-
-                } else {
-                    console.log('ActionType dropdown not found, will retry');
-                    setTimeout(window.initializeAccountManagement, 200);
-                }
-            }, 200);
-        };
-
-        // Also add document ready to initialize
-        $(document).ready(function () {
-            console.log('Document ready - initializing');
-            initializeAccountManagement();
-        });
-
+        // Run on page load to respect default selection
+        document.addEventListener("DOMContentLoaded", function () {
+            var dropdown = document.getElementById("ActionType");
+            if (dropdown) handleActionChange(dropdown.value);
+        });      
     </script>
 
    

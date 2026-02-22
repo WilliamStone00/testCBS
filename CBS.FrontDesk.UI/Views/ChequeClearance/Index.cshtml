@@ -39,7 +39,7 @@
 
 
 
-<div class="card mb-1">
+@*<div class="card mb-1">
     <div class="card-body d-flex justify-content-end align-items-center">
 
         <a type="button" onclick=" LoadDataGen('ChequeClearance', 'myDataTable', '_ChequeClearanceDataTable', 0, 'datalistingview', null, 'list')" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
@@ -52,7 +52,7 @@
         </a>
 
     </div>
-</div>
+</div>*@
 
 
 
@@ -182,182 +182,217 @@
 
 @*@Html.Partial("_DiscountModal", Model.Discount)*@
 
+
+<div class="modal fade" id="clearanceDetailsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div id="clearanceDetailsContent">
+                    @*@Html.Partial("_Details")*@
+                    <!-- Content will load here -->
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 @section Scripts {
 
     @Scripts.Render("~/bundles/jqueryval")
-    <script>
+<script>
 
-    // =====================================================
-    // GLOBAL VARIABLES
-    // =====================================================
-    let clearanceTableLoaded = false;
+// =====================================================
+// GLOBAL VARIABLES
+// =====================================================
+let clearanceTableLoaded = false;
 
-    // =====================================================
-    // FILTER HELPERS
-    // =====================================================
-    function collectClearanceFilter() {
-        return {
-            BranchId: $('#branchId').val(),
-            StartDate: $('#StartDate').val(),
-            EndDate: $('#EndDate').val(),
-            CustomerId: $('#CustomerId').val(),
-            CheckBookId: $('#CheckBookId').val(),
-            Status: $('#Status').val(),
-            Options: {}
-        };
-    }
+// =====================================================
+// FILTER HELPERS
+// =====================================================
+function collectClearanceFilter() {
+    return {
+        BranchId: $('#branchId').val(),
+        StartDate: $('#StartDate').val(),
+        EndDate: $('#EndDate').val(),
+        CustomerId: $('#CustomerId').val(),
+        CheckBookId: $('#CheckBookId').val(),
+        Status: $('#Status').val(),
+        Options: {}
+    };
+}
 
-    function resetClearanceFilters() {
-        $('#clearanceFilterForm').trigger('reset');
-        $('.select2').val('').trigger('change');
-        appalert('🧹 Filters reset.', 1, 1);
-    }
+function resetClearanceFilters() {
+    $('#clearanceFilterForm').trigger('reset');
+    $('.select2').val('').trigger('change');
+    appalert('🧹 Filters reset.', 1, 1);
+}
 
-    // =====================================================
-    // LOAD DATATABLE
-    // =====================================================
-    function loadClearanceData() {
+// =====================================================
+// LOAD DATATABLE
+// =====================================================
+function loadClearanceData() {
 
-        $('#myDataTable').DataTable({
-            serverSide: true,
-            processing: true,
-            destroy: true,                // ✅ allows multiple filter apply
-            responsive: true,
-            searching: false,
-            order: [[0, 'asc']],
+    $('#myDataTable').DataTable({
+        serverSide: true,
+        processing: false,
+        destroy: true,          // allows multiple reinitialization
+        responsive: true,
+        searching: false,
+        order: [[0, 'asc']],
 
-            ajax: {
-                url: '@Url.Action("LoadClearanceData", "ChequeClearance")',
-                type: 'POST',
-                contentType: 'application/json',
-                data: function (d) {
+        ajax: {
+            url: '@Url.Action("LoadClearanceData", "ChequeClearance")',
+            type: 'POST',
+            contentType: 'application/json',
+            data: function (d) {
 
-                    const filters = collectClearanceFilter();
+                const filters = collectClearanceFilter();
 
-                    filters.Options = {
-                        draw: d.draw,
-                        start: d.start,
-                        length: d.length,
-                        skip: d.start,
-                        pageSize: d.length,
-                        searchValue: d.search?.value || '',
-                        sortColumnName: d.columns[d.order[0].column].data,
-                        sortColumnDirection: d.order[0].dir
-                    };
+                filters.Options = {
+                    draw: d.draw,
+                    start: d.start,
+                    length: d.length,
+                    skip: d.start,
+                    pageSize: d.length,
+                    searchValue: d.search?.value || '',
+                    sortColumnName: d.columns[d.order[0].column].data,
+                    sortColumnDirection: d.order[0].dir
+                };
 
-                    return JSON.stringify(filters);
-                },
-                error: function (xhr, status, err) {
-                    console.error('❌ Load clearance failed:', status, err);
-                    appalert('❌ Failed to load clearance data. Status: ' + xhr.status, 4, 1);
+                return JSON.stringify(filters);
+            },
+            error: function (xhr, status, err) {
+                console.error('❌ Load clearance failed:', status, err);
+                appalert('❌ Failed to load clearance data. Status: ' + xhr.status, 4, 1);
+            }
+        },
+
+        columns: [
+            {
+                data: 'CreatedDate',
+                render: data => data ? moment(data).format('DD/MM/YYYY HH:mm:ss') : ''
+            },
+            { data: 'BranchName' },
+            { data: 'AccountNumber' },
+            { data: 'CustomerId' },
+            {
+                data: 'Amount',
+                render: data => data ? parseFloat(data).toLocaleString() : '0'
+            },
+            {
+                data: 'Status',
+                render: function (data) {
+                    if (data === 'Approved')
+                        return `<span class="badge bg-success">${data}</span>`;
+                    if (data === 'Rejected')
+                        return `<span class="badge bg-danger">${data}</span>`;
+                    if (data === 'Pending')
+                        return `<span class="badge bg-warning">${data}</span>`;
+                    return `<span class="badge bg-secondary">${data}</span>`;
                 }
             },
-
-            columns: [
-                {
-                    data: 'CreatedDate',
-                    render: data => data ? moment(data).format('DD/MM/YYYY HH:mm:ss') : ''
-                },
-                { data: 'BranchName' },
-                { data: 'AccountNumber' },
-                { data: 'CustomerId' },
-                {
-                    data: 'Amount',
-                    render: data => data ? parseFloat(data).toLocaleString() : '0'
-                },
-                {
-                    data: 'Status',
-                    render: function (data) {
-                        if (data === 'Approved')
-                            return `<span class="badge bg-success">${data}</span>`;
-                        if (data === 'Rejected')
-                            return `<span class="badge bg-danger">${data}</span>`;
-                        if (data === 'Pending')
-                            return `<span class="badge bg-warning">${data}</span>`;
-                        return `<span class="badge bg-secondary">${data}</span>`;
-                    }
-                },
-                {
-                    data: null,
-                    orderable: false,
-                    render: function (_, __, row) {
-                        return `
-                        <div class="dropdown text-center">
-                            <button class="btn btn-sm dropdown-toggle text-white"
-                                    style="background-color:#0dcaf0;"
-                                    data-bs-toggle="dropdown">
-                                <i class="mdi mdi-cog-outline me-1"></i> Actions
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <button class="dropdown-item"
-                                        onclick="ViewClearanceDetails('${row.Id}')">
-                                        <i class="mdi mdi-file-document-outline me-1 text-primary"></i> Details
-                                    </button>
-                                </li>
-
-                                <li><hr class="dropdown-divider"></li>
-
-                                <li>
-                                    <button class="dropdown-item"
-                                        onclick="ReviewClearance('${row.Id}')">
-                                        <i class="mdi mdi-eye me-1 text-info"></i> Review
-                                    </button>
-                                </li>
-
-                                <li>
-                                    <button class="dropdown-item"
-                                        onclick="ApproveClearance('${row.Id}')">
-                                        <i class="mdi mdi-check-circle-outline me-1 text-success"></i> Approve
-                                    </button>
-                                </li>
-
-                                <li>
-                                    <button class="dropdown-item text-danger"
-                                        onclick="RejectClearance('${row.Id}')">
-                                        <i class="mdi mdi-close-circle-outline me-1 text-danger"></i> Reject
-                                    </button>
-                                </li>
-                            </ul>
-                        </div>`;
-                    }
-                }
-            ],
-
-            initComplete: function () {
-                clearanceTableLoaded = true;
-                appalert('✅ Clearance table loaded successfully!', 1, 1);
-            },
-
-            drawCallback: function () {
-                if (!this.api().rows({ page: 'current' }).data().length) {
-                    appalert('⚠️ No clearance records found.', 2, 1);
+            {
+                data: null,
+                orderable: false,
+                render: function (_, __, row) {
+                    return `
+                    <div class="dropdown text-center">
+                        <button class="btn btn-sm dropdown-toggle text-white"
+                                style="background-color:#0dcaf0;"
+                                data-bs-toggle="dropdown">
+                            <i class="mdi mdi-cog-outline me-1"></i> Actions
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="dropdown-item"
+                                   href="/ChequeClearance/GetClearanceDetails?id=${row.Id}"
+                                   target="_blank">
+                                    <i class="mdi mdi-file-document-outline me-1 text-primary"></i>
+                                    Details
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <button class="dropdown-item"
+                                    onclick="ReviewClearance('${row.Id}')">
+                                    <i class="mdi mdi-eye me-1 text-info"></i> Review
+                                </button>
+                            </li>
+                            <li>
+                                <button class="dropdown-item"
+                                    onclick="ApproveClearance('${row.Id}')">
+                                    <i class="mdi mdi-check-circle-outline me-1 text-success"></i> Approve
+                                </button>
+                            </li>
+                            <li>
+                                <button class="dropdown-item text-danger"
+                                    onclick="RejectClearance('${row.Id}')">
+                                    <i class="mdi mdi-close-circle-outline me-1 text-danger"></i> Reject
+                                </button>
+                            </li>
+                        </ul>
+                    </div>`;
                 }
             }
-        });
-    }
+        ],
 
-    // =====================================================
-    // DOCUMENT READY
-    // =====================================================
-    $(document).ready(function () {
+        initComplete: function () {
+            clearanceTableLoaded = true;
+            appalert('✅ Clearance table loaded successfully!', 1, 1);
+        },
 
-        // Apply Filter
-        $('#applyFilterBtn').on('click', function (e) {
-            e.preventDefault();
-            clearanceTableLoaded = false;
-            loadClearanceData();
-        });
+        drawCallback: function () {
+            if (!this.api().rows({ page: 'current' }).data().length) {
+                appalert('⚠️ No clearance records found.', 2, 1);
+            }
+        }
+    });
+}
 
-        // Reset Filter
-        $('#resetFilterBtn').on('click', function (e) {
-            e.preventDefault();
-            resetClearanceFilters();
-        });
+// =====================================================
+// MODAL FUNCTION (MUST BE GLOBAL)
+// =====================================================
+//function ViewClearanceDetails(id) {
 
+//    if (!id) {
+//        appalert("❌ Invalid clearance ID", 2, 1);
+//        return;
+//    }
+
+//    $.get('/ChequeClearance/GetClearanceDetails', { id: id }, function (response) {
+
+//        $('#clearanceDetailsContent').html(response);
+
+//        var modal = new bootstrap.Modal(
+//            document.getElementById('clearanceDetailsModal')
+//        );
+
+//        modal.show();
+//    })
+//    .fail(function () {
+//        appalert("❌ Failed to load clearance details", 2, 1);
+//    });
+//}
+
+// =====================================================
+// DOCUMENT READY
+// =====================================================
+$(document).ready(function () {
+
+    $('#applyFilterBtn').on('click', function (e) {
+        e.preventDefault();
+        clearanceTableLoaded = false;
+        loadClearanceData();
     });
 
-    </script>
+    $('#resetFilterBtn').on('click', function (e) {
+        e.preventDefault();
+        resetClearanceFilters();
+    });
 
+});
+
+</script>
     }
 

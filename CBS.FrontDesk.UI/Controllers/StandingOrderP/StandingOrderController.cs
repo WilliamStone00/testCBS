@@ -25,6 +25,7 @@ using System.Web.Http.Results;
 using System.Web.Mvc;
 using ZXing;
 using static CBS.FrontDesk.Data.Entity.SalaryManagement.EndDateAfterStartDateAttribute;
+using static CBS.FrontDesk.Data.Entity.SalaryManagement.StandingOrderDataTableQuery;
 
 namespace CBS.FrontDesk.UI.Controllers.StandingOrderP
 {
@@ -44,6 +45,10 @@ namespace CBS.FrontDesk.UI.Controllers.StandingOrderP
             _branchServices = branchServices;
         }
 
+        public ActionResult GetExportModal()
+        {
+            return PartialView("_ExportStandingOrder");
+        }
 
         public async Task loader()
         {
@@ -113,11 +118,114 @@ namespace CBS.FrontDesk.UI.Controllers.StandingOrderP
 
             return Json(new { success = false, status = false, message = errorMessage });
         }
-      
 
-        
 
-       
+        [HttpPost]
+        public async Task<ActionResult> ExportStandingOrderData(ExportTableRequest request)
+        {
+            try
+            {
+                Console.WriteLine($"=== EXPORT DEBUG START ===");
+                Console.WriteLine($"Request received: {request != null}");
+                Console.WriteLine($"Data count: {request?.Data?.Count ?? 0}");
+                Console.WriteLine($"Total Records: {request?.TotalRecords ?? 0}");
+                Console.WriteLine($"Export Options: {request?.ExportOptions?.FileName ?? "N/A"}");
+
+                if (request?.Data == null || !request.Data.Any())
+                {
+                    Console.WriteLine("No data to export");
+                    return Json(new { success = false, message = "No standing order data available for export." });
+                }
+
+                // Convert dynamic data to strongly typed list
+                Console.WriteLine($"=== CONVERTING DATA ===");
+                var standingOrderData = StandingOrderExcelExportGenerator.ConvertToStandingOrderData(request.Data.Cast<dynamic>().ToList());
+                Console.WriteLine($"Successfully converted {standingOrderData.Count} records");
+
+                if (!standingOrderData.Any())
+                {
+                    Console.WriteLine("No data converted successfully");
+                    return Json(new { success = false, message = "No valid standing order data could be processed for export." });
+                }
+
+                // Data analysis
+                var activeCount = standingOrderData.Count(x => x.IsActive);
+                var inactiveCount = standingOrderData.Count(x => !x.IsActive);
+                Console.WriteLine($"Data analysis: {activeCount} active, {inactiveCount} inactive orders");
+
+                // Prepare file name and paths
+                string timestamp = DateTime.Now.ToString("yyyyMMddHHmmss");
+                string fileName = $"{request.ExportOptions?.FileName ?? "StandingOrders_Report"}_{timestamp}.xlsx";
+                string directoryPath = Server.MapPath("~/TempFiles");
+
+                Console.WriteLine($"=== FILE PREPARATION ===");
+                Console.WriteLine($"Directory: {directoryPath}");
+                Console.WriteLine($"File Name: {fileName}");
+
+                if (!Directory.Exists(directoryPath))
+                {
+                    Console.WriteLine("Creating temp directory");
+                    Directory.CreateDirectory(directoryPath);
+                }
+
+                string filePath = Path.Combine(directoryPath, fileName);
+                string exportedBy = Session["FullName"]?.ToString() ?? "System";
+
+                Console.WriteLine($"Full Path: {filePath}");
+                Console.WriteLine($"Exported By: {exportedBy}");
+
+                // Generate Excel file with multiple sheets
+                Console.WriteLine($"=== GENERATING EXCEL WITH MULTIPLE SHEETS ===");
+                var exportGenerator = new StandingOrderExcelExportGenerator();
+                exportGenerator.GenerateStandingOrderExcel(standingOrderData, filePath, exportedBy, request.ExportOptions);
+
+                // Verify file was created
+                if (!System.IO.File.Exists(filePath))
+                {
+                    Console.WriteLine("ERROR: Excel file was not created");
+                    return Json(new { success = false, message = "Failed to generate Excel file." });
+                }
+
+                Console.WriteLine($"Excel file generated successfully: {filePath}");
+                Console.WriteLine($"File size: {new FileInfo(filePath).Length} bytes");
+
+                // Read and send file to browser
+                Console.WriteLine($"=== READING FILE ===");
+                byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+                Console.WriteLine($"File bytes read: {fileBytes.Length} bytes");
+
+                // Delete temp file after sending
+                Console.WriteLine($"=== CLEANUP ===");
+                System.IO.File.Delete(filePath);
+                Console.WriteLine("Temp file deleted");
+
+                Console.WriteLine($"=== EXPORT COMPLETE ===");
+                Console.WriteLine($"Returning file: {fileName} ({fileBytes.Length} bytes)");
+
+                return File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"=== EXPORT ERROR ===");
+                Console.WriteLine($"Error Type: {ex.GetType().Name}");
+                Console.WriteLine($"Error Message: {ex.Message}");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine($"Inner Exception: {ex.InnerException.Message}");
+                    Console.WriteLine($"Inner Stack Trace: {ex.InnerException.StackTrace}");
+                }
+
+                return Json(new
+                {
+                    success = false,
+                    message = $"An error occurred while exporting to Excel: {ex.Message}"
+                });
+            }
+        }
+
+
         [HttpPost]
         public async Task<ActionResult> Update(StandingOrderCarrier model)
         {
@@ -203,6 +311,12 @@ namespace CBS.FrontDesk.UI.Controllers.StandingOrderP
                     return PartialView("_DataNotFound", new StandingOrderCarrier());
                 }
             }
+            else if (path== "ExportStandingOrder")
+            {
+                
+                    return PartialView(partialView);
+                
+            }
             else
             {
                 ViewBag.Key=KEY;
@@ -261,11 +375,7 @@ namespace CBS.FrontDesk.UI.Controllers.StandingOrderP
         //}
 
         public ActionResult StandingOrderRegistration()
-        {
-         
-            return View();
-        }
-
+        {  return View();  }
         
 
         public async Task<ActionResult> DownloadStandingOrderMemberRegistrationTemplate()

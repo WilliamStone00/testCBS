@@ -34,7 +34,7 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceReq
         public string ExternalChequeNumber { get; set; }
         public string ExternalBankName { get; set; }
         
-        public int ChequeType { get; set; }
+        public bool ChequeType { get; set; }
   
 
         public string ExternalBankCode { get; set; }      // Code banque (SWIFT / BIC)
@@ -80,9 +80,29 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceReq
 
         public string CheckBook { get; set; }
 
+
+
+        public bool IsExternalCheck { get; set; }
+
         
 
+       
 
+        public int? ExternalCheckLeaf { get; set; }
+
+       
+
+        public string ExternalAccountName { get; set; }
+
+        
+
+        public string ExternalPlaceIssue { get; set; }
+
+        public DateTime? ExternalDateIssue { get; set; }
+
+        public string ExternalLocation { get; set; }
+
+    
         public List<ClearanceRequestImage> Documents { get; set; }
 
     }
@@ -98,7 +118,7 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceReq
         public string CustomerId { get; set; }
 
         public string CheckBookNumber { get; set; } = null;
-        public DateTime CreatedDate { get; set; }
+        public DateTime? CreatedDate { get; set; }
 
         public int? CheckBookPageNumber { get; set; }
         public string AccountNumber { get; set; }
@@ -144,7 +164,7 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceReq
         public string ClearedBy { get; set; }
         public string RejectedBy { get; set; }
 
-        public DateTime SubmissionDate { get; set; }
+        public DateTime? SubmissionDate { get; set; }
         public DateTime? ProcessedDate { get; set; }
         public DateTime? ClearedDate { get; set; }
         public DateTime? RejectionDate { get; set; }
@@ -153,12 +173,30 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceReq
         public decimal DeduceAmount { get; set; }
         public decimal ReceiveAmount { get; set; }
         public decimal Charges { get; set; }
-
+      
         
 
         public string CheckBook { get; set; }
 
-      
+        public bool IsExternalCheck { get; set; }
+
+        
+        public int? ExternalCheckLeaf { get; set; }
+
+       
+
+        public string ExternalAccountName { get; set; }
+
+       
+
+        public string ExternalPlaceIssue { get; set; }
+
+        public DateTime? ExternalDateIssue { get; set; }
+
+        public string ExternalLocation { get; set; }
+
+     
+
     }
 
 

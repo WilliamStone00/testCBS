@@ -159,5 +159,102 @@ namespace CBS.FrontDesk.Data.Entity
         public bool isDeleted { get; set; }
     }
 
+    public class Accountgetid
+    {
+        public string Id { get; set; }
+        public string AccountNumber { get; set; }
+        public decimal Balance { get; set; } = 0;
+        public decimal PreviousBalance { get; set; } = 0;
+        public string Status { get; set; } 
+        public string ProductId { get; set; }
+        public string CustomerId { get; set; }
+        public string TellerId { get; set; }
+        public string BranchCode { get; set; }
+        public string CustomerName { get; set; }
+        public string EncryptedBalance { get; set; }
+        public decimal InterestGenerated { get; set; } = 0;
+        public decimal LastInterestPosted { get; set; } = 0;
+        public decimal BlockedAmount { get; set; } = 0;
+        public string BlockedId { get; set; }
+        public string ProfileType { get; set; }
+        public DateTime DateBlocked { get; set; } = DateTime.MinValue;
+        public DateTime DateReleased { get; set; } = DateTime.MinValue;
+        public string ReasonOfBlocked { get; set; }
+        //public decimal TellerInterestBalance { get; set; }
+        public DateTime? DateOfLastOperation { get; set; } = DateTime.MinValue;
+        public DateTime? LastInterestCalculatedDate { get; set; } = DateTime.MinValue;
+        public string AccountName { get; set; }
+        public string LastOperation { get; set; }
+        public string AccountType { get; set; }
+        public bool IsTellerAccount { get; set; }
+        public string OpenningOfDayStatus { get; set; }
+        public DateTime? OpenningOfDayDate { get; set; } = DateTime.MinValue;
+        public string OpenningOfDayReference { get; set; }
+        public decimal OpeningBalance { get; set; }
+        public DateTime? DateOfOpeningBalance { get; set; } = DateTime.MinValue;
+        public decimal LastOperationAmount { get; set; } = 0;
+        public string BankId { get; set; }
+        public string BranchId { get; set; }
+        public SavingProduct Product { get; set; }
+        public List<WithdrawalNotification> WithdrawalNotifications { get; set; }
 
+        /// <summary>Last closure reason applied to this account (for BI and compliance quick filters).</summary>
+        public string LastClosureReason { get; set; }
+
+        /// <summary>UTC time when account was finally closed (null if open).</summary>
+        public DateTime? ClosedOn { get; set; } = DateTime.MinValue;
+        public bool IsOverdraftEnabled { get; set; } = false;
+        // ✅ Has the overdraft service been activated for this account?
+        // This flag must be true before any OD request can be submitted.
+
+        public decimal OverdraftLimit { get; set; } = 0;
+        // ✅ The maximum limit assigned to this account (live usable OD limit).
+        // Can be changed after approval by LM.
+
+        public decimal OverdraftUsed { get; set; } = 0;
+        // ✅ Amount already consumed from the overdraft limit.
+        // Used for interest calculations, blocking thresholds, utilization %
+
+        public decimal InterestRate { get; set; }
+        // ✅ Interest rate applied on the used overdraft amount (monthly or annual)
+
+        public decimal PenaltyRate { get; set; }
+        // ✅ Additional rate or fee applied if overdraft becomes delinquent or overdrawn
+
+        public string LinkedSalaryAccountId { get; set; }
+        // ✅ (Optional) Account where salary is paid to.
+        // If set, OD can be auto-recovered when salary is deposited.
+
+        public string RecoverySourceAccountIds { get; set; }
+        // ✅ (Optional) List of accounts used as backup recovery sources (group wallet, spouse, business partner)
+
+        public bool AutoRecoverOnDeposit { get; set; } = true;
+        // ✅ Should the OD be auto-cleared when new deposits enter the account?
+
+        public DateTime? OverdraftActivationDate { get; set; }
+        // ✅ When this OD feature was enabled on the account.
+
+        public DateTime? OverdraftExpiryDate { get; set; }
+        // ✅ Optional: When this OD feature expires (e.g. 6-month promo or renewable OD)
+
+        public bool IsBlocked { get; set; } = false;
+        // ✅ If blocked, account cannot draw or use overdraft (due to default or risk event)
+
+        public string ActivatedBy { get; set; }
+        // ✅ User, teller, or officer ID who activated OD on the account (audit trail)
+
+        public bool IsActive { get; set; } = true;
+        // ✅ Overall activation record toggle — can be deactivated for auditing or archiving
+
+        // 🧮 Helper (not mapped in DB)
+        public decimal AvailableOverdraft => OverdraftLimit - OverdraftUsed;
+
+        public decimal AvailableBalance =>
+            IsOverdraftEnabled ? (Balance >= 0 ? Balance : OverdraftLimit + Balance) : Balance;
+        public bool IsSalaryOverdraftAccount { get; set; }
+        public bool IsCashInBlocked { get; set; }
+        public bool IsWithdrawalBlocked { get; set; }
+        public bool IsTransferBlocked { get; set; }
+
+    }
 }

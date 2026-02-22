@@ -1376,6 +1376,7 @@ namespace CBS.FrontDesk.Helper
         //-------------------- Cheque Cleance ---------------
         public const string ChequeClearanceRequest = "/api/v1/clearance/request";
         public const string ClearanceDataTable = "/api/v1/clearance/data-table";
+        public const string GetClearanceDetails = "/api/v1/clearance/{0}";
 
 
         //---------------------- Global Configuration ----------------------------
@@ -1453,6 +1454,7 @@ namespace CBS.FrontDesk.Helper
         public static string RejectLossRequest = "api/lossmanagement/requests/reject";
 
         public static string LossRequestDetails = "api/lossmanagement/requests/details";
+        public static string accoubtbyid = "/api/v1/Account/{0}";
 
 
 
