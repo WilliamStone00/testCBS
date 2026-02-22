@@ -363,7 +363,6 @@ function confirmTransaction(title, message, ajaxUrl, data, operationType) {
 
 function successCallback(response, operationType) {
     appalert(response.message, 1, 1);
-    resetDepositorForm();
     switch (operationType) {
         case 'CashInMomocashCollection':
             GetMemberData($("#customerId").val(), '_MomocashCollectionDesk', 'datalistingview', 'cashin');
