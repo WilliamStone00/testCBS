@@ -19,6 +19,7 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.MembersFSerie
 {
+    [CheckSessionTimeOutAttribute]
     public class MemberAccountManController : Controller
     {
         private readonly BranchServices _branchServices;

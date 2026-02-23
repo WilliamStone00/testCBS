@@ -26,6 +26,7 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers
 {
+    [CheckSessionTimeOutAttribute]
     public class MembersFSeriesReportController : BaseController
     {
         private readonly FinancialReportBuilder _reportBuilder;
@@ -434,6 +435,7 @@ namespace CBS.FrontDesk.UI.Controllers
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             });
         }
+
 
         //Helper method to get item count
         private int GetItemCount(object data)
