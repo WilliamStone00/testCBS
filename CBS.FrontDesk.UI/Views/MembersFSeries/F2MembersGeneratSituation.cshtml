@@ -445,61 +445,59 @@
             console.log('Initializing Account Selection Handler - Using TEXT for identification');
 
             var $accountSelect = $('#memberAccountIds');
-            var allAccountsText = "All Accounts"; // Always check by text, not value
+
+            // Guard clause - if element doesn't exist, exit
+            if (!$accountSelect.length) {
+                console.log('Member Account IDs element not found');
+                return;
+            }
+
+            var allAccountsText = "All Accounts";
 
             // Remove any existing handlers first
             $accountSelect.off('select2:select select2:unselect');
 
             // Handle selection events
             $accountSelect.on('select2:select', function (e) {
-                var selectedText = e.params.data.text.trim(); // Get the text of the selected item
+                var selectedText = e.params.data.text.trim();
                 var selectedValue = e.params.data.id;
                 var currentValues = $(this).val() || [];
 
                 console.log('Selected - Text:', selectedText, '| Value:', selectedValue);
 
-                // CASE 1: User selected "All Accounts" (identified by TEXT)
                 if (selectedText === allAccountsText) {
-                    // Clear all other selections and keep only "All Accounts"
                     $(this).val([selectedValue]).trigger('change');
-                    console.log('All Accounts selected (by text). Individual account selections cleared.');
+                    console.log('All Accounts selected. Individual account selections cleared.');
 
                     if (typeof appalert === 'function') {
                         appalert('All accounts selected. Individual account selections cleared.', 3, 1);
                     }
                 }
-                // CASE 2: User selected an individual account
                 else {
-                    // Check if "All Accounts" is currently selected by looking at the SELECTED OPTIONS' TEXT
                     var hasAllAccountsSelected = false;
                     var selectedOptions = $(this).select2('data');
 
                     $(selectedOptions).each(function() {
                         if (this.text && this.text.trim() === allAccountsText) {
                             hasAllAccountsSelected = true;
-                            return false; // break the loop
+                            return false;
                         }
                     });
 
-                    // If "All Accounts" is selected, remove it
                     if (hasAllAccountsSelected) {
-                        // Get all values EXCEPT the one that corresponds to "All Accounts"
-                        // Find the option with text "All Accounts"
                         var allAccountsValue = null;
                         $accountSelect.find("option").each(function() {
                             if ($(this).text().trim() === allAccountsText) {
                                 allAccountsValue = $(this).val();
-                                return false; // break the loop
+                                return false;
                             }
                         });
 
                         if (allAccountsValue) {
-                            // Filter out the "All Accounts" value
                             var filteredValues = currentValues.filter(function(v) {
                                 return v !== allAccountsValue;
                             });
 
-                            // Add the newly selected account
                             filteredValues.push(selectedValue);
                             $(this).val(filteredValues).trigger('change');
                             console.log('Individual account selected: removed "All Accounts".');
@@ -512,18 +510,15 @@
                 }
             });
 
-            // Handle unselect events
             $accountSelect.on('select2:unselect', function (e) {
                 var unselectedText = e.params.data.text.trim();
                 console.log('Unselected - Text:', unselectedText);
 
-                // If user unselects "All Accounts", no special handling needed
                 if (unselectedText === allAccountsText) {
                     console.log('All Accounts unselected');
                 }
             });
 
-            // Optional: Add a helper function to check current selection mode
             window.checkSelectionMode = function() {
                 var selectedData = $('#memberAccountIds').select2('data');
                 var hasAllAccounts = false;
@@ -548,32 +543,34 @@
                 };
             };
 
-            console.log('Account Selection Handler initialized successfully (using TEXT identification)');
+            console.log('Account Selection Handler initialized successfully');
         }
 
         // ============================================================
-        // ACCOUNT SITUATION SELECTION HANDLER - USING TEXT IDENTIFICATION
+        // ACCOUNT SITUATION SELECTION HANDLER
         // ============================================================
         function initializeAccountSituationHandler() {
             console.log('Initializing Account Situation Handler - Using TEXT for identification');
 
             var $accountSelect = $('#accountSituationIds');
-            var allAccountsText = "All Accounts"; // Always check by text, not value
 
-            // Remove any existing handlers first
+            if (!$accountSelect.length) {
+                console.log('Account Situation IDs element not found');
+                return;
+            }
+
+            var allAccountsText = "All Accounts";
+
             $accountSelect.off('select2:select select2:unselect');
 
-            // Handle selection events
             $accountSelect.on('select2:select', function (e) {
-                var selectedText = e.params.data.text.trim(); // Get the text of the selected item
+                var selectedText = e.params.data.text.trim();
                 var selectedValue = e.params.data.id;
                 var currentValues = $(this).val() || [];
 
                 console.log('Account Situation - Selected Text:', selectedText, '| Value:', selectedValue);
 
-                // CASE 1: User selected "All Accounts" (identified by TEXT)
                 if (selectedText === allAccountsText) {
-                    // Clear all other selections and keep only "All Accounts"
                     $(this).val([selectedValue]).trigger('change');
                     console.log('Account Situation - All Accounts selected. Individual account selections cleared.');
 
@@ -581,37 +578,31 @@
                         appalert('All accounts selected. Individual account selections cleared.', 3, 1);
                     }
                 }
-                // CASE 2: User selected an individual account
                 else {
-                    // Check if "All Accounts" is currently selected by looking at the SELECTED OPTIONS' TEXT
                     var hasAllAccountsSelected = false;
                     var selectedOptions = $(this).select2('data');
 
                     $(selectedOptions).each(function() {
                         if (this.text && this.text.trim() === allAccountsText) {
                             hasAllAccountsSelected = true;
-                            return false; // break the loop
+                            return false;
                         }
                     });
 
-                    // If "All Accounts" is selected, remove it
                     if (hasAllAccountsSelected) {
-                        // Find the option with text "All Accounts"
                         var allAccountsValue = null;
                         $accountSelect.find("option").each(function() {
                             if ($(this).text().trim() === allAccountsText) {
                                 allAccountsValue = $(this).val();
-                                return false; // break the loop
+                                return false;
                             }
                         });
 
                         if (allAccountsValue) {
-                            // Filter out the "All Accounts" value
                             var filteredValues = currentValues.filter(function(v) {
                                 return v !== allAccountsValue;
                             });
 
-                            // Add the newly selected account
                             filteredValues.push(selectedValue);
                             $(this).val(filteredValues).trigger('change');
                             console.log('Account Situation - Individual account selected: removed "All Accounts".');
@@ -624,18 +615,15 @@
                 }
             });
 
-            // Handle unselect events
             $accountSelect.on('select2:unselect', function (e) {
                 var unselectedText = e.params.data.text.trim();
                 console.log('Account Situation - Unselected Text:', unselectedText);
 
-                // If user unselects "All Accounts", no special handling needed
                 if (unselectedText === allAccountsText) {
                     console.log('Account Situation - All Accounts unselected');
                 }
             });
 
-            // Optional: Add a helper function to check current selection mode
             window.checkAccountSituationMode = function() {
                 var selectedData = $('#accountSituationIds').select2('data');
                 var hasAllAccounts = false;
@@ -664,71 +652,33 @@
         }
 
         // ============================================================
-        // LOAN SITUATION HANDLER - TO HIDE DATE FIELDS WHEN ALL LOANS SELECTED
+        // LOAN SITUATION HANDLER
         // ============================================================
         function initializeLoanSituationHandler() {
             console.log('Initializing Loan Situation Handler');
 
             var $loanStatusSelect = $('#LoanHistoryStatus');
-            var $dateFromField = $('#loanSituationDateFrom').closest('.col-md-6');
-            var $dateToField = $('#loanSituationDateTo').closest('.col-md-6');
-            var $dateLabels = $('label[for="loanSituationDateFrom"], label[for="loanSituationDateTo"]').closest('.col-md-6');
 
-            // Remove any existing handlers
+            if (!$loanStatusSelect.length) {
+                console.log('Loan History Status element not found');
+                return;
+            }
+
             $loanStatusSelect.off('change.loanSituation');
 
-            // Add change handler
             $loanStatusSelect.on('change.loanSituation', function() {
                 var selectedValue = $(this).val();
                 console.log('Loan status changed to:', selectedValue);
-
-                if (selectedValue === 'all') {
-                    // Hide date fields when "All Loans" is selected
-                    $dateFromField.hide();
-                    $dateToField.hide();
-
-                    // Remove required attribute
-                    $('#loanSituationDateFrom').removeAttr('required');
-                    $('#loanSituationDateTo').removeAttr('required');
-
-                    console.log('Date fields hidden - "All Loans" selected');
-                } else {
-                    // Show date fields for other selections
-                    $dateFromField.show();
-                    $dateToField.show();
-
-                    // Add required attribute
-                    $('#loanSituationDateFrom').attr('required', 'required');
-                    $('#loanSituationDateTo').attr('required', 'required');
-
-                    console.log('Date fields shown - specific loan status selected');
-                }
             });
-
-            // Trigger initial state
-            setTimeout(function() {
-                var initialValue = $loanStatusSelect.val();
-                if (initialValue === 'all') {
-                    $dateFromField.hide();
-                    $dateToField.hide();
-                    $('#loanSituationDateFrom').removeAttr('required');
-                    $('#loanSituationDateTo').removeAttr('required');
-                }
-            }, 100);
 
             console.log('Loan Situation Handler initialized');
         }
 
         // ============================================================
-        // REPORT GENERATOR - COMPLETE FIXED VERSION
+        // REPORT GENERATOR
         // ============================================================
 
-        // Global variables
         var ReportGenerator = {};
-
-        // ============================================================
-        // GLOBAL FUNCTIONS
-        // ============================================================
 
         function switchReport(reportType) {
             console.log('switchReport called with:', reportType);
@@ -757,17 +707,6 @@
                     $('#accountStatementAccount').removeAttr('name');
                     $('#accountDateFrom').removeAttr('name');
                     $('#accountDateTo').removeAttr('name');
-
-                    // Re-initialize account selection handler when switching to MemberSituation
-                    setTimeout(function() {
-                        initializeAccountSelectionHandler();
-
-                        // Also check and log initial selection state
-                        if (typeof checkSelectionMode === 'function') {
-                            var mode = checkSelectionMode();
-                            console.log('Initial selection mode:', mode);
-                        }
-                    }, 500);
                     break;
 
                 case 'AccountSituation':
@@ -781,17 +720,6 @@
                     $('#memberAccountIds').removeAttr('name');
                     $('#memberLoanStatus').removeAttr('name');
                     $('#memberDateTo').removeAttr('name');
-
-                    // Initialize account situation handler
-                    setTimeout(function() {
-                        initializeAccountSituationHandler();
-
-                        // Also check and log initial selection state
-                        if (typeof checkAccountSituationMode === 'function') {
-                            var mode = checkAccountSituationMode();
-                            console.log('Account Situation initial mode:', mode);
-                        }
-                    }, 500);
                     break;
 
                 case 'AccountStatement':
@@ -826,18 +754,10 @@
                 case 'LoanSituation':
                     $('#loanSituationForm').removeClass('d-none');
 
-                    // Initialize loan situation handler
-                    setTimeout(function() {
-                        initializeLoanSituationHandler();
-                    }, 300);
-
-                    // Set default loan status if not set
                     var loanStatus = $('#LoanHistoryStatus').val();
                     if (!loanStatus || loanStatus === '') {
                         $('#LoanHistoryStatus').val('all').trigger('change');
                     }
-
-                    // Don't set required for dates initially - they will be set by handler
                     break;
 
                 case 'InterestVadPenalty':
@@ -988,54 +908,9 @@
 
             $('#LoanHistoryStatus').removeClass('is-invalid');
 
-            // Check if loan status is selected
             if (!selectedStatus || selectedStatus === '') {
                 $('#LoanHistoryStatus').addClass('is-invalid');
                 isValid = false;
-            }
-
-            // Only validate dates if not "All Loans"
-            if (selectedStatus !== 'all') {
-                $('#loanSituationDateFrom, #loanSituationDateTo').removeClass('is-invalid');
-
-                if (!$('#loanSituationDateFrom').val()) {
-                    $('#loanSituationDateFrom').addClass('is-invalid');
-                    isValid = false;
-                }
-
-                if (!$('#loanSituationDateTo').val()) {
-                    $('#loanSituationDateTo').addClass('is-invalid');
-                    isValid = false;
-                }
-
-                var fromDate = $('#loanSituationDateFrom').val();
-                var toDate = $('#loanSituationDateTo').val();
-
-                if (fromDate && toDate) {
-                    var fromDateObj = new Date(fromDate);
-                    fromDateObj.setHours(0, 0, 0, 0);
-                    var toDateObj = new Date(toDate);
-                    toDateObj.setHours(0, 0, 0, 0);
-
-                    if (fromDateObj > toDateObj) {
-                        $('#loanSituationDateFrom').addClass('is-invalid');
-                        $('#loanSituationDateTo').addClass('is-invalid');
-                        isValid = false;
-                    }
-
-                    var today = new Date();
-                    today.setHours(0, 0, 0, 0);
-
-                    if (fromDateObj > today) {
-                        $('#loanSituationDateFrom').addClass('is-invalid');
-                        isValid = false;
-                    }
-
-                    if (toDateObj > today) {
-                        $('#loanSituationDateTo').addClass('is-invalid');
-                        isValid = false;
-                    }
-                }
             }
 
             return isValid;
@@ -1164,75 +1039,12 @@
             }
             formData.append('LoanStatus', loanStatus);
 
-            // Only append dates if not "All Loans"
-            if (loanStatus !== 'all') {
-                formData.append('DateFrom', $('#loanSituationDateFrom').val() || '');
-                formData.append('DateTo', $('#loanSituationDateTo').val() || '');
-            }
-
             return formData;
         }
 
         // ============================================================
         // INITIALIZATION FUNCTIONS
         // ============================================================
-
-        function initializePage() {
-            console.log('Report Generator: Initializing...');
-
-            $('#ReportType').val('MemberSituation');
-
-            setDefaultDates();
-            initializeSelect2();
-
-            // Initialize account selection handler after Select2 is ready
-            setTimeout(function() {
-                initializeAccountSelectionHandler();
-
-                // Also check and log initial selection state
-                if (typeof checkSelectionMode === 'function') {
-                    var mode = checkSelectionMode();
-                    console.log('Initial selection mode:', mode);
-                }
-            }, 500);
-
-            // Initialize account situation handler
-            setTimeout(function() {
-                initializeAccountSituationHandler();
-            }, 700);
-
-            setupRadioButtons();
-            setupCheckboxHandlers();
-            setupResetButton();
-            setupInterestVadPenaltyRadioButtons();
-            setupDateValidation();
-
-            $('#accountSituationIds').on('change', function() {
-                updateSelectedAccountsList();
-            });
-
-            $('#LoanHistoryStatus').on('change', function() {
-                console.log('Loan status changed to:', $(this).val());
-            });
-
-            initializeFormFields();
-            switchReport('MemberSituation');
-
-            console.log('Report Generator: Initialization complete');
-        }
-
-        function initializeFormFields() {
-            $('#memberLoanStatus').val('all');
-            $('#memberDateTo').val(new Date().toISOString().split('T')[0]);
-
-            if (!$('#LoanHistoryStatus').val() || $('#LoanHistoryStatus').val() === '') {
-                $('#LoanHistoryStatus').val('all');
-            }
-
-            $('#memberAccountIds').attr('name', 'AccountIds');
-            $('#memberLoanStatus').attr('name', 'LoanStatus');
-            $('#memberDateTo').attr('name', 'DateTo');
-        }
 
         function initializeSelect2() {
             if ($.fn.select2) {
@@ -1251,7 +1063,11 @@
                     var $this = $(this);
                     if ($this.is('select') && $this.attr('multiple')) {
                         if ($this.hasClass('select2-hidden-accessible')) {
-                            $this.select2('destroy');
+                            try {
+                                $this.select2('destroy');
+                            } catch(e) {
+                                console.log('Error destroying Select2:', e);
+                            }
                         }
 
                         $this.select2({
@@ -1263,6 +1079,104 @@
                     }
                 });
             }
+        }
+
+        function waitForElement(selector, callback, maxAttempts = 20) {
+            let attempts = 0;
+
+            function check() {
+                const $element = $(selector);
+                if ($element.length && $element.hasClass('select2-hidden-accessible')) {
+                    console.log(`Element ${selector} is ready`);
+                    callback();
+                    return true;
+                }
+
+                attempts++;
+                if (attempts < maxAttempts) {
+                    console.log(`Waiting for ${selector} to be ready... attempt ${attempts}`);
+                    setTimeout(check, 100);
+                } else {
+                    console.warn(`Element ${selector} not ready after ${maxAttempts} attempts`);
+                    // Still try to initialize as fallback
+                    callback();
+                }
+                return false;
+            }
+
+            check();
+        }
+
+        function initializePage() {
+            console.log('Report Generator: Initializing...');
+
+            $('#ReportType').val('MemberSituation');
+
+            setDefaultDates();
+
+            // Initialize Select2 first
+            initializeSelect2();
+
+            // Wait for elements to be ready before attaching handlers
+            waitForElement('#memberAccountIds', function() {
+                console.log('Member Account IDs ready, attaching handler');
+                initializeAccountSelectionHandler();
+
+                if (typeof checkSelectionMode === 'function') {
+                    setTimeout(function() {
+                        var mode = checkSelectionMode();
+                        console.log('Initial selection mode:', mode);
+                    }, 200);
+                }
+            });
+
+            waitForElement('#accountSituationIds', function() {
+                console.log('Account Situation IDs ready, attaching handler');
+                initializeAccountSituationHandler();
+
+                if (typeof checkAccountSituationMode === 'function') {
+                    setTimeout(function() {
+                        var mode = checkAccountSituationMode();
+                        console.log('Account Situation initial mode:', mode);
+                    }, 200);
+                }
+            });
+
+            setupRadioButtons();
+            setupCheckboxHandlers();
+            setupResetButton();
+            setupInterestVadPenaltyRadioButtons();
+            setupDateValidation();
+
+            $('#accountSituationIds').on('change', function () {
+                updateSelectedAccountsList();
+            });
+
+            $('#LoanHistoryStatus').on('change', function () {
+                console.log('Loan status changed to:', $(this).val());
+            });
+
+            initializeFormFields();
+
+            // Switch to default report after a short delay
+            setTimeout(function() {
+                switchReport('MemberSituation');
+            }, 300);
+
+            console.log('Report Generator: Initialization complete');
+        }
+
+        function initializeFormFields() {
+            $('#memberLoanStatus').val('all');
+            $('#memberDateTo').val(new Date().toISOString().split('T')[0]);
+
+            if (!$('#LoanHistoryStatus').val() || $('#LoanHistoryStatus').val() === '') {
+                $('#LoanHistoryStatus').val('all');
+            }
+
+            $('#memberAccountIds').attr('name', 'AccountIds');
+            $('#memberLoanStatus').attr('name', 'LoanStatus');
+            $('#memberDateTo').attr('name', 'DateTo');
         }
 
         function setDefaultDates() {
@@ -1514,29 +1428,10 @@
 
             $('#LoanHistoryStatus').val('all');
 
-            // Reset loan situation date fields visibility
-            setTimeout(function() {
-                var $dateFromField = $('#loanSituationDateFrom').closest('.col-md-6');
-                var $dateToField = $('#loanSituationDateTo').closest('.col-md-6');
-                $dateFromField.hide();
-                $dateToField.hide();
-                $('#loanSituationDateFrom').removeAttr('required');
-                $('#loanSituationDateTo').removeAttr('required');
-            }, 100);
-
-            // Re-initialize account situation handler
-            setTimeout(function() {
-                initializeAccountSituationHandler();
-            }, 600);
-
             $('#interestReport').prop('checked', true);
             $('#interestVadPenaltyHelp').html('<strong>Interest Report Selected:</strong> Generate interest calculation report for the selected date range');
 
             $('#dateValidationMessage').hide();
-
-            setTimeout(function() {
-                initializeAccountSelectionHandler();
-            }, 500);
 
             if (typeof appalert === 'function') {
                 appalert('Form has been reset', 3, 1);
@@ -1872,8 +1767,6 @@
                 console.log('Initial state check - Radio checked:', $('input[name="ReportTypeRadio"]:checked').val());
                 console.log('Loan repayment radio states - By Loan:', $('#repaymentByLoan').is(':checked'), 'By Repayment:', $('#repaymentByRepayment').is(':checked'));
                 console.log('Loan history status:', $('#LoanHistoryStatus').val());
-                console.log('Account selection handler status: Initialized');
-                console.log('Account situation handler status: Initialized');
 
                 // Check account selection mode
                 if (typeof checkSelectionMode === 'function') {
@@ -1893,7 +1786,6 @@
         // TEST FUNCTIONS FOR DEBUGGING
         // ============================================================
 
-        // Test function for account selection (Member Situation)
         function testAccountSelection() {
             console.log('=== TEST ACCOUNT SELECTION (Member Situation) ===');
 
@@ -1931,7 +1823,6 @@
             };
         }
 
-        // Test function for account situation
         function testAccountSituation() {
             console.log('=== TEST ACCOUNT SITUATION ===');
 
@@ -1969,7 +1860,6 @@
             };
         }
 
-        // Test function for loan repayment
         function testLoanRepayment() {
             console.log('=== LOAN REPAYMENT TEST ===');
             console.log('Current state:');
@@ -1982,7 +1872,6 @@
             handleLoanRepaymentToggle();
         }
 
-        // Test function for loan history
         function testLoanHistory() {
             console.log('=== LOAN HISTORY TEST ===');
             console.log('Current loan status:', $('#LoanHistoryStatus').val());
@@ -2000,7 +1889,6 @@
             }
         }
 
-        // Test function to manually trigger loan situation handler
         function testLoanSituationHandler() {
             console.log('=== TEST LOAN SITUATION HANDLER ===');
             initializeLoanSituationHandler();
