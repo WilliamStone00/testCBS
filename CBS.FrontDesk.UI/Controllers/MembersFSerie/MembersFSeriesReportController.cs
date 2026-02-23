@@ -26,6 +26,7 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers
 {
+    [CheckSessionTimeOutAttribute]
     public class MembersFSeriesReportController : BaseController
     {
         private readonly FinancialReportBuilder _reportBuilder;
@@ -220,30 +221,6 @@ namespace CBS.FrontDesk.UI.Controllers
         }
 
 
-        //Helper method to get item count
-        private int GetItemCount(object data)
-        {
-            if (data == null) return 0;
-
-            if (data is System.Collections.ICollection collection)
-                return collection.Count;
-
-            // Try reflection for List<T>
-            var countProperty = data.GetType().GetProperty("Count");
-            if (countProperty != null)
-            {
-                return (int)countProperty.GetValue(data);
-            }
-
-            // Try Count() extension method
-            var countMethod = data.GetType().GetMethod("Count");
-            if (countMethod != null)
-            {
-                return (int)countMethod.Invoke(data, null);
-            }
-
-            return 0;
-        }
 
         // POST: Reports/PrepareReport
         [HttpPost]
