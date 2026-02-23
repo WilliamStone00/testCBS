@@ -376,8 +376,16 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
         public string CNI { get; set; }
         public string Address { get; set; }
         public string Phone { get; set; }
-       
-        
+
+
+
+      
+        public string AccountNumber { get; set; }
+      
+        public int Installment { get; set; }
+        public int NumberOfInstallments { get; set; }
+      
+        public decimal VAT { get; set; }
 
     }
 
@@ -1366,6 +1374,15 @@ namespace CBS.FrontDesk.Data.Entity.ReportMembersFSeries
         public string MembersName { get; set; }
         public string MembersBranch { get; set; }
         public string MemberBranchCode { get; set; }
+
+     
+        public string AccountNumber { get; set; }
+        public decimal LoanAmount { get; set; }
+        public decimal DueAmount { get; set; }
+        public int Installment { get; set; }
+        public int NumberOfInstallments { get; set; }
+        public DateTime? MaturityDate { get; set; }
+        public decimal VAT { get; set; }
     }
     public class MemberSituationSummary
     {

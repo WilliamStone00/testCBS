@@ -292,20 +292,20 @@ namespace CBS.BusinessService.ReportingMembersFSeries
                 LoanHistories = situation.Loans
                     .Select(l => new LoanSituationRow
                     {
-                        LoanAccount = l.LoanAccount,
-                        LoanType = l.LoanType,
+                        LoanAccount = l.LoanAccount, 
+                        LoanType = l.LoanType, AccountNumber= l.AccountNumber,
                         LoanBalance = l.Balance,
                         Interest = l.Interest,
                         InterestRate = l.InterestRate,
                         LastRepaymentDate = l.LastRepaymentDate,
-                        LoanDate = l.LoanDate,
+                        LoanDate = l.LoanDate, 
                         DisbursementDate = l.DisbursementDate,
-                        NumberOfInstallment = l.DelDays,
-                        LoanAmount = l.Principal,
+                        NumberOfInstallment = l.NumberOfInstallments,
+                        LoanAmount = l.LoanAmount,
                         LoanRepaymentAmount = l.LastRepaymentAmount,
                         DelInterest = l.DelInterest,
                         DeliquenceAmount = l.DelAmount,
-                        Deliquencedays = l.DelDays
+                        Deliquencedays = l.DelDays, DelAmount = l.DelAmount, 
                     })
                     .ToList()
             };
