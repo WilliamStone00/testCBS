@@ -195,6 +195,11 @@ namespace CBS.FrontDesk.Data.Entity
         public decimal LastOperationAmount { get; set; } = 0;
         public string BankId { get; set; }
         public string BranchId { get; set; }
+        public string BranchName { get; set; }
+        public string BankName { get; set; }
+        public string BranchPrintingdetails { get; set; }
+        public string PrintedBy { get; set; }
+        public DateTime? printedOn { get; set; }
         public SavingProduct Product { get; set; }
         public List<WithdrawalNotification> WithdrawalNotifications { get; set; }
 
@@ -233,6 +238,9 @@ namespace CBS.FrontDesk.Data.Entity
 
         public DateTime? OverdraftActivationDate { get; set; }
         // ✅ When this OD feature was enabled on the account.
+
+        public DateTime? CreatedDate { get; set; }
+        public string AccountManager { get; set; }
 
         public DateTime? OverdraftExpiryDate { get; set; }
         // ✅ Optional: When this OD feature expires (e.g. 6-month promo or renewable OD)

@@ -1,140 +1,387 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accountgetid
 @using Resources
-
-@functions {
-    string FormatDate(DateTime date)
-    {
-        return date != DateTime.MinValue ? date.ToString("dd/MM/yyyy") : string.Empty;
-    }
-
-    string FormatNullableDate(DateTime? date)
-    {
-        return date.HasValue && date.Value != DateTime.MinValue
-            ? date.Value.ToString("dd/MM/yyyy")
-            : string.Empty;
-    }
-}
-
+@using CBS.FrontDesk.UI.Helper;
 
 <fieldset class="fieldset-custom">
+    @Html.HiddenFor(m => m.BankName)
+    @Html.HiddenFor(m => m.BranchPrintingdetails)
+    @Html.HiddenFor(m => m.PrintedBy)
+    @Html.HiddenFor(m => m.printedOn)
 
-    <!-- Header Card -->
-    <div class="card bg-light mb-4 shadow-sm">
-        <div class="card-body text-center">
-            <h1 class="card-title text-primary fw-bold mb-2">
-                <i class="mdi mdi-bank-outline me-2"></i> Account Details
-            </h1>
-            <p class="card-text text-muted mb-1">
-                Here are the complete details of the selected account.
-            </p>
+    <!-- Header Card with Gradient -->
+    <div class="card bg-gradient-light mb-4 shadow-lg border-0">
+        <div class="card-body text-white py-4">
+            <div class="d-flex align-items-center justify-content-between">
+                <div>
+                    <h1 class="display-6 fw-bold mb-2">
+                        <i class="mdi mdi-bank-outline me-2"></i> Account Details
+                    </h1>
+                    <p class="text-black">
+                        <i class="mdi mdi-information-outline me-1"></i> Complete information for account @Model.AccountNumber
+                    </p>
+                </div>
+                <div class="text-end">
+                    <span class="badge @(Model.IsActive ? "bg-success" : "bg-danger") p-3 fs-6 shadow-sm">
+                        <i class="mdi @(Model.IsActive ? "mdi-check-circle" : "mdi-close-circle") me-1"></i>
+                        @(Model.IsActive ? "Active" : "Inactive")
+                    </span>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="row">
-
-        <!-- LEFT COLUMN -->
-        <div class="col-md-6">
-            <h6 class="text-primary">
-                <i class="mdi mdi-information-outline me-2"></i> Basic Information
-            </h6>
-
-            <table class="table table-sm table-bordered">
-                <tr><td class="fw-bold">Account ID:</td><td>@Model.Id</td></tr>
-                <tr><td class="fw-bold">Account Number:</td><td>@Model.AccountNumber</td></tr>
-                <tr><td class="fw-bold">Account Name:</td><td>@(Model.AccountName ?? "-")</td></tr>
-                <tr><td class="fw-bold">Customer Name:</td><td>@Model.CustomerName</td></tr>
-                <tr><td class="fw-bold">Account Type:</td><td>@Model.AccountType</td></tr>
-                <tr><td class="fw-bold">Profile Type:</td><td>@(Model.ProfileType ?? "-")</td></tr>
-                <tr><td class="fw-bold">Product ID:</td><td>@Model.ProductId</td></tr>
-                <tr><td class="fw-bold">Bank ID:</td><td>@Model.BankId</td></tr>
-                <tr><td class="fw-bold">Branch ID:</td><td>@Model.BranchId</td></tr>
-                <tr><td class="fw-bold">Branch Code:</td><td>@(Model.BranchCode ?? "-")</td></tr>
-                <tr><td class="fw-bold">Teller ID:</td><td>@(Model.TellerId ?? "-")</td></tr>
-                <tr><td class="fw-bold">Is Teller Account:</td><td>@(Model.IsTellerAccount ? "Yes" : "No")</td></tr>
-            </table>
+    <!-- Basic Information Card -->
+    <div class="card shadow-sm mb-4 border-0">
+        <div class="card-header bg-white py-3 border-bottom">
+            <h5 class="mb-0 text-primary">
+                <i class="mdi mdi-information-outline me-2"></i>Basic Information
+            </h5>
         </div>
-
-        <!-- RIGHT COLUMN -->
-        <div class="col-md-6">
-            <h6 class="text-primary">
-                <i class="mdi mdi-currency-usd me-2"></i> Financial Summary
-            </h6>
-
-            <table class="table table-sm table-bordered">
-                <tr><td class="fw-bold">Current Balance:</td><td>@Model.Balance.ToString("N2")</td></tr>
-                <tr><td class="fw-bold">Previous Balance:</td><td>@Model.PreviousBalance.ToString("N2")</td></tr>
-                <tr><td class="fw-bold">Opening Balance:</td><td>@Model.OpeningBalance.ToString("N2")</td></tr>
-                <tr><td class="fw-bold">Blocked Amount:</td><td>@Model.BlockedAmount.ToString("N2")</td></tr>
-                <tr><td class="fw-bold">Interest Generated:</td><td>@Model.InterestGenerated.ToString("N2")</td></tr>
-                <tr><td class="fw-bold">Last Interest Posted:</td><td>@Model.LastInterestPosted.ToString("N2")</td></tr>
-                <tr><td class="fw-bold">Last Operation:</td><td>@(Model.LastOperation ?? "-")</td></tr>
-                <tr><td class="fw-bold">Last Operation Amount:</td><td>@Model.LastOperationAmount.ToString("N2")</td></tr>
-                <tr><td class="fw-bold">Available Balance:</td><td>@Model.AvailableBalance.ToString("N2")</td></tr>
-            </table>
-        </div>
-
-    </div>
-
-    <!-- STATUS SECTION -->
-    <div class="row mt-3">
-        <div class="col-12">
-            <h6 class="text-primary">
-                <i class="mdi mdi-shield-check-outline me-2"></i> Account Status & Controls
-            </h6>
-
-            <table class="table table-sm table-bordered">
-                <tr><td class="fw-bold">Status:</td><td>@Model.Status</td></tr>
-                <tr><td class="fw-bold">Is Active:</td><td>@(Model.IsActive ? "Yes" : "No")</td></tr>
-                <tr><td class="fw-bold">Is Blocked:</td><td>@(Model.IsBlocked ? "Yes" : "No")</td></tr>
-                <tr><td class="fw-bold">Blocked Reason:</td><td>@(Model.ReasonOfBlocked ?? "-")</td></tr>
-                <tr><td class="fw-bold">Cash In Blocked:</td><td>@(Model.IsCashInBlocked ? "Yes" : "No")</td></tr>
-                <tr><td class="fw-bold">Withdrawal Blocked:</td><td>@(Model.IsWithdrawalBlocked ? "Yes" : "No")</td></tr>
-                <tr><td class="fw-bold">Transfer Blocked:</td><td>@(Model.IsTransferBlocked ? "Yes" : "No")</td></tr>
-                <tr><td class="fw-bold">Openning Of Day Status:</td><td>@Model.OpenningOfDayStatus</td></tr>
-            </table>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <tbody>
+                        <tr class="border-bottom">
+                            <th class="ps-4 bg-light" style="width: 200px;">Account ID</th>
+                            <td class="fw-semibold">@Model.Id</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <th class="ps-4 bg-light">Account Number</th>
+                            <td><span class="badge bg-light bg-opacity-10 text-primary p-2">@Model.AccountNumber</span></td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <th class="ps-4 bg-light">Account Name</th>
+                            <td>@(Model.AccountName ?? "-")</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <th class="ps-4 bg-light">Customer Name</th>
+                            <td class="fw-bold">@Model.CustomerName</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <th class="ps-4 bg-light">Account Type</th>
+                            <td><span class="badge bg-info">@Model.AccountType</span></td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <th class="ps-4 bg-light">Profile Type</th>
+                            <td>@(Model.ProfileType ?? "-")</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <th class="ps-4 bg-light">Product ID</th>
+                            <td>@Model.ProductId</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <th class="ps-4 bg-light">Branch</th>
+                            <td>@Model.BranchName <span class="text-muted">(@Model.BranchCode)</span></td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <th class="ps-4 bg-light">Teller ID</th>
+                            <td>@(Model.TellerId ?? "-")</td>
+                        </tr>
+                        <tr>
+                            <th class="ps-4 bg-light">Teller Account</th>
+                            <td>
+                                <span class="badge @(Model.IsTellerAccount ? "bg-warning" : "bg-secondary")">
+                                    @(Model.IsTellerAccount ? "Yes" : "No")
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
-    <!-- OVERDRAFT SECTION -->
-    <div class="row mt-3">
-        <div class="col-12">
-            <h6 class="text-primary">
-                <i class="mdi mdi-chart-line me-2"></i> Overdraft Configuration
-            </h6>
-
-            <table class="table table-sm table-bordered">
-                <tr><td class="fw-bold">OD Enabled:</td><td>@(Model.IsOverdraftEnabled ? "Yes" : "No")</td></tr>
-                <tr><td class="fw-bold">Overdraft Limit:</td><td>@Model.OverdraftLimit.ToString("N2")</td></tr>
-                <tr><td class="fw-bold">Overdraft Used:</td><td>@Model.OverdraftUsed.ToString("N2")</td></tr>
-                <tr><td class="fw-bold">Available OD:</td><td>@Model.AvailableOverdraft.ToString("N2")</td></tr>
-                <tr><td class="fw-bold">Interest Rate:</td><td>@Model.InterestRate %</td></tr>
-                <tr><td class="fw-bold">Penalty Rate:</td><td>@Model.PenaltyRate %</td></tr>
-                <tr><td class="fw-bold">Auto Recover:</td><td>@(Model.AutoRecoverOnDeposit ? "Yes" : "No")</td></tr>
-                <tr><td class="fw-bold">Activation Date:</td><td>@FormatNullableDate(Model.OverdraftActivationDate)</td></tr>
-                <tr><td class="fw-bold">Expiry Date:</td><td>@FormatNullableDate(Model.OverdraftExpiryDate)</td></tr>
-                <tr><td class="fw-bold">Activated By:</td><td>@(Model.ActivatedBy ?? "-")</td></tr>
-                <tr><td class="fw-bold">Salary OD Account:</td><td>@(Model.IsSalaryOverdraftAccount ? "Yes" : "No")</td></tr>
-            </table>
+    <!-- Financial Summary Card -->
+    <div class="card shadow-sm mb-4 border-0">
+        <div class="card-header bg-white py-3 border-bottom">
+            <h5 class="mb-0 text-primary">
+                <i class="mdi mdi-currency-usd me-2"></i>Financial Summary
+            </h5>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <tbody>
+                        <tr class="border-bottom">
+                            <th class="ps-4 bg-light" style="width: 200px;">Opening Balance</th>
+                            <td class="fw-semibold">@Model.OpeningBalance.ToString("N2")</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <th class="ps-4 bg-light">Current Balance</th>
+                            <td class="fw-bold text-primary h5 mb-0">@Model.Balance.ToString("N2")</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <th class="ps-4 bg-light">Previous Balance</th>
+                            <td>@Model.PreviousBalance.ToString("N2")</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <th class="ps-4 bg-light">Available Balance</th>
+                            <td class="fw-bold text-success">@Model.AvailableBalance.ToString("N2")</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <th class="ps-4 bg-light">Blocked Amount</th>
+                            <td class="text-danger">@Model.BlockedAmount.ToString("N2")</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <th class="ps-4 bg-light">Interest Generated</th>
+                            <td>@Model.InterestGenerated.ToString("N2")</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <th class="ps-4 bg-light">Last Interest Posted</th>
+                            <td>@Model.LastInterestPosted.ToString("N2")</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <th class="ps-4 bg-light">Last Operation</th>
+                            <td>@(Model.LastOperation ?? "-")</td>
+                        </tr>
+                        <tr>
+                            <th class="ps-4 bg-light">Last Operation Amount</th>
+                            <td class="fw-semibold">@Model.LastOperationAmount.ToString("N2")</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
-    <!-- TIMELINE -->
-    <div class="row mt-3">
-        <div class="col-12">
-            <h6 class="text-primary">
-                <i class="mdi mdi-timeline-clock-outline me-2"></i> Timeline & Audit
-            </h6>
-
-            <table class="table table-sm table-bordered">
-                <tr><td class="fw-bold">Date Blocked:</td><td>@FormatNullableDate(Model.DateBlocked)</td></tr>
-                <tr><td class="fw-bold">Date Released:</td><td>@FormatNullableDate(Model.DateReleased)</td></tr>
-                <tr><td class="fw-bold">Last Interest Calculated:</td><td>@FormatNullableDate(Model.LastInterestCalculatedDate)</td></tr>
-                <tr><td class="fw-bold">Date Of Last Operation:</td><td>@FormatNullableDate(Model.DateOfLastOperation)</td></tr>
-                <tr><td class="fw-bold">Closed On:</td><td>@FormatNullableDate(Model.ClosedOn)</td></tr>
-                <tr><td class="fw-bold">Last Closure Reason:</td><td>@(Model.LastClosureReason ?? "-")</td></tr>
-            </table>
+    <!-- Status & Controls Card -->
+    <div class="card shadow-sm mb-4 border-0">
+        <div class="card-header bg-white py-3 border-bottom">
+            <h5 class="mb-0 text-primary">
+                <i class="mdi mdi-shield-check-outline me-2"></i>Account Status & Controls
+            </h5>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <tbody>
+                        <tr class="border-bottom">
+                            <th class="ps-4 bg-light" style="width: 200px;">Status</th>
+                            <td><span class="badge bg-info">@Model.Status</span></td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <th class="ps-4 bg-light">Account State</th>
+                            <td>
+                                <span class="badge @(Model.IsActive ? "bg-success" : "bg-danger") me-2">
+                                    @(Model.IsActive ? "Active" : "Inactive")
+                                </span>
+                                <span class="badge @(Model.IsBlocked ? "bg-danger" : "bg-success")">
+                                    @(Model.IsBlocked ? "Blocked" : "Unblocked")
+                                </span>
+                            </td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <th class="ps-4 bg-light">Blocked Reason</th>
+                            <td>@(Model.ReasonOfBlocked ?? "-")</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <th class="ps-4 bg-light">Cash In Blocked</th>
+                            <td>
+                                <span class="badge @(Model.IsCashInBlocked ? "bg-danger" : "bg-success")">
+                                    @(Model.IsCashInBlocked ? "Yes" : "No")
+                                </span>
+                            </td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <th class="ps-4 bg-light">Withdrawal Blocked</th>
+                            <td>
+                                <span class="badge @(Model.IsWithdrawalBlocked ? "bg-danger" : "bg-success")">
+                                    @(Model.IsWithdrawalBlocked ? "Yes" : "No")
+                                </span>
+                            </td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <th class="ps-4 bg-light">Transfer Blocked</th>
+                            <td>
+                                <span class="badge @(Model.IsTransferBlocked ? "bg-danger" : "bg-success")">
+                                    @(Model.IsTransferBlocked ? "Yes" : "No")
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="ps-4 bg-light">Opening Day Status</th>
+                            <td><span class="badge bg-secondary">@Model.OpenningOfDayStatus</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
+    <!-- Overdraft Configuration Card -->
+    <div class="card shadow-sm mb-4 border-0">
+        <div class="card-header bg-white py-3 border-bottom">
+            <h5 class="mb-0 text-primary">
+                <i class="mdi mdi-chart-line me-2"></i>Overdraft Configuration
+            </h5>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <tbody>
+                        <tr class="border-bottom">
+                            <th class="ps-4 bg-light" style="width: 200px;">OD Enabled</th>
+                            <td>
+                                <span class="badge @(Model.IsOverdraftEnabled ? "bg-success" : "bg-secondary")">
+                                    @(Model.IsOverdraftEnabled ? "Yes" : "No")
+                                </span>
+                            </td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <th class="ps-4 bg-light">Overdraft Limit</th>
+                            <td class="fw-semibold">@Model.OverdraftLimit.ToString("N2")</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <th class="ps-4 bg-light">Overdraft Used</th>
+                            <td class="text-warning">@Model.OverdraftUsed.ToString("N2")</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <th class="ps-4 bg-light">Available OD</th>
+                            <td class="text-success">@Model.AvailableOverdraft.ToString("N2")</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <th class="ps-4 bg-light">Interest Rate</th>
+                            <td><span class="badge bg-primary bg-opacity-10 text-primary">@Model.InterestRate %</span></td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <th class="ps-4 bg-light">Penalty Rate</th>
+                            <td><span class="badge bg-danger bg-opacity-10 text-danger">@Model.PenaltyRate %</span></td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <th class="ps-4 bg-light">Auto Recover</th>
+                            <td>
+                                <span class="badge @(Model.AutoRecoverOnDeposit ? "bg-success" : "bg-secondary")">
+                                    @(Model.AutoRecoverOnDeposit ? "Yes" : "No")
+                                </span>
+                            </td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <th class="ps-4 bg-light">Activation Date</th>
+                            <td>@DateHelper.FormatNullableDate(Model.OverdraftActivationDate)</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <th class="ps-4 bg-light">Expiry Date</th>
+                            <td>@DateHelper.FormatNullableDate(Model.OverdraftExpiryDate)</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <th class="ps-4 bg-light">Activated By</th>
+                            <td>@(Model.ActivatedBy ?? "-")</td>
+                        </tr>
+                        <tr>
+                            <th class="ps-4 bg-light">Salary OD Account</th>
+                            <td>
+                                <span class="badge @(Model.IsSalaryOverdraftAccount ? "bg-success" : "bg-secondary")">
+                                    @(Model.IsSalaryOverdraftAccount ? "Yes" : "No")
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Account Opening Card -->
+    <div class="card shadow-sm mb-4 border-0">
+        <div class="card-header bg-white py-3 border-bottom">
+            <h5 class="mb-0 text-primary">
+                <i class="mdi mdi-calendar-plus me-2"></i>Account Opening
+            </h5>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <tbody>
+                        <tr class="border-bottom">
+                            <th class="ps-4 bg-light" style="width: 200px;">Opening Date</th>
+                            <td><span class="fw-semibold">@DateHelper.FormatNullableDate(Model.CreatedDate)</span></td>
+                        </tr>
+                        <tr>
+                            <th class="ps-4 bg-light">Account Manager</th>
+                            <td>@Model.AccountManager</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Timeline & Audit Card -->
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-white py-3 border-bottom">
+            <h5 class="mb-0 text-primary">
+                <i class="mdi mdi-timeline-clock-outline me-2"></i>Timeline & Audit
+            </h5>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <tbody>
+                        <tr class="border-bottom">
+                            <th class="ps-4 bg-light" style="width: 200px;">Date Blocked</th>
+                            <td>@DateHelper.FormatNullableDate(Model.DateBlocked)</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <th class="ps-4 bg-light">Date Released</th>
+                            <td>@DateHelper.FormatNullableDate(Model.DateReleased)</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <th class="ps-4 bg-light">Last Interest Calculated</th>
+                            <td>@DateHelper.FormatNullableDate(Model.LastInterestCalculatedDate)</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <th class="ps-4 bg-light">Date Of Last Operation</th>
+                            <td>@DateHelper.FormatNullableDate(Model.DateOfLastOperation)</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <th class="ps-4 bg-light">Closed On</th>
+                            <td>@DateHelper.FormatNullableDate(Model.ClosedOn)</td>
+                        </tr>
+                        <tr>
+                            <th class="ps-4 bg-light">Last Closure Reason</th>
+                            <td>@(Model.LastClosureReason ?? "-")</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </fieldset>
 
+<style>
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .table th {
+        font-weight: 600;
+        color: #495057;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .table td {
+        vertical-align: middle;
+    }
+
+    .card {
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .card-header {
+        background-color: #f8f9fa;
+    }
+
+    .badge {
+        padding: 0.5em 0.8em;
+        font-weight: 500;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: rgba(0,0,0,.02);
+    }
+
+    .ps-4 {
+        padding-left: 1.5rem !important;
+    }
+</style>

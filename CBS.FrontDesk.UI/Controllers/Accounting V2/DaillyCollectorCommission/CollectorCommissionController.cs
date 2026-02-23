@@ -564,7 +564,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
                 Console.WriteLine($"Data analysis: {branches.Count} branches, {collectors.Count} collectors");
 
                 // Prepare file name and paths
-                string timestamp = DateTime.Now.ToString("yyyyMMddHHmmss");
+                string timestamp = DateTime.Now.ToString("dd/MM/yyyy");
                 string fileName = $"{request.ExportOptions?.FileName ?? "Commission_Report"}_{timestamp}.xlsx";
                 string directoryPath = Server.MapPath("~/TempFiles");
 

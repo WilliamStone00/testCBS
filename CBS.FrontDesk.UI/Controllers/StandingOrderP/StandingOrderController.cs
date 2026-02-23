@@ -311,6 +311,12 @@ namespace CBS.FrontDesk.UI.Controllers.StandingOrderP
                     return PartialView("_DataNotFound", new StandingOrderCarrier());
                 }
             }
+            else if (path== "ExportStandingOrder")
+            {
+                
+                    return PartialView(partialView);
+                
+            }
             else
             {
                 ViewBag.Key=KEY;
