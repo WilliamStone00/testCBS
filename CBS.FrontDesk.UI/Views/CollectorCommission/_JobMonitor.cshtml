@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission.JobMonitorViewModel
-
+@using CBS.FrontDesk.UI.Helper;
 <!-- Background Job Monitoring Dashboard -->
 <div class="card mb-3 border-0 shadow-sm">
     <div class="card-header bg-gradient-light text-white py-2" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
@@ -10,7 +10,7 @@
             <div>
                 <span class="badge bg-primary text-dark me-2" id="jobLastUpdated">
                     <i class="mdi mdi-clock-outline me-1"></i>
-                    @(Model?.LastUpdated != null ? Model.LastUpdated.ToString() : "Never")
+                    @(@DateHelper.FormatNullableDate(Model?.LastUpdated) != null ? @DateHelper.FormatNullableDateTime(Model.LastUpdated) : "Never")
                 </span>
                 <button class="btn btn-sm btn-light" id="refreshJobStatus" title="Refresh Job Status">
                     <i class="mdi mdi-refresh" id="refreshIcon"></i>
@@ -40,7 +40,7 @@
             </div>
             <div id="countdownTimer" class="small text-muted @(Model?.AutoRefreshEnabled == true ? "" : "d-none")">
                 <i class="mdi mdi-timer-outline me-1"></i>
-                <span id="countdownSeconds">@(Model?.CountdownSeconds ?? 10)</span>s
+                <span id="countdownSeconds">@(Model?.CountdownSeconds ?? 5)</span>s
             </div>
         </div>
     </div>
