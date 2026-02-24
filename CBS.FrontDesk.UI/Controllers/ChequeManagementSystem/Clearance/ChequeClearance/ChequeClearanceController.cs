@@ -169,6 +169,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeCl
                     // adjust if needed
                     // You can leave others empty for user input
                 };
+                await loader();
 
                 return View("_InternalChequeRequest", model);
             }
