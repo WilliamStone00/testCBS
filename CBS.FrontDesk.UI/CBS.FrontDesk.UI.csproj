@@ -512,10 +512,10 @@
       <DependentUpon>IncomeStatement.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\IPS.cs">
+    <Compile Include="AppFiles\Reporting\IPSReports\CombinedInsurancePremiums.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>IPS.rpt</DependentUpon>
+      <DependentUpon>CombinedInsurancePremiums.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\JER.cs">
@@ -2121,6 +2121,7 @@
     <Compile Include="Controllers\Accounting V2\IncomeStatement\IncomeStatementController.cs" />
     <Compile Include="Controllers\Accounting V2\IPS\IPSClaimController.cs" />
     <Compile Include="Controllers\Accounting V2\IPS\IPSConfigController.cs" />
+    <Compile Include="Controllers\Accounting V2\IPS\IPSReporting\IPSReportingController.cs" />
     <Compile Include="Controllers\Accounting V2\JournalEntries\JournalEntriesController.cs" />
     <Compile Include="Controllers\Accounting V2\MemberReconciliation\FileListingController.cs" />
     <Compile Include="Controllers\Accounting V2\MemberReconciliation\MemberReconciliationController.cs" />
@@ -2338,6 +2339,7 @@
     <Compile Include="Helper\DateHelper.cs" />
     <Compile Include="Helper\HtmlHelperExtensions.cs" />
     <Compile Include="Helper\FileUploadHelper.cs" />
+    <Compile Include="Helper\NumberFormatter.cs" />
     <Compile Include="Helper\ReportLogoHelper.cs" />
     <Compile Include="Helper\SalarySheetExcelExporter.cs" />
     <Compile Include="Models\Class1.cs" />
@@ -8595,9 +8597,9 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>IncomeStatement.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\IPS.rpt">
+    <EmbeddedResource Include="AppFiles\Reporting\IPSReports\CombinedInsurancePremiums.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>IPS.cs</LastGenOutput>
+      <LastGenOutput>CombinedInsurancePremiums.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\JER.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
@@ -10845,6 +10847,7 @@
     <Content Include="Views\ChequeClearance\_Details.cshtml" />
     <Content Include="Views\MembersFSeries\_AccountDetails.cshtml" />
     <Content Include="Views\StandingOrder\_ExportStandingOrder.cshtml" />
+    <Content Include="Views\IPSReporting\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

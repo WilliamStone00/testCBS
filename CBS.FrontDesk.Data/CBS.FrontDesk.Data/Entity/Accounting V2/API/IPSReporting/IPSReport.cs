@@ -14,6 +14,99 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.API.IPSReporting
     }
 
 
+
+    public class LpDeductionSummary
+    {
+        public decimal ExcessLoanBalance { get; set; }
+        public decimal LoansOverAgeThreshold { get; set; }
+        public decimal LoansToOrganizations { get; set; }
+        public decimal OtherLPDeductions { get; set; }
+        public decimal TotalLPDeductions { get; set; }
+        public decimal LPInsurableAmount { get; set; }
+        public decimal LPPremiumDue { get; set; }
+    }
+
+    public class LsDeductionSummary
+    {
+        public decimal ExcessSavingsBalance { get; set; }
+        public decimal OtherLSDeductions { get; set; }
+        public decimal TotalLSDeductions { get; set; }
+        public decimal LSInsurableAmount { get; set; }
+        public decimal LSPremiumDue { get; set; }
+    }
+
+    public class CombinedSummary
+    {
+        public decimal TotalOutstandingLoans { get; set; }
+        public decimal TotalSharesAndSavings { get; set; }
+        public decimal TotalInsurableAmount { get; set; }
+        public decimal TotalDeductions { get; set; }
+        public decimal TotalPremiumsDue { get; set; }
+    }
+
+    public class InsurancePremiumData
+    {
+        public string BranchId { get; set; }
+        public string BranchName { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
+        public DateTime GeneratedDate { get; set; }
+        public string Currency { get; set; }
+        public decimal MaxLoanProtectionAmount { get; set; }
+        public decimal LoanProtectionRate { get; set; }
+        public int MaxAgeForCoverage { get; set; }
+        public decimal MaxLifeSavingsAmount { get; set; }
+        public decimal LifeSavingsRate { get; set; }
+        public string IpsConfigId { get; set; }
+        public int IpsConfigYear { get; set; }
+        public string IpsConfigBranchId { get; set; }
+        public string IpsConfigBranchName { get; set; }
+        public int LpTotalNumberOfOutstandingLoans { get; set; }
+        public decimal LpTotalAmountOfOutstandingLoans { get; set; }
+        public decimal LpExcessLoanBalance { get; set; }
+        public decimal LpLoansOverAgeThreshold { get; set; }
+        public decimal LpLoansToOrganizations { get; set; }
+        public List<object> LpOtherDeductions { get; set; } = new List<object>();
+        public decimal LpTotalOtherDeductions { get; set; }
+        public decimal LpTotalDeductions { get; set; }
+        public decimal LpTotalFromReverseSide { get; set; }
+        public decimal LpInsurableLoans { get; set; }
+        public decimal LpPremiumDue { get; set; }
+        public int LsTotalNumberOfMembers { get; set; }
+        public decimal LsTotalSharesAndSavings { get; set; }
+        public decimal LsExcessBalance { get; set; }
+        public List<object> LsoOtherDeductions { get; set; } = new List<object>();
+        public decimal LsTotalOtherDeductions { get; set; }
+        public decimal LsTotalDeductions { get; set; }
+        public decimal LsTotalFromReverseSide { get; set; }
+        public decimal LsInsurableSharesAndSavings { get; set; }
+        public decimal LsPremiumDue { get; set; }
+        public decimal LsPremiumDueLeftColumn { get; set; }
+        public string LifeSavingsClaimDebitAccountId { get; set; }
+        public string LifeSavingsClaimCreditAccountId { get; set; }
+        public string LoanProtectionDebitAccountId { get; set; }
+        public string LoanProtectionCreditAccountId { get; set; }
+        public decimal TotalPremiumsDue { get; set; }
+        public decimal TotalInsurableAmount { get; set; }
+        public decimal TotalDeductions { get; set; }
+        public LpDeductionSummary LpDeductionSummary { get; set; }
+        public LsDeductionSummary LsDeductionSummary { get; set; }
+        public CombinedSummary CombinedSummary { get; set; }
+    }
+
+    public class RootResponse
+    {
+        public InsurancePremiumData Data { get; set; }
+        public int StatusCode { get; set; }
+        public string Message { get; set; }
+        public string Status { get; set; }
+        public string Description { get; set; }
+        public List<object> Errors { get; set; } = new List<object>();
+        public bool Success { get; set; }
+    }
+
+
+
     /// <summary>
     /// Main DTO for combined Insurance Premium calculations including both
     /// Loan Protection (Protection du Pret) and Life Savings (Epargnes Vie).
@@ -164,41 +257,41 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.API.IPSReporting
         /// <summary>
         /// Loan Protection deduction summary for reporting
         /// </summary>
-        //public Dictionary<string, decimal> LPDeductionSummary => new()
-        //{
-        //    ["Excess Loan Balance"] = LPExcessLoanBalance,
-        //    ["Loans Over Age Threshold"] = LPLoansOverAgeThreshold,
-        //    ["Loans to Organizations"] = LPLoansToOrganizations,
-        //    ["Other LP Deductions"] = LPTotalOtherDeductions,
-        //    ["Total LP Deductions"] = LPTotalDeductions,
-        //    ["LP Insurable Amount"] = LPInsurableLoans,
-        //    ["LP Premium Due"] = LPPremiumDue
-        //};
+        public Dictionary<string, decimal> LPDeductionSummary => new Dictionary<string, decimal>()
+        {
+            ["Excess Loan Balance"] = LPExcessLoanBalance,
+            ["Loans Over Age Threshold"] = LPLoansOverAgeThreshold,
+            ["Loans to Organizations"] = LPLoansToOrganizations,
+            ["Other LP Deductions"] = LPTotalOtherDeductions,
+            ["Total LP Deductions"] = LPTotalDeductions,
+            ["LP Insurable Amount"] = LPInsurableLoans,
+            ["LP Premium Due"] = LPPremiumDue
+        };
 
-        ///// <summary>
-        ///// Life Savings deduction summary for reporting
-        ///// </summary>
-        //public Dictionary<string, decimal> LSDeductionSummary => new()
-        //{
-        //    ["Excess Savings Balance"] = LSExcessBalance,
-        //    // ["Organizational Accounts"] = LSOrganizationalAccounts,
-        //    ["Other LS Deductions"] = LSTotalOtherDeductions,
-        //    ["Total LS Deductions"] = LSTotalDeductions,
-        //    ["LS Insurable Amount"] = LSInsurableSharesAndSavings,
-        //    ["LS Premium Due"] = LSPremiumDue
-        //};
+        /// <summary>
+        /// Life Savings deduction summary for reporting
+        /// </summary>
+        public Dictionary<string, decimal> LSDeductionSummary => new Dictionary<string, decimal>()
+        {
+            ["Excess Savings Balance"] = LSExcessBalance,
+            // ["Organizational Accounts"] = LSOrganizationalAccounts,
+            ["Other LS Deductions"] = LSTotalOtherDeductions,
+            ["Total LS Deductions"] = LSTotalDeductions,
+            ["LS Insurable Amount"] = LSInsurableSharesAndSavings,
+            ["LS Premium Due"] = LSPremiumDue
+        };
 
-        ///// <summary>
-        ///// Combined summary for overall reporting
-        ///// </summary>
-        //public Dictionary<string, decimal> CombinedSummary => new()
-        //{
-        //    ["Total Outstanding Loans"] = LPTotalAmountOfOutstandingLoans,
-        //    ["Total Shares & Savings"] = LSTotalSharesAndSavings,
-        //    ["Total Insurable Amount"] = TotalInsurableAmount,
-        //    ["Total Deductions"] = TotalDeductions,
-        //    ["Total Premiums Due"] = TotalPremiumsDue
-        //};
+        /// <summary>
+        /// Combined summary for overall reporting
+        /// </summary>
+        public Dictionary<string, decimal> CombinedSummary => new Dictionary<string, decimal>()
+        {
+            ["Total Outstanding Loans"] = LPTotalAmountOfOutstandingLoans,
+            ["Total Shares & Savings"] = LSTotalSharesAndSavings,
+            ["Total Insurable Amount"] = TotalInsurableAmount,
+            ["Total Deductions"] = TotalDeductions,
+            ["Total Premiums Due"] = TotalPremiumsDue
+        };
     }
 
 
@@ -233,9 +326,48 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.API.IPSReporting
         public string BranchId { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
-        public string  ReportType { get; set; }
-        
+        public string ReportType { get; set; }
+        public string PrintOption { get; set; }
     }
 
+    public class IPSflatobject
+    {
+        public string BankName { get; set; }
+        public string BankCode { get; set; }
+        public string BranchName { get; set; }
+        public string BranchCode { get; set; }
+        public string BranchPOBox { get; set; }
+        public string BranchTell { get; set; }
+        public string BranchFax { get; set; }
+        public string NameOfCreditUnion { get; set; }
+        public string Address { get; set; }
+        public int ContractNumber { get; set; }
+        public DateTime ReportForTheMonthOf { get; set; }
+        public decimal TotalAmountOfOutstandingLoans { get; set; }
+        public decimal TotalFromReverseSide { get; set; }
+        public decimal InsurableLoans { get; set; }
+        public decimal LPPremiumDue { get; set; }
+        public decimal TotalNumberOfMembers { get; set; }
+        public decimal TotalSharesandSavings { get; set; }
+        public decimal TotatFromReverseSideLifeS { get; set; }
+        public decimal LSPDRateTimeLine4 { get; set; }
+        public decimal LSPDLine5leftcolumn { get; set; }
+        public decimal TPDLine5plusLine6 { get; set; }
+        public decimal LBIEOFLP { get; set; }
+        public decimal LBOM { get; set; }
+        public decimal LTCOAU { get; set; }
+        public decimal OLPD { get; set; }
+        public decimal TLD { get; set; }
+        public decimal LSBIEOFLS { get; set; }
+        public decimal SSOCOU { get; set; }
+        public decimal OLSD { get; set; }
+        public decimal TLSD { get; set; }
+        public string Logo { get; set; }
+        public string PrintedBy { get; set; }
+        public DateTime PrintedOn { get; set; }
+        public string TotalNumberOfOutstandingLoans { get; set; }
+        public string InsurableSharesAndSaving { get; set; }
+    }
 
 }
+

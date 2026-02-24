@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.ReportRPT {
+namespace CBS.FrontDesk.UI.AppFiles.Reporting.IPSReports {
     using System;
     using System.ComponentModel;
     using CrystalDecisions.Shared;
@@ -16,14 +16,14 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.ReportRPT {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class IPS : ReportClass {
+    public class CombinedInsurancePremiums : ReportClass {
         
-        public IPS() {
+        public CombinedInsurancePremiums() {
         }
         
         public override string ResourceName {
             get {
-                return "IPS.rpt";
+                return "CombinedInsurancePremiums.rpt";
             }
             set {
                 // Do nothing
@@ -41,7 +41,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.ReportRPT {
         
         public override string FullResourceName {
             get {
-                return "CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.ReportRPT.IPS.rpt";
+                return "CBS.FrontDesk.UI.AppFiles.Reporting.IPSReports.CombinedInsurancePremiums.rpt";
             }
             set {
                 // Do nothing
@@ -90,9 +90,9 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.ReportRPT {
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class CachedIPS : Component, ICachedReport {
+    public class CachedCombinedInsurancePremiums : Component, ICachedReport {
         
-        public CachedIPS() {
+        public CachedCombinedInsurancePremiums() {
         }
         
         [Browsable(false)]
@@ -129,7 +129,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.ReportRPT {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            IPS rpt = new IPS();
+            CombinedInsurancePremiums rpt = new CombinedInsurancePremiums();
             rpt.Site = this.Site;
             return rpt;
         }
