@@ -1,5 +1,4 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.IPS.IPSClaim
-
 <!-- Action Modal -->
 <div class="modal fade" id="actionModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered">
@@ -122,21 +121,24 @@
 
                     <!-- Post Details Section (for Post only) -->
                     <div id="postDetailsSection" style="display: none;">
-                        <!-- Customer Info Section -->
-                        <div class="card mb-3 ">
-                            <div class="card-header bg-light text-primary d-flex justify-content-between align-items-center">
+                        <!-- Customer Info Section - Expanded by default -->
+                        <div class="card mb-3 accordion-item">
+                            <div class="card-header bg-light text-primary d-flex justify-content-between align-items-center"
+                                 data-bs-toggle="collapse"
+                                 data-bs-target="#customerCardBody"
+                                 role="button"
+                                 aria-expanded="true">
                                 <span><i class="mdi mdi-account me-1"></i> Customer Information</span>
                                 <div>
-                                    <button type="button" class="btn btn-info btn-sm" id="refreshCustomerBtn">
+                                    <button type="button" class="btn btn-info btn-sm" id="refreshCustomerBtn" onclick="event.stopPropagation();">
                                         <i class="mdi mdi-refresh"></i> Refresh
                                     </button>
-                                    <button type="button" class="btn btn-light btn-sm" data-bs-toggle="collapse"
-                                            data-bs-target="#customerCardBody">
+                                    <button type="button" class="btn btn-light btn-sm" onclick="event.stopPropagation();">
                                         <i class="mdi mdi-chevron-up"></i>
                                     </button>
                                 </div>
                             </div>
-                            <div class="collapse show" id="customerCardBody">
+                            <div class="collapse show" id="customerCardBody" data-bs-parent="#postDetailsSection">
                                 <div class="card-body" id="customerInfoSection">
                                     <div class="text-center py-4">
                                         <div class="spinner-border text-primary" role="status">
@@ -148,16 +150,19 @@
                             </div>
                         </div>
 
-                        <!-- Total Amount Section -->
-                        <div class="card mb-3">
-                            <div class="card-header bg-light text-primary d-flex justify-content-between align-items-center">
+                        <!-- Total Amount Section - Closed by default -->
+                        <div class="card mb-3 accordion-item">
+                            <div class="card-header bg-light text-primary d-flex justify-content-between align-items-center"
+                                 data-bs-toggle="collapse"
+                                 data-bs-target="#totalAmountCardBody"
+                                 role="button"
+                                 aria-expanded="false">
                                 <span><i class="mdi mdi-cash-multiple me-1"></i> Total Premium Amount</span>
-                                <button type="button" class="btn btn-light btn-sm" data-bs-toggle="collapse"
-                                        data-bs-target="#totalAmountCardBody">
-                                    <i class="mdi mdi-chevron-up"></i>
+                                <button type="button" class="btn btn-light btn-sm" onclick="event.stopPropagation();">
+                                    <i class="mdi mdi-chevron-down"></i>
                                 </button>
                             </div>
-                            <div class="collapse show" id="totalAmountCardBody">
+                            <div class="collapse" id="totalAmountCardBody" data-bs-parent="#postDetailsSection">
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-6">
@@ -201,21 +206,21 @@
                             </div>
                         </div>
 
-                        <!-- Source Accounts Section -->
-                        <div class="card mb-3 ">
-                            <div class="card-header bg-light text-primary d-flex justify-content-between align-items-center">
+                        <!-- Source Accounts Section - Closed by default -->
+                        <div class="card mb-3 accordion-item">
+                            <div class="card-header bg-light text-primary d-flex justify-content-between align-items-center"
+                                 data-bs-toggle="collapse"
+                                 data-bs-target="#sourceAccountsCardBody"
+                                 role="button"
+                                 aria-expanded="false">
                                 <span><i class="mdi mdi-bank-transfer me-1"></i> Source Account Entries</span>
                                 <div>
-                                    @*<button type="button" class="btn btn-primary btn-sm" id="addSourceRowBtn">
-                                        <i class="mdi mdi-plus"></i> Add Row
-                                    </button>*@
-                                    <button type="button" class="btn btn-light btn-sm" data-bs-toggle="collapse"
-                                            data-bs-target="#sourceAccountsCardBody">
-                                        <i class="mdi mdi-chevron-up"></i>
+                                    <button type="button" class="btn btn-light btn-sm" onclick="event.stopPropagation();">
+                                        <i class="mdi mdi-chevron-down"></i>
                                     </button>
                                 </div>
                             </div>
-                            <div class="collapse show" id="sourceAccountsCardBody">
+                            <div class="collapse" id="sourceAccountsCardBody" data-bs-parent="#postDetailsSection">
                                 <div class="card-body p-0">
                                     <div class="table-responsive">
                                         <table class="table table-sm table-hover mb-0" id="sourceAccountsTable">
@@ -248,19 +253,22 @@
                             </div>
                         </div>
 
-                        <!-- Member Balance Destination Section -->
-                        <div class="card mb-3 ">
-                            <div class="card-header bg-light text-primary d-flex justify-content-between align-items-center">
+                        <!-- Member Balance Destination Section - Closed by default -->
+                        <div class="card mb-3 accordion-item">
+                            <div class="card-header bg-light text-primary d-flex justify-content-between align-items-center"
+                                 data-bs-toggle="collapse"
+                                 data-bs-target="#memberAccountsCardBody"
+                                 role="button"
+                                 aria-expanded="false">
                                 <span><i class="mdi mdi-account-cash me-1"></i> Member Balance Distribution</span>
                                 <div>
                                     <span class="badge bg-light text-dark" id="memberAccountsCount">0 accounts</span>
-                                    <button type="button" class="btn btn-light btn-sm" data-bs-toggle="collapse"
-                                            data-bs-target="#memberAccountsCardBody">
-                                        <i class="mdi mdi-chevron-up"></i>
+                                    <button type="button" class="btn btn-light btn-sm" onclick="event.stopPropagation();">
+                                        <i class="mdi mdi-chevron-down"></i>
                                     </button>
                                 </div>
                             </div>
-                            <div class="collapse show" id="memberAccountsCardBody">
+                            <div class="collapse" id="memberAccountsCardBody" data-bs-parent="#postDetailsSection">
                                 <div class="card-body p-0">
                                     <div class="table-responsive">
                                         <table class="table table-sm table-hover mb-0" id="memberAccountsTable">
@@ -295,21 +303,24 @@
                             </div>
                         </div>
 
-                        <!-- Branch Destination Section -->
-                        <div class="card mb-3">
-                            <div class="card-header bg-light text-primary d-flex justify-content-between align-items-center">
+                        <!-- Branch Destination Section - Closed by default -->
+                        <div class="card mb-3 accordion-item">
+                            <div class="card-header bg-light text-primary d-flex justify-content-between align-items-center"
+                                 data-bs-toggle="collapse"
+                                 data-bs-target="#branchAccountsCardBody"
+                                 role="button"
+                                 aria-expanded="false">
                                 <span><i class="mdi mdi-bank me-1"></i> Branch Account Distribution</span>
                                 <div>
-                                    <button type="button" class="btn btn-primary btn-sm" id="addBranchRowBtn">
+                                    <button type="button" class="btn btn-primary btn-sm" id="addBranchRowBtn" onclick="event.stopPropagation();">
                                         <i class="mdi mdi-plus"></i> Add Row
                                     </button>
-                                    <button type="button" class="btn btn-light btn-sm" data-bs-toggle="collapse"
-                                            data-bs-target="#branchAccountsCardBody">
-                                        <i class="mdi mdi-chevron-up"></i>
+                                    <button type="button" class="btn btn-light btn-sm" onclick="event.stopPropagation();">
+                                        <i class="mdi mdi-chevron-down"></i>
                                     </button>
                                 </div>
                             </div>
-                            <div class="collapse show" id="branchAccountsCardBody">
+                            <div class="collapse" id="branchAccountsCardBody" data-bs-parent="#postDetailsSection">
                                 <div class="card-body p-0">
                                     <div class="table-responsive">
                                         <table class="table table-sm table-hover mb-0" id="branchAccountsTable">
@@ -341,78 +352,6 @@
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Validation Summary -->
-                        @*<div class="card mb-3">
-                            <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
-                                <span><i class="mdi mdi-check-all me-1"></i> Validation Summary</span>
-                                <button type="button" class="btn btn-light btn-sm" data-bs-toggle="collapse"
-                                        data-bs-target="#validationCardBody">
-                                    <i class="mdi mdi-chevron-up"></i>
-                                </button>
-                            </div>
-                            <div class="collapse show" id="validationCardBody">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="mb-3">
-                                                <div class="d-flex justify-content-between mb-1">
-                                                    <span class="fw-bold">Total Amount:</span>
-                                                    <span id="validationEnteredTotal" class="fw-bold text-primary">0.00</span>
-                                                </div>
-                                                <div class="d-flex justify-content-between mb-1">
-                                                    <span class="fw-bold">Source Total:</span>
-                                                    <span id="validationSourceTotal" class="fw-bold text-info">0.00</span>
-                                                </div>
-                                                <div class="d-flex justify-content-between mb-1">
-                                                    <span class="fw-bold">Available for Member/Branch:</span>
-                                                    <span id="availableForMemberBranch" class="fw-bold text-success">0.00</span>
-                                                </div>
-                                                <hr>
-                                                <div class="d-flex justify-content-between mb-1">
-                                                    <span class="fw-bold">Member Total:</span>
-                                                    <span id="validationMemberTotal" class="fw-bold text-warning">0.00</span>
-                                                </div>
-                                                <div class="d-flex justify-content-between mb-1">
-                                                    <span class="fw-bold">Branch Total:</span>
-                                                    <span id="validationBranchTotal" class="fw-bold text-danger">0.00</span>
-                                                </div>
-                                                <div class="d-flex justify-content-between mb-1">
-                                                    <span class="fw-bold">Branch + Member Total:</span>
-                                                    <span id="validationBranchMemberTotal" class="fw-bold text-secondary">0.00</span>
-                                                </div>
-                                                <div class="d-flex justify-content-between">
-                                                    <span class="fw-bold">Remaining Balance:</span>
-                                                    <span id="remainingBalance" class="fw-bold text-dark">0.00</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="mb-3">
-                                                <div class="text-center mb-3">
-                                                    <span id="validationStatus" class="badge bg-warning fs-6">Not Validated</span>
-                                                </div>
-                                                <div class="alert alert-light border">
-                                                    <p class="mb-2" id="validationMessage">Enter total amount first</p>
-                                                    <div class="d-flex justify-content-between">
-                                                        <span class="fw-bold">Combined Total:</span>
-                                                        <span id="validationCombinedTotal" class="fw-bold text-dark">0.00</span>
-                                                    </div>
-                                                </div>
-                                                <hr>
-                                                <div class="small text-muted">
-                                                    <i class="mdi mdi-information-outline me-1"></i>
-                                                    <strong>Rules:</strong><br>
-                                                    1. Source total ≤ Total amount<br>
-                                                    2. (Member + Branch) ≤ (Total - Source)<br>
-                                                    3. Combined total = Total amount
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>*@
                     </div>
 
                     <!-- Common Note Section -->
@@ -544,6 +483,4 @@
             </div>
         </div>
     </div>
-</div>
-
-
+@*</div>*@

@@ -122,6 +122,7 @@
     <Compile Include="Entity\Accounting V2\AccountingYear\AccountingYear.cs" />
     <Compile Include="Entity\Accounting V2\AccountTypeDefinition\AccountTypeDefinition.cs" />
     <Compile Include="Entity\Accounting V2\AccountTypeGroup\AccountTypeGroupResponse.cs" />
+    <Compile Include="Entity\Accounting V2\API\IPSReporting\IPSReport.cs" />
     <Compile Include="Entity\Accounting V2\CollectorDevice\CollectorDevice.cs" />
     <Compile Include="Entity\Accounting V2\Base\BranchInfo.cs" />
     <Compile Include="Entity\Accounting V2\DaillyCollectorLicense\DaillyCollectorLicense.cs" />
