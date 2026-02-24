@@ -82,38 +82,38 @@ namespace CBS.BusinessService.Accounting_V2.IPS.IPSReporting
                 ReportForTheMonthOf = filter.EndDate ?? DateTime.Now,
 
                 // Loan Protection (LP) Section - Front Side (Column 1)
-                TotalAmountOfOutstandingLoans = premiumData.LpTotalAmountOfOutstandingLoans,
-                TotalFromReverseSide = premiumData.LpTotalFromReverseSide,
-                InsurableLoans = premiumData.LpInsurableLoans,
-                LPPremiumDue = premiumData.LpPremiumDue,
-
+                TotalAmountOfOutstandingLoans = premiumData.LPTotalNumberOfOutstandingLoans,
+                TotalFromReverseSide = premiumData.LPTotalFromReverseSide,
+                InsurableLoans = premiumData.LPInsurableLoans,
+                LPPremiumDue = premiumData.LPPremiumDue,
+     
                 // Life Savings (LS) Section - Front Side (Column 2)
-                TotalNumberOfMembers = premiumData.LsTotalNumberOfMembers,
-                TotalSharesandSavings = premiumData.LsTotalSharesAndSavings,
-                TotatFromReverseSideLifeS = premiumData.LsTotalFromReverseSide,
+                TotalNumberOfMembers = premiumData.LSTotalNumberOfMembers,
+                TotalSharesandSavings = premiumData.LSTotalSharesAndSavings,
+                TotatFromReverseSideLifeS = premiumData.LSTotalFromReverseSide,
 
                 // LP Deductions - Reverse Side (Column 1)
-                LSPDRateTimeLine4 = premiumData.LsPremiumDue, // Excess Loan Balance
-                LSPDLine5leftcolumn = premiumData.LpLoansOverAgeThreshold, // Loans Over Age Threshold
-                TPDLine5plusLine6 = premiumData.LpLoansToOrganizations, // Loans to Organizations
+                LSPDRateTimeLine4 = premiumData.LSInsurableSharesAndSavings, // Excess Loan Balance
+                LSPDLine5leftcolumn = premiumData.LSPremiumDue, // Loans Over Age Threshold
+                TPDLine5plusLine6 = premiumData.TotalPremiumsDue, // Loans to Organizations
                 LBIEOFLP = premiumData.LpExcessLoanBalance, // Other LP Deductions
-                LBOM = premiumData.LpTotalDeductions, // Total LP Deductions
-                LTCOAU = premiumData.LpInsurableLoans, // Insurable Loans (after deductions)
-                OLPD = premiumData.LpPremiumDue, // LP Premium Due
-                TLD = premiumData.LpTotalAmountOfOutstandingLoans, // Total Loans (for reference)
+                LBOM = premiumData.LPLoansOverAgeThreshold, // Total LP Deductions
+                LTCOAU = premiumData.LPLoansToOrganizations, // Insurable Loans (after deductions)
+                OLPD = premiumData.LpDeductionSummary.OtherLPDeductions, // LP Premium Due
+                TLD = premiumData.LpDeductionSummary.TotalLPDeductions, // Total Loans (for reference)
 
                 // LS Deductions - Reverse Side (Column 2)
-                LSBIEOFLS = premiumData.LsExcessBalance, // Excess Savings Balance
-                SSOCOU = premiumData.LsTotalOtherDeductions, // Other LS Deductions
-                OLSD = premiumData.LsTotalDeductions, // Total LS Deductions
-                TLSD = premiumData.LsTotalSharesAndSavings, // Total Shares & Savings (for reference)
+                LSBIEOFLS = premiumData.LSExcessBalance, // Excess Savings Balance
+                SSOCOU = premiumData.LSTotalOtherDeductions, // Other LS Deductions
+                OLSD = premiumData.LSTotalDeductions, // Total LS Deductions
+                TLSD = premiumData.LSTotalSharesAndSavings, // Total Shares & Savings (for reference)
 
                 // Footer Information
                 Logo = logoPath,
                 PrintedBy = GetUserFullName(),
                 PrintedOn = DateTime.Now,
-                TotalNumberOfOutstandingLoans = premiumData.LpTotalNumberOfOutstandingLoans.ToString(),
-                InsurableSharesAndSaving = premiumData.LsInsurableSharesAndSavings.ToString()
+                TotalNumberOfOutstandingLoans = premiumData.LPTotalNumberOfOutstandingLoans.ToString(),
+                InsurableSharesAndSaving = premiumData.LSInsurableSharesAndSavings.ToString()
             };
 
             rows.Add(row);
