@@ -264,12 +264,12 @@
 
                             if (response.success) {
 
-                                // 🔹 If report returns redirect URL
-                                if (response.redirectUrl) {
-                                    window.location.href = response.redirectUrl;
-                                    return;
-                                }
-
+                                //// 🔹 If report returns redirect URL
+                                //if (response.redirectUrl) {
+                                //    window.location.href = response.redirectUrl;
+                                //    return;
+                                //}
+                                window.open(response.redirectUrl, '_blank');
                                 appalert(response.message || "Operation successful", 1, 1);
 
                             } else {

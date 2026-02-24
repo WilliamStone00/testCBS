@@ -4,12 +4,15 @@ using CBS.BusinessService.Session;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.API.IPSReporting;
 using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.CustomerManagement;
+using CBS.FrontDesk.Helper;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static CBS.BusinessService.ReportingMembersFSeries.FinancialReportBuilder;
+
 
 namespace CBS.BusinessService.Accounting_V2.IPS.IPSReporting
 {
@@ -38,7 +41,21 @@ namespace CBS.BusinessService.Accounting_V2.IPS.IPSReporting
             return branch?.Bank;
         }
 
-              
+        public static class NumberFormatter
+        {
+            public static decimal ToDecimalPlaces(decimal value, int decimalPlaces)
+            {
+                return Math.Round(value, decimalPlaces, MidpointRounding.AwayFromZero);
+            }
+
+            public static decimal? TonullableDecimalPlaces(decimal? value, int decimalPlaces)
+            {
+                if (!value.HasValue) return null;
+                return Math.Round(value.Value, decimalPlaces, MidpointRounding.AwayFromZero);
+            }
+
+            
+        }
 
 
         public async Task<List<IPSflatobject>> BuildInsurancePremiumRows(InsurancePremiumDto filter)
@@ -82,7 +99,8 @@ namespace CBS.BusinessService.Accounting_V2.IPS.IPSReporting
                 ReportForTheMonthOf = filter.EndDate ?? DateTime.Now,
 
                 // Loan Protection (LP) Section - Front Side (Column 1)
-                TotalAmountOfOutstandingLoans = premiumData.LPTotalNumberOfOutstandingLoans,
+                TotalAmountOfOutstandingLoans = premiumData.LPTotalAmountOfOutstandingLoans, 
+
                 TotalFromReverseSide = premiumData.LPTotalFromReverseSide,
                 InsurableLoans = premiumData.LPInsurableLoans,
                 LPPremiumDue = premiumData.LPPremiumDue,
@@ -112,8 +130,8 @@ namespace CBS.BusinessService.Accounting_V2.IPS.IPSReporting
                 Logo = logoPath,
                 PrintedBy = GetUserFullName(),
                 PrintedOn = DateTime.Now,
-                TotalNumberOfOutstandingLoans = premiumData.LPTotalNumberOfOutstandingLoans.ToString(),
-                InsurableSharesAndSaving = premiumData.LSInsurableSharesAndSavings.ToString()
+                TotalNumberOfOutstandingLoans = premiumData.LPTotalNumberOfOutstandingLoans.ToString("N1"),
+                InsurableSharesAndSaving = premiumData.LSInsurableSharesAndSavings.ToString("N1")
             };
 
             rows.Add(row);

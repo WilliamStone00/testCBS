@@ -56,7 +56,17 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.IPS.IPSReporting
             {
                new SelectListItem { Text = "Insurance Premium", Value = "InsurancePremium" },
                new SelectListItem { Text = "Loan Protection", Value = "LoanProtection" },
-               new SelectListItem { Text = "Life Savings", Value = "LifeSavings" }
+               new SelectListItem { Text = "Life Savings", Value = "LifeSavings" },
+               new SelectListItem { Text = "Loans In Excess Balance Of An Amount", Value = "LoansInExcessBalanceOfAnAmount" },
+                new SelectListItem { Text = "Loans For Members Above An Age", Value = "LoansForMembersAboveAnAge" },
+                new SelectListItem { Text = "Group Loans", Value = "GroupLoans" },
+                new SelectListItem { Text = "Main and Staff Elected Loans", Value = "MainAndStaffElectedLoans" },
+                new SelectListItem { Text = "Loans Summary Report", Value = "LoansSummaryReport" },
+                new SelectListItem { Text = "Savings In Excess Balance of An Amount", Value = "SavingsInExcessBalanceOfAnAmount" },
+                new SelectListItem { Text = "Group Savings", Value = "GroupSavings" },
+                new SelectListItem { Text = "Savings For Deceased Members", Value = "SavingsForDeceasedMembers" },
+                new SelectListItem { Text = "Savings Summary Report", Value = "SavingsSummaryReport" }
+
             };
                         
             ViewBag.PrintType = new List<SelectListItem>
@@ -76,6 +86,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.IPS.IPSReporting
             Session["SubReportsData"] = null;
             Session["ReportParameters"] = null;
 
+            if (parameters.ReportType != "InsurancePremium")
+                return Json(new { success = false, message = "Report Type not Yet available."});
             if (parameters == null)
                 return Json(new { success = false, message = "No parameters provided." });
 
