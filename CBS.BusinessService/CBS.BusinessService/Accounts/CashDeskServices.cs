@@ -6,6 +6,7 @@ using CBS.BusinessService.CustomerManagement;
 using CBS.BusinessService.UserManagement;
 using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.Accounting;
+using CBS.FrontDesk.Data.Entity.Accounting_V2.Affiliate;
 using CBS.FrontDesk.Data.Entity.AccountingV2;
 using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.CustomerManagement;
@@ -1176,6 +1177,7 @@ namespace CBS.BusinessService.Accounts
                 throw ex;
             }
         }
+
         public async Task<CashDesk> GetAccountByAccountNumberSearch(string customerId)
         {
             try
@@ -1799,6 +1801,8 @@ namespace CBS.BusinessService.Accounts
             return values.ToList();
 
         }
+
+       
     }
 
 }

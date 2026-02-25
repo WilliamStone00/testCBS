@@ -35,7 +35,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
         /// Injects the required CollectorCommissionController via dependency injection.
         /// </summary>
         /// <param name="CategoryConfigService">The service for cheque admin operations.</param>
-        public CollectorCommissionController(IPSClaimService iPSClaimService ,CommissionExcelExportGenerator commissionExcelExportGenerator, ChartOfAccountsV2Service chartOfAccountsV2Service1, ManualDailyCollectionService manualDailyCollectionService, ChartOfAccountsV2Service chartOfAccountsV2Service, CollectorCommissionService collectorCommissionService, BranchServices branchServices, BranchAccountService branchAccountService)
+        public CollectorCommissionController(IPSClaimService iPSClaimService, CommissionExcelExportGenerator commissionExcelExportGenerator, ChartOfAccountsV2Service chartOfAccountsV2Service1, ManualDailyCollectionService manualDailyCollectionService, ChartOfAccountsV2Service chartOfAccountsV2Service, CollectorCommissionService collectorCommissionService, BranchServices branchServices, BranchAccountService branchAccountService)
         {
             _collectorCommissionService = collectorCommissionService;
             _chartOfAccountsV = chartOfAccountsV2Service;
@@ -47,7 +47,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
         }
 
         public async Task<ActionResult> Index()
-        {
+       {
             await loader();
             return View(new CollectorComissionResponse());
         }
@@ -73,7 +73,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
         public async Task<JsonResult> DataTable(commisionQuery query)
         {
             try
-            {               
+            {
                 var data = await _collectorCommissionService.CommisionDataTableAsync(query);
 
                 var Response = JsonConvert.DeserializeObject<List<DataTableResponse>>(JsonConvert.SerializeObject(data.data));
@@ -131,12 +131,45 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
             }
         }
 
+        //[HttpPost]
+        //public async Task<JsonResult> GetCommissionData(CollectorComissionResponse model)
+        //{
+        //    try
+        //    {
+        //        var commissionData = await _collectorCommissionService.GetCommissionAsync(model);
+
+        //        if (commissionData != null)
+        //        {
+        //            return Json(new { success = true, data = commissionData });
+        //        }
+        //        else
+        //        {
+        //            return Json(new { success = false, message = "No commission data found for the selected criteria." });
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Json(new { success = false, message = ex.Message });
+        //    }
+        //}
+
         [HttpPost]
         public async Task<JsonResult> GetCommissionData(CollectorComissionResponse model)
         {
             try
             {
+                // ✅ Always store JobId in Session
+
+
                 var commissionData = await _collectorCommissionService.GetCommissionAsync(model);
+                if (!string.IsNullOrWhiteSpace(commissionData.JobId))
+                {
+                    Session["CollectorCommissionJobId"] = commissionData.JobId;
+                }
+                else
+                {
+                    Session["CollectorCommissionJobId"] = null;
+                }
 
                 if (commissionData != null)
                 {
@@ -152,6 +185,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
                 return Json(new { success = false, message = ex.Message });
             }
         }
+
 
         [HttpGet]
         public ActionResult ExportCommission()
@@ -183,8 +217,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
         {
             try
             {
-                 var customerData = await _collectorCommissionService.GetCustomerAccountDropdownAsync(customerId);
-               // var customerData = await _ipsClaimService.GetinfoAsync(customerId);
+                var customerData = await _collectorCommissionService.GetCustomerAccountDropdownAsync(customerId);
+                // var customerData = await _ipsClaimService.GetinfoAsync(customerId);
 
                 return Json(new
                 {
@@ -275,7 +309,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
 
         [HttpGet]
         public async Task<JsonResult> GetPcmfAccountsByBranch(string branchId)
-        {
+       {
             try
             {
                 if (string.IsNullOrEmpty(branchId))
@@ -476,6 +510,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
             }
         }
 
+
+
+
         [HttpPost]
         public async Task<ActionResult> ExportTableData(ExportTableRequest request)
         {
@@ -527,7 +564,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
                 Console.WriteLine($"Data analysis: {branches.Count} branches, {collectors.Count} collectors");
 
                 // Prepare file name and paths
-                string timestamp = DateTime.Now.ToString("yyyyMMddHHmmss");
+                string timestamp = DateTime.Now.ToString("dd/MM/yyyy");
                 string fileName = $"{request.ExportOptions?.FileName ?? "Commission_Report"}_{timestamp}.xlsx";
                 string directoryPath = Server.MapPath("~/TempFiles");
 
@@ -597,6 +634,123 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
                 });
             }
         }
-    }
 
+
+
+        private async Task<JobMonitorViewModel> GetJobMonitorViewModel()
+        {
+            var viewModel = new JobMonitorViewModel
+            {
+                LastUpdated = DateTime.Now,
+                AutoRefreshEnabled = false,
+                CurrentJobId = Session["CollectorCommissionJobId"]?.ToString(),
+                HasActiveJob = false
+            };
+
+            if (!string.IsNullOrWhiteSpace(viewModel.CurrentJobId))
+            {
+                try
+                {
+                    var result = await _collectorCommissionService
+                        .GetJobSnapshotAsync(viewModel.CurrentJobId);
+
+                    if (result != null && result.Data != null)
+                    {
+                        var snapshot = (JobSnapshotDto)result.Data;
+
+                        viewModel.HasActiveJob = true;
+                        viewModel.JobData = snapshot;
+
+                        // Enable auto-refresh for Pending or Running jobs
+                        if (snapshot.Status == 0 || snapshot.Status == 1)
+                        {
+                            viewModel.AutoRefreshEnabled = true;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Log only – UI should not break
+                    System.Diagnostics.Debug.WriteLine(
+                        $"[JobMonitor] Error loading job snapshot: {ex.Message}");
+                }
+            }
+
+            return viewModel;
+        }
+
+
+        [HttpGet]
+        public async Task<ActionResult> RefreshJobMonitor()
+        {
+            var viewModel = await GetJobMonitorViewModel();
+            return PartialView("_JobMonitor", viewModel);
+        }
+
+        /// <summary>
+        /// Gets job snapshot by ID (from parameter or Session)
+        /// </summary>
+        [HttpGet]
+        public async Task<JsonResult> GetJobSnapshot()
+        {
+            try
+            {
+                string jobId = Session["CollectorCommissionJobId"]?.ToString();
+
+                if (string.IsNullOrWhiteSpace(jobId))
+                {
+                    return Json(new { success = false, message = "Job ID is required" }, JsonRequestBehavior.AllowGet);
+                }
+
+                var snapshot = await _collectorCommissionService.GetJobSnapshotAsync(jobId);
+
+                if (snapshot != null)
+                {
+                    return Json(new { success = true, data = snapshot }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Job not found" }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        /// <summary>
+        /// Gets the current active job from Session
+        /// </summary>
+        [HttpGet]
+        public async Task<JsonResult> GetCurrentJob()
+        {
+            try
+            {
+                string jobId = Session["CollectorCommissionJobId"]?.ToString();
+
+                if (string.IsNullOrWhiteSpace(jobId))
+                {
+                    return Json(new { success = false, message = "No active job in session" }, JsonRequestBehavior.AllowGet);
+                }
+
+                var snapshot = await _collectorCommissionService.GetJobSnapshotAsync(jobId);
+
+                if (snapshot != null)
+                {
+                    return Json(new { success = true, data = snapshot }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Job not found" }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+       
+    }
 }

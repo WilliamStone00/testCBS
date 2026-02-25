@@ -7,12 +7,15 @@ using CBS.BusinessService.CustomerManagement;
 using CBS.BusinessService.LoanP;
 using CBS.BusinessService.Repayment;
 using CBS.FrontDesk.Data.Entity;
+using CBS.FrontDesk.Data.Entity.Accounting_V2.Affiliate;
 using CBS.FrontDesk.Data.Entity.CustomerManagement;
 using CBS.FrontDesk.Data.Entity.LoanConf;
+using CBS.FrontDesk.Data.Entity.MemberAccountManagement;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Data.ReportDataSetDto;
+using CBS.FrontDesk.UI.Controllers.Accounting_V2.Affiliate;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -24,7 +27,7 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.Series
 {
-    //[CheckSessionTimeOutAttribute]
+    [CheckSessionTimeOutAttribute]
 
     public class MembersFSeriesController : BaseController
     {
@@ -100,6 +103,16 @@ namespace CBS.FrontDesk.UI.Controllers.Series
                 Text = $"{l.Id} - {l.LoanType} - {l.Balance}"
             }).ToList();
 
+            ViewBag.AccountActions = Enum.GetValues(typeof(AccountManagementAction))
+                .Cast<AccountManagementAction>()
+                .Select(e => new SelectListItem
+                {
+                    Text = e.ToString(),
+                    Value = ((int)e).ToString()
+                }).ToList();            
+          
+            var branches = await _branchServices.GetBranches();
+            ViewBag.Branches = branches;
             return true;
         }
 
@@ -177,10 +190,10 @@ namespace CBS.FrontDesk.UI.Controllers.Series
                 }
             });
         }
-      
+
         public async Task<ActionResult> Index()
         {
-            ViewBag.Branches=await _branchServices.GetBranches();
+            ViewBag.Branches = await _branchServices.GetBranches();
             return View();
         }
         public async Task<ActionResult> F5MembersAccountStatement()
@@ -249,7 +262,7 @@ namespace CBS.FrontDesk.UI.Controllers.Series
 
 
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = "_DataNotFound", string path = null, string serviceOption = null)
-         {
+        {
             try
             {
                 //if (path == "list")
@@ -315,14 +328,27 @@ namespace CBS.FrontDesk.UI.Controllers.Series
                     var transactionHistories = await _cashDeskService.GetCustomerTransactionsByCustomerNumber(KEY);
                     cashDesk.Transactions = transactionHistories.ToList();
                     return PartialView(partialView, cashDesk);
-                }else if(path == "Report")
+                }
+                else if (path == "Report")
                 {
                     // var data = await _pcmfLoanPurposeService.GetByIdAsync(KEY);
                     await LoadMemberAccountsAndLoans(KEY, path);
                     var id = new ReportParameters { CustomerId = KEY };
-                    return PartialView(partialView,id);
+                    return PartialView(partialView, id);
                 }
-                    ViewBag.message = "Invalid option selected";
+                else if (path == "Membermanag")
+                {
+                    // var data = await _pcmfLoanPurposeService.GetByIdAsync(KEY);
+                    await LoadMemberAccountsAndLoans(KEY, path);
+                   
+                    return PartialView(partialView);
+                }
+                else if (path == "GetaccountById")
+                {
+                   var data = await _accountServices.GetaccountByIdAsync(KEY);
+                    return PartialView(partialView, data);
+                }
+                ViewBag.message = "Invalid option selected";
                 return PartialView("_NoRecordFound", new CashDesk());
 
             }
@@ -358,7 +384,7 @@ namespace CBS.FrontDesk.UI.Controllers.Series
                         var receiptRptSource = receiptTransactionReports.ToList();
 
                         SetSessionVariables(receiptRptSource, "Receipts.rpt", "~/AppFiles/Reporting/Transactions/Reciepts/Receipts.rpt", $"{receiptTransaction.TransactionReference}");
-                        break;
+                    break;
 
                     case "customer_account_transaction_rpt":
                         var accountTransactionHistories = await _accountServices.GetCustomerTransactionsByAccountNumber(KEY);
@@ -396,9 +422,9 @@ namespace CBS.FrontDesk.UI.Controllers.Series
 
                         SetSessionVariables(datefrom, dateto); // Set date range session variables
 
-                        break;
+                    break;
 
-                    default:
+                default:
                         break;
                 }
 
@@ -425,6 +451,7 @@ namespace CBS.FrontDesk.UI.Controllers.Series
             this.HttpContext.Session["DateFrom"] = datefrom;
             this.HttpContext.Session["DateTo"] = dateto;
         }
+
         [HttpGet]
         //GetMembersLoans(string customerId, string queryParameter)
         //public async Task<ActionResult> GetFilteredLoans(string filter, string memberId)
@@ -437,10 +464,10 @@ namespace CBS.FrontDesk.UI.Controllers.Series
         public async Task<ActionResult> GetFilteredLoansPartial(string filter, string memberId)
         {
             var loans = await _cashDeskService.GetMembersLoans(memberId, filter);
-            var cdesk = new CashDesk { CustomerId=memberId, Loans=loans };
+            var cdesk = new CashDesk { CustomerId = memberId, Loans = loans };
             return PartialView("_LoansTablePartial", cdesk); // View name must match Razor file below
         }
-   
+
         public async Task<ActionResult> LoanDetailsPartial(string loanId)
         {
             var loan = await _loanServices.GetLoan(loanId); // Include all accounts + loans
@@ -468,7 +495,7 @@ namespace CBS.FrontDesk.UI.Controllers.Series
                 return PartialView("_MemberLoanRefunds", Enumerable.Empty<Refund>());
             var refunds = await _refundServices
                 .GetRefundsByCustomerId(customerId, true, null, dateFrom, dateTo);
-            var cashDesk = new CashDesk { CustomerId=customerId, Refunds=refunds };
+            var cashDesk = new CashDesk { CustomerId = customerId, Refunds = refunds };
             return PartialView("_MemberLoanRefunds", cashDesk);
         }
 
@@ -482,7 +509,7 @@ namespace CBS.FrontDesk.UI.Controllers.Series
             if (refund == null) return HttpNotFound("Refund not found.");
 
             // Ensure navigations exist (adjust if your service already eager-loads)
-            refund.RefundDetails     = refund.RefundDetails     ?? new List<RefundDetail>();
+            refund.RefundDetails = refund.RefundDetails ?? new List<RefundDetail>();
             refund.LoanAmortizations = refund.LoanAmortizations ?? new List<LoanAmortization>();
             var loan = refund.Loan;
 
@@ -555,60 +582,61 @@ namespace CBS.FrontDesk.UI.Controllers.Series
             var vm = new RefundDetailsVM
             {
                 Refund = refund,
-                Loan   = loan,
+                Loan = loan,
 
                 ProductName = refund.LoanProduct?.ProductName ?? refund.LoanProduct?.ProductName,
-                LoanId      = loanId,
-                LoanStatus  = loanStatus,
+                LoanId = loanId,
+                LoanStatus = loanStatus,
                 RefundStatusBadgeClass = RefundBadge(),
-                LoanStatusBadgeClass   = LoanBadge(loanStatus),
+                LoanStatusBadgeClass = LoanBadge(loanStatus),
 
-                LoanAmount   = loanAmount,
-                LoanPaid     = loanPaid,
-                LoanBalance  = loanBalance,
-                LoanDueAmount= loanDue,
-                LoanRate     = loanRate,
-                LoanDate     = loanDate,
+                LoanAmount = loanAmount,
+                LoanPaid = loanPaid,
+                LoanBalance = loanBalance,
+                LoanDueAmount = loanDue,
+                LoanRate = loanRate,
+                LoanDate = loanDate,
                 LastRefundDate = lastRefDt,
 
                 RefundDetails = details,
                 Amortizations = amortList,
 
                 AllocPrincipal = allocPrincipal,
-                AllocInterest  = allocInterest,
-                AllocTax       = allocTax,
-                AllocPenalty   = allocPenalty,
-                AllocTotal     = allocTotal,
+                AllocInterest = allocInterest,
+                AllocTax = allocTax,
+                AllocPenalty = allocPenalty,
+                AllocTotal = allocTotal,
                 AllocationsConsistent = (refund.Amount == refund.Paid) && Math.Abs(refund.Amount - allocTotal) <= 0.5m,
 
                 DetailCollected = detCollected,
                 DetailPrincipal = detPrin,
-                DetailInterest  = detInt,
-                DetailTax       = detTax,
-                DetailPenalty   = detPen,
-                DetailBalance   = detBal,
+                DetailInterest = detInt,
+                DetailTax = detTax,
+                DetailPenalty = detPen,
+                DetailBalance = detBal,
 
-                TotalInstallments     = totalInst,
+                TotalInstallments = totalInst,
                 CompletedInstallments = completedInst,
-                OverdueInstallments   = overdueInst,
-                AmortDueSum           = dueSum,
-                AmortPaidSum          = paidSum,
-                AmortBalanceSum       = balSum,
-                NextDueDate           = nextDue
+                OverdueInstallments = overdueInst,
+                AmortDueSum = dueSum,
+                AmortPaidSum = paidSum,
+                AmortBalanceSum = balSum,
+                NextDueDate = nextDue
             };
 
             // Attach VM to CashDesk
             var cashDesk = new CashDesk
             {
                 CustomerId = refund.CustomerId,
-                Refund     = refund,
-                Loan       = loan,
-                RefundVM   = vm
+                Refund = refund,
+                Loan = loan,
+                RefundVM = vm
             };
 
             return PartialView("_RefundDetails", cashDesk);
         }
 
+       
 
     }
 }

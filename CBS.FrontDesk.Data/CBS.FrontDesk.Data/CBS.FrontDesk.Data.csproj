@@ -122,6 +122,7 @@
     <Compile Include="Entity\Accounting V2\AccountingYear\AccountingYear.cs" />
     <Compile Include="Entity\Accounting V2\AccountTypeDefinition\AccountTypeDefinition.cs" />
     <Compile Include="Entity\Accounting V2\AccountTypeGroup\AccountTypeGroupResponse.cs" />
+    <Compile Include="Entity\Accounting V2\API\IPSReporting\IPSReport.cs" />
     <Compile Include="Entity\Accounting V2\CollectorDevice\CollectorDevice.cs" />
     <Compile Include="Entity\Accounting V2\Base\BranchInfo.cs" />
     <Compile Include="Entity\Accounting V2\DaillyCollectorLicense\DaillyCollectorLicense.cs" />
@@ -290,6 +291,7 @@
     <Compile Include="Entity\ManualDailycollection\ManualDailyCollectionFileDetail.cs" />
     <Compile Include="Entity\ManualDailycollection\TransactionDetailDto.cs" />
     <Compile Include="Entity\ManualDailycollection\ValidationFormViewModel.cs" />
+    <Compile Include="Entity\MemberAccountManagement\MemberAccountManagement.cs" />
     <Compile Include="Entity\MemberAdjustmentConsole\ApproveMemberAdjustmentRequestCommand.cs" />
     <Compile Include="Entity\MemberAdjustmentConsole\GetMemberAdjustmentRequestsDataTableQuery.cs" />
     <Compile Include="Entity\MemberAdjustmentConsole\MemberAdjustmentModel.cs" />

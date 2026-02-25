@@ -1,5 +1,7 @@
-﻿using CBS.BusinessService.Accounting_V2.ExportReports;
+﻿using CBS.BusinessService.Accounting_V2.BranchAccountService;
+using CBS.BusinessService.Accounting_V2.ExportReports;
 using CBS.BusinessService.Accounting_V2.TrialBalance;
+using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Queries;
 using System;
 using System.IO;
@@ -18,15 +20,19 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
         private readonly TrialBalances6ColumnService _trialBalanceService;
         private readonly TrialBalance6ColumnsExport _repoExcel;
 
+        private readonly BranchServices _branchServices;
         /// <summary>
         /// Controller constructor – dependency injection ensures service availability.
         /// </summary>
         public TrialBalance6ColumnsController(
             TrialBalances6ColumnService trialBalanceService,
-            TrialBalance6ColumnsExport repoExcel)
+            TrialBalance6ColumnsExport repoExcel,
+            BranchServices branchServices)
         {
             _trialBalanceService = trialBalanceService ?? throw new ArgumentNullException(nameof(trialBalanceService));
             _repoExcel = repoExcel ?? throw new ArgumentNullException(nameof(repoExcel));
+            _branchServices = branchServices;
+           
         }
 
 
@@ -65,6 +71,12 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
 
                 string userName = _trialBalanceService.GetUserFullName();
 
+                var branch = await _branchServices.GetBranch(model.BranchId);
+                string branchName = branch?.Name ?? "Unknown";
+
+                var branchcode = await _branchServices.GetBranch(model.BranchId);
+                string branchcod = branch?.BranchCode ?? "Unknown";
+
                 // ✅ User-based folder
                 string directoryPath = Server.MapPath(
                     $"~/TempReportFiles/TrialBalance6/{userName}");
@@ -76,7 +88,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
 
                 // ✅ User-based filename
                 string fileName =
-                    $"TrialBalance6_{userName}_{DateTime.Now:yyyy_MM_dd_HH_mm_ss}.xlsx";
+                    $"TB_6_{branchcod}_{DateTime.Now:yyyy_MM_dd}.xlsx";
 
                 string fullPath = Path.Combine(directoryPath, fileName);
 
@@ -91,10 +103,15 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
 
                 HttpContext.Session["rptSource"] = response;
 
-                // ✅ Return all files for user (latest first)
+                // ✅ Return all files for user (latest first), using generated fileName for new file
                 var files = Directory.GetFiles(directoryPath)
                     .OrderByDescending(System.IO.File.GetCreationTime)
-                    .Select(Path.GetFileName)
+                    .Select(f => new
+                    {
+                        FileName =  fileName,
+                        fileSize = $"{new FileInfo(f).Length / 1024} KB",
+                        Name = branchName
+                    })
                     .ToList();
 
                 return Json(new
@@ -113,7 +130,6 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
                 }, JsonRequestBehavior.AllowGet);
             }
         }
-
 
 
         /// <summary>

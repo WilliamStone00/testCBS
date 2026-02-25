@@ -292,20 +292,20 @@ namespace CBS.BusinessService.ReportingMembersFSeries
                 LoanHistories = situation.Loans
                     .Select(l => new LoanSituationRow
                     {
-                        LoanAccount = l.LoanAccount,
-                        LoanType = l.LoanType,
+                        LoanAccount = l.LoanAccount, 
+                        LoanType = l.LoanType, AccountNumber= l.AccountNumber,
                         LoanBalance = l.Balance,
                         Interest = l.Interest,
                         InterestRate = l.InterestRate,
                         LastRepaymentDate = l.LastRepaymentDate,
-                        LoanDate = l.LoanDate,
+                        LoanDate = l.LoanDate, 
                         DisbursementDate = l.DisbursementDate,
-                        NumberOfInstallment = l.DelDays,
-                        LoanAmount = l.Principal,
+                        NumberOfInstallment = l.NumberOfInstallments,
+                        LoanAmount = l.LoanAmount,
                         LoanRepaymentAmount = l.LastRepaymentAmount,
                         DelInterest = l.DelInterest,
                         DeliquenceAmount = l.DelAmount,
-                        Deliquencedays = l.DelDays
+                        Deliquencedays = l.DelDays, DelAmount = l.DelAmount, 
                     })
                     .ToList()
             };
@@ -317,73 +317,97 @@ namespace CBS.BusinessService.ReportingMembersFSeries
         {
             var repaymentData = await _reportService.GetLoanRepaymentData(parameters);
             var bra = await GetBranchandbank();
-            var cus = await GetCustomer(parameters.MemberReference);
-
+            var cus = await GetCustomer(parameters?.MemberReference);
 
             var rows = new List<LoanRepaymentRow>();
 
+            if (repaymentData == null)
+                return rows;
 
-            // ✅ Generate logo once
+            // ✅ Generate logo once (null safe)
             var logoPath = bra != null
-                ? PaymentReceiptMapping.GenerateAndSaveBankLogoImage(bra.Bank?.LogoUrl, bra.Name)
-                : "";
+                ? PaymentReceiptMapping.GenerateAndSaveBankLogoImage(
+                    bra.Bank?.LogoUrl ?? string.Empty,
+                    bra.Name ?? string.Empty)
+                : string.Empty;
+
+            var summary = repaymentData.Summary;
 
             // =========================
             // REPAYMENT TRANSACTIONS
             // =========================
-            if (repaymentData.RepaymentLines != null)
+            if (repaymentData.RepaymentLines != null && repaymentData.RepaymentLines.Any())
             {
                 foreach (var trx in repaymentData.RepaymentLines)
                 {
+                    if (trx == null)
+                        continue;
+
                     rows.Add(new LoanRepaymentRow
                     {
-                        Logo = logoPath,
+                        Logo = logoPath ?? string.Empty,
                         ReportTitle = "LOAN REPAYMENT",
-                        BankName = GetBankName(),
-                        BranchName = GetBranchName(),
-                        BranchCode = GetBankCode(),
-                        BranchAddress = bra.Address,
-                        BranchTellephone = bra.Telephone,
-                        MembersName = cus != null ? $"{cus.FirstName} {cus.LastName}" : "-",
-                        MembersReference   = cus?.CustomerId ?? "-",
+
+                        BankName = GetBankName() ?? "-",
+                        BranchName = GetBranchName() ?? "-",
+                        BranchCode = GetBankCode() ?? "-",
+
+                        BranchAddress = bra?.Address ?? "-",
+                        BranchTellephone = bra?.Telephone ?? "-",
+
+                        MembersName = cus != null
+                            ? $"{cus.FirstName ?? ""} {cus.LastName ?? ""}".Trim()
+                            : "-",
+
+                        MembersReference = cus?.CustomerId ?? "-",
                         Phone = cus?.Phone ?? "-",
                         Address = cus?.Address ?? "-",
+
                         PeriodFrom = parameters.DateFrom,
                         PeriodTo = parameters.DateTo,
-                        PrintedBy = GetUserFullName(),
-                        PrintedOn = DateTime.Now,
-                        Id = trx.Id,
-                        Comment = trx.Comment,
-                        PaymentChannel = trx.PaymentChannel,
-                        PaymentMethod = trx.PaymentMethod,
-                        Tax = trx.Tax,
-                
-                        LoanId = trx.LoanId,
-                        LoanAccountNumber = trx.LoanAccountNumber,
-                        LoanType = trx.LoanType,
-                        LoanAmount = trx.LoanAmount,
-                        //  LoanAccountNumber = trx.AccountNumber,
 
-                        Date = trx.DateOfPayment.ToString("dd/MM/yyyy HH:mm:ss"),
+                        PrintedBy = GetUserFullName() ?? "-",
+                        PrintedOn = DateTime.Now,
+
+                        Id = trx.Id,
+                        Comment = trx.Comment ?? "-",
+                        PaymentChannel = trx.PaymentChannel ?? "-",
+                        PaymentMethod = trx.PaymentMethod ?? "-",
+                        Tax = trx.Tax,
+
+                        LoanId = trx.LoanId,
+                        LoanAccountNumber = trx.LoanAccountNumber ?? "-",
+                        LoanType = trx.LoanType ?? "-",
+                        LoanAmount = trx.LoanAmount,
+
+                        Date = trx.DateOfPayment != default
+                            ? trx.DateOfPayment.ToString("dd/MM/yyyy HH:mm:ss")
+                            : "-",
 
                         DateOfPayment = trx.DateOfPayment,
+
                         Principal = trx.Principal,
                         Interest = trx.Interest,
                         Penalty = trx.Penalty,
                         Balance = trx.Balance,
                         Amount = trx.Amount,
+
                         Year = $"2021 - {DateTime.Now.Year}",
-                        Status = trx.completeStatus,
-                        TotalPrincipal = repaymentData.Summary.TotalPrincipal,
-                        TotalInterest = repaymentData.Summary.TotalInterest,
-                        TotalPenalty = repaymentData.Summary.TotalPenalty,
-                        TotalPaid = repaymentData.Summary.TotalPaid,
-                        TotalVat = repaymentData.Summary.TotalVat
+                        Status = trx.completeStatus ?? "-",
+
+                        // ✅ Summary null safe
+                        TotalPrincipal = summary?.TotalPrincipal ?? 0,
+                        TotalInterest = summary?.TotalInterest ?? 0,
+                        TotalPenalty = summary?.TotalPenalty ?? 0,
+                        TotalPaid = summary?.TotalPaid ?? 0,
+                        TotalVat = summary?.TotalVat ?? 0
                     });
                 }
-            }          
+            }
+
             return rows;
         }
+
 
 
         // 4. Build Loan Situation Rows

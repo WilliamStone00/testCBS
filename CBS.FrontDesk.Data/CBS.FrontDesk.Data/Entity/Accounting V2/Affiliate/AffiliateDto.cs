@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace CBS.FrontDesk.Data.Entity.Accounting_V2.Affiliate
 {
+  
     public class Affiliateresponse
     {
         public string Id { get; set; } 

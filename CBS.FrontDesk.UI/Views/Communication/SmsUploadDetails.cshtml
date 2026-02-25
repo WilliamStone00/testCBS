@@ -360,11 +360,12 @@
                                 draw: d.draw,
                                 start: d.start,
                                 length: d.length,
+                                pageSize: d.length,
+                                skip: d.start,
                                 searchValue: (d.search && d.search.value) ? d.search.value : null,
-                                sortColumn: (d.order && d.order.length > 0) ? d.columns[d.order[0].column].data : null,
-                                sortDirection: (d.order && d.order.length > 0) ? d.order[0].dir : null
+                                sortColumnName: (d.order && d.order.length > 0) ? d.columns[d.order[0].column].data : null,
+                                sortColumnDirection: (d.order && d.order.length > 0) ? d.order[0].dir : null
                             },
-
                             // default filter
                             FileUploadId: fileUploadId,
 

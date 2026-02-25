@@ -12,6 +12,7 @@ using CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceRequest;
 
 using CBS.FrontDesk.Data.Message;
+using DocumentFormat.OpenXml.EMMA;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -168,6 +169,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeCl
                     // adjust if needed
                     // You can leave others empty for user input
                 };
+                await loader();
 
                 return View("_InternalChequeRequest", model);
             }
@@ -248,7 +250,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeCl
             {
                 var data = await _chequeClearanceService.ClearanceDataTableAsync(query);
 
-                var Request = JsonConvert.DeserializeObject<List<Data.Entity.CheckManagementSystem.Clearance.ClearanceRequest.OptionRequest>>(
+                var Request = JsonConvert.DeserializeObject<List<Data.Entity.CheckManagementSystem.Clearance.ClearanceRequest.ClearanceResponce>>(
                     JsonConvert.SerializeObject(data.data));
 
                 return Json(new
@@ -273,9 +275,30 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeCl
                 });
             }
 
-            
-            
-            
+        }
+
+
+        [HttpGet]
+        public async Task<ActionResult> GetClearanceDetails(string Id)
+        {
+            if (string.IsNullOrEmpty(Id))
+                return new HttpStatusCodeResult(400, "clearance Id is required");
+
+            try
+            {
+                var model = await _chequeClearanceService.ClearanceDetails(Id);
+
+                if (model == null)
+                    return HttpNotFound(" Not found");
+
+
+
+                return View("_Details", model);
+            }
+            catch (Exception ex)
+            {
+                return new HttpStatusCodeResult(500, ex.Message);
+            }
         }
     }
 }

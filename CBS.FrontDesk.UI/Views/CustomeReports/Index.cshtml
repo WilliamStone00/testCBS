@@ -1,11 +1,13 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.TrialBalance.CustomeResportItemS
 @using Resources
 <style>
+
+    /* ================= TABLE ================= */
+
     .custom-report-table {
         border-radius: 8px;
         overflow: hidden;
         font-size: 0.92rem;
-        table-layout: fixed; /* ✅ FIX */
     }
 
         .custom-report-table tbody tr:hover {
@@ -13,32 +15,60 @@
             cursor: pointer;
         }
 
-        .custom-report-table td,
-        .custom-report-table th {
+        .custom-report-table th,
+        .custom-report-table td {
             vertical-align: middle !important;
             padding: 10px 12px !important;
         }
 
-            /* ✅ FIXED COLUMN WIDTHS */
+        .custom-report-table th {
+            white-space: nowrap;
+            font-weight: 600;
+            font-size: 0.85rem;
+            letter-spacing: 0.3px;
+        }
+
+            /* ===== 7 COLUMN WIDTH DISTRIBUTION ===== */
+
             .custom-report-table th:nth-child(1),
             .custom-report-table td:nth-child(1) {
-                width: 30%;
+                width: 12%; /* DATE */
             }
 
             .custom-report-table th:nth-child(2),
             .custom-report-table td:nth-child(2) {
-                width: 25%;
+                width: 18%; /* BRANCH */
             }
 
             .custom-report-table th:nth-child(3),
             .custom-report-table td:nth-child(3) {
-                width: 25%;
+                width: 22%; /* NAME */
+                white-space: normal;
+                word-break: break-word;
             }
 
             .custom-report-table th:nth-child(4),
             .custom-report-table td:nth-child(4) {
-                width: 20%;
+                width: 10%; /* FILE SIZE */
             }
+
+            .custom-report-table th:nth-child(5),
+            .custom-report-table td:nth-child(5) {
+                width: 15%; /* REPORT TYPE */
+            }
+
+            .custom-report-table th:nth-child(6),
+            .custom-report-table td:nth-child(6) {
+                width: 10%; /* SOURCE */
+            }
+
+            .custom-report-table th:nth-child(7),
+            .custom-report-table td:nth-child(7) {
+                width: 13%; /* ACTIONS */
+                text-align: center;
+            }
+
+    /* ================= ACTION BUTTONS ================= */
 
     .btnExcel,
     .btnPdf {
@@ -71,12 +101,6 @@
             background-color: rgba(192, 26, 26, 0.08);
         }
 
-    .actions-cell {
-        width: 140px;
-        max-width: 140px;
-        text-align: center;
-    }
-
     .actions-container {
         display: flex;
         align-items: center;
@@ -89,44 +113,7 @@
         height: 18px;
         background-color: #e0e0e0;
     }
-
-    .report-name-column {
-        white-space: normal;
-        word-wrap: break-word;
-    }
-
-    /*=================== line =========================*/
-
-    /* Fixed column widths for ALL rows */
-    .custom-report-table th:nth-child(1),
-    .custom-report-table td:nth-child(1) {
-        width: 30%;
-    }
-
-    .custom-report-table th:nth-child(2),
-    .custom-report-table td:nth-child(2) {
-        width: 25%;
-    }
-
-    .custom-report-table th:nth-child(3),
-    .custom-report-table td:nth-child(3) {
-        width: 25%;
-    }
-
-    .custom-report-table th:nth-child(4),
-    .custom-report-table td:nth-child(4) {
-        width: 20%;
-    }
-
-    .custom-report-table {
-        border-radius: 8px;
-        overflow: hidden;
-        font-size: 0.92rem;
-        table-layout: fixed; /* ✅ forces fixed column widths */
-    }
-
 </style>
-
 
 <!-- ▬▬▬ HEADER ▬▬▬ -->
 <div class="row mb-2">
@@ -193,11 +180,10 @@
 <!-- ▬▬▬ FILTER UI ▬▬▬ -->
 <div class="card p-4 card-flat-gray shadow">
 
-    <!-- ROW 1: Accounting Year toggle + dropdown -->
-    <div class="row g-3 mb-3 align-items-end">
-
+    <!-- ROW 1: Accounting Year -->
+    @*<div class="row g-3 mb-3 align-items-end">
         <div class="col-md-6">
-            <div class="form-check mt-3 mt-md-0">
+            <div class="form-check">
                 <input class="form-check-input" type="checkbox" id="ToggleAccountingYear" />
                 <label class="form-check-label fw-semibold" for="ToggleAccountingYear">
                     @GlobalCustomeReports.Filter_by_Accounting_Year
@@ -223,7 +209,7 @@
                 new { @class = "form-select select2 accountingyear_custome", id = "AccountingYear" }
             )
         </div>
-    </div>
+    </div>*@
 
     <!-- ROW 2: Branch -->
     <div class="row g-3 mb-3">
@@ -234,130 +220,126 @@
                 new SelectList(ViewBag.Branches, "Id", "Name"),
                 "--- Select Branch ---",
                 new
-                {
+                     {
                     @class = "form-control branches_custome select2 required-field",
                     multiple = "multiple",
                     id = "BranchId"
                 })
-        <small class="text-muted">
-            @GlobalCustomeReports.Select_one_or_more_branches_Other_filters_will_appear_after_a_branch_is_selected
-        </small>
+            <small class="text-muted">
+                Select one or more branches.
+            </small>
         </div>
     </div>
 
-    @*==================== group controls one =======================*@
-    <div>
-        <!-- ROW 3: Report Type + Source Mode (requires branch) -->
-        <div class="row g-3 mb-3 requires-branch d-none">
-            <div class="col-md-6">
-                @Html.Label("ReportType", "Report Type", new { @class = "form-label fw-semibold" })
-                @Html.DropDownList(
-                    "ReportType",
-                    (IEnumerable<SelectListItem>)ViewBag.ReportTypes,
-                    "--- Select Report Type ---",
-                    new
-                    {
-                        @class = "form-select select2 reportype_custome required-field",
-                        id = "ReportType"
-                    })
-                <small class="text-muted">
-                    @Html.Raw(@GlobalCustomeReports.Choose_JE_or_Account_Statement_to_enable_account_selection)
-                </small>
-            </div>
-
-            <div class="col-md-6">
-                @Html.Label("SourceMode", "Source Mode", new { @class = "form-label fw-semibold" })
-                @Html.DropDownList(
-                    "SourceMode",
-                    new List<SelectListItem> {
-                        new SelectListItem { Text = "Temporary", Value = "Temp" },
-                        new SelectListItem { Text = "Reconciled", Value = "Reconciled" },
-                        new SelectListItem { Text = "Auto", Value = "Auto" },
-                        new SelectListItem { Text = "RealTime", Value = "RealTime" }
-                    },
-                    "--- Select Source Mode ---",
-                    new
-                    {
-                        @class = "form-select select2 source_custome required-field",
-                        id = "SourceMode"
-                    })
-                <small class="text-muted">
-                    @GlobalCustomeReports.Select_the_transaction_source_you_want_to_report_on
-                </small>
-            </div>
+    <!-- ROW 3: Report Type + Source -->
+    <div class="row g-3 mb-3 requires-branch d-none">
+        <div class="col-md-6">
+            @Html.Label("ReportType", "Report Type", new { @class = "form-label fw-semibold" })
+            @Html.DropDownList(
+                "ReportType",
+                (IEnumerable<SelectListItem>)ViewBag.ReportTypes,
+                "--- Select Report Type ---",
+                new { @class = "form-select select2 required-field", id = "ReportType" })
         </div>
 
-        <!-- ROW 4: Flags (requires branch) -->
-        <div class="row g-3 mb-3 requires-branch d-none">
-            <div class="col-md-8 d-flex align-items-center gap-4">
-                <div class="form-check" hidden>
-                    <input type="checkbox" id="IsInterbranch" class="form-check-input" />
-                    <label class="form-check-label" for="IsInterbranch">@GlobalShared.Laison</label>
-                </div>
-
-                <div class="form-check d-none include_zero_group">
-                    <input type="checkbox" id="IncludingZero" class="form-check-input" />
-                    <label class="form-check-label" for="IncludingZero">@GlobalCustomeReports.Include_Zero_Balance_On_TB</label>
-                </div>
-
-                <div class="form-check">
-                    <input type="checkbox" id="IsConsolidated" class="form-check-input" />
-                    <label class="form-check-label" for="IsConsolidated">@GlobalShared.Consolidated</label>
-                </div>
-
-                <div class="form-check">
-                    <input type="checkbox" id="IncludeAllAccountsInTB" class="form-check-input" checked />
-                    <label class="form-check-label" for="IncludeAllAccountsInTB">@GlobalCustomeReports.Include_All_Accounts_InTB</label>
-                </div>
-            </div>
+        <div class="col-md-6">
+            @Html.Label("SourceMode", "Source Mode", new { @class = "form-label fw-semibold" })
+            @Html.DropDownList(
+                "SourceMode",
+                new List<SelectListItem> {
+                    new SelectListItem { Text = "Temporary", Value = "Temp" },
+                    new SelectListItem { Text = "Reconciled", Value = "Reconciled" }
+                },
+                "--- Select Source Mode ---",
+                new { @class = "form-select select2 required-field", id = "SourceMode" })
         </div>
+    </div>
 
-        <!-- ROW 5: Accounts (optional) -->
-        <div class="row">
-            <div class="col-md-12 account account_group d-none">
-                <label class="form-label fw-semibold" for="AccountId">
-                    @GlobalShared.Select_Accounts <span class="text-muted">(@GlobalShared.Optional)</span>
+    <!-- ROW 4: Flags -->
+    <div class="row g-3 mb-3 requires-branch d-none">
+        <div class="col-12 d-flex flex-wrap gap-4">
+            <div class="form-check d-none include_zero_group">
+                <input type="checkbox" id="IncludingZero" class="form-check-input" />
+                <label class="form-check-label" for="IncludingZero">
+                    Include Zero Balance On TB
                 </label>
-                @Html.DropDownList(
-                    "AccountId",
-                    new List<SelectListItem>(),
-                    "--- Select Account ---",
-                    new
-                    {
-                        @class = "select2 select-gray branches_accounts",
-                        multiple = "multiple",
-                        id = "AccountId"
-                    })
-                <small class="text-muted">
-                    @Html.Raw(@GlobalCustomeReports.Accounts_are_only_required_for_JE_and_Account_Statement_reports)
-                </small>
-            </div>
-        </div>
-
-        <!-- ROW 6: Date Range (requires branch) -->
-        <div class="row date_range_group d-none">
-            <div class="col-md-6">
-                <label class="form-label fw-semibold" for="StartDate">📆 @GlobalShared.Start_Date</label>
-                <input type="date" id="StartDate" class="form-control select-gray required-field" />
             </div>
 
-            <div class="col-md-6">
-                <label class="form-label fw-semibold" for="EndDate">📆 @GlobalShared.End_Date</label>
-                <input type="date" id="EndDate" class="form-control select-gray required-field" />
+            <div class="form-check">
+                <input type="checkbox" id="IsConsolidated" class="form-check-input" />
+                <label class="form-check-label" for="IsConsolidated">
+                    Consolidated
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input type="checkbox" id="IncludeAllAccountsInTB" class="form-check-input" checked />
+                <label class="form-check-label" for="IncludeAllAccountsInTB">
+                    Include All Accounts In TB
+                </label>
             </div>
         </div>
     </div>
 
-    <!-- ROW 7: Buttons (requires branch) -->
-    <div class="row mt-3 requires-branch d-none">
+    <!-- ROW 5: Accounts -->
+    <div class="row mb-3 account_group d-none">
+        <div class="col-12">
+            <label class="form-label fw-semibold" for="AccountId">
+                Select Accounts <span class="text-muted">(optional)</span>
+            </label>
+            @Html.DropDownList(
+                "AccountId",
+                new List<SelectListItem>(),
+                "--- Select Account ---",
+                new
+                     {
+                    @class = "select2 select-gray branches_accounts",
+                    multiple = "multiple",
+                    id = "AccountId"
+                })
+        </div>
+    </div>
+
+    <!-- ROW 6: Export Format (FIXED spacing issue here) -->
+    <!-- ROW 7: Date Range -->
+    <div class="row g-3 mb-3 date_range_group d-none">
+        <div class="col-md-6">
+            <label class="form-label fw-semibold" for="StartDate">📆 Start Date</label>
+            <input type="date" id="StartDate" class="form-control required-field" />
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label fw-semibold" for="EndDate">📆 End Date</label>
+            <input type="date" id="EndDate" class="form-control required-field" />
+        </div>
+    </div>
+
+
+    <div class="row g-3 mb-3 export_group d-none">
+        <div class="col-md-6">
+            @Html.Label("ExportType", "Export Format", new { @class = "form-label fw-semibold" })
+            @Html.DropDownList(
+                "ExportType",
+                new List<SelectListItem>
+                {
+                    new SelectListItem { Text = "Excel", Value = "Excel" },
+                    new SelectListItem { Text = "PDF", Value = "PDF" }
+                },
+                "--- Select Export Format ---",
+                new { @class = "form-select select2", id = "ExportType" })
+        </div>
+    </div>
+
+    <!-- ROW 8: Buttons -->
+    <div class="row g-3 mt-3 requires-branch d-none">
         <div class="col-md-6">
             <button type="button"
-                    style="background:green"
                     id="btnGetCommission"
                     class="btn btn-success w-100 disabled">
                 <i class="mdi mdi-search me-1"></i> @GlobalShared.Apply_Filter
             </button>
         </div>
+
         <div class="col-md-6">
             <button type="button" id="btnReset" class="btn btn-secondary w-100">
                 <i class="mdi mdi-refresh me-1"></i> @GlobalShared.Reset
@@ -368,36 +350,35 @@
 </div>
 
 <!-- ▬▬▬ REPORT RESULT LIST ▬▬▬ -->
-<div class="card p-3 shadow-sm mt-4" id="reportTableContainer">
+<div class="card shadow-sm mt-4" id="reportTableContainer">
 
-    <div class="table-responsive">
-        <div class="d-flex justify-content-between align-items-center">
-            <h5 class="text-primary mb-3"><i class="mdi mdi-table"></i>@GlobalShared.Donwload_Reports_In Excel / PDF</h5>
+    <div class="card-body p-3">
 
-            <div>
-                <button id="clearGeneratedReports" type="button" class="btn btn-danger d-none">
-                    @GlobalShared.Clear_Generated_Reports
-                </button>
-            </div>
+        <div class="table-responsive">
+            <table id="myDataTable"
+                   class="table table-hover table-bordered align-middle mb-0 custom-report-table">
+
+                <thead class="table-light">
+                    <tr>
+                        <th style="width: 12%;">DATE</th>
+                        <th style="width: 18%;">BRANCH NAME</th>
+                        <th style="width: 22%;">NAME</th>
+                        <th style="width: 10%;">FILE SIZE</th>
+                        <th style="width: 15%;">REPORT TYPE</th>
+                        <th style="width: 10%;">SOURCE</th>
+                        <th style="width: 13%;" class="text-center">ACTIONS</th>
+                    </tr>
+                </thead>
+
+                <tbody id="reportTableBody">
+
+                </tbody>
+
+            </table>
         </div>
 
-
-        <table style="width: 100%" id="myDataTable" class="table table-hover table-bordered mt-3 mb-0 custom-report-table">
-            <thead>
-                <tr>
-                    <th class="report-name-column">@GlobalShared.NAME_UC</th>
-                    <th class="report-name-column">@GlobalShared.REPORT_TYPE_UC</th>
-                    <th class="report-name-column">@GlobalShared.SOURCE_MODE</th>
-                    <th class="actions-cell text-center">@GlobalShared.ACTIONS_UC</th>
-                </tr>
-            </thead>
-            <tbody id="reportTableBody">
-                <!-- Single row will be injected dynamically -->
-            </tbody>
-        </table>
     </div>
 </div>
-
 
 @section Scripts {
     <script>
@@ -476,7 +457,7 @@
 
         //    // Excel: download using file from response
         //    $('.btnExcel').off().on('click', function () {
-                
+
         //        if (response && response.downloadFile) {
 
         //            if (controllerName == "TrialBalance4Columns") {
@@ -501,17 +482,17 @@
 
         // 🔹 UPDATED: Supports MULTIPLE rows + buttons changed to LINKS
         function loadReportToTable(response, reportTypeValue) {
-            $('#clearGeneratedReports').removeClass('d-none');
-            const reportName = $('#ReportType option:selected').text();
-            const sourceMode = $('#SourceMode option:selected').text();
 
-            // ✅ Backend now sends an array of files
+            $('#clearGeneratedReports').removeClass('d-none');
+
+            const reportName = $('#ReportType').val(); // gets the value, not text
+            const sourceMode = $('#SourceMode').val(); // gets "Temp" or "Reconciled"
             const files = response?.files || [];
 
             if (!files.length) {
                 $('#reportTableBody').html(`
             <tr>
-                <td colspan="4" class="text-center">
+                <td colspan="7" class="text-center">
                     No files available
                 </td>
             </tr>
@@ -521,9 +502,8 @@
             }
 
             let rowsHtml = '';
-
-            // Determine controller once
             let controllerName = '';
+
             switch (reportTypeValue.toLowerCase()) {
                 case 'trial balance 6 columns':
                     controllerName = 'TrialBalance6Columns';
@@ -544,54 +524,89 @@
                     controllerName = 'TrialBalance6Columns';
             }
 
-            // ✅ One row per file
-            files.forEach(file => {
+            files.forEach(fileObj => {
+                const file = fileObj.FileName || '';
+                const branchName = fileObj.Name || '';
+                const fileSize = fileObj.fileSize || '';
+
+                // Remove extension safely
+                const nameWithoutExt = file.replace('.xlsx', '');
+                const parts = nameWithoutExt.split('_');
+
+                let formattedDate = '';
+
+                // ✅ Extract last 3 parts as date: yyyy_MM_dd
+                if (parts.length >= 3) {
+                    const len = parts.length;
+                    const year = parts[len - 3];
+                    const month = parts[len - 2];
+                    const day = parts[len - 1];
+
+                    formattedDate = `${day}/${month}/${year}`;
+                }
+
                 rowsHtml += `
-            <tr>
-                <td class="report-name-column">${file}</td>
-                <td>${reportName}</td>
-                <td>${sourceMode}</td>
-                <td class="actions-cell text-center">
-                    <div class="actions-container">
-                        <a href="javascript:void(0)"
-                           class="report-action-link btnExcel"
-                           data-controller="${controllerName}"
-                           data-file="${file}">
-                            <i class="mdi mdi-file-excel-outline"></i> Excel
-                        </a>
+        <tr>
+            <td>${formattedDate}</td>
+            <td>${branchName}</td>
+            <td>${file}</td>
+            <td>${fileSize}</td>
+            <td>${reportName}</td>
+            <td>${sourceMode}</td>
+            <td class="actions-cell text-center">
+                <div class="actions-container">
+                    <a href="javascript:void(0)"
+                       class="btnExcel"
+                       data-controller="${controllerName}"
+                       data-file="${file}">
+                        <i class="mdi mdi-file-excel-outline"></i> Excel
+                    </a>
 
-                        <span class="action-separator"></span>
+                    <span class="action-separator"></span>
 
-                        <a href="javascript:void(0)"
-                           class="report-action-link btnPdf"
-                           data-controller="${controllerName}">
-                            <i class="mdi mdi-file-pdf-box"></i> PDF
-                        </a>
-                    </div>
-                </td>
-            </tr>
-        `;
+                    <a href="javascript:void(0)"
+                       class="report-action-link btnPdf"
+                       data-controller="${controllerName}">
+                        <i class="mdi mdi-file-pdf-box"></i> PDF
+                    </a>
+                </div>
+            </td>
+        </tr>
+    `;
             });
-
             $('#reportTableBody').html(rowsHtml);
 
-            // ✅ Excel download
+            // Excel Download
             $('.btnExcel').off().on('click', function () {
                 const controller = $(this).data('controller');
                 const file = $(this).data('file');
-
                 window.location = `/${controller}/Download?file=${encodeURIComponent(file)}`;
             });
 
-            // PDF print
+            // PDF Reprint
             $('.btnPdf').off().on('click', function () {
                 const controller = $(this).data('controller');
                 Reprint(controller);
             });
         }
-
-
         $(document).ready(function () {
+
+            $(document).ajaxError(function (event, xhr, settings, thrownError) {
+
+                let message = "⚠️ An unexpected error occurred.";
+
+                // If backend returns Json({ success:false, message:"..." })
+                if (xhr.responseJSON && xhr.responseJSON.message) {
+                    message = xhr.responseJSON.message;
+                }
+                // If server returns text error (500 page, etc.)
+                else if (xhr.responseText) {
+                    message = xhr.responseText;
+                }
+
+                appalert(message, 2, 1);
+            });
+
 
             const $branch = $('#BranchId');
             const $reportType = $('#ReportType');
@@ -607,19 +622,51 @@
             });
 
             // Validate Filter button state
-            function validateFilters() {
-                const branchSelected = $branch.val() && $branch.val().length > 0;
-                const hasReportType = $reportType.val();
-                const hasSource = $('#SourceMode').val();
-                const hasStartDate = $('#StartDate').val();
-                const hasEndDate = $('#EndDate').val();
+                    function validateFilters() {
+                        const branchSelected = $branch.val() && $branch.val().length > 0;
+                        const hasReportType = $reportType.val();
+                        const hasSource = $('#SourceMode').val();
+                        const startDateVal = $('#StartDate').val();
+                        const endDateVal = $('#EndDate').val();
 
-                const ok = branchSelected && hasReportType && hasSource && hasStartDate && hasEndDate;
+                        let dateValid = true;
 
-                $btn.prop('disabled', !ok).toggleClass('disabled', !ok);
-            }
+                        if (startDateVal && endDateVal) {
 
-            // Show/hide rows that depend on branch selection
+                            const fromDate = new Date(startDateVal);
+                            const toDate = new Date(endDateVal);
+                            const today = new Date();
+
+                            // 🔹 Remove time from ALL dates
+                            fromDate.setHours(0, 0, 0, 0);
+                            toDate.setHours(0, 0, 0, 0);
+                            today.setHours(0, 0, 0, 0);
+
+                            // ❌ FromDate > ToDate
+                            if (fromDate > toDate) {
+                                appalert('⚠️ From Date cannot be greater than To Date.', 2, 1);
+                                dateValid = false;
+                            }
+
+                            // ❌ ToDate in the future (BUT today is allowed)
+                            else if (toDate > today) {
+                                appalert('⚠️ To Date cannot be greater than today.', 2, 1);
+                                dateValid = false;
+                            }
+
+                            // ❌ Dates must NOT be before 2025
+                            else if (fromDate.getFullYear() < 2025 || toDate.getFullYear() < 2025) {
+                                appalert('⚠️ Dates cannot be earlier than year 2025.', 2, 1);
+                                dateValid = false;
+                            }
+                        }
+
+                        const ok = branchSelected && hasReportType && hasSource && startDateVal && endDateVal && dateValid;
+
+                        $btn.prop('disabled', !ok).toggleClass('disabled', !ok);
+
+                        return ok;
+                    }            // Show/hide rows that depend on branch selection
             function toggleBranchDependentFields() {
                 const hasBranch = $branch.val() && $branch.val().length > 0;
 
@@ -857,6 +904,89 @@
                 toggleBranchDependentFields();
                 validateFilters();
             });
+
+
+            $(document).on("change", "#ReportType", function () {
+                var selected = $(this).val();
+
+                if (selected === "JE" || selected === "Account Statement") {
+                    $(".export_group").removeClass("d-none");
+                } else {
+                    $(".export_group").addClass("d-none");
+                    $("#ExportType").val("").trigger("change");
+                }
+            });
+
+
+            $(document).on("change", "#ExportType", function () {
+                var exportType = $(this).val();
+                console.log(exportType); // Excel or PDF
+                var reportType = $("#ReportType").val();
+
+                if (!exportType || !reportType) return;
+
+                // Only allow if filters are valid
+                if (!validateFilters()) return;
+
+                const payload = buildReportPayload();
+                console.log("Payload Object:", payload);
+
+                let url = '';
+
+                // Decide the endpoint based on report type
+                switch (reportType) {
+                    case "JE":
+                        url = '/JournalEntries/DownloadExcel';
+                        break;
+                    case "Account Statement":
+                        url = '/JournalEntries/DownloadGeneralLedger';
+                        break;
+                    default:
+                        return; // do nothing for other types
+                }
+
+                if (exportType === "Excel") {
+                    try {
+                        const queryString = $.param(payload, true); // 🔥 FIX
+                        window.location = `${url}?${queryString}`;
+                    } catch (err) {
+                        appalert('⚠️ Error exporting Excel: ' + err.message, 2, 1);
+                    }
+                }
+
+                if (exportType === "PDF") {
+
+                    switch (reportType) {
+
+                        case "JE":
+                            Reprint('JournalEntries');
+                            break;
+
+                        case "Account Statement":
+                            $.ajax({
+                                url: '/AccntStatement/GenerateReport/',
+                                type: 'POST',
+                                contentType: 'application/json',
+                                data: JSON.stringify(payload),
+                                success: function () {
+                                    Reprint('AccntStatement');
+                                },
+                                error: function (xhr) {
+                                    let message = "⚠️ Failed to generate Account Statement.";
+                                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                                        message = xhr.responseJSON.message;
+                                    }
+                                    appalert(message, 2, 1);
+                                }
+                            });
+                            break;
+                    }
+                }
+                // Optional: reset ExportType after trigger
+                $(this).val("").trigger("change");
+            });
+
+
         });
     </script>
 }

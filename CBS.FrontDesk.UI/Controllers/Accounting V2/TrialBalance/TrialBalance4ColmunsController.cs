@@ -1,5 +1,6 @@
 ﻿using CBS.BusinessService.Accounting_V2.ExportReports;
 using CBS.BusinessService.Accounting_V2.TrialBalance;
+using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Queries;
 using System;
 using System.IO;
@@ -17,19 +18,21 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
         /// </summary>
         private readonly TrialBalances4ColumnService _trialBalanceService;
         private readonly TrialBalance4ColumnsExport _repoExcel;
+        private readonly BranchServices _branchServices;
 
         /// <summary>
         /// Constructor – dependency injection
         /// </summary>
         public TrialBalance4ColumnsController(
             TrialBalances4ColumnService trialBalanceService,
-            TrialBalance4ColumnsExport repoExcel)
+            TrialBalance4ColumnsExport repoExcel, BranchServices branchServices)
         {
             _trialBalanceService = trialBalanceService 
                 ?? throw new ArgumentNullException(nameof(trialBalanceService));
 
             _repoExcel = repoExcel 
                 ?? throw new ArgumentNullException(nameof(repoExcel));
+            _branchServices = branchServices;
         }
 
         /// <summary>
@@ -93,6 +96,13 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
 
                 string userName = _trialBalanceService.GetUserFullName();
 
+
+                var branch = await _branchServices.GetBranch(model.BranchId);
+                string branchName = branch?.Name ?? "Unknown";
+
+                var branchcode = await _branchServices.GetBranch(model.BranchId);
+                string branchcod = branch?.BranchCode ?? "Unknown";
+
                 string directoryPath = Server.MapPath(
                     $"~/TempReportFiles/TrialBalance/{userName}");
 
@@ -102,7 +112,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
                 }
 
                 string fileName =
-                    $"TrialBalance4_{userName}_{DateTime.Now:yyyy_MM_dd_HH_mm_ss}.xlsx";
+    $"TB_4_{branchcod}_{DateTime.Now:yyyy_MM_dd}.xlsx";
+
 
                 string fullPath = Path.Combine(directoryPath, fileName);
 
@@ -113,8 +124,14 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
 
                 // ✅ RETURN ALL FILES FOR USER
                 var files = Directory.GetFiles(directoryPath)
-                    .Select(Path.GetFileName)
-                    .ToList();
+                 .OrderByDescending(System.IO.File.GetCreationTime)
+                 .Select(f => new
+                 {
+                     FileName = fileName,
+                     fileSize = $"{new FileInfo(f).Length / 1024} KB",
+                     Name = branchName
+                 })
+                 .ToList();
 
                 HttpContext.Session["rptSource"] = response;
 

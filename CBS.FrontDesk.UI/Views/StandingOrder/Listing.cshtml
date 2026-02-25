@@ -1,5 +1,5 @@
 ﻿@model  CBS.FrontDesk.Data.Entity.SalaryManagement.StandingOrderDataTableQuery
-    @* create a simple query model OR reuse your existing query *@
+@* create a simple query model OR reuse your existing query *@
 @using Resources
 @{
     ViewBag.Title = "Standing Orders - Filters";
@@ -73,10 +73,13 @@
 
         @using (Html.BeginForm("Index", "StandingOrder", FormMethod.Get, new { id = "soFilterForm", autocomplete = "off" }))
         {
-            <div class="card p-2 mb-2 bg-light">
+            <div class="card p-3 mb-3 bg-light">
 
-                <div class="row g-1">
-                    <div class="col-md-4">
+                <!-- ============================= -->
+                <!-- ALWAYS VISIBLE SECTION -->
+                <!-- ============================= -->
+                <div class="row g-2">
+                    <div class="col-md-6">
                         <label class="form-label fw-bold small">Branch</label>
                         @Html.DropDownList("BranchId",
                             new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name"),
@@ -84,63 +87,143 @@
                             new { @class = "form-select form-select-sm select2", id = "BranchId" })
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <label class="form-label fw-bold small">Member Reference</label>
-                        <input id="MemberId" class="form-control form-control-sm" placeholder="e.g. 5467" />
-                    </div>
-
-                    <div class="col-md-4">
-                        <label class="form-label fw-bold small">Member Name</label>
-                        <input id="MemberName" class="form-control form-control-sm" placeholder="Member name" />
+                        <input id="MemberId" name="MemberId"
+                               class="form-control form-control-sm"
+                               placeholder="e.g. 5467" />
                     </div>
                 </div>
 
-                <div class="row g-1 mt-1">
-                    <div class="col-md-4">
+                <hr />
+
+                <!-- ============================= -->
+                <!-- FILTER CHECKBOXES -->
+                <!-- ============================= -->
+                <div class="row g-2">
+
+                    <div class="col-md-3">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input filter-toggle" data-target="#MemberNameDiv" id="chkMemberName">
+                            <label class="form-check-label small" for="chkMemberName">Member Name</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input filter-toggle" data-target="#SourceAccountTypeDiv" id="chkSource">
+                            <label class="form-check-label small" for="chkSource">Source Account Type</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input filter-toggle" data-target="#DestinationAccountTypeDiv" id="chkDestination">
+                            <label class="form-check-label small" for="chkDestination">Destination Account Type</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input filter-toggle" data-target="#FrequencyDiv" id="chkFrequency">
+                            <label class="form-check-label small" for="chkFrequency">Frequency</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 mt-2">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input filter-toggle" data-target="#StatusDiv" id="chkStatus">
+                            <label class="form-check-label small" for="chkStatus">Status</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 mt-2">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input filter-toggle" data-target="#StartDateDiv" id="chkStartDate">
+                            <label class="form-check-label small" for="chkStartDate">Start Date</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 mt-2">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input filter-toggle" data-target="#EndDateDiv" id="chkEndDate">
+                            <label class="form-check-label small" for="chkEndDate">End Date</label>
+                        </div>
+                    </div>
+
+                </div>
+
+                <hr />
+
+                <!-- ============================= -->
+                <!-- HIDDEN FILTER FIELDS -->
+                <!-- ============================= -->
+
+                <div class="row mt-2">
+
+                    <!-- Member Name -->
+                    <div id="MemberNameDiv" class="col-md-4 d-none">
+                        <label class="form-label fw-bold small">Member Name</label>
+                        <input id="MemberName" name="MemberName"
+                               class="form-control form-control-sm" />
+                    </div>
+
+                    <!-- Source Account Type -->
+                    <div id="SourceAccountTypeDiv" class="col-md-4 d-none">
                         <label class="form-label fw-bold small">Source Account Type</label>
                         @Html.DropDownList("SourceAccountType",
                             new SelectList(ViewBag.SourceAccountTypes ?? new List<SelectListItem>(), "Value", "Text"),
                             "--- Any ---",
-                            new { @class = "form-select form-select-sm select2", id = "SourceAccountType" })
+                            new { @class = "form-select form-select-sm select2" })
                     </div>
 
-                    <div class="col-md-4">
+                    <!-- Destination Account Type -->
+                    <div id="DestinationAccountTypeDiv" class="col-md-4 d-none">
                         <label class="form-label fw-bold small">Destination Account Type</label>
                         @Html.DropDownList("DestinationAccountType",
                             new SelectList(ViewBag.DestinationAccountTypes ?? new List<SelectListItem>(), "Value", "Text"),
                             "--- Any ---",
-                            new { @class = "form-select form-select-sm select2", id = "DestinationAccountType" })
+                            new { @class = "form-select form-select-sm select2" })
                     </div>
 
-                    <div class="col-md-4">
+                    <!-- Frequency -->
+                    <div id="FrequencyDiv" class="col-md-4 mt-2 d-none">
                         <label class="form-label fw-bold small">Frequency</label>
                         @Html.DropDownList("Frequency",
                             new SelectList(ViewBag.Frequencies ?? new List<SelectListItem>(), "Value", "Text"),
                             "--- Any ---",
-                            new { @class = "form-select form-select-sm select2", id = "Frequency" })
+                            new { @class = "form-select form-select-sm select2" })
                     </div>
-                </div>
 
-                <div class="row g-1 mt-1">
-                    <div class="col-md-4">
+                    <!-- Status -->
+                    <div id="StatusDiv" class="col-md-4 mt-2 d-none">
                         <label class="form-label fw-bold small">Status</label>
-                        <select id="IsActive" class="form-select form-select-sm select2">
+                        <select id="IsActive" name="IsActive" class="form-select form-select-sm select2">
                             <option value="">--- Any ---</option>
                             <option value="true">Active</option>
                             <option value="false">Inactive</option>
                         </select>
                     </div>
 
-                    <div class="col-md-4">
+                    <!-- Start Date -->
+                    <div id="StartDateDiv" class="col-md-4 mt-2 d-none">
                         <label class="form-label fw-bold small">Start Date</label>
-                        <input id="StartDate" type="date" class="form-control form-control-sm" />
+                        <input id="StartDate" name="StartDate"
+                               type="date"
+                               class="form-control form-control-sm" />
                     </div>
 
-                    <div class="col-md-4">
+                    <!-- End Date -->
+                    <div id="EndDateDiv" class="col-md-4 mt-2 d-none">
                         <label class="form-label fw-bold small">End Date</label>
-                        <input id="EndDate" type="date" class="form-control form-control-sm" />
+                        <input id="EndDate" name="EndDate"
+                               type="date"
+                               class="form-control form-control-sm" />
                     </div>
+
                 </div>
+
+
             </div>
 
             <div class="row mt-2">
@@ -163,13 +246,18 @@
             </button>
         </div>*@
 
-    <div class="d-flex justify-content-end mb-2">
+    <!-- In the Actions section, replace or add this -->
+    <div class="d-flex justify-content-end mb-2 gap-2">
+        <button id="btnExportSO" type="button" class="btn btn-info btn-sm">
+            <i class="mdi mdi-export me-1"></i> Export Data
+        </button>
         <a href="/StandingOrder/StandingOrderRegistration"
            class="btn btn-success btn-sm">
             <i class="mdi mdi-plus-circle-outline me-1"></i>
             <span>Create Standing Order</span>
         </a>
     </div>
+
 
     <!-- Data -->
     <div id="datalistingview">
@@ -251,20 +339,20 @@
 
                 <!-- Footer -->
                 @*<div class="modal-footer border-0 justify-content-between">
-                    <div>
-                        <span class="text-muted fw-semibold">
-                            Standing Order ID: <span class="text-dark" id="soDetailsIdDisplay">N/A</span>
-                        </span>
-                    </div>
-                    <div class="text-center w-100">
-                        <small class="text-muted">Powered by FLX-CBS</small>
-                    </div>
-                    <div>
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                            <i class="mdi mdi-close"></i> Close
-                        </button>
-                    </div>
-                </div>*@
+                        <div>
+                            <span class="text-muted fw-semibold">
+                                Standing Order ID: <span class="text-dark" id="soDetailsIdDisplay">N/A</span>
+                            </span>
+                        </div>
+                        <div class="text-center w-100">
+                            <small class="text-muted">Powered by FLX-CBS</small>
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                <i class="mdi mdi-close"></i> Close
+                            </button>
+                        </div>
+                    </div>*@
 
             </div>
         </div>
@@ -363,9 +451,8 @@
                         <button type="button" class="btn btn-outline-secondary me-2" data-bs-dismiss="modal">
                             <i class="mdi mdi-close"></i> Cancel
                         </button>-->
-
-                        <!-- If you prefer the button to be inside the injected form, you can remove this -->
-                        <!--<button type="button" class="btn btn-primary" id="soEditSaveBtn">
+                <!-- If you prefer the button to be inside the injected form, you can remove this -->
+                <!--<button type="button" class="btn btn-primary" id="soEditSaveBtn">
                             <i class="mdi mdi-content-save-outline"></i> Save
                         </button>
                     </div>
@@ -378,6 +465,24 @@
 
 </div>
 
+
+<!-- Modal Container -->
+<div class="modal fade"
+     id="genericModal"
+     tabindex="-1"
+     aria-labelledby="genericModalLabel"
+     aria-modal="true"
+     role="dialog">
+
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <!-- Dynamic content loads here -->
+        </div>
+    </div>
+
+</div>
+
+
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 
@@ -389,8 +494,98 @@
   const dataUrl   = '@Url.Action("LoadStandingOrderData", "StandingOrder")';
   const detailUrl = '@Url.Action("InitializeData", "StandingOrder")';
   const initUrl   = '@Url.Action("InitializeData", "StandingOrder")';
+  const exportModalUrl = '@Url.Action("GetExportModal", "StandingOrder")';
+  const exportDataUrl = '@Url.Action("ExportStandingOrderData", "StandingOrder")';
 
   let table = null, tableInitialized = false;
+  let exportModal = null;
+
+  // Alertify helper functions
+  function isAlertifyAvailable() {
+    return typeof alertify !== 'undefined' && alertify;
+  }
+
+  function initAlertify() {
+    if (!isAlertifyAvailable()) return;
+
+    alertify.defaults = alertify.defaults || {};
+    alertify.defaults.notifier = {
+      delay: 5,
+      position: 'top-right',
+      closeButton: true
+    };
+
+    alertify.defaults.glossary = {
+      ok: 'OK',
+      cancel: 'Cancel'
+    };
+  }
+
+  // Call init on document ready
+  $(document).ready(function() {
+    initAlertify();
+  });
+
+  function showExportWarning(message) {
+    if (isAlertifyAvailable()) {
+      alertify.warning(message, 5);
+    } else if (typeof appalert === 'function') {
+      appalert(message, 2, 'warning');
+    } else {
+      console.warn('Export warning:', message);
+    }
+  }
+
+  function showExportError(message) {
+    if (isAlertifyAvailable()) {
+      alertify.error(message, 5);
+    } else if (typeof appalert === 'function') {
+      appalert(message, 4, 'danger');
+    } else {
+      console.error('Export error:', message);
+    }
+  }
+
+  function showExportSuccess(message) {
+    if (isAlertifyAvailable()) {
+      alertify.success(message, 3);
+    } else if (typeof appalert === 'function') {
+      appalert(message, 1, 'success');
+    } else {
+      console.log('Export success:', message);
+    }
+  }
+
+  function showExportInfo(message) {
+    if (isAlertifyAvailable()) {
+      alertify.message(message, 4);
+    } else if (typeof appalert === 'function') {
+      appalert(message, 3, 'info');
+    } else {
+      console.info('Export info:', message);
+    }
+  }
+
+  function showExportConfirm(message, onConfirm, onCancel) {
+    if (isAlertifyAvailable()) {
+      alertify.confirm(
+        'Confirm Export',
+        message,
+        function() {
+          if (onConfirm) onConfirm();
+        },
+        function() {
+          if (onCancel) onCancel();
+        }
+      ).set('labels', {ok: 'Yes, Export', cancel: 'Cancel'});
+    } else {
+      if (confirm(message)) {
+        if (onConfirm) onConfirm();
+      } else {
+        if (onCancel) onCancel();
+      }
+    }
+  }
 
   function getFilters(){
     const isActiveVal = $('#IsActive').val();
@@ -410,15 +605,25 @@
 
   function showModalLoading(targetSel){
     const $m = $(targetSel);
+    if (!$m.length) return;
+
     $(`${targetSel} .modal-body`).html('<div class="text-center py-4"><div class="spinner-border" role="status"></div></div>');
-    (bootstrap.Modal.getInstance($m[0]) || new bootstrap.Modal($m[0], { backdrop: 'static' })).show();
+    const modal = bootstrap.Modal.getInstance($m[0]);
+    if (modal) {
+      modal.show();
+    } else {
+      new bootstrap.Modal($m[0], { backdrop: 'static' }).show();
+    }
   }
 
   function loadIntoModal(modalSel, url, data){
     $.get(url, data)
       .done(html => {
-        showModalLoading(modalSel);
-        $(`${modalSel} .modal-body`).html(html || '<div class="text-center text-muted">No content.</div>');
+        const $modalBody = $(`${modalSel} .modal-body`);
+        if ($modalBody.length) {
+          $modalBody.html(html || '<div class="text-center text-muted">No content.</div>');
+        }
+
         if ($.fn.select2){
           try {
             $(`${modalSel} .select2`).each(function(){
@@ -428,8 +633,16 @@
             });
           } catch(e){ console.warn('select2 in modal init failed', e); }
         }
+
+        const modal = bootstrap.Modal.getInstance($(modalSel)[0]);
+        if (modal) modal.show();
       })
-      .fail(() => $(`${modalSel} .modal-body`).html('<div class="p-3 text-danger">Unable to load content. Please try again.</div>'));
+      .fail(() => {
+        const $modalBody = $(`${modalSel} .modal-body`);
+        if ($modalBody.length) {
+          $modalBody.html('<div class="p-3 text-danger">Unable to load content. Please try again.</div>');
+        }
+      });
   }
 
   function actionButtons(row){
@@ -541,14 +754,321 @@
     tableInitialized = true;
   }
 
-  function reloadTable(){
-    if (!tableInitialized){
-      if ($('#myDataTable').length === 0){ console.error('myDataTable markup missing. Ensure _DataStandingOrders partial is present.'); return; }
-      initDataTable();
-    } else if (table && table.ajax){
-      table.ajax.reload(null, false);
+      function reloadTable(){
+        if (!tableInitialized){
+          if ($('#myDataTable').length === 0){ console.error('myDataTable markup missing. Ensure _DataStandingOrders partial is present.'); return; }
+          initDataTable();
+        } else if (table && table.ajax){
+          table.ajax.reload(null, false);
+        }
+      }
+
+    // ========== EXPORT FUNCTIONALITY ==========
+
+    function initExportModal() {
+        const modalEl = document.getElementById('exportModal');
+        if (modalEl && !exportModal) {
+            exportModal = new bootstrap.Modal(modalEl, {
+                backdrop: 'static',
+                keyboard: false
+            });
+        }
+        return exportModal;
     }
-  }
+
+    function resetExportButton($btn, originalText) {
+        if ($btn && $btn.length) {
+            $btn.html(originalText).prop('disabled', false);
+        }
+        $('#exportProgress .progress-bar').css('width', '0%');
+        $('#exportProgress').addClass('d-none');
+        $('#progressText').text('Preparing export...');
+    }
+
+    function performExport($btn, originalText, tableData, totalRecords) {
+        // Get export options
+        const exportOptions = {
+            fileName: $('#fileName').val() || 'StandingOrders_Report',
+            format: $('#exportFormat').val(),
+            startDate: $('#startDate').val(),
+            endDate: $('#endDate').val(),
+            includeSummary: $('#includeSummary').is(':checked'),
+            exportType: $('#exportType').val()
+        };
+
+        // Prepare request
+        const request = {
+            Data: tableData,
+            TotalRecords: totalRecords,
+            ExportOptions: exportOptions
+        };
+
+        // Show progress
+        $('#exportProgress').removeClass('d-none');
+        $('#exportProgress .progress-bar').css('width', '0%');
+        $('#progressText').text('Starting export...');
+
+        if ($btn && $btn.length) {
+            $btn.html('<span class="spinner-border spinner-border-sm me-1"></span> Exporting...').prop('disabled', true);
+        }
+
+        appalert('Export started. Please wait...', 3, 'info');
+
+        // SIMULATED PROGRESS - This will show smooth progress while server processes
+        let simulatedProgress = 0;
+        const progressInterval = setInterval(() => {
+            if (simulatedProgress < 90) { // Cap at 90% until actual response
+                // Increment by random amount but slow down as we approach 90
+                const increment = Math.max(1, Math.random() * (10 - simulatedProgress / 10));
+                simulatedProgress = Math.min(90, simulatedProgress + increment);
+
+                // Update progress bar with smooth animation
+                $('#exportProgress .progress-bar').css('width', simulatedProgress + '%');
+
+                // Update text with different messages based on progress
+                let message = '';
+                if (simulatedProgress < 30) {
+                    message = 'Preparing data...';
+                } else if (simulatedProgress < 60) {
+                    message = 'Processing records...';
+                } else if (simulatedProgress < 85) {
+                    message = 'Generating file...';
+                } else {
+                    message = 'Finalizing...';
+                }
+
+                $('#progressText').text(`${message} ${Math.round(simulatedProgress)}%`);
+            }
+        }, 300); // Update every 300ms for smooth animation
+
+        // Make export request
+        $.ajax({
+            url: exportDataUrl,
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(request),
+            xhrFields: {
+                responseType: 'blob'
+            },
+            xhr: function () {
+                var xhr = new window.XMLHttpRequest();
+                // Keep the actual download progress for the final 10-100%
+                xhr.addEventListener('progress', function (evt) {
+                    if (evt.lengthComputable) {
+                        // Calculate overall progress: 90% simulated + 10% download
+                        const simulatedPart = 90; // Simulated progress capped at 90%
+                        const downloadPart = 10; // Remaining 10% for download
+
+                        // Calculate download percentage of the final 10%
+                        const downloadPercent = Math.round(evt.loaded / evt.total * 100);
+                        const totalPercent = simulatedPart + (downloadPart * downloadPercent / 100);
+
+                        // Clear the simulated interval and use real progress for final stage
+                        clearInterval(progressInterval);
+
+                        // Update with real progress
+                        $('#exportProgress .progress-bar').css('width', totalPercent + '%');
+                        $('#progressText').text(`Downloading file... ${Math.round(totalPercent)}%`);
+                    }
+                }, false);
+                return xhr;
+            },
+            success: function (response, status, xhr) {
+                // Clear the simulated progress interval
+                clearInterval(progressInterval);
+
+                // Set to 100% complete
+                $('#exportProgress .progress-bar').css('width', '100%');
+                $('#progressText').text('Complete! Preparing download...');
+
+                const contentType = xhr.getResponseHeader('Content-Type') || '';
+
+                if (contentType.includes('application/json')) {
+                    const reader = new FileReader();
+                    reader.onload = function () {
+                        try {
+                            const jsonResponse = JSON.parse(reader.result);
+                            appalert(jsonResponse.message || 'Export failed', 0, 'danger');
+                        } catch (e) {
+                            appalert('An error occurred during export', 0, 'danger');
+                        }
+                        resetExportButton($btn, originalText);
+                    };
+                    reader.readAsText(response);
+                    return;
+                }
+
+                // Small delay to show 100% completion
+                setTimeout(() => {
+                    // Get filename from Content-Disposition
+                    let fileName = getFileNameFromContentDisposition(xhr);
+                    if (!fileName) {
+                        const fileExtension = exportOptions.format === 'csv' ? 'csv' :
+                            exportOptions.format === 'pdf' ? 'pdf' : 'xlsx';
+                        fileName = `${exportOptions.fileName}_${new Date().toISOString().slice(0, 10)}.${fileExtension}`;
+                    }
+
+                    // Create download link
+                    const url = window.URL.createObjectURL(response);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = fileName;
+                    document.body.appendChild(a);
+                    a.click();
+
+                    setTimeout(() => {
+                        window.URL.revokeObjectURL(url);
+                        document.body.removeChild(a);
+                    }, 100);
+
+                    // Close modal
+                    if (exportModal) {
+                        exportModal.hide();
+                    }
+
+                    const recordCount = exportOptions.exportType === 'all' ? 'all' : tableData.length;
+                    appalert(`Successfully exported ${recordCount} records.`, 1, 'success');
+                    resetExportButton($btn, originalText);
+                }, 500); // Half second delay to show 100%
+            },
+            error: function (xhr, status, error) {
+                // Clear the simulated progress interval
+                clearInterval(progressInterval);
+
+                console.error('Export error:', error);
+
+                if (xhr.responseText) {
+                    try {
+                        // Try to parse as JSON first
+                        const response = JSON.parse(xhr.responseText);
+                        appalert(response.message || 'An error occurred during export', 0, 'danger');
+                    } catch (e) {
+                        // If not JSON, check if it's HTML or text
+                        if (xhr.responseText.trim().startsWith('<!DOCTYPE') || xhr.responseText.trim().startsWith('<html')) {
+                            appalert('Server error occurred. Please check logs.', 0, 'danger');
+                        } else {
+                            appalert(xhr.responseText || 'An error occurred during export. Please try again.', 0, 'danger');
+                        }
+                    }
+                } else {
+                    appalert('An error occurred during export. Please try again.', 0, 'danger');
+                }
+
+                resetExportButton($btn, originalText);
+            },
+            complete: function () {
+                // Ensure interval is cleared even if something else happens
+                clearInterval(progressInterval);
+            }
+        });
+    }
+
+    function getFileNameFromContentDisposition(xhr) {
+        const contentDisposition = xhr.getResponseHeader('Content-Disposition');
+        if (contentDisposition) {
+            const filenameMatch = contentDisposition.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/);
+            if (filenameMatch && filenameMatch[1]) {
+                return filenameMatch[1].replace(/['"]/g, '');
+            }
+        }
+        return null;
+    }
+
+    // Handle export button click - Use generic ShowModal
+    $(document).on('click', '#btnExportSO', function () {
+
+        // Optional: keep your table validation if needed
+        if (!tableInitialized) {
+            appalert('Please load the table data first by clicking "Apply Filter" before exporting.', 2, 'warning');
+            return;
+        }
+
+        const hasData = table && table.rows && table.rows().count() > 0;
+        if (!hasData) {
+            appalert('No data available to export. Please apply filters to load data first.', 2, 'warning');
+            return;
+        }
+
+        // 🔥 Just call your generic modal loader
+        ShowModal('', '_ExportStandingOrder', 'StandingOrder', 'ExportStandingOrder');
+
+    });
+
+
+    // Handle export confirmation
+    $(document).on('click', '#btnConfirmExport', function () {
+        const $btn = $(this);
+        const originalText = $btn.html();
+
+        // Get data from DataTable
+        let tableData = [];
+        let totalRecords = 0;
+
+        if (table && table.rows) {
+            const exportType = $('#exportType').val();
+
+            if (exportType === 'filtered') {
+                tableData = table.rows({ search: 'applied' }).data().toArray();
+                totalRecords = table.data().count();
+            } else {
+                tableData = table.rows().data().toArray();
+                totalRecords = tableData.length;
+            }
+        }
+
+        if (!tableData || tableData.length === 0) {
+            appalert('No data available to export. Please apply filters to load data first.', 2, 'warning');
+            return;
+        }
+
+        // Show confirmation for large exports
+        if (tableData.length > 1000) {
+            if (confirm(`You are about to export ${tableData.length} records. This may take a few moments. Continue?`)) {
+                performExport($btn, originalText, tableData, totalRecords);
+            }
+        } else {
+            performExport($btn, originalText, tableData, totalRecords);
+        }
+    });
+
+    // Handle export type change
+    $(document).on('change', '#exportType', function () {
+        if ($(this).val() === 'all') {
+            appalert('This will export all standing orders regardless of current filters. This may take longer if there are many records.', 3, 'info');
+        }
+    });
+
+    // Handle date range validation
+    $(document).on('change', '#startDate, #endDate', function () {
+        const startDate = $('#startDate').val();
+        const endDate = $('#endDate').val();
+
+        if (startDate && endDate && startDate > endDate) {
+            appalert('Start date cannot be after end date.', 2, 'warning');
+            $(this).val('');
+        }
+    });
+
+    // Handle format change
+    $(document).on('change', '#exportFormat', function () {
+        const format = $(this).val();
+        if (format === 'pdf') {
+            appalert('PDF export will include formatted tables and summaries.', 3, 'info');
+        } else if (format === 'csv') {
+            appalert('CSV export will include raw data without formatting.', 3, 'info');
+        }
+    });
+
+    // Clean up modal on hide
+    $(document).on('hidden.bs.modal', '#exportModal', function () {
+        $('#exportProgress').addClass('d-none');
+        $('#exportProgress .progress-bar').css('width', '0%');
+        $('#progressText').text('Preparing export...');
+
+        // Remove modal from DOM after hide to prevent duplicates
+        $(this).remove();
+    });
+  // ========== END EXPORT FUNCTIONALITY ==========
 
   $(function(){
     if ($.fn.select2){
@@ -581,8 +1101,20 @@
       const id = $(this).data('id'); if (!id) return;
         loadIntoModal('#soEditModal', initUrl, { KEY: id, partialView:'_StandingOrderForm', path:'get', serviceOption:'StandingOrder' });
     });
-  });
 
+      $(".filter-toggle").change(function () {
+          var target = $(this).data("target");
+
+          if ($(this).is(":checked")) {
+              $(target).removeClass("d-none");
+          } else {
+              $(target).addClass("d-none");
+              $(target).find("input").val("");
+              $(target).find("select").val("").trigger("change");
+          }
+      });
+
+  });
 })(jQuery, window);
     </script>
 }

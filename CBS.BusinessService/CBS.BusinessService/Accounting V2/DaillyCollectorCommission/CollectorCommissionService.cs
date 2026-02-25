@@ -139,6 +139,82 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
             }
         }
 
+        /// <summary>
+        /// Gets job snapshot from the API
+        /// </summary>
+        public async Task<ExecutionMessages> GetJobSnapshotAsync(string jobId)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(jobId))
+                {
+                    GetExecutionMessages(
+                        null,
+                        false,
+                        null,
+                        MessagesResults.Failed,
+                        ExecutionProcessOption.InsertObject,
+                        SystemMessageStatus.Failed.ToString(),
+                        null,
+                        "Job ID is required"
+                    );
+
+                    return ExecutionMessage;
+                }
+
+                var encodedId = Uri.EscapeDataString(jobId);
+                string formattedUrl = string.Format(APICallHelper.GetJobSnapshot, encodedId);
+
+                var response = await _apiCallerHelper
+                    .GetAsync<ServiceResponse<JobSnapshotDto>>(formattedUrl);
+
+                if (response != null &&
+                    response.ApiResponseData?.Success == true &&
+                    response.ApiResponseData.Data != null)
+                {
+                    GetExecutionMessages(
+                        response.ApiResponseData.Data,
+                        true,
+                        null,
+                        MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages,
+                        SystemMessageStatus.Success.ToString(),
+                        null,
+                        response.ApiResponseData.Message
+                    );
+                }
+                else
+                {
+                    GetExecutionMessages(
+                        null,
+                        false,
+                        null,
+                        MessagesResults.Failed,
+                        ExecutionProcessOption.InsertObject,
+                        SystemMessageStatus.Failed.ToString(),
+                        null,
+                        response?.ApiResponseData?.Message ?? "Failed to retrieve job snapshot"
+                    );
+                }
+            }
+            catch (Exception ex)
+            {
+                GetExecutionMessages(
+                    null,
+                    false,
+                    null,
+                    MessagesResults.Error,
+                    ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Error.ToString(),
+                    ex,
+                    ex.Message
+                );
+            }
+
+            return ExecutionMessage;
+        }
+
+
         public async Task<CustomerDataDto> GetCustomerAccountDropdownAsync(string customerId)
         {
             if (string.IsNullOrWhiteSpace(customerId))

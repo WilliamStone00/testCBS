@@ -92,6 +92,33 @@
                 input.click();             // use native click (safer than trigger)
             }
 
+                   // ================= OVERDRAFT TOGGLE =================
+            function toggleOverdraftSection() {
+
+                if ($('#UseOverdraft').is(':checked')) {
+                    $('#overdraftSection').slideDown();
+                } else {
+                    $('#overdraftSection').slideUp();
+
+                    // Optional: clear values
+                    $('#CurrentClearanceAmount').val('');
+                    $('#RemainingAmount').val('');
+                    $('#DeduceAmount').val('');
+                    $('#Charges').val('');
+                    $('#ReceiveAmount').val('');
+                }
+            }
+
+// Run on initial load
+            toggleOverdraftSection();
+
+// Bind checkbox change (delegated because partials may reload)
+        $(document)
+            .off('change', '#UseOverdraft')
+            .on('change', '#UseOverdraft', function () {
+                toggleOverdraftSection();
+            });
+
             // ================= LOAD EXTERNAL PARTIAL =================
             $(document)
                 .off('click', '#externalBtn')
@@ -254,112 +281,82 @@
 
 
 
-window.ClearanceSubmitAjax = function(form) {
+window.ClearanceSubmitAjax = function (form) {
+
     const $form = $(form);
     if (!$form.valid()) return false;
 
-    function getSelectText(selector) {
-        const $el = $form.find(selector);
-        if (!$el.length) return "---";
-        if ($el.is('select')) return $el.find('option:selected').text() || "---";
-        return $el.val() || "---";
-    }
+    alertify.confirm(
+        "Confirmation",
+        "Are you sure you want to approve this journal entry?",
 
-    const fields = {
+        // ✅ OK
+        function () {
 
-        "Branch": $form.find('#BranchId option:selected').text() || "---",
-        "Branch Id": $form.find('#BranchId').val() || "---",
+            const $btn = $('#btnSubmitClearance'); // change to your actual button id
+            const $icon = $btn.find('i');
+            const $text = $btn.find('.btn-text');
 
-        "Amount": $form.find('#Amount').val() || "---",
-        "External Cheque Number": $form.find('#ExternalChequeNumber').val() || "---",
-        "Page Number": $form.find('#CheckBookPageNumber').val() || "---",
-        "Bank Name": $form.find('#ExternalBankName').val() || "---",
-        "Bank Code": $form.find('#ExternalBankCode').val() || "---",
-        "Branch Code": $form.find('#ExternalBranchCode').val() || "---",
-        "Branch Name": $form.find('#ExternalBranchName').val() || "---",
-        "External Account": $form.find('#ExternalAccountNumber').val() || "---",
+            // Button loading state
+            $btn.prop('disabled', true);
+            $icon.removeClass().addClass('mdi mdi-loading mdi-spin');
+            $text.text('Processing...');
 
-        "Member Reference": $form.find('#CustomerId').val() || "---",
-        "Use Overdraft": $form.find('#UseOverdraft').is(':checked') ? "True" : "False",
-        "Clear Now": $form.find('#CurrentClearanceAmount').val() || "---",
-        "Remaining": $form.find('#RemainingAmount').val() || "---"
-    };
-
-
-    let tableRows = '';
-    for (const key in fields) {
-        tableRows += `<tr><th>${key}</th><td>${fields[key]}</td></tr>`;
-    }
-
-    const title = "Submit Clearance Request";
-    const message = `
-        <p>Please review the clearance details before submitting:</p>
-        <table class="table table-sm table-bordered"><tbody>${tableRows}</tbody></table>
-        <div class="form-check mt-3">
-            <input type="checkbox" class="form-check-input" id="alertifyConfirmCheckbox">
-            <label class="form-check-label" for="alertifyConfirmCheckbox">I confirm that the above details are correct.</label>
-        </div>
-    `;
-
-    alertify.confirm(title, message,
-        function() {
             $.ajax({
                 type: 'POST',
                 url: $form.attr('action'),
                 data: new FormData($form[0]),
                 processData: false,
                 contentType: false,
-                beforeSend: function() {
-                    $('.alertify .ajs-ok').prop('disabled', true)
-                        .html('<span class="spinner-border spinner-border-sm"></span> Processing...');
-                },
-                success: function(res) {
-                    alertify.dismissAll();
+
+                success: function (res) {
 
                     if (res?.success) {
-                        const successHtml = `
-                            <div class="text-center">
-                                <div class="mb-3">
-                                    <i class="mdi mdi-check-circle-outline text-success" style="font-size: 4rem;"></i>
-                                </div>
-                                <h4 class="text-success mb-3">Clearance Submitted Successfully!</h4>
-                                <p class="mb-2">Reference ID: <strong>${res.clearanceId || 'N/A'}</strong></p>
-                                <p class="text-muted">Would you like to upload cheque image now?</p>
-                            </div>
-                        `;
 
-                        alertify.confirm('Success', successHtml,
-                            function() { window.location.href = res.uploadUrl || '@Url.Action("ImageUpload","ChequeClearance")'; },
-                            function() { window.location.href = res.listingUrl || '@Url.Action("Index","ChequeClearance")'; }
-                        ).set({ labels: { ok: 'Upload Image', cancel: 'Go to Listing' }, defaultFocus: 'none' });
+                        alertify.success("✅ Clearance submitted successfully.");
+
+                        setTimeout(function () {
+                            window.location.href =
+                                res.uploadUrl ||
+                                '@Url.Action("ImageUpload","ChequeClearance")';
+                        }, 1000);
 
                     } else {
                         appalert(res?.message || "❌ Failed to submit clearance request.", 2, 1);
                     }
                 },
-                error: function(xhr) {
-                    if (xhr.status === 401) window.location.href = '/Authentication/Login';
-                    let errorMessage = xhr.responseJSON?.message || "An error occurred during submission.";
+
+                error: function (xhr) {
+                    if (xhr.status === 401)
+                        window.location.href = '/Authentication/Login';
+
+                    let errorMessage =
+                        xhr.responseJSON?.message ||
+                        "An error occurred during submission.";
+
                     appalert(errorMessage, 0, 1);
                 },
-                complete: function() { $('.alertify .ajs-ok').prop('disabled', false).html('Yes, Continue'); }
+
+                complete: function () {
+
+                    // Reset button state
+                    $btn.prop('disabled', false);
+                    $icon.removeClass().addClass('mdi mdi-check');
+                    $text.text('Submit');
+                }
             });
         },
-        function() { appalert("🚫 Clearance submission cancelled.", 2, 1); }
-    ).set({
-        labels: { ok: 'Yes, Continue', cancel: 'Cancel' },
-        onshow: function() {
-            const okBtn = $('.alertify .ajs-ok');
-            okBtn.prop('disabled', true);
-            $('#alertifyConfirmCheckbox').off('change').on('change', function() {
-                okBtn.prop('disabled', !this.checked);
-            });
+
+        // ❌ Cancel
+        function () {
+            appalert("🚫 Clearance submission cancelled.", 2, 1);
         }
+    ).set({
+        labels: { ok: 'Yes, Continue', cancel: 'Cancel' }
     });
 
     return false;
 };
-
 
 
 </script>

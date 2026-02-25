@@ -512,10 +512,10 @@
       <DependentUpon>IncomeStatement.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\IPS.cs">
+    <Compile Include="AppFiles\Reporting\IPSReports\CombinedInsurancePremiums.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>IPS.rpt</DependentUpon>
+      <DependentUpon>CombinedInsurancePremiums.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\JER.cs">
@@ -680,7 +680,7 @@
       <DependentUpon>TellerStatement1.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="AppFiles\Reporting\Transactions\UpdatedStatement\Loan\LoanRepaymentRPT.cs">
+    <Compile Include="AppFiles\Reporting\Transactions\UpdatedStatement\Loan\LoanRepaymentRPT1.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>LoanRepaymentRPT.rpt</DependentUpon>
@@ -2261,6 +2261,7 @@
       <DependentUpon>GlobalWithdrawalNotification.fr.resx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\UnityMvcActivator.cs" />
+    <Compile Include="Controllers\Accounting V2\AccntStatement\AccountStatementExcelExportGenerator.cs" />
     <Compile Include="Controllers\Accounting V2\AccntStatement\AccountStatementFlatItems.cs" />
     <Compile Include="Controllers\Accounting V2\AccountBlackListing\AccountBlancklistController.cs" />
     <Compile Include="Controllers\Accounting V2\AccountTypeDefinition\AccountTypeDefinition.cs" />
@@ -2280,6 +2281,7 @@
     <Compile Include="Controllers\Accounting V2\IncomeStatement\IncomeStatementController.cs" />
     <Compile Include="Controllers\Accounting V2\IPS\IPSClaimController.cs" />
     <Compile Include="Controllers\Accounting V2\IPS\IPSConfigController.cs" />
+    <Compile Include="Controllers\Accounting V2\IPS\IPSReporting\IPSReportingController.cs" />
     <Compile Include="Controllers\Accounting V2\JournalEntries\JournalEntriesController.cs" />
     <Compile Include="Controllers\Accounting V2\MemberReconciliation\FileListingController.cs" />
     <Compile Include="Controllers\Accounting V2\MemberReconciliation\MemberReconciliationController.cs" />
@@ -2421,6 +2423,7 @@
     <Compile Include="Controllers\MemberNoneCashOperation\MemberNoneCashOperationController.cs" />
     <Compile Include="Controllers\MemberNoneCashOperation\MobileMoneyBackOfficeController.cs" />
     <Compile Include="Controllers\LoanApplicationManagement\MemberOperationController.cs" />
+    <Compile Include="Controllers\MembersFSerie\MemberAccountManController.cs" />
     <Compile Include="Controllers\MembersFSerie\MembersFSeriesController.cs" />
     <Compile Include="Controllers\MembersFSerie\MembersFSeriesReportController.cs" />
     <Compile Include="Controllers\MobileMoneyV2\MobileMoneyConfigV2Controller.cs" />
@@ -2493,8 +2496,10 @@
       <DependentUpon>GeneralStatisticsDataSet.xsd</DependentUpon>
     </Compile>
     <Compile Include="Filter\MaliciousContentScannerService.cs" />
+    <Compile Include="Helper\DateHelper.cs" />
     <Compile Include="Helper\HtmlHelperExtensions.cs" />
     <Compile Include="Helper\FileUploadHelper.cs" />
+    <Compile Include="Helper\NumberFormatter.cs" />
     <Compile Include="Helper\ReportLogoHelper.cs" />
     <Compile Include="Helper\SalarySheetExcelExporter.cs" />
     <Compile Include="Models\Class1.cs" />
@@ -7727,8 +7732,6 @@
     <Content Include="AppFiles\ManualDailyCollection\Manualdaillycollectiontemplete.xlsx" />
     <Content Include="AppFiles\AffiliateAccountUpload\BAPCCUL_ACCOUNTS2.xlsx" />
     <Content Include="AppFiles\AffiliateAccountUpload\SampleBalanceSheet2.xlsx" />
-    <Content Include="Scripts\Js\Crud\DailyCollection\ManualDailyCollection\ManualDailyCollection.js" />
-    <Content Include="Scripts\Js\Crud\FileUpload\FileUploadQuery.js" />
     <Content Include="Views\MobileMoneyConfigV2\Index.cshtml" />
     <Content Include="Views\MobileMoneyConfigV2\_Create.cshtml" />
     <Content Include="Views\MobileMoneyConfigV2\_Data.cshtml" />
@@ -7805,7 +7808,7 @@
     </Content>
     <EmbeddedResource Include="AppFiles\Reporting\Transactions\UpdatedStatement\Loan\LoanRepaymentRPT.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>LoanRepaymentRPT.cs</LastGenOutput>
+      <LastGenOutput>LoanRepaymentRPT1.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\Transactions\UpdatedStatement\Loan\LoanSituationRPT.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
@@ -8864,9 +8867,9 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>IncomeStatement.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\IPS.rpt">
+    <EmbeddedResource Include="AppFiles\Reporting\IPSReports\CombinedInsurancePremiums.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>IPS.cs</LastGenOutput>
+      <LastGenOutput>CombinedInsurancePremiums.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\JER.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
@@ -11102,7 +11105,19 @@
     <Content Include="Views\SalaryUpload\_LoanRepaymentDetails.cshtml" />
     <Content Include="Views\SalaryUpload\_FileStatistics.cshtml" />
     <None Include="Scripts\Js\Crud\FeeRange\.editorconfig" />
+    <Content Include="Views\CollectorCommission\_JobMonitor.cshtml" />
+    <Content Include="Views\CollectorCommission\_JobMonitorData.cshtml" />
+    <Content Include="Views\CollectorCommission\_JobMonitorNoData.cshtml" />
     <Content Include="Views\GLSystemReconciliation\_ExportDataTable.cshtml" />
+    <Content Include="Views\MembersFSeries\_MemberAccMana.cshtml" />
+    <Content Include="Views\MemberAccountMan\List.cshtml" />
+    <Content Include="Views\MemberAccountMan\_AccountStatusDataTable.cshtml" />
+    <Content Include="Views\MemberAccountMan\_AccountStatusDetails.cshtml" />
+    <Content Include="Views\MemberAccountMan\_Decission.cshtml" />
+    <Content Include="Views\ChequeClearance\_Details.cshtml" />
+    <Content Include="Views\MembersFSeries\_AccountDetails.cshtml" />
+    <Content Include="Views\StandingOrder\_ExportStandingOrder.cshtml" />
+    <Content Include="Views\IPSReporting\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

@@ -1,34 +1,34 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
+using CBS.BusinessService.Config;
 using CBS.BusinessService.CustomerManagement;
+using CBS.BusinessService.UserManagement;
+using CBS.FrontDesk.Data;
+using CBS.FrontDesk.Data.Entity;
+using CBS.FrontDesk.Data.Entity.Accounting_V2.Affiliate;
 using CBS.FrontDesk.Data.Entity.Config;
-
 using CBS.FrontDesk.Data.Entity.CustomerManagement;
 using CBS.FrontDesk.Data.Entity.DataTable;
+using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
-using CBS.FrontDesk.Data.Entity;
+using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
+using CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation;
 using CBS.FrontDesk.Data.Message;
+using CBS.FrontDesk.Data.ReportDataSetDto;
+using CBS.FrontDesk.Data.UserManagement;
 using CBS.FrontDesk.Helper;
+using ClosedXML.Excel;
+using DocumentFormat.OpenXml.EMMA;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
-using CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation;
-using System.Web.Util;
-using CBS.FrontDesk.Data.Entity.LoanConf;
-using CBS.FrontDesk.Data.ReportDataSetDto;
-using CBS.FrontDesk.Data.UserManagement;
-using System.Web.Mvc;
 using System.Web;
-using CBS.BusinessService.UserManagement;
-using CBS.BusinessService.Config;
-using System.IO;
-using ClosedXML.Excel;
-using DocumentFormat.OpenXml.EMMA;
-using CBS.FrontDesk.Data;
+using System.Web.Mvc;
+using System.Web.Util;
 using Account = CBS.FrontDesk.Data.Entity.SavingProducts.Account;
 
 namespace CBS.BusinessService.Accounts
@@ -71,7 +71,29 @@ namespace CBS.BusinessService.Accounts
             return dataTable;
         }
 
+        public async Task<Accountgetid> GetaccountByIdAsync(string id)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(id))
+                    throw new ArgumentException("id is required", nameof(id));
 
+                var encodedId = Uri.EscapeDataString(id);
+                string formattedUrl = string.Format(APICallHelper.accoubtbyid, encodedId);
+
+                var response = await _transactionApiHelper.GetAsync<ServiceResponse<Accountgetid>>(formattedUrl);
+
+                if (response.IsSuccess)
+                {
+                    return response.ApiResponseData?.Data;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
 
 
         public async Task<IEnumerable<CustomerAccountDto>> GetCustomersAccountsForTransfter(string searchCriterial = "All")

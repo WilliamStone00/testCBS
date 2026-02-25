@@ -1,0 +1,575 @@
+﻿@model CBS.FrontDesk.Data.Entity.MemberAccountManagement.ManageAccountStatusCommand
+@using Resources
+
+<div class="card shadow-lg border-0">
+    <div class="card-body">
+
+        @using (Html.BeginForm(
+            "CreateOrUpdate",
+            "MemberAccountMan",
+            FormMethod.Post,
+            new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate2(this);" }))
+        {
+            <!-- ============================== -->
+            <!-- HEADER -->
+            <!-- ============================== -->
+            <div class="col-12">
+                <div class="card bg-light mb-2 shadow-sm">
+                    <div class="card-body text-center">
+                        <h1 class="card-title text-primary fw-bold">
+                            <i class="mdi mdi-format-list-bulleted-type me-2"></i> Account Management Request
+                        </h1>
+                        <p class="card-text">
+                            Memeber account management request form
+                            <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-2">
+                <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+                    <span><i class="mdi mdi-account-cog me-2"></i> Tips</span>
+                    <button class="btn btn-light btn-sm" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#collapseAccountActions"
+                            aria-expanded="false" aria-controls="collapseAccountActions">
+                        <i class="mdi mdi-chevron-down"></i>
+                    </button>
+                </h6>
+                <div id="collapseAccountActions" class="collapse">
+                    <div class="card-body">
+                        <p class="mb-3">
+                            The Account Management Actions provide <strong>granular control</strong> over account status and operations.
+                            These actions help maintain security, ensure compliance, and manage customer accounts effectively.
+                        </p>
+
+                        <!-- Account Status Management -->
+                        <div class="row">
+                            <div class="col-12">
+                                <h6 class="text-primary mb-2">
+                                    <i class="mdi mdi-account-switch me-1"></i> Account Status Controls
+                                </h6>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="card bg-light border-0">
+                                    <div class="card-body p-3">
+                                        <h6 class="mb-2"><span class="badge bg-success me-2">Activate</span> Initial Setup</h6>
+                                        <p class="small mb-2">Enable a newly created account for normal operations. All operations become available to the customer.</p>
+
+                                        <h6 class="mb-2 mt-3"><span class="badge bg-warning me-2">Freeze</span> Temporary Hold</h6>
+                                        <p class="small mb-2">Temporarily restrict all operations. Used for suspicious activity or customer requests. <span class="badge bg-info">Use Unfreeze to restore</span></p>
+
+                                        <h6 class="mb-2 mt-3"><span class="badge bg-secondary me-2">Unfreeze</span> Restore Access</h6>
+                                        <p class="small mb-0">Remove temporary hold and return account to normal operating status.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <div class="card bg-light border-0">
+                                    <div class="card-body p-3">
+                                        <h6 class="mb-2"><span class="badge bg-danger me-2">Close</span> Account Termination</h6>
+                                        <p class="small mb-2">Permanently close an account. No further operations allowed. Requires zero balance and no pending transactions.</p>
+
+                                        <h6 class="mb-2 mt-3"><span class="badge bg-success me-2">Reopen</span> Reactivate Closed</h6>
+                                        <p class="small mb-2">Reopen a previously closed account. All account data and history preserved.</p>
+
+                                        <h6 class="mb-2 mt-3"><span class="badge bg-warning me-2">Mark Dormant</span> Inactivity Status</h6>
+                                        <p class="small mb-0">Flag accounts with prolonged inactivity. <span class="badge bg-info">Reactivate Dormant</span> to restore normal status.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Block/Unblock Controls -->
+                        <div class="row mt-2">
+                            <div class="col-12">
+                                <h6 class="text-primary mb-2">
+                                    <i class="mdi mdi-shield-lock me-1"></i> Account Blocking Controls
+                                </h6>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="card border-0 bg-light">
+                                    <div class="card-body p-3">
+                                        <h6 class="mb-3 text-danger"><i class="mdi mdi-cancel me-1"></i> Full Account Access</h6>
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <div>
+                                                <span class="badge bg-danger me-2">Block Full</span>
+                                                <strong>Complete Restriction</strong>
+                                            </div>
+                                            <span class="badge bg-success">Unblock Full</span>
+                                        </div>
+                                        <p class="small mb-0">
+                                            <i class="mdi mdi-alert-circle text-danger me-1"></i>
+                                            <strong>Block Full:</strong> Immediately suspend ALL account operations. Used for fraud, legal holds, or security breaches.<br>
+                                            <i class="mdi mdi-check-circle text-success me-1 mt-2"></i>
+                                            <strong>Unblock Full:</strong> Remove all restrictions and restore full account access.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <div class="card border-0 bg-light">
+                                    <div class="card-body p-3">
+                                        <h6 class="mb-3 text-warning"><i class="mdi mdi-lock-clock me-1"></i> Partial Account Access</h6>
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <div>
+                                                <span class="badge bg-warning me-2">Block Partial</span>
+                                                <strong>Limited Restriction</strong>
+                                            </div>
+                                            <span class="badge bg-success">Unblock Partial</span>
+                                        </div>
+                                        <p class="small mb-0">
+                                            <i class="mdi mdi-alert-circle text-warning me-1"></i>
+                                            <strong>Block Partial:</strong> Restrict the withdrawal of a specific amount ofmoney in that account while allowing the rest .<br>
+                                            <i class="mdi mdi-check-circle text-success me-1 mt-2"></i>
+                                            <strong>Unblock Partial:</strong> Remove  restrictions on that money who was blocked.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Operation-level Controls -->
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <h6 class="text-primary mb-2">
+                                    <i class="mdi mdi-cash-multiple me-1"></i> Transaction Operation Controls
+                                </h6>
+                                <p class="small text-muted mb-3">Fine-grained control over specific transaction types without affecting overall account status</p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <!-- Cash Operations -->
+                            <div class="col-md-4 mb-3">
+                                <div class="card h-100 border-0 bg-light">
+                                    <div class="card-body p-3">
+                                        <h6 class="mb-3"><i class="mdi mdi-cash text-success me-1"></i> Cash Operations</h6>
+
+                                        <div class="mb-2">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <span class="badge bg-danger me-1">Block Cash In</span>
+                                                </div>
+                                                <span class="badge bg-success">Open Cash In</span>
+                                            </div>
+                                            <p class="small mt-1 mb-0">Control deposit capabilities. Block prevents incoming cash, Open allows deposits.</p>
+                                        </div>
+
+                                        <div class="mb-0 mt-3">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <span class="badge bg-danger me-1">Block Withdrawal</span>
+                                                </div>
+                                                <span class="badge bg-success">Open Withdrawal</span>
+                                            </div>
+                                            <p class="small mt-1 mb-0">Control withdrawal capabilities. Block prevents outgoing cash, Open allows withdrawals.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Transfer Operations -->
+                            <div class="col-md-4 mb-3">
+                                <div class="card h-100 border-0 bg-light">
+                                    <div class="card-body p-3">
+                                        <h6 class="mb-3"><i class="mdi mdi-swap-horizontal text-info me-1"></i> Transfer Operations</h6>
+
+                                        <div class="mb-2">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <span class="badge bg-danger me-1">Block Transfer</span>
+                                                </div>
+                                                <span class="badge bg-success">Open Transfer</span>
+                                            </div>
+                                            <p class="small mt-1 mb-0">Master control for all transfers. Block prevents ALL transfer types, Open allows transfers.</p>
+                                        </div>
+
+                                        <p class="small text-warning mt-2 mb-0">
+                                            <i class="mdi mdi-information-outline me-1"></i>
+                                            Note: Individual transfer types (internal, external, etc.) inherit from this master control
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Quick Reference Table -->
+                            <div class="col-md-4 mb-3">
+                                <div class="card h-100 border-0 bg-light">
+                                    <div class="card-body p-3">
+                                        <h6 class="mb-3"><i class="mdi mdi-lightning-bolt text-primary me-1"></i> Quick Reference</h6>
+                                        <table class="table table-sm small mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Action Pair</th>
+                                                    <th>Use Case</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><span class="badge bg-danger">Block</span> / <span class="badge bg-success">Open</span></td>
+                                                    <td>Toggle specific operations</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><span class="badge bg-danger">Block Full</span> / <span class="badge bg-success">Unblock Full</span></td>
+                                                    <td>Complete account lockdown</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><span class="badge bg-warning">Freeze</span> / <span class="bg-info badge">Unfreeze</span></td>
+                                                    <td>Temporary investigation holds</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Best Practices & Important Notes -->
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                <div class="card border-0 bg-light">
+                                    <div class="card-body p-3">
+                                        <h6 class="text-primary mb-2">
+                                            <i class="mdi mdi-check-circle me-1"></i> Best Practices
+                                        </h6>
+                                        <ul class="small mb-0">
+                                            <li class="mb-2">
+                                                <i class="mdi mdi-file-document text-success me-1"></i>
+                                                <strong>Document reasons:</strong> Always note why an action was taken
+                                            </li>
+                                            <li class="mb-2">
+                                                <i class="mdi mdi-timer text-success me-1"></i>
+                                                <strong>Review frozen accounts:</strong> Regularly check and resolve frozen status
+                                            </li>
+                                            <li class="mb-2">
+                                                <i class="mdi mdi-layers text-success me-1"></i>
+                                                <strong>Check hierarchy:</strong> Full blocks override partial blocks
+                                            </li>
+                                            <li class="mb-2">
+                                                <i class="mdi mdi-bell text-success me-1"></i>
+                                                <strong>Notify customers:</strong> Inform customers when their account status changes
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="card border-0 bg-light">
+                                    <div class="card-body p-3">
+                                        <h6 class="text-primary mb-2">
+                                            <i class="mdi mdi-alert-circle me-1"></i> Important Notes
+                                        </h6>
+                                        <ul class="small mb-0">
+                                            <li class="mb-2">
+                                                <i class="mdi mdi-lock text-warning me-1"></i>
+                                                <strong>Block hierarchy:</strong> Full Block > Partial Block > Operation Block
+                                            </li>
+                                            <li class="mb-2">
+                                                <i class="mdi mdi-history text-warning me-1"></i>
+                                                <strong>Audit trail:</strong> All actions are logged for compliance
+                                            </li>
+                                            <li class="mb-2">
+                                                <i class="mdi mdi-scale-balance text-warning me-1"></i>
+                                                <strong>Regulatory holds:</strong> Some blocks may be legally required
+                                            </li>
+                                            <li class="mb-2">
+                                                <i class="mdi mdi-cash-100 text-warning me-1"></i>
+                                                <strong>Balance requirements:</strong> Closed accounts must have zero balance
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Matrix -->
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <h6 class="text-primary mb-2">
+                                    <i class="mdi mdi-matrix me-1"></i> Action Impact Matrix
+                                </h6>
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-bordered small">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Action</th>
+                                                <th>Deposits</th>
+                                                <th>Withdrawals</th>
+                                                <th>Transfers</th>
+                                                <th>View Balance</th>
+                                                <th>Account Details</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>Active/Normal</strong></td>
+                                                <td><span class="text-success">✓ Allowed</span></td>
+                                                <td><span class="text-success">✓ Allowed</span></td>
+                                                <td><span class="text-success">✓ Allowed</span></td>
+                                                <td><span class="text-success">✓ Allowed</span></td>
+                                                <td><span class="text-success">✓ Visible</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Frozen</strong></td>
+                                                <td><span class="text-danger">✗ Blocked</span></td>
+                                                <td><span class="text-danger">✗ Blocked</span></td>
+                                                <td><span class="text-danger">✗ Blocked</span></td>
+                                                <td><span class="text-success">✓ Allowed</span></td>
+                                                <td><span class="text-success">✓ Visible</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Block Full</strong></td>
+                                                <td><span class="text-danger">✗ Blocked</span></td>
+                                                <td><span class="text-danger">✗ Blocked</span></td>
+                                                <td><span class="text-danger">✗ Blocked</span></td>
+                                                <td><span class="text-danger">✗ Blocked</span></td>
+                                                <td><span class="text-warning">⚠ Limited</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Block Partial</strong></td>
+                                                <td><span class="text-warning">↺ Varies</span></td>
+                                                <td><span class="text-warning">↺ Varies</span></td>
+                                                <td><span class="text-warning">↺ Varies</span></td>
+                                                <td><span class="text-success">✓ Allowed</span></td>
+                                                <td><span class="text-success">✓ Visible</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Closed</strong></td>
+                                                <td><span class="text-danger">✗ Blocked</span></td>
+                                                <td><span class="text-danger">✗ Blocked</span></td>
+                                                <td><span class="text-danger">✗ Blocked</span></td>
+                                                <td><span class="text-warning">⚠ Archive</span></td>
+                                                <td><span class="text-warning">⚠ Archive</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Dormant</strong></td>
+                                                <td><span class="text-warning">⚠ Restricted</span></td>
+                                                <td><span class="text-warning">⚠ Restricted</span></td>
+                                                <td><span class="text-warning">⚠ Restricted</span></td>
+                                                <td><span class="text-success">✓ Allowed</span></td>
+                                                <td><span class="text-success">✓ Visible</span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Example Scenarios -->
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <h6 class="text-primary mb-2">
+                                    <i class="mdi mdi-chart-line me-1"></i> Common Scenarios
+                                </h6>
+                                <div class="row">
+                                    <div class="col-md-4 mb-2">
+                                        <div class="border-start border-4 border-danger ps-3">
+                                            <strong class="text-danger">Fraud Investigation</strong>
+                                            <p class="small mb-0">Use <span class="badge bg-danger">Block Full</span> immediately, then investigate. <span class="badge bg-success">Unblock Full</span> if cleared.</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mb-2">
+                                        <div class="border-start border-4 border-warning ps-3">
+                                            <strong class="text-warning">Customer Request</strong>
+                                            <p class="small mb-0"><span class="badge bg-warning">Freeze</span> account while customer resolves issues. <span class="badge bg-info">Unfreeze</span> when resolved.</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mb-2">
+                                        <div class="border-start border-4 border-info ps-3">
+                                            <strong class="text-info">Operational Limit</strong>
+                                            <p class="small mb-0"><span class="badge bg-danger">Block Withdrawal</span> for savings accounts, keep <span class="badge bg-success">Open Cash In</span> active.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="my-3">
+
+                        <!-- Quick Actions Guide -->
+                        <div class="row">
+                            <div class="col-12">
+                                <h6 class="text-primary mb-2">
+                                    <i class="mdi mdi-gesture-tap-button me-1"></i> Action Selection Guide
+                                </h6>
+                                <div class="row small">
+                                    <div class="col-md-3 mb-2">
+                                        <i class="mdi mdi-play text-success me-1"></i>
+                                        <strong>Activate/Open:</strong> Enable operations
+                                    </div>
+                                    <div class="col-md-3 mb-2">
+                                        <i class="mdi mdi-pause text-warning me-1"></i>
+                                        <strong>Freeze/Block:</strong> Temporary restrictions
+                                    </div>
+                                    <div class="col-md-3 mb-2">
+                                        <i class="mdi mdi-stop text-danger me-1"></i>
+                                        <strong>Close/Block Full:</strong> Permanent/Terminal actions
+                                    </div>
+                                    <div class="col-md-3 mb-2">
+                                        <i class="mdi mdi-refresh text-info me-1"></i>
+                                        <strong>Reopen/Unblock:</strong> Restore previous state
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p class="text-muted mt-3 mb-0 small">
+                            <i class="mdi mdi-information-outline me-1"></i>
+                            <strong>Note:</strong> All account management actions are logged for audit purposes. Some actions may require additional approvals based on your security profile. Blocked operations will show appropriate error messages to customers.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-1">
+                <div class="card-body d-flex justify-content-end align-items-center">
+                    <a href="@Url.Action("List", "MemberAccountMan")"
+                       class="btn btn-label-primary btn-sm me-2"
+                       id="btnViewList"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       data-bs-toggle="tooltip"
+                       title="@GlobalShared.ViewList">
+                        <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
+                    </a>
+                </div>
+            </div>
+
+
+            <fieldset class="fieldset-custom mb-4">
+
+                <h5 class="text-primary fw-bold">
+                    <i class="mdi mdi-cog-outline me-1"></i> Action Selection
+                </h5>
+
+                <div class="row gy-3">
+
+                    <!-- ===================== -->
+                    <!-- Branch Dropdown -->
+                    <!-- ===================== -->
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            @Html.DropDownListFor(
+                                m => m.AccountId,
+                                new SelectList(ViewBag.Account, "Value", "Text"),
+                                "--- Select Account ---",
+                                new { @class = "form-control select2" })
+                            <label>Member Account</label>
+                            @Html.ValidationMessageFor(m => m.AccountId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <!-- ===================== -->
+                    <!-- Action Dropdown -->
+                    <!-- ===================== -->
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            @Html.DropDownListFor(
+                                m => m.Action,
+                                (IEnumerable<SelectListItem>)ViewBag.AccountActions,
+                                "--- Select Action ---",
+                                new
+                                     {
+                                    @class = "form-control select2",
+                                    @id = "ActionType",
+                                    onchange = "handleActionChange(this.value)"
+                                })
+                            <label for="ActionType">Actions</label>
+                            @Html.ValidationMessageFor(m => m.Action, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+
+
+                    <!-- ===================== -->
+                    <!-- Blocked Amount -->
+                    <!-- ===================== -->
+                    <div class="col-md-12" id="partialBlockSection" style="display:none;">
+                        <div class="form-floating">
+                            @Html.TextBoxFor(m => m.Amount, new
+                            {
+                                @class = "form-control",
+                                type = "number",
+                                placeholder = "Enter blocked amount",
+                                @id = "BlockedAmount"  // 👈 ADD THIS LINE
+                            })
+                            <label>Amount</label>
+                            @Html.ValidationMessageFor(m => m.Amount, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="row g-3">
+
+                        <!-- Block Reason -->
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                @Html.TextBoxFor(m => m.BlockReason,
+                                    new { @class = "form-control", placeholder = "Enter block reason" })
+                                @Html.LabelFor(m => m.BlockReason)
+                                @Html.ValidationMessageFor(m => m.BlockReason, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <!-- Effective Date -->
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                @Html.TextBoxFor(m => m.EffectiveDate,
+                                    "{0:yyyy-MM-dd}",
+                                    new
+                                    {
+                                        @class = "form-control",
+                                        type = "date",
+                                        min = DateTime.Now.ToString("yyyy-MM-dd") // Prevent selecting past dates
+                                    })
+                                @Html.LabelFor(m => m.EffectiveDate)
+                                @Html.ValidationMessageFor(m => m.EffectiveDate, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+                    <!-- ✅ Remark -->
+                    <div class="col-md-12">
+                        <div class="form-floating">
+                            @Html.TextBoxFor(m => m.RequestReason, new
+                            {
+                                @class = "form-control",
+                                placeholder = "Enter Request Reason",
+                                maxlength = "250",
+                                @required = "required"
+                            })
+                            <label>Request Reason</label>
+                            @Html.ValidationMessageFor(m => m.RequestReason, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                </div>
+
+            </fieldset>
+
+            <!-- ============================== -->
+            <!-- ACTION BUTTONS -->
+            <!-- ============================== -->
+            <div class="text-end mt-4">
+                <button type="submit" class="btn btn-primary me-2">
+                    <i class="mdi mdi-check-circle-outline me-1"></i> Create Request
+                </button>
+                <button type="reset" class="btn btn-outline-secondary">
+                    @GlobalShared.Reset
+                </button>
+            </div>
+        }
+    </div>
+</div>
+

@@ -1,9 +1,12 @@
 ﻿
 using BusinessServices;
 using CBS.API.Helper;
+using CBS.BusinessService.CustomerManagement;
+using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.AffiliateAccount;
 using CBS.FrontDesk.Data.Entity.AccountingDayObject;
 using CBS.FrontDesk.Data.Entity.CashCeilingManagement;
+using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.SalaryManagement;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
@@ -19,6 +22,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Mvc;
 using static CBS.FrontDesk.Data.Entity.SalaryManagement.EndDateAfterStartDateAttribute;
 
 namespace CBS.BusinessService.Accounts
@@ -27,11 +31,11 @@ namespace CBS.BusinessService.Accounts
     public class StandingOrderServices : BaseService
     {
         private readonly ApiCallerHelper _transactionApiHelper;
-
-        public StandingOrderServices()
+        private readonly IndividualProfileServices _individualProfileServices;
+        public StandingOrderServices(IndividualProfileServices individualProfileServices)
         {
             _transactionApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["TransactionBaseUrl"].ToString());
-
+            _individualProfileServices = individualProfileServices;
         }
 
         public async Task<ExecutionMessages> Delete(string id)
@@ -154,7 +158,7 @@ namespace CBS.BusinessService.Accounts
         {
             try
             {
-               
+
                 var response = await _transactionApiHelper.PostAsync<ServiceResponse<StandingOrder>>(APICallHelper.CreateStandingOrder, model);
                 if (response.IsSuccess)
                 {
@@ -178,7 +182,36 @@ namespace CBS.BusinessService.Accounts
             }
             return ExecutionMessage;
         }
-        
+
+        public async Task<CustomerDataDto> GetCustomerAccountDropdownAsync(string customerId)
+        {
+            if (string.IsNullOrWhiteSpace(customerId))
+                throw new ArgumentException(nameof(customerId));
+
+            var agrAggregates = await _individualProfileServices.GetAggregates();
+            var customerProfile = await _individualProfileServices.GetCustomer(customerId, agrAggregates);
+
+            // Defensive: ensure accounts list exists
+            var accounts = customerProfile.CustomerAccounts ?? new List<CustomerAccount>();
+
+            var vm = new CustomerDataDto
+            {
+                CustomerDto = customerProfile.CustomerList,
+                AccountSelectList = accounts
+                    .Select(a => new SelectListItem
+                    {
+                        Value = a.accountNumber ?? string.Empty, // sent back to backend when selected
+                        Text = string.IsNullOrWhiteSpace(a.accountName)
+                            ? $"{a.accountNumber} ({a.balance:N2})"
+                            : $"{a.accountNumber} - {a.accountName} ({a.balance:N2})"
+                    })
+                    .OrderBy(x => x.Value)
+                    .ToList()
+            };
+
+            return vm;
+        }
+
         public async Task<ExecutionMessages> Update(AddOrUpdateStandingOrderCommand model)
         {
             try
