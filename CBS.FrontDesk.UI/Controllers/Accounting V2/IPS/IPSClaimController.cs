@@ -379,6 +379,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.IPS
             [HttpPost]
             public async Task<JsonResult> LoadClaimsData(IPSClaimQuery query)
              {
+             await LoadViewData();
                 try
                 {
                     var data = await _ipsClaimService.GetClaimsDataTableAsync(query);

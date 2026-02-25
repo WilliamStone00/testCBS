@@ -345,6 +345,10 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             private global::System.Data.DataColumn columnPrintedOn;
             
+            private global::System.Data.DataColumn columnTotalNumberOfOutstandingLoans;
+            
+            private global::System.Data.DataColumn columnInsurableSharesAndSaving;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public IPSDataTable() {
@@ -644,6 +648,22 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TotalNumberOfOutstandingLoansColumn {
+                get {
+                    return this.columnTotalNumberOfOutstandingLoans;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn InsurableSharesAndSavingColumn {
+                get {
+                    return this.columnInsurableSharesAndSaving;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -712,7 +732,9 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                         decimal TLSD, 
                         string Logo, 
                         string PrintedBy, 
-                        System.DateTime PrintedOn) {
+                        System.DateTime PrintedOn, 
+                        string TotalNumberOfOutstandingLoans, 
+                        string InsurableSharesAndSaving) {
                 IPSRow rowIPSRow = ((IPSRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         BankName,
@@ -747,7 +769,9 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                         TLSD,
                         Logo,
                         PrintedBy,
-                        PrintedOn};
+                        PrintedOn,
+                        TotalNumberOfOutstandingLoans,
+                        InsurableSharesAndSaving};
                 rowIPSRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowIPSRow);
                 return rowIPSRow;
@@ -803,6 +827,8 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                 this.columnLogo = base.Columns["Logo"];
                 this.columnPrintedBy = base.Columns["PrintedBy"];
                 this.columnPrintedOn = base.Columns["PrintedOn"];
+                this.columnTotalNumberOfOutstandingLoans = base.Columns["TotalNumberOfOutstandingLoans"];
+                this.columnInsurableSharesAndSaving = base.Columns["InsurableSharesAndSaving"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -874,6 +900,10 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                 base.Columns.Add(this.columnPrintedBy);
                 this.columnPrintedOn = new global::System.Data.DataColumn("PrintedOn", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPrintedOn);
+                this.columnTotalNumberOfOutstandingLoans = new global::System.Data.DataColumn("TotalNumberOfOutstandingLoans", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalNumberOfOutstandingLoans);
+                this.columnInsurableSharesAndSaving = new global::System.Data.DataColumn("InsurableSharesAndSaving", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnInsurableSharesAndSaving);
                 this.ExtendedProperties.Add("Generator_TablePropName", "_IPS");
                 this.ExtendedProperties.Add("Generator_UserTableName", "IPS");
             }
@@ -1546,6 +1576,38 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string TotalNumberOfOutstandingLoans {
+                get {
+                    try {
+                        return ((string)(this[this.tableIPS.TotalNumberOfOutstandingLoansColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalNumberOfOutstandingLoans\' in table \'IPS\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableIPS.TotalNumberOfOutstandingLoansColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string InsurableSharesAndSaving {
+                get {
+                    try {
+                        return ((string)(this[this.tableIPS.InsurableSharesAndSavingColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'InsurableSharesAndSaving\' in table \'IPS\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableIPS.InsurableSharesAndSavingColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsBankNameNull() {
                 return this.IsNull(this.tableIPS.BankNameColumn);
             }
@@ -1938,6 +2000,30 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetPrintedOnNull() {
                 this[this.tableIPS.PrintedOnColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTotalNumberOfOutstandingLoansNull() {
+                return this.IsNull(this.tableIPS.TotalNumberOfOutstandingLoansColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTotalNumberOfOutstandingLoansNull() {
+                this[this.tableIPS.TotalNumberOfOutstandingLoansColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsInsurableSharesAndSavingNull() {
+                return this.IsNull(this.tableIPS.InsurableSharesAndSavingColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetInsurableSharesAndSavingNull() {
+                this[this.tableIPS.InsurableSharesAndSavingColumn] = global::System.Convert.DBNull;
             }
         }
         

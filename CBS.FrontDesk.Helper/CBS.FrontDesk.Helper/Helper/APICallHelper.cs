@@ -1949,7 +1949,10 @@ namespace CBS.FrontDesk.Helper
         public static string CreateMAM = "/api/v1/AccountManagement/submit";
         public static string DecissionMAM = "/api/v1/AccountManagement/decide";
         public static string UpdateMAM = "not availlable";
-        public static string DeactivateMAM = "not availlable";        
+        public static string DeactivateMAM = "not availlable";
+
+        ///---------------------------- IPS Reporting ------------------------------
+        public static string ipspremium = "/api/v1/IPS/CombinedInsurancePremiums";        
 
     }
 }

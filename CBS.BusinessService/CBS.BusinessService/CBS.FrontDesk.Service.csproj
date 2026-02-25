@@ -288,6 +288,8 @@
     <Compile Include="Accounting V2\IPS\IPSClaim.cs" />
     <Compile Include="Accounting V2\IPS\IPSClaimExcelExportGenerator.cs" />
     <Compile Include="Accounting V2\IPS\IPSConfigService.cs" />
+    <Compile Include="Accounting V2\IPS\IPSReporting\IPSReportBuilderService.cs" />
+    <Compile Include="Accounting V2\IPS\IPSReporting\IPSReportService.cs" />
     <Compile Include="Accounting V2\JournalEntries\JournalEntriesService.cs" />
     <Compile Include="Accounting V2\JournalReceiptsReports\JournalReceiptsService.cs" />
     <Compile Include="Accounting V2\Pendingaccounts\AccountManagementPositionCalculator.cs" />
