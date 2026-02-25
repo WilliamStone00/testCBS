@@ -1035,6 +1035,61 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>LiaisonLedger.fr.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\AffiliateToBranchFallback\AffiliateToBranchFallback.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AffiliateToBranchFallback.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AndriodAppVersioning.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\APIKey\ApiKeyRessource.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ApiKeyRessource.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Authentication\AuthenticationRessource1.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AuthenticationRessource.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\BlacklistUser\BlacklistUserRessource.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BlacklistUserRessource.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\BranchAccount\BranchAccountRessources.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BranchAccountRessources.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\BranchCashConfig\BranchCashConfigRessource.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BranchCashConfigRessource.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashCeilingRequest\CashCeilingRequestRessource.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CashCeilingRequestRessource.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashReconciliation\CashReconciliationResource.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CashReconciliationResource.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Categoryconfic\CategoryconficResource.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CategoryconficResource.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\ChartOfAccountV2\ChartOfAccountV2Resource.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ChartOfAccountV2Resource.fr.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\ChequeManagementSystem\ChequeManagements1.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1171,7 +1226,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ApiKeyRessource.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\Authentication\AuthenticationRessource.Designer.cs" />
     <Compile Include="App_GlobalResources\BankingOperations\GlobalBankingOperations.fr.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1182,8 +1236,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalBankData.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\BlacklistUser\BlacklistUserRessource.Designer.cs" />
     <Compile Include="App_GlobalResources\BranchAccount\BranchAccountRessources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BranchAccountRessources.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\Bank\GlobalBankData.fr.designer.cs">
       <AutoGen>True</AutoGen>
@@ -7985,6 +8041,54 @@
     <Content Include="App_GlobalResources\GLSystemReconciliation\GlobalGLSystemReconciliation.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalGLSystemReconciliation.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AffiliateToBranchFallback\AffiliateToBranchFallback.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AffiliateToBranchFallback.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AndriodAppVersioning.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\APIKey\ApiKeyRessource.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>ApiKeyRessource.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Authentication\AuthenticationRessource.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AuthenticationRessource1.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\BlacklistUser\BlacklistUserRessource.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>BlacklistUserRessource1.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\BlacklistUser\BlacklistUserRessource.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>BlacklistUserRessource.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\BranchAccount\BranchAccountRessources.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>BranchAccountRessources.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\BranchCashConfig\BranchCashConfigRessource.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>BranchCashConfigRessource.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashCeilingRequest\CashCeilingRequestRessource.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CashCeilingRequestRessource.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashReconciliation\CashReconciliationResource.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CashReconciliationResource.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Categoryconfic\CategoryconficResource.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CategoryconficResource.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\ChartOfAccountV2\ChartOfAccountV2Resource.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>ChartOfAccountV2Resource.fr.designer.cs</LastGenOutput>
     </Content>
     <None Include="AppFiles\Accountingv2Reporting\DataSets\AccountingV2DS.xsd">
       <SubType>Designer</SubType>

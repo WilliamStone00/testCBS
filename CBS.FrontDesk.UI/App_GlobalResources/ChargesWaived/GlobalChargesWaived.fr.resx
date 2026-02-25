@@ -133,7 +133,7 @@
     <value>Date d'exonération</value>
   </data>
   <data name="EnterChargeToWaive" xml:space="preserve">
-    <value>Entrez le frais à exonérer. (Remarque que cela n'est valable que pour une journée).</value>
+    <value>Saisir le frais à exonérer. (Remarque : valable uniquement pour une journée).</value>
   </data>
   <data name="GDate" xml:space="preserve">
     <value>Date G</value>
@@ -145,34 +145,34 @@
     <value>Initier une demande de retrait d'épargne</value>
   </data>
   <data name="IsWithdrawalDone" xml:space="preserve">
-    <value>Le retrait est-il effectué</value>
+    <value>Le retrait est-il effectué ?</value>
   </data>
   <data name="NoDataWasFoundAtTheMoment" xml:space="preserve">
     <value>Aucune donnée trouvée pour le moment</value>
   </data>
   <data name="NormalCharge" xml:space="preserve">
-    <value>Frais normal</value>
+    <value>Frais standard</value>
   </data>
   <data name="PendingWithdrawalNotifications" xml:space="preserve">
     <value>Notifications de retrait en attente</value>
   </data>
   <data name="ReasonForWaivingCharges" xml:space="preserve">
-    <value>Raison de l'exonération de frais</value>
+    <value>Motif de l'exonération des frais</value>
   </data>
   <data name="ReasonForWithdrawal" xml:space="preserve">
-    <value>Raison du retrait</value>
+    <value>Motif du retrait</value>
   </data>
   <data name="REQUESTINFO" xml:space="preserve">
-    <value>INFO DE LA DEMANDE</value>
+    <value>INFORMATIONS DE LA DEMANDE</value>
   </data>
   <data name="ViewCustomerDetails" xml:space="preserve">
-    <value>Afficher les détails du client</value>
+    <value>Afficher les informations du client</value>
   </data>
   <data name="WaivedAmount" xml:space="preserve">
     <value>Montant exonéré</value>
   </data>
   <data name="WaivedCharge" xml:space="preserve">
-    <value>Frais exonérés</value>
+    <value>Frais exonéré</value>
   </data>
   <data name="WaivedRequests" xml:space="preserve">
     <value>Demandes exonérées</value>

@@ -117,28 +117,67 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AccountingConfigurations" xml:space="preserve">
-    <value>Paramètres comptables</value>
+  <data name="AppCode" xml:space="preserve">
+    <value>Code de l’application</value>
   </data>
-  <data name="AlertTimeBeforeTimespanElapseInMinutes" xml:space="preserve">
-    <value>Temps d’alerte avant l’expiration de la période, en minutes</value>
+  <data name="Actions" xml:space="preserve">
+    <value>ACTIONS</value>
   </data>
-  <data name="CashMovementConfigurationPanel" xml:space="preserve">
-    <value>Panneau de configuration des mouvements de liquidités</value>
+  <data name="ANDROIDVERSIONDETAILS" xml:space="preserve">
+    <value>Liste des versions Android</value>
   </data>
-  <data name="CashTrackerManagement" xml:space="preserve">
-    <value>Gestion du suivi des liquidités</value>
+  <data name="ANDROIDVERSIONLISTING" xml:space="preserve">
+    <value>Liste des versions Android</value>
   </data>
-  <data name="DistanceToCover" xml:space="preserve">
-    <value>Distance à parcourir (en kilomètres)</value>
+  <data name="AndroidVersionManagement" xml:space="preserve">
+    <value>Gestion des versions Android</value>
   </data>
-  <data name="Duration" xml:space="preserve">
-    <value>Durée (en minutes)</value>
+  <data name="ANDROIDVERSIONMANAGEMENT_UC" xml:space="preserve">
+    <value>Gestion des versions Android</value>
   </data>
-  <data name="DurationForMovement" xml:space="preserve">
-    <value>Durée du mouvement (en minutes)</value>
+  <data name="APKDownloadURL" xml:space="preserve">
+    <value>URL de téléchargement de l’APK</value>
   </data>
-  <data name="SampleMessageToBeSendBeforeTimespanElapse" xml:space="preserve">
-    <value>Exemple de message à envoyer avant l’expiration de la période</value>
+  <data name="APKURL" xml:space="preserve">
+    <value>URL de l’APK</value>
+  </data>
+  <data name="AppCode1" xml:space="preserve">
+    <value>Code de l’application</value>
+  </data>
+  <data name="EnsureVersionNamesFollowSemanticVersioning" xml:space="preserve">
+    <value>Vérifier que les noms de version suivent le versionnage sémantique</value>
+  </data>
+  <data name="EnterAPKDownloadURL" xml:space="preserve">
+    <value>Saisir l’URL de téléchargement de l’APK</value>
+  </data>
+  <data name="ManageAllAndroidVersionReleases" xml:space="preserve">
+    <value>Gérer toutes les versions Android et leurs configurations.</value>
+  </data>
+  <data name="NoAndroidVersionsHaveBeenConfigured" xml:space="preserve">
+    <value>Aucune version Android n’a encore été configurée</value>
+  </data>
+  <data name="OnlyAuthorizedPersonnelCanUpdate" xml:space="preserve">
+    <value>Seul le personnel autorisé peut mettre à jour ou supprimer des versions</value>
+  </data>
+  <data name="ProvideAValidAPKURL" xml:space="preserve">
+    <value>Fournir une URL APK valide pour télécharger l’application Android</value>
+  </data>
+  <data name="SecretCode" xml:space="preserve">
+    <value>Code secret</value>
+  </data>
+  <data name="VaultDetails" xml:space="preserve">
+    <value>Détails du coffre</value>
+  </data>
+  <data name="VaultID" xml:space="preserve">
+    <value>ID du coffre</value>
+  </data>
+  <data name="VaultInformations" xml:space="preserve">
+    <value>Informations du coffre</value>
+  </data>
+  <data name="VaultOperations" xml:space="preserve">
+    <value>Opérations sur le coffre</value>
+  </data>
+  <data name="ViewDetailsAndManageAndroidVersions" xml:space="preserve">
+    <value>Consulter les détails et gérer efficacement les versions Android</value>
   </data>
 </root>

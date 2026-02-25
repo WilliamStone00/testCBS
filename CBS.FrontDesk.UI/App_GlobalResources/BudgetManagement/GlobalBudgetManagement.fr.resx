@@ -124,25 +124,25 @@
     <value>Budget</value>
   </data>
   <data name="BudgetCategory" xml:space="preserve">
-    <value>Catégorie de budget</value>
+    <value>Catégorie budgétaire</value>
   </data>
   <data name="BudgetCategoryData" xml:space="preserve">
-    <value>Données de catégorie de budget</value>
+    <value>Données de catégorie budgétaire</value>
   </data>
   <data name="BudgetCategoryDetails" xml:space="preserve">
-    <value>Détails de la catégorie de budget</value>
+    <value>Détails de la catégorie budgétaire</value>
   </data>
   <data name="BudgetCode" xml:space="preserve">
-    <value>Code de budget</value>
+    <value>Code budgétaire</value>
   </data>
   <data name="BUDGET_CONFIGURATIONS" xml:space="preserve">
-    <value>CONFIGURATIONS DE BUDGET</value>
+    <value>Configurations budgétaires</value>
   </data>
   <data name="BudgetCreation" xml:space="preserve">
-    <value>Création de budget</value>
+    <value>Création du budget</value>
   </data>
   <data name="BudgetData" xml:space="preserve">
-    <value>Données de budget</value>
+    <value>Données budgétaires</value>
   </data>
   <data name="BudgetDetails" xml:space="preserve">
     <value>Détails du budget</value>
@@ -151,9 +151,9 @@
     <value>Unité organisationnelle</value>
   </data>
   <data name="SelectBudgetPeriods" xml:space="preserve">
-    <value>Sélectionner les périodes de budget</value>
+    <value>Sélectionner les périodes budgétaires</value>
   </data>
   <data name="SelectOrganizationalUnit" xml:space="preserve">
-    <value>Sélectionner l'unité organisationnelle</value>
+    <value>Sélectionner l’unité organisationnelle</value>
   </data>
 </root>

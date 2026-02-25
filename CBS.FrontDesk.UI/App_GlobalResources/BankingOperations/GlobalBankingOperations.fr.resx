@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ACCOUNTINGTRANSACTIONREVERSALREQUEST" xml:space="preserve">
-    <value>DEMANDE D'INVERSION DE TRANSACTION COMPTABLE</value>
+    <value>Demande d'inversion de transaction comptable</value>
   </data>
   <data name="Action" xml:space="preserve">
     <value>Action</value>
@@ -139,7 +139,7 @@
     <value>Retour à l'accueil</value>
   </data>
   <data name="BANKINGOPERATIONSCASHMANAGEMENT" xml:space="preserve">
-    <value>OPÉRATIONS BANCAIRES - GESTION DE LA TRÉSORERIE</value>
+    <value>Opérations bancaires – Gestion de la trésorerie</value>
   </data>
   <data name="BankOperations" xml:space="preserve">
     <value>Opérations bancaires</value>
@@ -151,28 +151,28 @@
     <value>Cliquez pour afficher la demande d'inversion de transaction en attente</value>
   </data>
   <data name="FailedRequestApprovalView" xml:space="preserve">
-    <value>Page des demande d'approbation échouée</value>
+    <value>Page des demandes d'approbation échouée</value>
   </data>
   <data name="HasAlreadyBeenRejected" xml:space="preserve">
     <value>La demande d'approbation a déjà été rejetée</value>
   </data>
   <data name="hasBeenSuccesfullyApproved" xml:space="preserve">
-    <value>a été approuvée avec succès</value>
+    <value>A été approuvée avec succès</value>
   </data>
   <data name="hasBeenSuccesfullySentForApproval" xml:space="preserve">
-    <value>a été envoyée avec succès pour approbation</value>
+    <value>A été envoyée avec succès pour approbation</value>
   </data>
   <data name="HavingReferenceId" xml:space="preserve">
-    <value>ayant l'ID de référence</value>
+    <value>Ayant l'ID de référence</value>
   </data>
   <data name="havingTransactionReferenceId" xml:space="preserve">
-    <value>ayant l'ID de référence de transaction</value>
+    <value>Ayant l'ID de référence de transaction</value>
   </data>
   <data name="InTheSystemPleasekindlyContactSystemAdmin" xml:space="preserve">
-    <value>dans le système. Veuillez contacter l'administrateur système pour obtenir de l'aide</value>
+    <value>Dans le système. Veuillez contacter l'administrateur système pour assistance</value>
   </data>
   <data name="IsPendingForApproval" xml:space="preserve">
-    <value>est en attente d'approbation</value>
+    <value>Est en attente d'approbation</value>
   </data>
   <data name="IssuedBy" xml:space="preserve">
     <value>Émis par</value>
@@ -202,7 +202,7 @@
     <value>Sélectionner la décision</value>
   </data>
   <data name="SelectYourDecisionAndClickOnApprovedAccount" xml:space="preserve">
-    <value>Sélectionnez votre décision et cliquez sur le bouton d'approbation de la demande pour approuver la demande</value>
+    <value>Sélectionnez votre décision et cliquez sur le bouton d'approbation pour approuver la demande</value>
   </data>
   <data name="Status" xml:space="preserve">
     <value>Statut</value>
@@ -217,7 +217,7 @@
     <value>Il n'y a pas d'entrée avec l'ID de référence</value>
   </data>
   <data name="TheTransactionReversalRequestIssuedBy" xml:space="preserve">
-    <value>La demande d'inversion de transaction émise par</value>
+    <value>Demande d'inversion de transaction émise par</value>
   </data>
   <data name="TransactionReferenceId" xml:space="preserve">
     <value>ID de référence de transaction</value>
@@ -241,7 +241,7 @@
     <value>Afficher la demande d'inversion de transaction</value>
   </data>
   <data name="WithReference" xml:space="preserve">
-    <value>avec la référence</value>
+    <value>Avec la référence</value>
   </data>
   <data name="YouHaveJustRejectedTheTransactionReversalRequestIssuedBy" xml:space="preserve">
     <value>Vous venez de rejeter la demande d'inversion de transaction émise par</value>
@@ -250,10 +250,10 @@
     <value>Vous venez d'approuver la demande d'inversion de transaction émise par</value>
   </data>
   <data name="YourTransactionReversalRequestHasBeenSentSuccesfully" xml:space="preserve">
-    <value>Votre demande d'inversion de transaction a été envoyée avec succès. Attendez patiemment l'approbation de votre gestionnaire</value>
+    <value>Votre demande d'inversion de transaction a été envoyée avec succès. Attendez l'approbation de votre gestionnaire</value>
   </data>
   <data name="YourTransactionReversalRequestFailed" xml:space="preserve">
-    <value>Votre demande d'inversion de transaction a échoué. Veuillez contacter votre service d'assistance technique pour obtenir de l'aide</value>
+    <value>Votre demande d'inversion de transaction a échoué. Veuillez contacter votre service d'assistance technique</value>
   </data>
   <data name="FailedTransactionReversalRequest" xml:space="preserve">
     <value>Demande d'inversion de transaction échouée</value>
@@ -262,7 +262,7 @@
     <value>Demande d'inversion de transaction</value>
   </data>
   <data name="ACCOUNTINGENTRYADJUSTMENT" xml:space="preserve">
-    <value>AJUSTEMENT D'ÉCRITURE COMPTABLE</value>
+    <value>Ajustement d'écriture comptable</value>
   </data>
   <data name="TransactionReference" xml:space="preserve">
     <value>Référence de transaction</value>
@@ -271,7 +271,7 @@
     <value>Envoyer la demande</value>
   </data>
   <data name="PROVISIONBANKTOVAULT" xml:space="preserve">
-    <value>PROVISION DE LA BANQUE AU VAULT</value>
+    <value>Provision de la banque au coffre</value>
   </data>
   <data name="SelectSourceAccount" xml:space="preserve">
     <value>Sélectionner le compte source</value>
@@ -292,7 +292,7 @@
     <value>Sélectionner le compte de destination</value>
   </data>
   <data name="ThisIsAManualEntryTransactionReference" xml:space="preserve">
-    <value>Il s'agit d'une référence de transaction manuelle qui sera suivie dans le système concernant cette opération spécifique</value>
+    <value>Il s'agit d'une référence de transaction manuelle qui sera suivie dans le système pour cette opération spécifique</value>
   </data>
   <data name="SelectBookingDirection" xml:space="preserve">
     <value>Sélectionner le sens d'enregistrement</value>

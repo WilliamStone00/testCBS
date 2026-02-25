@@ -61,7 +61,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Charges waiver.
+        ///   Looks up a localized string similar to Charge waiver.
         /// </summary>
         internal static string ChargesWaiver {
             get {
@@ -70,7 +70,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Charges waiver requests.
+        ///   Looks up a localized string similar to Charge waiver requests.
         /// </summary>
         internal static string ChargesWaiverRequests {
             get {
@@ -79,7 +79,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CHARGESWAIVER.
+        ///   Looks up a localized string similar to CHARGE WAIVER.
         /// </summary>
         internal static string CHARGESWAIVERUC {
             get {
@@ -106,7 +106,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enter charge to waive. (Note that this is valid only for a day)..
+        ///   Looks up a localized string similar to Enter charge to waive. (Note that this is valid only for one day)..
         /// </summary>
         internal static string EnterChargeToWaive {
             get {
@@ -133,7 +133,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Initiate saving withdrawal request.
+        ///   Looks up a localized string similar to Initiate savings withdrawal request.
         /// </summary>
         internal static string InitiateSavingWithdrawalRequest {
             get {
@@ -142,7 +142,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Is withdrawal done.
+        ///   Looks up a localized string similar to Is withdrawal done?.
         /// </summary>
         internal static string IsWithdrawalDone {
             get {
@@ -151,7 +151,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No Data was found at the moment.
+        ///   Looks up a localized string similar to No data found at the moment.
         /// </summary>
         internal static string NoDataWasFoundAtTheMoment {
             get {
@@ -169,7 +169,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pending Withdrawal Notifications.
+        ///   Looks up a localized string similar to Pending withdrawal notifications.
         /// </summary>
         internal static string PendingWithdrawalNotifications {
             get {

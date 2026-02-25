@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="API_Key_Management_Tips" xml:space="preserve">
+    <value>Conseils de gestion des clés API</value>
+  </data>
+  <data name="Activate_Or_DisActivate_an_Api_key_using_Api_Key_reference" xml:space="preserve">
+    <value>Activer ou désactiver une clé API en utilisant la référence de clé API</value>
+  </data>
+  <data name="Activate_this_API_key_to_allow_its_usage" xml:space="preserve">
+    <value>Activez cette clé API pour autoriser son utilisation</value>
+  </data>
+  <data name="API_Endpoint" xml:space="preserve">
+    <value>Point de terminaison API</value>
+  </data>
+  <data name="API_Key_Activation_DisActivate" xml:space="preserve">
+    <value>Activation / Désactivation de la clé API</value>
+  </data>
+  <data name="API_Key_Creation_Tips" xml:space="preserve">
+    <value>Conseils pour la création de clés API</value>
+  </data>
+  <data name="API_Key_Details" xml:space="preserve">
+    <value>Détails de la clé API</value>
+  </data>
+  <data name="API_Key_Generated_Successfully" xml:space="preserve">
+    <value>Clé API générée avec succès</value>
+  </data>
+  <data name="API_Key_Management" xml:space="preserve">
+    <value>Gestion des clés API</value>
+  </data>
+  <data name="API_Key_Usage_Guide" xml:space="preserve">
+    <value>Guide d’utilisation des clés API</value>
+  </data>
+  <data name="API_keys_are_created_with_5_year_expiration_by_default" xml:space="preserve">
+    <value>Les clés API sont créées avec une expiration par défaut de 5 ans</value>
+  </data>
+  <data name="API_keys_expire_after_5_years_configurable" xml:space="preserve">
+    <value>Les clés API expirent après 5 ans (configurable)</value>
+  </data>
+  <data name="API_Keys_List" xml:space="preserve">
+    <value>Liste des clés API</value>
+  </data>
+  <data name="Associate_API_keys_with_specific_users_for_better_tracking_and_management" xml:space="preserve">
+    <value>Associer les clés API à des utilisateurs spécifiques pour un meilleur suivi et une meilleure gestion</value>
+  </data>
+  <data name="Authenticate_and_receive_session_token" xml:space="preserve">
+    <value>Authentifiez-vous et recevez un jeton de session</value>
+  </data>
+  <data name="Authentication_Header" xml:space="preserve">
+    <value>En-tête d’authentification</value>
+  </data>
+  <data name="Change_API_Key_Status" xml:space="preserve">
+    <value>Modifier le statut de la clé API</value>
+  </data>
+  <data name="Change_API_Key_status_for" xml:space="preserve">
+    <value>Modifier le statut de la clé API pour</value>
+  </data>
+  <data name="Check_if_key_has_expired_or_been_revoked" xml:space="preserve">
+    <value>Vérifiez si la clé a expiré ou a été révoquée</value>
+  </data>
+  <data name="Check_your_API_key_is_correct_and_active" xml:space="preserve">
+    <value>Vérifiez que votre clé API est correcte et active</value>
+  </data>
+  <data name="Choose_appropriate_key_length_32_256_characters_based_on_security_requirements" xml:space="preserve">
+    <value>Choisissez une longueur de clé appropriée (32 à 256 caractères) en fonction des exigences de sécurité</value>
+  </data>
+  <data name="Commit_API_keys_to_version_control" xml:space="preserve">
+    <value>Ne pas commettre les clés API dans le contrôle de version</value>
+  </data>
+  <data name="Copy_and_securely_store_your_API_key_immediately_after_generation_it_wont_be_shown_again" xml:space="preserve">
+    <value>Copiez et stockez votre clé API de manière sécurisée immédiatement après sa génération - elle ne sera plus affichée</value>
+  </data>
+  <data name="Copy_and_store_the_raw_key_immediately_after_creation_it_wont_be_shown_again" xml:space="preserve">
+    <value>Copiez et stockez la clé brute immédiatement après sa création - elle ne sera plus affichée</value>
+  </data>
+  <data name="Copy_this_key_now_it_wont_be_shown_again" xml:space="preserve">
+    <value>Copiez cette clé maintenant - elle ne sera plus affichée</value>
+  </data>
+  <data name="Create_an_API_key_using_the_form_above_by_selecting_a_user_and_specifying_key_length" xml:space="preserve">
+    <value>Créez une clé API en utilisant le formulaire ci-dessus en sélectionnant un utilisateur et en spécifiant la longueur de la clé</value>
+  </data>
+  <data name="Create_API_Key" xml:space="preserve">
+    <value>Créer une clé API</value>
+  </data>
+  <data name="Create_New_API_Key" xml:space="preserve">
+    <value>Créer une nouvelle clé API</value>
+  </data>
+  <data name="Create_renew_revoke_and_monitor_your_API_keys_with_comprehensive_security_controls" xml:space="preserve">
+    <value>Créez, renouvelez, révoquez et surveillez vos clés API avec des contrôles de sécurité complets</value>
+  </data>
+  <data name="Create_renew_revoke_and_track_API_key_usage_and_expiration" xml:space="preserve">
+    <value>Créez, renouvelez, révoquez et suivez l’utilisation et l’expiration des clés API</value>
+  </data>
+  <data name="Deactivate_this_API_key_to_temporarily_prevent_its_usage" xml:space="preserve">
+    <value>Désactivez cette clé API pour empêcher temporairement son utilisation</value>
+  </data>
+  <data name="Developer_Guide" xml:space="preserve">
+    <value>Guide du développeur</value>
+  </data>
+  <data name="Each_key_is_tied_to_a_specific_username" xml:space="preserve">
+    <value>Chaque clé est liée à un nom d’utilisateur spécifique</value>
+  </data>
+  <data name="Ensure_H_TSC_API_KEY_header_is_included" xml:space="preserve">
+    <value>Assurez-vous que l’en-tête H-TSC-API-KEY est inclus</value>
+  </data>
+  <data name="Expiration_Warning" xml:space="preserve">
+    <value>Avertissement d’expiration</value>
+  </data>
+  <data name="Expose_API_keys_in_frontend_code_or_mobile_apps" xml:space="preserve">
+    <value>Ne pas exposer les clés API dans le code frontal ou les applications mobiles</value>
+  </data>
+  <data name="Extend_the_validity_period_of_this_API_key" xml:space="preserve">
+    <value>Prolongez la période de validité de cette clé API</value>
+  </data>
+  <data name="Filter_Api_Key" xml:space="preserve">
+    <value>Filtrer la clé API</value>
+  </data>
+  <data name="Here_we_can_revoke_an_Api_key" xml:space="preserve">
+    <value>Ici, nous pouvons révoquer une clé API</value>
+  </data>
+  <data name="If_you_encounter_issues_with_your_API_key_or_need_assistance" xml:space="preserve">
+    <value>En cas de problème avec votre clé API ou pour obtenir de l’aide</value>
+  </data>
+  <data name="Ignore_expiration_warnings" xml:space="preserve">
+    <value>Ignorer les avertissements d’expiration</value>
+  </data>
+  <data name="Include_this_header_in_every_API_request" xml:space="preserve">
+    <value>Incluez cet en-tête dans chaque requête API</value>
+  </data>
+  <data name="Key_Binding" xml:space="preserve">
+    <value>Liaison de clé</value>
+  </data>
+  <data name="Key_Expiration" xml:space="preserve">
+    <value>Expiration de la clé</value>
+  </data>
+  <data name="Key_Id" xml:space="preserve">
+    <value>Identifiant de la clé</value>
+  </data>
+  <data name="Key_Length" xml:space="preserve">
+    <value>Longueur de la clé</value>
+  </data>
+  <data name="Key_Revocation" xml:space="preserve">
+    <value>Révocation de clé</value>
+  </data>
+  <data name="Key_Rotation" xml:space="preserve">
+    <value>Rotation des clés</value>
+  </data>
+  <data name="Keys_can_be_revoked_for_security_reasons" xml:space="preserve">
+    <value>Les clés peuvent être révoquées pour des raisons de sécurité</value>
+  </data>
+  <data name="Manage_and_monitor_all_API_keys_for_secure_access_to_your_application_services" xml:space="preserve">
+    <value>Gérez et surveillez toutes les clés API pour un accès sécurisé aux services de votre application</value>
+  </data>
+  <data name="Manage_and_secure_your_API_keys_for_system_integration_and_external_access" xml:space="preserve">
+    <value>Gérez et sécurisez vos clés API pour l’intégration système et l’accès externe</value>
+  </data>
+  <data name="Monitor_expiration_dates_closely_and_renew_keys_before_they_expire_to_avoid_service_interruptions" xml:space="preserve">
+    <value>Surveillez de près les dates d’expiration et renouvelez les clés avant leur expiration pour éviter les interruptions de service</value>
+  </data>
+  <data name="Monitor_your_API_usage_regularly" xml:space="preserve">
+    <value>Surveillez régulièrement l’utilisation de votre API</value>
+  </data>
+  <data name="New_Validity_Period" xml:space="preserve">
+    <value>Nouvelle période de validité</value>
+  </data>
+  <data name="No_API_keys_found" xml:space="preserve">
+    <value>Aucune clé API trouvée</value>
+  </data>
+  <data name="Notifications_start_30_days_before_expiry" xml:space="preserve">
+    <value>Les notifications commencent 30 jours avant l’expiration</value>
+  </data>
+  <data name="Reason_for_Renewal" xml:space="preserve">
+    <value>Motif du renouvellement</value>
+  </data>
+  <data name="Regularly_check_the_status_column_to_ensure_all_active_keys_are_valid_and_not_revoked" xml:space="preserve">
+    <value>Vérifiez régulièrement la colonne de statut pour vous assurer que toutes les clés actives sont valides et non révoquées</value>
+  </data>
+  <data name="Regularly_rotate_API_keys_and_immediately_revoke_any_keys_that_may_be_compromised" xml:space="preserve">
+    <value>Faites pivoter régulièrement les clés API et révoquez immédiatement toute clé pouvant être compromise</value>
+  </data>
+  <data name="Renew_API_Key" xml:space="preserve">
+    <value>Renouveler la clé API</value>
+  </data>
+  <data name="Renew_API_Key_for" xml:space="preserve">
+    <value>Renouveler la clé API pour</value>
+  </data>
+  <data name="Renew_Key" xml:space="preserve">
+    <value>Renouveler la clé</value>
+  </data>
+  <data name="Revocation_Reason" xml:space="preserve">
+    <value>Motif de révocation</value>
+  </data>
+  <data name="Revoke_API_Key" xml:space="preserve">
+    <value>Révoquer la clé API</value>
+  </data>
+  <data name="Revoke_Key" xml:space="preserve">
+    <value>Révoquer la clé</value>
+  </data>
+  <data name="Rotate_keys_periodically_for_security" xml:space="preserve">
+    <value>Faites pivoter les clés périodiquement pour des raisons de sécurité</value>
+  </data>
+  <data name="Search_for_API_keys_by_the_associated_username_to_quickly_find_all_keys_for_a_specific_user" xml:space="preserve">
+    <value>Recherchez les clés API par nom d’utilisateur associé pour trouver rapidement toutes les clés d’un utilisateur spécifique</value>
+  </data>
+  <data name="Security_Best_Practices" xml:space="preserve">
+    <value>Bonnes pratiques de sécurité</value>
+  </data>
+  <data name="Security_Monitoring" xml:space="preserve">
+    <value>Surveillance de sécurité</value>
+  </data>
+  <data name="Security_Notice" xml:space="preserve">
+    <value>Avis de sécurité</value>
+  </data>
+  <data name="Share_keys_via_unsecured_channels_email_chat" xml:space="preserve">
+    <value>Ne partagez pas les clés via des canaux non sécurisés (email, chat)</value>
+  </data>
+  <data name="Status_Change_Reason" xml:space="preserve">
+    <value>Motif de changement de statut</value>
+  </data>
+  <data name="Status_Monitoring" xml:space="preserve">
+    <value>Surveillance du statut</value>
+  </data>
+  <data name="Store_API_keys_in_secure_locations" xml:space="preserve">
+    <value>Stockez les clés API dans des emplacements sécurisés (variables d’environnement, coffres)</value>
+  </data>
+  <data name="Store_API_keys_securely_and_never_expose_them_in_client_side_code" xml:space="preserve">
+    <value>Stockez les clés API de manière sécurisée et ne les exposez jamais dans le code client</value>
+  </data>
+  <data name="Store_this_key_securely_You_wont_be_able_to_retrieve_it_again" xml:space="preserve">
+    <value>Stockez cette clé en toute sécurité. Vous ne pourrez pas la récupérer à nouveau</value>
+  </data>
+  <data name="Suspicious_activity_is_monitored_and_alerted" xml:space="preserve">
+    <value>Les activités suspectes sont surveillées et des alertes sont émises</value>
+  </data>
+  <data name="Testing_Your_API_Key" xml:space="preserve">
+    <value>Tester votre clé API</value>
+  </data>
+  <data name="This_action_cannot_be_undone_The_API_key_will_be_immediately_invalidated" xml:space="preserve">
+    <value>Cette action est irréversible. La clé API sera immédiatement invalidée</value>
+  </data>
+  <data name="This_API_key_provides_access_to_your_account_Keep_it_secure_and_report_any_suspected_compromise_immediately" xml:space="preserve">
+    <value>Cette clé API donne accès à votre compte. Gardez-la sécurisée et signalez immédiatement toute compromission suspectée</value>
+  </data>
+  <data name="This_guide_explains_how_to_properly_use_your_API_key_for_authentication_and_integration_with_our_services" xml:space="preserve">
+    <value>Ce guide explique comment utiliser correctement votre clé API pour l’authentification et l’intégration avec nos services</value>
+  </data>
+  <data name="This_key_will_be_used_in_the_examples_below_Store_it_securely" xml:space="preserve">
+    <value>Cette clé sera utilisée dans les exemples ci-dessous. Stockez-la en toute sécurité</value>
+  </data>
+  <data name="Troubleshooting" xml:space="preserve">
+    <value>Dépannage</value>
+  </data>
+  <data name="Use_different_keys_for_different_applications" xml:space="preserve">
+    <value>Utilisez différentes clés pour différentes applications</value>
+  </data>
+  <data name="Use_HTTPS_for_all_API_communications" xml:space="preserve">
+    <value>Utilisez HTTPS pour toutes les communications API</value>
+  </data>
+  <data name="Use_the_API_key_in_your_authentication_headers_as_shown_below" xml:space="preserve">
+    <value>Utilisez la clé API dans vos en-têtes d’authentification comme indiqué ci-dessous</value>
+  </data>
+  <data name="Use_the_copy_button_next_to_each_key_prefix_for_easy_reference_when_identifying_keys_in_logs" xml:space="preserve">
+    <value>Utilisez le bouton de copie à côté de chaque préfixe de clé pour une référence facile lors de l’identification des clés dans les journaux</value>
+  </data>
+  <data name="Use_the_list_view_to_manage_existing_keys_renew_revoke_or_change_status" xml:space="preserve">
+    <value>Utilisez la vue liste pour gérer les clés existantes, les renouveler, les révoquer ou changer leur statut</value>
+  </data>
+  <data name="Use_the_same_key_across_multiple_environments" xml:space="preserve">
+    <value>Utilisez la même clé dans plusieurs environnements</value>
+  </data>
+  <data name="Use_the_unique_Key_ID_to_locate_a_specific_API_key_when_you_need_to_manage_individual_keys" xml:space="preserve">
+    <value>Utilisez l’ID unique de la clé pour localiser une clé API spécifique lorsque vous devez gérer des clés individuelles</value>
+  </data>
+  <data name="Using_Postman" xml:space="preserve">
+    <value>Utilisation de Postman</value>
+  </data>
+  <data name="Verify_user_permissions_and_key_binding" xml:space="preserve">
+    <value>Vérifiez les permissions utilisateur et la liaison de la clé</value>
+  </data>
+  <data name="View_API_Integration_Guide" xml:space="preserve">
+    <value>Voir le guide d’intégration API</value>
+  </data>
+  <data name="You_can_request_key_renewal_before_expiration" xml:space="preserve">
+    <value>Vous pouvez demander le renouvellement d’une clé avant son expiration</value>
+  </data>
+  <data name="Your_API_key_provides_full_access_to_your_account_Keep_it_secure_and_never_expose_it_in_client_side_code" xml:space="preserve">
+    <value>Votre clé API donne un accès complet à votre compte. Gardez-la sécurisée et ne l’exposez jamais dans le code client</value>
+  </data>
+  <data name="Your_Current_API_Key" xml:space="preserve">
+    <value>Votre clé API actuelle</value>
+  </data>
+</root>
