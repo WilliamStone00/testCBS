@@ -117,28 +117,79 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AccountingConfigurations" xml:space="preserve">
-    <value>Paramètres comptables</value>
+  <data name="Details_amp_hierarchical_structure_for_the_selected_node" xml:space="preserve">
+    <value>Détails et structure hiérarchique du nœud sélectionné</value>
   </data>
-  <data name="AlertTimeBeforeTimespanElapseInMinutes" xml:space="preserve">
-    <value>Temps d’alerte avant l’expiration de la période, en minutes</value>
+  <data name="Account_Hierarchy" xml:space="preserve">
+    <value>Hiérarchie des comptes</value>
   </data>
-  <data name="CashMovementConfigurationPanel" xml:space="preserve">
-    <value>Panneau de configuration des mouvements de liquidités</value>
+  <data name="Affiliate_Account_Details" xml:space="preserve">
+    <value>Détails du compte affilié</value>
   </data>
-  <data name="CashTrackerManagement" xml:space="preserve">
-    <value>Gestion du suivi des liquidités</value>
+  <data name="Chart_of_Accounts_Management" xml:space="preserve">
+    <value> Gestion du plan comptable</value>
   </data>
-  <data name="DistanceToCover" xml:space="preserve">
-    <value>Distance à parcourir (en kilomètres)</value>
+  <data name="Choose_All_Active_Inactive_All_will_not_filter_by_active_state" xml:space="preserve">
+    <value>Choisir Tous/Actifs/Inactifs — `Tous` ne filtrera pas par état actif.</value>
   </data>
-  <data name="Duration" xml:space="preserve">
-    <value>Durée (en minutes)</value>
+  <data name="Click_the_caret_to_expand_or_collapse_child_nodes" xml:space="preserve">
+    <value>Cliquez sur le chevron pour développer ou réduire les nœuds enfants</value>
   </data>
-  <data name="DurationForMovement" xml:space="preserve">
-    <value>Durée du mouvement (en minutes)</value>
+  <data name="Edit_Chart_Of_Account_Management" xml:space="preserve">
+    <value>Modifier la gestion du plan comptable</value>
   </data>
-  <data name="SampleMessageToBeSendBeforeTimespanElapse" xml:space="preserve">
-    <value>Exemple de message à envoyer avant l’expiration de la période</value>
+  <data name="Filter_and_manage_affiliates_search_by_code_name_status_and_creation_date" xml:space="preserve">
+    <value>Filtrer et gérer les affiliés (recherche par code, nom, statut et date de création).</value>
+  </data>
+  <data name="Follow_the_established_numbering_system_for_consistent_account_identification" xml:space="preserve">
+    <value>Suivre le système de numérotation établi pour une identification cohérente des comptes.</value>
+  </data>
+  <data name="Important_Changes_to_account_structure_may_affect_financial_reporting_and_transactions" xml:space="preserve">
+    <value> Important : Les modifications de la structure des comptes peuvent affecter les rapports financiers et les transactions.</value>
+  </data>
+  <data name="Maintain_proper_parent_child_relationships_for_accurate_financial_reporting" xml:space="preserve">
+    <value>Maintenir des relations parent-enfant appropriées pour une comptabilité précise.</value>
+  </data>
+  <data name="Manage_and_organize_your_financial_accounts_hierarchy_with_ease_Display_edit_and_maintain_your_chart_of_accounts_structure" xml:space="preserve">
+    <value> Gérez et organisez facilement la hiérarchie de vos comptes financiers. Affichez, modifiez et maintenez la structure de votre plan comptable.</value>
+  </data>
+  <data name="Matches_against_affiliate_name" xml:space="preserve">
+    <value>Correspondances avec le nom de l’affilié.</value>
+  </data>
+  <data name="Naming_Convention" xml:space="preserve">
+    <value>Convention de nommage</value>
+  </data>
+  <data name="Only_leaf_level_accounts_with_no_children_should_allow_transaction_posting" xml:space="preserve">
+    <value>Seuls les comptes de niveau feuille (sans comptes enfants) doivent permettre la saisie de transactions.</value>
+  </data>
+  <data name="PCMF_CAMCULL_Details" xml:space="preserve">
+    <value>Détails PCMF CAMCULL</value>
+  </data>
+  <data name="Posting_nodes_are_labelled_with_a_Posting_badge" xml:space="preserve">
+    <value>Les nœuds de saisie sont étiquetés avec un badge &lt;span class="badge bg-info"&gt;Saisie&lt;/span&gt;.</value>
+  </data>
+  <data name="Posting_Rights" xml:space="preserve">
+    <value>Droits de saisie</value>
+  </data>
+  <data name="Remember_to_save_after_making_any_modifications_to_account_details" xml:space="preserve">
+    <value> N’oubliez pas de sauvegarder après toute modification des détails du compte.</value>
+  </data>
+  <data name="Select_an_account_to_view_details" xml:space="preserve">
+    <value>Sélectionnez un compte pour voir les détails</value>
+  </data>
+  <data name="Toggle_date_filters_to_limit_by_creation_range_UTC" xml:space="preserve">
+    <value>Activez/désactivez les filtres de date pour limiter selon la plage de création (UTC)</value>
+  </data>
+  <data name="Use_clear_and_consistent_naming_in_both_English_and_French_for_all_accounts" xml:space="preserve">
+    <value> Utilisez un nommage clair et cohérent en anglais et en français pour tous les comptes.</value>
+  </data>
+  <data name="Use_Expand_and_Collapse_to_open_close_all_nodes_quickly" xml:space="preserve">
+    <value>Utilisez &lt;em&gt;Développer&lt;/em&gt; et &lt;em&gt;Réduire&lt;/em&gt; pour ouvrir/fermer rapidement tous les nœuds.</value>
+  </data>
+  <data name="Use_full_or_partial_affiliate_code_for_quick_lookup" xml:space="preserve">
+    <value>Utilisez le code affilié complet ou partiel pour une recherche rapide.</value>
+  </data>
+  <data name="Use_the_refresh_button_to_ensure_you_re_viewing_the_latest_account_structure" xml:space="preserve">
+    <value>Utilisez le bouton Actualiser pour vous assurer de visualiser la dernière structure des comptes</value>
   </data>
 </root>

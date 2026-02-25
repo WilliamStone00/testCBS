@@ -70,7 +70,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to **Approved changes cannot be reverted automatically.** Ensure the request is legitimate before proceeding.
+        ///   Looks up a localized string similar to Approved changes cannot be reverted automatically. Ensure the request is legitimate before proceeding..
         /// </summary>
         internal static string ApprovedChangesCannotBeRevertedAutomatically {
             get {
@@ -79,7 +79,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Approved changes cannot be reverted automatically.
+        ///   Looks up a localized string similar to Approved changes cannot be reverted automatically..
         /// </summary>
         internal static string ApprovedChangesCannotBeRevertedAutomatically2 {
             get {
@@ -88,7 +88,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Be cautious of fraudulent requests and ensure all approvals align with company policies.
+        ///   Looks up a localized string similar to Be cautious of fraudulent requests and ensure all approvals align with company policies..
         /// </summary>
         internal static string BeCautiousOfFraudulentRequests {
             get {
@@ -115,7 +115,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ensure that the member requesting the phone number change is authorized and that supporting documents (if required) are available.
+        ///   Looks up a localized string similar to Ensure that the member requesting the phone number change is authorized and that supporting documents (if required) are available..
         /// </summary>
         internal static string EnsureThatTheMemberRequestingThePhoneNumberChangeIsAuthorized {
             get {
@@ -124,7 +124,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ensure that the new phone number **belongs to the member** and is active.
+        ///   Looks up a localized string similar to Ensure that the new phone number belongs to the member and is active..
         /// </summary>
         internal static string EnsureThatTheNewPhoneNumberBelongsToTheMember {
             get {
@@ -169,7 +169,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If there are any inconsistencies, **reject** the request and provide a reason in the approval comment.
+        ///   Looks up a localized string similar to If there are any inconsistencies, reject the request and provide a reason in the approval comment..
         /// </summary>
         internal static string IfThereAreAnyInconsistencies {
             get {
@@ -214,7 +214,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Manage requests for updating member phone numbers. Use the options below to view pending requests or submit new ones.
+        ///   Looks up a localized string similar to Manage requests for updating member phone numbers. Use the options below to view pending requests or submit new ones..
         /// </summary>
         internal static string ManageRequestsForUpdatingMemberPhoneNumbers {
             get {
@@ -277,7 +277,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Once approved, the change will take effect immediately and cannot be undone.
+        ///   Looks up a localized string similar to Once approved, the change will take effect immediately and cannot be undone..
         /// </summary>
         internal static string OnceApprovedTheChangeWillTakeEffectImmediatelyAndCannotBeUndone {
             get {
@@ -331,7 +331,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Provide a clear and concise reason for approval or rejection in the comment section.
+        ///   Looks up a localized string similar to Provide a clear and concise reason for approval or rejection in the comment section..
         /// </summary>
         internal static string ProvideAclearAndConciseReasonForApproval {
             get {
@@ -349,7 +349,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Requests must be approved by an authorized officer.
+        ///   Looks up a localized string similar to Requests must be approved by an authorized officer..
         /// </summary>
         internal static string RequestsMustBeApprovedByAnAuthorizedOfficer {
             get {
@@ -358,7 +358,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Review pending requests and take necessary actions to **approve or reject** changes.
+        ///   Looks up a localized string similar to Review pending requests and take necessary actions to approve or reject changes..
         /// </summary>
         internal static string ReviewPendingRequestsAndTakeNecessaryActions {
             get {
@@ -376,7 +376,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Security consideration.
+        ///   Looks up a localized string similar to Security considerations.
         /// </summary>
         internal static string SecurityConsideration {
             get {
@@ -385,7 +385,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The old phone number will be replaced with the new one in the system upon approval.
+        ///   Looks up a localized string similar to The old phone number will be replaced with the new one in the system upon approval..
         /// </summary>
         internal static string TheOldPhoneNumberWillBeReplacedWithTheNewOneInTheSystemUponApproval {
             get {
@@ -421,7 +421,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You are about to review and approve a phone number change request. Please ensure the details are accurate before proceeding with approval.
+        ///   Looks up a localized string similar to You are about to review and approve a phone number change request. Please ensure the details are accurate before proceeding with approval..
         /// </summary>
         internal static string YouAreAboutToReviewAndApproveAPhoneNumberChangeRequest {
             get {

@@ -117,28 +117,43 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AccountingConfigurations" xml:space="preserve">
-    <value>Paramètres comptables</value>
+  <data name="Reconcile_Fallback_Transaction" xml:space="preserve">
+    <value>Rapprocher la transaction de secours (fallback)</value>
   </data>
-  <data name="AlertTimeBeforeTimespanElapseInMinutes" xml:space="preserve">
-    <value>Temps d’alerte avant l’expiration de la période, en minutes</value>
+  <data name="Branch_accounts_not_available_Please_try_refreshing_the_page" xml:space="preserve">
+    <value>Comptes de l’agence non disponibles. Veuillez essayer de rafraîchir la page</value>
   </data>
-  <data name="CashMovementConfigurationPanel" xml:space="preserve">
-    <value>Panneau de configuration des mouvements de liquidités</value>
+  <data name="Detailed_information_about_the_fallback_transaction" xml:space="preserve">
+    <value>Informations détaillées sur la transaction de secours (fallback)</value>
   </data>
-  <data name="CashTrackerManagement" xml:space="preserve">
-    <value>Gestion du suivi des liquidités</value>
+  <data name="Fallback_GL_Account" xml:space="preserve">
+    <value>Compte du Grand Livre (GL) de secours (fallback)</value>
   </data>
-  <data name="DistanceToCover" xml:space="preserve">
-    <value>Distance à parcourir (en kilomètres)</value>
+  <data name="Fallback_GL_Contains" xml:space="preserve">
+    <value>Le compte GL de secours (fallback) contient</value>
   </data>
-  <data name="Duration" xml:space="preserve">
-    <value>Durée (en minutes)</value>
+  <data name="Fallback_Log_Details" xml:space="preserve">
+    <value>Détails du journal (log) de secours (fallback)</value>
   </data>
-  <data name="DurationForMovement" xml:space="preserve">
-    <value>Durée du mouvement (en minutes)</value>
+  <data name="Fallback_Reconciliation" xml:space="preserve">
+    <value>Rapprochement de secours (Fallback Reconciliation)</value>
   </data>
-  <data name="SampleMessageToBeSendBeforeTimespanElapse" xml:space="preserve">
-    <value>Exemple de message à envoyer avant l’expiration de la période</value>
+  <data name="Manage_and_reconcile_affiliate_to_branch_fallback_transactions" xml:space="preserve">
+    <value>Gérer et rapprocher les transactions de secours (fallback) des affiliés vers l’agence</value>
+  </data>
+  <data name="Reconcile_the_fallback_transaction_by_mapping_source_and_destination_GL_accounts" xml:space="preserve">
+    <value>Rapprocher la transaction de secours (fallback) en associant les comptes GL source et destination</value>
+  </data>
+  <data name="Review_and_reconcile_transactions_that_fell_back_to_branch_accounts" xml:space="preserve">
+    <value>Examiner et rapprocher les transactions qui ont été redirigées vers les comptes de l’agence</value>
+  </data>
+  <data name="Supposed_GL_Account" xml:space="preserve">
+    <value>Compte GL supposé (Supposed GL Account)</value>
+  </data>
+  <data name="Supposed_GL_Contains" xml:space="preserve">
+    <value>Le compte GL supposé contient</value>
+  </data>
+  <data name="Your_account_information_content_here" xml:space="preserve">
+    <value>Le contenu des informations de votre compte ici</value>
   </data>
 </root>

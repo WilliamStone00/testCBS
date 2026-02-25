@@ -117,28 +117,70 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AccountingConfigurations" xml:space="preserve">
-    <value>Paramètres comptables</value>
+  <data name="Blocked_By" xml:space="preserve">
+    <value>Bloqué par</value>
   </data>
-  <data name="AlertTimeBeforeTimespanElapseInMinutes" xml:space="preserve">
-    <value>Temps d’alerte avant l’expiration de la période, en minutes</value>
+  <data name="Active_Blocks" xml:space="preserve">
+    <value>Blocages actifs</value>
   </data>
-  <data name="CashMovementConfigurationPanel" xml:space="preserve">
-    <value>Panneau de configuration des mouvements de liquidités</value>
+  <data name="Blacklist_Configuration" xml:space="preserve">
+    <value>Configuration de la liste noire</value>
   </data>
-  <data name="CashTrackerManagement" xml:space="preserve">
-    <value>Gestion du suivi des liquidités</value>
+  <data name="BLACKLIST_USER_IP" xml:space="preserve">
+    <value>Mettre un utilisateur / une adresse IP sur liste noire</value>
   </data>
-  <data name="DistanceToCover" xml:space="preserve">
-    <value>Distance à parcourir (en kilomètres)</value>
+  <data name="Blacklisted_User_Details" xml:space="preserve">
+    <value>Détails de l’utilisateur inscrit sur liste noire</value>
   </data>
-  <data name="Duration" xml:space="preserve">
-    <value>Durée (en minutes)</value>
+  <data name="BLACKLISTED_USERS" xml:space="preserve">
+    <value>Utilisateurs inscrits sur liste noire</value>
   </data>
-  <data name="DurationForMovement" xml:space="preserve">
-    <value>Durée du mouvement (en minutes)</value>
+  <data name="Blacklisted_Users_LC" xml:space="preserve">
+    <value>Utilisateurs inscrits sur liste noire</value>
   </data>
-  <data name="SampleMessageToBeSendBeforeTimespanElapse" xml:space="preserve">
-    <value>Exemple de message à envoyer avant l’expiration de la période</value>
+  <data name="Block_Ends" xml:space="preserve">
+    <value>Fin du blocage</value>
+  </data>
+  <data name="Blocked_IPs" xml:space="preserve">
+    <value>Adresses IP bloquées</value>
+  </data>
+  <data name="Blocked_On" xml:space="preserve">
+    <value>Bloqué le</value>
+  </data>
+  <data name="Blocked_User_Locations" xml:space="preserve">
+    <value>Localisation des utilisateurs bloqués</value>
+  </data>
+  <data name="Blocking_Details" xml:space="preserve">
+    <value>Détails du blocage</value>
+  </data>
+  <data name="Ensure_IP_or_User_ID_is_accurate_before_applying_a_block" xml:space="preserve">
+    <value>Assurez-vous que l’adresse IP ou l’identifiant utilisateur est correct avant d’appliquer un blocage</value>
+  </data>
+  <data name="Geolocation_Details" xml:space="preserve">
+    <value>Détails de géolocalisation</value>
+  </data>
+  <data name="Manage_users_and_IPs_that_have_been_blocked_due_to_suspicious_or_abusive_behavior" xml:space="preserve">
+    <value>Gérer les utilisateurs et les adresses IP bloqués en raison d’un comportement suspect ou abusif</value>
+  </data>
+  <data name="Monitor_and_analyze_access_control_enforced_by_the_WAF_Apply_filters_below" xml:space="preserve">
+    <value>Surveiller et analyser le contrôle d’accès appliqué par le WAF. Appliquer les filtres ci-dessous pour afficher les indicateurs sur la période sélectionnée</value>
+  </data>
+  <data name="Monitor_location_branch_and_timestamp_info_for_investigation" xml:space="preserve">
+    <value>Surveiller les informations de localisation, d’agence et d’horodatage à des fins d’investigation</value>
+  </data>
+  <data name="No_users_or_IPs_are_currently_blacklisted" xml:space="preserve">
+    <value>Aucun utilisateur ni aucune adresse IP n’est actuellement inscrit sur liste noire</value>
+  </data>
+  <data name="Reason_for_Blocking" xml:space="preserve">
+    <value>Motif du blocage</value>
+  </data>
+  <data name="Recent_Blocked_Users" xml:space="preserve">
+    <value>Utilisateurs récemment bloqués</value>
+  </data>
+  <data name="Set_a_reasonable_block_duration_long_enough_to_deter_abuse" xml:space="preserve">
+    <value>Définir une durée de blocage appropriée — suffisamment longue pour dissuader les abus</value>
+  </data>
+  <data name="Unblock_Delete_User_or_IP" xml:space="preserve">
+    <value>Débloquer / Supprimer un utilisateur ou une adresse IP</value>
   </data>
 </root>
