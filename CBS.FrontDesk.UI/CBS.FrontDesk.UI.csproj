@@ -11117,6 +11117,7 @@
     <Content Include="Views\ChequeClearance\_Details.cshtml" />
     <Content Include="Views\MembersFSeries\_AccountDetails.cshtml" />
     <Content Include="Views\StandingOrder\_ExportStandingOrder.cshtml" />
+    <Content Include="Views\ChequeClearance\_Validation.cshtml" />
     <Content Include="Views\IPSReporting\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>

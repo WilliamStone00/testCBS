@@ -354,6 +354,17 @@
 
     <div class="card-body p-3">
 
+        <!-- 🔴 Clear Generated Reports Button (Hidden by default) -->
+        <div class="text-end mb-3 d-none" id="clearButtonWrapper">
+            <button type="button"
+                    id="clearGeneratedReports"
+                    class="btn btn-danger">
+                <i class="mdi mdi-delete-outline me-1"></i>
+                Clear Generated Reports
+            </button>
+        </div>
+
+        <!-- 📊 Report Table -->
         <div class="table-responsive">
             <table id="myDataTable"
                    class="table table-hover table-bordered align-middle mb-0 custom-report-table">
@@ -371,7 +382,6 @@
                 </thead>
 
                 <tbody id="reportTableBody">
-
                 </tbody>
 
             </table>
@@ -483,24 +493,61 @@
         // 🔹 UPDATED: Supports MULTIPLE rows + buttons changed to LINKS
         function loadReportToTable(response, reportTypeValue) {
 
-            $('#clearGeneratedReports').removeClass('d-none');
+            $('#clearButtonWrapper').removeClass('d-none');
 
-            const reportName = $('#ReportType').val(); // gets the value, not text
+            const selectedReport = $('#ReportType').val();
+
+            const reportMap = {
+                "Trial Balance 6 Columns": "TB_6",
+                "Trial Balance 4 Columns": "TB_4"
+               
+            };
+
+            const reportName = reportMap[selectedReport] || selectedReport; // gets the value, not text
             const sourceMode = $('#SourceMode').val(); // gets "Temp" or "Reconciled"
-            const files = response?.files || [];
+            /*const files = response?.files || [];*/
+
+            let files = response?.files || [];
+
+            // ✅ Sort by date (newest first)
+            files.sort((a, b) => {
+
+                function extractDate(fileName) {
+                    const nameWithoutExt = fileName.replace('.xlsx', '');
+                    const parts = nameWithoutExt.split('_');
+
+                    if (parts.length >= 3) {
+                        const len = parts.length;
+                        const year = parts[len - 3];
+                        const month = parts[len - 2];
+                        const day = parts[len - 1];
+
+                        return new Date(`${year}-${month}-${day}`);
+                    }
+
+                    return new Date(0); // fallback if no date
+                }
+
+                const dateA = extractDate(a.FileName || '');
+                const dateB = extractDate(b.FileName || '');
+
+                return dateB - dateA; // 🔥 newest first
+            });
 
             if (!files.length) {
+
                 $('#reportTableBody').html(`
-            <tr>
-                <td colspan="7" class="text-center">
-                    No files available
-                </td>
-            </tr>
-        `);
-                $('#clearGeneratedReports').addClass('d-none');
+        <tr>
+            <td colspan="7" class="text-center">
+                No files available
+            </td>
+        </tr>
+    `);
+
+                $('#clearButtonWrapper').removeClass('d-none');
+                $('#reportTableContainer').removeClass('d-none'); // show container to display message
                 return;
             }
-
             let rowsHtml = '';
             let controllerName = '';
 
@@ -743,7 +790,7 @@
                 showIncludeZero(val);
 
                 if (!val.includes('trial balance')) {
-                    $('#clearGeneratedReports').addClass('d-none');
+                    $('#clearButtonWrapper').addClass('d-none');
                 }
             });
 
@@ -860,17 +907,23 @@
                 btn.prop('disabled', true);
 
                 $.ajax({
-                    url: '/CustomeReports/ClearGeneratedReports',
+                    url: '/CustomeReports/clearGeneratedReports',
                     type: 'POST',
                     success: function (response) {
                         if (response.success) {
                             appalert('✅ Reports Cleared Successfully.', 1, 1);
+
+                            loadReportToTable({ files: [] });
                         } else {
                             appalert(response.message || '⚠️ Failed to clear reports.', 2, 1);
                         }
                     },
-                    error: function () {
-                        appalert(response.message || '⚠️ An error occurred while clearing reports.', 2, 1);
+                    error: function (xhr) {
+                        let message = '⚠️ An error occurred while clearing reports.';
+                        if (xhr.responseJSON && xhr.responseJSON.message) {
+                            message = xhr.responseJSON.message;
+                        }
+                        appalert(message, 2, 1);
                     },
                     complete: function () {
                         btn.prop('disabled', false);
@@ -897,7 +950,7 @@
                 $('.accounting-year-group').addClass('d-none');
                 $accountDropdown.empty();
                 $account_group.addClass('d-none');
-                $('#clearGeneratedReports').addClass('d-none');
+                $('#clearButtonWrapper').addClass('d-none');
 
                 $('#reportTableBody').empty();
 
