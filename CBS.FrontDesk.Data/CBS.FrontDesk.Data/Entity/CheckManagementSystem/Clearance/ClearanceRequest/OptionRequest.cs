@@ -178,7 +178,7 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceReq
 
         public string CheckBook { get; set; }
 
-        public bool IsExternalCheck { get; set; }
+        public string IsExternalCheck { get; set; }
 
         
         public int? ExternalCheckLeaf { get; set; }
