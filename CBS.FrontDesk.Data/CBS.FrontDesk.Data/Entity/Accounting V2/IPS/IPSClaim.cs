@@ -70,7 +70,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.IPS
 
         public string BranchId { get; set; } = string.Empty;
         public string BranchName { get; set; }
-
+        public string BankName { get; set; }
         public string Remarks { get; set; } = string.Empty;
 
         public string PostingReference { get; set; }
