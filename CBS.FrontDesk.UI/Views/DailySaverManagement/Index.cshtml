@@ -2,17 +2,17 @@
 @{
     ViewBag.Title = "Daily Saver Account Creation";
 }
-
+@using Resources
 <div class="row">
     <div class="col-12">
         <!-- Page Header -->
         <div class="card bg-light border-0 shadow-sm mb-3">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary mb-1">
-                    <i class="mdi mdi-account-plus-outline me-2"></i> Daily Saver – Open New Account
+                    <i class="mdi mdi-account-plus-outline me-2"></i> @GlobalDailySaverManagement.Daily_Saver_Open_New_Account
                 </h1>
                 <p class="card-text text-muted mb-0">
-                    Capture only the essentials to quickly onboard a Daily Saver.
+                    @GlobalDailySaverManagement.Capture_only_the_essentials_to_quickly_onboard_a_Daily_Saver
                 </p>
             </div>
         </div>
@@ -39,7 +39,7 @@
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
         <span>
-            <i class="mdi mdi-information-outline me-2"></i> Help Tips
+            <i class="mdi mdi-information-outline me-2"></i> @GlobalShared.Help_Tips_LC
         </span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHelpTips" aria-expanded="false" aria-controls="collapseHelpTips">
             <i class="mdi mdi-chevron-down"></i>
@@ -48,10 +48,10 @@
     <div id="collapseHelpTips" class="collapse">
         <div class="card-body">
             <ul class="mb-0">
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Required fields are minimal: Identity, Address, ID, Economic activity.</li>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Opening amount is optional — enter if initial subscription is paid now.</li>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Use the cascading Country → Region → Division → Sub-Division → Town selectors.</li>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> External transaction ref helps reconcile with cash desk or MoMo receipts.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalDailySaverManagement.Required_fields_are_minimal_Identity_Address_ID_Economic_activity</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalDailySaverManagement.Opening_amount_is_optional_enter_if_initial_subscription_is_paid_now</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalDailySaverManagement.Use_the_cascading_Country_Region_Division_Sub_Division_Town_selectors</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalDailySaverManagement.External_transaction_ref_helps_reconcile_with_cash_desk_or_MoMo_receipts</li>
             </ul>
         </div>
     </div>
@@ -64,7 +64,7 @@
             <div class="accordion-item active">
                 <h2 class="accordion-header" id="dsFormHeader">
                     <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#dsFormCollapse" aria-expanded="true" aria-controls="dsFormCollapse">
-                        <i class="mdi mdi-account-card-details me-2"></i> Daily Saver – Identification Form
+                        <i class="mdi mdi-account-card-details me-2"></i> @GlobalDailySaverManagement.Daily_Saver_Identification_Form
                     </button>
                 </h2>
                 <div id="dsFormCollapse" class="accordion-collapse collapse show" data-bs-parent="#accordionDailySaver">

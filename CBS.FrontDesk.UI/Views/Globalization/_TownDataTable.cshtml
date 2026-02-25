@@ -1,16 +1,16 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Config.GlobalizationViewModel
-
+@using Resources
 <!-- Town Table -->
 <hr />
-<h6 class="text-secondary mb-3"><i class="bi bi-list-check"></i> Existing Towns</h6>
+<h6 class="text-secondary mb-3"><i class="bi bi-list-check"></i> @GlobalGlobalization.Existing_Towns</h6>
 
 <div class="table-responsive">
     <table id="townTable" class="table table-bordered table-striped table-hover table-sm w-100">
         <thead class="table-light">
             <tr>
-                <th>SubDivision</th>
-                <th>Town Name</th>
-                <th style="width: 120px;">Actions</th>
+                <th>@GlobalShared.SubDivision</th>
+                <th>@GlobalGlobalization.Town_Name</th>
+                <th style="width: 120px;">@GlobalShared.Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -61,7 +61,7 @@
             {
                 <tr>
                     <td colspan="3" class="text-center text-muted">
-                        <i class="bi bi-info-circle me-1"></i> No towns found.
+                        <i class="bi bi-info-circle me-1"></i> @GlobalGlobalization.No_towns_found
                     </td>
                 </tr>
             }

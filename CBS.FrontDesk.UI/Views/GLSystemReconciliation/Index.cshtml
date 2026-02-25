@@ -1,6 +1,6 @@
 ﻿
 @model CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation.Reconciliation
-
+@using Resources
 
 @{
     ViewBag.Title = "G.L System Reconciliation";
@@ -13,7 +13,7 @@
 <div class="card bg-light mb-3">
     <div class="card-body text-center">
         <h1 class="card-title text-primary">
-            <i class="mdi mdi-cog-outline me-2"></i> System Reconciliation
+            <i class="mdi mdi-cog-outline me-2"></i> @GlobalGLSystemReconciliation.System_Reconciliation
         </h1>
 
         @*<div class="alert alert-info mt-3 py-2">
@@ -25,7 +25,7 @@
 
 <div class="card mb-2">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> FILTER USAGE GUIDE</span>
+        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalGLSystemReconciliation.FILTER_USAGE_GUIDE</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFilterTips" aria-expanded="true">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -34,14 +34,14 @@
     <div id="collapseFilterTips" class="collapse">
         <div class="card-body">
             <ul class="mb-0">
-                <li><strong>Branch Filter:</strong> Check the box to enable branch selection. You can show or hide it as needed.</li>
-                <li><strong>Operation Type:</strong> Choose whether to view <em>Cash In</em> or <em>Cash Out</em> operations.</li>
-                <li><strong>Reconciliation Status:</strong> Filter between <em>Temporary</em> or <em>Reconciled</em> journal entries.</li>
-                <li><strong>Reference:</strong> Enter a reference number or keyword to search for specific transactions.</li>
-                <li><strong>Date Filters:</strong> Use the toggle to show or hide accounting and creation date filters. You can filter by range for better results.</li>
-                <li><strong>Apply Filters:</strong> Click <em>Search</em> to load matching results in the table below.</li>
-                <li><strong>Reset Filters:</strong> Use the reset button to clear all filters and start a new search.</li>
-                <li><strong>Tip:</strong> Combine filters (e.g., Branch + Date) for more precise results.</li>
+                <li><strong>@GlobalShared.Branch_Filter:</strong> @GlobalGLSystemReconciliation.Check_the_box_to_enable_branch_selection_You_can_show_or_hide_it_as_needed</li>
+                <li><strong>@GlobalShared.Operation_type:</strong> @Html.Raw(@GlobalGLSystemReconciliation.Choose_whether_to_view_Cash_In_or_Cash_Out_operations)</li>
+                <li><strong>@GlobalShared.Reconciliation_Status:</strong> @Html.Raw(@GlobalGLSystemReconciliation.Filter_between_Temporary_or_Reconciled_journal_entries)</li>
+                <li><strong>@GlobalShared.Reference:</strong> @GlobalGLSystemReconciliation.Enter_a_reference_number_or_keyword_to_search_for_specific_transactions</li>
+                <li><strong>@GlobalShared.Date_Filters:</strong> @GlobalGLSystemReconciliation.Use_the_toggle_to_show_or_hide_accounting_and_creation_date_filters_You_can_filter_by_range_for_better_results</li>
+                <li><strong>@GlobalShared.Apply_filters:</strong> @GlobalGLSystemReconciliation.Click_Search_to_load_matching_results_in_the_table_below</li>
+                <li><strong>@GlobalShared.Reset_Filters:</strong> @GlobalGLSystemReconciliation.Use_the_reset_button_to_clear_all_filters_and_start_a_new_search</li>
+                <li><strong>@GlobalShared.Tip:</strong> @GlobalGLSystemReconciliation.Combine_filters_e_g_Branch_Date_for_more_precise_results</li>
             </ul>
         </div>
     </div>
@@ -54,7 +54,7 @@
 
 <div class="card shadow p-3 mb-2">
     <h5 class="text-primary mb-2">
-        <i class="mdi mdi-filter-outline me-1"></i> ADVANCE FILTERS
+        <i class="mdi mdi-filter-outline me-1"></i> @GlobalShared.ADVANCE_FILTERS
     </h5>
 
     <form id="systemReconciliationFilterForm" autocomplete="off" method="post">
@@ -75,7 +75,7 @@
                         <input class="form-check-input" type="checkbox" id="toggleBranch"
                                onclick="document.getElementById('branchFilter').classList.toggle('d-none')" />
                         <label class="form-check-label fw-bold" for="toggleBranch">
-                            Show Branch Filter
+                            @GlobalShared.Show_Branch_Filter
                         </label>
                     </div>
                 </div>
@@ -85,7 +85,7 @@
                         <input class="form-check-input" type="checkbox" id="toggleDateFilters"
                                onclick="document.getElementById('dateFilters').classList.toggle('d-none')" />
                         <label class="form-check-label fw-bold" for="toggleDateFilters">
-                            Show Date Filters
+                            @GlobalShared.Show_Date_Filters
                         </label>
                     </div>
                 </div>
@@ -95,7 +95,7 @@
             <div id="branchFilter" class="d-none mb-3">
                 <div class="row">
                     <div class="col-md-12">
-                        <label class="form-label fw-bold">Branch</label>
+                        <label class="form-label fw-bold">@GlobalShared.Branch</label>
                         @Html.DropDownList("BranchId",
                             new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
                             "--- Select Branch ---",
@@ -108,12 +108,12 @@
             <div id="dateFilters" class="d-none mb-3">
                 <div class="row">
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">Start Date</label>
+                        <label class="form-label fw-bold">@GlobalShared.Start_Date</label>
                         <input type="date" id="FromDate" name="FromDate" class="form-control" />
                     </div>
 
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">End Date</label>
+                        <label class="form-label fw-bold">@GlobalShared.End_Date</label>
                         <input type="date" id="ToDate" name="ToDate" class="form-control" />
                     </div>
                 </div>
@@ -123,10 +123,10 @@
             <div class="row mb-3">
 
                 <div class="col-md-6">
-                    <label class="form-label fw-bold">Member Reference</label>
+                    <label class="form-label fw-bold">@GlobalShared.Member_reference</label>
                     <input type="text" id="MemberReference" name="MemberReference"
                            class="form-control"
-                           placeholder="Enter Member Reference" />
+                           placeholder="@GlobalShared.Enter_member_reference" />
                 </div>
 
                 @*<div class="col-md-4">
@@ -137,10 +137,10 @@
                     </div>*@
 
                 <div class="col-md-6">
-                    <label class="form-label fw-bold">Reference</label>
+                    <label class="form-label fw-bold">@GlobalShared.Reference</label>
                     <input type="text" id="Reference" name="Reference"
                            class="form-control"
-                           placeholder="Enter Reference" />
+                           placeholder="@GlobalShared.Enter_Reference" />
                 </div>
             </div>
 
@@ -149,9 +149,9 @@
 
                 <div class="col-md-12">
                     <label for="Status" class="form-label fw-bold">
-                        Status
+                        @GlobalShared.Status
                         <small class="text-muted d-block">
-                            Select status for failed reconciled entries
+                            @GlobalGLSystemReconciliation.Select_status_for_failed_reconciled_entries
                         </small>
                     </label>
 
@@ -180,20 +180,20 @@
             <div class="col-12 col-md-4">
                 <button id="applyFilterBtn" type="submit"
                         class="btn btn-primary btn-sm w-100">
-                    <i class="mdi mdi-magnify me-1"></i> Apply Filters
+                    <i class="mdi mdi-magnify me-1"></i> @GlobalShared.Apply_filters
                 </button>
             </div>
 
             <div class="col-12 col-md-4">
                 <button id="resetFilterBtn" type="button"
                         class="btn btn-secondary btn-sm w-100">
-                    <i class="mdi mdi-refresh me-1"></i> Reset Filters
+                    <i class="mdi mdi-refresh me-1"></i> @GlobalShared.Reset_Filters
                 </button>
             </div>
 
             <div class="col-12 col-md-4">
                 <button type="button" id="btnExportReconciliation" class="btn btn-success btn-sm w-100">
-                    <i class="mdi mdi-export me-1"></i> Export
+                    <i class="mdi mdi-export me-1"></i> @GlobalShared.Export
                 </button>
             </div>
         </div>
@@ -251,16 +251,16 @@
                 <div class="card bg-light mb-3">
                     <div class="card-body text-center">
                         <h1 class="card-title text-primary">
-                            <i class="mdi mdi-file-document-outline me-2"></i> Request Payload (Editable)
+                            <i class="mdi mdi-file-document-outline me-2"></i> @GlobalShared.Request_Payload (@GlobalShared.Editable)
                         </h1>
                         <p class="card-text">
-                            Use this page to modify the payload (Request Json).
+                            @GlobalGLSystemReconciliation.Use_this_page_to_modify_the_payload (@GlobalShared.Request_Json).
                         </p>
                         <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
                     </div>
                 </div>
 
-                <label class="form-label fw-bold">Request JSON</label>
+                <label class="form-label fw-bold">@GlobalShared.Request_Json</label>
 
                 <div id="jsonEditor"
                      style="height: 500px; border: 1px solid #dee2e6; border-radius: 6px;">
@@ -268,7 +268,7 @@
 
 
                 <small class="text-muted">
-                    Edit the JSON payload carefully. Invalid JSON will not be accepted.
+                    @GlobalGLSystemReconciliation.Edit_the_JSON_payload_carefully_Invalid_JSON_will_not_be_accepted
                 </small>
 
                 <div id="jsonError" class="text-danger mt-2 d-none"></div>
@@ -277,21 +277,21 @@
             <div class="modal-footer">
 
                 <button class="btn btn-primary btn-sm" id="btnCopyPayload">
-                    <i class="mdi mdi-content-copy me-1"></i> Copy
+                    <i class="mdi mdi-content-copy me-1"></i> @GlobalShared.Copy
                 </button>
 
 
                 <button class="btn btn-info btn-sm" id="btnBeautify">
-                    <i class="mdi mdi-format-align-left me-1"></i> Beautify
+                    <i class="mdi mdi-format-align-left me-1"></i> @GlobalShared.Beautify
                 </button>
 
                 <button class="btn btn-success btn-sm" id="btnSavePayload">
-                    <i class="mdi mdi-content-save-outline me-1"></i> Post
+                    <i class="mdi mdi-content-save-outline me-1"></i> @GlobalShared.Post
                 </button>
 
                 <button class="btn btn-secondary btn-sm"
                         data-bs-dismiss="modal">
-                    <i class="mdi mdi-close-circle-outline me-1"></i> Close
+                    <i class="mdi mdi-close-circle-outline me-1"></i> @GlobalShared.Close
                 </button>
             </div>
 

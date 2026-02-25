@@ -8,10 +8,10 @@
     <div class="card bg-light mb-4 shadow-sm">
         <div class="card-body text-center">
             <h1 class="card-title text-primary fw-bold mb-2">
-                <i class="mdi mdi-certificate-outline me-2"></i> License Details
+                <i class="mdi mdi-certificate-outline me-2"></i> @GlobalDailyCollectorLicense.License_Details
             </h1>
             <p class="card-text text-muted mb-1">
-                here we have the details for a collector's license being mapped to a device
+                @GlobalDailyCollectorLicense.here_we_have_the_details_for_a_collectors_license_being_mapped_to_a_device
             </p>
         </div>
     </div>
@@ -22,11 +22,11 @@
             <div class="row">
                 <!-- Left Column: Basic Information -->
                 <div class="col-md-6">
-                    <h6 class="text-primary"><i class="mdi mdi-information-outline me-2"></i> Basic Information</h6>
+                    <h6 class="text-primary"><i class="mdi mdi-information-outline me-2"></i> @GlobalShared.Basic_Information</h6>
                     <table class="table table-sm table-bordered mb-0">
-                        <tr><td class="fw-bold">License ID</td><td>@Model.Id</td></tr>
+                        <tr><td class="fw-bold">@GlobalDailyCollectorLicense.License_ID</td><td>@Model.Id</td></tr>
                         <tr>
-                            <td class="fw-bold">License Code</td>
+                            <td class="fw-bold">@GlobalDailyCollectorLicense.License_Code</td>
                             <td>
                                 <div class="d-flex align-items-center">
                                     <div class="font-monospace me-2 mb-0">@Model.LicenseCode</div>
@@ -37,11 +37,11 @@
                                 </div>
                             </td>
                         </tr>
-                        <tr><td class="fw-bold">Collector User</td><td>@Model.CollectorUserName</td></tr>
-                        <tr><td class="fw-bold">Collector Code</td><td>@Model.CollectorCode</td></tr>
-                        <tr><td class="fw-bold">Branch</td><td>@(Model.BranchId ?? "-")</td></tr>
+                        <tr><td class="fw-bold">@GlobalDailyCollectorLicense.Collector_User</td><td>@Model.CollectorUserName</td></tr>
+                        <tr><td class="fw-bold">@GlobalDailyCollectorLicense.Collector_Code</td><td>@Model.CollectorCode</td></tr>
+                        <tr><td class="fw-bold">@GlobalShared.Branch</td><td>@(Model.BranchId ?? "-")</td></tr>
                         <tr>
-                            <td class="fw-bold">Status</td>
+                            <td class="fw-bold">@GlobalShared.Status</td>
                             <td>
                                 <span class="badge @GetStatusBadgeClass(Model.Status)">@Model.Status</span>
                             </td>
@@ -51,24 +51,24 @@
 
                 <!-- Right Column: License Settings -->
                 <div class="col-md-6">
-                    <h6 class="text-primary"><i class="mdi mdi-cog-outline me-2"></i> License Settings</h6>
+                    <h6 class="text-primary"><i class="mdi mdi-cog-outline me-2"></i> @GlobalDailyCollectorLicense.License_Settings</h6>
                     <table class="table table-sm table-bordered mb-0">
                         <tr>
-                            <td class="fw-bold">Start Date</td>
+                            <td class="fw-bold">@GlobalShared.Start_Date</td>
                             <td>@Model.StartDate.ToString()</td>
                         </tr>
                         <tr>
-                            <td class="fw-bold">Expiry Date</td>
+                            <td class="fw-bold">@GlobalShared.Expiry_Date</td>
                             <td>
                                 <span class="@(Model.ExpiryDate < DateTime.Now ? "text-danger" : "text-success")">
                                     @Model.ExpiryDate.ToString()
                                 </span>
                             </td>
                         </tr>
-                        <tr><td class="fw-bold">Bound Device</td><td>@(string.IsNullOrEmpty(Model.BoundDeviceId) ? "Not Bound" : Model.BoundDeviceId)</td></tr>
-                        <tr><td class="fw-bold">Devices Activated</td><td>@Model.DevicesActivatedCount / @Model.MaxDevicesAllowed</td></tr>
+                        <tr><td class="fw-bold">@GlobalDailyCollectorLicense.Bound_Device</td><td>@(string.IsNullOrEmpty(Model.BoundDeviceId) ? "Not Bound" : Model.BoundDeviceId)</td></tr>
+                        <tr><td class="fw-bold">@GlobalDailyCollectorLicense.Devices_Activated</td><td>@Model.DevicesActivatedCount / @Model.MaxDevicesAllowed</td></tr>
                         <tr>
-                            <td class="fw-bold">Licensed</td>
+                            <td class="fw-bold">@GlobalShared.Licensed</td>
                             <td>
                                 @(Model.IsLicensed
                                     ? (Html.Raw("<span class=\"badge bg-success\">Yes</span>"))
@@ -76,7 +76,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="fw-bold">Revoked</td>
+                            <td class="fw-bold">@GlobalShared.Revoked</td>
                             <td>
                                 @(Model.IsRevoked
                                     ? (Html.Raw("<span class=\"badge bg-danger\">Yes</span>"))
@@ -90,10 +90,10 @@
             <!-- Message / Notes Section -->
             <div class="row mt-3">
                 <div class="col-12">
-                    <h6 class="text-primary"><i class="mdi mdi-note-outline me-2"></i> Message</h6>
+                    <h6 class="text-primary"><i class="mdi mdi-note-outline me-2"></i> @GlobalShared.Message</h6>
                     <table class="table table-sm table-bordered mb-0">
                         <tr>
-                            <td class="fw-bold">Message</td>
+                            <td class="fw-bold">@GlobalShared.Message</td>
                             <td>@(Model.Message ?? "No Message")</td>
                         </tr>
                     </table>
@@ -103,12 +103,12 @@
             <!-- Timeline Section -->
             <div class="row mt-3">
                 <div class="col-12">
-                    <h6 class="text-primary"><i class="mdi mdi-timeline-clock-outline me-2"></i> Timeline</h6>
+                    <h6 class="text-primary"><i class="mdi mdi-timeline-clock-outline me-2"></i> @GlobalShared.Timeline</h6>
                     <table class="table table-sm table-bordered mb-0">
-                        <tr><td class="fw-bold">Created Date</td><td>@Model.StartDate.ToString()</td></tr>
-                        <tr><td class="fw-bold">Created By</td><td>@Model.CollectorUserName</td></tr>
-                        <tr><td class="fw-bold">Modified Date</td><td>@Model.ExpiryDate.ToString()</td></tr>
-                        <tr><td class="fw-bold">Modified By</td><td>@Model.CollectorUserName</td></tr>
+                        <tr><td class="fw-bold">@GlobalShared.Created_Date</td><td>@Model.StartDate.ToString()</td></tr>
+                        <tr><td class="fw-bold">@GlobalShared.Created_by</td><td>@Model.CollectorUserName</td></tr>
+                        <tr><td class="fw-bold">@GlobalShared.Modified_Date</td><td>@Model.ExpiryDate.ToString()</td></tr>
+                        <tr><td class="fw-bold">@GlobalShared.Modified_By</td><td>@Model.CollectorUserName</td></tr>
                     </table>
                 </div>
             </div>
@@ -117,7 +117,7 @@
 
     <div class="d-flex justify-content-end">
         <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">
-            <i class="mdi mdi-close me-1"></i> Cancel
+            <i class="mdi mdi-close me-1"></i> @GlobalShared.Cancel
         </button>
     </div>
 

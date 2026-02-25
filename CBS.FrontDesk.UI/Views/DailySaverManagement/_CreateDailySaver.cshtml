@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.CustomerManagement.DailySaverCreateVm
-
+@using Resources
 @using (Html.BeginForm("AddOrUpdate", "DailySaverManagement", FormMethod.Post, new { enctype = "multipart/form-data", id = "memberForm", onsubmit = "return AjaxPostAndUpdate(this);" }))
 {
     @Html.AntiForgeryToken()
@@ -9,7 +9,7 @@
         <!-- Branch selection (moved into the form) -->
         <div class="card mb-3">
             <div class="card-body">
-                <label for="BranchId" class="form-label fw-bold">Select Branch</label>
+                <label for="BranchId" class="form-label fw-bold">@GlobalShared.Select_Branch</label>
                 @Html.DropDownListFor(m => m.BranchId,
                     new SelectList(ViewBag.Branches, "Id", "Name"),
                     "--- Select Branch ---",
@@ -21,15 +21,15 @@
         <!-- New / Existing toggle -->
         <div class="card mb-3">
             <div class="card-body">
-                <label class="form-label fw-bold d-block mb-2">Daily saver type</label>
+                <label class="form-label fw-bold d-block mb-2">@GlobalDailySaverManagement.Daily_saver_type</label>
                 <div id="radioButtonsContainer" class="d-flex gap-4">
                     <div class="form-check">
                         @Html.RadioButtonFor(m => m.IsNewCustomer, true, new { @class = "form-check-input", id = "rbNew" })
-                        <label class="form-check-label" for="rbNew">New Daily saver</label>
+                        <label class="form-check-label" for="rbNew">@GlobalDailySaverManagement.New_Daily_saver</label>
                     </div>
                     <div class="form-check">
                         @Html.RadioButtonFor(m => m.IsNewCustomer, false, new { @class = "form-check-input", id = "rbExisting", disabled = "disabled" })
-                        <label class="form-check-label" for="rbExisting">Existing member</label>
+                        <label class="form-check-label" for="rbExisting">@GlobalShared.Existing_member</label>
                     </div>
                 </div>
                 <!-- New Daily Saver ID (DS + 1–7 digits) -->
@@ -53,13 +53,13 @@
                             @Html.ValidationMessageFor(m => m.DailySaverId, "", new { @class = "text-danger", id = "DailySaverIdError" })
 
                             <label>
-                                Daily saver account number
+                                @GlobalDailySaverManagement.Daily_saver_account_number
                                 <i class="mdi mdi-information-outline text-primary ms-1"
                                    data-bs-toggle="tooltip"
-                                   title="If you cannot provide an account number, enter 0 and the system will generate it automatically."></i>
+                                   title="@GlobalDailySaverManagement.If_you_cannot_provide_an_account_number_enter_0_and_the_system_will_generate_it_automatically"></i>
                             </label>
                         </div>
-                        <small class="text-muted">Rule: enter <strong>0</strong> to auto-generate, else a <strong>positive integer</strong> (≤7 digits).</small>
+                        <small class="text-muted">@GlobalShared.Rule: @Html.Raw(@GlobalDailySaverManagement.enter_0_to_auto_generate_else_a_positive_integer_7_digits)
                     </div>
                 </div>
 
@@ -87,7 +87,7 @@
                            disabled = "disabled"
                        })
                             @Html.ValidationMessageFor(m => m.CustomerId, "", new { @class = "text-danger" })
-                            <label>Existing Member Account (10 digits)</label>
+                            <label>@GlobalShared.Existing_Member_Account (10 digits)</label>
                         </div>
                         <small class="text-muted">Example: 0130001234</small>
                     </div>
@@ -99,7 +99,7 @@
         <div class="card accordion-item mb-3">
             <h2 class="accordion-header" id="ds_profile_h">
                 <button class="accordion-button" data-bs-toggle="collapse" data-bs-target="#ds_profile_c">
-                    Profile
+                    @GlobalShared.Profile
                 </button>
             </h2>
             <div id="ds_profile_c" class="accordion-collapse collapse show" data-bs-parent="#dailySaverAccordion">
@@ -110,42 +110,42 @@
                                 <div class="form-floating form-floating-outline">
                                     @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", required = "required" })
                                     @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
-                                    <label>First name</label>
+                                    <label>@GlobalShared.First_Name</label>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-floating form-floating-outline">
                                     @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", required = "required" })
                                     @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
-                                    <label>Last name</label>
+                                    <label>@GlobalShared.Last_Name</label>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-floating form-floating-outline">
                                     @Html.EnumDropDownListFor(m => m.Gender, "--- Select gender ---", new { @class = "form-control select2", required = "required" })
                                     @Html.ValidationMessageFor(m => m.Gender, "", new { @class = "text-danger" })
-                                    <label>Gender</label>
+                                    <label>@GlobalShared.Gender</label>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-floating form-floating-outline">
                                     @Html.TextBoxFor(m => m.DateOfBirth, new { @class = "form-control", type = "date", required = "required" })
                                     @Html.ValidationMessageFor(m => m.DateOfBirth, "", new { @class = "text-danger" })
-                                    <label>Date of birth</label>
+                                    <label>@GlobalShared.Date_of_birth</label>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-floating form-floating-outline">
                                     @Html.TextBoxFor(m => m.Phone, new { @class = "form-control", required = "required" })
                                     @Html.ValidationMessageFor(m => m.Phone, "", new { @class = "text-danger" })
-                                    <label>Phone</label>
+                                    <label>@GlobalShared.Phone</label>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-floating form-floating-outline">
                                     @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
                                     @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
-                                    <label>Email</label>
+                                    <label>@GlobalShared.Email</label>
                                 </div>
                             </div>
                         </div>
@@ -157,7 +157,7 @@
         <div class="card accordion-item mb-3">
             <h2 class="accordion-header" id="ds_extra_h">
                 <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#ds_extra_c">
-                    Additional Information
+                    @GlobalShared.Additional_Information
                 </button>
             </h2>
             <div id="ds_extra_c" class="accordion-collapse collapse" data-bs-parent="#dailySaverAccordion">
@@ -170,7 +170,7 @@
                                 <div class="form-floating form-floating-outline">
                                     @Html.TextBoxFor(m => m.PlaceOfBirth, new { @class = "form-control", placeholder = "Place of Birth" })
                                     @Html.ValidationMessageFor(m => m.PlaceOfBirth, "", new { @class = "text-danger" })
-                                    <label>Place of Birth</label>
+                                    <label>@GlobalShared.Place_of_Birth</label>
                                 </div>
                             </div>
 
@@ -182,7 +182,7 @@
                                         "--- Select Language ---",
                                         new { @class = "form-control select2", required = "required" })
                                     @Html.ValidationMessageFor(m => m.Language, "", new { @class = "text-danger" })
-                                    <label>Language</label>
+                                    <label>@GlobalShared.Language</label>
                                 </div>
                             </div>
 
@@ -194,7 +194,7 @@
                                         "--- Select Marital Status ---",
                                         new { @class = "form-control select2", required = "required" })
                                     @Html.ValidationMessageFor(m => m.MaritalStatus, "", new { @class = "text-danger" })
-                                    <label>Marital Status</label>
+                                    <label>@GlobalShared.Marital_Status</label>
                                 </div>
                             </div>
 
@@ -204,10 +204,10 @@
                                     @Html.CheckBoxFor(m => m.IsUploadedData,
                                         new { @class = "form-check-input", disabled = "disabled" })
                                     <label class="form-check-label fw-bold" for="IsUploadedData">
-                                        Is Uploaded Data (system-managed)
+                                        @GlobalDailySaverManagement.Is_Uploaded_Data_system_managed
                                     </label>
                                 </div>
-                                <small class="text-muted">Always set to false. Controlled by system.</small>
+                                <small class="text-muted">@GlobalDailySaverManagement.Always_set_to_false_Controlled_by_system</small>
                             </div>
 
                         </div>
@@ -220,7 +220,7 @@
         <div class="card accordion-item mb-3">
             <h2 class="accordion-header" id="ds_addr_h">
                 <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#ds_addr_c">
-                    Address
+                    @GlobalShared.Address
                 </button>
             </h2>
             <div id="ds_addr_c" class="accordion-collapse collapse" data-bs-parent="#dailySaverAccordion">
@@ -231,42 +231,42 @@
                                 <div class="form-floating form-floating-outline">
                                     @Html.DropDownListFor(m => m.CountryId, new SelectList(ViewBag.Countries, "Id", "Name"), "--- Select Country ---", new { @class = "form-control select2", id = "CountryId", required = "required" })
                                     @Html.ValidationMessageFor(m => m.CountryId, "", new { @class = "text-danger" })
-                                    <label>Country</label>
+                                    <label>@GlobalShared.Country</label>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-floating form-floating-outline">
                                     @Html.DropDownListFor(m => m.RegionId, new SelectList(ViewBag.Regions, "Id", "Name"), "--- Select Region ---", new { @class = "form-control select2", id = "RegionId", required = "required" })
                                     @Html.ValidationMessageFor(m => m.RegionId, "", new { @class = "text-danger" })
-                                    <label>Region</label>
+                                    <label>@GlobalShared.Region</label>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-floating form-floating-outline">
                                     @Html.DropDownListFor(m => m.DivisionId, new SelectList(ViewBag.Divisions, "Id", "Name"), "--- Select Division ---", new { @class = "form-control select2", id = "DivisionId", required = "required" })
                                     @Html.ValidationMessageFor(m => m.DivisionId, "", new { @class = "text-danger" })
-                                    <label>Division</label>
+                                    <label>@GlobalShared.Division</label>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-floating form-floating-outline">
                                     @Html.DropDownListFor(m => m.SubDivisionId, new SelectList(ViewBag.SubDivisions, "Id", "Name"), "--- Select Sub-Division ---", new { @class = "form-control select2", id = "SubDivisionId", required = "required" })
                                     @Html.ValidationMessageFor(m => m.SubDivisionId, "", new { @class = "text-danger" })
-                                    <label>Sub-Division</label>
+                                    <label>@GlobalShared.Sub_Division</label>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-floating form-floating-outline">
                                     @Html.DropDownListFor(m => m.TownId, new SelectList(ViewBag.Towns, "Id", "Name"), "--- Select Town ---", new { @class = "form-control select2", id = "TownId", required = "required" })
                                     @Html.ValidationMessageFor(m => m.TownId, "", new { @class = "text-danger" })
-                                    <label>Town</label>
+                                    <label>@GlobalShared.Town</label>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-floating form-floating-outline">
                                     @Html.TextAreaFor(m => m.Address, new { @class = "form-control", required = "required", id = "Address" })
                                     @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger" })
-                                    <label>Address</label>
+                                    <label>@GlobalShared.Address</label>
                                 </div>
                             </div>
                         </div>
@@ -279,7 +279,7 @@
         <div class="card accordion-item mb-3">
             <h2 class="accordion-header" id="ds_id_h">
                 <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#ds_id_c">
-                    Identification
+                    @GlobalShared.Identification
                 </button>
             </h2>
             <div id="ds_id_c" class="accordion-collapse collapse" data-bs-parent="#dailySaverAccordion">
@@ -290,21 +290,21 @@
                                 <div class="form-floating form-floating-outline">
                                     @Html.TextBoxFor(m => m.IDNumber, new { @class = "form-control", required = "required" })
                                     @Html.ValidationMessageFor(m => m.IDNumber, "", new { @class = "text-danger" })
-                                    <label>National ID / Passport No.</label>
+                                    <label>@GlobalShared.National_ID / Passport No.</label>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-floating form-floating-outline">
                                     @Html.TextBoxFor(m => m.IDNumberIssueDate, new { @class = "form-control", type = "date", required = "required" })
                                     @Html.ValidationMessageFor(m => m.IDNumberIssueDate, "", new { @class = "text-danger" })
-                                    <label>Date issued</label>
+                                    <label>@GlobalShared.Date_issued</label>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-floating form-floating-outline">
                                     @Html.TextBoxFor(m => m.IDNumberIssueAt, new { @class = "form-control", required = "required" })
                                     @Html.ValidationMessageFor(m => m.IDNumberIssueAt, "", new { @class = "text-danger" })
-                                    <label>Place issued</label>
+                                    <label>@GlobalShared.Place_issued</label>
                                 </div>
                             </div>
                         </div>
@@ -317,7 +317,7 @@
         <div class="card accordion-item mb-3">
             <h2 class="accordion-header" id="ds_eco_h">
                 <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#ds_eco_c">
-                    Account Setup
+                    @GlobalShared.Account_Setup
                 </button>
             </h2>
             <div id="ds_eco_c" class="accordion-collapse collapse" data-bs-parent="#dailySaverAccordion">
@@ -328,28 +328,28 @@
                                 <div class="form-floating form-floating-outline">
                                     @Html.DropDownListFor(m => m.EconomicActivitiesId, new SelectList(ViewBag.EconomicActivities, "Id", "Name"), "--- Select activity ---", new { @class = "form-control select2", required = "required" })
                                     @Html.ValidationMessageFor(m => m.EconomicActivitiesId, "", new { @class = "text-danger" })
-                                    <label>Economic activity</label>
+                                    <label>@GlobalShared.Economic_activity</label>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-floating form-floating-outline">
                                     @Html.TextBoxFor(m => m.Occupation, new { @class = "form-control", required = "required" })
                                     @Html.ValidationMessageFor(m => m.Occupation, "", new { @class = "text-danger" })
-                                    <label>Occupation</label>
+                                    <label>@GlobalShared.Occupation</label>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-floating form-floating-outline">
                                     @Html.TextBoxFor(m => m.TotalSubscriptionAmount, new { @class = "form-control", type = "number", step = "0.01", min = "0" })
                                     @Html.ValidationMessageFor(m => m.TotalSubscriptionAmount, "", new { @class = "text-danger" })
-                                    <label>Opening Amount (optional)</label>
+                                    <label>@GlobalShared.Opening_Amount (@GlobalShared.Optional)</label>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-floating form-floating-outline">
                                     @Html.TextBoxFor(m => m.ExternalTransactionReference, new { @class = "form-control" })
                                     @Html.ValidationMessageFor(m => m.ExternalTransactionReference, "", new { @class = "text-danger" })
-                                    <label>External Transaction Ref.</label>
+                                    <label>@GlobalDailySaverManagement.External_Transaction_Ref.</label>
                                 </div>
                             </div>
                         </div>
@@ -361,9 +361,9 @@
         </div>
         <div class="mt-4 d-flex gap-2">
             <button type="submit" class="btn btn-primary">
-                <i class="mdi mdi-content-save-outline me-1"></i> Save
+                <i class="mdi mdi-content-save-outline me-1"></i> @GlobalShared.Save
             </button>
-            <a href="@Url.Action("Index","DailySaverManagement")" class="btn btn-outline-secondary">Cancel</a>
+            <a href="@Url.Action("Index","DailySaverManagement")" class="btn btn-outline-secondary">@GlobalShared.Cancel</a>
         </div>
     </div>
 }

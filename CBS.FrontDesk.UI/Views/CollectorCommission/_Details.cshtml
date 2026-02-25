@@ -1,15 +1,15 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission.DataTableResponse
-
+@using Resources
 <fieldset class="fieldset-custom">
 
     <!-- Header Card -->
     <div class="card bg-light mb-4 shadow-sm">
         <div class="card-body text-center">
             <h1 class="card-title text-primary fw-bold mb-2">
-                <i class="mdi mdi-account-cash me-2"></i> Commission Payment Details
+                <i class="mdi mdi-account-cash me-2"></i>  @GlobalCollectorCommission.Commission_Payment_Details
             </h1>
             <p class="card-text text-muted mb-1">
-                Detailed view of commission payment information and transaction details
+                @GlobalCollectorCommission.Detailed_view_of_commission_payment_information_and_transaction_details
             </p>
         </div>
     </div>
@@ -17,27 +17,27 @@
     <div class="row">
         <!-- Left Column - Basic Information -->
         <div class="col-md-6">
-            <h6 class="text-primary"><i class="mdi mdi-information-outline me-2"></i> Basic Information</h6>
+            <h6 class="text-primary"><i class="mdi mdi-information-outline me-2"></i>  @GlobalShared.Basic_Information</h6>
             <table class="table table-sm table-bordered">
-                <tr><td class="fw-bold">Payment ID:</td><td>@Model.Id</td></tr>
-                <tr><td class="fw-bold">Reference Number:</td><td>@(Model.ReferenceNumber ?? "-")</td></tr>
-                <tr><td class="fw-bold">Member Reference:</td><td>@(Model.MemberReference ?? "-")</td></tr>
-                <tr><td class="fw-bold">Currency:</td><td>@(Model.Currency ?? "-")</td></tr>
-                <tr><td class="fw-bold">Payment Source:</td><td>@(Model.PaymentSource ?? "-")</td></tr>
-                <tr><td class="fw-bold">Description:</td><td>@(Model.Description ?? "-")</td></tr>
+                <tr><td class="fw-bold"> @GlobalShared.Payment_ID:</td><td>@Model.Id</td></tr>
+                <tr><td class="fw-bold"> @GlobalShared.Reference_Number:</td><td>@(Model.ReferenceNumber ?? "-")</td></tr>
+                <tr><td class="fw-bold"> @GlobalShared.Member_reference:</td><td>@(Model.MemberReference ?? "-")</td></tr>
+                <tr><td class="fw-bold"> @GlobalShared.Currency:</td><td>@(Model.Currency ?? "-")</td></tr>
+                <tr><td class="fw-bold"> @GlobalShared.Payment_Source:</td><td>@(Model.PaymentSource ?? "-")</td></tr>
+                <tr><td class="fw-bold"> @GlobalShared.Description:</td><td>@(Model.Description ?? "-")</td></tr>
             </table>
         </div>
 
         <!-- Right Column - Collector Information -->
         <div class="col-md-6">
-            <h6 class="text-primary"><i class="mdi mdi-account-group me-2"></i> Collector Information</h6>
+            <h6 class="text-primary"><i class="mdi mdi-account-group me-2"></i>  @GlobalShared.Collector_Information</h6>
             <table class="table table-sm table-bordered">
-                <tr><td class="fw-bold">Collector ID:</td><td>@Model.CollectorId</td></tr>
-                <tr><td class="fw-bold">Collector Name:</td><td>@(Model.CollectorName ?? "-")</td></tr>
-                <tr><td class="fw-bold">Phone Number:</td><td>@(Model.CollectorPhoneNumber ?? "-")</td></tr>
-                <tr><td class="fw-bold">Account Number:</td><td>@(Model.CollectorAccountNumber ?? "-")</td></tr>
-                <tr><td class="fw-bold">Branch:</td><td>@(Model.BranchName ?? Model.BranchCode ?? "-")</td></tr>
-                <tr><td class="fw-bold">Branch Code:</td><td>@(Model.BranchCode ?? "-")</td></tr>
+                <tr><td class="fw-bold"> @GlobalShared.Collector ID:</td><td>@Model.CollectorId</td></tr>
+                <tr><td class="fw-bold"> @GlobalShared.Collector Name:</td><td>@(Model.CollectorName ?? "-")</td></tr>
+                <tr><td class="fw-bold"> @GlobalShared.Phone Number:</td><td>@(Model.CollectorPhoneNumber ?? "-")</td></tr>
+                <tr><td class="fw-bold"> @GlobalShared.Account Number:</td><td>@(Model.CollectorAccountNumber ?? "-")</td></tr>
+                <tr><td class="fw-bold"> @GlobalShared.Branch:</td><td>@(Model.BranchName ?? Model.BranchCode ?? "-")</td></tr>
+                <tr><td class="fw-bold"> @GlobalShared.Branch_Code:</td><td>@(Model.BranchCode ?? "-")</td></tr>
             </table>
         </div>
     </div>
@@ -45,26 +45,26 @@
     <!-- Amounts Section -->
     <div class="row mt-3">
         <div class="col-12">
-            <h6 class="text-primary"><i class="mdi mdi-cash-multiple me-2"></i> Payment Amounts</h6>
+            <h6 class="text-primary"><i class="mdi mdi-cash-multiple me-2"></i>  @GlobalShared.Payment_Amounts</h6>
             <table class="table table-sm table-bordered">
                 <tr>
-                    <td class="fw-bold">Collector Share Amount:</td>
+                    <td class="fw-bold"> @GlobalCollectorCommission.Collector_Share_Amount:</td>
                     <td class="text-success fw-bold">@String.Format("{0:N2}", Model.CollectorShareAmount)</td>
                 </tr>
                 <tr>
-                    <td class="fw-bold">Incentive Amount:</td>
+                    <td class="fw-bold"> @GlobalShared.Incentive_Amount:</td>
                     <td class="text-success fw-bold">@String.Format("{0:N2}", Model.IncentiveAmount)</td>
                 </tr>
                 <tr>
-                    <td class="fw-bold">Total Paid to Collector:</td>
+                    <td class="fw-bold"> @GlobalCollectorCommission.Total_Paid_to_Collector:</td>
                     <td class="text-success fw-bold">@String.Format("{0:N2}", Model.TotalPaidAmountToCollector)</td>
                 </tr>
                 <tr>
-                    <td class="fw-bold">Total Commission Shared:</td>
+                    <td class="fw-bold"> @GlobalCollectorCommission.Total_Commission_Shared:</td>
                     <td class="text-info fw-bold">@String.Format("{0:N2}", Model.TotalCommissionShared)</td>
                 </tr>
                 <tr>
-                    <td class="fw-bold">Amount Paid:</td>
+                    <td class="fw-bold"> @GlobalShared.Amount Paid:</td>
                     <td class="text-primary fw-bold">@String.Format("{0:N2}", Model.AmountPaid)</td>
                 </tr>
             </table>
@@ -74,20 +74,20 @@
     <!-- Period Information -->
     <div class="row mt-3">
         <div class="col-md-6">
-            <h6 class="text-primary"><i class="mdi mdi-calendar-range me-2"></i> Period Information</h6>
+            <h6 class="text-primary"><i class="mdi mdi-calendar-range me-2"></i>  @GlobalShared.Period_Information</h6>
             <table class="table table-sm table-bordered">
-                <tr><td class="fw-bold">Year:</td><td>@Model.Year</td></tr>
-                <tr><td class="fw-bold">Month:</td><td>@System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(Model.Month)</td></tr>
-                <tr><td class="fw-bold">Date Paid:</td><td>@Model.DatePaid.ToString("yyyy-MM-dd HH:mm:ss")</td></tr>
+                <tr><td class="fw-bold"> @GlobalShared.Year:</td><td>@Model.Year</td></tr>
+                <tr><td class="fw-bold"> @GlobalShared.Month:</td><td>@System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(Model.Month)</td></tr>
+                <tr><td class="fw-bold"> @GlobalShared.Date Paid:</td><td>@Model.DatePaid.ToString("yyyy-MM-dd HH:mm:ss")</td></tr>
             </table>
         </div>
 
         <!-- Processing Information -->
         <div class="col-md-6">
-            <h6 class="text-primary"><i class="mdi mdi-account-cog me-2"></i> Processing Information</h6>
+            <h6 class="text-primary"><i class="mdi mdi-account-cog me-2"></i>  @GlobalShared.Processing_Information</h6>
             <table class="table table-sm table-bordered">
-                <tr><td class="fw-bold">Processed By:</td><td>@(Model.ProcessedBy ?? "-")</td></tr>
-                <tr><td class="fw-bold">Processed By User ID:</td><td>@(Model.ProcessedByUserId ?? "-")</td></tr>
+                <tr><td class="fw-bold"> @GlobalShared.Processed_By:</td><td>@(Model.ProcessedBy ?? "-")</td></tr>
+                <tr><td class="fw-bold"> @GlobalShared.Processed_By_User_ID:</td><td>@(Model.ProcessedByUserId ?? "-")</td></tr>
             </table>
         </div>
     </div>
@@ -95,44 +95,44 @@
     <!-- Timeline Section -->
     <div class="row mt-3">
         <div class="col-12">
-            <h6 class="text-primary"><i class="mdi mdi-timeline-clock-outline me-2"></i> Timeline</h6>
+            <h6 class="text-primary"><i class="mdi mdi-timeline-clock-outline me-2"></i>  @GlobalShared.Timeline</h6>
             <table class="table table-sm table-bordered">
                 <tr>
-                    <td class="fw-bold">Created Date:</td>
+                    <td class="fw-bold"> @GlobalShared.Created_Date:</td>
                     <td>@Model.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss")</td>
                 </tr>
                 <tr>
-                    <td class="fw-bold">Created By:</td>
+                    <td class="fw-bold"> @GlobalShared.Created_by:</td>
                     <td>@(Model.CreatedBy ?? "-")</td>
                 </tr>
                 <tr>
-                    <td class="fw-bold">Modified Date:</td>
+                    <td class="fw-bold"> @GlobalShared.Modified_Date:</td>
                     <td>@Model.ModifiedDate.ToString("yyyy-MM-dd HH:mm:ss")</td>
                 </tr>
                 <tr>
-                    <td class="fw-bold">Modified By:</td>
+                    <td class="fw-bold"> @GlobalShared.Modified_By:</td>
                     <td>@(Model.ModifiedBy ?? "-")</td>
                 </tr>
                 @if (Model.IsDeleted)
                 {
                     <tr class="table-danger">
-                        <td class="fw-bold">Deleted Date:</td>
+                        <td class="fw-bold"> @GlobalShared.Deleted_Date:</td>
                         <td>@(Model.DeletedDate?.ToString("yyyy-MM-dd HH:mm:ss") ?? "-")</td>
                     </tr>
                     <tr class="table-danger">
-                        <td class="fw-bold">Deleted By:</td>
+                        <td class="fw-bold"> @GlobalShared.Deleted_By:</td>
                         <td>@(Model.DeletedBy ?? "-")</td>
                     </tr>
                     <tr class="table-danger">
-                        <td class="fw-bold">Status:</td>
-                        <td class="text-danger fw-bold">DELETED</td>
+                        <td class="fw-bold"> @GlobalShared.Status:</td>
+                        <td class="text-danger fw-bold"> @GlobalShared.DELETED_UC</td>
                     </tr>
                 }
                 else
                 {
                     <tr class="table-success">
-                        <td class="fw-bold">Status:</td>
-                        <td class="text-success fw-bold">ACTIVE</td>
+                        <td class="fw-bold"> @GlobalShared.Status:</td>
+                        <td class="text-success fw-bold"> @GlobalShared.ACTIVE_UC</td>
                     </tr>
                 }
             </table>
@@ -144,32 +144,32 @@
         <div class="col-12">
             <div class="card border-primary">
                 <div class="card-header bg-primary text-white">
-                    <h6 class="mb-0"><i class="mdi mdi-summary me-2"></i> Payment Summary</h6>
+                    <h6 class="mb-0"><i class="mdi mdi-summary me-2"></i>  @GlobalShared.Payment_Summary</h6>
                 </div>
                 <div class="card-body">
                     <div class="row text-center">
                         <div class="col-md-3 mb-3">
                             <div class="border rounded p-3 bg-light">
                                 <h5 class="text-primary mb-1">@String.Format("{0:N2}", Model.TotalPaidAmountToCollector)</h5>
-                                <small class="text-muted">Total Paid to Collector</small>
+                                <small class="text-muted"> @GlobalCollectorCommission.Total_Paid_to_Collector</small>
                             </div>
                         </div>
                         <div class="col-md-3 mb-3">
                             <div class="border rounded p-3 bg-light">
                                 <h5 class="text-success mb-1">@String.Format("{0:N2}", Model.CollectorShareAmount)</h5>
-                                <small class="text-muted">Collector Share</small>
+                                <small class="text-muted"> @GlobalShared.Collector_Share</small>
                             </div>
                         </div>
                         <div class="col-md-3 mb-3">
                             <div class="border rounded p-3 bg-light">
                                 <h5 class="text-info mb-1">@String.Format("{0:N2}", Model.IncentiveAmount)</h5>
-                                <small class="text-muted">Incentives</small>
+                                <small class="text-muted"> @GlobalShared.Incentives</small>
                             </div>
                         </div>
                         <div class="col-md-3 mb-3">
                             <div class="border rounded p-3 bg-light">
                                 <h5 class="text-warning mb-1">@System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(Model.Month) @Model.Year</h5>
-                                <small class="text-muted">Commission Period</small>
+                                <small class="text-muted"> @GlobalShared.Commission_Period</small>
                             </div>
                         </div>
                     </div>

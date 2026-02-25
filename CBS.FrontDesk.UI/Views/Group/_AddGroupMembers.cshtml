@@ -10,7 +10,7 @@
                 <input type="hidden" name="Option" value="addmembers" id="Option" />
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(m => m.AddGroupCustomerCommand.CustomerIds, new MultiSelectList(ViewBag.Members, "Value", "Text"), "---"+ @GlobalGroup.SelectMembers +"---", new { @class = "form-control select2", @search = "true", @multiple = "multiple" })
+                        @Html.DropDownListFor(m => m.AddGroupCustomerCommand.CustomerIds, new MultiSelectList(ViewBag.Members, "Value", "Text"), "---"+ GlobalShared.Select_Members +"---", new { @class = "form-control select2", @search = "true", @multiple = "multiple" })
                         @Html.ValidationMessageFor(m => m.AddGroupCustomerCommand.CustomerIds, "", new { @class = "text-danger " })
                         <label for="formValidationDob">@GlobalGroup.SelectMembersAndAddTo @Model.Group.GroupName @Model.Group.GroupType.GroupTypeName</label>
                     </div>

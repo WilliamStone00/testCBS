@@ -15,28 +15,28 @@
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.amount, new { @class = "form-control"})
                     @Html.ValidationMessageFor(m => m.amount, "", new { @class = "text-danger" })
-                    <label>@GlobalFundingLine.Amount</label>
+                    <label>@GlobalShared.Amount</label>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.beginDate, new { @class = "form-control date-picker" })
                     @Html.ValidationMessageFor(m => m.beginDate, "", new { @class = "text-danger" })
-                    <label>@GlobalFundingLine.BeginDate</label>
+                    <label>@GlobalShared.Begin_Date</label>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.endDate, new { @class = "form-control date-picker"})
                     @Html.ValidationMessageFor(m => m.endDate, "", new { @class = "text-danger" })
-                    <label>@GlobalFundingLine.EndDate</label>
+                    <label>@GlobalShared.End_Date</label>
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="form-floating form-floating-outline">
                     @Html.TextAreaFor(m => m.Description, new { @class = "form-control"})
                     @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
-                    <label>@GlobalFundingLine.Description</label>
+                    <label>@GlobalShared.Description</label>
                 </div>
             </div>
             <div class="col-md-12">
@@ -50,7 +50,7 @@
                 <div class="form-floating form-floating-outline">
                     @Html.DropDownListFor(m => m.currencyId, new SelectList(ViewBag.Currencies, "Id", "Code"), "---"+@GlobalFundingLine.SelectCurrency+"---", new { @class = "form-control select2", @search = "true" })
                     @Html.ValidationMessageFor(m => m.currencyId, "", new { @class = "text-danger " })
-                    <label>@GlobalFundingLine.Currency</label>
+                    <label>@GlobalShared.Currency</label>
                 </div>
             </div>
         </div>

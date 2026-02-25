@@ -1,17 +1,17 @@
 ﻿@{
     ViewBag.Title = "Global Configuration";
 }
-
+@using Resources
 <div class="row">
     <div class="col-12">
         <!-- Page Header -->
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-cog-outline me-2"></i> Global Configuration
+                    <i class="mdi mdi-cog-outline me-2"></i> @GlobalShared.Global_Configuration
                 </h1>
                 <p class="card-text text-muted">
-                    Manage cheque configuration parameters globally and consistently.
+                    @GlobalConfig.Manage_cheque_configuration_parameters_globally_and_consistently
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -23,7 +23,7 @@
 <div class="card mb-1">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
         <span>
-            <i class="mdi mdi-information-outline me-2"></i> Tips
+            <i class="mdi mdi-information-outline me-2"></i> @GlobalShared.Tips
         </span>
         <button class="btn btn-light btn-sm"
                 type="button"
@@ -40,19 +40,19 @@
             <ul class="mb-0">
                 <li>
                     <i class="mdi mdi-check-circle-outline text-success me-2"></i>
-                    Ensure minimum and maximum cheque limits are correctly defined.
+                    @GlobalConfig.Ensure_minimum_and_maximum_cheque_limits_are_correctly_defined
                 </li>
                 <li>
                     <i class="mdi mdi-check-circle-outline text-success me-2"></i>
-                    Cheque validity days must reflect operational policies.
+                    @GlobalConfig.Cheque_validity_days_must_reflect_operational_policies
                 </li>
                 <li>
                     <i class="mdi mdi-alert-circle-outline text-warning me-2"></i>
-                    Centralised mode affects all branches.
+                    @GlobalConfig.Centralised_mode_affects_all_branches
                 </li>
                 <li>
                     <i class="mdi mdi-information-outline text-primary me-2"></i>
-                    Only one global configuration should be active.
+                    @GlobalConfig.Only_one_global_configuration_should_be_active
                 </li>
             </ul>
         </div>
@@ -73,7 +73,7 @@
                                 data-bs-target="#accordionGlobalConfigBody"
                                 aria-expanded="true"
                                 aria-controls="accordionGlobalConfigBody">
-                            <i class="mdi mdi-cog me-2"></i> Global Configuration
+                            <i class="mdi mdi-cog me-2"></i> @GlobalShared.Global_Configuration
                         </button>
                     </h2>
 
@@ -92,7 +92,7 @@
                                            class="btn btn-label-primary btn-sm me-2"
                                            data-bs-toggle="tooltip"
                                            title="View List">
-                                            <i class="mdi mdi-view-list mdi-18px"></i> View List
+                                            <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.View_List
                                         </a>
 
                                         <a type="button"
@@ -100,7 +100,7 @@
                                            class="btn btn-label-secondary btn-sm"
                                            data-bs-toggle="tooltip"
                                            title="Add Configuration">
-                                            <i class="mdi mdi-plus mdi-18px"></i> New Configuration
+                                            <i class="mdi mdi-plus mdi-18px"></i> @GlobalShared.New_Configuration
                                         </a>
                                     </div>
                                 </div>
@@ -132,10 +132,10 @@
             <div class="modal-header p-2">
                 <header class="w-100 text-center">
                     <h4 class="text-primary fw-bold mb-1">
-                        <i class="mdi mdi-cog-outline me-2"></i> Global Configuration Details
+                        <i class="mdi mdi-cog-outline me-2"></i> @GlobalConfig.Global_Configuration_Details
                     </h4>
                     <p class="text-muted mb-0">
-                        View global cheque configuration details.
+                        @GlobalConfig.View_global_cheque_configuration_details
                     </p>
                     <hr style="border: 1px solid rgba(128, 128, 128, 0.5);" />
                 </header>
@@ -151,7 +151,7 @@
                 <button type="button"
                         class="btn btn-secondary btn-sm"
                         data-bs-dismiss="modal">
-                    Close
+                    @GlobalShared.Close
                 </button>
             </div>
 

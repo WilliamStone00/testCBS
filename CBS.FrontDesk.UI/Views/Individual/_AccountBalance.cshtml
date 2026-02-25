@@ -54,7 +54,7 @@
 <div class="col-lg-12 mb-3">
     <div class="card">
         <div class="card-header">
-            <h5 class="card-title mb-0">@GlobalIndividual.AccountBalance</h5>
+            <h5 class="card-title mb-0">@GlobalShared.Account_balance</h5>
         </div>
         <div class="card-body">
             <div class="row gy-4">
@@ -111,10 +111,10 @@
                                     <!-- Reduced bottom padding -->
                                     <div class="account-details">
                                         <h6 class="mb-1">
-                                            @GlobalIndividual.Balance: <span class="text-success">@account.balance.ToString("#,##0.00")</span>
+                                            @GlobalShared.Balance: <span class="text-success">@account.balance.ToString("#,##0.00")</span>
                                         </h6>
-                                        <small>@GlobalIndividual.AccountName: <b>@account.product.Name</b></small><br />
-                                        <small>@GlobalIndividual.AccountNumber: <b>@account.accountNumber</b></small><br />
+                                        <small>@GlobalShared.Account_Name: <b>@account.product.Name</b></small><br />
+                                        <small>@GlobalShared.Account_Number: <b>@account.accountNumber</b></small><br />
                                     </div>
                                 </div>
                                 <!-- Slimmer Card Footer -->

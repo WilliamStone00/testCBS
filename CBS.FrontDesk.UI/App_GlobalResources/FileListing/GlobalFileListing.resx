@@ -1,0 +1,291 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Always_verify_Trial_and_Member_Balance_data_before_confirming" xml:space="preserve">
+    <value>Always verify Trial and Member Balance data before confirming</value>
+  </data>
+  <data name="Check_Balances" xml:space="preserve">
+    <value>Check Balances</value>
+  </data>
+  <data name="Check_file_size_type_and_upload_timestamps" xml:space="preserve">
+    <value>Check file size, type, and upload timestamps</value>
+  </data>
+  <data name="Check_technical_details_tab_for_processing_errors" xml:space="preserve">
+    <value>Check technical details tab for processing errors</value>
+  </data>
+  <data name="Choose_All_Active_Inactive_All_will_not_filter_by_active_state" xml:space="preserve">
+    <value>Choose All/Active/Inactive — `All` will not filter by active state.</value>
+  </data>
+  <data name="Click_column_headers_to_sort_data" xml:space="preserve">
+    <value>Click column headers to sort data</value>
+  </data>
+  <data name="Click_section_headers_to_show_hide_data_tables" xml:space="preserve">
+    <value>Click section headers to show/hide data tables</value>
+  </data>
+  <data name="Click_View_buttons_to_see_complete_record_information" xml:space="preserve">
+    <value>Click "View" buttons to see complete record information</value>
+  </data>
+  <data name="Color_coded_badges_show_file_processing_state" xml:space="preserve">
+    <value>Color-coded badges show file processing state</value>
+  </data>
+  <data name="Confirmation_Process" xml:space="preserve">
+    <value>Confirmation Process</value>
+  </data>
+  <data name="Confirm_Reconciliation" xml:space="preserve">
+    <value>Confirm Reconciliation</value>
+  </data>
+  <data name="Dates_are_treated_as_UTC" xml:space="preserve">
+    <value>Dates are treated as UTC (CreatedFromUtc / CreatedToUtc)</value>
+  </data>
+  <data name="Destination_GL_Id" xml:space="preserve">
+    <value>Destination GL Id</value>
+  </data>
+  <data name="Destination_GL_Name" xml:space="preserve">
+    <value>Destination GL Name</value>
+  </data>
+  <data name="Difference_Amount" xml:space="preserve">
+    <value>Difference Amount</value>
+  </data>
+  <data name="Difference_In_Amount" xml:space="preserve">
+    <value>Difference In Amount</value>
+  </data>
+  <data name="Ensure_debit_credit_totals_match_expected_values" xml:space="preserve">
+    <value>Ensure debit/credit totals match expected values</value>
+  </data>
+  <data name="Ensure_you_have_backups_before_proceeding" xml:space="preserve">
+    <value>Ensure you have backups before proceeding</value>
+  </data>
+  <data name="Fee_Settings" xml:space="preserve">
+    <value>Fee Settings</value>
+  </data>
+  <data name="Filter_and_manage_affiliates_search_by_code_name_status_and_creation_date" xml:space="preserve">
+    <value>Filter and manage affiliates (search by code, name, status and creation date).</value>
+  </data>
+  <data name="Gl_Balance" xml:space="preserve">
+    <value>Gl Balance</value>
+  </data>
+  <data name="GL_history_code" xml:space="preserve">
+    <value>GL history code</value>
+  </data>
+  <data name="GL_History_Details" xml:space="preserve">
+    <value>GL History Details</value>
+  </data>
+  <data name="GL_history_name" xml:space="preserve">
+    <value>GL history name</value>
+  </data>
+  <data name="Journal_Header_Id" xml:space="preserve">
+    <value>Journal Header Id</value>
+  </data>
+  <data name="Matches_against_affiliate_name" xml:space="preserve">
+    <value>Matches against affiliate name.</value>
+  </data>
+  <data name="Member_Balance_Data" xml:space="preserve">
+    <value>Member Balance Data</value>
+  </data>
+  <data name="Member_Balance_Details" xml:space="preserve">
+    <value>Member Balance Details</value>
+  </data>
+  <data name="Migration_GLs_Histories" xml:space="preserve">
+    <value>Migration GLs Histories</value>
+  </data>
+  <data name="Navigate_through_large_datasets_using_page_controls" xml:space="preserve">
+    <value>Navigate through large datasets using page controls</value>
+  </data>
+  <data name="Once_confirmed_the_reconciliation_process_will_be_finalized_and_cannot_be_undone" xml:space="preserve">
+    <value>Once confirmed, the reconciliation process will be finalized and cannot be undone.</value>
+  </data>
+  <data name="On_this_page_we_have_the_details_of_a_reconciliation_file_and_we_have_the_possibility_to_confirm_the_reconciliation" xml:space="preserve">
+    <value>On this page we have the details of a reconciliation file and we have the possibility to confirm the reconciliation</value>
+  </data>
+  <data name="Quick_overview_of_key_metrics_at_the_top" xml:space="preserve">
+    <value>Quick overview of key metrics at the top</value>
+  </data>
+  <data name="Ready_to_Complete_Reconciliation" xml:space="preserve">
+    <value>Ready to Complete Reconciliation</value>
+  </data>
+  <data name="Reconciliation_cannot_be_undone_once_confirmed" xml:space="preserve">
+    <value>Reconciliation cannot be undone once confirmed</value>
+  </data>
+  <data name="Reconciliation_File_Details" xml:space="preserve">
+    <value>Reconciliation File Details</value>
+  </data>
+  <data name="Reconciliation_Listing" xml:space="preserve">
+    <value>Reconciliation Listing</value>
+  </data>
+  <data name="Reconciliation_Ref" xml:space="preserve">
+    <value>Reconciliation Ref</value>
+  </data>
+  <data name="Reconciliation_Reference" xml:space="preserve">
+    <value>Reconciliation Reference</value>
+  </data>
+  <data name="Reconciliation_Status" xml:space="preserve">
+    <value>Reconciliation Status</value>
+  </data>
+  <data name="SGL_Name" xml:space="preserve">
+    <value>SGL Name</value>
+  </data>
+  <data name="Show_Created_Date_Filters" xml:space="preserve">
+    <value>Show Created Date Filters</value>
+  </data>
+  <data name="Source_GL_Id" xml:space="preserve">
+    <value>Source GL Id</value>
+  </data>
+  <data name="Status_Indicators" xml:space="preserve">
+    <value>Status Indicators</value>
+  </data>
+  <data name="Summary_Cards" xml:space="preserve">
+    <value>Summary Cards</value>
+  </data>
+  <data name="Switch_between_Basic_Info_and_Technical_Details" xml:space="preserve">
+    <value>Switch between Basic Info and Technical Details</value>
+  </data>
+  <data name="Tab_Navigation" xml:space="preserve">
+    <value>Tab Navigation</value>
+  </data>
+  <data name="Take_note_Once_confirmed_the_reconciliation_process_will_be_finalized_and_cannot_be_undone" xml:space="preserve">
+    <value>Take note: Once confirmed, the reconciliation process will be finalized and cannot be undone.</value>
+  </data>
+  <data name="This_will_update_all_records_and_mark_the_file_as_processed" xml:space="preserve">
+    <value>This will update all records and mark the file as processed</value>
+  </data>
+  <data name="Toggle_date_filters_to_limit_by_creation_range" xml:space="preserve">
+    <value>Toggle date filters to limit by creation range (UTC)</value>
+  </data>
+  <data name="Trial_Balance_Data" xml:space="preserve">
+    <value>Trial Balance Data</value>
+  </data>
+  <data name="Trial_Balance_Details" xml:space="preserve">
+    <value>Trial Balance Details</value>
+  </data>
+  <data name="Use_full_or_partial_affiliate_code_for_quick_lookup" xml:space="preserve">
+    <value>Use full or partial affiliate code for quick lookup.</value>
+  </data>
+  <data name="Use_search_boxes_to_find_specific_records" xml:space="preserve">
+    <value>Use search boxes to find specific records</value>
+  </data>
+  <data name="use_the_initiation_date_filter_below" xml:space="preserve">
+    <value>use the initiation date filter below</value>
+  </data>
+  <data name="Verify_all_member_IDs_and_account_numbers_are_valid" xml:space="preserve">
+    <value>Verify all member IDs and account numbers are valid</value>
+  </data>
+  <data name="Verify_Data_Tables" xml:space="preserve">
+    <value>Verify Data Tables</value>
+  </data>
+</root>

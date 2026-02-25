@@ -61,24 +61,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Description.
-        /// </summary>
-        internal static string Description {
-            get {
-                return ResourceManager.GetString("Description", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Group type.
-        /// </summary>
-        internal static string GroupType {
-            get {
-                return ResourceManager.GetString("GroupType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Group type name.
         /// </summary>
         internal static string GroupTypeName {
@@ -106,11 +88,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Type.
+        ///   Looks up a localized string similar to No member group type was found at the moment..
         /// </summary>
-        internal static string Type {
+        internal static string No_member_group_type_was_found_at_the_moment {
             get {
-                return ResourceManager.GetString("Type", resourceCulture);
+                return ResourceManager.GetString("No_member_group_type_was_found_at_the_moment", resourceCulture);
             }
         }
     }

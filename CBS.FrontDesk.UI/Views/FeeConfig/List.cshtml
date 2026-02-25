@@ -6,18 +6,18 @@
 
 <div class="card bg-light mb-3">
     <div class="card-body text-center">
-        <h1 class="card-title text-primary"><i class="mdi mdi-currency-usd-circle-outline me-2"></i>@ChequeManagements.FeeConfiguration</h1>
-        <p class="card-text">@ChequeManagements.text2</p>
+        <h1 class="card-title text-primary"><i class="mdi mdi-currency-usd-circle-outline me-2"></i>@GlobalFeeConfig.Fee_Configurations</h1>
+        <p class="card-text">@GlobalFeeConfig.Configure_centralized_or_branch_specific_fees_using_percentage_or_range_based_calculations</p>
         <div class="alert alert-info mt-3 py-2">
             <i class="mdi mdi-information-outline me-1"></i>
-            @ChequeManagements.text3
+            @GlobalFeeConfig.Always_choose_either_to_configure_a_centralized_system_or_decentralized_and_always_choose_a_Fee_Type
         </div>
     </div>
 </div>
 
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i>@ChequeManagements.tipCfee</span>
+        <span><i class="mdi mdi-information-outline me-2"></i>@GlobalFeeConfig.TIPS_FOR_FEE_CONFIGURATION</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -25,12 +25,12 @@
     <div id="collapseTips" class="collapse">
         <div class="card-body">
             <ul>
-                <li><strong>@ChequeManagements.ConfigurationScope:</strong>@ChequeManagements.ConfigurationScopetext</li>
-                <li><strong>@ChequeManagements.LoadConfiguration:</strong>@ChequeManagements.feeindextext1</li>
-                <li><strong>@ChequeManagements.FeeMethodChoice:</strong>@ChequeManagements.feeindextext2</li>
-                <li><strong>@ChequeManagements.FeeRanges:</strong>@ChequeManagements.feeindextext3</li>
-                <li><strong>@ChequeManagements.SavingChanges:</strong>@ChequeManagements.feeindextext4</li>
-                <li><strong>@ChequeManagements.DeletingaConfiguration:</strong>@ChequeManagements.feeindextext5</li>
+                <li><strong>@GlobalFeeConfig.ConfigurationScope:</strong>@GlobalFeeConfig.Use_Is_Centralized_for_system_wide_rules_uncheck_to_pick_a_branch</li>
+                <li><strong>@GlobalFeeConfig.LoadConfiguration:</strong>@GlobalFeeConfig.After_selecting_scope_and_a_fee_type_click_Load_to_fetch_existing_settings</li>
+                <li><strong>@GlobalFeeConfig.Fee_Method_Choice:</strong>@GlobalFeeConfig.Enable_only_one_method_at_a_time_Percentage_or_Range_UI_enforces_this</li>
+                <li><strong>@GlobalFeeConfig.FeeRanges:</strong>@GlobalFeeConfig.When_using_ranges_ensure_no_overlap</li>
+                <li><strong>@GlobalFeeConfig.Saving_Changes:</strong>@GlobalFeeConfig.Save_button_persists_the_entire_configuration</li>
+                <li><strong>@GlobalFeeConfig.Deleting_a_Configuration:</strong>@GlobalFeeConfig.Delete_will_permanently_remove_the_configuration_for_the_loaded_scope</li>
             </ul>
             <a href="~/Views/FeeConfig/List.cshtml">~/Views/FeeConfig/List.cshtml</a>
         </div>
@@ -40,7 +40,7 @@
 <!-- Fee Config Filters -->
 <div class="card shadow p-3 mb-4" id="filtersSection">
     <h5 class="text-primary mb-3">
-        <i class="mdi mdi-filter-outline me-1"></i> Fee Config Filters
+        <i class="mdi mdi-filter-outline me-1"></i> @GlobalFeeConfig.Fee_Config_Filters
     </h5>
 
     <form id="feeConfigFilterForm" method="post" autocomplete="off">
@@ -51,28 +51,28 @@
                 <div class="col-md-3">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="toggleBranch" />
-                        <label class="form-check-label fw-bold" for="toggleBranch">Show Branch</label>
+                        <label class="form-check-label fw-bold" for="toggleBranch">@GlobalShared.Show_Branch</label>
                     </div>
                 </div>
 
                 <div class="col-md-3">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="toggleFeeType" />
-                        <label class="form-check-label fw-bold" for="toggleFeeType">Show Fee Type</label>
+                        <label class="form-check-label fw-bold" for="toggleFeeType">@GlobalShared.Show_Fee_Type</label>
                     </div>
                 </div>
 
                 <div class="col-md-3">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="toggleFlags" />
-                        <label class="form-check-label fw-bold" for="toggleFlags">Show Flags</label>
+                        <label class="form-check-label fw-bold" for="toggleFlags">@GlobalFeeConfig.Show_Flags</label>
                     </div>
                 </div>
 
                 <div class="col-md-3">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="toggleDates" />
-                        <label class="form-check-label fw-bold" for="toggleDates">Show Date Filters</label>
+                        <label class="form-check-label fw-bold" for="toggleDates">@GlobalShared.Show_Date_Filters</label>
                     </div>
                 </div>
             </div>
@@ -81,7 +81,7 @@
             <div id="branchFilter" class="d-none mb-3">
                 <div class="row">
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">Branch</label>
+                        <label class="form-label fw-bold">@GlobalShared.Branch</label>
                         @Html.DropDownList("BranchId",
                             new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
                             "--- Select Branch ---",
@@ -89,7 +89,7 @@
                     </div>
 
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">Branch Code</label>
+                        <label class="form-label fw-bold">@GlobalShared.Branch_Code</label>
                         <input type="text"
                                name="BranchCode"
                                class="form-control"
@@ -102,7 +102,7 @@
             <div id="feeTypeContainer" class="d-none mb-3">
                 <div class="row">
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">Fee Type</label>
+                        <label class="form-label fw-bold">@GlobalShared.Fee_Type</label>
                         @Html.DropDownList("FeeType",
                             new SelectList(ViewBag.FeeTypes, "Value", "Text"),
                             "--- Select Fee Type ---",
@@ -120,7 +120,7 @@
                                    name="AcceptStaticAmount"
                                    value="true" />
                             <label class="form-check-label fw-bold">
-                                Accept Static Amount
+                                @GlobalFeeConfig.Accept_Static_Amount
                             </label>
                         </div>
                     </div>
@@ -131,7 +131,7 @@
                                    name="AcceptPercentage"
                                    value="true" />
                             <label class="form-check-label fw-bold">
-                                Accept Percentage
+                                @GlobalFeeConfig.Accept_Percentage
                             </label>
                         </div>
                     </div>
@@ -142,7 +142,7 @@
                                    name="AcceptRange"
                                    value="true" />
                             <label class="form-check-label fw-bold">
-                                Accept Range
+                                @GlobalFeeConfig.Accept_Range
                             </label>
                         </div>
                     </div>
@@ -153,7 +153,7 @@
                                    name="IsCentralized"
                                    value="true" />
                             <label class="form-check-label fw-bold">
-                                Is Centralized
+                                @GlobalShared.Is_Centralized
                             </label>
                         </div>
                     </div>
@@ -164,14 +164,14 @@
             <div id="dateFilters" class="d-none">
                 <div class="row">
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">Start Date</label>
+                        <label class="form-label fw-bold">@GlobalShared.Start_Date</label>
                         <input type="date"
                                name="StartDate"
                                class="form-control" />
                     </div>
 
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">End Date</label>
+                        <label class="form-label fw-bold">@GlobalShared.End_Date</label>
                         <input type="date"
                                name="EndDate"
                                class="form-control" />
@@ -187,13 +187,13 @@
                 <button id="applyFilterBtn"
                         type="submit"
                         class="btn btn-primary me-2 w-100">
-                    <i class="mdi mdi-magnify"></i> Apply Filter
+                    <i class="mdi mdi-magnify"></i> @GlobalShared.Apply_Filter
                 </button>
 
                 <button id="resetFilterBtn"
                         type="reset"
                         class="btn btn-secondary me-2 w-100">
-                    <i class="mdi mdi-refresh"></i> Reset
+                    <i class="mdi mdi-refresh"></i> @GlobalShared.Reset
                 </button>
             </div>
         </div>
@@ -209,7 +209,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Details</h5>
+                <h5 class="modal-title">@GlobalShared.Details</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body" id="detailsModalBody">

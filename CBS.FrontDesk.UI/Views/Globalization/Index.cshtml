@@ -1,6 +1,7 @@
 ﻿@{
     ViewBag.Title = "Globalization Management";
 }
+@using Resources
 <style>
     .nav-tabs .nav-link {
         background-color: transparent;
@@ -42,14 +43,14 @@
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-earth me-2"></i> Globalization Management
+                    <i class="mdi mdi-earth me-2"></i> @GlobalGlobalization.Globalization_Management
                 </h1>
                 <p class="card-text">
-                    Manage your country's geographical hierarchy including regions, divisions, subdivisions, and towns.
+                    @GlobalGlobalization.Manage_your_countrys_geographical_hierarchy_including_regions_divisions_subdivisions_and_towns
                 </p>
                 <p class="card-text fw-bold text-danger">
                     <i class="mdi mdi-alert-circle-outline me-1"></i>
-                    Ensure levels are created in order: <strong>Country → Region → Division → SubDivision → Town</strong>.
+                   @Html.Raw(@GlobalGlobalization.Ensure_levels_are_created_in_order_Country_Region_Division_SubDivision_Town).
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -60,7 +61,7 @@
 <!-- TIPS SECTION -->
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> Tips for Effective Location Setup</span>
+        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalGlobalization.Tips_for_Effective_Location_Setup</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -68,11 +69,11 @@
     <div id="collapseTips" class="collapse">
         <div class="card-body">
             <ul>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Start by creating countries, then build the hierarchy layer-by-layer.</li>
-                <li><i class="mdi mdi-domain text-secondary me-2"></i> Ensure region and division names are consistent for clarity.</li>
-                <li><i class="mdi mdi-database-plus-outline text-success me-2"></i> Each section supports independent <strong>create, edit, delete</strong> operations.</li>
-                <li><i class="mdi mdi-table-edit text-primary me-2"></i> All forms use modal editing and partial updates — no page reload needed.</li>
-                <li><i class="mdi mdi-server-network text-info me-2"></i> Use subdivisions and towns for precise branch/member mappings.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalGlobalization.Start_by_creating_countries_then_build_the_hierarchy_layer_by_layer</li>
+                <li><i class="mdi mdi-domain text-secondary me-2"></i> @GlobalGlobalization.Ensure_region_and_division_names_are_consistent_for_clarity</li>
+                <li><i class="mdi mdi-database-plus-outline text-success me-2"></i> @Html.Raw(@GlobalGlobalization.Each_section_supports_independent_create_edit_delete_operations)</li>
+                <li><i class="mdi mdi-table-edit text-primary me-2"></i> @GlobalGlobalization.All_forms_use_modal_editing_and_partial_updates_no_page_reload_needed</li>
+                <li><i class="mdi mdi-server-network text-info me-2"></i> @GlobalGlobalization.Use_subdivisions_and_towns_for_precise_branch_member_mappings</li>
             </ul>
         </div>
     </div>
@@ -86,19 +87,19 @@
             <!-- NAV TABS -->
             <ul class="nav nav-tabs border-0 mb-3 fw-semibold" id="locationTab" role="tablist" style="font-size: 0.95rem;">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="country-tab" data-bs-toggle="tab" data-bs-target="#country" type="button" role="tab">🏳️ COUNTRY</button>
+                    <button class="nav-link active" id="country-tab" data-bs-toggle="tab" data-bs-target="#country" type="button" role="tab">🏳️ @GlobalShared.COUNTRY_UC</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="region-tab" data-bs-toggle="tab" data-bs-target="#region" type="button" role="tab">🌐 REGION</button>
+                    <button class="nav-link" id="region-tab" data-bs-toggle="tab" data-bs-target="#region" type="button" role="tab">🌐 @GlobalShared.REGION_UC</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="division-tab" data-bs-toggle="tab" data-bs-target="#division" type="button" role="tab">🏙️ DIVISION</button>
+                    <button class="nav-link" id="division-tab" data-bs-toggle="tab" data-bs-target="#division" type="button" role="tab">🏙️ @GlobalShared.DIVISION_UC</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="subdivision-tab" data-bs-toggle="tab" data-bs-target="#subdivision" type="button" role="tab">🏘️ SUBDIVISION</button>
+                    <button class="nav-link" id="subdivision-tab" data-bs-toggle="tab" data-bs-target="#subdivision" type="button" role="tab">🏘️ @GlobalShared.SUBDIVISION_UC</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="town-tab" data-bs-toggle="tab" data-bs-target="#town" type="button" role="tab">🏡 TOWN</button>
+                    <button class="nav-link" id="town-tab" data-bs-toggle="tab" data-bs-target="#town" type="button" role="tab">🏡 @GlobalShared.TOWN_UC</button>
                 </li>
             </ul>
 
@@ -171,7 +172,7 @@
             <div id="globalizationLoader" class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 d-none z-3" style="z-index: 1055;">
                 <div class="d-flex flex-column justify-content-center align-items-center h-100 text-center">
                     <div class="spinner-border text-primary mb-3" role="status"></div>
-                    <p class="fw-semibold text-primary">Processing request, please wait...</p>
+                    <p class="fw-semibold text-primary">@GlobalGlobalization.Processing_request_please_wait...</p>
                 </div>
             </div>
 
@@ -181,10 +182,10 @@
                     <div class="card bg-light mb-2">
                         <div class="card-body text-center">
                             <h1 class="card-title text-primary" id="globalizationModalTitle">
-                                <i class="bi bi-gear-fill me-2"></i> <span id="globalizationModalTitleText">Globalization Management</span>
+                                <i class="bi bi-gear-fill me-2"></i> <span id="globalizationModalTitleText">@GlobalGlobalization.Globalization_Management</span>
                             </h1>
                             <p class="card-text" id="globalizationModalDescription">
-                                Manage entries for countries, regions, divisions, subdivisions, and towns.
+                                @GlobalGlobalization.Manage_entries_for_countries_regions_divisions_subdivisions_and_towns
                             </p>
                             <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
                         </div>
@@ -206,10 +207,10 @@
                 </div>
                 <div class="d-flex align-items-center">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                        <i class="bi bi-x-circle"></i> Cancel
+                        <i class="bi bi-x-circle"></i> @GlobalShared.Cancel
                     </button>
                     <button type="submit" form="globalizationForm" class="btn btn-success ms-2">
-                        <i class="bi bi-check2-square"></i> Save
+                        <i class="bi bi-check2-square"></i> @GlobalShared.Save
                     </button>
                 </div>
             </div>

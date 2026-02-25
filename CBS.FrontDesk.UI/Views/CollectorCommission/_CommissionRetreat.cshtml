@@ -1,8 +1,8 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission.CollectorComissionResponse
-
+@using Resources
 <div class="modal-header bg-warning">
     <h5 class="modal-title text-white">
-        <i class="mdi mdi-cash-remove me-2"></i>Retreat Commission Payment
+        <i class="mdi mdi-cash-remove me-2"></i>@GlobalCollectorCommission.Retreat_Commission_Payment
     </h5>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
@@ -10,33 +10,33 @@
 <div class="modal-body">
     <div class="alert alert-warning">
         <i class="mdi mdi-alert-circle-outline me-2"></i>
-        <strong>Warning:</strong> This action will reverse the commission payment and cannot be undone.
+        <strong>@GlobalShared.Warning:</strong> @GlobalCollectorCommission.This_action_will_reverse_the_commission_payment_and_cannot_be_undone
     </div>
 
     <!-- Commission Details -->
     <div class="card mb-3">
         <div class="card-header bg-light">
-            <h6 class="mb-0"><i class="mdi mdi-information-outline me-2"></i>Commission Details</h6>
+            <h6 class="mb-0"><i class="mdi mdi-information-outline me-2"></i>@GlobalShared.Commission_Details</h6>
         </div>
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
                     <div class="mb-2">
-                        <strong>Collector:</strong>
+                        <strong>@GlobalShared.Collector:</strong>
                         <span id="retreatCollectorName">@Model.CollectorName</span>
                     </div>
                     <div class="mb-2">
-                        <strong>Branch:</strong>
+                        <strong>@GlobalShared.Branch:</strong>
                         <span id="retreatBranchName">@Model.BranchName</span>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="mb-2">
-                        <strong>Period:</strong>
+                        <strong>@GlobalShared.Period:</strong>
                         <span id="retreatPeriod">@Model.Month</span>
                     </div>
                     <div class="mb-2">
-                        <strong>Total Amount:</strong>
+                        <strong>@GlobalShared.Total_amount:</strong>
                         <span id="retreatTotalAmount">@Model.Total.ToString("C")</span>
                     </div>
                 </div>
@@ -47,41 +47,41 @@
     <!-- Retreat Reason -->
     <div class="mb-3">
         <label for="retreatReason" class="form-label fw-semibold">
-            <i class="mdi mdi-comment-text-outline me-1"></i>Reason for Retreat
+            <i class="mdi mdi-comment-text-outline me-1"></i>@GlobalShared.Reason_for_Retreat
         </label>
         <select id="retreatReason" class="form-select">
-            <option value="">-- Select Reason --</option>
-            <option value="incorrect_calculation">Incorrect Calculation</option>
-            <option value="duplicate_payment">Duplicate Payment</option>
-            <option value="wrong_collector">Wrong Collector</option>
-            <option value="system_error">System Error</option>
-            <option value="other">Other</option>
+            <option value="">-- @GlobalShared.Select_Reason --</option>
+            <option value="incorrect_calculation">@GlobalShared.Incorrect_Calculation</option>
+            <option value="duplicate_payment">@GlobalShared.Duplicate_Payment</option>
+            <option value="wrong_collector">@GlobalShared.Wrong_Collector</option>
+            <option value="system_error">@GlobalShared.System_Error</option>
+            <option value="other">@GlobalShared.Other</option>
         </select>
     </div>
 
     <!-- Additional Notes -->
     <div class="mb-3">
         <label for="retreatNotes" class="form-label fw-semibold">
-            <i class="mdi mdi-note-text-outline me-1"></i>Additional Notes
+            <i class="mdi mdi-note-text-outline me-1"></i>@GlobalShared.Additional_Notes
         </label>
-        <textarea id="retreatNotes" class="form-control" rows="3" placeholder="Enter any additional details about this retreat..."></textarea>
+        <textarea id="retreatNotes" class="form-control" rows="3" placeholder="@GlobalCollectorCommission.Enter_any_additional_details_about_this_retreat..."></textarea>
     </div>
 
     <!-- Confirmation Checkbox -->
     <div class="form-check mb-3">
         <input class="form-check-input" type="checkbox" id="confirmRetreat">
         <label class="form-check-label text-danger fw-semibold" for="confirmRetreat">
-            I understand that this action cannot be undone and will reverse all commission payments
+            @GlobalCollectorCommission.I_understand_that_this_action_cannot_be_undone_and_will_reverse_all_commission_payments
         </label>
     </div>
 </div>
 
 <div class="modal-footer">
     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-        <i class="mdi mdi-close me-1"></i>Cancel
+        <i class="mdi mdi-close me-1"></i>@GlobalShared.Cancel
     </button>
     <button type="button" id="btnConfirmRetreat" class="btn btn-danger" disabled>
-        <i class="mdi mdi-cash-remove me-1"></i>Confirm Retreat
+        <i class="mdi mdi-cash-remove me-1"></i>@GlobalShared.Confirm_Retreat
     </button>
 </div>
 

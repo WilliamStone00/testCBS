@@ -26,7 +26,7 @@
             <div class="row g-4">
                 <div class="col-md-4" id="branchDiv" style="display:block">
                     <label for="branchInput">Branch</label>
-                    @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "id", "name"), "---"+ @GlobalDailyTellerAssignation.SelectBranch +"---", new { @class = "form-control shadow-box select2", @id = "branchInput" })
+                    @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "id", "name"), "---"+ GlobalShared.SelectBranch +"---", new { @class = "form-control shadow-box select2", @id = "branchInput" })
                     @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
                 </div>
                 <div class="col-md-4" id="tellerDiv" style="display:none">
@@ -37,14 +37,14 @@
                 <div class="col-md-8">
                     <div class="row g-4">
                         <div class="col-md-6">
-                            <label for="dateFromInput">@GlobalDailyTellerAssignation.DateFrom</label>
+                            <label for="dateFromInput">@GlobalShared.DateFrom</label>
                             <div class="input-group">
                                 @Html.TextBoxFor(m => m.DateFrom, new { @class = "form-control shadow-box date-picker", @id = "dateFromInput", @placeholder = "Date From" })
                             </div>
                             @Html.ValidationMessageFor(m => m.DateFrom, "", new { @class = "text-danger" })
                         </div>
                         <div class="col-md-6">
-                            <label for="dateToInput">@GlobalDailyTellerAssignation.DateTo</label>
+                            <label for="dateToInput">@GlobalShared.DateTo</label>
                             <div class="input-group">
                                 @Html.TextBoxFor(m => m.DateTo, new { @class = "form-control shadow-box date-picker", @id = "dateToInput", @placeholder = "Date To" })
                             </div>

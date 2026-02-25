@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission.CollectorComissionResponse
+    @using Resources
 @{
     var dailyCollectorSharePercent = 0.60m;
     var branchSharePercent = 0.40m;
@@ -11,15 +12,15 @@
             <div class="card bg-light mb-2">
                 <div class="card-body text-center">
                     <h1 class="card-title text-primary">
-                        <i class="mdi mdi-account-cash me-2"></i>Commission Treatment
+                        <i class="mdi mdi-account-cash me-2"></i>@GlobalShared.Commission_Treatment
                     </h1>
                     <p class="card-text">
-                        Process collector commission payments
+                        @GlobalCollectorCommission.Process_collector_commission_payments
                     </p>
 
                     <div class="alert alert-info mt-3 py-2">
                         <i class="mdi mdi-information-outline me-1"></i>
-                        Here we can treat a collector's file
+                        @GlobalCollectorCommission.Here_we_can_treat_a_collectors_file
                     </div>
 
                     <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
@@ -32,20 +33,20 @@
     <div class="card mb-2">
         <div class="card-header bg-light">
             <h6 class="card-title mb-0">
-                <i class="mdi mdi-account-search me-2"></i> Search for Daily Collector Info
+                <i class="mdi mdi-account-search me-2"></i> @GlobalCollectorCommission.Search_for_Daily_Collector_Info
             </h6>
         </div>
 
         <div class="card-body">
             <div class="row g-2">
                 <div class="col-md-9">
-                    <label class="form-label">Customer Reference</label>
-                    <input type="text" class="form-control" id="customerReference" placeholder="Enter Customer Reference">
+                    <label class="form-label">@GlobalShared.Customer_Reference</label>
+                    <input type="text" class="form-control" id="customerReference" placeholder="@GlobalShared.Enter_Customer_Reference">
                 </div>
 
                 <div class="col-md-3 d-flex align-items-end">
                     <button class="btn btn-primary w-100" type="button" id="btnSearchCustomer">
-                        <i class="mdi mdi-magnify"></i> Search
+                        <i class="mdi mdi-magnify"></i> @GlobalShared.Search
                     </button>
                 </div>
             </div>
@@ -54,18 +55,18 @@
             <div id="customerInfo" class="mt-3 p-3 border rounded d-none">
                 <div class="row">
                     <div class="col-12">
-                        <strong>Member Name:</strong> <span id="customerName"></span>
+                        <strong>@GlobalShared.Member_name:</strong> <span id="customerName"></span>
                     </div>
                 </div>
 
                 <div class="row mt-2">
                     <div class="col-12 col-md-6 d-flex align-items-center mb-1 mb-md-0">
-                        <strong class="me-2">Phone:</strong>
+                        <strong class="me-2">@GlobalShared.Phone:</strong>
                         <span id="customerPhone"></span>
                     </div>
 
                     <div class="col-12 col-md-6 d-flex align-items-center">
-                        <strong class="me-2">Email:</strong>
+                        <strong class="me-2">@GlobalShared.Email:</strong>
                         <span id="customerEmail"></span>
                     </div>
                 </div>
@@ -75,7 +76,7 @@
             <div id="accountSelection" class="mt-3 d-none">
                 <div class="row">
                     <div class="col-md-12">
-                        <label class="form-label">Daily Collector Commission Account</label>
+                        <label class="form-label">@GlobalCollectorCommission.Daily_Collector_Commission_Account</label>
                         @Html.DropDownList("DailyCollectorAccount",
                           new List<SelectListItem> { new SelectListItem { Text = "--- Select Account ---", Value = "" } },
                           new { @class = "form-control select2", id = "DailyCollectorAccount" })
@@ -89,7 +90,7 @@
     <div id="paymentDetails" class="card d-none">
         <div class="card-header bg-light">
             <h6 class="card-title mb-1">
-                <i class="mdi mdi-cash-usd me-2"></i> Payment Details
+                <i class="mdi mdi-cash-usd me-2"></i> @GlobalShared.Payment_Details
             </h6>
         </div>
 
@@ -144,7 +145,7 @@
                 <div class="row mb-2">
 
                     <div class="col-md-6">
-                        <label class="form-label">Daily Collector Share</label>
+                        <label class="form-label">@GlobalCollectorCommission.Daily_Collector_Share</label>
                         @Html.TextBoxFor(m => m.DailyCollectorShare, new
                    {
                        @class = "form-control",
@@ -171,7 +172,7 @@
                 <!-- Branch Share and HO PCMF side by side -->
                 <div class="row mb-2">
                     <div class="col-md-4">
-                        <label class="form-label">Branch Share</label>
+                        <label class="form-label">@GlobalShared.Branch_Share</label>
                         @Html.TextBoxFor(m => m.BranchShare, new
                    {
                        @class = "form-control",
@@ -194,7 +195,7 @@
                 </div>
                 <div class="row mb-2">
                     <div class="col-md-4">
-                        <label class="form-label">Incentives</label>
+                        <label class="form-label">@GlobalShared.Incentives</label>
                         @Html.TextBoxFor(m => m.Incentives, new
                    {
                        @class = "form-control incentives-input",
@@ -218,14 +219,14 @@
                 <div class="col-md-12">
                     <div class="form-floating">
                         @Html.TextAreaFor(m => m.MemoIncentive, new
-                   {
-                       @class = "form-control",
-                       placeholder = "Enter Incentive Memo",
-                       rows = "3",
-                       maxlength = "500",
-                       id = "MemoIncentive"
-                   })
-                        <label>Incentive's Memo</label>
+                           {
+                               @class = "form-control",
+                               placeholder = "Enter Incentive Memo",
+                               rows = "3",
+                               maxlength = "500",
+                               id = "MemoIncentive"
+                           })
+                        <label>@GlobalShared.Incentives_Memo</label>
                         @Html.ValidationMessageFor(m => m.MemoIncentive, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -249,10 +250,10 @@
                 <div class="row">
                     <div class="col-12 text-end">
                         <button type="button" class="btn btn-secondary" id="btnResetPayment">
-                            <i class="mdi mdi-refresh me-1"></i> Reset
+                            <i class="mdi mdi-refresh me-1"></i> @GlobalShared.Reset
                         </button>
                         <button type="submit" class="btn btn-primary" id="btnPostPayment">
-                            <i class="mdi mdi-check-circle me-1"></i> Post
+                            <i class="mdi mdi-check-circle me-1"></i> @GlobalShared.Post
                         </button>
                     </div>
                 </div>

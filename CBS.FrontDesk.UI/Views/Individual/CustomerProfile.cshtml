@@ -1,7 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.IndividualCustomerProfile
     @using Resources
 @{
-    ViewBag.Title = @GlobalIndividual.Profile;
+    ViewBag.Title = "Profile";
 }
 
 <div class="row">
@@ -30,8 +30,8 @@
                         @ViewBag.MemberStatus <span class="highlight-text">@Model.CustomerList.CustomerId</span>
                         <hr />
                         <small>@GlobalIndividual.MemberCode</small><br />
-                        <small>@GlobalIndividual.BankCode: @Session["BankCode"].ToString()</small><br />
-                        <small>@GlobalIndividual.BranchCode: @Session["BranchCode"].ToString()</small>
+                        <small>@GlobalShared.Bank_Code: @Session["BankCode"].ToString()</small><br />
+                        <small>@GlobalShared.Branch_Code: @Session["BranchCode"].ToString()</small>
                     </h4>
                 </div>
             </div>
@@ -44,13 +44,13 @@
                         <hr />
                         @if (Model.CustomerList.MembershipApprovalStatus == "Approved")
                         {
-                            <small>@GlobalIndividual.Approved BY: @Model.CustomerList.MembershipApprovalBy</small><br />
-                            <small>@GlobalIndividual.Approved Date: @Model.CustomerList.MembershipApprovedDate</small><br />
-                            <small>@GlobalIndividual.Status: <span class="highlight-text">@Model.CustomerList.MembershipApprovalStatus.ToUpper()</span></small>
+                            <small>@GlobalShared.Approved_by: @Model.CustomerList.MembershipApprovalBy</small><br />
+                            <small>@GlobalShared.Approved_Date: @Model.CustomerList.MembershipApprovedDate</small><br />
+                            <small>@GlobalShared.Status: <span class="highlight-text">@Model.CustomerList.MembershipApprovalStatus.ToUpper()</span></small>
                         }
                         else
                         {
-                            <small>@GlobalIndividual.Status: <span class="highlight-text">@Model.CustomerList.MembershipApprovalStatus</span></small>
+                            <small>@GlobalShared.Status: <span class="highlight-text">@Model.CustomerList.MembershipApprovalStatus</span></small>
                         }
                         <br />
                         <small>@GlobalIndividual.RegistrationDate: @Model.CustomerList.MembershipApplicantDate</small>
@@ -61,7 +61,7 @@
             <!-- Member Photo -->
             <div class="card mt-3">
                 <div class="card-body">
-                    <h5 class="card-title">@GlobalIndividual.Photo</h5>
+                    <h5 class="card-title">@GlobalShared.Photo</h5>
                     <div class="image-upload-container">
                         @if (Model.CustomerList.photoUrl != null)
                         {
@@ -117,7 +117,7 @@
                         <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalIndividual.PhotoAndSignatureUploadsAreMandatoryForIdentificationPurposes.</li>
                         <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i>@GlobalIndividual.MembershipApprovalStatusAndDatesShouldBeReviewedRegularlyForUpdates.</li>
                     </ul>
-                    <p class="text-muted">@GlobalIndividual.AdditionalNotes:</p>
+                    <p class="text-muted">@GlobalShared.Additional_Notes:</p>
                     <ul>
                         <li><i class="mdi mdi-information-outline text-primary me-2"></i> @GlobalIndividual.CollectiveAccountsRequireTheNoneMemberAccountOptionToBeChecked.</li>
                         <li><i class="mdi mdi-information-outline text-primary me-2"></i> @GlobalIndividual.MemberReferencesConsistOfABranchCodeAndA7DigitMemberCode.</li>
@@ -133,7 +133,7 @@
                     <ul class="nav nav-tabs nav-fill" role="tablist">
                         <li class="nav-item">
                             <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#navs-profile" aria-controls="navs-profile" aria-selected="true">
-                                <i class="tf-icons mdi mdi-account-outline me-1"></i> @GlobalIndividual.ProfileDetails
+                                <i class="tf-icons mdi mdi-account-outline me-1"></i> @GlobalShared.Profile_Details
                             </button>
                         </li>
                         <li class="nav-item">

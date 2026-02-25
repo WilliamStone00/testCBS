@@ -13,7 +13,7 @@
 
         <div class="alert alert-info mt-3 py-2">
             <i class="mdi mdi-information-outline me-1 "></i>
-            Configure posting rules for <strong>Local</strong> and <strong>Interbranch</strong> transactions.
+            @Html.Raw(@GlobalConfigurationManualEntry.Configure_posting_rules_for_Local_and_Interbranch_transactions)
         </div>
     </div>
 </div>
@@ -30,12 +30,12 @@
         <div class="card-body">
             <ul>
                 <li><strong>@GlobalConfigurationManualEntry.TypeSelection:</strong>@GlobalConfigurationManualEntry.ChoosewhethertheconfigurationappliestoLocalorInterbranchoperations.</li>
-                <li><strong>@GlobalConfigurationManualEntry.Command:</strong> @GlobalConfigurationManualEntry.DefinehowtheprocessrunsoptionsincludeAutoAutoApprovalandotherautomationmodes.</li>
-                <li><strong>@GlobalConfigurationManualEntry.Description:</strong> @GlobalConfigurationManualEntry.Provideashortsummaryexplainingtheconfigurationpurposeorbehavior.</li>
+                <li><strong>@GlobalShared.Command:</strong> @GlobalConfigurationManualEntry.DefinehowtheprocessrunsoptionsincludeAutoAutoApprovalandotherautomationmodes.</li>
+                <li><strong>@GlobalShared.Description:</strong> @GlobalConfigurationManualEntry.Provideashortsummaryexplainingtheconfigurationpurposeorbehavior.</li>
                 <li><strong>@GlobalConfigurationManualEntry.UserApproval:</strong> @GlobalConfigurationManualEntry.Enablethisiftheinitiatingusermustalsoapprovethetransaction.</li>
-                <li><strong>@GlobalConfigurationManualEntry.Status:</strong> @GlobalConfigurationManualEntry.Usethistoggletoactivateordeactivateaconfigurationwithoutdeletingit.</li>
+                <li><strong>@GlobalShared.Status:</strong> @GlobalConfigurationManualEntry.Usethistoggletoactivateordeactivateaconfigurationwithoutdeletingit.</li>
                 <li><strong>@GlobalConfigurationManualEntry.ReviewRegularly:</strong>@GlobalConfigurationManualEntry.Keepconfigurationdataalignedwithcurrentbranchrulesandapprovalworkflows.</li>
-                <li><strong>@GlobalConfigurationManualEntry.SaveChanges:</strong>@GlobalConfigurationManualEntry.Alwaysvalidateentriesbeforesavingorupdatingtoensureintegrityacrossbranches.</li>
+                <li><strong>@GlobalShared.SaveChanges:</strong>@GlobalConfigurationManualEntry.Alwaysvalidateentriesbeforesavingorupdatingtoensureintegrityacrossbranches.</li>
             </ul>
         </div>
     </div>

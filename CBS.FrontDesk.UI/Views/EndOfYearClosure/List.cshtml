@@ -10,7 +10,7 @@
 <div class="card bg-light mb-3">
     <div class="card-body text-center">
         <h1 class="card-title text-primary">
-            <i class="mdi mdi-cog-outline me-2"></i> Closure Journal Request
+            <i class="mdi mdi-cog-outline me-2"></i> @GlobalEndOfYearClosure.Closure_Journal_Request
         </h1>
 
         @*<div class="alert alert-info mt-3 py-2">
@@ -22,7 +22,7 @@
 
 <div class="card mb-2">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> FILTER USAGE GUIDE</span>
+        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalEndOfYearClosure.FILTER_USAGE_GUIDE</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFilterTips" aria-expanded="true">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -31,14 +31,14 @@
     <div id="collapseFilterTips" class="collapse">
         <div class="card-body">
             <ul class="mb-0">
-                <li><strong>Branch Filter:</strong> Check the box to enable branch selection. You can show or hide it as needed.</li>
-                <li><strong>Operation Type:</strong> Choose whether to view <em>Cash In</em> or <em>Cash Out</em> operations.</li>
-                <li><strong>Reconciliation Status:</strong> Filter between <em>Temporary</em> or <em>Reconciled</em> journal entries.</li>
-                <li><strong>Reference:</strong> Enter a reference number or keyword to search for specific transactions.</li>
-                <li><strong>Date Filters:</strong> Use the toggle to show or hide accounting and creation date filters. You can filter by range for better results.</li>
-                <li><strong>Apply Filters:</strong> Click <em>Search</em> to load matching results in the table below.</li>
-                <li><strong>Reset Filters:</strong> Use the reset button to clear all filters and start a new search.</li>
-                <li><strong>Tip:</strong> Combine filters (e.g., Branch + Date) for more precise results.</li>
+                <li><strong>@GlobalShared.Branch Filter:</strong> @GlobalEndOfYearClosure.Check_the_box_to_enable_branch_selection_You_can_show_or_hide_it_as_needed</li>
+                <li><strong>@GlobalShared.Operation_type:</strong>  @Html.Raw(@GlobalEndOfYearClosure.Choose_whether_to_view_Cash_In_or_Cash_Out_operations)</li>
+                <li><strong>@GlobalShared.Reconciliation Status:</strong> @Html.Raw(@GlobalEndOfYearClosure.Filter_between_Temporary_or_Reconciled_journal_entries)</li>
+                <li><strong>@GlobalShared.Reference:</strong> @GlobalEndOfYearClosure.Enter_a_reference_number_or_keyword_to_search_for_specific_transactions</li>
+                <li><strong>@GlobalShared.Date_Filters:</strong> @GlobalEndOfYearClosure.Use_the_toggle_to_show_or_hide_accounting_and_creation_date_filters_You_can_filter_by_range_for_better_results</li>
+                <li><strong>@GlobalShared.Apply_filters:</strong> @Html.Raw(@GlobalEndOfYearClosure.Click_Search_to_load_matching_results_in_the_table_below)</li>
+                <li><strong>@GlobalShared.Reset_Filters:</strong> @GlobalEndOfYearClosure.Use_the_reset_button_to_clear_all_filters_and_start_a_new_search</li>
+                <li><strong>@GlobalShared.Tip:</strong> @GlobalEndOfYearClosure.Combine_filters_e_g_Branch_Date_for_more_precise_results</li>
             </ul>
         </div>
     </div>
@@ -48,7 +48,7 @@
 
 <div class="card shadow p-3 mb-2">
     <h5 class="text-primary mb-2">
-        <i class="mdi mdi-filter-outline me-1"></i> ADVANCE FILTERS
+        <i class="mdi mdi-filter-outline me-1"></i> @GlobalShared.ADVANCE_FILTERS
     </h5>
 
     <form id="journalHeaderFilterForm" autocomplete="off" method="post">
@@ -65,7 +65,7 @@
 
             <div class="row mb-1">
                 <div class="col-md-12 mb-1">
-                    <label class="form-label fw-bold" for="branchId">Branch</label>
+                    <label class="form-label fw-bold" for="branchId">@GlobalShared.Branch</label>
                     @Html.DropDownList("BranchId",
                         new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
                         "--- Select Branch ---",
@@ -75,7 +75,7 @@
 
             <div class="row mb-1">
                 <div class="col-md-6 mb-1">
-                    <label class="form-label fw-bold" for="AdjustmentType">Adjustment Type</label>
+                    <label class="form-label fw-bold" for="AdjustmentType">@GlobalShared.Adjustment_Type</label>
                     @Html.DropDownList("AdjustmentType",
                         new SelectList(ViewBag.AdjustmentType ?? new List<object>(), "Value", "Text"),
                         "--- Select Adjustment Type ---",
@@ -103,13 +103,13 @@
         <div class="row g-2 mt-2">
             <div class="col-12 col-md-4">
                 <button id="applyFilterBtn" type="submit" class="btn btn-primary btn-sm w-100">
-                    <i class="mdi mdi-magnify me-1"></i> Apply Filters
+                    <i class="mdi mdi-magnify me-1"></i> @GlobalShared.Apply_filters
                 </button>
             </div>
 
             <div class="col-12 col-md-4">
                 <button id="resetFilterBtn" type="button" class="btn btn-secondary btn-sm w-100">
-                    <i class="mdi mdi-refresh me-1"></i> Reset Filters
+                    <i class="mdi mdi-refresh me-1"></i> @GlobalShared.Reset_Filters
                 </button>
             </div>
         </div>

@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Manage_Cancellation_Requests" xml:space="preserve">
+    <value>Gérer les demandes d’annulation</value>
+  </data>
+  <data name="Always_Verify_Credentials" xml:space="preserve">
+    <value>Toujours vérifier les identifiants</value>
+  </data>
+  <data name="Approve_Reject_or_Validate_a_customer_s_cheque_Cancellation_request_and_manage_the_lifecycle_of_a_clearance_using_this_form" xml:space="preserve">
+    <value>Approuver, rejeter ou valider la demande d’annulation de chèque d’un client et gérer le cycle de vie de la compensation à l’aide de ce formulaire.</value>
+  </data>
+  <data name="Branch_Account_Number_and_Customer_Name_must_be_filled_before_submission" xml:space="preserve">
+    <value>L’agence, le numéro de compte et le nom du client doivent être renseignés avant la soumission.</value>
+  </data>
+  <data name="CANCELLATION_REQUEST_VIEWER" xml:space="preserve">
+    <value>CONSULTATION DES DEMANDES D’ANNULATION</value>
+  </data>
+  <data name="Cheque_Book_ID" xml:space="preserve">
+    <value>Identifiant du chéquier</value>
+  </data>
+  <data name="Cheque_Branch" xml:space="preserve">
+    <value>Agence d’émission du chèque</value>
+  </data>
+  <data name="Cheque_Cancellation_Actions" xml:space="preserve">
+    <value>Actions d’annulation de chèque</value>
+  </data>
+  <data name="Cheque_Cancellation_Details" xml:space="preserve">
+    <value>Détails de l’annulation du chèque</value>
+  </data>
+  <data name="Cheque_Cancellation_Request" xml:space="preserve">
+    <value>Demande d’annulation de chèque</value>
+  </data>
+  <data name="Cheque_Creation_Date" xml:space="preserve">
+    <value>Date de création du chèque</value>
+  </data>
+  <data name="Cheque_Expiration_Date" xml:space="preserve">
+    <value>Date d’expiration du chèque</value>
+  </data>
+  <data name="Cheque_Leaf_ID" xml:space="preserve">
+    <value>Identifiant de la feuille de chèque</value>
+  </data>
+  <data name="Choose_Cheque_Book_Cheque_Leaf_Or_Cheque_Number_according_to_what_you_are_cancelling" xml:space="preserve">
+    <value>Choisissez &lt;em&gt;Chéquier&lt;/em&gt;, &lt;em&gt;Feuille de chèque&lt;/em&gt; ou &lt;em&gt;Numéro de chèque&lt;/em&gt; selon l’élément à annuler.</value>
+  </data>
+  <data name="Clearly_state_why_the_cheque_is_being_cancelled" xml:space="preserve">
+    <value>Indiquez clairement la raison de l’annulation du chèque (ex. : perte, vol, erreur, doublon)</value>
+  </data>
+  <data name="Double_check_the_cheque_number_book_ID_and_leaf_ID_before_submitting" xml:space="preserve">
+    <value>Vérifiez soigneusement le numéro du chèque, l’identifiant du chéquier et l’identifiant de la feuille avant la soumission.</value>
+  </data>
+  <data name="Mandatory_Fields" xml:space="preserve">
+    <value>Champs obligatoires</value>
+  </data>
+  <data name="No_cancellation_requests_found" xml:space="preserve">
+    <value>Aucune demande d'annulation trouvé.</value>
+  </data>
+  <data name="Once_approved_a_cancelled_cheque_cannot_be_reinstated_ensure_accuracy_before_confirming" xml:space="preserve">
+    <value>Une fois approuvé, un chèque annulé ne peut pas être rétabli — assurez-vous de l’exactitude avant confirmation.</value>
+  </data>
+  <data name="Provide_a_Valid_Reason" xml:space="preserve">
+    <value>Fournir un motif valide</value>
+  </data>
+  <data name="Select_Correct_Request_Type" xml:space="preserve">
+    <value>Sélectionner le type de demande approprié</value>
+  </data>
+  <data name="Some_cancellations_may_require_approval_from_a_supervisor_manager_before_they_take_effect" xml:space="preserve">
+    <value>Certaines annulations peuvent nécessiter l’approbation d’un superviseur ou d’un responsable avant de prendre effet.</value>
+  </data>
+  <data name="TIPS_FOR_CHEQUE_CANCELLATION" xml:space="preserve">
+    <value>CONSEILS POUR L’ANNULATION DE CHÈQUE</value>
+  </data>
+  <data name="Use_the_details_below_to_guide_your_validation_process" xml:space="preserve">
+    <value>Utilisez les informations ci-dessous pour guider votre processus de validation.</value>
+  </data>
+  <data name="Use_the_notes_field_to_add_any_special_remarks_that_may_help_reviewers" xml:space="preserve">
+    <value>Utilisez le champ « notes » pour ajouter toute remarque particulière pouvant aider les examinateurs.</value>
+  </data>
+  <data name="Verify_Cheque_Details" xml:space="preserve">
+    <value>Vérifier les détails du chèque</value>
+  </data>
+  <data name="You_are_viewing_a_detailed_summary_of_the_selected_cheque_cancellation_request" xml:space="preserve">
+    <value>Vous consultez un récapitulatif détaillé de la demande d’annulation de chèque sélectionnée.</value>
+  </data>
+</root>

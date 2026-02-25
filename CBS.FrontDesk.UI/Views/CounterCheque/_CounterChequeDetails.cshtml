@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheque.CounterChecks
+@using Resources
 @*<div class="row">
     <div class="col-12">
         <div class="card bg-light mb-2">
@@ -27,10 +28,10 @@
     <div class="card bg-light mb-3">
         <div class="card-body text-center">
             <h1 class="card-title text-primary">
-                <i class="mdi mdi-file-document-outline me-2"></i>COUNTER CHEQUE DETAILS
+                <i class="mdi mdi-file-document-outline me-2"></i>@GlobalCounterCheque.COUNTER_CHEQUE_DETAILS
             </h1>
             <p class="card-text">
-                Use this page to quickly check the Details of the cheque leaf you Request.
+                @GlobalCounterCheque.Use_this_page_to_quickly_check_the_Details_of_the_cheque_leaf_you_Request
 
             </p>
             <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
@@ -39,14 +40,14 @@
 
     <div class="card mb-4 border-0 shadow-sm">
         <div class="card-header bg-light">
-            <h6 class="mb-0 text-primary"><i class="mdi mdi-information-outline me-2"></i>Cheque Information Summary</h6>
+            <h6 class="mb-0 text-primary"><i class="mdi mdi-information-outline me-2"></i>@GlobalCounterCheque.Cheque_Information_Summary</h6>
         </div>
         <div class="card-body">
             <div class="row">
-                <div class="col-md-6 mb-2"><strong>Cheque Number:</strong> @(Model.CheckNumber ?? "N/A")</div>
-                <div class="col-md-6 mb-2"><strong>Amount:</strong> <span class="text-success fw-bold">@Model.Amount.ToString("N2")</span></div>
-                <div class="col-md-6 mb-2"><strong>Status:</strong> <span class="badge @GetStatusBadgeClass(Model.Status)">@Model.Status</span></div>
-                <div class="col-md-6 mb-2"><strong>Issued On:</strong> @Model.IssuedOn</div>
+                <div class="col-md-6 mb-2"><strong>@GlobalShared.Cheque Number:</strong> @(Model.CheckNumber ?? "N/A")</div>
+                <div class="col-md-6 mb-2"><strong>@GlobalShared.Amount:</strong> <span class="text-success fw-bold">@Model.Amount.ToString("N2")</span></div>
+                <div class="col-md-6 mb-2"><strong>@GlobalShared.Status:</strong> <span class="badge @GetStatusBadgeClass(Model.Status)">@Model.Status</span></div>
+                <div class="col-md-6 mb-2"><strong>@GlobalShared.Issued_On:</strong> @Model.IssuedOn</div>
             </div>
         </div>
     </div>
@@ -54,28 +55,28 @@
     <div class="table-responsive">
         <table class="table table-bordered table-striped">
             <thead class="table-light">
-                <tr><th colspan="2" class="text-center bg-primary text-white"><i class="mdi mdi-card-bulleted-outline me-2"></i>Detailed Information</th></tr>
+                <tr><th colspan="2" class="text-center bg-primary text-white"><i class="mdi mdi-card-bulleted-outline me-2"></i>@GlobalShared.Detailed_Information</th></tr>
             </thead>
             <tbody>
                 <tr><td class="fw-bold" style="width:40%;">Counter Cheque Id</td><td style="width:60%;">@Model.Id</td></tr>
-                <tr><td class="fw-bold">Customer ID</td><td>@(string.IsNullOrEmpty(Model.CustomerId) ? "N/A" : Model.CustomerId)</td></tr>
-                <tr><td class="fw-bold">Client Name</td><td>@(string.IsNullOrEmpty(Model.ClientName) ? "N/A" : Model.ClientName)</td></tr>
-                <tr><td class="fw-bold">Account Number</td><td>@(string.IsNullOrEmpty(Model.AccountNumber) ? "N/A" : Model.AccountNumber)</td></tr>
-                <tr><td class="fw-bold">Branch ID</td><td>@Model.BranchId</td></tr>
-                <tr><td class="fw-bold">Check Leaf ID</td><td>@(string.IsNullOrEmpty(Model.CheckLeafId) ? "N/A" : Model.CheckLeafId)</td></tr>
-                <tr><td class="fw-bold">Check Number</td><td>@(string.IsNullOrEmpty(Model.CheckNumber) ? "N/A" : Model.CheckNumber)</td></tr>
-                <tr><td class="fw-bold">Amount</td><td class="text-success fw-bold">@Model.Amount.ToString("N2")</td></tr>
-                <tr><td class="fw-bold">Issued On</td><td>@Model.IssuedOn</td></tr>
-                <tr><td class="fw-bold">Issued By</td><td>@(string.IsNullOrEmpty(Model.IssuedBy) ? "N/A" : Model.IssuedBy)</td></tr>
-                <tr><td class="fw-bold">Status</td><td><span class="badge @GetStatusBadgeClass(Model.Status)">@Model.Status</span></td></tr>
+                <tr><td class="fw-bold">@GlobalShared.Customer_ID</td><td>@(string.IsNullOrEmpty(Model.CustomerId) ? "N/A" : Model.CustomerId)</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.Client_Name</td><td>@(string.IsNullOrEmpty(Model.ClientName) ? "N/A" : Model.ClientName)</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.Account_Number</td><td>@(string.IsNullOrEmpty(Model.AccountNumber) ? "N/A" : Model.AccountNumber)</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.Branch_ID</td><td>@Model.BranchId</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.Check_Leaf_ID</td><td>@(string.IsNullOrEmpty(Model.CheckLeafId) ? "N/A" : Model.CheckLeafId)</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.Check_number</td><td>@(string.IsNullOrEmpty(Model.CheckNumber) ? "N/A" : Model.CheckNumber)</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.Amount</td><td class="text-success fw-bold">@Model.Amount.ToString("N2")</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.Issued_On</td><td>@Model.IssuedOn</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.Issued_By</td><td>@(string.IsNullOrEmpty(Model.IssuedBy) ? "N/A" : Model.IssuedBy)</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.Status</td><td><span class="badge @GetStatusBadgeClass(Model.Status)">@Model.Status</span></td></tr>
             </tbody>
         </table>
     </div>
 </div>
 
 <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="mdi mdi-close me-1"></i>Close</button>
-    <button type="button" class="btn btn-primary" onclick="window.print();"><i class="mdi mdi-printer me-1"></i>Print</button>
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="mdi mdi-close me-1"></i>@GlobalShared.Close</button>
+    <button type="button" class="btn btn-primary" onclick="window.print();"><i class="mdi mdi-printer me-1"></i>@GlobalShared.Print</button>
 </div>
 
 @functions {

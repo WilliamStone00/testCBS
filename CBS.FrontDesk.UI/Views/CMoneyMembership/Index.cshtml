@@ -33,12 +33,12 @@
     <div id="collapseTips" class="collapse">
         <div class="card-body">
             <ul>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>@GlobalCMoneyMembership.FilterByBranch:</strong> @GlobalCMoneyMembership.UseBranchCodeOrNameToNarrowActivations.</li>
-                <li><i class="mdi mdi-calendar-check-outline text-primary me-2"></i> <strong>@GlobalCMoneyMembership.DateRange:</strong> @GlobalCMoneyMembership.FilterByActivationAndLastPaymentDateRanges.</li>
-                <li><i class="mdi mdi-account-multiple-check-outline text-success me-2"></i> <strong>@GlobalCMoneyMembership.ActivatedBy:</strong> @GlobalCMoneyMembership.FilterByActivationUser.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>@GlobalShared.FilterByBranch:</strong> @GlobalCMoneyMembership.UseBranchCodeOrNameToNarrowActivations.</li>
+                <li><i class="mdi mdi-calendar-check-outline text-primary me-2"></i> <strong>@GlobalShared.Date_Range:</strong> @GlobalCMoneyMembership.FilterByActivationAndLastPaymentDateRanges.</li>
+                <li><i class="mdi mdi-account-multiple-check-outline text-success me-2"></i> <strong>@GlobalShared.Activated_by:</strong> @GlobalCMoneyMembership.FilterByActivationUser.</li>
                 <li><i class="mdi mdi-star-circle-outline text-primary me-2"></i> <strong>@GlobalCMoneyMembership.SubscriptionPINStatus:</strong> @GlobalCMoneyMembership.FilterBySubscriptionOrPINChangeState.</li>
                 <li><i class="mdi mdi-file-export-outline text-success me-2"></i> <strong>@GlobalShared.Export:</strong> @GlobalCMoneyMembership.ExportFilteredActivationsToExcel.</li>
-                <li><i class="mdi mdi-reload text-info me-2"></i> <strong>@GlobalCMoneyMembership.RefreshOften:</strong> @GlobalCMoneyMembership.ToKeepDataUpToDate.</li>
+                <li><i class="mdi mdi-reload text-info me-2"></i> <strong>@GlobalShared.Refresh_often:</strong> @GlobalCMoneyMembership.ToKeepDataUpToDate.</li>
             </ul>
         </div>
     </div>
@@ -46,30 +46,30 @@
 
 <!-- Advanced Filters -->
 <div class="card shadow p-3 mb-4">
-    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> @GlobalCMoneyMembership.AdvancedFilters</h5>
+    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> @GlobalShared.Advanced_filters</h5>
     <div class="card p-3 mb-3 bg-light">
         <div class="row mb-3">
             <div class="col-md-4 form-check">
                 <input type="checkbox" class="form-check-input" id="byBranch" />
-                <label class="form-check-label fw-bold" for="byBranch">@GlobalCMoneyMembership.FilterByBranch</label>
+                <label class="form-check-label fw-bold" for="byBranch">@GlobalShared.FilterByBranch</label>
             </div>
             <div class="col-md-4 form-check">
                 <input type="checkbox" class="form-check-input" id="byUser" />
-                <label class="form-check-label fw-bold" for="byUser">@GlobalCMoneyMembership.FilterByUser</label>
+                <label class="form-check-label fw-bold" for="byUser">@GlobalShared.Filter_by_user</label>
             </div>
             <div class="col-md-4 form-check">
                 <input type="checkbox" class="form-check-input" id="byDate" />
-                <label class="form-check-label fw-bold" for="byDate">@GlobalCMoneyMembership.FilterByDateRange</label>
+                <label class="form-check-label fw-bold" for="byDate">@GlobalShared.Filter_by_Date_Range</label>
             </div>
         </div>
 
         <div id="branchFilterSection" class="row mb-3" style="display:none;">
             <div class="col-md-12">
-                <label for="branchInput" class="form-label fw-bold">@GlobalCMoneyMembership.SelectBranch</label>
+                <label for="branchInput" class="form-label fw-bold">@GlobalShared.SelectBranch</label>
                 @Html.DropDownList(
                     "branchInput",
                     new SelectList(ViewBag.Branches, "Id", "Name"),
-                    "---"+ @GlobalCMoneyMembership.SelectBranch +"---",
+                    "---"+ GlobalShared.SelectBranch +"---",
                     new { @class = "form-control shadow-sm select2", @id = "branchInput" }
                 )
             </div>
@@ -77,60 +77,60 @@
  
         <div id="userFilterSection" class="row mb-3" style="display:none;">
             <div class="col-md-12">
-                <label class="form-label fw-bold">@GlobalCMoneyMembership.SearchByUser</label>
+                <label class="form-label fw-bold">@GlobalShared.Search_by_user</label>
                 <input type="text" id="activatedBy" class="form-control" placeholder="@GlobalCMoneyMembership.ActivatedByUser" />
             </div>
         </div>
 
         <div id="dateRangeSection" class="row mb-3" style="display:none;">
             <div class="col-md-6">
-                <input type="date" id="activationDateFrom" class="form-control" placeholder="@GlobalCMoneyMembership.ActivationDateFrom (dd/mm/yyyy)" />
+                <input type="date" id="activationDateFrom" class="form-control" placeholder="@GlobalShared.Activation_date_from (dd/mm/yyyy)" />
             </div>
             <div class="col-md-6">
-                <input type="date" id="activationDateTo" class="form-control" placeholder="@GlobalCMoneyMembership.ActivationDateTo (dd/mm/yyyy)" />
+                <input type="date" id="activationDateTo" class="form-control" placeholder="@GlobalShared.Activation_date_to (dd/mm/yyyy)" />
             </div>
 
         </div>
 
 
         <div class="row">
-            <div class="col-md-3 mb-2"><input type="text" id="customerId" class="form-control" placeholder="@GlobalCMoneyMembership.CustomerID" /></div>
-            <div class="col-md-3 mb-2"><input type="text" id="loginId" class="form-control" placeholder="@GlobalCMoneyMembership.LoginIDLc" /></div>
-            <div class="col-md-3 mb-2"><input type="text" id="phoneNumber" class="form-control" placeholder="@GlobalCMoneyMembership.PhoneNumber" /></div>
-            <div class="col-md-3 mb-2"><input type="text" id="name" class="form-control" placeholder="@GlobalCMoneyMembership.CustomerName" /></div>
+            <div class="col-md-3 mb-2"><input type="text" id="customerId" class="form-control" placeholder="@GlobalShared.Customer_ID" /></div>
+            <div class="col-md-3 mb-2"><input type="text" id="loginId" class="form-control" placeholder="@GlobalShared.Login" /></div>
+            <div class="col-md-3 mb-2"><input type="text" id="phoneNumber" class="form-control" placeholder="@GlobalShared.Phone_Number" /></div>
+            <div class="col-md-3 mb-2"><input type="text" id="name" class="form-control" placeholder="@GlobalShared.Customer_Name" /></div>
         </div>
         <div class="row">
             <div class="col-md-3 mb-2">
                 <select id="activationStatus" class="form-select">
-                    <option value="">@GlobalCMoneyMembership.AllStatus</option>
-                    <option value="true">@GlobalCMoneyMembership.ActiveLc</option>
-                    <option value="false">@GlobalCMoneyMembership.Deactivated</option>
+                    <option value="">@GlobalShared.All_status</option>
+                    <option value="true">@GlobalShared.Activate</option>
+                    <option value="false">@GlobalShared.Deactivated</option>
                 </select>
             </div>
             <div class="col-md-3 mb-2">
                 <select id="hasChangedDefaultPin" class="form-select">
                     <option value="">@GlobalCMoneyMembership.ChangedDefaultPIN ?</option>
-                    <option value="true">@GlobalCMoneyMembership.Yes</option>
-                    <option value="false">@GlobalCMoneyMembership.No</option>
+                    <option value="true">@GlobalShared.Yes</option>
+                    <option value="false">@GlobalShared.No</option>
                 </select>
             </div>
             <div class="col-md-3 mb-2">
                 <select id="isSubscribed" class="form-select">
-                    <option value="">@GlobalCMoneyMembership.SubscriptionStatus</option>
-                    <option value="true">@GlobalCMoneyMembership.SubscribedLc</option>
-                    <option value="false">@GlobalCMoneyMembership.NotSubscribed</option>
+                    <option value="">@GlobalShared.Subscription_status</option>
+                    <option value="true">@GlobalShared.Subscribed</option>
+                    <option value="false">@GlobalShared.Not_subscribed</option>
                 </select>
             </div>
             <div class="col-md-3 mb-2 d-flex">
-                <input type="number" id="failedAttemptsMin" class="form-control me-1" placeholder="@GlobalCMoneyMembership.MinAttempts" />
-                <input type="number" id="failedAttemptsMax" class="form-control" placeholder="@GlobalCMoneyMembership.MaxAttempts" />
+                <input type="number" id="failedAttemptsMin" class="form-control me-1" placeholder="@GlobalShared.Min_attempts" />
+                <input type="number" id="failedAttemptsMax" class="form-control" placeholder="@GlobalShared.Max_attempts" />
             </div>
         </div>
     </div>
 
     <div class="row mt-2">
         <div class="col-md-12 d-flex">
-            <button id="applyFilterBtn" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> @GlobalCMoneyMembership.ApplyFilter</button>
+            <button id="applyFilterBtn" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> @GlobalShared.Apply_Filter</button>
             <button id="resetFilterBtn" class="btn btn-secondary me-2 w-100"><i class="mdi mdi-refresh"></i> @GlobalShared.Reset</button>
             <button id="exportBtn" class="btn btn-success w-100"><i class="mdi mdi-file-excel"></i> @GlobalShared.Export</button>
         </div>

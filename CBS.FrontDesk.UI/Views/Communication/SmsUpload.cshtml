@@ -35,20 +35,20 @@
         <div class="card bg-light mb-4 shadow-sm">
             <div class="card-body text-center">
                 <h1 class="card-title text-success fw-bold mb-2">
-                    <i class="mdi mdi-message-processing-outline me-2"></i> SMS BULK UPLOAD
+                    <i class="mdi mdi-message-processing-outline me-2"></i> @GlobalCommunication.SMS_BULK_UPLOAD
                 </h1>
 
                 <p class="card-text text-muted mb-2">
-                    <strong>Communication Console</strong> — Upload → preview → send SMS in bulk.
+                    <strong>@GlobalCommunication.Communication_Console</strong> — @GlobalCommunication.Upload_preview_send_SMS_in_bulk
                     <br />
-                    Upload file, validate rows, preview computed messages, then send only once confirmed.
+                    @GlobalCommunication.Upload_file_validate_rows_preview_computed_messages_then_send_only_once_confirmed
                 </p>
 
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.35);" />
 
                 <div class="alert alert-info mt-3 d-flex align-items-center justify-content-center">
                     <i class="mdi mdi-information-outline me-2"></i>
-                    <strong>Important:</strong>&nbsp;Preview is mandatory. Sending requires a valid <b>FileUploadId</b>.
+                    <strong>@GlobalShared.Important:</strong>&nbsp;@Html.Raw(@GlobalCommunication.Preview_is_mandatory_Sending_requires_a_valid_FileUploadId)
                 </div>
             </div>
         </div>
@@ -57,14 +57,14 @@
         <div class="row mb-2">
             <div class="col-md-6 text-md-end mb-1 mb-md-0">
                 <a href="/Communication/Index" class="btn btn-primary btn-sm shadow-sm px-3 w-100 w-md-auto">
-                    <i class="mdi mdi-view-list me-1"></i> SMS Upload Listing
+                    <i class="mdi mdi-view-list me-1"></i> @GlobalCommunication.SMS_Upload_Listing
                 </a>
             </div>
             <div class="col-md-6 text-md-start">
                 <a href="/Communication/DownloadSmsUploadTemplate"
                    class="btn btn-outline-secondary btn-sm shadow-sm px-3 w-100 w-md-auto"
                    data-bs-toggle="tooltip" title="Download template (CSV/Excel)">
-                    <i class="mdi mdi-file-download-outline me-1"></i> Download Template
+                    <i class="mdi mdi-file-download-outline me-1"></i> @GlobalShared.Download_Template
                 </a>
             </div>
         </div>
@@ -86,8 +86,8 @@
                                 data-bs-target="#collapseSmsUpload"
                                 aria-expanded="true" aria-controls="collapseSmsUpload">
                             <i class="mdi mdi-cloud-upload-outline me-2"></i>
-                            SMS Upload + Preview
-                            <span class="badge bg-success ms-2">Required</span>
+                            @GlobalShared.SMS_Upload +  @GlobalShared.Preview
+                            <span class="badge bg-success ms-2">@GlobalShared.Required</span>
                         </button>
                     </h2>
 
@@ -96,7 +96,7 @@
 
                             <div class="alert alert-info mb-3">
                                 <i class="mdi mdi-information-outline me-2"></i>
-                                Fill required details then upload file for preview.
+                                @GlobalCommunication.Fill_required_details_then_upload_file_for_preview
                             </div>
 
                             <div class="row g-3">
@@ -118,7 +118,7 @@
                                 <!-- Sender Service -->
                                 <div class="col-md-6">
                                     <label class="form-label fw-semibold">
-                                        Sender Service <span class="req-star">*</span>
+                                        @GlobalShared.Sender_Service <span class="req-star">*</span>
                                     </label>
                                     @Html.TextBoxFor(m => m.SenderService,
                                         new { @class = "form-control", id = "SenderService", placeholder = "e.g. CMONEY / CAMCCUL", required = "required" })
@@ -128,7 +128,7 @@
                                 <!-- Title -->
                                 <div class="col-md-6">
                                     <label class="form-label fw-semibold">
-                                        Title <span class="req-star">*</span>
+                                        @GlobalShared.Title <span class="req-star">*</span>
                                     </label>
                                     @Html.TextBoxFor(m => m.Title,
                                         new { @class = "form-control", id = "Title", placeholder = "e.g. Loan Reminder Campaign", required = "required" })
@@ -138,7 +138,7 @@
                                 <!-- Purpose -->
                                 <div class="col-md-6">
                                     <label class="form-label fw-semibold">
-                                        Purpose <span class="text-muted">(optional)</span>
+                                        @GlobalShared.Purpose <span class="text-muted">(optional)</span>
                                     </label>
                                     @Html.TextBoxFor(m => m.Purpose,
                                         new { @class = "form-control", id = "Purpose", placeholder = "Optional: Salary notice / Loan arrears / Promo..." })
@@ -147,19 +147,19 @@
                                 <!-- Default Message Template -->
                                 <div class="col-md-6">
                                     <label class="form-label fw-semibold">
-                                        Default Message Template <span class="text-muted">(optional)</span>
+                                        @GlobalShared.Default_Message_Template <span class="text-muted">(@GlobalShared.Optional)</span>
                                     </label>
                                     @Html.TextAreaFor(m => m.DefaultMessageTemplate,
                                         new { @class = "form-control", id = "DefaultMessageTemplate", rows = "2", placeholder = "e.g Dear {Name} , your Balance is {Amount}." })
                                     <small class="text-muted help-hint">
-                                        Sent to Preview endpoint as <code>defaultMessageTemplate</code>.
+                                        @GlobalCommunication.Sent_to_Preview_endpoint_as_defaultMessageTemplate.
                                     </small>
                                 </div>
 
                                 <!-- File -->
                                 <div class="col-md-12">
                                     <label for="smsFile" class="form-label fw-semibold">
-                                        Select Upload File <span class="req-star">*</span>
+                                        @GlobalShared.Select_Upload_File <span class="req-star">*</span>
                                     </label>
 
                                     <div class="input-group has-validation">
@@ -168,15 +168,15 @@
                                                required data-max-size="10485760" />
 
                                         <button class="btn btn-primary px-4" type="submit" id="btnSmsUploadPreview">
-                                            <span class="upload-text">Upload & Preview</span>
+                                            <span class="upload-text">@GlobalShared.Upload & @GlobalShared.Preview</span>
                                             <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
                                             <i class="mdi mdi-cloud-upload-outline ms-1"></i>
                                         </button>
 
-                                        <div class="invalid-feedback">Please select a valid file (max 10MB).</div>
+                                        <div class="invalid-feedback">@GlobalShared.Please_select_a_valid_file (max 10MB).</div>
                                     </div>
 
-                                    <div class="form-text">Supported: .csv, .xlsx, .xls</div>
+                                    <div class="form-text">@GlobalShared.Supported: .csv, .xlsx, .xls</div>
                                 </div>
 
                             </div>
@@ -199,7 +199,7 @@
                             data-bs-toggle="collapse"
                             data-bs-target="#collapseSmsPreview"
                             aria-expanded="false" aria-controls="collapseSmsPreview">
-                        <i class="mdi mdi-file-document-outline me-2"></i> Preview Result (Rows)
+                        <i class="mdi mdi-file-document-outline me-2"></i> @GlobalShared.Preview_Result (Rows)
                     </button>
                 </h2>
 
@@ -211,11 +211,11 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Member Ref</th>
-                                        <th>Receiver Phone</th>
-                                        <th>Receiver Name</th>
-                                        <th class="text-center">Status</th>
-                                        <th>Validation Error</th>
+                                        <th>@GlobalShared.Member_ref</th>
+                                        <th>@GlobalShared.Receiver_Phone</th>
+                                        <th>@GlobalShared.Receiver_Name</th>
+                                        <th class="text-center">@GlobalShared.Status</th>
+                                        <th>@GlobalShared.Validation_Error</th>
                                         <th>Message</th>
                                     </tr>
                                 </thead>
@@ -224,13 +224,13 @@
 
                             <div class="d-flex flex-wrap gap-2 mt-2">
                                 <span class="badge bg-dark" id="smsSumTotalRows">Total: 0</span>
-                                <span class="badge bg-success" id="smsSumValidRows">Valid: 0</span>
-                                <span class="badge bg-danger" id="smsSumInvalidRows">Invalid: 0</span>
+                                <span class="badge bg-success" id="smsSumValidRows">@GlobalShared.Valid: 0</span>
+                                <span class="badge bg-danger" id="smsSumInvalidRows">@GlobalShared.Invalid: 0</span>
                             </div>
 
                             <small class="text-muted d-block mt-2">
                                 <i class="mdi mdi-information-outline me-1"></i>
-                                Preview uses <b>SmsUploadDetailDto</b> rows (Message + IsValid + ValidationError).
+                                @Html.Raw(@GlobalCommunication.Preview_uses_SmsUploadDetailDto_rows_Message_IsValid_ValidationError)
                             </small>
                         </div>
 
@@ -256,7 +256,7 @@
                                 data-bs-toggle="collapse"
                                 data-bs-target="#collapseSmsSend"
                                 aria-expanded="true" aria-controls="collapseSmsSend">
-                            <i class="mdi mdi-send-check-outline me-2"></i> Send SMS (From Upload)
+                            <i class="mdi mdi-send-check-outline me-2"></i> @GlobalShared.Send_SMS (@GlobalShared.From_Upload)
                             <span class="badge bg-primary ms-2">Send</span>
                         </button>
                     </h2>
@@ -266,20 +266,20 @@
 
                             <div class="alert alert-secondary">
                                 <i class="mdi mdi-information-outline me-2"></i>
-                                Sending uses <b>SendSmsFileUploadCommand</b> with FileUploadId + SenderService + Title + Purpose + DefaultMessageTemplate.
+                                @Html.Raw(@GlobalCommunication.Sending_uses_SendSmsFileUploadCommand_with_FileUploadId_SenderService_Title_Purpose_DefaultMessageTemplate)
                             </div>
 
                             <div class="row g-3">
                                 <div class="col-md-4">
-                                    <label class="form-label fw-semibold">FileUploadId</label>
+                                    <label class="form-label fw-semibold">@GlobalShared.FileUploadId</label>
                                     <input type="text" class="form-control" id="FileUploadIdDisplay" value="N/A" readonly />
                                 </div>
                                 <div class="col-md-4">
-                                    <label class="form-label fw-semibold">Sender Service</label>
+                                    <label class="form-label fw-semibold">@GlobalShared.Sender_Service</label>
                                     <input type="text" class="form-control" id="SenderServiceDisplay" value="N/A" readonly />
                                 </div>
                                 <div class="col-md-4">
-                                    <label class="form-label fw-semibold">Title</label>
+                                    <label class="form-label fw-semibold">@GlobalShared.Title</label>
                                     <input type="text" class="form-control" id="TitleDisplay" value="N/A" readonly />
                                 </div>
                             </div>
@@ -287,7 +287,7 @@
                             <div class="row mt-3 mb-2">
                                 <div class="col-md-12 text-end">
                                     <button type="submit" class="btn btn-primary" id="btnSendSmsUpload">
-                                        <i class="mdi mdi-check-circle-outline me-2"></i> Send SMS (Uploaded File)
+                                        <i class="mdi mdi-check-circle-outline me-2"></i> @GlobalShared.Send_SMS (@GlobalShared.Uploaded_File)
                                     </button>
                                 </div>
                             </div>

@@ -4,7 +4,7 @@
 @{
     ViewBag.Title = "Index";
 }
-
+@using Resources
  
 
 <div class="row">
@@ -13,9 +13,9 @@
             <!-- Header Section -->
             <div class="card-header text-white">
                 <h4 class="mb-0">
-                    <i class="mdi mdi-percent me-2"></i>Commission Configuration
+                    <i class="mdi mdi-percent me-2"></i>@DailyCollectionSettingRessource.Commission_Configuration
                 </h4>
-                <small>Configure commission settings for different operation types and stakeholders</small>
+                <small>@DailyCollectionSettingRessource.Configure_commission_settings_for_different_operation_types_and_stakeholders</small>
             </div>
 
             <div class="card-body">
@@ -27,7 +27,7 @@
                     <!-- Operation Type Selection -->
             <div class="form-section">
                 <h6 class="text-primary mb-3">
-                    <i class="mdi mdi-cog me-2"></i>Operation Configuration
+                    <i class="mdi mdi-cog me-2"></i>@GlobalShared.Operation_Configuration
                 </h6>
            
                 <div class="row">
@@ -58,20 +58,20 @@
                                     required = "required"
                                 })
                             @Html.ValidationMessageFor(m => m.CommissionSetting.ProviderType, "", new { @class = "text-danger" })
-                            <label>Provider Type *</label>
+                            <label>@GlobalShared.Provider_Type *</label>
                         </div>
                     </div>
                 </div>
                 <!-- Commission Type Selection -->
                 <div class="row">
                     <div class="col-md-8">
-                        <h6 class="text-secondary mb-3">Commission Type</h6>
+                        <h6 class="text-secondary mb-3">@GlobalShared.Commission_Type</h6>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="commission-type-card" onclick="selectCommissionType(true)">
                                     <i class="mdi mdi-percent text-success" style="font-size: 2rem;"></i>
                                     <h6 class="mt-2">Proportional</h6>
-                                    <small class="text-muted">Percentage-based commission</small>
+                                    <small class="text-muted">@DailyCollectionSettingRessource.Percentage_based_commission</small>
                                     @Html.RadioButtonFor(m => m.CommissionSetting.IsProportional, true,
                                         new { id = "proportionalTrue", onchange = "toggleCommissionType(true)" })
                                 </div>
@@ -80,7 +80,7 @@
                                 <div class="commission-type-card" onclick="selectCommissionType(false)">
                                     <i class="mdi mdi-cash text-warning" style="font-size: 2rem;"></i>
                                     <h6 class="mt-2">Fixed Amount</h6>
-                                    <small class="text-muted">Fixed amount per transaction</small>
+                                    <small class="text-muted">@DailyCollectionSettingRessource.Fixed_amount_per_transaction</small>
                                     @Html.RadioButtonFor(m => m.CommissionSetting.IsProportional, false,
                                         new { id = "proportionalFalse", onchange = "toggleCommissionType(false)" })
                                 </div>
@@ -91,8 +91,8 @@
                         <div class="form-check form-switch mt-4">
                             @Html.CheckBoxFor(m => m.CommissionSetting.IsInterbranch, new { @class = "form-check-input", id = "interbranchChk" })
                             <label class="form-check-label" for="interbranchChk">
-                                <strong>Inter-branch Transaction</strong>
-                                <small class="d-block text-muted">Check if this applies to inter-branch operations</small>
+                                <strong>@DailyCollectionSettingRessource.Inter_branch_Transaction</strong>
+                                <small class="d-block text-muted">@DailyCollectionSettingRessource.Check_if_this_applies_to_inter_branch_operations</small>
                             </label>
                         </div>
                     </div>
@@ -102,14 +102,14 @@
                     <!-- Fixed Amount Section -->
                     <div id="fixedAmountSection" class="form-section hidden-section">
                         <h6 class="text-primary mb-3">
-                            <i class="mdi mdi-cash me-2"></i>Fixed Amount Configuration
+                            <i class="mdi mdi-cash me-2"></i>@DailyCollectionSettingRessource.Fixed_Amount_Configuration
                         </h6>
                         <div class="col-md-6">
                             <div class="form-floating">
                                 @Html.TextBoxFor(m => m.CommissionSetting.AmountPerTransaction,
                                     new { @class = "form-control", @type = "number", step = "0.01", min = "0", placeholder = "Amount Per Transaction" })
                                 @Html.ValidationMessageFor(m => m.CommissionSetting.AmountPerTransaction, "", new { @class = "text-danger" })
-                                <label>Amount Per Transaction</label>
+                                <label>@DailyCollectionSettingRessource.Amount_Per_Transaction</label>
                             </div>
                         </div>
                     </div>
@@ -117,7 +117,7 @@
                     <!-- Proportional Commission Section -->
                     <div id="proportionalSection" class="form-section">
                         <h6 class="text-primary mb-3">
-                            <i class="mdi mdi-percent me-2"></i>Commission Distribution
+                            <i class="mdi mdi-percent me-2"></i>@DailyCollectionSettingRessource.Commission_Distribution
                         </h6>
                         <div class="row">
                             <div class="col-md-8">
@@ -127,7 +127,7 @@
                                             @Html.TextBoxFor(m => m.CommissionSetting.CommissionProviderShare,
                                                 new { @class = "form-control commission-input", @type = "number", step = "0.01", min = "0", max = "100", placeholder = "Commission Provider", oninput = "updateCommissionTotal()" })
                                             @Html.ValidationMessageFor(m => m.CommissionSetting.CommissionProviderShare, "", new { @class = "text-danger" })
-                                            <label>Commission Provider (%)</label>
+                                            <label>@DailyCollectionSettingRessource.Commission_Provider (%)</label>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -135,25 +135,25 @@
                                             @Html.TextBoxFor(m => m.CommissionSetting.AgentShare,
                                                 new { @class = "form-control commission-input", @type = "number", step = "0.01", min = "0", max = "100", placeholder = "Agent Share", oninput = "updateCommissionTotal()" })
                                             @Html.ValidationMessageFor(m => m.CommissionSetting.AgentShare, "", new { @class = "text-danger" })
-                                            <label>Agent Share (%)</label>
+                                            <label>@DailyCollectionSettingRessource.Agent_Share (%)</label>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="commission-preview">
-                                    <h6><i class="mdi mdi-calculator me-2"></i>Commission Summary</h6>
+                                    <h6><i class="mdi mdi-calculator me-2"></i>@GlobalShared.Commission_Summary</h6>
                                     <div class="d-flex justify-content-between mb-2">
-                                        <span>Provider:</span>
+                                        <span>@GlobalShared.Provider:</span>
                                         <span id="providerDisplay" class="percentage-display">0%</span>
                                     </div>
                                     <div class="d-flex justify-content-between mb-2">
-                                        <span>Agent:</span>
+                                        <span>@GlobalShared.Agent:</span>
                                         <span id="agentDisplay" class="percentage-display">0%</span>
                                     </div>
                                     <hr style="border-color: rgba(255,255,255,0.3);">
                                     <div class="d-flex justify-content-between">
-                                        <strong>Total:</strong>
+                                        <strong>@GlobalShared.Total:</strong>
                                         <strong id="totalDisplay" class="percentage-display">0%</strong>
                                     </div>
                                     <div id="totalWarning" class="validation-warning" style="display: none;">
@@ -167,17 +167,17 @@
                     <!-- Scope Configuration -->
                     <div class="form-section">
                         <h6 class="text-primary mb-3">
-                            <i class="mdi mdi-target me-2"></i>Configuration Scope
+                            <i class="mdi mdi-target me-2"></i>@DailyCollectionSettingRessource.Configuration_Scope
                         </h6>
-                        <p class="text-muted mb-3">Select the scope for this commission configuration (select only one):</p>
+                        <p class="text-muted mb-3">@DailyCollectionSettingRessource.Select_the_scope_for_this_commission_configuration_select_only_one:</p>
 
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="scope-selector" onclick="selectScope('global')">
                                     <div class="text-center">
                                         <i class="mdi mdi-earth text-success" style="font-size: 2rem;"></i>
-                                        <h6 class="mt-2">Global Configuration</h6>
-                                        <small class="text-muted">Applies to entire organization</small>
+                                        <h6 class="mt-2">@GlobalShared.Global_Configuration</h6>
+                                        <small class="text-muted">@DailyCollectionSettingRessource.Applies_to_entire_organization</small>
                                         @Html.CheckBoxFor(m => m.CommissionSetting.IsGlobal, new { @class = "form-check-input d-none", id = "isGlobalChk" })
                                     </div>
                                 </div>
@@ -186,8 +186,8 @@
                                 <div class="scope-selector" onclick="selectScope('branch')">
                                     <div class="text-center">
                                         <i class="mdi mdi-office-building text-warning" style="font-size: 2rem;"></i>
-                                        <h6 class="mt-2">Branch Configuration</h6>
-                                        <small class="text-muted">Applies to specific branch</small>
+                                        <h6 class="mt-2">@GlobalShared.Branch_Configuration</h6>
+                                        <small class="text-muted">@DailyCollectionSettingRessource.Applies_to_specific_branch</small>
                                         @Html.CheckBoxFor(m => m.CommissionSetting.IsBranch, new { @class = "form-check-input d-none", id = "isBranchChk" })
                                     </div>
                                 </div>
@@ -196,8 +196,8 @@
                                 <div class="scope-selector" onclick="selectScope('agent')">
                                     <div class="text-center">
                                         <i class="mdi mdi-account-group text-info" style="font-size: 2rem;"></i>
-                                        <h6 class="mt-2">Agent Configuration</h6>
-                                        <small class="text-muted">Applies to specific agent</small>
+                                        <h6 class="mt-2">@GlobalShared.Agent_Configuration</h6>
+                                        <small class="text-muted">@DailyCollectionSettingRessource.Applies_to_specific_agent</small>
                                         @Html.CheckBoxFor(m => m.CommissionSetting.IsAgent, new { @class = "form-check-input d-none", id = "isAgentChk" })
                                     </div>
                                 </div>
@@ -234,19 +234,19 @@
                     <!-- Action Buttons -->
             <div class="d-flex justify-content-between mt-4">
                 <div>
-            <button type="button" class="btn btn-outline-secondary" onclick="resetForm()">
-                <i class="mdi mdi-refresh me-2"></i>Reset Form
-            </button>
-            <button type="button" class="btn btn-outline-info" onclick="previewConfiguration()">
-                <i class="mdi mdi-eye me-2"></i>Preview
-            </button>
+                    <button type="button" class="btn btn-outline-secondary" onclick="resetForm()">
+                        <i class="mdi mdi-refresh me-2"></i>@GlobalShared.Reset_Form
+                    </button>
+                    <button type="button" class="btn btn-outline-info" onclick="previewConfiguration()">
+                        <i class="mdi mdi-eye me-2"></i>@GlobalShared.Preview
+                    </button>
         </div>
                 <!-- Commission Preview Modal -->
                 <div class="modal fade" id="previewModal" tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                             <div class="modal-header bg-light">
-                                <h5 class="modal-title">Confirm Configuration</h5>
+                                <h5 class="modal-title">@GlobalShared.Confirm_Configuration</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body" id="previewContent">
@@ -259,14 +259,14 @@
                     @if (Model?.CommissionSetting?.Id == null)
                     {
                         <button type="submit" class="btn btn-primary">
-                            <i class="mdi mdi-content-save me-2"></i>Save Configuration
+                            <i class="mdi mdi-content-save me-2"></i>@GlobalShared.Save_Configuration
                         </button>
                         <input type="hidden" name="Action" value="insert" id="Action" />
                     }
                     else
                     {
                         <button type="submit" class="btn btn-success">
-                            <i class="mdi mdi-update me-2"></i>Update Configuration
+                            <i class="mdi mdi-update me-2"></i>@GlobalShared.Update_Configuration
                         </button>
                         <input type="hidden" name="Action" value="update" id="Action" />
                     }

@@ -1,16 +1,16 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Config.GlobalizationViewModel
-
+@using Resources
 <!-- Table of Divisions -->
 <hr />
-<h6 class="text-secondary mb-3"><i class="bi bi-list-check"></i> Existing Divisions</h6>
+<h6 class="text-secondary mb-3"><i class="bi bi-list-check"></i> @GlobalGlobalization.Existing_Divisions</h6>
 
 <div class="table-responsive">
     <table id="divisionTable" class="table table-bordered table-striped table-hover table-sm w-100">
         <thead class="table-light">
             <tr>
-                <th>Region</th>
-                <th>Division Name</th>
-                <th style="width: 120px;">Actions</th>
+                <th>@GlobalShared.Region</th>
+                <th>@GlobalGlobalization.Division_Name</th>
+                <th style="width: 120px;">@GlobalShared.Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -61,7 +61,7 @@
             {
                 <tr>
                     <td colspan="3" class="text-center text-muted">
-                        <i class="bi bi-info-circle me-1"></i> No divisions found.
+                        <i class="bi bi-info-circle me-1"></i> @GlobalGlobalization.No_divisions_found
                     </td>
                 </tr>
             }

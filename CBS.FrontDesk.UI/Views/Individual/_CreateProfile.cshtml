@@ -25,7 +25,7 @@
                                 data-bs-target="#collapseDeliveryAddress"
                                 aria-expanded="true"
                                 aria-controls="collapseDeliveryAddress">
-                            @GlobalIndividual.Profile
+                            @GlobalShared.Profile
                         </button>
                     </h2>
                     <div id="collapseDeliveryAddress"
@@ -43,9 +43,9 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", @placeholder = @GlobalIndividual.FirstName, @required = "required" })
+                                            @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", @placeholder = GlobalShared.First_Name, @required = "required" })
                                             @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
-                                            <label>@GlobalIndividual.FirstName</label>
+                                            <label>@GlobalShared.First_Name</label>
                                         </div>
                                     </div>
 
@@ -92,23 +92,23 @@
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.TextBoxFor(m => m.DateOfBirth, new { @class = "form-control", @type = "date", @placeholder = @GlobalIndividual.DateOfBirth, @required = "required" })
+                                            @Html.TextBoxFor(m => m.DateOfBirth, new { @class = "form-control", @type = "date", @placeholder = GlobalShared.Date_of_birth, @required = "required" })
                                             @Html.ValidationMessageFor(m => m.DateOfBirth, "", new { @class = "text-danger" })
-                                            <label>@GlobalIndividual.DateOfBirth</label>
+                                            <label>@GlobalShared.Date_of_birth</label>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.TextBoxFor(m => m.PlaceOfBirth, new { @class = "form-control", @placeholder = @GlobalIndividual.PlaceOfBirth, @required = "required" })
+                                            @Html.TextBoxFor(m => m.PlaceOfBirth, new { @class = "form-control", @placeholder = GlobalShared.Place_of_Birth, @required = "required" })
                                             @Html.ValidationMessageFor(m => m.PlaceOfBirth, "", new { @class = "text-danger" })
-                                            <label>@GlobalIndividual.PlaceOfBirth</label>
+                                            <label>@GlobalShared.Place_of_Birth</label>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.TextBoxFor(m => m.Phone, new { @class = "form-control", @placeholder = @GlobalIndividual.PhoneNumber, @required = "required" })
+                                            @Html.TextBoxFor(m => m.Phone, new { @class = "form-control", @placeholder = GlobalShared.Phone_Number, @required = "required" })
                                             @Html.ValidationMessageFor(m => m.Phone, "", new { @class = "text-danger" })
-                                            <label>@GlobalIndividual.PhoneNumber</label>
+                                            <label>@GlobalShared.Phone_Number</label>
                                         </div>
                                     </div>
 
@@ -121,16 +121,16 @@
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.TextBoxFor(m => m.IDNumberIssueDate, new { @class = "form-control", @type = "date", @placeholder = @GlobalIndividual.DateIssued, @required = "required" })
+                                            @Html.TextBoxFor(m => m.IDNumberIssueDate, new { @class = "form-control", @type = "date", @placeholder = GlobalShared.Date_issued, @required = "required" })
                                             @Html.ValidationMessageFor(m => m.IDNumberIssueDate, "", new { @class = "text-danger" })
-                                            <label>@GlobalIndividual.DateIssued</label>
+                                            <label>@GlobalShared.Date_issued</label>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.TextBoxFor(m => m.IDNumberIssueAt, new { @class = "form-control", @placeholder = @GlobalIndividual.PlaceOfIssued, @required = "required" })
+                                            @Html.TextBoxFor(m => m.IDNumberIssueAt, new { @class = "form-control", @placeholder = GlobalShared.PlaceOfIssued, @required = "required" })
                                             @Html.ValidationMessageFor(m => m.IDNumberIssueAt, "", new { @class = "text-danger" })
-                                            <label>@GlobalIndividual.PlaceOfIssued</label>
+                                            <label>@GlobalShared.PlaceOfIssued</label>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
@@ -183,7 +183,7 @@
                                 data-bs-target="#collapsePaymentMethod3"
                                 aria-expanded="false"
                                 aria-controls="collapsePaymentMethod3">
-                            @GlobalIndividual.Address
+                            @GlobalShared.Address
                         </button>
                     </h2>
                     <div id="collapsePaymentMethod3"
@@ -200,7 +200,7 @@
                                                 "---"+ @GlobalIndividual.SelectCountry+"---",
                                                 new { @class = "form-control select2", @id = "CountryId", @required = "required" })
                                             @Html.ValidationMessageFor(m => m.CountryId, "", new { @class = "text-danger" })
-                                            <label for="CountryId">@GlobalIndividual.Country</label>
+                                            <label for="CountryId">@GlobalShared.Country</label>
                                         </div>
                                     </div>
 
@@ -208,10 +208,10 @@
                                         <div class="form-floating form-floating-outline">
                                             @Html.DropDownListFor(m => m.RegionId,
                                                 new SelectList(ViewBag.Regions, "Id", "Name"),
-                                                "---"+ @GlobalIndividual.SelectRegion+"---",
+                                                "---"+ GlobalShared.Select_Region+"---",
                                                 new { @class = "form-control select2", @id = "RegionId", @required = "required" })
                                             @Html.ValidationMessageFor(m => m.RegionId, "", new { @class = "text-danger" })
-                                            <label for="RegionId">@GlobalIndividual.Region</label>
+                                            <label for="RegionId">@GlobalShared.Region</label>
                                         </div>
                                     </div>
 
@@ -222,7 +222,7 @@
                                                 "---"+ @GlobalIndividual.SelectDivision+"---",
                                                 new { @class = "form-control select2", @id = "DivisionId", @required = "required" })
                                             @Html.ValidationMessageFor(m => m.DivisionId, "", new { @class = "text-danger" })
-                                            <label for="DivisionId">@GlobalIndividual.Division</label>
+                                            <label for="DivisionId">@GlobalShared.Division</label>
                                         </div>
                                     </div>
 
@@ -233,7 +233,7 @@
                                                 "---"+ @GlobalIndividual.SelectSubDivision+"---",
                                                 new { @class = "form-control select2", @id = "SubDivisionId", @required = "required" })
                                             @Html.ValidationMessageFor(m => m.SubDivisionId, "", new { @class = "text-danger" })
-                                            <label for="SubDivisionId">@GlobalIndividual.SubDivision</label>
+                                            <label for="SubDivisionId">@GlobalShared.SubDivision</label>
                                         </div>
                                     </div>
 
@@ -244,23 +244,23 @@
                                                 "---" + @GlobalIndividual.SelectTown+"---",
                                                 new { @class = "form-control select2", @id = "TownId", @required = "required" })
                                             @Html.ValidationMessageFor(m => m.TownId, "", new { @class = "text-danger" })
-                                            <label for="TownId">@GlobalIndividual.Town</label>
+                                            <label for="TownId">@GlobalShared.Town</label>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.TextAreaFor(m => m.Address, new { @class = "form-control", @placeholder = @GlobalIndividual.Address , @required = "required", @id = "Address" })
+                                            @Html.TextAreaFor(m => m.Address, new { @class = "form-control", @placeholder = GlobalShared.Address , @required = "required", @id = "Address" })
                                             @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger" })
-                                            <label for="Address">@GlobalIndividual.Address</label>
+                                            <label for="Address">@GlobalShared.Address</label>
                                         </div>
                                     </div>
 
                                     <div class="col-md-4">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = @GlobalIndividual.Email, @required = "required", @id = "Email" })
+                                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = GlobalShared.Email, @required = "required", @id = "Email" })
                                             @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
-                                            <label for="Email">@GlobalIndividual.Email</label>
+                                            <label for="Email">@GlobalShared.Email</label>
                                         </div>
                                     </div>
 
@@ -300,7 +300,7 @@
                                 data-bs-target="#collapsePaymentMethod5"
                                 aria-expanded="false"
                                 aria-controls="collapsePaymentMethod5">
-                            @GlobalIndividual.MaritalStatus
+                            @GlobalShared.Marital_Status
                         </button>
                     </h2>
                     <div id="collapsePaymentMethod5"
@@ -315,7 +315,7 @@
                                         <div class="form-floating form-floating-outline">
                                             @Html.DropDownListFor(m => m.MaritalStatus, new SelectList(ViewBag.maritalStatuses, "Text", "Value"), "---"+ @GlobalIndividual.SelectMaritalStatus+"---", new { @class = "form-control select2", @search = "true", @required = "required" })
                                             @Html.ValidationMessageFor(m => m.MaritalStatus, "", new { @class = "text-danger " })
-                                            <label for="formValidationDob">@GlobalIndividual.MaritalStatus</label>
+                                            <label for="formValidationDob">@GlobalShared.Marital_Status</label>
                                         </div>
                                     </div>
                                     <div class="col-md-9">

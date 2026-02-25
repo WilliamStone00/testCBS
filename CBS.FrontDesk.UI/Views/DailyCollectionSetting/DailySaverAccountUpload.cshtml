@@ -1,19 +1,19 @@
 ﻿
 @model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
-
+@using Resources
  
 <div class="row">
     <div class="col-12">
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-cash-check me-2"></i> DAILYSAVER MIGRATION
+                    <i class="mdi mdi-cash-check me-2"></i> @DailyCollectionSettingRessource.DAILYSAVER_MIGRATION
                 </h1>
                 <p class="card-text">
-                    This interface gives the possibility to migrate data dailyasvers  into the TRUSTSOFTCREDIT by the daily collector.
+                    @DailyCollectionSettingRessource.This_interface_gives_the_possibility_to_migrate_data_dailyasvers_into_the_TRUSTSOFTCREDIT_by_the_daily_collector
                 </p>
-                <p class="card-text text-warning fw-bold"> 
-                    <i class="mdi mdi-alert-circle-outline me-1"></i> In case of any difficulty kindly contact system administrator.
+                <p class="card-text text-warning fw-bold">
+                    <i class="mdi mdi-alert-circle-outline me-1"></i> @DailyCollectionSettingRessource.In_case_of_any_difficulty_kindly_contact_system_administrator
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -24,7 +24,7 @@
 <!-- Tips Section -->
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> TIPS FOR MIGRATION</span>
+        <span><i class="mdi mdi-information-outline me-2"></i> @DailyCollectionSettingRessource.TIPS_FOR_MIGRATION</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -32,8 +32,8 @@
     <div id="collapseTips" class="collapse">
         <div class="card-body">
             <ul>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>Scenario:</strong> I want use and account that is not currently created in the system.</li>
-                <li><i class="mdi mdi-check-circle-outline  text-primary me-2"></i> <strong>Action:  </strong>Go on account management and fill the form acccordingly.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>@GlobalShared.Scenario:</strong> @DailyCollectionSettingRessource.I_want_use_and_account_that_is_not_currently_created_in_the_system</li>
+                <li><i class="mdi mdi-check-circle-outline  text-primary me-2"></i> <strong>@GlobalShared.Action:  </strong>@DailyCollectionSettingRessource.Go_on_account_management_and_fill_the_form_acccordingly</li>
 
 
             </ul>
@@ -48,16 +48,16 @@
             <div class="card-body">
                 <div class="upload-container">
                     <div class="upload-header">
-                        <h1>📊 Excel File Upload</h1>
-                        <p>Upload your Excel files to process data</p>
+                        <h1>📊 @GlobalShared.Excel_File_Upload</h1>
+                        <p>@DailyCollectionSettingRessource.Upload_your_Excel_files_to_process_data</p>
                     </div>
 
                     <div class="file-constraints">
-                        <h3>File Requirements:</h3>
+                        <h3>@GlobalShared.File_Requirements:</h3>
                         <ul>
-                            <li>Accepted formats: .xlsx, .xls</li>
-                            <li>Maximum file size: 3.0 MB</li>
-                            <li>Single file upload</li>
+                            <li>@GlobalShared.Accepted_formats: .xlsx, .xls</li>
+                            <li>@GlobalShared.Maximum_file_size: 3.0 MB</li>
+                            <li>@GlobalShared.Single_file_upload</li>
                         </ul>
                     </div>
 
@@ -66,7 +66,7 @@
                             <input type="file" class="file-input" id="fileInput" name="excelFile" accept=".xlsx,.xls" required>
                             <div class="file-input-content">
                                 <span class="upload-icon">📁</span>
-                                <div class="file-input-text">Choose Excel File or Drag & Drop</div>
+                                <div class="file-input-text">@GlobalShared.Choose_Excel_File_or_Drag_Drop</div>
                                 <div class="file-input-subtext">Support for .xlsx and .xls files up to 3MB</div>
                             </div>
                         </div>
@@ -83,7 +83,7 @@
 
                         <button type="submit" class="upload-button" id="uploadButton">
                             <span class="loading-spinner" id="loadingSpinner"></span>
-                            <span id="buttonText">Upload File</span>
+                            <span id="buttonText">@GlobalShared.Upload_File</span>
                         </button>
                     </form>
 

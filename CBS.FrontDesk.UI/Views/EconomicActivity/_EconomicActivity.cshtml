@@ -8,14 +8,14 @@
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
-                <label>@GlobalEconomicActivity.Name</label>
+                <label>@GlobalShared.Name</label>
             </div>
         </div>
         <div class="col-md-12">
             <div class="form-floating form-floating-outline">
                 @Html.TextAreaFor(m => m.Description, new { @class = "form-control", @style = "height: 200px;" })
                 @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
-                <label>@GlobalEconomicActivity.Description</label>
+                <label>@GlobalShared.Description</label>
             </div>
         </div>
         

@@ -1,7 +1,7 @@
 ﻿@using Resources
 <div class="modal-header bg-light">
     <h5 class="modal-title fw-bold text-primary" id="confirmModalLabel">
-        <i class="mdi mdi-book-check-outline me-2"></i> @ManualEntry.ConfirmJournalPosting
+        <i class="mdi mdi-book-check-outline me-2"></i> @GlobalEndOfYearClosure.Confirm_Journal_Posting
     </h5>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
@@ -10,22 +10,22 @@
     <div class="border rounded p-3 mb-3 bg-light small">
         <div class="row mb-2">
             <div class="col-md-4">
-                <strong>@ManualEntry.AccountingDate:</strong>
+                <strong>@GlobalShared.Accounting_Date:</strong>
                 <span id="confirmAccountingDateCopy"></span>
             </div>
 
             <div class="col-md-4">
-                <strong>Branch:</strong>
+                <strong>@GlobalShared.Branch:</strong>
                 <span id="confirmBranchCopy"></span>
             </div>
 
             <div class="col-md-4" id="confirmCounterpartyDivCopy" style="display:none;">
-                <strong>@ManualEntry.CounterpartyBranch:</strong>
+                <strong>@GlobalEndOfYearClosure.CounterpartyBranch:</strong>
                 <span id="confirmCounterpartyBranchCopy"></span>
             </div>
 
             <div class="col-md-4">
-                <strong>Adjustment Type:</strong>
+                <strong>@GlobalShared.Adjustment_Type:</strong>
                 <span id="confirmAdjustmentTypeCopy"></span>
             </div>
         </div>
@@ -35,15 +35,15 @@
         <table class="table table-bordered align-middle text-center" id="confirmTableCopy">
             <thead class="table-light">
                 <tr>
-                    <th>@ManualEntry.Account</th>
-                    <th>@ManualEntry.Debit</th>
-                    <th>@ManualEntry.Credit</th>
+                    <th>@GlobalShared.Account</th>
+                    <th>@GlobalShared.Debit</th>
+                    <th>@GlobalShared.Credit</th>
                 </tr>
             </thead>
             <tbody></tbody>
             <tfoot class="fw-bold text-end">
                 <tr>
-                    <td class="text-end">Total Debit:</td>
+                    <td class="text-end">@GlobalShared.Total_Debit:</td>
                     <td id="confirmTotalDebitCopy" class="text-end text-success">0.00</td>
                     <td id="confirmTotalCreditCopy" class="text-end text-success">0.00</td>
                 </tr>
@@ -53,7 +53,7 @@
 
     <div class="alert alert-info mt-3 text-center mb-0">
         <i class="mdi mdi-alert-circle-outline me-1"></i>
-        @ManualEntry.Areyousureyouwanttoposttheaboveentries
+        @GlobalEndOfYearClosure.Are_you_sure_you_want_to_post_the_above_entries
     </div>
 </div>
 
@@ -62,7 +62,7 @@
         <i class="mdi mdi-check-circle-outline me-1"></i> OK
     </button>
     <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">
-        <i class="mdi mdi-cancel me-1"></i> Cancel
+        <i class="mdi mdi-cancel me-1"></i> @GlobalShared.Cancel
     </button>
 </div>
 

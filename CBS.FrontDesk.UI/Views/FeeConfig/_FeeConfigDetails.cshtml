@@ -5,37 +5,37 @@
 <div class="card bg-light mb-4 shadow-sm">
     <div class="card-body text-center">
         <h1 class="card-title text-primary fw-bold mb-2">
-            <i class="mdi mdi-book-open-page-variant-outline me-2"></i>@ChequeManagements.FeeConfigDetails
+            <i class="mdi mdi-book-open-page-variant-outline me-2"></i>@GlobalFeeConfig.Fee_Config_Details
         </h1>
         <p class="card-text text-muted mb-1">
-            @ChequeManagements.feedetailstxt
+            @GlobalFeeConfig.here_we_have_the_details_of_each_fee_configuration_which_is_divided_into_three_sections_Basic_Information_Fee_Seting_and_Fee_Ranges
         </p>
     </div>
 </div>
 
     <div class="row">
         <div class="col-md-6">
-            <h6 class="text-primary"><i class="mdi mdi-information-outline me-2"></i>@ChequeManagements.BasicInformation</h6>
+            <h6 class="text-primary"><i class="mdi mdi-information-outline me-2"></i>@GlobalShared.Basic_Information</h6>
             <table class="table table-sm table-bordered">
                 <tbody>
                     <tr>
-                        <td class="fw-bold">@ChequeManagements.ID:</td>
+                        <td class="fw-bold">ID:</td>
                         <td>@(Model?.id)</td>
                     </tr>
                     <tr>
-                        <td class="fw-bold">@ChequeManagements.FeeType:</td>
+                        <td class="fw-bold">@GlobalShared.Fee_Type:</td>
                         <td>@(Model?.feeType)</td>
                     </tr>
                     <tr>
-                        <td class="fw-bold">@ChequeManagements.Branch:</td>
+                        <td class="fw-bold">@GlobalShared.Branch:</td>
                         <td>@(string.IsNullOrWhiteSpace(Model?.branchName) ? "Centralized" : Html.Encode(Model.branchName))</td>
                     </tr>
                     <tr>
-                        <td class="fw-bold">@ChequeManagements.Type:</td>
+                        <td class="fw-bold">@GlobalShared.Type:</td>
                         <td>@(Model?.isCentralized == true ? "Centralized" : "Branch Specific")</td>
                     </tr>
                       <tr>
-                        <td class="fw-bold">@ChequeManagements.Description:</td>
+                        <td class="fw-bold">@GlobalShared.Description:</td>
                         <td>@(Model?.description)</td>
                     </tr>
                 </tbody>
@@ -43,27 +43,27 @@
         </div>
 
         <div class="col-md-6">
-            <h6 class="text-primary"><i class="mdi mdi-cog-outline me-2"></i>@ChequeManagements.FeeSettings</h6>
+            <h6 class="text-primary"><i class="mdi mdi-cog-outline me-2"></i>@GlobalFeeConfig.FeeSettings</h6>
             <table class="table table-sm table-bordered">
                 <tbody>
                     <tr>
-                        <td class="fw-bold">@ChequeManagements.StaticAmount:</td>
+                        <td class="fw-bold">@GlobalFeeConfig.StaticAmount:</td>
                         <td>@(Model?.staticAmount)</td>
                     </tr>
                     <tr>
-                        <td class="fw-bold">@ChequeManagements.AcceptStatic:</td>
+                        <td class="fw-bold">@GlobalFeeConfig.AcceptStatic:</td>
                         <td>@(Model?.acceptStaticAmount)</td>
                     </tr>
                     <tr>
-                        <td class="fw-bold">@ChequeManagements.Percentage:</td>
+                        <td class="fw-bold">@GlobalShared.Percentage:</td>
                         <td>@(Model.percentageApplied.Value.ToString("N2", CultureInfo.InvariantCulture))</td>
                     </tr>
                     <tr>
-                        <td class="fw-bold">@ChequeManagements.AcceptPercentage:</td>
+                        <td class="fw-bold">@GlobalFeeConfig.AcceptPercentage:</td>
                         <td>@(Model?.acceptPercentage)</td>
                     </tr>
                     <tr>
-                        <td class="fw-bold">@ChequeManagements.AcceptRange:</td>
+                        <td class="fw-bold">@GlobalFeeConfig.AcceptRange:</td>
                         <td>@(Model?.acceptRange)</td>
                     </tr>
                 </tbody>
@@ -75,15 +75,15 @@
     {
         <div class="row mt-3">
             <div class="col-12">
-                <h6 class="text-primary"><i class="mdi mdi-chart-line me-2"></i>@ChequeManagements.FeeRanges</h6>
+                <h6 class="text-primary"><i class="mdi mdi-chart-line me-2"></i>@GlobalFeeConfig.FeeRanges</h6>
                 <div class="table-responsive">
                     <table class="table table-sm table-bordered table-striped">
                         <thead class="table-light">
                             <tr>
-                                <th>@ChequeManagements.RangeName</th>
-                                <th>@ChequeManagements.FromAmount</th>
-                                <th>@ChequeManagements.ToAmount</th>
-                                <th>@ChequeManagements.FeeValue</th>
+                                <th>@GlobalFeeConfig.RangeName</th>
+                                <th>@GlobalFeeConfig.FromAmount</th>
+                                <th>@GlobalFeeConfig.ToAmount</th>
+                                <th>@GlobalFeeConfig.FeeValue</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -106,7 +106,7 @@
     {
         <div class="row mt-3">
             <div class="col-12">
-                <div class="alert alert-light text-center"> @ChequeManagements.feedetailstext2</div>
+                <div class="alert alert-light text-center"> @GlobalFeeConfig.feedetailstext2</div>
             </div>
         </div>
     }

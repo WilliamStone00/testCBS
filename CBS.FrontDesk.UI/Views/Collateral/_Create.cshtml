@@ -14,7 +14,7 @@
                                 data-bs-target="#collapseDeliveryAddress"
                                 aria-expanded="true"
                                 aria-controls="collapseDeliveryAddress">
-                            @GlobalCollateral.EnterParameters
+                            @GlobalShared.Enter_parameters
                         </button>
                     </h2>
                     <div id="collapseDeliveryAddress"
@@ -27,7 +27,7 @@
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.name, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.name, "", new { @class = "text-danger" })
-                                        <label>@GlobalCollateral.Name</label>
+                                        <label>@GlobalShared.Name</label>
                                     </div>
                                 </div>
                             </div>

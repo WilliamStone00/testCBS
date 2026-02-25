@@ -61,119 +61,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Amount from.
-        /// </summary>
-        internal static string AmountFrom {
-            get {
-                return ResourceManager.GetString("AmountFrom", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Amount to.
-        /// </summary>
-        internal static string AmountTo {
-            get {
-                return ResourceManager.GetString("AmountTo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Charge.
-        /// </summary>
-        internal static string Charge {
-            get {
-                return ResourceManager.GetString("Charge", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Charges.
-        /// </summary>
-        internal static string Charges {
-            get {
-                return ResourceManager.GetString("Charges", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to EnterValue (in %).
-        /// </summary>
-        internal static string EnterValue {
-            get {
-                return ResourceManager.GetString("EnterValue", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Fee configuration.
-        /// </summary>
-        internal static string FeeConfiguration {
-            get {
-                return ResourceManager.GetString("FeeConfiguration", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Fee range.
-        /// </summary>
-        internal static string FeeRange {
-            get {
-                return ResourceManager.GetString("FeeRange", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to From.
-        /// </summary>
-        internal static string From {
-            get {
-                return ResourceManager.GetString("From", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Name.
-        /// </summary>
-        internal static string Name {
-            get {
-                return ResourceManager.GetString("Name", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to No loan fee type is configured.
         /// </summary>
         internal static string NoLoanFeeTypeIsConfigured {
             get {
                 return ResourceManager.GetString("NoLoanFeeTypeIsConfigured", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select fee.
-        /// </summary>
-        internal static string SelectFee {
-            get {
-                return ResourceManager.GetString("SelectFee", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to To.
-        /// </summary>
-        internal static string To {
-            get {
-                return ResourceManager.GetString("To", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Type.
-        /// </summary>
-        internal static string Type {
-            get {
-                return ResourceManager.GetString("Type", resourceCulture);
             }
         }
     }

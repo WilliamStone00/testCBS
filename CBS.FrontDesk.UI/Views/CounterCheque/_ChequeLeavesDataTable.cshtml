@@ -1,9 +1,9 @@
 ﻿@model IEnumerable<CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheque.CheckBookLeaf>
-
+@using Resources
 
 <div class="card mt-3 shadow-sm">
     <div class="card-header bg-light text-primary fw-bold">
-        <i class="mdi mdi-table me-1"></i> Cheque Leaves
+        <i class="mdi mdi-table me-1"></i> @GlobalShared.Cheque_Leaves
     </div>
 
     <div class="card-body">
@@ -12,11 +12,11 @@
                    id="myDataTable_chequeLeaves">
                 <thead class="table-light">
                     <tr>
-                        <th>Leaf</th>
-                        <th>CheckBook ID</th>
-                        <th>Status</th>
-                        <th>Issued Date</th>
-                        <th>Issued To</th>
+                        <th>@GlobalShared.Leaf</th>
+                        <th>@GlobalShared.CheckBook_ID</th>
+                        <th>@GlobalShared.Status</th>
+                        <th>@GlobalShared.Issued_Date</th>
+                        <th>@GlobalShared.Issued_To</th>
                         <th style="width:15%">Actions</th>
                     </tr>
                 </thead>
@@ -54,7 +54,7 @@
                                             data-bs-toggle="dropdown"
                                             aria-expanded="false">
                                         <i class="mdi mdi-cog-outline"></i>
-                                        Actions
+                                        @GlobalShared.Actions
                                     </button>
 
                                     <ul class="dropdown-menu dropdown-menu-end shadow-sm animate__animated animate__fadeIn">
@@ -64,7 +64,7 @@
                                             <button class="dropdown-item btn-create"
                                                     data-id="@leaf.Id">
                                                 <i class="mdi mdi-file-document-outline text-primary me-2"></i>
-                                                Counter Request
+                                                @GlobalCounterCheque.Counter_Request
                                             </button>
                                         </li>
 
@@ -73,7 +73,7 @@
                                             <button class="dropdown-item view-leaf-btn"
                                                     data-leaf-id="@leaf.Id">
                                                 <i class="mdi mdi-eye-outline text-info me-2"></i>
-                                                View Details
+                                                @GlobalShared.View_Details
                                             </button>
                                         </li>
 
@@ -82,7 +82,7 @@
                                             <button class="dropdown-item btn-clearance"
                                                     data-id="@leaf.Id">
                                                 <i class="mdi mdi-broom text-danger me-2"></i>
-                                                Clearance
+                                                @GlobalShared.Clearance
                                             </button>
                                         </li>
 
@@ -90,7 +90,7 @@
                                             <button class="dropdown-item btn-clearance"
                                                     data-id="@leaf.Id">
                                                 <i class="mdi mdi-broom text-danger me-2"></i>
-                                                Clearance
+                                                @GlobalShared.Clearance
                                             </button>
                                         </li>
 

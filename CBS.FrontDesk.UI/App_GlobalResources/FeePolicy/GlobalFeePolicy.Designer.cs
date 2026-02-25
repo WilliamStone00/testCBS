@@ -61,65 +61,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Amount from.
-        /// </summary>
-        internal static string AmountFrom {
-            get {
-                return ResourceManager.GetString("AmountFrom", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Amount to.
-        /// </summary>
-        internal static string AmountTo {
-            get {
-                return ResourceManager.GetString("AmountTo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Branch.
-        /// </summary>
-        internal static string Branch {
-            get {
-                return ResourceManager.GetString("Branch", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Charge.
-        /// </summary>
-        internal static string Charge {
-            get {
-                return ResourceManager.GetString("Charge", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Charges.
-        /// </summary>
-        internal static string Charges {
-            get {
-                return ResourceManager.GetString("Charges", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Check to de-centralise this policy.
         /// </summary>
         internal static string CheckToDecentraliseThisPolicy {
             get {
                 return ResourceManager.GetString("CheckToDecentraliseThisPolicy", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to EnterValue (in %).
-        /// </summary>
-        internal static string EnterValue {
-            get {
-                return ResourceManager.GetString("EnterValue", resourceCulture);
             }
         }
         
@@ -151,47 +97,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to From.
-        /// </summary>
-        internal static string From {
-            get {
-                return ResourceManager.GetString("From", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Name.
-        /// </summary>
-        internal static string Name {
-            get {
-                return ResourceManager.GetString("Name", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to No fee type is set.
         /// </summary>
         internal static string NoFeeTypeIsSet {
             get {
                 return ResourceManager.GetString("NoFeeTypeIsSet", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select Bank.
-        /// </summary>
-        internal static string SelectBank {
-            get {
-                return ResourceManager.GetString("SelectBank", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select branch.
-        /// </summary>
-        internal static string SelectBranch {
-            get {
-                return ResourceManager.GetString("SelectBranch", resourceCulture);
             }
         }
         
@@ -214,15 +124,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select fee.
-        /// </summary>
-        internal static string SelectFee {
-            get {
-                return ResourceManager.GetString("SelectFee", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Select MFI.
         /// </summary>
         internal static string SelectMFI {
@@ -237,24 +138,6 @@ namespace Resources {
         internal static string To {
             get {
                 return ResourceManager.GetString("To", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Type.
-        /// </summary>
-        internal static string Type {
-            get {
-                return ResourceManager.GetString("Type", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Value.
-        /// </summary>
-        internal static string Value {
-            get {
-                return ResourceManager.GetString("Value", resourceCulture);
             }
         }
     }

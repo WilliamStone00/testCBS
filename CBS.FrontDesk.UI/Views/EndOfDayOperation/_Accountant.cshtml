@@ -35,8 +35,8 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.PrimaryTellerProvisioningHistory.openedDate, new { @class = "form-control date-picker", @placeholder = @GlobalEndOfDayOperation.OperationDate })
-                                        <label>@GlobalEndOfDayOperation.OpenedDate</label>
+                                        @Html.TextBoxFor(m => m.PrimaryTellerProvisioningHistory.openedDate, new { @class = "form-control date-picker", @placeholder = GlobalShared.OperationDate })
+                                        <label>@GlobalShared.OpenedDate</label>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
@@ -48,18 +48,18 @@
                                 <div class="col-md-8">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.PrimaryTellerProvisioningHistory.cashAtHand, new { @class = "form-control", @readonly = true })
-                                        <label style="color:blue">@GlobalEndOfDayOperation.CashAtHand</label>
+                                        <label style="color:blue">@GlobalShared.CashAtHand</label>
                                     </div>
                                 </div> <div class="col-md-4">
                                     <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.PrimaryTellerProvisioningHistory.clossedDate, new { @class = "form-control date-picker", @placeholder = @GlobalEndOfDayOperation.OperationDate })
-                                        <label>@GlobalEndOfDayOperation.DateToClose</label>
+                                        @Html.TextBoxFor(m => m.PrimaryTellerProvisioningHistory.clossedDate, new { @class = "form-control date-picker", @placeholder = GlobalShared.OperationDate })
+                                        <label>@GlobalShared.DateToClose</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.PrimaryTellerProvisioningHistory.accountBalance, new { @class = "form-control", @readonly = true })
-                                        <label style="color:blue">@GlobalEndOfDayOperation.SystemDifference</label>
+                                        <label style="color:blue">@GlobalShared.SystemDifference</label>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
@@ -71,13 +71,13 @@
                                 <div class="col-md-3">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.PrimaryTellerProvisioningHistory.accountantConfirmationStatus, new { @class = "form-control", @readonly = true })
-                                        <label style="color:blue">@GlobalEndOfDayOperation.ValidationStatus</label>
+                                        <label style="color:blue">@GlobalShared.ValidationStatus</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextAreaFor(m => m.PrimaryTellerProvisioningHistory.primaryTellerComment, new { @class = "form-control", @style = "height: 75px;" })
-                                        <label for="formValidationDob">@GlobalEndOfDayOperation.TellerNote</label>
+                                        <label for="formValidationDob">@GlobalShared.TellerNote</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -137,14 +137,14 @@
                                     <div class="form-floating form-floating-outline">
                                         @Html.DropDownListFor(m => m.EndOfDayAccountantCommand.accountantConfirmationStatus, new SelectList(ViewBag.Statuses, "Text", "Value"), "---"+ @GlobalEndOfDayOperation.SelectConfirmationStatusType + "---", new { @class = "form-control select2", @search = "true" })
                                         @Html.ValidationMessageFor(m => m.EndOfDayAccountantCommand.accountantConfirmationStatus, "", new { @class = "text-danger " })
-                                        <label for="formValidationDob">@GlobalEndOfDayOperation.ConfirmationStatus</label>
+                                        <label for="formValidationDob">@GlobalShared.ConfirmationStatus</label>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
                                         @Html.DropDownListFor(m => m.EndOfDayAccountantCommand.eodClosedStatus, new SelectList(ViewBag.ClosedStatus, "Text", "Value"), "---"+ @GlobalEndOfDayOperation.SelectClosedStatusType + "---", new { @class = "form-control select2", @search = "true" })
                                         @Html.ValidationMessageFor(m => m.EndOfDayAccountantCommand.eodClosedStatus, "", new { @class = "text-danger " })
-                                        <label for="formValidationDob">@GlobalEndOfDayOperation.ClosedStatus</label>
+                                        <label for="formValidationDob">@GlobalShared.ClosedStatus</label>
                                     </div>
                                 </div>
 
@@ -152,7 +152,7 @@
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextAreaFor(m => m.EndOfDayAccountantCommand.comment, new { @class = "form-control", @style = "height: 75px;" })
                                         @Html.ValidationMessageFor(m => m.EndOfDayAccountantCommand.comment, "", new { @class = "text-danger " })
-                                        <label for="formValidationDob">@GlobalEndOfDayOperation.AccounantNote</label>
+                                        <label for="formValidationDob">@GlobalEndOfDayOperation.AccountantNote</label>
                                     </div>
                                 </div>
                             </div>
@@ -176,7 +176,7 @@
                         data-bs-target="#accordionPopoutIconx-1"
                         aria-controls="accordionPopoutIconx-1">
                     <i class="mdi mdi-two-factor-authentication me-2"></i>
-                    @GlobalEndOfDayOperation.Transactions
+                    @GlobalShared.Transactions
                 </button>
             </h2>
 
@@ -200,12 +200,12 @@
                                 <table class="table table-hover" id="myDataTable">
                                     <thead class="table-light">
                                         <tr>
-                                            <th>@GlobalEndOfDayOperation.Date</th>
-                                            <th>@GlobalEndOfDayOperation.Debit</th>
-                                            <th>@GlobalEndOfDayOperation.Credit</th>
-                                            <th>@GlobalEndOfDayOperation.PreviousBalance</th>
-                                            <th>@GlobalEndOfDayOperation.Balance</th>
-                                            <th>@GlobalEndOfDayOperation.Type</th>
+                                            <th>@GlobalShared.Date</th>
+                                            <th>@GlobalShared.Debit</th>
+                                            <th>@GlobalShared.Credit</th>
+                                            <th>@GlobalShared.PreviousBalance</th>
+                                            <th>@GlobalShared.Balance</th>
+                                            <th>@GlobalShared.Type</th>
                                         </tr>
                                     </thead>
                                     <tbody>

@@ -16,14 +16,14 @@
              <div class="form-floating form-floating-outline">
                  @Html.TextBoxFor(m => m.DocumentType.name, new { @class = "form-control" })
                  @Html.ValidationMessageFor(m => m.DocumentType.name, "", new { @class = "text-danger" })
-                 <label>@GlobalDocumentConfiguration.Name</label>
+                 <label>@GlobalShared.Name</label>
              </div>
          </div>
          <div class="col-12">
              <div class="form-floating form-floating-outline">
                  @Html.TextBoxFor(m => m.DocumentType.description, new { @class = "form-control" })
                  @Html.ValidationMessageFor(m => m.DocumentType.description, "", new { @class = "text-danger" })
-                 <label>@GlobalDocumentConfiguration.Name</label>
+                 <label>@GlobalShared.Name</label>
              </div>
          </div>
 
@@ -40,7 +40,7 @@
                 @Html.HiddenFor(m => m.DocumentType.id)
                 <input type="hidden" name="Action" value="update" id="Action" />
             }            
-            <div class="text-center text-muted"><small>C B S 4 U @GlobalDocumentConfiguration.userAccount (@Session["FullName"])</small></div>
+            <div class="text-center text-muted"><small>C B S 4 U @GlobalShared.userAccount (@Session["FullName"])</small></div>
         </div>
 
     }

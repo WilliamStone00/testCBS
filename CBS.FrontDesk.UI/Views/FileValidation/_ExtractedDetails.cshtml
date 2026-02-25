@@ -1,12 +1,12 @@
 ﻿@model IEnumerable<CBS.FrontDesk.Data.Entity.ManualDailycollection.TransactionDetailDto>
 @using System.Globalization
-
+@using Resources
 <div class="container-fluid">
     <!-- Header -->
     <div class="row mb-3">
         <div class="col-12">
-            <h3 class="text-primary"><i class="mdi mdi-file-document-outline me-1"></i> Manual Entry - File Details</h3>
-            <p class="text-muted mb-0">Review, filter and inspect the extracted manual daily collection rows below.</p>
+            <h3 class="text-primary"><i class="mdi mdi-file-document-outline me-1"></i> @GlobalFileValidation.Manual_Entry_File_Details</h3>
+            <p class="text-muted mb-0">@GlobalFileValidation.Review_filter_and_inspect_the_extracted_manual_daily_collection_rows_below</p>
         </div>
     </div>
 
@@ -14,11 +14,11 @@
     <div class="row mb-3">
         <div class="col-12">
             <div class="alert alert-info small mb-0">
-                <strong>Tips:</strong>
+                <strong>@GlobalShared.Tips:</strong>
                 <ul class="mb-0 ms-3">
-                    <li>Use the filters below to narrow results. Submit will call the server and re-render this partial.</li>
-                    <li>Click <em>Details</em> to open row-level information (controller action returns a partial view).</li>
-                    <li>Amounts display with two decimals; dates are shown in yyyy-MM-dd format.</li>
+                    <li>@GlobalFileValidation.Use_the_filters_below_to_narrow_results_Submit_will_call_the_server_and_re_render_this_partial</li>
+                    <li>@Html.Raw(@GlobalFileValidation.Click_Details_to_open_row_level_information_controller_action_returns_a_partial_view)</li>
+                    <li>@GlobalFileValidation.Amounts_display_with_two_decimals_dates_are_shown_in_yyyy_MM_dd_format</li>
                 </ul>
             </div>
         </div>
@@ -28,105 +28,105 @@
     <form method="get" class="card card-body mb-3" novalidate>
         <div class="row gx-2 gy-2">
             <div class="col-md-3">
-                <label class="form-label fw-semibold">memberBranchCode</label>
+                <label class="form-label fw-semibold">@GlobalShared.member_Branch_Code</label>
                 <input type="text" name="memberBranchCode" id="memberBranchCode" class="form-control"
                        value="@(Request.QueryString["memberBranchCode"] ?? String.Empty)" />
             </div>
 
             <div class="col-md-3">
-                <label class="form-label fw-semibold">memberBranchId</label>
+                <label class="form-label fw-semibold">@GlobalShared.member_Branch_Id</label>
                 <input type="text" name="memberBranchId" id="memberBranchId" class="form-control"
                        value="@(Request.QueryString["memberBranchId"] ?? String.Empty)" />
             </div>
 
             <div class="col-md-3">
-                <label class="form-label fw-semibold">memberBranchName</label>
+                <label class="form-label fw-semibold">@GlobalShared.member_Branch_Name</label>
                 <input type="text" name="memberBranchName" id="memberBranchName" class="form-control"
                        value="@(Request.QueryString["memberBranchName"] ?? String.Empty)" />
             </div>
 
             <div class="col-md-3">
-                <label class="form-label fw-semibold">amount</label>
+                <label class="form-label fw-semibold">@GlobalShared.Amount</label>
                 <input type="number" step="0.01" name="amount" id="amount" class="form-control"
                        value="@(Request.QueryString["amount"] ?? String.Empty)" />
             </div>
 
             <div class="col-md-3">
-                <label class="form-label fw-semibold">memberName</label>
+                <label class="form-label fw-semibold">@GlobalShared.Member_name</label>
                 <input type="text" name="memberName" id="memberName" class="form-control"
                        value="@(Request.QueryString["memberName"] ?? String.Empty)" />
             </div>
 
             <div class="col-md-3">
-                <label class="form-label fw-semibold">memberReference</label>
+                <label class="form-label fw-semibold">@GlobalShared.Member_reference</label>
                 <input type="text" name="memberReference" id="memberReference" class="form-control"
                        value="@(Request.QueryString["memberReference"] ?? String.Empty)" />
             </div>
 
             <div class="col-md-3">
-                <label class="form-label fw-semibold">accountNumber</label>
+                <label class="form-label fw-semibold">@GlobalShared.Account_Number</label>
                 <input type="text" name="accountNumber" id="accountNumber" class="form-control"
                        value="@(Request.QueryString["accountNumber"] ?? String.Empty)" />
             </div>
 
             <div class="col-md-3">
-                <label class="form-label fw-semibold">dailyCollectorName</label>
+                <label class="form-label fw-semibold">@GlobalShared.daily_Collector_Name</label>
                 <input type="text" name="dailyCollectorName" id="dailyCollectorName" class="form-control"
                        value="@(Request.QueryString["dailyCollectorName"] ?? String.Empty)" />
             </div>
 
             <div class="col-md-3">
-                <label class="form-label fw-semibold">uploadBy</label>
+                <label class="form-label fw-semibold">@GlobalShared.Upload_by</label>
                 <input type="text" name="uploadBy" id="uploadBy" class="form-control"
                        value="@(Request.QueryString["uploadBy"] ?? String.Empty)" />
             </div>
 
             <div class="col-md-3">
-                <label class="form-label fw-semibold">manualEntryDailyCollectorId</label>
+                <label class="form-label fw-semibold">@GlobalFileValidation.manual_Entry_Daily_Collector_Id</label>
                 <input type="text" name="manualEntryDailyCollectorId" id="manualEntryDailyCollectorId" class="form-control"
                        value="@(Request.QueryString["manualEntryDailyCollectorId"] ?? String.Empty)" />
             </div>
 
             <div class="col-md-3">
-                <label class="form-label fw-semibold">processingStatus</label>
+                <label class="form-label fw-semibold">@GlobalShared.Processing_Status</label>
                 <input type="text" name="processingStatus" id="processingStatus" class="form-control"
                        value="@(Request.QueryString["processingStatus"] ?? String.Empty)" />
             </div>
 
             <div class="col-md-3">
-                <label class="form-label fw-semibold">treatementStatus</label>
+                <label class="form-label fw-semibold">@GlobalShared.Treatement_Status</label>
                 <input type="text" name="treatementStatus" id="treatementStatus" class="form-control"
                        value="@(Request.QueryString["treatementStatus"] ?? String.Empty)" />
             </div>
 
             <div class="col-md-3">
-                <label class="form-label fw-semibold">treatementDate</label>
+                <label class="form-label fw-semibold">@GlobalShared.Treatement_Date</label>
                 <input type="date" name="treatementDate" id="treatementDate" class="form-control"
                        value="@(Request.QueryString["treatementDate"] ?? String.Empty)" />
             </div>
 
             <div class="col-md-3">
-                <label class="form-label fw-semibold">accountingDate</label>
+                <label class="form-label fw-semibold">@GlobalShared.Accounting_Date</label>
                 <input type="date" name="accountingDate" id="accountingDate" class="form-control"
                        value="@(Request.QueryString["accountingDate"] ?? String.Empty)" />
             </div>
 
             <div class="col-md-3">
-                <label class="form-label fw-semibold">startDate</label>
+                <label class="form-label fw-semibold">@GlobalShared.Start_Date</label>
                 <input type="date" name="startDate" id="startDate" class="form-control"
                        value="@(Request.QueryString["startDate"] ?? String.Empty)" />
             </div>
 
             <div class="col-md-3">
-                <label class="form-label fw-semibold">endDate</label>
+                <label class="form-label fw-semibold">@GlobalShared.End_Date</label>
                 <input type="date" name="endDate" id="endDate" class="form-control"
                        value="@(Request.QueryString["endDate"] ?? String.Empty)" />
             </div>
 
             <div class="col-12 mt-3 d-flex gap-2">
-                <button type="submit" class="btn btn-primary">Apply Filters</button>
-                <button type="reset" class="btn btn-outline-secondary">Reset</button>
-                <a class="btn btn-light border" href="@Url.Action(null)">Clear & Reload</a>
+                <button type="submit" class="btn btn-primary">@GlobalShared.Apply_filters</button>
+                <button type="reset" class="btn btn-outline-secondary">@GlobalShared.Reset</button>
+                <a class="btn btn-light border" href="@Url.Action(null)">@GlobalShared.Clear & @GlobalShared.Reload</a>
                 <div class="ms-auto text-muted align-self-center small">Showing @(Model?.Count() ?? 0) rows</div>
             </div>
         </div>
@@ -140,20 +140,20 @@
                 <table class="table table-bordered table-hover mb-0" style="width:100%">
                     <thead class="table-light">
                         <tr>
-                            <th>Member Ref</th>
-                            <th>Member Name</th>
-                            <th>Account Number</th>
-                            <th>Branch Name</th>
-                            <th class="text-end">Amount</th>
-                            <th>Collector</th>
-                            <th>Uploaded By</th>
-                            <th>Processing Status</th>
-                            <th>Treatement Status</th>
-                            <th>Treatement Date</th>
-                            <th>Accounting Date</th>
-                            <th>Start Date</th>
-                            <th>End Date</th>
-                            <th>Actions</th>
+                            <th>@GlobalShared.Member_ref</th>
+                            <th>@GlobalShared.Member_name</th>
+                            <th>@GlobalShared.Account_Number</th>
+                            <th>@GlobalShared.Branch_Name</th>
+                            <th class="text-end">@GlobalShared.Amount</th>
+                            <th>@GlobalShared.Collector</th>
+                            <th>@GlobalShared.Uploaded_By</th>
+                            <th>@GlobalShared.Processing_Status</th>
+                            <th>@GlobalShared.Treatement_Status</th>
+                            <th>@GlobalShared.Treatement_Date</th>
+                            <th>@GlobalShared.Accounting_Date</th>
+                            <th>@GlobalShared.Start_Date</th>
+                            <th>@GlobalShared.End_Date</th>
+                            <th>@GlobalShared.Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -203,7 +203,7 @@
                                         @* Details link - controller should handle and return a partial view for that entry *@
                                         <a class="btn btn-sm btn-outline-primary"
                                            href="@Url.Action("GetFileDetailsById", "ManualDailyCollection", new { KEY = item.manualEntryDailyCollectorId })">
-                                            Details
+                                            @GlobalShared.Details
                                         </a>
                                     </td>
                                 </tr>
@@ -212,7 +212,7 @@
                         else
                         {
                             <tr>
-                                <td colspan="14" class="text-center small text-muted">No records found.</td>
+                                <td colspan="14" class="text-center small text-muted">@GlobalShared.No_records_found.</td>
                             </tr>
                         }
                     </tbody>
