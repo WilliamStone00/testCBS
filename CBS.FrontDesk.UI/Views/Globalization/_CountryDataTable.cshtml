@@ -1,15 +1,15 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Config.GlobalizationViewModel
-
+@using Resources
 <hr />
-<h6 class="text-secondary mb-3"><i class="bi bi-list-check"></i> Existing Countries</h6>
+<h6 class="text-secondary mb-3"><i class="bi bi-list-check"></i> @GlobalShared.Existing_Countries</h6>
 
 <div class="table-responsive">
     <table id="countryTable" class="table table-bordered table-striped table-hover table-sm w-100">
         <thead class="table-light">
             <tr>
-                <th>Code</th>
-                <th>Name</th>
-                <th style="width: 120px;">Actions</th>
+                <th>@GlobalShared.Code</th>
+                <th>@GlobalShared.Name</th>
+                <th style="width: 120px;">@GlobalShared.Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -48,7 +48,7 @@
             {
                 <tr>
                     <td colspan="3" class="text-center text-muted">
-                        <i class="bi bi-info-circle me-1"></i> No countries found.
+                        <i class="bi bi-info-circle me-1"></i> @GlobalShared.No_countries_found
                     </td>
                 </tr>
             }

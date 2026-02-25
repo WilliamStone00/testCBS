@@ -135,8 +135,14 @@
   <data name="BranchManagement" xml:space="preserve">
     <value>Branch management</value>
   </data>
-  <data name="Collateral" xml:space="preserve">
-    <value>Collateral</value>
+  <data name="Centralised_mode_affects_all_branches" xml:space="preserve">
+    <value>Centralised mode affects all branches.</value>
+  </data>
+  <data name="Cheque_Validity" xml:space="preserve">
+    <value>Cheque Validity</value>
+  </data>
+  <data name="Cheque_validity_days_must_reflect_operational_policies" xml:space="preserve">
+    <value>Cheque validity days must reflect operational policies.</value>
   </data>
   <data name="ConfigureAccountsAndAccountingEntryPerOperations" xml:space="preserve">
     <value>Configure accounts and accounting entry per operations</value>
@@ -149,9 +155,6 @@
   </data>
   <data name="ConfiguringLoans" xml:space="preserve">
     <value>Configuring loans</value>
-  </data>
-  <data name="Country" xml:space="preserve">
-    <value>Country</value>
   </data>
   <data name="CreateAndManageBranches" xml:space="preserve">
     <value>Create and manage branches</value>
@@ -183,6 +186,15 @@
   <data name="DocumentsThatAreRelatedToLoanProducts" xml:space="preserve">
     <value>Documents that are related to loan products</value>
   </data>
+  <data name="Ensure_minimum_and_maximum_cheque_limits_are_correctly_defined" xml:space="preserve">
+    <value>Ensure minimum and maximum cheque limits are correctly defined.</value>
+  </data>
+  <data name="GLOBAL_CONFIGURATION" xml:space="preserve">
+    <value>GLOBAL CONFIGURATION</value>
+  </data>
+  <data name="Global_Configuration_Details" xml:space="preserve">
+    <value>Global Configuration Details</value>
+  </data>
   <data name="LoanConfiguration" xml:space="preserve">
     <value>Loan configuration</value>
   </data>
@@ -201,8 +213,29 @@
   <data name="ManageThirdPartyBankAccount" xml:space="preserve">
     <value>Manage ThirdParty BankAccount</value>
   </data>
+  <data name="Manage_cheque_configuration_parameters_globally_and_consistently" xml:space="preserve">
+    <value>Manage cheque configuration parameters globally and consistently.</value>
+  </data>
+  <data name="Maximum_Cheque_Leave" xml:space="preserve">
+    <value>Maximum Cheque Leave</value>
+  </data>
+  <data name="Max_Leave" xml:space="preserve">
+    <value>Max Leave</value>
+  </data>
   <data name="MenuMaster" xml:space="preserve">
     <value>Menu master</value>
+  </data>
+  <data name="Minimum_Cheque_Leave" xml:space="preserve">
+    <value>Minimum Cheque Leave</value>
+  </data>
+  <data name="Min_Leave" xml:space="preserve">
+    <value>Min Leave</value>
+  </data>
+  <data name="No_configuration_available" xml:space="preserve">
+    <value>No configuration available.</value>
+  </data>
+  <data name="Only_one_global_configuration_should_be_active" xml:space="preserve">
+    <value>Only one global configuration should be active.</value>
   </data>
   <data name="OperationEvent" xml:space="preserve">
     <value>Operation Event</value>
@@ -212,9 +245,6 @@
   </data>
   <data name="OrdinaryAccountConfiguration" xml:space="preserve">
     <value>Ordinary account configuration</value>
-  </data>
-  <data name="Penalty" xml:space="preserve">
-    <value>Penalty</value>
   </data>
   <data name="RoleManager" xml:space="preserve">
     <value>Role manager</value>
@@ -227,5 +257,8 @@
   </data>
   <data name="TellerManagement" xml:space="preserve">
     <value>Teller management</value>
+  </data>
+  <data name="View_global_cheque_configuration_details" xml:space="preserve">
+    <value>View global cheque configuration details.</value>
   </data>
 </root>

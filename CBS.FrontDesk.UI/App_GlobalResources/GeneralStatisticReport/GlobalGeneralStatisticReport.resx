@@ -1,0 +1,468 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Account_Balances_Against_Account_Type_Composition" xml:space="preserve">
+    <value>Account Balances Against Account Type Composition</value>
+  </data>
+  <data name="Account_Insights" xml:space="preserve">
+    <value>Account Insights</value>
+  </data>
+  <data name="Account_Insight_Interpretation" xml:space="preserve">
+    <value>Account Insight Interpretation</value>
+  </data>
+  <data name="Account_Ownership_Insight" xml:space="preserve">
+    <value>Account Ownership Insight</value>
+  </data>
+  <data name="Account_Type_Summary" xml:space="preserve">
+    <value>Account Type Summary</value>
+  </data>
+  <data name="Align_credit_policies_to_strengthen_compliance_and_ensure_portfolio_health" xml:space="preserve">
+    <value>Align credit policies to strengthen compliance and ensure portfolio health.</value>
+  </data>
+  <data name="Among_the" xml:space="preserve">
+    <value>Among the</value>
+  </data>
+  <data name="Analyzes_member_composition_by_gender_and_group_form_individuals_vs_cooperatives_This_is_useful_for_compliance_with_gender_or_inclusion_policies_as_well_as_for_assessing_targeted_outreach_effectiveness" xml:space="preserve">
+    <value>Analyzes member composition by gender and group form (individuals vs cooperatives). This is useful for compliance with gender or inclusion policies, as well as for assessing targeted outreach effectiveness.</value>
+  </data>
+  <data name="Analyze_member_and_loan_performance_across_branches_dates_and_profiles" xml:space="preserve">
+    <value>Analyze member and loan performance across branches, dates, and profiles.</value>
+  </data>
+  <data name="and_groups_at" xml:space="preserve">
+    <value>and groups at</value>
+  </data>
+  <data name="A_smart_dashboard_for_exploring_membership_trends_account_balances_loan_exposure_demographics_and_compliance_gaps_across_branches_and_periods" xml:space="preserve">
+    <value>A smart dashboard for exploring membership trends, account balances, loan exposure, demographics, and compliance gaps across branches and periods.</value>
+  </data>
+  <data name="A_total_of_265_loans_have_been_disbursed_worth" xml:space="preserve">
+    <value>A total of &lt;strong&gt;265&lt;/strong&gt; loans have been disbursed worth</value>
+  </data>
+  <data name="Breaks_down_outstanding_and_disbursed_loans_by_status_active_closed_loan_type_and_product_category_Enables_you_to_track_lending_performance_monitor_exposure_and_detect_unhealthy_accumulation_in_certain_categories" xml:space="preserve">
+    <value>Breaks down outstanding and disbursed loans by status (active, closed), loan type, and product category. Enables you to track lending performance, monitor exposure, and detect unhealthy accumulation in certain categories.</value>
+  </data>
+  <data name="Business_loans_alone_exceed_40_of_total_value" xml:space="preserve">
+    <value>&lt;strong&gt;Business loans&lt;/strong&gt; alone exceed 40% of total value.</value>
+  </data>
+  <data name="Choose_one_or_more_types_of_accounts" xml:space="preserve">
+    <value>Choose one or more types of accounts.</value>
+  </data>
+  <data name="Choose_the_kind_of_report_to_generate" xml:space="preserve">
+    <value>Choose the kind of report to generate.</value>
+  </data>
+  <data name="Compliance_Warning" xml:space="preserve">
+    <value>Compliance Warning</value>
+  </data>
+  <data name="contributing" xml:space="preserve">
+    <value>contributing</value>
+  </data>
+  <data name="Current_Portfolio_Size" xml:space="preserve">
+    <value>Current Portfolio Size</value>
+  </data>
+  <data name="Demographic_Insights" xml:space="preserve">
+    <value>Demographic Insights</value>
+  </data>
+  <data name="Demographic_Split" xml:space="preserve">
+    <value>Demographic Split</value>
+  </data>
+  <data name="Demonstrates_strong_group_based_savings_culture" xml:space="preserve">
+    <value>Demonstrates strong group-based savings culture.</value>
+  </data>
+  <data name="Displays_account_balances_categorized_by_type_eg_savings_deposits_shares_and_ownership_individuals_or_groups_Use_this_view_to_assess_deposit_mobilization_efforts_balance_distributions_and_concentration_risks" xml:space="preserve">
+    <value>Displays account balances categorized by type (e.g., savings, deposits, shares) and ownership (individuals or groups). Use this view to assess deposit mobilization efforts, balance distributions, and concentration risks.</value>
+  </data>
+  <data name="exceeding_the_170_compliance_threshold" xml:space="preserve">
+    <value>exceeding the 170% compliance threshold.</value>
+  </data>
+  <data name="exceed_total_loan_volume" xml:space="preserve">
+    <value>exceed total loan volume</value>
+  </data>
+  <data name="Explore_insights_via_tabs_Overview_Loans_Accounts_Demographics_Compliance_Gaps" xml:space="preserve">
+    <value>Explore insights via tabs: 📊 Overview, 💰 Loans, 📈 Accounts, 👥 Demographics, ⚠️ Compliance Gaps.</value>
+  </data>
+  <data name="Filter_statistics_by_specific_branch" xml:space="preserve">
+    <value>Filter statistics by specific branch.</value>
+  </data>
+  <data name="Flags_members_who_are_fully_registered_and_approved_but_lack_any_financial_account_savings_or_loan_This_helps_in_identifying_onboarding_or_operational_bottlenecks_that_may_prevent_full_participation_in_the_institution_s_services" xml:space="preserve">
+    <value>Flags members who are fully registered and approved but lack any financial account (savings or loan). This helps in identifying onboarding or operational bottlenecks that may prevent full participation in the institution's services.</value>
+  </data>
+  <data name="Gaps_in_Compliance" xml:space="preserve">
+    <value>Gaps in Compliance</value>
+  </data>
+  <data name="Gender_Distribution_Insight" xml:space="preserve">
+    <value>Gender Distribution Insight</value>
+  </data>
+  <data name="Gender_Distribution_Summary" xml:space="preserve">
+    <value>Gender Distribution Summary</value>
+  </data>
+  <data name="General_Statistics_Dashboard" xml:space="preserve">
+    <value>General Statistics Dashboard</value>
+  </data>
+  <data name="General_Statistics_Report" xml:space="preserve">
+    <value>General Statistics Report</value>
+  </data>
+  <data name="groups_have_active_accounts" xml:space="preserve">
+    <value>groups have active accounts</value>
+  </data>
+  <data name="Groups_hold_the_highest_savings" xml:space="preserve">
+    <value>Groups hold the highest savings</value>
+  </data>
+  <data name="Groups_show_strong_credit_demand_especially_in_Business_and_Farming_with_total_borrowings_exceeding" xml:space="preserve">
+    <value>Groups show strong credit demand, especially in &lt;b&gt;Business&lt;/b&gt; and &lt;b&gt;Farming&lt;/b&gt;, with total borrowings exceeding</value>
+  </data>
+  <data name="Group_Borrowing" xml:space="preserve">
+    <value>Group Borrowing</value>
+  </data>
+  <data name="Group_Performance" xml:space="preserve">
+    <value>Group Performance</value>
+  </data>
+  <data name="Hold" xml:space="preserve">
+    <value>Hold</value>
+  </data>
+  <data name="Immediate_review_of_lending_strategies_is_recommended" xml:space="preserve">
+    <value>Immediate review of lending strategies is recommended.</value>
+  </data>
+  <data name="Include_specific_customer_member_types" xml:space="preserve">
+    <value>Include specific customer/member types.</value>
+  </data>
+  <data name="Indicates_high_borrowing_with_moderate_savings_capacity" xml:space="preserve">
+    <value>Indicates high borrowing with moderate savings capacity.</value>
+  </data>
+  <data name="indicating_stronger_engagement_through_standard_membership_accounts" xml:space="preserve">
+    <value>indicating stronger engagement through standard membership accounts.</value>
+  </data>
+  <data name="insights_help_guide_lending_thresholds_identify_deposit_rich_segments_and_track_capital_sustainability_Monitor_trends_regularly_for_strategic_financial_decisions" xml:space="preserve">
+    <value>insights help guide lending thresholds, identify deposit-rich segments, and track capital sustainability. Monitor trends regularly for strategic financial decisions.</value>
+  </data>
+  <data name="Liquidity_Position" xml:space="preserve">
+    <value>Liquidity Position</value>
+  </data>
+  <data name="loans_granted_amounting_to" xml:space="preserve">
+    <value>loans granted, amounting to</value>
+  </data>
+  <data name="Loans_in_June_2025" xml:space="preserve">
+    <value>Loans in June 2025</value>
+  </data>
+  <data name="Loan_Balance_by_Demographic" xml:space="preserve">
+    <value>Loan Balance by Demographic</value>
+  </data>
+  <data name="Loan_Breakdown_by_Purposes" xml:space="preserve">
+    <value>Loan Breakdown by Purposes</value>
+  </data>
+  <data name="Loan_Categories_Summary" xml:space="preserve">
+    <value>Loan Categories Summary</value>
+  </data>
+  <data name="Loan_Category_Analysis" xml:space="preserve">
+    <value>Loan Category Analysis</value>
+  </data>
+  <data name="Loan_Category_Distribution_by_Amount" xml:space="preserve">
+    <value>Loan Category Distribution by Amount</value>
+  </data>
+  <data name="Loan_Category_Summary" xml:space="preserve">
+    <value>Loan Category Summary</value>
+  </data>
+  <data name="Loan_Distribution_by_Gender_Group" xml:space="preserve">
+    <value>Loan Distribution by Gender/Group</value>
+  </data>
+  <data name="Loan_Insights" xml:space="preserve">
+    <value>Loan Insights</value>
+  </data>
+  <data name="Loan_Insights_Summary" xml:space="preserve">
+    <value>Loan Insights Summary</value>
+  </data>
+  <data name="Loan_Saving_Breakdown_by_Demographic" xml:space="preserve">
+    <value>Loan &amp; Saving Breakdown by Demographic</value>
+  </data>
+  <data name="Loan_Target_Summary" xml:space="preserve">
+    <value>Loan Target Summary</value>
+  </data>
+  <data name="Loan_to_Savings_Ratio" xml:space="preserve">
+    <value>Loan-to-Savings Ratio</value>
+  </data>
+  <data name="Loan_to_Saving_Ratio" xml:space="preserve">
+    <value>Loan-to-Saving Ratio</value>
+  </data>
+  <data name="Loan_to_saving_ratio_is" xml:space="preserve">
+    <value>Loan-to-saving ratio is</value>
+  </data>
+  <data name="Loan_Type_Breakdown" xml:space="preserve">
+    <value>Loan Type Breakdown</value>
+  </data>
+  <data name="Loan_Type_Summary" xml:space="preserve">
+    <value>Loan Type Summary</value>
+  </data>
+  <data name="Loan_vs_Savings_Balance" xml:space="preserve">
+    <value>Loan vs. Savings Balance</value>
+  </data>
+  <data name="Loan_vs_Saving_Balance" xml:space="preserve">
+    <value>Loan vs. Saving Balance</value>
+  </data>
+  <data name="Member_shares_dominate_over_preference_shares_with_FCFA" xml:space="preserve">
+    <value>Member shares dominate over preference shares, with FCFA</value>
+  </data>
+  <data name="Member_vs_Preference_Shares" xml:space="preserve">
+    <value>Member vs. Preference Shares</value>
+  </data>
+  <data name="Men_hold_the_majority_with" xml:space="preserve">
+    <value>Men hold the majority with</value>
+  </data>
+  <data name="Missing_Customers" xml:space="preserve">
+    <value>Missing Customers</value>
+  </data>
+  <data name="Missing_Records" xml:space="preserve">
+    <value>Missing Records</value>
+  </data>
+  <data name="M_Account_Num" xml:space="preserve">
+    <value>M.Account Num</value>
+  </data>
+  <data name="new_loans_granted_this_month_worth" xml:space="preserve">
+    <value>new loans granted this month, worth</value>
+  </data>
+  <data name="new_loans_were_granted_this_month_worth" xml:space="preserve">
+    <value>new loans were granted this month, worth</value>
+  </data>
+  <data name="of_all_account_balances_confirming_the_cooperatives_strength_in_deposit_mobilization" xml:space="preserve">
+    <value>of all account balances, confirming the cooperative’s strength in deposit mobilization.</value>
+  </data>
+  <data name="of_all_outstanding_loans_followed_by_women_at" xml:space="preserve">
+    <value>of all outstanding loans, followed by women at</value>
+  </data>
+  <data name="of_loans_and" xml:space="preserve">
+    <value>of loans and</value>
+  </data>
+  <data name="of_loans_but_contribute" xml:space="preserve">
+    <value>of loans but contribute</value>
+  </data>
+  <data name="of_savings" xml:space="preserve">
+    <value>of savings</value>
+  </data>
+  <data name="of_the_total_which_suggests_strong_collective_savings_practices_and_potential_lending_targets" xml:space="preserve">
+    <value>of the total, which suggests strong collective savings practices and potential lending targets.</value>
+  </data>
+  <data name="of_total_loans_and" xml:space="preserve">
+    <value>of total loans and </value>
+  </data>
+  <data name="Out_of" xml:space="preserve">
+    <value>Out of</value>
+  </data>
+  <data name="Ownership_is_balanced_across_member_types" xml:space="preserve">
+    <value>Ownership is balanced across member types.</value>
+  </data>
+  <data name="Provides_a_quick_summary_of_total_membership_across_genders_and_groups_This_section_helps_you_identify_general_participation_trends_evaluate_growth_and_verify_if_the_member_base_aligns_with_institutional_targets" xml:space="preserve">
+    <value>Provides a quick summary of total membership across genders and groups. This section helps you identify general participation trends, evaluate growth, and verify if the member base aligns with institutional targets.</value>
+  </data>
+  <data name="Recent_Lending_Trend" xml:space="preserve">
+    <value>Recent Lending Trend</value>
+  </data>
+  <data name="Represent" xml:space="preserve">
+    <value>Represent</value>
+  </data>
+  <data name="representing_approximately" xml:space="preserve">
+    <value>representing approximately</value>
+  </data>
+  <data name="Savings_Distribution_by_Gender_Group" xml:space="preserve">
+    <value>Savings Distribution by Gender/Group</value>
+  </data>
+  <data name="Savings_Dominance" xml:space="preserve">
+    <value>Savings Dominance</value>
+  </data>
+  <data name="Saving_Account_Balance_by_Group" xml:space="preserve">
+    <value>Saving Account Balance by Group</value>
+  </data>
+  <data name="Sectoral_Loan_Distribution" xml:space="preserve">
+    <value>Sectoral Loan Distribution</value>
+  </data>
+  <data name="Select_the_reporting_period" xml:space="preserve">
+    <value>Select the reporting period.</value>
+  </data>
+  <data name="showing_ongoing_growth_in_credit_access" xml:space="preserve">
+    <value>showing &lt;span class="text-success"&gt;ongoing growth in credit access&lt;/span&gt;.</value>
+  </data>
+  <data name="Shows_balanced_financial_engagement" xml:space="preserve">
+    <value>Shows balanced financial engagement.</value>
+  </data>
+  <data name="supporting_communal_economic_activity" xml:space="preserve">
+    <value>supporting communal economic activity.</value>
+  </data>
+  <data name="These_categories_jointly_represent_the_primary_credit_drivers_in_the_institution" xml:space="preserve">
+    <value>These categories jointly represent the primary credit drivers in the institution.</value>
+  </data>
+  <data name="These_insights_support_targeting_profitable_sectors_improving_financial_inclusion_strategies_and_monitoring_risk_exposure_across_demographics" xml:space="preserve">
+    <value>These insights support targeting profitable sectors, improving financial inclusion strategies, and monitoring risk exposure across demographics.</value>
+  </data>
+  <data name="The_highest_concentration_is_in_Short_and_Medium_Term_loans_reflecting_demand_for_flexible_repayment_options" xml:space="preserve">
+    <value>The highest concentration is in &lt;strong&gt;Short&lt;/strong&gt; and &lt;strong&gt;Medium Term&lt;/strong&gt; loans, reflecting demand for flexible repayment options.</value>
+  </data>
+  <data name="The_largest_loan_disbursements_are_in_Business_and_Education_sectors" xml:space="preserve">
+    <value>The largest loan disbursements are in &lt;strong&gt;Business&lt;/strong&gt; and &lt;strong&gt;Education&lt;/strong&gt; sectors</value>
+  </data>
+  <data name="The_Saving_account_type_holds" xml:space="preserve">
+    <value>The &lt;b&gt;Saving&lt;/b&gt; account type holds</value>
+  </data>
+  <data name="This_indicates_a_compliant_liquidity_buffer" xml:space="preserve">
+    <value>This indicates a compliant liquidity buffer</value>
+  </data>
+  <data name="This_signals_high_loan_exposure_relative_to_available_savings" xml:space="preserve">
+    <value>This signals high loan exposure relative to available savings.</value>
+  </data>
+  <data name="This_suggests_a_healthy_credit_cycle_for_the_ongoing_period" xml:space="preserve">
+    <value>This suggests a healthy credit cycle for the ongoing period.</value>
+  </data>
+  <data name="Tips_for_Interpreting_Dashboard_Insights" xml:space="preserve">
+    <value>Tips for Interpreting Dashboard Insights</value>
+  </data>
+  <data name="Tips_for_Using_Filters" xml:space="preserve">
+    <value>Tips for Using Filters</value>
+  </data>
+  <data name="Top_3_Loan_Categories" xml:space="preserve">
+    <value>Top 3 Loan Categories</value>
+  </data>
+  <data name="totaling" xml:space="preserve">
+    <value>totaling</value>
+  </data>
+  <data name="Total_Loan_Balance" xml:space="preserve">
+    <value>Total Loan Balance</value>
+  </data>
+  <data name="Total_Loan_Volume" xml:space="preserve">
+    <value>Total Loan Volume</value>
+  </data>
+  <data name="Total_of" xml:space="preserve">
+    <value>Total of</value>
+  </data>
+  <data name="Total_savings" xml:space="preserve">
+    <value>Total savings</value>
+  </data>
+  <data name="Total_Savings_Balance" xml:space="preserve">
+    <value>Total Savings Balance</value>
+  </data>
+  <data name="Total_Saving_Volume" xml:space="preserve">
+    <value>Total Saving Volume</value>
+  </data>
+  <data name="Use_filters_above_to_narrow_your_analysis_to_a_specific_branch_time_period_or_product_group_After_analyzing_a_dashboard_you_may_export_the_data_or_use_it_to_guide_policy_or_product_interventions" xml:space="preserve">
+    <value>Use filters above to narrow your analysis to a specific branch, time period, or product group. After analyzing a dashboard, you may export the data or use it to guide policy or product interventions.</value>
+  </data>
+  <data name="Use_filters_like_branch_date_range_and_account_type_to_generate_targeted_reports" xml:space="preserve">
+    <value>Use filters like branch, date range, and account type to generate targeted reports.</value>
+  </data>
+  <data name="Use_this_insight_to_refine_loan_offers_promote_targeted_saving_schemes_and_evaluate_risk_exposure_by_demographic" xml:space="preserve">
+    <value>Use this insight to refine loan offers, promote targeted saving schemes, and evaluate risk exposure by demographic.</value>
+  </data>
+  <data name="yielding_a_loan_to_saving_ratio_of" xml:space="preserve">
+    <value>yielding a loan-to-saving ratio of</value>
+  </data>
+</root>

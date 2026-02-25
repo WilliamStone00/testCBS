@@ -38,9 +38,9 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.TextBoxFor(m => m.EndOfDaySubTellerCommand.operationDate, new { @class = "form-control date-picker", @placeholder = @GlobalEndOfDayOperation.OperationDate })
+                                            @Html.TextBoxFor(m => m.EndOfDaySubTellerCommand.operationDate, new { @class = "form-control date-picker", @placeholder = GlobalShared.OperationDate })
                                             @Html.ValidationMessageFor(m => m.EndOfDaySubTellerCommand.operationDate, "", new { @class = "text-danger" })
-                                            <label>@GlobalEndOfDayOperation.DateToClose</label>
+                                            <label>@GlobalShared.DateToClose</label>
                                         </div>
                                     </div>
                                     <div class="col-md-3">

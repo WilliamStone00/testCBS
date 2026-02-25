@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.CollectorDevice.CollectorDeviceresponse
-
+@using Resources
 <div class="card">
     <div class="modal-body">
         @using (Html.BeginForm("CreateOrUpdate", "CollectorDevice", FormMethod.Post,
@@ -17,7 +17,7 @@
                 <!-- Device Information Section -->
                 <div class="col-12">
                     <h6 class="text-primary border-bottom pt-2 pb-1">
-                        <i class="mdi mdi-devices me-1"></i> Device Information
+                        <i class="mdi mdi-devices me-1"></i> @GlobalShared.Device_Information
                     </h6>
                 </div>
 
@@ -25,7 +25,7 @@
                     <div class="form-floating shadow-sm">
                         @Html.TextBoxFor(m => m.DeviceId, new { @class = "form-control", placeholder = "Device ID" })
                         @Html.ValidationMessageFor(m => m.DeviceId, "", new { @class = "text-danger" })
-                        <label>Device ID *</label>
+                        <label>@GlobalShared.Device_ID *</label>
                     </div>
                 </div>
 
@@ -33,7 +33,7 @@
                     <div class="form-floating shadow-sm">
                         @Html.TextBoxFor(m => m.DeviceName, new { @class = "form-control", placeholder = "Device Name" })
                         @Html.ValidationMessageFor(m => m.DeviceName, "", new { @class = "text-danger" })
-                        <label>Device Name *</label>
+                        <label>@GlobalShared.Device_Name *</label>
                     </div>
                 </div>
 
@@ -41,7 +41,7 @@
                     <div class="form-floating shadow-sm">
                         @Html.TextBoxFor(m => m.DeviceVersion, new { @class = "form-control", placeholder = "Device Version" })
                         @Html.ValidationMessageFor(m => m.DeviceVersion, "", new { @class = "text-danger" })
-                        <label>Device Version</label>
+                        <label>@GlobalShared.Device_Version</label>
                     </div>
                 </div>
 
@@ -49,7 +49,7 @@
                     <div class="form-floating shadow-sm">
                         @Html.TextBoxFor(m => m.DeviceSerialNumber, new { @class = "form-control", placeholder = "Serial Number" })
                         @Html.ValidationMessageFor(m => m.DeviceSerialNumber, "", new { @class = "text-danger" })
-                        <label>Serial Number *</label>
+                        <label>@GlobalShared.Serial_Number *</label>
                     </div>
                 </div>
 
@@ -57,19 +57,19 @@
                     @if (string.IsNullOrEmpty(Model?.Id))
                     {
                         <button type="submit" class="btn btn-primary shadow-sm px-4">
-                            <i class="mdi mdi-content-save me-1"></i> Create Device
+                            <i class="mdi mdi-content-save me-1"></i> @GlobalShared.Create_Device
                         </button>
                         <button type="button" class="btn btn-outline-secondary shadow-sm px-4" data-bs-dismiss="modal">
-                            Cancel
+                            @GlobalShared.Cancel
                         </button>
                     }
                     else
                     {
                         <button type="submit" class="btn btn-primary me-2">
-                            <i class="mdi mdi-content-save me-1"></i> Update Device
+                            <i class="mdi mdi-content-save me-1"></i> @GlobalShared.Update_Device
                         </button>
                         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                            Cancel
+                            @GlobalShared.Cancel
                         </button>
                     }
                 </div>

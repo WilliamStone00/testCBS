@@ -1,4 +1,5 @@
-﻿<div class="card-body p-4">
+﻿@using Resources
+<div class="card-body p-4">
     <div class="row g-3 bg-light p-3 rounded border shadow-sm mb-3">
 
         <!-- 🔘 Horizontal Toggles -->
@@ -6,26 +7,26 @@
             <div class="col-auto">
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" type="checkbox" id="enableBranch" checked />
-                    <label class="form-check-label fw-bold" for="enableBranch">Filter by branch</label>
+                    <label class="form-check-label fw-bold" for="enableBranch">@GlobalShared.Filter_by_Branch</label>
                 </div>
             </div>
             <div class="col-auto">
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" type="checkbox" id="enableDateRange" />
-                    <label class="form-check-label fw-bold" for="enableDateRange">Filter by date range</label>
+                    <label class="form-check-label fw-bold" for="enableDateRange">@GlobalShared.Filter_by_Date_Range</label>
                 </div>
             </div>
             <div class="col-auto">
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" type="checkbox" id="enableReportType" />
-                    <label class="form-check-label fw-bold" for="enableReportType">Choose report type</label>
+                    <label class="form-check-label fw-bold" for="enableReportType">@GlobalShared.Choose_report_type</label>
                 </div>
             </div>
         </div>
 
         <!-- ✅ Branch Filter -->
         <div class="col-md-12 branch-section">
-            <label for="branchInput" class="form-label fw-semibold">Branch</label>
+            <label for="branchInput" class="form-label fw-semibold">@GlobalShared.Branch</label>
             @Html.DropDownList("branchInput",
                 new SelectList(ViewBag.Branches as List<SelectListItem> ?? new List<SelectListItem>(), "Value", "Text"),
                 "Select Branch",
@@ -35,25 +36,25 @@
         <!-- 📅 Date Range -->
         <div class="row g-2 date-range-section d-none">
             <div class="col-md-6">
-                <label for="startDate" class="form-label fw-semibold">Start Date</label>
-                <input type="date" class="form-control form-control-sm filter-input" id="startDate" placeholder="Start date" />
+                <label for="startDate" class="form-label fw-semibold">@GlobalShared.Start_Date</label>
+                <input type="date" class="form-control form-control-sm filter-input" id="startDate" placeholder="@GlobalShared.Start_Date" />
             </div>
             <div class="col-md-6">
-                <label for="endDate" class="form-label fw-semibold">End Date</label>
-                <input type="date" class="form-control form-control-sm filter-input" id="endDate" placeholder="End date" />
+                <label for="endDate" class="form-label fw-semibold">@GlobalShared.End_Date</label>
+                <input type="date" class="form-control form-control-sm filter-input" id="endDate" placeholder="@GlobalShared.End_Date" />
             </div>
         </div>
 
         <!-- 👤 Account Type & Profile -->
         <div class="col-md-4">
-            <label for="accountTypes" class="form-label fw-semibold">Account Types</label>
+            <label for="accountTypes" class="form-label fw-semibold">@GlobalShared.Account_Types</label>
             @Html.DropDownList("accountTypes",
      new SelectList(ViewBag.AccountTypes as List<SelectListItem> ?? new List<SelectListItem>(), "Value", "Text"),
      new { @class = "form-control form-control-sm select2", id = "accountTypes", multiple = "multiple", name = "accountTypes[]" })
 
         </div>
         <div class="col-md-4">
-            <label for="accountProfiles" class="form-label fw-semibold">Account Profiles</label>
+            <label for="accountProfiles" class="form-label fw-semibold">@GlobalShared.Profiles</label>
             @Html.DropDownList("accountProfiles",
                 new SelectList(ViewBag.AccountProfiles as List<SelectListItem> ?? new List<SelectListItem>(), "Value", "Text"),
                 "Select profiles",
@@ -62,7 +63,7 @@
 
         <!-- 🧾 Loan Status -->
         <div class="col-md-4">
-            <label for="loanStatus" class="form-label fw-semibold">Loan Status</label>
+            <label for="loanStatus" class="form-label fw-semibold">@GlobalShared.Loan_Status</label>
             @Html.DropDownList("loanStatus",
                 new SelectList(new List<SelectListItem>
                 {
@@ -76,7 +77,7 @@
 
         <!-- 📊 Report Type -->
         <div class="col-md-12 report-type-section d-none">
-            <label for="mainReportType" class="form-label fw-semibold">Report Type</label>
+            <label for="mainReportType" class="form-label fw-semibold">@GlobalShared.Report_Type</label>
             @Html.DropDownList("mainReportType",
                 new SelectList(new List<SelectListItem>
                 {
@@ -93,8 +94,8 @@
 
     <!-- 🔘 Action Buttons -->
     <div class="d-flex justify-content-between">
-        <button id="applyFilterBtn" class="btn btn-primary w-100 me-2"><i class="mdi mdi-magnify"></i> Apply Filter</button>
-        <button id="resetFilterBtn" class="btn btn-dark w-100 me-2"><i class="mdi mdi-refresh"></i> Reset</button>
-        <button id="exportBtn" class="btn btn-lime w-100"><i class="mdi mdi-file-export"></i> Export</button>
+        <button id="applyFilterBtn" class="btn btn-primary w-100 me-2"><i class="mdi mdi-magnify"></i> @GlobalShared.Apply_Filter</button>
+        <button id="resetFilterBtn" class="btn btn-dark w-100 me-2"><i class="mdi mdi-refresh"></i> @GlobalShared.Reset</button>
+        <button id="exportBtn" class="btn btn-lime w-100"><i class="mdi mdi-file-export"></i> @GlobalShared.Export</button>
     </div>
 </div>

@@ -1,7 +1,7 @@
 ﻿@{
     ViewBag.Title = "Collector Devices - List";
 }
-
+@using Resources
 @*<div class="card mb-4">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center">
@@ -23,14 +23,14 @@
         <fieldset class="fieldset-custom">
             <div class="card-header d-flex align-items-center">
                 <h4 class="card-title mb-0 text-primary">
-                    <i class="mdi mdi-view-list me-2"></i> Collector Devices List
+                    <i class="mdi mdi-view-list me-2"></i> @GlobalShared.Collector_Devices_List
                 </h4>
                 <button type="button"
                         class="btn btn-sm btn-outline-primary ms-auto"
                         onclick="deviceManager.refreshDataTable()"
                         data-bs-toggle="tooltip"
                         title="Refresh Table">
-                    <i class="mdi mdi-refresh"></i> Refresh
+                    <i class="mdi mdi-refresh"></i> @GlobalShared.Refresh
                 </button>
             </div>
 
@@ -38,13 +38,13 @@
                 <table class="table table-hover" id="collectorDevicesTable" style="width:100%">
                     <thead class="table-light">
                         <tr>
-                            <th class="text-center col-created">Created On</th>
-                            <th class="text-center col-name">Device Name</th>
-                            <th class="text-center col-serial">Serial Number</th>
-                            <th class="text-center col-version">Version</th>
-                            <th class="text-center col-status">Status</th>
-                            <th class="text-center col-assigned">Assigned Collector</th>
-                            <th class="text-center col-actions">Actions</th>
+                            <th class="text-center col-created">@GlobalShared.Created On</th>
+                            <th class="text-center col-name">@GlobalShared.Device_Name</th>
+                            <th class="text-center col-serial">@GlobalShared.Serial_Number</th>
+                            <th class="text-center col-version">@GlobalShared.Version</th>
+                            <th class="text-center col-status">@GlobalShared.Status</th>
+                            <th class="text-center col-assigned">@GlobalShared.Assigned_Collector</th>
+                            <th class="text-center col-actions">@GlobalShared.Actions</th>
                         </tr>
                     </thead>
                     <tbody>

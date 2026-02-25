@@ -117,44 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AccounantNote" xml:space="preserve">
-    <value>Note du comptable</value>
-  </data>
   <data name="AccountantNote" xml:space="preserve">
     <value>Note du comptable</value>
   </data>
   <data name="AccountantStatus" xml:space="preserve">
     <value>Statut du comptable</value>
   </data>
-  <data name="AdditionalNotes" xml:space="preserve">
-    <value>Notes supplémentaires</value>
-  </data>
   <data name="AfterCompletingTheProcess" xml:space="preserve">
     <value>après avoir terminé le processus</value>
   </data>
-  <data name="Attribute" xml:space="preserve">
-    <value>Attribut</value>
-  </data>
-  <data name="Balance" xml:space="preserve">
-    <value>Solde</value>
-  </data>
-  <data name="CashAtHand" xml:space="preserve">
-    <value>Encaisse</value>
-  </data>
-  <data name="CashAtHandt" xml:space="preserve">
-    <value>Encaisse</value>
-  </data>
-  <data name="Charges" xml:space="preserve">
-    <value>Frais</value>
-  </data>
   <data name="ClosedAmountOfPreviouseDay" xml:space="preserve">
     <value>Montant fermé de la veille</value>
-  </data>
-  <data name="ClosedDate" xml:space="preserve">
-    <value>Date de fermeture</value>
-  </data>
-  <data name="ClosedStatus" xml:space="preserve">
-    <value>Statut de fermeture</value>
   </data>
   <data name="CloseEndTheDayOperation" xml:space="preserve">
     <value>Fermer (fin de l'opération de la journée)</value>
@@ -204,9 +177,6 @@
   <data name="ConfirmAnyDiscrepanciesAreResolvedBeforeProceeding" xml:space="preserve">
     <value>Confirmer que toutes les anomalies ont été résolues avant de procéder</value>
   </data>
-  <data name="ConfirmationStatus" xml:space="preserve">
-    <value>Statut de confirmation</value>
-  </data>
   <data name="ConfirmationTheOperationsOf" xml:space="preserve">
     <value>Confirmation des opérations de</value>
   </data>
@@ -215,27 +185,6 @@
   </data>
   <data name="ConfirmTheTotalBalanceMatchesTheExpectedAmount" xml:space="preserve">
     <value>Confirmer que le solde total correspond au montant attendu</value>
-  </data>
-  <data name="Credit" xml:space="preserve">
-    <value>Crédit</value>
-  </data>
-  <data name="Date" xml:space="preserve">
-    <value>Date</value>
-  </data>
-  <data name="DateClosed" xml:space="preserve">
-    <value>Date de fermeture</value>
-  </data>
-  <data name="DateCloses" xml:space="preserve">
-    <value>Date de fermeture</value>
-  </data>
-  <data name="DateOpen" xml:space="preserve">
-    <value>Date d'ouverture</value>
-  </data>
-  <data name="DateToClose" xml:space="preserve">
-    <value>Date de fermeture</value>
-  </data>
-  <data name="Debit" xml:space="preserve">
-    <value>Débit</value>
   </data>
   <data name="DetailsOfOperationsOf" xml:space="preserve">
     <value>Détails des opérations de</value>
@@ -279,12 +228,6 @@
   <data name="ExportTellerTransactions" xml:space="preserve">
     <value>Exporter les transactions du caissier</value>
   </data>
-  <data name="FeeType" xml:space="preserve">
-    <value>Type de frais</value>
-  </data>
-  <data name="FollowTheseStepsToEnsureASmoothClosingOfTheMainTill" xml:space="preserve">
-    <value>Suivez ces étapes pour assurer une fermeture fluide de la caisse principale</value>
-  </data>
   <data name="FollowTheseStepsToEnsureASuccessfulSubTillClosure" xml:space="preserve">
     <value>Suivez ces étapes pour assurer une fermeture réussie de la sous-caisse</value>
   </data>
@@ -300,14 +243,8 @@
   <data name="GenerateTheNecessaryReportsForReconciliation" xml:space="preserve">
     <value>Générer les rapports nécessaires pour la réconciliation</value>
   </data>
-  <data name="HELPTIPS" xml:space="preserve">
-    <value>CONSEILS</value>
-  </data>
   <data name="IfThe" xml:space="preserve">
     <value>Si le</value>
-  </data>
-  <data name="InitialAmount" xml:space="preserve">
-    <value>Montant initial</value>
   </data>
   <data name="MakeSureTo" xml:space="preserve">
     <value>Assurez-vous de</value>
@@ -327,12 +264,6 @@
   <data name="Of" xml:space="preserve">
     <value>de</value>
   </data>
-  <data name="OpenDate" xml:space="preserve">
-    <value>Date d'ouverture</value>
-  </data>
-  <data name="OpenedDate" xml:space="preserve">
-    <value>Date d'ouverture</value>
-  </data>
   <data name="OpenOfDayAmount" xml:space="preserve">
     <value>Montant d'ouverture de la journée</value>
   </data>
@@ -341,12 +272,6 @@
   </data>
   <data name="OpenOfDayNote" xml:space="preserve">
     <value>Note d'ouverture de la journée</value>
-  </data>
-  <data name="OperationDate" xml:space="preserve">
-    <value>Date d'opération</value>
-  </data>
-  <data name="PreviousBalance" xml:space="preserve">
-    <value>Solde précédent</value>
   </data>
   <data name="PrimaryTellerComentary" xml:space="preserve">
     <value>Commentaire du caissier principal</value>
@@ -369,9 +294,6 @@
   <data name="printYourEndOfDayReport" xml:space="preserve">
     <value>imprimer votre rapport de fin de journée</value>
   </data>
-  <data name="ProvisionedBy" xml:space="preserve">
-    <value>Provisionné par</value>
-  </data>
   <data name="ReplenishedAmount" xml:space="preserve">
     <value>Montant réapprovisionné</value>
   </data>
@@ -381,59 +303,17 @@
   <data name="SelectConfirmationStatusType" xml:space="preserve">
     <value>Sélectionner le type de statut de confirmation</value>
   </data>
-  <data name="SelectStatusType" xml:space="preserve">
-    <value>Sélectionner le type de statut</value>
-  </data>
   <data name="SubTellerCommentary" xml:space="preserve">
     <value>Commentaire du sous-caissier</value>
   </data>
   <data name="SubTellerEOD" xml:space="preserve">
     <value>Sous-caissier FDJ</value>
   </data>
-  <data name="SystemBalance" xml:space="preserve">
-    <value>Solde système</value>
-  </data>
-  <data name="SystemDifference" xml:space="preserve">
-    <value>Différence système</value>
-  </data>
   <data name="TellerAccountBalance" xml:space="preserve">
     <value>Solde du compte du caissier</value>
   </data>
   <data name="TellerCloseOfDayNote" xml:space="preserve">
     <value>Note de fermeture de la journée du caissier</value>
-  </data>
-  <data name="TellerCode" xml:space="preserve">
-    <value>Code du caissier</value>
-  </data>
-  <data name="TellerComment" xml:space="preserve">
-    <value>Commentaire du caissier</value>
-  </data>
-  <data name="TellerName" xml:space="preserve">
-    <value>Nom du caissier</value>
-  </data>
-  <data name="TellerNote" xml:space="preserve">
-    <value>Note du caissier</value>
-  </data>
-  <data name="TellerUser" xml:space="preserve">
-    <value>Utilisateur caissier</value>
-  </data>
-  <data name="TotalAmount" xml:space="preserve">
-    <value>Montant total</value>
-  </data>
-  <data name="Transactions" xml:space="preserve">
-    <value>Transactions</value>
-  </data>
-  <data name="Type" xml:space="preserve">
-    <value>Type</value>
-  </data>
-  <data name="User" xml:space="preserve">
-    <value>Utilisateur</value>
-  </data>
-  <data name="ValidationStatus" xml:space="preserve">
-    <value>Statut de validation</value>
-  </data>
-  <data name="Value" xml:space="preserve">
-    <value>Valeur</value>
   </data>
   <data name="VerificationOfSubtellerOperations" xml:space="preserve">
     <value>Vérification des opérations de la sous-caisse</value>
@@ -449,5 +329,8 @@
   </data>
   <data name="VerifyThatAllSubTillsUnderTheSameBranch" xml:space="preserve">
     <value>Vérifiez que toutes les sous-caisses sous la même agence ont été fermées</value>
+  </data>
+  <data name="FollowTheseStepsToEnsureASmoothClosingOfTheMainTill" xml:space="preserve">
+    <value>Suivez ces étapes pour assurer une fermeture fluide de la caisse principale</value>
   </data>
 </root>

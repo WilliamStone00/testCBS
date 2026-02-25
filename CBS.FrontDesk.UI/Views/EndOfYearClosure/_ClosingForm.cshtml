@@ -1,5 +1,6 @@
 ﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.EndOfYearClosure.EndOfYear
 @using System.Linq
+@using Resources
 
 @using (Html.BeginForm(
     "CloseYear",
@@ -106,7 +107,7 @@
         <div class="row mb-2">
             <div class="col-md-12 text-end">
                 <button type="submit" class="btn btn-primary">
-                    Reset Income and Expense
+                    @GlobalEndOfYearClosure.Reset_Income_and_Expense
                 </button>
             </div>
         </div>

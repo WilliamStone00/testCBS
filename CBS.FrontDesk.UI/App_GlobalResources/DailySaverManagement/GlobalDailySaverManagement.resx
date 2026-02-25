@@ -1,0 +1,165 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Always_set_to_false_Controlled_by_system" xml:space="preserve">
+    <value>Always set to false. Controlled by system.</value>
+  </data>
+  <data name="Capture_only_the_essentials_to_quickly_onboard_a_Daily_Saver" xml:space="preserve">
+    <value>Capture only the essentials to quickly onboard a Daily Saver.</value>
+  </data>
+  <data name="Daily_saver_account_number" xml:space="preserve">
+    <value>Daily saver account number</value>
+  </data>
+  <data name="Daily_Saver_Identification_Form" xml:space="preserve">
+    <value>Daily Saver – Identification Form</value>
+  </data>
+  <data name="Daily_Saver_Open_New_Account" xml:space="preserve">
+    <value>Daily Saver – Open New Account</value>
+  </data>
+  <data name="Daily_saver_type" xml:space="preserve">
+    <value>Daily saver type</value>
+  </data>
+  <data name="enter_0_to_auto_generate_else_a_positive_integer_7_digits" xml:space="preserve">
+    <value>enter &lt;strong&gt;0&lt;/strong&gt; to auto-generate, else a &lt;strong&gt;positive integer&lt;/strong&gt; (≤7 digits).&lt;/small&gt;</value>
+  </data>
+  <data name="External_Transaction_Ref" xml:space="preserve">
+    <value>External Transaction Ref</value>
+  </data>
+  <data name="External_transaction_ref_helps_reconcile_with_cash_desk_or_MoMo_receipts" xml:space="preserve">
+    <value>External transaction ref helps reconcile with cash desk or MoMo receipts.</value>
+  </data>
+  <data name="If_you_cannot_provide_an_account_number_enter_0_and_the_system_will_generate_it_automatically" xml:space="preserve">
+    <value>If you cannot provide an account number, enter 0 and the system will generate it automatically.</value>
+  </data>
+  <data name="Is_Uploaded_Data_system_managed" xml:space="preserve">
+    <value>Is Uploaded Data (system-managed)</value>
+  </data>
+  <data name="New_Daily_saver" xml:space="preserve">
+    <value>New Daily saver</value>
+  </data>
+  <data name="Opening_amount_is_optional_enter_if_initial_subscription_is_paid_now" xml:space="preserve">
+    <value>Opening amount is optional — enter if initial subscription is paid now.</value>
+  </data>
+  <data name="Required_fields_are_minimal_Identity_Address_ID_Economic_activity" xml:space="preserve">
+    <value>Required fields are minimal: Identity, Address, ID, Economic activity.</value>
+  </data>
+  <data name="Use_the_cascading_Country_Region_Division_Sub_Division_Town_selectors" xml:space="preserve">
+    <value>Use the cascading Country → Region → Division → Sub-Division → Town selectors.</value>
+  </data>
+</root>

@@ -1,12 +1,12 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Config.GlobalizationViewModel
-
+@using Resources
 <div class="table-responsive">
     <table id="subDivisionTable" class="table table-bordered table-striped table-hover table-sm w-100">
         <thead class="table-light">
             <tr>
-                <th>Division</th>
-                <th>SubDivision Name</th>
-                <th style="width: 120px;">Actions</th>
+                <th>@GlobalShared.Division</th>
+                <th>@GlobalGlobalization.SubDivision_Name</th>
+                <th style="width: 120px;">@GlobalShared.Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -57,7 +57,7 @@
             {
                 <tr>
                     <td colspan="3" class="text-center text-muted">
-                        <i class="bi bi-info-circle me-1"></i> No subdivisions found.
+                        <i class="bi bi-info-circle me-1"></i> @GlobalGlobalization.No_subdivisions_found
                     </td>
                 </tr>
             }

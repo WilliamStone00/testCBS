@@ -61,29 +61,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Active.
-        /// </summary>
-        internal static string Active {
-            get {
-                return ResourceManager.GetString("Active", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Both.
         /// </summary>
         internal static string Both {
             get {
                 return ResourceManager.GetString("Both", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Branch.
-        /// </summary>
-        internal static string Branch {
-            get {
-                return ResourceManager.GetString("Branch", resourceCulture);
             }
         }
         
@@ -169,24 +151,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Date from.
-        /// </summary>
-        internal static string DateFrom {
-            get {
-                return ResourceManager.GetString("DateFrom", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Date to.
-        /// </summary>
-        internal static string DateTo {
-            get {
-                return ResourceManager.GetString("DateTo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Export daily operations.
         /// </summary>
         internal static string ExportDailyOperations {
@@ -214,15 +178,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Filter by branch.
-        /// </summary>
-        internal static string FilterByBranch {
-            get {
-                return ResourceManager.GetString("FilterByBranch", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Filter by till.
         /// </summary>
         internal static string FilterByTill {
@@ -232,29 +187,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Filtered by date.
-        /// </summary>
-        internal static string FilteredByDate {
-            get {
-                return ResourceManager.GetString("FilteredByDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Filter tellers in operation.
         /// </summary>
         internal static string FilterTellersInOperation {
             get {
                 return ResourceManager.GetString("FilterTellersInOperation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Inactive.
-        /// </summary>
-        internal static string Inactive {
-            get {
-                return ResourceManager.GetString("Inactive", resourceCulture);
             }
         }
         
@@ -304,24 +241,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reassign.
-        /// </summary>
-        internal static string Reassign {
-            get {
-                return ResourceManager.GetString("Reassign", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select branch.
-        /// </summary>
-        internal static string SelectBranch {
-            get {
-                return ResourceManager.GetString("SelectBranch", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Select branch to load tellers assigned.
         /// </summary>
         internal static string SelectBranchToLoadTellersAssigned {
@@ -358,15 +277,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select user.
-        /// </summary>
-        internal static string SelectUser {
-            get {
-                return ResourceManager.GetString("SelectUser", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Set tellers for the day.
         /// </summary>
         internal static string SetTellersForTheDay {
@@ -385,29 +295,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Status.
-        /// </summary>
-        internal static string Status {
-            get {
-                return ResourceManager.GetString("Status", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Sub-T.
         /// </summary>
         internal static string SubT {
             get {
                 return ResourceManager.GetString("SubT", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Teller.
-        /// </summary>
-        internal static string Teller {
-            get {
-                return ResourceManager.GetString("Teller", resourceCulture);
             }
         }
         
@@ -448,47 +340,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tills.
-        /// </summary>
-        internal static string Tills {
-            get {
-                return ResourceManager.GetString("Tills", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Tills F5 Operations.
         /// </summary>
         internal static string TillsF5Operations {
             get {
                 return ResourceManager.GetString("TillsF5Operations", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Type.
-        /// </summary>
-        internal static string Type {
-            get {
-                return ResourceManager.GetString("Type", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to User.
-        /// </summary>
-        internal static string User {
-            get {
-                return ResourceManager.GetString("User", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Users.
-        /// </summary>
-        internal static string Users {
-            get {
-                return ResourceManager.GetString("Users", resourceCulture);
             }
         }
         

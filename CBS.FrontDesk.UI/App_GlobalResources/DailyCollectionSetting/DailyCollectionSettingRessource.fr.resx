@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Base_configuration_for_all" xml:space="preserve">
+    <value>Configuration de base pour tous</value>
+  </data>
+  <data name="Agent_Share" xml:space="preserve">
+    <value>Part de l’agent</value>
+  </data>
+  <data name="Amount_Per_Transaction" xml:space="preserve">
+    <value>Montant par transaction</value>
+  </data>
+  <data name="AmountPerTransaction" xml:space="preserve">
+    <value>Montant par transaction</value>
+  </data>
+  <data name="Applies_only_to_this_agent" xml:space="preserve">
+    <value>S’applique uniquement à cet agent</value>
+  </data>
+  <data name="Applies_to_all_agents_in_branch" xml:space="preserve">
+    <value>S’applique à tous les agents de l’agence</value>
+  </data>
+  <data name="Applies_to_all_branches_agents" xml:space="preserve">
+    <value>S’applique à toutes les agences et à tous les agents</value>
+  </data>
+  <data name="Applies_to_entire_organization" xml:space="preserve">
+    <value>S’applique à l’ensemble de l’organisation</value>
+  </data>
+  <data name="Applies_to_specific_agent" xml:space="preserve">
+    <value>S’applique à un agent spécifique</value>
+  </data>
+  <data name="Applies_to_specific_branch" xml:space="preserve">
+    <value>S’applique à une agence spécifique</value>
+  </data>
+  <data name="Audit_quarterly_for_updates" xml:space="preserve">
+    <value>Audit trimestriel pour mises à jour</value>
+  </data>
+  <data name="Branch_specific_rules" xml:space="preserve">
+    <value>Règles spécifiques à l’agence</value>
+  </data>
+  <data name="Check_if_this_applies_to_inter_branch_operations" xml:space="preserve">
+    <value>Vérifier si cela s’applique aux opérations inter-agences</value>
+  </data>
+  <data name="Choose_agent_from_dropdown" xml:space="preserve">
+    <value>Choisir l’agent dans la liste déroulante</value>
+  </data>
+  <data name="Choose_branch_from_dropdown" xml:space="preserve">
+    <value>Choisir l’agence dans la liste déroulante</value>
+  </data>
+  <data name="Commission_Configuration" xml:space="preserve">
+    <value>Configuration des commissions</value>
+  </data>
+  <data name="COMMISSION_CONFIGURATION_GUIDE" xml:space="preserve">
+    <value>GUIDE DE CONFIGURATION DES COMMISSIONS</value>
+  </data>
+  <data name="Commission_Distribution" xml:space="preserve">
+    <value>Répartition des commissions</value>
+  </data>
+  <data name="COMMISSION_MANAGEMENT" xml:space="preserve">
+    <value>GESTION DES COMMISSIONS</value>
+  </data>
+  <data name="Commission_Provider" xml:space="preserve">
+    <value>Fournisseur de commission</value>
+  </data>
+  <data name="Configuration_Scope" xml:space="preserve">
+    <value>Portée de la configuration</value>
+  </data>
+  <data name="Configure_commission_settings_for_different_operation_types_and_stakeholders" xml:space="preserve">
+    <value>Configurer les paramètres de commission selon les types d’opérations et les parties prenantes</value>
+  </data>
+  <data name="Configure_special_rates_if_needed" xml:space="preserve">
+    <value>Configurer des taux spéciaux si nécessaire</value>
+  </data>
+  <data name="Cross_branch_transactions" xml:space="preserve">
+    <value>Transactions inter-agences</value>
+  </data>
+  <data name="Daily_Cash_In_Limit" xml:space="preserve">
+    <value>Plafond journalier d’encaissement</value>
+  </data>
+  <data name="Daily_Cash_Out_Limit" xml:space="preserve">
+    <value>Plafond journalier de décaissement</value>
+  </data>
+  <data name="DAILYSAVER_MIGRATION" xml:space="preserve">
+    <value>MIGRATION DAILYSAVER</value>
+  </data>
+  <data name="Enter_fixed_amount" xml:space="preserve">
+    <value>Saisir un montant fixe</value>
+  </data>
+  <data name="Fallback_for_specific_cases" xml:space="preserve">
+    <value>Solution de repli pour cas spécifiques</value>
+  </data>
+  <data name="Fixed_Amount" xml:space="preserve">
+    <value>Montant fixe</value>
+  </data>
+  <data name="Fixed_Amount_Configuration" xml:space="preserve">
+    <value>Configuration du montant fixe</value>
+  </data>
+  <data name="Fixed_amount_per_transaction" xml:space="preserve">
+    <value>Montant fixe par transaction</value>
+  </data>
+  <data name="Flat_rate_commissions" xml:space="preserve">
+    <value>Commissions forfaitaires</value>
+  </data>
+  <data name="For_branch_to_branch_transfers" xml:space="preserve">
+    <value>Pour les transferts d’agence à agence</value>
+  </data>
+  <data name="For_revenue_sharing_models" xml:space="preserve">
+    <value>Pour les modèles de partage des revenus</value>
+  </data>
+  <data name="For_simple_commission_structures" xml:space="preserve">
+    <value>Pour des structures de commission simples</value>
+  </data>
+  <data name="For_stakeholder_profit_distribution" xml:space="preserve">
+    <value>Pour la répartition des bénéfices entre parties prenantes</value>
+  </data>
+  <data name="For_standardized_fees" xml:space="preserve">
+    <value>Pour des frais standardisés</value>
+  </data>
+  <data name="Go_on_account_management_and_fill_the_form_acccordingly" xml:space="preserve">
+    <value>Aller dans la gestion des comptes et remplir le formulaire en conséquence.</value>
+  </data>
+  <data name="How_to_configure" xml:space="preserve">
+    <value>Comment configurer</value>
+  </data>
+  <data name="How_to_set" xml:space="preserve">
+    <value>Comment paramétrer</value>
+  </data>
+  <data name="I_want_use_and_account_that_is_not_currently_created_in_the_system" xml:space="preserve">
+    <value>Je souhaite utiliser un compte qui n’est pas encore créé dans le système.</value>
+  </data>
+  <data name="In_case_of_any_difficulty_kindly_contact_system_administrator" xml:space="preserve">
+    <value>En cas de difficulté, veuillez contacter l’administrateur système.</value>
+  </data>
+  <data name="Individual_exceptions" xml:space="preserve">
+    <value>Exceptions individuelles</value>
+  </data>
+  <data name="Inter_branch_Transaction" xml:space="preserve">
+    <value>Transaction inter-agences</value>
+  </data>
+  <data name="Interbranch" xml:space="preserve">
+    <value>Inter-agences</value>
+  </data>
+  <data name="Note_special_arrangements" xml:space="preserve">
+    <value>Noter les dispositions particulières</value>
+  </data>
+  <data name="Organization_wide_defaults" xml:space="preserve">
+    <value>Paramètres par défaut de l’organisation</value>
+  </data>
+  <data name="Overridden_by_specific_settings" xml:space="preserve">
+    <value>Remplacé par des paramètres spécifiques</value>
+  </data>
+  <data name="Override_all_other_settings" xml:space="preserve">
+    <value>Remplacer tous les autres paramètres</value>
+  </data>
+  <data name="Override_global_settings" xml:space="preserve">
+    <value>Remplacer les paramètres globaux</value>
+  </data>
+  <data name="Percentage_based_commission" xml:space="preserve">
+    <value>Commission basée sur un pourcentage</value>
+  </data>
+  <data name="Percentage_based_commissions" xml:space="preserve">
+    <value>Commissions basées sur un pourcentage</value>
+  </data>
+  <data name="Performance_based_commissions" xml:space="preserve">
+    <value>Commissions basées sur la performance</value>
+  </data>
+  <data name="Proportional" xml:space="preserve">
+    <value>Proportionnel</value>
+  </data>
+  <data name="Regional_variations" xml:space="preserve">
+    <value>Variations régionales</value>
+  </data>
+  <data name="Same_amount_applies_per_transaction" xml:space="preserve">
+    <value>Le même montant s’applique par transaction</value>
+  </data>
+  <data name="SCOPE_CONFIGURATION" xml:space="preserve">
+    <value>CONFIGURATION DE LA PORTÉE</value>
+  </data>
+  <data name="Select_the_scope_for_this_commission_configuration_select_only_one" xml:space="preserve">
+    <value>Sélectionner la portée pour cette configuration de commission (choisir une seule option)</value>
+  </data>
+  <data name="Select_Transction_operation_type_Choose_commission_provider_Configure_commission_structure_Set_scope" xml:space="preserve">
+    <value>Sélectionner le type d’opération → Choisir le fournisseur de commission → Configurer la structure de commission → Définir la portée</value>
+  </data>
+  <data name="Set_source_destination_rules" xml:space="preserve">
+    <value>Définir les règles source/destination</value>
+  </data>
+  <data name="Special_agent_agreements" xml:space="preserve">
+    <value>Accords spécifiques avec les agents</value>
+  </data>
+  <data name="Special_branch_arrangements" xml:space="preserve">
+    <value>Dispositions spécifiques à certaines agences</value>
+  </data>
+  <data name="Special_commission_arrangements" xml:space="preserve">
+    <value>Dispositions particulières de commission</value>
+  </data>
+  <data name="Standard_commission_rules" xml:space="preserve">
+    <value>Règles standard de commission</value>
+  </data>
+  <data name="This_interface_gives_the_possibility_to_migrate_data_dailyasvers_into_the_TRUSTSOFTCREDIT_by_the_daily_collector" xml:space="preserve">
+    <value>Cette interface permet au collecteur journalier de migrer les données DailySaver vers TRUSTSOFTCREDIT.</value>
+  </data>
+  <data name="TIPS_FOR_MIGRATION" xml:space="preserve">
+    <value>CONSEILS POUR LA MIGRATION</value>
+  </data>
+  <data name="Total_must_equal_100" xml:space="preserve">
+    <value>Le total doit être égal à 100</value>
+  </data>
+  <data name="Upload_your_Excel_files_to_process_data" xml:space="preserve">
+    <value>Téléverser vos fichiers Excel pour traiter les données</value>
+  </data>
+  <data name="Use_Preview_before_saving" xml:space="preserve">
+    <value>Utiliser l’aperçu avant l’enregistrement</value>
+  </data>
+  <data name="When_revenue_sharing_between_branches" xml:space="preserve">
+    <value>En cas de partage des revenus entre agences</value>
+  </data>
+  <data name="When_to_use" xml:space="preserve">
+    <value>Quand utiliser</value>
+  </data>
+  <data name="When_transaction_amount_doesnt_matter" xml:space="preserve">
+    <value>Lorsque le montant de la transaction n’a pas d’importance</value>
+  </data>
+  <data name="When_transaction_amounts_vary" xml:space="preserve">
+    <value>Lorsque les montants des transactions varient</value>
+  </data>
+</root>

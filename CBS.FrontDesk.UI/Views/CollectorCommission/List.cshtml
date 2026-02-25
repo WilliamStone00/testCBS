@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission.commisionQuery
+    @using Resources
 @{
     ViewBag.Title = "Commission Overview - Filters";
 }
@@ -8,10 +9,10 @@
         <div class="card bg-light mb-2">
             <div class="card-body text-center py-3">
                 <h4 class="card-title text-primary mb-1">
-                    <i class="mdi mdi-account-cash me-2"></i>Commission Management
+                    <i class="mdi mdi-account-cash me-2"></i>@GlobalShared.Commission_Management
                 </h4>
                 <p class="card-text small text-muted mb-0">
-                    Manage and filter commission data for collectors and members
+                    @GlobalCollectorCommission.Manage_and_filter_commission_data_for_collectors_and_members
                 </p>
             </div>
         </div>
@@ -21,7 +22,7 @@
 <!-- Collapsible Tips -->
 <div class="card mb-2">
     <h6 class="card-header py-2 d-flex justify-content-between align-items-center text-primary">
-        <span class="small"><i class="mdi mdi-information-outline me-1"></i> Tips & Guidelines</span>
+        <span class="small"><i class="mdi mdi-information-outline me-1"></i> @GlobalShared.Tips_And_Guidelines</span>
         <button class="btn btn-light btn-sm p-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCommissionTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -29,11 +30,11 @@
     <div id="collapseCommissionTips" class="collapse">
         <div class="card-body py-2">
             <ul class="small mb-0">
-                <li><strong>Branch Selection:</strong> Start by selecting a branch to load available collectors.</li>
-                <li><strong>Collector Filter:</strong> Choose a specific collector to view individual commissions.</li>
-                <li><strong>Period Filtering:</strong> Use Year and Month for time-based filtering.</li>
-                <li><strong>Date Range:</strong> Use Start/End Date for precise period filtering.</li>
-                <li><strong>Amount Range:</strong> Filter by minimum and maximum paid amounts.</li>
+                <li><strong>@GlobalShared.Branch_Selection:</strong> @GlobalCollectorCommission.Start_by_selecting_a_branch_to_load_available_collectors</li>
+                <li><strong>@GlobalShared.Collector_Filter:</strong> @GlobalCollectorCommission.Choose_a_specific_collector_to_view_individual_commissions</li>
+                <li><strong>@GlobalShared.Period_Filtering:</strong> @GlobalCollectorCommission.Use_Year_and_Month_for_time_based_filtering</li>
+                <li><strong>@GlobalShared.Date_Range:</strong> @GlobalCollectorCommission.Use_Start_End_Date_for_precise_period_filtering</li>
+                <li><strong>@GlobalShared.Amount_Range:</strong> @GlobalCollectorCommission.Filter_by_minimum_and_maximum_paid_amounts</li>
             </ul>
         </div>
     </div>
@@ -41,12 +42,12 @@
 
 <!-- Compact Commission Filters -->
 <div class="card shadow-sm p-2 mb-2">
-    <h6 class="text-primary mb-2"><i class="mdi mdi-filter-outline me-1"></i> Commission Filters</h6>
+    <h6 class="text-primary mb-2"><i class="mdi mdi-filter-outline me-1"></i> @GlobalShared.Commission_Filters</h6>
 
     <form id="commissionFilterForm" autocomplete="off">
         <div class="card p-2 mb-1 bg-light">
             <div class="col-md-12">
-                <label for="BranchId" class="form-label small fw-semibold">🏢 Branch</label>
+                <label for="BranchId" class="form-label small fw-semibold">🏢 @GlobalShared.Branch</label>
                 @Html.DropDownListFor(m => m.BranchId,
                     new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name"),
                     "--- Select Branch ---",
@@ -57,24 +58,24 @@
             <div class="row g-2 mb-2">
 
                 <div class="col-md-6">
-                    <label for="CollectorId" class="form-label small fw-semibold">👤 Collector</label>
+                    <label for="CollectorId" class="form-label small fw-semibold">👤 @GlobalShared.Collector</label>
                     @Html.DropDownList("CollectorId",
                         new List<SelectListItem> { new SelectListItem { Text = "--- Select Collector ---", Value = "" } },
                         new { @class = "form-control form-control-sm select2", id = "CollectorId" })
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label small fw-semibold">Member Ref</label>
-                    <input type="text" id="MemberReference" name="MemberReference" class="form-control form-control-sm" placeholder="Member reference" />
+                    <label class="form-label small fw-semibold">@GlobalShared.Member_ref</label>
+                    <input type="text" id="MemberReference" name="MemberReference" class="form-control form-control-sm" placeholder="@GlobalShared.Member_reference" />
                 </div>
             </div>
 
             <!-- Period Filters - Compact Row -->
             <div class="row g-2 mb-2">
                 <div class="col-md-4">
-                    <label class="form-label small fw-semibold">Year</label>
+                    <label class="form-label small fw-semibold">@GlobalShared.Year</label>
                     <select id="Year" name="Year" class="form-control form-control-sm">
-                        <option value="">--- Year ---</option>
+                        <option value="">--- @GlobalShared.Year ---</option>
                         @for (int year = DateTime.Now.Year; year >= DateTime.Now.Year - 5; year--)
                         {
                             <option value="@year">@year</option>
@@ -83,9 +84,9 @@
                 </div>
 
                 <div class="col-md-4">
-                    <label class="form-label small fw-semibold">Month</label>
+                    <label class="form-label small fw-semibold">@GlobalShared.Month</label>
                     <select id="Month" name="Month" class="form-control form-control-sm">
-                        <option value="">--- Month ---</option>
+                        <option value="">--- @GlobalShared.Month ---</option>
                         <option value="1">Jan</option>
                         <option value="2">Feb</option>
                         <option value="3">Mar</option>
@@ -102,8 +103,8 @@
                 </div>
 
                 <div class="col-md-4">
-                    <label class="form-label small fw-semibold">Ref Number</label>
-                    <input type="text" id="ReferenceNumber" name="ReferenceNumber" class="form-control form-control-sm" placeholder="Reference number" />
+                    <label class="form-label small fw-semibold">@GlobalShared.Ref_Number</label>
+                    <input type="text" id="ReferenceNumber" name="ReferenceNumber" class="form-control form-control-sm" placeholder="@GlobalShared.Reference_Number" />
                 </div>
             </div>
 
@@ -112,11 +113,11 @@
                 <div class="col-md-6">
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" id="toggleDateRange" onclick="document.getElementById('dateRangeFilters').classList.toggle('d-none')" />
-                        <label class="form-check-label small" for="toggleDateRange">Date Range</label>
+                        <label class="form-check-label small" for="toggleDateRange">@GlobalShared.Date_Range</label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" id="toggleAmountRange" onclick="document.getElementById('amountRangeFilters').classList.toggle('d-none')" />
-                        <label class="form-check-label small" for="toggleAmountRange">Amount Range</label>
+                        <label class="form-check-label small" for="toggleAmountRange">@GlobalShared.Amount_Range</label>
                     </div>
                 </div>
             </div>
@@ -125,11 +126,11 @@
             <div id="dateRangeFilters" class="d-none">
                 <div class="row g-2 mb-2">
                     <div class="col-md-6">
-                        <label class="form-label small fw-semibold">Start Date</label>
+                        <label class="form-label small fw-semibold">@GlobalShared.Start_Date</label>
                         <input type="date" id="StartDate" name="StartDate" class="form-control form-control-sm" />
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label small fw-semibold">End Date</label>
+                        <label class="form-label small fw-semibold">@GlobalShared.End_Date</label>
                         <input type="date" id="EndDate" name="EndDate" class="form-control form-control-sm" />
                     </div>
                 </div>
@@ -139,11 +140,11 @@
             <div id="amountRangeFilters" class="d-none">
                 <div class="row g-2 mb-2">
                     <div class="col-md-6">
-                        <label class="form-label small fw-semibold">Min Amount</label>
+                        <label class="form-label small fw-semibold">@GlobalShared.Min_Amount</label>
                         <input type="number" id="MinPaidAmount" name="MinPaidAmount" class="form-control form-control-sm" placeholder="0.00" step="0.01" min="0" />
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label small fw-semibold">Max Amount</label>
+                        <label class="form-label small fw-semibold">@GlobalShared.Max_Amount</label>
                         <input type="number" id="MaxPaidAmount" name="MaxPaidAmount" class="form-control form-control-sm" placeholder="0.00" step="0.01" min="0" />
                     </div>
                 </div>
@@ -154,19 +155,19 @@
         <div class="row g-2 mt-2">
             <div class="col-12 col-md-4">
                 <button id="applyCommissionFilterBtn" type="button" class="btn btn-primary btn-sm w-100">
-                    <i class="mdi mdi-magnify me-1" aria-hidden="true"></i> Apply Filters
+                    <i class="mdi mdi-magnify me-1" aria-hidden="true"></i> @GlobalShared.Apply_filters
                 </button>
             </div>
 
             <div class="col-12 col-md-4">
                 <button id="resetCommissionFilterBtn" type="button" class="btn btn-secondary btn-sm w-100">
-                    <i class="mdi mdi-refresh me-1" aria-hidden="true"></i> Reset
+                    <i class="mdi mdi-refresh me-1" aria-hidden="true"></i> @GlobalShared.Reset
                 </button>
             </div>
 
             <div class="col-12 col-md-4">
                 <button type="button" id="btnExport" class="btn btn-success btn-sm w-100">
-                    <i class="mdi mdi-export me-1" aria-hidden="true"></i> Export
+                    <i class="mdi mdi-export me-1" aria-hidden="true"></i> @GlobalShared.Export
                 </button>
             </div>
         </div>

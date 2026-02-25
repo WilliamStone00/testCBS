@@ -2,17 +2,17 @@
     ViewBag.Title = "Uploaded DailyCollection Files";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
-
+@using Resources
 <div class="row">
     <div class="col-12">
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="bi bi-upload"></i> 📤 Uploaded Daily Collector Operations files</span>
+                    <i class="bi bi-upload"></i> 📤 @GlobalDailyAgentManagement.Uploaded_Daily_Collector_Operations_files</span>
                 </h1>
 
                 <p class="card-text text-dark fw-bold">
-                    <i class="mdi mdi-alert-circle-outline me-1"></i>This interface enables daily collectors to upload daily operations to the back-office operator to register all daily collector field operations.
+                    <i class="mdi mdi-alert-circle-outline me-1"></i>@GlobalDailyAgentManagement.This_interface_enables_daily_collectors_to_upload_daily_operations_to_the_back_office_operator_to_register_all_daily_collector_field_operations
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -22,7 +22,7 @@
 
 <div class="card mb-2">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> TIPS for daily collection file uploads</span>
+        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalDailyAgentManagement.TIPS_for_daily_collection_file_uploads</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -30,8 +30,8 @@
     <div id="collapseTips" class="collapse">
         <div class="card-body">
             <ul>
-                <li><i class="mdi mdi-account-multiple-check-outline text-success me-2"></i> <strong>Select uploaded files:</strong>Select  Daily Collector.</li>
-                <li><i class="mdi mdi-cash-check me-2"></i> <strong> File Upload:</strong>File uploaded </li>
+                <li><i class="mdi mdi-account-multiple-check-outline text-success me-2"></i> <strong>@GlobalShared.Select_uploaded_files:</strong>@GlobalDailyAgentManagement.Select_Daily_Collector.</li>
+                <li><i class="mdi mdi-cash-check me-2"></i> <strong> @GlobalShared.File_Upload:</strong>@GlobalShared.File_uploaded </li>
 
             </ul>
         </div>
@@ -45,14 +45,14 @@
     <div class="controls">
         <div class="search-container">
 
-            <input type="text" id="searchInput" class="search-input" placeholder="Search files, branches, or users...">
+            <input type="text" id="searchInput" class="search-input" placeholder="@GlobalShared.Search_files_branches_or_users...">
             <span class="filter-container justify-content-end">
                 
                 <select id="categoryFilter" class="filter-select">
                     <svg class="filter-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <polygon points="22,3 2,3 10,12.46 10,19 14,21 14,12.46"></polygon>
                     </svg>
-                    <option value="">All Categories</option>
+                    <option value="">@GlobalShared.All_Categories</option>
                 </select>
             </span>
 
@@ -73,7 +73,7 @@
                 <tr>
                     <th>
                         <div class="sortable" data-column="fileName">
-                            <span>File Name</span>
+                            <span>@GlobalShared.File Name</span>
                             <svg class="sort-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="m7 15 5 5 5-5"></path>
                                 <path d="m7 9 5-5 5 5"></path>
@@ -82,7 +82,7 @@
                     </th>
                     <th>
                         <div class="sortable" data-column="branchName">
-                            <span>Branch</span>
+                            <span>@GlobalShared.Branch</span>
                             <svg class="sort-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="m7 15 5 5 5-5"></path>
                                 <path d="m7 9 5-5 5 5"></path>
@@ -91,7 +91,7 @@
                     </th>
                     <th>
                         <div class="sortable" data-column="uploadedBy">
-                            <span>Uploaded By</span>
+                            <span>@GlobalShared.Uploaded_By</span>
                             <svg class="sort-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="m7 15 5 5 5-5"></path>
                                 <path d="m7 9 5-5 5 5"></path>
@@ -100,7 +100,7 @@
                     </th>
                     <th>
                         <div class="sortable" data-column="uploadedOn">
-                            <span>Upload Date</span>
+                            <span>@GlobalShared.Upload Date</span>
                             <svg class="sort-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="m7 15 5 5 5-5"></path>
                                 <path d="m7 9 5-5 5 5"></path>
@@ -109,14 +109,14 @@
                     </th>
                     <th>
                         <div class="sortable" data-column="fileCategory">
-                            <span>Category</span>
+                            <span>@GlobalShared.Category</span>
                             <svg class="sort-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="m7 15 5 5 5-5"></path>
                                 <path d="m7 9 5-5 5 5"></path>
                             </svg>
                         </div>
                     </th>
-                    <th>Actions</th>
+                    <th>@GlobalShared.Actions</th>
                 </tr>
             </thead>
             <tbody id="tableBody">
@@ -124,8 +124,8 @@
         </table>
     </div>
     <div id="emptyState" class="empty-state" style="display: none;">
-        <h3>No files found</h3>
-        <p>Try adjusting your search or filter criteria</p>
+        <h3>@GlobalShared.No_files_found</h3>
+        <p>@GlobalShared.Try_adjusting_your_search_or_filter_criteria</p>
     </div>
 
 

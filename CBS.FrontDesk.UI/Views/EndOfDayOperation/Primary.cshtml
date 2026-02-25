@@ -27,7 +27,7 @@
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-Main">
         <span>
-            <i class="mdi mdi-information-outline me-2"></i> @GlobalEndOfDayOperation.HELPTIPS
+            <i class="mdi mdi-information-outline me-2"></i> @GlobalShared.HELP_TIPS
         </span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHelpTips" aria-expanded="false" aria-controls="collapseHelpTips">
             <i class="mdi mdi-chevron-down"></i>
@@ -44,7 +44,7 @@
                 <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalEndOfDayOperation.GenerateAndSaveNecessaryReports.</li>
                 <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalEndOfDayOperation.ConfirmTheTotalBalanceMatchesTheExpectedAmount.</li>
             </ul>
-            <p class="text-muted">@GlobalEndOfDayOperation.AdditionalNotes:</p>
+            <p class="text-muted">@GlobalShared.Additional_Notes:</p>
             <ul>
                 <li><i class="mdi mdi-information-outline text-Main me-2"></i> @GlobalEndOfDayOperation.IfThe <strong>@GlobalEndOfDayOperation.CloseOfDaButtonIsGreyedOut</strong>, @GlobalEndOfDayOperation.ensureAllSubTillsAreClosed.</li>
                 <li><i class="mdi mdi-alert-outline text-danger me-2"></i> @GlobalEndOfDayOperation.MakeSureTo <strong>@GlobalEndOfDayOperation.printYourEndOfDayReport</strong> @GlobalEndOfDayOperation.AfterCompletingTheProcess.</li>

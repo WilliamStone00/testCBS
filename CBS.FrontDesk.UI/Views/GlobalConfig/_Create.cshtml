@@ -1,7 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.Configurations.GlobalConfig.GlobalConfig
-
+@using Resources
 <fieldset class="fieldset-custom">
-    <legend>GLOBAL CONFIGURATION</legend>
+    <legend>@GlobalConfig.GLOBAL_CONFIGURATION</legend>
 
     <div class="card-body">
         @using (Html.BeginForm("Create", "GlobalConfig", FormMethod.Post,
@@ -12,7 +12,7 @@
             <!-- SETTINGS -->
             <fieldset class="border rounded p-3 mb-4">
                 <legend class="float-none w-auto px-2 text-primary fw-bold">
-                    General Settings
+                    @GlobalShared.General_Settings
                 </legend>
 
                 <div class="row gy-3">
@@ -21,7 +21,7 @@
                         <div class="form-floating form-floating-outline">
                             @Html.TextBoxFor(m => m.MinimumOfChequeLeave,
                                 new { @class = "form-control", type = "number" })
-                            <label>Minimum Cheque Leave</label>
+                            <label>@GlobalConfig.Minimum_Cheque_Leave</label>
                         </div>
                     </div>
 
@@ -29,7 +29,7 @@
                         <div class="form-floating form-floating-outline">
                             @Html.TextBoxFor(m => m.MaximumOfChequeLeave,
                                 new { @class = "form-control", type = "number" })
-                            <label>Maximum Cheque Leave</label>
+                            <label>@GlobalConfig.Maximum_Cheque_Leave</label>
                         </div>
                     </div>
 
@@ -37,7 +37,7 @@
                         <div class="form-floating form-floating-outline">
                             @Html.TextBoxFor(m => m.ChequeValidityDays,
                                 new { @class = "form-control", type = "number" })
-                            <label>Cheque Validity (Days)</label>
+                            <label>@GlobalConfig.Cheque_Validity (@GlobalShared.Days)</label>
                         </div>
                     </div>
 
@@ -46,7 +46,7 @@
                             @Html.CheckBoxFor(m => m.IsCentralised,
                                 new { @class = "form-check-input" })
                             <label class="form-check-label ms-1">
-                                Is Centralised
+                                @GlobalShared.Is_Centralised
                             </label>
                         </div>
                     </div>
@@ -58,12 +58,12 @@
             <div class="d-flex justify-content-end gap-2">
                 @if (ViewBag.Key != null)
                 {
-                    <button class="btn btn-primary">Update</button>
+                    <button class="btn btn-primary">@GlobalShared.Update</button>
                 }
                 else
                 {
-                    <button class="btn btn-primary">Save</button>
-                    <button type="reset" class="btn btn-outline-secondary">Reset</button>
+                    <button class="btn btn-primary">@GlobalShared.Save</button>
+                    <button type="reset" class="btn btn-outline-secondary">@GlobalShared.Reset</button>
                 }
             </div>
         }

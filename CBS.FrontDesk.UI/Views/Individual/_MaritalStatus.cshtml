@@ -12,7 +12,7 @@
             <div class="form-floating form-floating-outline">
                 @Html.DropDownListFor(m => m.CustomerList.MaritalStatus, new SelectList(ViewBag.maritalStatuses, "Text", "Value"), "---"+ @GlobalIndividual.SelectMaritalStatus+"---", new { @class = "form-control select2", @search = "true" })
                 @Html.ValidationMessageFor(m => m.CustomerList.MaritalStatus, "", new { @class = "text-danger " })
-                <label for="formValidationDob">@GlobalIndividual.MaritalStatus</label>
+                <label for="formValidationDob">@GlobalShared.Marital_Status</label>
             </div>
         </div>
         <div class="col-md-9">

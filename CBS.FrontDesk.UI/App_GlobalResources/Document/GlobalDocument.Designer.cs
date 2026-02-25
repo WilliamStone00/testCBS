@@ -61,29 +61,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Document.
-        /// </summary>
-        internal static string Document {
-            get {
-                return ResourceManager.GetString("Document", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Manage different documents for loan.
         /// </summary>
         internal static string ManageDifferentDocumentsForLoan {
             get {
                 return ResourceManager.GetString("ManageDifferentDocumentsForLoan", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Name.
-        /// </summary>
-        internal static string Name {
-            get {
-                return ResourceManager.GetString("Name", resourceCulture);
             }
         }
     }

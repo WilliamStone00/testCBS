@@ -117,26 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Active" xml:space="preserve">
-    <value>Actif</value>
-  </data>
-  <data name="ActiveStatus" xml:space="preserve">
-    <value>Statut actif</value>
-  </data>
-  <data name="Branch" xml:space="preserve">
-    <value>Agence</value>
-  </data>
-  <data name="BranchSpecific" xml:space="preserve">
-    <value>Spécifique à l'agence</value>
-  </data>
-  <data name="Centralised" xml:space="preserve">
-    <value>Centralisé</value>
-  </data>
   <data name="CheckToCentralise" xml:space="preserve">
     <value>Cochez pour centraliser</value>
-  </data>
-  <data name="Configuration" xml:space="preserve">
-    <value>Configuration</value>
   </data>
   <data name="ConfiguredRecurringHolidayData" xml:space="preserve">
     <value>Données de vacances récurrentes configurées</value>
@@ -144,14 +126,8 @@
   <data name="ConfigureRecurringHolidays" xml:space="preserve">
     <value>Configurer les vacances récurrentes</value>
   </data>
-  <data name="Day" xml:space="preserve">
-    <value>Jour</value>
-  </data>
   <data name="DayOfMonth" xml:space="preserve">
     <value>Jour du mois</value>
-  </data>
-  <data name="Description" xml:space="preserve">
-    <value>Description</value>
   </data>
   <data name="EditDeleteRestricted" xml:space="preserve">
     <value>Modification/suppression restreinte</value>
@@ -171,15 +147,6 @@
   <data name="HolidayType" xml:space="preserve">
     <value>Type de vacances</value>
   </data>
-  <data name="Inactive" xml:space="preserve">
-    <value>Inactif</value>
-  </data>
-  <data name="Month" xml:space="preserve">
-    <value>Mois</value>
-  </data>
-  <data name="Name" xml:space="preserve">
-    <value>Nom</value>
-  </data>
   <data name="NoRecurringHolidayIsConfiguredYet" xml:space="preserve">
     <value>Aucune vacance récurrente n'est configurée pour le moment</value>
   </data>
@@ -192,9 +159,6 @@
   <data name="RecurringSetRecurringHolidays" xml:space="preserve">
     <value>Définir les vacances récurrentes</value>
   </data>
-  <data name="SelectBranch" xml:space="preserve">
-    <value>Sélectionner une agence</value>
-  </data>
   <data name="SelectHolidayType" xml:space="preserve">
     <value>Sélectionner le type de vacances</value>
   </data>
@@ -203,8 +167,5 @@
   </data>
   <data name="SelectRecurringDay" xml:space="preserve">
     <value>Sélectionner le jour récurrent</value>
-  </data>
-  <data name="Status" xml:space="preserve">
-    <value>Statut</value>
   </data>
 </root>

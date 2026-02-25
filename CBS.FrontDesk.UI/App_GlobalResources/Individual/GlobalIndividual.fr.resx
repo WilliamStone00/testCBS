@@ -117,20 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AccountBalance" xml:space="preserve">
-    <value>Solde du compte</value>
-  </data>
   <data name="accountIsActive" xml:space="preserve">
     <value>le compte est actif</value>
   </data>
   <data name="accountIsDeactivated" xml:space="preserve">
     <value>le compte est désactivé</value>
-  </data>
-  <data name="AccountName" xml:space="preserve">
-    <value>Nom du compte</value>
-  </data>
-  <data name="AccountNumber" xml:space="preserve">
-    <value>Numéro de compte</value>
   </data>
   <data name="AccountsOverview" xml:space="preserve">
     <value>Vue d'ensemble des comptes</value>
@@ -138,17 +129,11 @@
   <data name="AccountStatus" xml:space="preserve">
     <value>Statut du compte</value>
   </data>
-  <data name="AddAccount" xml:space="preserve">
-    <value>Ajouter un compte</value>
-  </data>
   <data name="AddNextOfKings" xml:space="preserve">
     <value>Ajouter le prochain roi</value>
   </data>
   <data name="AddOrdinaryAccountTo" xml:space="preserve">
     <value>Ajouter un compte ordinaire à</value>
-  </data>
-  <data name="Address" xml:space="preserve">
-    <value>Adresse</value>
   </data>
   <data name="AddSignatory" xml:space="preserve">
     <value>Ajouter un signataire</value>
@@ -156,20 +141,11 @@
   <data name="AffiliateMemberSalary" xml:space="preserve">
     <value>Salaire du membre affilié</value>
   </data>
-  <data name="All" xml:space="preserve">
-    <value>Tous</value>
-  </data>
   <data name="AnalyzeMemberBreakdownAcrossKeyAttributes" xml:space="preserve">
     <value>Analyser la répartition des membres selon les attributs clés</value>
   </data>
-  <data name="ApplyFilter" xml:space="preserve">
-    <value>Appliquer le filtre</value>
-  </data>
   <data name="ApprovalLegalStatus" xml:space="preserve">
     <value>Statut d'approbation et légal</value>
-  </data>
-  <data name="Approved" xml:space="preserve">
-    <value>Approuvé</value>
   </data>
   <data name="AwaitMembershipApproval" xml:space="preserve">
     <value>Attend l'approbation d'adhésion</value>
@@ -180,17 +156,11 @@
   <data name="Awaits_Validation" xml:space="preserve">
     <value>Attend la validation</value>
   </data>
-  <data name="Balance" xml:space="preserve">
-    <value>Solde</value>
-  </data>
   <data name="BankRelationship" xml:space="preserve">
     <value>Relation avec la banque</value>
   </data>
   <data name="Both" xml:space="preserve">
     <value>Les deux</value>
-  </data>
-  <data name="Branch" xml:space="preserve">
-    <value>Agence</value>
   </data>
   <data name="BranchHeadOffice" xml:space="preserve">
     <value>Agence centrale</value>
@@ -225,12 +195,6 @@
   <data name="CNI" xml:space="preserve">
     <value>CNI</value>
   </data>
-  <data name="Country" xml:space="preserve">
-    <value>Pays</value>
-  </data>
-  <data name="CreatedFrom" xml:space="preserve">
-    <value>Créé à partir de</value>
-  </data>
   <data name="DailyCollection" xml:space="preserve">
     <value>Collecte quotidienne</value>
   </data>
@@ -243,23 +207,11 @@
   <data name="DataCommit" xml:space="preserve">
     <value>Engagement de données</value>
   </data>
-  <data name="DateFrom" xml:space="preserve">
-    <value>Date de début</value>
-  </data>
-  <data name="DateIssued" xml:space="preserve">
-    <value>Date d'émission</value>
-  </data>
   <data name="DateQuery" xml:space="preserve">
     <value>Requête de date</value>
   </data>
-  <data name="DateTo" xml:space="preserve">
-    <value>Date de fin</value>
-  </data>
   <data name="DeactivateAccount" xml:space="preserve">
     <value>Désactiver le compte</value>
-  </data>
-  <data name="Division" xml:space="preserve">
-    <value>Division</value>
   </data>
   <data name="Divorced" xml:space="preserve">
     <value>Divorcé</value>
@@ -276,9 +228,6 @@
   <data name="EconomicActivity" xml:space="preserve">
     <value>Activité économique</value>
   </data>
-  <data name="Email" xml:space="preserve">
-    <value>Courriel</value>
-  </data>
   <data name="EmployeerAddress" xml:space="preserve">
     <value>Adresse de l'employeur</value>
   </data>
@@ -290,9 +239,6 @@
   </data>
   <data name="EntranceFee" xml:space="preserve">
     <value>Frais d'entrée</value>
-  </data>
-  <data name="Export" xml:space="preserve">
-    <value>Exporter</value>
   </data>
   <data name="ExportSearchResultsToExcelForReportingOrRecordkeeping" xml:space="preserve">
     <value>Exporter les résultats de la recherche vers Excel pour le reporting ou l'enregistrement</value>
@@ -321,14 +267,8 @@
   <data name="FilterApprovedMembersByLegalFormOrType" xml:space="preserve">
     <value>Filtrer les membres approuvés par forme juridique ou type</value>
   </data>
-  <data name="FilterByBranch" xml:space="preserve">
-    <value>Filtrer par agence</value>
-  </data>
   <data name="FilterByCreationDateOrBirthDateToTargetSpecificDemographics" xml:space="preserve">
     <value>Filtrer par date de création ou date de naissance pour cibler des données démographiques spécifiques</value>
-  </data>
-  <data name="FirstName" xml:space="preserve">
-    <value>Prénom</value>
   </data>
   <data name="FullMember" xml:space="preserve">
     <value>Membre à part entière</value>
@@ -393,9 +333,6 @@
   <data name="Male" xml:space="preserve">
     <value>Masculin</value>
   </data>
-  <data name="MaritalStatus" xml:space="preserve">
-    <value>État civil</value>
-  </data>
   <data name="Married" xml:space="preserve">
     <value>Marié</value>
   </data>
@@ -410,9 +347,6 @@
   </data>
   <data name="MemberFilters" xml:space="preserve">
     <value>Filtres de membre</value>
-  </data>
-  <data name="MemberName" xml:space="preserve">
-    <value>Nom du membre</value>
   </data>
   <data name="MemberOverview" xml:space="preserve">
     <value>Vue d'ensemble des membres</value>
@@ -435,9 +369,6 @@
   <data name="MEMBERSOVERVIEW" xml:space="preserve">
     <value>VUE D'ENSEMBLE DES MEMBRES</value>
   </data>
-  <data name="MembersProfile" xml:space="preserve">
-    <value>Profil du membre</value>
-  </data>
   <data name="MembersReferenceNumber" xml:space="preserve">
     <value>Numéro de référence des membres</value>
   </data>
@@ -452,9 +383,6 @@
   </data>
   <data name="MobileMoneyOrange" xml:space="preserve">
     <value>Orange Money</value>
-  </data>
-  <data name="MoralPerson" xml:space="preserve">
-    <value>Personne morale</value>
   </data>
   <data name="MothersAddress" xml:space="preserve">
     <value>Adresse de la mère</value>
@@ -473,9 +401,6 @@
   </data>
   <data name="MTNMoneyCollectiveAccountForNoneRegularizedMembers" xml:space="preserve">
     <value>Compte collectif MTN Mobile Money pour les membres non régularisés</value>
-  </data>
-  <data name="Name" xml:space="preserve">
-    <value>Nom</value>
   </data>
   <data name="NationalIDCard" xml:space="preserve">
     <value>Carte d'identité nationale</value>
@@ -519,23 +444,8 @@
   <data name="PayTheRequiredMembershipDues" xml:space="preserve">
     <value>Payer les cotisations d'adhésion requises</value>
   </data>
-  <data name="Pending" xml:space="preserve">
-    <value>En attente</value>
-  </data>
   <data name="PersonnalIdentificationNumber" xml:space="preserve">
     <value>Numéro d'identification personnelle</value>
-  </data>
-  <data name="PhoneNumber" xml:space="preserve">
-    <value>Numéro de téléphone</value>
-  </data>
-  <data name="PhysicalPerson" xml:space="preserve">
-    <value>Personne physique</value>
-  </data>
-  <data name="PlaceOfBirth" xml:space="preserve">
-    <value>Lieu de naissance</value>
-  </data>
-  <data name="PlaceOfIssued" xml:space="preserve">
-    <value>Lieu d'émission</value>
   </data>
   <data name="PleaseAddNewAccountsToStartManagingFinancialTransactions" xml:space="preserve">
     <value>Veuillez ajouter de nouveaux comptes pour commencer à gérer les transactions financières</value>
@@ -548,9 +458,6 @@
   </data>
   <data name="PreRegisteredMembers" xml:space="preserve">
     <value>Membres pré-enregistrés</value>
-  </data>
-  <data name="Profile" xml:space="preserve">
-    <value>Profil</value>
   </data>
   <data name="QueryParameter" xml:space="preserve">
     <value>Paramètre de requête</value>
@@ -566,9 +473,6 @@
   </data>
   <data name="ReactivateAccount" xml:space="preserve">
     <value>Réactiver le compte</value>
-  </data>
-  <data name="Region" xml:space="preserve">
-    <value>Région</value>
   </data>
   <data name="RegistrationDates" xml:space="preserve">
     <value>Dates d'enregistrement</value>
@@ -587,9 +491,6 @@
   </data>
   <data name="Sector" xml:space="preserve">
     <value>Secteur</value>
-  </data>
-  <data name="SelectBranch" xml:space="preserve">
-    <value>Sélectionner une agence</value>
   </data>
   <data name="SelectBranchHeadOffice" xml:space="preserve">
     <value>Sélectionner l'agence centrale</value>
@@ -629,9 +530,6 @@
   </data>
   <data name="SelectProduct" xml:space="preserve">
     <value>Sélectionner un produit</value>
-  </data>
-  <data name="SelectRegion" xml:space="preserve">
-    <value>Sélectionner une région</value>
   </data>
   <data name="SelectRelationshipBetween" xml:space="preserve">
     <value>Sélectionner la relation entre</value>
@@ -684,12 +582,6 @@
   <data name="SpouseOccupation" xml:space="preserve">
     <value>Profession du conjoint</value>
   </data>
-  <data name="SubDivision" xml:space="preserve">
-    <value>Sous-division</value>
-  </data>
-  <data name="Telephone" xml:space="preserve">
-    <value>Téléphone</value>
-  </data>
   <data name="TemporalSalaryAccountForMembersAssociatedToOtherAffiliates" xml:space="preserve">
     <value>Compte de salaire temporaire pour les membres associés à d'autres affiliés</value>
   </data>
@@ -707,9 +599,6 @@
   </data>
   <data name="TotalAccountBalanceAsOfToday" xml:space="preserve">
     <value>Solde total du compte à ce jour</value>
-  </data>
-  <data name="Town" xml:space="preserve">
-    <value>Ville</value>
   </data>
   <data name="UncheckTheBoxAndClickTheDeactivate" xml:space="preserve">
     <value>Décochez la case et cliquez sur le bouton "Désactiver" pour désactiver le compte</value>
@@ -741,9 +630,6 @@
   <data name="WorkStatus" xml:space="preserve">
     <value>Statut de travail</value>
   </data>
-  <data name="DateOfBirth" xml:space="preserve">
-    <value>Date de naissance</value>
-  </data>
   <data name="DateOfBirthFrom" xml:space="preserve">
     <value>Date de naissance (De)</value>
   </data>
@@ -753,20 +639,8 @@
   <data name="AgeCategory" xml:space="preserve">
     <value>Catégorie d'âge</value>
   </data>
-  <data name="CustomerType" xml:space="preserve">
-    <value>Type de client</value>
-  </data>
   <data name="AgeCategoryStatus" xml:space="preserve">
     <value>Statut de la catégorie d'âge</value>
-  </data>
-  <data name="Rejected" xml:space="preserve">
-    <value>Rejeté</value>
-  </data>
-  <data name="CustomerID" xml:space="preserve">
-    <value>ID client</value>
-  </data>
-  <data name="CreatedTo" xml:space="preserve">
-    <value>Créé à</value>
   </data>
   <data name="MembersReporting" xml:space="preserve">
     <value>Rapports des membres</value>
@@ -801,17 +675,8 @@
   <data name="SelectCustomerCategory" xml:space="preserve">
     <value>Sélectionner une catégorie de client</value>
   </data>
-  <data name="PlaceOfIssue" xml:space="preserve">
-    <value>Lieu d'émission</value>
-  </data>
-  <data name="ProfileDetails" xml:space="preserve">
-    <value>Détails du profil</value>
-  </data>
   <data name="CheckMeIAmAdailySavingMember" xml:space="preserve">
     <value>Cochez-moi. Je suis un membre d'épargne quotidienne</value>
-  </data>
-  <data name="Account" xml:space="preserve">
-    <value>Compte</value>
   </data>
   <data name="FilledTabs" xml:space="preserve">
     <value>Onglets remplis</value>
@@ -831,26 +696,11 @@
   <data name="MemberCode" xml:space="preserve">
     <value>Code du membre : 4 derniers chiffres</value>
   </data>
-  <data name="BankCode" xml:space="preserve">
-    <value>Code de la banque</value>
-  </data>
-  <data name="BranchCode" xml:space="preserve">
-    <value>Code de l'agence</value>
-  </data>
   <data name="MEMBER_STATUS" xml:space="preserve">
     <value>STATUT DU MEMBRE</value>
   </data>
-  <data name="Status" xml:space="preserve">
-    <value>Statut</value>
-  </data>
   <data name="RegistrationDate" xml:space="preserve">
     <value>Date d'enregistrement</value>
-  </data>
-  <data name="Photo" xml:space="preserve">
-    <value>Photo</value>
-  </data>
-  <data name="Signature" xml:space="preserve">
-    <value>Signature</value>
   </data>
   <data name="HELPTIPS" xml:space="preserve">
     <value>CONSEILS</value>
@@ -893,9 +743,6 @@
   </data>
   <data name="AccountDetails" xml:space="preserve">
     <value>Détails du compte</value>
-  </data>
-  <data name="AdditionalNotes" xml:space="preserve">
-    <value>Notes supplémentaires</value>
   </data>
   <data name="IndividualAccountCreation" xml:space="preserve">
     <value>Création de compte individuel</value>
@@ -948,9 +795,6 @@
   <data name="EnsureSalaryDetailsAreAccurateAndAlignWithTheMembersProfile" xml:space="preserve">
     <value>Assurez-vous que les détails du salaire sont exacts et correspondent au profil du membre</value>
   </data>
-  <data name="MemberReference" xml:space="preserve">
-    <value>Référence du membre</value>
-  </data>
   <data name="TheSystemWill" xml:space="preserve">
     <value>Le système générera automatiquement</value>
   </data>
@@ -996,9 +840,6 @@
   <data name="toCreateTheAccountOnceAllFieldsAreCompleted" xml:space="preserve">
     <value>pour créer le compte une fois que tous les champs sont complétés</value>
   </data>
-  <data name="Click" xml:space="preserve">
-    <value>Cliquez</value>
-  </data>
   <data name="IfTheFormCannotBeSubmittedReviewTheHighlightedFields" xml:space="preserve">
     <value>Si le formulaire ne peut pas être soumis, examinez les champs mis en évidence pour les informations manquantes ou incorrectes</value>
   </data>
@@ -1034,9 +875,6 @@
   </data>
   <data name="EmploymentStatus" xml:space="preserve">
     <value>Statut d'emploi</value>
-  </data>
-  <data name="BankInformation" xml:space="preserve">
-    <value>Informations bancaires</value>
   </data>
   <data name="LegalStatus" xml:space="preserve">
     <value>Statut juridique</value>

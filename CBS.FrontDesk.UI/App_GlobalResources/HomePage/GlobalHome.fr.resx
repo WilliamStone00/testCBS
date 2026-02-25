@@ -117,8 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Credit" xml:space="preserve">
-    <value>CREDIT</value>
+  <data name="About" xml:space="preserve">
+    <value>À propos</value>
+  </data>
+  <data name="AboutInformation" xml:space="preserve">
+    <value>Utilisez cette zone pour fournir des informations supplémentaires.</value>
+  </data>
+  <data name="ContactUs" xml:space="preserve">
+    <value>Contactez Nous</value>
   </data>
   <data name="Home" xml:space="preserve">
     <value>Accueil</value>
@@ -134,9 +140,6 @@
   </data>
   <data name="SatisfactionText" xml:space="preserve">
     <value>Flux SARL ! : Autonomiser les entreprises. Améliorer les vies.</value>
-  </data>
-  <data name="TrustSoft" xml:space="preserve">
-    <value>TRUSTSOFT</value>
   </data>
   <data name="WelcomeTitle" xml:space="preserve">
     <value>BIENVENUE À</value>

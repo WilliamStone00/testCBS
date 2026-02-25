@@ -1,17 +1,17 @@
 ﻿
 @using Resources
 <div class="card p-3 shadow mb-4">
-    <h5 class="text-primary mb-3"><i class="mdi mdi-table"></i>Fee Config</h5>
+    <h5 class="text-primary mb-3"><i class="mdi mdi-table"></i>@GlobalFeeConfig.Fee_Config</h5>
     <div class="table-responsive">
         <table id="myDataTable" class="table table-bordered table-striped">
             <thead class="table-light">
                 <tr>
-                    <th>@ChequeManagements.FeeType</th>
-                    <th>@ChequeManagements.Branch</th>
-                    <th>@ChequeManagements.Type</th>
-                    <th>@ChequeManagements.IsCentralized</th>
-                    <th>@ChequeManagements.Description</th>
-                    <th>@ChequeManagements.Actions</th>
+                    <th>@GlobalShared.Fee_Type</th>
+                    <th>@GlobalShared.Branch</th>
+                    <th>@GlobalShared.Type</th>
+                    <th>@GlobalFeeConfig.IsCentralized</th>
+                    <th>@GlobalShared.Description</th>
+                    <th>@GlobalShared.Actions</th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -31,7 +31,7 @@
                 <!-- Details content will be loaded here -->
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@ChequeManagements.Close</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@GlobalShared.Close</button>
             </div>
         </div>
     </div>

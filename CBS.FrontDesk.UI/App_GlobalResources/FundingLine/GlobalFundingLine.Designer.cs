@@ -70,24 +70,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Amount.
-        /// </summary>
-        internal static string Amount {
-            get {
-                return ResourceManager.GetString("Amount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Begin date.
-        /// </summary>
-        internal static string BeginDate {
-            get {
-                return ResourceManager.GetString("BeginDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Credit-line name.
         /// </summary>
         internal static string CreditLineName {
@@ -97,65 +79,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Currency.
-        /// </summary>
-        internal static string Currency {
-            get {
-                return ResourceManager.GetString("Currency", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Date of birth.
-        /// </summary>
-        internal static string DateOfBirth {
-            get {
-                return ResourceManager.GetString("DateOfBirth", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Description.
-        /// </summary>
-        internal static string Description {
-            get {
-                return ResourceManager.GetString("Description", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to End date.
-        /// </summary>
-        internal static string EndDate {
-            get {
-                return ResourceManager.GetString("EndDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Funding line.
         /// </summary>
         internal static string FundingLine {
             get {
                 return ResourceManager.GetString("FundingLine", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Name.
-        /// </summary>
-        internal static string Name {
-            get {
-                return ResourceManager.GetString("Name", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Range.
-        /// </summary>
-        internal static string Range {
-            get {
-                return ResourceManager.GetString("Range", resourceCulture);
             }
         }
         

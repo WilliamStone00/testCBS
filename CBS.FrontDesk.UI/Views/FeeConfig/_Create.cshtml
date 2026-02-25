@@ -17,14 +17,14 @@
     <div class="card shadow p-3">
         <h5 class="text-primary mb-3">
             <i class="mdi mdi-pencil-box-outline me-2"></i>
-            Manage Configuration for:
+            @GlobalFeeConfig.ManageConfigurationfor:
             <span class="text-dark">@Model.feeType</span>
         </h5>
 
         <div class="form-floating mb-3 bg-light">
             @Html.TextBoxFor(m => m.description, new { @class = "form-control", placeholder = "Description" })
             @Html.ValidationMessageFor(m => m.description, "", new { @class = "text-danger" })
-            <label>@ChequeManagements.Description</label>
+            <label>@GlobalShared.Description</label>
         </div>
 
         <!-- STATIC CONFIG -->
@@ -32,14 +32,14 @@
             <div class="mb-3">
                 <h5 class="text-primary mb-3">
                     <i class="mdi mdi-pencil-box-outline me-2"></i>
-                    @ChequeManagements.StaticConfig
+                    @GlobalFeeConfig.StaticConfig
                 </h5>
 
                 <div class="form-check form-switch mb-2">
                     @Html.CheckBoxFor(m => m.acceptStaticAmount,
                         new { id = "AcceptStatus", @class = "form-check-input" })
                     <label class="form-check-label fw-bold" for="AcceptStatus">
-                        @ChequeManagements.EnableStatusFee
+                        @GlobalFeeConfig.EnableStatusFee
                     </label>
                 </div>
 
@@ -47,7 +47,7 @@
                     @Html.TextBoxFor(m => m.staticAmount,
                         new { @class = "form-control", type = "number", step = "1", placeholder = "Static" })
                     @Html.ValidationMessageFor(m => m.staticAmount, "", new { @class = "text-danger" })
-                    <label>@ChequeManagements.Static</label>
+                    <label>@GlobalFeeConfig.Static</label>
                 </div>
             </div>
         </div>
@@ -59,14 +59,14 @@
             <div class="mb-3">
                 <h5 class="text-primary mb-3">
                     <i class="mdi mdi-pencil-box-outline me-2"></i>
-                    @ChequeManagements.PercentageConfig
+                    @GlobalFeeConfig.PercentageConfig
                 </h5>
 
                 <div class="form-check form-switch mb-2">
                     @Html.CheckBoxFor(m => m.acceptPercentage,
                         new { id = "AcceptPercentage", @class = "form-check-input" })
                     <label class="form-check-label fw-bold" for="AcceptPercentage">
-                        @ChequeManagements.EnablePercentageFee
+                        @GlobalFeeConfig.EnablePercentageFee
                     </label>
                 </div>
 
@@ -74,7 +74,7 @@
                     @Html.TextBoxFor(m => m.percentageApplied,
                         new { @class = "form-control", type = "number", step = "0.01", placeholder = "Percentage (%)" })
                     @Html.ValidationMessageFor(m => m.percentageApplied, "", new { @class = "text-danger" })
-                    <label>@ChequeManagements.Percentage (%)</label>
+                    <label>@GlobalShared.Percentage (%)</label>
                 </div>
             </div>
         </div>
@@ -86,24 +86,24 @@
             <div class="mb-3">
                 <h5 class="text-primary mb-3">
                     <i class="mdi mdi-pencil-box-outline me-2"></i>
-                    @ChequeManagements.RangeConfig
+                    @GlobalFeeConfig.RangeConfig
                 </h5>
 
                 <div class="form-check form-switch mb-2">
                     @Html.CheckBoxFor(m => m.acceptRange,
                         new { id = "AcceptRange", @class = "form-check-input" })
                     <label class="form-check-label fw-bold" for="AcceptRange">
-                        @ChequeManagements.EnableRangeBasedFee
+                        @GlobalFeeConfig.EnableRangeBasedFee
                     </label>
                 </div>
 
                 <div class="d-flex justify-content-between align-items-center mb-2">
-                    <h6>@ChequeManagements.FeeRanges</h6>
+                    <h6>@GlobalFeeConfig.FeeRanges</h6>
                     <button type="button"
                             id="addRangeRowBtn"
                             class="btn btn-sm btn-outline-text-primary">
                         <i class="mdi mdi-plus"></i>
-                        @ChequeManagements.AddRow
+                        @GlobalFeeConfig.AddRow
                     </button>
                 </div>
 
@@ -111,11 +111,11 @@
                     <table class="table table-bordered">
                         <thead class="table-light">
                             <tr>
-                                <th style="width: 25%;">@ChequeManagements.Name</th>
-                                <th style="width: 20%;">@ChequeManagements.FromAmount</th>
-                                <th style="width: 20%;">@ChequeManagements.ToAmount</th>
-                                <th style="width: 20%;">@ChequeManagements.Fee</th>
-                                <th style="width: 15%;">@ChequeManagements.Actions</th>
+                                <th style="width: 25%;">@GlobalShared.Name</th>
+                                <th style="width: 20%;">@GlobalFeeConfig.FromAmount</th>
+                                <th style="width: 20%;">@GlobalFeeConfig.ToAmount</th>
+                                <th style="width: 20%;">@GlobalShared.Fee</th>
+                                <th style="width: 15%;">@GlobalShared.Actions</th>
                             </tr>
                         </thead>
                         <tbody id="range-table-body">
@@ -144,7 +144,7 @@
                     <button id="saveConfigBtn" type="submit"
                             class="btn btn-primary shadow-sm px-4">
                         <i class="fas fa-save me-1"></i>
-                        @ChequeManagements.Save
+                        @GlobalShared.Save
                     </button>
 
                     <button type="reset"
@@ -156,7 +156,7 @@
                 {
                     <button  type="submit"
                             class="btn btn-primary me-2">
-                        @GlobalBank.Update
+                        @GlobalShared.Update
                     </button>
 
                     <button type="reset"

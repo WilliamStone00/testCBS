@@ -13,16 +13,16 @@
             {
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "id", "name"), "---"+ @GlobalDailyTellerAssignation.SelectBranch+ "---", new { @class = "form-control select2", @disabled = "disabled" })
+                        @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "id", "name"), "---"+ GlobalShared.SelectBranch+ "---", new { @class = "form-control select2", @disabled = "disabled" })
                         @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
-                        <label>@GlobalDailyTellerAssignation.Branch</label>
+                        <label>@GlobalShared.Branch</label>
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
                         @Html.DropDownListFor(m => m.TellerId, new SelectList(ViewBag.Tellers, "Value", "Text"), "---"+ @GlobalDailyTellerAssignation.SelectTeller+ "---", new { @class = "form-control select2", @search = "true", @disabled = "disabled" })
                         @Html.ValidationMessageFor(m => m.TellerId, "", new { @class = "text-danger" })
-                        <label>@GlobalDailyTellerAssignation.Teller</label>
+                        <label>@GlobalShared.Teller</label>
                     </div>
                 </div>
             }
@@ -30,25 +30,25 @@
             {
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "id", "name"), "---"+ @GlobalDailyTellerAssignation.SelectBranch+ "---", new { @class = "form-control select2", @search = "true" })
+                        @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "id", "name"), "---"+ GlobalShared.SelectBranch+ "---", new { @class = "form-control select2", @search = "true" })
                         @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
-                        <label>@GlobalDailyTellerAssignation.Branch</label>
+                        <label>@GlobalShared.Branch</label>
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
                         @Html.DropDownListFor(m => m.TellerId, new SelectList(ViewBag.Tellers, "Value", "Text"), "---"+ @GlobalDailyTellerAssignation.SelectTeller +"---", new { @class = "form-control select2", @search = "true" })
                         @Html.ValidationMessageFor(m => m.TellerId, "", new { @class = "text-danger" })
-                        <label>@GlobalDailyTellerAssignation.Teller</label>
+                        <label>@GlobalShared.Teller</label>
                     </div>
                 </div>
 
             }
             <div class="col-md-12">
                 <div class="form-floating form-floating-outline">
-                    @Html.DropDownListFor(m => m.UserId, new SelectList(ViewBag.Users, "Value", "Text"), "---" + @GlobalDailyTellerAssignation.SelectUser +"---", new { @class = "form-control select2", @search = "true" })
+                    @Html.DropDownListFor(m => m.UserId, new SelectList(ViewBag.Users, "Value", "Text"), "---" + GlobalShared.Select_User + "---", new { @class = "form-control select2", @search = "true" })
                     @Html.ValidationMessageFor(m => m.UserId, "", new { @class = "text-danger" })
-                    <label>@GlobalDailyTellerAssignation.User</label>
+                    <label>@GlobalShared.User</label>
                 </div>
             </div>
             <div class="col-12">
