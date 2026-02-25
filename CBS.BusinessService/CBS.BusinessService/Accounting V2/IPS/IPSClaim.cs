@@ -235,7 +235,6 @@ namespace CBS.BusinessService.Accounting_V2.IPS
         {
             try
             {
-
                 string url = string.Format(APICallHelper.PostIPSClaim, model.ClaimId);
                 var response = await _apiHelper.PostAsync<ServiceResponse<object>>(url, model);
 
