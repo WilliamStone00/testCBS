@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Ready_for_printing_delivery" xml:space="preserve">
+    <value>Prêt pour impression / remise</value>
+  </data>
+  <data name="Audit_Information" xml:space="preserve">
+    <value>Informations d’audit</value>
+  </data>
+  <data name="Bank_and_Branch_Details" xml:space="preserve">
+    <value>Détails de la banque et de l’agence</value>
+  </data>
+  <data name="Category_Information" xml:space="preserve">
+    <value>Informations de catégorie</value>
+  </data>
+  <data name="CheckBook_blocked_for_security_reasons" xml:space="preserve">
+    <value>Chéquier bloqué pour des raisons de sécurité</value>
+  </data>
+  <data name="CheckBook_handed_over_to_customer" xml:space="preserve">
+    <value>Chéquier remis au client</value>
+  </data>
+  <data name="CheckBook_Overview" xml:space="preserve">
+    <value>Aperçu du chéquier</value>
+  </data>
+  <data name="CheckBook_reported_lost" xml:space="preserve">
+    <value>Chéquier déclaré perdu</value>
+  </data>
+  <data name="CheckBook_Request_Creation" xml:space="preserve">
+    <value>Création de la demande de chéquier</value>
+  </data>
+  <data name="CheckBooks" xml:space="preserve">
+    <value>Chéquiers</value>
+  </data>
+  <data name="Cheque_Book_Details" xml:space="preserve">
+    <value>Détails du chéquier</value>
+  </data>
+  <data name="Cheque_Book_Details_Management" xml:space="preserve">
+    <value>Gestion des détails du chéquier</value>
+  </data>
+  <data name="Cheque_Book_Filters" xml:space="preserve">
+    <value>Filtres des chéquiers</value>
+  </data>
+  <data name="Cheque_Book_ID" xml:space="preserve">
+    <value>Identifiant du chéquier</value>
+  </data>
+  <data name="Cheque_Leaf_Details" xml:space="preserve">
+    <value>Détails des feuilles de chèque</value>
+  </data>
+  <data name="Cheque_Leaves" xml:space="preserve">
+    <value>Feuilles de chèque</value>
+  </data>
+  <data name="Click_Print_button_to_generate_a_printable_report" xml:space="preserve">
+    <value>Cliquez sur le bouton &lt;strong&gt;Imprimer&lt;/strong&gt; pour générer un rapport imprimable</value>
+  </data>
+  <data name="Configuration_Flags" xml:space="preserve">
+    <value>Configuration et indicateurs</value>
+  </data>
+  <data name="Configure_notification_preferences_for_customers_and_enable_automatic_renewal_for_recurring_CheckBook_requests" xml:space="preserve">
+    <value>Configurer les préférences de notification des clients et activer le renouvellement automatique pour les demandes récurrentes de chéquier.</value>
+  </data>
+  <data name="Current_Serial" xml:space="preserve">
+    <value>Numéro de série actuel</value>
+  </data>
+  <data name="Customer_Search_Selection" xml:space="preserve">
+    <value>Recherche et sélection du client</value>
+  </data>
+  <data name="Detailed_view_and_management_of_cheque_book_information" xml:space="preserve">
+    <value>Vue détaillée et gestion des informations du chéquier</value>
+  </data>
+  <data name="Export_leaves_data_to_CSV_for_external_analysis" xml:space="preserve">
+    <value>Exporter les données des feuilles en CSV pour une analyse externe</value>
+  </data>
+  <data name="Leaves" xml:space="preserve">
+    <value>Feuilles</value>
+  </data>
+  <data name="Loading_cheque_book_details" xml:space="preserve">
+    <value>Chargement des détails du chéquier</value>
+  </data>
+  <data name="Manage_all_checkbooks_and_requests_here" xml:space="preserve">
+    <value>Gérer tous les chéquiers et les demandes ici.</value>
+  </data>
+  <data name="New_request_awaiting_review" xml:space="preserve">
+    <value>Nouvelle demande en attente de validation</value>
+  </data>
+  <data name="No_cheque_book_data_available_Please_check_the_cheque_book_ID" xml:space="preserve">
+    <value>Aucune donnée de chéquier disponible. Veuillez vérifier l’identifiant du chéquier.</value>
+  </data>
+  <data name="Notify_on_Any_Transaction" xml:space="preserve">
+    <value>Notifier pour toute transaction</value>
+  </data>
+  <data name="Notify_on_Clearance" xml:space="preserve">
+    <value>Notifier lors de la compensation</value>
+  </data>
+  <data name="Notify_on_Payment" xml:space="preserve">
+    <value>Notifier lors du paiement</value>
+  </data>
+  <data name="Number_Of_Leaves" xml:space="preserve">
+    <value>Nombre de feuilles</value>
+  </data>
+  <data name="Once_a_customer_is_selected_fill_in_the_CheckBook_request_form_Choose_the_correct_category_number_of_leaves_and_account_for_fee_payment" xml:space="preserve">
+    <value>Une fois le client sélectionné, renseignez le formulaire de demande de chéquier. Choisissez la catégorie appropriée, le nombre de feuilles et le compte pour le paiement des frais.</value>
+  </data>
+  <data name="Related_Information" xml:space="preserve">
+    <value>Informations associées</value>
+  </data>
+  <data name="Replacement_Cheque_Book_ID" xml:space="preserve">
+    <value>Identifiant du chéquier de remplacement</value>
+  </data>
+  <data name="Request_declined" xml:space="preserve">
+    <value>Demande rejetée</value>
+  </data>
+  <data name="Search_by_serial_number_status" xml:space="preserve">
+    <value>Recherche par numéro de série, statut</value>
+  </data>
+  <data name="See_all_cheque_leaves_with_serial_numbers_and_current_status" xml:space="preserve">
+    <value>Afficher toutes les feuilles de chèque avec les numéros de série et le statut actuel</value>
+  </data>
+  <data name="Select_an_account_to_view_details" xml:space="preserve">
+    <value>Sélectionnez un compte pour voir les détails</value>
+  </data>
+  <data name="Serial_Range" xml:space="preserve">
+    <value>Plage de numéros de série</value>
+  </data>
+  <data name="Show_Status_Flags" xml:space="preserve">
+    <value>Afficher les indicateurs de statut</value>
+  </data>
+  <data name="Showing_0_to_0_of_0_entries" xml:space="preserve">
+    <value>Affichage de 0 à 0 sur 0 entrées</value>
+  </data>
+  <data name="Start_by_searching_for_a_customer_account_The_CheckBook_request_form_will_appear_automatically_after_a_successful_search" xml:space="preserve">
+    <value>Commencez par rechercher un compte client. Le formulaire de demande de chéquier s’affichera automatiquement après une recherche réussie.</value>
+  </data>
+  <data name="Total_Leaves" xml:space="preserve">
+    <value>Total des feuilles</value>
+  </data>
+  <data name="Under_additional_verification" xml:space="preserve">
+    <value>En cours de vérification complémentaire</value>
+  </data>
+  <data name="Understanding_CheckBook_Statuses" xml:space="preserve">
+    <value>Comprendre les statuts du chéquier</value>
+  </data>
+  <data name="Unique_identifier_for_this_cheque_book" xml:space="preserve">
+    <value>Identifiant unique de ce chéquier</value>
+  </data>
+  <data name="Use_the_search_box_to_filter_leaves_by_serial_number_or_status" xml:space="preserve">
+    <value>Utilisez la zone de recherche pour filtrer les feuilles par numéro de série ou par statut</value>
+  </data>
+  <data name="Use_the_search_box_to_find_customers_by_account_number_or_ID_The_system_will_automatically_display_the_CheckBook_request_form_with_customer_details" xml:space="preserve">
+    <value>Utilisez la zone de recherche pour trouver les clients par numéro de compte ou identifiant. Le système affichera automatiquement le formulaire de demande de chéquier avec les informations du client.</value>
+  </data>
+  <data name="View_all_CheckBook_requests_in_the_All_Requests_tab_Actions_like_Approve_Reject_Review_Mark_as_Delivered_Block_Unblock_or_Mark_as_Lost_are_available_depending_on_the_current_status" xml:space="preserve">
+    <value>Consultez toutes les demandes de chéquier dans l’onglet « Toutes les demandes ». Des actions telles que Approuver, Rejeter, Examiner, Marquer comme remis, Bloquer/Débloquer ou Marquer comme perdu sont disponibles selon le statut actuel.</value>
+  </data>
+  <data name="View_complete_details_leaves_status_and_manage_cheque_book_operations" xml:space="preserve">
+    <value>Afficher les détails complets, le statut des feuilles et gérer les opérations liées au chéquier</value>
+  </data>
+  <data name="View_customer_details_and_associated_account_information" xml:space="preserve">
+    <value>Afficher les informations du client et les comptes associés</value>
+  </data>
+</root>

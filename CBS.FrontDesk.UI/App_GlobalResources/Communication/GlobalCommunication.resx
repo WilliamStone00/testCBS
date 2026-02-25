@@ -163,7 +163,7 @@
     <value>Upload file, validate rows, preview computed messages, then send only once confirmed.</value>
   </data>
   <data name="Upload_preview_send_SMS_in_bulk" xml:space="preserve">
-    <value> Upload → preview → send SMS in bulk.</value>
+    <value>Upload → preview → send SMS in bulk.</value>
   </data>
   <data name="Use_Actions_Download_to_export_the_uploaded_Excel" xml:space="preserve">
     <value>Use Actions → Download to export the uploaded Excel.</value>

@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.GeneralStatisticReport.GeneralStatisticsDashboard
-
+@using Resources
 @{
     ViewBag.Title = "General Statistics Dashboard";
 }
@@ -14,13 +14,13 @@
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-chart-box-outline me-2"></i> General Statistics Dashboard
+                    <i class="mdi mdi-chart-box-outline me-2"></i> @GlobalGeneralStatisticReport.General_Statistics_Dashboard
                 </h1>
                 <p class="card-text">
-                    A smart dashboard for exploring membership trends, account balances, loan exposure, demographics, and compliance gaps across branches and periods.
+                    @GlobalGeneralStatisticReport.A_smart_dashboard_for_exploring_membership_trends_account_balances_loan_exposure_demographics_and_compliance_gaps_across_branches_and_periods
                 </p>
                 <p class="card-text text-black fw-bold">
-                    <i class="mdi mdi-lightbulb-on-outline me-1"></i> Explore insights via tabs: 📊 Overview, 💰 Loans, 📈 Accounts, 👥 Demographics, ⚠️ Compliance Gaps.
+                    <i class="mdi mdi-lightbulb-on-outline me-1"></i> @GlobalGeneralStatisticReport.Explore_insights_via_tabs_Overview_Loans_Accounts_Demographics_Compliance_Gaps
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -32,7 +32,7 @@
 <!-- Tips Section -->
 <div class="card mb-2">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-lightbulb-on-outline me-2"></i> Tips for Interpreting Dashboard Insights</span>
+        <span><i class="mdi mdi-lightbulb-on-outline me-2"></i> @GlobalGeneralStatisticReport.Tips_for_Interpreting_Dashboard_Insights</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -42,33 +42,33 @@
             <ul class="mb-0">
 
                 <li>
-                    <strong>📊 Overview:</strong>
-                    Provides a quick summary of total membership across genders and groups. This section helps you identify general participation trends, evaluate growth, and verify if the member base aligns with institutional targets.
+                    <strong>📊 @GlobalShared.Overview:</strong>
+                    @GlobalGeneralStatisticReport.Provides_a_quick_summary_of_total_membership_across_genders_and_groups_This_section_helps_you_identify_general_participation_trends_evaluate_growth_and_verify_if_the_member_base_aligns_with_institutional_targets
                 </li>
 
                 <li>
-                    <strong>📈 Account Insights:</strong>
-                    Displays account balances categorized by type (e.g., savings, deposits, shares) and ownership (individuals or groups). Use this view to assess deposit mobilization efforts, balance distributions, and concentration risks.
+                    <strong>📈 @GlobalGeneralStatisticReport.Account_Insights:</strong>
+                    @GlobalGeneralStatisticReport.Displays_account_balances_categorized_by_type_eg_savings_deposits_shares_and_ownership_individuals_or_groups_Use_this_view_to_assess_deposit_mobilization_efforts_balance_distributions_and_concentration_risks
                 </li>
 
                 <li>
-                    <strong>💰 Loan Insights:</strong>
-                    Breaks down outstanding and disbursed loans by status (active, closed), loan type, and product category. Enables you to track lending performance, monitor exposure, and detect unhealthy accumulation in certain categories.
+                    <strong>💰 @GlobalGeneralStatisticReport.Loan_Insights:</strong>
+                    @GlobalGeneralStatisticReport.Breaks_down_outstanding_and_disbursed_loans_by_status_active_closed_loan_type_and_product_category_Enables_you_to_track_lending_performance_monitor_exposure_and_detect_unhealthy_accumulation_in_certain_categories
                 </li>
 
                 <li>
-                    <strong>👥 Demographics:</strong>
-                    Analyzes member composition by gender and group form (individuals vs cooperatives). This is useful for compliance with gender or inclusion policies, as well as for assessing targeted outreach effectiveness.
+                    <strong>👥 @GlobalShared.Demographics:</strong>
+                    @GlobalGeneralStatisticReport.Analyzes_member_composition_by_gender_and_group_form_individuals_vs_cooperatives_This_is_useful_for_compliance_with_gender_or_inclusion_policies_as_well_as_for_assessing_targeted_outreach_effectiveness
                 </li>
 
                 <li>
-                    <strong>⚠️ Gaps in Compliance:</strong>
-                    Flags members who are fully registered and approved but lack any financial account (savings or loan). This helps in identifying onboarding or operational bottlenecks that may prevent full participation in the institution's services.
+                    <strong>⚠️ @GlobalGeneralStatisticReport.Gaps_in_Compliance:</strong>
+                    @GlobalGeneralStatisticReport.Flags_members_who_are_fully_registered_and_approved_but_lack_any_financial_account_savings_or_loan_This_helps_in_identifying_onboarding_or_operational_bottlenecks_that_may_prevent_full_participation_in_the_institution_s_services
                 </li>
 
                 <li>
-                    <strong>📌 Recommendations:</strong>
-                    Use filters above to narrow your analysis to a specific branch, time period, or product group. After analyzing a dashboard, you may export the data or use it to guide policy or product interventions.
+                    <strong>📌 @GlobalShared.Recommendations:</strong>
+                    @GlobalGeneralStatisticReport.Use_filters_above_to_narrow_your_analysis_to_a_specific_branch_time_period_or_product_group_After_analyzing_a_dashboard_you_may_export_the_data_or_use_it_to_guide_policy_or_product_interventions
                 </li>
 
             </ul>
@@ -82,9 +82,9 @@
 <!-- Collapsible Filter Section -->
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-filter-outline me-2"></i> Report Filters</span>
+        <span><i class="mdi mdi-filter-outline me-2"></i> @GlobalShared.Report_Filters</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFilter" aria-expanded="true" aria-controls="collapseFilter">
-            <i class="mdi mdi-tune"></i> Toggle Filter
+            <i class="mdi mdi-tune"></i> @GlobalShared.Toggle_Filter
         </button>
     </h6>
     <div id="collapseFilter" class="show">
@@ -114,9 +114,9 @@
 <div id="dashboardCardContainer" style="display: none;">
     <div class="card mb-3 border-0 shadow-sm">
         <h6 class="card-header d-flex justify-content-between align-items-center text-primary bg-light">
-            <span><i class="mdi mdi-view-dashboard-outline me-2"></i> Dashboard</span>
+            <span><i class="mdi mdi-view-dashboard-outline me-2"></i> @GlobalShared.Dashboard</span>
             <button class="btn btn-outline-primary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDashboard" aria-expanded="true" aria-controls="collapseDashboard">
-                <i class="mdi mdi-chevron-down"></i> Toggle Dashboard
+                <i class="mdi mdi-chevron-down"></i> @GlobalShared.Toggle_Dashboard
             </button>
         </h6>
 

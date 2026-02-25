@@ -117,26 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Active" xml:space="preserve">
-    <value>Active</value>
-  </data>
-  <data name="ActiveStatus" xml:space="preserve">
-    <value>Active status</value>
-  </data>
-  <data name="Branch" xml:space="preserve">
-    <value>Branch</value>
-  </data>
-  <data name="BranchSpecific" xml:space="preserve">
-    <value>Branch-specific</value>
-  </data>
-  <data name="Centralised" xml:space="preserve">
-    <value>Centralised</value>
-  </data>
   <data name="CheckToCentralise" xml:space="preserve">
     <value>Check to centralise</value>
-  </data>
-  <data name="Configuration" xml:space="preserve">
-    <value>Configuration</value>
   </data>
   <data name="ConfiguredRecurringHolidayData" xml:space="preserve">
     <value>Configured recurring holiday data</value>
@@ -144,14 +126,8 @@
   <data name="ConfigureRecurringHolidays" xml:space="preserve">
     <value>Configure recurring holidays</value>
   </data>
-  <data name="Day" xml:space="preserve">
-    <value>Day</value>
-  </data>
   <data name="DayOfMonth" xml:space="preserve">
     <value>Day of month</value>
-  </data>
-  <data name="Description" xml:space="preserve">
-    <value>Description</value>
   </data>
   <data name="EditDeleteRestricted" xml:space="preserve">
     <value>Edit/Delete Restricted</value>
@@ -171,15 +147,6 @@
   <data name="HolidayType" xml:space="preserve">
     <value>Holiday type</value>
   </data>
-  <data name="Inactive" xml:space="preserve">
-    <value>Inactive</value>
-  </data>
-  <data name="Month" xml:space="preserve">
-    <value>Month</value>
-  </data>
-  <data name="Name" xml:space="preserve">
-    <value>Name</value>
-  </data>
   <data name="NoRecurringHolidayIsConfiguredYet" xml:space="preserve">
     <value>No recurring holiday is configured yet</value>
   </data>
@@ -192,9 +159,6 @@
   <data name="RecurringSetRecurringHolidays" xml:space="preserve">
     <value>Recurring set recurring holidays</value>
   </data>
-  <data name="SelectBranch" xml:space="preserve">
-    <value>Select branch</value>
-  </data>
   <data name="SelectHolidayType" xml:space="preserve">
     <value>Select holiday type</value>
   </data>
@@ -203,8 +167,5 @@
   </data>
   <data name="SelectRecurringDay" xml:space="preserve">
     <value>Select recurring day</value>
-  </data>
-  <data name="Status" xml:space="preserve">
-    <value>Status</value>
   </data>
 </root>

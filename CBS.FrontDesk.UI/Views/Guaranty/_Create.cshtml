@@ -8,35 +8,35 @@
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.name, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.name, "", new { @class = "text-danger" })
-                    <label>@GlobalGuaranty.Name</label>
+                    <label>@GlobalShared.Name</label>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.type, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.type, "", new { @class = "text-danger" })
-                    <label>@GlobalGuaranty.Type</label>
+                    <label>@GlobalShared.Type</label>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.value, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.value, "", new { @class = "text-danger" })
-                    <label>@GlobalGuaranty.Value</label>
+                    <label>@GlobalShared.Value</label>
                 </div>
             </div>
             <div class="col-md-9">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.linkDoc, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.linkDoc, "", new { @class = "text-danger" })
-                    <label>@GlobalGuaranty.Link</label>
+                    <label>@GlobalShared.Link</label>
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="form-floating form-floating-outline">
                     @Html.TextAreaFor(m => m.description, new { @class = "form-control", @style = "height: 200px;" })
                     @Html.ValidationMessageFor(m => m.description, "", new { @class = "text-danger" })
-                    <label>@GlobalGuaranty.Description</label>
+                    <label>@GlobalShared.Description</label>
                 </div>
             </div>
 

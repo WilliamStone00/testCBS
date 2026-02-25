@@ -61,15 +61,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Accounant note.
-        /// </summary>
-        internal static string AccounantNote {
-            get {
-                return ResourceManager.GetString("AccounantNote", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Accountant note.
         /// </summary>
         internal static string AccountantNote {
@@ -88,15 +79,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Additional notes.
-        /// </summary>
-        internal static string AdditionalNotes {
-            get {
-                return ResourceManager.GetString("AdditionalNotes", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to after completing the process.
         /// </summary>
         internal static string AfterCompletingTheProcess {
@@ -106,74 +88,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Attribute.
-        /// </summary>
-        internal static string Attribute {
-            get {
-                return ResourceManager.GetString("Attribute", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Balance.
-        /// </summary>
-        internal static string Balance {
-            get {
-                return ResourceManager.GetString("Balance", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cash at hand.
-        /// </summary>
-        internal static string CashAtHand {
-            get {
-                return ResourceManager.GetString("CashAtHand", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cash at handt.
-        /// </summary>
-        internal static string CashAtHandt {
-            get {
-                return ResourceManager.GetString("CashAtHandt", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Charges.
-        /// </summary>
-        internal static string Charges {
-            get {
-                return ResourceManager.GetString("Charges", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Closed amount of previouse day.
         /// </summary>
         internal static string ClosedAmountOfPreviouseDay {
             get {
                 return ResourceManager.GetString("ClosedAmountOfPreviouseDay", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Closed date.
-        /// </summary>
-        internal static string ClosedDate {
-            get {
-                return ResourceManager.GetString("ClosedDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Closed status.
-        /// </summary>
-        internal static string ClosedStatus {
-            get {
-                return ResourceManager.GetString("ClosedStatus", resourceCulture);
             }
         }
         
@@ -322,15 +241,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Confirmation status.
-        /// </summary>
-        internal static string ConfirmationStatus {
-            get {
-                return ResourceManager.GetString("ConfirmationStatus", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Confirmation the operations of.
         /// </summary>
         internal static string ConfirmationTheOperationsOf {
@@ -354,69 +264,6 @@ namespace Resources {
         internal static string ConfirmTheTotalBalanceMatchesTheExpectedAmount {
             get {
                 return ResourceManager.GetString("ConfirmTheTotalBalanceMatchesTheExpectedAmount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Credit.
-        /// </summary>
-        internal static string Credit {
-            get {
-                return ResourceManager.GetString("Credit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Date.
-        /// </summary>
-        internal static string Date {
-            get {
-                return ResourceManager.GetString("Date", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Date closed.
-        /// </summary>
-        internal static string DateClosed {
-            get {
-                return ResourceManager.GetString("DateClosed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Date closes.
-        /// </summary>
-        internal static string DateCloses {
-            get {
-                return ResourceManager.GetString("DateCloses", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Date open.
-        /// </summary>
-        internal static string DateOpen {
-            get {
-                return ResourceManager.GetString("DateOpen", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Date to close.
-        /// </summary>
-        internal static string DateToClose {
-            get {
-                return ResourceManager.GetString("DateToClose", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Debit.
-        /// </summary>
-        internal static string Debit {
-            get {
-                return ResourceManager.GetString("Debit", resourceCulture);
             }
         }
         
@@ -547,15 +394,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fee type.
-        /// </summary>
-        internal static string FeeType {
-            get {
-                return ResourceManager.GetString("FeeType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Follow these steps to ensure a smooth closing of the Main till.
         /// </summary>
         internal static string FollowTheseStepsToEnsureASmoothClosingOfTheMainTill {
@@ -610,29 +448,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HELP TIPS.
-        /// </summary>
-        internal static string HELPTIPS {
-            get {
-                return ResourceManager.GetString("HELPTIPS", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to If the.
         /// </summary>
         internal static string IfThe {
             get {
                 return ResourceManager.GetString("IfThe", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Initial amount.
-        /// </summary>
-        internal static string InitialAmount {
-            get {
-                return ResourceManager.GetString("InitialAmount", resourceCulture);
             }
         }
         
@@ -691,24 +511,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Open date.
-        /// </summary>
-        internal static string OpenDate {
-            get {
-                return ResourceManager.GetString("OpenDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Opened date.
-        /// </summary>
-        internal static string OpenedDate {
-            get {
-                return ResourceManager.GetString("OpenedDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Open of day amount.
         /// </summary>
         internal static string OpenOfDayAmount {
@@ -732,24 +534,6 @@ namespace Resources {
         internal static string OpenOfDayNote {
             get {
                 return ResourceManager.GetString("OpenOfDayNote", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Operation date.
-        /// </summary>
-        internal static string OperationDate {
-            get {
-                return ResourceManager.GetString("OperationDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Previous balance.
-        /// </summary>
-        internal static string PreviousBalance {
-            get {
-                return ResourceManager.GetString("PreviousBalance", resourceCulture);
             }
         }
         
@@ -817,15 +601,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Provisioned by.
-        /// </summary>
-        internal static string ProvisionedBy {
-            get {
-                return ResourceManager.GetString("ProvisionedBy", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Replenished amount.
         /// </summary>
         internal static string ReplenishedAmount {
@@ -853,15 +628,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select status type.
-        /// </summary>
-        internal static string SelectStatusType {
-            get {
-                return ResourceManager.GetString("SelectStatusType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Sub teller commentary.
         /// </summary>
         internal static string SubTellerCommentary {
@@ -880,24 +646,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to System balance.
-        /// </summary>
-        internal static string SystemBalance {
-            get {
-                return ResourceManager.GetString("SystemBalance", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to System difference.
-        /// </summary>
-        internal static string SystemDifference {
-            get {
-                return ResourceManager.GetString("SystemDifference", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Teller account balance.
         /// </summary>
         internal static string TellerAccountBalance {
@@ -912,105 +660,6 @@ namespace Resources {
         internal static string TellerCloseOfDayNote {
             get {
                 return ResourceManager.GetString("TellerCloseOfDayNote", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Teller code.
-        /// </summary>
-        internal static string TellerCode {
-            get {
-                return ResourceManager.GetString("TellerCode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Teller comment.
-        /// </summary>
-        internal static string TellerComment {
-            get {
-                return ResourceManager.GetString("TellerComment", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Teller name.
-        /// </summary>
-        internal static string TellerName {
-            get {
-                return ResourceManager.GetString("TellerName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Teller note.
-        /// </summary>
-        internal static string TellerNote {
-            get {
-                return ResourceManager.GetString("TellerNote", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Teller user.
-        /// </summary>
-        internal static string TellerUser {
-            get {
-                return ResourceManager.GetString("TellerUser", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Total amount.
-        /// </summary>
-        internal static string TotalAmount {
-            get {
-                return ResourceManager.GetString("TotalAmount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Transactions.
-        /// </summary>
-        internal static string Transactions {
-            get {
-                return ResourceManager.GetString("Transactions", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Type.
-        /// </summary>
-        internal static string Type {
-            get {
-                return ResourceManager.GetString("Type", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to User.
-        /// </summary>
-        internal static string User {
-            get {
-                return ResourceManager.GetString("User", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Validation status.
-        /// </summary>
-        internal static string ValidationStatus {
-            get {
-                return ResourceManager.GetString("ValidationStatus", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Value.
-        /// </summary>
-        internal static string Value {
-            get {
-                return ResourceManager.GetString("Value", resourceCulture);
             }
         }
         

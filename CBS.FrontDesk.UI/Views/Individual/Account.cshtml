@@ -1,7 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.IndividualCustomerProfile
     @using Resources
 @{
-    ViewBag.Title = @GlobalIndividual.Account;
+    ViewBag.Title = "Account";
 }
 
 <div class="row justify-content-end">
@@ -30,7 +30,7 @@
                                 data-bs-target="#navs-justified-home"
                                 aria-controls="navs-justified-home"
                                 aria-selected="true">
-                            <i class="tf-icons mdi mdi-account-outline me-1"></i> @GlobalIndividual.Profile
+                            <i class="tf-icons mdi mdi-account-outline me-1"></i> @GlobalShared.Profile
                             @*<span class="badge rounded-pill badge-center h-px-20 w-px-20 bg-label-danger ms-1">3</span>*@
                         </button>
                     </li>
@@ -64,7 +64,7 @@
                                 data-bs-target="#navs-justified-messages"
                                 aria-controls="navs-justified-messages"
                                 aria-selected="false">
-                            <i class="tf-icons mdi mdi-account me-1"></i> @GlobalIndividual.Account
+                            <i class="tf-icons mdi mdi-account me-1"></i> @GlobalShared.Account
                         </button>
                     </li>
 

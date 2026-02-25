@@ -61,65 +61,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Active.
-        /// </summary>
-        internal static string Active {
-            get {
-                return ResourceManager.GetString("Active", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Active status.
-        /// </summary>
-        internal static string ActiveStatus {
-            get {
-                return ResourceManager.GetString("ActiveStatus", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Branch.
-        /// </summary>
-        internal static string Branch {
-            get {
-                return ResourceManager.GetString("Branch", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Branch-specific.
-        /// </summary>
-        internal static string BranchSpecific {
-            get {
-                return ResourceManager.GetString("BranchSpecific", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Centralised.
-        /// </summary>
-        internal static string Centralised {
-            get {
-                return ResourceManager.GetString("Centralised", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Check to centralise.
         /// </summary>
         internal static string CheckToCentralise {
             get {
                 return ResourceManager.GetString("CheckToCentralise", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Configuration.
-        /// </summary>
-        internal static string Configuration {
-            get {
-                return ResourceManager.GetString("Configuration", resourceCulture);
             }
         }
         
@@ -142,29 +88,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Day.
-        /// </summary>
-        internal static string Day {
-            get {
-                return ResourceManager.GetString("Day", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Day of month.
         /// </summary>
         internal static string DayOfMonth {
             get {
                 return ResourceManager.GetString("DayOfMonth", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Description.
-        /// </summary>
-        internal static string Description {
-            get {
-                return ResourceManager.GetString("Description", resourceCulture);
             }
         }
         
@@ -223,33 +151,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Inactive.
-        /// </summary>
-        internal static string Inactive {
-            get {
-                return ResourceManager.GetString("Inactive", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Month.
-        /// </summary>
-        internal static string Month {
-            get {
-                return ResourceManager.GetString("Month", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Name.
-        /// </summary>
-        internal static string Name {
-            get {
-                return ResourceManager.GetString("Name", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to No recurring holiday is configured yet.
         /// </summary>
         internal static string NoRecurringHolidayIsConfiguredYet {
@@ -286,15 +187,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select branch.
-        /// </summary>
-        internal static string SelectBranch {
-            get {
-                return ResourceManager.GetString("SelectBranch", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Select holiday type.
         /// </summary>
         internal static string SelectHolidayType {
@@ -318,15 +210,6 @@ namespace Resources {
         internal static string SelectRecurringDay {
             get {
                 return ResourceManager.GetString("SelectRecurringDay", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Status.
-        /// </summary>
-        internal static string Status {
-            get {
-                return ResourceManager.GetString("Status", resourceCulture);
             }
         }
     }

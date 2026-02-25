@@ -115,11 +115,29 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Collateral.
+        ///   Looks up a localized string similar to Centralised mode affects all branches..
         /// </summary>
-        internal static string Collateral {
+        internal static string Centralised_mode_affects_all_branches {
             get {
-                return ResourceManager.GetString("Collateral", resourceCulture);
+                return ResourceManager.GetString("Centralised_mode_affects_all_branches", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cheque Validity.
+        /// </summary>
+        internal static string Cheque_Validity {
+            get {
+                return ResourceManager.GetString("Cheque_Validity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cheque validity days must reflect operational policies..
+        /// </summary>
+        internal static string Cheque_validity_days_must_reflect_operational_policies {
+            get {
+                return ResourceManager.GetString("Cheque_validity_days_must_reflect_operational_policies", resourceCulture);
             }
         }
         
@@ -156,15 +174,6 @@ namespace Resources {
         internal static string ConfiguringLoans {
             get {
                 return ResourceManager.GetString("ConfiguringLoans", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Country.
-        /// </summary>
-        internal static string Country {
-            get {
-                return ResourceManager.GetString("Country", resourceCulture);
             }
         }
         
@@ -259,6 +268,33 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ensure minimum and maximum cheque limits are correctly defined..
+        /// </summary>
+        internal static string Ensure_minimum_and_maximum_cheque_limits_are_correctly_defined {
+            get {
+                return ResourceManager.GetString("Ensure_minimum_and_maximum_cheque_limits_are_correctly_defined", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GLOBAL CONFIGURATION.
+        /// </summary>
+        internal static string GLOBAL_CONFIGURATION {
+            get {
+                return ResourceManager.GetString("GLOBAL_CONFIGURATION", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Global Configuration Details.
+        /// </summary>
+        internal static string Global_Configuration_Details {
+            get {
+                return ResourceManager.GetString("Global_Configuration_Details", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Loan configuration.
         /// </summary>
         internal static string LoanConfiguration {
@@ -313,11 +349,74 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Manage cheque configuration parameters globally and consistently..
+        /// </summary>
+        internal static string Manage_cheque_configuration_parameters_globally_and_consistently {
+            get {
+                return ResourceManager.GetString("Manage_cheque_configuration_parameters_globally_and_consistently", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximum Cheque Leave.
+        /// </summary>
+        internal static string Maximum_Cheque_Leave {
+            get {
+                return ResourceManager.GetString("Maximum_Cheque_Leave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max Leave.
+        /// </summary>
+        internal static string Max_Leave {
+            get {
+                return ResourceManager.GetString("Max_Leave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Menu master.
         /// </summary>
         internal static string MenuMaster {
             get {
                 return ResourceManager.GetString("MenuMaster", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimum Cheque Leave.
+        /// </summary>
+        internal static string Minimum_Cheque_Leave {
+            get {
+                return ResourceManager.GetString("Minimum_Cheque_Leave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Min Leave.
+        /// </summary>
+        internal static string Min_Leave {
+            get {
+                return ResourceManager.GetString("Min_Leave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No configuration available..
+        /// </summary>
+        internal static string No_configuration_available {
+            get {
+                return ResourceManager.GetString("No_configuration_available", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only one global configuration should be active..
+        /// </summary>
+        internal static string Only_one_global_configuration_should_be_active {
+            get {
+                return ResourceManager.GetString("Only_one_global_configuration_should_be_active", resourceCulture);
             }
         }
         
@@ -345,15 +444,6 @@ namespace Resources {
         internal static string OrdinaryAccountConfiguration {
             get {
                 return ResourceManager.GetString("OrdinaryAccountConfiguration", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Penalty.
-        /// </summary>
-        internal static string Penalty {
-            get {
-                return ResourceManager.GetString("Penalty", resourceCulture);
             }
         }
         
@@ -390,6 +480,15 @@ namespace Resources {
         internal static string TellerManagement {
             get {
                 return ResourceManager.GetString("TellerManagement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View global cheque configuration details..
+        /// </summary>
+        internal static string View_global_cheque_configuration_details {
+            get {
+                return ResourceManager.GetString("View_global_cheque_configuration_details", resourceCulture);
             }
         }
     }

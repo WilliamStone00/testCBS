@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,109 +117,85 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Account" xml:space="preserve">
-    <value>Account</value>
+  <data name="Manage_Cancellation_Requests" xml:space="preserve">
+    <value>Gérer les demandes d’annulation</value>
   </data>
-  <data name="AccountingDate" xml:space="preserve">
-    <value>Accounting Date</value>
+  <data name="Always_Verify_Credentials" xml:space="preserve">
+    <value>Toujours vérifier les identifiants</value>
   </data>
-  <data name="Actions" xml:space="preserve">
-    <value>Actions</value>
+  <data name="Approve_Reject_or_Validate_a_customer_s_cheque_Cancellation_request_and_manage_the_lifecycle_of_a_clearance_using_this_form" xml:space="preserve">
+    <value>Approuver, rejeter ou valider la demande d’annulation de chèque d’un client et gérer le cycle de vie de la compensation à l’aide de ce formulaire.</value>
   </data>
-  <data name="addbutton" xml:space="preserve">
-    <value>add button</value>
+  <data name="Branch_Account_Number_and_Customer_Name_must_be_filled_before_submission" xml:space="preserve">
+    <value>L’agence, le numéro de compte et le nom du client doivent être renseignés avant la soumission.</value>
   </data>
-  <data name="AddRow" xml:space="preserve">
-    <value>Add Row</value>
+  <data name="CANCELLATION_REQUEST_VIEWER" xml:space="preserve">
+    <value>CONSULTATION DES DEMANDES D’ANNULATION</value>
   </data>
-  <data name="ApprovalVerification" xml:space="preserve">
-    <value>Some journal entries may require supervisor approval before final posting.</value>
+  <data name="Cheque_Book_ID" xml:space="preserve">
+    <value>Identifiant du chéquier</value>
   </data>
-  <data name="ApprovalWorkflow" xml:space="preserve">
-    <value>Approval Workflow</value>
+  <data name="Cheque_Branch" xml:space="preserve">
+    <value>Agence d’émission du chèque</value>
   </data>
-  <data name="Areyousureyouwanttoposttheaboveentries" xml:space="preserve">
-    <value>Are you sure you want to post the above entries?</value>
+  <data name="Cheque_Cancellation_Actions" xml:space="preserve">
+    <value>Actions d’annulation de chèque</value>
   </data>
-  <data name="Attachments" xml:space="preserve">
-    <value>Attachments</value>
+  <data name="Cheque_Cancellation_Details" xml:space="preserve">
+    <value>Détails de l’annulation du chèque</value>
   </data>
-  <data name="chartofaccounts" xml:space="preserve">
-    <value>Ensure each account selected is valid and active within the chart of accounts.</value>
+  <data name="Cheque_Cancellation_Request" xml:space="preserve">
+    <value>Demande d’annulation de chèque</value>
   </data>
-  <data name="ClearAllRows" xml:space="preserve">
-    <value>Clear All Rows</value>
+  <data name="Cheque_Creation_Date" xml:space="preserve">
+    <value>Date de création du chèque</value>
   </data>
-  <data name="ConfirmationofDate" xml:space="preserve">
-    <value>Confirm the posting date falls within an open accounting period.</value>
+  <data name="Cheque_Expiration_Date" xml:space="preserve">
+    <value>Date d’expiration du chèque</value>
   </data>
-  <data name="ConfirmJournalPosting" xml:space="preserve">
-    <value> Confirm Journal Posting</value>
+  <data name="Cheque_Leaf_ID" xml:space="preserve">
+    <value>Identifiant de la feuille de chèque</value>
   </data>
-  <data name="CounterpartyBranch" xml:space="preserve">
-    <value>Counterparty Branch</value>
+  <data name="Choose_Cheque_Book_Cheque_Leaf_Or_Cheque_Number_according_to_what_you_are_cancelling" xml:space="preserve">
+    <value>Choisissez &lt;em&gt;Chéquier&lt;/em&gt;, &lt;em&gt;Feuille de chèque&lt;/em&gt; ou &lt;em&gt;Numéro de chèque&lt;/em&gt; selon l’élément à annuler.</value>
   </data>
-  <data name="Credit" xml:space="preserve">
-    <value>Credit</value>
+  <data name="Clearly_state_why_the_cheque_is_being_cancelled" xml:space="preserve">
+    <value>Indiquez clairement la raison de l’annulation du chèque (ex. : perte, vol, erreur, doublon)</value>
   </data>
-  <data name="Debit" xml:space="preserve">
-    <value>Debit</value>
+  <data name="Double_check_the_cheque_number_book_ID_and_leaf_ID_before_submitting" xml:space="preserve">
+    <value>Vérifiez soigneusement le numéro du chèque, l’identifiant du chéquier et l’identifiant de la feuille avant la soumission.</value>
   </data>
-  <data name="DebitandCreditBalance" xml:space="preserve">
-    <value>Debit and Credit Balance</value>
+  <data name="Mandatory_Fields" xml:space="preserve">
+    <value>Champs obligatoires</value>
   </data>
-  <data name="DebitEqualCredit" xml:space="preserve">
-    <value>The total debit amount must always equal the total credit amount before saving</value>
+  <data name="No_cancellation_requests_found" xml:space="preserve">
+    <value>Aucune demande d'annulation trouvé.</value>
   </data>
-  <data name="Description" xml:space="preserve">
-    <value>Always include a clear narration describing the purpose of the journal entry.</value>
+  <data name="Once_approved_a_cancelled_cheque_cannot_be_reinstated_ensure_accuracy_before_confirming" xml:space="preserve">
+    <value>Une fois approuvé, un chèque annulé ne peut pas être rétabli — assurez-vous de l’exactitude avant confirmation.</value>
   </data>
-  <data name="Diff" xml:space="preserve">
-    <value>Diff</value>
+  <data name="Provide_a_Valid_Reason" xml:space="preserve">
+    <value>Fournir un motif valide</value>
   </data>
-  <data name="EnableInterbranchTransaction" xml:space="preserve">
-    <value>Enable Interbranch Transaction</value>
+  <data name="Select_Correct_Request_Type" xml:space="preserve">
+    <value>Sélectionner le type de demande approprié</value>
   </data>
-  <data name="Enter" xml:space="preserve">
-    <value>Enter any remark or note about this journal entry</value>
+  <data name="Some_cancellations_may_require_approval_from_a_supervisor_manager_before_they_take_effect" xml:space="preserve">
+    <value>Certaines annulations peuvent nécessiter l’approbation d’un superviseur ou d’un responsable avant de prendre effet.</value>
   </data>
-  <data name="HeaderNote" xml:space="preserve">
-    <value>Ensure all debit and credit entries are balanced before posting.</value>
+  <data name="TIPS_FOR_CHEQUE_CANCELLATION" xml:space="preserve">
+    <value>CONSEILS POUR L’ANNULATION DE CHÈQUE</value>
   </data>
-  <data name="ManualEntryChecks" xml:space="preserve">
-    <value>Manual Entry Checks</value>
+  <data name="Use_the_details_below_to_guide_your_validation_process" xml:space="preserve">
+    <value>Utilisez les informations ci-dessous pour guider votre processus de validation.</value>
   </data>
-  <data name="ManualJournalEntry" xml:space="preserve">
-    <value>Manual Journal Entry</value>
+  <data name="Use_the_notes_field_to_add_any_special_remarks_that_may_help_reviewers" xml:space="preserve">
+    <value>Utilisez le champ « notes » pour ajouter toute remarque particulière pouvant aider les examinateurs.</value>
   </data>
-  <data name="Narration" xml:space="preserve">
-    <value>Narration</value>
+  <data name="Verify_Cheque_Details" xml:space="preserve">
+    <value>Vérifier les détails du chèque</value>
   </data>
-  <data name="OperationCode" xml:space="preserve">
-    <value>Operation Code</value>
-  </data>
-  <data name="PostEntries" xml:space="preserve">
-    <value>Post Entries</value>
-  </data>
-  <data name="PostingDate" xml:space="preserve">
-    <value>Posting Date</value>
-  </data>
-  <data name="Remark" xml:space="preserve">
-    <value>Memo</value>
-  </data>
-  <data name="TIPSFORMANUALJOURNALENTRY" xml:space="preserve">
-    <value>TIPS FOR MANUAL JOURNAL ENTRY</value>
-  </data>
-  <data name="Totals" xml:space="preserve">
-    <value>Totals</value>
-  </data>
-  <data name="Upload" xml:space="preserve">
-    <value>Upload any supporting documents if required for audit or verification.</value>
-  </data>
-  <data name="ValidateAccounts" xml:space="preserve">
-    <value>Validate Accounts</value>
-  </data>
-  <data name="ViewList" xml:space="preserve">
-    <value>View List</value>
+  <data name="You_are_viewing_a_detailed_summary_of_the_selected_cheque_cancellation_request" xml:space="preserve">
+    <value>Vous consultez un récapitulatif détaillé de la demande d’annulation de chèque sélectionnée.</value>
   </data>
 </root>

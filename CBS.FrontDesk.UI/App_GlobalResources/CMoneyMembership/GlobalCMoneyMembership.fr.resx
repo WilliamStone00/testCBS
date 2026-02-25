@@ -118,49 +118,49 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ActivateAmemberAccountByVerifyingTheirPhoneNumber" xml:space="preserve">
-    <value>Activer un compte de membre en vérifiant son numéro de téléphone et en complétant les détails requis</value>
+    <value>Activer le compte d’un membre en vérifiant son numéro de téléphone et en complétant les informations requises</value>
   </data>
   <data name="ActivatedByUser" xml:space="preserve">
-    <value>Activé par (utilisateur)</value>
+    <value>Activé par (Utilisateur)</value>
   </data>
   <data name="ACTIVATIONFORM" xml:space="preserve">
-    <value>FORMULAIRE D'ACTIVATION</value>
+    <value>FORMULAIRE D’ACTIVATION</value>
   </data>
   <data name="ACTIVATIONPROCEDURE" xml:space="preserve">
-    <value>PROCÉDURE D'ACTIVATION</value>
+    <value>PROCÉDURE D’ACTIVATION</value>
   </data>
   <data name="ADate" xml:space="preserve">
     <value>Date A</value>
   </data>
   <data name="AdviseTheMemberToChangeTheDefaultPIN" xml:space="preserve">
-    <value>Conseillez au membre de changer le code PIN par défaut. Les membres n'auront pas accès tant que le code PIN n'est pas changé</value>
+    <value>Informer le membre de changer le code PIN par défaut. L’accès ne sera possible qu’après modification du PIN</value>
   </data>
   <data name="AdviseTheMemberToSetTheirSecurityQuestionAndAnswer" xml:space="preserve">
-    <value>Conseillez au membre de définir une question de sécurité et une réponse. Cela sera utilisé si le membre oublie son code PIN</value>
+    <value>Informer le membre de définir une question et une réponse de sécurité. Elles seront utilisées en cas d’oubli du code PIN</value>
   </data>
   <data name="AfterTheMemberConfirmsTheOTP" xml:space="preserve">
-    <value>Après que le membre ait confirmé l'OTP avec son numéro de téléphone, toute autre instance du même numéro de téléphone utilisé par un autre membre dans le système sera écrasée</value>
+    <value>Après confirmation de l’OTP associé au numéro de téléphone, toute autre utilisation de ce numéro par un autre membre dans le système sera remplacée</value>
   </data>
   <data name="bySendingAoneTimePassword" xml:space="preserve">
     <value>en envoyant un mot de passe à usage unique (OTP)</value>
   </data>
   <data name="ChangedDefaultPIN" xml:space="preserve">
-    <value>A changé le code PIN par défaut</value>
+    <value>Code PIN par défaut modifié</value>
   </data>
   <data name="CMONEYACCOUNTACTIVATION" xml:space="preserve">
-    <value>ACTIVATION DE COMPTE C-MONEY</value>
+    <value>ACTIVATION DU COMPTE C-MONEY</value>
   </data>
   <data name="CMONEYMEMBERACTIVATIONS" xml:space="preserve">
-    <value>ACTIVATION DE COMPTE C-MONEY</value>
+    <value>ACTIVATION DU COMPTE C-MONEY</value>
   </data>
   <data name="CMoneyMemberActivationsOverview" xml:space="preserve">
-    <value>Vue d'ensemble des activations de membres C-Money</value>
+    <value>Vue d’ensemble des activations des membres C-Money</value>
   </data>
   <data name="CMoneyMemberProfileManagement" xml:space="preserve">
-    <value>Gestion du profil de membre C-Money</value>
+    <value>Gestion du profil des membres C-Money</value>
   </data>
   <data name="CMONEYMEMBERPROFILEMANAGEMENTUC" xml:space="preserve">
-    <value>GESTION DU PROFIL DE MEMBRE C-MONEY</value>
+    <value>GESTION DU PROFIL DES MEMBRES C-MONEY</value>
   </data>
   <data name="CMONEYPROFILE" xml:space="preserve">
     <value>PROFIL C-MONEY</value>
@@ -172,40 +172,40 @@
     <value>NUMÉRO DE TÉLÉPHONE PAR DÉFAUT</value>
   </data>
   <data name="EasilyManageAndActivateAccountsWithOurSimpleInterface" xml:space="preserve">
-    <value>Gérez facilement les comptes C-MONEY avec notre interface simple</value>
+    <value>Gérez et activez facilement les comptes C-MONEY grâce à notre interface intuitive</value>
   </data>
   <data name="EasilyManageProfilesIncludingActivation" xml:space="preserve">
-    <value>Gérez facilement les profils, y compris l'activation, la réinitialisation du code PIN, la désactivation, la réactivation, la définition des questions de sécurité et des réponses, le changement de numéro de membre, la génération d'OTP et la mise à jour du statut d'abonnement</value>
+    <value>Gérez facilement les profils : activation, réinitialisation du PIN, désactivation, réactivation, définition des questions de sécurité, modification du numéro du membre, génération d’OTP et mise à jour du statut d’abonnement</value>
   </data>
   <data name="EasilyManageProfilesIncludingActivationAndMore" xml:space="preserve">
-    <value>Gérez facilement les profils, y compris l'activation, la réinitialisation du code PIN, la désactivation, etc</value>
+    <value>Gérez facilement les profils, y compris l’activation, la réinitialisation du PIN, la désactivation, etc</value>
   </data>
   <data name="EnterTheOTPCodeReceivedByTheMember" xml:space="preserve">
-    <value>Entrez le code OTP reçu par le membre pour valider le numéro de téléphone</value>
+    <value>Saisir le code OTP reçu par le membre pour valider le numéro de téléphone</value>
   </data>
   <data name="EnterTheOTPSentToTheMembersPhoneForVerification" xml:space="preserve">
-    <value>Entrez l'OTP envoyé au téléphone du membre pour vérification</value>
+    <value>Saisir l’OTP envoyé au téléphone du membre pour vérification</value>
   </data>
   <data name="ExportFilteredActivationsToExcel" xml:space="preserve">
     <value>Exporter les activations filtrées vers Excel</value>
   </data>
   <data name="FilterByActivationAndLastPaymentDateRanges" xml:space="preserve">
-    <value>Filtrer par plage de dates d'activation et de dernier paiement</value>
+    <value>Filtrer par plage de dates d’activation et de dernier paiement</value>
   </data>
   <data name="FilterByActivationUser" xml:space="preserve">
-    <value>Filtrer par utilisateur d'activation</value>
+    <value>Filtrer par utilisateur ayant effectué l’activation</value>
   </data>
   <data name="FilterBySubscriptionOrPINChangeState" xml:space="preserve">
-    <value>Filtrer par statut d'abonnement ou de changement de code PIN</value>
+    <value>Filtrer par statut d’abonnement ou de modification du PIN</value>
   </data>
   <data name="FollowTheseStepsToActivateAMember" xml:space="preserve">
-    <value>Suivez ces étapes pour activer un membre pour l'utilisation de l'application mobile C-MONEY</value>
+    <value>Suivre ces étapes pour activer un membre à l’application mobile C-MONEY</value>
   </data>
   <data name="LoginIDIsAutomaticallyGeneratedByTheSystem" xml:space="preserve">
-    <value>L'ID de connexion est automatiquement généré par le système et communiqué au membre</value>
+    <value>L’identifiant de connexion est généré automatiquement par le système et communiqué au membre</value>
   </data>
   <data name="LoginIDWillBeAutomaticallyGeneratedByTheSystem" xml:space="preserve">
-    <value>L'ID de connexion sera automatiquement généré par le système, en combinant le code de l'agence et les 4 derniers chiffres de la référence du membre. Si des doublons existent, il peut s'étendre à 5 chiffres pour l'unicité</value>
+    <value>L’identifiant de connexion sera généré automatiquement par le système en combinant le code agence et les 4 derniers chiffres de la référence membre. En cas de doublon, il pourra être étendu à 5 chiffres pour garantir l’unicité</value>
   </data>
   <data name="MemberIs" xml:space="preserve">
     <value>Le membre est</value>
@@ -220,37 +220,37 @@
     <value>Référence M</value>
   </data>
   <data name="NoteDeactivatingAnAccountWillRestrictTheMembersAccess" xml:space="preserve">
-    <value>Remarque : La désactivation d'un compte restreindra l'accès du membre aux services C-Money</value>
+    <value>Remarque : La désactivation d’un compte restreindra l’accès du membre aux services C-Money</value>
   </data>
   <data name="NoteReactivatingAnAccountWillRestoreTheMembersAccess" xml:space="preserve">
-    <value>Remarque : La réactivation d'un compte restaurera l'accès du membre aux services C-Money</value>
+    <value>Remarque : La réactivation d’un compte rétablira l’accès du membre aux services C-Money</value>
   </data>
   <data name="NoteResettingThePINWillSetItBackToTheDefaultValue" xml:space="preserve">
-    <value>Remarque : La réinitialisation du code PIN le ramènera à la valeur par défaut. Informez le membre de le changer immédiatement après la connexion</value>
+    <value>Remarque : La réinitialisation du PIN le ramènera à sa valeur par défaut. Informer le membre de le changer immédiatement après connexion</value>
   </data>
   <data name="NoteSettingAsecurityQuestionAndAnswer" xml:space="preserve">
-    <value>Remarque : La définition d'une question de sécurité et d'une réponse aide à renforcer la sécurité du compte et permet de réinitialiser le code PIN en utilisant ces informations</value>
+    <value>Remarque : Définir une question et une réponse de sécurité renforce la sécurité du compte et permet la réinitialisation du PIN</value>
   </data>
   <data name="NoteThatForEveryActivationTheMemberReceivesLoginCredentialsViaSMS" xml:space="preserve">
-    <value>Notez que pour chaque activation, le membre reçoit des informations de connexion par SMS. Conseillez aux membres de garder les informations d'identification confidentielles</value>
+    <value>Remarque : Pour chaque activation, le membre reçoit ses identifiants par SMS. Conseillez aux membres de les garder confidentiels</value>
   </data>
   <data name="NoteUpdateTheSubscriptionStatusForTheMembersAccount" xml:space="preserve">
-    <value>Remarque : Mettez à jour le statut d'abonnement du compte du membre</value>
+    <value>Remarque : Mettre à jour le statut d’abonnement du compte du membre</value>
   </data>
   <data name="NoteUseSecurityQuestionsAndAnswersToResetThePINSecurely" xml:space="preserve">
-    <value>Remarque : Utilisez les questions de sécurité et les réponses pour réinitialiser le code PIN en toute sécurité</value>
+    <value>Remarque : Utiliser les questions et réponses de sécurité pour réinitialiser le PIN en toute sécurité</value>
   </data>
   <data name="OnceActivatedTheMemberWillHaveAccessTo" xml:space="preserve">
-    <value>Une fois activé, le membre aura accès aux fonctionnalités de l'application mobile C-MONEY, permettant des transactions financières fluides</value>
+    <value>Une fois activé, le membre aura accès aux fonctionnalités de l’application mobile C-MONEY pour effectuer des transactions financières fluides</value>
   </data>
   <data name="PleaseEnterTheMembersDefaultPhoneNumber" xml:space="preserve">
-    <value>Veuillez entrer le numéro de téléphone par défaut du membre pour recevoir des OTP et des communications</value>
+    <value>Veuillez saisir le numéro de téléphone par défaut du membre pour recevoir les OTP et les communications</value>
   </data>
   <data name="ReasonForDeactivatingAccount" xml:space="preserve">
-    <value>Raison de la désactivation du compte</value>
+    <value>Motif de désactivation du compte</value>
   </data>
   <data name="RESETPINWITHSECURITYQUESTIONS" xml:space="preserve">
-    <value>RÉINITIALISER LE CODE PIN AVEC LES QUESTIONS DE SÉCURITÉ</value>
+    <value>RÉINITIALISER LE PIN AVEC LES QUESTIONS DE SÉCURITÉ</value>
   </data>
   <data name="SelectMemberPreferredLanguageForSMS" xml:space="preserve">
     <value>Sélectionner la langue préférée du membre pour les SMS</value>
@@ -259,48 +259,48 @@
     <value>Envoyer un code OTP au numéro de téléphone par défaut du membre pour vérification</value>
   </data>
   <data name="SendOTPTo" xml:space="preserve">
-    <value>Envoyer l'OTP à</value>
+    <value>Envoyer l’OTP à</value>
   </data>
   <data name="SETSECURITYQUESTIONANSWER" xml:space="preserve">
-    <value>DÉFINIR LA QUESTION DE SÉCURITÉ &amp; RÉPONSE</value>
+    <value>DÉFINIR LA QUESTION ET LA RÉPONSE DE SÉCURITÉ</value>
   </data>
   <data name="SubmitTheFormToFinalizeTheActivationProcess" xml:space="preserve">
-    <value>Soumettre le formulaire pour finaliser le processus d'activation</value>
+    <value>Soumettre le formulaire pour finaliser l’activation</value>
   </data>
   <data name="SubscriptionPINStatus" xml:space="preserve">
-    <value>Statut d'abonnement &amp; code PIN</value>
+    <value>Statut d’abonnement &amp; code PIN</value>
   </data>
   <data name="TheMemberServiceWillAssistMembersThroughTheLoginProcess" xml:space="preserve">
-    <value>Le service aux membres aidera les membres tout au long du processus de connexion</value>
+    <value>Le service aux membres accompagnera les membres durant le processus de connexion</value>
   </data>
   <data name="TIPSFORUSINGCMONEYACTIVATIONFILTERSEFFECTIVELY" xml:space="preserve">
-    <value>CONSEILS POUR UTILISER LES FILTRES D'ACTIVATION C-MONEY EFFICACEMENT</value>
+    <value>CONSEILS POUR UTILISER EFFICACEMENT LES FILTRES D’ACTIVATION C-MONEY</value>
   </data>
   <data name="ToKeepDataUpToDate" xml:space="preserve">
     <value>Pour maintenir les données à jour</value>
   </data>
   <data name="TrackSearchAndAnalyzeMemberActivationsAcrossBranches" xml:space="preserve">
-    <value>Suivez, recherchez et analysez les activations des membres dans les agences. Utilisez des filtres pour afficher les activations par utilisateur, agence, date d'activation, statut d'abonnement, etc</value>
+    <value>Suivre, rechercher et analyser les activations des membres par agence. Utiliser les filtres par utilisateur, agence, date d’activation, statut d’abonnement, etc</value>
   </data>
   <data name="UPDATESUBSCRIPTION" xml:space="preserve">
-    <value>METTRE À JOUR L'ABONNEMENT</value>
+    <value>METTRE À JOUR L’ABONNEMENT</value>
   </data>
   <data name="UPDATESUBSCRIPTIONSTATUS" xml:space="preserve">
-    <value>METTRE À JOUR LE STATUT D'ABONNEMENT</value>
+    <value>METTRE À JOUR LE STATUT D’ABONNEMENT</value>
   </data>
   <data name="UPLOADMEMBERPHOTO" xml:space="preserve">
     <value>TÉLÉCHARGER LA PHOTO DU MEMBRE</value>
   </data>
   <data name="UploadTheMemberPhotoToCompleteTheirProfile" xml:space="preserve">
-    <value>Téléchargez la photo du membre pour compléter son profil. Assurez-vous que la photo est claire et respecte les exigences de format</value>
+    <value>Télécharger la photo du membre pour compléter son profil. Veiller à ce qu’elle soit claire et conforme aux exigences de format</value>
   </data>
   <data name="UseAdvancedSearchDateRangesAndStatusFilters" xml:space="preserve">
-    <value>Utilisez la recherche avancée, les plages de dates et les filtres de statut pour identifier les enregistrements d'activation clés. Exportez les données pour les rapports et la conformité d'audit</value>
+    <value>Utiliser la recherche avancée, les plages de dates et les filtres pour identifier les activations clés. Exporter les données pour le reporting et la conformité aux audits</value>
   </data>
   <data name="UseBranchCodeOrNameToNarrowActivations" xml:space="preserve">
-    <value>Utilisez le code ou le nom de l'agence pour affiner les activations</value>
+    <value>Utiliser le code ou le nom de l’agence pour affiner les activations</value>
   </data>
   <data name="VerifyTheMemberPhoneNumber" xml:space="preserve">
-    <value>Vérifiez le numéro de téléphone du membre</value>
+    <value>Vérifier le numéro de téléphone du membre</value>
   </data>
 </root>

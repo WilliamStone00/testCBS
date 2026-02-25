@@ -12,7 +12,7 @@
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.CardSignatureSpecimen.Name, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.CardSignatureSpecimen.Name, "", new { @class = "text-danger " })
-                <label>@GlobalIndividual.Name</label>
+                <label>@GlobalShared.Name</label>
             </div>
         </div>
         <div class="col-md-3">

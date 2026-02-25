@@ -120,35 +120,11 @@
   <data name="AccountingRole" xml:space="preserve">
     <value>Accounting role</value>
   </data>
-  <data name="Amount" xml:space="preserve">
-    <value>Amount</value>
-  </data>
-  <data name="BeginDate" xml:space="preserve">
-    <value>Begin date</value>
-  </data>
   <data name="CreditLineName" xml:space="preserve">
     <value>Credit-line name</value>
   </data>
-  <data name="Currency" xml:space="preserve">
-    <value>Currency</value>
-  </data>
-  <data name="DateOfBirth" xml:space="preserve">
-    <value>Date of birth</value>
-  </data>
-  <data name="Description" xml:space="preserve">
-    <value>Description</value>
-  </data>
-  <data name="EndDate" xml:space="preserve">
-    <value>End date</value>
-  </data>
   <data name="FundingLine" xml:space="preserve">
     <value>Funding line</value>
-  </data>
-  <data name="Name" xml:space="preserve">
-    <value>Name</value>
-  </data>
-  <data name="Range" xml:space="preserve">
-    <value>Range</value>
   </data>
   <data name="SelectAccounting" xml:space="preserve">
     <value>Select accounting</value>

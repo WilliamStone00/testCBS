@@ -3,7 +3,7 @@
 <div class="card-body">
     @using (Html.BeginForm("AddOrUpdate", "GroupType", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
     {<fieldset class="fieldset-custom">
-            <legend>@GlobalGroupType.GroupType</legend>
+            <legend>@GlobalShared.Group_Type</legend>
             <br />
 
             <div class="row mt-2 gy-4">
@@ -18,7 +18,7 @@
                     <div class="form-floating form-floating-outline">
                         @Html.TextAreaFor(m => m.Description, new { @class = "form-control", @style = "height: 200px;" })
                         @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
-                        <label>@GlobalGroupType.Description</label>
+                        <label>@GlobalShared.Description</label>
                     </div>
                 </div>
             </div>

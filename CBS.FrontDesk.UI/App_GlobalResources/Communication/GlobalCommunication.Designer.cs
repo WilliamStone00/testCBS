@@ -198,7 +198,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to  Upload → preview → send SMS in bulk..
+        ///   Looks up a localized string similar to Upload → preview → send SMS in bulk..
         /// </summary>
         internal static string Upload_preview_send_SMS_in_bulk {
             get {

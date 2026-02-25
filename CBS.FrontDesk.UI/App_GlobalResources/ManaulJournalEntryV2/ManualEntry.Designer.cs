@@ -22,14 +22,14 @@ namespace Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Web.Application.StronglyTypedResourceProxyBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class GlobalAbout {
+    internal class ManualEntry {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal GlobalAbout() {
+        internal ManualEntry() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Resources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Resources.GlobalAbout", global::System.Reflection.Assembly.Load("App_GlobalResources"));
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Resources.ManualEntry", global::System.Reflection.Assembly.Load("App_GlobalResources"));
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -57,33 +57,6 @@ namespace Resources {
             }
             set {
                 resourceCulture = value;
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to About.
-        /// </summary>
-        internal static string About {
-            get {
-                return ResourceManager.GetString("About", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Use this area to provide additional information..
-        /// </summary>
-        internal static string AboutInformation {
-            get {
-                return ResourceManager.GetString("AboutInformation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Contact Us.
-        /// </summary>
-        internal static string ContactUs {
-            get {
-                return ResourceManager.GetString("ContactUs", resourceCulture);
             }
         }
     }

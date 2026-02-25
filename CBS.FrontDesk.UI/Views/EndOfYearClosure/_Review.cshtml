@@ -1,6 +1,6 @@
 ﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.EndOfYearClosure.EndOfYearTaskViewModel
 @using System.Linq
-
+@using Resources
 @using (Html.BeginForm("ReviewClosure", "EndOfYearClosure", FormMethod.Post,
     new { enctype = "multipart/form-data", onsubmit = "return ReviewClosureSubmitAjax(this);" }))
 {
@@ -35,11 +35,11 @@
 
                     <!-- COMMENT PER TASK -->
                     <div class="mt-2">
-                        <label class="form-label">Remark</label>
+                        <label class="form-label">@GlobalShared.Remark</label>
                         <textarea class="form-control task-comment"
                                   name="Tasks[@index].Comment"
                                   rows="2"
-                                  placeholder="Add note for this task">@item.Comment</textarea>
+                                  placeholder="@GlobalEndOfYearClosure.Add_note_for_this_task">@item.Comment</textarea>
                     </div>
                 </div>
 
@@ -49,7 +49,7 @@
             <!-- SAVE -->
             <div class="row mb-2 mt-3">
                 <div class="col-md-12 text-end">
-                    <button type="submit" class="btn btn-primary">Validate</button>
+                    <button type="submit" class="btn btn-primary">@GlobalShared.Validate</button>
                 </div>
             </div>
         </div>

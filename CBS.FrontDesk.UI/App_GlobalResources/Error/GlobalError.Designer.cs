@@ -79,11 +79,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Message.
+        ///   Looks up a localized string similar to If you believe this is a mistake, please &lt;strong&gt;contact support&lt;/strong&gt; via.
         /// </summary>
-        internal static string Message {
+        internal static string If_you_believe_this_is_a_mistake_please_contact_support_via {
             get {
-                return ResourceManager.GetString("Message", resourceCulture);
+                return ResourceManager.GetString("If_you_believe_this_is_a_mistake_please_contact_support_via", resourceCulture);
             }
         }
         
@@ -120,6 +120,15 @@ namespace Resources {
         internal static string OopsWereSorryButTheServiceIsCurrentlyUnavailable {
             get {
                 return ResourceManager.GetString("OopsWereSorryButTheServiceIsCurrentlyUnavailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to or open a ticket at.
+        /// </summary>
+        internal static string or_open_a_ticket_at {
+            get {
+                return ResourceManager.GetString("or_open_a_ticket_at", resourceCulture);
             }
         }
         
@@ -169,15 +178,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Status code.
-        /// </summary>
-        internal static string StatusCode {
-            get {
-                return ResourceManager.GetString("StatusCode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to 401 - Unauthorized.
         /// </summary>
         internal static string Unauthorized {
@@ -192,6 +192,15 @@ namespace Resources {
         internal static string UnauthorizedAccess {
             get {
                 return ResourceManager.GetString("UnauthorizedAccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your access has been restricted due to unusual or excessive activity..
+        /// </summary>
+        internal static string Your_access_has_been_restricted_due_to_unusual_or_excessive_activity {
+            get {
+                return ResourceManager.GetString("Your_access_has_been_restricted_due_to_unusual_or_excessive_activity", resourceCulture);
             }
         }
     }

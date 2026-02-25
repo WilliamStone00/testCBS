@@ -117,26 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AmountFrom" xml:space="preserve">
-    <value>Montant de</value>
-  </data>
-  <data name="AmountTo" xml:space="preserve">
-    <value>Montant à</value>
-  </data>
-  <data name="Branch" xml:space="preserve">
-    <value>Agence</value>
-  </data>
-  <data name="Charge" xml:space="preserve">
-    <value>Frais</value>
-  </data>
-  <data name="Charges" xml:space="preserve">
-    <value>Frais</value>
-  </data>
   <data name="CheckToDecentraliseThisPolicy" xml:space="preserve">
     <value>Cochez pour décentraliser cette politique</value>
-  </data>
-  <data name="EnterValue" xml:space="preserve">
-    <value>Entrer la valeur (en %)</value>
   </data>
   <data name="FeePolicyConfiguration" xml:space="preserve">
     <value>Configuration de la politique de frais</value>
@@ -147,20 +129,8 @@
   <data name="FeePolicySet" xml:space="preserve">
     <value>Ensemble de politique de frais</value>
   </data>
-  <data name="From" xml:space="preserve">
-    <value>De</value>
-  </data>
-  <data name="Name" xml:space="preserve">
-    <value>Nom</value>
-  </data>
   <data name="NoFeeTypeIsSet" xml:space="preserve">
     <value>Aucun type de frais n'est défini</value>
-  </data>
-  <data name="SelectBank" xml:space="preserve">
-    <value>Sélectionner une banque</value>
-  </data>
-  <data name="SelectBranch" xml:space="preserve">
-    <value>Sélectionner une agence</value>
   </data>
   <data name="SelectEvent" xml:space="preserve">
     <value>Sélectionner un événement</value>
@@ -168,19 +138,10 @@
   <data name="SelectEventCode" xml:space="preserve">
     <value>Sélectionner un code d'événement</value>
   </data>
-  <data name="SelectFee" xml:space="preserve">
-    <value>Sélectionner des frais</value>
-  </data>
   <data name="SelectMFI" xml:space="preserve">
     <value>Sélectionner MFI</value>
   </data>
   <data name="To" xml:space="preserve">
     <value>À</value>
-  </data>
-  <data name="Type" xml:space="preserve">
-    <value>Type</value>
-  </data>
-  <data name="Value" xml:space="preserve">
-    <value>Valeur</value>
   </data>
 </root>

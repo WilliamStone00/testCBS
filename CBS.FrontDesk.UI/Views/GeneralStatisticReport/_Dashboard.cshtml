@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.GeneralStatisticReport.GeneralStatisticsDashboard
+@using Resources
 @using CBS.FrontDesk.UI.Helper
 @{
     decimal loanBalance = @Model.LoanBreakdowns.Sum(x => x.TotalAmount);
@@ -84,19 +85,19 @@
 
 <ul class="nav nav-tabs" id="dashboardTab" role="tablist">
     <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button" role="tab">📊 Overview</button>
+        <button class="nav-link active" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button" role="tab">📊 @GlobalShared.Overview</button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link" id="account-tab" data-bs-toggle="tab" data-bs-target="#account" type="button" role="tab">📈 Account Insights</button>
+        <button class="nav-link" id="account-tab" data-bs-toggle="tab" data-bs-target="#account" type="button" role="tab">📈 @GlobalGeneralStatisticReport.Account_Insights</button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link" id="loan-tab" data-bs-toggle="tab" data-bs-target="#loan" type="button" role="tab">💰 Loan Insights</button>
+        <button class="nav-link" id="loan-tab" data-bs-toggle="tab" data-bs-target="#loan" type="button" role="tab">💰 @GlobalGeneralStatisticReport.Loan_Insights</button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link" id="demographics-tab" data-bs-toggle="tab" data-bs-target="#demographics" type="button" role="tab">👥 Demographic Insights</button>
+        <button class="nav-link" id="demographics-tab" data-bs-toggle="tab" data-bs-target="#demographics" type="button" role="tab">👥 @GlobalGeneralStatisticReport.Demographic_Insights</button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link" id="missing-tab" data-bs-toggle="tab" data-bs-target="#missing" type="button" role="tab">⚠️ Missing Records</button>
+        <button class="nav-link" id="missing-tab" data-bs-toggle="tab" data-bs-target="#missing" type="button" role="tab">⚠️ @GlobalGeneralStatisticReport.Missing_Records</button>
     </li>
 </ul>
 
@@ -110,7 +111,7 @@
                     <div class="col-md-3">
                         <div class="card shadow-sm">
                             <div class="card-body text-center">
-                                <h6>Total Members</h6>
+                                <h6>@GlobalShared.Total_members</h6>
                                 <h4 class="fw-bold">@Model.MembersWithAccounts.Total.ToString("N0")</h4>
                             </div>
                         </div>
@@ -118,7 +119,7 @@
                     <div class="col-md-3">
                         <div class="card shadow-sm">
                             <div class="card-body text-center">
-                                <h6>Men</h6>
+                                <h6>@GlobalShared.Men</h6>
                                 <h4 class="fw-bold text-info">@Model.MembersWithAccounts.Men.ToString("N0")</h4>
                             </div>
                         </div>
@@ -126,7 +127,7 @@
                     <div class="col-md-3">
                         <div class="card shadow-sm">
                             <div class="card-body text-center">
-                                <h6>Women</h6>
+                                <h6>@GlobalShared.Women</h6>
                                 <h4 class="fw-bold text-warning">@Model.MembersWithAccounts.Women.ToString("N0")</h4>
                             </div>
                         </div>
@@ -134,7 +135,7 @@
                     <div class="col-md-3">
                         <div class="card shadow-sm">
                             <div class="card-body text-center">
-                                <h6>Groups</h6>
+                                <h6>@GlobalShared.Groups</h6>
                                 <h4 class="fw-bold text-danger">@Model.MembersWithAccounts.Groups.ToString("N0")</h4>
                             </div>
                         </div>
@@ -145,18 +146,18 @@
 
         <!-- 📊 GENDER INSIGHT FULL WIDTH -->
         <div class="card shadow-sm p-3 mb-3">
-            <h6 class="text-muted mb-2">📊 Gender Distribution Insight</h6>
+            <h6 class="text-muted mb-2">📊 @GlobalGeneralStatisticReport.Gender_Distribution_Insight</h6>
             <p class="mb-2">
-                Among the <strong>@Model.MembersWithAccounts.Total.ToString("N0")</strong> members:
+                @GlobalGeneralStatisticReport.Among_the <strong>@Model.MembersWithAccounts.Total.ToString("N0")</strong> @GlobalShared.Members:
                 <strong>@Model.MembersWithAccounts.Men.ToString("N0")</strong> (
                 @((Model.MembersWithAccounts.Men * 100) / Model.MembersWithAccounts.Total)%)
-                are <span class="text-info fw-bold">Men</span>,
+                @GlobalShared.are <span class="text-info fw-bold">@GlobalShared.Men</span>,
                 <strong>@Model.MembersWithAccounts.Women.ToString("N0")</strong> (
                 @((Model.MembersWithAccounts.Women * 100) / Model.MembersWithAccounts.Total)%)
-                are <span class="text-warning fw-bold">Women</span>, and
+                @GlobalShared.are <span class="text-warning fw-bold">@GlobalShared.Women</span>, @GlobalShared.and
                 <strong>@Model.MembersWithAccounts.Groups.ToString("N0")</strong> (
                 @((Model.MembersWithAccounts.Groups * 100) / Model.MembersWithAccounts.Total)%)
-                are <span class="text-danger fw-bold">Groups</span>.
+                @GlobalShared.are <span class="text-danger fw-bold">@GlobalShared.Groups</span>.
             </p>
         </div>
 
@@ -166,11 +167,10 @@
             <div class="col-md-3">
                 <div class="card shadow-sm h-100">
                     <div class="card-body small">
-                        <h6 class="text-muted mb-2">📘 Loan Category Analysis</h6>
+                        <h6 class="text-muted mb-2">📘 @GlobalGeneralStatisticReport.Loan_Category_Analysis</h6>
                         <p class="mb-0">
-                            A total of <strong>265</strong> loans have been disbursed worth <strong>39,550,000</strong>.
-                            The highest concentration is in <strong>Short</strong> and <strong>Medium Term</strong> loans,
-                            reflecting demand for flexible repayment options.
+                            @Html.Raw(@GlobalGeneralStatisticReport.A_total_of_265_loans_have_been_disbursed_worth) <strong>39,550,000</strong>.
+                            @Html.Raw(@GlobalGeneralStatisticReport.The_highest_concentration_is_in_Short_and_Medium_Term_loans_reflecting_demand_for_flexible_repayment_options)
                         </p>
                     </div>
                 </div>
@@ -180,10 +180,10 @@
             <div class="col-md-3">
                 <div class="card shadow-sm h-100">
                     <div class="card-body small">
-                        <h6 class="text-muted mb-2">📊 Sectoral Loan Distribution</h6>
+                        <h6 class="text-muted mb-2">📊 @GlobalGeneralStatisticReport.Sectoral_Loan_Distribution</h6>
                         <p class="mb-0">
-                            The largest loan disbursements are in <strong>Business</strong> and <strong>Education</strong> sectors,
-                            totaling <strong>28,200,000</strong>. <strong>Business loans</strong> alone exceed 40% of total value.
+                            @Html.Raw(@GlobalGeneralStatisticReport.The_largest_loan_disbursements_are_in_Business_and_Education_sectors),
+                            @GlobalGeneralStatisticReport.totaling <strong>28,200,000</strong>. @Html.Raw(@GlobalGeneralStatisticReport.Business_loans_alone_exceed_40_of_total_value)
                         </p>
                     </div>
                 </div>
@@ -193,10 +193,10 @@
             <div class="col-md-3">
                 <div class="card shadow-sm h-100">
                     <div class="card-body small">
-                        <h6 class="text-muted mb-2">📅 Loans in June 2025</h6>
+                        <h6 class="text-muted mb-2">📅 @GlobalGeneralStatisticReport.Loans_in_June_2025</h6>
                         <p class="mb-0">
-                            <strong>17</strong> new loans were granted this month, worth <strong>1,620,000</strong>.
-                            This suggests a healthy credit cycle for the ongoing period.
+                            <strong>17</strong> @GlobalGeneralStatisticReport.new_loans_were_granted_this_month_worth <strong>1,620,000</strong>.
+                            @GlobalGeneralStatisticReport.This_suggests_a_healthy_credit_cycle_for_the_ongoing_period
                         </p>
                     </div>
                 </div>
@@ -207,14 +207,13 @@
             <div class="col-md-3">
                 <div class="card shadow-sm h-100">
                     <div class="card-body small">
-                        <h6 class="text-muted mb-2">💼 Account Ownership Insight</h6>
+                        <h6 class="text-muted mb-2">💼 @GlobalGeneralStatisticReport.Account_Ownership_Insight</h6>
                         <p class="mb-0">
-                            Out of <strong>@Model.MembersWithAccounts.Total.ToString("N0")</strong> members:<br />
-                            <strong>@Model.MembersWithAccounts.Men.ToString("N0")</strong> men,
-                            <strong>@Model.MembersWithAccounts.Women.ToString("N0")</strong> women,
-                            and <strong>@Model.MembersWithAccounts.Groups.ToString("N0")</strong> groups
-                            have active accounts.<br />
-                            <span class="text-success fw-bold">Ownership is balanced across member types.</span>
+                            @GlobalGeneralStatisticReport.Out_of <strong>@Model.MembersWithAccounts.Total.ToString("N0")</strong> @GlobalShared.Members:<br />
+                            <strong>@Model.MembersWithAccounts.Men.ToString("N0")</strong> @GlobalShared.Men,
+                            <strong>@Model.MembersWithAccounts.Women.ToString("N0")</strong> @GlobalShared.Women,
+                            @GlobalShared.and <strong>@Model.MembersWithAccounts.Groups.ToString("N0")</strong> @GlobalGeneralStatisticReport.groups_have_active_accounts.<br />
+                            <span class="text-success fw-bold">@GlobalGeneralStatisticReport.Ownership_is_balanced_across_member_types</span>
                         </p>
                     </div>
                 </div>
@@ -231,7 +230,7 @@
             <div class="col-md-6">
                 <div class="card shadow-sm h-100">
                     <div class="card-body">
-                        <h6 class="text-primary mb-2">📊 Saving Account Balance by Group</h6>
+                        <h6 class="text-primary mb-2">📊 @GlobalGeneralStatisticReport.Saving_Account_Balance_by_Group</h6>
                         <canvas id="accountGroupChart" height="120"></canvas> <!-- reduced height -->
                     </div>
                 </div>
@@ -241,7 +240,7 @@
             <div class="col-md-6">
                 <div class="card shadow-sm h-100">
                     <div class="card-body">
-                        <h6 class="text-primary mb-2">💼 Account Balances Against Account Type Composition</h6>
+                        <h6 class="text-primary mb-2">💼 @GlobalGeneralStatisticReport.Account_Balances_Against_Account_Type_Composition</h6>
                         <canvas id="accountTypePieChart" height="120"></canvas> <!-- reduced height -->
                     </div>
                 </div>
@@ -254,12 +253,12 @@
             <div class="col-md-6">
                 <div class="card shadow-sm h-100 @(isCompliant ? "border-success" : "border-danger")">
                     <div class="card-body">
-                        <h6 class="text-primary mb-2">🏦 Loan vs. Savings Balance</h6>
+                        <h6 class="text-primary mb-2">🏦 @GlobalGeneralStatisticReport.Loan_vs_Savings_Balance</h6>
                         <p class="mb-1">
-                            Total Loan Balance: <strong>@loanBalance.ToString("N0")</strong><br />
-                            Total Savings Balance: <strong>@savingBalance.ToString("N0")</strong><br />
-                            Difference: <strong>@difference.ToString("N0")</strong><br />
-                            Loan-to-Savings Ratio: <strong>@loanRatio.ToString("N1")%</strong>
+                            @GlobalGeneralStatisticReport.Total_Loan_Balance: <strong>@loanBalance.ToString("N0")</strong><br />
+                            @GlobalGeneralStatisticReport.Total_Savings_Balance: <strong>@savingBalance.ToString("N0")</strong><br />
+                            @GlobalShared.Difference: <strong>@difference.ToString("N0")</strong><br />
+                            @GlobalGeneralStatisticReport.Loan_to_Savings_Ratio: <strong>@loanRatio.ToString("N1")%</strong>
                         </p>
                         <p class="@statusClass mt-2">
                             @icon @statusMessage
@@ -272,7 +271,7 @@
             <div class="col-md-6">
                 <div class="card shadow-sm h-100">
                     <div class="card-body">
-                        <h6 class="text-primary mb-2">📈 Loan vs. Saving Balance</h6>
+                        <h6 class="text-primary mb-2">📈 @GlobalGeneralStatisticReport.Loan_vs_Saving_Balance</h6>
                         <canvas id="loanSavingLineChart" height="150"></canvas>
                     </div>
                 </div>
@@ -284,20 +283,20 @@
         <!-- 🧾 Account Type Summary -->
         <div class="card mb-4 shadow-sm">
             <div class="card-body">
-                <h5 class="text-primary mb-3">📘 Account Type Summary</h5>
+                <h5 class="text-primary mb-3">📘 @GlobalGeneralStatisticReport.Account_Type_Summary</h5>
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover table-sm align-middle">
                         <thead class="table-light">
                             <tr>
-                                <th>Account Type</th>
-                                <th>Men</th>
-                                <th>Women</th>
-                                <th>Groups</th>
-                                <th>Total</th>
-                                <th>Men Amount</th>
-                                <th>Women Amount</th>
-                                <th>Groups Amount</th>
-                                <th>Total Amount</th>
+                                <th>@GlobalShared.Account_type</th>
+                                <th>@GlobalShared.Men</th>
+                                <th>@GlobalShared.Women</th>
+                                <th>@GlobalShared.Groups</th>
+                                <th>@GlobalShared.Total</th>
+                                <th>@GlobalShared.Men_Amount</th>
+                                <th>@GlobalShared.Women_Amount</th>
+                                <th>@GlobalShared.Groups_Amount</th>
+                                <th>@GlobalShared.Total_amount</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -336,7 +335,7 @@
         <!-- 🧠 Account Insight Interpretation (Collapsible) -->
         <div class="card shadow-sm border-info mb-3">
             <div class="card-header text-info d-flex justify-content-between align-items-center">
-                <span><i class="mdi mdi-lightbulb-on-outline me-1"></i> Account Insight Interpretation</span>
+                <span><i class="mdi mdi-lightbulb-on-outline me-1"></i> @GlobalGeneralStatisticReport.Account_Insight_Interpretation</span>
                 <button class="btn btn-outline-info btn-sm" data-bs-toggle="collapse" data-bs-target="#accountInsightCollapse">
                     <i class="mdi mdi-chevron-down"></i>
                 </button>
@@ -346,28 +345,28 @@
                 <div class="card-body text-sm text-dark">
                     <ul class="mb-3">
                         <li>
-                            <strong>Liquidity Position:</strong> Total savings (FCFA <b>@totalSaving.ToString("N0")</b>) exceed total loan volume (FCFA <b>@totalLoan.ToString("N0")</b>) by
-                            <b>@balanceSavingminusLoan.ToString("N0")</b>, yielding a loan-to-saving ratio of
+                            <strong>@GlobalGeneralStatisticReport.Liquidity_Position:</strong> @GlobalGeneralStatisticReport.Total_savings (FCFA <b>@totalSaving.ToString("N0")</b>) @GlobalGeneralStatisticReport.exceed_total_loan_volume (FCFA <b>@totalLoan.ToString("N0")</b>) by
+                            <b>@balanceSavingminusLoan.ToString("N0")</b>, @GlobalGeneralStatisticReport.yielding_a_loan_to_saving_ratio_of
                             <b>@loanToSavingRatio.ToString("N1")%</b>.
-                            <span class="text-success fw-bold">This indicates a compliant liquidity buffer.</span>
+                            <span class="text-success fw-bold">@GlobalGeneralStatisticReport.This_indicates_a_compliant_liquidity_buffer.</span>
                         </li>
                         <li>
-                            <strong>Savings Dominance:</strong> The <b>Saving</b> account type holds
-                            <b>@(savingTotalPercent.ToString("N1"))%</b> of all account balances, confirming the cooperative’s strength in deposit mobilization.
+                            <strong>@GlobalGeneralStatisticReport.Savings_Dominance:</strong> @Html.Raw(@GlobalGeneralStatisticReport.The_Saving_account_type_holds)
+                            <b>@(savingTotalPercent.ToString("N1"))%</b> @GlobalGeneralStatisticReport.of_all_account_balances_confirming_the_cooperatives_strength_in_deposit_mobilization
                         </li>
                         <li>
-                            <strong>Group Performance:</strong> Groups hold the highest savings
-                            (FCFA <b>@savingGroupsAmount.ToString("N0")</b>), contributing
-                            <b>@savingGroupsPercent.ToString("N1")%</b> of the total, which suggests strong collective savings practices and potential lending targets.
+                            <strong>@GlobalGeneralStatisticReport.Group_Performance:</strong> @GlobalGeneralStatisticReport.Groups_hold_the_highest_savings
+                            (FCFA <b>@savingGroupsAmount.ToString("N0")</b>), @GlobalGeneralStatisticReport.contributing
+                            <b>@savingGroupsPercent.ToString("N1")%</b> @GlobalGeneralStatisticReport.of_the_total_which_suggests_strong_collective_savings_practices_and_potential_lending_targets
                         </li>
                         <li>
-                            <strong>Member vs. Preference Shares:</strong> Member shares dominate over preference shares, with FCFA
+                            <strong>@GlobalGeneralStatisticReport.Member_vs_Preference_Shares:</strong> @GlobalGeneralStatisticReport.Member_shares_dominate_over_preference_shares_with_FCFA
                             <b>@memberShareTotal.ToString("N0")</b> vs.
-                            <b>@preferenceShareTotal.ToString("N0")</b>, indicating stronger engagement through standard membership accounts.
+                            <b>@preferenceShareTotal.ToString("N0")</b>, @GlobalGeneralStatisticReport.indicating_stronger_engagement_through_standard_membership_accounts
                         </li>
                     </ul>
                     <p class="text-muted mt-2">
-                        These insights help guide lending thresholds, identify deposit-rich segments, and track capital sustainability. Monitor trends regularly for strategic financial decisions.
+                        @GlobalGeneralStatisticReport.insights_help_guide_lending_thresholds_identify_deposit_rich_segments_and_track_capital_sustainability_Monitor_trends_regularly_for_strategic_financial_decisions
                     </p>
                 </div>
             </div>
@@ -382,7 +381,7 @@
             <div class="col-md-12 mb-4">
                 <div class="card shadow-sm">
                     <div class="card-body">
-                        <i class="mdi mdi-account-cash-outline me-1"></i> Loan Balance by Demographic
+                        <i class="mdi mdi-account-cash-outline me-1"></i> @GlobalGeneralStatisticReport.Loan_Balance_by_Demographic
                         <canvas id="loanDemographicChart" height="300"></canvas>
                     </div>
                 </div>
@@ -394,20 +393,20 @@
         <!-- 💳 Loan Summary -->
         <div class="card mb-4 shadow-sm">
             <div class="card-body">
-                <h5 class="text-primary mb-3">💳 Loan Category Summary</h5>
+                <h5 class="text-primary mb-3">💳 @GlobalGeneralStatisticReport.Loan_Category_Summary</h5>
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover table-sm align-middle">
                         <thead class="table-light">
                             <tr>
-                                <th>Category</th>
-                                <th>Men</th>
-                                <th>Women</th>
-                                <th>Groups</th>
-                                <th>Total</th>
-                                <th>Men Amount</th>
-                                <th>Women Amount</th>
-                                <th>Groups Amount</th>
-                                <th>Total Amount</th>
+                                <th>@GlobalShared.Category</th>
+                                <th>@GlobalShared.Men</th>
+                                <th>@GlobalShared.Women</th>
+                                <th>@GlobalShared.Groups</th>
+                                <th>@GlobalShared.Total</th>
+                                <th>@GlobalShared.Men_Amount</th>
+                                <th>@GlobalShared.Women_Amount</th>
+                                <th>@GlobalShared.Groups_Amount</th>
+                                <th>@GlobalShared.Total_amount</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -449,7 +448,7 @@
             <div class="col-md-12 mb-4">
                 <div class="card shadow-sm mt-4">
                     <div class="card-body">
-                        <h6 class="text-muted mb-2">📊 Loan Breakdown by Purposes</h6>
+                        <h6 class="text-muted mb-2">📊 @GlobalGeneralStatisticReport.Loan_Breakdown_by_Purposes</h6>
                         <canvas id="loanBreakdownChart" height="1000"></canvas>
                     </div>
                 </div>
@@ -460,20 +459,20 @@
             <div class="card mb-4 shadow-sm">
                
                 <div class="card-body">
-                    <h5 class="text-primary mb-3">📊 Loan Breakdown by Purposes</h5>
+                    <h5 class="text-primary mb-3">📊 @GlobalGeneralStatisticReport.Loan_Breakdown_by_Purposes</h5>
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover table-sm align-middle">
                             <thead class="table-light">
                                 <tr>
-                                    <th>Category</th>
-                                    <th>Men</th>
-                                    <th>Women</th>
-                                    <th>Groups</th>
-                                    <th>Total</th>
-                                    <th>Men Amount</th>
-                                    <th>Women Amount</th>
-                                    <th>Groups Amount</th>
-                                    <th>Total Amount</th>
+                                    <th>@GlobalShared.Category</th>
+                                    <th>@GlobalShared.Men</th>
+                                    <th>@GlobalShared.Women</th>
+                                    <th>@GlobalShared.Groups</th>
+                                    <th>@GlobalShared.Total</th>
+                                    <th>@GlobalShared.Men Amount</th>
+                                    <th>@GlobalShared.Women Amount</th>
+                                    <th>@GlobalShared.Groups Amount</th>
+                                    <th>@GlobalShared.Total Amount</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -494,7 +493,7 @@
                             </tbody>
                             <tfoot class="fw-bold bg-light">
                                 <tr>
-                                    <td>Total</td>
+                                    <td>@GlobalShared.Total</td>
                                     <td>@Model.LoanBreakdowns.Sum(x => x.Men).ToString("N0")</td>
                                     <td>@Model.LoanBreakdowns.Sum(x => x.Women).ToString("N0")</td>
                                     <td>@Model.LoanBreakdowns.Sum(x => x.Groups).ToString("N0")</td>
@@ -514,21 +513,21 @@
 
         <div class="card shadow-sm border-primary mb-4">
             <div class="card-header bg-light text-primary fw-bold">
-                <i class="mdi mdi-format-list-bulleted-type me-1"></i> Loan Type Summary
+                <i class="mdi mdi-format-list-bulleted-type me-1"></i> @GlobalGeneralStatisticReport.Loan_Type_Summary
             </div>
             <div class="card-body table-responsive mb-2">
                 <table class="table table-bordered table-hover table-sm align-middle">
                     <thead class="table-light">
                         <tr>
-                            <th>Loan Type</th>
-                            <th>Men</th>
-                            <th>Women</th>
-                            <th>Groups</th>
-                            <th>Total</th>
-                            <th>Men Amount</th>
-                            <th>Women Amount</th>
-                            <th>Groups Amount</th>
-                            <th>Total Amount</th>
+                            <th>@GlobalShared.Loan_Type</th>
+                            <th>@GlobalShared.Men</th>
+                            <th>@GlobalShared.Women</th>
+                            <th>@GlobalShared.Groups</th>
+                            <th>@GlobalShared.Total</th>
+                            <th>@GlobalShared.Men_Amount</th>
+                            <th>@GlobalShared.Women_Amount</th>
+                            <th>@GlobalShared.Groups_Amount</th>
+                            <th>@GlobalShared.Total_amount</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -564,7 +563,7 @@
             </div>
             <div class="card-body table-responsive mb-2">
                 <div class="mt-4">
-                    <h6 class="text-success"><i class="mdi mdi-chart-bar me-1"></i> Loan Type Breakdown</h6>
+                    <h6 class="text-success"><i class="mdi mdi-chart-bar me-1"></i> @GlobalGeneralStatisticReport.Loan_Type_Breakdown</h6>
                     <canvas id="loanTypeChart" height="400"></canvas>
                 </div>
             </div>
@@ -572,7 +571,7 @@
 
         <div class="card shadow-sm border-secondary mb-4">
             <div class="card-header text-primary d-flex justify-content-between align-items-center">
-                <span><i class="mdi mdi-tag-multiple-outline me-1"></i>  Loan Target Summary</span>
+                <span><i class="mdi mdi-tag-multiple-outline me-1"></i>  @GlobalGeneralStatisticReport.Loan_Target_Summary</span>
                 <button class="btn btn-outline-warning btn-sm" data-bs-toggle="collapse" data-bs-target="#loantargetCollapse">
                     <i class="mdi mdi-chevron-down"></i>
                 </button>
@@ -583,15 +582,15 @@
                         <table class="table table-bordered table-hover table-sm align-middle">
                             <thead class="table-light">
                                 <tr>
-                                    <th>Loan Target</th>
-                                    <th>Men</th>
-                                    <th>Women</th>
-                                    <th>Groups</th>
-                                    <th>Total</th>
-                                    <th>Men Amount</th>
-                                    <th>Women Amount</th>
-                                    <th>Groups Amount</th>
-                                    <th>Total Amount</th>
+                                    <th>@GlobalShared.Loan_Target</th>
+                                    <th>@GlobalShared.Men</th>
+                                    <th>@GlobalShared.Women</th>
+                                    <th>@GlobalShared.Groups</th>
+                                    <th>@GlobalShared.Total</th>
+                                    <th>@GlobalShared.Men_Amount</th>
+                                    <th>@GlobalShared.Women_Amount</th>
+                                    <th>@GlobalShared.Groups_Amount</th>
+                                    <th>@GlobalShared.Total_amount</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -612,7 +611,7 @@
                             </tbody>
                             <tfoot class="fw-bold bg-light">
                                 <tr>
-                                    <td>Total</td>
+                                    <td>@GlobalShared.Total</td>
                                     <td>@Model.LoanTargetSummaries.Sum(x => x.MenCount).ToString("N0")</td>
                                     <td>@Model.LoanTargetSummaries.Sum(x => x.WomenCount).ToString("N0")</td>
                                     <td>@Model.LoanTargetSummaries.Sum(x => x.GroupsCount).ToString("N0")</td>
@@ -635,7 +634,7 @@
         <!-- 📦 Loan Categories Insights & Breakdown -->
         <div class="card shadow-sm border-secondary mb-4">
             <div class="card-header text-primary d-flex justify-content-between align-items-center">
-                <span><i class="mdi mdi-tag-multiple-outline me-1"></i> Loan Categories Summary</span>
+                <span><i class="mdi mdi-tag-multiple-outline me-1"></i> @GlobalGeneralStatisticReport.Loan_Categories_Summary</span>
                 <button class="btn btn-outline-warning btn-sm" data-bs-toggle="collapse" data-bs-target="#loanCategoryCollapse">
                     <i class="mdi mdi-chevron-down"></i>
                 </button>
@@ -648,15 +647,15 @@
                         <table class="table table-bordered table-hover table-sm align-middle">
                             <thead class="table-light">
                                 <tr>
-                                    <th>Category</th>
-                                    <th>Men</th>
-                                    <th>Women</th>
-                                    <th>Groups</th>
-                                    <th>Total</th>
-                                    <th>Men Amount</th>
-                                    <th>Women Amount</th>
-                                    <th>Groups Amount</th>
-                                    <th>Total Amount</th>
+                                    <th>@GlobalShared.Category</th>
+                                    <th>@GlobalShared.Men</th>
+                                    <th>@GlobalShared.Women</th>
+                                    <th>@GlobalShared.Groups</th>
+                                    <th>@GlobalShared.Total</th>
+                                    <th>@GlobalShared.Men_Amount</th>
+                                    <th>@GlobalShared.Women_Amount</th>
+                                    <th>@GlobalShared.Groups_Amount</th>
+                                    <th>@GlobalShared.Total_amount</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -677,7 +676,7 @@
                             </tbody>
                             <tfoot class="fw-bold bg-light">
                                 <tr>
-                                    <td>Total</td>
+                                    <td>@GlobalShared.Total</td>
                                     <td>@Model.LoanCategorySummaries.Sum(x => x.MenCount).ToString("N0")</td>
                                     <td>@Model.LoanCategorySummaries.Sum(x => x.WomenCount).ToString("N0")</td>
                                     <td>@Model.LoanCategorySummaries.Sum(x => x.GroupsCount).ToString("N0")</td>
@@ -693,7 +692,7 @@
                     <div class="card-body table-responsive mb-2">
                         <!-- 📊 Bar Chart: Loan Category Amounts -->
                         <div class="mb-4">
-                            <h6 class="text-muted mb-2"><i class="mdi mdi-chart-bar"></i> Loan Category Distribution by Amount</h6>
+                            <h6 class="text-muted mb-2"><i class="mdi mdi-chart-bar"></i> @GlobalGeneralStatisticReport.Loan_Category_Distribution_by_Amount</h6>
                             <canvas id="loanCategoryChartx" height="280"></canvas>
                         </div>
                     </div>
@@ -756,7 +755,7 @@
         <!-- 🧠 Loan Insights Interpretation -->
         <div class="card shadow-sm border-info mb-3">
             <div class="card-header text-info d-flex justify-content-between align-items-center">
-                <span><i class="mdi mdi-lightbulb-on-outline me-1"></i> Loan Insights Summary</span>
+                <span><i class="mdi mdi-lightbulb-on-outline me-1"></i> @GlobalGeneralStatisticReport.Loan_Insights_Summary</span>
                 <button class="btn btn-outline-info btn-sm" data-bs-toggle="collapse" data-bs-target="#loanInsightsCollapse">
                     <i class="mdi mdi-chevron-down"></i>
                 </button>
@@ -766,15 +765,15 @@
                 <div class="card-body text-dark text-sm">
                     <ul class="mb-3">
                         <li>
-                            <strong>Current Portfolio Size:</strong> Total of <b>@totalLoans.ToString("N0")</b> loans granted, amounting to <b>@totalLoanAmount.ToString("N0") FCFA</b>.
+                            <strong>@GlobalGeneralStatisticReport.Current_Portfolio_Size:</strong> @GlobalGeneralStatisticReport.Total_of <b>@totalLoans.ToString("N0")</b> @GlobalGeneralStatisticReport.loans_granted_amounting_to <b>@totalLoanAmount.ToString("N0") FCFA</b>.
                         </li>
                         <li>
-                            <strong>Demographic Split:</strong> Men hold the majority with <b>@loanMenAmount.ToString("N0") FCFA</b>, representing approximately
-                            <b>@loanMenPercent.ToString("N1")%</b> of all outstanding loans, followed by women at <b>@loanWomenPercent.ToString("N1")%</b> and groups at
+                            <strong>@GlobalGeneralStatisticReport.Demographic_Split:</strong> @GlobalGeneralStatisticReport.Men_hold_the_majority_with <b>@loanMenAmount.ToString("N0") FCFA</b>, @GlobalGeneralStatisticReport.representing_approximately
+                            <b>@loanMenPercent.ToString("N1")%</b> @GlobalGeneralStatisticReport.of_all_outstanding_loans_followed_by_women_at <b>@loanWomenPercent.ToString("N1")%</b> @GlobalGeneralStatisticReport.and_groups_at
                             <b>@loanGroupsPercent.ToString("N1")%</b>.
                         </li>
                         <li>
-                            <strong>Top 3 Loan Categories:</strong>
+                            <strong>@GlobalGeneralStatisticReport.Top_3_Loan_Categories:</strong>
                             <ul>
                                 @foreach (var category in top3Categories)
                                 {
@@ -783,22 +782,22 @@
                                     </li>
                                 }
                             </ul>
-                            These categories jointly represent the primary credit drivers in the institution.
+                            @GlobalGeneralStatisticReport.These_categories_jointly_represent_the_primary_credit_drivers_in_the_institution
                         </li>
 
                         <li>
-                            <strong>Group Borrowing:</strong> Groups show strong credit demand, especially in <b>Business</b> and <b>Farming</b>, with total borrowings exceeding
-                            <b>@loanGroupsAmount.ToString("N0") FCFA</b>, supporting communal economic activity.
+                            <strong>@GlobalGeneralStatisticReport.Group_Borrowing:</strong> @Html.Raw(@GlobalGeneralStatisticReport.Groups_show_strong_credit_demand_especially_in_Business_and_Farming_with_total_borrowings_exceeding)
+                            <b>@loanGroupsAmount.ToString("N0") FCFA</b>, @GlobalGeneralStatisticReport.supporting_communal_economic_activity
                         </li>
                         <li>
-                            <strong>Recent Lending Trend:</strong> <b>@loansGrantedThisMonth</b> new loans granted this month, worth <b>@newLoansAmountThisMonth.ToString("N0") FCFA</b>,
-                            showing <span class="text-success">ongoing growth in credit access</span>.
+                            <strong>@GlobalGeneralStatisticReport.Recent_Lending_Trend:</strong> <b>@loansGrantedThisMonth</b> @GlobalGeneralStatisticReport.new_loans_granted_this_month_worth <b>@newLoansAmountThisMonth.ToString("N0") FCFA</b>,
+                            @Html.Raw(@GlobalGeneralStatisticReport.showing_ongoing_growth_in_credit_access)
                         </li>
                     </ul>
 
                     <p class="text-muted">
-                        These insights support targeting profitable sectors, improving financial inclusion strategies, and monitoring risk exposure across demographics.
-                        Align credit policies to strengthen compliance and ensure portfolio health.
+                        @GlobalGeneralStatisticReport.These_insights_support_targeting_profitable_sectors_improving_financial_inclusion_strategies_and_monitoring_risk_exposure_across_demographics
+                        @GlobalGeneralStatisticReport.Align_credit_policies_to_strengthen_compliance_and_ensure_portfolio_health
                     </p>
                 </div>
             </div>
@@ -813,31 +812,31 @@
             <div class="col-md-6">
                 <div class="card h-100 shadow-sm">
                     <div class="card-body">
-                        <h5 class="text-primary mb-3">👥 Gender Distribution Summary</h5>
+                        <h5 class="text-primary mb-3">👥 @GlobalGeneralStatisticReport.Gender_Distribution_Summary</h5>
                         <ul class="list-group">
                             <li class="list-group-item d-flex justify-content-between align-items-center">
-                                Men
+                                @GlobalShared.Men
                                 <span class="badge bg-primary">
                                     @Model.CustomerGenderSummary.Men.ToString("N0")
                                     (@Model.CustomerGenderSummary.MenPercentage%)
                                 </span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
-                                Women
+                                @GlobalShared.Women
                                 <span class="badge bg-warning text-dark">
                                     @Model.CustomerGenderSummary.Women.ToString("N0")
                                     (@Model.CustomerGenderSummary.WomenPercentage%)
                                 </span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
-                                Groups
+                                @GlobalShared.Groups
                                 <span class="badge bg-danger">
                                     @Model.CustomerGenderSummary.Groups.ToString("N0")
                                     (@Model.CustomerGenderSummary.GroupsPercentage%)
                                 </span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center fw-bold">
-                                Total
+                                @GlobalShared.Total
                                 <span>@Model.CustomerGenderSummary.Total.ToString("N0")</span>
                             </li>
                         </ul>
@@ -849,7 +848,7 @@
             <div class="col-md-6">
                 <div class="card shadow-sm h-100">
                     <div class="card-body">
-                        <h6 class="text-primary mb-2">👥 Gender Distribution</h6>
+                        <h6 class="text-primary mb-2">👥 @GlobalShared.Gender_Distribution</h6>
                         <canvas id="genderDistributionChart" height="120"></canvas>
                     </div>
                 </div>
@@ -864,7 +863,7 @@
             <div class="col-md-6">
                 <div class="card shadow-sm border-start h-100">
                     <div class="card-body">
-                        <h6 class="text-primary mb-3">📊 Loan Distribution by Gender/Group</h6>
+                        <h6 class="text-primary mb-3">📊 @GlobalGeneralStatisticReport.Loan_Distribution_by_Gender_Group</h6>
                         <canvas id="loanByDemographicChart" height="220"></canvas>
                     </div>
                 </div>
@@ -873,7 +872,7 @@
             <div class="col-md-6">
                 <div class="card shadow-sm border-start h-100">
                     <div class="card-body">
-                        <h6 class="text-primary mb-3">💰 Savings Distribution by Gender/Group</h6>
+                        <h6 class="text-primary mb-3">💰 @GlobalGeneralStatisticReport.Savings_Distribution_by_Gender_Group</h6>
                         <canvas id="savingsByDemographicChart" height="220"></canvas>
                     </div>
                 </div>
@@ -883,7 +882,7 @@
         <!-- 📌 Insight Summary -->
         <div class="card shadow-sm border-info mb-3">
             <div class="card-header text-info d-flex justify-content-between align-items-center">
-                <span><i class="mdi mdi-lightbulb-on-outline me-1"></i> Insight Summary</span>
+                <span><i class="mdi mdi-lightbulb-on-outline me-1"></i> @GlobalShared.Insight_Summary</span>
                 <button class="btn btn-outline-info btn-sm" data-bs-toggle="collapse" data-bs-target="#insightCollapse">
                     <i class="mdi mdi-chevron-down"></i>
                 </button>
@@ -894,7 +893,7 @@
                 <div class="card-body">
 
                     <!-- 📋 Table: Loan & Saving Breakdown -->
-                    <h6 class="text-primary mb-3">📋 Loan & Saving Breakdown by Demographic</h6>
+                    <h6 class="text-primary mb-3">📋 @GlobalGeneralStatisticReport.Loan_Saving_Breakdown_by_Demographic</h6>
 
                     @{
                         var rows = new[]
@@ -908,11 +907,11 @@
                     <table class="table table-bordered table-sm text-center align-middle">
                         <thead class="table-light">
                             <tr>
-                                <th>Group</th>
-                                <th>Loan (FCFA)</th>
-                                <th>Loan %</th>
-                                <th>Saving (FCFA)</th>
-                                <th>Saving %</th>
+                                <th>@GlobalShared.Group</th>
+                                <th>@GlobalShared.Loan (FCFA)</th>
+                                <th>@GlobalShared.Loan %</th>
+                                <th>@GlobalShared.Saving (FCFA)</th>
+                                <th>@GlobalShared.Saving %</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -929,7 +928,7 @@
                         </tbody>
                         <tfoot class="fw-bold table-light">
                             <tr>
-                                <td>Total</td>
+                                <td>@GlobalShared.Total</td>
                                 <td>@totalLoan.ToString("N0")</td>
                                 <td>100%</td>
                                 <td>@totalSaving.ToString("N0")</td>
@@ -943,12 +942,11 @@
                     {
                         <div class="card mt-4 border-warning border-start border-4 shadow-sm">
                             <div class="card-body">
-                                <h6 class="text-warning fw-bold"><i class="mdi mdi-alert-outline me-1"></i> Compliance Warning</h6>
+                                <h6 class="text-warning fw-bold"><i class="mdi mdi-alert-outline me-1"></i> @GlobalGeneralStatisticReport.Compliance_Warning</h6>
                                 <p class="mb-0">
-                                    Loan-to-saving ratio is <strong>@loanToSavingRatio.ToString("N1")%</strong>,
-                                    exceeding the 170% compliance threshold.<br />
-                                    This signals high loan exposure relative to available savings.
-                                    Immediate review of lending strategies is recommended.
+                                    @GlobalGeneralStatisticReport.Loan_to_saving_ratio_is <strong>@loanToSavingRatio.ToString("N1")%</strong>, @GlobalGeneralStatisticReport.exceeding_the_170_compliance_threshold<br />
+                                    @GlobalGeneralStatisticReport.This_signals_high_loan_exposure_relative_to_available_savings
+                                    @GlobalGeneralStatisticReport.Immediate_review_of_lending_strategies_is_recommended
                                 </p>
                             </div>
                         </div>
@@ -956,30 +954,30 @@
 
                     <!-- 🧠 Interpretation -->
                     <div class="mt-4">
-                        <h6 class="text-success"><i class="mdi mdi-lightbulb-outline me-1"></i> Interpretation</h6>
+                        <h6 class="text-success"><i class="mdi mdi-lightbulb-outline me-1"></i> @GlobalShared.Interpretation</h6>
                         <p class="mb-3">
-                            <strong>Loan-to-Saving Ratio:</strong> @loanToSavingRatio.ToString("N1")%<br />
-                            <strong>Total Loan Volume:</strong> @totalLoan.ToString("N0") FCFA<br />
-                            <strong>Total Saving Volume:</strong> @totalSaving.ToString("N0") FCFA
+                            <strong>@GlobalGeneralStatisticReport.Loan_to_Saving_Ratio:</strong> @loanToSavingRatio.ToString("N1")%<br />
+                            <strong>@GlobalGeneralStatisticReport.Total_Loan_Volume:</strong> @totalLoan.ToString("N0") FCFA<br />
+                                                                                                                            <strong>@GlobalGeneralStatisticReport.Total_Saving_Volume:</strong> @totalSaving.ToString("N0") FCFA
                         </p>
 
                         <ul>
                             <li>
-                                <strong>Men:</strong> Hold <b>@loanMenPercent.ToString("N1")%</b> of total loans and <b>@savingMenPercent.ToString("N1")%</b> of savings.
-                                Indicates high borrowing with moderate savings capacity.
+                                <strong>@GlobalShared.Men:</strong> @GlobalGeneralStatisticReport.Hold <b>@loanMenPercent.ToString("N1")%</b> @GlobalGeneralStatisticReport.of_total_loans_and <b>@savingMenPercent.ToString("N1")%</b> @GlobalGeneralStatisticReport.of_savings.
+                                @GlobalGeneralStatisticReport.Indicates_high_borrowing_with_moderate_savings_capacity
                             </li>
                             <li>
-                                <strong>Women:</strong> Represent <b>@loanWomenPercent.ToString("N1")%</b> of loans and <b>@savingWomenPercent.ToString("N1")%</b> of savings.
-                                Shows balanced financial engagement.
+                                <strong>@GlobalShared.Women:</strong> @GlobalGeneralStatisticReport.Represent <b>@loanWomenPercent.ToString("N1")%</b> @GlobalGeneralStatisticReport.of_loans_and <b>@savingWomenPercent.ToString("N1")%</b> @GlobalGeneralStatisticReport.of_savings.
+                                @GlobalGeneralStatisticReport.Shows_balanced_financial_engagement
                             </li>
                             <li>
-                                <strong>Groups:</strong> Hold <b>@loanGroupsPercent.ToString("N1")%</b> of loans but contribute <b>@savingGroupsPercent.ToString("N1")%</b> of savings.
-                                Demonstrates strong group-based savings culture.
+                                <strong>@GlobalShared.Groups:</strong> @GlobalGeneralStatisticReport.Hold <b>@loanGroupsPercent.ToString("N1")%</b> @GlobalGeneralStatisticReport.of_loans_but_contribute<b>@savingGroupsPercent.ToString("N1")%</b> @GlobalGeneralStatisticReport.of_savings.
+                                @GlobalGeneralStatisticReport.Demonstrates_strong_group_based_savings_culture
                             </li>
                         </ul>
 
                         <p class="text-muted mt-3">
-                            Use this insight to refine loan offers, promote targeted saving schemes, and evaluate risk exposure by demographic.
+                            @GlobalGeneralStatisticReport.Use_this_insight_to_refine_loan_offers_promote_targeted_saving_schemes_and_evaluate_risk_exposure_by_demographic
                         </p>
                     </div>
 
@@ -994,17 +992,17 @@
             <div class="col-md-12">
                 <div class="card shadow-sm">
                     <div class="card-body">
-                        <h5 class="text-danger mb-3">❗ Missing Customers</h5>
-                        <p>Total: <strong>@Model.MembersWithAccounts.Missing.ToString("N0")</strong></p>
+                        <h5 class="text-danger mb-3">❗ @GlobalGeneralStatisticReport.Missing_Customers</h5>
+                        <p>@GlobalShared.Total: <strong>@Model.MembersWithAccounts.Missing.ToString("N0")</strong></p>
                         <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
                             <table class="table table-sm table-bordered">
                                 <thead class="table-light">
                                     <tr>
-                                        <th>M.Account Num</th>
-                                        <th>Name</th>
-                                        <th>Gender</th>
-                                        <th>Age</th>
-                                        <th>Reason</th>
+                                        <th>@GlobalGeneralStatisticReport.M_Account_Num</th>
+                                        <th>@GlobalShared.Name</th>
+                                        <th>@GlobalShared.Gender</th>
+                                        <th>@GlobalShared.Age</th>
+                                        <th>@GlobalShared.Reason</th>
                                     </tr>
                                 </thead>
                                 <tbody>

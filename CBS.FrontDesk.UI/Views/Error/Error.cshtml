@@ -12,8 +12,8 @@
 <div class="container mt-5">
     <div class="alert alert-danger shadow border-start border-4 border-danger">
         <h4 class="alert-heading"><i class="mdi mdi-alert-circle-outline me-2"></i> @title</h4>
-        <p><strong>@GlobalError.StatusCode:</strong> @errorCode</p>
-        <p><strong>@GlobalError.Message:</strong> @message</p>
+        <p><strong>@GlobalShared.StatusCode:</strong> @errorCode</p>
+        <p><strong>@GlobalShared.Message:</strong> @message</p>
 
         @if (showDiagnostics && !string.IsNullOrEmpty(stackTrace))
         {

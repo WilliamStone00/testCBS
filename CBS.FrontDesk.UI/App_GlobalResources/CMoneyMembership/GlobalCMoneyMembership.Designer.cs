@@ -232,7 +232,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Easily manage profiles, including activation, PIN resets, deactivation, reactivation, Set Security Questions &amp; Answer, Change Members Number, Generate OTP and Update Subcription Status.
+        ///   Looks up a localized string similar to Easily manage profiles, including activation, PIN resets, deactivation, reactivation, Set Security Questions &amp; Answer, Change Members Number, Generate OTP and Update Subscription Status.
         /// </summary>
         internal static string EasilyManageProfilesIncludingActivation {
             get {

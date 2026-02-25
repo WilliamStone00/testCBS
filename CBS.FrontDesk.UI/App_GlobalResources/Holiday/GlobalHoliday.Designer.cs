@@ -61,56 +61,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Active.
-        /// </summary>
-        internal static string Active {
-            get {
-                return ResourceManager.GetString("Active", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Active status.
         /// </summary>
         internal static string ActiveStatus {
             get {
                 return ResourceManager.GetString("ActiveStatus", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Begin date.
-        /// </summary>
-        internal static string BeginDate {
-            get {
-                return ResourceManager.GetString("BeginDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Branch.
-        /// </summary>
-        internal static string Branch {
-            get {
-                return ResourceManager.GetString("Branch", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Branch-specific.
-        /// </summary>
-        internal static string BranchSpecific {
-            get {
-                return ResourceManager.GetString("BranchSpecific", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Centralised.
-        /// </summary>
-        internal static string Centralised {
-            get {
-                return ResourceManager.GetString("Centralised", resourceCulture);
             }
         }
         
@@ -129,24 +84,6 @@ namespace Resources {
         internal static string ConfiguredHolidayData {
             get {
                 return ResourceManager.GetString("ConfiguredHolidayData", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Description.
-        /// </summary>
-        internal static string Description {
-            get {
-                return ResourceManager.GetString("Description", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to End date.
-        /// </summary>
-        internal static string EndDate {
-            get {
-                return ResourceManager.GetString("EndDate", resourceCulture);
             }
         }
         
@@ -187,15 +124,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Inactive.
-        /// </summary>
-        internal static string Inactive {
-            get {
-                return ResourceManager.GetString("Inactive", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to No holiday is configured yet.
         /// </summary>
         internal static string NoHolidayIsConfiguredYet {
@@ -205,29 +133,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select branch.
-        /// </summary>
-        internal static string SelectBranch {
-            get {
-                return ResourceManager.GetString("SelectBranch", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Set holidays.
         /// </summary>
         internal static string SetHolidays {
             get {
                 return ResourceManager.GetString("SetHolidays", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Status.
-        /// </summary>
-        internal static string Status {
-            get {
-                return ResourceManager.GetString("Status", resourceCulture);
             }
         }
     }

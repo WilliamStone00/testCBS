@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.Configurations.GlobalConfig.GlobalConfig
-
+@using Resources
 @*<style>
     .detail-card {
         border: 1px solid #e5e7eb;
@@ -56,21 +56,21 @@
 
 <div class="detail-card p-3">
     <h5 class="text-primary mb-3">
-        Global Configuration Details
+        @GlobalConfig.Global_Configuration_Details
     </h5>
 
     <ul class="list-group">
         <li class="list-group-item">
-            <strong>Minimum Cheque Leave:</strong> @Model.MinimumOfChequeLeave
+            <strong>@GlobalConfig.Minimum_Cheque_Leave:</strong> @Model.MinimumOfChequeLeave
         </li>
         <li class="list-group-item">
-            <strong>Maximum Cheque Leave:</strong> @Model.MaximumOfChequeLeave
+            <strong>@GlobalConfig.Maximum_Cheque_Leave:</strong> @Model.MaximumOfChequeLeave
         </li>
         <li class="list-group-item">
-            <strong>Cheque Validity (Days):</strong> @Model.ChequeValidityDays
+            <strong>@GlobalConfig.Cheque_Validity (@GlobalShared.Days):</strong> @Model.ChequeValidityDays
         </li>
         <li class="list-group-item">
-            <strong>Centralised:</strong>
+            <strong>@GlobalShared.Centralised:</strong>
             @(Model.IsCentralised ? "Yes" : "No")
         </li>
     </ul>

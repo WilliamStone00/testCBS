@@ -28,14 +28,14 @@ else
                     </div>
                     <div class="col-md-6" hidden="hidden">
                         <div class="form-floating form-floating-outline">
-                            <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@GlobalEndOfDayOperation.TotalAmount: 0.0</span>
+                            <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@GlobalShared.Total_amount: 0.0</span>
                             <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0">
                             <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalProvision" value="@Model.CloseOfDayRequest.Amount">
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-floating form-floating-outline">
-                            <span class="formatted-amount shadow-box" id="lblBalance">@GlobalEndOfDayOperation.Balance: @Model.CloseOfDayRequest.Amount.ToString("#,##0.0")</span>
+                            <span class="formatted-amount shadow-box" id="lblBalance">@GlobalShared.Balance: @Model.CloseOfDayRequest.Amount.ToString("#,##0.0")</span>
                         </div>
                     </div>
                 }

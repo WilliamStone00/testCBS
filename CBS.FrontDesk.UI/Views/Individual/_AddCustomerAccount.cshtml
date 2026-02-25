@@ -24,7 +24,7 @@
         <div class="col-md-9">
             <div class="form-floating">
                 @Html.TextBoxFor(m => m.CustomerList.name, new { @class = "form-control", @readonly = true })
-                <label>@GlobalIndividual.MemberName</label>
+                <label>@GlobalShared.Member_name</label>
             </div>
         </div>
 
@@ -47,7 +47,7 @@
 
         <!-- Submit Button -->
         <div class="col-12">
-            <button type="submit" class="btn btn-primary" id="submitButton">@GlobalIndividual.AddAccount</button>
+            <button type="submit" class="btn btn-primary" id="submitButton">@GlobalShared.Add_Account</button>
         </div>
     }
 

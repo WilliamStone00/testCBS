@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.EndOfYearClosure.EndOfYear
-
+@using Resources
 
 @using (Html.BeginForm("InitiateClosure", "EndOfYearClosure", FormMethod.Post,
     new { enctype = "multipart/form-data", onsubmit = "return InitiateSubmitAjax(this);" }))
@@ -57,7 +57,7 @@
             <div class="row mb-2">
                 <div class="col-md-12 text-end">
                     <button type="submit" class="btn btn-primary" onclick="return InitiateSubmitAjax(this);">
-                        Initiate Closure
+                        @GlobalShared.Initiate_Closure
                     </button>
 
                 </div>

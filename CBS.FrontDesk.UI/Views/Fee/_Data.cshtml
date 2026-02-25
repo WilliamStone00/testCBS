@@ -5,7 +5,7 @@
     @if (Model.Count == 0)
     {
         <div class="text-center my-3">
-            <p>No loan fee type is created</p>
+            <p>@GlobalFee.No_loan_fee_type_is_created</p>
         </div>
     }
     else
@@ -14,9 +14,9 @@
             <table class="table table-hover" id="myDataTable">
                 <thead class="table-light">
                     <tr>
-                        <th>@GlobalFee.Name</th>
-                        <th>@GlobalFee.Type</th>
-                        <th>@GlobalFee.PaymentStatus</th>
+                        <th>@GlobalShared.Name</th>
+                        <th>@GlobalShared.Type</th>
+                        <th>@GlobalShared.Payment_Status</th>
                         <th>@GlobalShared.Action</th>
                     </tr>
                 </thead>

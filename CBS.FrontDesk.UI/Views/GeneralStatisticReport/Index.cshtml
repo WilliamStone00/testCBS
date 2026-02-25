@@ -3,17 +3,17 @@
 }
 @using System.Web.Mvc
 @using System.Collections.Generic
-
+@using Resources
 <div class="row">
     <div class="col-12">
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-chart-bar me-2"></i> General Statistics Report
+                    <i class="mdi mdi-chart-bar me-2"></i> @GlobalGeneralStatisticReport.General_Statistics_Report
                 </h1>
-                <p class="card-text">Analyze member and loan performance across branches, dates, and profiles.</p>
+                <p class="card-text">@GlobalGeneralStatisticReport.Analyze_member_and_loan_performance_across_branches_dates_and_profiles</p>
                 <p class="card-text text-black fw-bold">
-                    <i class="mdi mdi-alert-circle-outline me-1"></i> Use filters like branch, date range, and account type to generate targeted reports.
+                    <i class="mdi mdi-alert-circle-outline me-1"></i> @GlobalGeneralStatisticReport.Use_filters_like_branch_date_range_and_account_type_to_generate_targeted_reports
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -23,7 +23,7 @@
 
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-lightbulb-on-outline me-2"></i> Tips for Using Filters</span>
+        <span><i class="mdi mdi-lightbulb-on-outline me-2"></i> @GlobalGeneralStatisticReport.Tips_for_Using_Filters</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -31,61 +31,61 @@
     <div id="collapseTips" class="collapse">
         <div class="card-body">
             <ul>
-                <li><strong>Branch:</strong> Filter statistics by specific branch.</li>
-                <li><strong>Date Range:</strong> Select the reporting period.</li>
-                <li><strong>Account Types:</strong> Choose one or more types of accounts.</li>
-                <li><strong>Account Profiles:</strong> Include specific customer/member types.</li>
-                <li><strong>Main Report Type:</strong> Choose the kind of report to generate.</li>
+                <li><strong>@GlobalShared.Branch:</strong> @GlobalGeneralStatisticReport.Filter_statistics_by_specific_branch</li>
+                <li><strong>@GlobalShared.Date_Range:</strong> @GlobalGeneralStatisticReport.Select_the_reporting_period</li>
+                <li><strong>@GlobalShared.Account_Types:</strong> @GlobalGeneralStatisticReport.Choose_one_or_more_types_of_accounts</li>
+                <li><strong>@GlobalShared.Account_Profiles:</strong> @GlobalGeneralStatisticReport.Include_specific_customer_member_types</li>
+                <li><strong>@GlobalShared.Main_Report_Type:</strong> @GlobalGeneralStatisticReport.Choose_the_kind_of_report_to_generate</li>
             </ul>
         </div>
     </div>
 </div>
 
 <div class="card shadow p-3 mb-4">
-    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> Report Filters</h5>
+    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> @GlobalShared.Report_Filters</h5>
 
     <div class="row mb-3">
         <div class="col-md-4">
-            <label class="form-label fw-bold">Branch</label>
+            <label class="form-label fw-bold">@GlobalShared.Branch</label>
             @Html.DropDownList("branchInput", new SelectList(ViewBag.Branches, "Id", "Name"), "--- Select Branch ---", new { @class = "form-control select2", id = "branchInput" })
         </div>
         <div class="col-md-4">
-            <label class="form-label fw-bold">Start Date</label>
+            <label class="form-label fw-bold">@GlobalShared.Start_Date</label>
             <input type="date" name="startDate" id="startDate" class="form-control" />
         </div>
         <div class="col-md-4">
-            <label class="form-label fw-bold">End Date</label>
+            <label class="form-label fw-bold">@GlobalShared.End_Date</label>
             <input type="date" name="endDate" id="endDate" class="form-control" />
         </div>
     </div>
 
     <div class="row mb-3">
         <div class="col-md-6">
-            <label class="form-label fw-bold">Account Types</label>
+            <label class="form-label fw-bold">@GlobalShared.Account_Types</label>
             @Html.ListBox("accountTypes", new MultiSelectList(ViewBag.AccountTypes as List<string>), new { @class = "form-control select2", id = "accountTypes" })
         </div>
         <div class="col-md-6">
-            <label class="form-label fw-bold">Account Profiles</label>
+            <label class="form-label fw-bold">@GlobalShared.Account_Profiles</label>
             @Html.ListBox("accountProfiles", new MultiSelectList(ViewBag.AccountProfiles as List<string>), new { @class = "form-control select2", id = "accountProfiles" })
         </div>
     </div>
 
     <div class="row mb-3">
         <div class="col-md-6">
-            <label class="form-label fw-bold">Loan Status</label>
+            <label class="form-label fw-bold">@GlobalShared.Loan_Status</label>
             @Html.DropDownList("loanStatus", new SelectList(new List<string> { "all", "active", "closed" }), new { @class = "form-control", id = "loanStatus" })
         </div>
         <div class="col-md-6">
-            <label class="form-label fw-bold">Main Report Type</label>
+            <label class="form-label fw-bold">@GlobalShared.Main_Report_Type</label>
             <input type="text" name="mainReportType" id="mainReportType" class="form-control" placeholder="e.g. GeneralSummary, LoanBreakdown" />
         </div>
     </div>
 
     <div class="row mt-2">
         <div class="col-md-12 d-flex">
-            <button id="applyFilterBtn" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> Apply Filter</button>
-            <button id="resetFilterBtn" class="btn btn-secondary me-2 w-100"><i class="mdi mdi-refresh"></i> Reset</button>
-            <button id="exportBtn" class="btn btn-success w-100"><i class="mdi mdi-file-export"></i> Export</button>
+            <button id="applyFilterBtn" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> @GlobalShared.Apply_Filter</button>
+            <button id="resetFilterBtn" class="btn btn-secondary me-2 w-100"><i class="mdi mdi-refresh"></i> @GlobalShared.Reset</button>
+            <button id="exportBtn" class="btn btn-success w-100"><i class="mdi mdi-file-export"></i> @GlobalShared.Export</button>
         </div>
     </div>
 </div>

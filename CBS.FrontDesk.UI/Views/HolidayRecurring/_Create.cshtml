@@ -12,7 +12,7 @@
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
-                        <label for="Month">@GlobalHolidayRecurring.Name</label>
+                        <label for="Month">@GlobalShared.Name</label>
                     </div>
                 </div>
                 <!-- Holiday Type -->
@@ -63,7 +63,7 @@
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.Month, new { @class = "form-control", type = "number", min = "0", max = "12" })
                         @Html.ValidationMessageFor(m => m.Month, "", new { @class = "text-danger" })
-                        <label for="Month">@GlobalHolidayRecurring.Month</label>
+                        <label for="Month">@GlobalShared.Month</label>
                     </div>
                 </div>
 
@@ -88,11 +88,11 @@
                         @Html.DropDownListFor(
                             m => m.BranchId,
                             new SelectList(ViewBag.Branches, "Id", "Name"),
-                            "---"+ @GlobalHolidayRecurring.SelectBranch+ "---",
+                            "---"+ GlobalShared.SelectBranch+ "---",
                             new { @class = "form-control select2", id = "BranchId", @search = "true" }
                         )
                         @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
-                        <label for="BranchId">@GlobalHolidayRecurring.SelectBranch</label>
+                        <label for="BranchId">@GlobalShared.SelectBranch</label>
                     </div>
                 </div>
 
@@ -101,7 +101,7 @@
                     <div class="form-floating form-floating-outline">
                         @Html.TextAreaFor(m => m.Description, new { @class = "form-control", style = "height: 200px;" })
                         @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
-                        <label for="Description">@GlobalHolidayRecurring.Description</label>
+                        <label for="Description">@GlobalShared.Description</label>
                     </div>
                 </div>
 
@@ -109,7 +109,7 @@
                 <div class="col-md-12">
                     <div class="form-check">
                         @Html.CheckBoxFor(m => m.IsActive, new { @class = "form-check-input", id = "isActive" })
-                        <label class="form-check-label" for="isActive">@GlobalHolidayRecurring.ActiveStatus</label>
+                        <label class="form-check-label" for="isActive">@GlobalShared.Active_Status</label>
                     </div>
                 </div>
             </div>
