@@ -754,12 +754,21 @@
                 case 'LoanSituation':
                     $('#loanSituationForm').removeClass('d-none');
 
+                    // Set required attributes
+                    $('#LoanHistoryStatus').attr('required', 'required');
+                    $('#loanSituationDateFrom').attr('required', 'required');
+                    $('#loanSituationDateTo').attr('required', 'required');
+
+                    // Set name attributes for form submission
+                    $('#LoanHistoryStatus').attr('name', 'LoanStatus');
+                    $('#loanSituationDateFrom').attr('name', 'DateFrom');
+                    $('#loanSituationDateTo').attr('name', 'DateTo');
+
                     var loanStatus = $('#LoanHistoryStatus').val();
                     if (!loanStatus || loanStatus === '') {
                         $('#LoanHistoryStatus').val('all').trigger('change');
                     }
                     break;
-
                 case 'InterestVadPenalty':
                     $('#interestVadPenaltyForm').removeClass('d-none');
                     $('#interestVadPenaltyDateFrom').attr('required', 'required');
@@ -1039,8 +1048,23 @@
             }
             formData.append('LoanStatus', loanStatus);
 
+            // Add date fields
+            var dateFrom = $('#loanSituationDateFrom').val();
+            var dateTo = $('#loanSituationDateTo').val();
+
+            formData.append('DateFrom', dateFrom || '');
+            formData.append('DateTo', dateTo || '');
+
+            console.log('Loan Situation Form Data:', {
+                ReportType: 'LoanSituation',
+                LoanStatus: loanStatus,
+                DateFrom: dateFrom,
+                DateTo: dateTo
+            });
+
             return formData;
         }
+
 
         // ============================================================
         // INITIALIZATION FUNCTIONS
@@ -1563,6 +1587,14 @@
                     formData.append('InterestVadPenaltyType', selectedType);
                     formData.append('DateFrom', $('#interestVadPenaltyDateFrom').val() || '');
                     formData.append('DateTo', $('#interestVadPenaltyDateTo').val() || '');
+                    break;
+
+                case 'LoanSituation':
+                    // This case is handled above by buildLoanSituationFormData()
+                    // But we'll keep it here as a fallback
+                    formData.append('LoanStatus', $('#LoanHistoryStatus').val() || 'all');
+                    formData.append('DateFrom', $('#loanSituationDateFrom').val() || '');
+                    formData.append('DateTo', $('#loanSituationDateTo').val() || '');
                     break;
             }
 

@@ -162,6 +162,7 @@
                                     <i class="mdi mdi-chevron-down"></i>
                                 </button>
                             </div>
+
                             <div class="collapse" id="totalAmountCardBody" data-bs-parent="#postDetailsSection">
                                 <div class="card-body">
                                     <div class="row">
@@ -221,6 +222,17 @@
                                 </div>
                             </div>
                             <div class="collapse" id="sourceAccountsCardBody" data-bs-parent="#postDetailsSection">
+
+                                <div class="col-md-12">
+                                    <label>Source Branch</label>
+                                    <div class="form-floating shadow-sm">
+                                        @Html.DropDownListFor(m => m.SourceBranchId, new SelectList(ViewBag.Branches, "Id", "name"), "--- Select Source Branch ---", new { @class = "form-control select2" })
+                                        @Html.ValidationMessageFor(m => m.SourceBranchId, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <hr/>
+
                                 <div class="card-body p-0">
                                     <div class="table-responsive">
                                         <table class="table table-sm table-hover mb-0" id="sourceAccountsTable">
@@ -508,4 +520,4 @@
             </div>
         </div>
     </div>
-@*</div>*@
+</div>
