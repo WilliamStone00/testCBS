@@ -133,7 +133,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A person from the same branch or network who can pledge their account for a guarantee, even if the balance is 0..
+        ///   Looks up a localized string similar to A person from the same branch or Credit Union who can pledge their account for a guarantee 100%, even if the balance is 0. Liquid or Assets.
         /// </summary>
         internal static string CoObligorDescription {
             get {
@@ -331,7 +331,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Shotee.
+        ///   Looks up a localized string similar to Surety.
         /// </summary>
         internal static string Shotee {
             get {
@@ -340,7 +340,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A person from the same branch or network, must have at least 80% in savings to guarantee a loan..
+        ///   Looks up a localized string similar to A person from the same branch or Credit Union, must have at least 100% in savings to guarantee a loan (Liquid coverage).
         /// </summary>
         internal static string ShoteeDescription {
             get {

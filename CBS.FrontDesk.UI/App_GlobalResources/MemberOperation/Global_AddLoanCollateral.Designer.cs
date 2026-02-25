@@ -97,6 +97,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Collateral Category.
+        /// </summary>
+        internal static string CollateralCategory {
+            get {
+                return ResourceManager.GetString("CollateralCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit.
         /// </summary>
         internal static string Edit {
@@ -111,6 +120,15 @@ namespace Resources {
         internal static string Location {
             get {
                 return ResourceManager.GetString("Location", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Market value.
+        /// </summary>
+        internal static string Marketvalue {
+            get {
+                return ResourceManager.GetString("Marketvalue", resourceCulture);
             }
         }
         
@@ -201,6 +219,15 @@ namespace Resources {
         internal static string Value {
             get {
                 return ResourceManager.GetString("Value", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Venal value.
+        /// </summary>
+        internal static string venalvalue {
+            get {
+                return ResourceManager.GetString("venalvalue", resourceCulture);
             }
         }
         
