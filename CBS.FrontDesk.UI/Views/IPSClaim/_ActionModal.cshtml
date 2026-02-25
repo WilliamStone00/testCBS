@@ -226,12 +226,12 @@
                                 <div class="col-md-12">
                                     <label>Source Branch</label>
                                     <div class="form-floating shadow-sm">
-                                        @Html.DropDownListFor(m => m.SourceBranchId, new SelectList(ViewBag.Branches, "Id", "name"), "--- Select Source Branch ---", new { @class = "form-control select2" })
+                                        @Html.DropDownListFor(m => m.SourceBranchId, new SelectList(ViewBag.Branches, "Id", "name"), "--- Select Source Branch ---", new { @class = "form-control select2", id = "SourceBranchId" })
                                         @Html.ValidationMessageFor(m => m.SourceBranchId, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
 
-                                <hr/>
+                                <hr />
 
                                 <div class="card-body p-0">
                                     <div class="table-responsive">
@@ -331,7 +331,7 @@
                                         data-bs-toggle="collapse"
                                         data-bs-target="#branchAccountsCardBody"
                                         aria-expanded="false">
-                                    <i class="mdi mdi-chevron-down"></i>
+                                    <i class="mdi mdi-chevron-down"></i> 
                                 </button>
 
                             </div>

@@ -482,13 +482,52 @@
             background-color: #0d6efd !important;
             color: white !important;
         }
-    </style>
+   
+            /* Ensure dropdown is above modal */
+            .select2-container--open {
+                z-index: 9999 !important;
+            }
+
+            /* Match Bootstrap styling */
+            .select2-container--default .select2-selection--single {
+                height: 38px !important;
+                border: 1px solid #dee2e6 !important;
+                border-radius: 0.25rem !important;
+                display: flex;
+                align-items: center;
+            }
+
+                .select2-container--default .select2-selection--single .select2-selection__rendered {
+                    line-height: 36px !important;
+                    padding-left: 12px !important;
+                }
+
+                .select2-container--default .select2-selection--single .select2-selection__arrow {
+                    height: 36px !important;
+                }
+
+            .select2-container {
+                width: 100% !important;
+            }
+
+            .select2-dropdown {
+                border: 1px solid #ced4da !important;
+                border-radius: 0.25rem !important;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.1) !important;
+                z-index: 10000 !important;
+            }
+
+            .select2-results__option--highlighted {
+                background-color: #0d6efd !important;
+                color: white !important;
+            }
+        </style>
 
     <script>
     var ClaimsTable = null;
     var currentTableData = [];
     var postingDataCache = {};
-    var affiliateAccounts = [];
+    var sourceBranchAffiliateAccounts = []; // Renamed from affiliateAccounts
     var branchAccounts = [];
 
     // ============================
@@ -496,7 +535,8 @@
     // ============================
     function formatCurrency(amount) {
         return new Intl.NumberFormat('en-US', {
-            minimumFractionDigits: 2
+            minimumFractionDigits: 1,
+            maximumFractionDigits: 1
         }).format(amount);
     }
 
@@ -834,6 +874,147 @@
     }
 
     // ============================
+    // SOURCE BRANCH AFFILIATE ACCOUNTS FUNCTIONS
+    // ============================
+
+    /**
+     * Handle source branch change event
+     */
+    function handleSourceBranchChange() {
+        var selectedBranchId = $('#SourceBranchId').val();
+
+        // Only proceed if we're in post mode and have a claim/member selected
+        if ($('#actionType').val() === 'post' && selectedBranchId) {
+            refreshSourceBranchAffiliateAccounts(selectedBranchId);
+        }
+    }
+
+/**
+ * Refresh source branch affiliate accounts based on selected branch
+ */
+function refreshSourceBranchAffiliateAccounts(branchId) {
+    var claimId = $('#hiddenClaimId').val();
+    var memberId = $('#hiddenMemberId').val();
+
+    if (!claimId || !memberId) {
+        console.log('Missing claim or member ID');
+        return;
+    }
+
+    // Store the current branch ID to check if it changed during loading
+    var currentBranchId = branchId;
+
+    // Show loading state on the source accounts section
+    $('#sourceAccountsTableBody').html(`
+        <tr id="loadingRow">
+            <td colspan="4" class="text-center py-4">
+                <div class="spinner-border spinner-border-sm text-primary me-2"></div>
+                Loading accounts for selected branch...
+            </td>
+        </tr>
+    `);
+
+    $.ajax({
+        url: '@Url.Action("GetPostingData", "IPSClaim")',
+        type: 'GET',
+        data: {
+            claimId: claimId,
+            memberId: memberId,
+            branchId: branchId
+        },
+        success: function(response) {
+            // Check if the branch hasn't changed during the AJAX call
+            if ($('#SourceBranchId').val() !== currentBranchId) {
+                // Branch changed during loading, ignore this response
+                return;
+            }
+
+            if (response.success && response.data) {
+                const data = response.data;
+
+                // Update source branch affiliate accounts with the new branch's accounts
+                if (data.viewBagData && data.viewBagData.sourceBranchAffiliateAccounts) {
+                    sourceBranchAffiliateAccounts = data.viewBagData.sourceBranchAffiliateAccounts.map(x => ({
+                        Value: x.Value,
+                        Text: x.Text
+                    }));
+
+                    // Clear the loading row first
+                    $('#loadingRow').remove();
+
+                    // Refresh the source accounts table with new accounts
+                    refreshSourceAccountsTable();
+
+                    // Optional: Show success message
+                    appalert('Source accounts updated for selected branch', 2, 1);
+                }
+            } else {
+                appalert('Failed to load accounts for selected branch', 3, 1);
+                // Restore previous state
+                $('#loadingRow').remove();
+                refreshSourceAccountsTable();
+            }
+        },
+        error: function() {
+            appalert('Error loading accounts for selected branch', 4, 1);
+            // Restore previous state
+            $('#loadingRow').remove();
+            refreshSourceAccountsTable();
+        }
+    });
+}
+    /**
+     * Refresh source accounts table with new affiliate accounts
+     */
+        /**
+      * Refresh source accounts table with new affiliate accounts
+      */
+        function refreshSourceAccountsTable() {
+            var currentRows = $('#sourceAccountsTableBody tr.source-account-row').length;
+
+            if (currentRows === 0) {
+                // If no rows exist, clear the table body first then add one default row
+                $('#sourceAccountsTableBody').empty(); // ← ADD THIS LINE
+                addSourceAccountRow();
+            } else {
+                // Clear any loading messages first
+                $('#sourceAccountsTableBody tr').not('.source-account-row').remove(); // ← ADD THIS LINE
+
+                // Update existing rows with new account options
+                $('#sourceAccountsTableBody tr.source-account-row').each(function () {
+                    var $row = $(this);
+                    var $select = $row.find('.source-gl-account');
+                    var currentValue = $select.val();
+
+                    // Rebuild options
+                    var optionsHtml = '<option value="">-- Select Account --</option>';
+                    if (sourceBranchAffiliateAccounts && sourceBranchAffiliateAccounts.length > 0) {
+                        sourceBranchAffiliateAccounts.forEach(function (acc) {
+                            optionsHtml += `<option value="${acc.Value}" ${acc.Value === currentValue ? 'selected' : ''}>${acc.Text}</option>`;
+                        });
+                    }
+
+                    // Replace select with new options and reinitialize Select2
+                    var $newSelect = $('<select>', {
+                        class: 'form-select form-select-sm source-gl-account',
+                        required: true,
+                        html: optionsHtml
+                    });
+
+                    $select.replaceWith($newSelect);
+
+                    // Reinitialize Select2 for this row
+                    setTimeout(function () {
+                        initializeSelect2($newSelect);
+                    }, 50);
+                });
+            }
+
+            // Make sure to update totals after refresh
+            setTimeout(updateAllTotals, 100);
+        }
+
+    // ============================
     // TABLE ROW FUNCTIONS WITH FIXED SELECT2 INITIALIZATION
     // ============================
 
@@ -841,8 +1022,8 @@
         var rowId = 'src_' + Math.floor(Math.random() * 100000);
 
         var optionsHtml = '<option value="">-- Select Account --</option>';
-        if (affiliateAccounts && affiliateAccounts.length > 0) {
-            affiliateAccounts.forEach(function (acc) {
+        if (sourceBranchAffiliateAccounts && sourceBranchAffiliateAccounts.length > 0) {
+            sourceBranchAffiliateAccounts.forEach(function (acc) {
                 optionsHtml += `<option value="${acc.Value}">${acc.Text}</option>`;
             });
         }
@@ -879,7 +1060,6 @@
 
         setTimeout(updateAllTotals, 100);
     }
-
     function addBranchAccountRow() {
         var rowId = 'br_' + Math.floor(Math.random() * 100000);
 
@@ -1400,11 +1580,19 @@
 
                 const data = response.data;
 
-                var rawAffiliates = data.viewBagData.affiliateAccounts || data.viewBagData.AffiliateAccounts || [];
-                var rawBranches = data.viewBagData.branchAccounts || data.viewBagData.BranchAccounts || [];
+                // Update global variables with renamed property
+                var rawSourceAffiliates = data.viewBagData.sourceBranchAffiliateAccounts || [];
+                var rawBranches = data.viewBagData.branchAccounts || [];
 
-                affiliateAccounts = rawAffiliates.map(x => ({ Value: x.Value || x.value, Text: x.Text || x.text }));
-                branchAccounts = rawBranches.map(x => ({ Value: x.Value || x.value, Text: x.Text || x.text }));
+                sourceBranchAffiliateAccounts = rawSourceAffiliates.map(x => ({
+                    Value: x.Value || x.value,
+                    Text: x.Text || x.text
+                }));
+
+                branchAccounts = rawBranches.map(x => ({
+                    Value: x.Value || x.value,
+                    Text: x.Text || x.text
+                }));
 
                 updatePostingUI(data);
                 setupPostingTables(data);
@@ -1566,6 +1754,24 @@
     // GLOBAL TABLE ROW EVENT BINDING
     // ============================
     function bindTableRowEvents() {
+        // Source Branch Change Event
+        $(document).on('change', '#SourceBranchId', function() {
+            handleSourceBranchChange();
+        });
+
+        // Refresh Source Accounts Button
+        $(document).on('click', '#refreshSourceAccountsBtn', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            var selectedBranchId = $('#SourceBranchId').val();
+            if (selectedBranchId) {
+                refreshSourceBranchAffiliateAccounts(selectedBranchId);
+            } else {
+                appalert('Please select a source branch first', 3, 1);
+            }
+        });
+
         $(document).on('click', '#addSourceRowBtn', function(e) {
             e.preventDefault();
             addSourceAccountRow();
@@ -1638,146 +1844,157 @@
     // ============================
     // DATA COLLECTION FOR POSTING
     // ============================
-    function collectPostingData() {
-        var data = {
-            ClaimId: $('#hiddenClaimId').val(),
-            CustomerId: $('#hiddenMemberId').val(),
-            Note: $('#actionNote').val(),
-            TotalAmount: parseFloat($('#totalAmount').val()) || 0,
-            ExternalApplicationName: $('#externalApplicationName').val(),
-            AccountingDate: $('#accountingDate').val(),
-            ForceRepost: $('#forceRepost').is(':checked'),
-            MemberBalanceDestinationEntries: [],
-            SourceAccountEntryListing: [],
-            DestinationBranchEntryListing: []
-        };
-
-        $('.source-account-row').each(function () {
-            var $row = $(this);
-            var accountSelect = $row.find('.source-gl-account');
-            var accountText = accountSelect.find('option:selected').text();
-            var entry = {
-                SourceGLAccountId: accountSelect.val(),
-                SourceGLAccountName: accountText,
-                Amount: parseFloat($row.find('.source-amount').val()) || 0,
-                Description: $row.find('.source-description').val()
+        function collectPostingData() {
+            var data = {
+                ClaimId: $('#hiddenClaimId').val(),
+                CustomerId: $('#hiddenMemberId').val(),
+                Note: $('#actionNote').val(),
+                TotalAmount: parseFloat($('#totalAmount').val()) || 0,
+                ExternalApplicationName: $('#externalApplicationName').val(),
+                AccountingDate: $('#accountingDate').val(),
+                ForceRepost: $('#forceRepost').is(':checked'),
+                MemberBalanceDestinationEntries: [],
+                SourceAccountEntryListing: [],
+                DestinationBranchEntryListing: []
             };
-            if (entry.SourceGLAccountId && entry.Amount > 0) {
-                data.SourceAccountEntryListing.push(entry);
-            }
-        });
 
-        $('.member-account-row').each(function () {
-            var $row = $(this);
-            var entry = {
-                AccountId: $row.find('.account-id').val(),
-                AccountNumber: $row.find('td:first-child small').text().trim(),
-                AccountName: $row.find('td:first-child .fw-bold').text().trim(),
-                AccountType: $row.find('.account-type').val(),
-                OriginalBalance: parseFloat($row.find('.account-balance').val()) || 0,
-                Amount: parseFloat($row.find('.member-amount').val()) || 0,
-                Description: $row.find('.member-description').val()
-            };
-            if (entry.AccountId && entry.Amount > 0) {
-                data.MemberBalanceDestinationEntries.push(entry);
-            }
-        });
+            $('.source-account-row').each(function () {
+                var $row = $(this);
+                var accountSelect = $row.find('.source-gl-account');
+                var accountText = accountSelect.find('option:selected').text();
 
-        $('.branch-account-row').each(function () {
-            var $row = $(this);
-            var accountSelect = $row.find('.branch-gl-account');
-            var accountText = accountSelect.find('option:selected').text();
-            var entry = {
-                DestinationBranchGLAccountId: accountSelect.val(),
-                DestinationBranchGLAccountName: accountText,
-                Amount: parseFloat($row.find('.branch-amount').val()) || 0,
-                Description: $row.find('.branch-description').val()
-            };
-            if (entry.DestinationBranchGLAccountId && entry.Amount > 0) {
-                data.DestinationBranchEntryListing.push(entry);
-            }
-        });
+                // Get the selected source branch ID
+                var sourceBranchId = $('#SourceBranchId').val(); // Add this line
 
-        return data;
-    }
+                var entry = {
+                    SourceBranchId: sourceBranchId, // Add this field
+                    SourceGLAccountId: accountSelect.val(),
+                    SourceGLAccountName: accountText,
+                    Amount: parseFloat($row.find('.source-amount').val()) || 0,
+                    Description: $row.find('.source-description').val()
+                };
 
-    function showConfirmationModal(postingData) {
-        $('#confirmClaimId').text(postingData.ClaimId);
-        $('#confirmMemberId').text(postingData.CustomerId);
-        $('#confirmTotalAmount').text(formatCurrency(postingData.TotalAmount));
-        $('#confirmAccountingDate').text(postingData.AccountingDate);
-        $('#confirmExternalApp').text(postingData.ExternalApplicationName);
-        $('#confirmForceRepost').text(postingData.ForceRepost ? 'Yes' : 'No');
+                if (entry.SourceGLAccountId && entry.Amount > 0) {
+                    data.SourceAccountEntryListing.push(entry);
+                }
+            });
 
-        var sourceTotal = postingData.SourceAccountEntryListing.reduce((sum, entry) => sum + entry.Amount, 0);
-        var memberTotal = postingData.MemberBalanceDestinationEntries.reduce((sum, entry) => sum + entry.Amount, 0);
-        var branchTotal = postingData.DestinationBranchEntryListing.reduce((sum, entry) => sum + entry.Amount, 0);
-        var totalEntries = sourceTotal + memberTotal + branchTotal;
+            $('.member-account-row').each(function () {
+                var $row = $(this);
+                var entry = {
+                    AccountId: $row.find('.account-id').val(),
+                    DestinationGLAccountId: $row.find('.account-id').val(),
+                    AccountNumber: $row.find('td:first-child small').text().trim(),
+                    AccountName: $row.find('td:first-child .fw-bold').text().trim(),
+                    AccountType: $row.find('.account-type').val(),
+                    OriginalBalance: parseFloat($row.find('.account-balance').val()) || 0,
+                    Amount: parseFloat($row.find('.member-amount').val()) || 0,
+                    Description: $row.find('.member-description').val()
+                };
+                if (entry.AccountId && entry.Amount > 0) {
+                    data.MemberBalanceDestinationEntries.push(entry);
+                }
+            });
 
-        var $tbody = $('#confirmSummaryTable tbody');
-        $tbody.empty();
+            $('.branch-account-row').each(function () {
+                var $row = $(this);
+                var accountSelect = $row.find('.branch-gl-account');
+                var accountText = accountSelect.find('option:selected').text();
+                var entry = {
+                    DestinationBranchGLAccountId: accountSelect.val(),
+                    DestinationBranchGLAccountName: accountText,
+                    Amount: parseFloat($row.find('.branch-amount').val()) || 0,
+                    Description: $row.find('.branch-description').val()
+                };
+                if (entry.DestinationBranchGLAccountId && entry.Amount > 0) {
+                    data.DestinationBranchEntryListing.push(entry);
+                }
+            });
 
-        var rowCounter = 1;
+            return data;
+        }
 
-        postingData.SourceAccountEntryListing.forEach(function (entry, index) {
-            $tbody.append(`
-                <tr>
-                    <td class="text-center">${rowCounter++}</td>
-                    <td><span class="badge bg-info">Source Account</span></td>
-                    <td>${entry.SourceGLAccountName || entry.SourceGLAccountId}</td>
-                    <td class="text-end">${formatCurrency(entry.Amount)}</td>
-                    <td>${entry.Description}</td>
-                    <td class="text-end">
-                        <span class="badge bg-light text-dark">${entry.SourceGLAccountId}</span>
-                    </td>
-                </tr>
-            `);
-        });
+        function showConfirmationModal(postingData) {
+            $('#confirmClaimId').text(postingData.ClaimId);
+            $('#confirmMemberId').text(postingData.CustomerId);
+            $('#confirmTotalAmount').text(formatCurrency(postingData.TotalAmount));
+            $('#confirmAccountingDate').text(postingData.AccountingDate);
+            $('#confirmExternalApp').text(postingData.ExternalApplicationName);
+            $('#confirmForceRepost').text(postingData.ForceRepost ? 'Yes' : 'No');
 
-        postingData.MemberBalanceDestinationEntries.forEach(function (entry, index) {
-            $tbody.append(`
-                <tr>
-                    <td class="text-center">${rowCounter++}</td>
-                    <td><span class="badge bg-warning">Member Account</span></td>
-                    <td>
-                        ${entry.AccountName} (${entry.AccountNumber})
-                        <br>
-                        <small class="text-muted">${entry.AccountType}</small>
-                        <br>
-                        <small class="text-info">Current Balance: ${formatCurrency(entry.OriginalBalance)}</small>
-                    </td>
-                    <td class="text-end">
-                        ${formatCurrency(entry.Amount)}
-                        <br>
-                        <small class="text-muted">New Balance: ${formatCurrency(entry.OriginalBalance + entry.Amount)}</small>
-                    </td>
-                    <td>${entry.Description}</td>
-                    <td class="text-end">
-                        <span class="badge bg-light text-dark">${entry.AccountId}</span>
-                    </td>
-                </tr>
-            `);
-        });
+            var sourceTotal = postingData.SourceAccountEntryListing.reduce((sum, entry) => sum + entry.Amount, 0);
+            var memberTotal = postingData.MemberBalanceDestinationEntries.reduce((sum, entry) => sum + entry.Amount, 0);
+            var branchTotal = postingData.DestinationBranchEntryListing.reduce((sum, entry) => sum + entry.Amount, 0);
+            var totalEntries = sourceTotal + memberTotal + branchTotal;
 
-        postingData.DestinationBranchEntryListing.forEach(function (entry, index) {
-            $tbody.append(`
-                <tr>
-                    <td class="text-center">${rowCounter++}</td>
-                    <td><span class="badge bg-danger">Branch Account</span></td>
-                    <td>${entry.DestinationBranchGLAccountName || entry.DestinationBranchGLAccountId}</td>
-                    <td class="text-end">${formatCurrency(entry.Amount)}</td>
-                    <td>${entry.Description}</td>
-                    <td class="text-end">
-                        <span class="badge bg-light text-dark">${entry.DestinationBranchGLAccountId}</span>
-                    </td>
-                </tr>
-            `);
-        });
+            var $tbody = $('#confirmSummaryTable tbody');
+            $tbody.empty();
 
-        $('#confirmEntriesTotal').text(formatCurrency(totalEntries));
+            var rowCounter = 1;
 
-        $('#confirmPostModal').modal('show');
-    }
+            postingData.SourceAccountEntryListing.forEach(function (entry, index) {
+                $tbody.append(`
+            <tr>
+                <td class="text-center">${rowCounter++}</td>
+                <td><span class="badge bg-info">Source Account</span></td>
+                <td>
+                    ${entry.SourceGLAccountName || entry.SourceGLAccountId}
+                    <br>
+                    <small class="text-muted">Branch ID: ${entry.SourceBranchId || 'N/A'}</small> <!-- Add this line -->
+                </td>
+                <td class="text-end">${formatCurrency(entry.Amount)}</td>
+                <td>${entry.Description}</td>
+                <td class="text-end">
+                    <span class="badge bg-light text-dark">${entry.SourceGLAccountId}</span>
+                </td>
+            </tr>
+        `);
+            });
+
+            postingData.MemberBalanceDestinationEntries.forEach(function (entry, index) {
+                $tbody.append(`
+            <tr>
+                <td class="text-center">${rowCounter++}</td>
+                <td><span class="badge bg-warning">Member Account</span></td>
+                <td>
+                    ${entry.AccountName} (${entry.AccountNumber})
+                    <br>
+                    <small class="text-muted">${entry.AccountType}</small>
+                    <br>
+                    <small class="text-info">Current Balance: ${formatCurrency(entry.OriginalBalance)}</small>
+                </td>
+                <td class="text-end">
+                    ${formatCurrency(entry.Amount)}
+                    <br>
+                    <small class="text-muted">New Balance: ${formatCurrency(entry.OriginalBalance + entry.Amount)}</small>
+                </td>
+                <td>${entry.Description}</td>
+                <td class="text-end">
+                    <span class="badge bg-light text-dark">${entry.AccountId}</span>
+                </td>
+            </tr>
+        `);
+            });
+
+            postingData.DestinationBranchEntryListing.forEach(function (entry, index) {
+                $tbody.append(`
+            <tr>
+                <td class="text-center">${rowCounter++}</td>
+                <td><span class="badge bg-danger">Branch Account</span></td>
+                <td>${entry.DestinationBranchGLAccountName || entry.DestinationBranchGLAccountId}</td>
+                <td class="text-end">${formatCurrency(entry.Amount)}</td>
+                <td>${entry.Description}</td>
+                <td class="text-end">
+                    <span class="badge bg-light text-dark">${entry.DestinationBranchGLAccountId}</span>
+                </td>
+            </tr>
+        `);
+            });
+
+            $('#confirmEntriesTotal').text(formatCurrency(totalEntries));
+
+            $('#confirmPostModal').modal('show');
+        }
 
     // ============================
     // FORM SUBMISSION
@@ -1837,14 +2054,21 @@
                     isValid = false;
                 }
 
+                // Validate that SourceBranchId is selected
+                var sourceBranchId = $('#SourceBranchId').val();
+                if (!sourceBranchId) {
+                    appalert('Please select a source branch', 3, 1);
+                    isValid = false;
+                }
+
                 var sourceTotal = getSourceTotal();
                 var memberTotal = getMemberTotal();
                 var branchTotal = getBranchTotal();
                 var combinedTotal = sourceTotal + memberTotal + branchTotal;
 
                 var hasEntries = $('.source-account-row').length > 0 ||
-                                $('.member-account-row').length > 0 ||
-                                $('.branch-account-row').length > 0;
+                    $('.member-account-row').length > 0 ||
+                    $('.branch-account-row').length > 0;
 
                 if (!hasEntries) {
                     appalert('Please add at least one account entry', 3, 1);
@@ -1910,11 +2134,10 @@
                     if (response.reload && ClaimsTable) {
                         ClaimsTable.ajax.reload(null, false);
                     }
-                    $btn.prop('disabled', false).html('<i class="mdi mdi-check-circle-outline me-1"></i><span id="submitButtonText">Submit</span>');
                 } else {
                     appalert(response.message || 'Action failed', 4, 1);
-                    $btn.prop('disabled', false).html('<i class="mdi mdi-check-circle-outline me-1"></i><span id="submitButtonText">Submit</span>');
                 }
+                $btn.prop('disabled', false).html('<i class="mdi mdi-check-circle-outline me-1"></i><span id="submitButtonText">Submit</span>');
             },
             error: function(xhr, status, error) {
                 appalert('Error: ' + (xhr.responseJSON?.message || error), 4, 1);
@@ -2200,5 +2423,6 @@
         });
     }
     </script>
+    }
 }
 
