@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.IndividualCustomerProfile
-
+@using Resources
 
 <div class="container mt-4">
     <div class="card shadow-sm">
@@ -8,64 +8,64 @@
                 <tbody>
                     <!-- General Information -->
                     <tr class="table-primary">
-                        <td colspan="2" class="font-weight-bold text-center">General Information</td>
+                        <td colspan="2" class="font-weight-bold text-center">@GlobalShared.General_Information</td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold">Account Number:</td>
+                        <td class="font-weight-bold">@GlobalShared.Account_Number:</td>
                         <td>@Model.CustomerAccount.accountNumber</td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold">Account Name:</td>
+                        <td class="font-weight-bold">@GlobalShared.Account_Name:</td>
                         <td>@Model.CustomerAccount.accountName</td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold">Customer Name:</td>
+                        <td class="font-weight-bold">@GlobalShared.Customer_Name:</td>
                         <td>@Model.CustomerAccount.customerName</td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold">Member Reference:</td>
+                        <td class="font-weight-bold">@GlobalShared.Member_reference:</td>
                         <td>@Model.CustomerAccount.customerId</td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold">Branch Code:</td>
+                        <td class="font-weight-bold">@GlobalShared.Branch_Code:</td>
                         <td>@Model.CustomerAccount.branchCode</td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold">Bank ID:</td>
+                        <td class="font-weight-bold">@GlobalShared.Bank_ID:</td>
                         <td>@Model.CustomerAccount.bankId</td>
                     </tr>
 
                     <!-- Balance Information -->
                     <tr class="table-primary">
-                        <td colspan="2" class="font-weight-bold text-center">Balance Information</td>
+                        <td colspan="2" class="font-weight-bold text-center">@GlobalShared.Balance_Information</td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold">Current Balance:</td>
+                        <td class="font-weight-bold">@GlobalShared.Current_balance:</td>
                         <td>@Model.CustomerAccount.balance.ToString("N1") FCFA</td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold">Previous Balance:</td>
+                        <td class="font-weight-bold">@GlobalShared.Previous_Balance:</td>
                         <td>@Model.CustomerAccount.previousBalance.ToString("N1") FCFA</td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold">Blocked Amount:</td>
+                        <td class="font-weight-bold">@GlobalShared.Blocked_Amount:</td>
                         <td>@Model.CustomerAccount.blockedAmount.ToString("N1") FCFA</td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold">Encrypted Balance:</td>
+                        <td class="font-weight-bold">@GlobalShared.Encrypted_Balance:</td>
                         <td>@Model.CustomerAccount.encryptedBalance</td>
                     </tr>
 
                     <!-- Account Status -->
                     <tr class="table-primary">
-                        <td colspan="2" class="font-weight-bold text-center">Account Status</td>
+                        <td colspan="2" class="font-weight-bold text-center">@GlobalShared.Account_Status</td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold">Status:</td>
+                        <td class="font-weight-bold">@GlobalShared.Status:</td>
                         <td>
                             @if (Model.CustomerAccount.status == "Active")
                             {
-                                <span class="badge bg-success text-white">Active</span>
+                                <span class="badge bg-success text-white">@GlobalShared.Active</span>
                             }
                             else
                             {
@@ -74,75 +74,75 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold">Reason for Block:</td>
+                        <td class="font-weight-bold">@GlobalShared.Reason_for_Block:</td>
                         <td>@Model.CustomerAccount.reasonOfBlocked</td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold">Date Blocked:</td>
+                        <td class="font-weight-bold">@GlobalShared.Date_Blocked:</td>
                         <td>@(Model.CustomerAccount.dateBlocked == DateTime.MinValue ? "N/A" : Model.CustomerAccount.dateBlocked.ToString("dd/MM/yyyy"))</td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold">Date Released:</td>
+                        <td class="font-weight-bold">@GlobalShared.Date_Released:</td>
                         <td>@(Model.CustomerAccount.dateReleased == DateTime.MinValue ? "N/A" : Model.CustomerAccount.dateReleased.ToString("dd/MM/yyyy"))</td>
                     </tr>
 
                     <!-- Product Information -->
                     <tr class="table-primary">
-                        <td colspan="2" class="font-weight-bold text-center">Product Information</td>
+                        <td colspan="2" class="font-weight-bold text-center">@GlobalShared.Product_Information</td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold">Product Code:</td>
+                        <td class="font-weight-bold">@GlobalShared.Product_Code:</td>
                         <td>@Model.CustomerAccount.product.Code</td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold">Product Name:</td>
+                        <td class="font-weight-bold">@GlobalShared.Product_Name:</td>
                         <td>@Model.CustomerAccount.product.Name</td>
                     </tr>
 
                     <!-- Interest Information -->
                     <tr class="table-primary">
-                        <td colspan="2" class="font-weight-bold text-center">Interest Information</td>
+                        <td colspan="2" class="font-weight-bold text-center">@GlobalShared.Interest_Information</td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold">Interest Generated:</td>
+                        <td class="font-weight-bold">@GlobalIndividual.Interest_Generated:</td>
                         <td>@Model.CustomerAccount.interestGenerated.ToString("N1") FCFA</td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold">Last Interest Posted:</td>
+                        <td class="font-weight-bold">@GlobalIndividual.Last_Interest_Posted:</td>
                         <td>@Model.CustomerAccount.lastInterestPosted.ToString("N1") FCFA</td>
                     </tr>
 
                     <!-- Account Operations -->
                     <tr class="table-primary">
-                        <td colspan="2" class="font-weight-bold text-center">Account Operations</td>
+                        <td colspan="2" class="font-weight-bold text-center">@GlobalShared.Account_Operations</td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold">Last Operation:</td>
+                        <td class="font-weight-bold">@GlobalShared.Last_operation:</td>
                         <td>@Model.CustomerAccount.lastOperation</td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold">Last Operation Amount:</td>
+                        <td class="font-weight-bold">@GlobalShared.Last_operation_amount:</td>
                         <td>@Model.CustomerAccount.lastOperationAmount.ToString("N1") FCFA</td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold">Date of Last Operation:</td>
+                        <td class="font-weight-bold">@GlobalShared.Date_of_Last_Operation:</td>
                         <td>@(Model.CustomerAccount.dateOfLastOperation == DateTime.MinValue ? "N/A" : Model.CustomerAccount.dateOfLastOperation.ToString("dd/MM/yyyy"))</td>
                     </tr>
 
                     <!-- Opening Day Information -->
                     <tr class="table-primary">
-                        <td colspan="2" class="font-weight-bold text-center">Opening Day Information</td>
+                        <td colspan="2" class="font-weight-bold text-center">@GlobalIndividual.Opening_Day_Information</td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold">Opening Day Status:</td>
+                        <td class="font-weight-bold">@GlobalIndividual.Opening_Day_Status:</td>
                         <td>@Model.CustomerAccount.openningOfDayStatus</td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold">Opening Day Date:</td>
+                        <td class="font-weight-bold">@GlobalShared.Opening_Day_Date:</td>
                         <td>@(Model.CustomerAccount.openningOfDayDate == DateTime.MinValue ? "N/A" : Model.CustomerAccount.openningOfDayDate.ToString("dd/MM/yyyy"))</td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold">Opening Balance:</td>
+                        <td class="font-weight-bold">@GlobalShared.Opening_Balance:</td>
                         <td>@Model.CustomerAccount.openingBalance.ToString("N1") FCFA</td>
                     </tr>
 
