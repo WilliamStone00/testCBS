@@ -141,6 +141,9 @@
   <data name="Marketvalue" xml:space="preserve">
     <value>Market value</value>
   </data>
+  <data name="NameOfPersonInvolved" xml:space="preserve">
+    <value>Name Of Person Involved</value>
+  </data>
   <data name="NoLoanCollateralAdded" xml:space="preserve">
     <value>No loan collateral is added</value>
   </data>

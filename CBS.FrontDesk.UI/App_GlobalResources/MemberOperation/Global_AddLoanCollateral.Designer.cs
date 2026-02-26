@@ -133,6 +133,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Name Of Person Involved.
+        /// </summary>
+        internal static string NameOfPersonInvolved {
+            get {
+                return ResourceManager.GetString("NameOfPersonInvolved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No loan collateral is added.
         /// </summary>
         internal static string NoLoanCollateralAdded {
