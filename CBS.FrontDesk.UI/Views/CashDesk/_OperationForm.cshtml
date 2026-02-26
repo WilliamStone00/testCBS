@@ -212,7 +212,57 @@
                     }
                     <input type="hidden" id="CustomerAlphaNumber" value="0" />
 
+                    <!-- AML SECTION -->
+                    <div class="col-12 mt-2">
+                        <fieldset class="fieldset-custom">
+                            <legend class="fs-6 text-muted mb-2">
+                                <i class="mdi mdi-shield-search me-1"></i> AML / KYC
+                            </legend>
 
+                            <div class="row gy-2">
+                                <!-- Source of Funds -->
+                                <div class="col-md-6">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.DropDownListFor(
+                                            m => m.SourceOfFundsCode,
+                                            ViewBag.SourceOfFunds as IEnumerable<SelectListItem>,
+                                            "--- Select Source of Funds / Income ---",
+                                            new { @class = "form-control select2 aml-source", id = "SourceOfFundsCode" }
+                                        )
+                                        <label for="SourceOfFundsCode">Source of Funds (Income Source)</label>
+                                        <small class="text-muted d-block mt-1">
+                                            Required for AML monitoring (money laundering risk).
+                                        </small>
+                                    </div>
+
+                                    <div class="form-floating form-floating-outline mt-2 d-none" id="SourceOfFundsOtherWrap">
+                                        @Html.TextBoxFor(m => m.SourceOfFundsOther,
+                                            new { @class = "form-control shadow-input-boxes", id = "SourceOfFundsOther", placeholder = "Type source of funds..." })
+                                        <label for="SourceOfFundsOther">Specify (Other)</label>
+                                    </div>
+                                </div>
+
+                                <!-- Purpose -->
+                                <div class="col-md-6">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.DropDownListFor(
+                                            m => m.DepositPurposeCode,
+                                            ViewBag.DepositPurpose as IEnumerable<SelectListItem>,
+                                            "--- Select Deposit Purpose ---",
+                                            new { @class = "form-control select2 aml-purpose", id = "DepositPurposeCode" }
+                                        )
+                                        <label for="DepositPurposeCode">Purpose of Deposit</label>
+                                    </div>
+
+                                    <div class="form-floating form-floating-outline mt-2 d-none" id="DepositPurposeOtherWrap">
+                                        @Html.TextBoxFor(m => m.DepositPurposeOther,
+                                            new { @class = "form-control shadow-input-boxes", id = "DepositPurposeOther", placeholder = "Type purpose..." })
+                                        <label for="DepositPurposeOther">Specify (Other)</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
 
 
                     <div class="table-responsive w-100 compact-section">
@@ -755,7 +805,34 @@ else if (ViewBag.Operation == "cashout")
                             </label>
                         </div>
                     </div>
+                    <!-- PURPOSE OF WITHDRAWAL (AML) -->
+                    <div class="col-12 mt-2">
+                        <fieldset class="fieldset-custom">
+                            <legend class="fs-6 text-muted mb-2">
+                                <i class="mdi mdi-shield-search me-1"></i> AML / KYC
+                            </legend>
 
+                            <div class="row gy-2">
+                                <div class="col-md-12">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.DropDownListFor(
+                                            m => m.WithdrawalPurposeCode,
+                                            ViewBag.WithdrawalPurpose as IEnumerable<SelectListItem>,
+                                            "--- Select Purpose of Withdrawal ---",
+                                            new { @class = "form-control select2", id = "WithdrawalPurposeCode" }
+                                        )
+                                        <label for="WithdrawalPurposeCode">Purpose of Withdrawal</label>
+                                    </div>
+
+                                    <div class="form-floating form-floating-outline mt-2 d-none" id="WithdrawalPurposeOtherWrap">
+                                        @Html.TextBoxFor(m => m.WithdrawalPurposeOther,
+                                            new { @class = "form-control shadow-input-boxes", id = "WithdrawalPurposeOther", placeholder = "Type purpose..." })
+                                        <label for="WithdrawalPurposeOther">Specify (Other)</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
                     <hr style="border: 2px solid red;" />
                     <div class="table-responsive" style="width: 100%;">
                         <table class="table table-hover" id="myDataTableT">
