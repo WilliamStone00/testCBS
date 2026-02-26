@@ -130,6 +130,37 @@
                             {
                                 @Html.AntiForgeryToken()
 
+                                <!-- Branch Selection for Manual Form -->
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        <div class="mb-3">
+                                            <label class="form-label fw-semibold">
+                                                Branch
+                                                <i class="mdi mdi-help-circle-outline text-muted"
+                                                   data-bs-toggle="tooltip"
+                                                   title="Select the branch for which you want to register standing orders"></i>
+                                            </label>
+
+                                            @Html.DropDownList("BranchId",
+                                                new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name"),
+                                                "--- Select Branch ---",
+                                                new
+                                                     {
+                                                    @class = "form-select select2",
+                                                    id = "ManualBranchId",
+                                                    required = "required",
+                                                    data_placeholder = "Select a branch..."
+                                                })
+
+                                            <small class="text-muted d-block help-hint mt-1">
+                                                <i class="mdi mdi-information-outline me-1"></i>
+                                                Standing orders will be registered for members belonging to the selected branch
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+
+
                                 <div class="card shadow-sm mb-2">
                                     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
                                         <span><i class="mdi mdi-information-outline me-2"></i> Tips & Rules (Manual Entry)</span>
@@ -281,6 +312,36 @@
                             {
                                 @Html.AntiForgeryToken()
 
+                                <!-- Branch Selection for File Upload Form -->
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        <div class="mb-3">
+                                            <label class="form-label fw-semibold">
+                                                Branch
+                                                <i class="mdi mdi-help-circle-outline text-muted"
+                                                   data-bs-toggle="tooltip"
+                                                   title="Select the branch for which you want to register standing orders"></i>
+                                            </label>
+
+                                            @Html.DropDownList("BranchId",
+                                                new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name"),
+                                                "--- Select Branch ---",
+                                                new
+                                                     {
+                                                    @class = "form-select select2",
+                                                    id = "FileBranchId",
+                                                    required = "required",
+                                                    data_placeholder = "Select a branch..."
+                                                })
+
+                                            <small class="text-muted d-block help-hint mt-1">
+                                                <i class="mdi mdi-information-outline me-1"></i>
+                                                Standing orders will be registered for members belonging to the selected branch
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="card shadow-sm mb-3">
                                     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
                                         <span><i class="mdi mdi-information-outline me-2"></i> Tips & Rules (File Upload)</span>
@@ -385,10 +446,10 @@
 
                                                                 <th>Member Reference</th>
                                                                 <th>Member Name</th>
-                                                                <th >Amount</th>
+                                                                <th>Amount</th>
                                                                 <th>Reason</th>
                                                                 @*<th class="text-center">Status</th>
-                                            <th>Message</th>*@
+                                                                    <th>Message</th>*@
                                                             </tr>
                                                         </thead>
                                                     </table>
@@ -434,45 +495,45 @@
                                                     This action will create standing orders for <b>all valid rows</b> in the preview table.
                                                 </div>
                                                 @*
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <label class="form-label fw-semibold">Start Date</label>
-                                    <input type="date" class="form-control" id="StartDate" name="StartDate"
-                                           value="@DateTime.Today.ToString("yyyy-MM-dd")" />
-                                    <small class="text-muted help-hint">
-                                        Default is today. Used for generated SO payloads when needed.
-                                    </small>
-                                </div>
+                                                    <div class="row g-3">
+                                                        <div class="col-md-6">
+                                                            <label class="form-label fw-semibold">Start Date</label>
+                                                            <input type="date" class="form-control" id="StartDate" name="StartDate"
+                                                                   value="@DateTime.Today.ToString("yyyy-MM-dd")" />
+                                                            <small class="text-muted help-hint">
+                                                                Default is today. Used for generated SO payloads when needed.
+                                                            </small>
+                                                        </div>
 
-                                <div class="col-md-6">
-                                    <label class="form-label fw-semibold">End Date</label>
-                                    <input type="date" class="form-control" id="EndDate" name="EndDate"
-                                           value="@DateTime.Today.AddYears(1).ToString("yyyy-MM-dd")" />
-                                    <small class="text-muted help-hint">
-                                        Default is +1 year. Adjust per institution policy.
-                                    </small>
-                                </div>
+                                                        <div class="col-md-6">
+                                                            <label class="form-label fw-semibold">End Date</label>
+                                                            <input type="date" class="form-control" id="EndDate" name="EndDate"
+                                                                   value="@DateTime.Today.AddYears(1).ToString("yyyy-MM-dd")" />
+                                                            <small class="text-muted help-hint">
+                                                                Default is +1 year. Adjust per institution policy.
+                                                            </small>
+                                                        </div>
 
-                                <div class="col-md-6">
-                                    <label class="form-label fw-semibold">Frequency</label>
-                                    <select class="form-select select2" id="Frequency" name="Frequency">
-                                        <option value="Monthly" selected>Monthly</option>
-                                        <option value="Weekly">Weekly</option>
-                                        <option value="Daily">Daily</option>
-                                    </select>
-                                </div>
+                                                        <div class="col-md-6">
+                                                            <label class="form-label fw-semibold">Frequency</label>
+                                                            <select class="form-select select2" id="Frequency" name="Frequency">
+                                                                <option value="Monthly" selected>Monthly</option>
+                                                                <option value="Weekly">Weekly</option>
+                                                                <option value="Daily">Daily</option>
+                                                            </select>
+                                                        </div>
 
-                                <div class="col-md-6">
-                                    <label class="form-label fw-semibold">Priority</label>
-                                    <select class="form-select select2" id="Priority" name="Priority">
-                                        <option value="1" selected>1 (Highest)</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                    </select>
-                                </div>
-                            </div>
+                                                        <div class="col-md-6">
+                                                            <label class="form-label fw-semibold">Priority</label>
+                                                            <select class="form-select select2" id="Priority" name="Priority">
+                                                                <option value="1" selected>1 (Highest)</option>
+                                                                <option value="2">2</option>
+                                                                <option value="3">3</option>
+                                                                <option value="4">4</option>
+                                                                <option value="5">5</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
                                                 *@
                                                 <div class="row mt-3 mb-2">
                                                     <div class="col-md-12 text-end">
@@ -552,16 +613,36 @@
                 if ($(this).val() === 'manual') {
                     $('#manualInputSection').show();
                     $('#fileInputSection').hide();
+
+                    // Update validation for manual form
+                    $('#ManualBranchId').prop('required', true);
+                    $('#FileBranchId').prop('required', false);
                 } else {
                     $('#manualInputSection').hide();
                     $('#fileInputSection').show();
+
+                    // Update validation for file form
+                    $('#ManualBranchId').prop('required', false);
+                    $('#FileBranchId').prop('required', true);
                 }
+            });
+
+            // Update hidden branch field when file branch changes
+            $('#FileBranchId').on('change', function () {
+                $('#BulkBranchId').val($(this).val());
             });
 
             $('[data-bs-toggle="tooltip"]').tooltip();
 
             if ($.fn.select2) {
-                try { $('.select2').select2({ width: '100%' }); } catch (e) { console.warn('select2 init failed', e); }
+                try {
+                    $('.select2').select2({
+                        width: '100%',
+                        placeholder: function () {
+                            return $(this).data('placeholder');
+                        }
+                    });
+                } catch (e) { console.warn('select2 init failed', e); }
             }
         });
     </script>
@@ -578,27 +659,43 @@
 
             if (!$(form).valid()) return false;
 
+            // Get branch ID
+            var branchId = $('#FileBranchId').val();
+            if (!branchId) {
+                appalert('Please select a branch before uploading.', 2, 1);
+                return false;
+            }
+
             alertify.confirm("Confirmation", "Upload file for validation & preview?",
                 function () {
+                    var formData = new FormData(form);
+
+                    // Add branch ID to form data
+                    //formData.append('BranchId', branchId);
+
                     var ajaxConfig = {
                         type: 'POST',
                         url: form.action,
-                        data: new FormData(form),
+                        data: formData,
                         success: function (response) {
                             if (response && response.success) {
                                 showUploadStatus(response.message || 'File processed successfully', 'success');
 
-                                // DataTables expects `data`
+                                // Store branch ID with preview data
                                 const rows = response.data.FileDetails || [];
                                 window.__soPreviewRows = rows;
+                                window.__selectedBranchId = branchId;
 
                                 displayStandingOrderPreview(rows);
                                 updateSummaryBadges(response.data);
 
                                 form.reset();
+                                // Restore branch selection after reset
+                                $('#FileBranchId').val(branchId).trigger('change');
                             } else {
                                 showUploadStatus((response && response.message) ? response.message : 'File processing failed', 'danger');
                                 window.__soPreviewRows = [];
+                                window.__selectedBranchId = null;
                                 displayStandingOrderPreview([]);
                                 updateSummaryBadges([]);
                             }
@@ -623,9 +720,16 @@
 
             // must have preview data
             const rows = window.__soPreviewRows || [];
-            console.log('So Preview Rows : '+rows)
+            console.log('So Preview Rows : ' + rows)
             if (!rows.length) {
                 appalert('Please upload and preview a valid file first.', 2, 1);
+                return false;
+            }
+
+            // Get branch ID (from stored value or current selection)
+            var branchId = window.__selectedBranchId || $('#FileBranchId').val();
+            if (!branchId) {
+                appalert('Branch selection is missing. Please re-upload the file with a branch selected.', 2, 1);
                 return false;
             }
 
@@ -652,10 +756,13 @@
                 function () {
 
                     const requestData = {
-                       /* StartDate: $('#StartDate').val(),
-                        EndDate: $('#EndDate').val(),
-                        Frequency: $('#Frequency').val(),
-                        Priority: $('#Priority').val(),*/
+                        /* StartDate: $('#StartDate').val(),
+                         EndDate: $('#EndDate').val(),
+                         Frequency: $('#Frequency').val(),
+                         Priority: $('#Priority').val(),*/
+
+                        // Add branch ID to request
+                        BranchId: branchId,
 
                         // Send only valid rows
                         Rows: rows.map(r => ({
@@ -667,7 +774,7 @@
                         }))
                     };
 
-                    
+
                     $.ajax({
                         type: 'POST',
                         url: form.action,
@@ -679,9 +786,9 @@
 
                                 // If API returns updated results, refresh preview
                                 if (Array.isArray(response.data)) {
-                                     displayStandingOrderCreationPreviewResult(response.data, '2');
-                                     updateSummaryBadges2(response.data, '2');
-                                  
+                                    displayStandingOrderCreationPreviewResult(response.data, '2');
+                                    updateSummaryBadges2(response.data, '2');
+
                                 }
                             } else {
                                 appalert(response?.message || 'Bulk create failed', 2, 1);
@@ -753,8 +860,8 @@
 
         function displayStandingOrderCreationPreviewResult(data, tableType) {
 
-            var tableTypeId = (String(tableType) === '2')  ? '#soBulkCreateStatusTable2' : '#soBulkCreateStatusTable'
-            var collapseFileContentId = (String(tableType) === '2')  ? '#bulkCreationContent' : '#bulkCreationContent2'
+            var tableTypeId = (String(tableType) === '2') ? '#soBulkCreateStatusTable2' : '#soBulkCreateStatusTable'
+            var collapseFileContentId = (String(tableType) === '2') ? '#bulkCreationContent' : '#bulkCreationContent2'
 
             if ($.fn.DataTable.isDataTable(tableTypeId)) {
                 $(tableTypeId).DataTable().destroy();
@@ -868,30 +975,30 @@
                 $('#manualRowsTable .empty-row').remove();
 
                 const newRow = $(`
-                    <tr data-row-id="${rowCounter}">
-                        <td>
-                            <input type="text" class="form-control form-control-sm member-id"
-                                   placeholder="e.g. 0010005467" required />
-                        </td>
-                        <td>
-                            <input type="text" class="form-control form-control-sm member-name"
-                                   placeholder="John Doe" />
-                        </td>
-                        <td>
-                            <input type="number" class="form-control form-control-sm amount text-end"
-                                   placeholder="0" step="0.01" min="0.01" required />
-                        </td>
-                        <td>
-                            <input type="text" class="form-control form-control-sm reason"
-                                   placeholder="Loan / Saving / Loan Repayment..." required />
-                        </td>
-                        <td class="text-end">
-                            <button type="button" class="btn btn-sm btn-outline-danger remove-row" title="Remove row">
-                                <i class="mdi mdi-delete-outline"></i>
-                            </button>
-                        </td>
-                    </tr>
-                `);
+                        <tr data-row-id="${rowCounter}">
+                            <td>
+                                <input type="text" class="form-control form-control-sm member-id"
+                                       placeholder="e.g. 0010005467" required />
+                            </td>
+                            <td>
+                                <input type="text" class="form-control form-control-sm member-name"
+                                       placeholder="John Doe" />
+                            </td>
+                            <td>
+                                <input type="number" class="form-control form-control-sm amount text-end"
+                                       placeholder="0" step="0.01" min="0.01" required />
+                            </td>
+                            <td>
+                                <input type="text" class="form-control form-control-sm reason"
+                                       placeholder="Loan / Saving / Loan Repayment..." required />
+                            </td>
+                            <td class="text-end">
+                                <button type="button" class="btn btn-sm btn-outline-danger remove-row" title="Remove row">
+                                    <i class="mdi mdi-delete-outline"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `);
 
                 $('#manualRowsTable tbody').append(newRow);
                 newRow.find('.member-id').focus();
@@ -901,6 +1008,19 @@
                 $(this).closest('tr').remove();
                 if ($('#manualRowsTable tbody tr').length === 0) {
                     $('#manualRowsTable tbody').append(`
+                            <tr class="empty-row">
+                                <td colspan="5" class="text-center text-muted py-4">
+                                    <i class="mdi mdi-database-remove fs-3 d-block mb-2"></i>
+                                    No rows added yet. Click <b>“Add Row”</b> to begin.
+                                </td>
+                            </tr>
+                        `);
+                    rowCounter = 0;
+                }
+            });
+
+            $('#resetManualRowsBtn').on('click', function () {
+                $('#manualRowsTable tbody').empty().append(`
                         <tr class="empty-row">
                             <td colspan="5" class="text-center text-muted py-4">
                                 <i class="mdi mdi-database-remove fs-3 d-block mb-2"></i>
@@ -908,19 +1028,6 @@
                             </td>
                         </tr>
                     `);
-                    rowCounter = 0;
-                }
-            });
-
-            $('#resetManualRowsBtn').on('click', function () {
-                $('#manualRowsTable tbody').empty().append(`
-                    <tr class="empty-row">
-                        <td colspan="5" class="text-center text-muted py-4">
-                            <i class="mdi mdi-database-remove fs-3 d-block mb-2"></i>
-                            No rows added yet. Click <b>“Add Row”</b> to begin.
-                        </td>
-                    </tr>
-                `);
                 rowCounter = 0;
             });
         });
@@ -931,6 +1038,13 @@
             const rowCount = $('#manualRowsTable tbody tr').not('.empty-row').length;
             if (rowCount <= 0) {
                 appalert('Please add at least one row before creating standing orders.', 2, 1);
+                return false;
+            }
+
+            // Get branch ID from manual form
+            var branchId = $('#ManualBranchId').val();
+            if (!branchId) {
+                appalert('Please select a branch before creating standing orders.', 2, 1);
                 return false;
             }
 
@@ -957,7 +1071,10 @@
                     function () {
 
                         // Your backend can infer Reason/purpose from Reason
-                        const requestData = { Rows: rows };
+                        const requestData = {
+                            Rows: rows,
+                            BranchId: branchId  // Add branch ID to request
+                        };
 
                         $.ajax({
                             type: 'POST',
@@ -969,8 +1086,8 @@
                                     appalert(response.message || 'Created successfully', 1, 1);
                                     // If API returns updated results, refresh preview
                                     if (Array.isArray(response.data)) {
-                                        displayStandingOrderCreationPreviewResult(response.data,'1');
-                                        updateSummaryBadges2(response.data,'1');
+                                        displayStandingOrderCreationPreviewResult(response.data, '1');
+                                        updateSummaryBadges2(response.data, '1');
                                     }
                                 } else {
                                     appalert(response?.message || 'Creation failed', 2, 1);
