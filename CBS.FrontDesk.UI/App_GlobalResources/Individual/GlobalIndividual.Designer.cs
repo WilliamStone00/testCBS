@@ -1051,6 +1051,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Last Interest Posted.
+        /// </summary>
+        internal static string Last_Interest_Posted {
+            get {
+                return ResourceManager.GetString("Last_Interest_Posted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Leave blank for other account types unless instructed otherwise.
         /// </summary>
         internal static string LeaveBlankForOtherAccountTypesUnlessInstructedOtherwise {
@@ -1605,6 +1614,24 @@ namespace Resources {
         internal static string OnceYouDeleteYourAccountThereIsNoGoingBackPleaseBeCertain {
             get {
                 return ResourceManager.GetString("OnceYouDeleteYourAccountThereIsNoGoingBackPleaseBeCertain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Openin Day Information.
+        /// </summary>
+        internal static string Opening_Day_Information {
+            get {
+                return ResourceManager.GetString("Opening_Day_Information", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Opening Day Status.
+        /// </summary>
+        internal static string Opening_Day_Status {
+            get {
+                return ResourceManager.GetString("Opening_Day_Status", resourceCulture);
             }
         }
         

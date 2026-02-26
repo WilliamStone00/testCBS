@@ -1,32 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Threading.Tasks;
-using BusinessServices;
+﻿using BusinessServices;
 using CBS.API.Helper;
-using CBS.FrontDesk.Data.Entity.Config;
-using CBS.FrontDesk.Data.Entity.CustomerManagement;
-using CBS.FrontDesk.Data.Message;
-using CBS.FrontDesk.Helper;
-using CBS.FrontDesk.Data.Entity.DataTable;
-using CBS.FrontDesk.Data.Entity.SavingProducts;
-using System.Net.Http.Headers;
-using CBS.FrontDesk.Data.Entity;
 using CBS.BusinessService.Config;
 using CBS.BusinessService.MembersAccountSettings;
 using CBS.BusinessService.MembersAccountSettings.policy;
-using System.Net.Http;
-using Newtonsoft.Json;
-using CBS.FrontDesk.Data.Entity.LoanConf;
-using CBS.FrontDesk.Data.ReportDataSetDto;
-using CBS.FrontDesk.Data.Entity.SalaryManagement;
-using CBS.FrontDesk.Data.Entity.CMoney;
 using CBS.BusinessService.Session;
+using CBS.FrontDesk.Data.Entity;
+using CBS.FrontDesk.Data.Entity.AccountingV2;
+using CBS.FrontDesk.Data.Entity.AccountingV2.EndOfYearClosure;
+using CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation;
+using CBS.FrontDesk.Data.Entity.CMoney;
+using CBS.FrontDesk.Data.Entity.Config;
+using CBS.FrontDesk.Data.Entity.CustomerManagement;
 using CBS.FrontDesk.Data.Entity.CustomerManagement.Grouping;
+using CBS.FrontDesk.Data.Entity.DataTable;
+using CBS.FrontDesk.Data.Entity.LoanConf;
+using CBS.FrontDesk.Data.Entity.SalaryManagement;
+using CBS.FrontDesk.Data.Entity.SavingProducts;
+using CBS.FrontDesk.Data.Message;
+using CBS.FrontDesk.Data.ReportDataSetDto;
+using CBS.FrontDesk.Helper;
 using DocumentFormat.OpenXml.Bibliography;
 using Microsoft.AspNet.SignalR.Hosting;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace CBS.BusinessService.CustomerManagement
 {
@@ -1360,6 +1363,100 @@ namespace CBS.BusinessService.CustomerManagement
         {
             throw new NotImplementedException();
         }
+
+        public async Task<ApiResponse<ResponseObject<MemberStatus>>> CreatstatusAsync(MemberStatus model)
+        {
+            if (model == null)
+            {
+                return new ApiResponse<ResponseObject<MemberStatus>>
+                {
+                    IsSuccess = false,
+                    Message = "Request model is null"
+                };
+            }
+
+            try
+            {
+                var apiResponse =
+                    await _customerApiHelper
+                        .PostAsync<ResponseObject<MemberStatus>>(
+                            APICallHelper.CreateMemberStatus,
+                            model
+                        );
+
+                // ✅ Return full backend response (NO transformation)
+                return apiResponse;
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<ResponseObject<MemberStatus>>
+                {
+                    IsSuccess = false,
+                    Message = $" {ex.Message}"
+                };
+            }
+        }
+
+
+        public async Task<List<MemberStatus>> GetAllAsync()
+        {
+            try
+            {
+                var apiResponse = await _customerApiHelper.GetAsync<ResponseObject<List<MemberStatus>>>(APICallHelper.GetAllMemberStatus);
+
+                if (apiResponse == null || apiResponse.ApiResponseData == null)
+                    return new List<MemberStatus>();
+
+                return apiResponse.ApiResponseData.Data ?? new List<MemberStatus>();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[GetAllAsync] Error fetching all : {ex.Message}");
+                return new List<MemberStatus>();
+            }
+        }
+        public async Task<MemberStatus> GetMemberStausByIdAsync(string id)
+        {
+            try
+            {
+
+                // Make API call including operationCode
+                var response = await _customerApiHelper.GetAsync<
+                    ResponseObject<MemberStatus>>(string.Format(APICallHelper.GetMemberStausById, id));
+                if (response.ApiResponseData != null)
+                {
+                    return response.ApiResponseData.Data;
+                }
+                return null;
+
+
+
+            }
+            catch (Exception ex)
+            {
+                //System.Diagnostics.Debug.WriteLine($"[GetJournalSourceByIdAsync] Error: {ex.Message}");
+                throw;
+            }
+        }
+
+        public async Task<List<StringValues>> GetAllPoliticalAsync()
+        {
+            try
+            {
+                var apiResponse = await _customerApiHelper.GetAsync<ResponseObject<List<StringValues>>>(APICallHelper.GetAllPoliticalstatus);
+
+                if (apiResponse == null || apiResponse.ApiResponseData == null)
+                    return new List<StringValues>();
+
+                return apiResponse.ApiResponseData.Data ?? new List<StringValues>();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[GetAllAsync] Error fetching all : {ex.Message}");
+                return new List<StringValues>();
+            }
+        }
+
     }
 
 

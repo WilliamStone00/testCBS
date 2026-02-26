@@ -147,6 +147,8 @@ function collectLoanFilters() {
         byPar: $('#byPar').is(':checked'),
         moreOptions: $('#moreOptions').is(':checked'),
 
+        isInterbranch: $('#isInterbranch').is(':checked'),
+
         branchId: $('#branchInput').val(),
         loanId: $('#loanId').val(),
         memberId: $('#memberId').val(),
@@ -173,7 +175,8 @@ function resetLoanFilters() {
     $('#startDate, #endDate, #loanId, #memberId, #loanTarget, #loanTypeCategory, #delinquentDays').val('');
     $('#status, #disburmentStatus, #deliquentStatus, #branchInput, #isMigratedLoan, #loanTypes, #loanCategory, #parId').val('');
     $('.select2').val('').trigger('change');
-    $('#byBranch, #byDate, #moreOptions, #byPar').prop('checked', false);
+    $('#byBranch, #byDate, #moreOptions, #byPar, #isInterbranch')
+        .prop('checked', false);
     $('#branchFilterSection, #dateRangeSection, #extraFiltersSection, #parFilterSection').slideUp();
     loadLoanData();
 }
@@ -203,6 +206,11 @@ function exportLoanData() {
     if (filters.loanTypeCategory) params.append("loanTypeCategory", filters.loanTypeCategory);
     if (filters.delinquentDays) params.append("delinquentDays", filters.delinquentDays);
     if (filters.parId) params.append("parId", filters.parId);
+
+    // ✅ NEW
+    if (filters.isInterbranch) {
+        params.append("isInterbranch", true);
+    }
 
     window.location.href = `/Loan/DownloadLoanData?${params.toString()}`;
 }

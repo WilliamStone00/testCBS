@@ -369,6 +369,14 @@ namespace CBS.FrontDesk.Helper
         public static string LoanApplicationFeesPending = "/api/v1/LoanApplicationFees/Pending/{0}";
         public static string GetDailyCollectorApprovedUpload = "/api/v1/ManualEntryCollector/ApprovedBatches/{0}";
         //ManualEntryDailyCollectorDto
+        //Member Status 
+        public static string CreateMemberStatus = "/api/v1/MemberStatus";
+        public static string GetAllMemberStatus = "/api/v1/MemberStatus";
+        public static string GetMemberStausById = "/api/v1/MemberStatus/{0}";
+
+        // politicalstatus
+
+        public static string GetAllPoliticalstatus = "/api/v1/PoliticalExposure/PoliticalExposure/Questions";
 
         //Group
         public static string Get_Update_Delete_Group = "/api/v1/Group/{0}";

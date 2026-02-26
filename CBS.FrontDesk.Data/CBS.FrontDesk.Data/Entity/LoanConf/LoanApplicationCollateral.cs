@@ -24,6 +24,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public string Address { get; set; }
         public string NameOfPersonInvolved { get; set; }
         public string Reference { get; set; }
+        public bool IsformallyRegistered { get; set; }
         public virtual LoanProductCollateral LoanProductCollateral { get; set; }
         public virtual LoanApplication LoanApplication { get; set; }
 

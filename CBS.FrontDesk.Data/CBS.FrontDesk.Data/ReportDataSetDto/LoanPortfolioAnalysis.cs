@@ -83,6 +83,7 @@ namespace CBS.FrontDesk.Data.ReportDataSetDto
     {
         public string BranchId { get; set; }
 
+        public string ReportType { get; set; }
         public string StartDate { get; set; }
 
         public string EndDate { get; set; }

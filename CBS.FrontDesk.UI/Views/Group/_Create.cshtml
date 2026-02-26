@@ -19,7 +19,7 @@
 
                                 <div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.GroupTypeId, new SelectList(ViewBag.GroupTypes, "GroupTypeId", "GroupTypeName"), "---"+ GlobalShared.Select_Group_Type +"---", new { @class = "form-control select2" })
+                                        @Html.DropDownListFor(m => m.GroupTypeId, new SelectList(ViewBag.GroupTypes, "GroupTypeId", "GroupTypeName"), "---" + GlobalShared.Select_Group_Type + "---", new { @class = "form-control select2" })
                                         @Html.ValidationMessageFor(m => m.GroupTypeId, "", new { @class = "text-danger" })
                                         <label>@GlobalShared.Select_Group_Type</label>
                                     </div>
@@ -41,19 +41,29 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-floating form-floating-outline">
                                         @Html.DropDownListFor(m => m.CustomerType, new List<SelectListItem>
                                         {
                                             new SelectListItem { Value = "MemberAccount", Text = "Normal Member Group Account", Selected = true }, // 🟰 Selected by default
                                             new SelectListItem { Value = "CivilServantsSalaryCollection", Text = "Civil Servant Salary Collective Group Account" },
                                             new SelectListItem { Value = "PrivateInstitutionSalaryCollection", Text = "Private Institution Salary Collective Group Account" }
-                                        }, "---"+ @GlobalGroup.SelectMemberAccountType +"---", new { @class = "form-select shadow-input-boxes" })
+                                        }, "---" + @GlobalGroup.SelectMemberAccountType + "---", new { @class = "form-select shadow-input-boxes" })
                                         @Html.ValidationMessageFor(m => m.CustomerType, "", new { @class = "text-danger" })
                                         <label>@GlobalGroup.SelectMemberAccountType</label>
                                     </div>
                                 </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.DropDownListFor(m => m.MemberStatus,
+                                            ViewBag.MemberStatuses as List<SelectListItem>,
+                                            "--- Select Member Status ---",
+                                            new { @class = "form-control select2", @required = "required" })
 
+                                        @Html.ValidationMessageFor(m => m.MemberStatus, "", new { @class = "text-danger" })
+                                        <label>Select MemberShip Status</label>
+                                    </div>
+                                </div>
 
                                 <div class="col-md-6">
                                     <div class="form-floating form-floating-outline">
@@ -111,8 +121,34 @@
                                     </div>
                                 </div>
 
+                                <div class="col-md-4">
+                                    @Html.CheckBoxFor(model => model.IsPoliticaExposed, new { @class = "form-check-input" })
+                                    @Html.LabelFor(model => model.IsPoliticaExposed, "Select Exposed status", new { @class = "form-check-label" })
+                                </div>
+                                <div id="pepDetails" class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.DropDownListFor(m => m.PoliticaExposedQuestion,
+                                                ViewBag.politicalstatuses as List<SelectListItem>,
+                                                "--- Select Member Status ---",
+                                                new { @class = "form-control select2", @required = "required" })
+
+                                            @Html.ValidationMessageFor(m => m.PoliticaExposedQuestion, "", new { @class = "text-danger" })
+                                            <label>Polictical question</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.PoliticaExposedAnswer, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.PoliticaExposedAnswer, "", new { @class = "text-danger" })
+                                            <label>Political Response</label>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
-                        </fieldset>
+</fieldset>
                     </div>
                 </div>
             </div>

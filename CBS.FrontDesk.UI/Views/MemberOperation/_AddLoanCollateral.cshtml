@@ -109,7 +109,23 @@
                         <label>@Global_AddLoanCollateral.NameOfPersonInvolved</label>
                     </div>
                 </div>
+                <div class="col-md-6">
+                    <div class="form-check mt-3">
+                        @Html.CheckBoxFor(m => m.LoanCollatera.IsformallyRegistered,
+                            new { @class = "form-check-input", id = "IsFormallyRegistered" })
+                        <label class="form-check-label" for="IsFormallyRegistered">
+                            Is Formally Registered
+                        </label>
+                    </div>
 
+                    <!-- Optional Description that appears only if checked -->
+                    <div class="form-floating form-floating-outline mt-3" id="formalRegistrationDescriptionContainer" style="display:none;">
+                        @Html.TextBoxFor(m => m.LoanCollatera.IsformallyRegistered,
+                            new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.LoanCollatera.IsformallyRegistered, "", new { @class = "text-danger" })
+                        <label>Description (Registration Details)</label>
+                    </div>
+                </div>
             </div>
             <div class="mt-4">
                 @if (ViewBag.Key == null)
@@ -130,3 +146,20 @@
     </div>
 
 </div>
+
+<script>
+    $(document).ready(function () {
+
+        function toggleDescription() {
+            if ($('#IsFormallyRegistered').is(':checked')) {
+                $('#formalRegistrationDescriptionContainer').slideDown();
+            } else {
+                $('#formalRegistrationDescriptionContainer').slideUp();
+                $('#LoanCollatera_FormalRegistrationDescription').val('');
+            }
+        }
+
+        toggleDescription(); // run on load
+        $('#IsFormallyRegistered').change(toggleDescription);
+    });
+</script>

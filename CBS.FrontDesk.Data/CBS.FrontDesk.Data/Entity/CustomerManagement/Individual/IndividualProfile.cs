@@ -261,7 +261,8 @@ namespace CBS.FrontDesk.Data.Entity.CustomerManagement
         public int NumberOfAttemptsOfMobileOrOnLineBankingLogin { get; set; }
         public bool IsUseOnLineMobileBanking { get; set; }
         public string CustomerPackageId { get; set; }
-        
+        public bool IsPoliticaExposed { get; set; }
+        public string PoliticaExposedAnswer { get; set; }
         public string BranchId { get; set; }
         public string EconomicActivitiesId { get; set; }
         public string BankId { get; set; }
@@ -303,6 +304,8 @@ namespace CBS.FrontDesk.Data.Entity.CustomerManagement
         public DateTime CompanyCreationDate { get; set; }
         public string PlaceOfCreation { get; set; }
         public string ConditionForWithdrawal { get; set; }
+        public string CustomerStatus { get; set; }
+        public string PoliticaExposedQuestion { get; set; }
         public List<CustomerDocument> CustomerDocuments { get; set; } = new List<CustomerDocument>();
         public List<MembershipNextOfKing> MembershipNextOfKings { get; set; } = new List<MembershipNextOfKing>();
         public List<CardSignatureSpecimen> CardSignatureSpecimens { get; set; } = new List<CardSignatureSpecimen>();

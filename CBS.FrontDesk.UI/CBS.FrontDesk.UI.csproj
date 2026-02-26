@@ -10820,6 +10820,8 @@
     <Content Include="Views\MembersFSeries\_AccountDetails.cshtml" />
     <Content Include="Views\StandingOrder\_ExportStandingOrder.cshtml" />
     <Content Include="Views\IPSReporting\Index.cshtml" />
+    <Content Include="Views\Individual\MemberStatus.cshtml" />
+    <Content Include="Views\Individual\MemberStatusTable.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
@@ -10847,6 +10849,7 @@
     <Folder Include="Controllers\DailyCollectionManagement\" />
     <Folder Include="Controllers\LoanManagementP\ApplicationP\" />
     <Folder Include="Hub\" />
+    <Folder Include="obj\Debug\TempPE\" />
     <Folder Include="Views\AccountingV2\" />
     <Folder Include="Views\BulkOperation\Contribution\" />
     <Folder Include="Views\BulkOperation\Topup\" />
