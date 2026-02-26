@@ -1060,7 +1060,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AccountOpeningRulePerBranch_Index.fr.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\AdvancedSheild\AdvancedShield.Designer.cs" />
     <Compile Include="App_GlobalResources\AffiliateAccount\AffiliateAccount2.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -10828,6 +10827,7 @@
     <Folder Include="AppFiles\Images\BarCodes\" />
     <Folder Include="AppFiles\Migration\TrialBalance\" />
     <Folder Include="App_Data\" />
+    <Folder Include="App_GlobalResources\AdvancedSheild\" />
     <Folder Include="App_GlobalResources\AttachedLoanDocuments\" />
     <Folder Include="bin\bin\fr\" />
     <Folder Include="bin\ca\" />
