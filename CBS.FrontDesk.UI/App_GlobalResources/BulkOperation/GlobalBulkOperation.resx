@@ -550,7 +550,7 @@
     <value>Bulk Operation Workflow</value>
   </data>
   <data name="Use_Branch_Status_Date_Range_together_to_narrow_results_before_opening_details_or_approvals" xml:space="preserve">
-    <value>Use Branch + Status + Date Range together to narrow results before opening details or approvals.</value>
+    <value>Use &lt;b&gt;Branch&lt;/b&gt; + &lt;b&gt;Status&lt;/b&gt; + &lt;b&gt;Date Range&lt;/b&gt; together to narrow results before opening details or approvals.</value>
   </data>
   <data name="Run_bulk_simulations_and_approvals_safely_filter_preview_then_execute" xml:space="preserve">
     <value>Run bulk simulations and approvals safely — filter, preview, then execute</value>

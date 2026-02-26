@@ -1410,7 +1410,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Use Branch + Status + Date Range together to narrow results before opening details or approvals..
+        ///   Looks up a localized string similar to Use &lt;b&gt;Branch&lt;/b&gt; + &lt;b&gt;Status&lt;/b&gt; + &lt;b&gt;Date Range&lt;/b&gt; together to narrow results before opening details or approvals..
         /// </summary>
         internal static string Use_Branch_Status_Date_Range_together_to_narrow_results_before_opening_details_or_approvals {
             get {

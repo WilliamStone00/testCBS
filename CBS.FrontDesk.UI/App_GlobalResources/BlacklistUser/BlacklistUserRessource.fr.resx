@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Blocked_By" xml:space="preserve">
+    <value>Bloqué par</value>
+  </data>
+  <data name="Active_Blocks" xml:space="preserve">
+    <value>Blocages actifs</value>
+  </data>
+  <data name="Blacklist_Configuration" xml:space="preserve">
+    <value>Configuration de la liste noire</value>
+  </data>
+  <data name="BLACKLIST_USER_IP" xml:space="preserve">
+    <value>Mettre un utilisateur / une adresse IP sur liste noire</value>
+  </data>
+  <data name="Blacklisted_User_Details" xml:space="preserve">
+    <value>Détails de l’utilisateur inscrit sur liste noire</value>
+  </data>
+  <data name="BLACKLISTED_USERS" xml:space="preserve">
+    <value>Utilisateurs inscrits sur liste noire</value>
+  </data>
+  <data name="Blacklisted_Users_LC" xml:space="preserve">
+    <value>Utilisateurs inscrits sur liste noire</value>
+  </data>
+  <data name="Block_Ends" xml:space="preserve">
+    <value>Fin du blocage</value>
+  </data>
+  <data name="Blocked_IPs" xml:space="preserve">
+    <value>Adresses IP bloquées</value>
+  </data>
+  <data name="Blocked_On" xml:space="preserve">
+    <value>Bloqué le</value>
+  </data>
+  <data name="Blocked_User_Locations" xml:space="preserve">
+    <value>Localisation des utilisateurs bloqués</value>
+  </data>
+  <data name="Blocking_Details" xml:space="preserve">
+    <value>Détails du blocage</value>
+  </data>
+  <data name="Ensure_IP_or_User_ID_is_accurate_before_applying_a_block" xml:space="preserve">
+    <value>Assurez-vous que l’adresse IP ou l’identifiant utilisateur est correct avant d’appliquer un blocage</value>
+  </data>
+  <data name="Geolocation_Details" xml:space="preserve">
+    <value>Détails de géolocalisation</value>
+  </data>
+  <data name="Manage_users_and_IPs_that_have_been_blocked_due_to_suspicious_or_abusive_behavior" xml:space="preserve">
+    <value>Gérer les utilisateurs et les adresses IP bloqués en raison d’un comportement suspect ou abusif</value>
+  </data>
+  <data name="Monitor_and_analyze_access_control_enforced_by_the_WAF_Apply_filters_below" xml:space="preserve">
+    <value>Surveiller et analyser le contrôle d’accès appliqué par le WAF. Appliquer les filtres ci-dessous pour afficher les indicateurs sur la période sélectionnée</value>
+  </data>
+  <data name="Monitor_location_branch_and_timestamp_info_for_investigation" xml:space="preserve">
+    <value>Surveiller les informations de localisation, d’agence et d’horodatage à des fins d’investigation</value>
+  </data>
+  <data name="No_users_or_IPs_are_currently_blacklisted" xml:space="preserve">
+    <value>Aucun utilisateur ni aucune adresse IP n’est actuellement inscrit sur liste noire</value>
+  </data>
+  <data name="Reason_for_Blocking" xml:space="preserve">
+    <value>Motif du blocage</value>
+  </data>
+  <data name="Recent_Blocked_Users" xml:space="preserve">
+    <value>Utilisateurs récemment bloqués</value>
+  </data>
+  <data name="Set_a_reasonable_block_duration_long_enough_to_deter_abuse" xml:space="preserve">
+    <value>Définir une durée de blocage appropriée — suffisamment longue pour dissuader les abus</value>
+  </data>
+  <data name="Unblock_Delete_User_or_IP" xml:space="preserve">
+    <value>Débloquer / Supprimer un utilisateur ou une adresse IP</value>
+  </data>
+</root>

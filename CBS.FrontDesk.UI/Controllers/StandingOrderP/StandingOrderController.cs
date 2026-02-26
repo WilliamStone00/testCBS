@@ -374,8 +374,10 @@ namespace CBS.FrontDesk.UI.Controllers.StandingOrderP
         //    }
         //}
 
-        public ActionResult StandingOrderRegistration()
-        {  return View();  }
+        public async Task<ActionResult> StandingOrderRegistration()
+        {
+            ViewBag.Branches= await _branchServices.GetBranches();
+            return View();  }
         
 
         public async Task<ActionResult> DownloadStandingOrderMemberRegistrationTemplate()

@@ -121,7 +121,7 @@ namespace CBS.BusinessService.Accounting_V2.IPS
 
                     // Enrich claim with context data
                     claim.BankId = GetBankID();
-                    claim.BankName = GetBankName();
+                    //claim.BankName = GetBankName();
                     claim.BranchCode = GetBranchCode();
                     claim.BranchName = GetBranchName();
                     claim.BranchId = GetBranchID();
@@ -235,7 +235,6 @@ namespace CBS.BusinessService.Accounting_V2.IPS
         {
             try
             {
-
                 string url = string.Format(APICallHelper.PostIPSClaim, model.ClaimId);
                 var response = await _apiHelper.PostAsync<ServiceResponse<object>>(url, model);
 

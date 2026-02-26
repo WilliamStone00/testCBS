@@ -285,7 +285,7 @@
     <Compile Include="Accounting V2\FallBack\fallbackservice.cs" />
     <Compile Include="Accounting V2\FilesUpload\FileUploadService.cs" />
     <Compile Include="Accounting V2\IncomeStatement\IncomeStatementService.cs" />
-    <Compile Include="Accounting V2\IPS\IPSClaim.cs" />
+    <Compile Include="Accounting V2\IPS\IPSClaimService.cs" />
     <Compile Include="Accounting V2\IPS\IPSClaimExcelExportGenerator.cs" />
     <Compile Include="Accounting V2\IPS\IPSConfigService.cs" />
     <Compile Include="Accounting V2\IPS\IPSReporting\IPSReportBuilderService.cs" />

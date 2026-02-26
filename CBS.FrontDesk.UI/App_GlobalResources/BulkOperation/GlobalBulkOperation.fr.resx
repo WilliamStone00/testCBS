@@ -124,16 +124,16 @@
     <value>À propos de ce transfert</value>
   </data>
   <data name="AdvancedUserFilters" xml:space="preserve">
-    <value>Filtres utilisateur avancés</value>
+    <value>Filtres utilisateurs avancés</value>
   </data>
   <data name="AllChangesAreLoggedForAuditPurposes" xml:space="preserve">
-    <value>Tous les changements sont enregistrés pour des raisons d'audit</value>
+    <value>Toutes les modifications sont enregistrées à des fins d’audit</value>
   </data>
   <data name="AllInformationIsEncrypted" xml:space="preserve">
-    <value>Toutes les informations sont cryptées</value>
+    <value>Toutes les informations sont chiffrées</value>
   </data>
   <data name="BulkOperationDetails" xml:space="preserve">
-    <value>Détails de l'opération en masse</value>
+    <value>Détails de l’opération en masse</value>
   </data>
   <data name="BulkOperationManagement" xml:space="preserve">
     <value>Gestion des opérations en masse</value>
@@ -142,46 +142,46 @@
     <value>Mécanismes de gestion des opérations en masse</value>
   </data>
   <data name="BulkOperationQueryOverview" xml:space="preserve">
-    <value>Vue d'ensemble des requêtes d'opération en masse</value>
+    <value>Vue d’ensemble des requêtes d’opération en masse</value>
   </data>
   <data name="BULKOPERATIONS" xml:space="preserve">
     <value>OPÉRATIONS EN MASSE</value>
   </data>
   <data name="BulkOperationSimulation" xml:space="preserve">
-    <value>Simulation d'opération en masse</value>
+    <value>Simulation d’opération en masse</value>
   </data>
   <data name="CombineFilters" xml:space="preserve">
-    <value>Combiner les filtres (par exemple, "Utilisateurs actifs dans l'agence X entre janvier et mars 2024")</value>
+    <value>Combiner les filtres (ex. : « Utilisateurs actifs dans l’agence X entre janvier et mars 2024 »)</value>
   </data>
   <data name="ConfirmBulkOperation" xml:space="preserve">
-    <value>Confirmer l'opération en masse</value>
+    <value>Confirmer l’opération en masse</value>
   </data>
   <data name="DestinationConfiguration" xml:space="preserve">
-    <value>Configuration de destination</value>
+    <value>Configuration de la destination</value>
   </data>
   <data name="EndAccountRange" xml:space="preserve">
     <value>Plage de comptes de fin</value>
   </data>
   <data name="EnterADescriptionForThisBulkOperation" xml:space="preserve">
-    <value>Entrez une description pour cette opération en masse...</value>
+    <value>Saisir une description pour cette opération en masse</value>
   </data>
   <data name="EnterApproverName" xml:space="preserve">
-    <value>Entrez le nom de l'approbateur</value>
+    <value>Saisir le nom de l’approbateur</value>
   </data>
   <data name="EnterDescriptionOrComments" xml:space="preserve">
-    <value>Entrez une description ou des commentaires</value>
+    <value>Saisir une description ou des commentaires</value>
   </data>
   <data name="ExecuteBatchActionsOnUsersRolesOrOrganizational" xml:space="preserve">
-    <value>Exécutez des actions par lots sur les utilisateurs, les rôles ou les unités organisationnelles. Importez/exportez des données, mettez à jour les autorisations ou modifiez les statuts en masse</value>
+    <value>Exécuter des actions par lots sur les utilisateurs, rôles ou unités organisationnelles. Importer / exporter des données, mettre à jour les autorisations ou modifier les statuts en masse</value>
   </data>
   <data name="FillAllRequiredFieldsAccurately" xml:space="preserve">
-    <value>Remplissez tous les champs obligatoires avec précision</value>
+    <value>Renseigner correctement tous les champs obligatoires</value>
   </data>
   <data name="FilterByActiveInactiveCompletedOrSuspendedAccounts" xml:space="preserve">
     <value>Filtrer par comptes actifs, inactifs, terminés ou suspendus</value>
   </data>
   <data name="FilterUsersByOrganizationalBranchOrLocation" xml:space="preserve">
-    <value>Filtrer les utilisateurs par agence ou emplacement organisationnel</value>
+    <value>Filtrer les utilisateurs par agence ou localisation organisationnelle</value>
   </data>
   <data name="GoToExecutedBulkOperationList" xml:space="preserve">
     <value>Aller à la liste des opérations en masse exécutées</value>
@@ -202,34 +202,34 @@
     <value>Sélectionner le compte de contribution à débiter</value>
   </data>
   <data name="SetTheEndDateRangeForUserRegistrationActivity" xml:space="preserve">
-    <value>Définissez la plage de dates de fin pour l'enregistrement/l'activité de l'utilisateur</value>
+    <value>Définir la plage de dates de fin pour l’inscription ou l’activité des utilisateurs</value>
   </data>
   <data name="SetTheStartDateRangeForUserRegistrationActivity" xml:space="preserve">
-    <value>Définissez la plage de dates de début pour l'enregistrement/l'activité de l'utilisateur</value>
+    <value>Définir la plage de dates de début pour l’inscription ou l’activité des utilisateurs</value>
   </data>
   <data name="ShowsFullTransactionDetails" xml:space="preserve">
     <value>Affiche les détails complets de la transaction</value>
   </data>
   <data name="ShowsTheMostCurrentTransferStatus" xml:space="preserve">
-    <value>Affiche le statut le plus actuel du transfert</value>
+    <value>Affiche le statut de transfert le plus récent</value>
   </data>
   <data name="SimulateARangeBulkOperation" xml:space="preserve">
-    <value>Simuler une opération de recharge/contribution  sur une plage</value>
+    <value>Simuler une opération de rechargement / contribution sur une plage</value>
   </data>
   <data name="SimulateBulkOperation" xml:space="preserve">
-    <value>Simuler l'opération en masse</value>
+    <value>Simuler l’opération en masse</value>
   </data>
   <data name="SimulateContribution" xml:space="preserve">
     <value>Simuler la contribution</value>
   </data>
   <data name="SimulateShareTopUp" xml:space="preserve">
-    <value>Simuler Le Rechargement</value>
+    <value>Simuler le rechargement</value>
   </data>
   <data name="SourceAccountsConfiguration" xml:space="preserve">
     <value>Configuration des comptes sources</value>
   </data>
   <data name="SimulationContributionStartMemberAccount" xml:space="preserve">
-    <value>Référence du membre de début de contribution</value>
+    <value>Référence membre de début pour la contribution</value>
   </data>
   <data name="ThisActionWillAffectMultipleRecords" xml:space="preserve">
     <value>Cette action affectera plusieurs enregistrements</value>
@@ -241,7 +241,7 @@
     <value>CONSEILS POUR LE FILTRAGE DES OPÉRATIONS EN MASSE</value>
   </data>
   <data name="UseFiltersToRefineSelectionsBeforeApplyingBulkChanges" xml:space="preserve">
-    <value>Utilisez des filtres (rôle, agence, date) pour affiner les sélections avant d'appliquer des modifications en masse</value>
+    <value>Utiliser les filtres (rôle, agence, date) pour affiner les sélections avant d’appliquer des modifications en masse</value>
   </data>
   <data name="View_Bulk_Operations" xml:space="preserve">
     <value>Afficher les opérations en masse</value>
@@ -253,52 +253,52 @@
     <value>Sélectionner le compte à débiter pour le rechargement</value>
   </data>
   <data name="SimulationTopupStartMemberAccount" xml:space="preserve">
-    <value>Référence du membre pour le début du rechargement</value>
+    <value>Référence membre de début pour le rechargement</value>
   </data>
   <data name="SimulationContributionMinimumAccountBalance" xml:space="preserve">
-    <value>Solde minimum de compte pour l'éligibilité à la contribution</value>
+    <value>Solde minimum du compte pour l’éligibilité à la contribution</value>
   </data>
   <data name="SimulationTopupMinimumAccountBalance" xml:space="preserve">
-    <value>Solde minimum de compte pour le rechargement</value>
+    <value>Solde minimum du compte pour le rechargement</value>
   </data>
   <data name="SimulationTopupEndMemberAccount" xml:space="preserve">
-    <value>Référence du membre pour la fin du rechargement</value>
+    <value>Référence membre de fin pour le rechargement</value>
   </data>
   <data name="SimulationContributionEndMemberAccount" xml:space="preserve">
-    <value>Référence du membre pour la fin de la contribution</value>
+    <value>Référence membre de fin pour la contribution</value>
   </data>
   <data name="SimulationContributionMaximumAccountBalance" xml:space="preserve">
-    <value>Solde maximum de compte pour l'éligibilité à la contribution</value>
+    <value>Solde maximum du compte pour l’éligibilité à la contribution</value>
   </data>
   <data name="SimulationTopupMaximumAccountBalance" xml:space="preserve">
-    <value>Plafond maximum de compte pour le rechargement</value>
+    <value>Solde maximum du compte pour le rechargement</value>
   </data>
   <data name="SimulationTopupDestinationAccountType" xml:space="preserve">
     <value>Compte à recharger</value>
   </data>
   <data name="SimulationTopupAmount" xml:space="preserve">
-    <value>Montant à recharger</value>
+    <value>Montant cible du rechargement</value>
   </data>
   <data name="SimulationContributionAmount" xml:space="preserve">
     <value>Montant de la contribution</value>
   </data>
   <data name="BulkOperationCashOutOrCashInAccount" xml:space="preserve">
-    <value>GL</value>
+    <value>Grand Livre (GL)</value>
   </data>
   <data name="BulkCashOperationSimulation" xml:space="preserve">
-    <value>Simulation d'opération de traitement de fonds en vrac</value>
+    <value>Simulation d’opération de trésorerie en masse</value>
   </data>
   <data name="BulkCashOperationParameters" xml:space="preserve">
-    <value>Configurer les paramètres de fonctionnement de la destination</value>
+    <value>Configurer les paramètres de l’opération de destination</value>
   </data>
   <data name="BulkCashAccountList" xml:space="preserve">
-    <value>Ajouter un compte membre pour une opération groupée</value>
+    <value>Ajouter un compte membre à l’opération en masse</value>
   </data>
   <data name="BulkCashSimulationMethod" xml:space="preserve">
-    <value>Méthode de simulation de trésorerie en vrac</value>
+    <value>Méthode de simulation de trésorerie en masse</value>
   </data>
   <data name="SelectAccountingDate" xml:space="preserve">
-    <value>Sélectionnez une date comptable</value>
+    <value>Sélectionner une date comptable</value>
   </data>
   <data name="BulkOperationCashOutOrCashInAccountTransferCashIn" xml:space="preserve">
     <value>À créditer</value>
@@ -307,274 +307,274 @@
     <value>À débiter</value>
   </data>
   <data name="SimulateBulkCashOperation" xml:space="preserve">
-    <value>Simuler un dépôt/retrait groupé de membres</value>
+    <value>Simuler une opération Cash-In / Cash-Out en masse pour les membres</value>
   </data>
   <data name="BulkType" xml:space="preserve">
-    <value>Bulk Type</value>
+    <value>Type d’opération en masse</value>
   </data>
   <data name="BulkProcessInitiated" xml:space="preserve">
-    <value>Bulk Process Initiated</value>
+    <value>Processus en masse lancé</value>
   </data>
   <data name="FilteredResults" xml:space="preserve">
-    <value>Bulk Operation Filtered</value>
+    <value>Opération en masse filtrée</value>
   </data>
   <data name="View_Bulk_Operation_Details" xml:space="preserve">
-    <value>View Bulk Operation Details</value>
+    <value>Afficher les détails de l’opération en masse</value>
   </data>
   <data name="BULKRANGEDOPERATIONS" xml:space="preserve">
-    <value>BULK RANGED OPERATIONS</value>
+    <value>OPÉRATIONS EN PLAGE EN MASSE</value>
   </data>
   <data name="BULKCASHOPERATIONS" xml:space="preserve">
-    <value>BULK CASH OPERATIONS</value>
+    <value>OPÉRATIONS DE TRÉSORERIE EN MASSE</value>
   </data>
   <data name="Bulk_Cash_Management_Console" xml:space="preserve">
-    <value />
+    <value>Console de gestion de la trésorerie en masse</value>
   </data>
   <data name="Process_multiple_account_cash_movements_in_one_operation_while_maintaining_complete_audit_trails_and_operational_control" xml:space="preserve">
-    <value />
+    <value>Traiter plusieurs mouvements de trésorerie sur plusieurs comptes en une seule opération tout en maintenant des pistes d’audit complètes et un contrôle opérationnel</value>
   </data>
   <data name="Simulate_and_validate_Cash_In_Cash_Out_batches_before_execution" xml:space="preserve">
-    <value />
+    <value>Simuler et valider les lots Cash-In / Cash-Out avant exécution</value>
   </data>
   <data name="All_bulk_cash_operations_run_in_SIMULATION_mode_first_for_review_and_validation_before_execution" xml:space="preserve">
-    <value />
+    <value>Toutes les opérations de trésorerie en masse s’exécutent d’abord en mode SIMULATION pour revue et validation avant exécution</value>
   </data>
   <data name="Choose_how_you_will_provide_account_data_manual_entry_or_file_upload" xml:space="preserve">
-    <value />
+    <value>Choisir la méthode de fourniture des données de compte : saisie manuelle ou téléversement de fichier</value>
   </data>
   <data name="Manual_mode_is_best_for_small_batches_File_mode_is_recommended_for_large_batches" xml:space="preserve">
-    <value />
+    <value>Le mode manuel est recommandé pour les petits volumes ; le mode fichier est recommandé pour les grands volumes</value>
   </data>
   <data name="Defines_whether_accounts_are_processed_within_a_single_branch_or_across_multiple_branches" xml:space="preserve">
-    <value />
+    <value>Définit si les comptes sont traités au sein d’une seule agence ou sur plusieurs agences</value>
   </data>
   <data name="Choose_Cash_In_deposit_or_Cash_Out_withdrawal_for_correct_accounting_routing" xml:space="preserve">
-    <value />
+    <value>Choisir Cash-In (dépôt) ou Cash-Out (retrait) pour un routage comptable correct</value>
   </data>
   <data name="Amount_must_be_greater_than_0_Verify_references_carefully_cash_operations_may_require_formal_reversals" xml:space="preserve">
-    <value />
+    <value>Le montant doit être supérieur à 0. Vérifier attentivement les références — les opérations de trésorerie peuvent nécessiter des annulations formelles</value>
   </data>
   <data name="Simulation_Type_is_mandatory_for_audit_classification_If_type_is_Other_provide_a_clear_description" xml:space="preserve">
-    <value />
+    <value>Le type de simulation est obligatoire pour la classification d’audit. Si le type est « Autre », fournir une description claire</value>
   </data>
   <data name="Internal_usually_means_same_branch_processing_External_Inter_Branch_allows_per_row_branch_selection" xml:space="preserve">
-    <value />
+    <value>« Interne » signifie généralement un traitement au sein de la même agence. « Externe / Inter-agence » permet une sélection d’agence par ligne</value>
   </data>
   <data name="Please_select_an_operation_scope" xml:space="preserve">
-    <value />
+    <value>Veuillez sélectionner le périmètre de l’opération</value>
   </data>
   <data name="Validate_Accounts_and_Amounts" xml:space="preserve">
-    <value />
+    <value>Valider les comptes et les montants</value>
   </data>
   <data name="Choose_Operation_Scope" xml:space="preserve">
-    <value />
+    <value>Choisir le périmètre de l’opération</value>
   </data>
   <data name="Select_Cash_Direction" xml:space="preserve">
-    <value />
+    <value>Sélectionner le sens de trésorerie</value>
   </data>
   <data name="Use_Simulation_Type" xml:space="preserve">
-    <value />
+    <value>Utiliser le type de simulation</value>
   </data>
   <data name="Used_to_load_branch_Chart_of_Accounts_for_cash_source_destination_routing" xml:space="preserve">
-    <value />
+    <value>Utilisé pour charger le plan comptable de l’agence pour le routage source/destination</value>
   </data>
   <data name="No_accounts_added_yet_Click_Add_Account_to_begin" xml:space="preserve">
-    <value />
+    <value>Aucun compte ajouté pour le moment. Cliquez sur « Ajouter un compte » pour commencer</value>
   </data>
   <data name="Each_row_represents_one_member_account_entry_in_the_batch" xml:space="preserve">
-    <value />
+    <value>Chaque ligne représente une écriture de compte membre dans le lot</value>
   </data>
   <data name="Please_select_a_cash_direction" xml:space="preserve">
-    <value />
+    <value>Veuillez sélectionner le sens de trésorerie</value>
   </data>
   <data name="Cash_In_deposit_to_member_accounts_Cash_Out_withdrawal_from_member_accounts" xml:space="preserve">
-    <value />
+    <value>Cash-In = dépôt sur les comptes membres. Cash-Out = retrait des comptes membres</value>
   </data>
   <data name="Must_match_an_open_accounting_day_for_the_selected_branch" xml:space="preserve">
-    <value />
+    <value>Doit correspondre à une journée comptable ouverte pour l’agence sélectionnée</value>
   </data>
   <data name="Please_select_a_valid_accounting_date" xml:space="preserve">
-    <value />
+    <value>Veuillez sélectionner une date comptable valide</value>
   </data>
   <data name="Categorizes_the_batch_for_audit_and_reporting" xml:space="preserve">
-    <value />
+    <value>Catégorise le lot pour l’audit et le reporting (frais, salaires, corrections, etc.)</value>
   </data>
   <data name="Please_select_a_simulation_type" xml:space="preserve">
-    <value />
+    <value>Veuillez sélectionner un type de simulation</value>
   </data>
   <data name="Recommended_include_ticket_number_approval_reference_or_business_reason" xml:space="preserve">
-    <value />
+    <value>Recommandé : inclure le numéro de ticket, la référence d’approbation ou la justification métier</value>
   </data>
   <data name="Select_the_branch_GL_account_used_to_route_this_cash_batch" xml:space="preserve">
-    <value />
+    <value>Sélectionner le compte GL de l’agence utilisé pour le routage de ce lot de trésorerie (ex. : Caisse, Coffre, Contrôle de trésorerie)</value>
   </data>
   <data name="Please_select_a_chart_of_account" xml:space="preserve">
-    <value />
+    <value>Veuillez sélectionner un plan comptable</value>
   </data>
   <data name="Cash_Source_Destination_Account_COA" xml:space="preserve">
-    <value />
+    <value>Compte source / destination de trésorerie (COA)</value>
   </data>
   <data name="Bulk_Operation_File_Upload" xml:space="preserve">
-    <value />
+    <value>Téléversement du fichier d’opération en masse</value>
   </data>
   <data name="Use_the_template_Upload_preview_confirm_parameters_run_simulation" xml:space="preserve">
-    <value />
+    <value>Utiliser le modèle. Téléverser → prévisualiser → confirmer les paramètres → lancer la simulation</value>
   </data>
   <data name="If_Simulation_Type_is_Other_description_is_required" xml:space="preserve">
-    <value />
+    <value>Si le type de simulation est « Autre », une description est obligatoire</value>
   </data>
   <data name="Please_select_chart_of_account" xml:space="preserve">
-    <value />
+    <value>Veuillez sélectionner un plan comptable</value>
   </data>
   <data name="Loads_branch_COA_used_for_cash_routing_during_simulation" xml:space="preserve">
-    <value />
+    <value>Charge le plan comptable (COA) de l’agence utilisé pour le routage de trésorerie lors de la simulation</value>
   </data>
   <data name="This_ID_links_the_simulation_to_the_uploaded_batch_file" xml:space="preserve">
-    <value />
+    <value>Cet identifiant lie la simulation au fichier de lot téléversé</value>
   </data>
   <data name="Validate_the_preview_before_running_simulation" xml:space="preserve">
-    <value />
+    <value>Valider l’aperçu avant de lancer la simulation</value>
   </data>
   <data name="Bulk_Operation_Details_Verification_and_Approvals" xml:space="preserve">
-    <value />
+    <value>Détails de l’opération en masse, vérification et approbations</value>
   </data>
   <data name="Amount_to_collect_from_each_eligible_account_or_per_rule_depending_on_your_backend_logic" xml:space="preserve">
-    <value />
+    <value>Montant à collecter sur chaque compte éligible (ou selon la règle définie dans la logique backend)</value>
   </data>
   <data name="Must_be_greater_than_0" xml:space="preserve">
-    <value />
+    <value>Doit être supérieur à 0</value>
   </data>
   <data name="Loaded_based_on_the_selected_branch" xml:space="preserve">
-    <value />
+    <value>Chargé en fonction de l’agence sélectionnée</value>
   </data>
   <data name="This_is_the_single_destination_GL_that_receives_the_collected_contribution_amount" xml:space="preserve">
-    <value />
+    <value>GL de destination unique qui reçoit le montant total de la contribution collectée</value>
   </data>
   <data name="The_system_will_credit_each_eligible_account_up_to_this_target_amount" xml:space="preserve">
-    <value />
+    <value>Le système créditera chaque compte éligible jusqu’à ce montant cible</value>
   </data>
   <data name="Target_account_type_to_be_credited_during_top_up" xml:space="preserve">
-    <value />
+    <value>Type de compte cible à créditer lors du rechargement</value>
   </data>
   <data name="Only_accounts_with_balance_this_amount_are_included" xml:space="preserve">
-    <value />
+    <value>Seuls les comptes dont le solde est inférieur ou égal à ce montant sont inclus</value>
   </data>
   <data name="Limits_selection_to_accounts_ending_at_this_member_account_reference" xml:space="preserve">
-    <value />
+    <value>Limite la sélection aux comptes se terminant par cette référence membre/compte</value>
   </data>
   <data name="Limits_selection_to_accounts_starting_from_this_member_account_reference" xml:space="preserve">
-    <value />
+    <value>Limite la sélection aux comptes à partir de cette référence membre/compte</value>
   </data>
   <data name="This_is_the_member_account_type_that_will_be_filtered_and_impacted_by_the_bulk_run" xml:space="preserve">
-    <value />
+    <value>Type de compte membre qui sera filtré et impacté par l’opération en masse</value>
   </data>
   <data name="collects_from_many_accounts_into_a_single_destination_account_GL" xml:space="preserve">
-    <value />
+    <value>Collecte les fonds de plusieurs comptes vers un compte de destination unique (GL)</value>
   </data>
   <data name="credits_multiple_accounts_to_a_target_amount" xml:space="preserve">
-    <value />
+    <value>Crédite plusieurs comptes jusqu’à un montant cible</value>
   </data>
   <data name="The_branch_defines_the_accounting_scope_and_the_available_branch_Chart_of_Accounts" xml:space="preserve">
-    <value />
+    <value>L’agence définit le périmètre comptable et le plan comptable disponible</value>
   </data>
   <data name="Pick_a_type_that_matches_the_business_reason_Use_Other_only_when_none_fits" xml:space="preserve">
-    <value />
+    <value>Choisir un type correspondant à la justification métier. Utiliser « Autre » uniquement si aucun type ne convient</value>
   </data>
   <data name="Recommended_format_Reason_period_operator" xml:space="preserve">
-    <value />
+    <value>Format recommandé : « Motif + période + opérateur »</value>
   </data>
   <data name="Required_if_Simulation_Type_is_Other" xml:space="preserve">
-    <value />
+    <value>Obligatoire si le type de simulation est « Autre »</value>
   </data>
   <data name="Always_run_simulation_and_verify_the_impacted_accounts_list_before_execution" xml:space="preserve">
-    <value />
+    <value>Toujours exécuter la simulation et vérifier la liste des comptes impactés avant l’exécution</value>
   </data>
   <data name="Avoid_wide_ranges_Start_End_Bulk_runs_are_hard_to_reverse_and_may_require_manual_correction" xml:space="preserve">
-    <value />
+    <value>Éviter les plages trop larges (début/fin). Les opérations en masse sont difficiles à annuler et peuvent nécessiter des corrections manuelles</value>
   </data>
   <data name="For_Contribution_choose_a_single_destination_GL_contribution_amount" xml:space="preserve">
-    <value />
+    <value>Pour une contribution : choisir un seul GL de destination et le montant de la contribution</value>
   </data>
   <data name="For_Top_Up_choose_destination_account_type_target_amount" xml:space="preserve">
-    <value />
+    <value>Pour un rechargement : choisir le type de compte de destination et le montant cible</value>
   </data>
   <data name="Keep_ranges_tight_to_avoid_unintended_selections" xml:space="preserve">
-    <value />
+    <value>Limiter les plages pour éviter des sélections non intentionnelles</value>
   </data>
   <data name="Define_which_accounts_are_impacted" xml:space="preserve">
-    <value />
+    <value>Définir les comptes impactés (type, plage, solde minimum/maximum)</value>
   </data>
   <data name="This_is_what_auditors_and_reports_will_use_to_identify_the_run" xml:space="preserve">
-    <value />
+    <value>C’est cet identifiant que les auditeurs et rapports utiliseront pour reconnaître l’opération</value>
   </data>
   <data name="Choose_a_simulation_type_and_write_a_clear_description" xml:space="preserve">
-    <value />
+    <value>Choisir un type de simulation et rédiger une description claire</value>
   </data>
   <data name="All_bulk_operations_are_executed_in_simulation_mode_first_to_allow_full_review_and_validation_before_actual_execution" xml:space="preserve">
-    <value />
+    <value>Toutes les opérations en masse sont exécutées d’abord en mode simulation afin de permettre une revue et validation complètes avant l’exécution réelle</value>
   </data>
   <data name="Save_time_by_processing_hundreds_of_accounts_in_a_single_operation_while_maintaining_complete_audit_trails_and_operational_control" xml:space="preserve">
-    <value />
+    <value>Gagner du temps en traitant des centaines de comptes en une seule opération tout en conservant des pistes d’audit complètes et un contrôle opérationnel</value>
   </data>
   <data name="Bulk_Account_Management_System" xml:space="preserve">
-    <value />
+    <value>Système de gestion des comptes en masse</value>
   </data>
   <data name="Perform_mass_operations_across_multiple_accounts_simultaneously" xml:space="preserve">
-    <value />
+    <value>Exécuter des opérations de masse sur plusieurs comptes simultanément</value>
   </data>
   <data name="Always_open_Details_before_approval_to_confirm_totals_member_count_and_simulation_type" xml:space="preserve">
-    <value />
+    <value>Toujours ouvrir les détails avant l’approbation afin de confirmer les totaux, le nombre de membres et le type de simulation</value>
   </data>
   <data name="Combine_filters_then_sort_by_Date_descending_to_see_most_recent_work_first" xml:space="preserve">
-    <value />
+    <value>Combiner les filtres puis trier par date décroissante pour afficher les travaux les plus récents en premier</value>
   </data>
   <data name="Narrow_by_creation_date_to_isolate_todays_last_weeks_simulations_and_reduce_noise" xml:space="preserve">
-    <value />
+    <value>Restreindre par date de création afin d’isoler les simulations d’aujourd’hui ou de la semaine dernière et réduire le bruit</value>
   </data>
   <data name="Use_status_to_quickly_identify_what_needs_action" xml:space="preserve">
-    <value />
+    <value>Utiliser le statut pour identifier rapidement les actions requises (En attente / En cours d’approbation / Échec)</value>
   </data>
   <data name="Filter_operations_initiated_from_a_specific_branch" xml:space="preserve">
-    <value />
+    <value>Filtrer les opérations initiées par une agence spécifique (idéal pour les audits et suivis d’approbation)</value>
   </data>
   <data name="Finalize_the_bulk_action" xml:space="preserve">
-    <value />
+    <value>Finaliser l’action en masse</value>
   </data>
   <data name="Open_details_and_verify_totals" xml:space="preserve">
-    <value />
+    <value>Ouvrir les détails et vérifier les totaux</value>
   </data>
   <data name="Create_a_simulation_batch" xml:space="preserve">
-    <value />
+    <value>Créer un lot de simulation</value>
   </data>
   <data name="Bulk_Operation_Workflow" xml:space="preserve">
-    <value />
+    <value>Flux de travail des opérations en masse</value>
   </data>
   <data name="Use_Branch_Status_Date_Range_together_to_narrow_results_before_opening_details_or_approvals" xml:space="preserve">
-    <value />
+    <value>Utiliser Agence + Statut + Plage de dates pour affiner les résultats avant d’ouvrir les détails ou les approbations</value>
   </data>
   <data name="Run_bulk_simulations_and_approvals_safely_filter_preview_then_execute" xml:space="preserve">
-    <value />
+    <value>Exécuter les simulations et approbations en toute sécurité — filtrer, prévisualiser puis exécuter</value>
   </data>
   <data name="Accounting_impact_is" xml:space="preserve">
-    <value />
+    <value>L’impact comptable est</value>
   </data>
   <data name="Accounting_Impact" xml:space="preserve">
-    <value />
+    <value>Impact comptable</value>
   </data>
   <data name="This_simulation_is_approved_and_will_generate_accounting_entries_upon_execution" xml:space="preserve">
-    <value />
+    <value>Cette simulation est approuvée et générera des écritures comptables lors de l’exécution</value>
   </data>
   <data name="This_simulation_is_eligible_to_impact_accounting_but_no_entries_were_generated_because_the_operation_is_not_yet_approved" xml:space="preserve">
-    <value />
+    <value>Cette simulation est éligible à un impact comptable, mais aucune écriture n’a été générée car l’opération n’est pas encore approuvée</value>
   </data>
   <data name="This_simulation_was_explicitly_configured_not_to_generate_accounting_entries_even_if_approved" xml:space="preserve">
-    <value />
+    <value>Cette simulation a été explicitement configurée pour ne pas générer d’écritures comptables, même si elle est approuvée</value>
   </data>
   <data name="When_enabled_this_simulation_will_generate_accounting_entries_upon_execution" xml:space="preserve">
-    <value />
+    <value>Lorsqu’elle est activée, cette simulation générera des écritures comptables lors de l’exécution</value>
   </data>
   <data name="Impact_Accounting" xml:space="preserve">
-    <value />
+    <value>Impact comptable</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="Simulation_Details_Filters" type="System.Resources.ResXNullRef, System.Windows.Forms">

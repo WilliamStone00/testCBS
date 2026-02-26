@@ -118,24 +118,24 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Activation_head_office_and_bank_link" xml:space="preserve">
-    <value />
+    <value>Activation, siège et rattachement bancaire</value>
   </data>
   <data name="Is_this_branch_linked_to_any_bank" xml:space="preserve">
-    <value>Cette branche est-elle liée à une banque ?</value>
+    <value>Cette agence est-elle rattachée à une banque ?</value>
   </data>
   <data name="Set_as_head_office_branch" xml:space="preserve">
-    <value>Définir comme branche du siège social</value>
+    <value>Définir comme agence siège</value>
   </data>
   <data name="Legal_identifiers_for_the_branch" xml:space="preserve">
-    <value />
+    <value>Identifiants légaux de l’agence.</value>
   </data>
   <data name="Contact_and_address_for_escalations" xml:space="preserve">
-    <value />
+    <value>Contact et adresse pour les escalades</value>
   </data>
   <data name="Initials_motto_and_creation_date" xml:space="preserve">
-    <value />
+    <value>Sigle, devise et date de création</value>
   </data>
   <data name="Branch_Management" xml:space="preserve">
-    <value>Gestion des agences</value>
+    <value>Gestion de l’agence</value>
   </data>
 </root>

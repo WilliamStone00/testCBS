@@ -223,7 +223,7 @@
     <value>Sélectionner l'option de recherche</value>
   </data>
   <data name="SelectThisOptionAndEnterTheTypeOfAction" xml:space="preserve">
-    <value>Sélectionnez cette option et entrez le type d'action (par exemple,</value>
+    <value>Sélectionnez cette option et entrez le type d'action (par exemple.,</value>
   </data>
   <data name="SelectThisOptionToFilterLogsByBranchName" xml:space="preserve">
     <value>Sélectionnez cette option pour filtrer les journaux par nom d'agence</value>

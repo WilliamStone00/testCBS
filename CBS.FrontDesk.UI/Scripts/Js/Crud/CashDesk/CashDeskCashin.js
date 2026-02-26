@@ -225,8 +225,10 @@ function collectLoanRepaymentSelection() {
 }
 
 function collectDeposits() {
+
     const deposits = [];
     const totalInfo = calculateTotalAmount();
+
     const alphaNumber = $('#CustomerAlphaNumber').val();
     const customerId = $('#customerId').val();
     const operationType = $('#OperationType').val();
@@ -235,14 +237,22 @@ function collectDeposits() {
     const note = $('#Note')?.val() || '';
     const globalVat = parseFloat($('#calculatedVat').text().replace(/,/g, '')) || 0;
 
-    const hideBalance = $('#hideBalanceCheckbox').is(':checked'); // ✅ FETCH OUTSIDE the loop once
+    const hideBalance = $('#hideBalanceCheckbox').is(':checked');
+
+    // ✅ AML FIELDS (FETCH ONCE)
+    const sourceOfFundsCode = $('#SourceOfFundsCode').val() || '';
+    const sourceOfFundsOther = $('#SourceOfFundsOther').val() || '';
+    const depositPurposeCode = $('#DepositPurposeCode').val() || '';
+    const depositPurposeOther = $('#DepositPurposeOther').val() || '';
 
     $('#myDataTableT tbody tr').each(function () {
-        const isChecked = $(this).find('td input[type="checkbox"]').prop('checked'); // ✅ target only inside table cell, not global checkbox!
+
+        const isChecked = $(this).find('td input[type="checkbox"]').prop('checked');
 
         if (!isChecked) return;
 
         const deposit = {
+
             AccountNumber: $(this).find('td:eq(0)').text().trim(),
             AccountType: $(this).find('td:eq(1)').text().trim(),
             Balance: parseFloat($(this).find('td:eq(2)').text()) || 0,
@@ -251,13 +261,14 @@ function collectDeposits() {
             Penalty: parseFloat($(this).find('.penalty-input')?.val()) || 0,
             Interest: parseFloat($(this).find('.interest-input')?.val()) || 0,
             Total: parseFloat($(this).find('.total-span').text()) || 0,
-            //Total: totalInfo.total //parseFloat($(this).find('.total-span').text()) || 0,
+
             Note: note,
             CheckName: checkName,
             CheckNumber: checkNumber,
             CustomerAlphaNumber: alphaNumber,
             CustomerId: customerId,
             OperationType: operationType,
+
             isDepositDoneByAccountOwner: isChecked,
             IsChargesInclussive: $(this).find('.check-inclussive').prop('checked'),
             IsSWS: true,
@@ -266,16 +277,21 @@ function collectDeposits() {
             LoanApplicationId: $(this).find('.loan-application-id')?.val() || '',
             Period: $(this).find('.period')?.val() || '',
             Vat: globalVat,
-            HideBalance: hideBalance // ✅ correctly from the top hide balance checkbox!
+            HideBalance: hideBalance,
+
+            // ✅ NEW AML FIELDS
+            SourceOfFundsCode: sourceOfFundsCode,
+            SourceOfFundsOther: sourceOfFundsCode === "OTHER" ? sourceOfFundsOther : '',
+            DepositPurposeCode: depositPurposeCode,
+            DepositPurposeOther: depositPurposeCode === "OTHER" ? depositPurposeOther : ''
         };
 
         deposits.push(deposit);
     });
 
-    console.log("✅ Collected Deposits:", deposits);
+    console.log("✅ Collected Deposits with AML:", deposits);
     return deposits;
 }
-
 
 
 function autoCheckDeposits() {
