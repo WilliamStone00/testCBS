@@ -1,0 +1,209 @@
+﻿
+@{ ViewBag.Title = "Member Status"; }
+
+
+<link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+<div class="row">
+    <div class="col-12">
+        <!-- Page Header -->
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-flag-variant me-2"></i>  MemberShip Status  Data Table
+                </h1>
+                <p class="card-text text-muted">
+                    Define a new status label for your members.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="card p-3 shadow mb-2">
+    <div class="table-responsive">
+        <table id="memberStatusTable" class="table table-bordered table-striped align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    
+                    <th style="width:150px;">Actions</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+
+
+
+
+<div class="modal fade" id="detailsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered custom-width">
+        <div class="modal-content">
+
+            <div class="card bg-light mb-3">
+                <div class="card-body text-center">
+                    <h1 class="card-title text-primary">
+                        <i class="mdi mdi-eye-outline me-2"></i>Member Status Details
+                    </h1>
+                    <p class="card-text">
+                        View full information of the selected member status.
+                    </p>
+                    <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+                </div>
+            </div>
+
+            <div class="modal-body">
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Name</label>
+                    <input type="text" id="detailsName" class="form-control" readonly />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Description</label>
+                    <textarea id="detailsDescription" class="form-control" rows="3" readonly></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Default Status</label>
+                    <input type="text" id="detailsDefault" class="form-control" readonly />
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="updateModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered custom-width">
+        <div class="modal-content">
+
+            <div class="card bg-light mb-3">
+                <div class="card-body text-center">
+                    <h1 class="card-title text-warning">
+                        <i class="mdi mdi-pencil-outline me-2"></i>Update Member Status
+                    </h1>
+                    <p class="card-text">
+                        Modify the selected member status information.
+                    </p>
+                    <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+                </div>
+            </div>
+
+            <div class="modal-body">
+
+                <input type="hidden" id="updateId" />
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Name</label>
+                    <input type="text" id="updateName" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Description</label>
+                    <textarea id="updateDescription" class="form-control" rows="3"></textarea>
+                </div>
+
+                <div class="form-check mb-3">
+                    <input type="checkbox" id="updateDefault" class="form-check-input" />
+                    <label class="form-check-label fw-bold">
+                        Set as Default Status
+                    </label>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button id="btnSubmitUpdate" class="btn btn-warning">Save Changes</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+        <script>
+
+            $(document).ready(function () {
+
+                $('#memberStatusTable').DataTable({
+                    ajax: {
+                        url: '/Individual/GetMemberStatuses',
+                        type: 'GET',
+                        dataSrc: 'data'
+                    },
+                    pageLength: 5,
+                    columns: [
+                        { data: 'Name' },
+                        { data: 'Description' },
+                       
+                        {
+                            data: 'Id',
+                            render: function (data, type, row) {
+                                return `
+                            <button class="btn btn-sm btn-info me-1"
+                                onclick="openDetails('${data}')">
+                                Details
+                            </button>
+
+                            <button class="btn btn-sm btn-warning"
+                                onclick="openUpdate('${data}')">
+                                Update
+                            </button>
+                        `;
+                            }
+                        }                    ]
+                });
+
+
+
+
+                function openDetails(id) {
+
+                    if (!id) {
+                        appalert("Invalid Member Status ID.", 0, 1);
+                        return;
+                    }
+
+                    $.get('/Individual/MemberStatusDetails', { id: id })
+                        .done(function (response) {
+                            if (response.success) {
+                                $('#detailsName').val(response.data.Name);
+                                $('#detailsDescription').val(response.data.Description);
+                                $('#detailsDefault').val(response.data.IsDefault ? "Yes" : "No");
+
+                                var modal = new bootstrap.Modal(document.getElementById('detailsModal'));
+                                modal.show();
+                            } else {
+                                appalert(response.message || "Unable to load details.", 2, 1);
+                            }
+                        })
+                        .fail(function () {
+                            appalert("Server error occurred while loading details.", 0, 1);
+                        });
+                }
+               
+            });
+        </script>
+    }
+
+
+

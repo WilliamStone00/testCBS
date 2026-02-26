@@ -46,6 +46,11 @@ namespace CBS.FrontDesk.Data.Entity.CustomerManagement.Grouping
         public string CustomerCategoryId { get; set; }
         public string Action { get; set; }
         public string ServiceOption { get; set; }
+        public string MemberStatus { get; set; }
+        public string PoliticaExposedAnswer { get; set; }
+        public bool IsPoliticaExposed { get; set; }
+
+        public string PoliticaExposedQuestion { get; set; }
         public GroupType GroupType { get; set; }
         public List<GroupCustomer> GroupCustomers { get; set; }
         public List<GroupDocument> GroupDocuments { get; set; }

@@ -155,4 +155,12 @@ namespace CBS.FrontDesk.Data.Entity
         public bool IsByBranch { get; set; }
 
     }
+
+    public class MemberStatus
+    {
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public string  Description { get; set; }
+        public bool IsDefault { get; set; }
+    }
 }

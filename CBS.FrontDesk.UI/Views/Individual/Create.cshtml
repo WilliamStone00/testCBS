@@ -238,6 +238,23 @@
                 }
             });
         }
+
+
+        function togglePepSection() {
+            if ($('#IsPoliticaExposed').is(':checked')) {
+                $('#pepDetails').slideDown();
+            } else {
+                $('#pepDetails').slideUp();
+            }
+        }
+
+        // Run on page load
+        togglePepSection();
+
+        // Run on checkbox change
+        $('#IsPoliticaExposed').change(function () {
+            togglePepSection();
+        });
     });
 
     </script>

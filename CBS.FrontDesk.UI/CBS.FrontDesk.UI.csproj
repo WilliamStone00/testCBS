@@ -11119,6 +11119,8 @@
     <Content Include="Views\StandingOrder\_ExportStandingOrder.cshtml" />
     <Content Include="Views\ChequeClearance\_Validation.cshtml" />
     <Content Include="Views\IPSReporting\Index.cshtml" />
+    <Content Include="Views\Individual\MemberStatus.cshtml" />
+    <Content Include="Views\Individual\MemberStatusTable.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
