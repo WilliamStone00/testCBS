@@ -184,18 +184,18 @@
 
                                     <div class="col-md-4">
                                         @Html.CheckBoxFor(model => model.IsPoliticaExposed, new { @class = "form-check-input" })
-                                        @Html.LabelFor(model => model.IsPoliticaExposed, "Politically Exposed Person (PEP)", new { @class = "form-check-label" })
+                                        @Html.LabelFor(model => model.IsPoliticaExposed, "Select Exposed status", new { @class = "form-check-label" })
                                     </div>
                                     <div id="pepDetails" class="row">
                                         <div class="col-md-6">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.DropDownListFor(m => m.PoliticaExposedQuestion,
                                                     ViewBag.politicalstatuses as List<SelectListItem>,
-                                                    "--- Select Member Status ---",
+                                                    "--- Select  status ---",
                                                     new { @class = "form-control select2", @required = "required" })
 
                                                 @Html.ValidationMessageFor(m => m.PoliticaExposedQuestion, "", new { @class = "text-danger" })
-                                                <label>Select Member Status</label>
+                                                <label>Polictical question</label>
                                             </div>
                                         </div>
 
@@ -203,7 +203,7 @@
                                             <div class="form-floating form-floating-outline">
                                                 @Html.TextBoxFor(m => m.PoliticaExposedAnswer, new { @class = "form-control" })
                                                 @Html.ValidationMessageFor(m => m.PoliticaExposedAnswer, "", new { @class = "text-danger" })
-                                                <label>Political Answers</label>
+                                                <label>Political Response</label>
                                             </div>
                                         </div>
                                     </div>
