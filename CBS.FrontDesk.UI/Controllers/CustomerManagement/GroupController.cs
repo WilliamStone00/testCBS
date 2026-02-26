@@ -28,6 +28,30 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
         public async Task<ActionResult> Index()
         {
             await GetViewBags();
+
+            var statuses = await _individualProfileServices.GetAllAsync(); // however you fetch them
+
+            ViewBag.MemberStatuses = statuses?
+                .Select(s => new SelectListItem
+                {
+                    Value = s.Name,
+                    Text = $"[{s.Name}] - [{s.Description}]"
+                })
+                .OrderBy(x => x.Text)
+                .ToList()
+                ?? new List<SelectListItem>();
+
+            var politicalstatus = await _individualProfileServices.GetAllPoliticalAsync(); // however you fetch them
+
+            ViewBag.politicalstatuses = politicalstatus?
+                .Select(s => new SelectListItem
+                {
+                    Value = s.Value,
+                    Text = $"[{s.Text}] - [{s.Value}]"
+                })
+                .OrderBy(x => x.Text)
+                .ToList()
+                ?? new List<SelectListItem>();
             return View(new Group());
         }
         public async Task<ActionResult> Details(string KEY)

@@ -48,7 +48,7 @@ namespace CBS.FrontDesk.UI.Controllers
             {
                 case "currentloan":
                     relativePath = "Loan/PortFolio/CurrentLoanRPT.rpt";
-                    reportTitle = "Current Loans Report";
+                    reportTitle = "Current Loans";
                     rptData = await _loanService.GetLoanPortfolioAnalysisAsync(reportCommand);
                     if (rptData == null)
                         return new JsonResult
@@ -83,7 +83,7 @@ namespace CBS.FrontDesk.UI.Controllers
                     break;
                 case "delinquentloanslistingwithaging":
                     relativePath = "Loan/LoanSituationAlpha/DeliquentLoanListingWithAgingRPT.rpt";
-                    reportTitle = "DELINQUENT LOANS WITH AGING REPORT";
+                    reportTitle = "LOAN AGINGS";
                     delinquencyData = await _loanService.GetLoanDelinquencyReportAsync(reportCommand);
                     if (delinquencyData == null || delinquencyData.CategorySummaries == null || !delinquencyData.LoanEntries.Any())
                         return new JsonResult
@@ -95,7 +95,7 @@ namespace CBS.FrontDesk.UI.Controllers
 
                 case "delinquentloan":
                     relativePath = "Loan/PortFolio/DelinquentLoansRPT.rpt";
-                    reportTitle = "PORTFOLIO OF DELINQUENT LOANS";
+                    reportTitle = "LOAN PORTFOLIO";
                     rptData = await _loanService.GetLoanPortfolioAnalysisAsync(reportCommand);
                     if (rptData == null)
                         return new JsonResult

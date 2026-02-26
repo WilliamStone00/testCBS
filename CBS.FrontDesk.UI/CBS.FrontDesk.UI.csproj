@@ -10812,6 +10812,8 @@
     <Content Include="Views\MembersFSeries\_AccountDetails.cshtml" />
     <Content Include="Views\StandingOrder\_ExportStandingOrder.cshtml" />
     <Content Include="Views\IPSReporting\Index.cshtml" />
+    <Content Include="Views\Individual\MemberStatus.cshtml" />
+    <Content Include="Views\Individual\MemberStatusTable.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
