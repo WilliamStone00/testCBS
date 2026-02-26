@@ -10841,6 +10841,7 @@
     <Folder Include="Controllers\DailyCollectionManagement\" />
     <Folder Include="Controllers\LoanManagementP\ApplicationP\" />
     <Folder Include="Hub\" />
+    <Folder Include="obj\Debug\TempPE\" />
     <Folder Include="Views\AccountingV2\" />
     <Folder Include="Views\BulkOperation\Contribution\" />
     <Folder Include="Views\BulkOperation\Topup\" />

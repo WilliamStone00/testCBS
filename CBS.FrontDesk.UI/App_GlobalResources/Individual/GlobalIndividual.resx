@@ -918,4 +918,13 @@
   <data name="SelectRelation" xml:space="preserve">
     <value>Select relation</value>
   </data>
+  <data name="Last_Interest_Posted" xml:space="preserve">
+    <value>Last Interest Posted</value>
+  </data>
+  <data name="Opening_Day_Information" xml:space="preserve">
+    <value>Openin Day Information</value>
+  </data>
+  <data name="Opening_Day_Status" xml:space="preserve">
+    <value>Opening Day Status</value>
+  </data>
 </root>
