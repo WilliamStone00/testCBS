@@ -142,7 +142,7 @@
     <value>Co-Obligor</value>
   </data>
   <data name="CoObligorDescription" xml:space="preserve">
-    <value>A person from the same branch or network who can pledge their account for a guarantee, even if the balance is 0.</value>
+    <value>A person from the same branch or Credit Union who can pledge their account for a guarantee 100%, even if the balance is 0. Liquid or Assets</value>
   </data>
   <data name="Edit" xml:space="preserve">
     <value>Edit</value>
@@ -208,10 +208,10 @@
     <value>Reset</value>
   </data>
   <data name="Shotee" xml:space="preserve">
-    <value>Shotee</value>
+    <value>Surety</value>
   </data>
   <data name="ShoteeDescription" xml:space="preserve">
-    <value>A person from the same branch or network, must have at least 80% in savings to guarantee a loan.</value>
+    <value>A person from the same branch or Credit Union, must have at least 100% in savings to guarantee a loan (Liquid coverage)</value>
   </data>
   <data name="Update" xml:space="preserve">
     <value>Update</value>

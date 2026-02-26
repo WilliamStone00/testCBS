@@ -21,6 +21,11 @@
                 <label class="form-check-label fw-bold text-primary" id="toggleReportLabel" for="toggleReportType">Main Reports</label>
             </div>
 
+            <div class="col-md-3 form-check">
+                <input type="checkbox" class="form-check-input" id="toggleloanreports" checked />
+                <label class="form-check-label fw-bold text-primary" id="toggleReportLabel" for="toggleReportType">Loan Reports</label>
+            </div>
+
             <!-- Shared Date Range Filter -->
             <div class="col-md-3 form-check">
                 <input type="checkbox" class="form-check-input" id="byDate" />
@@ -94,6 +99,28 @@
                     <option value="loanbycategory">Loan by Category</option>
                     <option value="loanbydelinquencyconfig">Loan by Delinquency Config</option>
                     <option value="loanbylegalform">Loan by Legal Form</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Filter Value</label>
+                <select id="QueryParamValue" class="form-select">
+                    <option value="">-- Select Value --</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div id="LoanReportsSection" class="card p-3 mb-3 bg-light" style="display: none;">
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Filter Parameter</label>
+                <select id="loanRep" class="form-select">
+                    @*<option value="">-- Sellect an option --</option>*@
+                    <option value="LoanListing">Loan History</option>
+                    <option value="current">Current Performing Loans</option>
+                    <option value="unpaid">Unpaid Loans</option>
+                    <option value="doubtful">Doubtful Loans</option>
+                    <option value="irrepayable">Irrepayable Loans</option>
+                    <option value="irrecoverable">Irrecoverable Loans</option>
                 </select>
             </div>
             <div class="col-md-6">

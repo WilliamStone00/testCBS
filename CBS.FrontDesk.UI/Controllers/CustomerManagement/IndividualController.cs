@@ -1,30 +1,33 @@
-﻿using CBS.BusinessService.CustomerManagement;
+﻿using CBS.BusinessService.Accounting;
+using CBS.BusinessService.AccountingV2.GLSystemReconciliation;
+using CBS.BusinessService.AccountingV2.JournalHead;
+using CBS.BusinessService.Accounts;
+using CBS.BusinessService.Config;
+using CBS.BusinessService.Config.Localization;
+using CBS.BusinessService.CustomerManagement;
+using CBS.BusinessService.MembersAccountSettings;
+using CBS.BusinessService.Session;
 using CBS.BusinessService.UserManagement;
+using CBS.FrontDesk.Data.Entity;
+using CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation;
+using CBS.FrontDesk.Data.Entity.Config;
+using CBS.FrontDesk.Data.Entity.CustomerManagement;
+using CBS.FrontDesk.Data.Entity.DataTable;
+using CBS.FrontDesk.Data.Entity.DownLoadDTO;
+using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Data.UserManagement;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Metadata.Edm;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using CBS.FrontDesk.Data.Entity.CustomerManagement;
-using CBS.FrontDesk.Data.Entity.Config;
-using CBS.FrontDesk.Data.Entity;
-using CBS.BusinessService.Accounting;
-using System.Data.Entity.Core.Metadata.Edm;
-using CBS.BusinessService.Config;
-using System.Linq.Expressions;
-using CBS.BusinessService.MembersAccountSettings;
-using CBS.BusinessService.Accounts;
-using CBS.FrontDesk.Data.Entity.SavingProducts;
 using System.Web.Services.Description;
-using Newtonsoft.Json;
-using System.Net;
-using CBS.FrontDesk.Data.Entity.DataTable;
-using CBS.BusinessService.Config.Localization;
-using CBS.BusinessService.Session;
-using CBS.FrontDesk.Data.Entity.DownLoadDTO;
 
 namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
 {
@@ -70,6 +73,16 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
             ViewBag.KEY = KEY;
             var customer = await InitializeCustomerData(KEY);
             ViewBag.MemberStatus = customer.CustomerList.CustomerId.Contains("PRM") ? "MEMBER REFERENCE NUMBER" : "MEMBER ACCOUNT NUMBER";
+            var statuses = await _individualProfileServices.GetAllAsync();
+            ViewBag.MemberStatuses = statuses?
+                .Select(s => new SelectListItem
+                {
+                    Value = s.Name,
+                    Text = $"[{s.Name}] - [{s.Description}]"
+                })
+                .OrderBy(x => x.Text)
+                .ToList()
+                ?? new List<SelectListItem>();
             return View(customer);
         }
         public async Task<ActionResult> MyMembers()
@@ -82,6 +95,28 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
             ViewBag.KEY = KEY;
             var customer = await InitializeCustomerData(KEY);
             return View(customer);
+        }
+
+        public async Task<ActionResult> MemberStatus()
+        {
+
+            return View();
+        }
+
+        public async Task<ActionResult> MemberStatusTable()
+        {
+
+            return View();
+        }
+
+        public async Task<JsonResult> GetMemberStatuses()
+        {
+            var statuses = await _individualProfileServices.GetAllAsync();
+
+            return Json(new
+            {
+                data = statuses
+            }, JsonRequestBehavior.AllowGet);
         }
 
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string serviceOption = null, string path = null)
@@ -222,8 +257,67 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
         {
             var customer = new IndividualProfile();
             await PopulateAggregatesInViewBag();
+
+
+            var statuses = await _individualProfileServices.GetAllAsync(); // however you fetch them
+
+            ViewBag.MemberStatuses = statuses?
+                .Select(s => new SelectListItem
+                {
+                    Value = s.Name,
+                    Text = $"[{s.Name}] - [{s.Description}]"
+                })
+                .OrderBy(x => x.Text)
+                .ToList()
+                ?? new List<SelectListItem>();
+
+            var politicalstatus = await _individualProfileServices.GetAllPoliticalAsync(); // however you fetch them
+
+            ViewBag.politicalstatuses = politicalstatus?
+                .Select(s => new SelectListItem
+                {
+                    Value = s.Value,
+                    Text = $"[{s.Text}] - [{s.Value}]"
+                })
+                .OrderBy(x => x.Text)
+                .ToList()
+                ?? new List<SelectListItem>();
             return View(customer);
         }
+
+       
+
+        [HttpGet]
+        public async Task<JsonResult> MemberStausDetails(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+                return Json(new { success = false, message = "Member Status ID is required." }, JsonRequestBehavior.AllowGet);
+
+            try
+            {
+                var entry = await _individualProfileServices.GetMemberStausByIdAsync(id);
+
+                if (entry == null)
+                    return Json(new { success = false, message = "Member Status not found." }, JsonRequestBehavior.AllowGet);
+
+                return Json(new
+                {
+                    success = true,
+                    data = new
+                    {
+                        entry.Id,
+                        entry.Name,
+                        entry.Description,
+                        entry.IsDefault
+                    }
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception)
+            {
+                return Json(new { success = false, message = "An unexpected error occurred." }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
         [HttpPost]
         public async Task<ActionResult> Create(IndividualProfile model)
         {
@@ -563,6 +657,46 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
             var towns = _locationService.GetTownsBySubDivision(subDivisionId);
             return Json(towns.Select(t => new { t.Id, t.Name }), JsonRequestBehavior.AllowGet);
         }
+
+        [HttpPost]
+        public async Task<ActionResult> CreateMemberStatus(MemberStatus model)
+        {
+            try
+            {
+                // 3️⃣ Call service
+                var response = await _individualProfileServices.CreatstatusAsync(model);
+
+                // 🔴 Null safety
+                if (response == null)
+                {
+                    return Json(new
+                    {
+                        success = false,
+                        statusCode = 502,
+                        message = "No response from individualProfileServices service."
+                    });
+                }
+
+                // ✅ SAME RESPONSE CONTRACT AS CloseYear
+                return Json(new
+                {
+                    success = response.IsSuccess,
+                    statusCode = response.IsSuccess ? 200 : 400,
+                    message = response.Message,
+                    data = response.ApiResponseData
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    success = false,
+                    statusCode = 500,
+                    message = $"Push record failed: {ex.Message}"
+                });
+            }
+        }
+
 
     }
 }

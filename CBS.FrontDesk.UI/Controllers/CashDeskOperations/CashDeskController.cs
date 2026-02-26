@@ -330,7 +330,50 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
                     ViewBag.AllAccountsAreMB = allAccountsAreMB;
                     ViewBag.AllAccountsAreMB = allAccountsAreMB;
                     ViewBag.ApprovedManualEntries = cashDesk.SelectedItemsApprovedUploads;
+                    ViewBag.SourceOfFunds = new List<SelectListItem>
+                    {
+                        new SelectListItem { Value = "SALARY", Text = "Salary / Wages" },
+                        new SelectListItem { Value = "BUSINESS", Text = "Business income / Sales" },
+                        new SelectListItem { Value = "FARMING", Text = "Farming / Agriculture" },
+                        new SelectListItem { Value = "RENT", Text = "Rent / Real estate income" },
+                        new SelectListItem { Value = "PENSION", Text = "Pension / Retirement" },
+                        new SelectListItem { Value = "REMITTANCE", Text = "Remittance (family support)" },
+                        new SelectListItem { Value = "SAVINGS", Text = "Personal savings" },
+                        new SelectListItem { Value = "LOAN_PROCEEDS", Text = "Loan proceeds" },
+                        new SelectListItem { Value = "GIFT", Text = "Gift / Donation" },
+                        new SelectListItem { Value = "INVESTMENT", Text = "Investment / Dividends" },
+                        new SelectListItem { Value = "SALE_ASSET", Text = "Sale of asset" },
+                        new SelectListItem { Value = "OTHER", Text = "Other (specify)" },
+                    };
 
+                    ViewBag.WithdrawalPurpose = new List<SelectListItem>
+                    {
+                        new SelectListItem { Value = "PERSONAL_USE", Text = "Personal use / Household" },
+                        new SelectListItem { Value = "BUSINESS_EXPENSE", Text = "Business expense" },
+                        new SelectListItem { Value = "SCHOOL_FEES", Text = "School fees" },
+                        new SelectListItem { Value = "MEDICAL", Text = "Medical / Health" },
+                        new SelectListItem { Value = "RENT_BILLS", Text = "Rent / Bills" },
+                        new SelectListItem { Value = "TRAVEL", Text = "Travel" },
+                        new SelectListItem { Value = "FUNERAL", Text = "Funeral / Ceremony" },
+                        new SelectListItem { Value = "CONSTRUCTION", Text = "Construction / House project" },
+                        new SelectListItem { Value = "FARMING", Text = "Farming / Agriculture" },
+                        new SelectListItem { Value = "PURCHASE_ASSET", Text = "Purchase of asset (land/car/etc.)" },
+                        new SelectListItem { Value = "GIVE_TO_FAMILY", Text = "Support family / Dependents" },
+                        new SelectListItem { Value = "OTHER", Text = "Other (specify)" },
+                    };
+                    ViewBag.DepositPurpose = new List<SelectListItem>
+                    {
+                        new SelectListItem { Value = "SAVINGS", Text = "Savings / Deposit" },
+                        new SelectListItem { Value = "SUBSCRIPTION", Text = "Subscription / Shares" },
+                        new SelectListItem { Value = "ACCOUNT_TOPUP", Text = "Account top-up" },
+                        new SelectListItem { Value = "LOAN_REPAYMENT", Text = "Loan repayment" },
+                        new SelectListItem { Value = "FEES", Text = "Fees / Charges" },
+                        new SelectListItem { Value = "BUSINESS_FLOAT", Text = "Business float / working capital" },
+                        new SelectListItem { Value = "CASH_CLEARANCE", Text = "Daily Collector cash clearance" },
+                        new SelectListItem { Value = "REMITTANCE", Text = "Remittance deposit" },
+                        new SelectListItem { Value = "PROJECT_SAVING", Text = "Project / goal saving" },
+                        new SelectListItem { Value = "OTHER", Text = "Other (specify)" },
+                    };
                     return PartialView(partialView, cashDesk);
                 }
 
@@ -355,26 +398,153 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
         {
             try
             {
-                if (deposits != null)
+                if (deposits == null || deposits.Count == 0)
+                    return Json(new { success = false, status = false, message = "No data was submitted." });
+
+                // Infer operation from first row (your current approach)
+                var op = OperationName(deposits.FirstOrDefault()?.OperationType);
+
+                // ---------------- AML VALIDATION ----------------
+                // Validate per row because your UI can submit multiple rows
+                for (int i = 0; i < deposits.Count; i++)
                 {
-                    var data = await _cashDeskService.BulkDeposi(deposits);
-                    if (data.Result)
+                    var d = deposits[i];
+
+                    // ensure each row has op (defensive)
+                    if (string.IsNullOrWhiteSpace(d.OperationType))
+                        d.OperationType = op;
+
+                    // CASHOUT => Purpose of withdrawal required
+                    if (IsOp(op, "cashout"))
                     {
-                        string operationtype = deposits.FirstOrDefault().OperationType.ToLower();
-                        string viewerUrl = PrepareReport(operationtype);
-                        return Json(new { success = data.Result, redirectUrl = viewerUrl, referenceId = data.ReferenceId, isJournalReceipt = data.IsJournalReceipt, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+                        if (string.IsNullOrWhiteSpace(d.WithdrawalPurposeCode))
+                        {
+                            return Json(new
+                            {
+                                success = false,
+                                status = false,
+                                message = $"Purpose of Withdrawal is required (row #{i + 1})."
+                            });
+                        }
+
+                        if (IsOther(d.WithdrawalPurposeCode) && string.IsNullOrWhiteSpace(d.WithdrawalPurposeOther))
+                        {
+                            return Json(new
+                            {
+                                success = false,
+                                status = false,
+                                message = $"Please specify 'Other' Purpose of Withdrawal (row #{i + 1})."
+                            });
+                        }
+
+                        // optional length control (avoid junk / overflow)
+                        if (Norm(d.WithdrawalPurposeOther).Length > 200)
+                        {
+                            return Json(new
+                            {
+                                success = false,
+                                status = false,
+                                message = $"Purpose of Withdrawal detail is too long (max 200 chars) (row #{i + 1})."
+                            });
+                        }
                     }
-                    return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
 
+                    // CASHIN => Purpose of deposit required (if you want)
+                    if (IsOp(op, "cashin"))
+                    {
+                        if (string.IsNullOrWhiteSpace(d.DepositPurposeCode))
+                        {
+                            return Json(new
+                            {
+                                success = false,
+                                status = false,
+                                message = $"Purpose of Deposit is required (row #{i + 1})."
+                            });
+                        }
+
+                        if (IsOther(d.DepositPurposeCode) && string.IsNullOrWhiteSpace(d.DepositPurposeOther))
+                        {
+                            return Json(new
+                            {
+                                success = false,
+                                status = false,
+                                message = $"Please specify 'Other' Purpose of Deposit (row #{i + 1})."
+                            });
+                        }
+
+                        if (Norm(d.DepositPurposeOther).Length > 200)
+                        {
+                            return Json(new
+                            {
+                                success = false,
+                                status = false,
+                                message = $"Purpose of Deposit detail is too long (max 200 chars) (row #{i + 1})."
+                            });
+                        }
+
+                        // OPTIONAL policy:
+                        // If you decide SourceOfFunds must be captured for cashin, uncomment:
+                        /*
+                        if (string.IsNullOrWhiteSpace(d.SourceOfFundsCode))
+                            return Json(new { success=false, status=false, message=$"Source of Funds is required (row #{i+1})." });
+
+                        if (IsOther(d.SourceOfFundsCode) && string.IsNullOrWhiteSpace(d.SourceOfFundsOther))
+                            return Json(new { success=false, status=false, message=$"Please specify 'Other' Source of Funds (row #{i+1})." });
+                        */
+                    }
                 }
-                return Json(new { success = false, status = false, message = $"No data was submitted." });
+                // ---------------- /AML VALIDATION ----------------
 
+                var data = await _cashDeskService.BulkDeposi(deposits);
+
+                if (data.Result)
+                {
+                    string operationtype = deposits.FirstOrDefault().OperationType.ToLower();
+                    string viewerUrl = PrepareReport(operationtype);
+
+                    return Json(new
+                    {
+                        success = data.Result,
+                        redirectUrl = viewerUrl,
+                        referenceId = data.ReferenceId,
+                        isJournalReceipt = data.IsJournalReceipt,
+                        status = data.MessageStatus,
+                        message = Messaging.MessageResult(data)
+                    });
+                }
+
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
             }
             catch (Exception ex)
             {
                 return Json(new { success = false, status = false, message = $"An error occurred: {ex.Message}" });
             }
         }
+        //[HttpPost]
+        //public async Task<ActionResult> PostRequestCash(List<BulkDeposit> deposits)
+        //{
+        //    try
+        //    {
+        //        if (deposits != null)
+        //        {
+        //            var data = await _cashDeskService.BulkDeposi(deposits);
+        //            if (data.Result)
+        //            {
+        //                string operationtype = deposits.FirstOrDefault().OperationType.ToLower();
+        //                string viewerUrl = PrepareReport(operationtype);
+        //                return Json(new { success = data.Result, redirectUrl = viewerUrl, referenceId = data.ReferenceId, isJournalReceipt = data.IsJournalReceipt, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+        //            }
+        //            return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+
+        //        }
+        //        return Json(new { success = false, status = false, message = $"No data was submitted." });
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Json(new { success = false, status = false, message = $"An error occurred: {ex.Message}" });
+        //    }
+        //}
 
         [HttpPost]
         public async Task<ActionResult> OtherCashinPosting(AddOtherTransactionCommand otherTransactionCommand)
@@ -562,6 +732,27 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound, "Onboarding data not found.");
 
             return PartialView("_OperationDesk", onboardingDetail);
+        }
+
+        private static bool IsOther(string code)
+    => string.Equals(code?.Trim(), "OTHER", StringComparison.OrdinalIgnoreCase);
+
+        private static string Norm(string v) => (v ?? "").Trim();
+
+        private static bool IsOp(string op, string expected)
+            => string.Equals(Norm(op), expected, StringComparison.OrdinalIgnoreCase);
+
+        private static string OperationName(string op)
+        {
+            var o = Norm(op).ToLowerInvariant();
+
+            if (o == "cashin" || o == "deposit")
+                return "cashin";
+
+            if (o == "cashout" || o == "withdrawal")
+                return "cashout";
+
+            return o; // fallback
         }
 
     }

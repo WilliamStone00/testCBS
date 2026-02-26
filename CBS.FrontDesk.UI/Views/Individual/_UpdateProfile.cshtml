@@ -35,7 +35,7 @@
         </div>
         <div class="col-md-3">
             <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.CustomerList.Gender, new SelectList(ViewBag.genders, "Text", "Value"), "---"+ @GlobalIndividual.SelectGender+"---", new { @class = "form-control select2", @search = "true", @required = "required" })
+                @Html.DropDownListFor(m => m.CustomerList.Gender, new SelectList(ViewBag.genders, "Text", "Value"), "---" + @GlobalIndividual.SelectGender + "---", new { @class = "form-control select2", @search = "true", @required = "required" })
                 @Html.ValidationMessageFor(m => m.CustomerList.Gender, "", new { @class = "text-danger" })
                 <label>@GlobalIndividual.Gender</label>
             </div>
@@ -72,7 +72,7 @@
 
         <div class="col-md-3">
             <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.CustomerList.IDNumber, new { @class = "form-control", @placeholder = @GlobalIndividual.NationalIDCardNumber , @required = "required" })
+                @Html.TextBoxFor(m => m.CustomerList.IDNumber, new { @class = "form-control", @placeholder = @GlobalIndividual.NationalIDCardNumber, @required = "required" })
                 @Html.ValidationMessageFor(m => m.CustomerList.IDNumber, "", new { @class = "text-danger" })
                 <label>@GlobalIndividual.NationalIDCard</label>
             </div>
@@ -101,7 +101,7 @@
 
         <div class="col-md-6">
             <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.CustomerList.EconomicActivitiesId, new SelectList(ViewBag.EconomicActivities, "Id", "Name"), "---"+ @GlobalIndividual.SelectEconomicActivity+"---", new { @class = "form-control select2", @search = "true", @required = "required" })
+                @Html.DropDownListFor(m => m.CustomerList.EconomicActivitiesId, new SelectList(ViewBag.EconomicActivities, "Id", "Name"), "---" + @GlobalIndividual.SelectEconomicActivity + "---", new { @class = "form-control select2", @search = "true", @required = "required" })
                 @Html.ValidationMessageFor(m => m.CustomerList.EconomicActivitiesId, "", new { @class = "text-danger " })
                 <label for="formValidationDob">@GlobalIndividual.EconimicActivity</label>
             </div>
@@ -115,16 +115,27 @@
         </div>
         <div class="col-md-3">
             <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.CustomerList.Language, new SelectList(ViewBag.languages, "Text", "Value"), "---"+ @GlobalIndividual.SelectLanguage+"---", new { @class = "form-control select2", @search = "true", @required = "required" })
+                @Html.DropDownListFor(m => m.CustomerList.Language, new SelectList(ViewBag.languages, "Text", "Value"), "---" + @GlobalIndividual.SelectLanguage + "---", new { @class = "form-control select2", @search = "true", @required = "required" })
                 @Html.ValidationMessageFor(m => m.CustomerList.Language, "", new { @class = "text-danger " })
                 <label for="formValidationDob">@GlobalIndividual.Language</label>
             </div>
         </div>
-        <div class="col-md-12">
+        <div class="col-md-6">
             <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.CustomerList.CustomerCategoryId, new SelectList(ViewBag.Categories, "Value", "Text"), "---"+ @GlobalIndividual.SelectCustomerCategory +"---", new { @class = "form-control select2", @search = "true", @required = "required" })
+                @Html.DropDownListFor(m => m.CustomerList.CustomerCategoryId, new SelectList(ViewBag.Categories, "Value", "Text"), "---" + @GlobalIndividual.SelectCustomerCategory + "---", new { @class = "form-control select2", @search = "true", @required = "required" })
                 @Html.ValidationMessageFor(m => m.CustomerList.CustomerCategoryId, "", new { @class = "text-danger " })
                 <label for="formValidationDob">@GlobalIndividual.SelectCustomerCategory</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating form-floating-outline">
+                @Html.DropDownListFor(m => m.CustomerList.CustomerStatus,
+                    ViewBag.MemberStatuses as List<SelectListItem>,
+                    "--- Select Member Status ---",
+                    new { @class = "form-control select2", @required = "required" })
+
+                @Html.ValidationMessageFor(m => m.CustomerList.CustomerStatus, "", new { @class = "text-danger" })
+                <label>Select Member Status</label>
             </div>
         </div>
         <!-- Address Info -->
@@ -134,35 +145,35 @@
         </div>
         <div class="col-md-6">
             <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.CustomerList.CountryId, new SelectList(ViewBag.Countries, "Id", "Name"), "---"+ @GlobalIndividual.SelectCountry+"---", new { @class = "form-control select2", @search = "true", @required = "required" })
+                @Html.DropDownListFor(m => m.CustomerList.CountryId, new SelectList(ViewBag.Countries, "Id", "Name"), "---" + @GlobalIndividual.SelectCountry + "---", new { @class = "form-control select2", @search = "true", @required = "required" })
                 @Html.ValidationMessageFor(m => m.CustomerList.CountryId, "", new { @class = "text-danger " })
                 <label for="formValidationDob">@GlobalShared.Country</label>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.CustomerList.RegionId, new SelectList(ViewBag.Regions, "Id", "Name"), "---"+ GlobalShared.Select_Region+"---", new { @class = "form-control select2", @search = "true", @required = "required" })
+                @Html.DropDownListFor(m => m.CustomerList.RegionId, new SelectList(ViewBag.Regions, "Id", "Name"), "---" + GlobalShared.Select_Region + "---", new { @class = "form-control select2", @search = "true", @required = "required" })
                 @Html.ValidationMessageFor(m => m.CustomerList.RegionId, "", new { @class = "text-danger " })
                 <label for="formValidationDob">@GlobalShared.Region</label>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.CustomerList.DivisionId, new SelectList(ViewBag.Divisions, "Id", "Name"), "---"+ @GlobalIndividual.SelectDivision+"---", new { @class = "form-control select2", @search = "true", @required = "required" })
+                @Html.DropDownListFor(m => m.CustomerList.DivisionId, new SelectList(ViewBag.Divisions, "Id", "Name"), "---" + @GlobalIndividual.SelectDivision + "---", new { @class = "form-control select2", @search = "true", @required = "required" })
                 @Html.ValidationMessageFor(m => m.CustomerList.DivisionId, "", new { @class = "text-danger " })
                 <label for="formValidationDob">@GlobalShared.Division</label>
             </div>
         </div>
         <div class="col-md-3">
             <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.CustomerList.SubDivisionId, new SelectList(ViewBag.SubDivisions, "Id", "Name"), "---"+ @GlobalIndividual.SelectSubDivision+"---", new { @class = "form-control select2", @search = "true", @required = "required" })
+                @Html.DropDownListFor(m => m.CustomerList.SubDivisionId, new SelectList(ViewBag.SubDivisions, "Id", "Name"), "---" + @GlobalIndividual.SelectSubDivision + "---", new { @class = "form-control select2", @search = "true", @required = "required" })
                 @Html.ValidationMessageFor(m => m.CustomerList.SubDivisionId, "", new { @class = "text-danger " })
                 <label for="formValidationDob">@GlobalShared.SubDivision</label>
             </div>
         </div>
         <div class="col-md-3">
             <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.CustomerList.TownId, new SelectList(ViewBag.Towns, "Id", "Name"), "---"+ @GlobalIndividual.SelectTown+"---", new { @class = "form-control select2", @search = "true", @required = "required" })
+                @Html.DropDownListFor(m => m.CustomerList.TownId, new SelectList(ViewBag.Towns, "Id", "Name"), "---" + @GlobalIndividual.SelectTown + "---", new { @class = "form-control select2", @search = "true", @required = "required" })
                 @Html.ValidationMessageFor(m => m.CustomerList.TownId, "", new { @class = "text-danger " })
                 <label for="formValidationDob">@GlobalShared.Town</label>
             </div>

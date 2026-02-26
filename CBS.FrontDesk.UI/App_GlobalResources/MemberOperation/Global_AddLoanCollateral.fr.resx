@@ -129,11 +129,20 @@
   <data name="Address" xml:space="preserve">
     <value>Adresse</value>
   </data>
+  <data name="CollateralCategory" xml:space="preserve">
+    <value>Catégorie de garantie</value>
+  </data>
   <data name="Edit" xml:space="preserve">
     <value>Editer</value>
   </data>
   <data name="Location" xml:space="preserve">
     <value>Emplacement</value>
+  </data>
+  <data name="Marketvalue" xml:space="preserve">
+    <value>Valeur marchande</value>
+  </data>
+  <data name="NameOfPersonInvolved" xml:space="preserve">
+    <value>Nom de la personne impliquée</value>
   </data>
   <data name="NoLoanCollateralAdded" xml:space="preserve">
     <value>Aucune garantie de prêt n'a été ajouté</value>
@@ -164,6 +173,9 @@
   </data>
   <data name="Value" xml:space="preserve">
     <value>Valeur</value>
+  </data>
+  <data name="venalvalue" xml:space="preserve">
+    <value>Valeur vénale</value>
   </data>
   <data name="ViewListOfCollaterals" xml:space="preserve">
     <value>Voir la liste des garanties</value>

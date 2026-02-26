@@ -1,0 +1,291 @@
+﻿@model CBS.FrontDesk.Data.Entity.MemberStatus
+
+@{ ViewBag.Title = "Member Status"; }
+
+
+<div class="row">
+    <div class="col-12">
+        <!-- Page Header -->
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-flag-variant me-2"></i> Create Membership Status
+                </h1>
+                <p class="card-text text-muted">
+                    Define a new status label for your members.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Help Tips Card -->
+<div class="card mb-3">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span>
+            <i class="mdi mdi-information-outline me-2"></i> HELPTIPS
+        </span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHelpTips" aria-expanded="false" aria-controls="collapseHelpTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseHelpTips" class="collapse">
+        <div class="card-body">
+            <p class="text-muted mb-2">
+                Follow these tips to create a meaningful member status:
+            </p>
+            <ul>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Use clear and descriptive status names (e.g., Active, Premium, Suspended).</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Keep status names concise - maximum 50 characters.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Provide a detailed description of what the status means for members.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Descriptions can be up to 200 characters.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Preview how the status will appear before creating it.</li>
+            </ul>
+            <p class="text-muted">Note:</p>
+            <ul>
+                <li><i class="mdi mdi-information-outline text-primary me-2"></i> Click <strong>Create Status</strong> to save the new member status.</li>
+                <li><i class="mdi mdi-alert-outline text-danger me-2"></i> Both fields are required and must meet the character limits.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12">
+        <div class="card">
+            <div class="card-body">
+                @using (Html.BeginForm("CreateMemberStatus", "Individual",
+                    FormMethod.Post,
+                    new { id = "memberStatusForm", onsubmit = "return SubmitMemberStatusAjax(this);" }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <!-- Status Name Field -->
+                            <div class="mb-4">
+                                <label for="StatusName" class="form-label fw-bold">
+                                    Status Name <span class="text-danger">*</span>
+                                </label>
+                                <div class="form-floating form-floating-outline">
+                                    @Html.TextBox("name", null, new
+                                    {
+                                        @class = "form-control",
+                                        @placeholder = "e.g. Active, Premium, Suspended",
+                                        @maxlength = "50",
+                                        @required = "required",
+                                        @id = "StatusName",
+                                        onkeyup = "updatePreview()"
+                                    })
+                                    <label for="StatusName">Status Name</label>
+                                </div>
+                                <div class="d-flex justify-content-between mt-1">
+                                    <small class="text-muted">Maximum 50 characters</small>
+                                    <small class="text-muted" id="nameCounter">0 / 50</small>
+                                </div>
+                            </div>
+
+                            <!-- Description Field -->
+                            <div class="mb-4">
+                                <label for="Description" class="form-label fw-bold">
+                                    Description <span class="text-danger">*</span>
+                                </label>
+                                <div class="form-floating form-floating-outline">
+                                    @Html.TextArea("description", null, new
+                                    {
+                                        @class = "form-control",
+                                        @placeholder = "Briefly describe what this status means...",
+                                        @maxlength = "200",
+                                        @required = "required",
+                                        @id = "Description",
+                                        @rows = "4",
+                                        @style = "height: 100px;",
+                                        onkeyup = "updatePreview()"
+                                    })
+                                    <label for="Description">Description</label>
+                                </div>
+                                <div class="d-flex justify-content-between mt-1">
+                                    <small class="text-muted">Maximum 200 characters</small>
+                                    <small class="text-muted" id="descriptionCounter">0 / 200</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Live Preview Column -->
+                        <div class="col-md-6">
+                            <div class="card bg-light h-100">
+                                <div class="card-header bg-transparent">
+                                    <h5 class="mb-0 text-primary">
+                                        <i class="mdi mdi-eye me-2"></i>LIVE PREVIEW
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="border rounded p-3 bg-white">
+                                        <h6 class="fw-bold mb-2" id="previewName">Status Name</h6>
+                                        <p class="text-muted mb-0" id="previewDescription">Description will appear here</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Form Actions -->
+            <div class="row mt-4">
+                <div class="col-12 d-flex justify-content-end gap-2">
+                    <button type="button" class="btn btn-secondary" onclick="resetForm()">
+                        <i class="mdi mdi-refresh me-2"></i>Reset
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="mdi mdi-plus-circle me-2"></i>Create Status
+                    </button>
+                </div>
+            </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function () {
+
+            const $form = $('#memberStatusForm');
+            const $name = $('#StatusName');
+            const $description = $('#Description');
+
+            // ================================
+            // Character Counters
+            // ================================
+            $name.on('input', function () {
+                $('#nameCounter').text(this.value.length + ' / 50');
+                updatePreview();
+            });
+
+            $description.on('input', function () {
+                $('#descriptionCounter').text(this.value.length + ' / 200');
+                updatePreview();
+            });
+
+            // ================================
+            // Live Preview
+            // ================================
+            window.updatePreview = function () {
+                const name = $name.val().trim() || 'Status Name';
+                const description = $description.val().trim() || 'Description will appear here';
+
+                $('#previewName').text(name);
+                $('#previewDescription').text(description);
+            };
+
+            // ================================
+            // Reset Form
+            // ================================
+            window.resetForm = function () {
+                $form[0].reset();
+                $('#nameCounter').text('0 / 50');
+                $('#descriptionCounter').text('0 / 200');
+                updatePreview();
+            };
+
+            // ================================
+            // AJAX Submit With Confirmation
+            // ================================
+            window.SubmitMemberStatusAjax = function (form) {
+
+                const $form = $(form);
+                const $name = $('#StatusName');
+                const $description = $('#Description');
+
+                const nameVal = $name.val().trim();
+                const descriptionVal = $description.val().trim();
+
+                if (!nameVal) {
+                    appalert("Enter status name.", 3, 1);
+                    return false;
+                }
+
+                if (!descriptionVal) {
+                    appalert("Enter description.", 3, 1);
+                    return false;
+                }
+
+                const message = `
+        <p>Please review before confirming:</p>
+        <table class="table table-sm table-bordered">
+            <tr><th>Status Name</th><td>${nameVal}</td></tr>
+            <tr><th>Description</th><td>${descriptionVal}</td></tr>
+        </table>
+        <div class="form-check mt-2">
+            <input type="checkbox" class="form-check-input" id="confirmCreateStatus">
+            <label class="form-check-label" for="confirmCreateStatus">
+                I confirm the above information is correct.
+            </label>
+        </div>
+    `;
+
+                alertify.confirm("Confirm Member Status Creation", message,
+                    function () {
+
+                        if (!$('#confirmCreateStatus').is(':checked')) {
+                            appalert("Please confirm before proceeding.", 3, 1);
+                            return false;
+                        }
+
+                        const token = $form.find('input[name="__RequestVerificationToken"]').val();
+
+                        $.ajax({
+                            type: "POST",
+                            url: $form.attr('action'),
+                            data: new FormData($form[0]),
+                            processData: false,
+                            contentType: false,
+                            headers: token ? { 'RequestVerificationToken': token } : {},
+                            beforeSend: function () {
+                                $('.alertify .ajs-ok')
+                                    .prop('disabled', true)
+                                    .html('<span class="spinner-border spinner-border-sm"></span> Processing...');
+                            },
+                            success: function (response) {
+
+                                if (response?.success) {
+                                    appalert(response.message || "Member status created successfully!", 1, 1);
+                                    alertify.dismissAll();
+                                    $form[0].reset();
+                                    $('#nameCounter').text('0 / 50');
+                                    $('#descriptionCounter').text('0 / 200');
+                                    updatePreview();
+                                } else {
+                                    appalert(response?.message || "Failed to create status.", 2, 1);
+                                }
+                            },
+                            error: function (xhr) {
+                                appalert("Error: " + (xhr.statusText || "Request failed"), 0, 1);
+                            },
+                            complete: function () {
+                                $('.alertify .ajs-ok').prop('disabled', false).html('Yes, Create');
+                            }
+                        });
+
+                    },
+                    function () {
+                        appalert("Operation cancelled.", 2, 1);
+                    }
+                ).set({
+                    labels: { ok: 'Yes, Create', cancel: 'Cancel' },
+                    onshow: function () {
+                        const okBtn = $('.alertify .ajs-ok');
+                        okBtn.prop('disabled', true);
+
+                        $('#confirmCreateStatus').off('change').on('change', function () {
+                            okBtn.prop('disabled', !this.checked);
+                        });
+                    }
+                });
+
+                return false;
+            };
+        });
+    </script>
+}

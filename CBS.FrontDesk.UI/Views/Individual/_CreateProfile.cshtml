@@ -85,7 +85,7 @@
 
                                     <div class="col-md-3">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.DropDownListFor(m => m.Gender, new SelectList(ViewBag.genders, "Text", "Value"), "---"+ @GlobalIndividual.SelectGender+"---", new { @class = "form-control select2", @search = "true" })
+                                            @Html.DropDownListFor(m => m.Gender, new SelectList(ViewBag.genders, "Text", "Value"), "---" + @GlobalIndividual.SelectGender + "---", new { @class = "form-control select2", @search = "true" })
                                             @Html.ValidationMessageFor(m => m.Gender, "", new { @class = "text-danger" })
                                             <label>@GlobalIndividual.Gender</label>
                                         </div>
@@ -143,7 +143,7 @@
 
                                     <div class="col-md-6">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.DropDownListFor(m => m.EconomicActivitiesId, new SelectList(ViewBag.EconomicActivities, "Id", "Name"), "---"+ @GlobalIndividual.SelectEconomicActivity + "---", new { @class = "form-control select2", @search = "true", @required = "required" })
+                                            @Html.DropDownListFor(m => m.EconomicActivitiesId, new SelectList(ViewBag.EconomicActivities, "Id", "Name"), "---" + @GlobalIndividual.SelectEconomicActivity + "---", new { @class = "form-control select2", @search = "true", @required = "required" })
                                             @Html.ValidationMessageFor(m => m.EconomicActivitiesId, "", new { @class = "text-danger " })
                                             <label for="formValidationDob">@GlobalIndividual.EconomicActivity</label>
                                         </div>
@@ -158,20 +158,57 @@
 
                                     <div class="col-md-3">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.DropDownListFor(m => m.Language, new SelectList(ViewBag.languages, "Text", "Value"), "---"+ @GlobalIndividual.SelectLanguage + "---", new { @class = "form-control select2", @search = "true", @required = "required" })
+                                            @Html.DropDownListFor(m => m.Language, new SelectList(ViewBag.languages, "Text", "Value"), "---" + @GlobalIndividual.SelectLanguage + "---", new { @class = "form-control select2", @search = "true", @required = "required" })
                                             @Html.ValidationMessageFor(m => m.Language, "", new { @class = "text-danger " })
                                             <label for="formValidationDob">@GlobalIndividual.Language</label>
                                         </div>
                                     </div>
-                                    <div class="col-md-9">
+                                    <div class="col-md-4">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.DropDownListFor(m => m.CustomerCategoryId, new SelectList(ViewBag.Categories, "Value", "Text"), "---"+@GlobalIndividual.SelectMembersCategory+"---", new { @class = "form-control select2", @search = "true", @required = "required" })
+                                            @Html.DropDownListFor(m => m.CustomerCategoryId, new SelectList(ViewBag.Categories, "Value", "Text"), "---" + @GlobalIndividual.SelectMembersCategory + "---", new { @class = "form-control select2", @search = "true", @required = "required" })
                                             @Html.ValidationMessageFor(m => m.CustomerCategoryId, "", new { @class = "text-danger " })
                                             <label for="formValidationDob">@GlobalIndividual.SelectMembersCategory</label>
                                         </div>
                                     </div>
+                                    <div class="col-md-5">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.DropDownListFor(m => m.CustomerStatus,
+                                                ViewBag.MemberStatuses as List<SelectListItem>,
+                                                "--- Select Member Status ---",
+                                                new { @class = "form-control select2", @required = "required" })
+
+                                            @Html.ValidationMessageFor(m => m.CustomerStatus, "", new { @class = "text-danger" })
+                                            <label>Select Member Status</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        @Html.CheckBoxFor(model => model.IsPoliticaExposed, new { @class = "form-check-input" })
+                                        @Html.LabelFor(model => model.IsPoliticaExposed, "Politically Exposed Person (PEP)", new { @class = "form-check-label" })
+                                    </div>
+                                    <div id="pepDetails" class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(m => m.PoliticaExposedQuestion,
+                                                    ViewBag.politicalstatuses as List<SelectListItem>,
+                                                    "--- Select Member Status ---",
+                                                    new { @class = "form-control select2", @required = "required" })
+
+                                                @Html.ValidationMessageFor(m => m.PoliticaExposedQuestion, "", new { @class = "text-danger" })
+                                                <label>Select Member Status</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.TextBoxFor(m => m.PoliticaExposedAnswer, new { @class = "form-control" })
+                                                @Html.ValidationMessageFor(m => m.PoliticaExposedAnswer, "", new { @class = "text-danger" })
+                                                <label>Political Answers</label>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </fieldset>
+</fieldset>
                         </div>
                     </div>
                 </div>
