@@ -1259,6 +1259,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalCollateral.fr.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Communication\GlobalCommunication.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalCommunication.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Communication\GlobalCommunication.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalCommunication.fr.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\CorrespondingBankManagement\GlobalCorrespondingBankManagement.fr.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -7696,6 +7706,15 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>AuthenticationRessource.designer.cs</LastGenOutput>
     </Content>
+    <Content Include="App_GlobalResources\Communication\GlobalCommunication.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalCommunication.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Communication\GlobalCommunication.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalCommunication.designer.cs</LastGenOutput>
+    </Content>
+    <EmbeddedResource Include="GlobalCommunication.resx" />
     <None Include="AppFiles\Accountingv2Reporting\DataSets\AccountingV2DS.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -10820,8 +10839,6 @@
     <Content Include="Views\MembersFSeries\_AccountDetails.cshtml" />
     <Content Include="Views\StandingOrder\_ExportStandingOrder.cshtml" />
     <Content Include="Views\IPSReporting\Index.cshtml" />
-    <Content Include="Views\Individual\MemberStatus.cshtml" />
-    <Content Include="Views\Individual\MemberStatusTable.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
@@ -10849,7 +10866,6 @@
     <Folder Include="Controllers\DailyCollectionManagement\" />
     <Folder Include="Controllers\LoanManagementP\ApplicationP\" />
     <Folder Include="Hub\" />
-    <Folder Include="obj\Debug\TempPE\" />
     <Folder Include="Views\AccountingV2\" />
     <Folder Include="Views\BulkOperation\Contribution\" />
     <Folder Include="Views\BulkOperation\Topup\" />
