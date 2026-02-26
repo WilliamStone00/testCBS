@@ -22,21 +22,21 @@ namespace Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Web.Application.StronglyTypedResourceProxyBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class AuthenticationRessource {
+    internal class AuthenticationRessource {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        public AuthenticationRessource() {
+        internal AuthenticationRessource() {
         }
         
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Resources.ResourceManager ResourceManager {
+        internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Resources.AuthenticationRessource", global::System.Reflection.Assembly.Load("App_GlobalResources"));
@@ -51,7 +51,7 @@ namespace Resources {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Globalization.CultureInfo Culture {
+        internal static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Add product.
         /// </summary>
-        public static string AddProduct {
+        internal static string AddProduct {
             get {
                 return ResourceManager.GetString("AddProduct", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Address &amp; Billing.
         /// </summary>
-        public static string AddressBilling {
+        internal static string AddressBilling {
             get {
                 return ResourceManager.GetString("AddressBilling", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to All customers.
         /// </summary>
-        public static string AllCustomers {
+        internal static string AllCustomers {
             get {
                 return ResourceManager.GetString("AllCustomers", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Back to login page.
         /// </summary>
-        public static string BackToLoginPage {
+        internal static string BackToLoginPage {
             get {
                 return ResourceManager.GetString("BackToLoginPage", resourceCulture);
             }
@@ -99,7 +99,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Category list.
         /// </summary>
-        public static string CategoryList {
+        internal static string CategoryList {
             get {
                 return ResourceManager.GetString("CategoryList", resourceCulture);
             }
@@ -108,7 +108,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Checkout.
         /// </summary>
-        public static string Checkout {
+        internal static string Checkout {
             get {
                 return ResourceManager.GetString("Checkout", resourceCulture);
             }
@@ -117,7 +117,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to CREDIT.
         /// </summary>
-        public static string Credit {
+        internal static string Credit {
             get {
                 return ResourceManager.GetString("Credit", resourceCulture);
             }
@@ -126,7 +126,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Customer.
         /// </summary>
-        public static string Customer {
+        internal static string Customer {
             get {
                 return ResourceManager.GetString("Customer", resourceCulture);
             }
@@ -135,7 +135,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Customer details.
         /// </summary>
-        public static string CustomerDetails {
+        internal static string CustomerDetails {
             get {
                 return ResourceManager.GetString("CustomerDetails", resourceCulture);
             }
@@ -144,7 +144,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Dashboard.
         /// </summary>
-        public static string Dashboard {
+        internal static string Dashboard {
             get {
                 return ResourceManager.GetString("Dashboard", resourceCulture);
             }
@@ -153,7 +153,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to eCommerce.
         /// </summary>
-        public static string ECommerce {
+        internal static string ECommerce {
             get {
                 return ResourceManager.GetString("ECommerce", resourceCulture);
             }
@@ -162,7 +162,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Email or Username.
         /// </summary>
-        public static string Email_or_Username {
+        internal static string Email_or_Username {
             get {
                 return ResourceManager.GetString("Email_or_Username", resourceCulture);
             }
@@ -171,7 +171,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Home.
         /// </summary>
-        public static string Home {
+        internal static string Home {
             get {
                 return ResourceManager.GetString("Home", resourceCulture);
             }
@@ -180,7 +180,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to If your account is blocked, contact administrator..
         /// </summary>
-        public static string If_your_account_is_blocked_contact_administrator {
+        internal static string If_your_account_is_blocked_contact_administrator {
             get {
                 return ResourceManager.GetString("If_your_account_is_blocked_contact_administrator", resourceCulture);
             }
@@ -189,7 +189,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to If you forget your password, contact administrator..
         /// </summary>
-        public static string If_you_forget_your_password_contact_administrator {
+        internal static string If_you_forget_your_password_contact_administrator {
             get {
                 return ResourceManager.GetString("If_you_forget_your_password_contact_administrator", resourceCulture);
             }
@@ -198,7 +198,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Locations.
         /// </summary>
-        public static string Locations {
+        internal static string Locations {
             get {
                 return ResourceManager.GetString("Locations", resourceCulture);
             }
@@ -207,7 +207,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Login.
         /// </summary>
-        public static string Login {
+        internal static string Login {
             get {
                 return ResourceManager.GetString("Login", resourceCulture);
             }
@@ -216,7 +216,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Please sign in to your account..
         /// </summary>
-        public static string LoginNote {
+        internal static string LoginNote {
             get {
                 return ResourceManager.GetString("LoginNote", resourceCulture);
             }
@@ -225,7 +225,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to LOGIN POLICY.
         /// </summary>
-        public static string LOGIN_POLICY {
+        internal static string LOGIN_POLICY {
             get {
                 return ResourceManager.GetString("LOGIN_POLICY", resourceCulture);
             }
@@ -234,7 +234,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Manage reviews.
         /// </summary>
-        public static string ManageReviews {
+        internal static string ManageReviews {
             get {
                 return ResourceManager.GetString("ManageReviews", resourceCulture);
             }
@@ -243,7 +243,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Multiple active sessions detected!.
         /// </summary>
-        public static string MultipleActiveSessionsDetected {
+        internal static string MultipleActiveSessionsDetected {
             get {
                 return ResourceManager.GetString("MultipleActiveSessionsDetected", resourceCulture);
             }
@@ -252,7 +252,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Multiple active sessions detected!.
         /// </summary>
-        public static string MultipleActiveSessionsDetected1 {
+        internal static string MultipleActiveSessionsDetected1 {
             get {
                 return ResourceManager.GetString("MultipleActiveSessionsDetected1", resourceCulture);
             }
@@ -261,7 +261,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to No internet connection.
         /// </summary>
-        public static string NoInternetConnection {
+        internal static string NoInternetConnection {
             get {
                 return ResourceManager.GetString("NoInternetConnection", resourceCulture);
             }
@@ -270,7 +270,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Notifications.
         /// </summary>
-        public static string Notifications {
+        internal static string Notifications {
             get {
                 return ResourceManager.GetString("Notifications", resourceCulture);
             }
@@ -279,7 +279,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Open sessions.
         /// </summary>
-        public static string OpenSessions {
+        internal static string OpenSessions {
             get {
                 return ResourceManager.GetString("OpenSessions", resourceCulture);
             }
@@ -288,7 +288,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Order.
         /// </summary>
-        public static string Order {
+        internal static string Order {
             get {
                 return ResourceManager.GetString("Order", resourceCulture);
             }
@@ -297,7 +297,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Order details.
         /// </summary>
-        public static string OrderDetails {
+        internal static string OrderDetails {
             get {
                 return ResourceManager.GetString("OrderDetails", resourceCulture);
             }
@@ -306,7 +306,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Order list.
         /// </summary>
-        public static string OrderList {
+        internal static string OrderList {
             get {
                 return ResourceManager.GetString("OrderList", resourceCulture);
             }
@@ -315,7 +315,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Overview.
         /// </summary>
-        public static string Overview {
+        internal static string Overview {
             get {
                 return ResourceManager.GetString("Overview", resourceCulture);
             }
@@ -324,7 +324,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Your Secure &amp; Reliable Partner. FLUX!.
         /// </summary>
-        public static string PartnerText {
+        internal static string PartnerText {
             get {
                 return ResourceManager.GetString("PartnerText", resourceCulture);
             }
@@ -333,7 +333,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Payments.
         /// </summary>
-        public static string Payments {
+        internal static string Payments {
             get {
                 return ResourceManager.GetString("Payments", resourceCulture);
             }
@@ -342,7 +342,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Product list.
         /// </summary>
-        public static string ProductList {
+        internal static string ProductList {
             get {
                 return ResourceManager.GetString("ProductList", resourceCulture);
             }
@@ -351,7 +351,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Products.
         /// </summary>
-        public static string Products {
+        internal static string Products {
             get {
                 return ResourceManager.GetString("Products", resourceCulture);
             }
@@ -360,7 +360,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Referrals.
         /// </summary>
-        public static string Referrals {
+        internal static string Referrals {
             get {
                 return ResourceManager.GetString("Referrals", resourceCulture);
             }
@@ -369,7 +369,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to RETRY.
         /// </summary>
-        public static string RETRY {
+        internal static string RETRY {
             get {
                 return ResourceManager.GetString("RETRY", resourceCulture);
             }
@@ -378,7 +378,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Flux SARL! : Empowering businesses. Enhancing lives..
         /// </summary>
-        public static string SatisfactionText {
+        internal static string SatisfactionText {
             get {
                 return ResourceManager.GetString("SatisfactionText", resourceCulture);
             }
@@ -387,7 +387,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Security.
         /// </summary>
-        public static string Security {
+        internal static string Security {
             get {
                 return ResourceManager.GetString("Security", resourceCulture);
             }
@@ -396,7 +396,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Session recovery code.
         /// </summary>
-        public static string SessionRecoveryCode {
+        internal static string SessionRecoveryCode {
             get {
                 return ResourceManager.GetString("SessionRecoveryCode", resourceCulture);
             }
@@ -405,7 +405,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Session Security Notice.
         /// </summary>
-        public static string SessionSecurityNotice {
+        internal static string SessionSecurityNotice {
             get {
                 return ResourceManager.GetString("SessionSecurityNotice", resourceCulture);
             }
@@ -414,7 +414,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Settings.
         /// </summary>
-        public static string Settings {
+        internal static string Settings {
             get {
                 return ResourceManager.GetString("Settings", resourceCulture);
             }
@@ -423,7 +423,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Shipping &amp; Delivery.
         /// </summary>
-        public static string ShippingDelivery {
+        internal static string ShippingDelivery {
             get {
                 return ResourceManager.GetString("ShippingDelivery", resourceCulture);
             }
@@ -432,7 +432,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Store details.
         /// </summary>
-        public static string StoreDetails {
+        internal static string StoreDetails {
             get {
                 return ResourceManager.GetString("StoreDetails", resourceCulture);
             }
@@ -441,7 +441,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Terminate other sessions.
         /// </summary>
-        public static string TerminateOtherSessions {
+        internal static string TerminateOtherSessions {
             get {
                 return ResourceManager.GetString("TerminateOtherSessions", resourceCulture);
             }
@@ -450,7 +450,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to This ensures only your session remains active for enhanced security.
         /// </summary>
-        public static string ThisEnsuresOnlyYourSessionRemainsActive {
+        internal static string ThisEnsuresOnlyYourSessionRemainsActive {
             get {
                 return ResourceManager.GetString("ThisEnsuresOnlyYourSessionRemainsActive", resourceCulture);
             }
@@ -459,7 +459,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to T R U S T S O F T C R E D I T-Authentication.
         /// </summary>
-        public static string Title {
+        internal static string Title {
             get {
                 return ResourceManager.GetString("Title", resourceCulture);
             }
@@ -468,7 +468,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to TRUSTSOFT.
         /// </summary>
-        public static string TrustSoft {
+        internal static string TrustSoft {
             get {
                 return ResourceManager.GetString("TrustSoft", resourceCulture);
             }
@@ -477,7 +477,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to WELCOME TO.
         /// </summary>
-        public static string WelcomeTitle {
+        internal static string WelcomeTitle {
             get {
                 return ResourceManager.GetString("WelcomeTitle", resourceCulture);
             }
@@ -486,7 +486,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to You are currently offline. Please check your internet connection and try again.
         /// </summary>
-        public static string YouAreCurrentlyOffline {
+        internal static string YouAreCurrentlyOffline {
             get {
                 return ResourceManager.GetString("YouAreCurrentlyOffline", resourceCulture);
             }
@@ -495,7 +495,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Your max login attempt is 3, else blocked..
         /// </summary>
-        public static string Your_max_login_attempt_is_3_else_blocked {
+        internal static string Your_max_login_attempt_is_3_else_blocked {
             get {
                 return ResourceManager.GetString("Your_max_login_attempt_is_3_else_blocked", resourceCulture);
             }
