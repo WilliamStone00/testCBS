@@ -203,6 +203,8 @@ namespace CBS.FrontDesk.Data.Entity.SalaryManagement
         }
         public sealed class RegisterStandingOrderUploadMain
         {
+            
+            public string BranchId { get; set; }
             public List<RegisterStandingOrderUpload> Rows { get; set; }
         }
 
