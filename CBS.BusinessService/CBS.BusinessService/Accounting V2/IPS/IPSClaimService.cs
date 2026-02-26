@@ -121,7 +121,7 @@ namespace CBS.BusinessService.Accounting_V2.IPS
 
                     // Enrich claim with context data
                     claim.BankId = GetBankID();
-                    claim.BankName = GetBankName();
+                    //claim.BankName = GetBankName();
                     claim.BranchCode = GetBranchCode();
                     claim.BranchName = GetBranchName();
                     claim.BranchId = GetBranchID();
