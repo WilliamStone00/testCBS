@@ -5005,4 +5005,49 @@
   <data name="Bank_Information" xml:space="preserve">
     <value>Bank Information</value>
   </data>
+  <data name="Date_Blocked" xml:space="preserve">
+    <value>Date Blocked</value>
+  </data>
+  <data name="Date_Released" xml:space="preserve">
+    <value>Date Released</value>
+  </data>
+  <data name="Account_Status" xml:space="preserve">
+    <value>Account Status</value>
+  </data>
+  <data name="General_Information" xml:space="preserve">
+    <value>General Information</value>
+  </data>
+  <data name="Product_Name" xml:space="preserve">
+    <value>Product Name</value>
+  </data>
+  <data name="Product_Code" xml:space="preserve">
+    <value>Product Code</value>
+  </data>
+  <data name="Previous_Balance" xml:space="preserve">
+    <value>Previous Balance</value>
+  </data>
+  <data name="Encrypted_Balance" xml:space="preserve">
+    <value>Encrypted Balance</value>
+  </data>
+  <data name="Reason_for_Block" xml:space="preserve">
+    <value>Reason for Block</value>
+  </data>
+  <data name="Blocked_Amount" xml:space="preserve">
+    <value>Blocked Amount</value>
+  </data>
+  <data name="Product_Information" xml:space="preserve">
+    <value>Product Information</value>
+  </data>
+  <data name="Account_Operations" xml:space="preserve">
+    <value>Account Operations</value>
+  </data>
+  <data name="Date_of_Last_Operation" xml:space="preserve">
+    <value>Date of Last Operation</value>
+  </data>
+  <data name="Opening_Day_Date" xml:space="preserve">
+    <value>Opening Day Date</value>
+  </data>
+  <data name="Opening_Balance" xml:space="preserve">
+    <value>Opening Balance</value>
+  </data>
 </root>

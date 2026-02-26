@@ -3388,4 +3388,49 @@
   <data name="Bank_Information" xml:space="preserve">
     <value />
   </data>
+  <data name="Date_Blocked" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Date_Released" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Account_Status" xml:space="preserve">
+    <value />
+  </data>
+  <data name="General_Information" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Product_Name" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Product_Code" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Previous_Balance" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Encrypted_Balance" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Reason_for_Block" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Blocked_Amount" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Product_Information" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Account_Operations" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Date_of_Last_Operation" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Opening_Day_Date" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Opening_Balance" xml:space="preserve">
+    <value />
+  </data>
 </root>
