@@ -33,11 +33,11 @@
     <div id="collapseTips" class="collapse">
         <div class="card-body">
             <ul>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>@GlobalIndividual.FilterByBranch:</strong> @GlobalIndividual.EasilySegmentMembersByOperationalBranch.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>@GlobalShared.FilterByBranch:</strong> @GlobalIndividual.EasilySegmentMembersByOperationalBranch.</li>
                 <li><i class="mdi mdi-calendar-range text-primary me-2"></i> <strong>@GlobalIndividual.RegistrationDates:</strong> @GlobalIndividual.FilterByCreationDateOrBirthDateToTargetSpecificDemographics.</li>
                 <li><i class="mdi mdi-gender-male-female text-secondary me-2"></i> <strong>@GlobalIndividual.GenderMaritalStatus:</strong> @GlobalIndividual.AnalyzeMemberBreakdownAcrossKeyAttributes.</li>
                 <li><i class="mdi mdi-account-check-outline text-info me-2"></i> <strong>@GlobalIndividual.ApprovalLegalStatus:</strong> @GlobalIndividual.FilterApprovedMembersByLegalFormOrType.</li>
-                <li><i class="mdi mdi-file-export-outline text-success me-2"></i> <strong>@GlobalIndividual.Export:</strong> @GlobalIndividual.ExportSearchResultsToExcelForReportingOrRecordkeeping.</li>
+                <li><i class="mdi mdi-file-export-outline text-success me-2"></i> <strong>@GlobalShared.Export:</strong> @GlobalIndividual.ExportSearchResultsToExcelForReportingOrRecordkeeping.</li>
             </ul>
         </div>
     </div>
@@ -83,8 +83,8 @@
                     <input type="text" id="customerId" name="CustomerId" class="form-control" placeholder="@GlobalIndividual.MemberAccountTemporalNumber" />
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label fw-bold">@GlobalIndividual.FirstName</label>
-                    <input type="text" id="firstName" name="FirstName" class="form-control" placeholder="@GlobalIndividual.FirstName" />
+                    <label class="form-label fw-bold">@GlobalShared.First_Name</label>
+                    <input type="text" id="firstName" name="FirstName" class="form-control" placeholder="@GlobalShared.First_Name" />
                 </div>
                 <div class="col-md-5">
                     <label class="form-label fw-bold">@GlobalIndividual.LastName</label>
@@ -95,8 +95,8 @@
             <div id="branchFilter" class="d-none">
                 <div class="row mb-3">
                     <div class="col-md-12">
-                        <label class="form-label fw-bold">@GlobalIndividual.Branch</label>
-                        @Html.DropDownList("BranchId", new SelectList(ViewBag.Branches, "Id", "Name"), "---"+ @GlobalIndividual.SelectBranch +"---", new { @class = "form-control select2", @id = "branchId", @name = "BranchId" })
+                        <label class="form-label fw-bold">@GlobalShared.Branch</label>
+                        @Html.DropDownList("BranchId", new SelectList(ViewBag.Branches, "Id", "Name"), "---"+ GlobalShared.Select_Branch +"---", new { @class = "form-control select2", @id = "branchId", @name = "BranchId" })
                     </div>
                 </div>
             </div>
@@ -107,7 +107,7 @@
                     <div class="col-md-4">
                         <label class="form-label fw-bold">@GlobalIndividual.Gender Or Groups</label>
                         <select id="gender" name="Gender" class="form-select">
-                            <option value="">@GlobalIndividual.All</option>
+                            <option value="">@GlobalShared.All</option>
                             <option value="Female">@GlobalIndividual.Female</option>
                             <option value="Male">@GlobalIndividual.Male</option>
                             <option value="Male">@GlobalIndividual.Groups</option>
@@ -115,9 +115,9 @@
 
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label fw-bold">@GlobalIndividual.MaritalStatus</label>
+                        <label class="form-label fw-bold">@GlobalShared.Marital_Status</label>
                         <select id="maritalStatus" name="MaritalStatus" class="form-select">
-                            <option value="">@GlobalIndividual.All</option>
+                            <option value="">@GlobalShared.All</option>
                             <option value="Divorced">@GlobalIndividual.Divorced</option>
                             <option value="Married">@GlobalIndividual.Married</option>
                             <option value="Single">@GlobalIndividual.Single</option>
@@ -128,7 +128,7 @@
                     <div class="col-md-4">
                         <label class="form-label fw-bold">@GlobalIndividual.WorkingStatus</label>
                         <select id="workingStatus" name="WorkingStatus" class="form-select">
-                            <option value="">@GlobalIndividual.All</option>
+                            <option value="">@GlobalShared.All</option>
                             <option value="Unemployed">@GlobalIndividual.Unemployed</option>
                             <option value="Working">@GlobalIndividual.Working</option>
                         </select>
@@ -144,7 +144,7 @@
                         <label class="form-label fw-bold">@GlobalIndividual.MembershipApproval</label>
                         <select id="membershipApprovalStatus" name="MembershipApprovalStatus" class="form-select">
                             <option value="">All</option>
-                            <option value="Approved">@GlobalIndividual.Approved</option>
+                            <option value="Approved">@GlobalShared.Approved</option>
                             <option value="Pending">@GlobalIndividual.Awaits_Validation</option>
                         </select>
                     </div>
@@ -152,15 +152,15 @@
                         <label class="form-label fw-bold">@GlobalIndividual.LegalForm</label>
                         <select id="legalForm" name="LegalForm" class="form-select">
                             <option value="">All</option>
-                            <option value="Moral_Person">@GlobalIndividual.MoralPerson</option>
-                            <option value="Physical_Person">@GlobalIndividual.PhysicalPerson</option>
+                            <option value="Moral_Person">@GlobalShared.Moral_Person</option>
+                            <option value="Physical_Person">@GlobalShared.Physical_Person</option>
                         </select>
 
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label fw-bold">@GlobalIndividual.MembersProfile</label>
+                        <label class="form-label fw-bold">@GlobalShared.Members_Profile</label>
                         <select id="customerType" name="CustomerType" class="form-select">
-                            <option value="">@GlobalIndividual.All</option>
+                            <option value="">@GlobalShared.All</option>
                             <option value="AffiliateMemberSalaryAccount">@GlobalIndividual.AffiliateMemberSalary (TMAA)</option>
                             <option value="CivilServantsSalaryCollection">@GlobalIndividual.CivilServantsSalary (CSCA)</option>
                             <option value="DailyCollection">@GlobalIndividual.DailyCollection (DCA)</option>
@@ -180,7 +180,7 @@
                     <div class="col-md-3">
                         <label class="form-label fw-bold">@GlobalIndividual.AgeCategory</label>
                         <select id="ageCategoryStatus" name="AgeCategoryStatus" class="form-select">
-                            <option value="">@GlobalIndividual.All</option>
+                            <option value="">@GlobalShared.All</option>
                             <option value="Major">@GlobalIndividual.Major</option>
                             <option value="Minor">@GlobalIndividual.Minor</option>
                         </select>
@@ -203,11 +203,11 @@
                 </div>
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">@GlobalIndividual.CreatedFrom</label>
+                        <label class="form-label fw-bold">@GlobalShared.Created_From</label>
                         <input type="date" id="createdFrom" name="CreatedFrom" class="form-control" />
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">@GlobalIndividual.CreatedTo</label>
+                        <label class="form-label fw-bold">@GlobalShared.Created_To</label>
                         <input type="date" id="createdTo" name="CreatedTo" class="form-control" />
                     </div>
                 </div>
@@ -216,7 +216,7 @@
 
         <div class="row mt-2">
             <div class="col-md-12 d-flex">
-                <button id="applyFilterBtn" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> @GlobalIndividual.ApplyFilter</button>
+                <button id="applyFilterBtn" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> @GlobalShared.Apply_Filter</button>
                 <button id="resetFilterBtn" type="reset" class="btn btn-secondary me-2 w-100"><i class="mdi mdi-refresh"></i> @GlobalShared.Reset</button>
                 @*<button id="exportBtn" class="btn btn-success w-100"><i class="mdi mdi-file-excel"></i> Export</button>*@
             </div>

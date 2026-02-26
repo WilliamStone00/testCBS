@@ -21,7 +21,7 @@
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.DateFromStr, new { @class = "form-control date-picker" })
                     @Html.ValidationMessageFor(m => m.DateFromStr, "", new { @class = "text-danger" })
-                    <label for="DateFrom">@GlobalHoliday.BeginDate</label>
+                    <label for="DateFrom">@GlobalShared.Begin_Date</label>
                 </div>
             </div>
 
@@ -29,7 +29,7 @@
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.DateToStr, new { @class = "form-control date-picker" })
                     @Html.ValidationMessageFor(m => m.DateToStr, "", new { @class = "text-danger" })
-                    <label for="DateTo">@GlobalHoliday.EndDate</label>
+                    <label for="DateTo">@GlobalShared.End_Date</label>
                 </div>
             </div>
 
@@ -48,18 +48,18 @@
                     @Html.DropDownListFor(
                         m => m.BranchId,
                         new SelectList(ViewBag.Branches, "Id", "Name"),
-                        "---"+ @GlobalHoliday.SelectBranch +"---",
+                        "---"+ GlobalShared.SelectBranch +"---",
                         new { @class = "form-control select2", id = "BranchId", @search = "true" }
                     )
                     @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
-                    <label for="BranchId">@GlobalHoliday.SelectBranch</label>
+                    <label for="BranchId">@GlobalShared.SelectBranch</label>
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="form-floating form-floating-outline">
                     @Html.TextAreaFor(m => m.Description, new { @class = "form-control", @style = "height: 200px;" })
                     @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
-                    <label>@GlobalHoliday.Description</label>
+                    <label>@GlobalShared.Description</label>
 
                 </div>
             </div>

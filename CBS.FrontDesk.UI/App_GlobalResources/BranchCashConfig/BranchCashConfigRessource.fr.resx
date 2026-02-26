@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Branch_is_fixed_for_this_configuration" xml:space="preserve">
+    <value>La branche est fixe pour cette configuration</value>
+  </data>
+  <data name="Add_Cash_Config" xml:space="preserve">
+    <value>Ajouter une configuration de caisse</value>
+  </data>
+  <data name="All_Cash_Control_Commission_VAT_MoMoCash_and_Fee_GLs_are_compulsory" xml:space="preserve">
+    <value>Tous les comptes GL de contrôle de caisse, commissions, TVA, MoMoCash et frais sont obligatoires</value>
+  </data>
+  <data name="All_Commission_VAT_MoMoCash_Loan_Transit_and_Interest_GLs_are_mandatory" xml:space="preserve">
+    <value>Tous les comptes GL de commissions, TVA, MoMoCash, transit de prêt et intérêts sont obligatoires</value>
+  </data>
+  <data name="All_core_cash_control_GLs_are_mandatory" xml:space="preserve">
+    <value>Tous les comptes GL principaux de contrôle de caisse sont obligatoires</value>
+  </data>
+  <data name="All_teller_vault_transfers_depend_on_this_mapping" xml:space="preserve">
+    <value>Tous les transferts guichet–coffre dépendent de ce paramétrage</value>
+  </data>
+  <data name="Always_select_the_correct_Branch_before_configuring" xml:space="preserve">
+    <value>Toujours sélectionner la &lt;b&gt;branche&lt;/b&gt; correcte avant la configuration</value>
+  </data>
+  <data name="Backup_GL_to_capture_application_form_charges_when_not_defined_by_the_product" xml:space="preserve">
+    <value>Compte GL de secours pour enregistrer les frais de dossier/formulaire lorsqu’ils ne sont pas définis par le produit</value>
+  </data>
+  <data name="BRANCH_CASH_CONFIG" xml:space="preserve">
+    <value>CONFIGURATION DE CAISSE PAR BRANCHE</value>
+  </data>
+  <data name="Branch_Cash_Config_Management" xml:space="preserve">
+    <value>Gestion de la configuration de caisse par branche</value>
+  </data>
+  <data name="Branch_Cash_Configuration" xml:space="preserve">
+    <value>Configuration de caisse de la branche</value>
+  </data>
+  <data name="Branch_Cash_GL_Mappings" xml:space="preserve">
+    <value>Correspondance des comptes GL de caisse par branche</value>
+  </data>
+  <data name="Branch_vault_GL_used_for_vault_stock_and_vault_till_transfers" xml:space="preserve">
+    <value>Compte GL du coffre de la branche utilisé pour le stock du coffre et les transferts coffre↔guichet</value>
+  </data>
+  <data name="Cash_Config_Details" xml:space="preserve">
+    <value>Détails de la configuration de caisse</value>
+  </data>
+  <data name="Cash_Deficit_Shortage" xml:space="preserve">
+    <value>Déficit de caisse (manquant)</value>
+  </data>
+  <data name="Cash_In_Hand_Account" xml:space="preserve">
+    <value>Compte espèces en caisse</value>
+  </data>
+  <data name="Cash_In_Hand_Till" xml:space="preserve">
+    <value>Espèces en caisse (guichet)</value>
+  </data>
+  <data name="Cash_In_Hand_Till_Vault_Surplus_Income_Shortage_Expense_Cash_Reversal_Account" xml:space="preserve">
+    <value>Espèces en caisse (guichet), coffre, produit de surplus, charge de déficit, compte de réversal caisse</value>
+  </data>
+  <data name="Cash_Reversal_Account" xml:space="preserve">
+    <value>Compte de réversal caisse</value>
+  </data>
+  <data name="Cash_Reversal_Account_is_used_for_delayed_cash_reversals_when_the_accounting_day_of_the_incident_has_already_passed_This_ensures_reversing_historical_cash_movements_does_not_impact_the_current_Till_Vault_cash_position" xml:space="preserve">
+    <value>Le &lt;b&gt;compte de réversal caisse&lt;/b&gt; est utilisé pour les &lt;b&gt;réversals différés&lt;/b&gt; lorsque la &lt;b&gt;journée comptable de l’incident est déjà clôturée&lt;/b&gt; (ex. réversal après 24h). Cela garantit que les mouvements historiques de caisse n’impactent pas la position actuelle du guichet/coffre.</value>
+  </data>
+  <data name="Cash_Surplus_Overage" xml:space="preserve">
+    <value>Surplus de caisse (excédent)</value>
+  </data>
+  <data name="Clearing_settlement_GL_for_partner_transactions_agents_wallets_third_party_processors_when_a_specific_GL_is_not_defined" xml:space="preserve">
+    <value>Compte GL de compensation/règlement pour les transactions partenaires (agents, portefeuilles, processeurs tiers) lorsqu’aucun GL spécifique n’est défini</value>
+  </data>
+  <data name="Commission_income_GL_for_Mobile_Money_operations_used_when_operation_or_product_configuration_does_not_define_a_more_specific_commission_GL" xml:space="preserve">
+    <value>Compte GL de produits de commissions pour les opérations Mobile Money, utilisé lorsqu’aucune commission spécifique n’est définie</value>
+  </data>
+  <data name="Commission_income_GL_used_when_account_to_account_external_transfers_do_not_provide_a_dedicated_commission_GL" xml:space="preserve">
+    <value>Compte GL de commissions utilisé pour les virements compte-à-compte ou externes lorsqu’aucun GL dédié n’est fourni</value>
+  </data>
+  <data name="Commission_income_GL_used_when_cash_in_operations_do_not_provide_a_specific_commission_GL" xml:space="preserve">
+    <value>Compte GL de commissions utilisé pour les opérations de dépôt d’espèces lorsqu’aucun GL spécifique n’est défini</value>
+  </data>
+  <data name="Commission_income_GL_used_when_cash_out_operations_do_not_provide_a_specific_commission_GL" xml:space="preserve">
+    <value>Compte GL de commissions utilisé pour les opérations de retrait d’espèces lorsqu’aucun GL spécifique n’est défini</value>
+  </data>
+  <data name="Commission_VAT_amp_Fee_Backup_Accounts" xml:space="preserve">
+    <value>Comptes de secours pour commissions, TVA et frais</value>
+  </data>
+  <data name="Commission_VAT_Interest_Backup" xml:space="preserve">
+    <value>Comptes de secours pour commissions, TVA et intérêts</value>
+  </data>
+  <data name="configure_a_single_controlled_suspense_GL_per_branch_here_and_reclassify_its_balance_during_End_of_Day_using_the_fallback_mapping_console" xml:space="preserve">
+    <value>Configurer ici un compte d’attente unique et contrôlé par branche et reclasser son solde en fin de journée via la console de correspondance de secours</value>
+  </data>
+  <data name="Configure_all_branch_level_cash_control_and_financial_routing_GL_accounts" xml:space="preserve">
+    <value>Configurer tous les comptes GL de contrôle de caisse et de routage financier au niveau de la branche</value>
+  </data>
+  <data name="Core_Cash_Control_Till_Vault" xml:space="preserve">
+    <value>Contrôle de caisse principal (Guichet &amp; Coffre)</value>
+  </data>
+  <data name="Dedicated_GL_used_to_post_delayed_cash_reversals_for_cash_operations_whose_original_accounting_day_has_already_passed_ensuring_that_reversing_historical_cash_movements_does_not_impact_the_current_cash_position_till_or_vault_of_the_branch" xml:space="preserve">
+    <value>Compte GL dédié utilisé pour enregistrer les réversals différés des opérations de caisse dont la journée comptable est déjà clôturée, afin de ne pas impacter la position de caisse actuelle de la branche</value>
+  </data>
+  <data name="default_backup_accounts" xml:space="preserve">
+    <value>comptes par défaut / de secours</value>
+  </data>
+  <data name="Default_GLs_to_capture_fees_commissions_VAT_and_interest_when_the_operation_mapping_does_not_specify_them_explicitly" xml:space="preserve">
+    <value>Comptes GL par défaut pour enregistrer frais, commissions, TVA et intérêts lorsque le mapping opérationnel ne les précise pas</value>
+  </data>
+  <data name="Default_income_GL_for_fees_charges_when_a_product_specific_revenue_GL_is_not_supplied" xml:space="preserve">
+    <value>Compte GL de produits par défaut pour les frais lorsqu’aucun GL de revenu spécifique au produit n’est fourni</value>
+  </data>
+  <data name="Default_interest_income_GL_when_a_product_loan_mapping_does_not_provide_a_specific_interest_GL" xml:space="preserve">
+    <value>Compte GL de produits d’intérêts par défaut lorsqu’aucun GL spécifique n’est défini pour le prêt</value>
+  </data>
+  <data name="Default_VAT_liability_GL_when_a_fee_commission_operation_does_not_specify_a_VAT_GL_explicitly" xml:space="preserve">
+    <value>Compte GL de TVA à payer par défaut lorsqu’une opération ne spécifie pas explicitement de GL TVA</value>
+  </data>
+  <data name="Disable_only_if_your_institution_uses_deferred_posting" xml:space="preserve">
+    <value>Désactiver uniquement si l’institution utilise des écritures différées</value>
+  </data>
+  <data name="Each_branch_has_its_own_GL_structure_and_balances" xml:space="preserve">
+    <value>Chaque branche dispose de sa propre structure et de ses soldes GL</value>
+  </data>
+  <data name="Each_such_posting_is_logged_for_EOD_review_including_the_supposed_GL_the_actual_suspense_GL_and_the_amount_If_this_field_is_left_empty_the_system_will_attempt_to_auto_create_the_affiliated_GL_at_the_level_of_the_Branch_GL_accounts_and_use_it_but_this_is_not_recommended_because_it_scatters_suspense_balances_across_multiple_GLs" xml:space="preserve">
+    <value>Chaque écriture est journalisée pour revue en fin de journée (EOD), incluant le GL attendu, le GL d’attente réel et le montant</value>
+  </data>
+  <data name="Enable_Real_time_Cash_Posting" xml:space="preserve">
+    <value>Activer la comptabilisation de caisse en temps réel</value>
+  </data>
+  <data name="Every_GL_configured_here_directly_determines_how_teller_vault" xml:space="preserve">
+    <value>Compte d’attente de secours</value>
+  </data>
+  <data name="Fallback_Suspense_GL" xml:space="preserve">
+    <value>Produits de frais de formulaire</value>
+  </data>
+  <data name="Form_Fee_Income" xml:space="preserve">
+    <value>Comptes GL génériques de revenus/règlements de secours lorsqu’aucun GL spécifique n’est fourni</value>
+  </data>
+  <data name="Generic_backup_income_settlement_GLs_when_the_transaction_or_product_does_not_provide_a_more_specific_GL" xml:space="preserve">
+    <value>Compte d’attente global de secours</value>
+  </data>
+  <data name="Global_Fallback_Suspense_GL" xml:space="preserve">
+    <value>Compte de liaison avec le siège</value>
+  </data>
+  <data name="Head_Office_Liaison_Account" xml:space="preserve">
+    <value>Si l’un manque, les opérations associées ne pourront pas être comptabilisées</value>
+  </data>
+  <data name="If_any_is_missing_related_operations_cannot_post" xml:space="preserve">
+    <value>En l’absence, toutes les opérations inter-branches échoueront</value>
+  </data>
+  <data name="If_missing_all_inter_branch_operations_will_fail" xml:space="preserve">
+    <value>Revenus et comptes génériques de secours</value>
+  </data>
+  <data name="Income_and_Generi_Backup_Revenue" xml:space="preserve">
+    <value>Compte GL de revenus pour enregistrer les frais de dossier/formulaire lorsqu’ils ne sont pas mappés au niveau produit/opération</value>
+  </data>
+  <data name="Income_GL_to_record_application_form_charges_when_not_mapped_at_product_operation_level" xml:space="preserve">
+    <value>Une configuration incorrecte entraîne des écarts de journée guichet</value>
+  </data>
+  <data name="Income_GL_to_record_application_form_charges_when_not_mapped_at_product_operation_level1" xml:space="preserve">
+    <value>des soldes GL incorrects et des coffres non rapprochés</value>
+  </data>
+  <data name="Income_GL_to_record_application_form_charges_when_not_mapped_at_product_operation_level2" xml:space="preserve">
+    <value>Compte GL de liaison inter-branches vers le siège, utilisé pour les compensations quotidiennes</value>
+  </data>
+  <data name="Income_GL_to_record_application_form_charges_when_not_mapped_at_product_operation_level3" xml:space="preserve">
+    <value>Règlement inter-branches, réseau et partenaires</value>
+  </data>
+  <data name="Income_GL_to_record_application_form_charges_when_not_mapped_at_product_operation_level4" xml:space="preserve">
+    <value>est essentiel pour les écritures inter-branches</value>
+  </data>
+  <data name="Incorrect_configuration_leads_to_teller_day_mismatches" xml:space="preserve">
+    <value>Transit de prêt</value>
+  </data>
+  <data name="incorrect_GL_balances_unreconciled_vault_positions" xml:space="preserve">
+    <value>Compte de transit de prêt</value>
+  </data>
+  <data name="Inter_branch_bridge_GL_to_HO_used_for_daily_liaison_clearing_between_branch_and_HO" xml:space="preserve">
+    <value>Transit de prêt et intérêts</value>
+  </data>
+  <data name="Inter_branch_HO_bridge_GL_for_daily_liaison_and_settlement_between_the_branch_and_head_office" xml:space="preserve">
+    <value>Compte GL principal du stock de caisse de la branche, utilisé pour les réceptions, sorties et transferts guichet↔coffre</value>
+  </data>
+  <data name="Inter_branch_Network_and_Partner_Settlement" xml:space="preserve">
+    <value>Correspondance (comptes de secours)</value>
+  </data>
+  <data name="interbranch_imbalances_or_misposted_commissions" xml:space="preserve">
+    <value>L’absence de correspondance provoquera des échecs d’écriture ou un routage comptable incorrect</value>
+  </data>
+  <data name="is_essential_for_inter_branch_posting" xml:space="preserve">
+    <value>Commission MoMoCash</value>
+  </data>
+  <data name="loan_transfer_Mobile_Money_and_fee_posting_workflows_behave" xml:space="preserve">
+    <value>Règlement MoMoCash</value>
+  </data>
+  <data name="Loan_Transit" xml:space="preserve">
+    <value>Seuls les agents autorisés doivent modifier cette configuration</value>
+  </data>
+  <data name="Loan_Transit_Account" xml:space="preserve">
+    <value>Les opérations telles que dépôt/retrait d’espèces, clôture guichet, transferts coffre et réversals différés échoueront immédiatement si ces comptes sont manquants</value>
+  </data>
+  <data name="Loan_Transit_And_Interest" xml:space="preserve">
+    <value>Comptabilisation en temps réel</value>
+  </data>
+  <data name="Main_branch_cash_stock_GL_Used_for_vault_receipts_issues_and_till_vault_transfers" xml:space="preserve">
+    <value>Revoir la configuration de caisse de la branche</value>
+  </data>
+  <data name="Mapping_Fallback_Backup_Accounts" xml:space="preserve">
+    <value>Les réversals le même jour sont comptabilisés directement sur les comptes guichet/coffre d’origine</value>
+  </data>
+  <data name="Missing_mappings_will_cause_posting_failures_or_incorrect_accounting_routing" xml:space="preserve">
+    <value>Compte GL de règlement pour les montants principaux Mobile Money (dépôt/retrait) lorsqu’aucune correspondance plus spécifique n’est fournie</value>
+  </data>
+  <data name="MoMoCash_Commission" xml:space="preserve">
+    <value>Charge de déficit</value>
+  </data>
+  <data name="MoMoCash_Settlement" xml:space="preserve">
+    <value>Produit de surplus</value>
+  </data>
+  <data name="Most_of_the_GLs_configured_here_act_as" xml:space="preserve">
+    <value>Compte GL de détention d’espèces du guichet pour les opérations comptoir et l’équilibrage de fin de journée</value>
+  </data>
+  <data name="Most_other_GLs_Revenue_Partner_CamCCUL_Fees_VAT_Commission_sact_as_fallback_accounts" xml:space="preserve">
+    <value>Compte GL du guichet : débité lors de la réception d’espèces et crédité lors du paiement au comptoir</value>
+  </data>
+  <data name="Only_authorized_officers_should_modify_this_configuration" xml:space="preserve">
+    <value>Compte GL temporaire pour retenir les montants de prêts en transit entre approbation et décaissement final</value>
+  </data>
+  <data name="Operations_such_as_Cash_In_Cash_Out_Teller_Closure_Vaul_Transfers_and_delayed_cash_reversals_will_fail_immediately_if_these_are_missing" xml:space="preserve">
+    <value>Cela garantit que le moteur comptable trouve toujours un chemin de routage</value>
+  </data>
+  <data name="postings_are_made_directly_against_the_original_cash_accounts" xml:space="preserve">
+    <value>Ce compte GL n’est pas utilisé pour les réversals le même jour</value>
+  </data>
+  <data name="Real_Time_Posting" xml:space="preserve">
+    <value>Utilisé lorsque l’encaisse physique est supérieure au solde comptable après rapprochement (excédent)</value>
+  </data>
+  <data name="represents_the_branch_vault_stock" xml:space="preserve">
+    <value>Utilisé lorsque l’encaisse physique est inférieure au solde comptable après rapprochement (manquant)</value>
+  </data>
+  <data name="Review_the_branch_cash_configuration" xml:space="preserve">
+    <value>Lorsqu’activé, les opérations de caisse sont comptabilisées immédiatement ; sinon, elles peuvent être différées</value>
+  </data>
+  <data name="Review_the_branch_s_mandatory_cash_GLs_and_the_fallback_revenue_fee_accounts_used" xml:space="preserve">
+    <value>Sans ce mapping, toutes les écritures de décaissement de prêt échoueront</value>
+  </data>
+  <data name="Same_day_reversals_are_posted_directly_to_the_original_Till_Vault_accounts_and_do_not_use_this_reversal_GL" xml:space="preserve">
+    <value>Un mauvais mapping peut entraîner</value>
+  </data>
+</root>

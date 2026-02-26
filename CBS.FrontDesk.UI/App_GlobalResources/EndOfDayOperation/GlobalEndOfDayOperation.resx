@@ -117,44 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AccounantNote" xml:space="preserve">
-    <value>Accounant note</value>
-  </data>
   <data name="AccountantNote" xml:space="preserve">
     <value>Accountant note</value>
   </data>
   <data name="AccountantStatus" xml:space="preserve">
     <value>Accountant status</value>
   </data>
-  <data name="AdditionalNotes" xml:space="preserve">
-    <value>Additional notes</value>
-  </data>
   <data name="AfterCompletingTheProcess" xml:space="preserve">
     <value>after completing the process</value>
   </data>
-  <data name="Attribute" xml:space="preserve">
-    <value>Attribute</value>
-  </data>
-  <data name="Balance" xml:space="preserve">
-    <value>Balance</value>
-  </data>
-  <data name="CashAtHand" xml:space="preserve">
-    <value>Cash at hand</value>
-  </data>
-  <data name="CashAtHandt" xml:space="preserve">
-    <value>Cash at handt</value>
-  </data>
-  <data name="Charges" xml:space="preserve">
-    <value>Charges</value>
-  </data>
   <data name="ClosedAmountOfPreviouseDay" xml:space="preserve">
     <value>Closed amount of previouse day</value>
-  </data>
-  <data name="ClosedDate" xml:space="preserve">
-    <value>Closed date</value>
-  </data>
-  <data name="ClosedStatus" xml:space="preserve">
-    <value>Closed status</value>
   </data>
   <data name="CloseEndTheDayOperation" xml:space="preserve">
     <value>Close (End the day operation)</value>
@@ -204,9 +177,6 @@
   <data name="ConfirmAnyDiscrepanciesAreResolvedBeforeProceeding" xml:space="preserve">
     <value>Confirm any discrepancies are resolved before proceeding</value>
   </data>
-  <data name="ConfirmationStatus" xml:space="preserve">
-    <value>Confirmation status</value>
-  </data>
   <data name="ConfirmationTheOperationsOf" xml:space="preserve">
     <value>Confirmation the operations of</value>
   </data>
@@ -215,27 +185,6 @@
   </data>
   <data name="ConfirmTheTotalBalanceMatchesTheExpectedAmount" xml:space="preserve">
     <value>Confirm the total balance matches the expected amount</value>
-  </data>
-  <data name="Credit" xml:space="preserve">
-    <value>Credit</value>
-  </data>
-  <data name="Date" xml:space="preserve">
-    <value>Date</value>
-  </data>
-  <data name="DateClosed" xml:space="preserve">
-    <value>Date closed</value>
-  </data>
-  <data name="DateCloses" xml:space="preserve">
-    <value>Date closes</value>
-  </data>
-  <data name="DateOpen" xml:space="preserve">
-    <value>Date open</value>
-  </data>
-  <data name="DateToClose" xml:space="preserve">
-    <value>Date to close</value>
-  </data>
-  <data name="Debit" xml:space="preserve">
-    <value>Debit</value>
   </data>
   <data name="DetailsOfOperationsOf" xml:space="preserve">
     <value>Details of operations of</value>
@@ -279,12 +228,6 @@
   <data name="ExportTellerTransactions" xml:space="preserve">
     <value>Export teller transactions</value>
   </data>
-  <data name="FeeType" xml:space="preserve">
-    <value>Fee type</value>
-  </data>
-  <data name="FollowTheseStepsToEnsureASmoothClosingOfTheMainTill" xml:space="preserve">
-    <value>Follow these steps to ensure a smooth closing of the Main till</value>
-  </data>
   <data name="FollowTheseStepsToEnsureASuccessfulSubTillClosure" xml:space="preserve">
     <value>Follow these steps to ensure a successful sub-till closure</value>
   </data>
@@ -300,14 +243,8 @@
   <data name="GenerateTheNecessaryReportsForReconciliation" xml:space="preserve">
     <value>Generate the necessary reports for reconciliation</value>
   </data>
-  <data name="HELPTIPS" xml:space="preserve">
-    <value>HELP TIPS</value>
-  </data>
   <data name="IfThe" xml:space="preserve">
     <value>If the</value>
-  </data>
-  <data name="InitialAmount" xml:space="preserve">
-    <value>Initial amount</value>
   </data>
   <data name="MakeSureTo" xml:space="preserve">
     <value>Make sure to</value>
@@ -327,12 +264,6 @@
   <data name="Of" xml:space="preserve">
     <value>of</value>
   </data>
-  <data name="OpenDate" xml:space="preserve">
-    <value>Open date</value>
-  </data>
-  <data name="OpenedDate" xml:space="preserve">
-    <value>Opened date</value>
-  </data>
   <data name="OpenOfDayAmount" xml:space="preserve">
     <value>Open of day amount</value>
   </data>
@@ -341,12 +272,6 @@
   </data>
   <data name="OpenOfDayNote" xml:space="preserve">
     <value>Open of day note</value>
-  </data>
-  <data name="OperationDate" xml:space="preserve">
-    <value>Operation date</value>
-  </data>
-  <data name="PreviousBalance" xml:space="preserve">
-    <value>Previous balance</value>
   </data>
   <data name="PrimaryTellerComentary" xml:space="preserve">
     <value>Primary teller comentary</value>
@@ -369,9 +294,6 @@
   <data name="printYourEndOfDayReport" xml:space="preserve">
     <value>print your End of Day report</value>
   </data>
-  <data name="ProvisionedBy" xml:space="preserve">
-    <value>Provisioned by</value>
-  </data>
   <data name="ReplenishedAmount" xml:space="preserve">
     <value>Replenished amount</value>
   </data>
@@ -381,59 +303,17 @@
   <data name="SelectConfirmationStatusType" xml:space="preserve">
     <value>Select confirmation status type</value>
   </data>
-  <data name="SelectStatusType" xml:space="preserve">
-    <value>Select status type</value>
-  </data>
   <data name="SubTellerCommentary" xml:space="preserve">
     <value>Sub teller commentary</value>
   </data>
   <data name="SubTellerEOD" xml:space="preserve">
     <value>Sub -teller EOD</value>
   </data>
-  <data name="SystemBalance" xml:space="preserve">
-    <value>System balance</value>
-  </data>
-  <data name="SystemDifference" xml:space="preserve">
-    <value>System difference</value>
-  </data>
   <data name="TellerAccountBalance" xml:space="preserve">
     <value>Teller account balance</value>
   </data>
   <data name="TellerCloseOfDayNote" xml:space="preserve">
     <value>Teller close of day note</value>
-  </data>
-  <data name="TellerCode" xml:space="preserve">
-    <value>Teller code</value>
-  </data>
-  <data name="TellerComment" xml:space="preserve">
-    <value>Teller comment</value>
-  </data>
-  <data name="TellerName" xml:space="preserve">
-    <value>Teller name</value>
-  </data>
-  <data name="TellerNote" xml:space="preserve">
-    <value>Teller note</value>
-  </data>
-  <data name="TellerUser" xml:space="preserve">
-    <value>Teller user</value>
-  </data>
-  <data name="TotalAmount" xml:space="preserve">
-    <value>Total amount</value>
-  </data>
-  <data name="Transactions" xml:space="preserve">
-    <value>Transactions</value>
-  </data>
-  <data name="Type" xml:space="preserve">
-    <value>Type</value>
-  </data>
-  <data name="User" xml:space="preserve">
-    <value>User</value>
-  </data>
-  <data name="ValidationStatus" xml:space="preserve">
-    <value>Validation status</value>
-  </data>
-  <data name="Value" xml:space="preserve">
-    <value>Value</value>
   </data>
   <data name="VerificationOfSubtellerOperations" xml:space="preserve">
     <value>Verification of subteller operations</value>
@@ -449,5 +329,8 @@
   </data>
   <data name="VerifyThatAllSubTillsUnderTheSameBranch" xml:space="preserve">
     <value>Verify that all sub-tills under the same branch have been closed</value>
+  </data>
+  <data name="FollowTheseStepsToEnsureASmoothClosingOfTheMainTill" xml:space="preserve">
+    <value>Follow these steps to ensure a smooth closing of the Main till</value>
   </data>
 </root>

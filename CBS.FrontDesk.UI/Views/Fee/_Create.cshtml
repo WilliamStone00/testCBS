@@ -3,14 +3,14 @@
 <div class="card-body">
     @using (Html.BeginForm("Create", "Fee", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
     {<fieldset class="fieldset-custom">
-            <legend>@GlobalFee.FeeTypes</legend>
+            <legend>@GlobalShared.Fee_Type</legend>
             @Html.HiddenFor(model => model.Id)
      <div class="row mt-2 gy-4">
          <div class="col-md-12">
              <div class="form-floating form-floating-outline">
                  @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
                  @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
-                 <label>@GlobalFee.Name</label>
+                 <label>@GlobalShared.Name</label>
              </div>
          </div>
          <div class="col-12">
@@ -37,7 +37,7 @@
              </div>
          </div>
          <div class="col-12 mt-2">
-             <label class="form-label fw-semibold">Fee Type</label>
+             <label class="form-label fw-semibold">@GlobalShared.Fee_Type</label>
              <div class="form-check">
                  @Html.RadioButtonFor(m => m.LoanFeeType, "Processing_Fee_Limit", new { @class = "form-check-input", id = "processingFeeLimitOption" })
                  <label class="form-check-label" for="processingFeeLimitOption">@GlobalFee.ProcessingFeeLimit</label>

@@ -118,25 +118,25 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="BankInformation" xml:space="preserve">
-    <value>Informations</value>
+    <value>Banque d'origine</value>
   </data>
   <data name="BankInitial" xml:space="preserve">
-    <value>Banque initiale</value>
+    <value>Devise / Slogan (Motto)</value>
   </data>
   <data name="CustomerServiceContact" xml:space="preserve">
     <value>Numéro du service client</value>
   </data>
   <data name="ImmatriculationNumber" xml:space="preserve">
-    <value>Numéro d'immatriculation</value>
+    <value>Boîte postale</value>
   </data>
   <data name="Motto" xml:space="preserve">
-    <value>Motto</value>
+    <value>Numéro d'enregistrement</value>
   </data>
   <data name="PBox" xml:space="preserve">
-    <value>Boite postal</value>
+    <value>Numéro de contribuable</value>
   </data>
   <data name="RegistrationNumber" xml:space="preserve">
-    <value>Numéro d'enrégistrement</value>
+    <value>Site web</value>
   </data>
   <data name="TaxPayerNumber" xml:space="preserve">
     <value>Numéro de contribuable</value>
@@ -145,9 +145,9 @@
     <value>Site Web</value>
   </data>
   <data name="BankConfiguration" xml:space="preserve">
-    <value>Configuration de la banque</value>
+    <value>Informations</value>
   </data>
   <data name="Bank_Management" xml:space="preserve">
-    <value />
+    <value>Configuration de la banque</value>
   </data>
 </root>

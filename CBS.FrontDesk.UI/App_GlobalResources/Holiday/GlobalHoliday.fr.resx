@@ -117,35 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Active" xml:space="preserve">
-    <value>Actif</value>
-  </data>
   <data name="ActiveStatus" xml:space="preserve">
     <value>Statut actif</value>
-  </data>
-  <data name="BeginDate" xml:space="preserve">
-    <value>Date de début</value>
-  </data>
-  <data name="Branch" xml:space="preserve">
-    <value>Agence</value>
-  </data>
-  <data name="BranchSpecific" xml:space="preserve">
-    <value>Spécifique à l'agence</value>
-  </data>
-  <data name="Centralised" xml:space="preserve">
-    <value>Centralisé</value>
   </data>
   <data name="CheckToCentralise" xml:space="preserve">
     <value>Cochez pour centraliser</value>
   </data>
   <data name="ConfiguredHolidayData" xml:space="preserve">
     <value>Données de vacances configurées</value>
-  </data>
-  <data name="Description" xml:space="preserve">
-    <value>Description</value>
-  </data>
-  <data name="EndDate" xml:space="preserve">
-    <value>Date de fin</value>
   </data>
   <data name="Event" xml:space="preserve">
     <value>Événement</value>
@@ -159,19 +138,10 @@
   <data name="HolidayConfiguration" xml:space="preserve">
     <value>Configuration des vacances</value>
   </data>
-  <data name="Inactive" xml:space="preserve">
-    <value>Inactif</value>
-  </data>
   <data name="NoHolidayIsConfiguredYet" xml:space="preserve">
     <value>Aucune vacance n'est configurée pour le moment</value>
   </data>
-  <data name="SelectBranch" xml:space="preserve">
-    <value>Sélectionner une agence</value>
-  </data>
   <data name="SetHolidays" xml:space="preserve">
     <value>Définir les vacances</value>
-  </data>
-  <data name="Status" xml:space="preserve">
-    <value>Statut</value>
   </data>
 </root>

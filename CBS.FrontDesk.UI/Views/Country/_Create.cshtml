@@ -13,7 +13,7 @@
             </div>
             <div class="col-md-8">
                 <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @placeholder = @GlobalCountry.Name })
+                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @placeholder = GlobalShared.Name })
                     @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
                     <label>@GlobalCountry.CountryName</label>
                 </div>

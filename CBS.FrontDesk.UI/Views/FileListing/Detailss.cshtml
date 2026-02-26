@@ -1,15 +1,16 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.Reconciliation.FileUploadData
 @using System.Globalization
+@using Resources
 
 <div class="row">
     <div class="col-12">
         <div class="card bg-light mb-2 p-2">
             <div class="card-body text-center py-2">
                 <h1 class="card-title text-primary mb-1">
-                    <i class="mdi mdi-account-group me-2"></i>Reconciliation File Details
+                    <i class="mdi mdi-account-group me-2"></i>@GlobalFileListing.Reconciliation_File_Details
                 </h1>
                 <p class="card-text small mb-1">
-                    On this page we have the details of a reconciliation file and we have the possibility to confirm the reconciliation
+                    @GlobalFileListing.On_this_page_we_have_the_details_of_a_reconciliation_file_and_we_have_the_possibility_to_confirm_the_reconciliation
                 </p>
                 <hr style="border: 1px solid rgba(128, 128, 128, 0.35);" />
             </div>
@@ -22,7 +23,7 @@
     <div class="card-header bg-gradient-light text-white py-3">
         <div class="d-flex justify-content-between align-items-center">
             <h6 class="mb-0">
-                <i class="mdi mdi-lightbulb-on-outline me-2"></i>Tips
+                <i class="mdi mdi-lightbulb-on-outline me-2"></i>@GlobalShared.Tips
             </h6>
             <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseReconciliationTips">
                 <i class="mdi mdi-chevron-down"></i>
@@ -36,44 +37,44 @@
                 <div class="col-md-6">
                     <div class="mb-3">
                         <h6 class="text-primary mb-2">
-                            <i class="mdi mdi-file-document-outline me-2"></i> File Details
+                            <i class="mdi mdi-file-document-outline me-2"></i> @GlobalShared.File_Details
                         </h6>
                         <ul class="list-unstyled small">
                             <li class="mb-2">
                                 <i class="mdi mdi-information-outline text-info me-2"></i>
-                                <strong>Summary Cards:</strong> Quick overview of key metrics at the top
+                                <strong>@GlobalFileListing.Summary_Cards:</strong> @GlobalFileListing.Quick_overview_of_key_metrics_at_the_top
                             </li>
                             <li class="mb-2">
                                 <i class="mdi mdi-tab text-primary me-2"></i>
-                                <strong>Tab Navigation:</strong> Switch between Basic Info and Technical Details
+                                <strong>@GlobalFileListing.Tab_Navigation:</strong> @GlobalFileListing.Switch_between_Basic_Info_and_Technical_Details
                             </li>
                             <li class="mb-2">
                                 <i class="mdi mdi-alert-circle-outline text-warning me-2"></i>
-                                <strong>Status Indicators:</strong> Color-coded badges show file processing state
+                                <strong>@GlobalFileListing.Status_Indicators:</strong> @GlobalFileListing.Color_coded_badges_show_file_processing_state
                             </li>
                             <li>
                                 <i class="mdi mdi-download-outline text-success me-2"></i>
-                                <strong>File Information:</strong> Check file size, type, and upload timestamps
+                                <strong>@GlobalShared.File_Information:</strong> @GlobalFileListing.Check_file_size_type_and_upload_timestamps
                             </li>
                         </ul>
                     </div>
 
                     <div class="mb-3">
                         <h6 class="text-success mb-2">
-                            <i class="mdi mdi-check-circle-outline me-2"></i> Confirmation Process
+                            <i class="mdi mdi-check-circle-outline me-2"></i> @GlobalFileListing.Confirmation_Process
                         </h6>
                         <ul class="list-unstyled small">
                             <li class="mb-2">
                                 <i class="mdi mdi-eye-outline text-info me-2"></i>
-                                <strong>Review Data:</strong> Always verify Trial and Member Balance data before confirming
+                                <strong>@GlobalShared.Review_Data:</strong> @GlobalFileListing.Always_verify_Trial_and_Member_Balance_data_before_confirming
                             </li>
                             <li class="mb-2">
                                 <i class="mdi mdi-alert-outline text-warning me-2"></i>
-                                <strong>Irreversible Action:</strong> Reconciliation cannot be undone once confirmed
+                                <strong>@GlobalShared.Irreversible_Action:</strong> @GlobalFileListing.Reconciliation_cannot_be_undone_once_confirmed
                             </li>
                             <li>
                                 <i class="mdi mdi-backup-restore text-secondary me-2"></i>
-                                <strong>Data Backup:</strong> Ensure you have backups before proceeding
+                                <strong>@GlobalShared.Data_Backup:</strong> @GlobalFileListing.Ensure_you_have_backups_before_proceeding
                             </li>
                         </ul>
                     </div>
@@ -82,48 +83,48 @@
                 <div class="col-md-6">
                     <div class="mb-3">
                         <h6 class="text-primary mb-2">
-                            <i class="mdi mdi-table-eye me-2"></i> Data Tables
+                            <i class="mdi mdi-table-eye me-2"></i> @GlobalShared.Data_Tables
                         </h6>
                         <ul class="list-unstyled small">
                             <li class="mb-2">
                                 <i class="mdi mdi-chevron-double-down text-info me-2"></i>
-                                <strong>Expand/Collapse:</strong> Click section headers to show/hide data tables
+                                <strong>@GlobalShared.Expand/@GlobalShared.Collapse:</strong> @GlobalFileListing.Click_section_headers_to_show_hide_data_tables
                             </li>
                             <li class="mb-2">
                                 <i class="mdi mdi-magnify text-success me-2"></i>
-                                <strong>Search & Filter:</strong> Use search boxes to find specific records
+                                <strong>@GlobalShared.Search_Filter:</strong> @GlobalFileListing.Use_search_boxes_to_find_specific_records
                             </li>
                             <li class="mb-2">
                                 <i class="mdi mdi-sort text-warning me-2"></i>
-                                <strong>Sorting:</strong> Click column headers to sort data
+                                <strong>@GlobalShared.Sorting:</strong> @GlobalFileListing.Click_column_headers_to_sort_data
                             </li>
                             <li class="mb-2">
                                 <i class="mdi mdi-eye-outline text-primary me-2"></i>
-                                <strong>Row Details:</strong> Click "View" buttons to see complete record information
+                                <strong>@GlobalShared.Row_Details:</strong> @GlobalFileListing.Click_View_buttons_to_see_complete_record_information
                             </li>
                             <li>
                                 <i class="mdi mdi-database-outline text-secondary me-2"></i>
-                                <strong>Pagination:</strong> Navigate through large datasets using page controls
+                                <strong>@GlobalShared.Pagination:</strong> @GlobalFileListing.Navigate_through_large_datasets_using_page_controls
                             </li>
                         </ul>
                     </div>
 
                     <div class="mb-3">
                         <h6 class="text-warning mb-2">
-                            <i class="mdi mdi-alert-box-outline me-2"></i> Common Issues
+                            <i class="mdi mdi-alert-box-outline me-2"></i> @GlobalShared.Common_Issues
                         </h6>
                         <ul class="list-unstyled small">
                             <li class="mb-2">
                                 <i class="mdi mdi-file-alert-outline text-danger me-2"></i>
-                                <strong>Error JSON:</strong> Check technical details tab for processing errors
+                                <strong>@GlobalShared.Error_JSON:</strong> @GlobalFileListing.Check_technical_details_tab_for_processing_errors
                             </li>
                             <li class="mb-2">
                                 <i class="mdi mdi-account-alert-outline text-warning me-2"></i>
-                                <strong>Member Data:</strong> Verify all member IDs and account numbers are valid
+                                <strong>@GlobalShared.Member_Data:</strong> @GlobalFileListing.Verify_all_member_IDs_and_account_numbers_are_valid
                             </li>
                             <li>
                                 <i class="mdi mdi-cash-multiple text-info me-2"></i>
-                                <strong>Balance Validation:</strong> Ensure debit/credit totals match expected values
+                                <strong>@GlobalShared.Balance_Validation:</strong> @GlobalFileListing.Ensure_debit_credit_totals_match_expected_values
                             </li>
                         </ul>
                     </div>
@@ -135,31 +136,31 @@
                 <div class="col-12">
                     <div class="alert alert-light border">
                         <h6 class="text-dark mb-2">
-                            <i class="mdi mdi-rocket-launch-outline text-primary me-2"></i> Quick Steps
+                            <i class="mdi mdi-rocket-launch-outline text-primary me-2"></i> @GlobalShared.Quick_Steps
                         </h6>
                         <div class="row text-center">
                             <div class="col-md-3">
                                 <div class="border rounded p-2 bg-white">
                                     <i class="mdi mdi-file-check-outline text-primary fs-4 d-block mb-1"></i>
-                                    <small class="text-muted">1. Review File Details</small>
+                                    <small class="text-muted">1. @GlobalShared.Review_File_Details</small>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="border rounded p-2 bg-white">
                                     <i class="mdi mdi-table-eye-outline text-info fs-4 d-block mb-1"></i>
-                                    <small class="text-muted">2. Verify Data Tables</small>
+                                    <small class="text-muted">2. @GlobalFileListing.Verify_Data_Tables</small>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="border rounded p-2 bg-white">
                                     <i class="mdi mdi-account-check-outline text-warning fs-4 d-block mb-1"></i>
-                                    <small class="text-muted">3. Check Balances</small>
+                                    <small class="text-muted">3. @GlobalFileListing.Check_Balances</small>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="border rounded p-2 bg-white">
                                     <i class="mdi mdi-check-all text-success fs-4 d-block mb-1"></i>
-                                    <small class="text-muted">4. Confirm Reconciliation</small>
+                                    <small class="text-muted">4. @GlobalShared.Confirm_Reconciliation</small>
                                 </div>
                             </div>
                         </div>
@@ -171,15 +172,15 @@
             <div class="row mt-2">
                 <div class="col-12">
                     <h6 class="text-dark mb-2">
-                        <i class="mdi mdi-palette-outline text-primary me-2"></i> Status Legend
+                        <i class="mdi mdi-palette-outline text-primary me-2"></i> @GlobalShared.Status_Legend
                     </h6>
                     <div class="d-flex flex-wrap gap-2">
-                        <span class="badge bg-success">Completed</span>
-                        <span class="badge bg-warning">Pending/Processing</span>
-                        <span class="badge bg-danger">Error/Failed</span>
-                        <span class="badge bg-info">Active</span>
-                        <span class="badge bg-secondary">Inactive/Unknown</span>
-                        <span class="badge bg-primary">Reconciled</span>
+                        <span class="badge bg-success">@GlobalShared.Completed</span>
+                        <span class="badge bg-warning">@GlobalShared.Pending/@GlobalShared.Processing</span>
+                        <span class="badge bg-danger">@GlobalShared.Error/@GlobalShared.Failed</span>
+                        <span class="badge bg-info">@GlobalShared.Active</span>
+                        <span class="badge bg-secondary">@GlobalShared.InActive/@GlobalShared.Unknown</span>
+                        <span class="badge bg-primary">@GlobalShared.Reconciled</span>
                     </div>
                 </div>
             </div>
@@ -195,7 +196,7 @@
                 <div class="card bg-light border-0 h-100">
                     <div class="card-body text-center">
                         <i class="mdi mdi-file-table-outline text-primary fs-1 mb-2"></i>
-                        <h5 class="text-muted">Trial Balance</h5>
+                        <h5 class="text-muted">@GlobalShared.Trial_Balance</h5>
                         <h3 class="text-primary">@(Model?.TrialBalanceRowCount ?? 0)</h3>
                         <small class="text-muted">Rows</small>
                     </div>
@@ -205,7 +206,7 @@
                 <div class="card bg-light border-0 h-100">
                     <div class="card-body text-center">
                         <i class="mdi mdi-account-group-outline text-success fs-1 mb-2"></i>
-                        <h5 class="text-muted">Member Balance</h5>
+                        <h5 class="text-muted">@GlobalShared.Member_Balance</h5>
                         <h3 class="text-success">@(Model?.MemberBalanceRowCount ?? 0)</h3>
                         <small class="text-muted">Rows</small>
                     </div>
@@ -215,7 +216,7 @@
                 <div class="card bg-light border-0 h-100">
                     <div class="card-body text-center">
                         <i class="mdi mdi-calendar-check-outline text-info fs-1 mb-2"></i>
-                        <h5 class="text-muted">Created</h5>
+                        <h5 class="text-muted">@GlobalShared.Created</h5>
                         <h6 class="text-info">
                             @if (Model?.CreatedDate != DateTime.MinValue)
                             {
@@ -226,7 +227,7 @@
                                 @:"—"
                             }
                         </h6>
-                        <small class="text-muted">Date</small>
+                        <small class="text-muted">@GlobalShared.Date</small>
                     </div>
                 </div>
             </div>
@@ -258,12 +259,12 @@
                 <ul class="nav nav-tabs" id="fileDetailsTabs" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="basic-tab" data-bs-toggle="tab" data-bs-target="#basic" type="button" role="tab">
-                            <i class="mdi mdi-information-outline me-1"></i> Basic Info
+                            <i class="mdi mdi-information-outline me-1"></i> @GlobalShared.Basic_Info
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="technical-tab" data-bs-toggle="tab" data-bs-target="#technical" type="button" role="tab">
-                            <i class="mdi mdi-cog-outline me-1"></i> Technical Details
+                            <i class="mdi mdi-cog-outline me-1"></i> @GlobalShared.Technical_Details
                         </button>
                     </li>
                 </ul>
@@ -275,9 +276,9 @@
                             <table class="table table-sm table-borderless mb-0">
                                 <tbody>
                                     <tr>
-                                        <td class="fw-bold text-muted small" style="width: 25%;">File Name</td>
+                                        <td class="fw-bold text-muted small" style="width: 25%;">@GlobalShared.File_Name</td>
                                         <td style="width: 25%;">@Html.Encode(Model?.FileName ?? "—")</td>
-                                        <td class="fw-bold text-muted small" style="width: 25%;">Created Date</td>
+                                        <td class="fw-bold text-muted small" style="width: 25%;">@GlobalShared.Created_Date</td>
                                         <td style="width: 25%;">
                                             @if (Model?.CreatedDate != DateTime.MinValue)
                                             {
@@ -290,7 +291,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="fw-bold text-muted small">Original File</td>
+                                        <td class="fw-bold text-muted small">@GlobalShared.Original_File</td>
                                         <td>@Html.Encode(Model?.OriginalFileName ?? "—")</td>
                                         <td class="fw-bold text-muted small">Modified Date</td>
                                         <td>
@@ -305,9 +306,9 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="fw-bold text-muted small">Branch ID</td>
+                                        <td class="fw-bold text-muted small">@GlobalShared.Branch_ID</td>
                                         <td>@Html.Raw(Model?.BranchId ?? "—")</td>
-                                        <td class="fw-bold text-muted small">Status</td>
+                                        <td class="fw-bold text-muted small">@GlobalShared.Status</td>
                                         <td>
                                             <span class="badge
                                             @(Model?.Status?.ToLower() == " completed" ? "bg-success" :
@@ -318,9 +319,9 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="fw-bold text-muted small">Category</td>
+                                        <td class="fw-bold text-muted small">@GlobalShared.Category</td>
                                         <td>@Html.Raw(Model?.Category ?? "—")</td>
-                                        <td class="fw-bold text-muted small">Deleted</td>
+                                        <td class="fw-bold text-muted small">@GlobalShared.Deleted</td>
                                         <td>
                                             <span class="badge @(Model?.IsDeleted == true ? " bg-danger" : "bg-success" )">
                                                 @(Model?.IsDeleted == true ? "Yes" : "No")
@@ -338,21 +339,21 @@
                             <table class="table table-sm table-borderless mb-0">
                                 <tbody>
                                     <tr>
-                                        <td class="fw-bold text-muted small" style="width: 25%;">Content Type</td>
+                                        <td class="fw-bold text-muted small" style="width: 25%;">@GlobalShared.Content_Type</td>
                                         <td style="width: 25%;">@Html.Encode(Model?.ContentType ?? "—")</td>
                                         <td class="fw-bold text-muted small" style="width: 25%;">File ID</td>
                                         <td style="width: 25%;" class="font-monospace small">@Html.Raw(Model?.Id ?? "—")</td>
                                     </tr>
                                     <tr>
-                                        <td class="fw-bold text-muted small">Storage Key</td>
+                                        <td class="fw-bold text-muted small">@GlobalShared.Storage_Key</td>
                                         <td class="font-monospace small">@Html.Encode(Model?.StorageKey ?? "—")</td>
                                         <td class="fw-bold text-muted small">Notes</td>
                                         <td>@Html.Raw(string.IsNullOrWhiteSpace(Model?.Notes ?? "") ? "—" : Html.Encode(Model.Notes))</td>
                                     </tr>
                                     <tr>
-                                        <td class="fw-bold text-muted small">Checksum</td>
+                                        <td class="fw-bold text-muted small">@GlobalShared.Checksum</td>
                                         <td class="font-monospace small">@Html.Encode(Model?.Checksum ?? "—")</td>
-                                        <td class="fw-bold text-muted small align-top">Error JSON</td>
+                                        <td class="fw-bold text-muted small align-top">@GlobalShared.Error_JSON</td>
                                         <td>
                                             @{
                                                 var errorJson = Model?.ErrorJson;
@@ -384,7 +385,7 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <h5 class="mb-0">
                                 <i class="mdi mdi-file-table-outline me-2"></i>
-                                Trial Balance Data
+                                @GlobalFileListing.Trial_Balance_Data
                                 <span class="badge bg-light text-primary ms-2">@Model.TrialBalanceRows.Count rows</span>
                             </h5>
                             <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#trialBalanceSection">
@@ -398,17 +399,17 @@
                                 <table id="trialBalanceTable" class="table table-striped" style="width:100%">
                                     <thead class="table-light">
                                         <tr>
-                                            <th>Branch Acc. Id</th>
-                                            <th>Branch Acc. Name</th>
-                                            <th class="text-end">Opening Debit</th>
-                                            <th class="text-end">Opening Credit</th>
-                                            <th class="text-end">Movement Debit</th>
-                                            <th class="text-end">Movement Credit</th>
-                                            <th class="text-end">End Debit</th>
-                                            <th class="text-end">End Credit</th>
-                                            <th>Reconciled</th>
-                                            <th>Active</th>
-                                            <th class="text-center">Actions</th>
+                                            <th>@GlobalShared.Branch_Acc_Id</th>
+                                            <th>@GlobalShared.Branch_Acc_Name</th>
+                                            <th class="text-end">@GlobalShared.Opening_Debit</th>
+                                            <th class="text-end">@GlobalShared.Opening_Credit</th>
+                                            <th class="text-end">@GlobalShared.Movement_Debit</th>
+                                            <th class="text-end">@GlobalShared.Movement_Credit</th>
+                                            <th class="text-end">@GlobalShared.End_Debit</th>
+                                            <th class="text-end">@GlobalShared.End_Credit</th>
+                                            <th>@GlobalShared.Reconciled</th>
+                                            <th>@GlobalShared.Active</th>
+                                            <th class="text-center">@GlobalShared.Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -430,7 +431,7 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <h5 class="mb-0">
                                 <i class="mdi mdi-account-group-outline me-2"></i>
-                                Member Balance Data
+                                @GlobalFileListing.Member_Balance_Data
                                 <span class="badge bg-light text-success ms-2">@Model.MemberBalanceRows.Count rows</span>
                             </h5>
                             <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#memberBalanceSection">
@@ -444,15 +445,15 @@
                                 <table id="memberBalanceTable" class="table table-striped" style="width:100%">
                                     <thead class="table-light">
                                         <tr>
-                                            <th>Member ID</th>
-                                            <th>Account Type</th>
-                                            <th>Account Number</th>
-                                            <th>Branch Code</th>
-                                            <th>Branch Name</th>
-                                            <th class="text-end">Balance</th>
-                                            <th>Reconciliation Status</th>
-                                            <th>Reconciled By</th>
-                                            <th class="text-center">Actions</th>
+                                            <th>@GlobalShared.Member_ID</th>
+                                            <th>@GlobalShared.Account_type</th>
+                                            <th>@GlobalShared.Account_Number</th>
+                                            <th>@GlobalShared.Branch_Code</th>
+                                            <th>@GlobalShared.Branch_Name</th>
+                                            <th class="text-end">@GlobalShared.Balance</th>
+                                            <th>@GlobalFileListing.Reconciliation_Status</th>
+                                            <th>@GlobalShared.Reconciled_By</th>
+                                            <th class="text-center">@GlobalShared.Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -471,15 +472,15 @@
             <div class="col-12 text-center">
                 <div class="card border-0 bg-light">
                     <div class="card-body py-4">
-                        <h4 class="text-muted mb-3">Ready to Complete Reconciliation?</h4>
-                        <p class="text-muted mb-4">Once confirmed, the reconciliation process will be finalized and cannot be undone.</p>
+                        <h4 class="text-muted mb-3">@GlobalFileListing.Ready_to_Complete_Reconciliation?</h4>
+                        <p class="text-muted mb-4">@GlobalFileListing.Once_confirmed_the_reconciliation_process_will_be_finalized_and_cannot_be_undone</p>
                         <button id="confirmReconciliationBtn" data-id="@Html.Raw(Model?.Id ?? " ")" data-branch="@Html.Raw(Model?.BranchId ?? " ")" class="btn btn-primary btn-lg px-5 py-3">
-                            <i class="mdi mdi-check-all me-2"></i> Confirm Reconciliation
+                            <i class="mdi mdi-check-all me-2"></i> @GlobalShared.Confirm_Reconciliation
                         </button>
                         <div class="mt-2">
                             <small class="text-muted">
                                 <i class="mdi mdi-information-outline me-1"></i>
-                                This will update all records and mark the file as processed
+                                @GlobalFileListing.This_will_update_all_records_and_mark_the_file_as_processed
                             </small>
                         </div>
                     </div>
@@ -498,7 +499,7 @@
                     <div class="card bg-light mb-2 p-2">
                         <div class="card-body text-center py-2">
                             <h1 class="card-title text-primary mb-1">
-                                <i class="mdi mdi-file-table-outline me-2"></i>Trial Balance Details
+                                <i class="mdi mdi-file-table-outline me-2"></i>@GlobalFileListing.Trial_Balance_Details
                                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                             </h1>
                             <hr style="border: 1px solid rgba(128, 128, 128, 0.35);" />
@@ -521,7 +522,7 @@
                     <div class="card bg-light mb-2 p-2">
                         <div class="card-body text-center py-2">
                             <h1 class="card-title text-primary mb-1">
-                                <i class="mdi mdi-account-group-outline me-2"></i>Member Balance Details
+                                <i class="mdi mdi-account-group-outline me-2"></i>@GlobalFileListing.Member_Balance_Details
                                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                             </h1>
                             <hr style="border: 1px solid rgba(128, 128, 128, 0.35);" />

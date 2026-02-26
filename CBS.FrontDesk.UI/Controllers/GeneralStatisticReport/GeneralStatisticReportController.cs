@@ -106,6 +106,8 @@ namespace CBS.FrontDesk.UI.Controllers.GeneralStatisticReport
             if (report == null)
                 return Content(""); // return empty HTML so JS can hide
 
+            if (reportCommand.LoanStatus == null) return Json(new { success = false, message = "Loan status is required" });
+
             var dashboard = new GeneralStatisticsDashboard
             {
                 BranchName = report.BranchName,

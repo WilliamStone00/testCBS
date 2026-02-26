@@ -162,6 +162,7 @@
                                     <i class="mdi mdi-chevron-down"></i>
                                 </button>
                             </div>
+
                             <div class="collapse" id="totalAmountCardBody" data-bs-parent="#postDetailsSection">
                                 <div class="card-body">
                                     <div class="row">
@@ -221,6 +222,17 @@
                                 </div>
                             </div>
                             <div class="collapse" id="sourceAccountsCardBody" data-bs-parent="#postDetailsSection">
+
+                                <div class="col-md-12">
+                                    <label>Source Branch</label>
+                                    <div class="form-floating shadow-sm">
+                                        @Html.DropDownListFor(m => m.SourceBranchId, new SelectList(ViewBag.Branches, "Id", "name"), "--- Select Source Branch ---", new { @class = "form-control select2", id = "SourceBranchId" })
+                                        @Html.ValidationMessageFor(m => m.SourceBranchId, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <hr />
+
                                 <div class="card-body p-0">
                                     <div class="table-responsive">
                                         <table class="table table-sm table-hover mb-0" id="sourceAccountsTable">
@@ -305,40 +317,42 @@
 
                         <!-- Branch Destination Section - Closed by default -->
                         <div class="card mb-3 accordion-item">
+
+                            <!-- CARD HEADER -->
                             <div class="card-header bg-light text-primary d-flex justify-content-between align-items-center">
 
-                                <!-- LEFT TITLE -->
                                 <span>
                                     <i class="mdi mdi-bank me-1"></i> Branch Account Distribution
                                 </span>
 
-                                <!-- RIGHT BUTTONS -->
-                                <div class="d-flex align-items-center gap-2">
-
-                                    <!-- ADD ROW (Independent Button) -->
-                                    <button type="button"
-                                            class="btn btn-primary btn-sm"
-                                            id="addBranchRowBtn">
-                                        <i class="mdi mdi-plus"></i> Add Row
-                                    </button>
-
-                                    <!-- COLLAPSE BUTTON ONLY -->
-                                    <button type="button"
-                                            class="btn btn-light btn-sm"
-                                            data-bs-toggle="collapse"
-                                            data-bs-target="#branchAccountsCardBody"
-                                            aria-expanded="false">
-                                        <i class="mdi mdi-chevron-down"></i>
-                                    </button>
-
-                                </div>
+                                <!-- Collapse Button Only -->
+                                <button type="button"
+                                        class="btn btn-light btn-sm"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#branchAccountsCardBody"
+                                        aria-expanded="false">
+                                    <i class="mdi mdi-chevron-down"></i> 
+                                </button>
 
                             </div>
 
+                            <!-- COLLAPSIBLE BODY -->
                             <div class="collapse" id="branchAccountsCardBody" data-bs-parent="#postDetailsSection">
-                                <div class="card-body p-0">
+                                <div class="card-body">
+
+                                    <!-- TOP ACTION BAR -->
+                                    <div class="d-flex justify-content-end mb-3">
+                                        <button type="button"
+                                                class="btn btn-primary btn-sm"
+                                                id="addBranchRowBtn">
+                                            <i class="mdi mdi-plus"></i> Add Row
+                                        </button>
+                                    </div>
+
+                                    <!-- TABLE -->
                                     <div class="table-responsive">
                                         <table class="table table-sm table-hover mb-0" id="branchAccountsTable">
+
                                             <thead class="table-light">
                                                 <tr>
                                                     <th width="40%">Destination Branch Account</th>
@@ -347,6 +361,7 @@
                                                     <th width="10%" class="text-center">Action</th>
                                                 </tr>
                                             </thead>
+
                                             <tbody id="branchAccountsTableBody">
                                                 <tr id="noBranchRows">
                                                     <td colspan="4" class="text-center text-muted py-4">
@@ -355,18 +370,25 @@
                                                     </td>
                                                 </tr>
                                             </tbody>
+
                                             <tfoot class="table-light">
                                                 <tr>
-                                                    <td colspan="1" class="text-end fw-bold">Branch Total:</td>
+                                                    <td class="text-end fw-bold">Branch Total:</td>
                                                     <td id="branchTotalAmount" class="fw-bold text-danger">0.00</td>
-                                                    <td colspan="2" class="text-end fw-bold text-muted">Available: <span id="branchAvailableBalance">0.00</span></td>
+                                                    <td colspan="2" class="text-end fw-bold text-muted">
+                                                        Available: <span id="branchAvailableBalance">0.00</span>
+                                                    </td>
                                                 </tr>
                                             </tfoot>
+
                                         </table>
                                     </div>
+
                                 </div>
                             </div>
+
                         </div>
+
                     </div>
 
                     <!-- Common Note Section -->
@@ -498,4 +520,4 @@
             </div>
         </div>
     </div>
-@*</div>*@
+</div>

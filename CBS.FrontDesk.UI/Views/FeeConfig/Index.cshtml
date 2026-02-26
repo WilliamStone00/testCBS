@@ -10,18 +10,18 @@
 
 <div class="card bg-light mb-3">
     <div class="card-body text-center">
-        <h1 class="card-title text-primary"><i class="mdi mdi-currency-usd-circle-outline me-2"></i>@ChequeManagements.FeeConfiguration</h1>
-        <p class="card-text">@ChequeManagements.text2</p>
+        <h1 class="card-title text-primary"><i class="mdi mdi-currency-usd-circle-outline me-2"></i>@GlobalFeeConfig.Fee_Configurations</h1>
+        <p class="card-text">@GlobalFeeConfig.Configure_centralized_or_branch_specific_fees_using_percentage_or_range_based_calculations</p>
         <div class="alert alert-info mt-3 py-2">
             <i class="mdi mdi-information-outline me-1"></i>
-            @ChequeManagements.text3
+            @GlobalFeeConfig.Always_choose_either_to_configure_a_centralized_system_or_decentralized_and_always_choose_a_Fee_Type
         </div>
     </div>
 </div>
 
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i>@ChequeManagements.tipCfee</span>
+        <span><i class="mdi mdi-information-outline me-2"></i>@GlobalFeeConfig.TIPS_FOR_FEE_CONFIGURATION</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -29,12 +29,12 @@
     <div id="collapseTips" class="collapse">
         <div class="card-body">
             <ul>
-                <li><strong>@ChequeManagements.ConfigurationScope:</strong>@ChequeManagements.ConfigurationScopetext</li>
-                <li><strong>@ChequeManagements.LoadConfiguration:</strong>@ChequeManagements.feeindextext1</li>
-                <li><strong>@ChequeManagements.FeeMethodChoice:</strong>@ChequeManagements.feeindextext2</li>
-                <li><strong>@ChequeManagements.FeeRanges:</strong>@ChequeManagements.feeindextext3</li>
-                <li><strong>@ChequeManagements.SavingChanges:</strong>@ChequeManagements.feeindextext4</li>
-                <li><strong>@ChequeManagements.DeletingaConfiguration:</strong>@ChequeManagements.feeindextext5</li>
+                <li><strong>@GlobalFeeConfig.ConfigurationScope:</strong>@GlobalFeeConfig.Use_Is_Centralized_for_system_wide_rules_uncheck_to_pick_a_branch</li>
+                <li><strong>@GlobalFeeConfig.LoadConfiguration:</strong>@GlobalFeeConfig.After_selecting_scope_and_a_fee_type_click_Load_to_fetch_existing_settings</li>
+                <li><strong>@GlobalFeeConfig.Fee_Method_Choice:</strong>@GlobalFeeConfig.Enable_only_one_method_at_a_time_Percentage_or_Range_UI_enforces_this</li>
+                <li><strong>@GlobalFeeConfig.FeeRanges:</strong>@GlobalFeeConfig.When_using_ranges_ensure_no_overlap</li>
+                <li><strong>@GlobalFeeConfig.Saving_Changes:</strong>@GlobalFeeConfig.Save_button_persists_the_entire_configuration</li>
+                <li><strong>@GlobalFeeConfig.Deleting_a_Configuration:</strong>@GlobalFeeConfig.Delete_will_permanently_remove_the_configuration_for_the_loaded_scope</li>
             </ul>
         </div>
     </div>
@@ -42,23 +42,23 @@
 
 <!-- Configuration Selection Area -->
 <div class="card shadow p-3 mb-4" id="loaddatadiv">
-    <h5 class="text-primary mb-3"><i class="mdi mdi-cogs me-1"></i>@ChequeManagements.SelectConfigurationScope</h5>
+    <h5 class="text-primary mb-3"><i class="mdi mdi-cogs me-1"></i>@GlobalFeeConfig.SelectConfigurationScope</h5>
     <div class="row align-items-end">
         <!-- Is Centralized Checkbox -->
         <div class="col-md-3">
             <div class="form-check form-switch mb-3">
                 <input class="form-check-input" type="checkbox" id="isCentralized" checked />
-                <label class="form-check-label fw-bold" for="isCentralized"> @ChequeManagements.IsCentralized?</label>
+                <label class="form-check-label fw-bold" for="isCentralized"> @GlobalShared.Is_Centralized?</label>
             </div>
         </div>
 
         <!-- Branch Dropdown (Initially Hidden) -->
         <div class="col-md-4" id="branch-selection-container" style="display: none;">
-            <label class="form-label fw-bold">@ChequeManagements.SelectBranch</label>
+            <label class="form-label fw-bold">@GlobalShared.SelectBranch</label>
 
             @* If ViewBag.Branches is IEnumerable with Id and Name *@
             <select id="branchId" name="BranchId" class="form-control select2">
-                <option value="">--- @ChequeManagements.SelectBranch ---</option>
+                <option value="">--- @GlobalShared.SelectBranch ---</option>
                 @{
                     var branches = ViewBag.Branches as IEnumerable<dynamic>;
                     if (branches != null)
@@ -75,13 +75,13 @@
 
         <!-- Fee Type Dropdown -->
         <div class="col-md-4">
-            <label class="form-label fw-bold">@ChequeManagements.SelectFeeType</label>
+            <label class="form-label fw-bold">@GlobalShared.Select_Fee_Type</label>
             @Html.DropDownList("feeType", new SelectList(ViewBag.FeeTypes, "Value", "Text"), "--- Select Fee Type ---", new { @class = "form-control select2", id = "feeType" })
         </div>
 
         <!-- Load Button -->
         <div class="col-md-1">
-            <button id="loadConfigBtn" class="btn btn-primary w-100">@ChequeManagements.Load</button>
+            <button id="loadConfigBtn" class="btn btn-primary w-100">@GlobalShared.Load</button>
         </div>
     </div>
 </div>
@@ -96,7 +96,7 @@
             <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
         </a>
         <a type="button" onclick="AddORUpdateGen(null,'config-form-container','_Create','new','FeeConfig')" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="@GlobalVault.AddNewVault">
-            <i class="mdi mdi-plus mdi-18px"></i> @ChequeManagements.addbutton
+            <i class="mdi mdi-plus mdi-18px"></i> @GlobalShared.addbutton
         </a>
     </div>
 </div>

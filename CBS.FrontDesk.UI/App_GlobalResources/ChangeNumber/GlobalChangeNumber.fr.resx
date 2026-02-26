@@ -118,43 +118,43 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ApprovalComment" xml:space="preserve">
-    <value>Commentaire d'approbation</value>
+    <value>Commentaire d’approbation</value>
   </data>
   <data name="ApprovedChangesCannotBeRevertedAutomatically" xml:space="preserve">
-    <value>**Les modifications approuvées ne peuvent pas être annulées automatiquement**. Assurez-vous que la demande est légitime avant de procéder</value>
+    <value>Les modifications approuvées ne peuvent pas être annulées automatiquement. Assurez-vous que la demande est légitime avant de procéder.</value>
   </data>
   <data name="ApprovedChangesCannotBeRevertedAutomatically2" xml:space="preserve">
-    <value>Les modifications approuvées ne peuvent pas être annulées automatiquement</value>
+    <value>Les modifications approuvées ne peuvent pas être annulées automatiquement.</value>
   </data>
   <data name="BeCautiousOfFraudulentRequests" xml:space="preserve">
-    <value>Soyez prudent face aux demandes frauduleuses et assurez-vous que toutes les approbations sont conformes aux politiques de l'entreprise</value>
+    <value>Faire preuve de vigilance face aux demandes frauduleuses et s’assurer que toutes les approbations sont conformes aux politiques de l’institution.</value>
   </data>
   <data name="ChangeMemberPhoneNumber" xml:space="preserve">
-    <value>Changer le numéro de téléphone du membre</value>
+    <value>Modifier le numéro de téléphone du membre</value>
   </data>
   <data name="ChangeMemberPhoneNumberApproval" xml:space="preserve">
     <value>Approbation du changement de numéro de téléphone du membre</value>
   </data>
   <data name="EnsureThatTheMemberRequestingThePhoneNumberChangeIsAuthorized" xml:space="preserve">
-    <value>Assurez-vous que le membre qui demande le changement de numéro de téléphone est autorisé et que les documents justificatifs (si nécessaire) sont disponibles</value>
+    <value>S’assurer que le membre demandant le changement de numéro de téléphone est autorisé et que les pièces justificatives (si requises) sont disponibles.</value>
   </data>
   <data name="EnsureThatTheNewPhoneNumberBelongsToTheMember" xml:space="preserve">
-    <value>Assurez-vous que le nouveau numéro de téléphone **appartient au membre** et est actif</value>
+    <value>S’assurer que le nouveau numéro de téléphone appartient au membre et qu’il est actif.</value>
   </data>
   <data name="EnsureTheNewPhoneNumberBelongsToTheMember" xml:space="preserve">
-    <value>Assurez-vous que le nouveau numéro de téléphone appartient au membre</value>
+    <value>S’assurer que le nouveau numéro de téléphone appartient au membre</value>
   </data>
   <data name="EnterApprovalComment" xml:space="preserve">
-    <value>Entrez le commentaire d'approbation</value>
+    <value>Saisir le commentaire d’approbation</value>
   </data>
   <data name="EnterNewPhoneNumber" xml:space="preserve">
-    <value>Entrez le nouveau numéro de téléphone</value>
+    <value>Saisir le nouveau numéro de téléphone</value>
   </data>
   <data name="EnterRequestReason" xml:space="preserve">
-    <value>Entrez la raison de la demande</value>
+    <value>Saisir le motif de la demande</value>
   </data>
   <data name="IfThereAreAnyInconsistencies" xml:space="preserve">
-    <value>S'il y a des incohérences, rejetez la demande et fournissez une raison dans le commentaire d'approbation</value>
+    <value>En cas d’incohérence, rejeter la demande et indiquer le motif dans le commentaire d’approbation.</value>
   </data>
   <data name="IMPORTANTINFORMATION" xml:space="preserve">
     <value>INFORMATIONS IMPORTANTES</value>
@@ -169,7 +169,7 @@
     <value>Gérer et approuver les demandes de changement de numéro de téléphone des membres</value>
   </data>
   <data name="ManageRequestsForUpdatingMemberPhoneNumbers" xml:space="preserve">
-    <value>Gérer les demandes de mise à jour des numéros de téléphone des membres. Utilisez les options ci-dessous pour afficher les demandes en attente ou en soumettre de nouvelles</value>
+    <value>Gérer les demandes de mise à jour des numéros de téléphone des membres. Utilisez les options ci-dessous pour afficher les demandes en attente ou en soumettre de nouvelles.</value>
   </data>
   <data name="MEMBERDETAILS" xml:space="preserve">
     <value>DÉTAILS DU MEMBRE</value>
@@ -190,13 +190,13 @@
     <value>Ancien numéro de téléphone</value>
   </data>
   <data name="OnceApprovedTheChangeWillTakeEffectImmediatelyAndCannotBeUndone" xml:space="preserve">
-    <value>Une fois approuvé, le changement prendra effet immédiatement et ne pourra pas être annulé</value>
+    <value>Une fois approuvé, le changement prendra effet immédiatement et ne pourra pas être annulé.</value>
   </data>
   <data name="PENDINGPHONENUMBERCHANGEREQUESTS" xml:space="preserve">
     <value>DEMANDES DE CHANGEMENT DE NUMÉRO DE TÉLÉPHONE EN ATTENTE</value>
   </data>
   <data name="PhoneNumberApproval" xml:space="preserve">
-    <value>Approbation du numéro de téléphone</value>
+    <value>Approbation du changement de numéro de téléphone</value>
   </data>
   <data name="PHONENUMBERCHANGEDETAILS" xml:space="preserve">
     <value>DÉTAILS DU CHANGEMENT DE NUMÉRO DE TÉLÉPHONE</value>
@@ -208,36 +208,36 @@
     <value>Mise à jour du numéro de téléphone</value>
   </data>
   <data name="ProvideAclearAndConciseReasonForApproval" xml:space="preserve">
-    <value>Fournissez une raison claire et concise pour l'approbation ou le rejet dans la section des commentaires</value>
+    <value>Fournir un motif clair et concis d’approbation ou de rejet dans la section des commentaires.</value>
   </data>
   <data name="REQUESTPHONENUMBERCHANGE" xml:space="preserve">
-    <value>DEMANDER UN CHANGEMENT DE NUMÉRO DE TÉLÉPHONE</value>
+    <value>DEMANDE DE CHANGEMENT DE NUMÉRO DE TÉLÉPHONE</value>
   </data>
   <data name="RequestsMustBeApprovedByAnAuthorizedOfficer" xml:space="preserve">
-    <value>Les demandes doivent être approuvées par un agent autorisé</value>
+    <value>Les demandes doivent être approuvées par un responsable autorisé.</value>
   </data>
   <data name="ReviewPendingRequestsAndTakeNecessaryActions" xml:space="preserve">
-    <value>Examiner les demandes en attente et prendre les mesures nécessaires pour approuver ou rejeter les changements</value>
+    <value>Examiner les demandes en attente et prendre les mesures nécessaires pour approuver ou rejeter les modifications.</value>
   </data>
   <data name="SEARCHMEMBER" xml:space="preserve">
     <value>RECHERCHER UN MEMBRE</value>
   </data>
   <data name="SecurityConsideration" xml:space="preserve">
-    <value>Considération de sécurité</value>
+    <value>Considérations de sécurité</value>
   </data>
   <data name="TheOldPhoneNumberWillBeReplacedWithTheNewOneInTheSystemUponApproval" xml:space="preserve">
-    <value>L'ancien numéro de téléphone sera remplacé par le nouveau dans le système après approbation</value>
+    <value>L’ancien numéro de téléphone sera remplacé par le nouveau dans le système après approbation.</value>
   </data>
   <data name="TIPSFORREQUESTAPPROVAL" xml:space="preserve">
-    <value>CONSEILS POUR L'APPROBATION DES DEMANDES</value>
+    <value>CONSEILS POUR L’APPROBATION DES DEMANDES</value>
   </data>
   <data name="VerifyTheIdentityOfTheRequesterBeforeApproval" xml:space="preserve">
-    <value>Vérifiez l'identité du demandeur avant l'approbation</value>
+    <value>Vérifiez l’identité du demandeur avant l’approbation</value>
   </data>
   <data name="ViewDetailsAndManagePhoneNumberChangeRequests" xml:space="preserve">
     <value>Afficher les détails et gérer les demandes de changement de numéro de téléphone</value>
   </data>
   <data name="YouAreAboutToReviewAndApproveAPhoneNumberChangeRequest" xml:space="preserve">
-    <value>Vous êtes sur le point d'examiner et d'approuver une demande de changement de numéro de téléphone. Veuillez vous assurer que les détails sont exacts avant de procéder à l'approbation</value>
+    <value>Vous êtes sur le point d’examiner et d’approuver une demande de changement de numéro de téléphone. Veuillez vous assurer que les informations sont exactes avant de procéder à l’approbation.</value>
   </data>
 </root>

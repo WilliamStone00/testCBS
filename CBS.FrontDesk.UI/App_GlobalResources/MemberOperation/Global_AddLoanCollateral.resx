@@ -129,11 +129,17 @@
   <data name="Address" xml:space="preserve">
     <value>Address</value>
   </data>
+  <data name="CollateralCategory" xml:space="preserve">
+    <value>Collateral Category</value>
+  </data>
   <data name="Edit" xml:space="preserve">
     <value>Edit</value>
   </data>
   <data name="Location" xml:space="preserve">
     <value>Location</value>
+  </data>
+  <data name="Marketvalue" xml:space="preserve">
+    <value>Market value</value>
   </data>
   <data name="NoLoanCollateralAdded" xml:space="preserve">
     <value>No loan collateral is added</value>
@@ -164,6 +170,9 @@
   </data>
   <data name="Value" xml:space="preserve">
     <value>Value</value>
+  </data>
+  <data name="venalvalue" xml:space="preserve">
+    <value>Venal value</value>
   </data>
   <data name="ViewListOfCollaterals" xml:space="preserve">
     <value>View List Of Collaterals</value>

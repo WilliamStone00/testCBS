@@ -79,24 +79,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fee.
-        /// </summary>
-        internal static string Fee {
-            get {
-                return ResourceManager.GetString("Fee", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Fee types.
-        /// </summary>
-        internal static string FeeTypes {
-            get {
-                return ResourceManager.GetString("FeeTypes", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Loan fee types.
         /// </summary>
         internal static string LoanFeeTypes {
@@ -106,11 +88,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Name.
+        ///   Looks up a localized string similar to No loan fee type is created.
         /// </summary>
-        internal static string Name {
+        internal static string No_loan_fee_type_is_created {
             get {
-                return ResourceManager.GetString("Name", resourceCulture);
+                return ResourceManager.GetString("No_loan_fee_type_is_created", resourceCulture);
             }
         }
         
@@ -120,15 +102,6 @@ namespace Resources {
         internal static string OperationFee {
             get {
                 return ResourceManager.GetString("OperationFee", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Payment status.
-        /// </summary>
-        internal static string PaymentStatus {
-            get {
-                return ResourceManager.GetString("PaymentStatus", resourceCulture);
             }
         }
         
@@ -174,15 +147,6 @@ namespace Resources {
         internal static string SelectEventItem {
             get {
                 return ResourceManager.GetString("SelectEventItem", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Type.
-        /// </summary>
-        internal static string Type {
-            get {
-                return ResourceManager.GetString("Type", resourceCulture);
             }
         }
     }

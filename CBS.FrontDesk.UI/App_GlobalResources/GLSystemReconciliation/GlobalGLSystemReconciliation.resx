@@ -1,0 +1,204 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Any_Issue_to_be_Raised" xml:space="preserve">
+    <value>Any Issue to be Raised ?</value>
+  </data>
+  <data name="Auxiliary_Reference" xml:space="preserve">
+    <value>Auxiliary Reference</value>
+  </data>
+  <data name="Cash_Vault_Verified" xml:space="preserve">
+    <value>Cash Vault Verified ?</value>
+  </data>
+  <data name="Check_the_box_to_enable_branch_selection_You_can_show_or_hide_it_as_needed" xml:space="preserve">
+    <value>Check the box to enable branch selection. You can show or hide it as needed.</value>
+  </data>
+  <data name="Choose_whether_to_view_Cash_In_or_Cash_Out_operations" xml:space="preserve">
+    <value>Choose whether to view &lt;em&gt;Cash In&lt;/em&gt; or &lt;em&gt;Cash Out&lt;/em&gt; operations.</value>
+  </data>
+  <data name="Click_Search_to_load_matching_results_in_the_table_below" xml:space="preserve">
+    <value>Click &lt;em&gt;Search&lt;/em&gt; to load matching results in the table below.</value>
+  </data>
+  <data name="Close_Of_Day" xml:space="preserve">
+    <value>Close Of Day</value>
+  </data>
+  <data name="Combine_filters_e_g_Branch_Date_for_more_precise_results" xml:space="preserve">
+    <value>Combine filters (e.g., Branch + Date) for more precise results.</value>
+  </data>
+  <data name="Detailed_information_for_the_selected_journal_entry_Scroll_to_view_reconciliations_and_receipts" xml:space="preserve">
+    <value>Detailed information for the selected journal entry. Scroll to view reconciliations, and receipts.</value>
+  </data>
+  <data name="Edit_the_JSON_payload_carefully_Invalid_JSON_will_not_be_accepted" xml:space="preserve">
+    <value>Edit the JSON payload carefully. Invalid JSON will not be accepted.</value>
+  </data>
+  <data name="Enter_a_reference_number_or_keyword_to_search_for_specific_transactions" xml:space="preserve">
+    <value>Enter a reference number or keyword to search for specific transactions.</value>
+  </data>
+  <data name="Export_reconciliation_records_with_optional_filters_and_format_selection" xml:space="preserve">
+    <value>Export reconciliation records with optional filters and format selection.</value>
+  </data>
+  <data name="Filter_between_Temporary_or_Reconciled_journal_entries" xml:space="preserve">
+    <value>Filter between &lt;em&gt;Temporary&lt;/em&gt; or &lt;em&gt;Reconciled&lt;/em&gt; journal entries.</value>
+  </data>
+  <data name="FILTER_USAGE_GUIDE" xml:space="preserve">
+    <value>FILTER USAGE GUIDE</value>
+  </data>
+  <data name="Have_All_Transactions_be_Reconciled" xml:space="preserve">
+    <value>Have  All Transactions be Reconciled ?</value>
+  </data>
+  <data name="Inter_Branch_Confirmed" xml:space="preserve">
+    <value>Inter-Branch Confirmed ?</value>
+  </data>
+  <data name="Make_Sure_every_Box_is_Checked_before_you_can_Close_the_Day" xml:space="preserve">
+    <value>Make Sure every Box is Checked before you can Close the Day</value>
+  </data>
+  <data name="Read_and_then_check_the_following_boxes_carefully" xml:space="preserve">
+    <value>Read and then check the following boxes carefully:</value>
+  </data>
+  <data name="Reconciled_Journal_ID" xml:space="preserve">
+    <value>Reconciled Journal ID</value>
+  </data>
+  <data name="Reconciliation_Date_Range" xml:space="preserve">
+    <value>Reconciliation Date Range (Optional)</value>
+  </data>
+  <data name="Reconciliation_Report_Export" xml:space="preserve">
+    <value>Reconciliation Report Export</value>
+  </data>
+  <data name="Select_status_for_failed_reconciled_entries" xml:space="preserve">
+    <value>Select status for failed reconciled entries</value>
+  </data>
+  <data name="System_Reconciliation" xml:space="preserve">
+    <value>System Reconciliation</value>
+  </data>
+  <data name="SYSTEM_RECONCILIATION_DETAILS" xml:space="preserve">
+    <value>SYSTEM RECONCILIATION DETAILS</value>
+  </data>
+  <data name="Temp_Journa_ID" xml:space="preserve">
+    <value>Temp Journal ID</value>
+  </data>
+  <data name="Use_the_reset_button_to_clear_all_filters_and_start_a_new_search" xml:space="preserve">
+    <value>Use the reset button to clear all filters and start a new search.</value>
+  </data>
+  <data name="Use_the_toggle_to_show_or_hide_accounting_and_creation_date_filters_You_can_filter_by_range_for_better_results" xml:space="preserve">
+    <value>Use the toggle to show or hide accounting and creation date filters. You can filter by range for better results.</value>
+  </data>
+  <data name="Use_this_page_to_modify_the_payload" xml:space="preserve">
+    <value>Use this page to modify the payload</value>
+  </data>
+</root>

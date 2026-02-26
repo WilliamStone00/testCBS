@@ -117,35 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Active" xml:space="preserve">
-    <value>Active</value>
-  </data>
   <data name="ActiveStatus" xml:space="preserve">
     <value>Active status</value>
-  </data>
-  <data name="BeginDate" xml:space="preserve">
-    <value>Begin date</value>
-  </data>
-  <data name="Branch" xml:space="preserve">
-    <value>Branch</value>
-  </data>
-  <data name="BranchSpecific" xml:space="preserve">
-    <value>Branch-specific</value>
-  </data>
-  <data name="Centralised" xml:space="preserve">
-    <value>Centralised</value>
   </data>
   <data name="CheckToCentralise" xml:space="preserve">
     <value>Check to centralise</value>
   </data>
   <data name="ConfiguredHolidayData" xml:space="preserve">
     <value>Configured Holiday Data</value>
-  </data>
-  <data name="Description" xml:space="preserve">
-    <value>Description</value>
-  </data>
-  <data name="EndDate" xml:space="preserve">
-    <value>End date</value>
   </data>
   <data name="Event" xml:space="preserve">
     <value>Event</value>
@@ -159,19 +138,10 @@
   <data name="HolidayConfiguration" xml:space="preserve">
     <value>Holiday configuration</value>
   </data>
-  <data name="Inactive" xml:space="preserve">
-    <value>Inactive</value>
-  </data>
   <data name="NoHolidayIsConfiguredYet" xml:space="preserve">
     <value>No holiday is configured yet</value>
   </data>
-  <data name="SelectBranch" xml:space="preserve">
-    <value>Select branch</value>
-  </data>
   <data name="SetHolidays" xml:space="preserve">
     <value>Set holidays</value>
-  </data>
-  <data name="Status" xml:space="preserve">
-    <value>Status</value>
   </data>
 </root>

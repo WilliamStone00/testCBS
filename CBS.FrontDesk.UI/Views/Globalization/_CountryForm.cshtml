@@ -1,9 +1,9 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Config.GlobalizationViewModel
-
+@using Resources
 <!-- Section Title -->
 <div class="col-12">
     <h6 class="text-primary border-bottom pt-2 pb-2">
-        <i class="mdi mdi-earth me-1"></i> Country Management
+        <i class="mdi mdi-earth me-1"></i> @GlobalGlobalization.Country_Management
     </h6>
 </div>
 
@@ -21,14 +21,14 @@
         <div class="col-md-6">
             <div class="form-floating shadow-sm">
                 @Html.TextBoxFor(m => m.Country.Code, new { @class = "form-control", placeholder = "Country Code", required = "required" })
-                <label>Country Code</label>
+                <label>@GlobalShared.Country_Code</label>
             </div>
         </div>
 
         <div class="col-md-6">
             <div class="form-floating shadow-sm">
                 @Html.TextBoxFor(m => m.Country.Name, new { @class = "form-control", placeholder = "Country Name", required = "required" })
-                <label>Country Name</label>
+                <label>@GlobalShared.Country_Name</label>
             </div>
         </div>
 
@@ -36,17 +36,17 @@
             @if (!string.IsNullOrWhiteSpace(Model.Country.Id))
             {
                 <button type="submit" class="btn btn-primary px-4 me-2">
-                    <i class="bi bi-check2-circle"></i> Update
+                    <i class="bi bi-check2-circle"></i> @GlobalShared.Update
                 </button>
                 <button type="button" class="btn btn-outline-secondary" onclick="location.reload()">
-                    <i class="bi bi-arrow-clockwise"></i> Reset
+                    <i class="bi bi-arrow-clockwise"></i> @GlobalShared.Reset
                 </button>
             }
             else
             {
-                <button type="submit" class="btn btn-success px-4">
-                    <i class="bi bi-save2"></i> Save Country
-                </button>
+        <button type="submit" class="btn btn-success px-4">
+            <i class="bi bi-save2"></i> @GlobalGlobalization.Save_Country
+        </button>
             }
         </div>
     </div>

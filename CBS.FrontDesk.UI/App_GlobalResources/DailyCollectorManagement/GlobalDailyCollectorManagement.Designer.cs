@@ -79,38 +79,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Additional notes.
-        /// </summary>
-        internal static string AdditionalNotes {
-            get {
-                return ResourceManager.GetString("AdditionalNotes", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to AGENT REFERENCE.
         /// </summary>
         internal static string AGENTREFERENCE {
             get {
                 return ResourceManager.GetString("AGENTREFERENCE", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Bank code.
-        /// </summary>
-        internal static string BankCode {
-            get {
-                return ResourceManager.GetString("BankCode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Branch code.
-        /// </summary>
-        internal static string BranchCode {
-            get {
-                return ResourceManager.GetString("BranchCode", resourceCulture);
             }
         }
         
@@ -196,15 +169,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Important .
-        /// </summary>
-        internal static string Important {
-            get {
-                return ResourceManager.GetString("Important", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to All uploaded files will first be validated to preview contents before final processing.
         /// </summary>
         internal static string ImportantText {
@@ -250,83 +214,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Photo preview.
-        /// </summary>
-        internal static string PhotoPreview {
-            get {
-                return ResourceManager.GetString("PhotoPreview", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Preview image.
-        /// </summary>
-        internal static string PreviewImage {
-            get {
-                return ResourceManager.GetString("PreviewImage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Preview signature.
-        /// </summary>
-        internal static string PreviewSignature {
-            get {
-                return ResourceManager.GetString("PreviewSignature", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Profile.
-        /// </summary>
-        internal static string Profile {
-            get {
-                return ResourceManager.GetString("Profile", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Profile details.
-        /// </summary>
-        internal static string ProfileDetails {
-            get {
-                return ResourceManager.GetString("ProfileDetails", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Registered by.
-        /// </summary>
-        internal static string RegisteredBy {
-            get {
-                return ResourceManager.GetString("RegisteredBy", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Registered date.
-        /// </summary>
-        internal static string RegisteredDate {
-            get {
-                return ResourceManager.GetString("RegisteredDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Signatory management.
         /// </summary>
         internal static string SignatoryManagement {
             get {
                 return ResourceManager.GetString("SignatoryManagement", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Signature preview.
-        /// </summary>
-        internal static string SignaturePreview {
-            get {
-                return ResourceManager.GetString("SignaturePreview", resourceCulture);
             }
         }
         

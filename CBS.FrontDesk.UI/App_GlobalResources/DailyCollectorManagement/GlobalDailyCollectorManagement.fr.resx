@@ -123,17 +123,8 @@
   <data name="AccountView" xml:space="preserve">
     <value>Vue du compte</value>
   </data>
-  <data name="AdditionalNotes" xml:space="preserve">
-    <value>Notes supplémentaires</value>
-  </data>
   <data name="AGENTREFERENCE" xml:space="preserve">
     <value>RÉFÉRENCE DE L'AGENT</value>
-  </data>
-  <data name="BankCode" xml:space="preserve">
-    <value>Code de la banque</value>
-  </data>
-  <data name="BranchCode" xml:space="preserve">
-    <value>Code de l'agence</value>
   </data>
   <data name="DailyAgentProfileManagement" xml:space="preserve">
     <value>Gestion du profil de l'agent quotidien</value>
@@ -168,32 +159,8 @@
   <data name="PhotoAndSignatureUploadsAreMandatory" xml:space="preserve">
     <value>Les téléchargements de photos et de signatures sont obligatoires à des fins d'identification</value>
   </data>
-  <data name="PhotoPreview" xml:space="preserve">
-    <value>Aperçu de la photo</value>
-  </data>
-  <data name="PreviewImage" xml:space="preserve">
-    <value>Aperçu de l'image</value>
-  </data>
-  <data name="PreviewSignature" xml:space="preserve">
-    <value>Aperçu de la signature</value>
-  </data>
-  <data name="Profile" xml:space="preserve">
-    <value>Profil</value>
-  </data>
-  <data name="ProfileDetails" xml:space="preserve">
-    <value>Détails du profil</value>
-  </data>
-  <data name="RegisteredBy" xml:space="preserve">
-    <value>Enregistré par</value>
-  </data>
-  <data name="RegisteredDate" xml:space="preserve">
-    <value>Date d'enregistrement</value>
-  </data>
   <data name="SignatoryManagement" xml:space="preserve">
     <value>Gestion des signataires</value>
-  </data>
-  <data name="SignaturePreview" xml:space="preserve">
-    <value>Aperçu de la signature</value>
   </data>
   <data name="ManualDailyCollections" xml:space="preserve">
     <value>Collectes quotidiennes manuelles</value>
@@ -203,9 +170,6 @@
   </data>
   <data name="MAD" xml:space="preserve">
     <value>COLLECTES QUOTIDIENNES MANUELLES</value>
-  </data>
-  <data name="Important" xml:space="preserve">
-    <value>Important</value>
   </data>
   <data name="ImportantText" xml:space="preserve">
     <value>Tous les fichiers téléchargés seront d'abord validés pour prévisualiser le contenu avant le traitement final</value>

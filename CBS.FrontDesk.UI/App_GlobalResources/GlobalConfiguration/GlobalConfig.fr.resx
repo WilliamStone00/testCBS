@@ -135,8 +135,14 @@
   <data name="BranchManagement" xml:space="preserve">
     <value>Gestion des agences</value>
   </data>
-  <data name="Collateral" xml:space="preserve">
-    <value>Garantie</value>
+  <data name="Centralised_mode_affects_all_branches" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Cheque_Validity" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Cheque_validity_days_must_reflect_operational_policies" xml:space="preserve">
+    <value />
   </data>
   <data name="ConfigureAccountsAndAccountingEntryPerOperations" xml:space="preserve">
     <value>Configurer les comptes et les entrées comptables par opérations</value>
@@ -149,9 +155,6 @@
   </data>
   <data name="ConfiguringLoans" xml:space="preserve">
     <value>Configuration des prêts</value>
-  </data>
-  <data name="Country" xml:space="preserve">
-    <value>Pays</value>
   </data>
   <data name="CreateAndManageBranches" xml:space="preserve">
     <value>Créer et gérer des agences</value>
@@ -183,6 +186,15 @@
   <data name="DocumentsThatAreRelatedToLoanProducts" xml:space="preserve">
     <value>Documents liés aux produits de prêt</value>
   </data>
+  <data name="Ensure_minimum_and_maximum_cheque_limits_are_correctly_defined" xml:space="preserve">
+    <value />
+  </data>
+  <data name="GLOBAL_CONFIGURATION" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Global_Configuration_Details" xml:space="preserve">
+    <value />
+  </data>
   <data name="LoanConfiguration" xml:space="preserve">
     <value>Configuration du prêt</value>
   </data>
@@ -201,8 +213,29 @@
   <data name="ManageThirdPartyBankAccount" xml:space="preserve">
     <value>Gérer le compte bancaire tiers</value>
   </data>
+  <data name="Manage_cheque_configuration_parameters_globally_and_consistently" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Maximum_Cheque_Leave" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Max_Leave" xml:space="preserve">
+    <value />
+  </data>
   <data name="MenuMaster" xml:space="preserve">
     <value>Maître de menu</value>
+  </data>
+  <data name="Minimum_Cheque_Leave" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Min_Leave" xml:space="preserve">
+    <value />
+  </data>
+  <data name="No_configuration_available" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Only_one_global_configuration_should_be_active" xml:space="preserve">
+    <value />
   </data>
   <data name="OperationEvent" xml:space="preserve">
     <value>Événement d'opération</value>
@@ -212,9 +245,6 @@
   </data>
   <data name="OrdinaryAccountConfiguration" xml:space="preserve">
     <value>Configuration du compte ordinaire</value>
-  </data>
-  <data name="Penalty" xml:space="preserve">
-    <value>Pénalité</value>
   </data>
   <data name="RoleManager" xml:space="preserve">
     <value>Gestionnaire de rôle</value>
@@ -227,5 +257,8 @@
   </data>
   <data name="TellerManagement" xml:space="preserve">
     <value>Gestion des caissiers</value>
+  </data>
+  <data name="View_global_cheque_configuration_details" xml:space="preserve">
+    <value />
   </data>
 </root>

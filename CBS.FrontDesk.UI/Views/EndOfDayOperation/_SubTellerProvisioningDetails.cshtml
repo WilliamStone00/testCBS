@@ -3,11 +3,11 @@
 
 <table>
     <tr>
-        <th>@GlobalEndOfDayOperation.Attribute</th>
-        <th>@GlobalEndOfDayOperation.Value</th>
+        <th>@GlobalShared.Attribute</th>
+        <th>@GlobalShared.Value</th>
     </tr>
     <tr>
-        <td>@GlobalEndOfDayOperation.OpenDate</td>
+        <td>@GlobalShared.OpenDate</td>
         <td>@Model.SubTellerProvioningHistory.openedDate</td>
     </tr>
     <tr>
@@ -19,7 +19,7 @@
         <td>@Model.SubTellerProvioningHistory.openOfDayAmount.ToString("#,##0.0")</td>
     </tr>
     <tr>
-        <td>@GlobalEndOfDayOperation.CashAtHand</td>
+        <td>@GlobalShared.CashAtHand</td>
         <td>@Model.SubTellerProvioningHistory.cashAtHand.ToString("#,##0.0")</td>
     </tr>
     <tr>
@@ -27,23 +27,23 @@
         <td>@Model.SubTellerProvioningHistory.ReplenishedAmount.ToString("#,##0.0")</td>
     </tr>
     <tr>
-        <td>@GlobalEndOfDayOperation.ProvisionedBy</td>
+        <td>@GlobalShared.ProvisionedBy</td>
         <td>@Model.SubTellerProvioningHistory.provisionedBy</td>
     </tr>
     <tr>
-        <td>@GlobalEndOfDayOperation.TellerComment</td>
+        <td>@GlobalShared.TellerComment</td>
         <td>@Model.SubTellerProvioningHistory.subTellerComment</td>
     </tr>
     <tr>
-        <td>@GlobalEndOfDayOperation.TellerCode</td>
+        <td>@GlobalShared.TellerCode</td>
         <td>@Model.SubTellerProvioningHistory.teller.code</td>
     </tr>
     <tr>
-        <td>@GlobalEndOfDayOperation.TellerName</td>
+        <td>@GlobalShared.TellerName</td>
         <td>@Model.SubTellerProvioningHistory.teller.name</td>
     </tr>
     <tr>
-        <td>@GlobalEndOfDayOperation.User</td>
+        <td>@GlobalShared.User</td>
         <td>@Model.SubTellerProvioningHistory.userIdInChargeOfThisTeller</td>
     </tr>
     <tr>
@@ -51,15 +51,15 @@
         <td>@Model.SubTellerProvioningHistory.primaryTellerComment</td>
     </tr>
     <tr>
-        <td>@GlobalEndOfDayOperation.ConfirmationStatus</td>
+        <td>@GlobalShared.ConfirmationStatus</td>
         <td>@Model.SubTellerProvioningHistory.primaryTellerConfirmationStatus</td>
     </tr>
     <tr>
-        <td>@GlobalEndOfDayOperation.ClosedDate</td>
+        <td>@GlobalShared.ClosedDate</td>
         <td>@Model.SubTellerProvioningHistory.clossedDate</td>
     </tr>
     <tr>
-        <td>@GlobalEndOfDayOperation.ClosedStatus</td>
+        <td>@GlobalShared.ClosedStatus</td>
         <td>@Model.SubTellerProvioningHistory.clossedStatus</td>
     </tr>
 </table>

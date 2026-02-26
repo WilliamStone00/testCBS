@@ -10,13 +10,13 @@
         @if (Model.Customer.IsUseOnLineMobileBanking)
         {
             <span class="badge bg-success py-2 px-4">
-                <i class="mdi mdi-check-circle-outline me-2"></i> @GlobalCMoneyMembership.MemberIs <strong>@GlobalCMoneyMembership.Activated</strong>
+                <i class="mdi mdi-check-circle-outline me-2"></i> @GlobalCMoneyMembership.MemberIs <strong>@GlobalShared.Activated</strong>
             </span>
         }
         else
         {
     <span class="badge bg-danger py-2 px-4">
-        <i class="mdi mdi-alert-circle-outline me-2"></i> @GlobalCMoneyMembership.MemberIs <strong>@GlobalCMoneyMembership.NotActivated</strong>
+        <i class="mdi mdi-alert-circle-outline me-2"></i> @GlobalCMoneyMembership.MemberIs <strong>@GlobalShared.Not_Activated</strong>
     </span>
         }
     </div>
@@ -106,7 +106,7 @@
         <div class="accordion-item mb-3">
             <h2 class="accordion-header" id="otpHeading">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#otpCollapse" aria-expanded="false" aria-controls="otpCollapse">
-                    @GlobalCMoneyMembership.SENDOTPCODE
+                    @GlobalShared.SEND_OTP_CODE
                 </button>
             </h2>
             <div id="otpCollapse" class="accordion-collapse collapse" aria-labelledby="otpHeading" data-bs-parent="#activationAccordion">
@@ -116,7 +116,7 @@
                     {
                         @Html.HiddenFor(m => m.GenerateMemberActivationOTPCommand.CustomerId)
                         <div class="mb-3">
-                            <label for="PhoneNumber" class="form-label">@GlobalCMoneyMembership.PhoneNumber</label>
+                            <label for="PhoneNumber" class="form-label">@GlobalShared.Phone_Number</label>
                             @Html.TextBoxFor(m => m.GenerateMemberActivationOTPCommand.PhoneNumber, new { @class = "form-control shadow-input-boxes", @id = "otpphonNumber" })
                             @Html.ValidationMessageFor(m => m.GenerateMemberActivationOTPCommand.PhoneNumber, "", new { @class = "text-danger" })
                         </div>
@@ -146,12 +146,12 @@
                                 <div class="row mt-2 gy-4">
                                     <div class="col-md-8">
                                         <div class="form-floating form-floating-outline">
-                                            <span class="formatted-amount shadow-box float-start">@GlobalCMoneyMembership.MembersName: <strong>@Model.Customer.name</strong></span>
+                                            <span class="formatted-amount shadow-box float-start">@GlobalShared.Members_name: <strong>@Model.Customer.name</strong></span>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-floating form-floating-outline">
-                                            <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@GlobalCMoneyMembership.SubscriptionFee: <strong>0.0</strong></span>
+                                            <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@GlobalShared.Subscription_Fee: <strong>0.0</strong></span>
                                             <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0">
                                         </div>
                                     </div>
@@ -172,7 +172,7 @@
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.AddCMoneyMemberActivationCommand.LoginId, new { @class = "form-control shadow-input-boxes", @readonly = "readonly", @id = "loginId" })
                                             @Html.ValidationMessageFor(m => m.AddCMoneyMemberActivationCommand.LoginId, "", new { @class = "text-danger" })
-                                            <label>@GlobalCMoneyMembership.LOGINID</label>
+                                            <label>@GlobalShared.LOGIN_ID_UC</label>
                                             <p class="text-muted small mt-1">@GlobalCMoneyMembership.LoginIDIsAutomaticallyGeneratedByTheSystem.</p>
                                         </div>
                                     </div>
@@ -180,13 +180,13 @@
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.AddCMoneyMemberActivationCommand.OTP, new { @class = "form-control shadow-input-boxes", @id = "otpid" })
                                             @Html.ValidationMessageFor(m => m.AddCMoneyMemberActivationCommand.OTP, "", new { @class = "text-danger" })
-                                            <label>@GlobalCMoneyMembership.OTPCODE</label>
+                                            <label>@GlobalShared.OTP_CODE</label>
                                             <p class="text-muted small mt-1">@GlobalCMoneyMembership.EnterTheOTPSentToTheMembersPhoneForVerification.</p>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.DropDownListFor(m => m.AddCMoneyMemberActivationCommand.Language, new SelectList(ViewBag.Languages, "Value", "Text"), "---"+@GlobalCMoneyMembership.SelectLanguage +"---", new { @class = "form-control select2", @search = "true" })
+                                            @Html.DropDownListFor(m => m.AddCMoneyMemberActivationCommand.Language, new SelectList(ViewBag.Languages, "Value", "Text"), "---"+ GlobalShared.Select_Language +"---", new { @class = "form-control select2", @search = "true" })
                                             @Html.ValidationMessageFor(m => m.AddCMoneyMemberActivationCommand.Language, "", new { @class = "text-danger" })
                                             <label>@GlobalCMoneyMembership.SelectMemberPreferredLanguageForSMS</label>
                                         </div>
@@ -201,7 +201,7 @@
                                     @Html.HiddenFor(m => m.AddCMoneyMemberActivationCommand.BranchCode)
                                     @if (Model.IsActive)
                                     {
-                                        <span class="badge bg-success py-2 px-4">@GlobalCMoneyMembership.MemberIs <strong>@GlobalCMoneyMembership.Activated</strong></span>
+                                        <span class="badge bg-success py-2 px-4">@GlobalCMoneyMembership.MemberIs <strong>@GlobalShared.Activated</strong></span>
                                     }
                                     else
                                     {

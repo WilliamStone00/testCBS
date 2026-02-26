@@ -1,22 +1,22 @@
 ﻿@model List<CBS.FrontDesk.Data.Entity.CheckManagementSystem.Configurations.GlobalConfig.GlobalConfig>
-
+@using Resources
 <fieldset class="fieldset-custom">
-    <legend>Global Configurations</legend>
+    <legend>@GlobalShared.Global_Configurations</legend>
 
     @if (!Model.Any())
     {
-        <p class="text-center">No configuration available.</p>
+        <p class="text-center">@GlobalConfig.No_configuration_available</p>
     }
     else
     {
         <table class="table table-bordered table-hover" id="myDataTable">
             <thead>
                 <tr>
-                    <th>Min Leave</th>
-                    <th>Max Leave</th>
-                    <th>Validity (Days)</th>
-                    <th>Status</th>
-                    <th class="text-center">Actions</th>
+                    <th>@GlobalConfig.Min_Leave</th>
+                    <th>@GlobalConfig.Max_Leave</th>
+                    <th>@GlobalShared.validity (@GlobalShared.Days)</th>
+                    <th>@GlobalShared.Status</th>
+                    <th class="text-center">@GlobalShared.Actions</th>
                 </tr>
             </thead>
 
@@ -30,22 +30,22 @@
                         <td class="text-center">
                             @if (item.IsCentralised)
                             {
-                                <span class="badge bg-success">Centralised</span>
+                                <span class="badge bg-success">@GlobalShared.Centralised</span>
                             }
                             else
                             {
-                                <span class="badge bg-secondary">Decentralised</span>
+                        <span class="badge bg-secondary">@GlobalShared.Decentralised</span>
                             }
                         </td>
                         <td class="text-center">
                             <button class="btn btn-sm btn-outline-primary"
                                     onclick="AddORUpdateGen('@item.Id','datalistingview','_Create','update','GlobalConfig')">
-                                Edit
+                                @GlobalShared.Edit
                             </button>
 
                             <button class="btn btn-sm btn-outline-info"
                                     onclick="showGlobalConfigDetails('@item.Id')">
-                                Details
+                                @GlobalShared.Details
                             </button>
                         </td>
                     </tr>

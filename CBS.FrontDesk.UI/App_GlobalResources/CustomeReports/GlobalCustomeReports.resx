@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Accounts_and_accounting_year_are_optional" xml:space="preserve">
+    <value>Accounts and accounting year are optional.</value>
+  </data>
+  <data name="Accounts_are_only_required_for_JE_and_Account_Statement_reports" xml:space="preserve">
+    <value>Accounts are only required for &lt;strong&gt;JE&lt;/strong&gt; and &lt;strong&gt;Account Statement&lt;/strong&gt; reports.</value>
+  </data>
+  <data name="Check_to_enable_the_accounting_year_dropdown" xml:space="preserve">
+    <value>Check to enable the accounting year dropdown.</value>
+  </data>
+  <data name="Choose_a_clear_start_date_and_end_date_for_precise_results" xml:space="preserve">
+    <value>Choose a clear &lt;strong&gt;start date&lt;/strong&gt; and &lt;strong&gt;end date&lt;/strong&gt; for precise results.</value>
+  </data>
+  <data name="Choose_a_Source_Mode_Temporary_Reconciled_Auto_or_RealTime" xml:space="preserve">
+    <value>Choose a &lt;strong&gt;Source Mode&lt;/strong&gt; (Temporary, Reconciled, Auto, or RealTime).</value>
+  </data>
+  <data name="Choose_JE_or_Account_Statement_to_enable_account_selection" xml:space="preserve">
+    <value>Choose &lt;strong&gt;JE&lt;/strong&gt; or &lt;strong&gt;Account Statement&lt;/strong&gt; to enable account selection.</value>
+  </data>
+  <data name="Custom_Trial_Balance_Report" xml:space="preserve">
+    <value>Custom Trial Balance Report</value>
+  </data>
+  <data name="Enable_Accounting_Year_only_if_you_want_to_filter_by_a_specific_year" xml:space="preserve">
+    <value>Enable &lt;strong&gt;Accounting Year&lt;/strong&gt; only if you want to filter by a specific year.</value>
+  </data>
+  <data name="Filter_by_Accounting_Year" xml:space="preserve">
+    <value>Filter by Accounting Year</value>
+  </data>
+  <data name="Generate_a_custom_trial_balance_based_on_branch_report_type_source_mode_and_date_range" xml:space="preserve">
+    <value>Generate a custom trial balance based on branch, report type, source mode and date range.</value>
+  </data>
+  <data name="Include_All_Accounts_InTB" xml:space="preserve">
+    <value>Include All Accounts InTB</value>
+  </data>
+  <data name="Include_Zero_Balance_On_TB" xml:space="preserve">
+    <value>Include Zero Balance On TB</value>
+  </data>
+  <data name="Select_a_branch_first_other_filters_will_appear_after_a_branch_is_chosen" xml:space="preserve">
+    <value>Select a &lt;strong&gt;branch&lt;/strong&gt; first – other filters will appear after a branch is chosen.</value>
+  </data>
+  <data name="Select_a_Report_Type_Accounts_are_only_used_for_JE_and_Account_Statement" xml:space="preserve">
+    <value>Select a &lt;strong&gt;Report Type&lt;/strong&gt;. Accounts are only used for &lt;strong&gt;JE&lt;/strong&gt; and &lt;strong&gt;@GlobalCustomeReports.Account Statement&lt;/strong&gt;.</value>
+  </data>
+  <data name="Select_one_or_more_branches_Other_filters_will_appear_after_a_branch_is_selected" xml:space="preserve">
+    <value>Select one or more branches. Other filters will appear after a branch is selected.</value>
+  </data>
+  <data name="Select_the_transaction_source_you_want_to_report_on" xml:space="preserve">
+    <value>Select the transaction source you want to report on.</value>
+  </data>
+  <data name="The_filter_becomes_active_when_dates_branch_report_type_and_source_mode_are_selected" xml:space="preserve">
+    <value>The filter becomes active when &lt;strong&gt;dates&lt;/strong&gt;, &lt;strong&gt;branch&lt;/strong&gt;, &lt;strong&gt;report type&lt;/strong&gt; and &lt;strong&gt;source mode&lt;/strong&gt; are selected.</value>
+  </data>
+  <data name="Use_this_tool_to_extract_targeted_data_for_reconciliation_analysis_and_auditing" xml:space="preserve">
+    <value>Use this tool to extract targeted data for reconciliation, analysis and auditing.</value>
+  </data>
+</root>

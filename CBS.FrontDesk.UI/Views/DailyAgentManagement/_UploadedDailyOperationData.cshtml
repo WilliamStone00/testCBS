@@ -1,28 +1,29 @@
-﻿<div class="container" id="HideDataResult">
+﻿@using Resources
+<div class="container" id="HideDataResult">
     <div class="header">
-        <h4>Daily Collection Report</h4>
+        <h4>@GlobalDailyAgentManagement.Daily_Collection_Report</h4>
     </div>
 
     <div class="summary-section">
-        <h2>Summary Information</h2>
+        <h2>@GlobalShared.Summary_Information</h2>
         <div class="summary-grid">
             <div>
                 <div class="summary-item">
-                    <span class="summary-label">Total Amount:</span>
+                    <span class="summary-label">@GlobalShared.Total_amount:</span>
                     <span class="summary-value total-amount" id="totalAmount"></span>
                 </div>
                 <div class="summary-item">
-                    <span class="summary-label">Total Members:</span>
+                    <span class="summary-label">@GlobalShared.Total_members:</span>
                     <span class="summary-value" id="totalMembers"></span>
                 </div>
             </div>
             <div>
                 <div class="summary-item">
-                    <span class="summary-label">Branch Name:</span>
+                    <span class="summary-label">@GlobalShared.Branch_Name:</span>
                     <span class="summary-value" id="branchName"></span>
                 </div>
                 <div class="summary-item">
-                    <span class="summary-label">Uploaded By:</span>
+                    <span class="summary-label">@GlobalShared.Uploaded_By:</span>
                     <span class="summary-value" id="uploadedBy"></span>
                 </div>
             </div>
@@ -30,16 +31,16 @@
     </div>
 
     <div class="details-section">
-        <h3>Member Collection Details</h3>
+        <h3>@GlobalDailyAgentManagement.Member_Collection_Details</h3>
         <table id="myDataTable">
             <thead>
                 <tr>
-                    <th>Member Ref</th>
-                    <th>Member Name</th>
-                    <th>Amount</th>
-                    <th>Collector Name</th>
-                    <th>Branch Code</th>
-                    <th>Branch Name</th>
+                    <th>@GlobalShared.Member_ref</th>
+                    <th>@GlobalShared.Member_name</th>
+                    <th>@GlobalShared.Amount</th>
+                    <th>@GlobalShared.Collector_Name</th>
+                    <th>@GlobalShared.Branch_Code</th>
+                    <th>@GlobalShared.Branch_Name</th>
                 </tr>
             </thead>
             <tbody> </tbody>
@@ -48,12 +49,12 @@
     <div class="col-12 text-end">
         <br />
         <button type="submit" class="btn btn-primary" onclick="">
-            <i class="mdi mdi-cloud-upload me-1"></i> Review Data
+            <i class="mdi mdi-cloud-upload me-1"></i> @GlobalShared.Review_Data
         </button>
     </div>
     <div class="footer">
-        <p>Generated on: <span id="currentDate"></span></p>
-        <p>Manual Entry Daily Collector Upload System</p>
+        <p>@GlobalShared.Generated_on: <span id="currentDate"></span></p>
+        <p>@GlobalDailyAgentManagement.Manual_Entry_Daily_Collector_Upload_System</p>
     </div>
 
 

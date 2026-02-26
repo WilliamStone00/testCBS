@@ -25,7 +25,7 @@
 
         <div class="mt-2">
             <h4 class="mb-3 text-primary">
-                <i class="mdi mdi-email-outline me-2"></i> Map
+                <i class="mdi mdi-email-outline me-2"></i> @GlobalShared.Map
             </h4>
 
             @* ===== COMMON: Mapping Name (read-only) ===== *@
@@ -53,7 +53,7 @@
                 @* Affiliate → HO: choose a PCMF account to map to *@
                 <div class="row g-2 mt-1">
                     <div class="col-md-12">
-                        <label class="form-label fw-bold" for="HoPcmfAccountId">HO PCMF Account</label>
+                        <label class="form-label fw-bold" for="HoPcmfAccountId">@GlobalFileUpload.HO_PCMF_Account</label>
                         @Html.DropDownListFor(
                             m => m.HoPcmfAccountId,
                             new SelectList((IEnumerable<dynamic>)(ViewBag.ChartOfAccountPcmf ?? Enumerable.Empty<object>()), "Value", "Text"),
@@ -62,7 +62,7 @@
                         )
                         @*@Html.ValidationMessageFor(m => m.HoPcmfAccountId, "", new { @class = "text-danger" })*@
                         <div class="form-text">
-                            Select the Head Office PCMF account to map the affiliate account to.
+                            @GlobalFileUpload.Select_the_Head_Office_PCMF_account_to_map_the_affiliate_account_to
                         </div>
                     </div>
                 </div>
@@ -74,7 +74,7 @@
                 @* Branch → Affiliate: choose an Affiliate account to map to *@
                 <div class="row g-2 mt-1">
                     <div class="col-md-12">
-                        <label class="form-label fw-bold" for="AffiliateAccountId">Affiliate Account</label>
+                        <label class="form-label fw-bold" for="AffiliateAccountId">@GlobalShared.Affiliate_Account</label>
                         @Html.DropDownListFor(
                             m => m.AffiliateAccountId,
                             new SelectList((IEnumerable<dynamic>)(ViewBag.ChartOfAccountMFI ?? Enumerable.Empty<object>()), "Id", "Name"),
@@ -82,9 +82,9 @@
                             new { @class = "form-select select2", id = "AffiliateAccountId" }
                         )
                         @*@Html.ValidationMessageFor(m => m.AffiliateAccountId, "", new { @class = "text-danger" })*@
-                        <div class="form-text">
-                            Select the Affiliate account to map the branch account to.
-                        </div>
+                    <div class="form-text">
+                        @GlobalFileUpload.Select_the_Affiliate_account_to_map_the_branch_account_to
+                    </div>
                     </div>
                 </div>
             }

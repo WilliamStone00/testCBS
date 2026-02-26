@@ -1,7 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.DailyCollectorManagementData
     @using Resources
 @{
-    ViewBag.Title = @GlobalDailyCollectorManagement.Profile;
+    ViewBag.Title = "Profile";
 }
 
 
@@ -35,8 +35,8 @@
                         @GlobalDailyCollectorManagement.AGENTREFERENCE # <span class="highlight-text">@Model.Agent.UserId</span>
                         <hr />
                         @*<small>Daily Agent code: Last 4 digits</small><br />*@
-                    <small>@GlobalDailyCollectorManagement.BankCode: @Session["BankCode"].ToString()</small><br />
-                        <small>@GlobalDailyCollectorManagement.BranchCode: @Session["BranchCode"].ToString()</small>
+                    <small>@GlobalShared.Bank_Code: @Session["BankCode"].ToString()</small><br />
+                        <small>@GlobalShared.Branch_Code: @Session["BranchCode"].ToString()</small>
                     </h4>
                 </div>
             </div>
@@ -47,8 +47,8 @@
                     <h4 class="group-title">
                         @GlobalDailyCollectorManagement.DailyAgentWorkingInformation
                         <hr />
-                        <small>@GlobalDailyCollectorManagement.RegisteredBy: @Model.AgentDto.CreatedBy</small><br />
-                        <small>@GlobalDailyCollectorManagement.RegisteredDate: @Model.AgentDto.CreatedDate</small><br />
+                        <small>@GlobalShared.RegisteredBy: @Model.AgentDto.CreatedBy</small><br />
+                        <small>@GlobalShared.RegisteredDate: @Model.AgentDto.CreatedDate</small><br />
                         <small>@GlobalDailyCollectorManagement.WorkingZone: <span class="highlight-text">@Model.AgentDto.ZoneName</span></small>
                     </h4>
                 </div>
@@ -113,7 +113,7 @@
                         <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalDailyCollectorManagement.PhotoAndSignatureUploadsAreMandatory.</li>
                
                     </ul>
-                    <p class="text-muted">@GlobalDailyCollectorManagement.AdditionalNotes:</p>
+                    <p class="text-muted">@GlobalShared.Additional_Notes:</p>
                     <ul>
                         <li><i class="mdi mdi-information-outline text-primary me-2"></i> @GlobalDailyCollectorManagement.DailyAgentreferencesConsistOfABranchCode.</li>
                         <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> @GlobalDailyCollectorManagement.EnsureProperDocumentationIsUploadedForVerificationPurposes.</li>
@@ -128,7 +128,7 @@
                     <ul class="nav nav-tabs nav-fill" role="tablist">
                         <li class="nav-item">
                             <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#navs-profile" aria-controls="navs-profile" aria-selected="true">
-                                <i class="tf-icons mdi mdi-account-outline me-1"></i> @GlobalDailyCollectorManagement.ProfileDetails
+                                <i class="tf-icons mdi mdi-account-outline me-1"></i> @GlobalShared.ProfileDetails
                             </button>
                         </li>
                         <li class="nav-item">
@@ -175,13 +175,13 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="photoPreviewModalLabel">@Model.AgentDto.FirstName @Model.AgentDto.LastName - @GlobalDailyCollectorManagement.PhotoPreview</h5>
+                <h5 class="modal-title" id="photoPreviewModalLabel">@Model.AgentDto.FirstName @Model.AgentDto.LastName - @GlobalShared.PhotoPreview</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-center">
                 @if (Model.AgentDto.ProfilePicture != null)
                 {
-                    <img src="@Model.AgentDto.ProfilePicture" class="img-fluid" alt="@GlobalDailyCollectorManagement.PreviewImage">
+                    <img src="@Model.AgentDto.ProfilePicture" class="img-fluid" alt="@GlobalShared.PreviewImage">
                 }
                 else
                 {
@@ -200,13 +200,13 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="signaturePreviewModalLabel">@Model.AgentDto.FirstName @Model.AgentDto.LastName - @GlobalDailyCollectorManagement.SignaturePreview</h5>
+                <h5 class="modal-title" id="signaturePreviewModalLabel">@Model.AgentDto.FirstName @Model.AgentDto.LastName - @GlobalShared.SignaturePreview</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-center">
                 @if (Model.AgentDto.Signature != null)
                 {
-                    <img src="@Model.AgentDto.Signature" class="img-fluid" alt="@GlobalDailyCollectorManagement.PreviewSignature">
+                    <img src="@Model.AgentDto.Signature" class="img-fluid" alt="@GlobalShared.PreviewSignature">
                 }
                 else
                 {

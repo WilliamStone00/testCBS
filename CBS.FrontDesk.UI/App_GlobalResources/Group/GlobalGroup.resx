@@ -117,12 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ActiveStatus" xml:space="preserve">
-    <value>Active status</value>
-  </data>
-  <data name="AddDocuments" xml:space="preserve">
-    <value>Add documents</value>
-  </data>
   <data name="AddMembersTo" xml:space="preserve">
     <value>Add members to</value>
   </data>
@@ -138,12 +132,6 @@
   <data name="CapitalAmount" xml:space="preserve">
     <value>Capital amount</value>
   </data>
-  <data name="Click" xml:space="preserve">
-    <value>Click</value>
-  </data>
-  <data name="Country" xml:space="preserve">
-    <value>Country</value>
-  </data>
   <data name="CreateANewGroupOrMoralPersonAccount" xml:space="preserve">
     <value>Create a new Group or Moral Person account. Ensure all required fields (group type, registration, identification, and address) are filled correctly</value>
   </data>
@@ -156,17 +144,11 @@
   <data name="DetailedAddress" xml:space="preserve">
     <value>Detailed address</value>
   </data>
-  <data name="Division" xml:space="preserve">
-    <value>Division</value>
-  </data>
   <data name="EconomicActivities" xml:space="preserve">
     <value>Economic activities</value>
   </data>
   <data name="EconomicActivity" xml:space="preserve">
     <value>Economic activity</value>
-  </data>
-  <data name="Email" xml:space="preserve">
-    <value>Email</value>
   </data>
   <data name="EnsureTheDateOfEstablishmentAndIdentification" xml:space="preserve">
     <value>Ensure the Date of Establishment and Identification Document Details are valid</value>
@@ -182,9 +164,6 @@
   </data>
   <data name="FormalInformalSector" xml:space="preserve">
     <value>Formal / Informal Sector</value>
-  </data>
-  <data name="Group" xml:space="preserve">
-    <value>Group</value>
   </data>
   <data name="GroupAddress" xml:space="preserve">
     <value>Group address</value>
@@ -216,9 +195,6 @@
   <data name="ManagementOf" xml:space="preserve">
     <value>Management of</value>
   </data>
-  <data name="Member" xml:space="preserve">
-    <value>Member</value>
-  </data>
   <data name="MoralPersonAccountCreation" xml:space="preserve">
     <value>Moral person account creation</value>
   </data>
@@ -231,35 +207,17 @@
   <data name="MoralPersons" xml:space="preserve">
     <value>Moral persons</value>
   </data>
-  <data name="NationalIDNumber" xml:space="preserve">
-    <value>National id number</value>
-  </data>
   <data name="NoMemberIsAddedTo" xml:space="preserve">
     <value>No member is added to</value>
   </data>
-  <data name="Occupation" xml:space="preserve">
-    <value>Occupation</value>
-  </data>
-  <data name="PhoneNumber" xml:space="preserve">
-    <value>Phone number</value>
-  </data>
-  <data name="PlaceOfIssue" xml:space="preserve">
-    <value>Place of Issue</value>
-  </data>
   <data name="PostBox" xml:space="preserve">
     <value>Post box</value>
-  </data>
-  <data name="Profile" xml:space="preserve">
-    <value>Profile</value>
   </data>
   <data name="ProperlySelectTheEconomicActivity" xml:space="preserve">
     <value>Properly select the Economic Activity and Customer Category for the Group</value>
   </data>
   <data name="ProvideAccurateAddressDetails" xml:space="preserve">
     <value>Provide accurate address details (Country, Region, Division, Sub-Division, Town)</value>
-  </data>
-  <data name="Region" xml:space="preserve">
-    <value>Region</value>
   </data>
   <data name="RegistrationNumber" xml:space="preserve">
     <value>Registration number</value>
@@ -273,53 +231,20 @@
   <data name="SearchByGroupNameTaxNumber" xml:space="preserve">
     <value>Search by Group name, Tax number, Registration number</value>
   </data>
-  <data name="SelectCountry" xml:space="preserve">
-    <value>Select country</value>
-  </data>
   <data name="SelectCustomerCategory" xml:space="preserve">
     <value>Select customer category</value>
-  </data>
-  <data name="SelectDivision" xml:space="preserve">
-    <value>Select division</value>
   </data>
   <data name="SelectEconomicActivity" xml:space="preserve">
     <value>Select economic activity</value>
   </data>
-  <data name="SelectGroupType" xml:space="preserve">
-    <value>Select group type</value>
-  </data>
   <data name="SelectMemberAccountType" xml:space="preserve">
     <value>Select member account type</value>
-  </data>
-  <data name="SelectMembers" xml:space="preserve">
-    <value>Select members</value>
   </data>
   <data name="SelectMembersAndAddTo" xml:space="preserve">
     <value>Select members and add to</value>
   </data>
-  <data name="SelectRegion" xml:space="preserve">
-    <value>Select region</value>
-  </data>
-  <data name="SelectSector" xml:space="preserve">
-    <value>Select sector</value>
-  </data>
-  <data name="SelectSubDivision" xml:space="preserve">
-    <value>Select sub-division</value>
-  </data>
-  <data name="SelectTown" xml:space="preserve">
-    <value>Select town</value>
-  </data>
-  <data name="SubDivision" xml:space="preserve">
-    <value>Sub-Division</value>
-  </data>
-  <data name="Tax" xml:space="preserve">
-    <value>Tax</value>
-  </data>
   <data name="TaxpayerNumber" xml:space="preserve">
     <value>Tax payer number</value>
-  </data>
-  <data name="Town" xml:space="preserve">
-    <value>Town</value>
   </data>
   <data name="UpdateGroup" xml:space="preserve">
     <value>Update group</value>

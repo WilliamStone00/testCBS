@@ -12,7 +12,7 @@
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.CustomerList.Phone, new { @class = "form-control", @placeholder = @GlobalIndividual.PhoneNumber })
                 @Html.ValidationMessageFor(m => m.CustomerList.Phone, "", new { @class = "text-danger" })
-                <label>@GlobalIndividual.PhoneNumber</label>
+                <label>@GlobalShared.Phone_Number</label>
             </div>
         </div>
         <div class="col-md-3">

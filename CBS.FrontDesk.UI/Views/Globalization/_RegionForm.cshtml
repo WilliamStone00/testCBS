@@ -1,9 +1,9 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Config.GlobalizationViewModel
-
+@using Resources
 <!-- Section Title -->
 <div class="col-12">
     <h6 class="text-primary border-bottom pt-2 pb-2">
-        <i class="bi bi-globe2"></i> Region Management
+        <i class="bi bi-globe2"></i> @GlobalGlobalization.Region_Management
     </h6>
 </div>
 
@@ -14,24 +14,24 @@
         <div class="col-md-6">
             <div class="form-floating shadow-sm">
                 <select id="CountryId" name="Region.CountryId" class="form-select select2" required>
-                    <option value="">--- Select Country ---</option>
+                    <option value="">--- @GlobalShared.Select_Country ---</option>
                     @foreach (var country in Model.Countries)
                     {
                         <option value="@country.Id">@country.Name</option>
                     }
                 </select>
-                <label for="CountryId">Country</label>
+                <label for="CountryId">@GlobalShared.Country</label>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-floating shadow-sm">
-                <input type="text" name="Region.Name" class="form-control" placeholder="Region Name" required />
-                <label>Region Name</label>
+                <input type="text" name="Region.Name" class="form-control" placeholder="@GlobalGlobalization.Region_Name" required />
+                <label>@GlobalGlobalization.Region_Name</label>
             </div>
         </div>
         <div class="col-12 text-end">
             <button type="submit" class="btn btn-secondary px-4">
-                <i class="bi bi-save2"></i> Save Region
+                <i class="bi bi-save2"></i> @GlobalGlobalization.Save_Region
             </button>
         </div>
     </div>

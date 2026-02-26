@@ -14,21 +14,21 @@
         <hr />
         <div class="row g-4">
             <div class="col-md-4">
-                <label for="branchInput">@GlobalDailyTellerAssignation.Branch</label>
-                @Html.DropDownListFor(m => m.GetTellerOpenningAndClossingQuery.BranchId, new SelectList(ViewBag.Branches, "id", "name"), "---"+ @GlobalDailyTellerAssignation.SelectBranch+"---", new { @class = "form-control shadow-box select2", @id = "branchInput" })
+                <label for="branchInput">@GlobalShared.Branch</label>
+                @Html.DropDownListFor(m => m.GetTellerOpenningAndClossingQuery.BranchId, new SelectList(ViewBag.Branches, "id", "name"), "---"+ GlobalShared.SelectBranch+"---", new { @class = "form-control shadow-box select2", @id = "branchInput" })
             </div>
             <div class="col-md-8">
                 <div class="row g-4">
                     <div class="col-md-6">
-                        <label for="dateFromInput">@GlobalDailyTellerAssignation.DateFrom</label>
+                        <label for="dateFromInput">@GlobalShared.DateFrom</label>
                         <div class="input-group">
-                            @Html.TextBoxFor(m => m.GetTellerOpenningAndClossingQuery.DateFrom, new { @class = "form-control shadow-box date-picker", @placeholder = @GlobalDailyTellerAssignation.DateFrom })
+                            @Html.TextBoxFor(m => m.GetTellerOpenningAndClossingQuery.DateFrom, new { @class = "form-control shadow-box date-picker", @placeholder = GlobalShared.DateFrom })
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <label for="dateToInput">@GlobalDailyTellerAssignation.DateTo</label>
+                        <label for="dateToInput">@GlobalShared.DateTo</label>
                         <div class="input-group">
-                            @Html.TextBoxFor(m => m.GetTellerOpenningAndClossingQuery.DateTo, new { @class = "form-control shadow-box date-picker", @placeholder = @GlobalDailyTellerAssignation.DateTo })
+                            @Html.TextBoxFor(m => m.GetTellerOpenningAndClossingQuery.DateTo, new { @class = "form-control shadow-box date-picker", @placeholder = GlobalShared.DateTo })
                             <button type="submit" class="btn btn-default btn-sm">Print</button>
                         </div>
                     </div>

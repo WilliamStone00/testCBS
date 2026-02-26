@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.Configurations.FeeConfiguration.Range
-
+@using Resources
 @{
     // index is provided via ViewData["index"] by the parent view (or left as placeholder)
     var index = ViewData["index"]?.ToString() ?? "{INDEX}";
@@ -22,7 +22,7 @@
         <input type="number" step="0.01" name="FeeTypeRanges[@index].Fee" value="@(Model?.value.ToString() ?? "")" class="form-control" />
     </td>
     <td class="text-center" style="width: 15%;">
-        <button type="button" class="btn btn-sm btn-outline-danger remove-range-row" title="Remove this row">
+        <button type="button" class="btn btn-sm btn-outline-danger remove-range-row" title="@GlobalFeeConfig.Remove_this_row">
             <i class="mdi mdi-delete"></i>
         </button>
     </td>

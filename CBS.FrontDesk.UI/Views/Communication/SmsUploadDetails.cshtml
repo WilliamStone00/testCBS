@@ -33,18 +33,18 @@
         <div class="card bg-light mb-4 shadow-sm">
             <div class="card-body text-center">
                 <h1 class="card-title text-success fw-bold mb-2">
-                    <i class="mdi mdi-file-document-multiple-outline me-2"></i> SMS UPLOAD DETAILS
+                    <i class="mdi mdi-file-document-multiple-outline me-2"></i> @GlobalCommunication.SMS_UPLOAD_DETAILS
                 </h1>
 
                 <p class="card-text text-muted mb-2">
-                    Review upload metadata, preview rows, then view sending history.
+                    @GlobalCommunication.Review_upload_metadata_preview_rows_then_view_sending_history
                 </p>
 
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.35);" />
 
                 <div class="alert alert-info mt-3 d-flex align-items-center justify-content-center">
                     <i class="mdi mdi-information-outline me-2"></i>
-                    <strong>FileUploadId:</strong>&nbsp;<span id="__fileUploadIdText">@($"{file?.Id}")</span>
+                    <strong>@GlobalShared.FileUploadId:</strong>&nbsp;<span id="__fileUploadIdText">@($"{file?.Id}")</span>
                 </div>
             </div>
         </div>
@@ -53,7 +53,7 @@
         <div class="row mb-2">
             <div class="col-md-6 text-md-start mb-1 mb-md-0">
                 <a href="/Communication/Index" class="btn btn-primary btn-sm shadow-sm px-3 w-100 w-md-auto">
-                    <i class="mdi mdi-arrow-left me-1"></i> Back to Listing
+                    <i class="mdi mdi-arrow-left me-1"></i> @GlobalShared.Back_to_Listing
                 </a>
             </div>
 
@@ -61,7 +61,7 @@
                 @if (canSend)
                 {
                     <button class="btn btn-success btn-sm shadow-sm px-3 w-100 w-md-auto" id="btnSendSmsFromDetails">
-                        <i class="mdi mdi-send-check-outline me-1"></i> Send SMS (Status: Viewed)
+                        <i class="mdi mdi-send-check-outline me-1"></i> @GlobalShared.Send_SMS (Status: Viewed)
                     </button>
                 }
                 else
@@ -69,7 +69,7 @@
             <button class="btn btn-secondary btn-sm shadow-sm px-3 w-100 w-md-auto" disabled
                     data-bs-toggle="tooltip"
                     title="Send is only enabled when Status is 'Viewed'.">
-                <i class="mdi mdi-lock-outline me-1"></i> Send Disabled (Status: @($"{file?.Status}"))
+                <i class="mdi mdi-lock-outline me-1"></i> @GlobalShared.Send_Disabled (Status: @($"{file?.Status}"))
             </button>
                 }
             </div>
@@ -85,7 +85,7 @@
                     <button class="accordion-button" type="button"
                             data-bs-toggle="collapse" data-bs-target="#collapseFileMeta"
                             aria-expanded="true" aria-controls="collapseFileMeta">
-                        <i class="mdi mdi-information-outline me-2"></i> Upload Metadata
+                        <i class="mdi mdi-information-outline me-2"></i> @GlobalShared.Upload Metadata
                     </button>
                 </h2>
 
@@ -94,54 +94,54 @@
 
                         <div class="row g-3">
                             <div class="col-md-3">
-                                <label class="form-label fw-semibold">FileUploadId</label>
+                                <label class="form-label fw-semibold">@GlobalShared.FileUploadId</label>
                                 <input class="form-control" readonly value="@($"{file?.Id}")" />
                             </div>
                             <div class="col-md-3">
-                                <label class="form-label fw-semibold">File Code</label>
+                                <label class="form-label fw-semibold">@GlobalShared.File Code</label>
                                 <input class="form-control" readonly value="@($"{file?.FileCode}")" />
                             </div>
                             <div class="col-md-3">
-                                <label class="form-label fw-semibold">Branch</label>
+                                <label class="form-label fw-semibold">@GlobalShared.Branch</label>
                                 <input class="form-control" readonly value="@($"{file?.BranchCode} - {file?.BranchName}")" />
                             </div>
                             <div class="col-md-3">
-                                <label class="form-label fw-semibold">Status</label>
+                                <label class="form-label fw-semibold">@GlobalShared.Status</label>
                                 <input class="form-control" readonly value="@($"{file?.Status}")" />
                             </div>
 
                             <div class="col-md-4">
-                                <label class="form-label fw-semibold">Sender Service</label>
+                                <label class="form-label fw-semibold">@GlobalShared.Sender_Service</label>
                                 <input class="form-control" readonly value="@($"{file?.SenderService}")" />
                             </div>
                             <div class="col-md-4">
-                                <label class="form-label fw-semibold">Title</label>
+                                <label class="form-label fw-semibold">@GlobalShared.Title</label>
                                 <input class="form-control" readonly value="@($"{file?.Title}")" />
                             </div>
                             <div class="col-md-4">
-                                <label class="form-label fw-semibold">Purpose</label>
+                                <label class="form-label fw-semibold">@GlobalShared.Purpose</label>
                                 <input class="form-control" readonly value="@($"{file?.Purpose}")" />
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label fw-semibold">File Name</label>
+                                <label class="form-label fw-semibold">@GlobalShared.File_Name</label>
                                 <input class="form-control" readonly value="@($"{file?.FileName}")" />
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label fw-semibold">Uploaded By / On</label>
+                                <label class="form-label fw-semibold">@GlobalShared.Uploaded_By / @GlobalShared.On</label>
                                 <input class="form-control" readonly value="@($"{file?.UploadedBy} - {file?.UploadedOn:yyyy-MM-dd HH:mm}")" />
                             </div>
 
                             <div class="col-md-12">
-                                <label class="form-label fw-semibold">Message Template</label>
+                                <label class="form-label fw-semibold">@GlobalShared.Message Template</label>
                                 <textarea class="form-control" rows="2" readonly>@($"{file?.MessageTemplate}")</textarea>
                             </div>
                         </div>
 
                         <div class="d-flex flex-wrap gap-2 mt-3">
                             <span class="badge bg-dark">Total: @(Model?.TotalRows ?? 0)</span>
-                            <span class="badge bg-success">Valid: @(Model?.ValidRows ?? 0)</span>
-                            <span class="badge bg-danger">Invalid: @(Model?.InvalidRows ?? 0)</span>
+                            <span class="badge bg-success">@GlobalShared.Valid: @(Model?.ValidRows ?? 0)</span>
+                            <span class="badge bg-danger">@GlobalShared.Invalid: @(Model?.InvalidRows ?? 0)</span>
                         </div>
 
                     </div>
@@ -156,7 +156,7 @@
                     <button class="accordion-button collapsed" type="button"
                             data-bs-toggle="collapse" data-bs-target="#collapsePreviewRows"
                             aria-expanded="false" aria-controls="collapsePreviewRows">
-                        <i class="mdi mdi-table-eye-outline me-2"></i> Preview Data (Rows)
+                        <i class="mdi mdi-table-eye-outline me-2"></i> @GlobalShared.Preview_Data (@GlobalShared.Rows)
                     </button>
                 </h2>
 
@@ -168,11 +168,11 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Member Ref</th>
-                                        <th>Receiver Phone</th>
-                                        <th>Receiver Name</th>
-                                        <th class="text-center">Status</th>
-                                        <th>Validation Error</th>
+                                        <th>@GlobalShared.Member_ref</th>
+                                        <th>@GlobalShared.Receiver_Phone</th>
+                                        <th>@GlobalShared.Receiver_Name</th>
+                                        <th class="text-center">@GlobalShared.Status</th>
+                                        <th>@GlobalShared.Validation_Error</th>
                                         <th>Message</th>
                                     </tr>
                                 </thead>
@@ -182,7 +182,7 @@
 
                         <small class="text-muted d-block mt-2">
                             <i class="mdi mdi-information-outline me-1"></i>
-                            Data source: <b>Model.Rows</b> (SmsUploadDetailDto).
+                            @GlobalShared.Data_source: <b>Model.Rows</b> (SmsUploadDetailDto).
                         </small>
 
                     </div>
@@ -197,7 +197,7 @@
                     <button class="accordion-button" type="button"
                             data-bs-toggle="collapse" data-bs-target="#collapseHistory"
                             aria-expanded="true" aria-controls="collapseHistory">
-                        <i class="mdi mdi-history me-2"></i> Send Details Listing
+                        <i class="mdi mdi-history me-2"></i> @GlobalCommunication.Send_Details_Listing
                         <span class="badge bg-primary ms-2">DataTable</span>
                     </button>
                 </h2>
@@ -207,7 +207,7 @@
 
                         <div class="alert alert-secondary">
                             <i class="mdi mdi-filter-outline me-2"></i>
-                            Default filter: <b>FileUploadId = @($"{file?.Id}")</b>
+                            @GlobalShared.Default_filter: <b>FileUploadId = @($"{file?.Id}")</b>
                         </div>
 
                         <div class="table-responsive">
@@ -224,14 +224,14 @@
                                 </colgroup>
                                 <thead>
                                     <tr>
-                                        <th>Sent On</th>
-                                        <th>Row</th>
-                                        <th>Recipient</th>
-                                        <th>Customer</th>
-                                        <th>Status</th>
-                                        <th>Error</th>
-                                        <th>Notification</th>
-                                        <th>Sent By</th>
+                                        <th>@GlobalShared.Sent_On</th>
+                                        <th>@GlobalShared.Row</th>
+                                        <th>@GlobalShared.Recipient</th>
+                                        <th>@GlobalShared.Customer</th>
+                                        <th>@GlobalShared.Status</th>
+                                        <th>@GlobalShared.Error</th>
+                                        <th>@GlobalShared.Notification</th>
+                                        <th>@GlobalShared.Sent_By</th>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
@@ -240,7 +240,7 @@
 
                         <small class="text-muted d-block mt-2">
                             <i class="mdi mdi-information-outline me-1"></i>
-                            Server-side DataTable: <b>GetSmsFileUploadHistoryDataTableQuery</b>
+                            @GlobalCommunication.Server_side_DataTable: <b>GetSmsFileUploadHistoryDataTableQuery</b>
                         </small>
 
                     </div>

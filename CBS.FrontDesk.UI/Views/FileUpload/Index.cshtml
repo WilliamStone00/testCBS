@@ -10,11 +10,11 @@
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary fw-bold mb-2">
-                    <i class="mdi mdi-bank-outline me-2"></i>@AccountingV2.BranchAndAffiliateFileUpload
+                    <i class="mdi mdi-bank-outline me-2"></i>@GlobalFileUpload.Branch_And_Affiliate_File_Upload
                 </h1>
-                <p class="card-text text-muted mb-1">@AccountingV2.fileuploadtext1</p>
+                <p class="card-text text-muted mb-1">@GlobalFileUpload.Sellect_checkbox_choice_if_is_Affiliate_then_choose_affiliate_account_if_no_choose_branch</p>
                 <p class="card-text text-info fw-semibold">
-                    <i class="mdi mdi-alert-circle-outline me-1"></i> @AccountingV2.fileuploadtext2
+                    <i class="mdi mdi-alert-circle-outline me-1"></i> @GlobalFileUpload.Always_check_the_Is_Affiliate_check_box_before_uploading_to_tuckle_between_Affiliate_Accounts_file_upload_and_Branch_Accounts_file_upload
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -25,7 +25,7 @@
 <!-- Tips -->
 <div class="card mb-2 shadow-sm">
     <h6 class="card-header d-flex justify-content-between align-items-center bg-light text-primary">
-        <span><i class="mdi mdi-lightbulb-outline me-2"></i> @AccountingV2.Tips</span>
+        <span><i class="mdi mdi-lightbulb-outline me-2"></i> @GlobalShared.Tips</span>
         <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLoanTips" aria-expanded="false" aria-controls="collapseLoanTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -34,29 +34,29 @@
         <div class="card-body">
             <ul class="list-group list-group-flush">
                 <li class="list-group-item">
-                    <strong>@AccountingV2.fileuploadtext3</strong>
+                    <strong>1. @GlobalFileUpload.Choose_which_kind_of_file_to_upload</strong>
                     <div class="small text-muted mt-1">
-                        @AccountingV2.Clickthe <strong>@AccountingV2.IsAffiliate</strong> @AccountingV2.checkboxtochoosetheuploadtype
+                        @Html.Raw(@GlobalFileUpload.Click_the_Is_Affiliate_checkbox_to_choose_the_upload_type)
                         <ul class="mb-0">
-                            <li><strong>@AccountingV2.Unchecked</strong> @AccountingV2.text1 <em>@AccountingV2.Branch</em> @AccountingV2.text2</li>
-                            <li><strong>@AccountingV2.Checked</strong> @AccountingV2.text3 <em>@AccountingV2.Affiliate</em> @AccountingV2.text4</li>
+                            <li><strong>@GlobalShared.Unchecked</strong> @Html.Raw(@GlobalFileUpload.you_re_uploading_a_Branch_file_Branch_selector_is_shown)</li>
+                            <li><strong>@GlobalShared.Checked</strong> @Html.Raw(@GlobalFileUpload.you_re_uploading_an_Affiliate_file_Affiliate_selector_is_shown)</li>
                         </ul>
                     </div>
                 </li>
 
                 <li class="list-group-item">
-                    <strong>@AccountingV2.text5</strong>
-                    <div class="small text-muted mt-1">@AccountingV2.tesxt6</div>
+                    <strong>2. @GlobalFileUpload.Use_the_dropdown</strong>
+                    <div class="small text-muted mt-1">@GlobalFileUpload.The_dropdown_is_searchable_Start_typing_the_branch_or_affiliate_name_to_quickly_find_it</div>
                 </li>
 
                 <li class="list-group-item">
-                    <strong>@AccountingV2.text7</strong>
-                    <div class="small text-muted mt-1">@AccountingV2.text8</div>
+                    <strong>3. @GlobalFileUpload.Double_check_required_fields</strong>
+                    <div class="small text-muted mt-1">@GlobalFileUpload.Ensure_Branch_Affiliate_is_selected_and_the_file_input_is_not_empty_The_form_will_validate_before_upload</div>
                 </li>
 
                 <li class="list-group-item">
-                    <strong>@AccountingV2.text9</strong>
-                    <div class="small text-muted mt-1">@AccountingV2.Afterclicking <em>@AccountingV2.Upload</em> @AccountingV2.text10</div>
+                    <strong>4. @GlobalFileUpload.Confirmation_result</strong>
+                    <div class="small text-muted mt-1">@Html.Raw(@GlobalFileUpload.After_clicking_Upload_you_will_be_asked_to_confirm_the_action_Results_success_errors_will_appear_on_this_page)</div>
                 </li>
             </ul>
         </div>
@@ -74,15 +74,15 @@
                 <div class="card-header bg-white border-0 py-3">
                     <h6 class="mb-0 text-primary d-flex align-items-center">
                         <i class="mdi mdi-cloud-upload-outline me-2"></i>
-                        @AccountingV2.text11
-                        <span class="badge bg-success ms-2">@ChequeManagements.Required</span>
+                        @GlobalFileUpload.Affiliate_and_Branch_File_Upload
+                        <span class="badge bg-success ms-2">@GlobalShared.Required</span>
                     </h6>
                 </div>
 
                 <div class="card-body">
                     <div class="alert alert-info d-flex align-items-center mb-3" role="alert">
                         <i class="mdi mdi-information-outline me-2"></i>
-                        <div>@ChequeManagements.headertext <strong>10MB</strong>.</div>
+                        <div>@GlobalShared.Maximum_file_size <strong>10MB</strong>.</div>
                     </div>
 
                     @Html.ValidationSummary(true, "", new { @class = "text-danger mb-3" })
@@ -92,16 +92,16 @@
                     <div class="col-12">
                         <div class="form-check">
                             @Html.CheckBoxFor(m => m.isAffiliate, new { @class = "form-check-input", id = "IsAffiliateCheckbox" })
-                            <label class="form-check-label" for="IsAffiliateCheckbox">Check to Upload Affiliate COA</label>
+                            <label class="form-check-label" for="IsAffiliateCheckbox">@GlobalFileUpload.Check_to_Upload_Affiliate_COA</label>
                         </div>
                     </div>
 
                     <!-- BRANCH DROPDOWN -->
                     <div class="col-12 branch-dropdown @(isAffiliate ? "d-none" : "")">
-                        <label for="BranchId" class="form-label fw-semibold">🏢 Select Branch</label>
+                        <label for="BranchId" class="form-label fw-semibold">🏢 @GlobalShared.Select_Branch</label>
                         @Html.DropDownListFor(m => m.branchId,
                             new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name"),
-                            "--- " + @GlobalUserManagement.SelectBranch + " ---",
+                            "--- " + GlobalShared.SelectBranch + " ---",
                             new
                                  {
                                 @class = "form-control select2",
@@ -113,10 +113,10 @@
 
                     <!-- AFFILIATE DROPDOWN -->
                     <div class="col-12 affiliate-dropdown @(isAffiliate ? "" : "d-none")">
-                        <label for="AffiliateId" class="form-label fw-semibold">👤 @AccountingV2.SelectAffiliate</label>
+                        <label for="AffiliateId" class="form-label fw-semibold">👤 @GlobalShared.Select_Affiliate</label>
                         @Html.DropDownListFor(m => m.affiliateId,
                             new SelectList(ViewBag.Affiliates ?? new List<SelectListItem>(), "Id", "Name"),
-                            "--- " + @AccountingV2.SearchAffiliate + " ---",
+                            "--- " + GlobalShared.Search_Affiliate + " ---",
                             new
                                  {
                                 @class = "form-control select2",
@@ -134,7 +134,7 @@
                         <div class="input-group">
                             <input type="file" name="file" id="file" class="form-control" required />
                             <button type="submit" class="btn btn-primary" id="btnSubmitUpload">
-                                <i class="mdi mdi-cloud-upload-outline me-1"></i> @ChequeManagements.UploadFile
+                                <i class="mdi mdi-cloud-upload-outline me-1"></i> @GlobalShared.Upload_File
                             </button>
                         </div>
                     </div>
@@ -146,21 +146,21 @@
                             @if (isAffiliate)
                             {
                                 <a id="affiliateTemplateLink" href="@Url.Action("AffiliateTemplate", "FileUpload")" class="btn btn-outline-primary">
-                                    <i class="mdi mdi-file-download-outline me-1"></i> Download MFI Template
+                                    <i class="mdi mdi-file-download-outline me-1"></i> @GlobalFileUpload.Download_MFI_Template
                                 </a>
 
                                 <a id="branchTemplateLink" href="@Url.Action("BranchAccountTemplate", "FileUpload")" class="btn btn-outline-primary d-none">
-                                    <i class="mdi mdi-file-download-outline me-1"></i> Download TryBalance Template
+                                    <i class="mdi mdi-file-download-outline me-1"></i> @GlobalFileUpload.Download_TryBalance_Template
                                 </a>
                             }
                             else
                             {
                                 <a id="branchTemplateLink" href="@Url.Action("BranchAccountTemplate", "FileUpload")" class="btn btn-outline-primary">
-                                    <i class="mdi mdi-file-download-outline me-1"></i> Download TryBalance Template
+                                    <i class="mdi mdi-file-download-outline me-1"></i> @GlobalFileUpload.Download_TryBalance_Template
                                 </a>
 
                                 <a id="affiliateTemplateLink" href="@Url.Action("AffiliateTemplate", "FileUpload")" class="btn btn-outline-primary d-none">
-                                    <i class="mdi mdi-file-download-outline me-1"></i> Download MFI Template
+                                    <i class="mdi mdi-file-download-outline me-1"></i> @GlobalFileUpload.Download_MFI_Template
                                 </a>
                             }
                         </div>

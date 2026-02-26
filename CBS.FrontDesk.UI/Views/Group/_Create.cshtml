@@ -19,9 +19,9 @@
 
                                 <div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.GroupTypeId, new SelectList(ViewBag.GroupTypes, "GroupTypeId", "GroupTypeName"), "---"+ @GlobalGroup.SelectGroupType +"---", new { @class = "form-control select2" })
+                                        @Html.DropDownListFor(m => m.GroupTypeId, new SelectList(ViewBag.GroupTypes, "GroupTypeId", "GroupTypeName"), "---"+ GlobalShared.Select_Group_Type +"---", new { @class = "form-control select2" })
                                         @Html.ValidationMessageFor(m => m.GroupTypeId, "", new { @class = "text-danger" })
-                                        <label>@GlobalGroup.SelectGroupType</label>
+                                        <label>@GlobalShared.Select_Group_Type</label>
                                     </div>
                                 </div>
 
@@ -83,7 +83,7 @@
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.Phone, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.Phone, "", new { @class = "text-danger" })
-                                        <label>@GlobalGroup.PhoneNumber</label>
+                                        <label>@GlobalShared.Phone_Number</label>
                                     </div>
                                 </div>
 
@@ -91,7 +91,7 @@
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.IDNumber, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.IDNumber, "", new { @class = "text-danger" })
-                                        <label>@GlobalGroup.NationalIDNumber</label>
+                                        <label>@GlobalShared.National_ID_Number</label>
                                     </div>
                                 </div>
 
@@ -107,7 +107,7 @@
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.IDNumberIssueAt, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.IDNumberIssueAt, "", new { @class = "text-danger" })
-                                        <label>@GlobalGroup.PlaceOfIssue</label>
+                                        <label>@GlobalShared.PlaceOfIssue</label>
                                     </div>
                                 </div>
 
@@ -133,10 +133,10 @@
                                     <div class="form-floating form-floating-outline">
                                         @Html.DropDownListFor(m => m.CountryId,
                                             new SelectList(ViewBag.Countries, "Id", "Name"),
-                                            "---"+ @GlobalGroup.SelectCountry+"---",
+                                            "---"+ GlobalShared.Select_Country+"---",
                                             new { @class = "form-control select2", @id = "CountryId", @required = "required" })
                                         @Html.ValidationMessageFor(m => m.CountryId, "", new { @class = "text-danger" })
-                                        <label for="CountryId">@GlobalGroup.Country</label>
+                                        <label for="CountryId">@GlobalShared.Country</label>
                                     </div>
                                 </div>
 
@@ -144,10 +144,10 @@
                                     <div class="form-floating form-floating-outline">
                                         @Html.DropDownListFor(m => m.RegionId,
                                             new SelectList(ViewBag.Regions, "Id", "Name"),
-                                            "---"+ @GlobalGroup.SelectRegion+"---",
+                                            "---"+ GlobalShared.Select_Region+"---",
                                             new { @class = "form-control select2", @id = "RegionId", @required = "required" })
                                         @Html.ValidationMessageFor(m => m.RegionId, "", new { @class = "text-danger" })
-                                        <label for="RegionId">@GlobalGroup.Region</label>
+                                        <label for="RegionId">@GlobalShared.Region</label>
                                     </div>
                                 </div>
 
@@ -155,10 +155,10 @@
                                     <div class="form-floating form-floating-outline">
                                         @Html.DropDownListFor(m => m.DivisionId,
                                             new SelectList(ViewBag.Divisions, "Id", "Name"),
-                                            "---"+ @GlobalGroup.SelectDivision+"---",
+                                            "---"+ GlobalShared.Select_Division+"---",
                                             new { @class = "form-control select2", @id = "DivisionId", @required = "required" })
                                         @Html.ValidationMessageFor(m => m.DivisionId, "", new { @class = "text-danger" })
-                                        <label for="DivisionId">@GlobalGroup.Division</label>
+                                        <label for="DivisionId">@GlobalShared.Division</label>
                                     </div>
                                 </div>
 
@@ -166,10 +166,10 @@
                                     <div class="form-floating form-floating-outline">
                                         @Html.DropDownListFor(m => m.SubDivisionId,
                                             new SelectList(ViewBag.SubDivisions, "Id", "Name"),
-                                            "---"+ @GlobalGroup.SelectSubDivision+"---",
+                                            "---"+ GlobalShared.Select_Sub_Division+"---",
                                             new { @class = "form-control select2", @id = "SubDivisionId", @required = "required" })
                                         @Html.ValidationMessageFor(m => m.SubDivisionId, "", new { @class = "text-danger" })
-                                        <label for="SubDivisionId">@GlobalGroup.SubDivision</label>
+                                        <label for="SubDivisionId">@GlobalShared.SubDivision</label>
                                     </div>
                                 </div>
 
@@ -177,10 +177,10 @@
                                     <div class="form-floating form-floating-outline">
                                         @Html.DropDownListFor(m => m.TownId,
                                             new SelectList(ViewBag.Towns, "Id", "Name"),
-                                            "---"+ @GlobalGroup.SelectTown +"---",
+                                            "---"+ GlobalShared.Select_Town +"---",
                                             new { @class = "form-control select2", @id = "TownId", @required = "required" })
                                         @Html.ValidationMessageFor(m => m.TownId, "", new { @class = "text-danger" })
-                                        <label for="TownId">@GlobalGroup.Town</label>
+                                        <label for="TownId">@GlobalShared.Town</label>
                                     </div>
                                 </div>
 
@@ -188,7 +188,7 @@
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
-                                        <label>@GlobalGroup.Email</label>
+                                        <label>@GlobalShared.Email</label>
                                     </div>
                                 </div>
 
@@ -246,7 +246,7 @@
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.Occupation, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.Occupation, "", new { @class = "text-danger" })
-                                        <label>@GlobalGroup.Occupation</label>
+                                        <label>@GlobalShared.Occupation</label>
                                     </div>
                                 </div>
 
@@ -260,7 +260,7 @@
 
                                 <div class="col-md-9">
                                     <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.FormalOrInformalSector, new SelectList(ViewBag.formalOrInformalSectors, "Text", "Value"), "---"+ @GlobalGroup.SelectSector +"---", new { @class = "form-control select2" })
+                                        @Html.DropDownListFor(m => m.FormalOrInformalSector, new SelectList(ViewBag.formalOrInformalSectors, "Text", "Value"), "---"+ GlobalShared.Select_Sector +"---", new { @class = "form-control select2" })
                                         @Html.ValidationMessageFor(m => m.FormalOrInformalSector, "", new { @class = "text-danger" })
                                         <label>@GlobalGroup.FormalInformalSector</label>
                                     </div>
