@@ -18,10 +18,11 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         [Required]
         public decimal Amount { get; set; }
         public string CollateralCategory { get; set; }
-        public string Venalvalue { get; set; }
-        public string Marketvalue  { get; set; }
+        public int Venalvalue { get; set; }
+        public int Marketvalue  { get; set; }
         public string Location { get; set; }
         public string Address { get; set; }
+        public string NameOfPersonInvolved { get; set; }
         public string Reference { get; set; }
         public virtual LoanProductCollateral LoanProductCollateral { get; set; }
         public virtual LoanApplication LoanApplication { get; set; }

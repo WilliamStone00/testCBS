@@ -686,6 +686,12 @@
       <DependentUpon>LoanRepaymentRPT.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="AppFiles\Reporting\Transactions\UpdatedStatement\Loan\GeneralLoanReportRPT.cs">
+      <DependentUpon>GeneralLoanReportRPT.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="AppFiles\Reporting\Transactions\UpdatedStatement\Loan\LoanSituationRPT.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -7865,6 +7871,10 @@
     <EmbeddedResource Include="AppFiles\Reporting\Transactions\UpdatedStatement\Loan\LoanRepaymentRPT.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>LoanRepaymentRPT1.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Transactions\UpdatedStatement\Loan\GeneralLoanReportRPT.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>GeneralLoanReportRPT.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\Transactions\UpdatedStatement\Loan\LoanSituationRPT.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

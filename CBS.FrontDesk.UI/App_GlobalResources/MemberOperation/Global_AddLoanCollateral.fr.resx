@@ -141,6 +141,9 @@
   <data name="Marketvalue" xml:space="preserve">
     <value>Valeur marchande</value>
   </data>
+  <data name="NameOfPersonInvolved" xml:space="preserve">
+    <value>Nom de la personne impliquée</value>
+  </data>
   <data name="NoLoanCollateralAdded" xml:space="preserve">
     <value>Aucune garantie de prêt n'a été ajouté</value>
   </data>

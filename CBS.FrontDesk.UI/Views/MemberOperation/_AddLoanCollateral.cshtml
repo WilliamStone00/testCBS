@@ -95,11 +95,18 @@
                         <label>@Global_AddLoanCollateral.Address</label>
                     </div>
                 </div>
-                <div class="col-md-12">
+                <div class="col-md-6">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.LoanCollatera.Reference, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.LoanCollatera.Reference, "", new { @class = "text-danger" })
                         <label>@Global_AddLoanCollateral.Reference</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.LoanCollatera.NameOfPersonInvolved, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.LoanCollatera.NameOfPersonInvolved, "", new { @class = "text-danger" })
+                        <label>@Global_AddLoanCollateral.NameOfPersonInvolved</label>
                     </div>
                 </div>
 
