@@ -9,10 +9,10 @@
         <div class="card bg-light mb-2 p-2">
             <div class="card-body text-center py-2">
                 <h1 class="card-title text-primary mb-1">
-                    <i class="mdi mdi-account-group me-2"></i>Reconciliation Listing
+                    <i class="mdi mdi-account-group me-2"></i>@GlobalFileListing.Reconciliation_Listing
                 </h1>
                 <p class="card-text small mb-1">
-                    @AccountingV2.AffiliateManagementtext
+                    @GlobalFileListing.Filter_and_manage_affiliates_search_by_code_name_status_and_creation_date
                 </p>
                 <hr style="border: 1px solid rgba(128, 128, 128, 0.35);" />
             </div>
@@ -23,7 +23,7 @@
 <!-- Tips -->
 <div class="card mb-2">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary py-1">
-        <span class="small"><i class="mdi mdi-information-outline me-2"></i> @AccountingV2.Tips</span>
+        <span class="small"><i class="mdi mdi-information-outline me-2"></i> @GlobalShared.Tips</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAffiliateTips" aria-expanded="false" aria-controls="collapseAffiliateTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -32,10 +32,10 @@
     <div id="collapseAffiliateTips" class="collapse">
         <div class="card-body small py-2">
             <ul class="mb-0">
-                <li class="mb-1"><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>@AccountingV2.Code:</strong> @AccountingV2.codetext</li>
-                <li class="mb-1"><i class="mdi mdi-account-box-multiple-outline text-primary me-2"></i> <strong>@AccountingV2.Name:</strong> @AccountingV2.Nametext</li>
-                <li class="mb-1"><i class="mdi mdi-filter-outline text-secondary me-2"></i> <strong>@AccountingV2.Status:</strong> @AccountingV2.Statustext</li>
-                <li><i class="mdi mdi-calendar-range text-info me-2"></i> <strong>@AccountingV2.CreatedDates:</strong> @AccountingV2.CreatedDatestext</li>
+                <li class="mb-1"><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>@GlobalShared.Code:</strong> @GlobalFileListing.Use_full_or_partial_affiliate_code_for_quick_lookup</li>
+                <li class="mb-1"><i class="mdi mdi-account-box-multiple-outline text-primary me-2"></i> <strong>@GlobalShared.Name:</strong> @GlobalFileListing.Matches_against_affiliate_name</li>
+                <li class="mb-1"><i class="mdi mdi-filter-outline text-secondary me-2"></i> <strong>@GlobalShared.Status:</strong> @GlobalFileListing.Choose_All_Active_Inactive_All_will_not_filter_by_active_state</li>
+                <li><i class="mdi mdi-calendar-range text-info me-2"></i> <strong>@GlobalShared.Created_Dates:</strong> @GlobalFileListing.Toggle_date_filters_to_limit_by_creation_range</li>
             </ul>
         </div>
     </div>
@@ -44,7 +44,7 @@
 <!-- Filters (rearranged, compact spacing) -->
 <div class="card shadow p-2 mb-3">
     <h5 class="text-primary mb-2 small">
-        <i class="mdi mdi-filter-outline me-1"></i> Filters
+        <i class="mdi mdi-filter-outline me-1"></i> @GlobalShared.Filters
     </h5>
 
     <form id="affiliateFilterForm" autocomplete="off" method="get" action="@Url.Action("Index")" class="mb-0">
@@ -57,28 +57,28 @@
                     @Html.DropDownListFor(
                         m => m.BranchId,
                         new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name"),
-                        "--- " + @GlobalUserManagement.SelectBranch + " ---",
+                        "--- " + GlobalShared.SelectBranch + " ---",
                         new { @class = "form-select select2 form-select-sm", id = "BranchId", @aria_label = "Branch" })
                     @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger small" })
                 </div>
 
                 <!-- Category label above (full width) -->
                 <div class="col-md-6">
-                    <label class="form-label fw-bold small mb-1" for="Category">Category</label>
+                    <label class="form-label fw-bold small mb-1" for="Category">@GlobalShared.Category</label>
                     <select id="Category" name="Category" class="form-select select2 form-select-sm">
-                        <option value="">@AccountingV2.All</option>
-                        <option value="Branch">Branch</option>
-                        <option value="Affiliate">Affiliate</option>
+                        <option value="">@GlobalShared.All</option>
+                        <option value="Branch">@GlobalShared.Branch</option>
+                        <option value="Affiliate">@GlobalShared.Affiliate</option>
                     </select>
                 </div>
 
                 <!-- Status (half width) -->
                 <div class="col-md-6">
-                    <label class="form-label fw-bold small mb-1" for="Status">@AccountingV2.Status</label>
+                    <label class="form-label fw-bold small mb-1" for="Status">@GlobalShared.Status</label>
                     <select id="Status" name="Status" class="form-select select2 form-select-sm">
-                        <option value="">@AccountingV2.All</option>
-                        <option value="Pending">Pending</option>
-                        <option value="Approved">Approved</option>
+                        <option value="">@GlobalShared.All</option>
+                        <option value="Pending">@GlobalShared.Pending</option>
+                        <option value="Approved">@GlobalShared.Approved</option>
                     </select>
                 </div>
 
@@ -86,9 +86,9 @@
                 <div class="col-md-6 d-flex align-items-center">
                     <div class="form-check me-2">
                         <input class="form-check-input" type="checkbox" id="toggleCreatedDates" />
-                        <label class="form-check-label small" for="toggleCreatedDates">@AccountingV2.ShowCreatedDateFilters</label>
+                        <label class="form-check-label small" for="toggleCreatedDates">@GlobalShared.Show_Created_Date_Filters</label>
                     </div>
-                    <small class="text-muted ms-auto">@AccountingV2.Affiliatetext1</small>
+                    <small class="text-muted ms-auto">@GlobalFileListing.Dates_are_treated_as_UTC</small>
                 </div>
             </div>
 
@@ -96,11 +96,11 @@
             <div id="createdDateFilters" class="d-none">
                 <div class="row mb-2 g-1">
                     <div class="col-md-6">
-                        <label class="form-label small mb-1" for="CreatedFromUtc">@AccountingV2.CreatedFrom (UTC)</label>
+                        <label class="form-label small mb-1" for="CreatedFromUtc">@GlobalShared.Created_From (UTC)</label>
                         <input type="date" id="CreatedFromUtc" name="CreatedFromUtc" class="form-control form-control-sm" />
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label small mb-1" for="CreatedToUtc">@AccountingV2.CreatedTo (UTC)</label>
+                        <label class="form-label small mb-1" for="CreatedToUtc">@GlobalShared.Created_To (UTC)</label>
                         <input type="date" id="CreatedToUtc" name="CreatedToUtc" class="form-control form-control-sm" />
                     </div>
                 </div>
@@ -110,12 +110,12 @@
         <div class="row g-1">
             <div class="col-md-6 pe-1">
                 <button id="applyAffiliateFilterBtn" type="button" class="btn btn-primary btn-sm w-100">
-                    <i class="mdi mdi-magnify"></i> @AccountingV2.ApplyFilter
+                    <i class="mdi mdi-magnify"></i> @GlobalShared.Apply_Filter
                 </button>
             </div>
             <div class="col-md-6 ps-1">
                 <button id="resetAffiliateFilterBtn" type="button" class="btn btn-secondary btn-sm w-100">
-                    <i class="mdi mdi-refresh"></i> @AccountingV2.Reset
+                    <i class="mdi mdi-refresh"></i> @GlobalShared.Reset
                 </button>
             </div>
         </div>
@@ -136,7 +136,7 @@
             </div>
             <div class="modal-body"><!-- AJAX injects here --></div>
             <div class="modal-footer py-1">
-                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">@GlobalShared.Close</button>
             </div>
         </div>
     </div>

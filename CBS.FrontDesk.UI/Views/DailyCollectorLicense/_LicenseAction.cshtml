@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorLicense.LicenseActionRequest
-
+@using Resources
 @{
     var actionType = (Model.ActionType ?? "").ToLowerInvariant();
 
@@ -58,21 +58,21 @@
         {
             <div class="alert alert-danger">
                 <i class="mdi mdi-alert-circle-outline me-2"></i>
-                <strong>Warning:</strong> This action cannot be undone. The license will be immediately invalidated.
+                <strong>@GlobalShared.Warning:</strong> @GlobalDailyCollectorLicense.This_action_cannot_be_undone_The_license_will_be_immediately_invalidated
             </div>
         }
         else if (actionType == "deactivate")
         {
             <div class="alert alert-warning">
                 <i class="mdi mdi-alert-outline me-2"></i>
-                <strong>Note:</strong> This will temporarily deactivate the license. It can be reactivated later.
+                <strong>@GlobalShared.Note:</strong> @GlobalDailyCollectorLicense.This_will_temporarily_deactivate_the_license_It_can_be_reactivated_later
             </div>
         }
         else if (actionType == "extend")
         {
             <div class="alert alert-info">
                 <i class="mdi mdi-information-outline me-2"></i>
-                <strong>Info:</strong> Extend the license validity period.
+                <strong>@GlobalShared.Info:</strong> @GlobalDailyCollectorLicense.Extend_the_license_validity_period
             </div>
         }
 
@@ -93,7 +93,7 @@
 
         <div class="card-body">
             <div class="mb-3">
-                <label class="form-label fw-bold">Collector User Name</label>
+                <label class="form-label fw-bold">@GlobalDailyCollectorLicense.Collector_User_Name</label>
                 @Html.TextBoxFor(m => m.CollectorUserName, new
                 {
                     @class = "form-control",
@@ -107,7 +107,7 @@
                 @if (actionType == "extend")
                 {
                     <div class="col-12">
-                        <label class="form-label fw-bold">New Expiry Date *</label>
+                        <label class="form-label fw-bold">@GlobalShared.New_Expiry_Date *</label>
                         <input type="datetime-local" name="NewExpiryDate" class="form-control" required
                                min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" />
                         @Html.ValidationMessageFor(m => m.NewExpiryDate, "", new { @class = "text-danger small" })
@@ -147,7 +147,7 @@
         </div>
 
         <div class="card-footer bg-transparent d-flex justify-content-end">
-            <button type="button" class="btn btn-light me-2" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-light me-2" data-bs-dismiss="modal">@GlobalShared.Cancel</button>
             <button type="submit" class="btn @buttonClass">
                 <i class="mdi @icon me-1"></i> @buttonText
             </button>

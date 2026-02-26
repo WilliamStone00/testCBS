@@ -1,4 +1,5 @@
-﻿using CBS.FrontDesk.Data.Entity.Config;
+﻿using BusinessServices;
+using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using ClosedXML.Excel;
 using System;
@@ -9,678 +10,670 @@ using System.Web;
 
 namespace CBS.FrontDesk.UI.Helper
 {
-    public static class LoanExcelGenerator
+    using System;
+    using System.Collections.Generic;
+    using System.Drawing;
+    using System.Linq;
+    using System.IO;
+    using OfficeOpenXml;
+    using OfficeOpenXml.Style;
+
+    public class LoanExcelGenerator : BaseService
     {
-        public static ExportFileResult GenerateLoanExcelx(List<Loan> loanDetails, string branchName, string exportedBy, string fileTitle, string dateFrom, string dateTo)
+        // -----------------------------------------------------------------------
+        // MAIN GENERATION METHOD
+        // -----------------------------------------------------------------------
+        public void GenerateLoanExcel(
+            List<Loan> loanDetails,
+            string filePath,
+            string exportedBy,
+            string fileTitle,
+            GetLoansDataTableQuery tableQuery)
         {
-            using (var workbook = new XLWorkbook())
+            string bank = GetBankName();
+            string branchCode = GetBranchCode();
+            string branchId = GetBranchID();
+            string branchName = GetBranchName();
+
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            using (var package = new ExcelPackage())
             {
-                var worksheet = workbook.Worksheets.Add("Loan Analysis");
+                // ===== SHEET 1: SUMMARY & OVERVIEW =====
+                CreateSummarySheet(package, loanDetails, bank, branchCode, branchId, branchName,
+                    exportedBy, fileTitle, tableQuery);
 
-                // Title with File Title
-                worksheet.Cell(1, 1).Value = $"{fileTitle.ToUpper()} - LOAN ANALYSIS FOR {branchName.ToUpper()}";
-                worksheet.Cell(1, 1).Style.Font.Bold = true;
-                worksheet.Cell(1, 1).Style.Font.FontSize = 14;
-                worksheet.Range(1, 1, 1, 45).Merge();
-                worksheet.Cell(1, 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                // ===== SHEET 2: BRANCH SUMMARY =====
+                CreateBranchSummarySheet(package, loanDetails, exportedBy, fileTitle, tableQuery);
 
-                // Export Details with Date Range
-                worksheet.Cell(2, 1).Value = $"Date Range: {dateFrom} - {dateTo}";
-                worksheet.Cell(2, 1).Style.Font.Italic = true;
-                worksheet.Cell(2, 1).Style.Font.FontSize = 10;
-                worksheet.Range(2, 1, 2, 45).Merge();
-                worksheet.Cell(2, 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                // ===== SHEET 3: LOAN DETAILS =====
+                CreateLoanDetailsSheet(package, loanDetails, exportedBy, fileTitle, tableQuery);
 
-                worksheet.Cell(3, 1).Value = $"Export Date: {DateTime.Now} BY {exportedBy}";
-                worksheet.Cell(3, 1).Style.Font.Italic = true;
-                worksheet.Cell(3, 1).Style.Font.FontSize = 10;
-                worksheet.Range(3, 1, 3, 45).Merge();
-                worksheet.Cell(3, 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
-
-                // Summary Table
-                worksheet.Cell(5, 1).Value = "Summary Table";
-                worksheet.Cell(5, 1).Style.Font.Bold = true;
-                worksheet.Range(5, 1, 5, 6).Merge();
-                worksheet.Cell(5, 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
-
-                var totalLoans = loanDetails.Count;
-                var totalLoanVolume = loanDetails.Sum(l => l.LoanAmount);
-                var totalRepayment = loanDetails.Sum(l => l.Paid);
-                var totalBalance = loanDetails.Sum(l => l.Balance);
-                var totalDueAmount = loanDetails.Sum(l => l.DueAmount);
-                var percentageRefund = (totalRepayment / (totalLoanVolume > 0 ? totalLoanVolume : 1)) * 100;
-
-                worksheet.Cell(6, 1).Value = "Total Loans (Number)";
-                worksheet.Cell(6, 2).Value = totalLoans;
-
-                worksheet.Cell(7, 1).Value = "Total Loans (Volume)";
-                worksheet.Cell(7, 2).Value = totalLoanVolume;
-                worksheet.Cell(7, 2).Style.NumberFormat.Format = "#,##0.0";
-
-                worksheet.Cell(8, 1).Value = "Total Repayment (Volume)";
-                worksheet.Cell(8, 2).Value = totalRepayment;
-                worksheet.Cell(8, 2).Style.NumberFormat.Format = "#,##0.0";
-
-                worksheet.Cell(9, 1).Value = "Total Balance (Volume)";
-                worksheet.Cell(9, 2).Value = totalBalance;
-                worksheet.Cell(9, 2).Style.NumberFormat.Format = "#,##0.0";
-
-                worksheet.Cell(10, 1).Value = "Total Due Amount (Volume)";
-                worksheet.Cell(10, 2).Value = totalDueAmount;
-                worksheet.Cell(10, 2).Style.NumberFormat.Format = "#,##0.0";
-
-                worksheet.Cell(11, 1).Value = "Percentage Refund";
-                worksheet.Cell(11, 2).Value = percentageRefund;
-                worksheet.Cell(11, 2).Style.NumberFormat.Format = "0.00%";
-
-                // Headers
-                var headers = new[]
-                 {
-                    "Loan Reference", "Customer Name", "Customer Reference", "Loan Date", "Loan Amount", "Interest Rate (%)",
-                    "Interest Forcasted", "Accrual Interest", "Last Interest Calculated Date", "VAT Interest", "VAT",
-                    "Penalty", "Paid", "Balance", "Loan Duration", "Maturity Date", "Due Amount", "AccountNumber",
-                    "BranchCode", "LastPayment", "Last Refund Date", "Loan Manager", "Advanced Payment Days",
-                    "Advanced Payment Amount", "Deliquent Days", "Deliquent Interest", "Deliquent Amount",
-                    "Last Deliquecy Processed Date", "Deliquent Status", "LoanType", "Interest Amount Upfront",
-                    "Savings", "OShares", "PShares", "Deposit", "Salary", "Shortee", "Co Obligor",
-                    "Co Operation Gurantor", "Other Guarantee Fund", "Total Fund Guranteed",
-                    "Percentage Of Liquidity Coverage", "Percentage Of Collateral Coverage",
-                    "Percentage Of Over All Coverage", "Coverage Status"
-                };
-
-
-                for (int i = 0; i < headers.Length; i++)
-                {
-                    worksheet.Cell(13, i + 1).Value = headers[i];
-                    worksheet.Cell(13, i + 1).Style.Font.Bold = true;
-                    worksheet.Cell(13, i + 1).Style.Fill.BackgroundColor = XLColor.LightGray;
-                    worksheet.Cell(13, i + 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
-                    worksheet.Cell(13, i + 1).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-                    worksheet.Cell(13, i + 1).Style.Border.OutsideBorderColor = XLColor.Black;
-                }
-
-                // Grouping, Ordering, and Data Population
-                int currentRow = 14;
-
-                foreach (var group in loanDetails
-                             .GroupBy(l => new { l.LoanType, l.DeliquentStatus })
-                             .OrderBy(g => g.Key.LoanType)
-                             .ThenBy(g => g.Key.DeliquentStatus))
-                {
-                    worksheet.Cell(currentRow, 1).Value = $"Loan Type: {group.Key.LoanType}, Delinquency Status: {group.Key.DeliquentStatus}";
-                    worksheet.Cell(currentRow, 1).Style.Font.Bold = true;
-                    worksheet.Range(currentRow, 1, currentRow, 45).Merge();
-                    currentRow++;
-
-                    foreach (var loan in group.OrderBy(l => l.LoanDate))
-                    {
-                        decimal totalCoveredAmount = loan.Savings + loan.OShares + loan.PShares + loan.Deposit + loan.Salary +
-                                                  loan.Shortee + loan.Co_Obligor + loan.Co_OperationGurantor + loan.OtherGuaranteeFund;
-
-                        decimal overallCoveragePercentage = (loan.DueAmount > 0) ? (totalCoveredAmount / loan.DueAmount) * 100 : 0;
-                        string coverageStatus = overallCoveragePercentage >= 100 ? "Covered" : "Not Covered";
-
-                        worksheet.Cell(currentRow, 1).Value = loan.Id;
-                        worksheet.Cell(currentRow, 2).Value = loan.CustomerName;
-                        worksheet.Cell(currentRow, 3).Value = loan.CustomerId;
-                        worksheet.Cell(currentRow, 4).Value = loan.LoanDate.ToString("dd/MM/yyyy, hh:mm:ss");
-                        worksheet.Cell(currentRow, 5).Value = loan.LoanAmount;
-                        worksheet.Cell(currentRow, 6).Value = loan.InterestRate;
-                        worksheet.Cell(currentRow, 7).Value = loan.InterestForcasted;
-                        worksheet.Cell(currentRow, 8).Value = loan.AccrualInterest;
-                        worksheet.Cell(currentRow, 9).Value = loan.LastInterestCalculatedDate.ToString("dd/MM/yyyy, hh:mm:ss");
-                        worksheet.Cell(currentRow, 10).Value = loan.Tax;
-                        worksheet.Cell(currentRow, 11).Value = loan.VatRate;
-                        worksheet.Cell(currentRow, 12).Value = loan.Penalty;
-                        worksheet.Cell(currentRow, 13).Value = loan.Paid;
-                        worksheet.Cell(currentRow, 14).Value = loan.Balance;
-                        worksheet.Cell(currentRow, 15).Value = loan.LoanDuration;
-                        worksheet.Cell(currentRow, 16).Value = loan.MaturityDate.ToString("dd/MM/yyyy, hh:mm:ss");
-                        worksheet.Cell(currentRow, 17).Value = loan.DueAmount;
-                        worksheet.Cell(currentRow, 18).Value = loan.AccountNumber;
-                        worksheet.Cell(currentRow, 19).Value = loan.BranchCode;
-                        worksheet.Cell(currentRow, 20).Value = loan.LastPayment;
-                        worksheet.Cell(currentRow, 21).Value = loan.LastRefundDate.ToString("dd/MM/yyyy, hh:mm:ss");
-                        worksheet.Cell(currentRow, 22).Value = loan.LoanManager;
-                        worksheet.Cell(currentRow, 23).Value = loan.AdvancedPaymentDays;
-                        worksheet.Cell(currentRow, 24).Value = loan.AdvancedPaymentAmount;
-                        worksheet.Cell(currentRow, 25).Value = loan.DeliquentDays;
-                        worksheet.Cell(currentRow, 26).Value = loan.DeliquentInterest;
-                        worksheet.Cell(currentRow, 27).Value = loan.DeliquentAmount;
-                        worksheet.Cell(currentRow, 28).Value = loan.LastDeliquecyProcessedDate?.ToString("dd/MM/yyyy, hh:mm:ss");
-                        worksheet.Cell(currentRow, 29).Value = loan.DeliquentStatus;
-                        worksheet.Cell(currentRow, 30).Value = loan.LoanType;
-                        worksheet.Cell(currentRow, 31).Value = loan.InterestAmountUpfront;
-                        worksheet.Cell(currentRow, 32).Value = loan.Savings;
-                        worksheet.Cell(currentRow, 33).Value = loan.OShares;
-                        worksheet.Cell(currentRow, 34).Value = loan.PShares;
-                        worksheet.Cell(currentRow, 35).Value = loan.Deposit;
-                        worksheet.Cell(currentRow, 36).Value = loan.Salary;
-                        worksheet.Cell(currentRow, 37).Value = loan.Shortee;
-                        worksheet.Cell(currentRow, 38).Value = loan.Co_Obligor;
-                        worksheet.Cell(currentRow, 39).Value = loan.Co_OperationGurantor;
-                        worksheet.Cell(currentRow, 40).Value = loan.OtherGuaranteeFund;
-                        worksheet.Cell(currentRow, 41).Value = totalCoveredAmount;
-                        worksheet.Cell(currentRow, 42).Value = loan.PercentageOfLiquidityCoverage;
-                        worksheet.Cell(currentRow, 43).Value = loan.PercentageOfCollateralCoverage;
-                        worksheet.Cell(currentRow, 44).Value = overallCoveragePercentage;
-                        worksheet.Cell(currentRow, 45).Value = coverageStatus;
-
-                        // Apply styles for current row
-                        for (int col = 1; col <= 45; col++)
-                        {
-                            worksheet.Cell(currentRow, col).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-                            worksheet.Cell(currentRow, col).Style.Border.OutsideBorderColor = XLColor.Black;
-                        }
-
-                        // Format currency and percentage cells
-                        worksheet.Cell(currentRow, 5).Style.NumberFormat.Format = "#,##0.0";  // Loan Amount
-                        worksheet.Cell(currentRow, 6).Style.NumberFormat.Format = "0.0";    // Interest Rate
-                        worksheet.Cell(currentRow, 17).Style.NumberFormat.Format = "#,##0.0"; // Due Amount
-                        worksheet.Cell(currentRow, 44).Style.NumberFormat.Format = "0.0";    // Overall Coverage
-
-                        currentRow++;
-                    }
-
-                    // Add Group Totals
-                    worksheet.Cell(currentRow, 1).Value = "Group Total:";
-                    worksheet.Cell(currentRow, 2).FormulaA1 = $"SUM({worksheet.Cell(14, 2).Address}:{worksheet.Cell(currentRow, 2)})";
-
-                    currentRow++;
-                }
-
-                using (var stream = new MemoryStream())
-                {
-                    workbook.SaveAs(stream);
-                    return new ExportFileResult
-                    {
-                        Content = stream.ToArray(),
-                        ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                        FileName = $"{fileTitle.Replace(" ", "_")}_LoanAnalysis_{DateTime.Now:yyyyMMddHHmmss}.xlsx"
-                    };
-                }
-            }
-        }
-
-        public static ExportFileResult GenerateLoanExcel(List<Loan> loanDetails, Branch branch, string exportedBy, string fileTitle, string dateFrom, string dateTo)
-        {
-            using (var workbook = new XLWorkbook())
-            {
-                var worksheet = workbook.Worksheets.Add("Loan Analysis");
-                string period = dateFrom==string.Empty ? $"ALL-LOANS FROM {(branch?.Name?.ToUpper() ?? "ALL BRANCH")}" : $"{dateFrom} - {dateTo}";
-                // Title with File Title
-                worksheet.Cell(1, 1).Value = $"{fileTitle.ToUpper()} - LOAN ANALYSIS FOR {(branch?.Name?.ToUpper() ?? "ALL BRANCH")}";
-                worksheet.Cell(1, 1).Style.Font.Bold = true;
-                worksheet.Cell(1, 1).Style.Font.FontSize = 14;
-                worksheet.Range(1, 1, 1, 46).Merge();
-                worksheet.Cell(1, 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
-                worksheet.Cell(1, 1).Style.Font.FontName = "Bahnschrift Light";
-                worksheet.Cell(1, 1).Style.Font.FontSize = 14;
-                // Export Details with Date Range
-                worksheet.Cell(2, 1).Value = $"Date Range: {period}";
-                worksheet.Cell(2, 1).Style.Font.Italic = false;
-                worksheet.Cell(2, 1).Style.Font.FontSize = 10;
-                worksheet.Cell(1, 1).Style.Font.FontName = "Bahnschrift Light";
-                worksheet.Range(2, 1, 2, 46).Merge();
-                worksheet.Cell(2, 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
-
-                worksheet.Cell(3, 1).Value = $"Export Date: {DateTime.Now} BY {exportedBy}";
-                worksheet.Cell(3, 1).Style.Font.Italic = false;
-                worksheet.Cell(3, 1).Style.Font.FontSize = 10;
-                worksheet.Cell(1, 1).Style.Font.FontName = "Bahnschrift Light";
-                worksheet.Range(3, 1, 3, 46).Merge();
-                worksheet.Cell(3, 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
-
-
-                // Summary Title
-                worksheet.Cell(5, 1).Value = "SUMMARY";
-                worksheet.Cell(5, 1).Style.Font.Bold = true;
-                worksheet.Cell(5, 1).Style.Fill.BackgroundColor = XLColor.Chocolate;
-                worksheet.Cell(5, 1).Style.Font.FontColor = XLColor.White;
-                worksheet.Cell(1, 1).Style.Font.FontName = "Bahnschrift Light";
-                worksheet.Range(5, 1, 5, 2).Merge();
-                worksheet.Cell(5, 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
-
-                // Summary Data
-                var totalLoans = loanDetails.Count;
-                var totalLoanVolume = loanDetails.Sum(l => l.LoanAmount);
-                var totalAccrualInterest = loanDetails.Sum(l => l.AccrualInterest);
-                var totalDeliquentInterest = loanDetails.Sum(l => l.DeliquentInterest);
-                var totalRepayment = loanDetails.Sum(l => l.Paid);
-                var totalBalance = loanDetails.Sum(l => l.Balance);
-                var totalDueAmount = loanDetails.Sum(l => l.DueAmount);
-                var percentageRefund = (totalRepayment / (totalLoanVolume > 0 ? totalLoanVolume : 1)) * 100;
-
-                // Summary Details with Borders
-                var summaryData = new (string Label, object Value, string NumberFormat)[]
-                {
-                    ("1. Number of Loans", totalLoans, "#,##0"),
-                    ("2. Volume of Loan", totalLoanVolume, "#,##0.0"),
-                    ("3. Volume of Accrual Interest", totalAccrualInterest, "#,##0.0"),
-                    ("4. Volume of Deliquent Interest", totalDeliquentInterest, "#,##0.0"),
-                    ("5. Volume of Refund", totalRepayment, "#,##0.0"),
-                    ("6. Percentage of Refund", percentageRefund, "0.0"),
-                    ("7. Outstanding Balance", totalBalance, "#,##0.0"),
-                    ("8. Total Due Amount", totalDueAmount, "#,##0.0")
-                };
-
-                int currentRowx = 6;
-                foreach (var (label, value, format) in summaryData)
-                {
-                    
-                    worksheet.Cell(currentRowx, 1).Value = label;
-                    worksheet.Cell(currentRowx, 2).Value = Convert.ToDouble(value);  // Ensures consistent numeric format
-                    worksheet.Cell(currentRowx, 2).Style.NumberFormat.Format = format;
-                    worksheet.Cell(currentRowx, 2).Style.Font.Bold = true;
-                    // Apply borders to both cells
-                    worksheet.Range(currentRowx, 1, currentRowx, 2).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-                    worksheet.Range(currentRowx, 1, currentRowx, 2).Style.Border.OutsideBorderColor = XLColor.Black;
-
-                    currentRowx++;
-                }
-
-
-
-                // Headers
-                var headers = new[]
-                {
-                    "Loan Reference", "Member's Name", "Member's Reference", "Loan Date", "Loan Amount", "Interest Rate (%)",
-                    "Interest Forcasted", "Accrual Interest", "Last Interest Calculated Date", "VAT Amount", "VAT Rate",
-                    "Penalty", "Paid", "Balance", "Loan Duration (M)", "Maturity Date", "Due Amount", "Account Number",
-                    "Branch Code", "Last Payment", "Last Refund Date", "Loan Manager", "Advanced Payment Days",
-                    "Advanced Payment Amount", "Deliquent Days", "Deliquent Interest", "Deliquent Amount",
-                    "Last Deliquecy Processed Date", "Deliquent Status", "Loan Type", "Loan Category", "Interest Amount Upfront",
-                    "Savings", "OShares", "PShares", "Deposit", "Salary", "Shortee", "Co Obligor",
-                    "Co Operation Gurantor", "Other Guarantee Fund", "Total Fund Guranteed",
-                    "Percentage Of Liquidity Coverage", "Percentage Of Collateral Coverage",
-                    "Percentage Of Over All Coverage", "Coverage Status"
-                };
-        
-
-                for (int i = 0; i < headers.Length; i++)
-                {
-                    worksheet.Cell(15, i + 1).Value = headers[i];
-                    worksheet.Cell(15, i + 1).Style.Font.Bold = true;
-                    worksheet.Cell(15, i + 1).Style.Fill.BackgroundColor = XLColor.LightGray;
-                    worksheet.Cell(15, i + 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
-                    worksheet.Cell(15, i + 1).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-                    worksheet.Cell(15, i + 1).Style.Border.OutsideBorderColor = XLColor.Black;
-                    worksheet.Cell(15, i + 1).Style.Font.FontName = "Bahnschrift Light";
-                }
-
-                // Grouping, Ordering, and Data Population
-                int currentRow = 16;
-
-                foreach (var branchGroup in loanDetails
-                    .GroupBy(l => l.BranchCode)
-                    .OrderBy(g => g.Key))
-                {
-                    var branchName = loanDetails.FirstOrDefault(l => l.BranchCode == branchGroup.Key)?.BranchName ?? "Unknown";
-
-                    worksheet.Cell(currentRow, 1).Value = $"BRANCH: {branchName.ToUpper()}";
-                    worksheet.Cell(currentRow, 1).Style.Font.Bold = true;
-                    worksheet.Range(currentRow, 1, currentRow, 46).Merge();
-                    currentRow++;
-
-                    decimal branchLoanAmount = 0;
-                    decimal branchPaid = 0;
-                    decimal branchBalance = 0;
-                    decimal branchDueAmount = 0;
-
-                    foreach (var deliquentGroup in branchGroup.GroupBy(l => l.DeliquentStatus).OrderBy(g => g.Key))
-                    {
-                        worksheet.Cell(currentRow, 1).Value = $"  DELINQUENT STATUS: {deliquentGroup.Key?.ToUpper()}";
-                        worksheet.Cell(currentRow, 1).Style.Font.Bold = true;
-                        worksheet.Range(currentRow, 1, currentRow, 46).Merge();
-                        currentRow++;
-
-                        decimal groupLoanAmount = 0;
-                        decimal groupInterestForecasted = 0;
-                        decimal groupAccrualInterest = 0;
-                        decimal groupVAT = 0;
-                        decimal groupPenalty = 0;
-                        decimal groupPaid = 0;
-                        decimal groupBalance = 0;
-                        decimal groupDueAmount = 0;
-
-                        foreach (var loan in deliquentGroup.OrderBy(l => l.LoanDate))
-                        {
-                            decimal totalCoveredAmount = loan.Savings + loan.OShares + loan.PShares + loan.Deposit + loan.Salary +
-                                                         loan.Shortee + loan.Co_Obligor + loan.Co_OperationGurantor + loan.OtherGuaranteeFund;
-
-                            decimal overallCoveragePercentage = (loan.DueAmount > 0) ? (totalCoveredAmount / loan.DueAmount) * 100 : 0;
-                            string coverageStatus = overallCoveragePercentage >= 100 ? "Covered" : "Not Covered";
-
-                            worksheet.Cell(currentRow, 1).Value = loan.Id;
-                            worksheet.Cell(currentRow, 2).Value = loan.CustomerName;
-                            worksheet.Cell(currentRow, 3).Value = loan.CustomerId;
-                            worksheet.Cell(currentRow, 4).Value = loan.LoanDate.ToString("dd/MM/yyyy, hh:mm:ss");
-                            worksheet.Cell(currentRow, 5).Value = loan.LoanAmount;
-                            worksheet.Cell(currentRow, 6).Value = loan.InterestRate;
-                            worksheet.Cell(currentRow, 7).Value = loan.InterestForcasted;
-                            worksheet.Cell(currentRow, 8).Value = loan.AccrualInterest;
-                            worksheet.Cell(currentRow, 9).Value = loan.LastInterestCalculatedDate.ToString("dd/MM/yyyy, hh:mm:ss");
-                            worksheet.Cell(currentRow, 10).Value = loan.Tax;
-                            worksheet.Cell(currentRow, 11).Value = loan.VatRate;
-                            worksheet.Cell(currentRow, 12).Value = loan.Penalty;
-                            worksheet.Cell(currentRow, 13).Value = loan.Paid;
-                            worksheet.Cell(currentRow, 14).Value = loan.Balance;
-                            worksheet.Cell(currentRow, 15).Value = loan.LoanDuration;
-                            worksheet.Cell(currentRow, 16).Value = loan.MaturityDate.ToString("dd/MM/yyyy, hh:mm:ss");
-                            worksheet.Cell(currentRow, 17).Value = loan.DueAmount;
-                            worksheet.Cell(currentRow, 18).Value = loan.AccountNumber;
-                            worksheet.Cell(currentRow, 19).Value = loan.BranchCode;
-                            worksheet.Cell(currentRow, 20).Value = loan.LastPayment;
-                            worksheet.Cell(currentRow, 21).Value = loan.LastRefundDate.ToString("dd/MM/yyyy, hh:mm:ss");
-                            worksheet.Cell(currentRow, 22).Value = loan.LoanManager;
-                            worksheet.Cell(currentRow, 23).Value = loan.AdvancedPaymentDays;
-                            worksheet.Cell(currentRow, 24).Value = loan.AdvancedPaymentAmount;
-                            worksheet.Cell(currentRow, 25).Value = loan.DeliquentDays;
-                            worksheet.Cell(currentRow, 26).Value = loan.DeliquentInterest;
-                            worksheet.Cell(currentRow, 27).Value = loan.DeliquentAmount;
-                            worksheet.Cell(currentRow, 28).Value = loan.LastDeliquecyProcessedDate?.ToString("dd/MM/yyyy, hh:mm:ss");
-                            worksheet.Cell(currentRow, 29).Value = loan.DeliquentStatus;
-                            worksheet.Cell(currentRow, 30).Value = loan.LoanType;
-                            worksheet.Cell(currentRow, 31).Value = loan.LoanCategory;
-                            worksheet.Cell(currentRow, 32).Value = loan.InterestAmountUpfront;
-                            worksheet.Cell(currentRow, 33).Value = loan.Savings;
-                            worksheet.Cell(currentRow, 34).Value = loan.OShares;
-                            worksheet.Cell(currentRow, 35).Value = loan.PShares;
-                            worksheet.Cell(currentRow, 36).Value = loan.Deposit;
-                            worksheet.Cell(currentRow, 37).Value = loan.Salary;
-                            worksheet.Cell(currentRow, 38).Value = loan.Shortee;
-                            worksheet.Cell(currentRow, 39).Value = loan.Co_Obligor;
-                            worksheet.Cell(currentRow, 40).Value = loan.Co_OperationGurantor;
-                            worksheet.Cell(currentRow, 41).Value = loan.OtherGuaranteeFund;
-                            worksheet.Cell(currentRow, 42).Value = totalCoveredAmount;
-                            worksheet.Cell(currentRow, 43).Value = loan.PercentageOfLiquidityCoverage;
-                            worksheet.Cell(currentRow, 44).Value = loan.PercentageOfCollateralCoverage;
-                            worksheet.Cell(currentRow, 45).Value = overallCoveragePercentage;
-                            worksheet.Cell(currentRow, 46).Value = coverageStatus;
-
-                            for (int col = 1; col <= 46; col++)
-                            {
-                                worksheet.Cell(currentRow, col).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-                                worksheet.Cell(currentRow, col).Style.Border.OutsideBorderColor = XLColor.Black;
-                                worksheet.Cell(currentRow, col).Style.Font.FontName = "Bahnschrift Light";
-                                worksheet.Cell(currentRow, col).Style.NumberFormat.Format = "#,##0.0";
-                            }
-
-                            // Subtotal accumulation
-                            groupLoanAmount += loan.LoanAmount;
-                            groupPaid += loan.Paid;
-                            groupBalance += loan.Balance;
-                            groupDueAmount += loan.DueAmount;
-                            groupInterestForecasted += loan.InterestForcasted;
-                            groupAccrualInterest += loan.AccrualInterest;
-                            groupVAT += loan.Tax;
-                            groupPenalty += loan.Penalty;
-
-
-                            // Also accumulate for branch
-                            branchLoanAmount += loan.LoanAmount;
-                            branchPaid += loan.Paid;
-                            branchBalance += loan.Balance;
-                            branchDueAmount += loan.DueAmount;
-
-                            currentRow++;
-                        }
-
-                        // Delinquent group subtotal row
-                        worksheet.Cell(currentRow, 1).Value = "Subtotal:";
-                        worksheet.Cell(currentRow, 1).Style.Font.Bold = true;
-                        worksheet.Cell(currentRow, 5).Value = groupLoanAmount;
-                        worksheet.Cell(currentRow, 7).Value = groupInterestForecasted;
-                        worksheet.Cell(currentRow, 8).Value = groupAccrualInterest;
-                        worksheet.Cell(currentRow, 10).Value = groupVAT;
-                        worksheet.Cell(currentRow, 12).Value = groupPenalty;
-                        worksheet.Cell(currentRow, 13).Value = groupPaid;
-                        worksheet.Cell(currentRow, 14).Value = groupBalance;
-                        worksheet.Cell(currentRow, 17).Value = groupDueAmount;
-                        var summaryCols = new[] { 5, 7, 8, 10, 12, 13, 14, 17 };
-                        foreach (var col in summaryCols)
-                        {
-                            worksheet.Cell(currentRow, col).Style.NumberFormat.Format = "#,##0.0";
-                            worksheet.Cell(currentRow, col).Style.Font.Bold = true;
-                            worksheet.Cell(currentRow, col).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-                            worksheet.Cell(currentRow, col).Style.Border.OutsideBorderColor = XLColor.Black;
-                            worksheet.Cell(currentRow, col).Style.Font.FontName = "Bahnschrift Light";
-                        }
-
-
-                        for (int col = 1; col <= 46; col++)
-                        {
-                            worksheet.Cell(currentRow, col).Style.Font.Bold = true;
-                            worksheet.Cell(currentRow, col).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-                            worksheet.Cell(currentRow, col).Style.Font.FontName = "Bahnschrift Light";
-                            worksheet.Cell(currentRow, col).Style.NumberFormat.Format = "#,##0.0";
-                        }
-
-                        currentRow++;
-                    }
-
-                    // Branch total row
-                    worksheet.Cell(currentRow, 1).Value = "Branch Total:";
-                    worksheet.Cell(currentRow, 1).Style.Font.Bold = true;
-                    worksheet.Cell(currentRow, 5).Value = branchLoanAmount;
-                    worksheet.Cell(currentRow, 13).Value = branchPaid;
-                    worksheet.Cell(currentRow, 14).Value = branchBalance;
-                    worksheet.Cell(currentRow, 17).Value = branchDueAmount;
-
-                    for (int col = 1; col <= 46; col++)
-                    {
-                        worksheet.Cell(currentRow, col).Style.Font.Bold = true;
-                        worksheet.Cell(currentRow, col).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-                        worksheet.Cell(currentRow, col).Style.Font.FontName = "Bahnschrift Light";
-                        worksheet.Cell(currentRow, col).Style.NumberFormat.Format = "#,##0.0";
-                    }
-
-                    currentRow += 2;
-                }
-                // Move a few rows down after the last branch section
-                currentRow += 1;
-
-                // Title for Branch Performance
-                worksheet.Cell(currentRow, 1).Value = $"BRANCH PERFORMANCE. [PERIOD: {period}]";
-                worksheet.Cell(currentRow, 1).Style.Font.Bold = true;
-                worksheet.Cell(currentRow, 1).Style.Fill.BackgroundColor = XLColor.DarkBlue;
-                worksheet.Cell(currentRow, 1).Style.Font.FontColor = XLColor.White;
-                worksheet.Cell(currentRow, 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
-                worksheet.Cell(currentRow, 1).Style.Font.FontName = "Bahnschrift Light";
-                worksheet.Range(currentRow, 1, currentRow, 2).Merge();
-                currentRow++;
-
-                // Header Row
-                worksheet.Cell(currentRow, 1).Value = "BRANCHES";
-                worksheet.Cell(currentRow, 2).Value = "NUMBER OF LOANS";
-
-                worksheet.Range(currentRow, 1, currentRow, 2).Style.Fill.BackgroundColor = XLColor.LightGray;
-                worksheet.Range(currentRow, 1, currentRow, 2).Style.Font.Bold = true;
-                worksheet.Range(currentRow, 1, currentRow, 2).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-                worksheet.Range(currentRow, 1, currentRow, 2).Style.Font.FontName = "Bahnschrift Light";
-                currentRow++;
-
-                // Generate Branch Performance Data
-                var branchPerformance = loanDetails
-                    .GroupBy(l => new { l.BranchCode, l.BranchName })
-                    .Select(g => new
-                    {
-                        Branch = $"{g.Key.BranchName} [{g.Key.BranchCode}]",
-                        Count = g.Count()
-                    })
-                    .OrderByDescending(x => x.Count)
+                // ===== SHEETS FOR EACH BRANCH =====
+                var branches = loanDetails
+                    .GroupBy(x => new { x.BranchCode, x.BranchName })
+                    .Select(g => new { BranchCode = g.Key.BranchCode, BranchName = g.Key.BranchName })
                     .ToList();
 
-                // Populate Branch Performance Table
-                foreach (var item in branchPerformance)
+                foreach (var branch in branches)
                 {
-                    worksheet.Cell(currentRow, 1).Value = item.Branch;
-                    worksheet.Cell(currentRow, 2).Value = item.Count;
-
-                    worksheet.Range(currentRow, 1, currentRow, 2).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-                    worksheet.Range(currentRow, 1, currentRow, 2).Style.Font.FontName = "Bahnschrift Light";
-
-                    currentRow++;
+                    var branchData = loanDetails
+                        .Where(x => x.BranchCode == branch.BranchCode && x.BranchName == branch.BranchName)
+                        .ToList();
+                    CreateBranchSheet(package, branchData, branch.BranchCode, branch.BranchName,
+                        exportedBy, fileTitle, tableQuery);
                 }
 
-                //        // Adjust column widths
-                worksheet.Columns().AdjustToContents();
-                using (var stream = new MemoryStream())
-                {
-                    workbook.SaveAs(stream);
-                    return new ExportFileResult
-                    {
-                        Content = stream.ToArray(),
-                        ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                        FileName = $"{fileTitle.Replace(" ", "_")}_{(branch?.BranchCode?.Replace(" ", "_") ?? "All_Branches")}_{DateTime.Now:yyyyMMddHHmmss}.xlsx"
-                    };
-                }
+                package.SaveAs(new FileInfo(filePath));
             }
         }
 
+        // -----------------------------------------------------------------------
+        // SHEET: SUMMARY & OVERVIEW
+        // -----------------------------------------------------------------------
+        private void CreateSummarySheet(
+            ExcelPackage package,
+            List<Loan> loanDetails,
+            string bank,
+            string branchCode,
+            string branchId,
+            string branchName,
+            string exportedBy,
+            string fileTitle,
+            GetLoansDataTableQuery tableQuery)
+        {
+            var worksheet = package.Workbook.Worksheets.Add("Summary & Overview");
+            ApplyDefaultStyle(worksheet);
 
+            int headerColumns = 3;
+            string headerEndColumn = GetColumnLetter(headerColumns);
+            int currentRow = CreateHeaderSection(worksheet, bank, branchCode, branchId, branchName,
+                exportedBy, fileTitle, tableQuery, headerEndColumn);
 
+            // ----- GENERAL SUMMARY -----
+            worksheet.Cells[$"A{currentRow}:{headerEndColumn}{currentRow}"].Merge = true;
+            worksheet.Cells[$"A{currentRow}"].Value = "GENERAL SUMMARY";
+            SetSectionHeaderStyle(worksheet.Cells[$"A{currentRow}"], Color.LightBlue);
+            currentRow += 2;
 
-        //public static ExportFileResult GenerateLoanExcel(List<Loan> loanDetails, string branchName, string exportedBy, string fileTitle, string dateFrom, string dateTo)
-        //{
-        //    using (var workbook = new XLWorkbook())
-        //    {
-        //        var worksheet = workbook.Worksheets.Add("Loan Analysis");
+            int totalLoans = loanDetails.Count;
+            int totalBranches = loanDetails.Select(x => x.BranchCode).Distinct().Count();
+            decimal totalLoanVolume = loanDetails.Sum(l => l.LoanAmount);
+            decimal totalRepaid = loanDetails.Sum(l => l.Paid);
+            decimal totalBalance = loanDetails.Sum(l => l.Balance);
+            decimal totalDue = loanDetails.Sum(l => l.DueAmount);
+            decimal totalAccrual = loanDetails.Sum(l => l.AccrualInterest);
+            decimal totalDelinquent = loanDetails.Sum(l => l.DeliquentInterest);
+            decimal percentageRepaid = totalLoanVolume > 0 ? (totalRepaid / totalLoanVolume) * 100 : 0;
 
-        //        // Title with File Title
-        //        worksheet.Cell(1, 1).Value = $"{fileTitle.ToUpper()} - LOAN ANALYSIS FOR {branchName.ToUpper()}";
-        //        worksheet.Cell(1, 1).Style.Font.Bold = true;
-        //        worksheet.Cell(1, 1).Style.Font.FontSize = 14;
-        //        worksheet.Range(1, 1, 1, 45).Merge();
-        //        worksheet.Cell(1, 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+            var summaryData = new[]
+            {
+            new { Metric = "Total Loans (Count)", Value = totalLoans.ToString("N0"), Description = "Number of loan records" },
+            new { Metric = "Total Branches", Value = totalBranches.ToString("N0"), Description = "Branches with loan activity" },
+            new { Metric = "Total Loan Volume", Value = totalLoanVolume.ToString("N2"), Description = "Sum of all loan amounts" },
+            new { Metric = "Total Repaid", Value = totalRepaid.ToString("N2"), Description = "Amount already paid" },
+            new { Metric = "Outstanding Balance", Value = totalBalance.ToString("N2"), Description = "Current principal balance" },
+            new { Metric = "Total Due Amount", Value = totalDue.ToString("N2"), Description = "Total amount due (principal + interest)" },
+            new { Metric = "Total Accrual Interest", Value = totalAccrual.ToString("N2"), Description = "Accrued interest" },
+            new { Metric = "Total Delinquent Interest", Value = totalDelinquent.ToString("N2"), Description = "Delinquent interest" },
+            new { Metric = "Repayment Rate", Value = percentageRepaid.ToString("0.00") + "%", Description = "Percentage of loan volume repaid" }
+        };
 
-        //        // Export Details with Date Range
-        //        worksheet.Cell(2, 1).Value = $"Date Range: {dateFrom} - {dateTo}";
-        //        worksheet.Cell(2, 1).Style.Font.Italic = true;
-        //        worksheet.Cell(2, 1).Style.Font.FontSize = 10;
-        //        worksheet.Range(2, 1, 2, 45).Merge();
-        //        worksheet.Cell(2, 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+            currentRow = CreateTwoColumnTable(worksheet, currentRow, summaryData, "Metric", "Value", "Description");
+            currentRow += 2;
 
-        //        worksheet.Cell(3, 1).Value = $"Export Date: {DateTime.Now} BY {exportedBy}";
-        //        worksheet.Cell(3, 1).Style.Font.Italic = true;
-        //        worksheet.Cell(3, 1).Style.Font.FontSize = 10;
-        //        worksheet.Range(3, 1, 3, 45).Merge();
-        //        worksheet.Cell(3, 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+            // ----- DELINQUENT STATUS DISTRIBUTION -----
+            var statusDist = loanDetails
+                .GroupBy(x => x.DeliquentStatus ?? "Unknown")
+                .Select(g => new { Status = g.Key, Count = g.Count() })
+                .OrderByDescending(x => x.Count)
+                .ToList();
 
-        //        // Headers
-        //        var headers = new[]
-        //        {
-        //    "Loan Reference", "Customer Name", "Customer Reference", "Loan Date", "Loan Amount", "Interest Rate (%)",
-        //    "InterestForcasted", "Accrual Interest", "LastInterestCalculatedDate", "VAT Interest", "VAT", "Penalty", "Paid",
-        //    "Balance", "LoanDuration", "MaturityDate", "Due Amount", "AccountNumber", "BranchCode", "LastPayment",
-        //    "LastRefundDate", "LoanManager", "AdvancedPaymentDays", "AdvancedPaymentAmount", "DeliquentDays",
-        //    "DeliquentInterest", "DeliquentAmount", "LastDeliquecyProcessedDate", "DeliquentStatus", "LoanType",
-        //    "InterestAmountUpfront", "Savings", "OShares", "PShares", "Deposit", "Salary", "Shortee", "Co_Obligor",
-        //    "Co_OperationGurantor", "OtherGuaranteeFund", "TotalFundGuranteed", "PercentageOfLiquidityCoverage",
-        //    "PercentageOfCollateralCoverage", "PercentageOfOverAllCoverage", "Coverage Status"
-        //};
+            currentRow = CreateDistributionSection(worksheet, currentRow, headerEndColumn,
+                "DELINQUENT STATUS DISTRIBUTION", statusDist, totalLoans, Color.LightYellow);
+            currentRow += 2;
 
-        //        for (int i = 0; i < headers.Length; i++)
-        //        {
-        //            worksheet.Cell(5, i + 1).Value = headers[i];
-        //            worksheet.Cell(5, i + 1).Style.Font.Bold = true;
-        //            worksheet.Cell(5, i + 1).Style.Fill.BackgroundColor = XLColor.LightGray;
-        //            worksheet.Cell(5, i + 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
-        //            worksheet.Cell(5, i + 1).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-        //            worksheet.Cell(5, i + 1).Style.Border.OutsideBorderColor = XLColor.Black;
-        //        }
+            // ----- LOAN TYPE DISTRIBUTION -----
+            var loanTypeDist = loanDetails
+                .Where(x => !string.IsNullOrEmpty(x.LoanType))
+                .GroupBy(x => x.LoanType)
+                .Select(g => new { Status = g.Key, Count = g.Count() })
+                .OrderByDescending(x => x.Count)
+                .ToList();
 
-        //        // Data
-        //        int currentRow = 6;
-        //        foreach (var loan in loanDetails)
-        //        {
-        //            decimal totalCoveredAmount = loan.Savings + loan.OShares + loan.PShares + loan.Deposit + loan.Salary +
-        //                                         loan.Shortee + loan.Co_Obligor + loan.Co_OperationGurantor + loan.OtherGuaranteeFund;
+            if (loanTypeDist.Any())
+            {
+                currentRow = CreateDistributionSection(worksheet, currentRow, headerEndColumn,
+                    "LOAN TYPE DISTRIBUTION", loanTypeDist, totalLoans, Color.LightGreen);
+            }
 
-        //            decimal overallCoveragePercentage = (loan.DueAmount > 0) ? (totalCoveredAmount / loan.DueAmount) * 100 : 0;
-        //            string coverageStatus = overallCoveragePercentage >= 100 ? "Covered" : "Not Covered";
+            worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+        }
 
-        //            worksheet.Cell(currentRow, 1).Value = loan.Id;
-        //            worksheet.Cell(currentRow, 2).Value = loan.CustomerName;
-        //            worksheet.Cell(currentRow, 3).Value = loan.CustomerId;
-        //            worksheet.Cell(currentRow, 4).Value = loan.LoanDate.ToString("dd/MM/yyyy, hh:mm:ss");
-        //            worksheet.Cell(currentRow, 5).Value = loan.LoanAmount;
-        //            worksheet.Cell(currentRow, 6).Value = loan.InterestRate;
-        //            worksheet.Cell(currentRow, 7).Value = loan.InterestForcasted;
-        //            worksheet.Cell(currentRow, 8).Value = loan.AccrualInterest;
-        //            worksheet.Cell(currentRow, 9).Value = loan.LastInterestCalculatedDate.ToString("dd/MM/yyyy, hh:mm:ss");
-        //            worksheet.Cell(currentRow, 10).Value = loan.Tax;
-        //            worksheet.Cell(currentRow, 11).Value = loan.VatRate;
-        //            worksheet.Cell(currentRow, 12).Value = loan.Penalty;
-        //            worksheet.Cell(currentRow, 13).Value = loan.Paid;
-        //            worksheet.Cell(currentRow, 14).Value = loan.Balance;
-        //            worksheet.Cell(currentRow, 15).Value = loan.LoanDuration;
-        //            worksheet.Cell(currentRow, 16).Value = loan.MaturityDate.ToString("dd/MM/yyyy, hh:mm:ss");
-        //            worksheet.Cell(currentRow, 17).Value = loan.DueAmount;
-        //            worksheet.Cell(currentRow, 18).Value = loan.AccountNumber;
-        //            worksheet.Cell(currentRow, 19).Value = loan.BranchCode;
-        //            worksheet.Cell(currentRow, 20).Value = loan.LastPayment;
-        //            worksheet.Cell(currentRow, 21).Value = loan.LastRefundDate.ToString("dd/MM/yyyy, hh:mm:ss");
-        //            worksheet.Cell(currentRow, 22).Value = loan.LoanManager;
-        //            worksheet.Cell(currentRow, 23).Value = loan.AdvancedPaymentDays;
-        //            worksheet.Cell(currentRow, 24).Value = loan.AdvancedPaymentAmount;
-        //            worksheet.Cell(currentRow, 25).Value = loan.DeliquentDays;
-        //            worksheet.Cell(currentRow, 26).Value = loan.DeliquentInterest;
-        //            worksheet.Cell(currentRow, 27).Value = loan.DeliquentAmount;
-        //            worksheet.Cell(currentRow, 28).Value = loan.LastDeliquecyProcessedDate?.ToString("dd/MM/yyyy, hh:mm:ss");
-        //            worksheet.Cell(currentRow, 29).Value = loan.DeliquentStatus;
-        //            worksheet.Cell(currentRow, 30).Value = loan.LoanType;
-        //            worksheet.Cell(currentRow, 31).Value = loan.InterestAmountUpfront;
-        //            worksheet.Cell(currentRow, 32).Value = loan.Savings;
-        //            worksheet.Cell(currentRow, 33).Value = loan.OShares;
-        //            worksheet.Cell(currentRow, 34).Value = loan.PShares;
-        //            worksheet.Cell(currentRow, 35).Value = loan.Deposit;
-        //            worksheet.Cell(currentRow, 36).Value = loan.Salary;
-        //            worksheet.Cell(currentRow, 37).Value = loan.Shortee;
-        //            worksheet.Cell(currentRow, 38).Value = loan.Co_Obligor;
-        //            worksheet.Cell(currentRow, 39).Value = loan.Co_OperationGurantor;
-        //            worksheet.Cell(currentRow, 40).Value = loan.OtherGuaranteeFund;
-        //            worksheet.Cell(currentRow, 41).Value = totalCoveredAmount;
-        //            worksheet.Cell(currentRow, 42).Value = loan.PercentageOfLiquidityCoverage;
-        //            worksheet.Cell(currentRow, 43).Value = loan.PercentageOfCollateralCoverage;
-        //            worksheet.Cell(currentRow, 44).Value = overallCoveragePercentage;
-        //            worksheet.Cell(currentRow, 45).Value = coverageStatus;
+        // -----------------------------------------------------------------------
+        // SHEET: BRANCH SUMMARY
+        // -----------------------------------------------------------------------
+        private void CreateBranchSummarySheet(
+            ExcelPackage package,
+            List<Loan> loanDetails,
+            string exportedBy,
+            string fileTitle,
+            GetLoansDataTableQuery tableQuery)
+        {
+            var worksheet = package.Workbook.Worksheets.Add("Branch Summary");
+            ApplyDefaultStyle(worksheet);
 
-        //            // Apply styles for current row
-        //            for (int col = 1; col <= 45; col++)
-        //            {
-        //                worksheet.Cell(currentRow, col).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-        //                worksheet.Cell(currentRow, col).Style.Border.OutsideBorderColor = XLColor.Black;
-        //            }
+            int headerColumns = 8;
+            string headerEndColumn = GetColumnLetter(headerColumns);
+            int currentRow = CreateHeaderSection(worksheet, GetBankName(), GetBranchCode(), GetBranchID(), GetBranchName(),
+                exportedBy, fileTitle, tableQuery, headerEndColumn);
 
-        //            // Format currency and percentage cells
-        //            worksheet.Cell(currentRow, 5).Style.NumberFormat.Format = "#,##0.0";  // Loan Amount
-        //            worksheet.Cell(currentRow, 6).Style.NumberFormat.Format = "0.0";    // Interest Rate
-        //            worksheet.Cell(currentRow, 17).Style.NumberFormat.Format = "#,##0.0"; // Due Amount
-        //            worksheet.Cell(currentRow, 44).Style.NumberFormat.Format = "0.0";    // Overall Coverage
+            worksheet.Cells[$"A{currentRow}:{headerEndColumn}{currentRow}"].Merge = true;
+            worksheet.Cells[$"A{currentRow}"].Value = "BRANCH SUMMARY";
+            SetSectionHeaderStyle(worksheet.Cells[$"A{currentRow}"], Color.LightCoral);
+            currentRow += 2;
 
-        //            currentRow++;
-        //        }
+            var branchHeaders = new[] { "Branch Code", "Branch Name", "# Loans", "Volume", "Repaid", "Balance", "Due Amount", "Avg Loan" };
+            for (int i = 0; i < branchHeaders.Length; i++)
+            {
+                worksheet.Cells[currentRow, i + 1].Value = branchHeaders[i];
+                SetHeaderStyle(worksheet.Cells[currentRow, i + 1], Color.LightGreen);
+            }
+            currentRow++;
 
-        //        // Adjust column widths
-        //        worksheet.Columns().AdjustToContents();
+            var branchSummary = loanDetails
+                .GroupBy(x => new { x.BranchCode, x.BranchName })
+                .Select(g => new
+                {
+                    BranchCode = g.Key.BranchCode,
+                    BranchName = g.Key.BranchName ?? "Unknown",
+                    LoanCount = g.Count(),
+                    Volume = g.Sum(x => x.LoanAmount),
+                    Repaid = g.Sum(x => x.Paid),
+                    Balance = g.Sum(x => x.Balance),
+                    Due = g.Sum(x => x.DueAmount),
+                    AvgLoan = g.Average(x => x.LoanAmount)
+                })
+                .OrderByDescending(x => x.Volume)
+                .ToList();
 
-        //        // Save the file to memory
-        //        using (var stream = new MemoryStream())
-        //        {
-        //            workbook.SaveAs(stream);
-        //            return new ExportFileResult
-        //            {
-        //                Content = stream.ToArray(),
-        //                ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        //                FileName = $"{fileTitle.Replace(" ", "_")}_LoanAnalysis_{DateTime.Now:yyyyMMddHHmmss}.xlsx"
-        //            };
-        //        }
-        //    }
-        //}
+            foreach (var b in branchSummary)
+            {
+                worksheet.Cells[currentRow, 1].Value = b.BranchCode;
+                worksheet.Cells[currentRow, 2].Value = b.BranchName;
+                worksheet.Cells[currentRow, 3].Value = b.LoanCount;
+                worksheet.Cells[currentRow, 4].Value = b.Volume;
+                worksheet.Cells[currentRow, 5].Value = b.Repaid;
+                worksheet.Cells[currentRow, 6].Value = b.Balance;
+                worksheet.Cells[currentRow, 7].Value = b.Due;
+                worksheet.Cells[currentRow, 8].Value = b.AvgLoan;
 
+                for (int col = 1; col <= headerColumns; col++)
+                    worksheet.Cells[currentRow, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                currentRow++;
+            }
 
-        
+            // Totals row
+            if (branchSummary.Any())
+            {
+                worksheet.Cells[currentRow, 1].Value = "TOTALS / AVERAGES:";
+                worksheet.Cells[currentRow, 1].Style.Font.Bold = true;
+                worksheet.Cells[currentRow, 3].Value = branchSummary.Sum(x => x.LoanCount);
+                worksheet.Cells[currentRow, 4].Value = branchSummary.Sum(x => x.Volume);
+                worksheet.Cells[currentRow, 5].Value = branchSummary.Sum(x => x.Repaid);
+                worksheet.Cells[currentRow, 6].Value = branchSummary.Sum(x => x.Balance);
+                worksheet.Cells[currentRow, 7].Value = branchSummary.Sum(x => x.Due);
+                worksheet.Cells[currentRow, 8].Value = branchSummary.Average(x => x.AvgLoan);
+
+                for (int col = 1; col <= headerColumns; col++)
+                {
+                    worksheet.Cells[currentRow, col].Style.Font.Bold = true;
+                    worksheet.Cells[currentRow, col].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    worksheet.Cells[currentRow, col].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
+                    worksheet.Cells[currentRow, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                }
+            }
+
+            worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+        }
+
+        // -----------------------------------------------------------------------
+        // SHEET: LOAN DETAILS (ALL ENTRIES)
+        // -----------------------------------------------------------------------
+        private void CreateLoanDetailsSheet(
+            ExcelPackage package,
+            List<Loan> loanDetails,
+            string exportedBy,
+            string fileTitle,
+            GetLoansDataTableQuery tableQuery)
+        {
+            var worksheet = package.Workbook.Worksheets.Add("Loan Details");
+            ApplyDefaultStyle(worksheet);
+
+            int headerColumns = 47;
+            string headerEndColumn = GetColumnLetter(headerColumns);
+            int currentRow = CreateHeaderSection(worksheet, GetBankName(), GetBranchCode(), GetBranchID(), GetBranchName(),
+                exportedBy, fileTitle, tableQuery, headerEndColumn);
+
+            // ----- DELINQUENT STATUS OVERVIEW -----
+            var statusOverview = loanDetails
+                .GroupBy(x => x.DeliquentStatus ?? "Unknown")
+                .Select(g => new { Status = g.Key, Count = g.Count() })
+                .OrderByDescending(x => x.Count)
+                .ToList();
+
+            currentRow = CreateDistributionSection(worksheet, currentRow, headerEndColumn,
+                "DELINQUENT STATUS OVERVIEW", statusOverview, loanDetails.Count, Color.LightYellow);
+            currentRow += 2;
+
+            worksheet.Cells[$"A{currentRow}:{headerEndColumn}{currentRow}"].Merge = true;
+            worksheet.Cells[$"A{currentRow}"].Value = "DETAILED LOAN ENTRIES";
+            SetSectionHeaderStyle(worksheet.Cells[$"A{currentRow}"], Color.LightCoral);
+            currentRow += 2;
+
+            var headers = new[]
+            {
+            "SN", "Loan Ref", "Member Name", "Member Reference", "Loan Date", "Loan Amount", "Interest Rate",
+            "Interest Forecast", "Accrual Interest", "Last Interest Calc", "VAT Amount", "VAT Rate",
+            "Penalty", "Paid", "Balance", "Duration (M)", "Maturity Date", "Due Amount", "Account No",
+            "Branch Code", "Last Payment", "Last Refund Date", "Loan Manager", "Adv Payment Days",
+            "Adv Payment Amt", "Delinquent Days", "Delinquent Interest", "Delinquent Amt",
+            "Last Delinquency Date", "Delinquent Status", "Loan Type", "Loan Category", "Interest Upfront",
+            "Savings", "O-Shares", "P-Shares", "Deposit", "Salary", "Shortee", "Co-Obligor",
+            "Co-Op Guarantor", "Other Guarantee", "Total Guaranteed", "Liquidity Cov %", "Collateral Cov %",
+            "Overall Cov %", "Coverage Status"
+        };
+
+            int headerRow = currentRow;
+            for (int i = 0; i < headers.Length; i++)
+            {
+                worksheet.Cells[headerRow, i + 1].Value = headers[i];
+                SetHeaderStyle(worksheet.Cells[headerRow, i + 1], Color.LightGreen);
+            }
+            currentRow++;
+
+            int sn = 1;
+            foreach (var loan in loanDetails.OrderByDescending(x => x.LoanDate))
+            {
+                decimal totalCovered = loan.Savings + loan.OShares + loan.PShares + loan.Deposit + loan.Salary +
+                                       loan.Shortee + loan.Co_Obligor + loan.Co_OperationGurantor + loan.OtherGuaranteeFund;
+                decimal overallCoveragePct = loan.DueAmount > 0 ? (totalCovered / loan.DueAmount) * 100 : 0;
+                string coverageStatus = overallCoveragePct >= 100 ? "Covered" : "Not Covered";
+
+                worksheet.Cells[currentRow, 1].Value = sn++;
+                worksheet.Cells[currentRow, 2].Value = loan.Id;
+                worksheet.Cells[currentRow, 3].Value = loan.CustomerName;
+                worksheet.Cells[currentRow, 4].Value = loan.CustomerId;
+                worksheet.Cells[currentRow, 5].Value = loan.LoanDate.ToString("dd-MM-yyyy HH:mm:ss");
+                worksheet.Cells[currentRow, 6].Value = loan.LoanAmount;
+                worksheet.Cells[currentRow, 7].Value = loan.InterestRate;
+                worksheet.Cells[currentRow, 8].Value = loan.InterestForcasted;
+                worksheet.Cells[currentRow, 9].Value = loan.AccrualInterest;
+                worksheet.Cells[currentRow, 10].Value = loan.LastInterestCalculatedDate?.ToString("dd-MM-yyyy HH:mm:ss") ?? "N/A";
+                worksheet.Cells[currentRow, 11].Value = loan.Tax;
+                worksheet.Cells[currentRow, 12].Value = loan.VatRate;
+                worksheet.Cells[currentRow, 13].Value = loan.Penalty;
+                worksheet.Cells[currentRow, 14].Value = loan.Paid;
+                worksheet.Cells[currentRow, 15].Value = loan.Balance;
+                worksheet.Cells[currentRow, 16].Value = loan.LoanDuration;
+                worksheet.Cells[currentRow, 17].Value = loan.MaturityDate.ToString("dd-MM-yyyy HH:mm:ss");
+                worksheet.Cells[currentRow, 18].Value = loan.DueAmount;
+                worksheet.Cells[currentRow, 19].Value = loan.AccountNumber;
+                worksheet.Cells[currentRow, 20].Value = loan.BranchCode;
+                worksheet.Cells[currentRow, 21].Value = loan.LastPayment;
+                worksheet.Cells[currentRow, 22].Value = loan.LastRefundDate.ToString("dd-MM-yyyy HH:mm:ss") ?? "N/A";
+                worksheet.Cells[currentRow, 23].Value = loan.LoanManager;
+                worksheet.Cells[currentRow, 24].Value = loan.AdvancedPaymentDays;
+                worksheet.Cells[currentRow, 25].Value = loan.AdvancedPaymentAmount;
+                worksheet.Cells[currentRow, 26].Value = loan.DeliquentDays;
+                worksheet.Cells[currentRow, 27].Value = loan.DeliquentInterest;
+                worksheet.Cells[currentRow, 28].Value = loan.DeliquentAmount;
+                worksheet.Cells[currentRow, 29].Value = loan.LastDeliquecyProcessedDate?.ToString("dd-MM-yyyy HH:mm:ss") ?? "N/A";
+                worksheet.Cells[currentRow, 30].Value = loan.DeliquentStatus;
+                worksheet.Cells[currentRow, 31].Value = loan.LoanType;
+                worksheet.Cells[currentRow, 32].Value = loan.LoanCategory;
+                worksheet.Cells[currentRow, 33].Value = loan.InterestAmountUpfront;
+                worksheet.Cells[currentRow, 34].Value = loan.Savings;
+                worksheet.Cells[currentRow, 35].Value = loan.OShares;
+                worksheet.Cells[currentRow, 36].Value = loan.PShares;
+                worksheet.Cells[currentRow, 37].Value = loan.Deposit;
+                worksheet.Cells[currentRow, 38].Value = loan.Salary;
+                worksheet.Cells[currentRow, 39].Value = loan.Shortee;
+                worksheet.Cells[currentRow, 40].Value = loan.Co_Obligor;
+                worksheet.Cells[currentRow, 41].Value = loan.Co_OperationGurantor;
+                worksheet.Cells[currentRow, 42].Value = loan.OtherGuaranteeFund;
+                worksheet.Cells[currentRow, 43].Value = totalCovered;
+                worksheet.Cells[currentRow, 44].Value = loan.PercentageOfLiquidityCoverage;
+                worksheet.Cells[currentRow, 45].Value = loan.PercentageOfCollateralCoverage;
+                worksheet.Cells[currentRow, 46].Value = overallCoveragePct;
+                worksheet.Cells[currentRow, 47].Value = coverageStatus;
+
+                for (int col = 1; col <= headerColumns; col++)
+                    worksheet.Cells[currentRow, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                currentRow++;
+            }
+
+            // Format numeric columns
+            worksheet.Cells[$"F{headerRow + 1}:F{currentRow - 1}"].Style.Numberformat.Format = "#,##0.00";
+            worksheet.Cells[$"G{headerRow + 1}:G{currentRow - 1}"].Style.Numberformat.Format = "0.00";
+            worksheet.Cells[$"H{headerRow + 1}:R{currentRow - 1}"].Style.Numberformat.Format = "#,##0.00";
+            worksheet.Cells[$"AN{headerRow + 1}:AP{currentRow - 1}"].Style.Numberformat.Format = "0.00";
+
+            worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+            worksheet.View.FreezePanes(headerRow + 1, 1);
+        }
+
+        // -----------------------------------------------------------------------
+        // SHEET: INDIVIDUAL BRANCH DETAILS
+        // -----------------------------------------------------------------------
+        private void CreateBranchSheet(
+     ExcelPackage package,
+     List<Loan> branchData,
+     string branchCode,
+     string branchName,
+     string exportedBy,
+     string fileTitle,
+     GetLoansDataTableQuery tableQuery)
+        {
+            string sheetName = CleanSheetName($"{branchCode} - {branchName}");
+            if (sheetName.Length > 31) sheetName = sheetName.Substring(0, 31);
+            var worksheet = package.Workbook.Worksheets.Add(sheetName);
+            ApplyDefaultStyle(worksheet);
+
+            int headerColumns = 11; // number of data columns (excluding SN)
+            string headerEndColumn = GetColumnLetter(headerColumns + 1); // +1 for SN
+            int currentRow = CreateHeaderSection(worksheet, GetBankName(), branchCode, branchCode, branchName,
+                exportedBy, fileTitle, tableQuery, headerEndColumn);
+
+            // ===== DETAILED LOAN ENTRIES (now first) =====
+            worksheet.Cells[$"A{currentRow}:{headerEndColumn}{currentRow}"].Merge = true;
+            worksheet.Cells[$"A{currentRow}"].Value = $"DETAILED LOANS - {branchName}";
+            SetSectionHeaderStyle(worksheet.Cells[$"A{currentRow}"], Color.LightCoral);
+            currentRow += 2;
+
+            var branchHeaders = new[]
+            {
+        "SN", "Loan Ref", "Member Name", "Loan Date", "Loan Amount", "Interest Rate",
+        "Paid", "Balance", "Due Amount", "Status", "Loan Type"
+    };
+
+            int headerRow = currentRow;
+            for (int i = 0; i < branchHeaders.Length; i++)
+            {
+                worksheet.Cells[headerRow, i + 1].Value = branchHeaders[i];
+                SetHeaderStyle(worksheet.Cells[headerRow, i + 1], Color.LightGreen);
+            }
+            currentRow++;
+
+            int sn = 1;
+            foreach (var loan in branchData.OrderByDescending(l => l.LoanDate))
+            {
+                worksheet.Cells[currentRow, 1].Value = sn++;
+                worksheet.Cells[currentRow, 2].Value = loan.Id;
+                worksheet.Cells[currentRow, 3].Value = loan.CustomerName;   // Member Name
+                worksheet.Cells[currentRow, 4].Value = loan.LoanDate.ToString("dd-MM-yyyy");
+                worksheet.Cells[currentRow, 5].Value = loan.LoanAmount;
+                worksheet.Cells[currentRow, 6].Value = loan.InterestRate;
+                worksheet.Cells[currentRow, 7].Value = loan.Paid;
+                worksheet.Cells[currentRow, 8].Value = loan.Balance;
+                worksheet.Cells[currentRow, 9].Value = loan.DueAmount;
+                worksheet.Cells[currentRow, 10].Value = loan.DeliquentStatus ?? "Current";
+                worksheet.Cells[currentRow, 11].Value = loan.LoanType;
+
+                for (int col = 1; col <= branchHeaders.Length; col++)
+                    worksheet.Cells[currentRow, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                currentRow++;
+            }
+
+            currentRow += 2; // leave space before summary
+
+            // ===== BRANCH SUMMARY (two‑column table) =====
+            worksheet.Cells[$"A{currentRow}:{headerEndColumn}{currentRow}"].Merge = true;
+            worksheet.Cells[$"A{currentRow}"].Value = $"BRANCH SUMMARY - {branchName}";
+            SetSectionHeaderStyle(worksheet.Cells[$"A{currentRow}"], Color.LightBlue);
+            currentRow += 2;
+
+            int total = branchData.Count;
+            decimal volume = branchData.Sum(l => l.LoanAmount);
+            decimal repaid = branchData.Sum(l => l.Paid);
+            decimal balance = branchData.Sum(l => l.Balance);
+            decimal due = branchData.Sum(l => l.DueAmount);
+
+            var summaryItems = new[]
+            {
+        new { Metric = "Total Loans", Value = total.ToString("N0") },
+        new { Metric = "Loan Volume", Value = volume.ToString("N2") },
+        new { Metric = "Repaid", Value = repaid.ToString("N2") },
+        new { Metric = "Balance", Value = balance.ToString("N2") },
+        new { Metric = "Due Amount", Value = due.ToString("N2") }
+    };
+
+            currentRow = CreateTwoColumnTable(worksheet, currentRow, summaryItems, "Metric", "Value");
+            currentRow += 2;
+
+            // ===== DELINQUENT STATUS DISTRIBUTION =====
+            var statusDist = branchData
+                .GroupBy(x => x.DeliquentStatus ?? "Unknown")
+                .Select(g => new { Status = g.Key, Count = g.Count() })
+                .ToList();
+
+            currentRow = CreateDistributionSection(worksheet, currentRow, headerEndColumn,
+                "DELINQUENT STATUS DISTRIBUTION", statusDist, total, Color.LightYellow);
+
+            worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+            worksheet.View.FreezePanes(headerRow + 1, 1);
+        }
+
+        // -----------------------------------------------------------------------
+        // HEADER SECTION (exactly as in the sample)
+        // -----------------------------------------------------------------------
+        private int CreateHeaderSection(
+            ExcelWorksheet worksheet,
+            string bank,
+            string branchCode,
+            string branchId,
+            string branchName,
+            string exportedBy,
+            string fileTitle,
+            GetLoansDataTableQuery tableQuery,
+            string headerEndColumn)
+        {
+            worksheet.Cells[$"A1:{headerEndColumn}1"].Merge = true;
+            worksheet.Cells["A1"].Value = bank;
+            worksheet.Cells["A1"].Style.Font.Bold = true;
+            worksheet.Cells["A1"].Style.Font.Size = 18;
+            worksheet.Cells["A1"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            worksheet.Cells["A1"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+            worksheet.Row(1).Height = 30;
+            worksheet.Cells["A1"].Style.Font.Color.SetColor(Color.White);
+            worksheet.Cells["A1"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells["A1"].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(0, 100, 0));
+
+            worksheet.Cells[$"A2:{headerEndColumn}2"].Merge = true;
+            worksheet.Cells["A2"].Value = $"Branch Code: {branchCode} | Branch: {branchName} | Branch ID: {branchId}";
+            worksheet.Cells["A2"].Style.Font.Bold = true;
+            worksheet.Cells["A2"].Style.Font.Size = 12;
+            worksheet.Cells["A2"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            worksheet.Cells["A2"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+            worksheet.Row(2).Height = 22;
+            worksheet.Cells["A2"].Style.Font.Color.SetColor(Color.White);
+            worksheet.Cells["A2"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells["A2"].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(70, 130, 180));
+
+            worksheet.Cells[$"A3:{headerEndColumn}3"].Merge = true;
+            worksheet.Cells["A3"].Value = $"Exported By: {exportedBy}";
+            worksheet.Cells["A3"].Style.Font.Bold = true;
+            worksheet.Cells["A3"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            worksheet.Cells["A3"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+            worksheet.Row(3).Height = 18;
+
+            worksheet.Cells[$"A4:{headerEndColumn}4"].Merge = true;
+            worksheet.Cells["A4"].Value = $"Export Date: {DateTime.Now:yyyy-MM-dd HH:mm:ss}";
+            worksheet.Cells["A4"].Style.Font.Bold = true;
+            worksheet.Cells["A4"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            worksheet.Cells["A4"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+            worksheet.Row(4).Height = 18;
+
+            worksheet.Cells[$"A5:{headerEndColumn}5"].Merge = true;
+            worksheet.Cells["A5"].Value = $"{fileTitle.ToUpper()} - LOAN DETAILED REPORT";
+            worksheet.Cells["A5"].Style.Font.Bold = true;
+            worksheet.Cells["A5"].Style.Font.Size = 14;
+            worksheet.Cells["A5"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            worksheet.Cells["A5"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+            worksheet.Row(5).Height = 25;
+            worksheet.Cells["A5"].Style.Font.Color.SetColor(Color.Black);
+            worksheet.Cells["A5"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells["A5"].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(255, 215, 0));
+
+            // Date range from tableQuery
+            if (tableQuery != null && tableQuery.StartDate.HasValue && tableQuery.EndDate.HasValue)
+            {
+                worksheet.Cells[$"A6:{headerEndColumn}6"].Merge = true;
+                worksheet.Cells["A6"].Value = $"Date Range: {tableQuery.StartDate.Value:dd-MM-yyyy} to {tableQuery.EndDate.Value:dd-MM-yyyy}";
+                worksheet.Cells["A6"].Style.Font.Bold = true;
+                worksheet.Cells["A6"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                worksheet.Cells["A6"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                worksheet.Row(6).Height = 18;
+                return 8; // content starts after header
+            }
+
+            return 7;
+        }
+
+        // -----------------------------------------------------------------------
+        // STYLING HELPERS
+        // -----------------------------------------------------------------------
+        private void ApplyDefaultStyle(ExcelWorksheet worksheet)
+        {
+            worksheet.Cells.Style.Font.Name = "Bahnschrift SemiCondensed";
+        }
+
+        private void SetSectionHeaderStyle(ExcelRange cell, Color backgroundColor)
+        {
+            cell.Style.Font.Bold = true;
+            cell.Style.Font.Size = 14;
+            cell.Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            cell.Style.Fill.PatternType = ExcelFillStyle.Solid;
+            cell.Style.Fill.BackgroundColor.SetColor(backgroundColor);
+        }
+
+        private void SetHeaderStyle(ExcelRange cell, Color backgroundColor)
+        {
+            cell.Style.Font.Bold = true;
+            cell.Style.Fill.PatternType = ExcelFillStyle.Solid;
+            cell.Style.Fill.BackgroundColor.SetColor(backgroundColor);
+            cell.Style.Border.BorderAround(ExcelBorderStyle.Thin);
+            cell.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+        }
+
+        // -----------------------------------------------------------------------
+        // TABLE HELPERS
+        // -----------------------------------------------------------------------
+        private int CreateTwoColumnTable(
+            ExcelWorksheet worksheet,
+            int startRow,
+            IEnumerable<dynamic> items,
+            string col1Header,
+            string col2Header,
+            string col3Header = null)
+        {
+            int colCount = string.IsNullOrEmpty(col3Header) ? 2 : 3;
+            int row = startRow;
+
+            for (int i = 0; i < colCount; i++)
+            {
+                worksheet.Cells[row, i + 1].Value = i == 0 ? col1Header : i == 1 ? col2Header : col3Header;
+                SetHeaderStyle(worksheet.Cells[row, i + 1], Color.LightGreen);
+            }
+            row++;
+
+            foreach (var item in items)
+            {
+                worksheet.Cells[row, 1].Value = item.Metric;
+                worksheet.Cells[row, 2].Value = item.Value;
+                if (colCount == 3)
+                    worksheet.Cells[row, 3].Value = item.Description;
+
+                for (int col = 1; col <= colCount; col++)
+                    worksheet.Cells[row, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                row++;
+            }
+
+            return row;
+        }
+
+        private int CreateDistributionSection(
+            ExcelWorksheet worksheet,
+            int currentRow,
+            string headerEndColumn,
+            string title,
+            IEnumerable<dynamic> distributionData,
+            int total,
+            Color backgroundColor)
+        {
+            worksheet.Cells[$"A{currentRow}:{headerEndColumn}{currentRow}"].Merge = true;
+            worksheet.Cells[$"A{currentRow}"].Value = title;
+            SetSectionHeaderStyle(worksheet.Cells[$"A{currentRow}"], backgroundColor);
+            currentRow += 2;
+
+            var headers = new[] { "Category", "Count", "Percentage" };
+            for (int i = 0; i < headers.Length; i++)
+            {
+                worksheet.Cells[currentRow, i + 1].Value = headers[i];
+                SetHeaderStyle(worksheet.Cells[currentRow, i + 1], Color.LightGreen);
+            }
+            currentRow++;
+
+            foreach (var item in distributionData)
+            {
+                decimal percentage = total > 0 ? (decimal)item.Count / total : 0;
+                worksheet.Cells[currentRow, 1].Value = item.Status;
+                worksheet.Cells[currentRow, 2].Value = item.Count;
+                worksheet.Cells[currentRow, 3].Value = percentage;
+
+                for (int col = 1; col <= 3; col++)
+                    worksheet.Cells[currentRow, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                currentRow++;
+            }
+
+            if (distributionData.Any())
+                worksheet.Cells[$"C{currentRow - distributionData.Count()}:C{currentRow - 1}"]
+                    .Style.Numberformat.Format = "0.0%";
+
+            return currentRow;
+        }
+
+        // -----------------------------------------------------------------------
+        // UTILITY HELPERS
+        // -----------------------------------------------------------------------
+        private string GetColumnLetter(int columnNumber)
+        {
+            string columnLetter = "";
+            while (columnNumber > 0)
+            {
+                int modulo = (columnNumber - 1) % 26;
+                columnLetter = Convert.ToChar('A' + modulo) + columnLetter;
+                columnNumber = (columnNumber - modulo) / 26;
+            }
+            return columnLetter;
+        }
+
+        private int GetColumnNumber(string columnLetter)
+        {
+            columnLetter = columnLetter.ToUpper();
+            int number = 0;
+            for (int i = 0; i < columnLetter.Length; i++)
+                number = number * 26 + (columnLetter[i] - 'A' + 1);
+            return number;
+        }
+
+        private string CleanSheetName(string name)
+        {
+            var invalidChars = new char[] { '\\', '/', '*', '?', ':', '[', ']' };
+            foreach (var ch in invalidChars)
+                name = name.Replace(ch, ' ');
+            name = string.Join(" ", name.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
+            return name.Trim();
+        }
     }
-
 }

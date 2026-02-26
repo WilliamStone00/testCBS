@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="EnsureAllCashoutRequestsAreAuthorized" xml:space="preserve">
+    <value>S’assurer que toutes les demandes de décaissement sont autorisées avant soumission</value>
+  </data>
+  <data name="ApprovalRejectionOrPendingStatus" xml:space="preserve">
+    <value>Les changements de statut (approuvé, rejeté ou en attente) sont définitifs et doivent être documentés avec des notes appropriées</value>
+  </data>
+  <data name="ApprovedRequestsShouldReflect" xml:space="preserve">
+    <value>Les demandes approuvées doivent être immédiatement reflétées dans le solde de la caisse ou du coffre concerné</value>
+  </data>
+  <data name="CashCeilingCashoutManagement" xml:space="preserve">
+    <value>Gestion des décaissements sous plafond de caisse</value>
+  </data>
+  <data name="CashCeilingRequestsManagement" xml:space="preserve">
+    <value>Gestion des demandes de plafond de caisse</value>
+  </data>
+  <data name="CashCeilingTransfers" xml:space="preserve">
+    <value>Transferts sous plafond de caisse</value>
+  </data>
+  <data name="CashoutRequestAmount" xml:space="preserve">
+    <value>Montant de la demande de décaissement</value>
+  </data>
+  <data name="CashToVault" xml:space="preserve">
+    <value>Transfert de caisse vers le coffre</value>
+  </data>
+  <data name="CASH_CEILING_DETAILS" xml:space="preserve">
+    <value>DÉTAILS DU PLAFOND DE CAISSE</value>
+  </data>
+  <data name="DeletingARequestRemovesItPermanently" xml:space="preserve">
+    <value>La suppression d’une demande l’efface définitivement</value>
+  </data>
+  <data name="EnsureAllRequestsAreReviewedAndProcessedPromptly" xml:space="preserve">
+    <value>S’assurer que toutes les demandes sont examinées et traitées rapidement</value>
+  </data>
+  <data name="EnsureTheBalancesAreAdjustedCorrectly" xml:space="preserve">
+    <value>S’assurer que les soldes sont correctement ajustés</value>
+  </data>
+  <data name="EnsureTheCashTransferAlignsWithBranchVaultPolicies" xml:space="preserve">
+    <value>S’assurer que le transfert de liquidités est conforme aux politiques du coffre de l’agence</value>
+  </data>
+  <data name="EnsureYourRequestDetailsAreAccurateBeforeSubmitting" xml:space="preserve">
+    <value>Vérifiez l’exactitude des détails de votre demande avant soumission</value>
+  </data>
+  <data name="ManageCashCeilingRequestsAndApprovals" xml:space="preserve">
+    <value>Gérez efficacement les demandes et validations de plafond de caisse. Utilisez les outils ci-dessous pour traiter les demandes de décaissement des caisses ou les transferts entre coffres</value>
+  </data>
+  <data name="ManageYourSubmittedCashCeiling" xml:space="preserve">
+    <value>Gérez efficacement vos demandes de plafond de caisse soumises. Utilisez les options ci-dessous pour consulter, modifier ou supprimer vos demandes</value>
+  </data>
+  <data name="MonitorTheTillsOperationalLimitDaily" xml:space="preserve">
+    <value>Surveillez quotidiennement le plafond opérationnel de la caisse afin d’éviter l’arrêt des opérations d’encaissement</value>
+  </data>
+  <data name="NoCashCeilingRequestsHaveBeenMadeYet" xml:space="preserve">
+    <value>Aucune demande de plafond de caisse n’a encore été effectuée</value>
+  </data>
+  <data name="PleaseNoteWhenTheSubTill" xml:space="preserve">
+    <value>Veuillez noter : lorsque la sous-caisse dépasse son plafond opérationnel, toutes les opérations d’encaissement sont automatiquement suspendues jusqu’au transfert de l’excédent vers la caisse principale</value>
+  </data>
+  <data name="SToPTILL" xml:space="preserve">
+    <value>CAISSE SOUS-CAISSE VERS CAISSE PRINCIPALE</value>
+  </data>
+  <data name="Subteller_Cash_To_PrimaryTeller" xml:space="preserve">
+    <value>Sous-caissier_Transfert de caisse vers caissier principal</value>
+  </data>
+  <data name="SubTillToPrimaryTillValidation" xml:space="preserve">
+    <value>Validation du transfert de la sous-caisse vers la caisse principale</value>
+  </data>
+  <data name="UseTheStatusColumnToMonitorTheState" xml:space="preserve">
+    <value>Utilisez la colonne « Statut » pour suivre l’état des demandes (En attente, Approuvée ou Rejetée)</value>
+  </data>
+  <data name="ValidateAndManageCashCeilingRequests" xml:space="preserve">
+    <value>Validez et gérez efficacement les demandes de plafond de caisse. Assurez des ajustements précis selon le type de demande</value>
+  </data>
+  <data name="VerifyTheRequestedCashoutAmount" xml:space="preserve">
+    <value>Vérifiez que le montant demandé et son objet sont conformes aux politiques de l’agence</value>
+  </data>
+  <data name="ViewAndManageCashCeilingRequest" xml:space="preserve">
+    <value>Consultez et gérez efficacement les détails des demandes de plafond de caisse</value>
+  </data>
+  <data name="ViewAndManageDetails" xml:space="preserve">
+    <value>Consultez et gérez les détails de toutes les demandes de plafond de caisse</value>
+  </data>
+  <data name="YouHaventCreatedAnyCashCeilingRequestsYet" xml:space="preserve">
+    <value>Vous n’avez encore créé aucune demande de plafond de caisse</value>
+  </data>
+  <data name="YouCanEditRequestsWithAPendingStatus" xml:space="preserve">
+    <value>Vous pouvez modifier les demandes ayant le statut « En attente »</value>
+  </data>
+  <data name="ViewAndManageCashCeilingRequestDetailsEfficiently" xml:space="preserve">
+    <value>Consultez et gérez efficacement les détails des demandes de plafond de caisse</value>
+  </data>
+  <data name="ViewAndManageAllCashCeilingRequestsInitiated" xml:space="preserve">
+    <value>Consultez et gérez toutes les demandes de plafond de caisse initiées par les sous-caissiers et les caissiers principaux. Assurez une gestion fluide des flux de trésorerie en traitant efficacement les demandes</value>
+  </data>
+  <data name="VerifyTheRequestedAmountAlignsWithBranch" xml:space="preserve">
+    <value>Vérifiez que le montant demandé est conforme aux politiques de l’agence et aux plafonds de caisse</value>
+  </data>
+  <data name="UseTheStatusColumnToTrack" xml:space="preserve">
+    <value>Utilisez la colonne « Statut » pour suivre l’avancement des demandes (En attente, Approuvée ou Rejetée)</value>
+  </data>
+  <data name="TransferCashToPrimaryTill" xml:space="preserve">
+    <value>Transférer les liquidités vers la caisse principale</value>
+  </data>
+  <data name="SubTillCashTransferToPrimaryTill" xml:space="preserve">
+    <value>Transfert de liquidités de la sous-caisse vers la caisse principale</value>
+  </data>
+  <data name="SubTellerToPrimaryTeller" xml:space="preserve">
+    <value>Sous-caissier vers caissier principal</value>
+  </data>
+  <data name="ReviewAndValidateCashCeilingRequests" xml:space="preserve">
+    <value>Examiner et valider efficacement les demandes de plafond de caisse. Approuver, rejeter ou mettre en attente selon les politiques de l’agence et les plafonds de caisse</value>
+  </data>
+  <data name="NoCashCeilingRequestsToValidateAtTheMoment" xml:space="preserve">
+    <value>Aucune demande de plafond de caisse à valider pour le moment</value>
+  </data>
+  <data name="MyCashCeilingRequests" xml:space="preserve">
+    <value>Mes demandes de plafond de caisse</value>
+  </data>
+  <data name="MonitorTheRequestTypes" xml:space="preserve">
+    <value>Surveillez les types de demandes (Caisse vers Coffre ou Sous-caissier vers Caissier principal) pour un traitement approprié</value>
+  </data>
+  <data name="ManageCashTransfersEfficiently" xml:space="preserve">
+    <value>Gérez efficacement les transferts de liquidités lorsque la caisse atteint son plafond opérationnel. Assurez le transfert rapide de tout excédent vers la caisse principale afin d’éviter les interruptions</value>
+  </data>
+  <data name="IfTheRequestTypeIs" xml:space="preserve">
+    <value>Si le type de demande est</value>
+  </data>
+  <data name="EnsureTheRequestDetailsAreAccurateBeforeValidation" xml:space="preserve">
+    <value>Vérifiez l’exactitude des détails de la demande avant validation</value>
+  </data>
+  <data name="EnsureTheCashIsDeductedFromCashInHand" xml:space="preserve">
+    <value>S’assurer que les liquidités sont déduites de la Caisse en main (57) et transférées vers le Coffre</value>
+  </data>
+  <data name="EnsureTheBalanceIsReducedFromTheSubteller" xml:space="preserve">
+    <value>S’assurer que le solde est diminué de la sous-caisse et ajouté à la caisse du caissier principal</value>
+  </data>
+  <data name="EnsureAllCashTransfersAreAuthorized" xml:space="preserve">
+    <value>S’assurer que tous les transferts de liquidités sont autorisés et validés avant soumission</value>
+  </data>
+  <data name="DenominationDistributions" xml:space="preserve">
+    <value>Répartition des coupures</value>
+  </data>
+  <data name="CASH_TO_VAULT" xml:space="preserve">
+    <value>CAISSE VERS COFFRE</value>
+  </data>
+  <data name="CashToVaultValidation" xml:space="preserve">
+    <value>Validation du transfert de caisse vers le coffre</value>
+  </data>
+  <data name="CashRequisitionApproval" xml:space="preserve">
+    <value>Approbation de la réquisition de liquidités</value>
+  </data>
+  <data name="CashOutCeilingRequest" xml:space="preserve">
+    <value>Demande de décaissement sous plafond</value>
+  </data>
+  <data name="CashCeilingRequestValidation" xml:space="preserve">
+    <value>Validation de la demande de plafond de caisse</value>
+  </data>
+  <data name="CashCeilingRequests" xml:space="preserve">
+    <value>Demandes de plafond de caisse</value>
+  </data>
+  <data name="ApprovedTransfersMustBeProcessedPromptly" xml:space="preserve">
+    <value>Les transferts approuvés doivent être traités rapidement afin de reprendre les opérations normales</value>
+  </data>
+  <data name="ApprovedRequestsShouldBeProcessed" xml:space="preserve">
+    <value>Les demandes approuvées doivent être traitées rapidement afin d’éviter des retards opérationnels</value>
+  </data>
+  <data name="AllCashCeilingRequests" xml:space="preserve">
+    <value>Toutes les demandes de plafond de caisse</value>
+  </data>
+</root>

@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.Reconciliation.ConfirmReconciliation
-
+@using Resources
 <div class="modal fade" id="confirmReconciliationModal" tabindex="-1" aria-labelledby="confirmReconciliationModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -12,10 +12,10 @@
                         <div class="card bg-light mb-2 p-2">
                             <div class="card-body text-center py-2">
                                 <h1 class="card-title text-primary mb-1">
-                                    <i class="mdi mdi-account-group me-2"></i>Confirm Reconciliation
+                                    <i class="mdi mdi-account-group me-2"></i>@GlobalFileListing.Confirm_Reconciliation
                                 </h1>
                                 <p class="card-text small mb-1">
-                                    Take note: Once confirmed, the reconciliation process will be finalized and cannot be undone.
+                                    @GlobalFileListing.Take_note_Once_confirmed_the_reconciliation_process_will_be_finalized_and_cannot_be_undone
                                 </p>
                                 <hr style="border: 1px solid rgba(128, 128, 128, 0.35);" />
                             </div>
@@ -24,7 +24,7 @@
 
                     @Html.HiddenFor(m => m.Id)
                     <div class="mb-3">
-                        <label class="form-label small fw-bold">Branch ID</label>
+                        <label class="form-label small fw-bold">@GlobalShared.Branch_ID</label>
                         @Html.TextBoxFor(m => m.BranchId, new { @class = "form-control", @readonly = "readonly" })
                     </div>
 
@@ -39,7 +39,7 @@
 
                                 <div class="col-12 col-md-4 d-flex flex-column align-items-md-end">
                                     <label for="AccountingDay" class="form-label mb-1">
-                                        📅 Accounting Date
+                                        📅 @GlobalShared.Accounting_Date
                                     </label>
                                     @Html.TextBoxFor(
                                         m => m.AccountingDate,
@@ -62,9 +62,9 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@GlobalShared.Cancel</button>
                     <button type="submit" id="confirmModalSubmitBtn" class="btn btn-primary">
-                        <i class="mdi mdi-check-all me-1"></i> Confirm
+                        <i class="mdi mdi-check-all me-1"></i> @GlobalShared.Confirm
                     </button>
                 </div>
             }

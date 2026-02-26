@@ -2,17 +2,17 @@
     ViewBag.Title = "Ordinary Account Initialization Overview";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
-
+@using Resources
 <div class="row">
     <div class="col-12">
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="bi bi-upload"></i> 📤 Upload Daily Collector Operations</span>
+                    <i class="bi bi-upload"></i> 📤 @GlobalDailyAgentManagement.Upload_Daily_Collector_Operations</span>
                 </h1>
 
                 <p class="card-text text-warning fw-bold">
-                    <i class="mdi mdi-alert-circle-outline me-1"></i> This interface enable back office operator to register all the daily collector field operation activity.
+                    <i class="mdi mdi-alert-circle-outline me-1"></i> @GlobalDailyAgentManagement.This_interface_enable_back_office_operator_to_register_all_the_daily_collector_field_operation_activity
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -22,7 +22,7 @@
 
 <div class="card mb-2">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> TIPS for daily collection END OF DAY OPERATION</span>
+        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalDailyAgentManagement.TIPS_for_daily_collection_END_OF_DAY_OPERATION</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -31,9 +31,9 @@
         <div class="card-body">
             <ul>
 
-                <li><i class="mdi mdi-calendar-check-outline text-primary me-2"></i> <strong>FilterByBranch:</strong>  Select branch if you are connected as head office</li>
-                <li><i class="mdi mdi-account-multiple-check-outline text-success me-2"></i> <strong>Select Daily Collector:</strong>Select  Daily Collector.</li>
-                <li><i class="mdi mdi-cash-check me-2"></i> <strong> File Upload:</strong>File uploaded </li>
+                <li><i class="mdi mdi-calendar-check-outline text-primary me-2"></i> <strong>@GlobalShared.FilterByBranch:</strong>  @GlobalDailyAgentManagement.Select_branch_if_you_are_connected_as_head_office</li>
+                <li><i class="mdi mdi-account-multiple-check-outline text-success me-2"></i> <strong>@GlobalDailyAgentManagement.Select_Daily_Collector:</strong>@GlobalDailyAgentManagement.Select_Daily_Collector.</li>
+                <li><i class="mdi mdi-cash-check me-2"></i> <strong> @GlobalShared.File_Upload:</strong>@GlobalShared.File_uploaded </li>
 
             </ul>
         </div>

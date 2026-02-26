@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.ManualDailycollection.FileDetailsResponse
+    @using Resources
 @{
     Func<decimal, string> formatCurrency = amount => amount.ToString("N2");
 }
@@ -94,10 +95,10 @@
                                 aria-expanded="true"
                                 aria-controls="dashCollapse">
                             <i class="mdi mdi-view-dashboard-outline me-1"></i>
-                            Daily Collector Cash Clearance — Dashboard
+                            @GlobalFileValidation.Daily_Collector_Cash_Clearance_Dashboard
                         </button>
                     </h5>
-                    <small class="text-muted">File ID: @Safe(Model?.Id)</small>
+                    <small class="text-muted">@GlobalShared.File_ID: @Safe(Model?.Id)</small>
                 </div>
 
                 <span class="badge @StatusBadge(Model?.status) ms-2">@Safe(Model?.status)</span>
@@ -132,15 +133,15 @@
                                     </div>
                                 </td>
                                 <td class="hdr-right">
-                                    <div class="doc-code">DAILY COLLECTOR CASH CLEARANCE <span class="muted">(D3C)</span></div>
+                                    <div class="doc-code">@GlobalFileValidation.DAILY_COLLECTOR_CASH_CLEARANCE <span class="muted">(D3C)</span></div>
                                     <table class="kv mini">
                                         <colgroup>
                                             <col style="width:46%">
                                             <col style="width:54%">
                                         </colgroup>
-                                        <tr><th>Report Date</th><td>@DateTime.Now.ToString("dd/MM/yyyy")</td></tr>
-                                        <tr><th>Branch</th><td>@Safe(Model?.BranchName)</td></tr>
-                                        <tr><th>Prepared by</th><td>____________________</td></tr>
+                                        <tr><th>@GlobalShared.Report_Date</th><td>@DateTime.Now.ToString("dd/MM/yyyy")</td></tr>
+                                        <tr><th>@GlobalShared.Branch</th><td>@Safe(Model?.BranchName)</td></tr>
+                                        <tr><th>@GlobalShared.Prepared_by</th><td>____________________</td></tr>
                                     </table>
                                 </td>
                             </tr>
@@ -154,9 +155,9 @@
                                 <col style="width:18%">
                                 <col style="width:32%">
                             </colgroup>
-                            <tr><th>File ID</th><td>@Safe(Model?.Id)</td><th>Transit Ref</th><td>@Safe(Model?.DailyCollectorTransitMemberReference)</td></tr>
-                            <tr><th>Collector</th><td>@Safe(Model?.CollectorName)</td><th>Collector ID</th><td>@Safe(Model?.CollectorId)</td></tr>
-                            <tr><th>Branch Code</th><td>@Safe(Model?.BranchCode)</td><th>Branch Id</th><td>@Safe(Model?.BranchId)</td></tr>
+                            <tr><th>@GlobalShared.File_ID</th><td>@Safe(Model?.Id)</td><th>@GlobalShared.Transit_Ref</th><td>@Safe(Model?.DailyCollectorTransitMemberReference)</td></tr>
+                            <tr><th>@GlobalShared.Collector</th><td>@Safe(Model?.CollectorName)</td><th>@GlobalShared.Collector_ID</th><td>@Safe(Model?.CollectorId)</td></tr>
+                            <tr><th>@GlobalShared.Branch_Code</th><td>@Safe(Model?.BranchCode)</td><th>@GlobalShared.Branch_ID</th><td>@Safe(Model?.BranchId)</td></tr>
                         </table>
 
                         <!-- Summary KPIs -->
@@ -166,7 +167,7 @@
                                 <col style="width:33%">
                                 <col style="width:33%">
                             </colgroup>
-                            <tr><th>Total Amount</th><th>Members</th><th>Branches Collected</th></tr>
+                            <tr><th>@GlobalShared.Total_amount</th><th>@GlobalShared.Members</th><th>@GlobalShared.Branches_Collected</th></tr>
                             <tr>
                                 <td class="num">@Money(Model.TotalAmount > 0 ? Model.TotalAmount : (Model.Details?.Sum(d => d.Amount) ?? 0m))</td>
                                 <td class="num">@((Model.TotalMember > 0 ? Model.TotalMember : (Model.Details?.Count ?? 0)))</td>
@@ -181,7 +182,7 @@
                                 <col style="width:33%">
                                 <col style="width:33%">
                             </colgroup>
-                            <tr><th>Uploaded By</th><th>Reviewed By</th><th>Approved By</th></tr>
+                            <tr><th>@GlobalShared.Uploaded_By</th><th>@GlobalShared.Reviewed_By</th><th>@GlobalShared.Approved_by</th></tr>
                             <tr>
                                 <td>
                                     <div class="strong">@Safe(Model?.UploadedBy)</div>
@@ -209,10 +210,10 @@
                                 <col style="width:30%">
                             </colgroup>
                             <tr>
-                                <th>Total Treated (Daily Savers Cash-in)</th>
+                                <th>@GlobalFileValidation.Total_Treated_Daily_Savers_Cash_in</th>
                                 <td class="num">@totalTreated</td>
-                                <th>Status</th>
-                                <td>Treated</td>
+                                <th>@GlobalShared.Status</th>
+                                <td>@GlobalShared.Treated</td>
                             </tr>
                         </table>
 
@@ -224,19 +225,18 @@
                                 <col style="width:18%">
                                 <col style="width:32%">
                             </colgroup>
-                            <tr><th colspan="4" class="section">CASH RECEPTION</th></tr>
-                            <tr><th>Cashier</th><td>@Safe(Model?.CashierName)</td><th>Date</th><td>@DateShort(Model?.CashReceptionDate)</td></tr>
-                            <tr><th>Cashier Branch</th><td>@Safe(Model?.CashierBranchName) (@Safe(Model?.CashierBranchCode))</td><th>Cash-in Amount</th><td class="num">@Money(Model?.TotalCashInAmount ?? 0m)</td></tr>
-                            <tr><th>Cash-in Status</th><td>@(Model?.CashInStatus==true ? "Yes" : "No")</td><th>Note</th><td class="wrap">@Safe(Model?.CashierComment)</td></tr>
+                            <tr><th colspan="4" class="section">@GlobalFileValidation.CASH_RECEPTION</th></tr>
+                            <tr><th>@GlobalShared.Cashier</th><td>@Safe(Model?.CashierName)</td><th>@GlobalShared.Date</th><td>@DateShort(Model?.CashReceptionDate)</td></tr>
+                            <tr><th>@GlobalShared.Cashier_Branch</th><td>@Safe(Model?.CashierBranchName) (@Safe(Model?.CashierBranchCode))</td><th>@GlobalFileValidation.Cash_in_Amount</th><td class="num">@Money(Model?.TotalCashInAmount ?? 0m)</td></tr>
+                            <tr><th>@GlobalShared.Cash_in_Status</th><td>@(Model?.CashInStatus==true ? "Yes" : "No")</td><th>@GlobalShared.Note</th><td class="wrap">@Safe(Model?.CashierComment)</td></tr>
                         </table>
 
                         <!-- Note -->
                         <div class="note-block mt10">
-                            <div class="note-title">Payment / Engagement Note</div>
+                            <div class="note-title">@GlobalFileValidation.Payment_Engagement_Note</div>
                             <div class="note-body">
-                                The above cash-in figures represent amounts collected by the assigned Daily Collector and verified by the Cashier.
-                                By signing below, the parties acknowledge the correctness of the amounts and agree that any discrepancy or
-                                pending adjustments will be reported and regularized at end-of-day (EOD) reconciliation.
+                                @GlobalFileValidation.The_above_cash_in_figures_represent_amounts_collected_by_the_assigned_Daily_Collector_and_verified_by_the_Cashier
+                                @GlobalFileValidation.By_signing_below_the_parties_acknowledge_the_correctness_of_the_amounts_and_agree_that_any_discrepancy_or_pending_adjustments_will_be_reported_and_regularized_at_end_of_day_EOD_reconciliation
                             </div>
                         </div>
 
@@ -245,22 +245,22 @@
                             <colgroup><col style="width:33%"><col style="width:34%"><col style="width:33%"></colgroup>
                             <tr>
                                 <td>
-                                    <div class="sig-title">Accountant</div>
+                                    <div class="sig-title">@GlobalShared.Accountant</div>
                                     <div class="sig-line"></div>
-                                    <div class="sig-meta">Name: ____________________</div>
-                                    <div class="sig-meta">Date: ____ / ____ / ______</div>
+                                    <div class="sig-meta">@GlobalShared.Name: ____________________</div>
+                                    <div class="sig-meta">@GlobalShared.Date: ____ / ____ / ______</div>
                                 </td>
                                 <td>
-                                    <div class="sig-title">Daily Collector</div>
+                                    <div class="sig-title">@GlobalShared.Daily_collector</div>
                                     <div class="sig-line"></div>
-                                    <div class="sig-meta">Name: ____________________</div>
-                                    <div class="sig-meta">Date: ____ / ____ / ______</div>
+                                    <div class="sig-meta">@GlobalShared.Name: ____________________</div>
+                                    <div class="sig-meta">@GlobalShared.Date: ____ / ____ / ______</div>
                                 </td>
                                 <td>
-                                    <div class="sig-title">Cashier</div>
+                                    <div class="sig-title">@GlobalShared.Cashier</div>
                                     <div class="sig-line"></div>
-                                    <div class="sig-meta">Name: ____________________</div>
-                                    <div class="sig-meta">Date: ____ / ____ / ______</div>
+                                    <div class="sig-meta">@GlobalShared.Name: ____________________</div>
+                                    <div class="sig-meta">@GlobalShared.Date: ____ / ____ / ______</div>
                                 </td>
                             </tr>
                         </table>
@@ -268,7 +268,7 @@
                         <!-- Footer -->
                         <div class="foot">
                             <div class="foot-left">[Footer line 1]  |  [Footer line 2]</div>
-                            <div class="foot-right">Page <span class="pg"></span></div>
+                            <div class="foot-right">@GlobalShared.Page <span class="pg"></span></div>
                         </div>
                     </div>
                 </div>
@@ -276,7 +276,7 @@
 
             <div class="card-footer bg-white">
                 <div class="small text-muted">
-                    Created: @DateOrDash(Model?.CreatedDate) &nbsp;|&nbsp; Modified: @DateOrDash(Model?.ModifiedDate) &nbsp;|&nbsp; Teller: @Safe(Model?.TellerName)
+                    @GlobalShared.Created: @DateOrDash(Model?.CreatedDate) &nbsp;|&nbsp; @GlobalShared.Modified: @DateOrDash(Model?.ModifiedDate) &nbsp;|&nbsp; @GlobalShared.Teller: @Safe(Model?.TellerName)
                 </div>
             </div>
         </div>
@@ -299,7 +299,7 @@
                     aria-expanded="false"
                     aria-controls="fileDetailsCollapse">
                 <i class="mdi mdi-format-list-bulleted me-2"></i>
-                Collections (@totalMembers)
+                @GlobalShared.Collections (@totalMembers)
             </button>
         </h6>
     </div>
@@ -312,12 +312,12 @@
 
                     <thead class="table-light">
                         <tr>
-                            <th style="width:9%">ACC NUM</th>
-                            <th style="width:26%">Name</th>
-                            <th style="width:8%" class="text-end">Amount</th>
-                            <th style="width:30%">Member's Branch</th>
+                            <th style="width:9%">@GlobalShared.ACC_NUM</th>
+                            <th style="width:26%">@GlobalShared.Name</th>
+                            <th style="width:8%" class="text-end">@GlobalShared.Amount</th>
+                            <th style="width:30%">@GlobalShared.Members_Branch</th>
                             <th style="width:17%">T. Date</th>
-                            <th style="width:10%">Status</th>
+                            <th style="width:10%">@GlobalShared.Status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -346,14 +346,14 @@
                     <tfoot>
                         <tr class="table-light">
                             <!-- 1st + 2nd columns -->
-                            <th colspan="2" class="text-end">Totals (filtered):</th>
+                            <th colspan="2" class="text-end">@GlobalShared.Totals (@GlobalShared.filtered):</th>
 
                             <!-- 3rd column = Amount (TOTAL GOES HERE) -->
                             <th class="text-end" id="ftAmountTotal">@totalAmount</th>
 
                             <!-- 4th–5th columns for a note -->
                             <th colspan="2" class="text-start">
-                                <span class="fw-semibold">Total Treated:</span>
+                                <span class="fw-semibold">@GlobalShared.Total_Treated:</span>
                                 <span id="ftTreatedTotal" class="ms-1">@totalMembers</span>
                             </th>
 
@@ -366,7 +366,7 @@
             </div>
 
             <div class="mt-2 small text-muted">
-                Created: @DateOrDash(Model?.CreatedDate) &nbsp;|&nbsp; Modified: @DateOrDash(Model?.ModifiedDate) &nbsp;|&nbsp; Teller: @Safe(Model?.TellerName)
+                @GlobalShared.Created: @DateOrDash(Model?.CreatedDate) &nbsp;|&nbsp; @GlobalShared.Modified: @DateOrDash(Model?.ModifiedDate) &nbsp;|&nbsp; @GlobalShared.Teller: @Safe(Model?.TellerName)
             </div>
         </div>
     </div>

@@ -686,6 +686,12 @@
       <DependentUpon>LoanRepaymentRPT.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="AppFiles\Reporting\Transactions\UpdatedStatement\Loan\GeneralLoanReportRPT.cs">
+      <DependentUpon>GeneralLoanReportRPT.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="AppFiles\Reporting\Transactions\UpdatedStatement\Loan\LoanSituationRPT.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1035,12 +1041,112 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>LiaisonLedger.fr.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\AccountingV2\ManaulJournalEntryV2\ManualEntry.Designer.cs">
+    <Compile Include="App_GlobalResources\AffiliateToBranchFallback\AffiliateToBranchFallback.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AffiliateToBranchFallback.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AndriodAppVersioning.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\APIKey\ApiKeyRessource.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ApiKeyRessource.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Authentication\AuthenticationRessource1.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AuthenticationRessource.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\BlacklistUser\BlacklistUserRessource.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BlacklistUserRessource.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\BranchAccount\BranchAccountRessources.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BranchAccountRessources.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\BranchCashConfig\BranchCashConfigRessource.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BranchCashConfigRessource.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashCeilingRequest\CashCeilingRequestRessource.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CashCeilingRequestRessource.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashReconciliation\CashReconciliationResource.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CashReconciliationResource.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Categoryconfic\CategoryconficResource.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CategoryconficResource.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\ChartOfAccountV2\ChartOfAccountV2Resource.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ChartOfAccountV2Resource.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\ChequeManagementSystem\ChequeManagements1.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ChequeManagements.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\EndOfYearClosure\GlobalEndOfYearClosure.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalEndOfYearClosure.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\FeeConfig\GlobalFeeConfig.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalFeeConfig.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\FileListing\GlobalFileListing.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalFileListing.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\FileUpload\GlobalFileUpload.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalFileUpload.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\FileValidation\GlobalFileValidation.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalFileValidation.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\GeneralStatisticReport\GlobalGeneralStatisticReport.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalGeneralStatisticReport.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Globalization\GlobalGlobalization.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalGlobalization.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\GLSystemReconciliation\GlobalGLSystemReconciliation.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalGLSystemReconciliation.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\ManaulJournalEntryV2\ManualEntry.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ManualEntry.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\AccountingV2\ManaulJournalEntryV2\ManualEntry.fr.designer.cs">
+    <Compile Include="App_GlobalResources\ManaulJournalEntryV2\ManualEntry.fr.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ManualEntry.fr.resx</DependentUpon>
@@ -1126,7 +1232,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ApiKeyRessource.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\Authentication\AuthenticationRessource.Designer.cs" />
     <Compile Include="App_GlobalResources\BankingOperations\GlobalBankingOperations.fr.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1137,8 +1242,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalBankData.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\BlacklistUser\BlacklistUserRessource.Designer.cs" />
     <Compile Include="App_GlobalResources\BranchAccount\BranchAccountRessources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BranchAccountRessources.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\Bank\GlobalBankData.fr.designer.cs">
       <AutoGen>True</AutoGen>
@@ -1225,20 +1332,40 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ChequeBookResource.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\ChequeBook\ChequeBookResource.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ChequeBookResource.fr.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\ChequeCancellation\ChequeCancellationResource.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ChequeCancellationResource.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\ChequeCancellation\ChequeCancellationResource.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ChequeCancellationResource.fr.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\ChequeCertification\ChequeCertificationResource.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ChequeCertificationResource.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\ChequeCertification\ChequeCertificationResource.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ChequeCertificationResource.fr.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\ChequeClearance\ChequeClearanceResource.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ChequeClearanceResource.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\ChequeClearance\ChequeClearanceResource.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ChequeClearanceResource.fr.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\ChequeManagementSystem\ChequeManagements.designer.cs">
       <AutoGen>True</AutoGen>
@@ -1255,6 +1382,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ChequeRequestResource.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\ChequeRequest\ChequeRequestResource.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ChequeRequestResource.fr.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\CMoneyMembership\GlobalCMoneyMembership.fr.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1265,20 +1397,110 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalCollateral.fr.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\CollectorCommission\GlobalCollectorCommission.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalCollectorCommission.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CollectorCommission\GlobalCollectorCommission.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalCollectorCommission.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CollectorDevice\GlobalCollectorDevice.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalCollectorDevice.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CollectorDevice\GlobalCollectorDevice.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalCollectorDevice.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Communication\GlobalCommunication.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalCommunication.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Communication\GlobalCommunication.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalCommunication.fr.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\CorrespondingBankManagement\GlobalCorrespondingBankManagement.fr.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalCorrespondingBankManagement.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CounterCheque\GlobalCounterCheque.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalCounterCheque.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CounterCheque\GlobalCounterCheque.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalCounterCheque.fr.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\Country\GlobalCountry.fr.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalCountry.fr.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\CustomeReports\GlobalCustomeReports.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalCustomeReports.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CustomeReports\GlobalCustomeReports.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalCustomeReports.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\DailyAgentManagement\GlobalDailyAgentManagement.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalDailyAgentManagement.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\DailyCollectionDashboard\GlobalDailyCollectionDashboard.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalDailyCollectionDashboard.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\DailyCollectionSetting\DailyCollectionSettingRessource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DailyCollectionSettingRessource.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\DailyCollectionSetting\DailyCollectionSettingRessource.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DailyCollectionSettingRessource.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\DailyCollectorLicense\GlobalDailyCollectorLicense.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalDailyCollectorLicense.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\DailyCollectorLicense\GlobalDailyCollectorLicense.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalDailyCollectorLicense.fr.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\DailyCollectorManagement\GlobalDailyCollectorManagement.fr.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalDailyCollectorManagement.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\DailySaverManagement\GlobalDailySaverManagement.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalDailySaverManagement.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\DailySaverManagement\GlobalDailySaverManagement.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalDailySaverManagement.fr.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\DailyTellerAssignation\GlobalDailyTellerAssignation.fr.designer.cs">
       <AutoGen>True</AutoGen>
@@ -4188,16 +4410,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalHoliday.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\HomePage\GlobalAbout.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>GlobalAbout.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\HomePage\GlobalAbout.fr.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>GlobalAbout.fr.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\HomePage\GlobalHome.designer.cs">
       <AutoGen>True</AutoGen>
@@ -7660,6 +7872,10 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>LoanRepaymentRPT1.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Transactions\UpdatedStatement\Loan\GeneralLoanReportRPT.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>GeneralLoanReportRPT.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\Transactions\UpdatedStatement\Loan\LoanSituationRPT.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>LoanSituationRPT.cs</LastGenOutput>
@@ -7707,6 +7923,182 @@
     <Content Include="App_GlobalResources\ChequeRequest\ChequeRequestResource.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>ChequeRequestResource.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CollectorCommission\GlobalCollectorCommission.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalCollectorCommission.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CollectorDevice\GlobalCollectorDevice.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalCollectorDevice.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Communication\GlobalCommunication.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalCommunication.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CounterCheque\GlobalCounterCheque.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalCounterCheque.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CustomeReports\GlobalCustomeReports.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalCustomeReports.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\DailyAgentManagement\GlobalDailyAgentManagement.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalDailyAgentManagement.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\DailyCollectionDashboard\GlobalDailyCollectionDashboard.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalDailyCollectionDashboard.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\DailyCollectionSetting\DailyCollectionSettingRessource.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>DailyCollectionSettingRessource.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\DailyCollectorLicense\GlobalDailyCollectorLicense.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalDailyCollectorLicense.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\DailySaverManagement\GlobalDailySaverManagement.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalDailySaverManagement.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\DailySaverManagement\GlobalDailySaverManagement.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalDailySaverManagement.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\DailyCollectorLicense\GlobalDailyCollectorLicense.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalDailyCollectorLicense.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\DailyCollectionSetting\DailyCollectionSettingRessource.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>DailyCollectionSettingRessource.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CustomeReports\GlobalCustomeReports.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalCustomeReports.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CounterCheque\GlobalCounterCheque.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalCounterCheque.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Communication\GlobalCommunication.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalCommunication.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CollectorDevice\GlobalCollectorDevice.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalCollectorDevice.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CollectorCommission\GlobalCollectorCommission.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalCollectorCommission.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\ChequeRequest\ChequeRequestResource.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>ChequeRequestResource.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\ChequeCertification\ChequeCertificationResource.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>ChequeCertificationResource.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\ChequeClearance\ChequeClearanceResource.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>ChequeClearanceResource.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\ChequeCancellation\ChequeCancellationResource.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>ChequeCancellationResource.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\ChequeBook\ChequeBookResource.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>ChequeBookResource.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\EndOfYearClosure\GlobalEndOfYearClosure.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalEndOfYearClosure.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\ChequeManagementSystem\ChequeManagements.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>ChequeManagements1.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\FeeConfig\GlobalFeeConfig.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalFeeConfig.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\FileListing\GlobalFileListing.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalFileListing.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\FileUpload\GlobalFileUpload.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalFileUpload.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\FileValidation\GlobalFileValidation.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalFileValidation.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\GeneralStatisticReport\GlobalGeneralStatisticReport.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalGeneralStatisticReport.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Globalization\GlobalGlobalization.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalGlobalization.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\GLSystemReconciliation\GlobalGLSystemReconciliation.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalGLSystemReconciliation.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AffiliateToBranchFallback\AffiliateToBranchFallback.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AffiliateToBranchFallback.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AndriodAppVersioning.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\APIKey\ApiKeyRessource.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>ApiKeyRessource.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Authentication\AuthenticationRessource.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AuthenticationRessource1.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\BlacklistUser\BlacklistUserRessource.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>BlacklistUserRessource1.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\BlacklistUser\BlacklistUserRessource.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>BlacklistUserRessource.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\BranchAccount\BranchAccountRessources.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>BranchAccountRessources.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\BranchCashConfig\BranchCashConfigRessource.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>BranchCashConfigRessource.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashCeilingRequest\CashCeilingRequestRessource.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CashCeilingRequestRessource.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashReconciliation\CashReconciliationResource.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CashReconciliationResource.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Categoryconfic\CategoryconficResource.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CategoryconficResource.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\ChartOfAccountV2\ChartOfAccountV2Resource.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>ChartOfAccountV2Resource.fr.designer.cs</LastGenOutput>
     </Content>
     <None Include="AppFiles\Accountingv2Reporting\DataSets\AccountingV2DS.xsd">
       <SubType>Designer</SubType>
@@ -8108,14 +8500,6 @@
       <DependentUpon>AccountingDataSet.xsd</DependentUpon>
     </Content>
     <Content Include="AppFiles\Reporting\SampleDocument\UploadedSampleTrialBalance.xlsx" />
-    <Content Include="App_GlobalResources\HomePage\GlobalAbout.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>GlobalAbout.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\HomePage\GlobalAbout.fr.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>GlobalAbout.fr.designer.cs</LastGenOutput>
-    </Content>
     <Content Include="App_GlobalResources\BranchManagement\GlobalBranchManagement.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalBranchManagement.Designer.cs</LastGenOutput>
@@ -9143,11 +9527,11 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>MainReportOld.cs</LastGenOutput>
     </EmbeddedResource>
-    <Content Include="App_GlobalResources\AccountingV2\ManaulJournalEntryV2\ManualEntry.resx">
+    <Content Include="App_GlobalResources\ManaulJournalEntryV2\ManualEntry.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>ManualEntry.Designer.cs</LastGenOutput>
     </Content>
-    <Content Include="App_GlobalResources\AccountingV2\ManaulJournalEntryV2\ManualEntry.fr.resx">
+    <Content Include="App_GlobalResources\ManaulJournalEntryV2\ManualEntry.fr.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>ManualEntry.fr.designer.cs</LastGenOutput>
     </Content>
@@ -10847,6 +11231,7 @@
     <Content Include="Views\ChequeClearance\_Details.cshtml" />
     <Content Include="Views\MembersFSeries\_AccountDetails.cshtml" />
     <Content Include="Views\StandingOrder\_ExportStandingOrder.cshtml" />
+    <Content Include="Views\ChequeClearance\_Validation.cshtml" />
     <Content Include="Views\IPSReporting\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>

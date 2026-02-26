@@ -12,10 +12,10 @@
         <div class="card bg-light mb-3 shadow-sm">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary fw-bold mb-2">
-                    <i class="mdi mdi-email-outline me-2"></i> Correspondence Request Details
+                    <i class="mdi mdi-email-outline me-2"></i> @GlobalFileUpload.Correspondence_Request_Details
                 </h1>
                 <p class="card-text lead mb-1">
-                    Detailed view of a single correspondence request, including accounts, mappings, and audit trail.
+                    @GlobalFileUpload.Detailed_view_of_a_single_correspondence_request_including_accounts_mappings_and_audit_trail
                 </p>
 
                 <div class="mt-2">
@@ -49,7 +49,7 @@
 <div class="card mb-3 shadow-sm">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
         <span>
-            <i class="mdi mdi-information-outline me-2"></i> Tips about this correspondence
+            <i class="mdi mdi-information-outline me-2"></i> @GlobalFileUpload.Tips_about_this_correspondence
         </span>
         <button class="btn btn-light btn-sm" type="button"
                 data-bs-toggle="collapse"
@@ -63,19 +63,19 @@
             <ul class="mb-0">
                 <li>
                     <i class="mdi mdi-email-check-outline text-primary me-2"></i>
-                    <strong>Scope:</strong> This record describes a single correspondence request (Branch or Affiliate).
+                    <strong>@GlobalShared.Scope:</strong> @GlobalFileUpload.This_record_describes_a_single_correspondence_request_Branch_or_Affiliate
                 </li>
                 <li>
                     <i class="mdi mdi-account-search-outline text-success me-2"></i>
-                    <strong>Request vs Action:</strong> Use <em>Requested By</em> and <em>Actioned By</em> to trace who initiated and who processed the request.
+                    <strong>@GlobalFileUpload.Request_vs_Action:</strong> @Html.Raw(@GlobalFileUpload.Use_Requested_By_and_Actioned_By_to_trace_who_initiated_and_who_processed_the_request)
                 </li>
                 <li>
                     <i class="mdi mdi-swap-horizontal text-info me-2"></i>
-                    <strong>GL Mapping:</strong> Check Branch / Affiliate / Ho PCMF mappings before approving any correspondence change in GL structure.
+                    <strong>@GlobalShared.GL_Mapping:</strong> @GlobalFileUpload.Check_Branch_Affiliate_Ho_PCMF_mappings_before_approving_any_correspondence_change_in_GL_structure
                 </li>
                 <li>
                     <i class="mdi mdi-alert-outline text-warning me-2"></i>
-                    <strong>Audit:</strong> Created / Modified / Actioned dates help you validate the timeline and detect late or suspicious changes.
+                    <strong>@GlobalShared.Audit:</strong> @GlobalFileUpload.Created_Modified_Actioned_dates_help_you_validate_the_timeline_and_detect_late_or_suspicious_changes
                 </li>
             </ul>
         </div>
@@ -86,7 +86,7 @@
 <div class="row">
     <div class="col-md-6">
         <h6 class="text-primary">
-            <i class="mdi mdi-information-outline me-2"></i>Basic Information
+            <i class="mdi mdi-information-outline me-2"></i>@GlobalShared.Basic_Information
         </h6>
         <table class="table table-sm table-bordered">
             <tbody>
@@ -95,19 +95,19 @@
                     <td>@Html.DisplayFor(m => m.Id)</td>
                 </tr>
                 <tr>
-                    <td class="fw-bold">Type</td>
+                    <td class="fw-bold">@GlobalShared.Type</td>
                     <td>@(string.IsNullOrWhiteSpace(Model?.Type) ? "-" : Html.Encode(Model.Type))</td>
                 </tr>
                 <tr>
-                    <td class="fw-bold">Branch</td>
+                    <td class="fw-bold">@GlobalShared.Branch</td>
                     <td>@(string.IsNullOrWhiteSpace(Model?.BranchName) ? "-" : Html.Encode(Model.BranchName))</td>
                 </tr>
                 <tr>
-                    <td class="fw-bold">Status</td>
+                    <td class="fw-bold">@GlobalShared.Status</td>
                     <td>@(string.IsNullOrWhiteSpace(Model?.Status) ? "-" : Html.Encode(Model.Status))</td>
                 </tr>
                 <tr>
-                    <td class="fw-bold">Requested By (Name)</td>
+                    <td class="fw-bold">@GlobalShared.Requested_by (@GlobalShared.Name)</td>
                     <td>@(string.IsNullOrWhiteSpace(Model?.RequestedByName) ? "-" : Html.Encode(Model.RequestedByName))</td>
                 </tr>
               @*  <tr>
@@ -115,7 +115,7 @@
                     <td>@(string.IsNullOrWhiteSpace(Model?.RequestedByUserId) ? "-" : Html.Encode(Model.RequestedByUserId))</td>
                 </tr>*@
                 <tr>
-                    <td class="fw-bold">Actioned By (Name)</td>
+                    <td class="fw-bold">@GlobalShared.Actioned_By (@GlobalShared.Name)</td>
                     <td>@(string.IsNullOrWhiteSpace(Model?.ActionedByName) ? "-" : Html.Encode(Model.ActionedByName))</td>
                 </tr>
                 @*<tr>
@@ -128,7 +128,7 @@
 
     <div class="col-md-6">
         <h6 class="text-primary">
-            <i class="mdi mdi-cog-outline me-2"></i>Accounts & Mapping
+            <i class="mdi mdi-cog-outline me-2"></i>@GlobalShared.Accounts & @GlobalShared.Mapping
         </h6>
         <table class="table table-sm table-bordered">
             <tbody>
@@ -154,7 +154,7 @@
                 </tr>*@
 
                 <tr>
-                    <td class="fw-bold">Branch Account Code / Name</td>
+                    <td class="fw-bold">@GlobalFileUpload.Branch_Account_Code / @GlobalShared.Name</td>
                     <td>
                         @(string.IsNullOrWhiteSpace(Model?.BranchAccountCode) ? "-" : Html.Encode(Model.BranchAccountCode))
                         : &nbsp;/&nbsp;
@@ -163,7 +163,7 @@
                 </tr>
 
                 <tr>
-                    <td class="fw-bold">Affiliate Account Code / Name</td>
+                    <td class="fw-bold">@GlobalFileUpload.Affiliate_Account_Code / @GlobalShared.Name</td>
                     <td>
                         @(string.IsNullOrWhiteSpace(Model?.AffiliateAccountCode) ? "-" : Html.Encode(Model.AffiliateAccountCode))
                         : &nbsp;/&nbsp;
@@ -172,7 +172,7 @@
                 </tr>
 
                 <tr>
-                    <td class="fw-bold">Source Affiliate Code / Name</td>
+                    <td class="fw-bold">@GlobalFileUpload.Source_Affiliate_Code / @GlobalShared.Name</td>
                     <td>
                         @(string.IsNullOrWhiteSpace(Model?.SourceAffiliateAccountCode) ? "-" : Html.Encode(Model.SourceAffiliateAccountCode))
                         : &nbsp;/&nbsp;
@@ -181,7 +181,7 @@
                 </tr>
 
                 <tr>
-                    <td class="fw-bold">HoPcmf Code / Name</td>
+                    <td class="fw-bold">@GlobalFileUpload.HoPcmf_Code / @GlobalShared.Name</td>
                     <td>
                         @(string.IsNullOrWhiteSpace(Model?.HoPcmfAccountCode) ? "-" : Html.Encode(Model.HoPcmfAccountCode))
                         : &nbsp;/&nbsp;
@@ -196,7 +196,7 @@
 <div class="row mt-2">
     <div class="col-md-6">
         <h6 class="text-primary">
-            <i class="mdi mdi-note-text me-2"></i>Rationale / Rejection
+            <i class="mdi mdi-note-text me-2"></i>@GlobalShared.Rationale / @GlobalShared.Rejection
         </h6>
         <div class="card card-body">
             @if (!string.IsNullOrWhiteSpace(Model?.Rationale))
@@ -216,12 +216,12 @@
 
     <div class="col-md-6">
         <h6 class="text-primary">
-            <i class="mdi mdi-calendar-range me-2"></i>Dates & Status
+            <i class="mdi mdi-calendar-range me-2"></i>@GlobalShared.Dates & @GlobalShared.Status
         </h6>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
-                    <td class="fw-bold">Actioned Date</td>
+                    <td class="fw-bold">@GlobalShared.Actioned_Date</td>
                     <td>
                         @(
                             Model != null && Model?.ActionedDate != null 
@@ -231,7 +231,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td class="fw-bold">Created Date</td>
+                    <td class="fw-bold">@GlobalShared.Created_Date</td>
                     <td>
                         @(
                             Model != null && Model?.CreatedDate != null
@@ -241,7 +241,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td class="fw-bold">Modified Date</td>
+                    <td class="fw-bold">@GlobalShared.Modified_Date</td>
                     <td>
                         @(
                             Model != null && Model?.ModifiedDate != null
@@ -251,7 +251,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td class="fw-bold">Is Deleted</td>
+                    <td class="fw-bold">@GlobalShared.Is_Deleted</td>
                     <td>@(Model?.IsDeleted == true ? "Yes" : "No")</td>
                 </tr>
             </tbody>

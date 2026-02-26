@@ -70,6 +70,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.IPS
 
         public string BranchId { get; set; } = string.Empty;
         public string BranchName { get; set; }
+        public string BankName { get; set; }
+      
 
         public string Remarks { get; set; } = string.Empty;
 
@@ -202,15 +204,18 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.IPS
         }
 
         public class MemberBalanceDestinationEntry
-        {
-            public string AccountId { get; set; } = string.Empty;
-            public string AccountType { get; set; } = string.Empty;
+    {
+        public string AccountId { get; set; } = string.Empty;
+        public string DestinationGLAccountId { get; set; } 
+
+        public string AccountType { get; set; } = string.Empty;
             public decimal Amount { get; set; }
             public string Description { get; set; }
         }
 
         public class SourceAccountEntryListing
         {
+            public string SourceBranchId { get; set; } = string.Empty;
             public string SourceGLAccountId { get; set; } = string.Empty;
             public decimal Amount { get; set; }
             public string Description { get; set; }
@@ -223,9 +228,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.IPS
             public string Description { get; set; }
         }
     
-
-
-
+       
 
 
     public class IPSClaimDocument

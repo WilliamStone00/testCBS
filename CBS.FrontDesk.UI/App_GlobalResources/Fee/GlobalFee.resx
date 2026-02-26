@@ -123,23 +123,14 @@
   <data name="DuringDisburstment" xml:space="preserve">
     <value>During disburstment</value>
   </data>
-  <data name="Fee" xml:space="preserve">
-    <value>Fee</value>
-  </data>
-  <data name="FeeTypes" xml:space="preserve">
-    <value>Fee types</value>
-  </data>
   <data name="LoanFeeTypes" xml:space="preserve">
     <value>Loan fee types</value>
   </data>
-  <data name="Name" xml:space="preserve">
-    <value>Name</value>
+  <data name="No_loan_fee_type_is_created" xml:space="preserve">
+    <value>No loan fee type is created</value>
   </data>
   <data name="OperationFee" xml:space="preserve">
     <value>Operation fee</value>
-  </data>
-  <data name="PaymentStatus" xml:space="preserve">
-    <value>Payment status</value>
   </data>
   <data name="PercentageOnPrincipalAmount" xml:space="preserve">
     <value>Percentage on principal amount</value>
@@ -155,8 +146,5 @@
   </data>
   <data name="SelectEventItem" xml:space="preserve">
     <value>Select event item</value>
-  </data>
-  <data name="Type" xml:space="preserve">
-    <value>Type</value>
   </data>
 </root>

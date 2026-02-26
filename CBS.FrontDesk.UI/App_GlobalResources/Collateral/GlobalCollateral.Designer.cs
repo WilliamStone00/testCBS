@@ -59,32 +59,5 @@ namespace Resources {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Collateral.
-        /// </summary>
-        internal static string Collateral {
-            get {
-                return ResourceManager.GetString("Collateral", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Enter parameters.
-        /// </summary>
-        internal static string EnterParameters {
-            get {
-                return ResourceManager.GetString("EnterParameters", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Name.
-        /// </summary>
-        internal static string Name {
-            get {
-                return ResourceManager.GetString("Name", resourceCulture);
-            }
-        }
     }
 }

@@ -1,6 +1,6 @@
 ﻿
 @model CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation.CloseOfDayModel
-
+@using Resources
 
 @* ----------------- Close Of Day Form ----------------- *@
 @using (Html.BeginForm("SubmitCloseOfDay", "GLSystemReconciliation", FormMethod.Post,
@@ -14,10 +14,10 @@
     <div class="card bg-light mb-2">
         <div class="card-body text-center">
             <h1 class="card-title text-primary">
-                <i class="mdi mdi-swap-horizontal-bold me-2"></i> Close Of Day
+                <i class="mdi mdi-swap-horizontal-bold me-2"></i> @GlobalGLSystemReconciliation.Close_Of_Day
             </h1>
             <p class="card-text">
-                Make Sure every Box is Checked before you can Close the Day
+                @GlobalGLSystemReconciliation.Make_Sure_every_Box_is_Checked_before_you_can_Close_the_Day
             </p>
             <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
         </div>
@@ -26,7 +26,7 @@
 
     <div id="closeOfDayForm" class="card shadow p-3 mb-4 mt-3">
         <h5 class="text-danger mb-3">
-            <i class="mdi mdi-lock me-1"></i> Close of Day
+            <i class="mdi mdi-lock me-1"></i> @GlobalGLSystemReconciliation.Close_Of_Day
         </h5>
 
         <div class="row">
@@ -35,7 +35,7 @@
 
             <div class="row mb-1">
                 <div class="col-md-12 mb-1">
-                    <label class="form-label fw-bold" for="branchId">Branch</label>
+                    <label class="form-label fw-bold" for="branchId">@GlobalShared.Branch</label>
                     @Html.DropDownList("BranchId",
                         new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
                         "--- Select Branch ---",
@@ -49,12 +49,12 @@
                 <div class="form-floating shadow-sm">
                     @Html.TextBoxFor(m => m.Reference, new { @class = "form-control", id = "Reference", @readonly = "readonly" })
                     @Html.ValidationMessageFor(m => m.Reference, "", new { @class = "text-danger" })
-                    <label for="Reference">Reference</label>
+                    <label for="Reference">@GlobalShared.Reference</label>
                 </div>
             </div>
 
             <p class="text-danger fw-bold">
-                Read and then check the following boxes carefully:
+                @GlobalGLSystemReconciliation.Read_and_then_check_the_following_boxes_carefully
             </p>
 
 
@@ -63,7 +63,7 @@
                 <div class="form-check">
                     @Html.CheckBoxFor(m => m.AllTransactionsReconciled, new { @class = "form-check-input", id = "AllTransactionsReconciled" })
                     <label class="form-check-label" for="AllTransactionsReconciled">
-                        Have  All Transactions be Reconciled ?
+                        @GlobalGLSystemReconciliation.Have_All_Transactions_be_Reconciled
                     </label>
                 </div>
             </div>
@@ -73,7 +73,7 @@
                 <div class="form-check">
                     @Html.CheckBoxFor(m => m.CashVaultVerified, new { @class = "form-check-input", id = "CashVaultVerified" })
                     <label class="form-check-label" for="CashVaultVerified">
-                        Cash Vault Verified ?
+                        @GlobalGLSystemReconciliation.Cash_Vault_Verified
                     </label>
                 </div>
             </div>
@@ -83,7 +83,7 @@
                 <div class="form-check">
                     @Html.CheckBoxFor(m => m.InterBranchConfirmed, new { @class = "form-check-input", id = "InterBranchConfirmed" })
                     <label class="form-check-label" for="InterBranchConfirmed">
-                        Inter-Branch Confirmed ?
+                        @GlobalGLSystemReconciliation.Inter_Branch_Confirmed
                     </label>
                 </div>
             </div>
@@ -93,7 +93,7 @@
                 <div class="form-check">
                     @Html.CheckBoxFor(m => m.AnyIssueToBeRaised, new { @class = "form-check-input", id = "AnyIssueToBeRaised" })
                     <label class="form-check-label" for="AnyIssueToBeRaised">
-                        Any Issue to be Raised ?
+                        @GlobalGLSystemReconciliation.Any_Issue_to_be_Raised
                     </label>
                 </div>
             </div>
@@ -109,7 +109,7 @@
                             id = "Comment",
                             style = "height: 100px"
                         })
-                    <label for="Comment">Comment</label>
+                    <label for="Comment">@GlobalShared.Comment</label>
                     @Html.ValidationMessageFor(m => m.Comment, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -119,7 +119,7 @@
 
         <div class="text-end mt-3">
             <button type="submit" class="btn btn-danger px-4">
-                <i class="mdi mdi-lock-check"></i> Close of Day
+                <i class="mdi mdi-lock-check"></i> @GlobalGLSystemReconciliation.Close_Of_Day
             </button>
         </div>
     </div>

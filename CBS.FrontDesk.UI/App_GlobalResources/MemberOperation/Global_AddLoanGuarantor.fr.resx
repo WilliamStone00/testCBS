@@ -135,14 +135,14 @@
   <data name="Amount" xml:space="preserve">
     <value>Montant</value>
   </data>
-  <data name="CoObligorDescription" xml:space="preserve">
-    <value>Une personne du même réseau ou branche qui peut engager son compte pour une garantie, même si le solde est 0.</value>
+  <data name="CoMember" xml:space="preserve">
+    <value>Co-membre</value>
   </data>
   <data name="CoObligor" xml:space="preserve">
     <value>Co-obligataire</value>
   </data>
-  <data name="CoMember" xml:space="preserve">
-    <value>Co-membre</value>
+  <data name="CoObligorDescription" xml:space="preserve">
+    <value>A person from the same branch or credit union who can pledge their account as a 100% guarantee, even if the balance is zero, whether in cash or assets.</value>
   </data>
   <data name="Edit" xml:space="preserve">
     <value>Editer</value>
@@ -208,10 +208,10 @@
     <value>Réinitialiser</value>
   </data>
   <data name="Shotee" xml:space="preserve">
-    <value>Shotee</value>
+    <value>Guarantee</value>
   </data>
   <data name="ShoteeDescription" xml:space="preserve">
-    <value>Une personne du même réseau ou branche, doit avoir au moins 80% d'épargne pour garantir un prêt.</value>
+    <value>A person from the same branch or credit union must have at least 100% savings to guarantee a loan (liquid coverage).</value>
   </data>
   <data name="Update" xml:space="preserve">
     <value>Mettre à jour</value>

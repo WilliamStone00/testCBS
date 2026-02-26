@@ -5,8 +5,8 @@
         <table class="table table-hover" id="myDataTable">
             <thead class="table-light">
                 <tr>
-                    <th>@GlobalGroupType.Type</th>
-                    <th>@GlobalGroupType.Description</th>
+                    <th>@GlobalShared.Type</th>
+                    <th>@GlobalShared.Description</th>
                     <th>@GlobalShared.Action</th>
                 </tr>
             </thead>
@@ -29,7 +29,7 @@
 }
 else
 {
-    <div class="alert alert-info" role="alert">
-        No member group type was found at the moment.
-    </div>
+<div class="alert alert-info" role="alert">
+    @GlobalGroupType.No_member_group_type_was_found_at_the_moment
+</div>
 }

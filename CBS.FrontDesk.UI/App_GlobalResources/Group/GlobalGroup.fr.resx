@@ -117,12 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ActiveStatus" xml:space="preserve">
-    <value>Statut actif</value>
-  </data>
-  <data name="AddDocuments" xml:space="preserve">
-    <value>Ajouter des documents</value>
-  </data>
   <data name="AddMembersTo" xml:space="preserve">
     <value>Ajouter des membres à</value>
   </data>
@@ -138,12 +132,6 @@
   <data name="CapitalAmount" xml:space="preserve">
     <value>Montant du capital</value>
   </data>
-  <data name="Click" xml:space="preserve">
-    <value>Cliquez</value>
-  </data>
-  <data name="Country" xml:space="preserve">
-    <value>Pays</value>
-  </data>
   <data name="CreateANewGroupOrMoralPersonAccount" xml:space="preserve">
     <value>Créer un nouveau compte de groupe ou de personne morale. Assurez-vous que tous les champs requis (type de groupe, enregistrement, identification et adresse) sont remplis correctement</value>
   </data>
@@ -156,17 +144,11 @@
   <data name="DetailedAddress" xml:space="preserve">
     <value>Adresse détaillée</value>
   </data>
-  <data name="Division" xml:space="preserve">
-    <value>Division</value>
-  </data>
   <data name="EconomicActivities" xml:space="preserve">
     <value>Activités économiques</value>
   </data>
   <data name="EconomicActivity" xml:space="preserve">
     <value>Activité économique</value>
-  </data>
-  <data name="Email" xml:space="preserve">
-    <value>Courriel</value>
   </data>
   <data name="EnsureTheDateOfEstablishmentAndIdentification" xml:space="preserve">
     <value>Assurez-vous que la date d'établissement et les détails du document d'identification sont valides</value>
@@ -182,9 +164,6 @@
   </data>
   <data name="FormalInformalSector" xml:space="preserve">
     <value>Secteur formel / informel</value>
-  </data>
-  <data name="Group" xml:space="preserve">
-    <value>Groupe</value>
   </data>
   <data name="GroupAddress" xml:space="preserve">
     <value>Adresse du groupe</value>
@@ -216,9 +195,6 @@
   <data name="ManagementOf" xml:space="preserve">
     <value>Gestion de</value>
   </data>
-  <data name="Member" xml:space="preserve">
-    <value>Membre</value>
-  </data>
   <data name="MoralPersonAccountCreation" xml:space="preserve">
     <value>Création de compte de personne morale</value>
   </data>
@@ -231,35 +207,17 @@
   <data name="MoralPersons" xml:space="preserve">
     <value>Personnes morales</value>
   </data>
-  <data name="NationalIDNumber" xml:space="preserve">
-    <value>Numéro d'identification national</value>
-  </data>
   <data name="NoMemberIsAddedTo" xml:space="preserve">
     <value>Aucun membre n'est ajouté à</value>
   </data>
-  <data name="Occupation" xml:space="preserve">
-    <value>Profession</value>
-  </data>
-  <data name="PhoneNumber" xml:space="preserve">
-    <value>Numéro de téléphone</value>
-  </data>
-  <data name="PlaceOfIssue" xml:space="preserve">
-    <value>Lieu d'émission</value>
-  </data>
   <data name="PostBox" xml:space="preserve">
     <value>Boîte postale</value>
-  </data>
-  <data name="Profile" xml:space="preserve">
-    <value>Profil</value>
   </data>
   <data name="ProperlySelectTheEconomicActivity" xml:space="preserve">
     <value>Sélectionnez correctement l'activité économique et la catégorie de client pour le groupe</value>
   </data>
   <data name="ProvideAccurateAddressDetails" xml:space="preserve">
     <value>Fournissez des détails d'adresse précis (pays, région, division, sous-division, ville)</value>
-  </data>
-  <data name="Region" xml:space="preserve">
-    <value>Région</value>
   </data>
   <data name="RegistrationNumber" xml:space="preserve">
     <value>Numéro d'enregistrement</value>
@@ -273,53 +231,20 @@
   <data name="SearchByGroupNameTaxNumber" xml:space="preserve">
     <value>Rechercher par nom de groupe, numéro de taxe, numéro d'enregistrement</value>
   </data>
-  <data name="SelectCountry" xml:space="preserve">
-    <value>Sélectionner un pays</value>
-  </data>
   <data name="SelectCustomerCategory" xml:space="preserve">
     <value>Sélectionner une catégorie de client</value>
-  </data>
-  <data name="SelectDivision" xml:space="preserve">
-    <value>Sélectionner une division</value>
   </data>
   <data name="SelectEconomicActivity" xml:space="preserve">
     <value>Sélectionner une activité économique</value>
   </data>
-  <data name="SelectGroupType" xml:space="preserve">
-    <value>Sélectionner un type de groupe</value>
-  </data>
   <data name="SelectMemberAccountType" xml:space="preserve">
     <value>Sélectionner le type de compte du membre</value>
-  </data>
-  <data name="SelectMembers" xml:space="preserve">
-    <value>Sélectionner des membres</value>
   </data>
   <data name="SelectMembersAndAddTo" xml:space="preserve">
     <value>Sélectionner des membres et les ajouter à</value>
   </data>
-  <data name="SelectRegion" xml:space="preserve">
-    <value>Sélectionner une région</value>
-  </data>
-  <data name="SelectSector" xml:space="preserve">
-    <value>Sélectionner un secteur</value>
-  </data>
-  <data name="SelectSubDivision" xml:space="preserve">
-    <value>Sélectionner une sous-division</value>
-  </data>
-  <data name="SelectTown" xml:space="preserve">
-    <value>Sélectionner une ville</value>
-  </data>
-  <data name="SubDivision" xml:space="preserve">
-    <value>Sous-division</value>
-  </data>
-  <data name="Tax" xml:space="preserve">
-    <value>Taxe</value>
-  </data>
   <data name="TaxpayerNumber" xml:space="preserve">
     <value>Numéro de contribuable</value>
-  </data>
-  <data name="Town" xml:space="preserve">
-    <value>Ville</value>
   </data>
   <data name="UpdateGroup" xml:space="preserve">
     <value>Mettre à jour le groupe</value>

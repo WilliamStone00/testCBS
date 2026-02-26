@@ -123,23 +123,14 @@
   <data name="DuringDisburstment" xml:space="preserve">
     <value>Pendant le décaissement</value>
   </data>
-  <data name="Fee" xml:space="preserve">
-    <value>Frais</value>
-  </data>
-  <data name="FeeTypes" xml:space="preserve">
-    <value>Types de frais</value>
-  </data>
   <data name="LoanFeeTypes" xml:space="preserve">
     <value>Types de frais de prêt</value>
   </data>
-  <data name="Name" xml:space="preserve">
-    <value>Nom</value>
+  <data name="No_loan_fee_type_is_created" xml:space="preserve">
+    <value />
   </data>
   <data name="OperationFee" xml:space="preserve">
     <value>Frais d'opération</value>
-  </data>
-  <data name="PaymentStatus" xml:space="preserve">
-    <value>Statut de paiement</value>
   </data>
   <data name="PercentageOnPrincipalAmount" xml:space="preserve">
     <value>Pourcentage sur le montant principal</value>
@@ -155,8 +146,5 @@
   </data>
   <data name="SelectEventItem" xml:space="preserve">
     <value>Sélectionner un élément d'événement</value>
-  </data>
-  <data name="Type" xml:space="preserve">
-    <value>Type</value>
   </data>
 </root>

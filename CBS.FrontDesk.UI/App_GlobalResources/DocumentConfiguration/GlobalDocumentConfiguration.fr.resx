@@ -118,19 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="CheckThisBoxIfTheReferenceCodeHasExceptionsToConsider" xml:space="preserve">
-    <value>Cochez cette case si le code de référence a des exceptions à prendre en compte</value>
+    <value>Cochez cette case si le code de référence comporte des exceptions à prendre en compte</value>
   </data>
   <data name="DeleteReferenceCode" xml:space="preserve">
     <value>Supprimer le code de référence</value>
   </data>
-  <data name="Description" xml:space="preserve">
-    <value>Description</value>
-  </data>
-  <data name="Document" xml:space="preserve">
-    <value>Document</value>
-  </data>
   <data name="DocumentManagement" xml:space="preserve">
-    <value>Gestion des documents</value>
+    <value>Gestion documentaire</value>
   </data>
   <data name="DocumentReferenceCodeManagement" xml:space="preserve">
     <value>Gestion des codes de référence des documents</value>
@@ -148,30 +142,21 @@
     <value>Panneau de configuration des états financiers</value>
   </data>
   <data name="FinancialStatementsConfigurations" xml:space="preserve">
-    <value>Configurations des états financiers</value>
+    <value>Paramétrage des états financiers</value>
   </data>
   <data name="GrossAccounts" xml:space="preserve">
     <value>Comptes bruts</value>
-  </data>
-  <data name="Name" xml:space="preserve">
-    <value>Nom</value>
   </data>
   <data name="OperationEvent" xml:space="preserve">
     <value>Événement d'opération</value>
   </data>
   <data name="ProvisionAccounts" xml:space="preserve">
-    <value>Comptes de provision</value>
+    <value>Comptes de provisions</value>
   </data>
   <data name="ReferenceCode" xml:space="preserve">
     <value>Code de référence</value>
   </data>
   <data name="SelectDocument" xml:space="preserve">
     <value>Sélectionner un document</value>
-  </data>
-  <data name="Type" xml:space="preserve">
-    <value>Type</value>
-  </data>
-  <data name="userAccount" xml:space="preserve">
-    <value>Compte utilisateur</value>
   </data>
 </root>

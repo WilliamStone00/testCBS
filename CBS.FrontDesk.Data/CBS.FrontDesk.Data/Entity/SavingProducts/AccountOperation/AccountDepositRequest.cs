@@ -100,6 +100,15 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public Remittance Remittance { get; set; } = new Remittance();
         public List<Remittance> Remittances { get; set; } = new List<Remittance>();
         public string ServiceOption { get; set; }
+        // AML - Source of Funds
+        public string SourceOfFundsCode { get; set; }      // e.g. SALARY, BUSINESS, ...
+        public string SourceOfFundsOther { get; set; }     // free text when OTHER or typed tag
+
+        // AML - Purpose
+        public string DepositPurposeCode { get; set; }     // e.g. SAVINGS, FEES, ...
+        public string DepositPurposeOther { get; set; }    // free text
+        public string WithdrawalPurposeCode { get; set; }   // e.g. SCHOOL_FEES, MEDICAL, OTHER
+        public string WithdrawalPurposeOther { get; set; }  // free text when OTHER or typed
     }
     public class MemberAccountVm
     {
@@ -231,6 +240,15 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public string ExternalBranchId { get; set; }
         public string ReceiverCNI { get; set; }
         public string ReceiverName { get; set; }
+        // AML - Source of Funds
+        public string SourceOfFundsCode { get; set; }      // e.g. SALARY, BUSINESS, ...
+        public string SourceOfFundsOther { get; set; }     // free text when OTHER or typed tag
+
+        // AML - Purpose
+        public string DepositPurposeCode { get; set; }     // e.g. SAVINGS, FEES, ...
+        public string DepositPurposeOther { get; set; }    // free text
+        public string WithdrawalPurposeCode { get; set; }   // e.g. SCHOOL_FEES, MEDICAL, OTHER
+        public string WithdrawalPurposeOther { get; set; }  // free text when OTHER or typed
         public string ReceiverCNIDateOfIssue { get; set; }
         public string ReceiverCNIDateOfExpiration { get; set; }
         public string ReceiverCNIPlcaceOfIssue { get; set; }

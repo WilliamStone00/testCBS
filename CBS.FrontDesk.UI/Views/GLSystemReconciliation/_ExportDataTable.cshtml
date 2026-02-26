@@ -1,4 +1,5 @@
-﻿<div class="modal-body">
+﻿@using Resources
+<div class="modal-body">
 
     <div class="row">
         <div class="col-12">
@@ -6,12 +7,12 @@
                 <div class="card-body text-center">
                     <h1 class="card-title text-primary">
                         <i class="mdi mdi-file-document-outline me-2"></i>
-                        Reconciliation Report Export
+                        @GlobalGLSystemReconciliation.Reconciliation_Report_Export
                     </h1>
 
                     <div class="alert alert-info mt-3 py-2">
                         <i class="mdi mdi-information-outline me-1"></i>
-                        Export reconciliation records with optional filters and format selection.
+                        @GlobalGLSystemReconciliation.Export_reconciliation_records_with_optional_filters_and_format_selection
                     </div>
 
                     <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
@@ -23,7 +24,7 @@
     <!-- Export Options -->
     <div class="row mb-3">
         <div class="col-md-6">
-            <label class="form-label fw-semibold">Export Format</label>
+            <label class="form-label fw-semibold">@GlobalShared.Export_Format</label>
             <select class="form-select" id="reconExportFormat">
                 <option value="excel">Excel (.xlsx)</option>
                 <option value="pdf">PDF (.pdf)</option>
@@ -31,12 +32,12 @@
         </div>
 
         <div class="col-md-6">
-            <label class="form-label fw-semibold">Report Type</label>
+            <label class="form-label fw-semibold">@GlobalShared.Report_Type</label>
             <select class="form-select" id="reconReportType">
-                <option value="full">Full Report</option>
-                <option value="dateRange">Date Range</option>
-                <option value="branch">By Branch</option>
-                <option value="status">By Status</option>
+                <option value="full">@GlobalShared.Full_Report</option>
+                <option value="dateRange">@GlobalShared.Date_Range</option>
+                <option value="branch">@GlobalShared.By_Branch</option>
+                <option value="status">@GlobalShared.By_Status</option>
             </select>
         </div>
     </div>
@@ -44,7 +45,7 @@
     <!-- Date Range -->
     <div class="row mb-3">
         <div class="col-md-6">
-            <label class="form-label fw-semibold">Reconciliation Date Range (Optional)</label>
+            <label class="form-label fw-semibold">@GlobalGLSystemReconciliation.Reconciliation_Date_Range</label>
             <div class="input-group">
                 <input type="date" class="form-control" id="reconStartDate">
                 <span class="input-group-text">To</span>
@@ -53,11 +54,11 @@
         </div>
 
         <div class="col-md-6">
-            <label class="form-label fw-semibold">File Name</label>
+            <label class="form-label fw-semibold">@GlobalShared.File_Name</label>
             <input type="text" class="form-control"
                    id="reconFileName"
                    value="Reconciliation_Report"
-                   placeholder="Enter file name">
+                   placeholder="@GlobalShared.Enter_file_name">
         </div>
     </div>
 
@@ -65,10 +66,10 @@
 
 <div class="modal-footer">
     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-        Cancel
+        @GlobalShared.Cancel
     </button>
 
     <button type="button" class="btn btn-primary" id="btnConfirmReconExport">
-        Export
+        @GlobalShared.Export
     </button>
 </div>

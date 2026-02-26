@@ -1,5 +1,6 @@
 ﻿
 @model CBS.FrontDesk.Data.Entity.DailyCollectionEntities.UploadDailyCollectorData
+    @using Resources
 
 @{
     // Make the partial view flexible to work with different models
@@ -43,10 +44,10 @@
                 <!-- Branch Selection -->
                 <div class="col-md-6">
                     <label for="BranchId" class="form-label fw-bold">
-                        <i class="fas fa-building text-primary me-2"></i>Select Branch
+                        <i class="fas fa-building text-primary me-2"></i>@GlobalShared.Select_Branch
                     </label>
                     <select name="BranchId" id="branchSelect" class="form-control select2" required>
-                        <option value="">--- Select Branch ---</option>
+                        <option value="">--- @GlobalShared.Select_Branch ---</option>
                         @if (ViewBag.Branches != null)
                         {
                             foreach (var branch in (IEnumerable<SelectListItem>)ViewBag.Branches)
@@ -55,16 +56,16 @@
                             }
                         }
                     </select>
-                    <div class="invalid-feedback">Please select a branch</div>
+                    <div class="invalid-feedback">@GlobalShared.Please_select_a_branch</div>
                 </div>
 
                 <!-- Daily Collector Selection -->
                 <div class="col-md-6">
                     <label for="CollectorId" class="form-label fw-bold">
-                        <i class="fas fa-user text-info me-2"></i>Select Daily Collector
+                        <i class="fas fa-user text-info me-2"></i>@GlobalDailyAgentManagement.Select_Daily_Collector
                     </label>
                     <select name="CollectorId" id="collectorSelect" class="form-control select2" required>
-                        <option value="">--- Select Daily Collector ---</option>
+                        <option value="">--- @GlobalDailyAgentManagement.Select_Daily_Collector ---</option>
                         @if (ViewBag.DailyCollectors != null)
                         {
                             foreach (var collector in (IEnumerable<SelectListItem>)ViewBag.DailyCollectors)
@@ -73,30 +74,30 @@
                             }
                         }
                     </select>
-                    <div class="invalid-feedback">Please select a collector</div>
+                    <div class="invalid-feedback">@GlobalDailyAgentManagement.Please_select_a_collector</div>
                 </div>
 
                 <!-- Download Sample Button -->
                 <div class="col-md-6">
                     <label class="form-label fw-bold">
-                        <i class="fas fa-download text-warning me-2"></i>Sample File
+                        <i class="fas fa-download text-warning me-2"></i>@GlobalShared.Sample_File
                     </label>
                     <div>
                         <button type="button" class="btn btn-outline-warning" id="downloadSampleBtn">
-                            <i class="fas fa-download me-2"></i>Download Excel Template
+                            <i class="fas fa-download me-2"></i>@GlobalShared.Download_Excel_Template
                         </button>
-                        <small class="text-muted d-block mt-1">Download the required file format</small>
+                        <small class="text-muted d-block mt-1">@GlobalShared.Download_the_required_file_format</small>
                     </div>
                 </div>
 
                 <!-- Excel File Upload -->
                 <div class="col-md-6">
                     <label for="ExcelFile" class="form-label fw-bold">
-                        <i class="fas fa-file-excel text-success me-2"></i>Upload XLSX File
+                        <i class="fas fa-file-excel text-success me-2"></i>@GlobalShared.Upload_XLSX_File
                     </label>
                     <input type="file" name="ExcelFile" id="ExcelFile" class="form-control" accept=".xlsx,.xls" required />
-                    <div class="invalid-feedback">Please select a valid Excel file</div>
-                    <small class="text-muted">Maximum file size: 10MB</small>
+                    <div class="invalid-feedback">@GlobalShared.Please_select_a_valid_Excel_file</div>
+                    <small class="text-muted">@GlobalShared.Maximum_file_size: 10MB</small>
                 </div>
 
                 <!-- Additional Fields (if needed) -->
@@ -104,16 +105,16 @@
                 {
                     <div class="col-md-6">
                         <label for="CollectionDate" class="form-label fw-bold">
-                            <i class="fas fa-calendar text-primary me-2"></i>Collection Date
+                            <i class="fas fa-calendar text-primary me-2"></i>@GlobalDailyAgentManagement.Collection_Date
                         </label>
                         <input type="date" name="CollectionDate" id="CollectionDate" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
                     </div>
 
                     <div class="col-md-6">
                         <label for="Notes" class="form-label fw-bold">
-                            <i class="fas fa-sticky-note text-secondary me-2"></i>Notes (Optional)
+                            <i class="fas fa-sticky-note text-secondary me-2"></i>@GlobalShared.Notes (@GlobalShared.Optional)
                         </label>
-                        <textarea name="Notes" id="Notes" class="form-control" rows="2" placeholder="Enter any additional notes..."></textarea>
+                        <textarea name="Notes" id="Notes" class="form-control" rows="2" placeholder="@GlobalDailyAgentManagement.Enter_any_additional_notes..."></textarea>
                     </div>
                 }
 
@@ -129,10 +130,10 @@
                 <div class="col-12">
                     <div class="d-flex justify-content-end gap-2">
                         <button type="button" class="btn btn-secondary" onclick="resetForm()">
-                            <i class="fas fa-undo me-2"></i>Reset
+                            <i class="fas fa-undo me-2"></i>@GlobalShared.Reset
                         </button>
                         <button type="submit" class="btn btn-primary" id="submitBtn">
-                            <i class="fas fa-cloud-upload me-2"></i>Upload & Process
+                            <i class="fas fa-cloud-upload me-2"></i>@GlobalShared.Upload & @GlobalShared.Process
                         </button>
                     </div>
                 </div>

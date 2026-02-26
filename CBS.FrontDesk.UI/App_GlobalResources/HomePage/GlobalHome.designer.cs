@@ -61,11 +61,29 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREDIT.
+        ///   Looks up a localized string similar to About.
         /// </summary>
-        internal static string Credit {
+        internal static string About {
             get {
-                return ResourceManager.GetString("Credit", resourceCulture);
+                return ResourceManager.GetString("About", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use this area to provide additional information..
+        /// </summary>
+        internal static string AboutInformation {
+            get {
+                return ResourceManager.GetString("AboutInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contact Us.
+        /// </summary>
+        internal static string ContactUs {
+            get {
+                return ResourceManager.GetString("ContactUs", resourceCulture);
             }
         }
         
@@ -111,15 +129,6 @@ namespace Resources {
         internal static string SatisfactionText {
             get {
                 return ResourceManager.GetString("SatisfactionText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to TRUSTSOFT.
-        /// </summary>
-        internal static string TrustSoft {
-            get {
-                return ResourceManager.GetString("TrustSoft", resourceCulture);
             }
         }
         

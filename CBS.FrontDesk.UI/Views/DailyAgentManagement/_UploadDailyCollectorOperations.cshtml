@@ -1,5 +1,5 @@
 ﻿
-
+@using Resources
 @model CBS.FrontDesk.Data.Entity.DailyCollectionEntities.UploadDailyCollectorData
 
 
@@ -10,14 +10,14 @@
             <div class="row bg-light">
                 <div class="col-md-6">
         
-                        <label for="branch">🏢 Select Branch</label>
+                        <label for="branch">🏢 @GlobalShared.Select_Branch</label>
                         @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches == null ? "" : ViewBag.Branches, "Text", "Value"), "--- Select Branch", new { @class = "form-control select2", @search = "true", @id = "AgentBranchId" })
                         @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
               
                 </div>
                 <div class="col-md-6">
                   
-                        <label for="collector">👤 Select Daily Collector</label>
+                        <label for="collector">👤 @GlobalDailyAgentManagement.Select_Daily_Collector</label>
                         @Html.DropDownListFor(m => m.CollectorId, new SelectList(ViewBag.DailyCollectors == null ? "" : ViewBag.DailyCollectors, "Text", "Value"), "--- Select Daily Collectors", new { @class = "form-control select2", @id = "CollectorxCollectorId", @search = "true" })
                         @Html.ValidationMessageFor(m => m.CollectorId, "", new { @class = "text-danger" })
                   
@@ -25,14 +25,14 @@
                 <div class="col-md-6">
                     <br />
 
-                    <button class="btn btn-dark" id="downloadExcelOPButton">Download sample file structure to be uploaded</button>
+                    <button class="btn btn-dark" id="downloadExcelOPButton">@GlobalDailyAgentManagement.Download_sample_file_structure_to_be_uploaded</button>
                 </div>
 
                 <!-- Excel File Upload -->
                 <div class="col-md-6">
 
                     <label for="ExcelFile" class="form-label text-dark fw-bold">
-                        <i class="mdi mdi-file-excel me-1 text-success"></i> Upload Collectors Member Excel File
+                        <i class="mdi mdi-file-excel me-1 text-success"></i> @GlobalDailyAgentManagement.Upload_Collectors_Member_Excel_File
                     </label>
                     <input type="file" class="form-control" id="ExcelFile" name="ExcelFile" accept=".xlsx" required />
 
@@ -41,7 +41,7 @@
                 <div class="col-12 text-end">
                     <br />
                     <button type="submit" class="btn btn-primary" onclick="ReadExcelFile()">
-                        <i class="mdi mdi-cloud-upload me-1"></i> Upload & Process
+                        <i class="mdi mdi-cloud-upload me-1"></i> @GlobalShared.Upload & @GlobalShared.Process
                     </button>
                 </div>
 

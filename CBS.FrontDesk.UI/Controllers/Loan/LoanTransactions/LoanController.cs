@@ -138,189 +138,224 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
             return View(new CBS.FrontDesk.Data.Entity.LoanConf.Loan { FileDownloadInfos = downloadInfoLoans.ToList() });
         }
         [HttpGet]
-        public async Task<ActionResult> Download(
-            string searchCriteria = "all",
-            string dateFrom = null,
-            string dateTo = null,
-            string status = "Open",
-            string deliquentstatus = "Current",
-            string branchid = null,
-            string exportReportType = "Loan Query")
-        {
-            try
-            {
-                DateTime? startDate = null;
-                DateTime? endDate = null;
-                var Branch = new Branch();
+        //public async Task<ActionResult> Download(
+        //    string searchCriteria = "all",
+        //    string dateFrom = null,
+        //    string dateTo = null,
+        //    string status = "Open",
+        //    string deliquentstatus = "Current",
+        //    string branchid = null,
+        //    string exportReportType = "Loan Query")
+        //{
+        //    try
+        //    {
+        //        DateTime? startDate = null;
+        //        DateTime? endDate = null;
+        //        var Branch = new Branch();
 
-                // Parse date strings if provided
-                if (!string.IsNullOrWhiteSpace(dateFrom))
-                {
-                    startDate = DateTime.ParseExact(dateFrom, "dd/MM/yyyy", null);
-                }
+        //        // Parse date strings if provided
+        //        if (!string.IsNullOrWhiteSpace(dateFrom))
+        //        {
+        //            startDate = DateTime.ParseExact(dateFrom, "dd/MM/yyyy", null);
+        //        }
 
-                if (!string.IsNullOrWhiteSpace(dateTo))
-                {
-                    endDate = DateTime.ParseExact(dateTo, "dd/MM/yyyy", null).AddDays(1).AddTicks(-1);  // Include the whole day
-                }
-
-
-                if (!string.IsNullOrWhiteSpace(branchid))
-                {
-                    var branch = await _branchServices.GetBranch(branchid);
-                    Branch = branch;
-                }
-                if (!_branchServices.IsHeadOffice())
-                {
-                    var branch = await _branchServices.GetBranch(_branchServices.GetBranchID());
-                    Branch = branch;
-                }
-                // Prepare the DataTable query
-                var getLoansDataTableQuery = new GetLoansDataTableQuery
-                {
-                    DataTableOptions = new DataTableOptions
-                    {
-                        pageSize = 10000,  // Export large number of records
-                        start = 0,
-                        searchValue = searchCriteria
-                    },
-                    StartDate = startDate ?? DateTime.MinValue,
-                    EndDate = endDate ?? DateTime.MinValue,
-                    BranchId = branchid,
-                    DeliquentStatus = deliquentstatus,
-                    Status = status,
-                    MemberId = "n/a",
-                };
-
-                getLoansDataTableQuery.DataTableOptions = GetDataTableOptions();
-
-                if (string.IsNullOrWhiteSpace(searchCriteria))
-                {
-                    searchCriteria = "all";
-                }
-
-                getLoansDataTableQuery.DataTableOptions.pageSize = 30000;
-                getLoansDataTableQuery.DataTableOptions.start = 0;
-
-                // Fetch the data
-                var dataTable = await _LoanServices.GetDataTableAsync(getLoansDataTableQuery);
-
-                // Convert dataTable.data to List<Loan>
-                var loans1 = JsonConvert.DeserializeObject<List<CBS.FrontDesk.Data.Entity.LoanConf.Loan>>(
-                    JsonConvert.SerializeObject(dataTable.data)
-                );
-
-                string exportedBy = Session["FullName"].ToString();
-                var branches = await _branchServices.GetBranches();
-                var loans = _LoanServices.MapLoansWithBranchDetails(branches.ToList(), loans1);
-
-                // Generate Excel file
-                //var exportFile = new ExportFileResult();
-                // Filter loans based on the selected `exportReportType`
-                switch (exportReportType)
-                {
-                    case "Approved_Loans":
-                        var exportFilea = LoanExcelGenerator.GenerateLoanExcel(loans, Branch, exportedBy, fileTitle: exportReportType, dateFrom, dateTo);
-                        // Return file to client for download
-                        return File(exportFilea.Content, exportFilea.ContentType, exportFilea.FileName);
-                    case "Paid_Loans":
-                        var exportFilep = LoanExcelGenerator.GenerateLoanExcel(loans, Branch, exportedBy, fileTitle: exportReportType, dateFrom, dateTo);
-                        // Return file to client for download
-                        return File(exportFilep.Content, exportFilep.ContentType, exportFilep.FileName);
-                    case "Delinquent_Loans":
-                        var exportFiled = LoanExcelGenerator.GenerateLoanExcel(loans, Branch, exportedBy, fileTitle: exportReportType, dateFrom, dateTo);
-                        // Return file to client for download
-                        return File(exportFiled.Content, exportFiled.ContentType, exportFiled.FileName);
-                    case "Current_Loans":
-                        var exportFilec = LoanExcelGenerator.GenerateLoanExcel(loans, Branch, exportedBy, fileTitle: exportReportType, dateFrom, dateTo);
-                        // Return file to client for download
-                        return File(exportFilec.Content, exportFilec.ContentType, exportFilec.FileName);
-                    case "All_Loans":
-                        var exportFile = LoanExcelGenerator.GenerateLoanExcel(loans, Branch, exportedBy, fileTitle: exportReportType, dateFrom, dateTo);
-                        // Return file to client for download
-                        return File(exportFile.Content, exportFile.ContentType, exportFile.FileName);
-
-                    default:
-                        var exportFiler = LoanExcelGenerator.GenerateLoanExcel(loans, Branch, exportedBy, fileTitle: exportReportType, dateFrom, dateTo);
-                        // Return file to client for download
-                        return File(exportFiler.Content, exportFiler.ContentType, exportFiler.FileName);
-                }
+        //        if (!string.IsNullOrWhiteSpace(dateTo))
+        //        {
+        //            endDate = DateTime.ParseExact(dateTo, "dd/MM/yyyy", null).AddDays(1).AddTicks(-1);  // Include the whole day
+        //        }
 
 
+        //        if (!string.IsNullOrWhiteSpace(branchid))
+        //        {
+        //            var branch = await _branchServices.GetBranch(branchid);
+        //            Branch = branch;
+        //        }
+        //        if (!_branchServices.IsHeadOffice())
+        //        {
+        //            var branch = await _branchServices.GetBranch(_branchServices.GetBranchID());
+        //            Branch = branch;
+        //        }
+        //        // Prepare the DataTable query
+        //        var getLoansDataTableQuery = new GetLoansDataTableQuery
+        //        {
+        //            DataTableOptions = new DataTableOptions
+        //            {
+        //                pageSize = 10000,  // Export large number of records
+        //                start = 0,
+        //                searchValue = searchCriteria
+        //            },
+        //            StartDate = startDate ?? DateTime.MinValue,
+        //            EndDate = endDate ?? DateTime.MinValue,
+        //            BranchId = branchid,
+        //            DeliquentStatus = deliquentstatus,
+        //            Status = status,
+        //            MemberId = "n/a",
+        //        };
+
+        //        getLoansDataTableQuery.DataTableOptions = GetDataTableOptions();
+
+        //        if (string.IsNullOrWhiteSpace(searchCriteria))
+        //        {
+        //            searchCriteria = "all";
+        //        }
+
+        //        getLoansDataTableQuery.DataTableOptions.pageSize = 30000;
+        //        getLoansDataTableQuery.DataTableOptions.start = 0;
+
+        //        // Fetch the data
+        //        var dataTable = await _LoanServices.GetDataTableAsync(getLoansDataTableQuery);
+
+        //        // Convert dataTable.data to List<Loan>
+        //        var loans1 = JsonConvert.DeserializeObject<List<CBS.FrontDesk.Data.Entity.LoanConf.Loan>>(
+        //            JsonConvert.SerializeObject(dataTable.data)
+        //        );
+
+        //        string exportedBy = Session["FullName"].ToString();
+        //        var branches = await _branchServices.GetBranches();
+        //        var loans = _LoanServices.MapLoansWithBranchDetails(branches.ToList(), loans1);
+
+        //        // Generate Excel file
+        //        //var exportFile = new ExportFileResult();
+        //        // Filter loans based on the selected `exportReportType`
+        //        switch (exportReportType)
+        //        {
+        //            case "Approved_Loans":
+        //                var exportFilea = LoanExcelGenerator.GenerateLoanExcel(loans, Branch, exportedBy, fileTitle: exportReportType, dateFrom, dateTo);
+        //                // Return file to client for download
+        //                return File(exportFilea.Content, exportFilea.ContentType, exportFilea.FileName);
+        //            case "Paid_Loans":
+        //                var exportFilep = LoanExcelGenerator.GenerateLoanExcel(loans, Branch, exportedBy, fileTitle: exportReportType, dateFrom, dateTo);
+        //                // Return file to client for download
+        //                return File(exportFilep.Content, exportFilep.ContentType, exportFilep.FileName);
+        //            case "Delinquent_Loans":
+        //                var exportFiled = LoanExcelGenerator.GenerateLoanExcel(loans, Branch, exportedBy, fileTitle: exportReportType, dateFrom, dateTo);
+        //                // Return file to client for download
+        //                return File(exportFiled.Content, exportFiled.ContentType, exportFiled.FileName);
+        //            case "Current_Loans":
+        //                var exportFilec = LoanExcelGenerator.GenerateLoanExcel(loans, Branch, exportedBy, fileTitle: exportReportType, dateFrom, dateTo);
+        //                // Return file to client for download
+        //                return File(exportFilec.Content, exportFilec.ContentType, exportFilec.FileName);
+        //            case "All_Loans":
+        //                var exportFile = LoanExcelGenerator.GenerateLoanExcel(loans, Branch, exportedBy, fileTitle: exportReportType, dateFrom, dateTo);
+        //                // Return file to client for download
+        //                return File(exportFile.Content, exportFile.ContentType, exportFile.FileName);
+
+        //            default:
+        //                var exportFiler = LoanExcelGenerator.GenerateLoanExcel(loans, Branch, exportedBy, fileTitle: exportReportType, dateFrom, dateTo);
+        //                // Return file to client for download
+        //                return File(exportFiler.Content, exportFiler.ContentType, exportFiler.FileName);
+        //        }
 
 
-            }
-            catch (Exception ex)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Error exporting data.");
-            }
-        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Error exporting data.");
+        //    }
+        //}
 
 
         public async Task<ActionResult> DownloadLoanData(GetLoansDataTableQuery tableQuery)
         {
             try
             {
-
-                
-
                 DateTime? startDate = null;
                 DateTime? endDate = null;
-                var branch = new Branch();
 
-                // 🔎 Parse date filters
-                if (!string.IsNullOrWhiteSpace(tableQuery.StartDate?.ToString()))
-                    startDate = DateTime.ParseExact(tableQuery.StartDate.Value.ToString("dd/MM/yyyy"), "dd/MM/yyyy", null);
+                // Parse date filters
+                if (tableQuery.StartDate.HasValue)
+                    startDate = tableQuery.StartDate.Value.Date;
 
-                if (!string.IsNullOrWhiteSpace(tableQuery.EndDate?.ToString()))
-                    endDate = DateTime.ParseExact(tableQuery.EndDate.Value.ToString("dd/MM/yyyy"), "dd/MM/yyyy", null).AddDays(1).AddTicks(-1);
+                if (tableQuery.EndDate.HasValue)
+                    endDate = tableQuery.EndDate.Value.Date.AddDays(1).AddTicks(-1);
 
-                // 🌍 Branch context
+                // Branch context for report header
+                Branch branchContext = null;
+
                 if (!string.IsNullOrWhiteSpace(tableQuery.BranchId))
-                    branch = await _branchServices.GetBranch(tableQuery.BranchId);
+                    branchContext = await _branchServices.GetBranch(tableQuery.BranchId);
 
-                if (!_branchServices.IsHeadOffice())
-                    branch = await _branchServices.GetBranch(_branchServices.GetBranchID());
-               
-                // 🚀 Set large page size for export
-                tableQuery.DataTableOptions=new DataTableOptions
+                if (!_branchServices.IsHeadOffice() && branchContext == null)
+                    branchContext = await _branchServices.GetBranch(_branchServices.GetBranchID());
+
+                // Set large page size for export
+                tableQuery.DataTableOptions = new DataTableOptions
                 {
-                    pageSize = 30000,  // Export large number of records
-                    start = 0,
+                    length = 0,    // all records
+                    pageSize = 30000,
+                    start = 0
                 };
 
-                // 📊 Get data
+                // Get data
                 var dataTable = await _LoanServices.GetDataTableAsync(tableQuery);
-                var loanList = JsonConvert.DeserializeObject<List<CBS.FrontDesk.Data.Entity.LoanConf.Loan>>(JsonConvert.SerializeObject(dataTable.data));
-
-                // 📤 Generate and return Excel
-                string exportedBy = Session["FullName"]?.ToString() ?? "Unknown";
-                var branches = await _branchServices.GetBranches();
-                var loans = _LoanServices.MapLoansWithBranchDetails(branches.ToList(), loanList);
-                string reportType = tableQuery.Status;
-                // Null-safe string conversions
-                string startDateStr = startDate?.ToString("dd/MM/yyyy") ?? "N/A";
-                string endDateStr = endDate?.ToString("dd/MM/yyyy") ?? "N/A";
-                string exportedByStr = !string.IsNullOrWhiteSpace(exportedBy) ? exportedBy : "Unknown User";
-                string reportTypeStr = !string.IsNullOrWhiteSpace(reportType) ? reportType : "Loan Report";
-
-                // Defensive fallback for null list
-                var safeLoans = loanList ?? new List<CBS.FrontDesk.Data.Entity.LoanConf.Loan>();
-
-      
-                var exportFile = LoanExcelGenerator.GenerateLoanExcel(
-                    safeLoans,
-                    branch,
-                    exportedByStr,
-                    reportTypeStr,
-                    startDateStr,
-                    endDateStr
+                var loanList = JsonConvert.DeserializeObject<List<CBS.FrontDesk.Data.Entity.LoanConf.Loan>>(
+                    JsonConvert.SerializeObject(dataTable.data)
                 );
 
-                return File(exportFile.Content, exportFile.ContentType, exportFile.FileName);
+                string exportedBy = Session["FullName"]?.ToString() ?? "Unknown";
+
+                // ===== FAST BRANCH LOOKUP PER LOAN =====
+                // Get unique branch IDs from the loan list
+                var branchIds = loanList
+                    .Where(l => !string.IsNullOrEmpty(l.BranchId))
+                    .Select(l => l.BranchId)
+                    .Distinct()
+                    .ToList();
+
+                // Fetch only required branches
+                var branchObjects = new List<Branch>();
+                foreach (var id in branchIds)
+                {
+                    var b = await _branchServices.GetBranch(id);
+                    if (b != null)
+                        branchObjects.Add(b);
+                }
+
+                // Create dictionary for fast lookup
+                var branchDict = branchObjects.ToDictionary(b => b.Id, b => new { b.Name, b.BranchCode });
+
+                // Map branch name and code to loans
+                foreach (var loan in loanList)
+                {
+                    if (!string.IsNullOrEmpty(loan.BranchId) && branchDict.TryGetValue(loan.BranchId, out var branchInfo))
+                    {
+                        loan.BranchName = branchInfo.Name;
+                        loan.BranchCode = branchInfo.BranchCode;
+                    }
+                    else
+                    {
+                        loan.BranchName = "—";
+                        loan.BranchCode = "—";
+                    }
+                }
+
+                string reportType = tableQuery.Status ?? "Loan Report";
+
+                var safeLoans = loanList ?? new List<CBS.FrontDesk.Data.Entity.LoanConf.Loan>();
+
+                // ===== Generate Excel =====
+                string tempFilePath = Path.GetTempFileName();
+                var generator = new LoanExcelGenerator();
+
+                generator.GenerateLoanExcel(
+                    safeLoans,
+                    tempFilePath,
+                    exportedBy,
+                    reportType,
+                    tableQuery
+                );
+
+                // Read and return file
+                byte[] fileBytes = System.IO.File.ReadAllBytes(tempFilePath);
+                string fileName = $"{reportType.Replace(" ", "_")}_{(branchContext?.BranchCode ?? "All")}_{DateTime.Now:yyyyMMddHHmmss}.xlsx";
+
+                System.IO.File.Delete(tempFilePath);
+
+                return File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
             }
             catch (Exception ex)
             {
+                // Log ex if needed
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Error exporting data.");
             }
         }

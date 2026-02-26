@@ -61,24 +61,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Code.
-        /// </summary>
-        internal static string Code {
-            get {
-                return ResourceManager.GetString("Code", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Country.
-        /// </summary>
-        internal static string Country {
-            get {
-                return ResourceManager.GetString("Country", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Country code.
         /// </summary>
         internal static string CountryCode {
@@ -93,15 +75,6 @@ namespace Resources {
         internal static string CountryName {
             get {
                 return ResourceManager.GetString("CountryName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to name.
-        /// </summary>
-        internal static string Name {
-            get {
-                return ResourceManager.GetString("Name", resourceCulture);
             }
         }
     }

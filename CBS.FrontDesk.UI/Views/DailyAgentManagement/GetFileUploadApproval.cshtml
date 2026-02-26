@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<CBS.FrontDesk.Data.Entity.DailyCollectionEntities.ManualEntryDailyCollectorUploadSummaryDto>
-
+@using Resources
 @{
     ViewBag.Title = "Manual Entry Daily Collector Upload Summary";
 }
@@ -11,7 +11,7 @@
             <tr>
                 <th>
                     <div class="sortable" data-column="fileUploadId">
-                        <span>File Upload ID</span>
+                        <span>@GlobalShared.File Upload ID</span>
                         <svg class="sort-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="m7 15 5 5 5-5"></path>
                             <path d="m7 9 5-5 5 5"></path>
@@ -20,7 +20,7 @@
                 </th>
                 <th>
                     <div class="sortable" data-column="branchName">
-                        <span>Branch</span>
+                        <span>@GlobalShared.Branch</span>
                         <svg class="sort-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="m7 15 5 5 5-5"></path>
                             <path d="m7 9 5-5 5 5"></path>
@@ -29,7 +29,7 @@
                 </th>
                 <th>
                     <div class="sortable" data-column="uploadedBy">
-                        <span>Uploaded By</span>
+                        <span>@GlobalShared.Uploaded_By</span>
                         <svg class="sort-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="m7 15 5 5 5-5"></path>
                             <path d="m7 9 5-5 5 5"></path>
@@ -38,7 +38,7 @@
                 </th>
                 <th>
                     <div class="sortable" data-column="totalMembers">
-                        <span>Total Members</span>
+                        <span>@GlobalShared.Total Members</span>
                         <svg class="sort-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="m7 15 5 5 5-5"></path>
                             <path d="m7 9 5-5 5 5"></path>
@@ -47,14 +47,14 @@
                 </th>
                 <th>
                     <div class="sortable" data-column="totalAmount">
-                        <span>Total Amount</span>
+                        <span>@GlobalShared.Total Amount</span>
                         <svg class="sort-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="m7 15 5 5 5-5"></path>
                             <path d="m7 9 5-5 5 5"></path>
                         </svg>
                     </div>
                 </th>
-                <th>Actions</th>
+                <th>@GlobalShared.Actions</th>
             </tr>
         </thead>
         <tbody id="tableBody">
@@ -67,11 +67,11 @@
                     <td>@Html.DisplayFor(modelItem => item.TotalMembers)</td>
                     <td>@Html.DisplayFor(modelItem => item.TotalAmount, "{0:C}")</td>
                     <td>
-                        <button class="btn btn-primary" onclick="viewUploadSummary('@item.FileUploadId')">👁️ View</button>
-                        <button class="btn btn-info" onclick="viewUploadDetails('@item.FileUploadId')">📋 Details</button>
+                        <button class="btn btn-primary" onclick="viewUploadSummary('@item.FileUploadId')">👁️ @GlobalShared.View</button>
+                        <button class="btn btn-info" onclick="viewUploadDetails('@item.FileUploadId')">📋 @GlobalShared.Details</button>
                         @if (item.manualEntryDailyCollectorUploadListDtos != null && item.manualEntryDailyCollectorUploadListDtos.Any())
                         {
-                            <button class="btn btn-success" onclick="toggleDetails('@item.FileUploadId')">📊 Expand</button>
+                            <button class="btn btn-success" onclick="toggleDetails('@item.FileUploadId')">📊 @GlobalShared.Expand</button>
                         }
                     </td>
                 </tr>
@@ -84,12 +84,12 @@
                                 <table class="table table-sm table-striped">
                                     <thead>
                                         <tr>
-                                            <th>Reference</th>
-                                            <th>Member Name</th>
-                                            <th>Amount</th>
-                                            <th>Daily Collector</th>
-                                            <th>Branch Code</th>
-                                            <th>Branch Name</th>
+                                            <th>@GlobalShared.Reference</th>
+                                            <th>@GlobalShared.Member Name</th>
+                                            <th>@GlobalShared.Amount</th>
+                                            <th>@GlobalShared.Daily_collector</th>
+                                            <th>@GlobalShared.Branch Code</th>
+                                            <th>@GlobalShared.Branch Name</th>
                                         </tr>
                                     </thead>
                                     <tbody>

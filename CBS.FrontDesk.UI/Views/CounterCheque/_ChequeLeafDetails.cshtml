@@ -1,9 +1,9 @@
 ﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheque.CheckBookLeaf
-
+@using Resources
 <div class="modal-header">
     <h5 class="modal-title text-primary">
         <i class="mdi mdi-file-document-outline me-1"></i>
-        Cheque Leaf #@Model.SerialNumber.ToString("D3")
+        @GlobalCounterCheque.Cheque_Leaf #@Model.SerialNumber.ToString("D3")
     </h5>
     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 </div>
@@ -12,7 +12,7 @@
     <table class="table table-sm table-bordered align-middle">
         <tbody>
             <tr>
-                <th>Status</th>
+                <th>@GlobalShared.Status</th>
                 <td>
                     <span class="badge @(Model.Status == "Available" ? "bg-success" : "bg-warning")">
                         @Model.Status
@@ -21,17 +21,17 @@
             </tr>
 
             <tr>
-                <th>CheckBook ID</th>
+                <th>@GlobalShared.CheckBook_ID</th>
                 <td>@Model.CheckBookId</td>
             </tr>
 
             <tr>
-                <th>Serial Number</th>
+                <th>@GlobalShared.Serial_Number</th>
                 <td>@Model.SerialNumber.ToString("D3")</td>
             </tr>
 
             <tr>
-                <th>Issued Date</th>
+                <th>@GlobalShared.Issued_Date</th>
                 <td>
                     @(Model.IssuedDate.HasValue
                         ? Model.IssuedDate.Value.ToString("dd/MM/yyyy HH:mm")
@@ -45,7 +45,7 @@
             </tr>
 
             <tr>
-                <th>Created Date</th>
+                <th>@GlobalShared.Created Date</th>
                 <td>@Model.CreatedDate.ToString("dd/MM/yyyy HH:mm")</td>
             </tr>
         </tbody>
@@ -54,6 +54,6 @@
 
 <div class="modal-footer">
     <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">
-        <i class="mdi mdi-close"></i> Close
+        <i class="mdi mdi-close"></i> @GlobalShared.Close
     </button>
 </div>

@@ -3,6 +3,7 @@
     ViewBag.Title = "DAILY COLLECTION DASHBOARD";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
+@using Resources
 @section Styles {
     <link href="~/CBSTemp/ui/assets/css/DailyCollectionDashBoard.css" rel="stylesheet" />
 
@@ -42,11 +43,11 @@
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <span><i class="mdi mdi-information-outline me-2"></i> DAILY COLLECTION DASHBOARD</span>
+                    <span><i class="mdi mdi-information-outline me-2"></i> @GlobalDailyCollectionDashboard.DAILY_COLLECTION_DASHBOARD</span>
                 </h1>
 
                 <p class="card-text text-warning fw-bold">
-                    <i class="mdi mdi-alert-circle-outline me-1"></i> This interface enable back office operator to pay each daily collector.
+                    <i class="mdi mdi-alert-circle-outline me-1"></i> @GlobalDailyCollectionDashboard.This_interface_enable_back_office_operator_to_pay_each_daily_collector
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -56,7 +57,7 @@
 
 <div class="card mb-2">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> TIPS for daily collection payment</span>
+        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalDailyCollectionDashboard.TIPS_for_daily_collection_payment</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -64,9 +65,9 @@
     <div id="collapseTips" class="collapse">
         <div class="card-body">
             <ul>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>DateRange:</strong> Select Payment period .</li>
-                <li><i class="mdi mdi-calendar-check-outline text-primary me-2"></i> <strong>FilterByBranch:</strong>  Select branch if you are connected as head office</li>
-                <li><i class="mdi mdi-account-multiple-check-outline text-success me-2"></i> <strong>Daily collector:</strong>Select the daily collector head office.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>@GlobalShared.DateRange:</strong> @GlobalShared.Select_Payment_period .</li>
+                <li><i class="mdi mdi-calendar-check-outline text-primary me-2"></i> <strong>@GlobalShared.FilterByBranch:</strong>  @GlobalDailyCollectionDashboard.Select_branch_if_you_are_connected_as_head_office</li>
+                <li><i class="mdi mdi-account-multiple-check-outline text-success me-2"></i> <strong>@GlobalShared.Daily_collector:</strong>@GlobalDailyCollectionDashboard.Select_the_daily_collector_head_office</li>
 
 
             </ul>
@@ -84,7 +85,7 @@
                     @if (Convert.ToBoolean(Session["IsHeadOffice"]) == true)
                     {
                         <div class="filter-group">
-                            <label for="month">📅 Select Month & Year</label>
+                            <label for="month">📅 @GlobalShared.Select_Month & @GlobalShared.Year</label>
                             @Html.TextBoxFor(m => m.DashboardActivities.Month, new
                             {
                                 @class = "form-control date",
@@ -95,12 +96,12 @@
                             @Html.ValidationMessageFor(m => m.DashboardActivities.Month, "", new { @class = "text-danger" })
                         </div>
                         <div class="filter-group">
-                            <label for="branch">🏢 Select Branch</label>
+                            <label for="branch">🏢 @GlobalShared.Select_Branch</label>
                             @Html.DropDownListFor(m => m.DashboardActivities.BranchId, new SelectList(ViewBag.Branches == null ? "" : ViewBag.Branches, "Value", "Text"), "--- Select Branch", new { @class = "form-control select2", @search = "true" })
 
                         </div>
                         <div class="filter-group">
-                            <label for="collector">👤 Select Daily Collector</label>
+                            <label for="collector">👤 @GlobalDailyCollectionDashboard.Select_Daily_Collector</label>
 
                             @Html.DropDownListFor(m => m.DashboardActivities.CollectorId, new SelectList(ViewBag.DailyCollectors == null ? "" : ViewBag.DailyCollectors, "Value", "Text"), "--- Select Daily Collectors", new { @class = "form-control select2", @search = "true" })
                         </div>
@@ -108,7 +109,7 @@
                     else
                     {
                         <div class="filter-group">
-                            <label for="month">📅 Select Month & Year</label>
+                            <label for="month">📅 @GlobalShared.Select_Month & @GlobalShared.Year</label>
                             @Html.TextBoxFor(m => m.DashboardActivities.Month, new
                             {
                                 @class = "form-control date",
@@ -119,7 +120,7 @@
                             @Html.ValidationMessageFor(m => m.DashboardActivities.Month, "", new { @class = "text-danger" })
                         </div>
                         <div class="filter-group">
-                            <label for="collector">👤 Select Daily Collector</label>
+                            <label for="collector">👤 @GlobalDailyCollectionDashboard.Select_Daily_Collector</label>
 
                             @Html.DropDownListFor(m => m.DashboardActivities.CollectorId, new SelectList(ViewBag.DailyCollectors == null ? "" : ViewBag.DailyCollectors, "Value", "Text"), "--- Select Daily Collectors", new { @class = "form-control select2", @search = "true" })
                         </div>
@@ -130,7 +131,7 @@
                     <div class="row mt-2">
                         <div class="col-md-4 d-flex justify-content-end">
                             @*     <button id="applyFilterBtn" class="btn btn-primary me-2 w-100" onclick="loadData()"><i class="mdi mdi-magnify"></i> 🔍 Load Data</button>*@
-                            <button id="submitBtn" type="submit" class="load-btn btn-primary" onclick="loadDashboard()">🔍 Load Data</button>
+                            <button id="submitBtn" type="submit" class="load-btn btn-primary" onclick="loadDashboard()">🔍 @GlobalShared.Load_Data</button>
                         </div>
                     </div>
                 </div>
@@ -146,32 +147,32 @@
     <!-- Key Metrics -->
     <div class="metrics-grid">
         <div class="metric-card">
-            <h3>Total Collections</h3>
+            <h3>@GlobalShared.Total_Collections</h3>
             <div class="metric-value">1,859,880</div>
             <div class="metric-subtitle">XAF</div>
         </div>
         <div class="metric-card">
-            <h3>Total Fees</h3>
+            <h3>@GlobalShared.Total_Fees</h3>
             <div class="metric-value">62,500</div>
             <div class="metric-subtitle">XAF</div>
         </div>
         <div class="metric-card">
-            <h3>Cash In Transactions</h3>
+            <h3>@GlobalShared.Cash_In_Transactions</h3>
             <div class="metric-value">34</div>
             <div class="metric-subtitle">Transactions</div>
         </div>
         <div class="metric-card">
-            <h3>Members Served</h3>
+            <h3>@GlobalShared.Members_Served</h3>
             <div class="metric-value">10</div>
-            <div class="metric-subtitle">Active Members</div>
+            <div class="metric-subtitle">@GlobalShared.Active_Members</div>
         </div>
         <div class="metric-card">
-            <h3>Net Balance</h3>
+            <h3>@GlobalShared.Net_balance</h3>
             <div class="metric-value">1,534,880</div>
             <div class="metric-subtitle">XAF</div>
         </div>
         <div class="metric-card">
-            <h3>Average per Saver</h3>
+            <h3>@GlobalShared.Average_per_Saver</h3>
             <div class="metric-value">185,988</div>
             <div class="metric-subtitle">XAF</div>
         </div>
@@ -180,11 +181,11 @@
     <!-- Charts Section -->
     <div class="charts-section">
         <div class="chart-container">
-            <div class="chart-title">Daily Collection Trend</div>
+            <div class="chart-title">@GlobalDailyCollectionDashboard.Daily_Collection_Trend</div>
             <canvas id="dailyTrendChart"></canvas>
         </div>
         <div class="chart-container">
-            <div class="chart-title">Branch Performance</div>
+            <div class="chart-title">@GlobalShared.Branch_Performance</div>
             <canvas id="branchChart"></canvas>
         </div>
     </div>
@@ -192,13 +193,13 @@
     <!-- Tables Section -->
     <div class="tables-section">
         <div class="table-container">
-            <div class="table-title">Top Savers</div>
+            <div class="table-title">@GlobalShared.Top_Savers</div>
             <table class="data-table">
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Code</th>
-                        <th>Amount (XAF)</th>
+                        <th>@GlobalShared.Name</th>
+                        <th>@GlobalShared.Code</th>
+                        <th>@GlobalShared.Amount (XAF)</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -222,14 +223,14 @@
         </div>
 
         <div class="table-container">
-            <div class="table-title">Daily Summary</div>
+            <div class="table-title">@GlobalShared.Daily_Summary</div>
             <table class="data-table">
                 <thead>
                     <tr>
-                        <th>Date</th>
-                        <th>Cash In</th>
-                        <th>Cash Out</th>
-                        <th>Net</th>
+                        <th>@GlobalShared.Date</th>
+                        <th>@GlobalShared.Cash_In</th>
+                        <th>@GlobalShared.Cash_out</th>
+                        <th>@GlobalShared.Net</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -270,25 +271,25 @@
 
     <!-- Branch Performance -->
     <div class="daily-summary">
-        <div class="table-title">Branch Performance Overview</div>
+        <div class="table-title">@GlobalDailyCollectionDashboard.Branch_Performance_Overview</div>
         <div class="branch-performance">
             <div class="branch-card">
                 <div class="branch-name">BAPCCUL Yaounde Biyem-Assi (003)</div>
                 <div class="branch-metrics">
                     <div class="branch-metric">
-                        <span>Total Collections:</span>
+                        <span>@GlobalShared.Total_Collections:</span>
                         <span class="amount">1,875,260 XAF</span>
                     </div>
                     <div class="branch-metric">
-                        <span>Transactions:</span>
+                        <span>@GlobalShared.Transactions:</span>
                         <span>24</span>
                     </div>
                     <div class="branch-metric">
-                        <span>Members Served:</span>
+                        <span>@GlobalShared.Members_Served:</span>
                         <span>4</span>
                     </div>
                     <div class="branch-metric">
-                        <span>Fees Collected:</span>
+                        <span>@GlobalShared.Fees_Collected:</span>
                         <span class="amount">52,000 XAF</span>
                     </div>
                 </div>
@@ -298,19 +299,19 @@
                 <div class="branch-name">Yaounde Emana (017)</div>
                 <div class="branch-metrics">
                     <div class="branch-metric">
-                        <span>Total Collections:</span>
+                        <span>@GlobalShared.Total_Collections:</span>
                         <span class="amount">160,120 XAF</span>
                     </div>
                     <div class="branch-metric">
-                        <span>Transactions:</span>
+                        <span>@GlobalShared.Transactions:</span>
                         <span>2</span>
                     </div>
                     <div class="branch-metric">
-                        <span>Members Served:</span>
+                        <span>@GlobalShared.Members_Served:</span>
                         <span>1</span>
                     </div>
                     <div class="branch-metric">
-                        <span>Fees Collected:</span>
+                        <span>@GlobalShared.Fees_Collected:</span>
                         <span class="amount">4,000 XAF</span>
                     </div>
                 </div>
@@ -320,19 +321,19 @@
                 <div class="branch-name">BAPCCUL Upstation Bamenda (015)</div>
                 <div class="branch-metrics">
                     <div class="branch-metric">
-                        <span>Total Collections:</span>
+                        <span>@GlobalShared.Total_Collections:</span>
                         <span class="amount">149,500 XAF</span>
                     </div>
                     <div class="branch-metric">
-                        <span>Transactions:</span>
+                        <span>@GlobalShared.Transactions:</span>
                         <span>13</span>
                     </div>
                     <div class="branch-metric">
-                        <span>Members Served:</span>
+                        <span>@GlobalShared.Members_Served:</span>
                         <span>4</span>
                     </div>
                     <div class="branch-metric">
-                        <span>Fees Collected:</span>
+                        <span>@GlobalShared.Fees_Collected:</span>
                         <span class="amount">6,500 XAF</span>
                     </div>
                 </div>
@@ -342,23 +343,23 @@
 
     <!-- Recent Transactions -->
     <div class="table-container full-width">
-        <div class="table-title">Recent Transactions</div>
+        <div class="table-title">@GlobalShared.Recent_Transactions</div>
         <table class="data-table">
             <thead>
                 <tr>
-                    <th>Date</th>
-                    <th>Member</th>
-                    <th>Type</th>
-                    <th>Amount</th>
-                    <th>Fee</th>
-                    <th>Branch</th>
+                    <th>@GlobalShared.Date</th>
+                    <th>@GlobalShared.Member</th>
+                    <th>@GlobalShared.Type</th>
+                    <th>@GlobalShared.Amount</th>
+                    <th>@GlobalShared.Fee</th>
+                    <th>@GlobalShared.Branch</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td>16 Jul 07:55</td>
                     <td>Tim Beckly</td>
-                    <td><span class="status-badge status-cashin">Cash In</span></td>
+                    <td><span class="status-badge status-cashin">@GlobalShared.Cash_In</span></td>
                     <td class="amount">100,000</td>
                     <td>2,000</td>
                     <td>Biyem-Assi</td>
@@ -366,7 +367,7 @@
                 <tr>
                     <td>15 Jul 07:58</td>
                     <td>lemnga crispus</td>
-                    <td><span class="status-badge status-cashin">Cash In</span></td>
+                    <td><span class="status-badge status-cashin">@GlobalShared.Cash_In</span></td>
                     <td class="amount">10,000</td>
                     <td>1,000</td>
                     <td>Bamenda</td>
@@ -374,7 +375,7 @@
                 <tr>
                     <td>15 Jul 07:43</td>
                     <td>lemnga crispus</td>
-                    <td><span class="status-badge status-cashin">Cash In</span></td>
+                    <td><span class="status-badge status-cashin">@GlobalShared.Cash_In</span></td>
                     <td class="amount">5,000</td>
                     <td>1,000</td>
                     <td>Bamenda</td>
@@ -382,7 +383,7 @@
                 <tr>
                     <td>14 Jul 21:53</td>
                     <td>lemnga crispus</td>
-                    <td><span class="status-badge status-cashout">Cash Out</span></td>
+                    <td><span class="status-badge status-cashout">@GlobalShared.Cash_out</span></td>
                     <td class="amount negative">5,000</td>
                     <td>0</td>
                     <td>Bamenda</td>
@@ -390,7 +391,7 @@
                 <tr>
                     <td>14 Jul 21:02</td>
                     <td>Ngongwoh Enow</td>
-                    <td><span class="status-badge status-cashin">Cash In</span></td>
+                    <td><span class="status-badge status-cashin">@GlobalShared.Cash_In</span></td>
                     <td class="amount">150,000</td>
                     <td>2,000</td>
                     <td>Emana</td>

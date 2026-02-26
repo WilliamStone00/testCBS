@@ -30,18 +30,55 @@
             <input type="hidden" value="@Model.LoanApplication.Id" id="loanapplicationid" />
 
             <div class="row g-4">
-                <div class="col-md-12">
+                <div class="col-md-6">
                     <div class="form-floating form-floating-outline">
                         @Html.DropDownListFor(m => m.LoanCollatera.LoanProductCollateralId, new SelectList(ViewBag.LoanProductCollaterals, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
                         @Html.ValidationMessageFor(m => m.LoanCollatera.LoanProductCollateralId, "", new { @class = "text-danger " })
                         <label>@Global_AddLoanCollateral.SelectLoanCollateral</label>
                     </div>
                 </div>
-                <div class="col-md-12">
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(
+                            m => m.LoanCollatera.CollateralCategory,
+                            new List<SelectListItem>
+                            {
+                                new SelectListItem { Text = "State", Value = "State" },
+                                new SelectListItem { Text = "Pledges (Must be establish by a layer)", Value = "Pledges" },
+                                new SelectListItem { Text = "Other Movable", Value = "OtherMovable" }
+                            },
+                            "--- Select ---",
+                            new { @class = "form-control select2" }
+                        )
+
+                        @Html.ValidationMessageFor(
+                            m => m.LoanCollatera.CollateralCategory,
+                            "",
+                            new { @class = "text-danger" }
+                        )
+
+                        <label>@Global_AddLoanCollateral.CollateralCategory</label>
+                    </div>
+                </div>
+                <div class="col-md-4">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.LoanCollatera.Amount, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.LoanCollatera.Amount, "", new { @class = "text-danger" })
                         <label>@Global_AddLoanCollateral.RateInPercentage</label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.LoanCollatera.Marketvalue, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.LoanCollatera.Marketvalue, "", new { @class = "text-danger" })
+                        <label>@Global_AddLoanCollateral.Marketvalue</label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.LoanCollatera.Venalvalue, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.LoanCollatera.Venalvalue, "", new { @class = "text-danger" })
+                        <label>@Global_AddLoanCollateral.venalvalue</label>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -58,11 +95,18 @@
                         <label>@Global_AddLoanCollateral.Address</label>
                     </div>
                 </div>
-                <div class="col-md-12">
+                <div class="col-md-6">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.LoanCollatera.Reference, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.LoanCollatera.Reference, "", new { @class = "text-danger" })
                         <label>@Global_AddLoanCollateral.Reference</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.LoanCollatera.NameOfPersonInvolved, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.LoanCollatera.NameOfPersonInvolved, "", new { @class = "text-danger" })
+                        <label>@Global_AddLoanCollateral.NameOfPersonInvolved</label>
                     </div>
                 </div>
 

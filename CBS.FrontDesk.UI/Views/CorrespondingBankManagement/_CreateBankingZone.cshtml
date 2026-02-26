@@ -15,7 +15,7 @@
                      <div class="form-floating form-floating-outline">
                          @Html.TextBoxFor(m => m.BankingZone.Name, new { @class = "form-control" })
                          @Html.ValidationMessageFor(m => m.BankingZone.Name, "", new { @class = "text-danger" })
-                         <label>@GlobalCorrespondingBankManagement.Name</label>
+                         <label>@GlobalShared.Name</label>
                      </div>
                  </div>
                  <div class="col-md-6">
@@ -30,7 +30,7 @@
                      <div class="form-floating form-floating-outline">
                          @Html.DropDownListFor(m => m.BankingZone.LocationType, new SelectList(ViewBag.LocationType == null ? "" : ViewBag.LocationType, "Text", "Value"), "---"+ @GlobalCorrespondingBankManagement.SelectFinancialInstitutionType+"---", new { @class = "form-control select2", @search = "true" })
                          @Html.ValidationMessageFor(m => m.BankingZone.LocationType, "", new { @class = "text-danger" })
-                         <label>@GlobalCorrespondingBankManagement.LocationLevel</label>
+                         <label>@GlobalShared.Location_level</label>
                      </div>
                  </div>
            
@@ -39,7 +39,7 @@
                          @Html.ListBoxFor(model => model.BankingZone.LocationId, new SelectList(ViewBag.Regions == null ? new List<SelectListItem>() : ViewBag.Regions, "Text", "Value"), new { @class = "form-control select2", @multiple = "multiple", @id = "BankingZoneLocationIds" })
 
                          @Html.ValidationMessageFor(m => m.BankingZone.LocationId, "", new { @class = "text-danger" })
-                         <label>@GlobalCorrespondingBankManagement.Location</label>
+                         <label>@GlobalShared.Location</label>
                      </div>
                  </div>
 

@@ -552,7 +552,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public DateTime LoanDate { get; set; }
         public bool IsLoanDisbursted { get; set; }
         public string DisbursmentStatus { get; set; }
-        public DateTime LastInterestCalculatedDate { get; set; }
+        public DateTime? LastInterestCalculatedDate { get; set; }
         public DateTime LastRefundDate { get; set; }
         public DateTime LastEventData { get; set; }
         public string CustomerId { get; set; }
@@ -874,6 +874,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
 
         /// <summary>Optional loan type category (e.g., ShortTerm, LongTerm).</summary>
         public string LoanTypeCategory { get; set; }
+        public bool IsInterbranch { get; set; }
     }
     public class GetLoanApplicationsDataTableQuery
     {

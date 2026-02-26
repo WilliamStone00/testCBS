@@ -1,0 +1,267 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AcceptPercentage" xml:space="preserve">
+    <value>Accept Percentage</value>
+  </data>
+  <data name="AcceptRange" xml:space="preserve">
+    <value>Accept Range</value>
+  </data>
+  <data name="AcceptStatic" xml:space="preserve">
+    <value>Accept Static</value>
+  </data>
+  <data name="Accept_Percentage" xml:space="preserve">
+    <value>Accept Percentage</value>
+  </data>
+  <data name="Accept_Range" xml:space="preserve">
+    <value>Accept Range</value>
+  </data>
+  <data name="Accept_Static_Amount" xml:space="preserve">
+    <value>Accept Static Amount</value>
+  </data>
+  <data name="AddRow" xml:space="preserve">
+    <value>Add Row</value>
+  </data>
+  <data name="After_selecting_scope_and_a_fee_type_click_Load_to_fetch_existing_settings" xml:space="preserve">
+    <value>After selecting scope and a fee type click 'Load' to fetch existing settings.</value>
+  </data>
+  <data name="All_Fee_Types" xml:space="preserve">
+    <value>All Fee Types</value>
+  </data>
+  <data name="Always_choose_either_to_configure_a_centralized_system_or_decentralized_and_always_choose_a_Fee_Type" xml:space="preserve">
+    <value>Always choose either to configure a centralized system or decentralized and always choose a Fee Type.</value>
+  </data>
+  <data name="Branch_Specific" xml:space="preserve">
+    <value>Branch Specific</value>
+  </data>
+  <data name="ConfigurationScope" xml:space="preserve">
+    <value>Configuration Scope</value>
+  </data>
+  <data name="Configuration_Type" xml:space="preserve">
+    <value>Configuration Type</value>
+  </data>
+  <data name="Configure_centralized_or_branch_specific_fees_using_percentage_or_range_based_calculations" xml:space="preserve">
+    <value> Configure centralized or branch-specific fees using percentage or range-based calculations.</value>
+  </data>
+  <data name="Delete_will_permanently_remove_the_configuration_for_the_loaded_scope" xml:space="preserve">
+    <value>Delete will permanently remove the configuration for the loaded scope.</value>
+  </data>
+  <data name="Deleting_a_Configuration" xml:space="preserve">
+    <value>Deleting a Configuration</value>
+  </data>
+  <data name="EnablePercentageFee" xml:space="preserve">
+    <value>Enable Percentage Fee</value>
+  </data>
+  <data name="EnableRangeBasedFee" xml:space="preserve">
+    <value>Enable Range-Based Fee</value>
+  </data>
+  <data name="EnableStatusFee" xml:space="preserve">
+    <value>Enable Status Fee</value>
+  </data>
+  <data name="Enable_only_one_method_at_a_time_Percentage_or_Range_UI_enforces_this" xml:space="preserve">
+    <value>Enable only one method at a time (Percentage or Range) — UI enforces this.</value>
+  </data>
+  <data name="feedetailstext2" xml:space="preserve">
+    <value>No fee ranges defined for this configuration</value>
+  </data>
+  <data name="FeeRanges" xml:space="preserve">
+    <value>Fee Ranges</value>
+  </data>
+  <data name="FeeSettings" xml:space="preserve">
+    <value> Fee Settings</value>
+  </data>
+  <data name="FeeValue" xml:space="preserve">
+    <value>Fee Value</value>
+  </data>
+  <data name="Fee_Config" xml:space="preserve">
+    <value>Fee Config</value>
+  </data>
+  <data name="Fee_Configurations" xml:space="preserve">
+    <value>Fee Configurations</value>
+  </data>
+  <data name="Fee_Configuration_Details" xml:space="preserve">
+    <value>Fee Configuration Details</value>
+  </data>
+  <data name="Fee_Config_Details" xml:space="preserve">
+    <value>Fee Config Details</value>
+  </data>
+  <data name="Fee_Config_Filters" xml:space="preserve">
+    <value>Fee Config Filters</value>
+  </data>
+  <data name="Fee_Method_Choice" xml:space="preserve">
+    <value>Fee Method Choice</value>
+  </data>
+  <data name="Filter_Sort_Configuration" xml:space="preserve">
+    <value>Filter &amp; Sort Configuration</value>
+  </data>
+  <data name="FromAmount" xml:space="preserve">
+    <value>From Amount</value>
+  </data>
+  <data name="here_we_have_the_details_of_each_fee_configuration_which_is_divided_into_three_sections_Basic_Information_Fee_Seting_and_Fee_Ranges" xml:space="preserve">
+    <value>here we have the details of each fee configuration which is divided into three sections Basic Information, Fee Seting and Fee Ranges</value>
+  </data>
+  <data name="LoadConfiguration" xml:space="preserve">
+    <value>Load Configuration</value>
+  </data>
+  <data name="ManageConfigurationfor" xml:space="preserve">
+    <value>Manage Configuration for</value>
+  </data>
+  <data name="PercentageConfig" xml:space="preserve">
+    <value>Percentage Config</value>
+  </data>
+  <data name="RangeConfig" xml:space="preserve">
+    <value>Range Config</value>
+  </data>
+  <data name="RangeName" xml:space="preserve">
+    <value>Range Name</value>
+  </data>
+  <data name="Remove_this_row" xml:space="preserve">
+    <value>Remove this row</value>
+  </data>
+  <data name="Save_button_persists_the_entire_configuration" xml:space="preserve">
+    <value>Save button persists the entire configuration.</value>
+  </data>
+  <data name="Saving_Changes" xml:space="preserve">
+    <value>Saving Changes</value>
+  </data>
+  <data name="SelectConfigurationScope" xml:space="preserve">
+    <value>Select Configuration Scope</value>
+  </data>
+  <data name="Static" xml:space="preserve">
+    <value>Static</value>
+  </data>
+  <data name="StaticAmount" xml:space="preserve">
+    <value>Static Amount</value>
+  </data>
+  <data name="StaticConfig" xml:space="preserve">
+    <value>Static Config</value>
+  </data>
+  <data name="TIPS_FOR_FEE_CONFIGURATION" xml:space="preserve">
+    <value>TIPS FOR FEE CONFIGURATION</value>
+  </data>
+  <data name="ToAmount" xml:space="preserve">
+    <value>To Amount</value>
+  </data>
+  <data name="Use_Is_Centralized_for_system_wide_rules_uncheck_to_pick_a_branch" xml:space="preserve">
+    <value>Use 'Is Centralized' for system-wide rules; uncheck to pick a branch.</value>
+  </data>
+  <data name="When_using_ranges_ensure_no_overlap" xml:space="preserve">
+    <value>When using ranges ensure no overlap.</value>
+  </data>
+</root>

@@ -22,11 +22,11 @@
             <table class="table table-hover" id="myDataTable">
                 <thead class="table-light">
                     <tr>
-                        <th>@GlobalDailyTellerAssignation.Users</th>
-                        <th>@GlobalDailyTellerAssignation.Branch</th>
-                        <th>@GlobalDailyTellerAssignation.Tills</th>
-                        <th>@GlobalDailyTellerAssignation.Status</th>
-                        <th>@GlobalDailyTellerAssignation.Type</th>
+                        <th>@GlobalShared.Users</th>
+                        <th>@GlobalShared.Branch</th>
+                        <th>@GlobalShared.Tills</th>
+                        <th>@GlobalShared.Status</th>
+                        <th>@GlobalShared.Type</th>
                         <th>@GlobalShared.Action</th>
                     </tr>
                 </thead>
@@ -40,11 +40,11 @@
                             <td style="width:5%">
                                 @if (d.Status)
                                 {
-                                    <span class="badge bg-info">@GlobalDailyTellerAssignation.Active</span>
+                                    <span class="badge bg-info">@GlobalShared.Active</span>
                                 }
                                 else
                                 {
-                            <span class="badge bg-danger">@GlobalDailyTellerAssignation.Inactive</span>
+                            <span class="badge bg-danger">@GlobalShared.InActive</span>
                                 }
                             </td>
                             <td style="width:10%">
@@ -58,7 +58,7 @@
                                 }
                             </td>
                             <td style="width:7%">
-                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_Create','update','DailyTellerAssignation',null,'@d.Id')" class="mr-2" data-bs-toggle="tooltip" title="Reassign @d.Teller.name">@GlobalDailyTellerAssignation.Reassign</a>
+                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_Create','update','DailyTellerAssignation',null,'@d.Id')" class="mr-2" data-bs-toggle="tooltip" title="Reassign @d.Teller.name">@GlobalShared.Reassign</a>
                                 <!-- Uncomment if needed -->
                                 <!-- <a href="#" class="mr-2" data-bs-toggle="tooltip" title="Delete @d.Teller.name" onclick="DeleteAssignedTeller('DailyTellerAssignation','@d.Id','myDataTable','_Data',0,'datalistingview')">Delete</a> -->
                             </td>

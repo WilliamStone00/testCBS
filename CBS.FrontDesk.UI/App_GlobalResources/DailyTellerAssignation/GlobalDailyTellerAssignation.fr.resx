@@ -117,14 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Active" xml:space="preserve">
-    <value>Actif</value>
-  </data>
   <data name="Both" xml:space="preserve">
     <value>Les deux</value>
-  </data>
-  <data name="Branch" xml:space="preserve">
-    <value>Agence</value>
   </data>
   <data name="CashOperations" xml:space="preserve">
     <value>Opérations de caisse</value>
@@ -153,12 +147,6 @@
   <data name="DailyTellerDataSet" xml:space="preserve">
     <value>Ensemble de données du caissier quotidien</value>
   </data>
-  <data name="DateFrom" xml:space="preserve">
-    <value>Date de début</value>
-  </data>
-  <data name="DateTo" xml:space="preserve">
-    <value>Date de fin</value>
-  </data>
   <data name="ExportDailyOperations" xml:space="preserve">
     <value>Exporter les opérations quotidiennes</value>
   </data>
@@ -168,20 +156,11 @@
   <data name="EXPORTOPTIONS" xml:space="preserve">
     <value>OPTIONS D'EXPORTATION</value>
   </data>
-  <data name="FilterByBranch" xml:space="preserve">
-    <value>Filtrer par agence</value>
-  </data>
   <data name="FilterByTill" xml:space="preserve">
     <value>Filtrer par caisse</value>
   </data>
-  <data name="FilteredByDate" xml:space="preserve">
-    <value>Filtré par date</value>
-  </data>
   <data name="FilterTellersInOperation" xml:space="preserve">
     <value>Filtrer les caissiers en opération</value>
-  </data>
-  <data name="Inactive" xml:space="preserve">
-    <value>Inactif</value>
   </data>
   <data name="NoDailyTellerIsSet" xml:space="preserve">
     <value>Aucun caissier quotidien n'est défini</value>
@@ -198,12 +177,6 @@
   <data name="PrimaryT" xml:space="preserve">
     <value>Primaire-T</value>
   </data>
-  <data name="Reassign" xml:space="preserve">
-    <value>Réaffecter</value>
-  </data>
-  <data name="SelectBranch" xml:space="preserve">
-    <value>Sélectionner une agence</value>
-  </data>
   <data name="SelectBranchToLoadTellersAssigned" xml:space="preserve">
     <value>Sélectionner une agence pour charger les caissiers affectés</value>
   </data>
@@ -216,23 +189,14 @@
   <data name="SelectTill" xml:space="preserve">
     <value>Sélectionner une caisse</value>
   </data>
-  <data name="SelectUser" xml:space="preserve">
-    <value>Sélectionner un utilisateur</value>
-  </data>
   <data name="SetTellersForTheDay" xml:space="preserve">
     <value>Définir les caissiers pour la journée</value>
   </data>
   <data name="StatementOfAccount" xml:space="preserve">
     <value>Relevé de compte (Opérations quotidiennes du caissier F5)</value>
   </data>
-  <data name="Status" xml:space="preserve">
-    <value>Statut</value>
-  </data>
   <data name="SubT" xml:space="preserve">
     <value>Sous-T</value>
-  </data>
-  <data name="Teller" xml:space="preserve">
-    <value>Caissier</value>
   </data>
   <data name="TellerOpenningAndClossingStatus" xml:space="preserve">
     <value>Statut d'ouverture et de fermeture du caissier</value>
@@ -246,20 +210,8 @@
   <data name="TillCashStatusPrintingParameters" xml:space="preserve">
     <value>Paramètres d'impression du statut de la caisse</value>
   </data>
-  <data name="Tills" xml:space="preserve">
-    <value>Caisses</value>
-  </data>
   <data name="TillsF5Operations" xml:space="preserve">
     <value>Opérations F5 des caisses</value>
-  </data>
-  <data name="Type" xml:space="preserve">
-    <value>Type</value>
-  </data>
-  <data name="User" xml:space="preserve">
-    <value>Utilisateur</value>
-  </data>
-  <data name="Users" xml:space="preserve">
-    <value>Utilisateurs</value>
   </data>
   <data name="ViewAssignedTellers" xml:space="preserve">
     <value>Afficher les caissiers affectés</value>

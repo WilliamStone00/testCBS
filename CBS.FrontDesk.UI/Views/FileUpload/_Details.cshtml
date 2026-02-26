@@ -9,17 +9,17 @@
 <div class="card bg-light mb-4 shadow-sm">
     <div class="card-body text-center">
         <h1 class="card-title text-primary fw-bold mb-2">
-            <i class="mdi mdi-book-open-page-variant-outline me-2"></i>Awaiting Correspondence Details
+            <i class="mdi mdi-book-open-page-variant-outline me-2"></i>@GlobalFileUpload.Awaiting_Correspondence_Details
         </h1>
         <p class="card-text text-muted mb-1">
-            here we have the details of an account awaiting correspondance
+            @GlobalFileUpload.here_we_have_the_details_of_an_account_awaiting_correspondance
         </p>
     </div>
 </div>
 
 <div class="row">
     <div class="col-md-6">
-        <h6 class="text-primary"><i class="mdi mdi-information-outline me-2"></i>Basic Information</h6>
+        <h6 class="text-primary"><i class="mdi mdi-information-outline me-2"></i>@GlobalShared.Basic_Information</h6>
         <table class="table table-sm table-bordered">
             <tbody>
             @*    <tr>
@@ -31,7 +31,7 @@
                     <td>@Html.DisplayFor(m => m.Scope)</td>
                 </tr>
                 <tr>
-                    <td class="fw-bold">@ChequeManagements.Branch</td>
+                    <td class="fw-bold">@GlobalShared.Branch</td>
                     <td>@(string.IsNullOrWhiteSpace(Model?.BranchName) ? "-" : Html.Encode(Model.BranchName))</td>
                 </tr>
 
@@ -45,19 +45,19 @@
                 }*@
 
                 <tr>
-                    <td class="fw-bold">@AccountingV2.Code</td>
+                    <td class="fw-bold">@GlobalShared.Code</td>
                     <td>@(string.IsNullOrWhiteSpace(Model?.Code) ? "-" : Html.Encode(Model.Code))</td>
                 </tr>
                 <tr>
-                    <td class="fw-bold">@AccountingV2.Name</td>
+                    <td class="fw-bold">@GlobalShared.Name</td>
                     <td>@(string.IsNullOrWhiteSpace(Model?.Name) ? "-" : Html.Encode(Model.Name))</td>
                 </tr>
                 <tr>
-                    <td class="fw-bold">Name (EN)</td>
+                    <td class="fw-bold">@GlobalShared.Name (EN)</td>
                     <td>@(string.IsNullOrWhiteSpace(Model?.NameEn) ? "-" : Html.Encode(Model.NameEn))</td>
                 </tr>
                 <tr>
-                    <td class="fw-bold">Name (FR)</td>
+                    <td class="fw-bold">@GlobalShared.Name (FR)</td>
                     <td>@(string.IsNullOrWhiteSpace(Model?.NameFr) ? "-" : Html.Encode(Model.NameFr))</td>
                 </tr>
             </tbody>
@@ -65,7 +65,7 @@
     </div>
 
     <div class="col-md-6">
-        <h6 class="text-primary"><i class="mdi mdi-cog-outline me-2"></i>Financial Info</h6>
+        <h6 class="text-primary"><i class="mdi mdi-cog-outline me-2"></i>@GlobalShared.Financial_Info</h6>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
@@ -87,7 +87,7 @@
         }*@
 
                 <tr>
-                    <td class="fw-bold">Requires Mapping</td>
+                    <td class="fw-bold">@GlobalFileUpload.Requires_Mapping</td>
                     <td>@(Model?.RequiresMapping == true ? "Yes" : "No")</td>
                 </tr>
 
@@ -109,11 +109,11 @@
                         <td>@(string.IsNullOrWhiteSpace(Model?.Path) ? "-" : Html.Encode(Model.Path))</td>
                     </tr>*@
                 <tr>
-                    <td class="fw-bold">Depth</td>
+                    <td class="fw-bold">@GlobalShared.Depth</td>
                     <td>@(Model != null ? Model.Depth.ToString(CultureInfo.InvariantCulture) : "-")</td>
                 </tr>
                 <tr>
-                    <td class="fw-bold">Posting Allowed</td>
+                    <td class="fw-bold">@GlobalShared.Posting_Allowed</td>
                     <td>@(Model?.PostingAllowed == true ? "Yes" : "No")</td>
                 </tr>
             </tbody>
@@ -123,18 +123,18 @@
 
 <div class="row mt-2">
     <div class="col-md-6">
-        <h6 class="text-primary"><i class="mdi mdi-note-text me-2"></i>Reason</h6>
+        <h6 class="text-primary"><i class="mdi mdi-note-text me-2"></i>@GlobalShared.Reason</h6>
         <div class="card card-body">
             @(string.IsNullOrWhiteSpace(Model?.Reason) ? "-" : Html.Encode(Model.Reason))
         </div>
     </div>
 
     <div class="col-md-6">
-        <h6 class="text-primary"><i class="mdi mdi-calendar-range me-2"></i>Dates & Status</h6>
+        <h6 class="text-primary"><i class="mdi mdi-calendar-range me-2"></i>@GlobalShared.Dates & @GlobalShared.Status</h6>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
-                    <td class="fw-bold">Created Date</td>
+                    <td class="fw-bold">@GlobalShared.Created_Date</td>
                     <td>
                         @(
                             Model != null
@@ -158,7 +158,7 @@
                         <td>@(Model?.IsDeleted == true ? "Yes" : "No")</td>
                     </tr>*@
                 <tr>
-                    <td class="fw-bold">Language</td>
+                    <td class="fw-bold">@GlobalShared.Language</td>
                     <td>@(string.IsNullOrWhiteSpace(Model?.Language) ? "-" : Html.Encode(Model.Language))</td>
                 </tr>
             </tbody>

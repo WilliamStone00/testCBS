@@ -117,12 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Description" xml:space="preserve">
-    <value>Description</value>
-  </data>
-  <data name="GroupType" xml:space="preserve">
-    <value>Group type</value>
-  </data>
   <data name="GroupTypeName" xml:space="preserve">
     <value>Group type name</value>
   </data>
@@ -132,7 +126,7 @@
   <data name="MembersGroupTypes" xml:space="preserve">
     <value>Member's group type</value>
   </data>
-  <data name="Type" xml:space="preserve">
-    <value>Type</value>
+  <data name="No_member_group_type_was_found_at_the_moment" xml:space="preserve">
+    <value>No member group type was found at the moment.</value>
   </data>
 </root>

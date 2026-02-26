@@ -1,7 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.LoanConf.FeeRange
     @using Resources
 <fieldset class="fieldset-custom">
-    <legend id="select_base">@GlobalFeeRange.FeeConfiguration</legend>
+    <legend id="select_base">@GlobalShared.Fee_Configuration</legend>
     <div class="card-body">
         @using (Html.BeginForm("Create", "FeeRange", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
         {
@@ -11,9 +11,9 @@
 
             <div class="col-md-12">
                 <div class="form-floating form-floating-outline">
-                    @Html.DropDownListFor(m => m.FeeId, new SelectList(ViewBag.Fees, "Id", "name"), "---"+ @GlobalFeeRange.SelectFee+"---", new { @class = "form-control select2", @onchange = "GetFee(this.value);", @search = "true" })
+                    @Html.DropDownListFor(m => m.FeeId, new SelectList(ViewBag.Fees, "Id", "name"), "---"+ GlobalShared.Select_fee+"---", new { @class = "form-control select2", @onchange = "GetFee(this.value);", @search = "true" })
                     @Html.ValidationMessageFor(m => m.FeeId, "", new { @class = "text-danger" })
-                    <label>@GlobalFeeRange.SelectFee</label>
+                    <label>@GlobalShared.Select_fee</label>
                 </div>
             </div>
             @if (ViewBag.Base == "Range")
@@ -24,21 +24,21 @@
                             <div class="form-floating form-floating-outline">
                                 @Html.TextBoxFor(m => m.AmountFrom, new { @class = "form-control" })
                                 @Html.ValidationMessageFor(m => m.AmountFrom, "", new { @class = "text-danger" })
-                                <label>@GlobalFeeRange.AmountFrom</label>
+                                <label>@GlobalShared.AmountFrom</label>
                             </div>
                         </div>
                         <div class="col-md-5 mb-3">
                             <div class="form-floating form-floating-outline">
                                 @Html.TextBoxFor(m => m.AmountTo, new { @class = "form-control" })
                                 @Html.ValidationMessageFor(m => m.AmountTo, "", new { @class = "text-danger" })
-                                <label>@GlobalFeeRange.AmountTo</label>
+                                <label>@GlobalShared.Amount_To</label>
                             </div>
                         </div>
                         <div class="col-md-2 mb-3">
                             <div class="form-floating form-floating-outline">
                                 @Html.TextBoxFor(m => m.Charge, new { @class = "form-control" })
                                 @Html.ValidationMessageFor(m => m.Charge, "", new { @class = "text-danger" })
-                                <label>@GlobalFeeRange.Charge</label>
+                                <label>@GlobalShared.Charge</label>
                             </div>
                         </div>
                     </div>
@@ -51,7 +51,7 @@
                         <div class="form-floating form-floating-outline">
                             @Html.TextBoxFor(m => m.PercentageValue, new { @class = "form-control" })
                             @Html.ValidationMessageFor(m => m.PercentageValue, "", new { @class = "text-danger" })
-                            <label>@GlobalFeeRange.EnterValue</label>
+                            <label>@GlobalShared.Enter_Value (in %)</label>
                         </div>
                     </div>
                 </div>
@@ -65,21 +65,21 @@
                             <div class="form-floating form-floating-outline">
                                 @Html.TextBoxFor(m => m.AmountFrom, new { @class = "form-control" })
                                 @Html.ValidationMessageFor(m => m.AmountFrom, "", new { @class = "text-danger" })
-                                <label>@GlobalFeeRange.AmountFrom</label>
+                                <label>@GlobalShared.AmountFrom</label>
                             </div>
                         </div>
                         <div class="col-md-5 mb-3">
                             <div class="form-floating form-floating-outline">
                                 @Html.TextBoxFor(m => m.AmountTo, new { @class = "form-control" })
                                 @Html.ValidationMessageFor(m => m.AmountTo, "", new { @class = "text-danger" })
-                                <label>@GlobalFeeRange.AmountTo</label>
+                                <label>@GlobalShared.Amount_To</label>
                             </div>
                         </div>
                         <div class="col-md-2 mb-3">
                             <div class="form-floating form-floating-outline">
                                 @Html.TextBoxFor(m => m.Charge, new { @class = "form-control" })
                                 @Html.ValidationMessageFor(m => m.Charge, "", new { @class = "text-danger" })
-                                <label>@GlobalFeeRange.Charge</label>
+                                <label>@GlobalShared.Charge</label>
                             </div>
                         </div>
                     </div>
@@ -89,7 +89,7 @@
                         <div class="form-floating form-floating-outline">
                             @Html.TextBoxFor(m => m.PercentageValue, new { @class = "form-control" })
                             @Html.ValidationMessageFor(m => m.PercentageValue, "", new { @class = "text-danger" })
-                            <label>@GlobalFeeRange.EnterValue</label>
+                            <label>@GlobalShared.Enter_Value (in %)</label>
                         </div>
                     </div>
                 </div>

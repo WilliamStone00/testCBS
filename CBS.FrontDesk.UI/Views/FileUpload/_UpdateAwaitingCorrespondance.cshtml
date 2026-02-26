@@ -4,10 +4,10 @@
 <div class="card bg-light mb-4 shadow-sm">
     <div class="card-body text-center">
         <h1 class="card-title text-primary fw-bold mb-2">
-            <i class="mdi mdi-book-open-page-variant-outline me-2"></i>Update Awaiting Correspondance
+            <i class="mdi mdi-book-open-page-variant-outline me-2"></i>@GlobalFileUpload.Update_Awaiting_Correspondance
         </h1>
         <p class="card-text text-muted mb-1">
-            here we have the existing request and the possibility to update each of its fileds
+            @GlobalFileUpload.here_we_have_the_existing_request_and_the_possibility_to_update_each_of_its_fileds
         </p>
     </div>
 </div>
@@ -30,7 +30,7 @@
                     <div class="form-floating shadow-sm">
                         @Html.TextBoxFor(m => m.Scope, new { @class = "form-control", placeholder = "Scope" })
                         @Html.ValidationMessageFor(m => m.Scope, "", new { @class = "text-danger" })
-                        <label>Scope</label>
+                        <label>@GlobalShared.Scope</label>
                     </div>
                 </div>
 
@@ -39,7 +39,7 @@
                     <div class="form-floating shadow-sm">
                         @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches ?? Enumerable.Empty<SelectListItem>(), "Id", "name"), "--- Select Branch ---", new { @class = "form-control select2" })
                         @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
-                        <label>Branch</label>
+                        <label>@GlobalShared.Branch</label>
                     </div>
                 </div>
 
@@ -48,7 +48,7 @@
                     <div class="form-floating shadow-sm">
                         @Html.DropDownListFor(m => m.AffiliateId, new SelectList(ViewBag.Affiliates ?? Enumerable.Empty<SelectListItem>(), "Id", "name"), "--- Select Affiliate ---", new { @class = "form-control select2" })
                         @Html.ValidationMessageFor(m => m.AffiliateId, "", new { @class = "text-danger" })
-                        <label>Affiliate</label>
+                        <label>@GlobalShared.Affiliate</label>
                     </div>
                 </div>
 
@@ -57,7 +57,7 @@
                     <div class="form-floating shadow-sm">
                         @Html.TextBoxFor(m => m.Code, new { @class = "form-control", placeholder = "Code" })
                         @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })
-                        <label>Code</label>
+                        <label>@GlobalShared.Code</label>
                     </div>
                 </div>
 
@@ -66,7 +66,7 @@
                     <div class="form-floating shadow-sm">
                         @Html.TextBoxFor(m => m.NameEn, new { @class = "form-control", placeholder = "Name (EN)" })
                         @Html.ValidationMessageFor(m => m.NameEn, "", new { @class = "text-danger" })
-                        <label>Name (EN)</label>
+                        <label>@GlobalShared.Name (EN)</label>
                     </div>
                 </div>
 
@@ -75,7 +75,7 @@
                     <div class="form-floating shadow-sm">
                         @Html.TextBoxFor(m => m.NameFr, new { @class = "form-control", placeholder = "Name (FR)" })
                         @Html.ValidationMessageFor(m => m.NameFr, "", new { @class = "text-danger" })
-                        <label>Name (FR)</label>
+                        <label>@GlobalShared.Name (FR)</label>
                     </div>
                 </div>
 
@@ -84,7 +84,7 @@
                     <div class="form-floating shadow-sm">
                         @Html.TextBoxFor(m => m.Class, new { @class = "form-control", placeholder = "Class" })
                         @Html.ValidationMessageFor(m => m.Class, "", new { @class = "text-danger" })
-                        <label>Class</label>
+                        <label>@GlobalShared.Class</label>
                     </div>
                 </div>
 
@@ -93,7 +93,7 @@
                     <div class="form-floating shadow-sm">
                         @Html.DropDownListFor(m => m.HoPcmfAccountId, new SelectList(ViewBag.HoAccounts ?? Enumerable.Empty<SelectListItem>(), "Id", "name"), "--- Select HO PCMF Account ---", new { @class = "form-control select2" })
                         @Html.ValidationMessageFor(m => m.HoPcmfAccountId, "", new { @class = "text-danger" })
-                        <label>HO PCMF Account</label>
+                        <label>@GlobalFileUpload.HO_PCMF_Account</label>
                     </div>
                 </div>
 
@@ -102,7 +102,7 @@
                     <div class="form-floating shadow-sm">
                         @Html.TextBoxFor(m => m.AffiliateToHoCorrespondenceId, new { @class = "form-control", placeholder = "Affiliate To HO Correspondence Id" })
                         @Html.ValidationMessageFor(m => m.AffiliateToHoCorrespondenceId, "", new { @class = "text-danger" })
-                        <label>Affiliate To HO Correspondence Id</label>
+                        <label>@GlobalFileUpload.Affiliate_To_HO_Correspondence_Id</label>
                     </div>
                 </div>
 
@@ -113,7 +113,7 @@
                     <div class="form-floating shadow-sm">
                         @Html.DropDownListFor(m => m.AffiliateAccountId, new SelectList(ViewBag.AffiliateAccounts ?? Enumerable.Empty<SelectListItem>(), "Id", "name"), "--- Select Affiliate Account ---", new { @class = "form-control select2" })
                         @Html.ValidationMessageFor(m => m.AffiliateAccountId, "", new { @class = "text-danger" })
-                        <label>Affiliate Account</label>
+                        <label>@GlobalShared.Affiliate_Account</label>
                     </div>
                 </div>
 
@@ -122,7 +122,7 @@
                     <div class="form-floating shadow-sm">
                         @Html.DropDownListFor(m => m.BranchAccountId, new SelectList(ViewBag.BranchAccounts ?? Enumerable.Empty<SelectListItem>(), "Id", "name"), "--- Select Branch Account ---", new { @class = "form-control select2" })
                         @Html.ValidationMessageFor(m => m.BranchAccountId, "", new { @class = "text-danger" })
-                        <label>Branch Account</label>
+                        <label>@GlobalShared.Branch_Account</label>
                     </div>
                 </div>
 
@@ -131,7 +131,7 @@
                     <div class="form-floating shadow-sm">
                         @Html.TextBoxFor(m => m.Path, new { @class = "form-control", placeholder = "Path" })
                         @Html.ValidationMessageFor(m => m.Path, "", new { @class = "text-danger" })
-                        <label>Path</label>
+                        <label>@GlobalShared.Path</label>
                     </div>
                 </div>
 
@@ -140,7 +140,7 @@
                     <div class="form-floating shadow-sm">
                         @Html.TextBoxFor(m => m.Depth, new { @class = "form-control", placeholder = "Depth", type = "number", step = "1", min = "0" })
                         @Html.ValidationMessageFor(m => m.Depth, "", new { @class = "text-danger" })
-                        <label>Depth</label>
+                        <label>@GlobalShared.Depth</label>
                     </div>
                 </div>
 
@@ -151,7 +151,7 @@
                     <div class="form-floating shadow-sm">
                         @Html.TextBoxFor(m => m.Reason, new { @class = "form-control", placeholder = "Reason" })
                         @Html.ValidationMessageFor(m => m.Reason, "", new { @class = "text-danger" })
-                        <label>Reason</label>
+                        <label>@GlobalShared.Reason</label>
                     </div>
                 </div>
 
@@ -160,7 +160,7 @@
                     <div class="form-floating shadow-sm">
                         @Html.TextBoxFor(m => m.Language, new { @class = "form-control", placeholder = "Language" })
                         @Html.ValidationMessageFor(m => m.Language, "", new { @class = "text-danger" })
-                        <label>Language</label>
+                        <label>@GlobalShared.Language</label>
                     </div>
                 </div>
 
@@ -168,7 +168,7 @@
                 <div class="col-md-6 d-flex align-items-center">
                     <div class="form-check ps-2">
                         @Html.CheckBoxFor(m => m.RequiresMapping, new { @class = "form-check-input", id = "RequiresMapping" })
-                        <label class="form-check-label" for="RequiresMapping">Requires Mapping</label>
+                        <label class="form-check-label" for="RequiresMapping">@GlobalFileUpload.Requires_Mapping</label>
                     </div>
                     @Html.ValidationMessageFor(m => m.RequiresMapping, "", new { @class = "text-danger ms-2" })
                 </div>
@@ -177,7 +177,7 @@
                 <div class="col-md-6 d-flex align-items-center">
                     <div class="form-check ps-2">
                         @Html.CheckBoxFor(m => m.PostingAllowed, new { @class = "form-check-input", id = "PostingAllowed" })
-                        <label class="form-check-label" for="PostingAllowed">Posting Allowed</label>
+                        <label class="form-check-label" for="PostingAllowed">@GlobalShared.Posting_Allowed</label>
                     </div>
                     @Html.ValidationMessageFor(m => m.PostingAllowed, "", new { @class = "text-danger ms-2" })
                 </div>
@@ -186,7 +186,7 @@
                     @if (string.IsNullOrEmpty(Model?.Id))
                     {
                         <button type="submit" class="btn btn-primary shadow-sm px-4">
-                            <i class="fas fa-save me-1"></i> Create
+                            <i class="fas fa-save me-1"></i> @GlobalShared.Create
                         </button>
                         <button type="reset" class="btn btn-outline-secondary shadow-sm px-4">
                             Reset
@@ -194,8 +194,8 @@
                     }
                     else
                     {
-                        <button type="submit" class="btn btn-primary me-2">Update</button>
-                        <a href="@Url.Action("List", "FileUpload")" class="btn btn-outline-secondary">Back to List</a>
+                <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
+                        <a href="@Url.Action("List", "FileUpload")" class="btn btn-outline-secondary">@GlobalShared.Back_to_List</a>
                     }
                 </div>
             </div>

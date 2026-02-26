@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.CollectorDevice.CollectorDeviceresponse
-
+@using Resources
 <!-- Alert Container -->
 <div id="alertContainer" class="position-fixed top-0 end-0 p-3" style="z-index: 1056; max-width: 400px;"></div>
 
@@ -9,7 +9,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title text-primary">
-                    <i class="mdi mdi-alert-circle-outline me-2"></i>Confirm Action
+                    <i class="mdi mdi-alert-circle-outline me-2"></i>@GlobalShared.Confirm_Action
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -18,10 +18,10 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" id="cancelAction" data-bs-dismiss="modal">
-                    <i class="mdi mdi-close me-1"></i>Cancel
+                    <i class="mdi mdi-close me-1"></i>@GlobalShared.Cancel
                 </button>
                 <button type="button" class="btn btn-danger" id="confirmAction">
-                    <i class="mdi mdi-check me-1"></i>Confirm
+                    <i class="mdi mdi-check me-1"></i>@GlobalShared.Confirm
                 </button>
             </div>
         </div>
@@ -40,9 +40,9 @@
             <div class="modal-body" id="detailsModalBody">
                 <div class="text-center py-4">
                     <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">Loading...</span>
+                        <span class="visually-hidden">@GlobalShared.Loading...</span>
                     </div>
-                    <p class="mt-2 text-muted">Loading device details...</p>
+                    <p class="mt-2 text-muted">@GlobalCollectorDevice.Loading_device_details...</p>
                 </div>
             </div>
                    </div>
@@ -61,14 +61,14 @@
                     <div class="card bg-light mb-2">
                         <div class="card-body text-center">
                             <h1 class="card-title text-primary">
-                                <i class="mdi mdi-pencil me-2"></i>Edit Device
+                                <i class="mdi mdi-pencil me-2"></i>@GlobalShared.Edit_Device
                             </h1>
                             <p class="card-text">
                                 @*CollectorCommissionText*@
                             </p>
                             <div class="alert alert-info mt-3 py-2">
                                 <i class="mdi mdi-information-outline me-1"></i>
-                                On this page we can edit and update an already existing device
+                                @GlobalCollectorDevice.On_this_page_we_can_edit_and_update_an_already_existing_device
                             </div>
                             <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
                         </div>
@@ -78,9 +78,9 @@
             <div class="modal-body" id="editModalBody">
                 <div class="text-center py-4">
                     <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">Loading...</span>
+                        <span class="visually-hidden">@GlobalShared.Loading...</span>
                     </div>
-                    <p class="mt-2 text-muted">Loading form...</p>
+                    <p class="mt-2 text-muted">@GlobalShared.Loading_form...</p>
                 </div>
             </div>
         </div>
@@ -93,10 +93,10 @@
         <div class="card bg-light mb-2">
             <div class="card-body text-center py-3">
                 <h4 class="card-title text-primary mb-1">
-                    <i class="mdi mdi-devices me-2"></i>Collector Device Management
+                    <i class="mdi mdi-devices me-2"></i>@GlobalCollectorDevice.Collector_Device_Management
                 </h4>
                 <p class="card-text small text-muted mb-0">
-                    Manage collector devices, assign to collectors, and monitor device status
+                    @GlobalCollectorDevice.Manage_collector_devices_assign_to_collectors_and_monitor_device_status
                 </p>
             </div>
         </div>
@@ -106,7 +106,7 @@
 <!-- Collapsible Tips -->
 <div class="card mb-2">
     <h6 class="card-header py-2 d-flex justify-content-between align-items-center text-primary">
-        <span class="small"><i class="mdi mdi-information-outline me-1"></i> Device Management Tips</span>
+        <span class="small"><i class="mdi mdi-information-outline me-1"></i> @GlobalCollectorDevice.Device_Management_Tips</span>
         <button class="btn btn-light btn-sm p-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDeviceTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -114,13 +114,13 @@
     <div id="collapseDeviceTips" class="collapse">
         <div class="card-body py-2">
             <ul class="small mb-0">
-                <li><strong>Device ID:</strong> Unique identifier for each collector device (required).</li>
-                <li><strong>Device Name:</strong> Descriptive name for easy identification (required).</li>
-                <li><strong>Serial Number:</strong> Hardware serial number for tracking purposes (required).</li>
-                <li><strong>Device Version:</strong> Software/firmware version of the device.</li>
-                <li><strong>Status Management:</strong> Set device status as Active, Inactive, or Maintenance.</li>
-                <li><strong>Collector Assignment:</strong> Assign devices to specific collectors for tracking.</li>
-                <li><strong>Secure Storage:</strong> Keep device information secure and regularly update status.</li>
+                <li><strong>@GlobalShared.Device_ID:</strong> @GlobalCollectorDevice.Unique_identifier_for_each_collector_device (@GlobalShared.Required).</li>
+                <li><strong>@GlobalShared.Device_Name:</strong> @GlobalCollectorDevice.Descriptive_name_for_easy_identification (@GlobalShared.Required).</li>
+                <li><strong>@GlobalShared.Serial_Number:</strong> @GlobalCollectorDevice.Hardware_serial_number_for_tracking_purposes (@GlobalShared.Required).</li>
+                <li><strong>@GlobalShared.Device_Version:</strong> @GlobalCollectorDevice.Software_firmware_version_of_the_device</li>
+                <li><strong>@GlobalShared.Status_Management:</strong> @GlobalCollectorDevice.Set_device_status_as_Active_Inactive_or_Maintenance</li>
+                <li><strong>@GlobalShared.Collector_Assignment:</strong> @GlobalCollectorDevice.Assign_devices_to_specific_collectors_for_tracking.</li>
+                <li><strong>@GlobalShared.Secure_Storage:</strong> @GlobalCollectorDevice.Keep_device_information_secure_and_regularly_update_status</li>
             </ul>
         </div>
     </div>
@@ -139,14 +139,14 @@
                         class="btn btn-label-primary btn-sm me-2"
                         data-bs-toggle="tooltip"
                         title="View All Devices">
-                    <i class="mdi mdi-view-list mdi-18px"></i> View Devices List
+                    <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.View_Devices_List
                 </button>
                 <button type="button"
                         onclick="deviceManager.showCreateForm()"
                         class="btn btn-label-secondary btn-sm"
                         data-bs-toggle="tooltip"
                         title="Add New Device">
-                    <i class="mdi mdi-plus mdi-18px"></i> Add New Device
+                    <i class="mdi mdi-plus mdi-18px"></i> @GlobalShared.Add_New_Device
                 </button>
             </div>
         </div>

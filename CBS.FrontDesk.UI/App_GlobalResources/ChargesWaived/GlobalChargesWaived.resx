@@ -118,13 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ChargesWaiver" xml:space="preserve">
-    <value>Charges waiver</value>
+    <value>Charge waiver</value>
   </data>
   <data name="ChargesWaiverRequests" xml:space="preserve">
-    <value>Charges waiver requests</value>
+    <value>Charge waiver requests</value>
   </data>
   <data name="CHARGESWAIVERUC" xml:space="preserve">
-    <value>CHARGESWAIVER</value>
+    <value>CHARGE WAIVER</value>
   </data>
   <data name="ChargeWaiverRequest" xml:space="preserve">
     <value>Charge waiver request</value>
@@ -133,7 +133,7 @@
     <value>Date waived</value>
   </data>
   <data name="EnterChargeToWaive" xml:space="preserve">
-    <value>Enter charge to waive. (Note that this is valid only for a day).</value>
+    <value>Enter charge to waive. (Note that this is valid only for one day).</value>
   </data>
   <data name="GDate" xml:space="preserve">
     <value>G Date</value>
@@ -142,19 +142,19 @@
     <value>I Date</value>
   </data>
   <data name="InitiateSavingWithdrawalRequest" xml:space="preserve">
-    <value>Initiate saving withdrawal request</value>
+    <value>Initiate savings withdrawal request</value>
   </data>
   <data name="IsWithdrawalDone" xml:space="preserve">
-    <value>Is withdrawal done</value>
+    <value>Is withdrawal done?</value>
   </data>
   <data name="NoDataWasFoundAtTheMoment" xml:space="preserve">
-    <value>No Data was found at the moment</value>
+    <value>No data found at the moment</value>
   </data>
   <data name="NormalCharge" xml:space="preserve">
     <value>Normal charge</value>
   </data>
   <data name="PendingWithdrawalNotifications" xml:space="preserve">
-    <value>Pending Withdrawal Notifications</value>
+    <value>Pending withdrawal notifications</value>
   </data>
   <data name="ReasonForWaivingCharges" xml:space="preserve">
     <value>Reason for waiving charges</value>

@@ -123,8 +123,8 @@
   <data name="GeneralError" xml:space="preserve">
     <value>General error</value>
   </data>
-  <data name="Message" xml:space="preserve">
-    <value>Message</value>
+  <data name="If_you_believe_this_is_a_mistake_please_contact_support_via" xml:space="preserve">
+    <value>If you believe this is a mistake, please &lt;strong&gt;contact support&lt;/strong&gt; via</value>
   </data>
   <data name="OopsItSeemsYouDontHavePermission" xml:space="preserve">
     <value>Oops! It seems you don't have permission to access this page</value>
@@ -137,6 +137,9 @@
   </data>
   <data name="OopsWereSorryButTheServiceIsCurrentlyUnavailable" xml:space="preserve">
     <value>Oops! We're sorry, but the service is currently unavailable</value>
+  </data>
+  <data name="or_open_a_ticket_at" xml:space="preserve">
+    <value>or open a ticket at</value>
   </data>
   <data name="PleaseCheckTheURLOrContactTheAdministratorForAssistance" xml:space="preserve">
     <value>Please check the URL or contact the administrator for assistance</value>
@@ -153,13 +156,13 @@
   <data name="ServiceUnavailable" xml:space="preserve">
     <value>503 - Service Unavailable</value>
   </data>
-  <data name="StatusCode" xml:space="preserve">
-    <value>Status code</value>
-  </data>
   <data name="Unauthorized" xml:space="preserve">
     <value>401 - Unauthorized</value>
   </data>
   <data name="UnauthorizedAccess" xml:space="preserve">
     <value>401-Unauthorized Access</value>
+  </data>
+  <data name="Your_access_has_been_restricted_due_to_unusual_or_excessive_activity" xml:space="preserve">
+    <value>Your access has been restricted due to unusual or excessive activity.</value>
   </data>
 </root>

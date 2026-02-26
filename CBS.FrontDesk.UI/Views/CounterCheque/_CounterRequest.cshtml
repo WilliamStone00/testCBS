@@ -46,7 +46,7 @@
                         placeholder = "Customer ID",
                         required = "required"
                     })
-                    <label>Customer ID</label>
+                    <label>@GlobalShared.Customer_ID</label>
                     @Html.ValidationMessageFor(m => m.CustomerId, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -60,7 +60,7 @@
                         placeholder = "Account Number",
                         required = "required"
                     })
-                    <label>Account Number</label>
+                    <label>@GlobalShared.Account_Number</label>
                     @Html.ValidationMessageFor(m => m.AccountNumber, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -76,7 +76,7 @@
                         min = "0",
                         required = "required"
                     })
-                    <label>Amount</label>
+                    <label>@GlobalShared.Amount</label>
                     @Html.ValidationMessageFor(m => m.Amount, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -91,7 +91,7 @@
                         placeholder = "Cheque Leaf ID",
                         required = "required"
                     })
-                    <label>Cheque Leaf ID</label>
+                    <label>@GlobalShared.Cheque_Leaf_ID</label>
                     @Html.ValidationMessageFor(m => m.CheckLeafId, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -105,7 +105,7 @@
                         placeholder = "Cheque Number",
                         required = "required"
                     })
-                    <label>Cheque Number</label>
+                    <label>@GlobalShared.Cheque_Number</label>
                     @Html.ValidationMessageFor(m => m.CheckNumber, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -120,19 +120,19 @@
             @if (string.IsNullOrWhiteSpace(Model?.Id))
             {
                 <button type="submit" class="btn btn-primary me-2">
-                    <i class="mdi mdi-content-save me-1"></i> Save
+                    <i class="mdi mdi-content-save me-1"></i> @GlobalShared.Save
                 </button>
                 <button type="reset" class="btn btn-outline-secondary">
-                    Reset
+                    @GlobalShared.Reset
                 </button>
             }
             else
             {
                 <button type="submit" class="btn btn-primary me-2">
-                    <i class="mdi mdi-refresh me-1"></i> Update
+                    <i class="mdi mdi-refresh me-1"></i> @GlobalShared.Update
                 </button>
                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">
-                    Close
+                    @GlobalShared.Close
                 </button>
             }
         </div>

@@ -1,15 +1,15 @@
 ﻿@model IEnumerable<CBS.FrontDesk.Data.Entity.CheckManagementSystem.Configurations.FeeConfiguration.FeeConfig>
-
+@using Resources
 <div class="card shadow p-3 mb-4">
-    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-2"></i> Filter & Sort Configuration</h5>
+    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-2"></i> @GlobalFeeConfig.Filter_Sort_Configuration</h5>
 
     <div class="card shadow p-3 mb-4">
         <!-- Filter Row -->
         <div class="row g-3 mb-3 bg-light p-3 rounded">
             <div class="col-md-3">
-                <label class="form-label fw-bold">Fee Type</label>
+                <label class="form-label fw-bold">@GlobalShared.Fee_Type</label>
                 <select id="feeTypeFilter" class="form-control">
-                    <option value="">All Fee Types</option>
+                    <option value="">@GlobalFeeConfig.All_Fee_Types</option>
                     @if (ViewBag.FeeTypes != null)
                     {
                         foreach (var feeType in ViewBag.FeeTypes as IEnumerable<dynamic>)
@@ -21,9 +21,9 @@
             </div>
 
             <div class="col-md-3">
-                <label class="form-label fw-bold">Branch</label>
+                <label class="form-label fw-bold">@GlobalShared.Branch</label>
                 <select id="branchFilter" class="form-control">
-                    <option value="">All Branches</option>
+                    <option value="">@GlobalShared.All_Branches</option>
                     @if (ViewBag.Branches != null)
                     {
                         foreach (var branch in ViewBag.Branches as IEnumerable<dynamic>)
@@ -35,32 +35,32 @@
             </div>
 
             <div class="col-md-3">
-                <label class="form-label fw-bold">Configuration Type</label>
+                <label class="form-label fw-bold">@GlobalFeeConfig.Configuration_Type</label>
                 <select id="centralizedFilter" class="form-control">
-                    <option value="">All Types</option>
-                    <option value="true">Centralized</option>
-                    <option value="false">Branch Specific</option>
+                    <option value="">@GlobalShared.All_Types</option>
+                    <option value="true">@GlobalShared.Centralized</option>
+                    <option value="false">@GlobalFeeConfig.Branch_Specific</option>
                 </select>
             </div>
 
             <div class="col-md-3">
-                <label class="form-label fw-bold">Status</label>
+                <label class="form-label fw-bold">@GlobalShared.Status</label>
                 <select id="statusFilter" class="form-control">
-                    <option value="">All Status</option>
-                    <option value="true">Active</option>
-                    <option value="false">Inactive</option>
+                    <option value="">@GlobalShared.All_status</option>
+                    <option value="true">@GlobalShared.Active</option>
+                    <option value="false">@GlobalShared.InActive</option>
                 </select>
             </div>
 
             <div class="row g-2 mt-2">
                 <div class="col-md-6">
                     <button id="applyFilterBtn" class="btn btn-primary w-100">
-                        <i class="mdi mdi-magnify me-1"></i> Apply Filters
+                        <i class="mdi mdi-magnify me-1"></i> @GlobalShared.Apply_filters
                     </button>
                 </div>
                 <div class="col-md-6">
                     <button id="resetFilterBtn" class="btn btn-secondary w-100">
-                        <i class="mdi mdi-refresh me-1"></i> Reset
+                        <i class="mdi mdi-refresh me-1"></i> @GlobalShared.Reset
                     </button>
                 </div>
             </div>
@@ -74,12 +74,12 @@
             <table id="feeConfigDataTable" class="table table-striped table-bordered" style="width:100%">
                 <thead class="table-light">
                     <tr>
-                        <th>Fee Type</th>
-                        <th>Branch</th>
-                        <th>Type</th>
-                        <th>IsCentralized</th>
-                        <th>Description</th>
-                        <th width="150">Actions</th>
+                        <th>@GlobalShared.Fee_Type</th>
+                        <th>@GlobalShared.Branch</th>
+                        <th>@GlobalShared.Type</th>
+                        <th>@GlobalShared.Is_Centralized</th>
+                        <th>@GlobalShared.Description</th>
+                        <th width="150">@GlobalShared.Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -95,14 +95,14 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                 <h5 class="modal-title">Fee Configuration Details</h5> 
+                 <h5 class="modal-title">@GlobalFeeConfig.Fee_Configuration_Details</h5> 
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="detailsModalBody">
                 <!-- Details content will be loaded here -->
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@GlobalShared.Close</button>
             </div>
         </div>
     </div>

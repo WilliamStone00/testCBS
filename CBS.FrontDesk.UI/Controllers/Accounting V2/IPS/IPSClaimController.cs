@@ -379,7 +379,6 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.IPS
             [HttpPost]
             public async Task<JsonResult> LoadClaimsData(IPSClaimQuery query)
              {
-             await LoadViewData();
                 try
                 {
                     var data = await _ipsClaimService.GetClaimsDataTableAsync(query);
@@ -632,6 +631,125 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.IPS
         }
 
         // Get posting data for claim
+        //[HttpGet]
+        //public async Task<JsonResult> GetPostingData(string claimId, string memberId, string branchId)
+        //{
+        //    try
+        //    {
+        //        if (string.IsNullOrWhiteSpace(claimId) ||
+        //            string.IsNullOrWhiteSpace(memberId) ||
+        //            string.IsNullOrWhiteSpace(branchId))
+        //        {
+        //            return Json(new
+        //            {
+        //                success = false,
+        //                message = "Claim ID, Member ID, and Branch ID are required."
+        //            }, JsonRequestBehavior.AllowGet);
+        //        }
+
+        //        // Explicit types (NO var = null)
+        //        dynamic customerData = null;
+        //        dynamic claim = null;
+
+        //        // Try get customer info
+        //        try
+        //        {
+        //            customerData = await _ipsClaimService.GetinfoAsync(memberId);
+        //        }
+        //        catch
+        //        {
+        //            // Ignore and continue
+        //        }
+
+        //        // Try get claim info
+        //        try
+        //        {
+        //            claim = await _ipsClaimService.GetClaimByIdAsync(claimId);
+        //        }
+        //        catch
+        //        {
+        //            // Ignore and continue
+        //        }
+
+        //        // Dropdown data
+        //        var branchAccounts = await _BranchAccountService
+        //            .GetAllBranchAccountsFromDataTableAsync(branchId);
+
+        //        var affiliateAccounts = await _AffiliateAccountService
+        //            .GetAllAffiliateAccounts();
+
+        //        return Json(new
+        //        {
+        //            success = true,
+        //            data = new
+        //            {
+        //                claim = claim == null ? null : new
+        //                {
+        //                    claim.Id,
+        //                    claim.ClaimType,
+        //                    claim.ClaimedAmount,
+        //                    claim.ApprovedAmount,
+        //                    claim.Status
+        //                },
+
+        //                customer = customerData?.customer == null ? null : new
+        //                {
+        //                    customerData.customer.customerId,
+        //                    customerData.customer.firstName,
+        //                    customerData.customer.lastName,
+        //                    customerData.customer.phone,
+        //                    customerData.customer.address,
+        //                    customerData.customer.email
+        //                },
+
+        //                accounts = customerData?.accounts != null
+        //                    ? ((IEnumerable<dynamic>)customerData.accounts)
+        //                        .Select(a => new
+        //                        {
+        //                            a.id,
+        //                            a.accountNumber,
+        //                            a.accountName,
+        //                            a.accountType,
+        //                            a.balance,
+        //                            a.availableBalance,
+        //                            a.blockedAmount
+        //                        })
+        //                        .Cast<object>()
+        //                        .ToList()
+        //                    : new List<object>(),
+
+
+        //                viewBagData = new
+        //                {
+        //                    affiliateAccounts = affiliateAccounts == null
+        //                        ? new List<object>()
+        //                        : affiliateAccounts.Select(a => new
+        //                        {
+        //                            Value = a.Value?.ToString(),
+        //                            Text = a.Text
+        //                        }).Cast<object>().ToList(),
+
+        //                    branchAccounts = branchAccounts == null
+        //                        ? new List<object>()
+        //                        : branchAccounts.Select(b => new
+        //                        {
+        //                            Value = b.Id?.ToString(),
+        //                            Text = $"{b.Code} - {b.Name}"
+        //                        }).Cast<object>().ToList()
+        //                }
+        //            }
+        //        }, JsonRequestBehavior.AllowGet);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Json(new
+        //        {
+        //            success = false,
+        //            message = $"Error loading posting data: {ex.Message}"
+        //        }, JsonRequestBehavior.AllowGet);
+        //    }
+        //}
+
         [HttpGet]
         public async Task<JsonResult> GetPostingData(string claimId, string memberId, string branchId)
         {
@@ -676,8 +794,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.IPS
                 var branchAccounts = await _BranchAccountService
                     .GetAllBranchAccountsFromDataTableAsync(branchId);
 
-                var affiliateAccounts = await _AffiliateAccountService
-                    .GetAllAffiliateAccounts();
+                var sourceBranchAffiliateAccounts = await _BranchAccountService
+                    .GetAllBranchAccountsFromDataTableAsync(branchId);
 
                 return Json(new
                 {
@@ -719,15 +837,14 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.IPS
                                 .ToList()
                             : new List<object>(),
 
-
                         viewBagData = new
                         {
-                            affiliateAccounts = affiliateAccounts == null
+                            sourceBranchAffiliateAccounts = sourceBranchAffiliateAccounts == null
                                 ? new List<object>()
-                                : affiliateAccounts.Select(a => new
+                                : sourceBranchAffiliateAccounts.Select(a => new
                                 {
-                                    Value = a.Value?.ToString(),
-                                    Text = a.Text
+                                    Value = a.Id?.ToString(),
+                                    Text = $"{a.Code} - {a.Name}"
                                 }).Cast<object>().ToList(),
 
                             branchAccounts = branchAccounts == null
@@ -774,7 +891,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.IPS
                     Console.WriteLine("No claims data to export");
                     return Json(new { success = false, message = "No claims data available for export." });
                 }
-
+                                                         
                 // Log data structure
                 Console.WriteLine($"=== CLAIMS DATA STRUCTURE ANALYSIS ===");
                 if (request.Data.Any())

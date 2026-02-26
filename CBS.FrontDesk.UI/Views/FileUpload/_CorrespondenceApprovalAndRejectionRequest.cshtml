@@ -8,18 +8,18 @@
         <div class="card-header d-flex justify-content-between align-items-center text-primary">
             <span>
                 <i class="mdi mdi-checkbox-marked-circle-outline me-2"></i>
-                Correspondence Request Approval / Rjection
+                @GlobalFileUpload.Correspondence_Request_Approval_Rejection
             </span>
             @if (Model.Type == "Approval")
             {
                 <span class="badge bg-info text-dark">
-                    Approval Request
+                    @GlobalShared.Approval_Request
                 </span>
             }
             else if (Model.Type == "Rejection")
             {
                 <span class="badge bg-info text-dark">
-                    Rejection Request
+                    @GlobalShared.Rejection_Request
                 </span>
             }
 
@@ -38,11 +38,11 @@
                         <i class="mdi mdi-information-outline text-primary fs-4"></i>
                     </div>
                     <div>
-                        <h6 class="fw-bold text-primary mb-1">Approval tips</h6>
+                        <h6 class="fw-bold text-primary mb-1">@GlobalShared.Approval_tips</h6>
                         <ul class="mb-0 ps-3">
-                            <li>Review the correspondence details before approving or rejecting.</li>
-                            <li>Use the note field to explain the reason for your decision.</li>
-                            <li>Your user identity will be attached automatically for audit trail.</li>
+                            <li>@GlobalFileUpload.Review_the_correspondence_details_before_approving_or_rejecting</li>
+                            <li>@GlobalFileUpload.Use_the_note_field_to_explain_the_reason_for_your_decision</li>
+                            <li>@GlobalFileUpload.Your_user_identity_will_be_attached_automatically_for_audit_trail</li>
                         </ul>
                     </div>
                 </div>
@@ -62,7 +62,7 @@
 
                 <div class="col-md-6">
                     <label class="form-label fw-bold">
-                        <i class="mdi mdi-account-check-outline me-1"></i> Requested By
+                        <i class="mdi mdi-account-check-outline me-1"></i> @GlobalShared.Requested_by
                     </label>
                     <input type="text"
                            class="form-control"
@@ -84,7 +84,7 @@
                         id = "CorrespondenceNote"
                     })
                 <small class="text-muted">
-                    Provide a clear justification. This note will be stored in the audit trail.
+                    @GlobalFileUpload.Provide_a_clear_justification_This_note_will_be_stored_in_the_audit_trail
                 </small>
             </div>
 
@@ -107,14 +107,14 @@
         <div class="card-footer d-flex justify-content-end">
             @if (Model.Type == "Approval")
             {
-                <button type="submit" class="btn btn-success" id="btnApproveCorrespondence"   data-bs-dismiss="modal">
-                    <i class="mdi mdi-check-circle-outline me-1"></i> Approve
+                <button type="submit" class="btn btn-success" id="btnApproveCorrespondence" data-bs-dismiss="modal">
+                    <i class="mdi mdi-check-circle-outline me-1"></i> @GlobalShared.Approve
                 </button>
             }
             else
             {
                 <button type="submit" class="btn btn-danger" id="btnRejectCorrespondence"  data-bs-dismiss="modal">
-                    <i class="mdi mdi-check-circle-outline me-1"></i> Reject
+                    <i class="mdi mdi-check-circle-outline me-1"></i> @GlobalShared.Reject
                 </button>
             }
 

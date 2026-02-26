@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Preview_uses_SmsUploadDetailDto_rows_Message_IsValid_ValidationError" xml:space="preserve">
+    <value>La prévisualisation utilise les lignes &lt;b&gt;SmsUploadDetailDto&lt;/b&gt; (Message + EstValide + ErreurValidation).</value>
+  </data>
+  <data name="Communication_Console" xml:space="preserve">
+    <value>Console de communication</value>
+  </data>
+  <data name="Date_range_filters_by_created_uploaded_date" xml:space="preserve">
+    <value>Filtres par plage de dates (date de création / date d’importation).</value>
+  </data>
+  <data name="Fill_required_details_then_upload_file_for_preview" xml:space="preserve">
+    <value>Renseigner les informations obligatoires puis importer le fichier pour prévisualisation.</value>
+  </data>
+  <data name="Preview_is_mandatory_Sending_requires_a_valid_FileUploadId" xml:space="preserve">
+    <value>La prévisualisation est obligatoire. L’envoi nécessite un &lt;b&gt;FileUploadId&lt;/b&gt; valide.</value>
+  </data>
+  <data name="Review_upload_metadata_preview_rows_then_view_sending_history" xml:space="preserve">
+    <value>Consulter les métadonnées d’importation, prévisualiser les lignes, puis consulter l’historique des envois.</value>
+  </data>
+  <data name="Send_Details_Listing" xml:space="preserve">
+    <value>Liste des détails d’envoi</value>
+  </data>
+  <data name="Sending_uses_SendSmsFileUploadCommand_with_FileUploadId_SenderService_Title_Purpose_DefaultMessageTemplate" xml:space="preserve">
+    <value>L’envoi utilise &lt;b&gt;SendSmsFileUploadCommand&lt;/b&gt; avec FileUploadId + ServiceExpéditeur + Titre + Objet + ModèleDeMessageParDéfaut.</value>
+  </data>
+  <data name="Sent_to_Preview_endpoint_as_defaultMessageTemplate" xml:space="preserve">
+    <value>Transmis au point d’accès Preview sous le paramètre &lt;code&gt;defaultMessageTemplate&lt;/code&gt;</value>
+  </data>
+  <data name="Server_side_DataTable" xml:space="preserve">
+    <value>Table de données côté serveur</value>
+  </data>
+  <data name="SMS_BULK_UPLOAD" xml:space="preserve">
+    <value>IMPORTATION SMS EN MASSE</value>
+  </data>
+  <data name="SMS_UPLOAD_DETAILS" xml:space="preserve">
+    <value>DÉTAILS D’IMPORTATION SMS</value>
+  </data>
+  <data name="SMS_Upload_Listing" xml:space="preserve">
+    <value>Liste des importations SMS</value>
+  </data>
+  <data name="Track_uploaded_SMS_files_filter_by_branch_user_status_type_and_download_by_ID" xml:space="preserve">
+    <value>Suivre les fichiers SMS importés, filtrer par agence/utilisateur/statut/type et télécharger par identifiant.</value>
+  </data>
+  <data name="Upload_file_validate_rows_preview_computed_messages_then_send_only_once_confirmed" xml:space="preserve">
+    <value>Importer le fichier, valider les lignes, prévisualiser les messages générés, puis envoyer uniquement après confirmation.</value>
+  </data>
+  <data name="Upload_preview_send_SMS_in_bulk" xml:space="preserve">
+    <value>Importer → Prévisualiser → Envoyer des SMS en masse.</value>
+  </data>
+  <data name="Use_Actions_Download_to_export_the_uploaded_Excel" xml:space="preserve">
+    <value>Utiliser Actions → Télécharger pour exporter le fichier Excel importé.</value>
+  </data>
+  <data name="Use_filters_before_loading_to_reduce_payload" xml:space="preserve">
+    <value>Utiliser les filtres avant le chargement afin de réduire le volume de données.</value>
+  </data>
+</root>
