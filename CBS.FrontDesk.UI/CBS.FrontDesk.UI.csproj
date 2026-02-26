@@ -1116,7 +1116,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ApiKeyRessource.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\Authentication\AuthenticationRessource.designer.cs" />
+    <Compile Include="App_GlobalResources\Authentication\AuthenticationRessource.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AuthenticationRessource.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\BankingOperations\GlobalBankingOperations.fr.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -7687,6 +7691,10 @@
     <Content Include="App_GlobalResources\ChequeRequest\ChequeRequestResource.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>ChequeRequestResource.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Authentication\AuthenticationRessource.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AuthenticationRessource.designer.cs</LastGenOutput>
     </Content>
     <None Include="AppFiles\Accountingv2Reporting\DataSets\AccountingV2DS.xsd">
       <SubType>Designer</SubType>
