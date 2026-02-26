@@ -361,6 +361,19 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
                         new SelectListItem { Value = "GIVE_TO_FAMILY", Text = "Support family / Dependents" },
                         new SelectListItem { Value = "OTHER", Text = "Other (specify)" },
                     };
+                    ViewBag.DepositPurpose = new List<SelectListItem>
+                    {
+                        new SelectListItem { Value = "SAVINGS", Text = "Savings / Deposit" },
+                        new SelectListItem { Value = "SUBSCRIPTION", Text = "Subscription / Shares" },
+                        new SelectListItem { Value = "ACCOUNT_TOPUP", Text = "Account top-up" },
+                        new SelectListItem { Value = "LOAN_REPAYMENT", Text = "Loan repayment" },
+                        new SelectListItem { Value = "FEES", Text = "Fees / Charges" },
+                        new SelectListItem { Value = "BUSINESS_FLOAT", Text = "Business float / working capital" },
+                        new SelectListItem { Value = "CASH_CLEARANCE", Text = "Daily Collector cash clearance" },
+                        new SelectListItem { Value = "REMITTANCE", Text = "Remittance deposit" },
+                        new SelectListItem { Value = "PROJECT_SAVING", Text = "Project / goal saving" },
+                        new SelectListItem { Value = "OTHER", Text = "Other (specify)" },
+                    };
                     return PartialView(partialView, cashDesk);
                 }
 

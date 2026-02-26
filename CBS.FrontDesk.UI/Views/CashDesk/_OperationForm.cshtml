@@ -212,6 +212,11 @@
                     }
                     <input type="hidden" id="CustomerAlphaNumber" value="0" />
 
+                    @{
+                        var sourceOfFundsList = ViewBag.SourceOfFunds as IEnumerable<SelectListItem> ?? Enumerable.Empty<SelectListItem>();
+                        var depositPurposeList = ViewBag.DepositPurpose as IEnumerable<SelectListItem> ?? Enumerable.Empty<SelectListItem>();
+                    }
+
                     <!-- AML SECTION -->
                     <div class="col-12 mt-2">
                         <fieldset class="fieldset-custom">
@@ -220,16 +225,18 @@
                             </legend>
 
                             <div class="row gy-2">
+
                                 <!-- Source of Funds -->
                                 <div class="col-md-6">
                                     <div class="form-floating form-floating-outline">
                                         @Html.DropDownListFor(
                                             m => m.SourceOfFundsCode,
-                                            ViewBag.SourceOfFunds as IEnumerable<SelectListItem>,
+                                            sourceOfFundsList,
                                             "--- Select Source of Funds / Income ---",
                                             new { @class = "form-control select2 aml-source", id = "SourceOfFundsCode" }
                                         )
                                         <label for="SourceOfFundsCode">Source of Funds (Income Source)</label>
+
                                         <small class="text-muted d-block mt-1">
                                             Required for AML monitoring (money laundering risk).
                                         </small>
@@ -247,7 +254,7 @@
                                     <div class="form-floating form-floating-outline">
                                         @Html.DropDownListFor(
                                             m => m.DepositPurposeCode,
-                                            ViewBag.DepositPurpose as IEnumerable<SelectListItem>,
+                                            depositPurposeList,
                                             "--- Select Deposit Purpose ---",
                                             new { @class = "form-control select2 aml-purpose", id = "DepositPurposeCode" }
                                         )
@@ -260,11 +267,10 @@
                                         <label for="DepositPurposeOther">Specify (Other)</label>
                                     </div>
                                 </div>
+
                             </div>
                         </fieldset>
                     </div>
-
-
                     <div class="table-responsive w-100 compact-section">
                         <fieldset class="fieldset-custom">
                             <div class="table-responsive w-100">
@@ -642,7 +648,42 @@
                             });
                         })();
                     </script>
+                    <script>
+                        function validateAmlFields() {
 
+                            var sourceCode = ($("#SourceOfFundsCode").val() || "").toUpperCase();
+                            var sourceOther = ($("#SourceOfFundsOther").val() || "").trim();
+
+                            var depositCode = ($("#DepositPurposeCode").val() || "").toUpperCase();
+                            var depositOther = ($("#DepositPurposeOther").val() || "").trim();
+
+                            // SOURCE OF FUNDS
+                            if (!sourceCode) {
+                                alert("Please select Source of Funds.");
+                                return false;
+                            }
+
+                            if (sourceCode === "OTHER" && sourceOther === "") {
+                                alert("Please specify the Source of Funds.");
+                                $("#SourceOfFundsOther").focus();
+                                return false;
+                            }
+
+                            // DEPOSIT PURPOSE
+                            if (!depositCode) {
+                                alert("Please select Deposit Purpose.");
+                                return false;
+                            }
+
+                            if (depositCode === "OTHER" && depositOther === "") {
+                                alert("Please specify the Deposit Purpose.");
+                                $("#DepositPurposeOther").focus();
+                                return false;
+                            }
+
+                            return true;
+                        }
+                    </script>
 
                 </div>
 
@@ -819,7 +860,7 @@ else if (ViewBag.Operation == "cashout")
                                             m => m.WithdrawalPurposeCode,
                                             ViewBag.WithdrawalPurpose as IEnumerable<SelectListItem>,
                                             "--- Select Purpose of Withdrawal ---",
-                                            new { @class = "form-control select2", id = "WithdrawalPurposeCode" }
+                                            new { @class = "form-control select2", id = "Value" }
                                         )
                                         <label for="WithdrawalPurposeCode">Purpose of Withdrawal</label>
                                     </div>

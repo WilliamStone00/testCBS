@@ -217,7 +217,12 @@ function collectDeposits() {
     const globalVat = parseFloat($('#calculatedVat').text().replace(/,/g, '')) || 0;
 
     const hideBalance = $('#hideBalanceCheckbox').is(':checked'); // ✅ FETCH OUTSIDE the loop once
+    // ✅ AML (FETCH ONCE)
+    const withdrawalPurposeCode = ($('#WithdrawalPurposeCode').val() || '').toString();
+    const withdrawalPurposeOtherRaw = ($('#WithdrawalPurposeOther').val() || '').toString().trim();
 
+    const withdrawalPurposeOther =
+        withdrawalPurposeCode.toUpperCase() === "OTHER" ? withdrawalPurposeOtherRaw : "";
     $('#myDataTableT tbody tr').each(function () {
         const isChecked = $(this).find('td input[type="checkbox"]').prop('checked'); // ✅ target only inside table cell, not global checkbox!
 
