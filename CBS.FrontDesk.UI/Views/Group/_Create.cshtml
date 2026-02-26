@@ -126,7 +126,7 @@
                                     @Html.LabelFor(model => model.IsPoliticaExposed, "Politically Exposed Person (PEP)", new { @class = "form-check-label" })
                                 </div>
                                 <div id="pepDetails" class="row">
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <div class="form-floating form-floating-outline">
                                             @Html.DropDownListFor(m => m.PoliticaExposedQuestion,
                                                 ViewBag.politicalstatuses as List<SelectListItem>,
@@ -138,7 +138,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.PoliticaExposedAnswer, new { @class = "form-control" })
                                             @Html.ValidationMessageFor(m => m.PoliticaExposedAnswer, "", new { @class = "text-danger" })
