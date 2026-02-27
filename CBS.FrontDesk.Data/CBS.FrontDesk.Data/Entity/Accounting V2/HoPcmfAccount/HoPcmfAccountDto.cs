@@ -1,13 +1,16 @@
 ﻿using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
+using Microsoft.AspNetCore.Http;
 using Microsoft.SqlServer.Server;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.IO.Pipes;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using static System.Web.Razor.Parser.SyntaxConstants;
 
 namespace CBS.FrontDesk.Data.Entity.Accounting_V2.HoPcmfAccount
@@ -27,7 +30,11 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.HoPcmfAccount
         public DateTime ModifiedDate { get; set; }
         public bool IsDeleted { get; set; }
     }
-
+    public class ChartOfAccountFileUpload
+    {
+        
+        public HttpPostedFileBase File { get; set; }
+    }
     // Entities/HoPcmfAccountTreeDto.cs
     public class HoPcmfAccountTreeDto
     {
@@ -42,6 +49,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.HoPcmfAccount
         public bool PostingAllowed { get; set; }
         public int Depth { get; set; }
         public string Path { get; set; }
+        public string Nature { get; set; }
+        public string PostCode { get; set; }
         public DateTime? CreatedDate { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public bool IsDeleted { get; set; }

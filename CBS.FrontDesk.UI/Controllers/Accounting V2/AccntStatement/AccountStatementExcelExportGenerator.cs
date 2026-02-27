@@ -1174,14 +1174,17 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
         // -----------------------------------------------------------------------
         // SHEET: INDIVIDUAL ACCOUNT DETAILS
         // -----------------------------------------------------------------------
+        // -----------------------------------------------------------------------
+        // SHEET: INDIVIDUAL ACCOUNT DETAILS
+        // -----------------------------------------------------------------------
         private void CreateAccountSheet(
-            ExcelPackage package,
-            List<AccountStatementFlatItems> accountData,
-            BankHeaderInformation headerInfo,
-            string accountNumber,
-            string accountName,
-            string exportedBy,
-            AccountingV2ReportsFilter filter)
+    ExcelPackage package,
+    List<AccountStatementFlatItems> accountData,
+    BankHeaderInformation headerInfo,
+    string accountNumber,
+    string accountName,
+    string exportedBy,
+    AccountingV2ReportsFilter filter)
         {
             // Create sheet name from account number and name (limited to 31 chars)
             string baseSheetName = $"{accountNumber}_{accountName}";
@@ -1206,18 +1209,26 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
             int currentRow = CreateHeaderSection(worksheet, headerInfo, exportedBy, filter,
                 $"GENERAL LEDGER - {accountNumber}", headerEndColumn);
 
-            // Add account-specific information after the standard header
-            //currentRow += 1;
+            // Create a two-column table for account information (with borders)
+            currentRow += 1; // Add a small gap
 
+            // Create account info table with borders
             var accountInfo = new[]
             {
-            new { Label = "ACCOUNT NO:", Value = accountNumber },
-            new { Label = "ACCOUNT NAME:", Value = accountName },
-            new { Label = "BEGINNING BALANCE:", Value = openingBalance.ToString("N2") },
-            new { Label = "ENDING BALANCE:", Value = closingBalance.ToString("N2") },
-            new { Label = "CURRENCY:", Value = accountData.FirstOrDefault()?.Currency ?? "XAF FRANCE CFA" },
-            new { Label = "ACCOUNTING DATE:", Value = DateTime.Now.ToString("dd-MM-yyyy") }
-        };
+        new { Label = "ACCOUNT NO:", Value = accountNumber },
+        new { Label = "ACCOUNT NAME:", Value = accountName },
+        new { Label = "BEGINNING BALANCE:", Value = openingBalance.ToString("N2") },
+        new { Label = "ENDING BALANCE:", Value = closingBalance.ToString("N2") },
+        new { Label = "CURRENCY:", Value = accountData.FirstOrDefault()?.Currency ?? "XAF FRANCE CFA" },
+        new { Label = "ACCOUNTING DATE:", Value = DateTime.Now.ToString("dd-MM-yyyy") }
+    };
+
+            // Add headers for the account info table
+            worksheet.Cells[currentRow, 1].Value = "FIELD";
+            worksheet.Cells[currentRow, 2].Value = "VALUE";
+            SetHeaderStyle(worksheet.Cells[currentRow, 1], Color.LightBlue);
+            SetHeaderStyle(worksheet.Cells[currentRow, 2], Color.LightBlue);
+            currentRow++;
 
             foreach (var info in accountInfo)
             {
@@ -1225,22 +1236,26 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
                 worksheet.Cells[currentRow, 1].Style.Font.Bold = true;
                 worksheet.Cells[currentRow, 2].Value = info.Value;
 
-                // Apply light border
-                for (int col = 1; col <= 2; col++)
-                    worksheet.Cells[currentRow, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                // Apply borders to both columns
+                worksheet.Cells[currentRow, 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                worksheet.Cells[currentRow, 2].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                // Set alignment
+                worksheet.Cells[currentRow, 1].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                worksheet.Cells[currentRow, 2].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
 
                 currentRow++;
             }
 
             // Empty row for spacing
-            //currentRow++;
+            currentRow++;
 
             // Transactions Table Headers
             var headers = new[]
             {
-            "SN", "DATE", "TIME", "USERNAME", "REFERENCE",
-            "DESCRIPTION", "DEBIT", "CREDIT", "BALANCE"
-        };
+        "SN", "DATE", "TIME", "REPRESENTATIVE", "REFERENCE",
+        "DESCRIPTION", "DEBIT", "CREDIT", "BALANCE"
+    };
 
             int headerRow = currentRow;
             for (int i = 0; i < headers.Length; i++)
@@ -1264,15 +1279,11 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
                     worksheet.Cells[currentRow, 2].Value = item.Date.ToString("dd-MM-yyyy");
                     worksheet.Cells[currentRow, 3].Value = item.time.ToString(@"hh\:mm\:ss");
 
-                    string username = !string.IsNullOrEmpty(item.Username) ? item.Username :
-                                      (!string.IsNullOrEmpty(item.UserName) ? item.UserName :
-                                      (!string.IsNullOrEmpty(item.PrintedBy) ? item.PrintedBy : ""));
-                    worksheet.Cells[currentRow, 4].Value = username;
-
+                    worksheet.Cells[currentRow, 4].Value = item.AuxiliaryRef;
                     worksheet.Cells[currentRow, 5].Value = item.ReferenceNumber;
                     worksheet.Cells[currentRow, 6].Value = item.Description;
-                    worksheet.Cells[currentRow, 7].Value = item.DebitAmount;  // <-- changed
-                    worksheet.Cells[currentRow, 8].Value = item.CreditAmount; // <-- changed
+                    worksheet.Cells[currentRow, 7].Value = item.DebitAmount;  // Always show, zero appears as 0
+                    worksheet.Cells[currentRow, 8].Value = item.CreditAmount; // Always show, zero appears as 0
 
                     runningBalance = item.Balance;
                     worksheet.Cells[currentRow, 9].Value = runningBalance;
@@ -1318,6 +1329,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
                     worksheet.Cells[currentRow, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
                     worksheet.Cells[currentRow, col].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
                 }
+                currentRow++;
             }
 
             // Auto-fit rows for wrapped text
@@ -1329,16 +1341,20 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
             // Format number columns
             worksheet.Cells[$"G{headerRow + 1}:I{currentRow}"].Style.Numberformat.Format = "#,##0.00";
 
-            // Set column widths
-            worksheet.Column(1).Width = 20;
-            worksheet.Column(2).Width = 20;
-            worksheet.Column(3).Width = 20;
-            worksheet.Column(4).Width = 18;
-            worksheet.Column(5).Width = 18;
-            worksheet.Column(6).Width = 40;
-            worksheet.Column(7).Width = 15;
-            worksheet.Column(8).Width = 15;
-            worksheet.Column(9).Width = 15;
+            // Set column widths with increased widths for all columns
+            worksheet.Column(1).Width = 10;   // SN - increased from 8
+            worksheet.Column(2).Width = 14;   // DATE - increased from 12
+            worksheet.Column(3).Width = 12;   // TIME - increased from 10
+            worksheet.Column(4).Width = 25;   // REPRESENTATIVE - increased from 20
+            worksheet.Column(5).Width = 25;   // REFERENCE - increased from 22
+            worksheet.Column(6).Width = 70;   // DESCRIPTION - increased from 60
+            worksheet.Column(7).Width = 18;   // DEBIT - increased from 15
+            worksheet.Column(8).Width = 18;   // CREDIT - increased from 15
+            worksheet.Column(9).Width = 20;   // BALANCE - increased from 18
+
+            // Also increase widths for the account info table columns
+            worksheet.Column(1).Width = 25; // For FIELD column (Label)
+            worksheet.Column(2).Width = 35; // For VALUE column
 
             worksheet.View.FreezePanes(headerRow + 1, 1);
 
@@ -1348,20 +1364,28 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
             worksheet.Cells[$"A{currentRow}:C{currentRow}"].Merge = true;
             worksheet.Cells[$"A{currentRow}"].Value = "ACCOUNT SUMMARY";
             worksheet.Cells[$"A{currentRow}"].Style.Font.Bold = true;
-            worksheet.Cells[$"A{currentRow}"].Style.Font.Size = 12;
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Size = 14;
+            worksheet.Cells[$"A{currentRow}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
             worksheet.Cells[$"A{currentRow}"].Style.Fill.PatternType = ExcelFillStyle.Solid;
             worksheet.Cells[$"A{currentRow}"].Style.Fill.BackgroundColor.SetColor(Color.LightBlue);
             currentRow += 2;
 
             var summaryItems = new[]
             {
-            new { Label = "Total Transactions:", Value = transactionCount.ToString("N0") },
-            new { Label = "Total Debit:", Value = totalDebit.ToString("N2") },
-            new { Label = "Total Credit:", Value = totalCredit.ToString("N2") },
-            new { Label = "Net Movement:", Value = (totalCredit - totalDebit).ToString("N2") },
-            new { Label = "Opening Balance:", Value = openingBalance.ToString("N2") },
-            new { Label = "Closing Balance:", Value = closingBalance.ToString("N2") }
-        };
+        new { Label = "Total Transactions:", Value = transactionCount.ToString("N0") },
+        new { Label = "Total Debit:", Value = totalDebit.ToString("N2") },
+        new { Label = "Total Credit:", Value = totalCredit.ToString("N2") },
+        new { Label = "Net Movement:", Value = (totalCredit - totalDebit).ToString("N2") },
+        new { Label = "Opening Balance:", Value = openingBalance.ToString("N2") },
+        new { Label = "Closing Balance:", Value = closingBalance.ToString("N2") }
+    };
+
+            // Add headers for summary table
+            worksheet.Cells[currentRow, 1].Value = "METRIC";
+            worksheet.Cells[currentRow, 2].Value = "VALUE";
+            SetHeaderStyle(worksheet.Cells[currentRow, 1], Color.LightBlue);
+            SetHeaderStyle(worksheet.Cells[currentRow, 2], Color.LightBlue);
+            currentRow++;
 
             foreach (var item in summaryItems)
             {
@@ -1370,9 +1394,16 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
                 worksheet.Cells[currentRow, 2].Value = item.Value;
 
                 for (int col = 1; col <= 2; col++)
+                {
                     worksheet.Cells[currentRow, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                    worksheet.Cells[currentRow, col].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                }
                 currentRow++;
             }
+
+            // Set widths for summary columns
+            worksheet.Column(1).Width = 25; // Metric column
+            worksheet.Column(2).Width = 25; // Value column
         }
 
         // -----------------------------------------------------------------------
@@ -1495,7 +1526,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
             worksheet.Column(2).Width = 18; // Value column
             if (colCount == 3)
             {
-                worksheet.Column(3).Width = 40; // Description column - increased width
+                worksheet.Column(3).Width = 60; // Description column - increased width
                 worksheet.Column(3).Style.WrapText = true; // Enable text wrapping
             }
 

@@ -76,6 +76,9 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.BranchAccount
         public DateTime? CreatedDate { get; set; }
         public bool? IsDeleted { get; set; }
 
+        public string Nature { get; set; }
+        public string PostCode { get; set; }
+
 
     }
 

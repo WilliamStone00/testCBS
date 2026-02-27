@@ -111,6 +111,8 @@
                 <button id="resetAffiliateFilterBtn" type="button" class="btn btn-secondary me-2 w-100">
                     <i class="mdi mdi-refresh"></i> @GlobalShared.Reset
                 </button>
+
+                <button id="exportBtn" class="btn btn-success w-100"><i class="mdi mdi-file-excel"></i> Export</button>
             </div>
         </div>
     </form>
@@ -255,6 +257,7 @@
                             return data ? (window.moment ? moment(data).format('DD/MM/YYYY HH:mm:ss') : data) : '-';
                         }
                     },
+                    { data: 'PostCode', name: 'postCode', defaultContent: '-' },
                     { data: 'Code', defaultContent: '-' },
                     { data: 'Name', name: 'name', defaultContent: '-' },
                     {
@@ -264,7 +267,9 @@
                             return renderClassLabel(data, row);
                         }
                     },
-                   /* { data: 'ParentId', defaultContent: '-' },*/
+                    
+                    { data: 'Nature', name: 'nature', defaultContent: '-' },
+                   
                     {
                         data: 'Id',
                         orderable: false,
@@ -317,7 +322,39 @@
                 }
             });
         }
+        function exportAffiliateData() {
 
+            var filters = collectAffiliateFilters();
+            var params = new URLSearchParams();
+
+            if (filters.Code) params.append("Code", filters.Code);
+            if (filters.Name) params.append("Name", filters.Name);
+            if (filters.PostingAllowed !== null) params.append("PostingAllowed", filters.PostingAllowed);
+            if (filters.IncludeDeleted !== null) params.append("IncludeDeleted", filters.IncludeDeleted);
+            if (filters.Class) params.append("Class", filters.Class);
+            if (filters.ParentId) params.append("ParentId", filters.ParentId);
+            if (filters.PathContains) params.append("PathContains", filters.PathContains);
+            if (filters.DepthFrom !== null) params.append("DepthFrom", filters.DepthFrom);
+            if (filters.DepthTo !== null) params.append("DepthTo", filters.DepthTo);
+            if (filters.CreatedFromUtc) params.append("CreatedFromUtc", filters.CreatedFromUtc);
+            if (filters.CreatedToUtc) params.append("CreatedToUtc", filters.CreatedToUtc);
+
+            // Optional confirmation
+            if (typeof alertify !== 'undefined') {
+                alertify.confirm(
+                    "Confirm Export",
+                    "Are you sure you want to export this data?",
+                    function () {
+                        window.location.href = '/ChartOfAccountV2/DownloadExcel?' + params.toString();
+                    },
+                    function () {
+                        alertify.error("Export cancelled");
+                    }
+                );
+            } else {
+                window.location.href = '/ChartOfAccountV2/DownloadExcel?' + params.toString();
+            }
+        }
         function loadAffiliateData() {
             initAffiliateDataTableIfNeeded();
             if (affiliateTable) affiliateTable.ajax.reload(null, false);
@@ -392,6 +429,11 @@
                     e.preventDefault();
                     loadAffiliateData();
                 }
+            });
+
+            $('#exportBtn').off('click').on('click', function (e) {
+                e.preventDefault();
+                exportAffiliateData();
             });
 
             // Select2 (safe)

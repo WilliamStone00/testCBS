@@ -27,6 +27,9 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.AffiliateAccount
         public DateTime CreatedDate { get; set; }
         public DateTime ModifiedDate { get; set; }
         public bool IsDeleted { get; set; }
+
+        public string Nature { get; set; }
+        public string PostCode { get; set; }
     }
 
 

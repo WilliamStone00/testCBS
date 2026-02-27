@@ -10822,6 +10822,7 @@
     <Content Include="Views\IPSReporting\Index.cshtml" />
     <Content Include="Views\Individual\MemberStatus.cshtml" />
     <Content Include="Views\Individual\MemberStatusTable.cshtml" />
+    <Content Include="Views\ChartOfAccountV2\UploadFile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

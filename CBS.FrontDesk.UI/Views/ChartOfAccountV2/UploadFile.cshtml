@@ -1,0 +1,136 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.HoPcmfAccount.ChartOfAccountFileUpload
+
+@{
+    ViewBag.Title = "UploadFile";
+}
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary fw-bold mb-2">
+                    <i class="mdi mdi-calendar-month me-2"></i> COA File Upload
+                </h1>
+
+                <p class="card-text text-info fw-semibold">
+                    <i class="mdi mdi-alert-circle-outline me-1"></i> Select the file to upload.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card mb-3">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> Tips</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseUploadTips" aria-expanded="false" aria-controls="collapseUploadTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+
+    <div id="collapseUploadTips" class="collapse">
+        <div class="card-body">
+            <ul class="mb-0">
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>Code:</strong> Select the correct code format for quick identification.</li>
+                <li><i class="mdi mdi-account-box-multiple-outline text-primary me-2"></i> <strong>Name:</strong> Ensure the file matches the proper affiliate or account name.</li>
+                <li><i class="mdi mdi-filter-outline text-secondary me-2"></i> <strong>Status:</strong> Active/inactive status does not filter uploads; verify file content instead.</li>
+                <li><i class="mdi mdi-calendar-range text-info me-2"></i> <strong>Created_Dates:</strong> Use date filters if you want to limit the upload to a specific creation range.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- File Upload Card -->
+<div class="card shadow-sm border-0 mb-4">
+    <div id="mainWorkspace">
+        <p class="text-primary fw-bold mb-3">
+            Please select your COA file below to upload. Make sure the file is in the correct format.
+        </p>
+        @using (Html.BeginForm("UploadchartofAccountFile", "ChartOfAccountV2", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return fileupload(this);" }))
+        {
+            <div class="card-body">
+                <div class="mb-1">
+                    <div class="input-group">
+                        <input type="file" name="File" id="file" class="form-control" required /> <!-- ✅ Name matches model property -->
+                        <button type="submit" class="btn btn-primary" id="btnSubmitUpload">
+                            <i class="mdi mdi-cloud-upload-outline me-1"></i> Upload File
+                        </button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        function fileupload(form) {
+            try {
+                var $form = $(form);
+
+                if ($.validator && $.validator.unobtrusive) {
+                    $.validator.unobtrusive.parse($form);
+                }
+
+                if ($.validator && !$form.valid()) {
+                    appalert("❌ Please select a file to upload.", 2, 1);
+                    return false;
+                }
+
+                alertify.confirm(
+                    "Confirm Upload",
+                    "Are you sure you want to upload this file?",
+                    function () {
+                        var formData = new FormData(form);
+
+                        var token = $form.find('input[name="__RequestVerificationToken"]').val();
+                        if (token && !formData.has('__RequestVerificationToken')) {
+                            formData.append('__RequestVerificationToken', token);
+                        }
+
+                        var $btn = $("#btnSubmitUpload");
+                        $btn.prop("disabled", true);
+
+                        $.ajax({
+                            url: $form.attr("action"),
+                            type: "POST",
+                            data: formData,
+                            contentType: false,
+                            processData: false,
+
+                            success: function (response) {
+                                if (response && response.success) {
+                                    appalert(response.message || "✅ Upload successful", 1, 1);
+                                } else {
+                                    appalert(response.message || "❌ Upload failed", 2, 1);
+                                }
+                            },
+
+                            error: function (xhr) {
+                                if (xhr.status === 401) {
+                                    window.location.href = "/Authentication/Login";
+                                    return;
+                                }
+                                appalert("❌ Server error occurred", 0, 1);
+                            },
+
+                            complete: function () {
+                                $btn.prop("disabled", false);
+                            }
+                        });
+                    },
+                    function () {
+                        appalert("⚠ Upload cancelled", 3, 1);
+                    }
+                );
+            } catch (ex) {
+                console.error(ex);
+                appalert("❌ Unexpected error: " + ex.message, 0, 1);
+            }
+
+            return false;
+        }
+    </script>
+}
+
