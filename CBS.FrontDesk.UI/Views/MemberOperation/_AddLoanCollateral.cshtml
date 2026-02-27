@@ -17,6 +17,7 @@
                 </div>
             </div>
         </div>
+        <a href="~/Views/MemberOperation/_AddLoanCollateral.cshtml">~/Views/MemberOperation/_AddLoanCollateral.cshtml</a>
     </div>
 </div>
 <div class="col">
@@ -118,12 +119,11 @@
                         </label>
                     </div>
 
-                    <!-- Optional Description that appears only if checked -->
-                    <div class="form-floating form-floating-outline mt-3" id="formalRegistrationDescriptionContainer" style="display:none;">
-                        @Html.TextBoxFor(m => m.LoanCollatera.IsformallyRegistered,
-                            new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.LoanCollatera.IsformallyRegistered, "", new { @class = "text-danger" })
-                        <label>Description (Registration Details)</label>
+                    <!-- Dynamic Status Message -->
+                    <div class="mt-3">
+                        <span id="registrationStatusMessage" class="fw-semibold text-danger">
+                            Collateral is NOT formally registered and Legalized.
+                        </span>
                     </div>
                 </div>
             </div>
@@ -147,19 +147,27 @@
 
 </div>
 
-<script>
-    $(document).ready(function () {
+    <script>
+        $(document).ready(function () {
 
-        function toggleDescription() {
-            if ($('#IsFormallyRegistered').is(':checked')) {
-                $('#formalRegistrationDescriptionContainer').slideDown();
-            } else {
-                $('#formalRegistrationDescriptionContainer').slideUp();
-                $('#LoanCollatera_FormalRegistrationDescription').val('');
+            function updateRegistrationMessage() {
+                if ($('#IsFormallyRegistered').is(':checked')) {
+                    $('#registrationStatusMessage')
+                        .text('Collateral is formally registered and Legalized.')
+                        .removeClass('text-danger')
+                        .addClass('text-success');
+                } else {
+                    $('#registrationStatusMessage')
+                        .text('Collateral is NOT formally registered and Legalized.')
+                        .removeClass('text-success')
+                        .addClass('text-danger');
+                }
             }
-        }
 
-        toggleDescription(); // run on load
-        $('#IsFormallyRegistered').change(toggleDescription);
-    });
-</script>
+            // Run on page load (important for edit mode)
+            updateRegistrationMessage();
+
+            // Run when checkbox changes
+            $('#IsFormallyRegistered').change(updateRegistrationMessage);
+        });
+    </script>

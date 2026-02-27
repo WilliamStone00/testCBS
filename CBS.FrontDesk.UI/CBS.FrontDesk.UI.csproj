@@ -680,6 +680,12 @@
       <DependentUpon>TellerStatement1.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="AppFiles\Reporting\Transactions\UpdatedStatement\Loan\GeneralLoanReportRPT.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GeneralLoanReportRPT.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="AppFiles\Reporting\Transactions\UpdatedStatement\Loan\LoanRepaymentRPT1.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -7639,6 +7645,10 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>CashDeskRessource.Designer.cs</LastGenOutput>
     </Content>
+    <EmbeddedResource Include="AppFiles\Reporting\Transactions\UpdatedStatement\Loan\GeneralLoanReportRPT.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>GeneralLoanReportRPT.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\Transactions\UpdatedStatement\Loan\LoanRepaymentRPT.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>LoanRepaymentRPT1.cs</LastGenOutput>

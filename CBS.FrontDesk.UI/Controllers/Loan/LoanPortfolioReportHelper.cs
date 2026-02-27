@@ -37,11 +37,14 @@ namespace CBS.FrontDesk.UI.Controllers
             return await GenerateReportInternalAsync(reportCommand, useQueryParam: true);
         }
 
+ 
         private async Task<JsonResult> GenerateReportInternalAsync(GenerateLoanPortfolioReportCommand reportCommand, bool useQueryParam)
         {
-            var reportType = (reportCommand.MainReportType ?? "All").ToLowerInvariant();
+            var reportType = reportCommand.MainReportType?.ToLowerInvariant(); 
+            var LoanReports = (reportCommand.ReportType).ToLowerInvariant();
             var rptData = new LoanDelinquencyReportResultRPT();
             var delinquencyData = new LoanDelinquencyReportDto();
+            var Generalreport  = new LoanDelinquencyReportDto();
             string reportTitle, relativePath;
 
             switch (reportType)
@@ -69,7 +72,7 @@ namespace CBS.FrontDesk.UI.Controllers
                             JsonRequestBehavior = JsonRequestBehavior.AllowGet
                         };
                     break;
-               
+
                 case "loansituations":
                     relativePath = "Loan/LoanSituationAlpha/LoanSituationAlphaRPT.rpt";
                     reportTitle = "LOANS SITUATION REPORT";
@@ -95,6 +98,7 @@ namespace CBS.FrontDesk.UI.Controllers
 
                 case "delinquentloan":
                     relativePath = "Loan/PortFolio/DelinquentLoansRPT.rpt";
+                    if(reportCommand.s)
                     reportTitle = "LOAN PORTFOLIO";
                     rptData = await _loanService.GetLoanPortfolioAnalysisAsync(reportCommand);
                     if (rptData == null)
@@ -104,7 +108,7 @@ namespace CBS.FrontDesk.UI.Controllers
                             JsonRequestBehavior = JsonRequestBehavior.AllowGet
                         };
                     break;
-                
+
 
                 case "loanbypurpose":
                 case "loanbytypes":
@@ -118,9 +122,31 @@ namespace CBS.FrontDesk.UI.Controllers
                             JsonRequestBehavior = JsonRequestBehavior.AllowGet
                         };
                     break;
-                case "LoanGeneralR":
-                   relativePath = "Transactions/UpdatedStatement/Loan/GeneralLoanReportRPT.rpt";
-                    reportTitle = "Loans by Purpose Report";
+
+                default:
+                    relativePath = "Loan/PortFolio/MainPortFolioRPT.rpt";
+                    reportTitle = "Loan Portfolio Analysis Report";
+                    break;
+            }
+
+            switch (LoanReports)
+            {
+                case "loanlisting":
+                    relativePath = "Transactions/UpdatedStatement/Loan/GeneralLoanReportRPT.rpt";
+                    if(reportCommand.IsSSFReport == true) {reportTitle = "SSF LOAN PORTFOLIO"; }
+                    reportTitle = "LOAN PORTFOLIO";
+                    delinquencyData = await _loanService.GetLoanDelinquencyReportAsync(reportCommand);
+                     if (rptData == null)
+                        return new JsonResult
+                        {
+                            Data = new { success = false, message = "No data found." },
+                            JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                        };
+                    break;
+
+                case "current":
+                    relativePath = "Transactions/UpdatedStatement/Loan/GeneralLoanReportRPT.rpt";
+                    reportTitle = "CURRENT PERFMORMING LOANS";
                     rptData = await _loanService.GetLoanPortfolioAnalysisAsync(reportCommand);
                     if (rptData == null)
                         return new JsonResult
@@ -129,6 +155,56 @@ namespace CBS.FrontDesk.UI.Controllers
                             JsonRequestBehavior = JsonRequestBehavior.AllowGet
                         };
                     break;
+
+                case "unpaid":
+                    relativePath = "Loan/PortFolio/UnpaidLoansRPT.rpt";
+                    reportTitle = "UNPAID LOANS";
+                    rptData = await _loanService.GetLoanPortfolioAnalysisAsync(reportCommand);
+                    if (rptData == null)
+                        return new JsonResult
+                        {
+                            Data = new { success = false, message = "No data found." },
+                            JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                        };
+                    break;
+
+                case "doubtful":
+                  relativePath = "Transactions/UpdatedStatement/Loan/GeneralLoanReportRPT.rpt";
+                    ;
+                    reportTitle = "DOUBTFUL LOANS";
+                    rptData = await _loanService.GetLoanPortfolioAnalysisAsync(reportCommand);
+                    if (rptData == null)
+                        return new JsonResult
+                        {
+                            Data = new { success = false, message = "No data found." },
+                            JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                        };
+                    break;
+
+                case "irrepayable":
+                    relativePath = "Transactions/UpdatedStatement/Loan/GeneralLoanReportRPT.rpt";
+                    reportTitle = "IRREPAYABLE LOANS";
+                    rptData = await _loanService.GetLoanPortfolioAnalysisAsync(reportCommand);
+                    if (rptData == null)
+                        return new JsonResult
+                        {
+                            Data = new { success = false, message = "No data found." },
+                            JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                        };
+                    break;
+
+                case "irrecoverable":
+                    relativePath = "Transactions/UpdatedStatement/Loan/GeneralLoanReportRPT.rpt";
+                    reportTitle = "IRRECOVERABLE LOANS";
+                    rptData = await _loanService.GetLoanPortfolioAnalysisAsync(reportCommand);
+                    if (rptData == null)
+                        return new JsonResult
+                        {
+                            Data = new { success = false, message = "No data found." },
+                            JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                        };
+                    break;
+
 
                 default:
                     relativePath = "Loan/PortFolio/MainPortFolioRPT.rpt";
@@ -186,6 +262,10 @@ namespace CBS.FrontDesk.UI.Controllers
                 _controller.Session["MainData"] = delinquencyData.LoanEntries;
             }
             else if (reportType == "delinquentloanslistingwithaging")
+            {
+                _controller.Session["MainData"] =delinquencyData.LoanEntries;
+            }
+            else if (LoanReports == "loanlisting")
             {
                 _controller.Session["MainData"] =delinquencyData.LoanEntries;
             }
