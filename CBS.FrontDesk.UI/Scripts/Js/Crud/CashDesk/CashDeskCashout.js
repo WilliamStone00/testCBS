@@ -216,15 +216,22 @@ function collectDeposits() {
     const note = $('#Note')?.val() || '';
     const globalVat = parseFloat($('#calculatedVat').text().replace(/,/g, '')) || 0;
 
-    const hideBalance = $('#hideBalanceCheckbox').is(':checked'); // ✅ FETCH OUTSIDE the loop once
-    // ✅ AML (FETCH ONCE)
+    const hideBalance = $('#hideBalanceCheckbox').is(':checked');
+
+    // ✅ AML (Fetch Once)
     const withdrawalPurposeCode = ($('#WithdrawalPurposeCode').val() || '').toString();
     const withdrawalPurposeOtherRaw = ($('#WithdrawalPurposeOther').val() || '').toString().trim();
 
     const withdrawalPurposeOther =
-        withdrawalPurposeCode.toUpperCase() === "OTHER" ? withdrawalPurposeOtherRaw : "";
+        withdrawalPurposeCode.toUpperCase() === "OTHER"
+            ? withdrawalPurposeOtherRaw
+            : "";
+
     $('#myDataTableT tbody tr').each(function () {
-        const isChecked = $(this).find('td input[type="checkbox"]').prop('checked'); // ✅ target only inside table cell, not global checkbox!
+
+        const isChecked = $(this)
+            .find('td input[type="checkbox"]')
+            .prop('checked');
 
         if (!isChecked) return;
 
@@ -237,21 +244,28 @@ function collectDeposits() {
             Penalty: parseFloat($(this).find('.penalty-input')?.val()) || 0,
             Interest: parseFloat($(this).find('.interest-input')?.val()) || 0,
             Total: parseFloat($(this).find('.total-span').text()) || 0,
+
             Note: note,
             CheckName: checkName,
             CheckNumber: checkNumber,
             CustomerAlphaNumber: alphaNumber,
             CustomerId: customerId,
             OperationType: operationType,
+
             isDepositDoneByAccountOwner: isChecked,
             IsChargesInclussive: $(this).find('.check-inclussive').prop('checked'),
             IsSWS: true,
             PaymentMethod: 'Cash',
             PaymentChannel: 'Web_Portal',
+
             LoanApplicationId: $(this).find('.loan-application-id')?.val() || '',
             Period: $(this).find('.period')?.val() || '',
             Vat: globalVat,
-            HideBalance: hideBalance // ✅ correctly from the top hide balance checkbox!
+            HideBalance: hideBalance,
+
+            // ✅ AML Fields Added Here
+            WithdrawalPurposeCode: withdrawalPurposeCode,
+            WithdrawalPurposeOther: withdrawalPurposeOther
         };
 
         deposits.push(deposit);
@@ -260,7 +274,6 @@ function collectDeposits() {
     console.log("✅ Collected Deposits:", deposits);
     return deposits;
 }
-
 //function collectDeposits() {
 //    var deposits = [];
 
