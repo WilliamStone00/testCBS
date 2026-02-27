@@ -476,6 +476,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MembersFSeries.xsd</DependentUpon>
     </Compile>
+    <Compile Include="AppFiles\Reporting\IPSReports\InternalProtectionSchema.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>InternalProtectionSchema.rpt</DependentUpon>
+    </Compile>
     <Compile Include="AppFiles\Reporting\Transactions\UpdatedStatement\AccountSituation.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -7655,6 +7660,10 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>CashDeskRessource.Designer.cs</LastGenOutput>
     </Content>
+    <EmbeddedResource Include="AppFiles\Reporting\IPSReports\InternalProtectionSchema.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>InternalProtectionSchema.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\Transactions\UpdatedStatement\Loan\GeneralLoanReportRPT.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>GeneralLoanReportRPT.cs</LastGenOutput>
