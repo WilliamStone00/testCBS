@@ -157,6 +157,16 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public decimal RemittanceAmount { get; set; }
         public DateTime? RemittanceDate { get; set; }
         public bool HideBalance { get; set; }
+
+        // AML - Source of Funds
+        public string SourceOfFundsCode { get; set; }      // e.g. SALARY, BUSINESS, ...
+        public string SourceOfFundsOther { get; set; }     // free text when OTHER or typed tag
+
+        // AML - Purpose
+        public string DepositPurposeCode { get; set; }     // e.g. SAVINGS, FEES, ...
+        public string DepositPurposeOther { get; set; }    // free text
+        public string WithdrawalPurposeCode { get; set; }   // e.g. SCHOOL_FEES, MEDICAL, OTHER
+        public string WithdrawalPurposeOther { get; set; }  // free text when OTHER or typed
         public BulkOperation()
         {
             DepositType = "Normal";
