@@ -487,7 +487,16 @@ namespace CBS.BusinessService.Accounts
                            ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, errorMessage);
                         return ExecutionMessage;
                     }
-                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, IsCashOperation = true, HideBalance = bulkDeposits.FirstOrDefault().HideBalance, OperationType = "Withdrawal" };
+                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, IsCashOperation = true, HideBalance = bulkDeposits.FirstOrDefault().HideBalance, OperationType = "Withdrawal",
+
+
+                               SourceOfFundsCode = bulkDeposits.FirstOrDefault().SourceOfFundsCode,
+                        SourceOfFundsOther = bulkDeposits.FirstOrDefault().SourceOfFundsOther,
+                        WithdrawalPurposeCode = bulkDeposits.FirstOrDefault().WithdrawalPurposeCode,
+                        WithdrawalPurposeOther = bulkDeposits.FirstOrDefault().WithdrawalPurposeOther,
+                        DepositPurposeCode = bulkDeposits.FirstOrDefault().DepositPurposeCode,
+                        DepositPurposeOther = bulkDeposits.FirstOrDefault().DepositPurposeOther,
+                    };
                     var response = await _transactionApiHelper.PostAsync<ServiceResponse<PaymentReceipt>>(APICallHelper.MakeWithdrawal, BulkOperation);
                     if (response.ApiResponseData != null)
                     {
@@ -647,7 +656,13 @@ namespace CBS.BusinessService.Accounts
                                 IncludeLoanRepayment = deposit.IncludeLoanRepayment,
                                 BulkOperationsForLoanRepayments = deposit.BulkOperationsForLoanRepayments,
                                 CustomerAlphaNumber = customerAlphaNumber,
-                                HideBalance = bulkOP.HideBalance
+                                HideBalance = bulkOP.HideBalance,
+                                SourceOfFundsCode = bulkOP.SourceOfFundsCode,
+                                SourceOfFundsOther = bulkOP.SourceOfFundsOther,
+                                WithdrawalPurposeCode = bulkOP.WithdrawalPurposeCode,
+                                WithdrawalPurposeOther = bulkOP.WithdrawalPurposeOther,
+                                DepositPurposeCode = bulkOP.DepositPurposeCode,
+                                DepositPurposeOther = bulkOP.DepositPurposeOther,
                             };
 
                             var response = await _transactionApiHelper
@@ -1802,7 +1817,7 @@ namespace CBS.BusinessService.Accounts
 
         }
 
-       
+
     }
 
 }
