@@ -47,19 +47,21 @@
     <div class="modal-dialog modal-dialog-centered custom-width">
         <div class="modal-content">
 
-            <div class="card bg-light mb-3">
-                <div class="card-body text-center">
-                    <h1 class="card-title text-primary">
-                        <i class="mdi mdi-eye-outline me-2"></i>Member Status Details
-                    </h1>
-                    <p class="card-text">
-                        View full information of the selected member status.
-                    </p>
-                    <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
-                </div>
-            </div>
 
             <div class="modal-body">
+
+
+                <div class="card bg-light mb-3">
+                    <div class="card-body text-center">
+                        <h1 class="card-title text-primary">
+                            <i class="mdi mdi-eye-outline me-2"></i>Member Status Details
+                        </h1>
+                        <p class="card-text">
+                            View full information of the selected member status.
+                        </p>
+                        <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+                    </div>
+                </div>
 
                 <div class="mb-3">
                     <label class="form-label fw-bold">Name</label>
@@ -92,19 +94,21 @@
     <div class="modal-dialog modal-dialog-centered custom-width">
         <div class="modal-content">
 
-            <div class="card bg-light mb-3">
-                <div class="card-body text-center">
-                    <h1 class="card-title text-warning">
-                        <i class="mdi mdi-pencil-outline me-2"></i>Update Member Status
-                    </h1>
-                    <p class="card-text">
-                        Modify the selected member status information.
-                    </p>
-                    <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
-                </div>
-            </div>
-
+            
             <div class="modal-body">
+
+                <div class="card bg-light mb-3">
+                    <div class="card-body text-center">
+                        <h1 class="card-title text-primary">
+                            <i class="mdi mdi-pencil-outline me-2"></i>Update Member Status
+                        </h1>
+                        <p class="card-text">
+                            Modify the selected member status information.
+                        </p>
+                        <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+                    </div>
+                </div>
+
 
                 <input type="hidden" id="updateId" />
 
@@ -129,81 +133,180 @@
 
             <div class="modal-footer">
                 <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button id="btnSubmitUpdate" class="btn btn-warning">Save Changes</button>
+                <button id="btnSubmitUpdate" class="btn btn-primary">Save Changes</button>
             </div>
 
         </div>
     </div>
 </div>
 
-
-
-    @section Scripts {
+  @section Scripts {
         @Scripts.Render("~/bundles/jqueryval")
-        <script>
+<script>
+    $(document).ready(function () {
 
-            $(document).ready(function () {
-
-                $('#memberStatusTable').DataTable({
-                    ajax: {
-                        url: '/Individual/GetMemberStatuses',
-                        type: 'GET',
-                        dataSrc: 'data'
-                    },
-                    pageLength: 5,
-                    columns: [
-                        { data: 'Name' },
-                        { data: 'Description' },
-                       
-                        {
-                            data: 'Id',
-                            render: function (data, type, row) {
-                                return `
-                            <button class="btn btn-sm btn-info me-1"
-                                onclick="openDetails('${data}')">
+        var table = $('#memberStatusTable').DataTable({
+            ajax: {
+                url: '/Individual/GetMemberStatuses',
+                type: 'GET',
+                dataSrc: 'data'
+            },
+            pageLength: 5,
+            columns: [
+                { data: 'Name' },
+                { data: 'Description' },
+                {
+                    data: 'Id',
+                    orderable: false,
+                    searchable: false,
+                    render: function (data) {
+                        return `
+                            <button class="btn btn-sm btn-info me-1 btn-details"
+                                data-id="${data}">
                                 Details
                             </button>
 
-                            <button class="btn btn-sm btn-warning"
-                                onclick="openUpdate('${data}')">
+                            <button class="btn btn-sm btn-primary btn-update"
+                                data-id="${data}">
                                 Update
                             </button>
                         `;
-                            }
-                        }                    ]
-                });
-
-
-
-
-                function openDetails(id) {
-
-                    if (!id) {
-                        appalert("Invalid Member Status ID.", 0, 1);
-                        return;
                     }
-
-                    $.get('/Individual/MemberStatusDetails', { id: id })
-                        .done(function (response) {
-                            if (response.success) {
-                                $('#detailsName').val(response.data.Name);
-                                $('#detailsDescription').val(response.data.Description);
-                                $('#detailsDefault').val(response.data.IsDefault ? "Yes" : "No");
-
-                                var modal = new bootstrap.Modal(document.getElementById('detailsModal'));
-                                modal.show();
-                            } else {
-                                appalert(response.message || "Unable to load details.", 2, 1);
-                            }
-                        })
-                        .fail(function () {
-                            appalert("Server error occurred while loading details.", 0, 1);
-                        });
                 }
-               
-            });
-        </script>
-    }
+            ]
+        });
+
+        // =========================
+        // DETAILS BUTTON CLICK
+        // =========================
+        $('#memberStatusTable').on('click', '.btn-details', function () {
+
+            var id = $(this).data('id');
+
+            if (!id) {
+                appalert("Invalid Member Status ID.", 0, 1);
+                return;
+            }
+
+            $.get('/Individual/MemberStatusDetails', { id: id })
+                .done(function (response) {
+
+                    if (response.success) {
+
+                        $('#detailsName').val(response.data.Name);
+                        $('#detailsDescription').val(response.data.Description);
+                        $('#detailsDefault').val(response.data.IsDefault ? "Yes" : "No");
+
+                        var modal = new bootstrap.Modal(document.getElementById('detailsModal'));
+                        modal.show();
+
+                    } else {
+                        appalert(response.message || "Unable to load details.", 2, 1);
+                    }
+                })
+                .fail(function (xhr) {
+                    console.log("Status:", xhr.status);
+                    console.log("Response:", xhr.responseText);
+                    appalert("Server error occurred while loading details.", 0, 1);
+                });
+        });
+
+        // =========================
+        // UPDATE BUTTON CLICK
+        // =========================
+        $('#memberStatusTable').on('click', '.btn-update', function () {
+
+            var id = $(this).data('id');
+
+            if (!id) {
+                appalert("Invalid Member Status ID.", 0, 1);
+                return;
+            }
+
+            $.get('/Individual/MemberStatusDetails', { id: id })
+                .done(function (response) {
+
+                    if (response.success) {
+
+                        // ✅ Fill UPDATE modal fields (correct IDs)
+                        $('#updateId').val(response.data.Id);
+                        $('#updateName').val(response.data.Name);
+                        $('#updateDescription').val(response.data.Description);
+                        $('#updateDefault').prop('checked', response.data.IsDefault);
+
+                        var modal = new bootstrap.Modal(document.getElementById('updateModal'));
+                        modal.show();
+
+                    } else {
+                        appalert(response.message || "Unable to load details.", 2, 1);
+                    }
+                })
+                .fail(function (xhr) {
+                    console.log("Status:", xhr.status);
+                    console.log("Response:", xhr.responseText);
+                    appalert("Server error occurred while loading details.", 0, 1);
+                });
+        });
+
+
+
+        $('#btnSubmitUpdate').click(function () {
+
+            var model = {
+                Id: $('#updateId').val(),
+                Name: $('#updateName').val(),
+                Description: $('#updateDescription').val(),
+                IsDefault: $('#updateDefault').is(':checked')
+            };
+
+            if (!model.Id) {
+                appalert("Invalid Member Status ID.", 0, 1);
+                return;
+            }
+
+            alertify.confirm(
+                "Confirm Update",
+                "Are you sure you want to post this update?",
+                function () {
+
+                    // YES clicked
+                    $.ajax({
+                        url: '/Individual/Updates',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(model),
+                        success: function (response) {
+
+                            if (response.success) {
+
+                                appalert("Member Status updated successfully.", 1, 1);
+
+                                var modal = bootstrap.Modal.getInstance(document.getElementById('updateModal'));
+                                modal.hide();
+
+                                $('#memberStatusTable').DataTable().ajax.reload();
+
+                            } else {
+                                appalert(response.message || "Update failed.", 2, 1);
+                            }
+                        },
+                        error: function (xhr) {
+                            console.log(xhr.responseText);
+                            appalert("Server error occurred while updating.", 0, 1);
+                        }
+                    });
+
+                },
+                function () {
+                    // NO clicked
+                    alertify.error("Update cancelled");
+                }
+            );
+
+        });    });
+</script>   
+        
+}
 
 
 

@@ -54,6 +54,8 @@ function shouldSkipLoanProducts(url) {
 }
 
 
+
+
 function getRequestedAmount() {
     // 1) preferred id
     var $a = $("#RequestedAmount");
@@ -255,6 +257,9 @@ window.gp = function gp(o, camel, pascal) {
     if (v !== undefined && v !== null) return v;
     return null;
 };
+
+
+
 
 function esc(s) {
     return (s == null ? "" : ("" + s))
@@ -1996,41 +2001,6 @@ function toggleInputFields() {
 //}
 
 
-//function AjaxPostLoanScedule(form) {
-
-//    $.validator.unobtrusive.parse(form);
-//    if ($(form).valid()) {
-//        var ajaxConfig = {
-//            type: 'POST',
-//            url: form.action,
-//            data: new FormData(form),
-//            success: function (response) {
-
-//                if (response.success) {
-//                    appalert(response.message, 1, 1);
-//                    LoadLocalSchedule();
-//                }
-//                else {
-//                    appalert(response.message, 2, 1);
-
-//                }
-
-//            }
-//            , error: function (err) {
-//                appalert(err.statusText, 0, 1);
-//            }
-//        };
-
-//        if ($(form).attr('enctype') === "multipart/form-data") {
-//            ajaxConfig["contentType"] = false;
-//            ajaxConfig["processData"] = false;
-//        }
-//        $.ajax(ajaxConfig);
-
-//    }
-//    return false;
-
-//}
 
 
 
@@ -2039,9 +2009,7 @@ function toggleInputFields() {
 
 //}
 
-//function LoadLocalSchedule() {
-//    LoadDataGen('MemberOperation', null, '_LoanSimulationScheduleData', 0, 'amortization_schedule_data_div', "KEY", 'applications', 'loan_schedule')
-//}
+
 
 
 
