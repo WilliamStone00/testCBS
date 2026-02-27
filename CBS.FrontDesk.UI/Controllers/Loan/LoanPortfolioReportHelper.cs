@@ -98,7 +98,7 @@ namespace CBS.FrontDesk.UI.Controllers
 
                 case "delinquentloan":
                     relativePath = "Loan/PortFolio/DelinquentLoansRPT.rpt";
-                    if(reportCommand.s)
+                   
                     reportTitle = "LOAN PORTFOLIO";
                     rptData = await _loanService.GetLoanPortfolioAnalysisAsync(reportCommand);
                     if (rptData == null)
@@ -265,7 +265,7 @@ namespace CBS.FrontDesk.UI.Controllers
             {
                 _controller.Session["MainData"] =delinquencyData.LoanEntries;
             }
-            else if (LoanReports == "loanlisting")
+            else if (LoanReports == "loanlisting"||LoanReports == "current"||LoanReports == "unpaid"||LoanReports == "irrecoverable")
             {
                 _controller.Session["MainData"] =delinquencyData.LoanEntries;
             }
