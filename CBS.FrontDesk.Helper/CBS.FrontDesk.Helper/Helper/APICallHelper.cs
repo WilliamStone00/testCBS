@@ -372,6 +372,7 @@ namespace CBS.FrontDesk.Helper
         //Member Status 
         public static string CreateMemberStatus = "/api/v1/MemberStatus";
         public static string GetAllMemberStatus = "/api/v1/MemberStatus";
+        public static string UpdateMemberStatus = "/api/v1/MemberStatus";
         public static string GetMemberStausById = "/api/v1/MemberStatus/{0}";
 
         // politicalstatus

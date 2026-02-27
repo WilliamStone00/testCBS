@@ -6,6 +6,7 @@ using CBS.BusinessService.MembersAccountSettings.policy;
 using CBS.BusinessService.Session;
 using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.AccountingV2;
+using CBS.FrontDesk.Data.Entity.AccountingV2.AccountingYear;
 using CBS.FrontDesk.Data.Entity.AccountingV2.EndOfYearClosure;
 using CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation;
 using CBS.FrontDesk.Data.Entity.CMoney;
@@ -1437,6 +1438,47 @@ namespace CBS.BusinessService.CustomerManagement
                 //System.Diagnostics.Debug.WriteLine($"[GetJournalSourceByIdAsync] Error: {ex.Message}");
                 throw;
             }
+        }
+
+        public async Task<ExecutionMessages> UpdateAsync(MemberStatus model)
+        {
+            try
+            {
+
+
+
+                var url = string.Format(APICallHelper.UpdateMemberStatus, model.Id);
+
+                // Send model to API via PUT
+                var response = await _customerApiHelper.PutAsync<ServiceResponse<MemberStatus>>(url, model);
+
+                if (response.IsSuccess)
+                {
+                    // Success execution message
+                    GetExecutionMessages(
+                        response?.ApiResponseData?.Data, true, null,
+                        MessagesResults.Success, ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null,
+                        response.ApiResponseData?.Message
+                    );
+                }
+                else
+                {
+                    // Failure execution message
+                    GetExecutionMessages(model, false, null,
+                        MessagesResults.Failed, ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Failed.ToString(), null,
+                        response.ApiResponseData?.Message ?? response.Message
+                    );
+                }
+            }
+            catch (Exception ex)
+            {
+                // Exception execution message
+                GetExecutionMessages(model, false, null, MessagesResults.Error,
+                    ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message
+                );
+            }
+
+            return ExecutionMessage; // Return accumulated execution result
         }
 
         public async Task<List<StringValues>> GetAllPoliticalAsync()

@@ -2,159 +2,273 @@
 @using Resources
 
 <div class="card shadow p-3 mb-4">
-    <h5 class="text-primary mb-3">
-        <i class="mdi mdi-filter-outline me-1"></i> @GlobalLoan.GenerateLoanPortfolioReport
-    </h5>
-
-    <!-- 🔘 Main Toggle and Shared Filters -->
-    <div class="card p-3 mb-3 bg-light">
-        <div class="row mb-3">
-            <!-- Shared Branch Filter -->
-            <div class="col-md-3 form-check">
-                <input type="checkbox" class="form-check-input" id="byBranch" />
-                <label class="form-check-label fw-bold" for="byBranch">@GlobalLoan.FilterByBranch</label>
-            </div>
-
-            <!-- Master Report Type Toggle -->
-            <div class="col-md-3 form-check">
-                <input type="checkbox" class="form-check-input" id="toggleReportType" checked />
-                <label class="form-check-label fw-bold text-primary" id="toggleReportLabel" for="toggleReportType">Main Reports</label>
-            </div>
-
-            <div class="col-md-3 form-check">
-                <input type="checkbox" class="form-check-input" id="toggleloanreports" checked />
-                <label class="form-check-label fw-bold text-primary" id="toggleReportLabel" for="toggleReportType">Loan Reports</label>
-            </div>
-
-            <!-- Shared Date Range Filter -->
-            <div class="col-md-3 form-check">
-                <input type="checkbox" class="form-check-input" id="byDate" />
-                <label class="form-check-label fw-bold" for="byDate">@GlobalLoan.FilterByDateRange</label>
-            </div>
-        </div>
-
-        <!-- Shared Branch Dropdown -->
-        <div class="row mb-3" id="branchFilterSection" style="display: none;">
-            <div class="col-md-12">
-                <label for="BranchId" class="form-label fw-bold">@GlobalLoan.SelectBranch</label>
-                @Html.DropDownList("BranchId", new SelectList(ViewBag.Branches, "Id", "Name"), "---" + @GlobalLoan.SelectBranch + "---", new { @class = "form-control select2" })
-            </div>
-        </div>
-
-        <!-- Shared Date Range Inputs -->
-        <div class="row mb-3" id="dateRangeSection" style="display: none;">
-            <div class="col-md-6">
-                <label class="form-label fw-bold">@GlobalLoan.StartDate</label>
-                <input type="date" id="StartDate" class="form-control" />
-            </div>
-            <div class="col-md-6">
-                <label class="form-label fw-bold">@GlobalLoan.EndDate</label>
-                <input type="date" id="EndDate" class="form-control" />
-            </div>
-        </div>
+    <div class="card-header bg-white border-0 pb-0">
+        <h5 class="text-primary mb-0">
+            <i class="mdi mdi-filter-outline me-1"></i> @GlobalLoan.GenerateLoanPortfolioReport
+        </h5>
     </div>
 
-    <!-- 🧾 Main Reports Section -->
-    <div id="mainFilterSection" class="card p-3 mb-3 bg-light">
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label class="form-label fw-bold">@GlobalLoan.MainReportType</label>
-                <select id="MainReportType" class="form-select">
-                    @*<option value="CurrentLoan">@GlobalLoan.CurrentLoanSummary</option>*@
-                    <option value="DelinquentLoan">Loan Portfolio with Delinquency Insight</option>
-                    <option value="delinquentloansummary">Loan Delinquency Summary by PAR, Gender, and Loan Type</option>
-                    <option value="delinquentloanslistingwithaging">Delinquent Loans with Aging Breakdown</option>
-                    <option value="loansituations">Loan Situation Report (Current Performing Loans)</option>
-                    @*<option value="LoanByPurpose">@GlobalLoan.LoanByPurpose</option>*@
-                </select>
-                
+    <div class="card-body">
+        <!-- 🔘 Report Type Selection - Only one can be active -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-3">
+                <div class="form-check form-switch">
+                    <input type="checkbox" class="form-check-input report-type-toggle" id="toggleReportType" checked role="switch" />
+                    <label class="form-check-label fw-semibold" for="toggleReportType">
+                        <i class="mdi mdi-chart-box text-primary me-1"></i>Main Reports
+                    </label>
+                </div>
             </div>
-            <div class="col-md-6" id="subreportSection" style="display: none;">
-                <label class="form-label fw-bold">Subreport Type(s)</label>
-                <select id="SubReportType" class="form-select select2" multiple>
-                    <option value="Flat_AgeAndGender">@GlobalLoan.DelinquencyAccordingToAgesAndGender</option>
-                    <option value="Flat_AgeAndLoanType">@GlobalLoan.DelinquencyAccordingToAgesAndLoanTypes</option>
-                    <option value="Flat_ByZone">@GlobalLoan.DelinquencyAccordingToZones</option>
-                    <option value="Flat_ByLoanTerm">@GlobalLoan.DelinquencyAccordingToLoanTerms</option>
-                    <option value="Flat_ByTargetGroup">@GlobalLoan.DelinquencyAccordingToTargetGroups</option>
-                    <option value="Flat_ByCategory">@GlobalLoan.DelinquencyAccordingToCategories</option>
-                </select>
-                <small class="text">@GlobalLoan.HoldCtrlToSelectMultiple</small>
+            <div class="col-md-3">
+                <div class="form-check form-switch">
+                    <input type="checkbox" class="form-check-input report-type-toggle" id="toggleloanreports" role="switch" />
+                    <label class="form-check-label fw-semibold" for="toggleloanreports">
+                        <i class="mdi mdi-format-list-bulleted text-success me-1"></i>Loan Reports
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-check form-switch">
+                    <input type="checkbox" class="form-check-input report-type-toggle" id="toggleSSF" role="switch" />
+                    <label class="form-check-label fw-semibold" for="toggleSSF">
+                        <i class="mdi mdi-bank text-info me-1"></i>SSF Loan Reports
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-check form-switch">
+                    <input type="checkbox" class="form-check-input report-type-toggle" id="toggleDuration" role="switch" />
+                    <label class="form-check-label fw-semibold" for="toggleDuration">
+                        <i class="mdi mdi-timer-sand text-warning me-1"></i>Loan by Duration
+                    </label>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- 📊 Breakdown Reports Section -->
-    <div id="queryFilterSection" class="card p-3 mb-3 bg-light" style="display: none;">
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label class="form-label fw-bold">Filter Parameter</label>
-                <select id="QueryParam" class="form-select">
-                    <option value="">-- Select Parameter --</option>
-                    <option value="loanbygender">Loan by Gender</option>
-                    <option value="loanbytypes">Loan by Types</option>
-                    <option value="loanbytarget">Loan by Target</option>
-                    <option value="loanbystatus">Loan by Status</option>
-                    <option value="loanbyproduct">Loan by Product</option>
-                    <option value="loanbycategory">Loan by Category</option>
-                    <option value="loanbydelinquencyconfig">Loan by Delinquency Config</option>
-                    <option value="loanbylegalform">Loan by Legal Form</option>
-                </select>
+        <div class="row g-3 mb-4">
+            <div class="col-md-3">
+                <div class="form-check form-switch">
+                    <input type="checkbox" class="form-check-input report-type-toggle" id="togglePAR" role="switch" />
+                    <label class="form-check-label fw-semibold" for="togglePAR">
+                        <i class="mdi mdi-alert-circle text-danger me-1"></i>PAR Loan Reports
+                    </label>
+                </div>
             </div>
-            <div class="col-md-6">
-                <label class="form-label fw-bold">Filter Value</label>
-                <select id="QueryParamValue" class="form-select">
-                    <option value="">-- Select Value --</option>
-                </select>
+            <div class="col-md-3">
+                <div class="form-check form-switch">
+                    <input type="checkbox" class="form-check-input filter-toggle" id="byBranch" role="switch" />
+                    <label class="form-check-label fw-semibold" for="byBranch">
+                        <i class="mdi mdi-domain me-1"></i>@GlobalLoan.FilterByBranch
+                    </label>
+                </div>
             </div>
-        </div>
-    </div>
-    <div id="LoanReportsSection" class="card p-3 mb-3 bg-light" style="display: none;">
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label class="form-label fw-bold">Filter Parameter</label>
-                <select id="loanRep" class="form-select">
-                    @*<option value="">-- Sellect an option --</option>*@
-                    <option value="LoanListing">Loan History</option>
-                    <option value="current">Current Performing Loans</option>
-                    <option value="unpaid">Unpaid Loans</option>
-                    <option value="doubtful">Doubtful Loans</option>
-                    <option value="irrepayable">Irrepayable Loans</option>
-                    <option value="irrecoverable">Irrecoverable Loans</option>
-                </select>
-            </div>
-            <div class="col-md-6">
-                <label class="form-label fw-bold">Filter Value</label>
-                <select id="QueryParamValue" class="form-select">
-                    <option value="">-- Select Value --</option>
-                </select>
+            <div class="col-md-3">
+                <div class="form-check form-switch">
+                    <input type="checkbox" class="form-check-input filter-toggle" id="byDate" role="switch" />
+                    <label class="form-check-label fw-semibold" for="byDate">
+                        <i class="mdi mdi-calendar-range me-1"></i>@GlobalLoan.FilterByDateRange
+                    </label>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Export Format -->
-    <div class="row mb-3" style="display:none">
-        <div class="col-md-12">
-            <label class="form-label fw-bold">@GlobalLoan.ExportFormat</label>
-            <select id="ReportDownloadType" class="form-select">
-                <option value="PDF">PDF</option>
-                <option value="Excel">Excel</option>
-                <option value="Word">Word</option>
-            </select>
-        </div>
-    </div>
+        <!-- Shared Filters Section -->
+        <div class="card bg-light border-0 mb-4">
+            <div class="card-body">
+                <!-- Shared Branch Dropdown -->
+                <div class="row mb-3" id="branchFilterSection" style="display: none;">
+                    <div class="col-md-12">
+                        <label for="BranchId" class="form-label fw-semibold">
+                            <i class="mdi mdi-domain me-1"></i>@GlobalLoan.SelectBranch
+                        </label>
+                        @Html.DropDownList("BranchId", new SelectList(ViewBag.Branches, "Id", "Name"), "---" + @GlobalLoan.SelectBranch + "---", new { @class = "form-control select2", @placeholder = "Select branch..." })
+                    </div>
+                </div>
 
-    <!-- Buttons -->
-    <div class="row mb-3">
-        <div class="col-md-6 d-flex align-items-end">
-            <button id="generateReportBtn" class="btn btn-primary w-100">
-                <i class="mdi mdi-file-chart-outline me-1"></i> @GlobalLoan.GenerateReport
-            </button>
+                <!-- Shared Date Range Inputs -->
+                <div class="row" id="dateRangeSection" style="display: none;">
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">
+                            <i class="mdi mdi-calendar-start me-1"></i>@GlobalLoan.StartDate
+                        </label>
+                        <input type="date" id="StartDate" class="form-control" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">
+                            <i class="mdi mdi-calendar-end me-1"></i>@GlobalLoan.EndDate
+                        </label>
+                        <input type="date" id="EndDate" class="form-control" />
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-md-6 d-flex align-items-end">
-            <button id="resetReportBtn" class="btn btn-dark w-100">
-                <i class="mdi mdi-refresh me-1"></i> @GlobalLoan.ResetFilters
-            </button>
+
+        <!-- 🧾 Main Reports Section -->
+        <div id="mainFilterSection" class="card border-0 bg-light mb-3">
+            <div class="card-body">
+                <h6 class="card-subtitle mb-3 text-primary">
+                    <i class="mdi mdi-chart-box me-1"></i>Main Report Configuration
+                </h6>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">@GlobalLoan.MainReportType</label>
+                        <select id="MainReportType" class="form-select">
+                            <option value="DelinquentLoan">Loan Portfolio with Delinquency Insight</option>
+                            <option value="delinquentloansummary">Loan Delinquency Summary by PAR, Gender, and Loan Type</option>
+                            <option value="delinquentloanslistingwithaging">Delinquent Loans with Aging Breakdown</option>
+                            <option value="loansituations">Loan Situation Report (Current Performing Loans)</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6" id="subreportSection" style="display: none;">
+                        <label class="form-label fw-semibold">Subreport Type(s)</label>
+                        <select id="SubReportType" class="form-select select2" multiple>
+                            <option value="Flat_AgeAndGender">@GlobalLoan.DelinquencyAccordingToAgesAndGender</option>
+                            <option value="Flat_AgeAndLoanType">@GlobalLoan.DelinquencyAccordingToAgesAndLoanTypes</option>
+                            <option value="Flat_ByZone">@GlobalLoan.DelinquencyAccordingToZones</option>
+                            <option value="Flat_ByLoanTerm">@GlobalLoan.DelinquencyAccordingToLoanTerms</option>
+                            <option value="Flat_ByTargetGroup">@GlobalLoan.DelinquencyAccordingToTargetGroups</option>
+                            <option value="Flat_ByCategory">@GlobalLoan.DelinquencyAccordingToCategories</option>
+                        </select>
+                        <small class="text-muted"><i class="mdi mdi-information-outline me-1"></i>@GlobalLoan.HoldCtrlToSelectMultiple</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 📊 Breakdown Reports Section (Query Parameters) -->
+        <div id="queryFilterSection" class="card border-0 bg-light mb-3" style="display: none;">
+            <div class="card-body">
+                <h6 class="card-subtitle mb-3 text-success">
+                    <i class="mdi mdi-chart-pie me-1"></i>Breakdown Analysis
+                </h6>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Query Parameter</label>
+                        <select id="QueryParam" class="form-select">
+                            <option value="">-- Select Parameter --</option>
+                            <option value="loanbygender">Loan by Gender</option>
+                            <option value="loanbytypes">Loan by Types</option>
+                            <option value="loanbytarget">Loan by Target</option>
+                            <option value="loanbystatus">Loan by Status</option>
+                            <option value="loanbyproduct">Loan by Product</option>
+                            <option value="loanbycategory">Loan by Category</option>
+                            <option value="loanbydelinquencyconfig">Loan by Delinquency Config</option>
+                            <option value="loanbylegalform">Loan by Legal Form</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Query Parameter Value</label>
+                        <select id="QueryParamValue" class="form-select">
+                            <option value="">-- Select Value --</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 📋 Loan Reports Section -->
+        <div id="LoanReportsSection" class="card border-0 bg-light mb-3" style="display: none;">
+            <div class="card-body">
+                <h6 class="card-subtitle mb-3 text-success">
+                    <i class="mdi mdi-format-list-bulleted me-1"></i>Loan Report Selection
+                </h6>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Report Type</label>
+                        <select id="ReportType" name="ReportType" class="form-select">
+                            <option value="">-- Select an option --</option>
+                            <option value="loanListing">Loan History</option>
+                            <option value="current">Current Performing Loans</option>
+                            <option value="unpaid">Unpaid Loans</option>
+                            <option value="doubtful">Doubtful Loans</option>
+                            <option value="irrepayable">Irrepayable Loans</option>
+                            <option value="irrecoverable">Irrecoverable Loans</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 💰 SSF Loan Reports Section -->
+        <div id="SSFLoanSection" class="card border-0 bg-light mb-3" style="display: none;">
+            <div class="card-body">
+                <h6 class="card-subtitle mb-3 text-info">
+                    <i class="mdi mdi-bank me-1"></i>SSF Loan Reports
+                </h6>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">SSF Report Type</label>
+                        <select id="SSFReportType" class="form-select">
+                            <option value="">-- Select SSF Report --</option>
+                            <option value="ssf_current">Current SSF Loans</option>
+                            <option value="ssf_unpaid">Unpaid SSF Loans</option>
+                            <option value="ssf_doubtful">Doubtful SSF Loans</option>
+                            <option value="ssf_irrecoverable">Irrecoverable SSF Loans</option>
+                            <option value="ssf_portfolio">Complete SSF Portfolio</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ⏱️ Loan by Duration Section -->
+        <div id="DurationSection" class="card border-0 bg-light mb-3" style="display: none;">
+            <div class="card-body">
+                <h6 class="card-subtitle mb-3 text-warning">
+                    <i class="mdi mdi-timer-sand me-1"></i>Loan Duration Analysis
+                </h6>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Duration Category</label>
+                        <select id="DurationType" class="form-select">
+                            <option value="">-- Select Duration --</option>
+                            <option value="longterm">Long Term Current Loans (Duration > 24 months)</option>
+                            <option value="mediumterm">Medium Term Current Loans (12 - 24 months)</option>
+                            <option value="shortterm">Short Term Current Loans (< 12 months)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ⚠️ PAR Loan Section -->
+        <div id="PARSection" class="card border-0 bg-light mb-3" style="display: none;">
+            <div class="card-body">
+                <h6 class="card-subtitle mb-3 text-danger">
+                    <i class="mdi mdi-alert-circle me-1"></i>PAR Loan Analysis
+                </h6>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">PAR Category</label>
+                        <select id="PARType" class="form-select">
+                            <option value="">-- Select PAR Category --</option>
+                            <option value="longterm_unpaid">Long Term Unpaid Loans (Delinquent 1-44 days)</option>
+                            <option value="doubtful_loans">Doubtful Loans (Delinquent 45-360+ days)</option>
+                            <option value="irrecoverable_loans">Irrecoverable Loans (Delinquent > 3 years, fully provisioned)</option>
+                            <option value="all_loans">All Loans (Without discrimination)</option>
+                            <option value="loans_granted_period">Loans Granted for a Specific Period</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hidden Export Format (kept for compatibility) -->
+        <input type="hidden" id="ReportDownloadType" value="PDF" />
+
+        <!-- Action Buttons -->
+        <div class="row g-3 mt-3">
+            <div class="col-md-6">
+                <button id="generateReportBtn" class="btn btn-primary w-100">
+                    <i class="mdi mdi-file-chart-outline me-1"></i> @GlobalLoan.GenerateReport
+                </button>
+            </div>
+            <div class="col-md-6">
+                <button id="resetReportBtn" class="btn btn-outline-secondary w-100">
+                    <i class="mdi mdi-refresh me-1"></i> @GlobalLoan.ResetFilters
+                </button>
+            </div>
         </div>
     </div>
 </div>
+

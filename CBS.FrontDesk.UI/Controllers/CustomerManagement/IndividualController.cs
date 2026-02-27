@@ -1,4 +1,5 @@
 ﻿using CBS.BusinessService.Accounting;
+using CBS.BusinessService.AccountingV2.AccountingYear;
 using CBS.BusinessService.AccountingV2.GLSystemReconciliation;
 using CBS.BusinessService.AccountingV2.JournalHead;
 using CBS.BusinessService.Accounts;
@@ -9,6 +10,7 @@ using CBS.BusinessService.MembersAccountSettings;
 using CBS.BusinessService.Session;
 using CBS.BusinessService.UserManagement;
 using CBS.FrontDesk.Data.Entity;
+using CBS.FrontDesk.Data.Entity.AccountingV2.AccountingYear;
 using CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation;
 using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.CustomerManagement;
@@ -288,7 +290,7 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
        
 
         [HttpGet]
-        public async Task<JsonResult> MemberStausDetails(string id)
+        public async Task<JsonResult> MemberStatusDetails(string id)
         {
             if (string.IsNullOrEmpty(id))
                 return Json(new { success = false, message = "Member Status ID is required." }, JsonRequestBehavior.AllowGet);
@@ -317,6 +319,36 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
                 return Json(new { success = false, message = "An unexpected error occurred." }, JsonRequestBehavior.AllowGet);
             }
         }
+
+
+        public async Task<ActionResult> Updates(MemberStatus model)
+        {
+
+            if (model == null)
+                return Json(new { success = false, message = "Invalid or empty model." });
+
+            try
+            {
+                    // Id present → update existing record
+                    var result = await _individualProfileServices.UpdateAsync(model);
+
+                    if (result == null)
+                        return Json(new { success = false, message = "No response from service." });
+
+                    return Json(new
+                    {
+                        success = result.Result,
+                        message = Messaging.MessageResult(result),
+                        data = result.Data
+                    });
+                
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = $"❌ Error: {ex.Message}" });
+            }
+        }
+
 
         [HttpPost]
         public async Task<ActionResult> Create(IndividualProfile model)

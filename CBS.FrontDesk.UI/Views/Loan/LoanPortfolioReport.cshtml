@@ -49,137 +49,178 @@
 
 @section Scripts {
     <script src="~/Scripts/Js/Crud/Loan/Portfolio/loanPortfolioReport.js"></script>
+
     <script>
-$(function () {
+    $(function () {
+        // Initialize Select2
+        $('.select2').select2({ width: '100%' });
 
-    /* ================= RESET FUNCTIONS ================= */
-
-    function resetMainReport() {
-        $('#MainReportType').val('DelinquentLoan');
-        $('#SubReportType').val([]).trigger('change');
-    }
-
-    function resetQueryParam() {
-        $('#QueryParam').val('');
-        $('#QueryParamValue').html('<option value="">-- Select Value --</option>');
-    }
-
-    function resetLoanReports() {
-        $('#loanRep').val('LoanListing');
-    }
-
-    function resetDateBranch() {
-        $('#BranchId').val('').trigger('change');
-        $('#StartDate, #EndDate').val('');
-    }
-
-    /* ================= SECTION TOGGLING ================= */
-
-    function toggleSections() {
-
-        const isMain = $('#toggleReportType').is(':checked');
-        const isLoanReports = $('#toggleloanreports').is(':checked');
-
-        // Only allow ONE main type active at a time
-        if (isMain) {
-            $('#toggleloanreports').prop('checked', false);
+        /* ================= RESET FUNCTIONS ================= */
+        function resetAllSections() {
+            resetMainReport();
+            resetQueryParam();
+            resetLoanReports();
+            resetSSFReports();
+            resetDurationReports();
+            resetPARReports();
+            resetDateBranch();
         }
 
-        if (isLoanReports) {
-            $('#toggleReportType').prop('checked', false);
+        function resetMainReport() {
+            $('#MainReportType').val('DelinquentLoan');
+            $('#SubReportType').val([]).trigger('change');
         }
 
-        const mainActive = $('#toggleReportType').is(':checked');
-        const loanActive = $('#toggleloanreports').is(':checked');
-
-        $('#mainFilterSection').toggle(mainActive);
-        $('#queryFilterSection').toggle(!mainActive && !loanActive);
-        $('#LoanReportsSection').toggle(loanActive);
-
-        resetMainReport();
-        resetQueryParam();
-        resetLoanReports();
-    }
-
-    function toggleBranch() {
-        $('#branchFilterSection').toggle($('#byBranch').is(':checked'));
-    }
-
-    function toggleDate() {
-        $('#dateRangeSection').toggle($('#byDate').is(':checked'));
-    }
-
-    /* ================= EVENTS ================= */
-
-    $('#toggleReportType').on('change', toggleSections);
-    $('#toggleloanreports').on('change', toggleSections);
-
-    $('#byBranch').on('change', toggleBranch);
-    $('#byDate').on('change', toggleDate);
-
-    // Subreport toggle (if needed later)
-    $('#MainReportType').on('change', function () {
-        $('#subreportSection').toggle($(this).val() === 'All');
-    });
-
-    // Breakdown dynamic loader
-    $('#QueryParam').on('change', function () {
-        const selectedParam = $(this).val();
-        const $dropdown = $('#QueryParamValue');
-
-        $dropdown.html('<option>Loading...</option>');
-
-        if (!selectedParam) {
-            $dropdown.html('<option value="">-- Select Value --</option>');
-            return;
+        function resetQueryParam() {
+            $('#QueryParam').val('');
+            $('#QueryParamValue').html('<option value="">-- Select Value --</option>');
         }
 
-        $.get('@Url.Action("GetLoanFilterValues", "Loan")',
-            { queryParam: selectedParam },
-            function (data) {
-                $dropdown.empty().append('<option value="">-- Select Value --</option>');
-                $.each(data, function (i, val) {
-                    $dropdown.append(`<option value="${val}">${val}</option>`);
-                });
+        function resetLoanReports() {
+            $('#ReportType').val('');
+        }
+
+        function resetSSFReports() {
+            $('#SSFReportType').val('');
+        }
+
+        function resetDurationReports() {
+            $('#DurationType').val('');
+        }
+
+        function resetPARReports() {
+            $('#PARType').val('');
+        }
+
+        function resetDateBranch() {
+            $('#BranchId').val('').trigger('change');
+            $('#StartDate, #EndDate').val('');
+        }
+
+        /* ================= SECTION TOGGLING ================= */
+
+        // Report type toggles - only one can be active
+        $('.report-type-toggle').on('change', function() {
+            if ($(this).is(':checked')) {
+                // Uncheck all other report type toggles
+                $('.report-type-toggle').not(this).prop('checked', false);
+                toggleReportSections();
+            } else {
+                // If this was the only checked one and we uncheck it, check main by default
+                if ($('.report-type-toggle:checked').length === 0) {
+                    $('#toggleReportType').prop('checked', true);
+                }
+                toggleReportSections();
             }
-        ).fail(function () {
-            $dropdown.html('<option value="">-- Load Failed --</option>');
         });
-    });
 
-    /* ================= RESET BUTTON ================= */
+        function toggleReportSections() {
+            const isMainReport = $('#toggleReportType').is(':checked');
+            const isLoanReport = $('#toggleloanreports').is(':checked');
+            const isSSFReport = $('#toggleSSF').is(':checked');
+            const isDurationReport = $('#toggleDuration').is(':checked');
+            const isPARReport = $('#togglePAR').is(':checked');
 
-    $('#resetReportBtn').on('click', function () {
+            // Show/hide sections based on active toggles
+            $('#mainFilterSection').toggle(isMainReport);
+            $('#LoanReportsSection').toggle(isLoanReport);
+            $('#SSFLoanSection').toggle(isSSFReport);
+            $('#DurationSection').toggle(isDurationReport);
+            $('#PARSection').toggle(isPARReport);
 
-        $('input[type=checkbox]').prop('checked', false);
+            // Query filter section is only visible when Main Report is active AND 'All' is selected
+            if (isMainReport) {
+                $('#queryFilterSection').toggle($('#MainReportType').val() === 'All');
+            } else {
+                $('#queryFilterSection').hide();
+            }
 
-        resetMainReport();
-        resetQueryParam();
-        resetLoanReports();
-        resetDateBranch();
+            // Subreport section logic
+            if (isMainReport) {
+                $('#subreportSection').toggle($('#MainReportType').val() === 'All');
+            } else {
+                $('#subreportSection').hide();
+            }
+        }
 
-        $('#ReportDownloadType').val('PDF');
+        // Filter toggles - independent and show/hide correctly
+        $('.filter-toggle').on('change', function() {
+            const filterId = $(this).attr('id');
 
-        // Default to Main Reports
+            if (filterId === 'byBranch') {
+                if ($(this).is(':checked')) {
+                    $('#branchFilterSection').slideDown();
+                } else {
+                    $('#branchFilterSection').slideUp();
+                }
+            } else if (filterId === 'byDate') {
+                if ($(this).is(':checked')) {
+                    $('#dateRangeSection').slideDown();
+                } else {
+                    $('#dateRangeSection').slideUp();
+                }
+            }
+        });
+
+        // Main Report Type change handler
+        $('#MainReportType').on('change', function() {
+            const isAllSelected = $(this).val() === 'All';
+            $('#subreportSection').toggle(isAllSelected);
+            $('#queryFilterSection').toggle(isAllSelected);
+        });
+
+        // Query Param change handler
+        $('#QueryParam').on('change', function () {
+            const selectedParam = $(this).val();
+            const $dropdown = $('#QueryParamValue');
+
+            $dropdown.html('<option>Loading...</option>');
+
+            if (!selectedParam) {
+                $dropdown.html('<option value="">-- Select Value --</option>');
+                return;
+            }
+
+            $.get('@Url.Action("GetLoanFilterValues", "Loan")',
+                { queryParam: selectedParam },
+                function (data) {
+                    $dropdown.empty().append('<option value="">-- Select Value --</option>');
+                    $.each(data, function (i, val) {
+                        $dropdown.append(`<option value="${val}">${val}</option>`);
+                    });
+                }
+            ).fail(function () {
+                $dropdown.html('<option value="">-- Load Failed --</option>');
+            });
+        });
+
+        /* ================= RESET BUTTON ================= */
+        $('#resetReportBtn').on('click', function () {
+            // Uncheck all toggles
+            $('input[type=checkbox]').prop('checked', false);
+
+            // Set default: Main Reports checked
+            $('#toggleReportType').prop('checked', true);
+
+            // Reset all selections
+            resetAllSections();
+
+            // Update UI
+            toggleReportSections();
+
+            // Hide filter sections (since they're unchecked)
+            $('#branchFilterSection, #dateRangeSection').hide();
+        });
+
+        /* ================= INITIAL STATE ================= */
         $('#toggleReportType').prop('checked', true);
+        toggleReportSections();
 
-        toggleSections();
-        toggleBranch();
-        toggleDate();
+        // Ensure filter sections are hidden initially
+        $('#branchFilterSection, #dateRangeSection').hide();
     });
 
-    /* ================= INIT ================= */
 
-    $('.select2').select2({ width: '100%' });
-
-    // Default state
-    $('#toggleReportType').prop('checked', true);
-    $('#toggleloanreports').prop('checked', false);
-
-    toggleSections();
-    toggleBranch();
-    toggleDate();
-});
     </script>
 
 }
