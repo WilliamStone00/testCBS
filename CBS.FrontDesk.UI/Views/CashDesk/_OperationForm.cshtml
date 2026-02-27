@@ -860,7 +860,7 @@ else if (ViewBag.Operation == "cashout")
                                             m => m.WithdrawalPurposeCode,
                                             ViewBag.WithdrawalPurpose as IEnumerable<SelectListItem>,
                                             "--- Select Purpose of Withdrawal ---",
-                                            new { @class = "form-control select2", id = "Value" }
+                                            new { @class = "form-control select2", id = "WithdrawalPurposeCode" }
                                         )
                                         <label for="WithdrawalPurposeCode">Purpose of Withdrawal</label>
                                     </div>

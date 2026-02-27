@@ -85,6 +85,18 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
                 .OrderBy(x => x.Text)
                 .ToList()
                 ?? new List<SelectListItem>();
+
+            var politicalstatus = await _individualProfileServices.GetAllPoliticalAsync(); // however you fetch them
+
+            ViewBag.politicalstatuses = politicalstatus?
+                .Select(s => new SelectListItem
+                {
+                    Value = s.Value,
+                    Text = $"[{s.Text}]"
+                })
+                .OrderBy(x => x.Text)
+                .ToList()
+                ?? new List<SelectListItem>();
             return View(customer);
         }
         public async Task<ActionResult> MyMembers()
@@ -279,7 +291,7 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
                 .Select(s => new SelectListItem
                 {
                     Value = s.Value,
-                    Text = $"[{s.Text}] - [{s.Value}]"
+                    Text = $"[{s.Text}]"
                 })
                 .OrderBy(x => x.Text)
                 .ToList()
