@@ -14,11 +14,11 @@
                         <h5 class="card-title">@GlobalIndividual.LegalFormStatus</h5>
                         <div class="form-check">
                             @Html.RadioButtonFor(m => m.LegalFormStatus, "Moral_Person", new { @class = "form-check-input", @id = "legalFormMoral" })
-                            <label class="form-check-label" for="legalFormMoral">@GlobalIndividual.MoralPerson</label>
+                            <label class="form-check-label" for="legalFormMoral">Moral Person</label>
                         </div>
                         <div class="form-check">
                             @Html.RadioButtonFor(m => m.LegalFormStatus, "Physical_Person", new { @class = "form-check-input", @id = "legalFormPhysical" })
-                            <label class="form-check-label" for="legalFormPhysical">@GlobalIndividual.PhysicalPerson</label>
+                            <label class="form-check-label" for="legalFormPhysical">Physical Person</label>
                         </div>
                         <div class="form-check">
                             @Html.RadioButtonFor(m => m.LegalFormStatus, "Both", new { @class = "form-check-input", @id = "legalFormBoth" })
@@ -33,15 +33,15 @@
                         <h5 class="card-title">@GlobalIndividual.MemberStatusType</h5>
                         <div class="form-check">
                             @Html.RadioButtonFor(m => m.MembersStatusType, "Approved", new { @class = "form-check-input", @id = "memberStatusApproved" })
-                            <label class="form-check-label" for="memberStatusApproved">@GlobalIndividual.Approved</label>
+                            <label class="form-check-label" for="memberStatusApproved">Approved</label>
                         </div>
                         <div class="form-check">
                             @Html.RadioButtonFor(m => m.MembersStatusType, "Pending", new { @class = "form-check-input", @id = "memberStatusPending" })
-                            <label class="form-check-label" for="memberStatusPending">@GlobalIndividual.Pending</label>
+                            <label class="form-check-label" for="memberStatusPending">Pending</label>
                         </div>
                         <div class="form-check">
                             @Html.RadioButtonFor(m => m.MembersStatusType, "All", new { @class = "form-check-input", @id = "memberStatusAll" })
-                            <label class="form-check-label" for="memberStatusAll">@GlobalIndividual.All</label>
+                            <label class="form-check-label" for="memberStatusAll">All</label>
                         </div>
                     </div>
                 </div>
@@ -58,7 +58,7 @@
                         </div>
                         <div class="form-check">
                             @Html.RadioButtonFor(m => m.QueryParameter, "All", new { @class = "form-check-input", @id = "queryAll", @onclick = "toggleDateQuery(false)" })
-                            <label class="form-check-label" for="queryAll">@GlobalIndividual.All</label>
+                            <label class="form-check-label" for="queryAll">All</label>
                         </div>
                     </div>
                 </div>
@@ -69,16 +69,16 @@
                         <h5 class="card-title">@GlobalIndividual.DateQuery</h5>
                         <div class="row g-4">
                             <div class="col-md-6">
-                                <label for="dateFromInput">@GlobalIndividual.DateFrom</label>
+                                <label for="dateFromInput">Date From</label>
                                 <div class="input-group">
-                                    @Html.TextBoxFor(m => m.DateFrom, new { @class = "form-control shadow-box date-picker", @id = "dateFromInput", @placeholder = @GlobalIndividual.DateFrom, @disabled = "disabled" })
+                                    @Html.TextBoxFor(m => m.DateFrom, new { @class = "form-control shadow-box date-picker", @id = "dateFromInput", @placeholder = "Date From", @disabled = "disabled" })
                                 </div>
                                 @Html.ValidationMessageFor(m => m.DateFrom, "", new { @class = "text-danger" })
                             </div>
                             <div class="col-md-6">
-                                <label for="dateToInput">@GlobalIndividual.DateTo</label>
+                                <label for="dateToInput">Date To</label>
                                 <div class="input-group">
-                                    @Html.TextBoxFor(m => m.DateTo, new { @class = "form-control shadow-box date-picker", @id = "dateToInput", @placeholder = @GlobalIndividual.DateTo, @disabled = "disabled" })
+                                    @Html.TextBoxFor(m => m.DateTo, new { @class = "form-control shadow-box date-picker", @id = "dateToInput", @placeholder = "Date To", @disabled = "disabled" })
                                 </div>
                                 @Html.ValidationMessageFor(m => m.DateTo, "", new { @class = "text-danger" })
                             </div>
@@ -92,8 +92,8 @@
             <div class="row g-4">
                 <!-- Branches Dropdown -->
                 <div class="col-md-12" id="branchDiv">
-                    <label for="branchInput">@GlobalIndividual.Branch</label>
-                    @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "id", "name"), "---"+ @GlobalIndividual.SelectBranch+"---", new { @class = "form-control shadow-box select2", @id = "branchInput" })
+                    <label for="branchInput">Branch</label>
+                    @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "id", "name"), "--- SelectBranch---", new { @class = "form-control shadow-box select2", @id = "branchInput" })
                     @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
                 </div>
             </div>
