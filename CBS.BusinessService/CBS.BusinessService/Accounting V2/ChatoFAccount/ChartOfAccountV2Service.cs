@@ -2,6 +2,7 @@
 using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.BranchAccount;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.HoPcmfAccount;
+using CBS.FrontDesk.Data.Entity.AccountingV2.SharedMonth;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
@@ -555,7 +556,26 @@ namespace CBS.BusinessService.Accounting_V2
             // depth 0 could be root server icon
             return node.Depth == 0 ? "fas fa-server text-warning" : "fas fa-folder text-primary";
         }
+
+        public async Task<ApiResponse<ServiceResponse<ChartOfAccountFileUpload>>> COAUpload(ChartOfAccountFileUpload model)
+        {
+            if (model?.File == null)
+                throw new ArgumentNullException(nameof(model.File), "Please select a file to upload.");
+
+            // ✅ API endpoint for Shared Month upload
+            var endpoint = APICallHelper.SharedMonthUpload;
+
+            // 🚀 Upload only the file
+            var result = await _apiHelper.UploadCOAFileAsync<
+                ServiceResponse<ChartOfAccountFileUpload>>(
+                    model.File,
+                    endpoint
+            );
+
+            return result;
+        }
+
     }
-   
+
 
 }

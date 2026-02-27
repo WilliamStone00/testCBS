@@ -6,28 +6,36 @@
 <div class="card">
     <div class="card-body">
         <div class="table-responsive">
-            <table id="myDataTable" class="table table-striped table-hover table-bordered" style="width:100%">
+            <table id="myDataTable"
+                   class="table table-striped table-hover table-bordered"
+                   style="width:100%">
+
                 <colgroup>
-                    <col style="width:15%" />  
-                    <col style="width:15%" />  
-                    <col style="width:40%" />  
-                    <col style="width:15%" />  
-                    <col style="width:15%" />   
+                    <col style="width:12%" />  <!-- Created Date -->
+                    <col style="width:15%" />  <!-- Account Number -->
+                    <col style="width:25%" />  <!-- Name -->
+                    <col style="width:12%" />  <!-- Class -->
+                    <col style="width:12%" />  <!-- Nature -->
+                    <col style="width:12%" />  <!-- PostCode -->
+                    <col style="width:12%" />  <!-- Actions -->
                 </colgroup>
 
                 <thead class="table-light">
                     <tr>
                         <th>@GlobalShared.Created_Date</th>
+                        <th>Code Post</th>
                         <th>@GlobalShared.Account_Number</th>
                         <th>@GlobalShared.Name</th>
                         <th>@GlobalShared.Class</th>
-                        @*<th>@AccountingV2.ParentId</th>*@
-                        <th style="width:160px">@GlobalShared.Actions</th>
+                        <th>Nature</th>
+                        <th>PostCode</th>
+                        <th style="width:150px">@GlobalShared.Actions</th>
                     </tr>
                 </thead>
 
-                <tbody>                  
+                <tbody>
                 </tbody>
+
             </table>
         </div>
     </div>

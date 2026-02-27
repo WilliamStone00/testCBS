@@ -927,12 +927,27 @@
             render: function (val) {
               return val ? (window.moment ? moment(val).format('DD/MM/YYYY HH:mm:ss') : val) : '-';
             }
-          },
+            },
+            {
+                data: 'PostCode',
+                name: 'PostCode',
+                render: function (data, type, row) {
+                    return data ? data : '-';
+                }
+            },
           { data: 'BranchName', name: 'Branch Name' },
           { data: 'Code', name: 'Code' },
           { data: 'Name', name: 'Name' },
           { data: 'Class', name: 'Class' },
           { data: 'AffiliateAccountName', name: 'AffiliateAccountName' },
+            {
+                data: 'Nature',
+                name: 'Nature',
+                render: function (data, type, row) {
+                    return data ? data : '-';
+                }
+            },
+            
           {
             data: null,
             orderable: false,

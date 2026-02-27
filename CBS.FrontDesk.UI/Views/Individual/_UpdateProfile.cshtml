@@ -138,6 +138,34 @@
                 <label>Select Member Status</label>
             </div>
         </div>
+
+
+
+        <div class="col-md-4">
+            @Html.CheckBoxFor(model => model.CustomerList.IsPoliticaExposed, new { @class = "form-check-input" })
+            @Html.LabelFor(model => model.CustomerList.IsPoliticaExposed, "Select Exposed status", new { @class = "form-check-label" })
+        </div>
+        <div id="pepDetails" class="row">
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    @Html.DropDownListFor(m => m.CustomerList.PoliticaExposedQuestion,
+                        ViewBag.politicalstatuses as List<SelectListItem>,
+                        "--- Select  status ---",
+                        new { @class = "form-control select2", @required = "required" })
+
+                    @Html.ValidationMessageFor(m => m.CustomerList.PoliticaExposedQuestion, "", new { @class = "text-danger" })
+                    <label>Polictical question</label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.CustomerList.PoliticaExposedAnswer, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.CustomerList.PoliticaExposedAnswer, "", new { @class = "text-danger" })
+                    <label>Political Response</label>
+                </div>
+            </div>
+        </div>
         <!-- Address Info -->
         <div class="col-12">
             <h5 class="mt-2"><b>2. @GlobalIndividual.AddressInfo</b></h5>

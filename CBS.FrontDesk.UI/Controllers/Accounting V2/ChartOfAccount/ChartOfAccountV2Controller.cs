@@ -1,16 +1,25 @@
 ﻿using CBS.BusinessService.Accounting;
 using CBS.BusinessService.Accounting_V2;
 using CBS.BusinessService.Accounting_V2.AffiliateAccounts;
+using CBS.BusinessService.Accounting_V2.ChatoFAccount;
+using CBS.BusinessService.Accounting_V2.JournalEntries;
+using CBS.BusinessService.AccountingV2.JournalHead;
+using CBS.BusinessService.AccountingV2.SharedMonth;
 using CBS.BusinessService.CheckManagementSystem;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Affiliate;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.AffiliateAccount;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.HoPcmfAccount;
+using CBS.FrontDesk.Data.Entity.Accounting_V2.Queries;
+using CBS.FrontDesk.Data.Entity.Accounting_V2.Reporting.FlatBaseE;
+using CBS.FrontDesk.Data.Entity.AccountingV2.SharedMonth;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem;
 using CBS.FrontDesk.Data.Message;
+using CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -24,14 +33,16 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2
         private readonly ChartOfAccountsV2Service _accountsService2;
         private readonly BranchServices _branchServices;
         private readonly AffiliateAccountMockService _affiliateAccountMockService;
+        private readonly PcmfExcelGenerator _pcmfExcelGenerator; // Add this
 
         // Constructor DI: make sure you register ChartOfAccountsV2Service in your DI container
-        public ChartOfAccountV2Controller(ChartOfAccountsV2mockService accountsService, BranchServices branchServices, AffiliateAccountMockService affiliateAccountMockService, ChartOfAccountsV2Service chartOfAccountsV2Service)
+        public ChartOfAccountV2Controller(ChartOfAccountsV2mockService accountsService, BranchServices branchServices, AffiliateAccountMockService affiliateAccountMockService, ChartOfAccountsV2Service chartOfAccountsV2Service, PcmfExcelGenerator pcmfExcelGenerator)
         {
             _accountsService = accountsService;
             _branchServices = branchServices;
             _affiliateAccountMockService = affiliateAccountMockService;
             _accountsService2 = chartOfAccountsV2Service;
+            _pcmfExcelGenerator = pcmfExcelGenerator;
         }
 
        
@@ -41,7 +52,11 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2
             
             return View();
         }
+        public ActionResult UploadFile()
+        {
 
+            return View();
+        }
         [HttpGet]
         public async Task<ActionResult> ListByClass(string cls)
         {
@@ -229,5 +244,103 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2
         //        return Json(new { success = false, message = "Failed to delete account." }, JsonRequestBehavior.AllowGet);
         //    }
         //}
+
+
+
+
+        [HttpGet]
+        
+
+        public async Task<ActionResult> DownloadExcel(GetHoPcmfCoaQuery model)
+        {
+            try
+            {
+
+                //var data = await _journalHeadService.GetJournalHeaderDataTableAsync(query);
+
+                
+                var data = await _accountsService2.GetDataTableAsync(model);
+                var accounts = JsonConvert.DeserializeObject<List<HoPcmfAccountTreeDto>>(
+                    JsonConvert.SerializeObject(data.data));
+
+              
+
+                if (accounts == null || !accounts.Any())
+                {
+                    return Json(new
+                    {
+                        success = false,
+                        message = "No data available for export."
+                    }, JsonRequestBehavior.AllowGet);
+                }
+
+                string exportedBy = Session["FullName"]?.ToString() ?? "System";
+
+                byte[] excelBytes = _pcmfExcelGenerator.ExportPcmfAccountTree(
+                    accounts,
+                    exportedBy,
+                    "PCMF DETAILS",
+                    model
+                );
+
+                string fileName = $"PCMF_ChartOfAccounts_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx";
+
+                return File(
+                    excelBytes,
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    fileName
+                );
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = ex.Message
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public async Task<ActionResult> UploadchartofAccountFile(ChartOfAccountFileUpload model)
+        {
+            try
+            {
+
+                if (model.File == null || model.File.ContentLength == 0)
+                    return Json(new { success = false, message = "No file provided." });
+
+               
+
+                // Call service
+                var response = await _accountsService2.COAUpload(model);
+
+                if (response?.IsSuccess == true && response.ApiResponseData != null)
+                {
+                    return Json(new
+                    {
+                        success = true,
+                        message = response.ApiResponseData.Message ?? "File uploaded successfully.",
+                        data = response.ApiResponseData.Data
+                    });
+                }
+
+                // Service-level failure
+                var msg = response?.ApiResponseData?.Message
+                          ?? response?.Message
+                          ?? "Upload failed.";
+
+                return Json(new { success = false, message = msg });
+            }
+            catch (Exception ex)
+            {
+                // TODO: log ex
+                return Json(new
+                {
+                    success = false,
+                    message = ex.Message,
+                    error = ex.Message
+                });
+            }
+        }
     }
 }

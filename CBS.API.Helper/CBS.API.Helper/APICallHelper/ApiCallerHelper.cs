@@ -4739,8 +4739,44 @@ namespace CBS.API.Helper
             }
         }
 
+        public async Task<ApiResponse<T>> UploadCOAFileAsync<T>(HttpPostedFileBase file, string apiUrl)
+        {
+            if (file == null)
+                throw new ArgumentNullException(nameof(file));
 
-        // Usage Examples:
+            try
+            {
+                apiUrl = RemoveDuplicateSlashes($"{GetEndpoint(_newbaseURL)}{apiUrl}");
+
+                using (var formData = new MultipartFormDataContent())
+                {
+                    // Reset stream
+                    if (file.InputStream.CanSeek)
+                        file.InputStream.Position = 0;
+
+                    // File content
+                    var fileContent = new StreamContent(file.InputStream);
+                    fileContent.Headers.ContentType =
+                        new MediaTypeHeaderValue(file.ContentType ?? "application/octet-stream");
+
+                    var fileName = Path.GetFileName(file.FileName ?? "upload.bin");
+                    formData.Add(fileContent, "file", fileName);
+
+                    // Add auth header
+                    AddAuthorizationHeader(_httpClient);
+
+                    // Send request
+                    var response = await _httpClient.PostAsync(apiUrl, formData).ConfigureAwait(false);
+
+                    return await HandleResponse<T>(response).ConfigureAwait(false);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"COA upload error: {ex}");
+                throw;
+            }
+        }        // Usage Examples:
 
         // 1. Fire-and-forget with callback
         //public void UploadWithCallback()

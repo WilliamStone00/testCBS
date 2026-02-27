@@ -394,13 +394,16 @@
             const v = row.CreatedDate || row.createdDate || row.CreatedOn || row.createdOn;
             return v ? (window.moment ? moment(v).format('DD/MM/YYYY HH:mm:ss') : v) : '-';
           }
-        },
+          },
+          { data: 'PostCode', name: 'PostCode', render: (d, t, row) => row.PostCode || row.postCode || '-' },
         {
           data: 'Code', name: 'AccountNumber',
           render: function(d,t,row){ return row.AccountNumber || row.accountNumber || row.Code || row.code || ''; }
         },
         { data: 'Name',  name: 'Name',  render: (d,t,row) => row.Name || row.name || row.NameEn || row.nameEn || '' },
-        { data: 'Class', name: 'Class', render: (d,t,row) => row.Class || row.class || '' },
+          { data: 'Class', name: 'Class', render: (d, t, row) => row.Class || row.class || '' },
+          { data: 'Nature', name: 'Nature', render: (d, t, row) => row.Nature || row.nature || '-' },
+         
         { data: null, orderable: false, searchable: false, className: 'text-end', render: (d,t,row) => actionButtons(row) }
       ],
       language: { emptyTable: 'No affiliates found' }
