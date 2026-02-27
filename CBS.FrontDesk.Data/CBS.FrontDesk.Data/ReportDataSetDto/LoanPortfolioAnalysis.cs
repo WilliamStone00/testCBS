@@ -81,27 +81,31 @@ namespace CBS.FrontDesk.Data.ReportDataSetDto
 
     public class GenerateLoanPortfolioReportCommand
     {
+        // Base Filters
         public string BranchId { get; set; }
-
-        public string ReportType { get; set; }
         public string StartDate { get; set; }
-
         public string EndDate { get; set; }
-
-        public string SubReportType { get; set; } // Comma-separated for multi-select
-
         public string ReportDownloadType { get; set; } // PDF, Excel, Word
 
-        public string MainReportType { get; set; } // All, CurrentLoan, DelinquentLoan, LoanByPurpose
+        // Report Types - Only one of these will have a value at a time
+        public string ReportType { get; set; } // For Loan Reports, SSF Reports, Duration Reports, PAR Reports
+        public string MainReportType { get; set; } // For Main Reports (DelinquentLoan, delinquentloansummary, etc.)
 
-        // ✅ New: Apply filtering based on selected loan portfolio category (e.g., Gender, Type)
+        // Sub Reports (for Main Reports when "All" is selected)
+        public string SubReportType { get; set; } // Comma-separated for multi-select
+
+        // Query Parameter Filtering (for Main Reports when "All" is selected)
         public bool FilterByParam { get; set; }
-
         public string QueryParam { get; set; } // e.g., "loanbygender", "loanbyproduct"
-
         public string QueryParamValue { get; set; } // e.g., "Male", "Micro Loan"
-    }
 
+        // Additional properties to identify which report section is active
+        public bool IsMainReport { get; set; }
+        public bool IsLoanReport { get; set; }
+        public bool IsSSFReport { get; set; }
+        public bool IsDurationReport { get; set; }
+        public bool IsPARReport { get; set; }
+    }
 
     public class LoanPortfolioAnalysis
     {

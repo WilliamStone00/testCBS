@@ -155,7 +155,7 @@
               <xs:element name="TotalLoanCount" msprop:Generator_ColumnPropNameInTable="TotalLoanCountColumn" msprop:Generator_ColumnPropNameInRow="TotalLoanCount" msprop:Generator_UserColumnName="TotalLoanCount" msprop:Generator_ColumnVarNameInTable="columnTotalLoanCount" type="xs:int" minOccurs="0" />
               <xs:element name="TotalCapital" msprop:Generator_ColumnPropNameInTable="TotalCapitalColumn" msprop:Generator_ColumnPropNameInRow="TotalCapital" msprop:Generator_UserColumnName="TotalCapital" msprop:Generator_ColumnVarNameInTable="columnTotalCapital" type="xs:decimal" minOccurs="0" />
               <xs:element name="TotalOutstandingLoanBalance" msprop:Generator_ColumnPropNameInTable="TotalOutstandingLoanBalanceColumn" msprop:Generator_ColumnPropNameInRow="TotalOutstandingLoanBalance" msprop:Generator_UserColumnName="TotalOutstandingLoanBalance" msprop:Generator_ColumnVarNameInTable="columnTotalOutstandingLoanBalance" type="xs:decimal" minOccurs="0" />
-              <xs:element name="SavingBalance" msprop:Generator_UserColumnName="SavingBalance" msprop:Generator_ColumnPropNameInTable="SavingBalanceColumn" msprop:Generator_ColumnPropNameInRow="SavingBalance" msprop:Generator_ColumnVarNameInTable="columnSavingBalance" type="xs:decimal" minOccurs="0" />
+              <xs:element name="SavingBalance" msprop:Generator_ColumnPropNameInTable="SavingBalanceColumn" msprop:Generator_ColumnPropNameInRow="SavingBalance" msprop:Generator_UserColumnName="SavingBalance" msprop:Generator_ColumnVarNameInTable="columnSavingBalance" type="xs:decimal" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

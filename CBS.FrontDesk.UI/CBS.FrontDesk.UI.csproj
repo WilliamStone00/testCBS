@@ -680,6 +680,12 @@
       <DependentUpon>TellerStatement1.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="AppFiles\Reporting\Transactions\UpdatedStatement\Loan\GeneralLoanReportRPT.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GeneralLoanReportRPT.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="AppFiles\Reporting\Transactions\UpdatedStatement\Loan\LoanRepaymentRPT1.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1060,7 +1066,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AccountOpeningRulePerBranch_Index.fr.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\AdvancedSheild\AdvancedShield.Designer.cs" />
     <Compile Include="App_GlobalResources\AffiliateAccount\AffiliateAccount2.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1258,6 +1263,16 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalCollateral.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Communication\GlobalCommunication.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalCommunication.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Communication\GlobalCommunication.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalCommunication.fr.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\CorrespondingBankManagement\GlobalCorrespondingBankManagement.fr.designer.cs">
       <AutoGen>True</AutoGen>
@@ -7640,6 +7655,10 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>CashDeskRessource.Designer.cs</LastGenOutput>
     </Content>
+    <EmbeddedResource Include="AppFiles\Reporting\Transactions\UpdatedStatement\Loan\GeneralLoanReportRPT.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>GeneralLoanReportRPT.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\Transactions\UpdatedStatement\Loan\LoanRepaymentRPT.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>LoanRepaymentRPT1.cs</LastGenOutput>
@@ -7696,6 +7715,15 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>AuthenticationRessource.designer.cs</LastGenOutput>
     </Content>
+    <Content Include="App_GlobalResources\Communication\GlobalCommunication.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalCommunication.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Communication\GlobalCommunication.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalCommunication.designer.cs</LastGenOutput>
+    </Content>
+    <EmbeddedResource Include="GlobalCommunication.resx" />
     <None Include="AppFiles\Accountingv2Reporting\DataSets\AccountingV2DS.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -10829,6 +10857,7 @@
     <Folder Include="AppFiles\Images\BarCodes\" />
     <Folder Include="AppFiles\Migration\TrialBalance\" />
     <Folder Include="App_Data\" />
+    <Folder Include="App_GlobalResources\AdvancedSheild\" />
     <Folder Include="App_GlobalResources\AttachedLoanDocuments\" />
     <Folder Include="bin\bin\fr\" />
     <Folder Include="bin\ca\" />
@@ -10850,7 +10879,6 @@
     <Folder Include="Controllers\DailyCollectionManagement\" />
     <Folder Include="Controllers\LoanManagementP\ApplicationP\" />
     <Folder Include="Hub\" />
-    <Folder Include="obj\Debug\TempPE\" />
     <Folder Include="Views\AccountingV2\" />
     <Folder Include="Views\BulkOperation\Contribution\" />
     <Folder Include="Views\BulkOperation\Topup\" />

@@ -500,6 +500,8 @@ namespace CBS.FrontDesk.UI.ReportForm
                     return;
                 }
 
+
+
                 // ✅ Initialize a new `ReportDocument` object for loading and binding data.
                 ReportDocument rd = new ReportDocument();
 
