@@ -212,13 +212,18 @@
 
     </script>
     <script>
-  $(document).ready(function() {
-    // Initialize select2
+ $(document).ready(function () {
+
+    /* ===============================
+       SELECT2 INITIALIZATION
+    =============================== */
     if ($.fn.select2) {
         $('#BranchId, #CollectorId').select2({ width: '100%' });
     }
 
-    // Hide form initially if not in edit mode
+    /* ===============================
+       INITIAL FORM VISIBILITY
+    =============================== */
     if ('@Model.Id' === '') {
         $('#configFormContainer').hide();
     } else {
@@ -226,93 +231,93 @@
         initializeScopeBasedOnModel();
     }
 
-    // Scope change handler
-    $('.config-scope').change(function() {
+    /* ===============================
+       SCOPE CHANGE HANDLER
+    =============================== */
+    $(document).on('change', '.config-scope', function () {
+
         var scope = $(this).val();
 
         if (scope === 'single') {
             $('#branchField').show();
             $('#collectorField').show();
             $('#IsCentralised').val(false);
-            // Clear and disable collector dropdown until branch is selected
-            $('#CollectorId').empty().append('<option value="">--- Select Collector ---</option>').trigger('change');
-            $('#CollectorId').prop('disabled', true);
-        } else if (scope === 'all') {
+
+            $('#CollectorId')
+                .empty()
+                .append('<option value="">--- Select Collector ---</option>')
+                .prop('disabled', true)
+                .trigger('change');
+        }
+
+        else if (scope === 'all') {
             $('#branchField').show();
             $('#collectorField').hide();
-            $('#CollectorId').val('').trigger('change');
-            $('#CollectorId').prop('disabled', false);
+            $('#CollectorId').val('').trigger('change').prop('disabled', false);
             $('#IsCentralised').val(false);
-        } else if (scope === 'centralised') {
-            $('#branchField').hide();
-            $('#collectorField').hide();
-            $('#BranchId').val('').trigger('change');
-            $('#CollectorId').val('').trigger('change');
-            $('#CollectorId').prop('disabled', false);
+        }
+
+        else if (scope === 'centralised') {
+            $('#branchField, #collectorField').hide();
+            $('#BranchId, #CollectorId').val('').trigger('change');
             $('#IsCentralised').val(true);
         }
     });
 
-    // Branch change handler - load collectors when branch is selected
-    $('#BranchId').change(function() {
+    /* ===============================
+       LOAD COLLECTORS ON BRANCH CHANGE
+    =============================== */
+    $(document).on('change', '#BranchId', function () {
+
         var branchId = $(this).val();
         var scope = $('input[name="ConfigScope"]:checked').val();
 
-        // Only load collectors if Single Collector is selected and branch is selected
         if (scope === 'single' && branchId) {
             loadCollectorsByBranch(branchId);
-        } else if (scope === 'single' && !branchId) {
-            // If branch is cleared, disable and clear collector dropdown
-            $('#CollectorId').empty().append('<option value="">--- Select Collector ---</option>').trigger('change');
-            $('#CollectorId').prop('disabled', true);
+        } else {
+            $('#CollectorId')
+                .empty()
+                .append('<option value="">--- Select Collector ---</option>')
+                .prop('disabled', true)
+                .trigger('change');
         }
     });
 
-    // Function to load collectors by branch
     function loadCollectorsByBranch(branchId) {
-        // Show loading state
-        $('#CollectorId').empty().append('<option value="">Loading collectors...</option>').trigger('change');
-        $('#CollectorId').prop('disabled', true);
 
-        // Get anti-forgery token if needed
-        var token = getAntiForgeryToken();
+        $('#CollectorId')
+            .empty()
+            .append('<option value="">Loading collectors...</option>')
+            .prop('disabled', true)
+            .trigger('change');
 
         $.ajax({
             url: '/DailyCollectorCommissionConfig/GetCollectorsByBranch',
             type: 'GET',
             data: { branchId: branchId },
-            dataType: 'json',
-            headers: token ? { 'RequestVerificationToken': token } : {},
-            success: function(response) {
-                $('#CollectorId').empty().append('<option value="">--- Select Collector ---</option>');
+            success: function (response) {
+
+                $('#CollectorId')
+                    .empty()
+                    .append('<option value="">--- Select Collector ---</option>');
 
                 if (response && response.length > 0) {
-                    $.each(response, function(index, item) {
-                        $('#CollectorId').append($('<option>', {
-                            value: item.Value,
-                            text: item.Text
-                        }));
+                    $.each(response, function (i, item) {
+                        $('#CollectorId').append(
+                            $('<option>', { value: item.Value, text: item.Text })
+                        );
                     });
                     $('#CollectorId').prop('disabled', false);
                 } else {
-                    $('#CollectorId').append('<option value="">No collectors found</option>');
-                    console.log('No collectors found for branch:', branchId);
+                    $('#CollectorId').append('<option>No collectors found</option>');
                 }
 
                 $('#CollectorId').trigger('change');
             },
-            error: function(xhr, status, error) {
-                console.error('Error loading collectors:', error);
-                $('#CollectorId').empty().append('<option value="">Error loading collectors</option>').trigger('change');
-
-                if (xhr.status === 401) {
-                    window.location.href = '/Authentication/Login';
-                } else {
-                    showMsg('Failed to load collectors. Please try again.', 4);
-                }
+            error: function () {
+                showMsg('Failed to load collectors.', 4);
             },
-            complete: function() {
-                // Reinitialize select2 if needed
+            complete: function () {
                 if ($.fn.select2) {
                     $('#CollectorId').select2({ width: '100%' });
                 }
@@ -320,115 +325,151 @@
         });
     }
 
-    // Add rule
-    $('#addRuleBtn').click(function() {
-        var index = $('.rule-item').length;
+    /* ===============================
+       ADD RULE (FIXED)
+    =============================== */
+    $(document).on('click', '#addRuleBtn', function () {
+
+        var index = $('#rulesContainer .rule-item').length;
+
         var newRow = `
             <div class="row rule-item mb-2">
                 <div class="col-md-5">
-                    <input type="text" name="Rules[${index}].Stakeholder" class="form-control" placeholder="Stakeholder (e.g., COLLECTOR)" />
+                    <select name="Rules[${index}].Stakeholder" class="form-select">
+                        <option value="">-- Select Stakeholder --</option>
+                        <option value="COLLECTOR">COLLECTOR</option>
+                        <option value="BRANCH">BRANCH</option>
+                    </select>
                 </div>
+
                 <div class="col-md-5">
-                    <input type="number" name="Rules[${index}].Percentage" class="form-control percentage-input" placeholder="Percentage" step="0.01" min="0" max="100" />
+                    <input type="number"
+                           name="Rules[${index}].Percentage"
+                           class="form-control percentage-input"
+                           placeholder="Percentage"
+                           step="0.01"
+                           min="0"
+                           max="100" />
                 </div>
+
                 <div class="col-md-2">
-                    <button type="button" class="btn btn-danger remove-rule"><i class="mdi mdi-delete"></i></button>
+                    <button type="button" class="btn btn-danger remove-rule">
+                        <i class="mdi mdi-delete"></i>
+                    </button>
                 </div>
             </div>
         `;
+
         $('#rulesContainer').append(newRow);
+    });
+
+    /* ===============================
+       REMOVE RULE
+    =============================== */
+    $(document).on('click', '.remove-rule', function () {
+
+        if ($('.rule-item').length <= 1) {
+            appalert('At least one rule is required', 3, 1);
+            return;
+        }
+
+        $(this).closest('.rule-item').remove();
+        reindexRules();
         updateTotalPercentage();
     });
 
-    // Remove rule
-    $(document).on('click', '.remove-rule', function() {
-        if ($('.rule-item').length > 1) {
-            $(this).closest('.rule-item').remove();
-            reindexRules();
+    /* ===============================
+       PERCENTAGE CALCULATION
+    =============================== */
+    $(document).on('input', '.percentage-input', function () {
+
+        var total = updateTotalPercentage();
+
+        if (total > 100) {
+            appalert('Total percentage cannot exceed 100%', 2, 1);
+            $(this).val('');
             updateTotalPercentage();
-        } else {
-            appalert('At least one rule is required', 3, 1);
         }
     });
 
-    // Update total on percentage change
-    $(document).on('input', '.percentage-input', function() {
-        updateTotalPercentage();
-    });
+    function updateTotalPercentage() {
 
-    // Form validation before submit
-    $('#commissionConfigForm').on('submit', function(e) {
+        var total = 0;
+
+        $('.percentage-input').each(function () {
+            total += parseFloat($(this).val()) || 0;
+        });
+
+        $('#totalPercentageDisplay')
+            .text('Total: ' + total.toFixed(2) + '%');
+
+        return total;
+    }
+
+    /* ===============================
+       FORM VALIDATION
+    =============================== */
+    $('#commissionConfigForm').on('submit', function (e) {
+
         var total = updateTotalPercentage();
+
         if (Math.abs(total - 100) > 0.01) {
             e.preventDefault();
-            appalert('Total percentage must equal 100%', 2, 1);
-            return false;
-        }
-
-        var scope = $('input[name="ConfigScope"]:checked').val();
-        if (scope === 'single' && !$('#CollectorId').val()) {
-            e.preventDefault();
-            appalert('Please select a collector for single collector configuration', 2, 1);
-            return false;
-        }
-        if (scope !== 'centralised' && !$('#BranchId').val()) {
-            e.preventDefault();
-            appalert('Please select a branch', 2, 1);
+            appalert('Total percentage must be exactly 100%', 2, 1);
             return false;
         }
     });
 
+    /* ===============================
+       REINDEX RULES (FIXED)
+    =============================== */
+    function reindexRules() {
+
+        $('#rulesContainer .rule-item').each(function (index) {
+
+            $(this).find('input, select').each(function () {
+
+                var name = $(this).attr('name');
+                if (name) {
+                    var newName = name.replace(/Rules\[\d+\]/, 'Rules[' + index + ']');
+                    $(this).attr('name', newName);
+                }
+            });
+        });
+    }
+
+    /* ===============================
+       INITIAL TOTAL
+    =============================== */
+    updateTotalPercentage();
+
+    /* ===============================
+       HELPERS
+    =============================== */
+    function showMsg(msg, level) {
+        if (typeof appalert === 'function')
+            appalert(msg || 'No message', level || 1, 1);
+        else
+            alert(msg || 'No message');
+    }
+
     function initializeScopeBasedOnModel() {
+
         var isCentralised = '@Model.IsCentralised' === 'True';
         var hasCollector = '@(!string.IsNullOrEmpty(Model.CollectorId))' === 'True';
 
         if (isCentralised) {
             $('#scopeCentralised').prop('checked', true).trigger('change');
-        } else if (hasCollector) {
+        }
+        else if (hasCollector) {
             $('#scopeSingle').prop('checked', true).trigger('change');
-            // If in edit mode with Single Collector, enable collector dropdown
-            if ('@Model.BranchId') {
-                $('#CollectorId').prop('disabled', false);
-            }
-        } else {
+            $('#CollectorId').prop('disabled', false);
+        }
+        else {
             $('#scopeAll').prop('checked', true).trigger('change');
         }
     }
 
-    function reindexRules() {
-        $('.rule-item').each(function(index) {
-            $(this).find('input[name^="Rules"]').each(function() {
-                var name = $(this).attr('name');
-                var newName = name.replace(/Rules\[\d+\]/, 'Rules[' + index + ']');
-                $(this).attr('name', newName);
-            });
-        });
-    }
-
-    function updateTotalPercentage() {
-        var total = 0;
-        $('.percentage-input').each(function() {
-            var val = parseFloat($(this).val()) || 0;
-            total += val;
-        });
-        $('#totalPercentageDisplay').text('Total: ' + total.toFixed(2) + '%');
-        return total;
-    }
-
-    // Helper function to get anti-forgery token (reuse from your existing code)
-    function getAntiForgeryToken() {
-        return $('input[name="__RequestVerificationToken"]').first().val() || null;
-    }
-
-    // Helper function to show messages (reuse from your existing code)
-    function showMsg(msg, level) {
-        if (typeof appalert === 'function') appalert(msg || 'No message', level || 1, 1);
-        else if (level && level <= 2) console.log((level === 1 ? 'OK: ' : 'WARN: ') + (msg || ''));
-        else alert(msg || 'No message');
-    }
-
-    // Initial total calculation
-    setTimeout(updateTotalPercentage, 500);
 });
     </script>
 }

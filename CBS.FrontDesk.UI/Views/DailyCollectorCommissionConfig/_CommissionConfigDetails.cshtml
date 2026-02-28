@@ -24,15 +24,15 @@
                     <td>
                         @if (Model.IsCentralised)
                         {
-                            <span class="badge bg-primary">Centralised</span>
+                            <span class="badge bg-primary">@Model.ScopeLevel</span>
                         }
                         else if (!string.IsNullOrEmpty(Model.CollectorId))
                         {
-                            <span class="badge bg-info">Single Collector</span>
+                           <span class="badge bg-info">@Model.ScopeLevel</span>
                         }
                         else
                         {
-                            <span class="badge bg-secondary">All Collectors</span>
+                           <span class="badge bg-secondary">@Model.ScopeLevel</span>
                         }
                     </td>
                 </tr>

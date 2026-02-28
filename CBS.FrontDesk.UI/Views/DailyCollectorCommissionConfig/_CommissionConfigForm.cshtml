@@ -69,7 +69,7 @@
                                  {
                                 @class = "form-control select2",
                                 id = "CollectorId",
-                                disabled = "disabled"  // Initially disabled until branch is selected
+                               // disabled = "disabled"  // Initially disabled until branch is selected
                             })
                         @Html.ValidationMessageFor(m => m.CollectorId, "", new { @class = "text-danger" })
                         <label>Collector</label>
@@ -114,16 +114,33 @@
                         {
                             <div class="row rule-item mb-2">
                                 <div class="col-md-5">
-                                    <input type="text" name="Rules[@i].Stakeholder" value="@Model.Rules[i].Stakeholder"
-                                           class="form-control" placeholder="Stakeholder (e.g., COLLECTOR)" />
+                                    @Html.DropDownListFor(m => m.Rules[i].Stakeholder,
+                                        new List<SelectListItem>
+                                        {
+                                            new SelectListItem { Text = "COLLECTOR", Value = "COLLECTOR" },
+                                            new SelectListItem { Text = "BRANCH", Value = "BRANCH" }
+                                        },
+                                        "-- Select Stakeholder --",
+                                        new { @class = "form-select" })
                                 </div>
+
                                 <div class="col-md-5">
-                                    <input type="number" name="Rules[@i].Percentage" value="@Model.Rules[i].Percentage"
-                                           class="form-control percentage-input" placeholder="Percentage" step="0.01" min="0" max="100" />
+                                    <input type="number"
+                                           name="Rules[@i].Percentage"
+                                           value="@Model.Rules[i].Percentage"
+                                           class="form-control percentage-input"
+                                           placeholder="Percentage"
+                                           step="0.01"
+                                           min="0"
+                                           max="100" />
                                 </div>
+
                                 <div class="col-md-2">
-                                    <button type="button" class="btn btn-danger remove-rule"><i class="mdi mdi-delete"></i></button>
+                                    <button type="button" class="btn btn-danger remove-rule">
+                                        <i class="mdi mdi-delete"></i>
+                                    </button>
                                 </div>
+
                                 @Html.HiddenFor(m => m.Rules[i].Id)
                                 @Html.HiddenFor(m => m.Rules[i].ConfigId)
                             </div>
@@ -133,13 +150,30 @@
                     {
                         <div class="row rule-item mb-2">
                             <div class="col-md-5">
-                                <input type="text" name="Rules[0].Stakeholder" class="form-control" placeholder="Stakeholder (e.g., COLLECTOR)" />
+                                @Html.DropDownList("Rules[0].Stakeholder",
+                                    new List<SelectListItem>
+                                    {
+                                        new SelectListItem { Text = "COLLECTOR", Value = "COLLECTOR" },
+                                        new SelectListItem { Text = "BRANCH", Value = "BRANCH" }
+                                    },
+                                    "-- Select Stakeholder --",
+                                    new { @class = "form-select" })
                             </div>
+
                             <div class="col-md-5">
-                                <input type="number" name="Rules[0].Percentage" class="form-control percentage-input" placeholder="Percentage" step="0.01" min="0" max="100" />
+                                <input type="number"
+                                       name="Rules[0].Percentage"
+                                       class="form-control percentage-input"
+                                       placeholder="Percentage"
+                                       step="0.01"
+                                       min="0"
+                                       max="100" />
                             </div>
+
                             <div class="col-md-2">
-                                <button type="button" class="btn btn-danger remove-rule"><i class="mdi mdi-delete"></i></button>
+                                <button type="button" class="btn btn-danger remove-rule">
+                                    <i class="mdi mdi-delete"></i>
+                                </button>
                             </div>
                         </div>
                     }
