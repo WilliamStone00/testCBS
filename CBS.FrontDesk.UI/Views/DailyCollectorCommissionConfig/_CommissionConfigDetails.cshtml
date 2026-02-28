@@ -28,16 +28,29 @@
                         }
                         else if (!string.IsNullOrEmpty(Model.CollectorId))
                         {
-                           <span class="badge bg-info">@Model.ScopeLevel</span>
+                            <span class="badge bg-info">@Model.ScopeLevel</span>
                         }
                         else
                         {
-                           <span class="badge bg-secondary">@Model.ScopeLevel</span>
+                            <span class="badge bg-secondary">@Model.ScopeLevel</span>
                         }
                     </td>
                 </tr>
                 <tr><td class="fw-bold">Branch ID:</td><td>@(Model.BranchId ?? "-")</td></tr>
-                <tr><td class="fw-bold">Collector ID:</td><td>@(Model.CollectorId ?? "-")</td></tr>
+                <tr><td class="fw-bold">Branch Name:</td><td>@(Model.BranchName ?? "-")</td></tr>
+
+                @if (!string.IsNullOrEmpty(Model.CollectorId))
+                {
+                    <tr>
+                        <td class="fw-bold">Collector ID:</td>
+                        <td>@Model.CollectorId</td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold">Collector Name:</td>
+                        <td>@Model.CollectorName</td>
+                    </tr>
+                }
+
                 <tr>
                     <td class="fw-bold">Status:</td>
                     <td>

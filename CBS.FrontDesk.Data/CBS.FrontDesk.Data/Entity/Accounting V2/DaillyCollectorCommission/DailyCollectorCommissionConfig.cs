@@ -14,6 +14,9 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission
 
         public string BranchId { get; set; }
         public string CollectorId { get; set; }
+
+        public string BranchName { get; set; }
+        public string CollectorName { get; set; }
         public string ScopeLevel { get; set; }
 
         public bool IsCentralised { get; set; }

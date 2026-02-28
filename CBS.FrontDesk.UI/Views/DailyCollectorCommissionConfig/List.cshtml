@@ -313,14 +313,14 @@
 
                 // 2 - Branch
                 {
-                    data: 'BranchId',
+                    data: 'BranchName',
                     defaultContent: '-',
                     render: function (data) { return data || '-'; }
                 },
 
                 // 3 - Collector
                 {
-                    data: 'CollectorId',
+                    data: 'CollectorName',
                     defaultContent: '-',
                     render: function (data) { return data || '-'; }
                 },
@@ -337,15 +337,15 @@
                     }
                 },
 
-                // 5 - Commission Rules (RuleCount)
-                {
-                    data: 'RuleCount',
-                    defaultContent: '-',
-                    render: function (data) {
-                        if (data === null || data === undefined) return '-';
-                        return data + ' rule' + (data !== 1 ? 's' : '');
-                    }
-                },
+                //// 5 - Commission Rules (RuleCount)
+                //{
+                //    data: 'RuleCount',
+                //    defaultContent: '-',
+                //    render: function (data) {
+                //        if (data === null || data === undefined) return '-';
+                //        return data + ' rule' + (data !== 1 ? 's' : '');
+                //    }
+                //},
 
                 // 6 - Total %
                 {
@@ -471,7 +471,7 @@
         }
 
         // Init DataTable once on page load
-        initDataTable();
+       // initDataTable();
 
         // Apply filter
         $('#applyFilterBtn').off('click').on('click', function (e) {
