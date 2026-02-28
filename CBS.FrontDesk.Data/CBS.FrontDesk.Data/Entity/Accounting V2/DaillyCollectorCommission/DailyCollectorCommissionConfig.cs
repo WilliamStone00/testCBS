@@ -62,9 +62,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission
     }
     public class DaillycollectorCommissionConfigQuery
     {
-        public DataTableOptions dataTableOptions { get; set; }
-        public DaillycollectorCommissionConfigQuery() { dataTableOptions = new DataTableOptions(); }
-
+        public DataTableOptions Options { get; set; }
+     
         public string BranchId { get; set; }
         public string CollectorId { get; set; }
 

@@ -73,7 +73,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
             {
                 return Json(new
                 {
-                    draw = query?.dataTableOptions?.draw ?? "1",
+                    draw = query?.Options?.draw ?? "1",
                     recordsTotal = 0,
                     recordsFiltered = 0,
                     data = new List<object>(),
