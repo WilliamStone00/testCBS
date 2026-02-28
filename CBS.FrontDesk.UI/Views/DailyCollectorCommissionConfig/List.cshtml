@@ -162,6 +162,10 @@
                     serverSide: dt.settings()[0].oFeatures.bServerSide,
                     processing: dt.settings()[0].oFeatures.bProcessing
                 });
+
+                // Log the actual data in the DataTable
+                var allData = dt.data().toArray();
+                console.log('All data in DataTable:', allData);
             }
 
             console.groupEnd();
@@ -198,16 +202,48 @@
                 .replace(/'/g, '&#39;');
         }
 
+        function parseDotNetDate(dateValue) {
+            if (!dateValue) return null;
+
+            // Handle /Date(1772233200000)/ format
+            if (typeof dateValue === 'string' && dateValue.indexOf('/Date(') === 0) {
+                var matches = /\/Date\((\d+)\)\//.exec(dateValue);
+                if (matches) {
+                    return new Date(parseInt(matches[1]));
+                }
+            }
+
+            // Handle regular date strings
+            return new Date(dateValue);
+        }
+
+        function formatDate(dateValue, format) {
+            if (!dateValue) return '-';
+
+            try {
+                var date = parseDotNetDate(dateValue);
+                if (!date || isNaN(date.getTime())) return '-';
+
+                if (window.moment) {
+                    return moment(date).format(format || 'DD/MM/YYYY');
+                } else {
+                    return date.toLocaleDateString();
+                }
+            } catch (e) {
+                log('Error formatting date:', e);
+                return '-';
+            }
+        }
+
         function initDataTable() {
             log('🚀 Initializing DataTable - START');
             logTableState('Before initialization');
 
             // Check if DataTable is already initialized
             if ($.fn.DataTable.isDataTable('#myDataTable')) {
-                log('⚠️ DataTable already initialized, returning existing instance');
-                configTable = $('#myDataTable').DataTable();
-                logTableState('After returning existing instance');
-                return true;
+                log('⚠️ DataTable already initialized, destroying existing instance');
+                $('#myDataTable').DataTable().destroy(true);
+                configTable = null;
             }
 
             if (!$('#myDataTable').length) {
@@ -222,7 +258,7 @@
                 searching: false,
                 responsive: true,
                 serverSide: true,
-                destroy: false,
+                destroy: true, // Allow destroying and recreating
                 order: [[0, 'desc']],
                 ajax: {
                     url: '/DailyCollectorCommissionConfig/LoadConfigData',
@@ -240,7 +276,7 @@
                             skip: d.start,
                             pageSize: d.length,
                             searchValue: d.search?.value || '',
-                            sortColumn: d.columns && d.order && d.order[0] ? d.columns[d.order[0].column].data : 'effectiveFrom',
+                            sortColumn: d.columns && d.order && d.order[0] ? d.columns[d.order[0].column].data : 'EffectiveFrom',
                             sortDirection: d.order && d.order[0] ? d.order[0].dir : 'desc'
                         };
 
@@ -269,99 +305,99 @@
                             console.log('Property names:', Object.keys(firstRecord));
                             console.log('Property values:', firstRecord);
 
-                            // Detailed property check
-                            log('Property presence check:', {
-                                effectiveFrom: {
+                            // Detailed property check - now looking for PascalCase
+                            log('Property presence check (PascalCase):', {
+                                EffectiveFrom: {
                                     exists: 'EffectiveFrom' in firstRecord,
-                                    value: firstRecord.effectiveFrom,
-                                    type: typeof firstRecord.effectiveFrom
+                                    value: firstRecord.EffectiveFrom,
+                                    type: typeof firstRecord.EffectiveFrom
                                 },
-                                effectiveTo: {
+                                EffectiveTo: {
                                     exists: 'EffectiveTo' in firstRecord,
-                                    value: firstRecord.effectiveTo,
-                                    type: typeof firstRecord.effectiveTo
+                                    value: firstRecord.EffectiveTo,
+                                    type: typeof firstRecord.EffectiveTo
                                 },
-                                scopeLevel: {
+                                ScopeLevel: {
                                     exists: 'ScopeLevel' in firstRecord,
-                                    value: firstRecord.scopeLevel,
-                                    type: typeof firstRecord.scopeLevel
+                                    value: firstRecord.ScopeLevel,
+                                    type: typeof firstRecord.ScopeLevel
                                 },
-                                branchId: {
+                                BranchId: {
                                     exists: 'BranchId' in firstRecord,
-                                    value: firstRecord.branchId,
-                                    type: typeof firstRecord.branchId
+                                    value: firstRecord.BranchId,
+                                    type: typeof firstRecord.BranchId
                                 },
-                                collectorId: {
-                                    exists: 'collectorId' in firstRecord,
-                                    value: firstRecord.collectorId,
-                                    type: typeof firstRecord.collectorId
+                                CollectorId: {
+                                    exists: 'CollectorId' in firstRecord,
+                                    value: firstRecord.CollectorId,
+                                    type: typeof firstRecord.CollectorId
                                 },
-                                ruleCount: {
-                                    exists: 'ruleCount' in firstRecord,
-                                    value: firstRecord.ruleCount,
-                                    type: typeof firstRecord.ruleCount
+                                RuleCount: {
+                                    exists: 'RuleCount' in firstRecord,
+                                    value: firstRecord.RuleCount,
+                                    type: typeof firstRecord.RuleCount
                                 },
-                                totalPercentage: {
-                                    exists: 'totalPercentage' in firstRecord,
-                                    value: firstRecord.totalPercentage,
-                                    type: typeof firstRecord.totalPercentage
+                                TotalPercentage: {
+                                    exists: 'TotalPercentage' in firstRecord,
+                                    value: firstRecord.TotalPercentage,
+                                    type: typeof firstRecord.TotalPercentage
                                 },
-                                isActive: {
-                                    exists: 'isActive' in firstRecord,
-                                    value: firstRecord.isActive,
-                                    type: typeof firstRecord.isActive
+                                IsActive: {
+                                    exists: 'IsActive' in firstRecord,
+                                    value: firstRecord.IsActive,
+                                    type: typeof firstRecord.IsActive
                                 },
-                                id: {
-                                    exists: 'id' in firstRecord,
-                                    value: firstRecord.id,
-                                    type: typeof firstRecord.id
+                                Id: {
+                                    exists: 'Id' in firstRecord,
+                                    value: firstRecord.Id,
+                                    type: typeof firstRecord.Id
                                 }
                             });
 
                             console.groupEnd();
 
                             // Simulate column rendering for first record
-                            log('🎨 Simulating column rendering for first record:');
+                            log('🎨 Simulating column rendering for first record with PascalCase:');
                             console.group('Column Rendering Simulation');
 
-                            // Column 0: effectiveFrom
-                            var col0 = firstRecord.effectiveFrom;
-                            var rendered0 = col0 ? (window.moment ? moment(col0).format('DD/MM/YYYY') : new Date(col0).toLocaleDateString()) : '-';
-                            console.log('Column 0 (effectiveFrom):', { original: col0, rendered: rendered0 });
+                            // Column 0: EffectiveFrom
+                            var col0 = firstRecord.EffectiveFrom;
+                            var rendered0 = formatDate(col0, 'DD/MM/YYYY');
+                            console.log('Column 0 (EffectiveFrom):', { original: col0, rendered: rendered0 });
 
-                            // Column 1: scopeLevel
-                            var col1 = firstRecord.scopeLevel;
+                            // Column 1: ScopeLevel
+                            var col1 = firstRecord.ScopeLevel;
                             var rendered1 = col1 ? col1.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ') : '-';
-                            console.log('Column 1 (scopeLevel):', { original: col1, rendered: rendered1 });
+                            console.log('Column 1 (ScopeLevel):', { original: col1, rendered: rendered1 });
 
-                            // Column 2: branchId
-                            console.log('Column 2 (branchId):', { original: firstRecord.branchId, rendered: firstRecord.branchId || '-' });
+                            // Column 2: BranchId
+                            console.log('Column 2 (BranchId):', { original: firstRecord.BranchId, rendered: firstRecord.BranchId || '-' });
 
-                            // Column 3: collectorId
-                            console.log('Column 3 (collectorId):', { original: firstRecord.collectorId, rendered: firstRecord.collectorId || '-' });
+                            // Column 3: CollectorId
+                            console.log('Column 3 (CollectorId):', { original: firstRecord.CollectorId, rendered: firstRecord.CollectorId || '-' });
 
                             // Column 4: effective period (combined)
-                            var from = firstRecord.effectiveFrom ? new Date(firstRecord.effectiveFrom).toLocaleDateString() : '-';
-                            var to = firstRecord.effectiveTo ? new Date(firstRecord.effectiveTo).toLocaleDateString() : 'No end date';
+                            var from = formatDate(firstRecord.EffectiveFrom);
+                            var to = firstRecord.EffectiveTo ? formatDate(firstRecord.EffectiveTo) : 'No end date';
                             console.log('Column 4 (effective period):', { from: from, to: to, combined: from + ' to ' + to });
 
-                            // Column 5: ruleCount
-                            var col5 = firstRecord.ruleCount;
+                            // Column 5: RuleCount
+                            var col5 = firstRecord.RuleCount;
                             var rendered5 = col5 !== null && col5 !== undefined ? col5 + ' rule' + (col5 !== 1 ? 's' : '') : '-';
-                            console.log('Column 5 (ruleCount):', { original: col5, rendered: rendered5 });
+                            console.log('Column 5 (RuleCount):', { original: col5, rendered: rendered5 });
 
-                            // Column 6: totalPercentage
-                            var col6 = firstRecord.totalPercentage;
+                            // Column 6: TotalPercentage
+                            var col6 = firstRecord.TotalPercentage;
                             var rendered6 = col6 !== null && col6 !== undefined ? parseFloat(col6).toFixed(2) + '%' : '-';
-                            console.log('Column 6 (totalPercentage):', { original: col6, rendered: rendered6 });
+                            console.log('Column 6 (TotalPercentage):', { original: col6, rendered: rendered6 });
 
-                            // Column 7: isActive
-                            var col7 = firstRecord.isActive;
+                            // Column 7: IsActive
+                            var col7 = firstRecord.IsActive;
                             var rendered7 = col7 ? '<span class="badge bg-success">Active</span>' : '<span class="badge bg-danger">Inactive</span>';
-                            console.log('Column 7 (isActive):', { original: col7, rendered: rendered7 });
+                            console.log('Column 7 (IsActive):', { original: col7, rendered: rendered7 });
 
-                            // Column 8: id (actions)
-                            console.log('Column 8 (id/actions):', { original: firstRecord.id, rendered: 'HTML dropdown with actions' });
+                            // Column 8: Id (actions)
+                            console.log('Column 8 (Id/actions):', { original: firstRecord.Id, rendered: 'HTML dropdown with actions' });
 
                             console.groupEnd();
 
@@ -395,7 +431,14 @@
                         }
 
                         log(`📊 Final: Received ${json.data.length} records out of ${json.recordsTotal || 0} total`);
-                        return json.data;
+
+                        // Important: Ensure the response has the correct structure
+                        return {
+                            draw: json.draw,
+                            recordsTotal: json.recordsTotal,
+                            recordsFiltered: json.recordsFiltered,
+                            data: json.data
+                        };
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         console.error('❌ DataTable AJAX error:', {
@@ -425,15 +468,7 @@
                             if (type === 'display') {
                                 log(`🎨 Rendering column 0 (EffectiveFrom) for row ${meta.row}:`, { data: data, row: row });
                             }
-                            if (!data) return '-';
-                            try {
-                                var rendered = window.moment ?
-                                    moment(data).format('DD/MM/YYYY') :
-                                    new Date(data).toLocaleDateString();
-                                return rendered;
-                            } catch (e) {
-                                return data || '-';
-                            }
+                            return formatDate(data, 'DD/MM/YYYY');
                         }
                     },
                     {
@@ -464,7 +499,7 @@
                         defaultContent: '-',
                         render: function (data, type, row, meta) {
                             if (type === 'display') {
-                                log(`🎨 Rendering column 3 (collectorId) for row ${meta.row}:`, { data: data, row: row });
+                                log(`🎨 Rendering column 3 (CollectorId) for row ${meta.row}:`, { data: data, row: row });
                             }
                             return data || '-';
                         }
@@ -476,8 +511,8 @@
                             if (type === 'display') {
                                 log(`🎨 Rendering column 4 (effective period) for row ${meta.row}:`, row);
                             }
-                            var from = row.EffectiveFrom ? new Date(row.effectiveFrom).toLocaleDateString() : '-';
-                            var to = row.EffectiveTo ? new Date(row.effectiveTo).toLocaleDateString() : 'No end date';
+                            var from = formatDate(row.EffectiveFrom);
+                            var to = row.EffectiveTo ? formatDate(row.EffectiveTo) : 'No end date';
                             return from + ' to ' + to;
                         }
                     },
@@ -486,7 +521,7 @@
                         defaultContent: '-',
                         render: function (data, type, row, meta) {
                             if (type === 'display') {
-                                log(`🎨 Rendering column 5 (ruleCount) for row ${meta.row}:`, { data: data, row: row });
+                                log(`🎨 Rendering column 5 (RuleCount) for row ${meta.row}:`, { data: data, row: row });
                             }
                             if (data === null || data === undefined) return '-';
                             return data + ' rule' + (data !== 1 ? 's' : '');
@@ -496,7 +531,7 @@
                         data: 'TotalPercentage',
                         render: function (data, type, row, meta) {
                             if (type === 'display') {
-                                log(`🎨 Rendering column 6 (totalPercentage) for row ${meta.row}:`, { data: data, row: row });
+                                log(`🎨 Rendering column 6 (TotalPercentage) for row ${meta.row}:`, { data: data, row: row });
                             }
                             if (data === null || data === undefined) return '-';
                             return parseFloat(data).toFixed(2) + '%';
@@ -506,7 +541,7 @@
                         data: 'IsActive',
                         render: function (data, type, row, meta) {
                             if (type === 'display') {
-                                log(`🎨 Rendering column 7 (isActive) for row ${meta.row}:`, { data: data, row: row });
+                                log(`🎨 Rendering column 7 (IsActive) for row ${meta.row}:`, { data: data, row: row });
                             }
                             return data ?
                                 '<span class="badge bg-success">Active</span>' :
@@ -571,15 +606,14 @@
                     console.log('Records total:', json?.recordsTotal);
                     console.log('Records filtered:', json?.recordsFiltered);
                     console.log('Data length:', json?.data?.length);
+
+                    // Log first record if available
+                    if (json?.data?.length > 0) {
+                        console.log('First record sample:', json.data[0]);
+                    }
                     console.groupEnd();
 
                     logTableState('After initComplete');
-
-                    // Force a redraw to ensure data displays
-                    if (configTable) {
-                        log('🔄 Forcing DataTable redraw');
-                        configTable.draw();
-                    }
                 },
                 drawCallback: function (settings) {
                     var api = this.api();
@@ -589,9 +623,14 @@
                     log(`📊 DataTable redraw callback - START`);
                     console.group('📊 DrawCallback Details');
                     console.log('Rows in current view:', api.rows({ page: 'current' }).count());
-                    console.log('Total rows:', data.length);
+                    console.log('Total rows in DataTable:', api.rows().count());
                     console.log('Page info:', pageInfo);
-                    console.log('Current page data:', data.toArray());
+
+                    if (data.length > 0) {
+                        console.log('First row data:', data[0]);
+                    } else {
+                        console.warn('No data in DataTable after draw');
+                    }
                     console.groupEnd();
 
                     logTableState('After draw callback');
@@ -601,13 +640,12 @@
                     return true;
                 },
                 rowCallback: function (row, data, index) {
-                    log(`📌 Row callback for index ${index}:`, { row: row, data: data });
-                },
-                headerCallback: function (thead, data, start, end, display) {
-                    log('📌 Header callback executed');
-                },
-                footerCallback: function (tfoot, data, start, end, display) {
-                    log('📌 Footer callback executed');
+                    log(`📌 Row callback for index ${index}:`, {
+                        row: row,
+                        data: data,
+                        id: data?.Id,
+                        effectiveFrom: data?.EffectiveFrom
+                    });
                 }
             });
 
@@ -622,6 +660,14 @@
 
             if ($.fn.DataTable.isDataTable('#myDataTable') && configTable) {
                 log('✅ DataTable already initialized');
+
+                // Force a reload to ensure data is displayed
+                var dt = $('#myDataTable').DataTable();
+                if (dt.rows().count() === 0) {
+                    log('⚠️ DataTable has 0 rows, forcing reload');
+                    dt.ajax.reload();
+                }
+
                 logTableState('After check (already initialized)');
                 return true;
             }
@@ -649,8 +695,12 @@
                 log('🔄 Reloading DataTable data via ajax.reload()');
                 configTable.ajax.reload(function (json) {
                     log('✅ Data reload callback executed', json);
+
+                    // Force a redraw after reload
+                    configTable.draw();
+
                     logTableState('After ajax.reload');
-                }, false);
+                }, false); // false = keep current paging
             }
         }
 
