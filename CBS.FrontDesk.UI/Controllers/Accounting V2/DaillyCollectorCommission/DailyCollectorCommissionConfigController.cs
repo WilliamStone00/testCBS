@@ -103,32 +103,59 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
                     return PartialView(partialView ?? "_CommissionConfigDetails", data);
                 }
             }
-
-            [HttpPost]
-            public async Task<ActionResult> CreateOrUpdate(DailyCollectorCommissionShareConfig model)
+        [HttpPost]
+        public async Task<ActionResult> CreateOrUpdate(DailyCollectorCommissionShareConfig model)
+        {
+            // Parse the CollectorId which contains "CustomerId|UserId" format
+            if (!string.IsNullOrWhiteSpace(model.CollectorId) && model.CollectorId.Contains("|"))
             {
-                if (string.IsNullOrWhiteSpace(model.Id))
+                var parts = model.CollectorId.Split('|');
+                if (parts.Length == 2)
                 {
-                    if (!ModelState.IsValid)
-                        return Json(new { success = false, message = "Validation failed." });
+                    // CustomerId goes to CollectorMemberReference
+                    model.CollectorMemberReference = parts[0];
 
-                    var result = await _configService.CreateConfigAsync(model);
-                    return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
-                }
-                else
-                {
-                    return await Update(model);
+                    // UserId goes to CollectorId
+                    model.CollectorId = parts[1];
                 }
             }
 
-            [HttpPost]
-             public async Task<ActionResult> Update(DailyCollectorCommissionShareConfig model)
+            if (string.IsNullOrWhiteSpace(model.Id))
             {
                 if (!ModelState.IsValid)
                     return Json(new { success = false, message = "Validation failed." });
 
-                var result = await _configService.UpdateConfigAsync(model);
+                var result = await _configService.CreateConfigAsync(model);
                 return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
+            }
+            else
+            {
+                return await Update(model);
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Update(DailyCollectorCommissionShareConfig model)
+        {
+            // Parse the CollectorId which contains "CustomerId|UserId" format
+            if (!string.IsNullOrWhiteSpace(model.CollectorId) && model.CollectorId.Contains("|"))
+            {
+                var parts = model.CollectorId.Split('|');
+                if (parts.Length == 2)
+                {
+                    // CustomerId goes to CollectorMemberReference
+                    model.CollectorMemberReference = parts[0];
+
+                    // UserId goes to CollectorId
+                    model.CollectorId = parts[1];
+                }
+            }
+
+            if (!ModelState.IsValid)
+                return Json(new { success = false, message = "Validation failed." });
+
+            var result = await _configService.UpdateConfigAsync(model);
+            return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
         }
 
         [HttpGet]
@@ -145,7 +172,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
         {
             try
             {
-                int order = 2;
+                int order = 1;
                 // This would call your service to get collectors by branch
                 var collectors = await _manualService.GetCollectorsAsSelectListAsync(branchId, order);
 

@@ -24,7 +24,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission
 
         public DateTime EffectiveFrom { get; set; }
         public DateTime? EffectiveTo { get; set; }
-
+        public string CollectorMemberReference { get; set; }
         // Navigation Property
         public List<DailyCollectorCommissionShareRule> Rules { get; set; }
             = new List<DailyCollectorCommissionShareRule>();
@@ -37,7 +37,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission
 
     public class DailyCollectorCommissionShareRule
     {
-        public string Id { get; set; } 
+        public string Id { get; set; }
 
         public string ConfigId { get; set; } = null;
 
@@ -53,12 +53,14 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission
     {
         public string Id { get; set; } = null;
         public string BranchId { get; set; }
+        public string BranchName { get; set; }
+        public string CollectorName { get; set; }
         public string CollectorId { get; set; }
         public bool IsCentralised { get; set; }
         public bool IsActive { get; set; }
         public DateTime? EffectiveFrom { get; set; }
         public DateTime? EffectiveTo { get; set; }
-
+        public string CollectorMemberReference { get; set; }
         public decimal TotalPercentage { get; set; }
         public string Stakeholders { get; set; } = null;   // e.g. "COLLECTOR:60 | BRANCH:40"
         public int RuleCount { get; set; }

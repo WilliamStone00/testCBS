@@ -37,16 +37,271 @@ namespace CBS.FrontDesk.UI.Controllers
             return await GenerateReportInternalAsync(reportCommand, useQueryParam: true);
         }
 
- 
+
+        //private async Task<JsonResult> GenerateReportInternalAsync(GenerateLoanPortfolioReportCommand reportCommand, bool useQueryParam)
+        //{
+        //    var reportType = reportCommand.MainReportType?.ToLowerInvariant(); 
+        //    var LoanReports = reportCommand.ReportType?.ToLowerInvariant();
+        //    var rptData = new LoanDelinquencyReportResultRPT();
+        //    var delinquencyData = new LoanDelinquencyReportDto();
+        //    var Generalreport  = new LoanDelinquencyReportDto();
+        //    string reportTitle, relativePath;
+
+        //    switch (reportType)
+        //    {
+        //        case "currentloan":
+        //            relativePath = "Loan/PortFolio/CurrentLoanRPT.rpt";
+        //            reportTitle = "Current Loans";
+        //            rptData = await _loanService.GetLoanPortfolioAnalysisAsync(reportCommand);
+        //            if (rptData == null)
+        //                return new JsonResult
+        //                {
+        //                    Data = new { success = false, message = "No data found." },
+        //                    JsonRequestBehavior = JsonRequestBehavior.AllowGet
+        //                };
+        //            break;
+
+        //        case "delinquentloansummary":
+        //            relativePath = "Loan/LoanDeliquentReport/DeliquentLoanSummaryMAINRPT.rpt";
+        //            reportTitle = "LOANS DELINQUENCY SUMMARY REPORT";
+        //            delinquencyData = await _loanService.GetLoanDelinquencyReportAsync(reportCommand);
+        //            if (delinquencyData == null || delinquencyData.CategorySummaries == null || !delinquencyData.FlattenedRows.Any())
+        //                return new JsonResult
+        //                {
+        //                    Data = new { success = false, message = "No delinquency data found." },
+        //                    JsonRequestBehavior = JsonRequestBehavior.AllowGet
+        //                };
+        //            break;
+
+        //        case "loansituations":
+        //            relativePath = "Loan/LoanSituationAlpha/LoanSituationAlphaRPT.rpt";
+        //            reportTitle = "LOANS SITUATION REPORT";
+        //            delinquencyData = await _loanService.GetLoanDelinquencyReportAsync(reportCommand);
+        //            if (delinquencyData == null || delinquencyData.CategorySummaries == null || !delinquencyData.LoanEntries.Any())
+        //                return new JsonResult
+        //                {
+        //                    Data = new { success = false, message = "No loan situation data found." },
+        //                    JsonRequestBehavior = JsonRequestBehavior.AllowGet
+        //                };
+        //            break;
+        //        case "delinquentloanslistingwithaging":
+        //            relativePath = "Loan/LoanSituationAlpha/DeliquentLoanListingWithAgingRPT.rpt";
+        //            reportTitle = "LOAN AGINGS";
+        //            delinquencyData = await _loanService.GetLoanDelinquencyReportAsync(reportCommand);
+        //            if (delinquencyData == null || delinquencyData.CategorySummaries == null || !delinquencyData.LoanEntries.Any())
+        //                return new JsonResult
+        //                {
+        //                    Data = new { success = false, message = "No loan situation data found." },
+        //                    JsonRequestBehavior = JsonRequestBehavior.AllowGet
+        //                };
+        //            break;
+
+        //        case "delinquentloan":
+        //            relativePath = "Loan/PortFolio/DelinquentLoansRPT.rpt";
+
+        //            reportTitle = "LOAN PORTFOLIO";
+        //            rptData = await _loanService.GetLoanPortfolioAnalysisAsync(reportCommand);
+        //            if (rptData == null)
+        //                return new JsonResult
+        //                {
+        //                    Data = new { success = false, message = "No data found." },
+        //                    JsonRequestBehavior = JsonRequestBehavior.AllowGet
+        //                };
+        //            break;
+
+
+        //        case "loanbypurpose":
+        //        case "loanbytypes":
+        //            relativePath = "Loan/PortFolio/LoanByPurposeRPT.rpt";
+        //            reportTitle = "Loans by Purpose Report";
+        //            rptData = await _loanService.GetLoanPortfolioAnalysisAsync(reportCommand);
+        //            if (rptData == null)
+        //                return new JsonResult
+        //                {
+        //                    Data = new { success = false, message = "No data found." },
+        //                    JsonRequestBehavior = JsonRequestBehavior.AllowGet
+        //                };
+        //            break;
+
+        //        default:
+        //            relativePath = "Loan/PortFolio/MainPortFolioRPT.rpt";
+        //            reportTitle = "Loan Portfolio Analysis Report";
+        //            break;
+        //    }
+
+        //    switch (LoanReports)
+        //    {
+        //        case "loanlisting":
+        //            relativePath = "Transactions/UpdatedStatement/Loan/GeneralLoanReportRPT.rpt";
+        //            if(reportCommand.IsSSFReport == true) {reportTitle = "SSF LOAN PORTFOLIO"; }
+        //            reportTitle = "LOAN PORTFOLIO";
+        //            delinquencyData = await _loanService.GetLoanDelinquencyReportAsync(reportCommand);
+        //             if (rptData == null)
+        //                return new JsonResult
+        //                {
+        //                    Data = new { success = false, message = "No data found." },
+        //                    JsonRequestBehavior = JsonRequestBehavior.AllowGet
+        //                };
+        //            break;
+
+        //        case "current":
+        //            relativePath = "Transactions/UpdatedStatement/Loan/GeneralLoanReportRPT.rpt";
+        //            reportTitle = "CURRENT PERFMORMING LOANS";
+        //            rptData = await _loanService.GetLoanPortfolioAnalysisAsync(reportCommand);
+        //            if (rptData == null)
+        //                return new JsonResult
+        //                {
+        //                    Data = new { success = false, message = "No data found." },
+        //                    JsonRequestBehavior = JsonRequestBehavior.AllowGet
+        //                };
+        //            break;
+
+        //        case "unpaid":
+        //            relativePath = "Loan/PortFolio/UnpaidLoansRPT.rpt";
+        //            reportTitle = "UNPAID LOANS";
+        //            rptData = await _loanService.GetLoanPortfolioAnalysisAsync(reportCommand);
+        //            if (rptData == null)
+        //                return new JsonResult
+        //                {
+        //                    Data = new { success = false, message = "No data found." },
+        //                    JsonRequestBehavior = JsonRequestBehavior.AllowGet
+        //                };
+        //            break;
+
+        //        case "doubtful":
+        //          relativePath = "Transactions/UpdatedStatement/Loan/GeneralLoanReportRPT.rpt";
+        //            ;
+        //            reportTitle = "DOUBTFUL LOANS";
+        //            rptData = await _loanService.GetLoanPortfolioAnalysisAsync(reportCommand);
+        //            if (rptData == null)
+        //                return new JsonResult
+        //                {
+        //                    Data = new { success = false, message = "No data found." },
+        //                    JsonRequestBehavior = JsonRequestBehavior.AllowGet
+        //                };
+        //            break;
+
+        //        case "irrepayable":
+        //            relativePath = "Transactions/UpdatedStatement/Loan/GeneralLoanReportRPT.rpt";
+        //            reportTitle = "IRREPAYABLE LOANS";
+        //            rptData = await _loanService.GetLoanPortfolioAnalysisAsync(reportCommand);
+        //            if (rptData == null)
+        //                return new JsonResult
+        //                {
+        //                    Data = new { success = false, message = "No data found." },
+        //                    JsonRequestBehavior = JsonRequestBehavior.AllowGet
+        //                };
+        //            break;
+
+        //        case "irrecoverable":
+        //            relativePath = "Transactions/UpdatedStatement/Loan/GeneralLoanReportRPT.rpt";
+        //            reportTitle = "IRRECOVERABLE LOANS";
+        //            rptData = await _loanService.GetLoanPortfolioAnalysisAsync(reportCommand);
+        //            if (rptData == null)
+        //                return new JsonResult
+        //                {
+        //                    Data = new { success = false, message = "No data found." },
+        //                    JsonRequestBehavior = JsonRequestBehavior.AllowGet
+        //                };
+        //            break;
+
+
+        //        default:
+        //            relativePath = "Loan/PortFolio/MainPortFolioRPT.rpt";
+        //            reportTitle = "Loan Portfolio Analysis Report";
+        //            break;
+        //    }
+
+        //    DateTime.TryParse(reportCommand.StartDate, out var sDate);
+        //    DateTime.TryParse(reportCommand.EndDate, out var eDate);
+
+        //    var parameters = new Dictionary<string, object>
+        //    {
+        //        { "DateFrom", sDate.ToString("dd/MM/yyyy") },
+        //        { "DateTo", eDate.ToString("dd/MM/yyyy") },
+        //        { "BranchName", reportType == "delinquentloansummary" ? delinquencyData.BranchName : rptData.BranchName },
+        //        { "CurrentYear", DateTime.Now.Year.ToString() },
+        //        { "PrintedBy", _controller.Session["FullName"]?.ToString() ?? "System" },
+        //        { "ReportTitle", reportTitle },
+        //        { "PrintedOn", DateTime.Now.ToString("dd/MM/yyyy, hh:mm:ss") }
+        //    };
+
+        //    var subReports = new Dictionary<string, object>();
+        //    if (reportType == "all")
+        //    {
+        //        var selectedReports = string.IsNullOrWhiteSpace(reportCommand.SubReportType)
+        //            ? new List<string> { "All" }
+        //            : reportCommand.SubReportType.Split(',').Select(s => s.Trim()).ToList();
+
+        //        bool ShouldInclude(string name) => selectedReports.Contains("All", StringComparer.OrdinalIgnoreCase)
+        //            || selectedReports.Contains(name, StringComparer.OrdinalIgnoreCase);
+
+        //        subReports = new Dictionary<string, object>
+        //        {
+        //            { "Flat_AgeAndGenderSubReport", ShouldInclude("Flat_AgeAndGender") ? rptData.Flat_AgeAndGender : null },
+        //            { "Flat_AgeAndLoanTypeSubReport", ShouldInclude("Flat_AgeAndLoanType") ? rptData.Flat_AgeAndLoanType : null },
+        //            { "Flat_ByLoanTermSubReport", ShouldInclude("Flat_ByLoanTerm") ? rptData.Flat_ByLoanTerm : null },
+        //            { "Flat_ByTargetGroupSubReport", ShouldInclude("Flat_ByTargetGroup") ? rptData.Flat_ByTargetGroup : null },
+        //            { "Flat_ByCategorySubReport", ShouldInclude("Flat_ByCategory") ? rptData.Flat_ByCategory : null },
+        //            { "Flat_ByZoneSubReport", ShouldInclude("Flat_ByZone") ? rptData.Flat_ByZone : null },
+        //            { "PortfolioDetailsSubReport", ShouldInclude("PortfolioDetails") ? rptData.PortfolioDetails : null }
+        //        };
+        //    }
+        //    else if (reportType == "delinquentloansummary")
+        //    {
+        //        subReports = new Dictionary<string, object>
+        //        {
+        //            { "SubDelinquencyByGenderSummaryRPT", delinquencyData.GenderSummariesAfter60Days },
+        //            { "SubDelinquencyByLoanTypeSummaryRPT", delinquencyData.LoanTypeSummariesAfter60Days },
+        //            { "SubLoanDelinquencyCategorySummaryRPT", delinquencyData.CategorySummaries }
+        //        };
+        //        _controller.Session["MainData"] = new List<LoanDelinquencyReportDto> { delinquencyData };
+        //    }
+        //    else if (reportType == "loansituations")
+        //    {
+        //        _controller.Session["MainData"] = delinquencyData.LoanEntries;
+        //    }
+        //    else if (reportType == "delinquentloanslistingwithaging")
+        //    {
+        //        _controller.Session["MainData"] =delinquencyData.LoanEntries;
+        //    }
+        //    else if (LoanReports == "loanlisting"||LoanReports == "current"||LoanReports == "unpaid"||LoanReports == "irrecoverable")
+        //    {
+        //        _controller.Session["MainData"] =delinquencyData.LoanEntries;
+        //    }
+        //    // delinquentloanslistingwithaging
+        //    else
+        //    {
+        //        if (reportType == "delinquentloan")
+        //            _controller.Session["MainData"] = rptData.PortfolioDetails;
+        //        else
+        //            _controller.Session["MainData"] = new List<LoanDelinquencyReportResultRPT> { rptData };
+
+        //    }
+
+        //    _controller.Session["ReportParameters"] = parameters;
+        //    _controller.Session["SubReportsData"] = subReports;
+
+        //    string viewerUrl = _controller.Url.Content($"/ReportForm/ReportViewer.aspx?reportPath={HttpUtility.UrlEncode(relativePath)}&reportName={HttpUtility.UrlEncode(reportTitle)}");
+
+        //    return new JsonResult
+        //    {
+        //        Data = new { success = true, redirectUrl = viewerUrl },
+        //        JsonRequestBehavior = JsonRequestBehavior.AllowGet
+        //    };
+        //}
+
         private async Task<JsonResult> GenerateReportInternalAsync(GenerateLoanPortfolioReportCommand reportCommand, bool useQueryParam)
         {
-            var reportType = reportCommand.MainReportType?.ToLowerInvariant(); 
-            var LoanReports = reportCommand.ReportType?.ToLowerInvariant();
+            var reportType = reportCommand.MainReportType?.ToLowerInvariant();
+            var loanReports = reportCommand.ReportType?.ToLowerInvariant();
             var rptData = new LoanDelinquencyReportResultRPT();
             var delinquencyData = new LoanDelinquencyReportDto();
-            var Generalreport  = new LoanDelinquencyReportDto();
-            string reportTitle, relativePath;
+            var Generalreport = new LoanDelinquencyReportDto();
+            string reportTitle = null;
+            string relativePath = null;
 
+            // First switch - Handle Main Reports
             switch (reportType)
             {
                 case "currentloan":
@@ -84,6 +339,7 @@ namespace CBS.FrontDesk.UI.Controllers
                             JsonRequestBehavior = JsonRequestBehavior.AllowGet
                         };
                     break;
+
                 case "delinquentloanslistingwithaging":
                     relativePath = "Loan/LoanSituationAlpha/DeliquentLoanListingWithAgingRPT.rpt";
                     reportTitle = "LOAN AGINGS";
@@ -98,7 +354,6 @@ namespace CBS.FrontDesk.UI.Controllers
 
                 case "delinquentloan":
                     relativePath = "Loan/PortFolio/DelinquentLoansRPT.rpt";
-                   
                     reportTitle = "LOAN PORTFOLIO";
                     rptData = await _loanService.GetLoanPortfolioAnalysisAsync(reportCommand);
                     if (rptData == null)
@@ -108,7 +363,6 @@ namespace CBS.FrontDesk.UI.Controllers
                             JsonRequestBehavior = JsonRequestBehavior.AllowGet
                         };
                     break;
-
 
                 case "loanbypurpose":
                 case "loanbytypes":
@@ -124,109 +378,149 @@ namespace CBS.FrontDesk.UI.Controllers
                     break;
 
                 default:
-                    relativePath = "Loan/PortFolio/MainPortFolioRPT.rpt";
-                    reportTitle = "Loan Portfolio Analysis Report";
+                    // Only set default if reportType has a value and it's not null
+                    if (!string.IsNullOrEmpty(reportType))
+                    {
+                        relativePath = "Loan/PortFolio/MainPortFolioRPT.rpt";
+                        reportTitle = "Loan Portfolio Analysis Report";
+                    }
                     break;
             }
 
-            switch (LoanReports)
+            // Check if we're dealing with a Main Report type
+            bool isMainReport = !string.IsNullOrEmpty(reportType) && (
+                reportType == "all" ||
+                reportType == "currentloan" ||
+                reportType == "delinquentloan" ||
+                reportType == "loansituations" ||
+                reportType == "delinquentloansummary" ||
+                reportType == "delinquentloanslistingwithaging" ||
+                reportType == "loanbypurpose" ||
+                reportType == "loanbytypes"
+            );
+
+            // Second switch - Only execute for Loan Reports (not Main Reports)
+            if (!isMainReport && !string.IsNullOrEmpty(loanReports))
             {
-                case "loanlisting":
-                    relativePath = "Transactions/UpdatedStatement/Loan/GeneralLoanReportRPT.rpt";
-                    if(reportCommand.IsSSFReport == true) {reportTitle = "SSF LOAN PORTFOLIO"; }
-                    reportTitle = "LOAN PORTFOLIO";
-                    delinquencyData = await _loanService.GetLoanDelinquencyReportAsync(reportCommand);
-                     if (rptData == null)
-                        return new JsonResult
+                switch (loanReports)
+                {
+                    case "loanlisting":
+                        relativePath = "Transactions/UpdatedStatement/Loan/GeneralLoanReportRPT.rpt";
+                        if (reportCommand.IsSSFReport == true)
                         {
-                            Data = new { success = false, message = "No data found." },
-                            JsonRequestBehavior = JsonRequestBehavior.AllowGet
-                        };
-                    break;
-
-                case "current":
-                    relativePath = "Transactions/UpdatedStatement/Loan/GeneralLoanReportRPT.rpt";
-                    reportTitle = "CURRENT PERFMORMING LOANS";
-                    rptData = await _loanService.GetLoanPortfolioAnalysisAsync(reportCommand);
-                    if (rptData == null)
-                        return new JsonResult
+                            reportTitle = "SSF LOAN PORTFOLIO";
+                        }
+                        else
                         {
-                            Data = new { success = false, message = "No data found." },
-                            JsonRequestBehavior = JsonRequestBehavior.AllowGet
-                        };
-                    break;
+                            reportTitle = "LOAN PORTFOLIO";
+                        }
+                        delinquencyData = await _loanService.GetLoanDelinquencyReportAsync(reportCommand);
+                        if (delinquencyData == null || !delinquencyData.LoanEntries.Any())
+                            return new JsonResult
+                            {
+                                Data = new { success = false, message = "No data found." },
+                                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                            };
+                        break;
 
-                case "unpaid":
-                    relativePath = "Loan/PortFolio/UnpaidLoansRPT.rpt";
-                    reportTitle = "UNPAID LOANS";
-                    rptData = await _loanService.GetLoanPortfolioAnalysisAsync(reportCommand);
-                    if (rptData == null)
-                        return new JsonResult
+                    case "current":
+                        relativePath = "Transactions/UpdatedStatement/Loan/GeneralLoanReportRPT.rpt";
+                        reportTitle = "CURRENT PERFORMING LOANS";
+                        rptData = await _loanService.GetLoanPortfolioAnalysisAsync(reportCommand);
+                        if (rptData == null)
+                            return new JsonResult
+                            {
+                                Data = new { success = false, message = "No data found." },
+                                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                            };
+                        break;
+
+                    case "unpaid":
+                        relativePath = "Loan/PortFolio/UnpaidLoansRPT.rpt";
+                        reportTitle = "UNPAID LOANS";
+                        rptData = await _loanService.GetLoanPortfolioAnalysisAsync(reportCommand);
+                        if (rptData == null)
+                            return new JsonResult
+                            {
+                                Data = new { success = false, message = "No data found." },
+                                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                            };
+                        break;
+
+                    case "doubtful":
+                        relativePath = "Transactions/UpdatedStatement/Loan/GeneralLoanReportRPT.rpt";
+                        reportTitle = "DOUBTFUL LOANS";
+                        rptData = await _loanService.GetLoanPortfolioAnalysisAsync(reportCommand);
+                        if (rptData == null)
+                            return new JsonResult
+                            {
+                                Data = new { success = false, message = "No data found." },
+                                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                            };
+                        break;
+
+                    case "irrepayable":
+                        relativePath = "Transactions/UpdatedStatement/Loan/GeneralLoanReportRPT.rpt";
+                        reportTitle = "IRREPAYABLE LOANS";
+                        rptData = await _loanService.GetLoanPortfolioAnalysisAsync(reportCommand);
+                        if (rptData == null)
+                            return new JsonResult
+                            {
+                                Data = new { success = false, message = "No data found." },
+                                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                            };
+                        break;
+
+                    case "irrecoverable":
+                        relativePath = "Transactions/UpdatedStatement/Loan/GeneralLoanReportRPT.rpt";
+                        reportTitle = "IRRECOVERABLE LOANS";
+                        rptData = await _loanService.GetLoanPortfolioAnalysisAsync(reportCommand);
+                        if (rptData == null)
+                            return new JsonResult
+                            {
+                                Data = new { success = false, message = "No data found." },
+                                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                            };
+                        break;
+
+                    default:
+                        // Only set default if we don't have a path from main reports
+                        if (string.IsNullOrEmpty(relativePath))
                         {
-                            Data = new { success = false, message = "No data found." },
-                            JsonRequestBehavior = JsonRequestBehavior.AllowGet
-                        };
-                    break;
+                            relativePath = "Loan/PortFolio/MainPortFolioRPT.rpt";
+                            reportTitle = "Loan Portfolio Analysis Report";
+                        }
+                        break;
+                }
+            }
 
-                case "doubtful":
-                  relativePath = "Transactions/UpdatedStatement/Loan/GeneralLoanReportRPT.rpt";
-                    ;
-                    reportTitle = "DOUBTFUL LOANS";
-                    rptData = await _loanService.GetLoanPortfolioAnalysisAsync(reportCommand);
-                    if (rptData == null)
-                        return new JsonResult
-                        {
-                            Data = new { success = false, message = "No data found." },
-                            JsonRequestBehavior = JsonRequestBehavior.AllowGet
-                        };
-                    break;
-
-                case "irrepayable":
-                    relativePath = "Transactions/UpdatedStatement/Loan/GeneralLoanReportRPT.rpt";
-                    reportTitle = "IRREPAYABLE LOANS";
-                    rptData = await _loanService.GetLoanPortfolioAnalysisAsync(reportCommand);
-                    if (rptData == null)
-                        return new JsonResult
-                        {
-                            Data = new { success = false, message = "No data found." },
-                            JsonRequestBehavior = JsonRequestBehavior.AllowGet
-                        };
-                    break;
-
-                case "irrecoverable":
-                    relativePath = "Transactions/UpdatedStatement/Loan/GeneralLoanReportRPT.rpt";
-                    reportTitle = "IRRECOVERABLE LOANS";
-                    rptData = await _loanService.GetLoanPortfolioAnalysisAsync(reportCommand);
-                    if (rptData == null)
-                        return new JsonResult
-                        {
-                            Data = new { success = false, message = "No data found." },
-                            JsonRequestBehavior = JsonRequestBehavior.AllowGet
-                        };
-                    break;
-
-
-                default:
-                    relativePath = "Loan/PortFolio/MainPortFolioRPT.rpt";
-                    reportTitle = "Loan Portfolio Analysis Report";
-                    break;
+            // Validate that we have a path and title
+            if (string.IsNullOrEmpty(relativePath) || string.IsNullOrEmpty(reportTitle))
+            {
+                return new JsonResult
+                {
+                    Data = new { success = false, message = "No report type selected or invalid report configuration." },
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                };
             }
 
             DateTime.TryParse(reportCommand.StartDate, out var sDate);
             DateTime.TryParse(reportCommand.EndDate, out var eDate);
 
             var parameters = new Dictionary<string, object>
-            {
-                { "DateFrom", sDate.ToString("dd/MM/yyyy") },
-                { "DateTo", eDate.ToString("dd/MM/yyyy") },
-                { "BranchName", reportType == "delinquentloansummary" ? delinquencyData.BranchName : rptData.BranchName },
-                { "CurrentYear", DateTime.Now.Year.ToString() },
-                { "PrintedBy", _controller.Session["FullName"]?.ToString() ?? "System" },
-                { "ReportTitle", reportTitle },
-                { "PrintedOn", DateTime.Now.ToString("dd/MM/yyyy, hh:mm:ss") }
-            };
+    {
+        { "DateFrom", sDate.ToString("dd/MM/yyyy") },
+        { "DateTo", eDate.ToString("dd/MM/yyyy") },
+        { "BranchName", reportType == "delinquentloansummary" ? delinquencyData?.BranchName : rptData?.BranchName },
+        { "CurrentYear", DateTime.Now.Year.ToString() },
+        { "PrintedBy", _controller.Session["FullName"]?.ToString() ?? "System" },
+        { "ReportTitle", reportTitle },
+        { "PrintedOn", DateTime.Now.ToString("dd/MM/yyyy, hh:mm:ss") }
+    };
 
             var subReports = new Dictionary<string, object>();
+
+            // Handle subreports and session data based on report type
             if (reportType == "all")
             {
                 var selectedReports = string.IsNullOrWhiteSpace(reportCommand.SubReportType)
@@ -237,46 +531,44 @@ namespace CBS.FrontDesk.UI.Controllers
                     || selectedReports.Contains(name, StringComparer.OrdinalIgnoreCase);
 
                 subReports = new Dictionary<string, object>
-                {
-                    { "Flat_AgeAndGenderSubReport", ShouldInclude("Flat_AgeAndGender") ? rptData.Flat_AgeAndGender : null },
-                    { "Flat_AgeAndLoanTypeSubReport", ShouldInclude("Flat_AgeAndLoanType") ? rptData.Flat_AgeAndLoanType : null },
-                    { "Flat_ByLoanTermSubReport", ShouldInclude("Flat_ByLoanTerm") ? rptData.Flat_ByLoanTerm : null },
-                    { "Flat_ByTargetGroupSubReport", ShouldInclude("Flat_ByTargetGroup") ? rptData.Flat_ByTargetGroup : null },
-                    { "Flat_ByCategorySubReport", ShouldInclude("Flat_ByCategory") ? rptData.Flat_ByCategory : null },
-                    { "Flat_ByZoneSubReport", ShouldInclude("Flat_ByZone") ? rptData.Flat_ByZone : null },
-                    { "PortfolioDetailsSubReport", ShouldInclude("PortfolioDetails") ? rptData.PortfolioDetails : null }
-                };
+        {
+            { "Flat_AgeAndGenderSubReport", ShouldInclude("Flat_AgeAndGender") ? rptData?.Flat_AgeAndGender : null },
+            { "Flat_AgeAndLoanTypeSubReport", ShouldInclude("Flat_AgeAndLoanType") ? rptData?.Flat_AgeAndLoanType : null },
+            { "Flat_ByLoanTermSubReport", ShouldInclude("Flat_ByLoanTerm") ? rptData?.Flat_ByLoanTerm : null },
+            { "Flat_ByTargetGroupSubReport", ShouldInclude("Flat_ByTargetGroup") ? rptData?.Flat_ByTargetGroup : null },
+            { "Flat_ByCategorySubReport", ShouldInclude("Flat_ByCategory") ? rptData?.Flat_ByCategory : null },
+            { "Flat_ByZoneSubReport", ShouldInclude("Flat_ByZone") ? rptData?.Flat_ByZone : null },
+            { "PortfolioDetailsSubReport", ShouldInclude("PortfolioDetails") ? rptData?.PortfolioDetails : null }
+        };
             }
             else if (reportType == "delinquentloansummary")
             {
                 subReports = new Dictionary<string, object>
-                {
-                    { "SubDelinquencyByGenderSummaryRPT", delinquencyData.GenderSummariesAfter60Days },
-                    { "SubDelinquencyByLoanTypeSummaryRPT", delinquencyData.LoanTypeSummariesAfter60Days },
-                    { "SubLoanDelinquencyCategorySummaryRPT", delinquencyData.CategorySummaries }
-                };
+        {
+            { "SubDelinquencyByGenderSummaryRPT", delinquencyData?.GenderSummariesAfter60Days },
+            { "SubDelinquencyByLoanTypeSummaryRPT", delinquencyData?.LoanTypeSummariesAfter60Days },
+            { "SubLoanDelinquencyCategorySummaryRPT", delinquencyData?.CategorySummaries }
+        };
                 _controller.Session["MainData"] = new List<LoanDelinquencyReportDto> { delinquencyData };
             }
             else if (reportType == "loansituations")
             {
-                _controller.Session["MainData"] = delinquencyData.LoanEntries;
+                _controller.Session["MainData"] = delinquencyData?.LoanEntries;
             }
             else if (reportType == "delinquentloanslistingwithaging")
             {
-                _controller.Session["MainData"] =delinquencyData.LoanEntries;
+                _controller.Session["MainData"] = delinquencyData?.LoanEntries;
             }
-            else if (LoanReports == "loanlisting"||LoanReports == "current"||LoanReports == "unpaid"||LoanReports == "irrecoverable")
+            else if (!isMainReport && (loanReports == "loanlisting" || loanReports == "current" || loanReports == "unpaid" || loanReports == "irrecoverable"))
             {
-                _controller.Session["MainData"] =delinquencyData.LoanEntries;
+                _controller.Session["MainData"] = delinquencyData?.LoanEntries;
             }
-            // delinquentloanslistingwithaging
             else
             {
                 if (reportType == "delinquentloan")
-                    _controller.Session["MainData"] = rptData.PortfolioDetails;
-                else
+                    _controller.Session["MainData"] = rptData?.PortfolioDetails;
+                else if (rptData != null)
                     _controller.Session["MainData"] = new List<LoanDelinquencyReportResultRPT> { rptData };
-
             }
 
             _controller.Session["ReportParameters"] = parameters;
