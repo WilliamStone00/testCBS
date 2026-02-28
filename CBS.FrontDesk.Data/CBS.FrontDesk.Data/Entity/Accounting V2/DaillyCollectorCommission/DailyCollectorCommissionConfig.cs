@@ -92,6 +92,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission
         public bool? IsCentralised { get; set; }
         public bool? IsActive { get; set; }
 
+        // NEW: Scope filter (CENTRALISED | BRANCH_DEFAULT | COLLECTOR_BRANCH)
+        public string ScopeLevel { get; set; }
         // Exact date filter
         public DateTime? EffectiveOn { get; set; }
 

@@ -48,7 +48,13 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
             private async Task LoaderViewBagData()
             {
                 var branches = await _branchServices.GetBranches();
-                ViewBag.Branches = branches;
+            ViewBag.Branches = branches;
+            ViewBag.ScopeLevels = new List<object>
+            {
+                new { Id = "CENTRALISED", Name = "Centralised Only" },
+                new { Id = "BRANCH_DEFAULT", Name = "Branch Default" },
+                new { Id = "COLLECTOR_BRANCH", Name = "Collector Per Branch" }
+            };
 
         }
 
