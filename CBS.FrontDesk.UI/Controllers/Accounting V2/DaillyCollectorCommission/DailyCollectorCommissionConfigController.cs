@@ -6,6 +6,7 @@ using CBS.FrontDesk.Data.Message;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -15,7 +16,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
  
 
    
-        [CheckSessionTimeOut]
+        //[CheckSessionTimeOut]
         public class DailyCollectorCommissionConfigController : BaseController
         {
             private readonly DailyCollectorCommissionConfigService _configService;
@@ -94,19 +95,45 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
             {
                 await LoaderViewBagData();
 
-                if (path == "list")
+            if (path == "list")
+            {
+                var data = await _configService.GetAllConfigsAsync();
+                return PartialView(partialView, data);
+            }
+            else if (partialView == "_CommissionConfigForm")
+            {
+                var data = await _configService.GetConfigByIdAsync(KEY);
+
+                // Map to Scomand for view display
+                var viewModel = new DailyCollectorCommissionScomand
                 {
-                    var data = await _configService.GetAllConfigsAsync();
-                    return PartialView(partialView, data);
-                }
-                else if (path == "new")
-                {
-                    return PartialView(partialView ?? "_CommissionConfigForm", new DailyCollectorCommissionShareConfig());
-                }
-                else
-                {
-                    var data = await _configService.GetConfigByIdAsync(KEY);
-                    return PartialView(partialView ?? "_CommissionConfigDetails", data);
+                    Id = data.Id,
+                    BranchId = data.BranchId,
+                    CollectorId = data.CollectorId,             
+                    IsCentralised = data.IsCentralised,
+                    IsActive = data.IsActive,
+                    EffectiveFrom = data.EffectiveFrom,
+                    EffectiveTo = data.EffectiveTo ?? DateTime.MaxValue, // Handle nullable EffectiveTo
+                    CollectorMemberReference = data.CollectorMemberReference,
+                    Rules = data.Rules?.Select(r => new DailyCollectorCommissionShareRule
+                    {
+                        Stakeholder = r.Stakeholder,
+                        Percentage = r.Percentage
+                    }).ToList() ?? new List<DailyCollectorCommissionShareRule>()
+                };
+
+                return PartialView(partialView ?? "_CommissionConfigDetails", viewModel);
+            }
+            else if (path == "new")
+            {
+                return PartialView(partialView ?? "_CommissionConfigForm", new DailyCollectorCommissionShareConfig());
+            }
+
+            else
+            {
+                var data = await _configService.GetConfigByIdAsync(KEY);
+
+                return PartialView(partialView ?? "_CommissionConfigDetails", data);
                 }
             }
         [HttpPost]
