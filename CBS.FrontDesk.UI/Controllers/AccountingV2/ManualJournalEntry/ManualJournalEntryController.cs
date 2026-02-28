@@ -54,8 +54,6 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2
             ViewBag.CounterBranches = CounterBranches;
             var branches = await _branchServices.GetBranches();
             ViewBag.Branches = branches;
-
-
             return true;
         }
 
