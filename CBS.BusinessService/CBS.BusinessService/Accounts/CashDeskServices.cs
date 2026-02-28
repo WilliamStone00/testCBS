@@ -656,7 +656,7 @@ namespace CBS.BusinessService.Accounts
                                 IncludeLoanRepayment = deposit.IncludeLoanRepayment,
                                 BulkOperationsForLoanRepayments = deposit.BulkOperationsForLoanRepayments,
                                 CustomerAlphaNumber = customerAlphaNumber,
-                                HideBalance = bulkOP.HideBalance,
+                                HideBalance = bulkOP.HideBalance, 
                                 SourceOfFundsCode = bulkOP.SourceOfFundsCode,
                                 SourceOfFundsOther = bulkOP.SourceOfFundsOther,
                                 WithdrawalPurposeCode = bulkOP.WithdrawalPurposeCode,
