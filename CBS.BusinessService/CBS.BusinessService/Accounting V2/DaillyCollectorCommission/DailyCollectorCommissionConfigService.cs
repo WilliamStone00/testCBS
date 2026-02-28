@@ -99,7 +99,7 @@ namespace CBS.BusinessService.Accounting_V2.DailyCollectorCommission
             }
         }
 
-        public async Task<ExecutionMessages> CreateConfigAsync(DailyCollectorCommissionShareConfig model)
+        public async Task<ExecutionMessages> CreateConfigAsync(DailyCollectorCommissionScomand model)
         {
             try
             {
@@ -125,7 +125,7 @@ namespace CBS.BusinessService.Accounting_V2.DailyCollectorCommission
             return ExecutionMessage;
         }
 
-        public async Task<ExecutionMessages> UpdateConfigAsync(DailyCollectorCommissionShareConfig model)
+        public async Task<ExecutionMessages> UpdateConfigAsync(DailyCollectorCommissionScomand model)
         {
             try
             {

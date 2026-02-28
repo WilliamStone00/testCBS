@@ -8,6 +8,27 @@ using System.Threading.Tasks;
 namespace CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission
 {
 
+    public sealed class DailyCollectorCommissionScomand
+    {
+        public string Id { get; set; }
+
+        public string BranchId { get; set; } = null;
+
+        public string CollectorId { get; set; } = null;
+
+        public bool IsCentralised { get; set; }
+
+        public bool IsActive { get; set; }
+
+        public DateTime EffectiveFrom { get; set; }
+
+        public DateTime EffectiveTo { get; set; }
+
+        public string CollectorMemberReference { get; set; } = null;
+
+        public List<DailyCollectorCommissionShareRule> Rules { get; set; } = new List<DailyCollectorCommissionShareRule>();
+    }
+
     public class DailyCollectorCommissionShareConfig
     {
         public string Id { get; set; } 
@@ -37,14 +58,9 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission
 
     public class DailyCollectorCommissionShareRule
     {
-        public string Id { get; set; }
-
-        public string ConfigId { get; set; } = null;
-
-        public string Stakeholder { get; set; } = null;
+       public string Stakeholder { get; set; } = null;
 
         public decimal Percentage { get; set; }
-
         // Navigation
         public DailyCollectorCommissionShareConfig Config { get; set; } = null;
     }

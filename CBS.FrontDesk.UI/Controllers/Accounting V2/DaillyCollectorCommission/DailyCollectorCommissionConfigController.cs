@@ -35,7 +35,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
             public async Task<ActionResult> Index()
             {
                 await LoaderViewBagData();
-                return View(new DailyCollectorCommissionShareConfig());
+                return View(new DailyCollectorCommissionScomand());
             }
 
             [HttpGet]
@@ -104,7 +104,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
                 }
             }
         [HttpPost]
-        public async Task<ActionResult> CreateOrUpdate(DailyCollectorCommissionShareConfig model)
+        public async Task<ActionResult> CreateOrUpdate(DailyCollectorCommissionScomand model)
         {
             // Parse the CollectorId which contains "CustomerId|UserId" format
             if (!string.IsNullOrWhiteSpace(model.CollectorId) && model.CollectorId.Contains("|"))
@@ -135,7 +135,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
         }
 
         [HttpPost]
-        public async Task<ActionResult> Update(DailyCollectorCommissionShareConfig model)
+        public async Task<ActionResult> Update(DailyCollectorCommissionScomand model)
         {
             // Parse the CollectorId which contains "CustomerId|UserId" format
             if (!string.IsNullOrWhiteSpace(model.CollectorId) && model.CollectorId.Contains("|"))

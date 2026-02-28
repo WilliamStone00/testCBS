@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission.DailyCollectorCommissionShareConfig
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission.DailyCollectorCommissionScomand
 
 <div class="card mb-3">
     <div class="card-body d-flex justify-content-end align-items-center">
@@ -22,8 +22,7 @@
         @using (Html.BeginForm("CreateOrUpdate", "DailyCollectorCommissionConfig", FormMethod.Post,new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);"}))
         {
             @Html.HiddenFor(m => m.Id)
-            @Html.HiddenFor(m => m.CreatedAt)
-
+        
             <div class="row gy-3">
                 <div class="col-12">
                     <h6 class="text-primary border-bottom pt-2 pb-1">
@@ -141,8 +140,7 @@
                                     </button>
                                 </div>
 
-                                @Html.HiddenFor(m => m.Rules[i].Id)
-                                @Html.HiddenFor(m => m.Rules[i].ConfigId)
+                              
                             </div>
                         }
                     }
