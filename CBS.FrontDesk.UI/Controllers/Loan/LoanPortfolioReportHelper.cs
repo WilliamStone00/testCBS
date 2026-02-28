@@ -41,7 +41,7 @@ namespace CBS.FrontDesk.UI.Controllers
         private async Task<JsonResult> GenerateReportInternalAsync(GenerateLoanPortfolioReportCommand reportCommand, bool useQueryParam)
         {
             var reportType = reportCommand.MainReportType?.ToLowerInvariant(); 
-            var LoanReports = (reportCommand.ReportType).ToLowerInvariant();
+            var LoanReports = reportCommand.ReportType?.ToLowerInvariant();
             var rptData = new LoanDelinquencyReportResultRPT();
             var delinquencyData = new LoanDelinquencyReportDto();
             var Generalreport  = new LoanDelinquencyReportDto();
