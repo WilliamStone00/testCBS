@@ -1,0 +1,551 @@
+﻿@{
+    ViewBag.Title = "Commission Configurations Listing";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2 shadow-sm">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary fw-bold">
+                    <i class="mdi mdi-format-list-bulleted-type me-2"></i> Commission Configurations Listing
+                </h1>
+                <p class="card-text">
+                    View existing commission configurations and use advanced filters to find specific records
+                </p>
+                <div class="alert alert-info mt-3 py-2">
+                    <i class="mdi mdi-information-outline me-1"></i>
+                    Use filters to search by branch, collector, effective dates, and status
+                </div>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-3 shadow-sm">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-lightbulb-on-outline me-2"></i> Quick Tips</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapseTips" aria-expanded="false">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseTips" class="collapse">
+        <div class="card-body">
+            <ul class="mb-0">
+                <li><i class="mdi mdi-home-city text-success me-2"></i><strong>Branch:</strong> Filter configurations by branch</li>
+                <li><i class="mdi mdi-account text-info me-2"></i><strong>Collector:</strong> Find configurations for specific collectors</li>
+                <li><i class="mdi mdi-calendar-range text-primary me-2"></i><strong>Effective Date:</strong> Filter by effective date range</li>
+                <li><i class="mdi mdi-toggle-switch text-warning me-2"></i><strong>Status:</strong> Show only active or inactive configurations</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow p-3 mb-4" id="filtersSection">
+    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> Filter Configurations</h5>
+
+    <form id="commissionFilterForm" autocomplete="off">
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Branch</label>
+                @Html.DropDownList("BranchId", new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
+                    "--- All Branches ---", new { @class = "form-control select2", id = "branchId" })
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Collector</label>
+                @Html.DropDownList("CollectorId", new SelectList(ViewBag.Collectors ?? new List<object>(), "Id", "FullName"),
+                    "--- All Collectors ---", new { @class = "form-control select2", id = "collectorId" })
+            </div>
+
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <label class="form-label fw-bold">Effective From Start</label>
+                <input type="date" id="effectiveFromStart" name="EffectiveFromStart" class="form-control" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label fw-bold">Effective From End</label>
+                <input type="date" id="effectiveFromEnd" name="EffectiveFromEnd" class="form-control" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label fw-bold">Effective On Date</label>
+                <input type="date" id="effectiveOn" name="EffectiveOn" class="form-control" />
+            </div>
+        </div>
+        <div class="col-md-4 d-flex align-items-center">
+            <div class="form-check me-3">
+                <input class="form-check-input" type="checkbox" id="isCentralised" name="IsCentralised" value="true" />
+                <label class="form-check-label fw-bold" for="isCentralised">Centralised Only</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="isActive" name="IsActive" value="true" />
+                <label class="form-check-label fw-bold" for="isActive">Active Only</label>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-md-12 d-flex">
+                <button id="applyFilterBtn" type="button" class="btn btn-primary me-2 w-100">
+                    <i class="mdi mdi-magnify"></i> Apply Filter
+                </button>
+                <button id="resetFilterBtn" type="button" class="btn btn-secondary me-2 w-100">
+                    <i class="mdi mdi-refresh"></i> Reset
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div id="datalistingview">
+    @Html.Partial("_CommissionConfigDataTable")
+</div>
+@*Commission Config Details Modal*@
+<div class="modal fade" id="configDetailsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center">
+                    <div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+<script>
+    // ============================================================
+    // Commission Config Listing - DataTable Script (CLEANED)
+    //
+    // ✅ Server-side DataTable with advanced filters (Branch, Collector, dates, status)
+    // ✅ Posts JSON payload to: /DailyCollectorCommissionConfig/LoadConfigData
+    // ✅ Renders key columns + action dropdown (Details/Edit/Delete)
+    //
+    // FIXES INCLUDED:
+    // 1) ✅ dataSrc MUST return an ARRAY, not an object.
+    // 2) ✅ Reduced noisy logs; only essential errors + optional debug.
+    // 3) ✅ Stronger date parsing (supports /Date(x)/ and ISO strings).
+    // 4) ✅ Safer sorting column fallback when DataTables uses null columns.
+    // ============================================================
+
+    var configTable = null;
+
+    // Toggle this for quick troubleshooting
+    var debugMode = false;
+
+    function debug(message, data) {
+        if (!debugMode) return;
+        if (data !== undefined) console.log('[CommissionConfig]', message, data);
+        else console.log('[CommissionConfig]', message);
+    }
+
+    // Convert empty values to null (API expects null instead of "")
+    function emptyToNull(v) {
+        return (v === undefined || v === null || v === '') ? null : v;
+    }
+
+    // Collect UI filters and return a request object matching DaillycollectorCommissionConfigQuery
+    function collectFilters() {
+        return {
+            BranchId: emptyToNull($('#branchId').val()),
+            CollectorId: emptyToNull($('#collectorId').val()),
+            IsCentralised: $('#isCentralised').is(':checked') ? true : null,
+            IsActive: $('#isActive').is(':checked') ? true : null,
+            EffectiveOn: emptyToNull($('#effectiveOn').val()),
+            EffectiveFromStart: emptyToNull($('#effectiveFromStart').val()),
+            EffectiveFromEnd: emptyToNull($('#effectiveFromEnd').val()),
+            Search: emptyToNull($('#search').val()),
+            Options: {} // filled in AJAX.data()
+        };
+    }
+
+    // Support both "/Date(123)/" and normal date strings
+    function parseDotNetDate(dateValue) {
+        if (!dateValue) return null;
+
+        if (typeof dateValue === 'string' && dateValue.indexOf('/Date(') === 0) {
+            var matches = /\/Date\((\d+)\)\//.exec(dateValue);
+            if (matches) return new Date(parseInt(matches[1]));
+        }
+
+        var d = new Date(dateValue);
+        return isNaN(d.getTime()) ? null : d;
+    }
+
+    function formatDate(dateValue, format) {
+        if (!dateValue) return '-';
+
+        var date = parseDotNetDate(dateValue);
+        if (!date) return '-';
+
+        // Prefer moment if available
+        if (window.moment) return moment(date).format(format || 'DD/MM/YYYY');
+
+        return date.toLocaleDateString();
+    }
+
+    // Converts "SCOPE_LEVEL_NAME" -> "Scope Level Name"
+    function humanizeEnumText(value) {
+        if (!value) return '-';
+        return String(value)
+            .split('_')
+            .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+            .join(' ');
+    }
+
+    // Build the DataTableOptions from DataTables request
+    function buildDtOptions(d) {
+        // Sort column name resolution (server expects a property name)
+        var sortColumn = 'EffectiveFrom';
+        var sortDirection = (d.order && d.order[0]) ? d.order[0].dir : 'desc';
+
+        try {
+            if (d.columns && d.order && d.order[0]) {
+                var colIndex = d.order[0].column;
+                // If you use "data: null" for a computed column, fallback to EffectiveFrom.
+                sortColumn = d.columns[colIndex]?.data || 'EffectiveFrom';
+                if (sortColumn === null || sortColumn === 'null' || sortColumn === undefined) sortColumn = 'EffectiveFrom';
+            }
+        } catch (e) {
+            sortColumn = 'EffectiveFrom';
+        }
+
+        return {
+            draw: d.draw,
+            start: d.start,
+            length: d.length,
+            skip: d.start,
+            pageSize: d.length,
+            searchValue: d.search?.value || '',
+            sortColumn: sortColumn,
+            sortDirection: sortDirection
+        };
+    }
+
+    // Initialize or re-initialize DataTable
+    function initDataTable() {
+        // Destroy existing instance safely
+        if ($.fn.DataTable.isDataTable('#myDataTable')) {
+            $('#myDataTable').DataTable().destroy(true);
+            configTable = null;
+        }
+
+        if (!$('#myDataTable').length) {
+            appalert('Table element #myDataTable not found', 0, 1);
+            return;
+        }
+
+        configTable = $('#myDataTable').DataTable({
+            responsive: true,
+            serverSide: true,
+            destroy: true,
+            order: [[0, 'desc']],
+            lengthMenu: [10, 25, 50],
+            pageLength: 10,
+
+            ajax: {
+                url: '/DailyCollectorCommissionConfig/LoadConfigData',
+                type: 'POST',
+                contentType: 'application/json',
+                data: function (d) {
+                    var filters = collectFilters();
+                    filters.Options = buildDtOptions(d);
+
+                    debug('Request payload', filters);
+                    return JSON.stringify(filters);
+                },
+
+                // IMPORTANT: dataSrc MUST return the array of rows
+                dataSrc: function (json) {
+                    if (json && json.error) {
+                        console.error('[CommissionConfig] Server error:', json.error);
+                        appalert('Server error: ' + json.error, 0, 1);
+                        return [];
+                    }
+
+                    // Expected: { draw, recordsTotal, recordsFiltered, data: [...] }
+                    if (!json || !Array.isArray(json.data)) return [];
+
+                    debug('Response data length', json.data.length);
+                    return json.data;
+                },
+
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.error('[CommissionConfig] DataTable AJAX error:', {
+                        status: jqXHR.status,
+                        textStatus: textStatus,
+                        errorThrown: errorThrown
+                    });
+
+                    var msg = 'Failed to load data. Please try again.';
+                    try {
+                        var response = JSON.parse(jqXHR.responseText);
+                        msg = response.message || response.error || msg;
+                    } catch { }
+                    appalert(msg, 0, 1);
+                }
+            },
+
+            columns: [
+                // 0 - Effective From
+                {
+                    data: 'EffectiveFrom',
+                    render: function (data) {
+                        return formatDate(data, 'DD/MM/YYYY');
+                    }
+                },
+
+                // 1 - Scope Level
+                {
+                    data: 'ScopeLevel',
+                    render: function (data) {
+                        return humanizeEnumText(data);
+                    }
+                },
+
+                // 2 - Branch
+                {
+                    data: 'BranchName',
+                    defaultContent: '-',
+                    render: function (data) { return data || '-'; }
+                },
+
+                // 3 - Collector
+                {
+                    data: 'CollectorName',
+                    defaultContent: '-',
+                    render: function (data) { return data || '-'; }
+                },
+
+                // 4 - Effective Period (computed)
+                {
+                    data: null,
+                    orderable: false,
+                    render: function (data, type, row) {
+                        if (!row) return '-';
+                        var from = formatDate(row.EffectiveFrom);
+                        var to = row.EffectiveTo ? formatDate(row.EffectiveTo) : 'No end date';
+                        return from + ' to ' + to;
+                    }
+                },
+
+                //// 5 - Commission Rules (RuleCount)
+                //{
+                //    data: 'RuleCount',
+                //    defaultContent: '-',
+                //    render: function (data) {
+                //        if (data === null || data === undefined) return '-';
+                //        return data + ' rule' + (data !== 1 ? 's' : '');
+                //    }
+                //},
+
+                // 6 - Total %
+                {
+                    data: 'TotalPercentage',
+                    render: function (data) {
+                        if (data === null || data === undefined) return '-';
+                        var n = parseFloat(data);
+                        if (isNaN(n)) return '-';
+                        return n.toFixed(2) + '%';
+                    }
+                },
+
+                // 7 - Status
+                {
+                    data: 'IsActive',
+                    render: function (data) {
+                        return data
+                            ? '<span class="badge bg-success">Active</span>'
+                            : '<span class="badge bg-danger">Inactive</span>';
+                    }
+                },
+
+                // 8 - Actions
+                {
+                    data: 'Id',
+                    orderable: false,
+                    searchable: false,
+                    render: function (data) {
+                        if (!data) return '<span class="text-muted">No ID</span>';
+
+                        var recordId = encodeURIComponent(data);
+                        var safeId = (data || '').replace(/[^a-zA-Z0-9_-]/g, '') || 'x';
+                        var btnId = 'actionDropdown_' + safeId;
+
+                        return `
+                            <div class="dropdown text-center">
+                                <button class="btn btn-sm btn-info dropdown-toggle text-white"
+                                        type="button" id="${btnId}"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="mdi mdi-cog-outline"></i> Actions
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="${btnId}">
+                                    <li>
+                                        <button type="button" class="dropdown-item btn-details" data-id="${recordId}">
+                                            <i class="mdi mdi-eye me-1 text-primary"></i> Details
+                                        </button>
+                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <button type="button" class="dropdown-item btn-edit" data-id="${recordId}">
+                                            <i class="mdi mdi-pencil-outline me-1 text-success"></i> Edit
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button type="button" class="dropdown-item btn-delete text-danger" data-id="${recordId}">
+                                            <i class="mdi mdi-delete-outline me-1 text-danger"></i> Delete
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        `;
+                    }
+                }
+            ],
+
+            language: {
+                emptyTable: 'No commission configurations found',
+                info: 'Showing _START_ to _END_ of _TOTAL_ entries',
+                infoEmpty: 'Showing 0 to 0 of 0 entries',
+                infoFiltered: '(filtered from _MAX_ total entries)'
+            }
+        });
+    }
+
+    // Reload data while keeping current page
+    function reloadData() {
+        if (!configTable || !$.fn.DataTable.isDataTable('#myDataTable')) {
+            initDataTable();
+            return;
+        }
+        configTable.ajax.reload(null, false);
+    }
+
+    function resetFilters() {
+        var form = document.getElementById('commissionFilterForm');
+        if (form) form.reset();
+
+        if ($.fn.select2) {
+            $('#branchId, #collectorId').val(null).trigger('change');
+        }
+        reloadData();
+        appalert('Filters reset', 3, 1);
+    }
+
+    // Hide filters & destroy datatable when switching to edit screen
+    function enterEditMode() {
+        $('#filtersSection').hide();
+        try {
+            if ($.fn.DataTable.isDataTable('#myDataTable')) {
+                $('#myDataTable').DataTable().destroy(true);
+            }
+            configTable = null;
+        } catch (e) { }
+    }
+
+    // Restore listing + reinit datatable after returning from edit screen
+    function exitEditModeAndReload() {
+        $('#filtersSection').show();
+        AddORUpdateGen(null, 'datalistingview', '_CommissionConfigDataTable', 'get', 'DailyCollectorCommissionConfig');
+        setTimeout(function () {
+            initDataTable();
+        }, 300);
+    }
+
+    $(document).ready(function () {
+        // Init Select2 (if available)
+        if ($.fn.select2) {
+            $('#branchId, #collectorId').select2({
+                width: '100%',
+                placeholder: 'Select option',
+                allowClear: true
+            });
+        }
+
+        // Init DataTable once on page load
+       // initDataTable();
+
+        // Apply filter
+        $('#applyFilterBtn').off('click').on('click', function (e) {
+            e.preventDefault();
+            reloadData();
+        });
+
+        // Reset filters
+        $('#resetFilterBtn').off('click').on('click', function (e) {
+            e.preventDefault();
+            resetFilters();
+        });
+
+        // Enter key triggers apply
+        $('#commissionFilterForm input').off('keypress').on('keypress', function (e) {
+            if (e.which === 13) {
+                e.preventDefault();
+                reloadData();
+            }
+        });
+
+        // Details
+        $(document).off('click', '.btn-details').on('click', '.btn-details', function (e) {
+            e.preventDefault();
+
+            var raw = $(this).data('id');
+            var id = raw ? decodeURIComponent(raw) : null;
+            if (!id) return appalert('Missing id for details', 0, 1);
+
+            var modalEl = document.getElementById('configDetailsModal');
+            if (!modalEl) return appalert('Details modal not found', 0, 1);
+
+            var bsModal = new bootstrap.Modal(modalEl);
+            $('#configDetailsModal .modal-body').html('<div class="text-center"><div class="spinner-border" role="status"></div></div>');
+            bsModal.show();
+
+            $.get('/DailyCollectorCommissionConfig/InitializeData', { KEY: id })
+                .done(function (html) {
+                    $('#configDetailsModal .modal-body').html(html || '<div class="text-center text-muted">No details available.</div>');
+                })
+                .fail(function () {
+                    $('#configDetailsModal .modal-body').html('<div class="text-center text-danger">Error loading details</div>');
+                    appalert('Failed to load details', 0, 1);
+                });
+        });
+
+        // Edit
+        $(document).off('click', '.btn-edit').on('click', '.btn-edit', function (e) {
+            e.preventDefault();
+
+            var raw = $(this).data('id');
+            var id = raw ? decodeURIComponent(raw) : null;
+            if (!id) return appalert('Missing id for edit', 0, 1);
+
+            enterEditMode();
+            AddORUpdateGen(id, 'datalistingview', '_CommissionConfigForm', 'get', 'DailyCollectorCommissionConfig');
+        });
+
+        // Cancel edit (your form should have .btn-cancel-edit)
+        $(document).off('click', '.btn-cancel-edit').on('click', '.btn-cancel-edit', function (e) {
+            e.preventDefault();
+            exitEditModeAndReload();
+        });
+
+        // Delete
+        $(document).off('click', '.btn-delete').on('click', '.btn-delete', function (e) {
+            e.preventDefault();
+
+            var raw = $(this).data('id');
+            var id = raw ? decodeURIComponent(raw) : null;
+            if (!id) return appalert('Missing id for delete', 0, 1);
+
+            DeleteRecordDataTable('DailyCollectorCommissionConfig', id, 'myDataTable', '_CommissionConfigDataTable', 0, 'datalistingview', null, 'list');
+        });
+    });
+</script>
+}

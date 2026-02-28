@@ -15,11 +15,11 @@
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h4 class="fw-bold text-primary mb-0">
                     <i class="mdi mdi-book-plus-outline me-2"></i>
-                    @ManualEntry.ManualJournalEntry
+                    Manual Journal Entry
                 </h4>
 
                 <div class="col-md-4 text-end">
-                    <label class="form-label fw-bold me-2">@ManualEntry.AccountingDate</label>
+                    <label class="form-label fw-bold me-2">Accounting Date</label>
                     @Html.TextBoxFor(m => m.AccountingDate,
                         new
                         {
@@ -40,25 +40,25 @@
                 <div class="form-check form-switch mb-1">
                     <input class="form-check-input" type="checkbox" id="enableInterbranch">
                     <label class="form-check-label fw-bold" for="enableInterbranch">
-                        @ManualEntry.EnableInterbranchTransaction
+                        Enable Interbranch Transaction
                     </label>
                 </div>
 
                 <!-- Branch + Counterparty Branch side by side -->
-                
+
                 <div class="row g-2 align-items-end">
-                        <div class="col-md-6">
-                            <label for="BranchId" class="form-label fw-bold">Branch</label>
-                            @Html.DropDownList("BranchId",
-                                new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
-                                "--- Select Branch ---",
-                                new { @class = "form-control select2 mb-1", @id = "BranchId" })  <!-- ✅ Match JS -->
-                        </div>
-                    
+                    <div class="col-md-6">
+                        <label for="BranchId" class="form-label fw-bold">Branch</label>
+                        @Html.DropDownList("BranchId",
+                            new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
+                            "--- Select Branch ---",
+                            new { @class = "form-control select2 mb-1", @id = "BranchId" })  <!-- ✅ Match JS -->
+                    </div>
+
 
 
                     <div class="col-md-6" id="counterpartyBranchDiv" style="display:none;">
-                        <label for="CounterpartyBranchId" class="form-label fw-bold">@ManualEntry.CounterpartyBranch</label>
+                        <label for="CounterpartyBranchId" class="form-label fw-bold">Counterparty Branch</label>
                         @Html.DropDownList(
                             "CounterpartyBranchId",
                             new SelectList(ViewBag.CounterBranches, "Id", "Name", Model?.CounterpartyBranchId),
@@ -74,17 +74,17 @@
                 <table class="table table-bordered align-middle text-center" id="myDataTable">
                     <thead class="table-light">
                         <tr>
-                            <th style="width:30%">@ManualEntry.Account</th>
-                            <th style="width:30%">@ManualEntry.Narration</th>
-                            <th style="width:15%">@ManualEntry.Debit</th>
-                            <th style="width:15%">@ManualEntry.Credit</th>
-                            <th style="width:10%">@ManualEntry.Actions</th>
+                            <th style="width:30%">Account</th>
+                            <th style="width:30%">Narration</th>
+                            <th style="width:15%">Debit</th>
+                            <th style="width:15%">Credit</th>
+                            <th style="width:10%">Actions</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
                     <tfoot class="table-light fw-bold">
                         <tr>
-                            <td colspan="2" class="text-end">@ManualEntry.Totals:</td>
+                            <td colspan="2" class="text-end">Totals:</td>
                             <td id="totalDebit" class="text-end">0.00</td>
                             <td id="totalCredit" class="text-end">0.00</td>
                             <td></td>
@@ -94,31 +94,31 @@
             </div>
 
             <div class="text-end mt-2">
-                <span id="difference" class="fw-bold text-danger">@ManualEntry.Diff: 0.00</span>
+                <span id="difference" class="fw-bold text-danger">Difference: 0.00</span>
             </div>
 
             <!-- ================= ACTION BUTTONS ================= -->
             <div class="mt-3 d-flex justify-content-between">
                 <div>
                     <button type="button" class="btn btn-outline-primary" id="addRowBtn">
-                        <i class="mdi mdi-plus"></i> @ManualEntry.AddRow
+                        <i class="mdi mdi-plus"></i> Add Row
                     </button>
                     <button type="button" class="btn btn-outline-danger" id="clearRowsBtn">
-                        <i class="mdi mdi-trash-can-outline"></i> @ManualEntry.ClearAllRows
+                        <i class="mdi mdi-trash-can-outline"></i> Clear All Rows
                     </button>
                 </div>
             </div>
 
             <!-- ================= MEMO ================= -->
             <div class="mt-4">
-                <label class="form-label fw-bold" for="Payload_Memo">@ManualEntry.Remark</label>
+                <label class="form-label fw-bold" for="Payload_Memo">Remark / Notes</label>
                 @Html.TextAreaFor(
                     m => m.Payload.Memo,
                     new
                     {
                         @class = "form-control shadow-sm",
                         rows = "3",
-                        placeholder = " ",
+                        placeholder = "Enter remarks or additional notes here...",
                         required = "required",
                         id = "Payload_Memo"
                     })
@@ -128,9 +128,133 @@
             <div class="mt-4 text-end">
                 <button type="submit" id="postEntriesBtn" class="btn btn-primary px-4" disabled>
                     <i class="mdi mdi-check-circle-outline me-1"></i>
-                    @ManualEntry.PostEntries
+                    Post Entries
                 </button>
             </div>
         </div>
     </div>
 }
+
+@*@using (Html.BeginForm("PostJournalEntry", "ManualJournalEntry", FormMethod.Post,
+    new { enctype = "multipart/form-data", id = "journalForm", onsubmit = "return journalEntrySubmitAjax(this);" }))
+{*@
+    <!--    <div class="card shadow-sm mt-3">-->
+    <!-- Added padding here -->
+    <!--<div class="card-body p-4">-->
+    <!-- ================= HEADER ================= -->
+    <!--<div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="fw-bold text-primary mb-0">
+            <i class="mdi mdi-book-plus-outline me-2"></i>
+            ManualEntry.ManualJournalEntry
+        </h4>
+
+        <div class="col-md-4 text-end">
+            <label class="form-label fw-bold me-2">ManualEntry.AccountingDate</label>
+            @Html.TextBoxFor(m => m.AccountingDate,
+                new
+                {
+                    @class = "form-control form-control-sm d-inline-block accounting-date",
+                    style = "width: 180px",
+                    type = "date",
+                    value = Model.AccountingDate.HasValue ? Model.AccountingDate.Value.ToString("yyyy-MM-dd") : "",
+                    data_date_default = "today",
+                    data_date_max = "today"
+                })
+            @Html.ValidationMessageFor(m => m.AccountingDate, "", new { @class = "text-danger" })
+        </div>
+    </div>-->
+    <!-- ================= INTERBRANCH ================= -->
+    <!--<div class="mb-2">-->
+    <!-- Interbranch toggle (on its own line) -->
+    <!--<div class="form-check form-switch mb-1">
+        <input class="form-check-input" type="checkbox" id="enableInterbranch">
+        <label class="form-check-label fw-bold" for="enableInterbranch">
+            ManualEntry.EnableInterbranchTransaction
+        </label>
+    </div>-->
+    <!-- Branch + Counterparty Branch side by side -->
+    <!--<div class="row g-2 align-items-end">
+            <div class="col-md-6">
+                <label for="BranchId" class="form-label fw-bold">Branch</label>
+                @Html.DropDownList("BranchId",
+                    new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
+                    "--- Select Branch ---",
+                    new { @class = "form-control select2 mb-1", @id = "BranchId" })-->
+    <!-- ✅ Match JS -->
+    <!--</div>
+
+
+
+            <div class="col-md-6" id="counterpartyBranchDiv" style="display:none;">
+                <label for="CounterpartyBranchId" class="form-label fw-bold">ManualEntry.CounterpartyBranch</label>
+                @Html.DropDownList(
+                    "CounterpartyBranchId",
+                    new SelectList(ViewBag.CounterBranches, "Id", "Name", Model?.CounterpartyBranchId),
+                    "Select Counterparty Branch",
+                    new { @class = "form-control select2", id = "CounterpartyBranchId" }
+                )
+            </div>
+        </div>
+    </div>-->
+    <!-- ================= TABLE ================= -->
+    <!--<div class="table-responsive">
+        <table class="table table-bordered align-middle text-center" id="myDataTable">
+            <thead class="table-light">
+                <tr>
+                    <th style="width:30%">ManualEntry.Account</th>
+                    <th style="width:30%">ManualEntry.Narration</th>
+                    <th style="width:15%">ManualEntry.Debit</th>
+                    <th style="width:15%">ManualEntry.Credit</th>
+                    <th style="width:10%">ManualEntry.Actions</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+            <tfoot class="table-light fw-bold">
+                <tr>
+                    <td colspan="2" class="text-end">ManualEntry.Totals:</td>
+                    <td id="totalDebit" class="text-end">0.00</td>
+                    <td id="totalCredit" class="text-end">0.00</td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <div class="text-end mt-2">
+        <span id="difference" class="fw-bold text-danger">ManualEntry.Diff: 0.00</span>
+    </div>-->
+    <!-- ================= ACTION BUTTONS ================= -->
+    <!--<div class="mt-3 d-flex justify-content-between">
+        <div>
+            <button type="button" class="btn btn-outline-primary" id="addRowBtn">
+                <i class="mdi mdi-plus"></i> ManualEntry.AddRow
+            </button>
+            <button type="button" class="btn btn-outline-danger" id="clearRowsBtn">
+                <i class="mdi mdi-trash-can-outline"></i> ManualEntry.ClearAllRows
+            </button>
+        </div>
+    </div>-->
+    <!-- ================= MEMO ================= -->
+    <!--<div class="mt-4">
+        <label class="form-label fw-bold" for="Payload_Memo">ManualEntry.Remark</label>
+        @Html.TextAreaFor(
+            m => m.Payload.Memo,
+            new
+            {
+                @class = "form-control shadow-sm",
+                rows = "3",
+                placeholder = " ",
+                required = "required",
+                id = "Payload_Memo"
+            })
+    </div>-->
+    <!-- ================= SUBMIT ================= -->
+    <!--<div class="mt-4 text-end">
+                    <button type="submit" id="postEntriesBtn" class="btn btn-primary px-4" disabled>
+                        <i class="mdi mdi-check-circle-outline me-1"></i>
+                        ManualEntry.PostEntries
+                    </button>
+                </div>
+            </div>
+        </div>
+    }-->

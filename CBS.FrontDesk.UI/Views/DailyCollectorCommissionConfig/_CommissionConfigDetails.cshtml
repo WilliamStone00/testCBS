@@ -1,0 +1,116 @@
+﻿
+@model CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission.DailyCollectorCommissionShareConfig
+@using CBS.FrontDesk.Helper
+@using CBS.FrontDesk.UI.Helper;
+<fieldset class="fieldset-custom">
+    <div class="card bg-light mb-4 shadow-sm">
+        <div class="card-body text-center">
+            <h1 class="card-title text-primary fw-bold mb-2">
+                <i class="mdi mdi-file-document-outline me-2"></i> Commission Configuration Details
+            </h1>
+            <p class="card-text text-muted mb-1">
+                Detailed information about this commission sharing configuration
+            </p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <h6 class="text-primary"><i class="mdi mdi-information-outline me-2"></i> Basic Information</h6>
+            <table class="table table-sm table-bordered">
+                <tr><td class="fw-bold">Configuration ID:</td><td>@Model.Id</td></tr>
+                <tr>
+                    <td class="fw-bold">Scope Level:</td>
+                    <td>
+                        @if (Model.IsCentralised)
+                        {
+                            <span class="badge bg-primary">@Model.ScopeLevel</span>
+                        }
+                        else if (!string.IsNullOrEmpty(Model.CollectorId))
+                        {
+                            <span class="badge bg-info">@Model.ScopeLevel</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">@Model.ScopeLevel</span>
+                        }
+                    </td>
+                </tr>
+                <tr><td class="fw-bold">Branch ID:</td><td>@(Model.BranchId ?? "-")</td></tr>
+                <tr><td class="fw-bold">Branch Name:</td><td>@(Model.BranchName ?? "-")</td></tr>
+
+                @if (!string.IsNullOrEmpty(Model.CollectorId))
+                {
+                    <tr>
+                        <td class="fw-bold">Collector ID:</td>
+                        <td>@Model.CollectorId</td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold">Collector Name:</td>
+                        <td>@Model.CollectorName</td>
+                    </tr>
+                }
+
+                <tr>
+                    <td class="fw-bold">Status:</td>
+                    <td>
+                        @if (Model.IsActive)
+                        {
+                            <span class="badge bg-success">Active</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">Inactive</span>
+                        }
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="col-md-6">
+            <h6 class="text-primary"><i class="mdi mdi-calendar-clock me-2"></i> Effective Period</h6>
+            <table class="table table-sm table-bordered">
+                <tr><td class="fw-bold">Effective From:</td><td>@DateHelper.FormatNullableDateTime(Model.EffectiveFrom)</td></tr>
+                <tr><td class="fw-bold">Effective To:</td><td>@DateHelper.FormatNullableDateTime(Model.EffectiveTo) ?? "No end date")</td></tr>
+                <tr><td class="fw-bold">Created At:</td><td>@DateHelper.FormatNullableDateTime(Model.CreatedAt)</td></tr>
+                <tr><td class="fw-bold">Modified At:</td><td>@DateHelper.FormatNullableDateTime(Model.ModifiedAt)</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-12">
+            <h6 class="text-primary"><i class="mdi mdi-chart-pie me-2"></i> Commission Rules</h6>
+            <table class="table table-sm table-bordered">
+                <thead class="table-light">
+                    <tr>
+                        <th>Stakeholder</th>
+                        <th>Percentage</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Rules != null && Model.Rules.Any())
+                    {
+                        foreach (var rule in Model.Rules)
+                        {
+                            <tr>
+                                <td>@rule.Stakeholder</td>
+                                <td>@rule.Percentage.ToString("F2")%</td>
+                            </tr>
+                        }
+                        <tr class="table-info">
+                            <td class="fw-bold">Total</td>
+                            <td class="fw-bold">@Model.Rules.Sum(r => r.Percentage).ToString("F2")%</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="2" class="text-center">No rules defined</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</fieldset>

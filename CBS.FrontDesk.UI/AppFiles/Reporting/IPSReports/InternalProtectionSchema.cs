@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.UpdatedStatement.MemberSituation {
+namespace CBS.FrontDesk.UI.AppFiles.Reporting.IPSReports {
     using System;
     using System.ComponentModel;
     using CrystalDecisions.Shared;
@@ -16,14 +16,14 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.UpdatedStatement.Memb
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class SubLoanSituationRPT : ReportClass {
+    public class InternalProtectionSchema : ReportClass {
         
-        public SubLoanSituationRPT() {
+        public InternalProtectionSchema() {
         }
         
         public override string ResourceName {
             get {
-                return "SubLoanSituationRPT.rpt";
+                return "InternalProtectionSchema.rpt";
             }
             set {
                 // Do nothing
@@ -41,8 +41,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.UpdatedStatement.Memb
         
         public override string FullResourceName {
             get {
-                return "CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.UpdatedStatement.MemberSituation" +
-                    ".SubLoanSituationRPT.rpt";
+                return "CBS.FrontDesk.UI.AppFiles.Reporting.IPSReports.InternalProtectionSchema.rpt";
             }
             set {
                 // Do nothing
@@ -88,28 +87,12 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.UpdatedStatement.Memb
                 return this.ReportDefinition.Sections[4];
             }
         }
-        
-        [Browsable(false)]
-        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_DateFrom {
-            get {
-                return this.DataDefinition.ParameterFields[0];
-            }
-        }
-        
-        [Browsable(false)]
-        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_DateTo {
-            get {
-                return this.DataDefinition.ParameterFields[1];
-            }
-        }
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class CachedSubLoanSituationRPT : Component, ICachedReport {
+    public class CachedInternalProtectionSchema : Component, ICachedReport {
         
-        public CachedSubLoanSituationRPT() {
+        public CachedInternalProtectionSchema() {
         }
         
         [Browsable(false)]
@@ -146,7 +129,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.UpdatedStatement.Memb
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            SubLoanSituationRPT rpt = new SubLoanSituationRPT();
+            InternalProtectionSchema rpt = new InternalProtectionSchema();
             rpt.Site = this.Site;
             return rpt;
         }

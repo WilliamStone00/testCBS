@@ -472,17 +472,8 @@ namespace CBS.BusinessService
         {
             try
             {
-                var couApiResponse = await _loanConfigApiHelper.PostAsync<ResponseObject<List<Loan>>>(APICallHelper.GetAllLoanByCustomerId, loanByCustomerIdQuery);
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
+                var couApiResponse = await _loanConfigApiHelper.PostAsync<ResponseObject<List<Loan>>>(APICallHelper.GetAllLoanByCustomerId, loanByCustomerIdQuery);       
+                               
                 
                 if (couApiResponse.IsSuccess)
                 {

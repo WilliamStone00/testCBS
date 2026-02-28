@@ -24,6 +24,7 @@ namespace CBS.FrontDesk.UI.WAF.Middleware.Core.ResponsCapture
         public void Init(HttpApplication context)
         {
             context.BeginRequest += (sender, e) =>
+            
             {
                 var app = (HttpApplication)sender;
 
