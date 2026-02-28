@@ -476,6 +476,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MembersFSeries.xsd</DependentUpon>
     </Compile>
+    <Compile Include="AppFiles\Reporting\IPSReports\InternalProtectionSchema.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>InternalProtectionSchema.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="AppFiles\Reporting\Transactions\UpdatedStatement\AccountSituation.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -2125,6 +2131,7 @@
     <Compile Include="Controllers\Accounting V2\CollectorDevice\CollectorDeviceController.cs" />
     <Compile Include="Controllers\Accounting V2\CustomeReports\CustomeReportsController.cs" />
     <Compile Include="Controllers\Accounting V2\DaillyCollectorCommission\CollectorCommissionController.cs" />
+    <Compile Include="Controllers\Accounting V2\DaillyCollectorCommission\DailyCollectorCommissionConfigController.cs" />
     <Compile Include="Controllers\Accounting V2\DaillyCollectorLicense\DaillyCollectorLicenseController.cs" />
     <Compile Include="Controllers\Accounting V2\FallBack\DeAffiliateToBranchFallbackfaultController.cs" />
     <Compile Include="Controllers\Accounting V2\IncomeStatement\IncomeStatementController.cs" />
@@ -7655,6 +7662,10 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>CashDeskRessource.Designer.cs</LastGenOutput>
     </Content>
+    <EmbeddedResource Include="AppFiles\Reporting\IPSReports\InternalProtectionSchema.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>InternalProtectionSchema.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\Transactions\UpdatedStatement\Loan\GeneralLoanReportRPT.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>GeneralLoanReportRPT.cs</LastGenOutput>
@@ -10851,6 +10862,11 @@
     <Content Include="Views\Individual\MemberStatus.cshtml" />
     <Content Include="Views\Individual\MemberStatusTable.cshtml" />
     <Content Include="Views\ChartOfAccountV2\UploadFile.cshtml" />
+    <Content Include="Views\DailyCollectorCommissionConfig\Index.cshtml" />
+    <Content Include="Views\DailyCollectorCommissionConfig\_CommissionConfigForm.cshtml" />
+    <Content Include="Views\DailyCollectorCommissionConfig\_CommissionConfigDataTable.cshtml" />
+    <Content Include="Views\DailyCollectorCommissionConfig\List.cshtml" />
+    <Content Include="Views\DailyCollectorCommissionConfig\_CommissionConfigDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

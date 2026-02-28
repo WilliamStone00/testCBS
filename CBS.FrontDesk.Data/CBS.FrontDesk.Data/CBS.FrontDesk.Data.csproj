@@ -125,6 +125,7 @@
     <Compile Include="Entity\Accounting V2\API\IPSReporting\IPSReport.cs" />
     <Compile Include="Entity\Accounting V2\CollectorDevice\CollectorDevice.cs" />
     <Compile Include="Entity\Accounting V2\Base\BranchInfo.cs" />
+    <Compile Include="Entity\Accounting V2\DaillyCollectorCommission\DailyCollectorCommissionConfig.cs" />
     <Compile Include="Entity\Accounting V2\DaillyCollectorLicense\DaillyCollectorLicense.cs" />
     <Compile Include="Entity\Accounting V2\FallBack\FallbackReconciliation.cs" />
     <Compile Include="Entity\Accounting V2\IPS\IPSClaim.cs" />
