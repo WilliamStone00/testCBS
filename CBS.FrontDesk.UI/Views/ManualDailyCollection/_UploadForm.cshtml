@@ -1,4 +1,5 @@
-﻿@model CBS.FrontDesk.Data.Entity.ManualDailycollection.FileUploadResponse
+﻿
+@model CBS.FrontDesk.Data.Entity.ManualDailycollection.FileUploadResponse
 @using Resources
 
 @using (Html.BeginForm("UploadFile", "ManualDailyCollection", FormMethod.Post,
@@ -11,8 +12,8 @@
         <div class="card-header bg-white border-0 py-3">
             <h6 class="mb-0 text-primary d-flex align-items-center">
                 <i class="mdi mdi-cloud-upload-outline me-2"></i>
-                @ChequeManagements.ManualDailyCollectionFileUpload
-                <span class="badge bg-success ms-2">@ChequeManagements.Required</span>
+                Manual Daily Collection File Upload
+                <span class="badge bg-success ms-2">Required</span>
             </h6>
         </div>
 
@@ -21,7 +22,7 @@
             <!-- Info -->
             <div class="alert alert-info d-flex align-items-center mb-3" role="alert">
                 <i class="mdi mdi-information-outline me-2"></i>
-                <div>@ChequeManagements.headertext <strong>10MB</strong>.</div>
+                <div>Please upload your daily collection file. Maximum file size is <strong>10MB</strong>.</div>
             </div>
 
             @Html.ValidationSummary(true, "", new { @class = "text-danger mb-3" })
@@ -51,14 +52,12 @@
                     </div>
                 </div>
 
-
-
                 <!-- BRANCH (full width) -->
                 <div class="col-12">
-                    <label for="BranchId" class="form-label fw-semibold">🏢 @ChequeManagements.BranchId</label>
+                    <label for="BranchId" class="form-label fw-semibold">🏢 Branch</label>
                     @Html.DropDownListFor(m => m.BranchId,
                      new SelectList(ViewBag.Branches, "Id", "Name"),
-                     "--- " + @GlobalUserManagement.SelectBranch + " ---",
+                     "--- " + "Select Branch" + " ---",
                      new { @class = "form-control select2", id = "BranchId", onchange = "loadCollectorsAjax(this.value)" })
 
                     @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
@@ -66,7 +65,7 @@
 
                 <!-- COLLECTOR -->
                 <div class="col-12 col-md-12">
-                    <label for="CollectorxCollectorId" class="form-label fw-semibold">👤 @ChequeManagements.sellectdailyCollector</label>
+                    <label for="CollectorxCollectorId" class="form-label fw-semibold">👤 Select Daily Collector</label>
                     @Html.DropDownListFor(m => m.CollectorAndUser,
                         Enumerable.Empty<SelectListItem>(),
                         "--- Select Daily Collector ---",
@@ -89,22 +88,22 @@
                         <div class="input-group">
                             <input type="file" name="uploadedFile" class="form-control" required />
                             <button type="button" id="btnUpload" class="btn btn-primary">
-                                <i class="mdi mdi-cloud-upload-outline me-1"></i> @ChequeManagements.UploadFile
+                                <i class="mdi mdi-cloud-upload-outline me-1"></i> Upload File
                             </button>
                         </div>
                         <small class="form-text text-muted">
-                            @ChequeManagements.Supportedformats: .csv, .xlsx, .xls
+                            Supported formats: .csv, .xlsx, .xls
                         </small>
                     </div>
                     <small class="form-text text-muted">
-                        @ChequeManagements.Supportedformats: .csv, .xlsx, .xls
+                        Supported formats: .csv, .xlsx, .xls
                     </small>
                 </div>
 
                 <!-- TEMPLATE DOWNLOAD -->
                 <div class="col-12 d-flex justify-content-end">
                     <a href="@Url.Action("DownloadTemplate", "ManualDailyCollection")" class="btn btn-outline-primary">
-                        <i class="mdi mdi-file-download-outline me-1"></i> @ChequeManagements.DownloadTemplate
+                        <i class="mdi mdi-file-download-outline me-1"></i> Download Template
                     </a>
                 </div>
             </div>
@@ -115,6 +114,129 @@
 <!-- Preview container (unchanged) -->
 <div id="uploadResultContainer" class="mt-4" style="display:none;"></div>
 
+
+
+
+
+
+
+@*@model CBS.FrontDesk.Data.Entity.ManualDailycollection.FileUploadResponse
+    @using Resources
+
+    @using (Html.BeginForm("UploadFile", "ManualDailyCollection", FormMethod.Post,
+        new { enctype = "multipart/form-data", id = "manualUploadForm" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="card shadow-sm mb-4">
+            <!-- Header -->
+            <div class="card-header bg-white border-0 py-3">
+                <h6 class="mb-0 text-primary d-flex align-items-center">
+                    <i class="mdi mdi-cloud-upload-outline me-2"></i>
+                    @ChequeManagements.ManualDailyCollectionFileUpload
+                    <span class="badge bg-success ms-2">@ChequeManagements.Required</span>
+                </h6>
+            </div>
+
+            <!-- Body -->
+            <div class="card-body">
+                <!-- Info -->
+                <div class="alert alert-info d-flex align-items-center mb-3" role="alert">
+                    <i class="mdi mdi-information-outline me-2"></i>
+                    <div>@ChequeManagements.headertext <strong>10MB</strong>.</div>
+                </div>
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger mb-3" })
+
+                <div class="row g-3">
+                    <!-- ACCOUNTING DATE: first, aligned right -->
+                    <div class="col-12 d-flex justify-content-md-end">
+                        <div class="col-md-4">
+                            <label for="AccountingDay" class="form-label fw-semibold text-md-end d-block">
+                                📅 Accounting Date
+                            </label>
+                            @Html.TextBoxFor(
+                                m => m.AccountingDay,
+                                new
+                                     {
+                                    @class = "form-control accounting-date",
+                                    type = "date",
+                                    id = "AccountingDay",
+                                    required = "required",
+                                    value = DateTime.Today.ToString("yyyy-MM-dd"), // 👈 Preselect today's date
+                                    max = DateTime.Today.ToString("yyyy-MM-dd")     // 👈 Prevent future dates
+                                })
+                            <small class="text-muted d-block text-md-end">
+                                Select the posting (accounting) date for this upload.
+                            </small>
+                            @Html.ValidationMessageFor(m => m.AccountingDay, "", new { @class = "text-danger d-block text-md-end" })
+                        </div>
+                    </div>
+
+
+
+                    <!-- BRANCH (full width) -->
+                    <div class="col-12">
+                        <label for="BranchId" class="form-label fw-semibold">🏢 @ChequeManagements.BranchId</label>
+                        @Html.DropDownListFor(m => m.BranchId,
+                         new SelectList(ViewBag.Branches, "Id", "Name"),
+                         "--- " + @GlobalUserManagement.SelectBranch + " ---",
+                         new { @class = "form-control select2", id = "BranchId", onchange = "loadCollectorsAjax(this.value)" })
+
+                        @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
+                    </div>
+
+                    <!-- COLLECTOR -->
+                    <div class="col-12 col-md-12">
+                        <label for="CollectorxCollectorId" class="form-label fw-semibold">👤 @ChequeManagements.sellectdailyCollector</label>
+                        @Html.DropDownListFor(m => m.CollectorAndUser,
+                            Enumerable.Empty<SelectListItem>(),
+                            "--- Select Daily Collector ---",
+                            new
+                            {
+                                @class = "form-control select2",
+                                id = "CollectorxCollectorId",
+                                required = "required",
+                                disabled = "disabled"
+                            })
+                        @Html.ValidationMessageFor(m => m.CollectorAndUser, "", new { @class = "text-danger" })
+                    </div>
+
+                    <!-- FILE -->
+                    <!-- File upload input -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Select operation file</label>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Select operation file</label>
+                            <div class="input-group">
+                                <input type="file" name="uploadedFile" class="form-control" required />
+                                <button type="button" id="btnUpload" class="btn btn-primary">
+                                    <i class="mdi mdi-cloud-upload-outline me-1"></i> @ChequeManagements.UploadFile
+                                </button>
+                            </div>
+                            <small class="form-text text-muted">
+                                @ChequeManagements.Supportedformats: .csv, .xlsx, .xls
+                            </small>
+                        </div>
+                        <small class="form-text text-muted">
+                            @ChequeManagements.Supportedformats: .csv, .xlsx, .xls
+                        </small>
+                    </div>
+
+                    <!-- TEMPLATE DOWNLOAD -->
+                    <div class="col-12 d-flex justify-content-end">
+                        <a href="@Url.Action("DownloadTemplate", "ManualDailyCollection")" class="btn btn-outline-primary">
+                            <i class="mdi mdi-file-download-outline me-1"></i> @ChequeManagements.DownloadTemplate
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <!-- Preview container (unchanged) -->
+    <div id="uploadResultContainer" class="mt-4" style="display:none;"></div>
+*@
 
 
 

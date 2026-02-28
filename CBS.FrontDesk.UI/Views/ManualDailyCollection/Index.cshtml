@@ -10,11 +10,11 @@
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary fw-bold mb-2">
-                    <i class="mdi mdi-bank-outline me-2"></i> @GlobalDailyCollectorManagement.MAD
+                    <i class="mdi mdi-bank-outline me-2"></i> Manual Daily Collection Management
                 </h1>
-                <p class="card-text text-muted mb-1">@ChequeManagements.Headertextforindex</p>
+                <p class="card-text text-muted mb-1">Manage and track daily cheque collections efficiently</p>
                 <p class="card-text text-warning fw-semibold">
-                    <i class="mdi mdi-alert-circle-outline me-1"></i>@ChequeManagements.importanttextindex
+                    <i class="mdi mdi-alert-circle-outline me-1"></i>Please ensure all uploaded files follow the required format and guidelines
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -35,47 +35,47 @@
         <div class="card-body">
             <ul class="list-group list-group-flush">
                 <li class="list-group-item">
-                    <strong>📂 @ChequeManagements.UploadNewFile</strong>
-                    @ChequeManagements.UploadNewFileINSTR
-                    <em>Tip:</em> @ChequeManagements.tipUploadNewFile
+                    <strong>📂 Upload New File</strong>
+                    Use this option to upload a new cheque collection file in the required format.
+                    <em>Tip:</em> Ensure your file follows the prescribed template structure before uploading.
                 </li>
                 <li class="list-group-item">
-                    <strong>📜 @ChequeManagements.ViewAllFiles</strong>
-                    @ChequeManagements.ViewAllFilestext
-                    <em>Tip:</em> ViewAllFilestiptext
+                    <strong>📜 View All Files</strong>
+                    Access and review all previously uploaded cheque collection files.
+                    <em>Tip:</em> Use the date filters to narrow down your search for specific periods.
                 </li>
                 <li class="list-group-item">
-                    <strong>🔎 @ChequeManagements.FileD</strong>
-                    @ChequeManagements.FileDetailsTEXT1
-                    <em>Tip:</em>  @ChequeManagements.FileDetailsTIPtext
+                    <strong>🔎 File Details</strong>
+                    Click on any file to view its detailed contents and transaction records.
+                    <em>Tip:</em> You can verify individual cheque details from this view.
                 </li>
                 <li class="list-group-item">
-                    <strong>📥 @ChequeManagements.DownloadTemplate:</strong>
-                    @ChequeManagements.DownloadTemplatetext
-                    <em>Tip:</em> @ChequeManagements.DownloadTemplatetetTIPStext.
+                    <strong>📥 Download Template:</strong>
+                    Download the standardized Excel template for cheque collection uploads.
+                    <em>Tip:</em> Always use the latest template version to avoid formatting errors.
                 </li>
                 <li class="list-group-item">
-                    <strong>🗑️ @ChequeManagements.DeleteInvalidFile:</strong>
-                    @ChequeManagements.DeleteInvalidFiletext
-                    <em>Tip:</em> @ChequeManagements.DeleteInvalidFileTIPStext
+                    <strong>🗑️ Delete Invalid File:</strong>
+                    Remove files that were uploaded with errors or incorrect data.
+                    <em>Tip:</em> Review error messages before deleting to understand what went wrong.
                 </li>
                 <li class="list-group-item">
-                    <strong>👤 @ChequeManagements.UserRolesPermissions</strong>
-                    @ChequeManagements.UserRolesPermissionsTEXT
-                    <em>Tip:</em> @ChequeManagements.UserRolesPermissionsTIPSTEXT
+                    <strong>👤 User Roles & Permissions</strong>
+                    Different users have varying access levels for upload, view, and delete actions.
+                    <em>Tip:</em> Contact your administrator if you need additional permissions.
                 </li>
                 <li class="list-group-item">
-                    <strong>⏳ @ChequeManagements.ProcessingTime</strong>
-                    @ChequeManagements.ProcessingTimetext
-                    <em>Tip:</em> @ChequeManagements.ProcessingTimetiptext.
+                    <strong>⏳ Processing Time</strong>
+                    File processing may take a few moments depending on file size and system load.
+                    <em>Tip:</em> Avoid uploading during peak hours for faster processing.
                 </li>
                 <li class="list-group-item">
-                    <strong>❓ @ChequeManagements.NeedHelp</strong>
-                    @ChequeManagements.Lookforthehelpicon (<i class="mdi mdi-help-circle-outline text-info"></i>) @ChequeManagements.Lookforthehelpicontext
-                    <em>Tip:</em>  @ChequeManagements.LookforthehelpiconTiptext
+                    <strong>❓ Need Help?</strong>
+                    Look for the help icon (<i class="mdi mdi-help-circle-outline text-info"></i>) throughout the interface for context-specific guidance.
+                    <em>Tip:</em> Hover over icons to see tooltips with additional information.
                 </li>
+            </ul>
         </div>
-
     </div>
 </div>
 <!-- Main Content Area -->
@@ -84,14 +84,99 @@
     <div class="card-body d-flex justify-content-end align-items-center">
         <!-- CORRECTED: The onclick functions now target 'mainWorkspace' -->
         <a type="button" onclick="LoadDataGen('ManualDailyCollection', 'myDataTable', '_FileList', 0, 'mainWorkspace', null, 'list')" class="btn btn-label-primary btn-sm me-2">
-            <i class="mdi mdi-view-list mdi-18px"></i>  @ChequeManagements.ViewAllFiles2
+            <i class="mdi mdi-view-list mdi-18px"></i> View All Files
         </a>
         <a type="button" onclick="AddORUpdateGen(null,'mainWorkspace','_UploadForm','new','ManualDailyCollection')" class="btn btn-label-secondary btn-sm">
-            <i class="mdi mdi-plus mdi-18px"></i>  @ChequeManagements.UploadFile
+            <i class="mdi mdi-plus mdi-18px"></i> Upload File
         </a>
     </div>
 </div>
 
+
+<!--<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary fw-bold mb-2">
+                    <i class="mdi mdi-bank-outline me-2"></i>GlobalDailyCollectorManagement.MAD
+                </h1>
+                <p class="card-text text-muted mb-1">ChequeManagements.Headertextforindex</p>
+                <p class="card-text text-warning fw-semibold">
+                    <i class="mdi mdi-alert-circle-outline me-1"></i>ChequeManagements.importanttextindex
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>-->
+<!-- Tips -->
+<!-- Tips Section -->
+<!--<div class="card mb-2 shadow-sm">
+    <h6 class="card-header d-flex justify-content-between align-items-center bg-light text-info">
+        <span><i class="mdi mdi-lightbulb-outline me-2"></i> Tips for Using Filters Effectively</span>
+        <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLoanTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseLoanTips" class="collapse">
+        <div class="card-body">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <strong>📂 ChequeManagements.UploadNewFile</strong>
+                    ChequeManagements.UploadNewFileINSTR
+                    <em>Tip:</em> ChequeManagements.tipUploadNewFile
+                </li>
+                <li class="list-group-item">
+                    <strong>📜 ChequeManagements.ViewAllFiles</strong>
+                    ChequeManagements.ViewAllFilestext
+                    <em>Tip:</em> ViewAllFilestiptext
+                </li>
+                <li class="list-group-item">
+                    <strong>🔎 ChequeManagements.FileD</strong>
+                    ChequeManagements.FileDetailsTEXT1
+                    <em>Tip:</em>  ChequeManagements.FileDetailsTIPtext
+                </li>
+                <li class="list-group-item">
+                    <strong>📥 ChequeManagements.DownloadTemplate:</strong>
+                    ChequeManagements.DownloadTemplatetext
+                    <em>Tip:</em> ChequeManagements.DownloadTemplatetetTIPStext.
+                </li>
+                <li class="list-group-item">
+                    <strong>🗑️ ChequeManagements.DeleteInvalidFile:</strong>
+                    ChequeManagements.DeleteInvalidFiletext
+                    <em>Tip:</em> ChequeManagements.DeleteInvalidFileTIPStext
+                </li>
+                <li class="list-group-item">
+                    <strong>👤 ChequeManagements.UserRolesPermissions</strong>
+                    ChequeManagements.UserRolesPermissionsTEXT
+                    <em>Tip:</em> ChequeManagements.UserRolesPermissionsTIPSTEXT
+                </li>
+                <li class="list-group-item">
+                    <strong>⏳ ChequeManagements.ProcessingTime</strong>
+                    ChequeManagements.ProcessingTimetext
+                    <em>Tip:</em> ChequeManagements.ProcessingTimetiptext.
+                </li>
+                <li class="list-group-item">
+                    <strong>❓ ChequeManagements.NeedHelp</strong>
+                    ChequeManagements.Lookforthehelpicon (<i class="mdi mdi-help-circle-outline text-info"></i>) ChequeManagements.Lookforthehelpicontext
+                    <em>Tip:</em>  ChequeManagements.LookforthehelpiconTiptext
+                </li>
+        </div>
+
+    </div>
+</div>-->
+<!-- Main Content Area -->
+<!--<div class="card mb-1">
+    <div class="card-body d-flex justify-content-end align-items-center">-->
+<!-- CORRECTED: The onclick functions now target 'mainWorkspace' -->
+<!--<a type="button" onclick="LoadDataGen('ManualDailyCollection', 'myDataTable', '_FileList', 0, 'mainWorkspace', null, 'list')" class="btn btn-label-primary btn-sm me-2">
+            <i class="mdi mdi-view-list mdi-18px"></i>  ChequeManagements.ViewAllFiles2
+        </a>
+        <a type="button" onclick="AddORUpdateGen(null,'mainWorkspace','_UploadForm','new','ManualDailyCollection')" class="btn btn-label-secondary btn-sm">
+            <i class="mdi mdi-plus mdi-18px"></i>  ChequeManagements.UploadFile
+        </a>
+    </div>
+</div>-->
 <!-- CORRECTED: The main content div now has the ID 'mainWorkspace' -->
 <!-- Main Workspace Card -->
 <div class="card shadow-sm border-0 mb-4">
