@@ -47,12 +47,12 @@
 
     <form id="commissionFilterForm" autocomplete="off">
         <div class="row mb-3">
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <label class="form-label fw-bold">Branch</label>
                 @Html.DropDownList("BranchId", new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
                     "--- All Branches ---", new { @class = "form-control select2", id = "branchId" })
             </div>
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <label class="form-label fw-bold">Collector</label>
                 @Html.DropDownList("CollectorId", new SelectList(ViewBag.Collectors ?? new List<object>(), "Id", "FullName"),
                     "--- All Collectors ---", new { @class = "form-control select2", id = "collectorId" })
