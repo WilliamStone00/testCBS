@@ -1717,6 +1717,13 @@ namespace CBS.FrontDesk.Helper
         public static string DaillyCollectorGetbyId = "not yet Availlable";
         public const string GetJobSnapshot = "/api/v1/Jobs/{0}/snapshot";
 
+        //-------------------------- Dailly Collector Commission config ------------------------------------
+        public const string DailyCollectorCommissionCreate = "/api/v1/DailyCollectorCommissionShareConfig/create";
+        public const string DailyCollectorCommissionGetById = "/api/v1/DailyCollectorCommissionShareConfig/get/{0}";
+        public const string DailyCollectorCommissionUpdate = "/api/v1/DailyCollectorCommissionShareConfig/update";
+        public const string DailyCollectorCommissionDatatable = "/api/v1/DailyCollectorCommissionShareConfig/datatable";
+        public const string DailyCollectorCommissionDelete = "/api/v1/DailyCollectorCommissionShareConfig/delete/{0}";
+
         //--------------------------- API KEY MANAGEMENT ----------------------------------------  
         public const string GetAllApiKeys = "/api/apikeys";
         public const string GetApiKeyById = "/api/apikeys/{0}";

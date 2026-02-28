@@ -26,6 +26,8 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
         
         private IPSDataTable tableIPS;
         
+        private IPSINSURABLEPREMIUMDataTable tableIPSINSURABLEPREMIUM;
+        
         private global::System.Data.SchemaSerializationMode _schemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -57,6 +59,9 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                 if ((ds.Tables["IPS"] != null)) {
                     base.Tables.Add(new IPSDataTable(ds.Tables["IPS"]));
                 }
+                if ((ds.Tables["IPSINSURABLEPREMIUM"] != null)) {
+                    base.Tables.Add(new IPSINSURABLEPREMIUMDataTable(ds.Tables["IPSINSURABLEPREMIUM"]));
+                }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
                 this.Namespace = ds.Namespace;
@@ -82,6 +87,16 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
         public IPSDataTable _IPS {
             get {
                 return this.tableIPS;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+        [global::System.ComponentModel.Browsable(false)]
+        [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
+        public IPSINSURABLEPREMIUMDataTable IPSINSURABLEPREMIUM {
+            get {
+                return this.tableIPSINSURABLEPREMIUM;
             }
         }
         
@@ -155,6 +170,9 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                 if ((ds.Tables["IPS"] != null)) {
                     base.Tables.Add(new IPSDataTable(ds.Tables["IPS"]));
                 }
+                if ((ds.Tables["IPSINSURABLEPREMIUM"] != null)) {
+                    base.Tables.Add(new IPSINSURABLEPREMIUMDataTable(ds.Tables["IPSINSURABLEPREMIUM"]));
+                }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
                 this.Namespace = ds.Namespace;
@@ -194,6 +212,12 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                     this.tableIPS.InitVars();
                 }
             }
+            this.tableIPSINSURABLEPREMIUM = ((IPSINSURABLEPREMIUMDataTable)(base.Tables["IPSINSURABLEPREMIUM"]));
+            if ((initTable == true)) {
+                if ((this.tableIPSINSURABLEPREMIUM != null)) {
+                    this.tableIPSINSURABLEPREMIUM.InitVars();
+                }
+            }
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -206,11 +230,19 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             this.SchemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
             this.tableIPS = new IPSDataTable();
             base.Tables.Add(this.tableIPS);
+            this.tableIPSINSURABLEPREMIUM = new IPSINSURABLEPREMIUMDataTable();
+            base.Tables.Add(this.tableIPSINSURABLEPREMIUM);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
         private bool ShouldSerialize_IPS() {
+            return false;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+        private bool ShouldSerializeIPSINSURABLEPREMIUM() {
             return false;
         }
         
@@ -271,6 +303,9 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
         public delegate void IPSRowChangeEventHandler(object sender, IPSRowChangeEvent e);
+        
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+        public delegate void IPSINSURABLEPREMIUMRowChangeEventHandler(object sender, IPSINSURABLEPREMIUMRowChangeEvent e);
         
         /// <summary>
         ///Represents the strongly named DataTable class.
@@ -992,6 +1027,661 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                 global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
                 attribute2.Name = "tableTypeName";
                 attribute2.FixedValue = "IPSDataTable";
+                type.Attributes.Add(attribute2);
+                type.Particle = sequence;
+                global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
+                if (xs.Contains(dsSchema.TargetNamespace)) {
+                    global::System.IO.MemoryStream s1 = new global::System.IO.MemoryStream();
+                    global::System.IO.MemoryStream s2 = new global::System.IO.MemoryStream();
+                    try {
+                        global::System.Xml.Schema.XmlSchema schema = null;
+                        dsSchema.Write(s1);
+                        for (global::System.Collections.IEnumerator schemas = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator(); schemas.MoveNext(); ) {
+                            schema = ((global::System.Xml.Schema.XmlSchema)(schemas.Current));
+                            s2.SetLength(0);
+                            schema.Write(s2);
+                            if ((s1.Length == s2.Length)) {
+                                s1.Position = 0;
+                                s2.Position = 0;
+                                for (; ((s1.Position != s1.Length) 
+                                            && (s1.ReadByte() == s2.ReadByte())); ) {
+                                    ;
+                                }
+                                if ((s1.Position == s1.Length)) {
+                                    return type;
+                                }
+                            }
+                        }
+                    }
+                    finally {
+                        if ((s1 != null)) {
+                            s1.Close();
+                        }
+                        if ((s2 != null)) {
+                            s2.Close();
+                        }
+                    }
+                }
+                xs.Add(dsSchema);
+                return type;
+            }
+        }
+        
+        /// <summary>
+        ///Represents the strongly named DataTable class.
+        ///</summary>
+        [global::System.Serializable()]
+        [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
+        public partial class IPSINSURABLEPREMIUMDataTable : global::System.Data.TypedTableBase<IPSINSURABLEPREMIUMRow> {
+            
+            private global::System.Data.DataColumn columnTotalShares;
+            
+            private global::System.Data.DataColumn columnTotalSavings;
+            
+            private global::System.Data.DataColumn columnTotalSharesAndSavings;
+            
+            private global::System.Data.DataColumn columnDeductions;
+            
+            private global::System.Data.DataColumn columnTotalSavingsInExcess;
+            
+            private global::System.Data.DataColumn columnSavingsOfClubs;
+            
+            private global::System.Data.DataColumn columnTotalDeductions;
+            
+            private global::System.Data.DataColumn columnInsurableSavings;
+            
+            private global::System.Data.DataColumn columnSavingsPremium;
+            
+            private global::System.Data.DataColumn columnTotalLoan;
+            
+            private global::System.Data.DataColumn columnLess;
+            
+            private global::System.Data.DataColumn columnLoansInExcess;
+            
+            private global::System.Data.DataColumn columnLoanToMemberAbove70;
+            
+            private global::System.Data.DataColumn columnLoanOfClubs;
+            
+            private global::System.Data.DataColumn columnTotalDeduction2;
+            
+            private global::System.Data.DataColumn columnInsurableLoans;
+            
+            private global::System.Data.DataColumn columnLoanPremuim;
+            
+            private global::System.Data.DataColumn columnMemberPremium;
+            
+            private global::System.Data.DataColumn _columnNO_Loans;
+            
+            private global::System.Data.DataColumn columnLogo;
+            
+            private global::System.Data.DataColumn columnBankName;
+            
+            private global::System.Data.DataColumn columnBankCode;
+            
+            private global::System.Data.DataColumn columnBranchCode;
+            
+            private global::System.Data.DataColumn columnBranchName;
+            
+            private global::System.Data.DataColumn columnBranchAddress;
+            
+            private global::System.Data.DataColumn columnPrintedBy;
+            
+            private global::System.Data.DataColumn columnprintedOn;
+            
+            private global::System.Data.DataColumn columnBranchTell;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public IPSINSURABLEPREMIUMDataTable() {
+                this.TableName = "IPSINSURABLEPREMIUM";
+                this.BeginInit();
+                this.InitClass();
+                this.EndInit();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            internal IPSINSURABLEPREMIUMDataTable(global::System.Data.DataTable table) {
+                this.TableName = table.TableName;
+                if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
+                    this.CaseSensitive = table.CaseSensitive;
+                }
+                if ((table.Locale.ToString() != table.DataSet.Locale.ToString())) {
+                    this.Locale = table.Locale;
+                }
+                if ((table.Namespace != table.DataSet.Namespace)) {
+                    this.Namespace = table.Namespace;
+                }
+                this.Prefix = table.Prefix;
+                this.MinimumCapacity = table.MinimumCapacity;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected IPSINSURABLEPREMIUMDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+                    base(info, context) {
+                this.InitVars();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TotalSharesColumn {
+                get {
+                    return this.columnTotalShares;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TotalSavingsColumn {
+                get {
+                    return this.columnTotalSavings;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TotalSharesAndSavingsColumn {
+                get {
+                    return this.columnTotalSharesAndSavings;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn DeductionsColumn {
+                get {
+                    return this.columnDeductions;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TotalSavingsInExcessColumn {
+                get {
+                    return this.columnTotalSavingsInExcess;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn SavingsOfClubsColumn {
+                get {
+                    return this.columnSavingsOfClubs;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TotalDeductionsColumn {
+                get {
+                    return this.columnTotalDeductions;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn InsurableSavingsColumn {
+                get {
+                    return this.columnInsurableSavings;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn SavingsPremiumColumn {
+                get {
+                    return this.columnSavingsPremium;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TotalLoanColumn {
+                get {
+                    return this.columnTotalLoan;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn LessColumn {
+                get {
+                    return this.columnLess;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn LoansInExcessColumn {
+                get {
+                    return this.columnLoansInExcess;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn LoanToMemberAbove70Column {
+                get {
+                    return this.columnLoanToMemberAbove70;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn LoanOfClubsColumn {
+                get {
+                    return this.columnLoanOfClubs;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TotalDeduction2Column {
+                get {
+                    return this.columnTotalDeduction2;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn InsurableLoansColumn {
+                get {
+                    return this.columnInsurableLoans;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn LoanPremuimColumn {
+                get {
+                    return this.columnLoanPremuim;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn MemberPremiumColumn {
+                get {
+                    return this.columnMemberPremium;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn _NO_LoansColumn {
+                get {
+                    return this._columnNO_Loans;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn LogoColumn {
+                get {
+                    return this.columnLogo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn BankNameColumn {
+                get {
+                    return this.columnBankName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn BankCodeColumn {
+                get {
+                    return this.columnBankCode;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn BranchCodeColumn {
+                get {
+                    return this.columnBranchCode;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn BranchNameColumn {
+                get {
+                    return this.columnBranchName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn BranchAddressColumn {
+                get {
+                    return this.columnBranchAddress;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn PrintedByColumn {
+                get {
+                    return this.columnPrintedBy;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn printedOnColumn {
+                get {
+                    return this.columnprintedOn;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn BranchTellColumn {
+                get {
+                    return this.columnBranchTell;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            [global::System.ComponentModel.Browsable(false)]
+            public int Count {
+                get {
+                    return this.Rows.Count;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public IPSINSURABLEPREMIUMRow this[int index] {
+                get {
+                    return ((IPSINSURABLEPREMIUMRow)(this.Rows[index]));
+                }
+            }
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public event IPSINSURABLEPREMIUMRowChangeEventHandler IPSINSURABLEPREMIUMRowChanging;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public event IPSINSURABLEPREMIUMRowChangeEventHandler IPSINSURABLEPREMIUMRowChanged;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public event IPSINSURABLEPREMIUMRowChangeEventHandler IPSINSURABLEPREMIUMRowDeleting;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public event IPSINSURABLEPREMIUMRowChangeEventHandler IPSINSURABLEPREMIUMRowDeleted;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void AddIPSINSURABLEPREMIUMRow(IPSINSURABLEPREMIUMRow row) {
+                this.Rows.Add(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public IPSINSURABLEPREMIUMRow AddIPSINSURABLEPREMIUMRow(
+                        decimal TotalShares, 
+                        decimal TotalSavings, 
+                        decimal TotalSharesAndSavings, 
+                        decimal Deductions, 
+                        decimal TotalSavingsInExcess, 
+                        decimal SavingsOfClubs, 
+                        decimal TotalDeductions, 
+                        decimal InsurableSavings, 
+                        decimal SavingsPremium, 
+                        decimal TotalLoan, 
+                        decimal Less, 
+                        decimal LoansInExcess, 
+                        decimal LoanToMemberAbove70, 
+                        decimal LoanOfClubs, 
+                        decimal TotalDeduction2, 
+                        decimal InsurableLoans, 
+                        decimal LoanPremuim, 
+                        decimal MemberPremium, 
+                        decimal _NO_Loans, 
+                        string Logo, 
+                        string BankName, 
+                        string BankCode, 
+                        string BranchCode, 
+                        string BranchName, 
+                        string BranchAddress, 
+                        string PrintedBy, 
+                        string printedOn, 
+                        string BranchTell) {
+                IPSINSURABLEPREMIUMRow rowIPSINSURABLEPREMIUMRow = ((IPSINSURABLEPREMIUMRow)(this.NewRow()));
+                object[] columnValuesArray = new object[] {
+                        TotalShares,
+                        TotalSavings,
+                        TotalSharesAndSavings,
+                        Deductions,
+                        TotalSavingsInExcess,
+                        SavingsOfClubs,
+                        TotalDeductions,
+                        InsurableSavings,
+                        SavingsPremium,
+                        TotalLoan,
+                        Less,
+                        LoansInExcess,
+                        LoanToMemberAbove70,
+                        LoanOfClubs,
+                        TotalDeduction2,
+                        InsurableLoans,
+                        LoanPremuim,
+                        MemberPremium,
+                        _NO_Loans,
+                        Logo,
+                        BankName,
+                        BankCode,
+                        BranchCode,
+                        BranchName,
+                        BranchAddress,
+                        PrintedBy,
+                        printedOn,
+                        BranchTell};
+                rowIPSINSURABLEPREMIUMRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowIPSINSURABLEPREMIUMRow);
+                return rowIPSINSURABLEPREMIUMRow;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public override global::System.Data.DataTable Clone() {
+                IPSINSURABLEPREMIUMDataTable cln = ((IPSINSURABLEPREMIUMDataTable)(base.Clone()));
+                cln.InitVars();
+                return cln;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override global::System.Data.DataTable CreateInstance() {
+                return new IPSINSURABLEPREMIUMDataTable();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            internal void InitVars() {
+                this.columnTotalShares = base.Columns["TotalShares"];
+                this.columnTotalSavings = base.Columns["TotalSavings"];
+                this.columnTotalSharesAndSavings = base.Columns["TotalSharesAndSavings"];
+                this.columnDeductions = base.Columns["Deductions"];
+                this.columnTotalSavingsInExcess = base.Columns["TotalSavingsInExcess"];
+                this.columnSavingsOfClubs = base.Columns["SavingsOfClubs"];
+                this.columnTotalDeductions = base.Columns["TotalDeductions"];
+                this.columnInsurableSavings = base.Columns["InsurableSavings"];
+                this.columnSavingsPremium = base.Columns["SavingsPremium"];
+                this.columnTotalLoan = base.Columns["TotalLoan"];
+                this.columnLess = base.Columns["Less"];
+                this.columnLoansInExcess = base.Columns["LoansInExcess"];
+                this.columnLoanToMemberAbove70 = base.Columns["LoanToMemberAbove70"];
+                this.columnLoanOfClubs = base.Columns["LoanOfClubs"];
+                this.columnTotalDeduction2 = base.Columns["TotalDeduction2"];
+                this.columnInsurableLoans = base.Columns["InsurableLoans"];
+                this.columnLoanPremuim = base.Columns["LoanPremuim"];
+                this.columnMemberPremium = base.Columns["MemberPremium"];
+                this._columnNO_Loans = base.Columns["NO.Loans"];
+                this.columnLogo = base.Columns["Logo"];
+                this.columnBankName = base.Columns["BankName"];
+                this.columnBankCode = base.Columns["BankCode"];
+                this.columnBranchCode = base.Columns["BranchCode"];
+                this.columnBranchName = base.Columns["BranchName"];
+                this.columnBranchAddress = base.Columns["BranchAddress"];
+                this.columnPrintedBy = base.Columns["PrintedBy"];
+                this.columnprintedOn = base.Columns["printedOn"];
+                this.columnBranchTell = base.Columns["BranchTell"];
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            private void InitClass() {
+                this.columnTotalShares = new global::System.Data.DataColumn("TotalShares", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalShares);
+                this.columnTotalSavings = new global::System.Data.DataColumn("TotalSavings", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalSavings);
+                this.columnTotalSharesAndSavings = new global::System.Data.DataColumn("TotalSharesAndSavings", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalSharesAndSavings);
+                this.columnDeductions = new global::System.Data.DataColumn("Deductions", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDeductions);
+                this.columnTotalSavingsInExcess = new global::System.Data.DataColumn("TotalSavingsInExcess", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalSavingsInExcess);
+                this.columnSavingsOfClubs = new global::System.Data.DataColumn("SavingsOfClubs", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnSavingsOfClubs);
+                this.columnTotalDeductions = new global::System.Data.DataColumn("TotalDeductions", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalDeductions);
+                this.columnInsurableSavings = new global::System.Data.DataColumn("InsurableSavings", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnInsurableSavings);
+                this.columnSavingsPremium = new global::System.Data.DataColumn("SavingsPremium", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnSavingsPremium);
+                this.columnTotalLoan = new global::System.Data.DataColumn("TotalLoan", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalLoan);
+                this.columnLess = new global::System.Data.DataColumn("Less", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnLess);
+                this.columnLoansInExcess = new global::System.Data.DataColumn("LoansInExcess", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnLoansInExcess);
+                this.columnLoanToMemberAbove70 = new global::System.Data.DataColumn("LoanToMemberAbove70", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnLoanToMemberAbove70);
+                this.columnLoanOfClubs = new global::System.Data.DataColumn("LoanOfClubs", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnLoanOfClubs);
+                this.columnTotalDeduction2 = new global::System.Data.DataColumn("TotalDeduction2", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalDeduction2);
+                this.columnInsurableLoans = new global::System.Data.DataColumn("InsurableLoans", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnInsurableLoans);
+                this.columnLoanPremuim = new global::System.Data.DataColumn("LoanPremuim", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnLoanPremuim);
+                this.columnMemberPremium = new global::System.Data.DataColumn("MemberPremium", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnMemberPremium);
+                this._columnNO_Loans = new global::System.Data.DataColumn("NO.Loans", typeof(decimal), null, global::System.Data.MappingType.Element);
+                this._columnNO_Loans.ExtendedProperties.Add("Generator_ColumnVarNameInTable", "_columnNO_Loans");
+                this._columnNO_Loans.ExtendedProperties.Add("Generator_UserColumnName", "NO.Loans");
+                base.Columns.Add(this._columnNO_Loans);
+                this.columnLogo = new global::System.Data.DataColumn("Logo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnLogo);
+                this.columnBankName = new global::System.Data.DataColumn("BankName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBankName);
+                this.columnBankCode = new global::System.Data.DataColumn("BankCode", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBankCode);
+                this.columnBranchCode = new global::System.Data.DataColumn("BranchCode", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBranchCode);
+                this.columnBranchName = new global::System.Data.DataColumn("BranchName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBranchName);
+                this.columnBranchAddress = new global::System.Data.DataColumn("BranchAddress", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBranchAddress);
+                this.columnPrintedBy = new global::System.Data.DataColumn("PrintedBy", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPrintedBy);
+                this.columnprintedOn = new global::System.Data.DataColumn("printedOn", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnprintedOn);
+                this.columnBranchTell = new global::System.Data.DataColumn("BranchTell", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBranchTell);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public IPSINSURABLEPREMIUMRow NewIPSINSURABLEPREMIUMRow() {
+                return ((IPSINSURABLEPREMIUMRow)(this.NewRow()));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
+                return new IPSINSURABLEPREMIUMRow(builder);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override global::System.Type GetRowType() {
+                return typeof(IPSINSURABLEPREMIUMRow);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanged(e);
+                if ((this.IPSINSURABLEPREMIUMRowChanged != null)) {
+                    this.IPSINSURABLEPREMIUMRowChanged(this, new IPSINSURABLEPREMIUMRowChangeEvent(((IPSINSURABLEPREMIUMRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanging(e);
+                if ((this.IPSINSURABLEPREMIUMRowChanging != null)) {
+                    this.IPSINSURABLEPREMIUMRowChanging(this, new IPSINSURABLEPREMIUMRowChangeEvent(((IPSINSURABLEPREMIUMRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleted(e);
+                if ((this.IPSINSURABLEPREMIUMRowDeleted != null)) {
+                    this.IPSINSURABLEPREMIUMRowDeleted(this, new IPSINSURABLEPREMIUMRowChangeEvent(((IPSINSURABLEPREMIUMRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleting(e);
+                if ((this.IPSINSURABLEPREMIUMRowDeleting != null)) {
+                    this.IPSINSURABLEPREMIUMRowDeleting(this, new IPSINSURABLEPREMIUMRowChangeEvent(((IPSINSURABLEPREMIUMRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void RemoveIPSINSURABLEPREMIUMRow(IPSINSURABLEPREMIUMRow row) {
+                this.Rows.Remove(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
+                global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
+                global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
+                IPS ds = new IPS();
+                global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
+                any1.Namespace = "http://www.w3.org/2001/XMLSchema";
+                any1.MinOccurs = new decimal(0);
+                any1.MaxOccurs = decimal.MaxValue;
+                any1.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any1);
+                global::System.Xml.Schema.XmlSchemaAny any2 = new global::System.Xml.Schema.XmlSchemaAny();
+                any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1";
+                any2.MinOccurs = new decimal(1);
+                any2.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any2);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute1 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute1.Name = "namespace";
+                attribute1.FixedValue = ds.Namespace;
+                type.Attributes.Add(attribute1);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute2.Name = "tableTypeName";
+                attribute2.FixedValue = "IPSINSURABLEPREMIUMDataTable";
                 type.Attributes.Add(attribute2);
                 type.Particle = sequence;
                 global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
@@ -2028,6 +2718,809 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
         }
         
         /// <summary>
+        ///Represents strongly named DataRow class.
+        ///</summary>
+        public partial class IPSINSURABLEPREMIUMRow : global::System.Data.DataRow {
+            
+            private IPSINSURABLEPREMIUMDataTable tableIPSINSURABLEPREMIUM;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            internal IPSINSURABLEPREMIUMRow(global::System.Data.DataRowBuilder rb) : 
+                    base(rb) {
+                this.tableIPSINSURABLEPREMIUM = ((IPSINSURABLEPREMIUMDataTable)(this.Table));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal TotalShares {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableIPSINSURABLEPREMIUM.TotalSharesColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalShares\' in table \'IPSINSURABLEPREMIUM\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableIPSINSURABLEPREMIUM.TotalSharesColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal TotalSavings {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableIPSINSURABLEPREMIUM.TotalSavingsColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalSavings\' in table \'IPSINSURABLEPREMIUM\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableIPSINSURABLEPREMIUM.TotalSavingsColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal TotalSharesAndSavings {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableIPSINSURABLEPREMIUM.TotalSharesAndSavingsColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalSharesAndSavings\' in table \'IPSINSURABLEPREMIUM\' is DB" +
+                                "Null.", e);
+                    }
+                }
+                set {
+                    this[this.tableIPSINSURABLEPREMIUM.TotalSharesAndSavingsColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal Deductions {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableIPSINSURABLEPREMIUM.DeductionsColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Deductions\' in table \'IPSINSURABLEPREMIUM\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableIPSINSURABLEPREMIUM.DeductionsColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal TotalSavingsInExcess {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableIPSINSURABLEPREMIUM.TotalSavingsInExcessColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalSavingsInExcess\' in table \'IPSINSURABLEPREMIUM\' is DBN" +
+                                "ull.", e);
+                    }
+                }
+                set {
+                    this[this.tableIPSINSURABLEPREMIUM.TotalSavingsInExcessColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal SavingsOfClubs {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableIPSINSURABLEPREMIUM.SavingsOfClubsColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'SavingsOfClubs\' in table \'IPSINSURABLEPREMIUM\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableIPSINSURABLEPREMIUM.SavingsOfClubsColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal TotalDeductions {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableIPSINSURABLEPREMIUM.TotalDeductionsColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalDeductions\' in table \'IPSINSURABLEPREMIUM\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableIPSINSURABLEPREMIUM.TotalDeductionsColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal InsurableSavings {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableIPSINSURABLEPREMIUM.InsurableSavingsColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'InsurableSavings\' in table \'IPSINSURABLEPREMIUM\' is DBNull." +
+                                "", e);
+                    }
+                }
+                set {
+                    this[this.tableIPSINSURABLEPREMIUM.InsurableSavingsColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal SavingsPremium {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableIPSINSURABLEPREMIUM.SavingsPremiumColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'SavingsPremium\' in table \'IPSINSURABLEPREMIUM\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableIPSINSURABLEPREMIUM.SavingsPremiumColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal TotalLoan {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableIPSINSURABLEPREMIUM.TotalLoanColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalLoan\' in table \'IPSINSURABLEPREMIUM\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableIPSINSURABLEPREMIUM.TotalLoanColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal Less {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableIPSINSURABLEPREMIUM.LessColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Less\' in table \'IPSINSURABLEPREMIUM\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableIPSINSURABLEPREMIUM.LessColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal LoansInExcess {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableIPSINSURABLEPREMIUM.LoansInExcessColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'LoansInExcess\' in table \'IPSINSURABLEPREMIUM\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableIPSINSURABLEPREMIUM.LoansInExcessColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal LoanToMemberAbove70 {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableIPSINSURABLEPREMIUM.LoanToMemberAbove70Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'LoanToMemberAbove70\' in table \'IPSINSURABLEPREMIUM\' is DBNu" +
+                                "ll.", e);
+                    }
+                }
+                set {
+                    this[this.tableIPSINSURABLEPREMIUM.LoanToMemberAbove70Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal LoanOfClubs {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableIPSINSURABLEPREMIUM.LoanOfClubsColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'LoanOfClubs\' in table \'IPSINSURABLEPREMIUM\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableIPSINSURABLEPREMIUM.LoanOfClubsColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal TotalDeduction2 {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableIPSINSURABLEPREMIUM.TotalDeduction2Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalDeduction2\' in table \'IPSINSURABLEPREMIUM\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableIPSINSURABLEPREMIUM.TotalDeduction2Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal InsurableLoans {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableIPSINSURABLEPREMIUM.InsurableLoansColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'InsurableLoans\' in table \'IPSINSURABLEPREMIUM\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableIPSINSURABLEPREMIUM.InsurableLoansColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal LoanPremuim {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableIPSINSURABLEPREMIUM.LoanPremuimColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'LoanPremuim\' in table \'IPSINSURABLEPREMIUM\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableIPSINSURABLEPREMIUM.LoanPremuimColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal MemberPremium {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableIPSINSURABLEPREMIUM.MemberPremiumColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'MemberPremium\' in table \'IPSINSURABLEPREMIUM\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableIPSINSURABLEPREMIUM.MemberPremiumColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal _NO_Loans {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableIPSINSURABLEPREMIUM._NO_LoansColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'NO.Loans\' in table \'IPSINSURABLEPREMIUM\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableIPSINSURABLEPREMIUM._NO_LoansColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string Logo {
+                get {
+                    try {
+                        return ((string)(this[this.tableIPSINSURABLEPREMIUM.LogoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Logo\' in table \'IPSINSURABLEPREMIUM\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableIPSINSURABLEPREMIUM.LogoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string BankName {
+                get {
+                    try {
+                        return ((string)(this[this.tableIPSINSURABLEPREMIUM.BankNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BankName\' in table \'IPSINSURABLEPREMIUM\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableIPSINSURABLEPREMIUM.BankNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string BankCode {
+                get {
+                    try {
+                        return ((string)(this[this.tableIPSINSURABLEPREMIUM.BankCodeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BankCode\' in table \'IPSINSURABLEPREMIUM\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableIPSINSURABLEPREMIUM.BankCodeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string BranchCode {
+                get {
+                    try {
+                        return ((string)(this[this.tableIPSINSURABLEPREMIUM.BranchCodeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BranchCode\' in table \'IPSINSURABLEPREMIUM\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableIPSINSURABLEPREMIUM.BranchCodeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string BranchName {
+                get {
+                    try {
+                        return ((string)(this[this.tableIPSINSURABLEPREMIUM.BranchNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BranchName\' in table \'IPSINSURABLEPREMIUM\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableIPSINSURABLEPREMIUM.BranchNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string BranchAddress {
+                get {
+                    try {
+                        return ((string)(this[this.tableIPSINSURABLEPREMIUM.BranchAddressColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BranchAddress\' in table \'IPSINSURABLEPREMIUM\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableIPSINSURABLEPREMIUM.BranchAddressColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string PrintedBy {
+                get {
+                    try {
+                        return ((string)(this[this.tableIPSINSURABLEPREMIUM.PrintedByColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PrintedBy\' in table \'IPSINSURABLEPREMIUM\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableIPSINSURABLEPREMIUM.PrintedByColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string printedOn {
+                get {
+                    try {
+                        return ((string)(this[this.tableIPSINSURABLEPREMIUM.printedOnColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'printedOn\' in table \'IPSINSURABLEPREMIUM\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableIPSINSURABLEPREMIUM.printedOnColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string BranchTell {
+                get {
+                    try {
+                        return ((string)(this[this.tableIPSINSURABLEPREMIUM.BranchTellColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BranchTell\' in table \'IPSINSURABLEPREMIUM\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableIPSINSURABLEPREMIUM.BranchTellColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTotalSharesNull() {
+                return this.IsNull(this.tableIPSINSURABLEPREMIUM.TotalSharesColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTotalSharesNull() {
+                this[this.tableIPSINSURABLEPREMIUM.TotalSharesColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTotalSavingsNull() {
+                return this.IsNull(this.tableIPSINSURABLEPREMIUM.TotalSavingsColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTotalSavingsNull() {
+                this[this.tableIPSINSURABLEPREMIUM.TotalSavingsColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTotalSharesAndSavingsNull() {
+                return this.IsNull(this.tableIPSINSURABLEPREMIUM.TotalSharesAndSavingsColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTotalSharesAndSavingsNull() {
+                this[this.tableIPSINSURABLEPREMIUM.TotalSharesAndSavingsColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsDeductionsNull() {
+                return this.IsNull(this.tableIPSINSURABLEPREMIUM.DeductionsColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetDeductionsNull() {
+                this[this.tableIPSINSURABLEPREMIUM.DeductionsColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTotalSavingsInExcessNull() {
+                return this.IsNull(this.tableIPSINSURABLEPREMIUM.TotalSavingsInExcessColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTotalSavingsInExcessNull() {
+                this[this.tableIPSINSURABLEPREMIUM.TotalSavingsInExcessColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsSavingsOfClubsNull() {
+                return this.IsNull(this.tableIPSINSURABLEPREMIUM.SavingsOfClubsColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetSavingsOfClubsNull() {
+                this[this.tableIPSINSURABLEPREMIUM.SavingsOfClubsColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTotalDeductionsNull() {
+                return this.IsNull(this.tableIPSINSURABLEPREMIUM.TotalDeductionsColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTotalDeductionsNull() {
+                this[this.tableIPSINSURABLEPREMIUM.TotalDeductionsColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsInsurableSavingsNull() {
+                return this.IsNull(this.tableIPSINSURABLEPREMIUM.InsurableSavingsColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetInsurableSavingsNull() {
+                this[this.tableIPSINSURABLEPREMIUM.InsurableSavingsColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsSavingsPremiumNull() {
+                return this.IsNull(this.tableIPSINSURABLEPREMIUM.SavingsPremiumColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetSavingsPremiumNull() {
+                this[this.tableIPSINSURABLEPREMIUM.SavingsPremiumColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTotalLoanNull() {
+                return this.IsNull(this.tableIPSINSURABLEPREMIUM.TotalLoanColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTotalLoanNull() {
+                this[this.tableIPSINSURABLEPREMIUM.TotalLoanColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsLessNull() {
+                return this.IsNull(this.tableIPSINSURABLEPREMIUM.LessColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetLessNull() {
+                this[this.tableIPSINSURABLEPREMIUM.LessColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsLoansInExcessNull() {
+                return this.IsNull(this.tableIPSINSURABLEPREMIUM.LoansInExcessColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetLoansInExcessNull() {
+                this[this.tableIPSINSURABLEPREMIUM.LoansInExcessColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsLoanToMemberAbove70Null() {
+                return this.IsNull(this.tableIPSINSURABLEPREMIUM.LoanToMemberAbove70Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetLoanToMemberAbove70Null() {
+                this[this.tableIPSINSURABLEPREMIUM.LoanToMemberAbove70Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsLoanOfClubsNull() {
+                return this.IsNull(this.tableIPSINSURABLEPREMIUM.LoanOfClubsColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetLoanOfClubsNull() {
+                this[this.tableIPSINSURABLEPREMIUM.LoanOfClubsColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTotalDeduction2Null() {
+                return this.IsNull(this.tableIPSINSURABLEPREMIUM.TotalDeduction2Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTotalDeduction2Null() {
+                this[this.tableIPSINSURABLEPREMIUM.TotalDeduction2Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsInsurableLoansNull() {
+                return this.IsNull(this.tableIPSINSURABLEPREMIUM.InsurableLoansColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetInsurableLoansNull() {
+                this[this.tableIPSINSURABLEPREMIUM.InsurableLoansColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsLoanPremuimNull() {
+                return this.IsNull(this.tableIPSINSURABLEPREMIUM.LoanPremuimColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetLoanPremuimNull() {
+                this[this.tableIPSINSURABLEPREMIUM.LoanPremuimColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsMemberPremiumNull() {
+                return this.IsNull(this.tableIPSINSURABLEPREMIUM.MemberPremiumColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetMemberPremiumNull() {
+                this[this.tableIPSINSURABLEPREMIUM.MemberPremiumColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool Is_NO_LoansNull() {
+                return this.IsNull(this.tableIPSINSURABLEPREMIUM._NO_LoansColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void Set_NO_LoansNull() {
+                this[this.tableIPSINSURABLEPREMIUM._NO_LoansColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsLogoNull() {
+                return this.IsNull(this.tableIPSINSURABLEPREMIUM.LogoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetLogoNull() {
+                this[this.tableIPSINSURABLEPREMIUM.LogoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsBankNameNull() {
+                return this.IsNull(this.tableIPSINSURABLEPREMIUM.BankNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetBankNameNull() {
+                this[this.tableIPSINSURABLEPREMIUM.BankNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsBankCodeNull() {
+                return this.IsNull(this.tableIPSINSURABLEPREMIUM.BankCodeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetBankCodeNull() {
+                this[this.tableIPSINSURABLEPREMIUM.BankCodeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsBranchCodeNull() {
+                return this.IsNull(this.tableIPSINSURABLEPREMIUM.BranchCodeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetBranchCodeNull() {
+                this[this.tableIPSINSURABLEPREMIUM.BranchCodeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsBranchNameNull() {
+                return this.IsNull(this.tableIPSINSURABLEPREMIUM.BranchNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetBranchNameNull() {
+                this[this.tableIPSINSURABLEPREMIUM.BranchNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsBranchAddressNull() {
+                return this.IsNull(this.tableIPSINSURABLEPREMIUM.BranchAddressColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetBranchAddressNull() {
+                this[this.tableIPSINSURABLEPREMIUM.BranchAddressColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsPrintedByNull() {
+                return this.IsNull(this.tableIPSINSURABLEPREMIUM.PrintedByColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetPrintedByNull() {
+                this[this.tableIPSINSURABLEPREMIUM.PrintedByColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsprintedOnNull() {
+                return this.IsNull(this.tableIPSINSURABLEPREMIUM.printedOnColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetprintedOnNull() {
+                this[this.tableIPSINSURABLEPREMIUM.printedOnColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsBranchTellNull() {
+                return this.IsNull(this.tableIPSINSURABLEPREMIUM.BranchTellColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetBranchTellNull() {
+                this[this.tableIPSINSURABLEPREMIUM.BranchTellColumn] = global::System.Convert.DBNull;
+            }
+        }
+        
+        /// <summary>
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
@@ -2047,6 +3540,40 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public IPSRow Row {
+                get {
+                    return this.eventRow;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataRowAction Action {
+                get {
+                    return this.eventAction;
+                }
+            }
+        }
+        
+        /// <summary>
+        ///Row event argument class
+        ///</summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+        public class IPSINSURABLEPREMIUMRowChangeEvent : global::System.EventArgs {
+            
+            private IPSINSURABLEPREMIUMRow eventRow;
+            
+            private global::System.Data.DataRowAction eventAction;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public IPSINSURABLEPREMIUMRowChangeEvent(IPSINSURABLEPREMIUMRow row, global::System.Data.DataRowAction action) {
+                this.eventRow = row;
+                this.eventAction = action;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public IPSINSURABLEPREMIUMRow Row {
                 get {
                     return this.eventRow;
                 }
