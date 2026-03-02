@@ -3,6 +3,7 @@ using CBS.BusinessService.Accounting_V2;
 using CBS.BusinessService.Accounting_V2.AffiliateAccounts;
 using CBS.BusinessService.Accounting_V2.ChatoFAccount;
 using CBS.BusinessService.Accounting_V2.JournalEntries;
+using CBS.BusinessService.Accounting_V2.Pendingaccounts;
 using CBS.BusinessService.AccountingV2.JournalHead;
 using CBS.BusinessService.AccountingV2.SharedMonth;
 using CBS.BusinessService.CheckManagementSystem;
@@ -10,6 +11,7 @@ using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Affiliate;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.AffiliateAccount;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.HoPcmfAccount;
+using CBS.FrontDesk.Data.Entity.Accounting_V2.PendingAccount;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Queries;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Reporting.FlatBaseE;
 using CBS.FrontDesk.Data.Entity.AccountingV2.SharedMonth;
@@ -161,31 +163,31 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2
 
         // POST: /Accounting_V2/ChartOfAccounts/UpdateAccountName
         // Accepts UpdateAccountNameRequest (Id, NameEn, NameFr)
-        [HttpPost]
-        public async Task<ActionResult> UpdateAccountName(UpdateAccountNameRequest request)
-        {
-            if (request == null || string.IsNullOrWhiteSpace(request.Id))
-                return Json(new { success = false, message = "Invalid request." });
+        //[HttpPost]
+        //public async Task<ActionResult> UpdateAccountName(UpdateAccountNameRequest request)
+        //{
+        //    if (request == null || string.IsNullOrWhiteSpace(request.Id))
+        //        return Json(new { success = false, message = "Invalid request." });
 
-            try
-            {
-                // I previously provided UpdateAccountNameAsync(accountId, newNameEn, newNameFr)
-                var result = await _accountsService2.UpdateAccountNameAsync(request);
+        //    try
+        //    {
+        //        // I previously provided UpdateAccountNameAsync(accountId, newNameEn, newNameFr)
+        //        var result = await _accountsService2.UpdateAccountNameAsync(request);
 
-                // ExecutionMessages is your standard response wrapper used across services
-                return Json(new
-                {
-                    success = result?.Result ?? false,
-                    status = result?.MessageStatus,
-                    message = Messaging.MessageResult(result)
-                });
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine("UpdateAccountName error: " + ex);
-                return Json(new { success = false, message = "Failed to update account name." });
-            }
-        }
+        //        // ExecutionMessages is your standard response wrapper used across services
+        //        return Json(new
+        //        {
+        //            success = result?.Result ?? false,
+        //            status = result?.MessageStatus,
+        //            message = Messaging.MessageResult(result)
+        //        });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        System.Diagnostics.Debug.WriteLine("UpdateAccountName error: " + ex);
+        //        return Json(new { success = false, message = "Failed to update account name." });
+        //    }
+        //}
 
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
         {
@@ -198,12 +200,39 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2
             }
             else if (path == "new")
             {
-                var model = new AddAffiliateAccountCommand();
+                var model = new HoPcmfAccountTreeDto();
                 if (!string.IsNullOrWhiteSpace(KEY))
                 {
                     model.ParentId = KEY;
                 }
                 return PartialView(partialView, model);
+            }
+            else if (path == "child")// This handles the "get" path for editing
+            {
+                // Get the Affiliateresponse from service
+                //var entity = await _accountsService.GetAccountTreeDtoByIdAsync(KEY);
+                var entity = await _accountsService2.GetAccountByIdAsync(KEY);
+
+                if (entity == null)
+                {
+                    // Handle not found case
+                    return Content("Affiliate not found");
+                }
+                var data = new CreatePcmfRequest
+                {
+                    ParentId = entity.Id,
+                    Class = entity.Class,
+                    PostingAllowed = entity.PostingAllowed,
+                    Nature = entity.Nature,
+                    Code = entity.Code,
+                    PostCode = entity.PostCode
+
+
+                };
+
+
+
+                return PartialView(partialView, entity);
             }
             else // This handles the "get" path for editing
             {
@@ -215,11 +244,74 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2
                 {
                     // Handle not found case
                     return Content("Affiliate not found");
-                }                
+                }
+
+
 
                 return PartialView(partialView, entity);
             }
         }
+
+
+        [HttpPost]
+        public async Task<ActionResult> CreateOrUpdate(CreatePcmfRequest model)
+        {
+            try
+            {
+                if (model == null)
+                    return Json(new { success = false, message = "Invalid request." });
+
+                if (!ModelState.IsValid)
+                    return Json(new { success = false, validation = true, message = "Validation failed." });
+
+                ExecutionMessages execMessage;
+
+                // 🔹 If only name update is intended
+                if (!string.IsNullOrWhiteSpace(model.Id))
+                    
+                {
+                    execMessage = await _accountsService2.UpdateAccountNameAsync(
+                        new UpdateAccountNameRequest
+                        {
+                            Id = model.Id,
+                            NameEn = model.NameEn,
+                            NameFr = model.NameFr
+                        });
+                }
+                else
+                {
+                    // 🔹 Normal Create or Full Update
+                    execMessage = await _accountsService2.CreateAsync(model);
+                }
+
+                if (execMessage == null)
+                    return Json(new { success = false, message = "No response from service." });
+
+                if (!execMessage.Result)
+                    return Json(new
+                    {
+                        success = false,
+                        message = execMessage.MessageString ?? "Operation failed.",
+                        data = execMessage.Data
+                    });
+
+                return Json(new
+                {
+                    success = true,
+                    message = execMessage.MessageString ?? "Operation completed successfully.",
+                    data = execMessage.Data
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = $"Operation failed: {ex.Message}"
+                });
+            }
+        }
+
 
         // GET: /Accounting_V2/ChartOfAccounts/Delete?KEY=...
         //[HttpGet]

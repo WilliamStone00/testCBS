@@ -19,12 +19,14 @@ namespace CBS.FrontDesk.UI.Controllers.DailySaverManagementP
         private readonly DailySaverServices _dailySaverServices;
         private readonly BranchServices _branchServices;
         private readonly LocationAggregateService _locationService;
-        public DailySaverManagementController(BranchServices branchServices = null, LocationAggregateService locationService = null, DailySaverServices dailySaverServices = null)
+        private readonly IndividualProfileServices _individualProfileServices;
+        public DailySaverManagementController(BranchServices branchServices = null, LocationAggregateService locationService = null, DailySaverServices dailySaverServices = null, IndividualProfileServices individualProfileServices = null)
         {
 
             _branchServices = branchServices;
-            _locationService=locationService;
-            _dailySaverServices=dailySaverServices;
+            _locationService = locationService;
+            _dailySaverServices = dailySaverServices;
+            _individualProfileServices = individualProfileServices;
         }
         public async Task<ActionResult> Index()
         {
@@ -36,6 +38,32 @@ namespace CBS.FrontDesk.UI.Controllers.DailySaverManagementP
                 IDNumberIssueDate = DateTime.Today.AddYears(-5),
                 IsNewCustomer = true
             };
+
+
+            var statuses = await _individualProfileServices.GetAllAsync(); // however you fetch them
+
+            ViewBag.MemberStatuses = statuses?
+                .Select(s => new SelectListItem
+                {
+                    Value = s.Id,
+                    Text = $"[{s.Name}] - [{s.Description}]"
+                })
+                .OrderBy(x => x.Text)
+                .ToList()
+                ?? new List<SelectListItem>();
+
+            var politicalstatus = await _individualProfileServices.GetAllPoliticalAsync(); // however you fetch them
+
+            ViewBag.politicalstatuses = politicalstatus?
+                .Select(s => new SelectListItem
+                {
+                    Value = s.Value,
+                    Text = $"[{s.Text}]"
+                })
+                .OrderBy(x => x.Text)
+                .ToList()
+                ?? new List<SelectListItem>();
+
             return View(vm);
         }
         private async Task LoadLookupsAsync()

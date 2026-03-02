@@ -113,4 +113,42 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.HoPcmfAccount
             public DateTime? CreatedToUtc { get; set; }
         public bool IncludeDeleted { get; set; } = false;
     }
+
+    public class CreatePcmfRequest
+    {
+        public string Id { get; set; }
+        public string Code { get; set; }
+
+        
+        public string NameEn { get; set; }
+
+        public string NameFr { get; set; }
+
+        public string Nature { get; set; }
+
+        public string PostCode { get; set; }
+
+        public string Class { get; set; }
+
+        public string ParentId { get; set; }
+
+        public bool PostingAllowed { get; set; }
+    }
+
+    public class PcmfResponseDto
+    {
+        public string Id { get; set; }
+        public string Code { get; set; }
+        public string Name { get; set; }
+        public string Class { get; set; }
+        public string ParentId { get; set; }
+        public string Path { get; set; }
+        public int Depth { get; set; }
+        public string Nature { get; set; }
+        public string PostCode { get; set; }
+        public bool PostingAllowed { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public bool IsDeleted { get; set; }
+        public List<string> Children { get; set; } = new List<string>();
+    }
 }

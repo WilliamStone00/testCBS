@@ -5050,4 +5050,10 @@
   <data name="Opening_Balance" xml:space="preserve">
     <value>Opening Balance</value>
   </data>
+  <data name="Old_Names" xml:space="preserve">
+    <value>Old Names</value>
+  </data>
+  <data name="Old_Account_Number" xml:space="preserve">
+    <value>Old Account Number</value>
+  </data>
 </root>

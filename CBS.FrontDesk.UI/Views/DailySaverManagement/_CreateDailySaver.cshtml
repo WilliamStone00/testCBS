@@ -148,6 +148,55 @@
                                     <label>@GlobalShared.Email</label>
                                 </div>
                             </div>
+
+                            <!-- Customer Status -->
+                            <div class="col-md-6">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.DropDownListFor(m => m.CustomerStatus,
+                                        ViewBag.MemberStatuses as List<SelectListItem>,
+                                        "--- Select Member Status ---",
+                                        new { @class = "form-control select2", required = "required" })
+                                    @Html.ValidationMessageFor(m => m.CustomerStatus, "", new { @class = "text-danger" })
+                                    <label>Select Member Status</label>
+                                </div>
+                            </div>
+
+                            <!-- Politically Exposed Checkbox -->
+                            <div class="col-md-6 d-flex align-items-center">
+                                <div class="form-check mt-3">
+                                    @Html.CheckBoxFor(model => model.IsPoliticaExposed,
+                                        new { @class = "form-check-input" })
+                                    @Html.LabelFor(model => model.IsPoliticaExposed,
+                                        "Select Exposed Status",
+                                        new { @class = "form-check-label ms-2" })
+                                </div>
+                            </div>
+                            <!-- PEP Details -->
+                            <div id="pepDetails" class="row g-4">
+
+                                <!-- Political Question -->
+                                <div class="col-md-6">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.DropDownListFor(m => m.PoliticaExposedQuestion,
+                                            ViewBag.politicalstatuses as List<SelectListItem>,
+                                            "--- Select Status ---",
+                                            new { @class = "form-control select2", required = "required" })
+                                        @Html.ValidationMessageFor(m => m.PoliticaExposedQuestion, "", new { @class = "text-danger" })
+                                        <label>Political Question</label>
+                                    </div>
+                                </div>
+
+                                <!-- Political Response -->
+                                <div class="col-md-6">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextBoxFor(m => m.PoliticaExposedAnswer,
+                                            new { @class = "form-control", required = "required" })
+                                        @Html.ValidationMessageFor(m => m.PoliticaExposedAnswer, "", new { @class = "text-danger" })
+                                        <label>Political Response</label>
+                                    </div>
+                                </div>
+
+                            </div>
                         </div>
                     </fieldset>
                 </div>

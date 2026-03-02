@@ -210,6 +210,11 @@ namespace CBS.FrontDesk.Data.Entity.CustomerManagement
         public string MaritalStatus { get; set; }
         public bool IsUploadedData { get; set; } = false;
         public string BankCode { get; set; }//
+        public string CustomerStatus { get; set; }
+        public string PoliticaExposedQuestion { get; set; }
+        public string PoliticaExposedAnswer { get; set; }
+        public bool IsPoliticaExposed { get; set; }
+
 
     }
 

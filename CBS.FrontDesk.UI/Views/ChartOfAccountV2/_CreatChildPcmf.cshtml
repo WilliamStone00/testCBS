@@ -1,0 +1,176 @@
+﻿
+@model CBS.FrontDesk.Data.Entity.Accounting_V2.HoPcmfAccount.HoPcmfAccountTreeDto
+
+
+<style>
+    .compact .card {
+        margin-bottom: .5rem !important
+    }
+
+    .compact .card-body {
+        padding: .75rem !important
+    }
+
+    .compact .card-header {
+        padding: .5rem .75rem !important
+    }
+
+    .compact .form-label {
+        margin-bottom: .2rem !important
+    }
+
+    .compact .form-check {
+        margin-bottom: 0 !important
+    }
+
+    .compact .row.g-1 > [class^="col-"] {
+        margin-bottom: .5rem
+    }
+
+    .required::after {
+        content: " *";
+        color: #dc3545
+    }
+</style>
+
+<div class="compact">
+
+    <!-- Header -->
+    <div class="card bg-light mb-2">
+        <div class="card-body text-center">
+            <h5 class="text-primary mb-1">
+                <i class="mdi mdi-file-tree-outline me-2"></i>
+                Create PCMF Child Account
+            </h5>
+            <small class="text-muted">
+                Create a child node under the selected Parent Account.
+            </small>
+        </div>
+    </div>
+
+    <div class="card shadow-sm p-3 mb-2">
+
+        @using (Html.BeginForm("CreateOrUpdate", "ChartOfAccountV2",
+            FormMethod.Post,
+            new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger small mb-2" })
+
+            <div class="row g-3">
+
+                <!-- Parent Account -->
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.ParentId, "Parent Account Number",
+                        new { @class = "form-label fw-semibold small text-muted" })
+                    @Html.TextBoxFor(m => m.ParentId,
+                        new { @class = "form-control form-control-sm bg-light", @readonly = "readonly" })
+                </div>
+
+                <div class="col-md-6"></div>
+
+                <hr class="my-2" />
+
+                <!-- Account Code -->
+                <div class="col-md-4">
+                    @Html.LabelFor(m => m.Code, new { @class = "form-label required fw-semibold small" })
+                    @Html.TextBoxFor(m => m.Code, new
+                    {
+                        @class = "form-control form-control-sm",
+                        placeholder = "e.g., 100000",
+                        maxlength = "10",
+                        autocomplete = "off"
+                    })
+                    @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger small" })
+                </div>
+
+                <!-- Class -->
+                <div class="col-md-4">
+                    @Html.LabelFor(m => m.Class, new { @class = "form-label required fw-semibold small" })
+                    @Html.DropDownListFor(
+                        m => m.Class,
+                        new SelectList(ViewBag.Classes ?? new List<SelectListItem>(), "Value", "Text"),
+                        "--- Select Class ---",
+                        new { @class = "form-select form-select-sm select2" })
+                    @Html.ValidationMessageFor(m => m.Class, "", new { @class = "text-danger small" })
+                </div>
+
+                <!-- Nature -->
+                <div class="col-md-4">
+                    @Html.LabelFor(m => m.Nature, new { @class = "form-label required fw-semibold small" })
+                    @Html.DropDownListFor(
+                        m => m.Nature,
+                        new List<SelectListItem>
+                        {
+                            new SelectListItem { Text = "Debit", Value = "Debit" },
+                            new SelectListItem { Text = "Credit", Value = "Credit" }
+                        },
+                        "--- Select Nature ---",
+                        new { @class = "form-select form-select-sm select2" })
+                    @Html.ValidationMessageFor(m => m.Nature, "", new { @class = "text-danger small" })
+                </div>
+
+                <hr class="my-2" />
+
+                <!-- Name EN -->
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.NameEn, "Name (English)",
+                        new { @class = "form-label required fw-semibold small" })
+                    @Html.TextBoxFor(m => m.NameEn, new
+                    {
+                        @class = "form-control form-control-sm",
+                        maxlength = "150",
+                        placeholder = "English name"
+                    })
+                    @Html.ValidationMessageFor(m => m.NameEn, "", new { @class = "text-danger small" })
+                </div>
+
+                <!-- Name FR -->
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.NameFr, "Nom (Français)",
+                        new { @class = "form-label required fw-semibold small" })
+                    @Html.TextBoxFor(m => m.NameFr, new
+                    {
+                        @class = "form-control form-control-sm",
+                        maxlength = "150",
+                        placeholder = "Nom en français"
+                    })
+                    @Html.ValidationMessageFor(m => m.NameFr, "", new { @class = "text-danger small" })
+                </div>
+
+                <!-- Post Code -->
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.PostCode, "Code Post",
+                        new { @class = "form-label fw-semibold small" })
+                    @Html.TextBoxFor(m => m.PostCode, new
+                    {
+                        @class = "form-control form-control-sm",
+                        maxlength = "20",
+                        placeholder = "Code Post"
+                    })
+                    @Html.ValidationMessageFor(m => m.PostCode, "", new { @class = "text-danger small" })
+                </div>
+
+                <!-- Posting Allowed -->
+                <div class="col-md-6 d-flex align-items-center">
+                    <div class="form-check mt-4">
+                        @Html.CheckBoxFor(m => m.PostingAllowed, new { @class = "form-check-input" })
+                        @Html.LabelFor(m => m.PostingAllowed, "Posting Allowed",
+                            new { @class = "form-check-label fw-semibold small" })
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Buttons -->
+            <div class="d-flex justify-content-end gap-2 mt-3">
+                <button type="submit" class="btn btn-primary btn-sm">
+                    <i class="mdi mdi-content-save me-1"></i> Save Child Account
+                </button>
+                <button type="reset" class="btn btn-outline-secondary btn-sm">
+                    <i class="mdi mdi-refresh me-1"></i> Reset
+                </button>
+            </div>
+        }
+    </div>
+</div>
