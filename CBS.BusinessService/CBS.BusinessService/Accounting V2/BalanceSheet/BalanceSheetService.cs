@@ -82,6 +82,12 @@ namespace CBS.BusinessService.Accounting_V2.BalanceSheet
             var consolidationLabel = model.Consolidated
                 ? "CONSOLIDATED"
                 : "BRANCH LEVEL";
+
+            var logoPath = BranchInformation != null
+               ? PaymentReceiptMapping.GenerateAndSaveBankLogoImage(
+                   BranchInformation.Bank?.LogoUrl ?? string.Empty,
+                   BranchInformation.Name ?? string.Empty)
+               : string.Empty;
             var header = new BankHeaderInformation
             {
                 BankId = BranchInformation.Bank?.Id,
@@ -107,7 +113,8 @@ namespace CBS.BusinessService.Accounting_V2.BalanceSheet
                 BranchCapital = BranchInformation.Capital,
                 BranchRegistrationNumber = BranchInformation.RegistrationNumber,
                 BranchImmatriculationNumber = BranchInformation.ImmatriculationNumber,
-                BranchPBox = BranchInformation.PBox ?? ""
+                BranchPBox = BranchInformation.PBox ?? "",
+                Logo = logoPath,             
             };
 
             // 4) Map to TrialBalanceReportItem (Crystal + Excel compatible)
@@ -131,7 +138,8 @@ namespace CBS.BusinessService.Accounting_V2.BalanceSheet
                     TotalNetPresentAsts = response.Payload.TotalAssetsNetCurrentYear,
                     ///*TotalLiabEquityNetCurrentYear*/ = response.Payload.TotalLiabEquityNetCurrentYear,
                     //TotalLiabEquityNetCurrentYear = response.Payload.TotalLiabEquityNetCurrentYear,
-                    BankAddress = BranchInformation.Bank.Address
+                    BankAddress = BranchInformation.Bank.Address,
+                    Year = $"2021 - {DateTime.Now.Year}",
                 };
 
                 // Attach full static bank + branch header information

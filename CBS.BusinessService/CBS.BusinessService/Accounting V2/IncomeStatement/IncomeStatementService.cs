@@ -85,6 +85,13 @@ namespace CBS.BusinessService.Accounting_V2.IncomeStatement
             var consolidationLabel = model.Consolidated
                 ? "CONSOLIDATED"
                 : "BRANCH LEVEL";
+
+            var logoPath = BranchInformation != null
+              ? PaymentReceiptMapping.GenerateAndSaveBankLogoImage(
+                  BranchInformation.Bank?.LogoUrl ?? string.Empty,
+                  BranchInformation.Name ?? string.Empty)
+              : string.Empty;
+
             var header = new BankHeaderInformation
             {
                 BankId = BranchInformation.Bank?.Id,
@@ -94,7 +101,8 @@ namespace CBS.BusinessService.Accounting_V2.IncomeStatement
                 BankTelephone = BranchInformation.Bank?.Telephone,
                 BankEmail = BranchInformation.Bank?.Email,
                 BankAddress = BranchInformation.Bank?.Address,
-                BankLogoUrl = BranchInformation.Bank?.LogoUrl,
+                BankLogoUrl = logoPath,
+                //BankLogoUrl = BranchInformation.Bank?.LogoUrl,
                 BankMotto = BranchInformation.Bank?.Motto,
                 BankRegistrationNumber = BranchInformation.Bank?.RegistrationNumber,
                 BankImmatriculationNumber = BranchInformation.Bank?.ImmatriculationNumber,
@@ -110,7 +118,8 @@ namespace CBS.BusinessService.Accounting_V2.IncomeStatement
                 BranchCapital = BranchInformation.Capital,
                 BranchRegistrationNumber = BranchInformation.RegistrationNumber,
                 BranchImmatriculationNumber = BranchInformation.ImmatriculationNumber,
-                BranchPBox = BranchInformation.PBox ?? ""
+                BranchPBox = BranchInformation.PBox ?? "",
+                
             };
 
             // 4) Map to TrialBalanceReportItem (Crystal + Excel compatible)
@@ -130,11 +139,11 @@ namespace CBS.BusinessService.Accounting_V2.IncomeStatement
                     Side = x.Side,
                     NetN1 = x.NetLastYear,
                     NetN = x.NetCurrentYear,
-                    Year = now.Year.ToString(),
+                    Year = $"2021 - {DateTime.Now.Year}",
                     Note = x.Note,
                     PrintedBy = _branchServices.GetUserFullName(),
                     BankAddress = BranchInformation.Bank.Address,
-
+                   
                     // totals 
                     TotalExpensesLastYear = response.Payload.TotalExpensesLastYear ?? 0,
                     TotalExpensesCurrentYear = response.Payload.TotalExpensesCurrentYear ?? 0,
@@ -175,6 +184,7 @@ namespace CBS.BusinessService.Accounting_V2.IncomeStatement
             item.BranchRegistrationNumber = header.BranchRegistrationNumber;
             item.BranchImmatriculationNumber = header.BranchImmatriculationNumber;
             item.BranchPBox = header.BranchPBox;
+          
         }
 
     }
