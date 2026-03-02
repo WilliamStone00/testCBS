@@ -17,7 +17,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.Reporting.FlatBaseE
         public string BankTelephone { get; set; }
         public string BankEmail { get; set; }
         public string BankAddress { get; set; }
-        public string BankOrganizationId { get; set; }
+            public string BankOrganizationId { get; set; }
         public string BankCapital { get; set; }
         public string BankRegistrationNumber { get; set; }
         public string BankLogoUrl { get; set; }
@@ -41,6 +41,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.Reporting.FlatBaseE
         //====================================== Branch information ===================================================
 
 
+        public string Logo { get; set; }
         public string BranchId { get; set; }
 
         public bool BranchIsHavingBank { get; set; } 

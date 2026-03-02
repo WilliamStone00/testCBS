@@ -20,9 +20,9 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission
 
         public bool IsActive { get; set; }
 
-        public DateTime EffectiveFrom { get; set; }
+        public DateTime? EffectiveFrom { get; set; }
 
-        public DateTime EffectiveTo { get; set; }
+        public DateTime? EffectiveTo { get; set; }
 
         public string CollectorMemberReference { get; set; } = null;
 

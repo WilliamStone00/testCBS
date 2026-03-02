@@ -476,6 +476,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MembersFSeries.xsd</DependentUpon>
     </Compile>
+    <Compile Include="AppFiles\Reporting\IPSReports\InsurableSavings.cs">
+      <DependentUpon>InsurableSavings.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="AppFiles\Reporting\IPSReports\InsurableLoan.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>InsurableLoan.rpt</DependentUpon>
+    </Compile>
     <Compile Include="AppFiles\Reporting\IPSReports\InternalProtectionSchema.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -7712,6 +7722,14 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>CashDeskRessource.Designer.cs</LastGenOutput>
     </Content>
+    <EmbeddedResource Include="AppFiles\Reporting\IPSReports\InsurableSavings.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>InsurableSavings.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\IPSReports\InsurableLoan.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>InsurableLoan.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\IPSReports\InternalProtectionSchema.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>InternalProtectionSchema.cs</LastGenOutput>

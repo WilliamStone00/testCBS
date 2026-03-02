@@ -42,10 +42,9 @@
     </div>
 </div>
 
-    <div id="datalistingview">
-        @Html.Partial("_CommissionConfigForm")
-    </div>
-
+<div id="datalistingview">
+    @Html.Partial("_CommissionConfigForm")
+</div>
 
 <!-- Commission Config Details Modal -->
 <div class="modal fade" id="configDetailsModal" tabindex="-1" aria-hidden="true">
@@ -69,8 +68,7 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-    <script >
-
+    <script>
         (function ($) {
             'use strict';
 
@@ -150,9 +148,13 @@
                                 showMsg(res.message || 'Operation successful', 1);
                                 if (res.reloadDataView === "Yes" || res.reload === true) reloadListing(res);
 
-                                // Hide form and show filters after successful save
-                                $('#configFormContainer').hide();
-                                $('#filtersSection').show();
+                                // Check if this is an edit operation
+                                var isEdit = $('#Id').val() && $('#Id').val() !== '';
+                                if (!isEdit) {
+                                    // Only hide for new records
+                                    $('#configFormContainer').hide();
+                                    $('#filtersSection').show();
+                                }
                             } else {
                                 showMsg((res && res.message) ? res.message : 'Operation failed', 2);
                             }
@@ -200,276 +202,323 @@
 
                 return false;
             };
-
-            //window.categorySubmitAjax = window.__categorySubmitAjaxFull;
-
-            //$(document).on('submit', 'form[action*="CreateOrUpdate"][action*="DailyCollectorCommissionConfig"]', function (e) {
-            //    e.preventDefault();
-            //    return window.categorySubmitAjax(this);
-            //});
-
         })(jQuery);
-
     </script>
+
     <script>
- $(document).ready(function () {
+        $(document).ready(function () {
+            /* ===============================
+               SELECT2 INITIALIZATION
+            =============================== */
+            if ($.fn.select2) {
+                $('#BranchId, #CollectorId').select2({ width: '100%' });
+            }
 
-    /* ===============================
-       SELECT2 INITIALIZATION
-    =============================== */
-    if ($.fn.select2) {
-        $('#BranchId, #CollectorId').select2({ width: '100%' });
-    }
+            /* ===============================
+               INITIAL FORM VISIBILITY
+            =============================== */
+            var hasId = $('#Id').val() && $('#Id').val() !== '';
 
-    /* ===============================
-       INITIAL FORM VISIBILITY
-    =============================== */
-    if ('@Model.Id' === '') {
-        $('#configFormContainer').hide();
-    } else {
-        $('#configFormContainer').show();
-        initializeScopeBasedOnModel();
-    }
+            if (!hasId) {
+                $('#configFormContainer').hide();
+            } else {
+                $('#configFormContainer').show();
+                // Small delay to ensure DOM is ready
+                setTimeout(function() {
+                    initializeScopeBasedOnModel();
+                }, 200);
+            }
 
-    /* ===============================
-       SCOPE CHANGE HANDLER
-    =============================== */
-    $(document).on('change', '.config-scope', function () {
+            /* ===============================
+               SCOPE CHANGE HANDLER
+            =============================== */
+            $(document).on('change', '.config-scope', function () {
+                var scope = $(this).val();
 
-        var scope = $(this).val();
+                if (scope === 'single') {
+                    $('#branchField').show();
+                    $('#collectorField').show();
+                    $('#IsCentralised').val(false);
 
-        if (scope === 'single') {
-            $('#branchField').show();
-            $('#collectorField').show();
-            $('#IsCentralised').val(false);
+                    var branchId = $('#BranchId').val();
+                    if (branchId) {
+                        loadCollectorsByBranch(branchId, true);
+                    } else {
+                        $('#CollectorId')
+                            .empty()
+                            .append('<option value="">--- Select Collector ---</option>')
+                            .prop('disabled', true)
+                            .trigger('change');
+                    }
+                } else if (scope === 'all') {
+                    $('#branchField').show();
+                    $('#collectorField').hide();
+                    $('#CollectorId').val('').trigger('change').prop('disabled', true);
+                    $('#IsCentralised').val(false);
+                } else if (scope === 'centralised') {
+                    $('#branchField, #collectorField').hide();
+                    $('#BranchId, #CollectorId').val('').trigger('change');
+                    $('#IsCentralised').val(true);
+                }
+            });
 
-            $('#CollectorId')
-                .empty()
-                .append('<option value="">--- Select Collector ---</option>')
-                .prop('disabled', true)
-                .trigger('change');
-        }
+            /* ===============================
+               LOAD COLLECTORS ON BRANCH CHANGE
+            =============================== */
+            $(document).on('change', '#BranchId', function () {
+                var branchId = $(this).val();
+                var scope = $('input[name="ConfigScope"]:checked').val();
 
-        else if (scope === 'all') {
-            $('#branchField').show();
-            $('#collectorField').hide();
-            $('#CollectorId').val('').trigger('change').prop('disabled', false);
-            $('#IsCentralised').val(false);
-        }
+                if (scope === 'single' && branchId) {
+                    loadCollectorsByBranch(branchId, true);
+                } else if (scope === 'all' && branchId) {
+                    loadCollectorsByBranch(branchId, false);
+                } else {
+                    $('#CollectorId')
+                        .empty()
+                        .append('<option value="">--- Select Collector ---</option>')
+                        .prop('disabled', true)
+                        .trigger('change');
+                }
+            });
 
-        else if (scope === 'centralised') {
-            $('#branchField, #collectorField').hide();
-            $('#BranchId, #CollectorId').val('').trigger('change');
-            $('#IsCentralised').val(true);
-        }
-    });
-
-    /* ===============================
-       LOAD COLLECTORS ON BRANCH CHANGE
-    =============================== */
-    $(document).on('change', '#BranchId', function () {
-
-        var branchId = $(this).val();
-        var scope = $('input[name="ConfigScope"]:checked').val();
-
-        if (scope === 'single' && branchId) {
-            loadCollectorsByBranch(branchId);
-        } else {
-            $('#CollectorId')
-                .empty()
-                .append('<option value="">--- Select Collector ---</option>')
-                .prop('disabled', true)
-                .trigger('change');
-        }
-    });
-
-    function loadCollectorsByBranch(branchId) {
-
-        $('#CollectorId')
-            .empty()
-            .append('<option value="">Loading collectors...</option>')
-            .prop('disabled', true)
-            .trigger('change');
-
-        $.ajax({
-            url: '/DailyCollectorCommissionConfig/GetCollectorsByBranch',
-            type: 'GET',
-            data: { branchId: branchId },
-            success: function (response) {
-
+            function loadCollectorsByBranch(branchId, enableCollector) {
                 $('#CollectorId')
                     .empty()
-                    .append('<option value="">--- Select Collector ---</option>');
+                    .append('<option value="">Loading collectors...</option>')
+                    .prop('disabled', true)
+                    .trigger('change');
 
-                if (response && response.length > 0) {
-                    $.each(response, function (i, item) {
-                        $('#CollectorId').append(
-                            $('<option>', { value: item.Value, text: item.Text })
-                        );
-                    });
-                    $('#CollectorId').prop('disabled', false);
-                } else {
-                    $('#CollectorId').append('<option>No collectors found</option>');
+                $.ajax({
+                    url: '/DailyCollectorCommissionConfig/GetCollectorsByBranch',
+                    type: 'GET',
+                    data: { branchId: branchId },
+                    success: function (response) {
+                        var collectorSelect = $('#CollectorId');
+                        collectorSelect.empty().append('<option value="">--- Select Collector ---</option>');
+
+                        if (response && response.length > 0) {
+                            $.each(response, function (i, item) {
+                                collectorSelect.append(
+                                    $('<option>', { value: item.Value, text: item.Text })
+                                );
+                            });
+
+                            // Enable or disable based on parameter
+                            collectorSelect.prop('disabled', !enableCollector);
+
+                            // Restore saved collector value if editing
+                            var savedCollectorId = $('#CollectorId').data('saved-value');
+                            if (savedCollectorId && enableCollector) {
+                                collectorSelect.val(savedCollectorId).trigger('change');
+                            }
+                        } else {
+                            collectorSelect.append('<option>No collectors found</option>');
+                            collectorSelect.prop('disabled', true);
+                        }
+
+                        collectorSelect.trigger('change');
+                    },
+                    error: function () {
+                        showMsg('Failed to load collectors.', 4);
+                    },
+                    complete: function () {
+                        if ($.fn.select2) {
+                            $('#CollectorId').select2({ width: '100%' });
+                        }
+                    }
+                });
+            }
+
+            /* ===============================
+                  ADD RULE (MAXIMUM 2 ROWS)
+               ================================ */
+                        $(document).on('click', '#addRuleBtn', function () {
+
+                            var currentCount = $('#rulesContainer .rule-item').length;
+
+                            // 🚫 Stop if already 2 rows
+                            if (currentCount >= 2) {
+                                if (typeof appalert === 'function') {
+                                    appalert('Maximum of 2 rules allowed', 3, 1);
+                                } else {
+                                    alert('Maximum of 2 rules allowed');
+                                }
+                                return;
+                            }
+
+                            var index = currentCount;
+
+                            var newRow = `
+                    <div class="row rule-item mb-2">
+                        <div class="col-md-5">
+                            <select name="Rules[${index}].Stakeholder" class="form-select">
+                                <option value="">-- Select Stakeholder --</option>
+                                <option value="COLLECTOR">COLLECTOR</option>
+                                <option value="BRANCH">BRANCH</option>
+                            </select>
+                        </div>
+                        <div class="col-md-5">
+                            <input type="number"
+                                   name="Rules[${index}].Percentage"
+                                   class="form-control percentage-input"
+                                   placeholder="Percentage"
+                                   step="0.01"
+                                   min="0"
+                                   max="100" />
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-danger remove-rule">
+                                <i class="mdi mdi-delete"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                $('#rulesContainer').append(newRow);
+            });
+
+            /* ===============================
+               REMOVE RULE
+            =============================== */
+            $(document).on('click', '.remove-rule', function () {
+                if ($('.rule-item').length <= 1) {
+                    if (typeof appalert === 'function') {
+                        appalert('At least one rule is required', 3, 1);
+                    } else {
+                        alert('At least one rule is required');
+                    }
+                    return;
                 }
 
-                $('#CollectorId').trigger('change');
-            },
-            error: function () {
-                showMsg('Failed to load collectors.', 4);
-            },
-            complete: function () {
-                if ($.fn.select2) {
-                    $('#CollectorId').select2({ width: '100%' });
+                $(this).closest('.rule-item').remove();
+                reindexRules();
+                updateTotalPercentage();
+            });
+
+            /* ===============================
+               PERCENTAGE CALCULATION
+            =============================== */
+            $(document).on('input', '.percentage-input', function () {
+                var total = updateTotalPercentage();
+
+                if (total > 100) {
+                    if (typeof appalert === 'function') {
+                        appalert('Total percentage cannot exceed 100%', 2, 1);
+                    } else {
+                        alert('Total percentage cannot exceed 100%');
+                    }
+                    $(this).val('');
+                    updateTotalPercentage();
+                }
+            });
+
+            function updateTotalPercentage() {
+                var total = 0;
+                $('.percentage-input').each(function () {
+                    total += parseFloat($(this).val()) || 0;
+                });
+
+                $('#totalPercentageDisplay').text('Total: ' + total.toFixed(2) + '%');
+                return total;
+            }
+
+            /* ===============================
+               FORM VALIDATION
+            =============================== */
+            $('#commissionConfigForm').on('submit', function (e) {
+                var total = updateTotalPercentage();
+
+                if (Math.abs(total - 100) > 0.01) {
+                    e.preventDefault();
+                    if (typeof appalert === 'function') {
+                        appalert('Total percentage must be exactly 100%', 2, 1);
+                    } else {
+                        alert('Total percentage must be exactly 100%');
+                    }
+                    return false;
+                }
+            });
+
+            /* ===============================
+               REINDEX RULES
+            =============================== */
+            function reindexRules() {
+                $('#rulesContainer .rule-item').each(function (index) {
+                    $(this).find('input, select').each(function () {
+                        var name = $(this).attr('name');
+                        if (name) {
+                            var newName = name.replace(/Rules\[\d+\]/, 'Rules[' + index + ']');
+                            $(this).attr('name', newName);
+                        }
+                    });
+                });
+            }
+
+            /* ===============================
+               INITIALIZE SCOPE BASED ON MODEL
+            =============================== */
+            function initializeScopeBasedOnModel() {
+                var isCentralised = '@(Model != null ? Model.IsCentralised.ToString() : "False")' === 'True';
+                var hasCollector = '@(Model != null && !string.IsNullOrEmpty(Model.CollectorId) ? "True" : "False")' === 'True';
+                var branchId = '@(Model != null ? Model.BranchId : "")';
+                var collectorId = '@(Model != null ? Model.CollectorId : "")';
+
+                // Store collector ID for later use
+                if (collectorId) {
+                    $('#CollectorId').data('saved-value', collectorId);
+                }
+
+                if (isCentralised) {
+                    $('#scopeCentralised').prop('checked', true).trigger('change');
+                } else if (hasCollector) {
+                    $('#scopeSingle').prop('checked', true).trigger('change');
+
+                    // Load collectors for the branch
+                    if (branchId && branchId !== '') {
+                        setTimeout(function() {
+                            loadCollectorsByBranch(branchId, true);
+                        }, 100);
+                    }
+                } else {
+                    $('#scopeAll').prop('checked', true).trigger('change');
+                    if (branchId && branchId !== '') {
+                        setTimeout(function() {
+                            loadCollectorsByBranch(branchId, false);
+                        }, 100);
+                    }
+                }
+            }
+
+            /* ===============================
+               CANCEL BUTTON HANDLER
+            =============================== */
+            $(document).on('click', '.btn-cancel-edit', function () {
+                $('#configFormContainer').hide();
+                $('#filtersSection').show();
+
+                // Reload the listing
+                if (typeof LoadDataGen === 'function') {
+                    LoadDataGen('DailyCollectorCommissionConfig',
+                        'myDataTable',
+                        '_CommissionConfigDataTable',
+                        0,
+                        'datalistingview',
+                        null,
+                        'list');
+                }
+            });
+
+            /* ===============================
+               HELPER FUNCTIONS
+            =============================== */
+            function showMsg(msg, level) {
+                if (typeof appalert === 'function') {
+                    appalert(msg || 'No message', level || 1, 1);
+                } else {
+                    alert(msg || 'No message');
                 }
             }
         });
-    }
-
-    /* ===============================
-       ADD RULE (FIXED)
-    =============================== */
-    $(document).on('click', '#addRuleBtn', function () {
-
-        var index = $('#rulesContainer .rule-item').length;
-
-        var newRow = `
-            <div class="row rule-item mb-2">
-                <div class="col-md-5">
-                    <select name="Rules[${index}].Stakeholder" class="form-select">
-                        <option value="">-- Select Stakeholder --</option>
-                        <option value="COLLECTOR">COLLECTOR</option>
-                        <option value="BRANCH">BRANCH</option>
-                    </select>
-                </div>
-
-                <div class="col-md-5">
-                    <input type="number"
-                           name="Rules[${index}].Percentage"
-                           class="form-control percentage-input"
-                           placeholder="Percentage"
-                           step="0.01"
-                           min="0"
-                           max="100" />
-                </div>
-
-                <div class="col-md-2">
-                    <button type="button" class="btn btn-danger remove-rule">
-                        <i class="mdi mdi-delete"></i>
-                    </button>
-                </div>
-            </div>
-        `;
-
-        $('#rulesContainer').append(newRow);
-    });
-
-    /* ===============================
-       REMOVE RULE
-    =============================== */
-    $(document).on('click', '.remove-rule', function () {
-
-        if ($('.rule-item').length <= 1) {
-            appalert('At least one rule is required', 3, 1);
-            return;
-        }
-
-        $(this).closest('.rule-item').remove();
-        reindexRules();
-        updateTotalPercentage();
-    });
-
-    /* ===============================
-       PERCENTAGE CALCULATION
-    =============================== */
-    $(document).on('input', '.percentage-input', function () {
-
-        var total = updateTotalPercentage();
-
-        if (total > 100) {
-            appalert('Total percentage cannot exceed 100%', 2, 1);
-            $(this).val('');
-            updateTotalPercentage();
-        }
-    });
-
-    function updateTotalPercentage() {
-
-        var total = 0;
-
-        $('.percentage-input').each(function () {
-            total += parseFloat($(this).val()) || 0;
-        });
-
-        $('#totalPercentageDisplay')
-            .text('Total: ' + total.toFixed(2) + '%');
-
-        return total;
-    }
-
-    /* ===============================
-       FORM VALIDATION
-    =============================== */
-    $('#commissionConfigForm').on('submit', function (e) {
-
-        var total = updateTotalPercentage();
-
-        if (Math.abs(total - 100) > 0.01) {
-            e.preventDefault();
-            appalert('Total percentage must be exactly 100%', 2, 1);
-            return false;
-        }
-    });
-
-    /* ===============================
-       REINDEX RULES (FIXED)
-    =============================== */
-    function reindexRules() {
-
-        $('#rulesContainer .rule-item').each(function (index) {
-
-            $(this).find('input, select').each(function () {
-
-                var name = $(this).attr('name');
-                if (name) {
-                    var newName = name.replace(/Rules\[\d+\]/, 'Rules[' + index + ']');
-                    $(this).attr('name', newName);
-                }
-            });
-        });
-    }
-
-    /* ===============================
-       INITIAL TOTAL
-    =============================== */
-    updateTotalPercentage();
-
-    /* ===============================
-       HELPERS
-    =============================== */
-    function showMsg(msg, level) {
-        if (typeof appalert === 'function')
-            appalert(msg || 'No message', level || 1, 1);
-        else
-            alert(msg || 'No message');
-    }
-
-    function initializeScopeBasedOnModel() {
-
-        var isCentralised = '@Model.IsCentralised' === 'True';
-        var hasCollector = '@(!string.IsNullOrEmpty(Model.CollectorId))' === 'True';
-
-        if (isCentralised) {
-            $('#scopeCentralised').prop('checked', true).trigger('change');
-        }
-        else if (hasCollector) {
-            $('#scopeSingle').prop('checked', true).trigger('change');
-            $('#CollectorId').prop('disabled', false);
-        }
-        else {
-            $('#scopeAll').prop('checked', true).trigger('change');
-        }
-    }
-
-});
     </script>
 }
