@@ -238,6 +238,36 @@
                                         </div>
                                         @Html.ValidationMessageFor(m => m.NameFrOld, "", new { @class = "text-danger small" })
                                     </div>
+
+
+
+                                    <!-- Post Code -->
+                                    <div class="col-md-4">
+                                        @Html.LabelFor(m => m.PostCode, "Code Post", new { @class = "form-label fw-semibold small" })
+                                        @Html.TextBoxFor(m => m.PostCode, new
+                                        {
+                                            @class = "form-control form-control-sm",
+                                            maxlength = "20",
+                                            placeholder = "Code Post"
+                                        })
+                                        @Html.ValidationMessageFor(m => m.PostCode, "", new { @class = "text-danger small" })
+                                    </div>
+
+
+                                    <!-- Nature -->
+                                    <div class="col-md-4">
+                                        @Html.LabelFor(m => m.Nature, new { @class = "form-label required fw-semibold small" })
+                                        @Html.DropDownListFor(
+                                            m => m.Nature,
+                                            new List<SelectListItem>
+                                            {
+                                                new SelectListItem { Text = "Debit", Value = "Debit" },
+                                                new SelectListItem { Text = "Credit", Value = "Credit" }
+                                            },
+                                            "--- Select Nature ---",
+                                            new { @class = "form-select form-select-sm select2" })
+                                        @Html.ValidationMessageFor(m => m.Nature, "", new { @class = "text-danger small" })
+                                    </div>
                                 </div>
 
                                 <div class="small text-muted mt-1">

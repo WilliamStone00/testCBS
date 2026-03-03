@@ -11057,6 +11057,8 @@
     <Content Include="Views\DailyCollectorCommissionConfig\_CommissionConfigDataTable.cshtml" />
     <Content Include="Views\DailyCollectorCommissionConfig\List.cshtml" />
     <Content Include="Views\DailyCollectorCommissionConfig\_CommissionConfigDetails.cshtml" />
+    <Content Include="Views\ChartOfAccountV2\_CreatePcmf.cshtml" />
+    <Content Include="Views\ChartOfAccountV2\_CreatChildPcmf.cshtml" />
     <Content Include="Views\MembersFSeries\Loanerror.cshtml" />
   </ItemGroup>
   <ItemGroup>

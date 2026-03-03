@@ -70,210 +70,250 @@
             @Html.HiddenFor(m => m.AffiliateId)
             @Html.HiddenFor(m => m.ChangeType)
 
-            <div class="mt-1">
-                @Html.ValidationSummary(true, "", new { @class = "text-danger mb-2" })
+        <div class="mt-1">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger mb-2" })
 
-                @if (isCreate)
-                {
-                    <div class="alert alert-warning py-2 mb-2">
-                        <div class="fw-semibold mb-1"><i class="mdi mdi-alert-circle-outline me-1"></i> @BranchAccountRessources.Create_mode_requirements</div>
-                        <ul class="mb-0 small">
-                            <li><strong>@GlobalShared.Update_Type</strong> @BranchAccountRessources.must_be_left_empty_when_creating_a_new_account.</li>
-                            <li><strong>@GlobalShared.Old_values</strong> (<em>@GlobalShared.Old Account Number / @GlobalShared.Old Names</em>) are <em>ignored</em> on create.</li>
-                            <li>@BranchAccountRessources.Provide_a_unique <strong>@GlobalShared.Account_Number</strong> (digits only, at least 12) and both <strong>English</strong> and <strong>French</strong> names.</li>
-                        </ul>
-                    </div>
-
-                    if (!string.IsNullOrWhiteSpace(Model?.AccountUpdateKind))
-                    {
-                        <div class="text-danger mb-2 small">
-                            <i class="mdi mdi-close-circle-outline me-1"></i>
-                            @BranchAccountRessources.For_create_requests, <strong>@GlobalShared.Update_Type</strong> @BranchAccountRessources.must_be_empty_Please_clear_the_selection.
-                        </div>
-                    }
-                }
-
-                <div class="row mb-2">
-                    <div class="col-md-6">
-                        @Html.LabelFor(m => m.ParentAccountNumber, "Parent Account Number", new { @class = "form-label small text-muted mb-1" })
-                        <input type="text" class="form-control form-control-sm" readonly value="@Model.ParentAccountNumber" />
-                    </div>
-                    <div class="col-md-6">
-                        @Html.LabelFor(m => m.Scope, "Scope", new { @class = "form-label small text-muted mb-1" })
-                        <input type="text" class="form-control form-control-sm" readonly value="@Model.Scope" />
-                    </div>
+            @if (isCreate)
+            {
+                <div class="alert alert-warning py-2 mb-2">
+                    <div class="fw-semibold mb-1"><i class="mdi mdi-alert-circle-outline me-1"></i> @BranchAccountRessources.Create_mode_requirements</div>
+                    <ul class="mb-0 small">
+                        <li><strong>@GlobalShared.Update_Type</strong> @BranchAccountRessources.must_be_left_empty_when_creating_a_new_account.</li>
+                        <li><strong>@GlobalShared.Old_values</strong> (<em>Old_Account_Number /Old_Names</em>) are <em>ignored</em> on create.</li>
+                        <li>@BranchAccountRessources.Provide_a_unique <strong>@GlobalShared.Account_Number</strong> (digits only, at least 12) and both <strong>English</strong> and <strong>French</strong> names.</li>
+                    </ul>
                 </div>
 
-                <div class="row g-1">
-                    <div class="col-md-6 mb-2">
-                        @Html.LabelFor(m => m.AffiliateAccountId, "Affiliate Account (Chart of Accounts)", new { @class = "form-label mb-1" })
-                        @Html.DropDownListFor(
-                            m => m.AffiliateAccountId,
-                            new SelectList(ViewBag.AffiliateAccounts, "Value", "Text"),
-                            "--- Select Affiliate Account (Chart of Account) ---",
-                            new { @class = "form-select form-select-sm select2", @aria_label = "Affiliate Account", @disabled = "disabled" })
-                        @Html.ValidationMessageFor(m => m.AffiliateAccountId, "", new { @class = "text-danger" })
+                if (!string.IsNullOrWhiteSpace(Model?.AccountUpdateKind))
+                {
+                    <div class="text-danger mb-2 small">
+                        <i class="mdi mdi-close-circle-outline me-1"></i>
+                        @BranchAccountRessources.For_create_requests, <strong>@GlobalShared.Update_Type</strong> @BranchAccountRessources.must_be_empty_Please_clear_the_selection.
                     </div>
+                }
+            }
 
-                    @* ✅ Code textbox ONLY on Create *@
-                    @if (isCreate)
+            <div class="row mb-2">
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.ParentAccountNumber, "Parent Account Number", new { @class = "form-label small text-muted mb-1" })
+                    <input type="text" class="form-control form-control-sm" readonly value="@Model.ParentAccountNumber" />
+                </div>
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.Scope, "Scope", new { @class = "form-label small text-muted mb-1" })
+                    <input type="text" class="form-control form-control-sm" readonly value="@Model.Scope" />
+                </div>
+            </div>
+
+            <div class="row g-1">
+                <div class="col-md-6 mb-2">
+                    @Html.LabelFor(m => m.AffiliateAccountId, "Affiliate Account (Chart of Accounts)", new { @class = "form-label mb-1" })
+                    @Html.DropDownListFor(
+                        m => m.AffiliateAccountId,
+                        new SelectList(ViewBag.AffiliateAccounts, "Value", "Text"),
+                        "--- Select Affiliate Account (Chart of Account) ---",
+                        new { @class = "form-select form-select-sm select2", @aria_label = "Affiliate Account", @disabled = "disabled" })
+                    @Html.ValidationMessageFor(m => m.AffiliateAccountId, "", new { @class = "text-danger" })
+                </div>
+
+                @* ✅ Code textbox ONLY on Create *@
+                @if (isCreate)
+                {
+                    <div class="col-md-6 mb-2">
+                        @Html.LabelFor(m => m.Code, "Account Number", new { @class = "form-label fw-semibold mb-1" })
+                        @Html.TextBoxFor(
+                            m => m.Code,
+                            new
+                            {
+                                @class = "form-control form-control-sm",
+                                placeholder = "Enter the account number (digits only, min 12)",
+                                minlength = "12",
+                                maxlength = "20",
+                                pattern = "\\d+",
+                                title = "Digits only. Minimum length 12."
+                            })
+                        @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })
+                    </div>
+                }
+            </div>
+
+            <div class="row g-1">
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.Nature, new { @class = "form-label required fw-semibold small" })
+                    @Html.DropDownListFor(
+                        m => m.Nature,
+                        new List<SelectListItem>
+                        {
+                            new SelectListItem { Text = "Debit", Value = "Debit" },
+                            new SelectListItem { Text = "Credit", Value = "Credit" }
+                        },
+                        "--- Select Nature ---",
+                        new { @class = "form-select form-select-sm select2" })
+                    @Html.ValidationMessageFor(m => m.Nature, "", new { @class = "text-danger small" })
+                </div>
+
+
+                <!-- Post Code -->
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.PostCode, "Code Post", new { @class = "form-label fw-semibold small" })
+                    @Html.TextBoxFor(m => m.PostCode, new
                     {
-                        <div class="col-md-6 mb-2">
-                            @Html.LabelFor(m => m.Code, "Account Number", new { @class = "form-label fw-semibold mb-1" })
+                        @class = "form-control form-control-sm",
+                        maxlength = "20",
+                        placeholder = "Code Post"
+                    })
+                    @Html.ValidationMessageFor(m => m.PostCode, "", new { @class = "text-danger small" })
+                </div>
+
+
+
+
+
+            </div>
+
+
+            @if (isUpdate)
+            {
+                <!-- ===== UPDATE SECTION (Old Values ReadOnly) ===== -->
+                <div class="border rounded p-2 my-2">
+                    <div class="row g-1">
+                        <!-- Update Type -->
+                        <div class="col-md-4 mb-2">
+                            @Html.LabelFor(m => m.AccountUpdateKind, "Update Type", new { @class = "form-label fw-semibold mb-1 required" })
+                            @Html.DropDownListFor(
+                                m => m.AccountUpdateKind,
+                                new SelectList(new[]
+                                {
+                                    new { Value = "Code",         Text = "Code only" },
+                                    new { Value = "NameEn",       Text = "Name (English) only" },
+                                    new { Value = "NameFr",       Text = "Name (French) only" },
+                                    new { Value = "Names",        Text = "Names (English & French)" },
+                                    new { Value = "CodeAndNames", Text = "Code + Names" }
+                                }, "Value", "Text", updateType),
+                                "--- Select update type ---",
+                                new { @class = "form-select form-select-sm select2" })
+                            <div class="form-text small">
+                                @BranchAccountRessources.Choose_what_is_changing_for_this_update_request.
+                            </div>
+                            @Html.ValidationMessageFor(m => m.AccountUpdateKind, "", new { @class = "text-danger" })
+                        </div>
+
+                        <!-- ✅ Old Account Number (READONLY) -->
+                        <div class="col-md-4 mb-2">
+                            @Html.LabelFor(m => m.CodeOld, "Old Account Number", new { @class = "form-label fw-semibold mb-1" + (needsOldCode ? " required" : "") })
+                            @Html.TextBoxFor(
+                                m => m.CodeOld,
+                                new
+                                {
+                                    @class = "form-control form-control-sm",
+                                    @readonly = "readonly"
+                                })
+                            <div class="form-text small">
+                                @BranchAccountRessources.Auto_filled_from_the_existing_account_read_only.
+                            </div>
+                            @Html.ValidationMessageFor(m => m.CodeOld, "", new { @class = "text-danger" })
+                        </div>
+
+                        <!-- New Account Number (Code Update) -->
+                        <div class="col-md-4 mb-2">
+                            @Html.LabelFor(m => m.Code, "New Account Number (Code Update)", new { @class = "form-label fw-semibold mb-1" + (needsNewCode ? " required" : "") })
                             @Html.TextBoxFor(
                                 m => m.Code,
                                 new
                                 {
                                     @class = "form-control form-control-sm",
-                                    placeholder = "Enter the account number (digits only, min 12)",
+                                    placeholder = "New account number (≥12 digits)",
                                     minlength = "12",
                                     maxlength = "20",
-                                    pattern = "\\d+",
-                                    title = "Digits only. Minimum length 12."
+                                    inputmode = "numeric",
+                                    pattern = "\\d{12,}",
+                                    autocomplete = "off"
                                 })
+                            <div class="form-text small">
+                                @BranchAccountRessources.Required_only_if_Update_Type_includes <strong>Code</strong>.
+                            </div>
                             @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })
                         </div>
-                    }
-                </div>
 
-                @if (isUpdate)
-                {
-                    <!-- ===== UPDATE SECTION (Old Values ReadOnly) ===== -->
-                    <div class="border rounded p-2 my-2">
-                        <div class="row g-1">
-                            <!-- Update Type -->
-                            <div class="col-md-4 mb-2">
-                                @Html.LabelFor(m => m.AccountUpdateKind, "Update Type", new { @class = "form-label fw-semibold mb-1 required" })
-                                @Html.DropDownListFor(
-                                    m => m.AccountUpdateKind,
-                                    new SelectList(new[]
-                                    {
-                                        new { Value = "Code",         Text = "Code only" },
-                                        new { Value = "NameEn",       Text = "Name (English) only" },
-                                        new { Value = "NameFr",       Text = "Name (French) only" },
-                                        new { Value = "Names",        Text = "Names (English & French)" },
-                                        new { Value = "CodeAndNames", Text = "Code + Names" }
-                                    }, "Value", "Text", updateType),
-                                    "--- Select update type ---",
-                                    new { @class = "form-select form-select-sm select2" })
-                                <div class="form-text small">
-                                    @BranchAccountRessources.Choose_what_is_changing_for_this_update_request.
-                                </div>
-                                @Html.ValidationMessageFor(m => m.AccountUpdateKind, "", new { @class = "text-danger" })
+                        <!-- ✅ Old Name (English) READONLY -->
+                        <div class="col-md-4 mb-2">
+                            @Html.LabelFor(m => m.NameEnOld, "Old Name (English)", new { @class = "form-label fw-semibold mb-1" + (needsOldNameEn ? " required" : "") })
+                            @Html.TextBoxFor(
+                                m => m.NameEnOld,
+                                new
+                                {
+                                    @class = "form-control form-control-sm",
+                                    @readonly = "readonly"
+                                })
+                            <div class="form-text small">
+                                @BranchAccountRessources.Auto_filled_from_the_existing_account_read_only.
                             </div>
-
-                            <!-- ✅ Old Account Number (READONLY) -->
-                            <div class="col-md-4 mb-2">
-                                @Html.LabelFor(m => m.CodeOld, "Old Account Number", new { @class = "form-label fw-semibold mb-1" + (needsOldCode ? " required" : "") })
-                                @Html.TextBoxFor(
-                                    m => m.CodeOld,
-                                    new
-                                    {
-                                        @class = "form-control form-control-sm",
-                                        @readonly = "readonly"
-                                    })
-                                <div class="form-text small">
-                                    @BranchAccountRessources.Auto_filled_from_the_existing_account_read_only.
-                                </div>
-                                @Html.ValidationMessageFor(m => m.CodeOld, "", new { @class = "text-danger" })
-                            </div>
-
-                            <!-- New Account Number (Code Update) -->
-                            <div class="col-md-4 mb-2">
-                                @Html.LabelFor(m => m.Code, "New Account Number (Code Update)", new { @class = "form-label fw-semibold mb-1" + (needsNewCode ? " required" : "") })
-                                @Html.TextBoxFor(
-                                    m => m.Code,
-                                    new
-                                    {
-                                        @class = "form-control form-control-sm",
-                                        placeholder = "New account number (≥12 digits)",
-                                        minlength = "12",
-                                        maxlength = "20",
-                                        inputmode = "numeric",
-                                        pattern = "\\d{12,}",
-                                        autocomplete = "off"
-                                    })
-                                <div class="form-text small">
-                                    @BranchAccountRessources.Required_only_if_Update_Type_includes <strong>Code</strong>.
-                                </div>
-                                @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })
-                            </div>
-
-                            <!-- ✅ Old Name (English) READONLY -->
-                            <div class="col-md-4 mb-2">
-                                @Html.LabelFor(m => m.NameEnOld, "Old Name (English)", new { @class = "form-label fw-semibold mb-1" + (needsOldNameEn ? " required" : "") })
-                                @Html.TextBoxFor(
-                                    m => m.NameEnOld,
-                                    new
-                                    {
-                                        @class = "form-control form-control-sm",
-                                        @readonly = "readonly"
-                                    })
-                                <div class="form-text small">
-                                    @BranchAccountRessources.Auto_filled_from_the_existing_account_read_only.
-                                </div>
-                                @Html.ValidationMessageFor(m => m.NameEnOld, "", new { @class = "text-danger" })
-                            </div>
-
-                            <!-- ✅ Old Name (French) READONLY -->
-                            <div class="col-md-4 mb-2">
-                                @Html.LabelFor(m => m.NameFrOld, "Old Name (French)", new { @class = "form-label fw-semibold mb-1" + (needsOldNameFr ? " required" : "") })
-                                @Html.TextBoxFor(
-                                    m => m.NameFrOld,
-                                    new
-                                    {
-                                        @class = "form-control form-control-sm",
-                                        @readonly = "readonly"
-                                    })
-                                <div class="form-text small">
-                                    @BranchAccountRessources.Auto_filled_from_the_existing_account_read_only.
-                                </div>
-                                @Html.ValidationMessageFor(m => m.NameFrOld, "", new { @class = "text-danger" })
-                            </div>
+                            @Html.ValidationMessageFor(m => m.NameEnOld, "", new { @class = "text-danger" })
                         </div>
 
-                        <div class="small text-muted mt-1">
-                            <strong>Note:</strong> @BranchAccountRessources.Old_values_are_locked_to_prevent_accidental_edits.
-                            @BranchAccountRessources.Only_enter_the_new_values_you_want_to_apply.
+                        <!-- ✅ Old Name (French) READONLY -->
+                        <div class="col-md-4 mb-2">
+                            @Html.LabelFor(m => m.NameFrOld, "Old Name (French)", new { @class = "form-label fw-semibold mb-1" + (needsOldNameFr ? " required" : "") })
+                            @Html.TextBoxFor(
+                                m => m.NameFrOld,
+                                new
+                                {
+                                    @class = "form-control form-control-sm",
+                                    @readonly = "readonly"
+                                })
+                            <div class="form-text small">
+                                @BranchAccountRessources.Auto_filled_from_the_existing_account_read_only.
+                            </div>
+                            @Html.ValidationMessageFor(m => m.NameFrOld, "", new { @class = "text-danger" })
                         </div>
-                    </div>
-                                    }
 
-                <div class="row g-1">
-                    <div class="col-md-6 mb-2">
-                        @Html.LabelFor(m => m.NameEn, "Account Name (English)", new { @class = "form-label fw-semibold mb-1" })
-                        @Html.TextBoxFor(m => m.NameEn, new { @class = "form-control form-control-sm", placeholder = "Account name in English", maxlength = "150" })
-                        @Html.ValidationMessageFor(m => m.NameEn, "", new { @class = "text-danger" })
+
+
+
+
                     </div>
 
-                    <div class="col-md-6 mb-2">
-                        @Html.LabelFor(m => m.NameFr, "Account Name (French)", new { @class = "form-label fw-semibold mb-1" })
-                        @Html.TextBoxFor(m => m.NameFr, new { @class = "form-control form-control-sm", placeholder = "Nom du compte en français", maxlength = "150" })
-                        @Html.ValidationMessageFor(m => m.NameFr, "", new { @class = "text-danger" })
+                    <div class="small text-muted mt-1">
+                        <strong>Note:</strong> @BranchAccountRessources.Old_values_are_locked_to_prevent_accidental_edits.
+                        @BranchAccountRessources.Only_enter_the_new_values_you_want_to_apply.
                     </div>
                 </div>
+            }
 
-                <div class="row mb-2">
-                    <div class="col-md-12">
-                        @Html.LabelFor(m => m.Notes, "Notes / Description", new { @class = "form-label mb-1" })
-                        @Html.TextBoxFor(m => m.Notes, new { @class = "form-control form-control-sm", placeholder = "Optional notes (max 100 chars)", maxlength = "100" })
-                        @Html.ValidationMessageFor(m => m.Notes, "", new { @class = "text-danger" })
-                    </div>
+            <div class="row g-1">
+                <div class="col-md-6 mb-2">
+                    @Html.LabelFor(m => m.NameEn, "Account Name (English)", new { @class = "form-label fw-semibold mb-1" })
+                    @Html.TextBoxFor(m => m.NameEn, new { @class = "form-control form-control-sm", placeholder = "Account name in English", maxlength = "150" })
+                    @Html.ValidationMessageFor(m => m.NameEn, "", new { @class = "text-danger" })
                 </div>
 
-                <div class="text-end">
-                    @if (isCreate)
-                     {
-                        <button type="submit" class="btn btn-primary btn-sm me-2" data-bs-dismiss="modal"><i class="fas fa-save me-1"></i> @GlobalShared.Save</button>
-                        <button type="reset" class="btn btn-outline-secondary btn-sm">@GlobalShared.Reset</button>
-                    }
-                    else
-                    {
-                        <button type="submit" class="btn btn-primary btn-sm me-2" data-bs-dismiss="modal"><i class="mdi mdi-refresh"></i> @GlobalShared.Update</button>
-                        <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">@GlobalShared.Close</button>
-                     }
+                <div class="col-md-6 mb-2">
+                    @Html.LabelFor(m => m.NameFr, "Account Name (French)", new { @class = "form-label fw-semibold mb-1" })
+                    @Html.TextBoxFor(m => m.NameFr, new { @class = "form-control form-control-sm", placeholder = "Nom du compte en français", maxlength = "150" })
+                    @Html.ValidationMessageFor(m => m.NameFr, "", new { @class = "text-danger" })
                 </div>
             </div>
+
+            <div class="row mb-2">
+                <div class="col-md-12">
+                    @Html.LabelFor(m => m.Notes, "Notes / Description", new { @class = "form-label mb-1" })
+                    @Html.TextBoxFor(m => m.Notes, new { @class = "form-control form-control-sm", placeholder = "Optional notes (max 100 chars)", maxlength = "100" })
+                    @Html.ValidationMessageFor(m => m.Notes, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="text-end">
+                @if (isCreate)
+                {
+                    <button type="submit" class="btn btn-primary btn-sm me-2" data-bs-dismiss="modal"><i class="fas fa-save me-1"></i> @GlobalShared.Save</button>
+                    <button type="reset" class="btn btn-outline-secondary btn-sm">@GlobalShared.Reset</button>
+                }
+                else
+                {
+                    <button type="submit" class="btn btn-primary btn-sm me-2" data-bs-dismiss="modal"><i class="mdi mdi-refresh"></i> @GlobalShared.Update</button>
+                    <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">@GlobalShared.Close</button>
+                }
+            </div>
+        </div>
                     }
     </div>
 </div>

@@ -1610,6 +1610,8 @@ namespace CBS.FrontDesk.Helper
         public static string GetAccountByIdEndpoint = "/api/v1/HoPcmfAccount/{0}/{1}";
         public static string UpdateAccountNameEndpoint = "/api/v1/HoPcmfAccount/{0}";
         public static string COAdatatable = "/api/v1/HoPcmfAccount/datatable";
+        public static string AddAccountCreationRequestPcmf = "/api/v1/HoPcmfAccount";
+        public static string UploadchartofAccountFile = "/api/v1/HoPcmfAccount/ho-pcmf-nature-postcode";
 
         //-------------------------- Affiliate ------------------------------------------
         public static string GetAllAffiliate = "/api/v1/Affiliate/simple?isActive=true&includeDeleted=false";

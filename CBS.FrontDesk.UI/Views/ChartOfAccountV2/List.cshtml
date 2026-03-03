@@ -118,11 +118,39 @@
     </form>
 </div>
 
+<div class="d-flex justify-content-end mb-2">
+    <button id="btnAddRootPcmf" type="button" class="btn btn-success btn-sm">
+        <i class="mdi mdi-plus-circle-outline me-1"></i> @GlobalShared.Add Account Number
+    </button>
+</div>
+
 <!-- DataTable Partial (initial or empty) -->
 <div id="affiliateListingView">
     @Html.Partial("_Data")
 </div>
 
+<!-- CREATE PCMF MODAL -->
+<div class="modal fade" id="createPcmfModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+
+            <div class="modal-body">
+                <!-- _CreatePcmf will load here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="createchildPcmfModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+
+            <div class="modal-body">
+                <!-- _CreatePcmf will load here -->
+            </div>
+        </div>
+    </div>
+</div>
 <!-- DETAILS modal -->
 <div class="modal fade" id="affiliateDetailsModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
@@ -155,7 +183,11 @@
     </div>
 </div>
 
+
+
+
 @section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
     <script>
         var affiliateTable = null;
 
@@ -267,9 +299,9 @@
                             return renderClassLabel(data, row);
                         }
                     },
-                    
+
                     { data: 'Nature', name: 'nature', defaultContent: '-' },
-                   
+
                     {
                         data: 'Id',
                         orderable: false,
@@ -284,27 +316,36 @@
                             var isDeleted = row.isDeleted === true || row.isDeleted === 'true' || row.isDeleted === 1;
 
                             var detailsBtn = `<button type="button" class="dropdown-item btn-details" data-id="${recordId}" data-name="${name}">
-                                                <i class="mdi mdi-eye me-1 text-primary"></i> Details
-                                              </button>`;
+                                                        <i class="mdi mdi-eye me-1 text-primary"></i> Details
+                                                      </button>`;
 
                             var editBtn = !isDeleted ? `<button type="button" class="dropdown-item btn-edit" data-id="${recordId}" data-name="${name}">
-                                                           <i class="mdi mdi-pencil-outline me-1 text-success"></i> Edit
-                                                         </button>` : '';
+                                                                   <i class="mdi mdi-pencil-outline me-1 text-success"></i> Edit
+                                                                 </button>` : '';
+
+
+                            var addAffiliateBtn = ` <button type="button" 
+                                                        class="dropdown-item btn-add" 
+                                                        data-id="${recordId}">
+                                                    <i class="mdi mdi-plus me-1 text-success"></i> Add Affiliate Account Node
+                                                </button>`;
 
                             return `
-                                <div class="dropdown text-center">
-                                    <button class="btn btn-sm btn-info dropdown-toggle text-white"
-                                            type="button" id="${btnId}"
-                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="mdi mdi-cog-outline"></i> Actions
-                                    </button>
-                                    <ul class="dropdown-menu" aria-labelledby="${btnId}">
-                                        <li>${detailsBtn}</li>
-                                        ${!isDeleted ? `<li><hr class="dropdown-divider"></li>` : ''}
-                                        ${!isDeleted ? `<li>${editBtn}</li>` : ''}
-                                    </ul>
-                                </div>
-                            `.trim();
+                                        <div class="dropdown text-center">
+                                            <button class="btn btn-sm btn-info dropdown-toggle text-white"
+                                                    type="button" id="${btnId}"
+                                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="mdi mdi-cog-outline"></i> Actions
+                                            </button>
+                                            <ul class="dropdown-menu" aria-labelledby="${btnId}">
+                                                <li>${detailsBtn}</li>
+                                               ${!isDeleted ? `
+                                                <li><hr class="dropdown-divider"></li>
+                                                <li>${editBtn}</li>
+                                                <li>${addAffiliateBtn}</li> ` : ''}
+                                            </ul>
+                                        </div>
+                                    `.trim();
                         }
                     }
                 ],
@@ -503,85 +544,178 @@
                     });
             });
 
-            // EDIT
+            //// EDIT
+            //$(document).off('click', '.btn-edit').on('click', '.btn-edit', function (e) {
+            //    e.preventDefault();
+            //    var $btn = $(this);
+            //    try { $btn.blur(); } catch (err) { /* ignore */ }
+
+            //    var raw = $btn.data('id');
+            //    var id = raw ? decodeURIComponent(raw) : null;
+            //    if (!id) { if (typeof appalert === 'function') appalert('Missing id for edit', 0, 1); return; }
+
+            //    var modalEl = document.getElementById('createPcmfModal');
+            //    if (!modalEl) { if (typeof appalert === 'function') appalert('Edit modal not found (#createPcmfModal)', 0, 1); return; }
+
+            //    var spinner = '<div class="text-center py-4"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>';
+            //    $('#createPcmfModal .modal-body').html(spinner);
+
+            //    var bsModal = null;
+            //    try { bsModal = new bootstrap.Modal(modalEl); } catch (ex) { /* ignore */ }
+            //    if (bsModal) bsModal.show();
+
+            //    $.get('/ChartOfAccountV2/InitializeData', { KEY: id, partialView: '_CreatePcmf', path: 'get' })
+            //        .done(function (html) {
+            //            $('#createPcmfModal .modal-body').html(html || '<div class="text-center text-muted">No edit form available.</div>');
+            //            try {
+            //                if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
+            //                    document.querySelectorAll('#createPcmfModal [data-bs-toggle="tooltip"]').forEach(function (el) {
+            //                        new bootstrap.Tooltip(el);
+            //                    });
+            //                }
+            //            } catch (e) { /* ignore */ }
+            //        })
+            //        .fail(function () {
+            //            $('#createPcmfModal .modal-body').html('<div class="text-center text-danger">Error loading edit form</div>');
+            //            if (typeof appalert === 'function') appalert('Failed to load edit form', 0, 1);
+            //        });
+            //});
+
+
+
+            // EDIT - Use same Create Modal
             $(document).off('click', '.btn-edit').on('click', '.btn-edit', function (e) {
                 e.preventDefault();
-                var $btn = $(this);
-                try { $btn.blur(); } catch (err) { /* ignore */ }
 
-                var raw = $btn.data('id');
-                var id = raw ? decodeURIComponent(raw) : null;
-                if (!id) { if (typeof appalert === 'function') appalert('Missing id for edit', 0, 1); return; }
+                var id = $(this).data('id');
+                if (!id) {
+                    if (typeof appalert === 'function')
+                        appalert('Missing id for edit', 0, 1);
+                    return;
+                }
 
-                var modalEl = document.getElementById('affiliateEditModal');
-                if (!modalEl) { if (typeof appalert === 'function') appalert('Edit modal not found (#affiliateEditModal)', 0, 1); return; }
+                var modalEl = document.getElementById('createPcmfModal');
+                if (!modalEl) {
+                    if (typeof appalert === 'function')
+                        appalert('Modal not found (#createPcmfModal)', 0, 1);
+                    return;
+                }
 
-                var spinner = '<div class="text-center py-4"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>';
-                $('#affiliateEditModal .modal-body').html(spinner);
-
-                var bsModal = null;
-                try { bsModal = new bootstrap.Modal(modalEl); } catch (ex) { /* ignore */ }
-                if (bsModal) bsModal.show();
-
-                $.get('/ChartOfAccountV2/InitializeData', { KEY: id, partialView: '_EditPartial', path: 'get' })
+                // 1️⃣ Load partial first
+                $.get('/ChartOfAccountV2/InitializeData', {
+                    KEY: id,
+                    partialView: '_CreatePcmf',
+                    path: 'get'
+                })
                     .done(function (html) {
-                        $('#affiliateEditModal .modal-body').html(html || '<div class="text-center text-muted">No edit form available.</div>');
-                        try {
-                            if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
-                                document.querySelectorAll('#affiliateEditModal [data-bs-toggle="tooltip"]').forEach(function (el) {
-                                    new bootstrap.Tooltip(el);
-                                });
-                            }
-                        } catch (e) { /* ignore */ }
+
+                        // 2️⃣ Inject into same modal
+                        $('#createPcmfModal .modal-body').html(html);
+
+                        // 3️⃣ Show modal AFTER content loads
+                        var bsModal = new bootstrap.Modal(modalEl);
+                        bsModal.show();
                     })
                     .fail(function () {
-                        $('#affiliateEditModal .modal-body').html('<div class="text-center text-danger">Error loading edit form</div>');
-                        if (typeof appalert === 'function') appalert('Failed to load edit form', 0, 1);
+                        if (typeof appalert === 'function')
+                            appalert('Failed to load edit form', 0, 1);
+                    });
+            });
+            // EDIT form submit (inside modal)
+            // CREATE + UPDATE SUBMIT
+
+
+
+
+
+
+            $(document).off('click', '.btn-add').on('click', '.btn-add', function (e) {
+                e.preventDefault();
+
+                var id = $(this).data('id');
+                if (!id) {
+                    if (typeof appalert === 'function')
+                        appalert('Missing id for edit', 0, 1);
+                    return;
+                }
+
+                var modalEl = document.getElementById('createchildPcmfModal');
+                if (!modalEl) {
+                    if (typeof appalert === 'function')
+                        appalert('Modal not found (#createchildPcmfModal)', 0, 1);
+                    return;
+                }
+
+                // 1️⃣ Load partial first
+                $.get('/ChartOfAccountV2/InitializeData', {
+                    KEY: id,
+                    partialView: '_CreatChildPcmf',
+                    path: 'child'
+                })
+                    .done(function (html) {
+
+                        // 2️⃣ Inject into same modal
+                        $('#createchildPcmfModal .modal-body').html(html);
+
+                        // 3️⃣ Show modal AFTER content loads
+                        var bsModal = new bootstrap.Modal(modalEl);
+                        bsModal.show();
+                    })
+                    .fail(function () {
+                        if (typeof appalert === 'function')
+                            appalert('Failed to load create child account form', 0, 1);
                     });
             });
 
-            // EDIT form submit (inside modal)
-            $(document).off('submit', '#editAccountForm').on('submit', '#editAccountForm', function (e) {
+            // ADD ROOT PCMF
+            $('#btnAddRootPcmf').off('click').on('click', function (e) {
                 e.preventDefault();
 
-                var $form = $(this);
-                var $btn = $form.find('#saveButton');
-                var originalHtml = $btn.html();
-                var formData = $form.serialize();
-                var token = $form.find('input[name="__RequestVerificationToken"]').val();
+                var modalEl = document.getElementById('createPcmfModal');
+                if (!modalEl) {
+                    if (typeof appalert === 'function')
+                        appalert('Create modal not found (#createPcmfModal)', 0, 1);
+                    return;
+                }
 
-                $btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving');
+                $.get('/ChartOfAccountV2/InitializeData', {
+                    KEY: null,
+                    partialView: '_CreatePcmf',
+                    path: 'new'
+                })
+                    .done(function (html) {
 
-                $.ajax({
-                    url: '/ChartOfAccountV2/UpdateAccountName',
-                    type: 'POST',
-                    data: formData,
-                    headers: token ? { 'RequestVerificationToken': token } : {},
-                    success: function (res) {
-                        $btn.prop('disabled', false).html(originalHtml);
+                        // Inject partial
+                        var $modal = $('#createPcmfModal');
+                        $modal.find('.modal-body').html(html);
 
-                        if (res && res.success) {
-                            try {
-                                var modalEl = document.getElementById('affiliateEditModal');
-                                var bs = bootstrap.Modal.getInstance(modalEl);
-                                if (bs) bs.hide();
-                            } catch (err) { /* ignore */ }
-
-                            if (typeof affiliateTable !== 'undefined' && affiliateTable) {
-                                affiliateTable.ajax.reload(null, false);
+                        // ✅ Destroy old select2 if any (important if modal reused)
+                        $modal.find('.select2').each(function () {
+                            if ($(this).hasClass('select2-hidden-accessible')) {
+                                $(this).select2('destroy');
                             }
+                        });
 
-                            if (typeof appalert === 'function') appalert(res.message || 'Saved', 3, 1);
-                        } else {
-                            if (typeof appalert === 'function') appalert(res?.message || 'Save failed', 0, 1);
-                        }
-                    },
-                    error: function () {
-                        $btn.prop('disabled', false).html(originalHtml);
-                        if (typeof appalert === 'function') appalert('Save request failed', 0, 1);
-                    }
-                });
+                        // ✅ Initialize select2 properly inside modal
+                        $modal.find('.select2').select2({
+                            dropdownParent: $modal,
+                            width: '100%'
+                        });
+
+                        // Show modal AFTER everything ready
+                        new bootstrap.Modal(modalEl).show();
+                    })
+                    .fail(function () {
+
+                        $('#createPcmfModal .modal-body').html(
+                            '<div class="text-danger text-center py-3">Failed to load form</div>'
+                        );
+
+                        new bootstrap.Modal(modalEl).show();
+                    });
             });
+
+
         });
     </script>
 }

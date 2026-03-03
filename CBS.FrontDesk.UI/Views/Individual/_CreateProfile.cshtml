@@ -192,7 +192,7 @@
                                                 @Html.DropDownListFor(m => m.PoliticaExposedQuestion,
                                                     ViewBag.politicalstatuses as List<SelectListItem>,
                                                     "--- Select  status ---",
-                                                    new { @class = "form-control select2", @required = "required" })
+                                                    new { @class = "form-control select2" })
 
                                                 @Html.ValidationMessageFor(m => m.PoliticaExposedQuestion, "", new { @class = "text-danger" })
                                                 <label>Polictical question</label>

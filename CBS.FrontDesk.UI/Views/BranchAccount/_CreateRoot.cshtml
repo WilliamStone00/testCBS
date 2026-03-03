@@ -54,99 +54,134 @@
             @* Ensure ROOT *@
             @Html.Hidden("ParentId", null)
 
-            <div class="mt-1">
-                @Html.ValidationSummary(true, "", new { @class = "text-danger mb-2" })
+        <div class="mt-1">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger mb-2" })
 
-                <div class="row mb-2">
-                    <div class="col-md-6">
-                        @Html.LabelFor(m => m.ParentAccountNumber, "Parent Account Number", new { @class = "form-label small text-muted mb-1" })
-                        <input type="text" class="form-control form-control-sm" readonly value="(ROOT)" />
-                    </div>
-                    <div class="col-md-6">
-                        @Html.LabelFor(m => m.Scope, "Scope", new { @class = "form-label small text-muted mb-1" })
-                        <input type="text" class="form-control form-control-sm" readonly value="@Model.Scope" />
-                    </div>
+            <div class="row mb-2">
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.ParentAccountNumber, "Parent Account Number", new { @class = "form-label small text-muted mb-1" })
+                    <input type="text" class="form-control form-control-sm" readonly value="(ROOT)" />
+                </div>
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.Scope, "Scope", new { @class = "form-label small text-muted mb-1" })
+                    <input type="text" class="form-control form-control-sm" readonly value="@Model.Scope" />
+                </div>
+            </div>
+
+            <div class="row mb-2">
+                <div class="col-md-12">
+                    @Html.LabelFor(m => m.BranchId, "Branch", new { @class = "form-label mb-1" })
+                    @Html.DropDownListFor(
+                        m => m.BranchId,
+                        new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name"),
+                        "--- " + @GlobalUserManagement.SelectBranch + " ---",
+                        new { @class = "form-select form-select-sm select2" })
+                    @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="row mb-2">
+                <div class="col-md-6 mb-2">
+                    @Html.LabelFor(m => m.Class, "Account Class", new { @class = "form-label fw-semibold mb-1" })
+                    @Html.DropDownListFor(
+                        m => m.Class,
+                        new SelectList(ViewBag.Classes ?? new List<SelectListItem>(), "Value", "Text"),
+                        "--- Select Class ---",
+                        new
+                             {
+                            @class = "form-select form-select-sm select2",
+                            onchange = "onClassChanged(this.value)",
+                            // optional: pass the fetch URL via data attribute for flexibility
+                            data_url = Url.Action("ListByClass", "AffiliateAccount")
+                        })
+                    @Html.ValidationMessageFor(m => m.Class, "", new { @class = "text-danger" })
                 </div>
 
-                <div class="row mb-2">
-                    <div class="col-md-12">
-                        @Html.LabelFor(m => m.BranchId, "Branch", new { @class = "form-label mb-1" })
-                        @Html.DropDownListFor(
-                            m => m.BranchId,
-                            new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name"),
-                            "--- " + @GlobalUserManagement.SelectBranch + " ---",
-                            new { @class = "form-select form-select-sm select2" })
-                        @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
-                    </div>
+                <div class="col-md-6 mb-2">
+                    @Html.LabelFor(m => m.AffiliateAccountId, "Affiliate Account (Chart of Accounts)", new { @class = "form-label mb-1" })
+                    @Html.DropDownListFor(
+                        m => m.AffiliateAccountId,
+                        new SelectList(ViewBag.AffiliateAccounts ?? new List<SelectListItem>(), "Value", "Text"),
+                        "--- Select Affiliate Account (Chart of Account) ---",
+                        new
+                             {
+                            @class = "form-select form-select-sm select2",
+                            @aria_label = "Affiliate Account",
+                            // start disabled until class is chosen (optional)
+                            disabled = (string.IsNullOrWhiteSpace(Model?.Class) ? "disabled" : null)
+                        })
+                    @Html.ValidationMessageFor(m => m.AffiliateAccountId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+
+            <hr class="my-2" />
+
+            <div class="row g-1">
+                <div class="col-md-2 mb-2">
+                    @Html.LabelFor(m => m.Code, "Account Number", new { @class = "form-label fw-semibold mb-1" })
+                    @Html.TextBoxFor(
+                        m => m.Code,
+                        new
+                             {
+                            @class = "form-control form-control-sm",
+                            placeholder = "Enter the account number (digits only, min 12)",
+                            minlength = "12",
+                            maxlength = "20",
+                            pattern = "\\d+",
+                            title = "Digits only. Minimum length 12."
+                        })
+                    @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-5 mb-2">
+                    @Html.LabelFor(m => m.NameEn, "Account Name (English)", new { @class = "form-label fw-semibold mb-1" })
+                    @Html.TextBoxFor(m => m.NameEn, new { @class = "form-control form-control-sm", placeholder = "Account name in English", maxlength = "150" })
+                    @Html.ValidationMessageFor(m => m.NameEn, "", new { @class = "text-danger" })
                 </div>
 
-                <div class="row mb-2">
-                    <div class="col-md-6 mb-2">
-                        @Html.LabelFor(m => m.Class, "Account Class", new { @class = "form-label fw-semibold mb-1" })
-                        @Html.DropDownListFor(
-                            m => m.Class,
-                            new SelectList(ViewBag.Classes ?? new List<SelectListItem>(), "Value", "Text"),
-                            "--- Select Class ---",
-                            new
-                                 {
-                                @class = "form-select form-select-sm select2",
-                                onchange = "onClassChanged(this.value)",
-                                // optional: pass the fetch URL via data attribute for flexibility
-                                data_url = Url.Action("ListByClass", "AffiliateAccount")
-                            })
-                        @Html.ValidationMessageFor(m => m.Class, "", new { @class = "text-danger" })
-                    </div>
+                <div class="col-md-5 mb-2">
+                    @Html.LabelFor(m => m.NameFr, "Account Name (French)", new { @class = "form-label fw-semibold mb-1" })
+                    @Html.TextBoxFor(m => m.NameFr, new { @class = "form-control form-control-sm", placeholder = "Nom du compte en français", maxlength = "150" })
+                    @Html.ValidationMessageFor(m => m.NameFr, "", new { @class = "text-danger" })
+                </div>
 
-                    <div class="col-md-6 mb-2">
-                        @Html.LabelFor(m => m.AffiliateAccountId, "Affiliate Account (Chart of Accounts)", new { @class = "form-label mb-1" })
-                        @Html.DropDownListFor(
-                            m => m.AffiliateAccountId,
-                            new SelectList(ViewBag.AffiliateAccounts ?? new List<SelectListItem>(), "Value", "Text"),
-                            "--- Select Affiliate Account (Chart of Account) ---",
-                            new
-                                 {
-                                @class = "form-select form-select-sm select2",
-                                @aria_label = "Affiliate Account",
-                                // start disabled until class is chosen (optional)
-                                disabled = (string.IsNullOrWhiteSpace(Model?.Class) ? "disabled" : null)
-                            })
-                        @Html.ValidationMessageFor(m => m.AffiliateAccountId, "", new { @class = "text-danger" })
-                    </div>
+            </div>
+
+
+            <div class="row g-1">
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.Nature, new { @class = "form-label required fw-semibold small" })
+                    @Html.DropDownListFor(
+                        m => m.Nature,
+                        new List<SelectListItem>
+                        {
+                            new SelectListItem { Text = "Debit", Value = "Debit" },
+                            new SelectListItem { Text = "Credit", Value = "Credit" }
+                        },
+                        "--- Select Nature ---",
+                        new { @class = "form-select form-select-sm select2" })
+                    @Html.ValidationMessageFor(m => m.Nature, "", new { @class = "text-danger small" })
+                </div>
+
+
+                <!-- Post Code -->
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.PostCode, "Code Post", new { @class = "form-label fw-semibold small" })
+                    @Html.TextBoxFor(m => m.PostCode, new
+                    {
+                        @class = "form-control form-control-sm",
+                        maxlength = "20",
+                        placeholder = "Code Post"
+                    })
+                    @Html.ValidationMessageFor(m => m.PostCode, "", new { @class = "text-danger small" })
                 </div>
 
 
 
-                <hr class="my-2" />
 
-                <div class="row g-1">
-                    <div class="col-md-2 mb-2">
-                        @Html.LabelFor(m => m.Code, "Account Number", new { @class = "form-label fw-semibold mb-1" })
-                        @Html.TextBoxFor(
-                            m => m.Code,
-                            new
-                                 {
-                                @class = "form-control form-control-sm",
-                                placeholder = "Enter the account number (digits only, min 12)",
-                                minlength = "12",
-                                maxlength = "20",
-                                pattern = "\\d+",
-                                title = "Digits only. Minimum length 12."
-                            })
-                        @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })
-                    </div>
-                    <div class="col-md-5 mb-2">
-                        @Html.LabelFor(m => m.NameEn, "Account Name (English)", new { @class = "form-label fw-semibold mb-1" })
-                        @Html.TextBoxFor(m => m.NameEn, new { @class = "form-control form-control-sm", placeholder = "Account name in English", maxlength = "150" })
-                        @Html.ValidationMessageFor(m => m.NameEn, "", new { @class = "text-danger" })
-                    </div>
 
-                    <div class="col-md-5 mb-2">
-                        @Html.LabelFor(m => m.NameFr, "Account Name (French)", new { @class = "form-label fw-semibold mb-1" })
-                        @Html.TextBoxFor(m => m.NameFr, new { @class = "form-control form-control-sm", placeholder = "Nom du compte en français", maxlength = "150" })
-                        @Html.ValidationMessageFor(m => m.NameFr, "", new { @class = "text-danger" })
-                    </div>
-
-                </div>
+            </div>
 
 
                 @* PostingAllowed removed *@
@@ -172,6 +207,6 @@
                     }
                 </div>
             </div>
-        }
-    </div>
+            }
+        </div>
 </div>

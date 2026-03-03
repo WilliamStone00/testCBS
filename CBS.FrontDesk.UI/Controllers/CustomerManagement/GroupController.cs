@@ -34,7 +34,7 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
             ViewBag.MemberStatuses = statuses?
                 .Select(s => new SelectListItem
                 {
-                    Value = s.Name,
+                    Value = s.Id,
                     Text = $"[{s.Name}] - [{s.Description}]"
                 })
                 .OrderBy(x => x.Text)
