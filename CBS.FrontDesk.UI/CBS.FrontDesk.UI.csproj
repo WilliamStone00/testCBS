@@ -480,11 +480,13 @@
       <DependentUpon>InsurableSavings.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="AppFiles\Reporting\IPSReports\InsurableLoan.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>InsurableLoan.rpt</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="AppFiles\Reporting\IPSReports\InternalProtectionSchema.cs">
       <AutoGen>True</AutoGen>
