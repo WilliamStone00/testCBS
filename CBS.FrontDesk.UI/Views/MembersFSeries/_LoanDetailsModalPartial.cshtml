@@ -20,9 +20,8 @@
     var docs = loan?.LoanApplication?.DocumentAttachedToLoans ?? new List<CBS.FrontDesk.Data.Entity.LoanConf.DocumentAttachedToLoan>();
     var refunds = loan?.Refunds ?? new List<CBS.FrontDesk.Data.Entity.LoanConf.Refund>();
     var amort = loan?.LoanAmortizations ?? new List<CBS.FrontDesk.Data.Entity.LoanConf.LoanAmortization>();
-    var isMigrated =
-    loan.IsUpload
-    || (loan.MigrationDate.HasValue && loan.MigrationDate.Value > DateTime.MinValue);
+  var isMigrated = loan.IsUpload
+                 || (loan.MigrationDate?.Date > DateTime.MinValue);
 
     var app = loan?.LoanApplication;
 
@@ -1701,7 +1700,7 @@
                                         <td colspan="2" class="fw-bold small">Processing Dates</td>
                                     </tr>
                                     <tr><td class="k">Last Refund Date</td><td class="v">@FDate(loan.LastRefundDate)</td></tr>
-                                    <tr><td class="k">Last Interest Calc Date</td><td class="v">@FDate(loan.LastInterestCalculatedDate)</td></tr>
+                                    <tr><td class="k">Last Interest Calc Date</td><td class="v">@(loan.LastInterestCalculatedDate.HasValue ? FDate(loan.LastInterestCalculatedDate.Value): "-")</td></tr>
                                     <tr><td class="k">Last Delinquency Proc</td><td class="v">@FDateNullable(loan.LastDeliquecyProcessedDate)</td></tr>
 
                                     <!-- Structuring -->

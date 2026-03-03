@@ -79,8 +79,7 @@
                    href="#sectionContainer"
                    onclick="LoadDataGen('ReportConfiguration', 'myDataTable_section', 'ReportConfiguration/ReportSection/_List', 0, 'sectionContainer',null,'section')"
                    @*data-url="@Url.Action("InitializeData", "ReportConfiguration")"
-                   data-params='{"path":"section","partialView":"ReportConfiguration/ReportSection/_List"}'*@
-                   >
+                   data-params='{"path":"section","partialView":"ReportConfiguration/ReportSection/_List"}'*@>
                     <i class="mdi mdi-view-list-outline me-1"></i> Section
                 </a>
             </li>
@@ -90,8 +89,8 @@
                    data-bs-toggle="tab"
                    href="#lineContainer"
                    onclick="LoadDataGen('ReportConfiguration', 'myDataTable_line', 'ReportConfiguration/ReportLine/_List', 0, 'lineContainer',null,'line')">
-                  @* data-url="@Url.Action("InitializeData", "ReportConfiguration")"
-                   data-params='{"path":"line","partialView":"ReportConfiguration/ReportLine/_List"}'>*@
+                    @* data-url="@Url.Action("InitializeData", "ReportConfiguration")"
+                        data-params='{"path":"line","partialView":"ReportConfiguration/ReportLine/_List"}'>*@
                     <i class="mdi mdi-format-line-weight me-1"></i> Line
                 </a>
             </li>
@@ -102,7 +101,7 @@
                    href="#mappingContainer"
                    onclick="LoadDataGen('ReportConfiguration', 'myDataTable_line_mapping', 'ReportConfiguration/ReportLineMapping/_List', 0, 'mappingContainer',null,'line_mapping')">
                     @*    data-url="@Url.Action("InitializeData", "ReportConfiguration")"
-                    data-params='{"path":"line_mapping","partialView":"ReportConfiguration/ReportLineMapping/_List"}'*@
+                        data-params='{"path":"line_mapping","partialView":"ReportConfiguration/ReportLineMapping/_List"}'*@
 
 
                     <i class="mdi mdi-link-variant me-1"></i> Mapping
@@ -132,8 +131,7 @@
     <div class="tab-pane fade" id="lineContainer"></div>
     <div class="tab-pane fade" id="mappingContainer"></div>
 </div>-->
-
-<!-- MODAL POUR CRÉER/ÉDITER UN REPORT -->
+ @*MODAL POUR CRÉER/ÉDITER UN REPORT*@ 
 <div class="modal fade" id="reportModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content">
@@ -157,9 +155,26 @@
     </div>
 </div>
 
+<!-- Modal Container -->
+<div class="modal fade" id="genericModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content bg-white p-4 border-0">
+
+            <div class="card shadow rounded-4 border-0">
+
+                <div class="card-body px-4 py-4">
+                    <!-- Form Content -->
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-<script>
+    <script>
     $(document).ready(function () {
 
             // ⚡ Charge automatiquement la tab "Definition" au démarrage
@@ -367,26 +382,61 @@
             );
         }
 
-         // ✅ Fonction pour ouvrir la modal d’édition
-        function openReportLineMappingEditModal(reportId) {
-            if (!reportId) {
-                alert("Invalid report ID");
-                return;
-            }
+        function ShowModal1(key, partialView, controller, path) {
+            var url = '/' + controller + '/Initilization?KEY=' + encodeURIComponent(key || '') +
+                '&partialView=' + encodeURIComponent(partialView) +
+                '&path=' + encodeURIComponent(path);
 
-            $("#reportModalBody").load('@Url.Action("Initilization", "ReportLineMapping")',
-                { path: "edit", partialView: "_CreateOrUpdate", KEY: reportId },
-                function (response, status, xhr) {
-                    if (status === "success") {
-                        var modal = new bootstrap.Modal(document.getElementById('reportModal'));
-                        modal.show();
-                    } else {
-                        console.error("Error loading edit form:", xhr.status, xhr.statusText);
-                        alert("Failed to load the edit form. Please try again.");
-                    }
-                }
-            );
+            $.get(url).done(function (html) {
+
+                const modalEl = document.getElementById('genericModal');
+                const modalBody = modalEl.querySelector('.modal-content');
+
+                modalBody.innerHTML = html;
+
+                const modal = new bootstrap.Modal(modalEl);
+
+                // Initialize Select2
+                initSelect2(modalEl);
+
+                modal.show();
+
+            }).fail(function () {
+                appalert('Failed to load content', 0, 1);
+            });
+        }
+                
+
+        function showCreateModal(){
+            ShowModal1(null, '_CreateOrUpdate', 'ReportLineMapping', 'new');
         }
 
-</script>
+               // ✅ Fonction pour ouvrir la modal d’édition
+           function openReportLineMappingEditModal(reportId) {
+                if (!reportId) {
+                    alert("Invalid report ID");
+                    return;
+                }
+
+                $("#reportModalBody").load('@Url.Action("Initilization", "ReportLineMapping")',
+                { path: "edit", partialView: "_CreateOrUpdate", KEY: reportId },
+                function (response, status, xhr) {
+                if (status === "success") {
+
+                // ✅ Initialize Select2 inside modal AFTER content is loaded
+                initSelect2("#reportModalBody");
+
+                var modalElement = document.getElementById('reportModal');
+                var modal = new bootstrap.Modal(modalElement);
+                modal.show();
+
+                } else {
+                console.error("Error loading edit form:", xhr.status, xhr.statusText);
+                alert("Failed to load the edit form. Please try again.");
+                }
+                }
+                );
+            }
+
+    </script>
 }

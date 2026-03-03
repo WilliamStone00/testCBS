@@ -2,7 +2,7 @@
 
 <div class="d-flex justify-content-between mb-2">
     <h5>Report Line Mappings</h5>
-    <a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="openReportLineMappingCreateModal()">
+    <a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="showCreateModal()">
         <i class="mdi mdi-plus"></i> New
     </a>
 </div>
@@ -11,8 +11,8 @@
     <thead>
         <tr>
             <th>Match Type</th>
-            <th>From</th>
-            <th>To</th>
+            @*<th>From</th>
+            <th>To</th>*@
             <th>Side</th>
             <th>Sign</th>
             <th>Include Liaison</th>
@@ -24,8 +24,8 @@
         {
             <tr>
                 <td>@item.MatchType</td>
-                <td>@item.FromValue</td>
-                <td>@item.ToValue</td>
+                @*<td>@item.FromValue</td>
+                <td>@item.ToValue</td>*@
                 <td>@item.Side</td>
                 <td>@item.Sign</td>
                 <td>@(item.IncludeLiaison ? "Yes" : "No")</td>
