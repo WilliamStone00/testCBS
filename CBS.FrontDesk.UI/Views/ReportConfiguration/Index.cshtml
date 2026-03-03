@@ -2,6 +2,7 @@
         ViewBag.Title = "Report Configuration";
     }*@
 
+
 <!-- Header -->
 <div class="row">
     <div class="col-12">
@@ -131,7 +132,7 @@
     <div class="tab-pane fade" id="lineContainer"></div>
     <div class="tab-pane fade" id="mappingContainer"></div>
 </div>-->
- @*MODAL POUR CRÉER/ÉDITER UN REPORT*@ 
+@*MODAL POUR CRÉER/ÉDITER UN REPORT*@
 <div class="modal fade" id="reportModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content">
@@ -146,11 +147,11 @@
                 </div>
             </div>
 
-            <div class="modal-footer">
+            @*<div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                     <i class="mdi mdi-close-circle-outline me-1"></i> Close
                 </button>
-            </div>
+            </div>*@
         </div>
     </div>
 </div>
@@ -174,7 +175,10 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-    <script>
+
+   
+
+<script>
     $(document).ready(function () {
 
             // ⚡ Charge automatiquement la tab "Definition" au démarrage
@@ -382,30 +386,77 @@
             );
         }
 
-        function ShowModal1(key, partialView, controller, path) {
-            var url = '/' + controller + '/Initilization?KEY=' + encodeURIComponent(key || '') +
-                '&partialView=' + encodeURIComponent(partialView) +
-                '&path=' + encodeURIComponent(path);
 
-            $.get(url).done(function (html) {
+    function ShowModal1(key, partialView, controller, path) {
+
+        // Build URL safely
+        var url = '/' + controller + '/Initilization?KEY=' + encodeURIComponent(key || '') +
+            '&partialView=' + encodeURIComponent(partialView || '') +
+            '&path=' + encodeURIComponent(path || '');
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            cache: false,
+            success: function (html) {
 
                 const modalEl = document.getElementById('genericModal');
-                const modalBody = modalEl.querySelector('.modal-content');
+                if (!modalEl) {
+                    console.error('genericModal not found in DOM');
+                    return;
+                }
 
-                modalBody.innerHTML = html;
+                const modalContent = modalEl.querySelector('.modal-content');
+                if (!modalContent) {
+                    console.error('.modal-content not found inside genericModal');
+                    return;
+                }
 
-                const modal = new bootstrap.Modal(modalEl);
+                // Inject Partial View HTML
+                modalContent.innerHTML = html;
 
-                // Initialize Select2
-                initSelect2(modalEl);
+                // Initialize Bootstrap Modal
+                const modal = new bootstrap.Modal(modalEl, {
+                    backdrop: 'static',
+                    keyboard: false
+                });
 
                 modal.show();
 
-            }).fail(function () {
-                appalert('Failed to load content', 0, 1);
-            });
-        }
-                
+                // 🔥 Initialize dynamic content AFTER modal is shown
+                modalEl.addEventListener('shown.bs.modal', function () {
+
+                    // Re-parse unobtrusive validation
+                    if ($.validator && $.validator.unobtrusive) {
+                        $.validator.unobtrusive.parse(modalContent);
+                    }
+
+                    // Re-init Select2 inside modal
+                    if ($.fn.select2) {
+                        $(modalContent).find('.select2').select2({
+                            dropdownParent: $('#genericModal')
+                        });
+                    }
+
+                    // Custom initializer (if exists)
+                    if (typeof window.initializeReportLineMapping === 'function') {
+                        window.initializeReportLineMapping(modalContent);
+                    }
+
+                }, { once: true });
+
+            },
+            error: function (xhr) {
+                console.error('Modal load error:', xhr);
+                if (typeof appalert === 'function') {
+                    appalert('Failed to load content', 0, 1);
+                } else {
+                    alert('Failed to load content');
+                }
+            }
+        });
+    }
+
 
         function showCreateModal(){
             ShowModal1(null, '_CreateOrUpdate', 'ReportLineMapping', 'new');
@@ -437,6 +488,6 @@
                 }
                 );
             }
-
+     
     </script>
 }
