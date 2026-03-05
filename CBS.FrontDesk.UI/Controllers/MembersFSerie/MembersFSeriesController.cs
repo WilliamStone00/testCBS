@@ -122,7 +122,8 @@ namespace CBS.FrontDesk.UI.Controllers.Series
         {
             var loan = await _loanServices.GetLoan(loanId);
             if (loan == null)
-                return View("LoanNotFound");
+                return View("Loanerror");
+
 
             // ✅ 1) Extract ONLY GL ids referenced by this loan
             var loanGlIds = new[]

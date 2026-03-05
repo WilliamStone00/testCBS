@@ -1,245 +1,245 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
 <style>
-     .loan-table-wrapper {
-         width: 100%;
-         overflow-x: hidden !important; /* ✅ remove extra bottom bar */
-         overflow-y: hidden;
-         border: 1px solid #e6e6e6;
-         border-radius: 8px;
-         background: #fff;
-     }
+    .loan-table-wrapper {
+        width: 100%;
+        overflow-x: hidden !important; /* ✅ remove extra bottom bar */
+        overflow-y: hidden;
+        border: 1px solid #e6e6e6;
+        border-radius: 8px;
+        background: #fff;
+    }
 
 
-     /* Make sure the table is wider than viewport so scrolling is meaningful */
-     .loan-table {
-         min-width: 1900px; /* increased because of advanced payment columns */
-         white-space: nowrap; /* prevent wrapping */
-     }
+    /* Make sure the table is wider than viewport so scrolling is meaningful */
+    .loan-table {
+        min-width: 1900px; /* increased because of advanced payment columns */
+        white-space: nowrap; /* prevent wrapping */
+    }
 
-         /* OPTIONAL: sticky first 2 columns */
-         .loan-table .sticky-col {
-             position: sticky;
-             left: 0;
-             z-index: 2;
-             background: inherit;
-             box-shadow: 2px 0 0 rgba(0,0,0,.04);
-         }
+        /* OPTIONAL: sticky first 2 columns */
+        .loan-table .sticky-col {
+            position: sticky;
+            left: 0;
+            z-index: 2;
+            background: inherit;
+            box-shadow: 2px 0 0 rgba(0,0,0,.04);
+        }
 
-         .loan-table .sticky-col-2 {
-             position: sticky;
-             left: 160px; /* must match Date column width */
-             z-index: 2;
-             background: inherit;
-             box-shadow: 2px 0 0 rgba(0,0,0,.04);
-         }
+        .loan-table .sticky-col-2 {
+            position: sticky;
+            left: 160px; /* must match Date column width */
+            z-index: 2;
+            background: inherit;
+            box-shadow: 2px 0 0 rgba(0,0,0,.04);
+        }
 
-         /* control first column width so left offsets stay correct */
-         .loan-table .col-date {
-             min-width: 160px;
-         }
-     /* ===================== STATUS PILLS ===================== */
-     .status-pill {
-         display: inline-flex;
-         align-items: center;
-         width: fit-content;
-         padding: .30rem .60rem;
-         border-radius: 999px;
-         font-weight: 800;
-         font-size: .78rem;
-         letter-spacing: .35px;
-         text-transform: uppercase;
-         line-height: 1;
-         white-space: nowrap;
-     }
+        /* control first column width so left offsets stay correct */
+        .loan-table .col-date {
+            min-width: 160px;
+        }
+    /* ===================== STATUS PILLS ===================== */
+    .status-pill {
+        display: inline-flex;
+        align-items: center;
+        width: fit-content;
+        padding: .30rem .60rem;
+        border-radius: 999px;
+        font-weight: 800;
+        font-size: .78rem;
+        letter-spacing: .35px;
+        text-transform: uppercase;
+        line-height: 1;
+        white-space: nowrap;
+    }
 
-     .status-open {
-         background: rgba(13,110,253,.12);
-         color: #0d6efd;
-         border: 1px solid rgba(13,110,253,.25);
-     }
+    .status-open {
+        background: rgba(13,110,253,.12);
+        color: #0d6efd;
+        border: 1px solid rgba(13,110,253,.25);
+    }
 
-     .status-disbursed {
-         background: rgba(25,135,84,.12);
-         color: #198754;
-         border: 1px solid rgba(25,135,84,.25);
-     }
+    .status-disbursed {
+        background: rgba(25,135,84,.12);
+        color: #198754;
+        border: 1px solid rgba(25,135,84,.25);
+    }
 
-     .status-closed {
-         background: rgba(108,117,125,.12);
-         color: #6c757d;
-         border: 1px solid rgba(108,117,125,.25);
-     }
+    .status-closed {
+        background: rgba(108,117,125,.12);
+        color: #6c757d;
+        border: 1px solid rgba(108,117,125,.25);
+    }
 
-     .status-rejected {
-         background: rgba(220,53,69,.12);
-         color: #dc3545;
-         border: 1px solid rgba(220,53,69,.25);
-     }
+    .status-rejected {
+        background: rgba(220,53,69,.12);
+        color: #dc3545;
+        border: 1px solid rgba(220,53,69,.25);
+    }
 
-     .status-pending {
-         background: rgba(255,193,7,.20);
-         color: #856404;
-         border: 1px solid rgba(255,193,7,.35);
-     }
+    .status-pending {
+        background: rgba(255,193,7,.20);
+        color: #856404;
+        border: 1px solid rgba(255,193,7,.35);
+    }
 
-     .status-refinanced {
-         background: rgba(13,202,240,.15);
-         color: #0aa2c0;
-         border: 1px solid rgba(13,202,240,.30);
-     }
+    .status-refinanced {
+        background: rgba(13,202,240,.15);
+        color: #0aa2c0;
+        border: 1px solid rgba(13,202,240,.30);
+    }
 
-     .status-rescheduled {
-         background: rgba(33,37,41,.08);
-         color: #212529;
-         border: 1px solid rgba(33,37,41,.18);
-     }
+    .status-rescheduled {
+        background: rgba(33,37,41,.08);
+        color: #212529;
+        border: 1px solid rgba(33,37,41,.18);
+    }
 
-     .status-restructured {
-         background: rgba(111,66,193,.12);
-         color: #6f42c1;
-         border: 1px solid rgba(111,66,193,.25);
-     }
+    .status-restructured {
+        background: rgba(111,66,193,.12);
+        color: #6f42c1;
+        border: 1px solid rgba(111,66,193,.25);
+    }
 
-     .num-strong {
-         font-weight: 800;
-     }
-     /* Fixed widths for stable sticky offsets */
-     .loan-table .col-date {
-         width: var(--w-date);
-         min-width: var(--w-date);
-         max-width: var(--w-date);
-     }
+    .num-strong {
+        font-weight: 800;
+    }
+    /* Fixed widths for stable sticky offsets */
+    .loan-table .col-date {
+        width: var(--w-date);
+        min-width: var(--w-date);
+        max-width: var(--w-date);
+    }
 
-     /* L.Type dynamic but bounded */
-     .loan-table .col-type {
-         width: auto !important;
-         min-width: 180px;
-         max-width: 520px;
-         overflow: hidden;
-         text-overflow: ellipsis;
-     }
+    /* L.Type dynamic but bounded */
+    .loan-table .col-type {
+        width: auto !important;
+        min-width: 180px;
+        max-width: 520px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 
-     /* Status content-sized */
-     .loan-table .col-status {
-         width: 1%;
-         white-space: nowrap;
-         text-align: center;
-         padding-left: .35rem !important;
-         padding-right: .35rem !important;
-     }
+    /* Status content-sized */
+    .loan-table .col-status {
+        width: 1%;
+        white-space: nowrap;
+        text-align: center;
+        padding-left: .35rem !important;
+        padding-right: .35rem !important;
+    }
 
-     .loan-table .col-action {
-         width: var(--w-action);
-         min-width: var(--w-action);
-         max-width: var(--w-action);
-         text-align: center;
-         padding-right: .25rem !important;
-         padding-left: .25rem !important;
-     }
-     /* =====================================================================================
+    .loan-table .col-action {
+        width: var(--w-action);
+        min-width: var(--w-action);
+        max-width: var(--w-action);
+        text-align: center;
+        padding-right: .25rem !important;
+        padding-left: .25rem !important;
+    }
+    /* =====================================================================================
     DataTables FixedColumns: force SOLID WHITE background (no transparency)
     Applies to the fixed-left and fixed-right cloned tables.
     ===================================================================================== */
 
-     /* Whole fixed tables */
-     table.dtfc-fixed-left,
-     table.dtfc-fixed-right {
-         background: #fff !important;
-     }
+    /* Whole fixed tables */
+    table.dtfc-fixed-left,
+    table.dtfc-fixed-right {
+        background: #fff !important;
+    }
 
-         /* Cells (body) */
-         table.dtfc-fixed-left th,
-         table.dtfc-fixed-left td,
-         table.dtfc-fixed-right th,
-         table.dtfc-fixed-right td {
-             background: #fff !important; /* ✅ solid white */
-             background-clip: padding-box;
-         }
+        /* Cells (body) */
+        table.dtfc-fixed-left th,
+        table.dtfc-fixed-left td,
+        table.dtfc-fixed-right th,
+        table.dtfc-fixed-right td {
+            background: #fff !important; /* ✅ solid white */
+            background-clip: padding-box;
+        }
 
-     /* Header area inside fixed tables */
-     div.dtfc-left-top-blocker,
-     div.dtfc-right-top-blocker,
-     div.dtfc-left-top-blocker th,
-     div.dtfc-right-top-blocker th {
-         background: #f8f9fa !important; /* match table-light */
-     }
+    /* Header area inside fixed tables */
+    div.dtfc-left-top-blocker,
+    div.dtfc-right-top-blocker,
+    div.dtfc-left-top-blocker th,
+    div.dtfc-right-top-blocker th {
+        background: #f8f9fa !important; /* match table-light */
+    }
 
-     /* Footer area inside fixed tables */
-     div.dtfc-left-bottom-blocker,
-     div.dtfc-right-bottom-blocker,
-     div.dtfc-left-bottom-blocker td,
-     div.dtfc-right-bottom-blocker td {
-         background: #f8f9fa !important;
-     }
+    /* Footer area inside fixed tables */
+    div.dtfc-left-bottom-blocker,
+    div.dtfc-right-bottom-blocker,
+    div.dtfc-left-bottom-blocker td,
+    div.dtfc-right-bottom-blocker td {
+        background: #f8f9fa !important;
+    }
 
-     /* Optional: keep row striping consistent in fixed columns */
-     table.dtfc-fixed-left tbody tr:nth-child(odd) td,
-     table.dtfc-fixed-right tbody tr:nth-child(odd) td {
-         background: #f8f9fa !important;
-     }
+    /* Optional: keep row striping consistent in fixed columns */
+    table.dtfc-fixed-left tbody tr:nth-child(odd) td,
+    table.dtfc-fixed-right tbody tr:nth-child(odd) td {
+        background: #f8f9fa !important;
+    }
 
-     /* Optional: a clean separator line between fixed and scrollable area */
-     table.dtfc-fixed-left {
-         box-shadow: 2px 0 0 rgba(0,0,0,.06);
-     }
+    /* Optional: a clean separator line between fixed and scrollable area */
+    table.dtfc-fixed-left {
+        box-shadow: 2px 0 0 rgba(0,0,0,.06);
+    }
 
-     table.dtfc-fixed-right {
-         box-shadow: -2px 0 0 rgba(0,0,0,.06);
-     }
-     /* =========================================================
+    table.dtfc-fixed-right {
+        box-shadow: -2px 0 0 rgba(0,0,0,.06);
+    }
+    /* =========================================================
     FIXEDCOLUMNS: REMOVE TRANSPARENCY (force solid backgrounds)
     Put this at the VERY END of CSS
     ========================================================= */
 
-     /* The fixed-column containers themselves */
-     .dtfc-fixed-left,
-     .dtfc-fixed-right,
-     .dtfc-fixed-left .dtfc-fixed-left,
-     .dtfc-fixed-right .dtfc-fixed-right,
-     .dtfc-fixed-left table,
-     .dtfc-fixed-right table {
-         background: #fff !important;
-     }
+    /* The fixed-column containers themselves */
+    .dtfc-fixed-left,
+    .dtfc-fixed-right,
+    .dtfc-fixed-left .dtfc-fixed-left,
+    .dtfc-fixed-right .dtfc-fixed-right,
+    .dtfc-fixed-left table,
+    .dtfc-fixed-right table {
+        background: #fff !important;
+    }
 
-         /* Force every cell to have a background (header/body/footer) */
-         .dtfc-fixed-left th, .dtfc-fixed-left td,
-         .dtfc-fixed-right th, .dtfc-fixed-right td {
-             background: #fff !important;
-             background-clip: padding-box !important;
-         }
+        /* Force every cell to have a background (header/body/footer) */
+        .dtfc-fixed-left th, .dtfc-fixed-left td,
+        .dtfc-fixed-right th, .dtfc-fixed-right td {
+            background: #fff !important;
+            background-clip: padding-box !important;
+        }
 
-         /* Header should look like Bootstrap table-light */
-         .dtfc-fixed-left thead th,
-         .dtfc-fixed-right thead th {
-             background: #f8f9fa !important;
-         }
+        /* Header should look like Bootstrap table-light */
+        .dtfc-fixed-left thead th,
+        .dtfc-fixed-right thead th {
+            background: #f8f9fa !important;
+        }
 
-         /* Footer should look like Bootstrap table-light */
-         .dtfc-fixed-left tfoot td,
-         .dtfc-fixed-right tfoot td {
-             background: #f8f9fa !important;
-         }
+        /* Footer should look like Bootstrap table-light */
+        .dtfc-fixed-left tfoot td,
+        .dtfc-fixed-right tfoot td {
+            background: #f8f9fa !important;
+        }
 
-         /* Match Bootstrap striped rows inside fixed columns */
-         .dtfc-fixed-left tbody tr:nth-child(odd) td,
-         .dtfc-fixed-right tbody tr:nth-child(odd) td {
-             background: #f2f2f2 !important; /* close to Bootstrap stripe */
-         }
+        /* Match Bootstrap striped rows inside fixed columns */
+        .dtfc-fixed-left tbody tr:nth-child(odd) td,
+        .dtfc-fixed-right tbody tr:nth-child(odd) td {
+            background: #f2f2f2 !important; /* close to Bootstrap stripe */
+        }
 
-         /* Match Bootstrap hover inside fixed columns */
-         .dtfc-fixed-left tbody tr:hover td,
-         .dtfc-fixed-right tbody tr:hover td {
-             background: #e9ecef !important;
-         }
+        /* Match Bootstrap hover inside fixed columns */
+        .dtfc-fixed-left tbody tr:hover td,
+        .dtfc-fixed-right tbody tr:hover td {
+            background: #e9ecef !important;
+        }
 
-     /* Optional: clean separators between fixed and scrollable area */
-     .dtfc-fixed-left {
-         box-shadow: 2px 0 0 rgba(0,0,0,.08) !important;
-     }
+    /* Optional: clean separators between fixed and scrollable area */
+    .dtfc-fixed-left {
+        box-shadow: 2px 0 0 rgba(0,0,0,.08) !important;
+    }
 
-     .dtfc-fixed-right {
-         box-shadow: -2px 0 0 rgba(0,0,0,.08) !important;
-     }
+    .dtfc-fixed-right {
+        box-shadow: -2px 0 0 rgba(0,0,0,.08) !important;
+    }
 </style>
 
 
@@ -370,21 +370,21 @@ else
                                 <span class="status-pill @statusPillClass">@status</span>
                             </td>
                             <td class="text-center sticky-right col-action">
-                                <a class="btn btn-sm btn-outline-primary px-2"
-                                   target="_blank"
-                                   href="@Url.Action("LoanDetails", "MembersFSeries", new { loanId = loan.Id })">
+                                <button class="btn btn-sm btn-outline-primary px-2"
+                                        onclick="openLoanDetails(@loan.Id)">
                                     <i class="mdi mdi-eye-outline"></i>
-                                </a>
+                                </button>
                             </td>
 
+
                             @*<td class="text-center sticky-right col-action">
-            <button type="button"
-                    class="btn btn-sm btn-outline-primary px-2"
-                    title="Details"
-                    onclick="loadLoanDetails('@loan.Id')">
-                <i class="mdi mdi-eye-outline"></i>
-            </button>
-        </td>*@
+                                    <button type="button"
+                                            class="btn btn-sm btn-outline-primary px-2"
+                                            title="Details"
+                                            onclick="loadLoanDetails('@loan.Id')">
+                                        <i class="mdi mdi-eye-outline"></i>
+                                    </button>
+                                </td>*@
                         </tr>
                     }
                 </tbody>
@@ -472,6 +472,16 @@ else
 
 
 <script>
+
+                            
+        function openLoanDetails(id) {
+            // build the URL using server-side Url.Action
+            var url = '@Url.Action("LoanDetails", "MembersFSeries")' + '?loanId=' + encodeURIComponent(id);
+            window.open(url, '_blank'); // open in a new tab/window
+        }
+
+
+
     $(function () {
         const id = "#LoansByMemberTable";
 
