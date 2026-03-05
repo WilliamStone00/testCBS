@@ -29,29 +29,29 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
         {
             await GetViewBags();
 
-            var statuses = await _individualProfileServices.GetAllAsync(); // however you fetch them
+            //var statuses = await _individualProfileServices.GetAllAsync(); // however you fetch them
 
-            ViewBag.MemberStatuses = statuses?
-                .Select(s => new SelectListItem
-                {
-                    Value = s.Id,
-                    Text = $"[{s.Name}] - [{s.Description}]"
-                })
-                .OrderBy(x => x.Text)
-                .ToList()
-                ?? new List<SelectListItem>();
+            //ViewBag.MemberStatuses = statuses?
+            //    .Select(s => new SelectListItem
+            //    {
+            //        Value = s.Id,
+            //        Text = $"[{s.Name}] - [{s.Description}]"
+            //    })
+            //    .OrderBy(x => x.Text)
+            //    .ToList()
+            //    ?? new List<SelectListItem>();
 
-            var politicalstatus = await _individualProfileServices.GetAllPoliticalAsync(); // however you fetch them
+            //var politicalstatus = await _individualProfileServices.GetAllPoliticalAsync(); // however you fetch them
 
-            ViewBag.politicalstatuses = politicalstatus?
-                .Select(s => new SelectListItem
-                {
-                    Value = s.Value,
-                    Text = $"[{s.Text}] - [{s.Value}]"
-                })
-                .OrderBy(x => x.Text)
-                .ToList()
-                ?? new List<SelectListItem>();
+            //ViewBag.politicalstatuses = politicalstatus?
+            //    .Select(s => new SelectListItem
+            //    {
+            //        Value = s.Value,
+            //        Text = $"[{s.Text}] - [{s.Value}]"
+            //    })
+            //    .OrderBy(x => x.Text)
+            //    .ToList()
+            //    ?? new List<SelectListItem>();
             return View(new Group());
         }
         public async Task<ActionResult> Details(string KEY)
@@ -223,6 +223,30 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
             ViewBag.Categories = agrAggregates.CustomerDefaultEnum.customerCategories;
             ViewBag.relationships = agrAggregates.CustomerDefaultEnum.relationships;
 
+            var statuses = await _individualProfileServices.GetAllAsync(); // however you fetch them
+
+
+            ViewBag.MemberStatuses = statuses?
+                .Select(s => new SelectListItem
+                {
+                    Value = s.Id,
+                    Text = $"[{s.Name}] - [{s.Description}]"
+                })
+                .OrderBy(x => x.Text)
+                .ToList()
+                ?? new List<SelectListItem>();
+
+            var politicalstatus = await _individualProfileServices.GetAllPoliticalAsync(); // however you fetch them
+
+            ViewBag.politicalstatuses = politicalstatus?
+                .Select(s => new SelectListItem
+                {
+                    Value = s.Value,
+                    Text = $"[{s.Text}] - [{s.Value}]"
+                })
+                .OrderBy(x => x.Text)
+                .ToList()
+                ?? new List<SelectListItem>();
         }
     }
 }

@@ -126,3 +126,115 @@
 
     </div>
 </div>
+
+@section Scripts {
+
+    @Scripts.Render("~/bundles/jqueryval")
+
+
+<script>
+
+
+
+
+        window.ClearanceSubmitAjax = function (form) {
+
+    const $form = $(form);
+    if (!$form.valid()) return false;
+
+    alertify.confirm(
+        "Confirmation",
+        "Are you sure you want to Submit the request?",
+
+        // ✅ OK
+        function () {
+
+            const $btn = $('#btnSubmitClearance'); // change to your actual button id
+            const $icon = $btn.find('i');
+            const $text = $btn.find('.btn-text');
+
+            // Button loading state
+            $btn.prop('disabled', true);
+            $icon.removeClass().addClass('mdi mdi-loading mdi-spin');
+            $text.text('Processing...');
+
+            $.ajax({
+                type: 'POST',
+                url: $form.attr('action'),
+                data: new FormData($form[0]),
+                processData: false,
+                contentType: false,
+
+              success: function (res) {
+
+                    if (res?.success) {
+
+                        appalert("✅ Clearance submitted successfully.", 1, 1);
+
+                        setTimeout(function () {
+
+                            alertify.confirm(
+                                "Next Step",
+                                "Clearance ID: <b>" + res.clearanceId + "</b><br/><br/>Do you want to upload an image or go to the list?",
+
+                                // Upload Image
+                                function () {
+                                    window.location.href =
+                                        '@Url.Action("ImageUpload","ChequeClearance")?clearanceId=' + res.clearanceId;
+                                },
+
+                                // Go to List
+                                function () {
+                                    window.location.href =
+                                        '@Url.Action("Index","ChequeClearance")';
+                                }
+
+                            ).set({
+                                labels: {
+                                    ok: "Upload Image",
+                                    cancel: "Go to List"
+                                }
+                            });
+
+                        }, 800);
+
+                    } else {
+                        appalert(res?.message || "❌ Failed to submit clearance request.", 2, 1);
+                    }
+                },
+
+                error: function (xhr) {
+                    if (xhr.status === 401)
+                        window.location.href = '/Authentication/Login';
+
+                    let errorMessage =
+                        xhr.responseJSON?.message ||
+                        "An error occurred during submission.";
+
+                    appalert(errorMessage, 0, 1);
+                },
+
+                complete: function () {
+
+                    // Reset button state
+                    $btn.prop('disabled', false);
+                    $icon.removeClass().addClass('mdi mdi-check');
+                    $text.text('Submit');
+                }
+            });
+        },
+
+        // ❌ Cancel
+        function () {
+            appalert("🚫 Clearance submission cancelled.", 2, 1);
+        }
+    ).set({
+        labels: { ok: 'Yes, Continue', cancel: 'Cancel' }
+    });
+
+    return false;
+};
+
+</script>
+
+}

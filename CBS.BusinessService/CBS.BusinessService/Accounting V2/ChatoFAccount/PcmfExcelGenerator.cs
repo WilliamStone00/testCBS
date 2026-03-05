@@ -10,7 +10,6 @@ using System.Linq;
 
 namespace CBS.BusinessService.Accounting_V2.ChatoFAccount
 {
-
     public class PcmfExcelGenerator : BaseService
     {
         public byte[] ExportPcmfAccountTree(
@@ -34,8 +33,8 @@ namespace CBS.BusinessService.Accounting_V2.ChatoFAccount
                 string branchId = GetBranchID();
                 string branchName = GetBranchName();
 
-                // Define header end column (8 columns now)
-                string headerEndColumn = "H";
+                // Define header end column (5 columns now)
+                string headerEndColumn = "E";
 
                 // Create header section and get starting row for data
                 int startRow = CreateHeaderSection(
@@ -50,12 +49,8 @@ namespace CBS.BusinessService.Accounting_V2.ChatoFAccount
                     headerEndColumn
                 );
 
-                // Add data table
+                // Add data table with only the 5 requested columns
                 AddDataTable(worksheet, accounts, startRow);
-
-                // Add footer section
-                int lastDataRow = startRow + GetTotalDataRows(accounts) + 1;
-                AddFooterSection(worksheet, lastDataRow, exportedBy, bank, branchCode, branchName);
 
                 // Auto-fit columns
                 worksheet.Cells.AutoFitColumns();
@@ -139,11 +134,10 @@ namespace CBS.BusinessService.Accounting_V2.ChatoFAccount
 
         private static void AddDataTable(ExcelWorksheet worksheet, List<HoPcmfAccountTreeDto> accounts, int startRow)
         {
-            // Updated headers - removed Depth and Path, moved Post Code between ID and Code
+            // Headers exactly as requested: Account, Name En, Name Fr, Nature, Post Code
             string[] headers = {
-            "ID", "Post Code", "Code", "Name", "Class", "Parent ID",
-            "Nature", "Created Date"
-        };
+                "Account", "Name En", "Name Fr", "Nature", "code post"
+            };
 
             // Add headers
             for (int i = 0; i < headers.Length; i++)
@@ -156,38 +150,44 @@ namespace CBS.BusinessService.Accounting_V2.ChatoFAccount
                 cell.Style.Border.BorderAround(ExcelBorderStyle.Thin);
             }
 
-            // Add data - updated mapping with Post Code moved to column 2
+            // Add data - mapping to the 5 columns
             int dataRow = startRow + 1;
             foreach (var account in FlattenAccountTree(accounts))
             {
-                worksheet.Cells[dataRow, 1].Value = account.Id;
-                worksheet.Cells[dataRow, 2].Value = account.PostCode;      // Post Code now column 2
-                worksheet.Cells[dataRow, 3].Value = account.Code;          // Code now column 3
-                worksheet.Cells[dataRow, 4].Value = account.Name;
-                worksheet.Cells[dataRow, 5].Value = account.Class;
-                worksheet.Cells[dataRow, 6].Value = account.ParentId;
-                worksheet.Cells[dataRow, 7].Value = GetNatureDisplayValue(account.Nature);
-                worksheet.Cells[dataRow, 8].Value = account.CreatedDate?.ToString("yyyy-MM-dd HH:mm:ss");
+                // Column 1: Account (using account.Name)
+                worksheet.Cells[dataRow, 1].Value = account.Code;
 
-                // Add borders (now only 8 columns)
-                for (int col = 1; col <= 8; col++)
+                // Column 2: Name En
+                worksheet.Cells[dataRow, 2].Value = account.NameEn;
+
+                // Column 3: Name Fr
+                worksheet.Cells[dataRow, 3].Value = account.NameFr;
+
+                // Column 4: Nature (with dropdown values)
+                worksheet.Cells[dataRow, 4].Value = GetNatureDisplayValue(account.Nature);
+
+                // Column 5: Post Code
+                worksheet.Cells[dataRow, 5].Value = account.PostCode;
+
+                // Add borders (5 columns)
+                for (int col = 1; col <= 5; col++)
                 {
                     worksheet.Cells[dataRow, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
                 }
 
-                // Indent based on depth (Name column is now column 4)
+                // Indent based on depth (Account column is column 1)
                 if (account.Depth > 0)
                 {
-                    worksheet.Cells[dataRow, 4].Style.Indent = account.Depth;
+                    worksheet.Cells[dataRow, 1].Style.Indent = account.Depth;
                 }
 
                 dataRow++;
             }
 
-            // Add dropdown validation for Nature column (now column 7)
+            // Add dropdown validation for Nature column (now column 4)
             if (dataRow > startRow + 1)
             {
-                var natureRange = worksheet.Cells[startRow + 1, 7, dataRow - 1, 7];
+                var natureRange = worksheet.Cells[startRow + 1, 4, dataRow - 1, 4];
                 var validation = natureRange.DataValidation.AddListDataValidation();
                 validation.Formula.Values.Add("-");
                 validation.Formula.Values.Add("Debit");
@@ -196,68 +196,6 @@ namespace CBS.BusinessService.Accounting_V2.ChatoFAccount
                 validation.ErrorTitle = "Invalid Nature";
                 validation.Error = "Please select a value from the dropdown list (-, Debit, Credit)";
             }
-        }
-
-        private static void AddFooterSection(ExcelWorksheet worksheet, int startRow, string exportedBy,
-            string bank, string branchCode, string branchName)
-        {
-            int row = startRow + 2;
-            string footerEndColumn = "H"; // Updated to H (8 columns)
-
-            // Add separator
-            worksheet.Cells[row - 1, 1, row - 1, 8].Style.Border.Top.Style = ExcelBorderStyle.Thick;
-
-            // Summary section
-            worksheet.Cells[$"A{row}:{footerEndColumn}{row}"].Merge = true;
-            worksheet.Cells[$"A{row}"].Value = "SUMMARY";
-            worksheet.Cells[$"A{row}"].Style.Font.Bold = true;
-            worksheet.Cells[$"A{row}"].Style.Font.Size = 12;
-            worksheet.Cells[$"A{row}"].Style.Font.UnderLine = true;
-            row++;
-
-            worksheet.Cells[$"A{row}"].Value = "Total Accounts:";
-            worksheet.Cells[$"A{row}"].Style.Font.Bold = true;
-            worksheet.Cells[$"B{row}"].Value = (startRow - 9).ToString();
-            row += 2;
-
-            // Footer information
-            worksheet.Cells[$"A{row}:{footerEndColumn}{row}"].Merge = true;
-            worksheet.Cells[$"A{row}"].Value = "EXPORT DETAILS";
-            worksheet.Cells[$"A{row}"].Style.Font.Bold = true;
-            worksheet.Cells[$"A{row}"].Style.Font.Size = 12;
-            worksheet.Cells[$"A{row}"].Style.Font.UnderLine = true;
-            row++;
-
-            worksheet.Cells[$"A{row}"].Value = "Export Timestamp:";
-            worksheet.Cells[$"A{row}"].Style.Font.Bold = true;
-            worksheet.Cells[$"B{row}"].Value = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-            row++;
-
-            worksheet.Cells[$"A{row}"].Value = "Exported By:";
-            worksheet.Cells[$"A{row}"].Style.Font.Bold = true;
-            worksheet.Cells[$"B{row}"].Value = exportedBy;
-            row++;
-
-            worksheet.Cells[$"A{row}"].Value = "Bank:";
-            worksheet.Cells[$"A{row}"].Style.Font.Bold = true;
-            worksheet.Cells[$"B{row}"].Value = bank;
-            row++;
-
-            worksheet.Cells[$"A{row}"].Value = "Branch Code:";
-            worksheet.Cells[$"A{row}"].Style.Font.Bold = true;
-            worksheet.Cells[$"B{row}"].Value = branchCode;
-            row++;
-
-            worksheet.Cells[$"A{row}"].Value = "Branch Name:";
-            worksheet.Cells[$"A{row}"].Style.Font.Bold = true;
-            worksheet.Cells[$"B{row}"].Value = branchName;
-            row += 2;
-
-            // Generation note
-            worksheet.Cells[$"A{row}:{footerEndColumn}{row}"].Merge = true;
-            worksheet.Cells[$"A{row}"].Value = "This report was generated automatically by the system.";
-            worksheet.Cells[$"A{row}"].Style.Font.Italic = true;
-            worksheet.Cells[$"A{row}"].Style.Font.Color.SetColor(Color.Gray);
         }
 
         private static List<HoPcmfAccountTreeDto> FlattenAccountTree(List<HoPcmfAccountTreeDto> accounts)
@@ -296,6 +234,3 @@ namespace CBS.BusinessService.Accounting_V2.ChatoFAccount
         }
     }
 }
-
-
-

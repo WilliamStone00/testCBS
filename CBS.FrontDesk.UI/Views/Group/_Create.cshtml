@@ -55,12 +55,12 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.MemberStatus,
+                                        @Html.DropDownListFor(m => m.CustomerStatus,
                                             ViewBag.MemberStatuses as List<SelectListItem>,
                                             "--- Select Member Status ---",
                                             new { @class = "form-control select2", @required = "required" })
 
-                                        @Html.ValidationMessageFor(m => m.MemberStatus, "", new { @class = "text-danger" })
+                                        @Html.ValidationMessageFor(m => m.CustomerStatus, "", new { @class = "text-danger" })
                                         <label>Select MemberShip Status</label>
                                     </div>
                                 </div>

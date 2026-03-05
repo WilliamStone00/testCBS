@@ -10745,7 +10745,6 @@
     <Content Include="Views\ChequeCancellation\_CancellationRequestDetails.cshtml" />
     <Content Include="Views\ChequeRequest\_CustomerSearch.cshtml" />
     <Content Include="Views\ChequeCancellation\_VerificationForm.cshtml" />
-    <Content Include="Views\ChequeClearance\_DiscountModal.cshtml" />
     <Content Include="Views\LossManagement\_CheckbookDetails.cshtml" />
     <Content Include="Views\LossManagement\_CheckLeafDetails.cshtml" />
     <Content Include="Views\LossManagement\_Header.cshtml" />
@@ -11021,7 +11020,7 @@
     <Content Include="Views\FeeConfig\_FeeConfigDataTable.cshtml" />
     <Content Include="Views\Country\Create.cshtml" />
     <Content Include="Views\ChequeClearance\_chequeDetails.cshtml" />
-    <Content Include="Views\ChequeClearance\_InternalChequeRequest.cshtml" />
+    <Content Include="Views\ChequeClearance\InternalChequeRequest.cshtml" />
     <Content Include="Views\ChequeClearance\ImageUpload.cshtml" />
     <Content Include="Views\SalaryUpload\ReexecuteSalaries.cshtml" />
     <Content Include="Views\SalaryUpload\ReexecuteSalaryFile.cshtml" />

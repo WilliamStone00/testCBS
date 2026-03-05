@@ -1679,60 +1679,66 @@
                                     </div>
                                 }
 
-                                <table class="table table-sm kv-table mb-0 mt-2">
+                            <table class="table table-sm kv-table mb-0 mt-2">
 
-                                    <!-- Timeline -->
-                                    <tr class="table-light">
-                                        <td colspan="2" class="fw-bold small">Timeline</td>
-                                    </tr>
-                                    <tr><td class="k">Loan Date</td><td class="v">@FDate(loan.LoanDate)</td></tr>
-                                    <tr><td class="k">Disbursement Date</td><td class="v">@FDate(loan.DisbursementDate)</td></tr>
+                                <!-- Timeline -->
+                                <tr class="table-light">
+                                    <td colspan="2" class="fw-bold small">Timeline</td>
+                                </tr>
+                                <tr><td class="k">Loan Date</td><td class="v">@FDate(loan.LoanDate)</td></tr>
+                                <tr><td class="k">Disbursement Date</td><td class="v">@FDate(loan.DisbursementDate)</td></tr>
 
-                                    <!-- Installments -->
-                                    <tr class="table-light">
-                                        <td colspan="2" class="fw-bold small">Installment Schedule</td>
-                                    </tr>
-                                    <tr><td class="k">First Installment Date</td><td class="v">@FDateShort(loan.FirstInstallmentDate)</td></tr>
-                                    <tr><td class="k">Next Installment Date</td><td class="v">@FDateShort(loan.NextInstallmentDate)</td></tr>
-                                    <tr><td class="k">Maturity Date</td><td class="v">@FDateShort(loan.MaturityDate)</td></tr>
+                                <!-- Installments -->
+                                <tr class="table-light">
+                                    <td colspan="2" class="fw-bold small">Installment Schedule</td>
+                                </tr>
+                                <tr><td class="k">First Installment Date</td><td class="v">@FDateShort(loan.FirstInstallmentDate)</td></tr>
+                                <tr><td class="k">Next Installment Date</td><td class="v">@FDateShort(loan.NextInstallmentDate)</td></tr>
+                                <tr><td class="k">Maturity Date</td><td class="v">@FDateShort(loan.MaturityDate)</td></tr>
 
-                                    <!-- Processing -->
-                                    <tr class="table-light">
-                                        <td colspan="2" class="fw-bold small">Processing Dates</td>
-                                    </tr>
-                                    <tr><td class="k">Last Refund Date</td><td class="v">@FDate(loan.LastRefundDate)</td></tr>
-                                    <tr><td class="k">Last Interest Calc Date</td><td class="v">@FDate(loan.LastInterestCalculatedDate)</td></tr>
-                                    <tr><td class="k">Last Delinquency Proc</td><td class="v">@FDateNullable(loan.LastDeliquecyProcessedDate)</td></tr>
+                                <!-- Processing -->
+                                <tr class="table-light">
+                                    <td colspan="2" class="fw-bold small">Processing Dates</td>
+                                </tr>
+                                <tr><td class="k">Last Refund Date</td><td class="v">@FDate(loan.LastRefundDate)</td></tr>
+                                <tr>
+                                    <td class="k">Last Interest Calc Date</td>
+                                    <td class="v">
+                                        @(loan.LastInterestCalculatedDate.HasValue? FDate(loan.LastInterestCalculatedDate.Value): "-")
+                                    </td>
+                                </tr>
+                                @*<tr><td class="k">Last Interest Calc Date</td><td class="v">@FDate(loan.LastInterestCalculatedDate)</td></tr>*@
+                                <tr><td class="k">Last Delinquency Proc</td><td class="v">@FDateNullable(loan.LastDeliquecyProcessedDate)</td></tr>
 
-                                    <!-- Structuring -->
-                                    <tr class="table-light">
-                                        <td colspan="2" class="fw-bold small">Structuring</td>
-                                    </tr>
-                                    <tr><td class="k">Structuring Date</td><td class="v">@FDate(loan.LoanStructuringDate)</td></tr>
-                                    <tr><td class="k">Structuring Status</td><td class="v">@Txt(loan.LoanStructuringStatus)</td></tr>
+                                <!-- Structuring -->
+                                <tr class="table-light">
+                                    <td colspan="2" class="fw-bold small">Structuring</td>
+                                </tr>
+                                <tr><td class="k">Structuring Date</td><td class="v">@FDate(loan.LoanStructuringDate)</td></tr>
+                                <tr><td class="k">Structuring Status</td><td class="v">@Txt(loan.LoanStructuringStatus)</td></tr>
 
-                                    <!-- Interest stop control -->
-                                    <tr class="table-light">
-                                        <td colspan="2" class="fw-bold small">Interest Stop / Controls</td>
-                                    </tr>
-                                    <tr><td class="k">Interest Stop?</td><td class="v">@(stopInterest ? "YES" : "NO")</td></tr>
-                                    <tr><td class="k">Stopped By</td><td class="v">@Txt(loan.StoppedBy)</td></tr>
-                                    <tr>
-                                        <td class="k">Stop Date</td>
-                                        <td class="v">
-                                            @if (stopDateMissing)
-                                            {
-                                                <span class="text-danger fw-bold">STOPPED BUT DATE MISSING</span>
-                                            }
-                                            else
-                                            {
-                                                @FDate(loan.DateInterestWastStoped)
-                                            }
-                                        </td>
-                                    </tr>
-                                    <tr><td class="k">Stop Comment</td><td class="v">@Txt(loan.InterestStoppedComment)</td></tr>
+                                <!-- Interest stop control -->
+                                <tr class="table-light">
+                                    <td colspan="2" class="fw-bold small">Interest Stop / Controls</td>
+                                </tr>
+                                <tr><td class="k">Interest Stop?</td><td class="v">@(stopInterest ? "YES" : "NO")</td></tr>
+                                <tr><td class="k">Stopped By</td><td class="v">@Txt(loan.StoppedBy)</td></tr>
+                                <tr>
+                                    <td class="k">Stop Date</td>
+                                    <td class="v">
+                                        @if (stopDateMissing)
+                                        {
+                                            <span class="text-danger fw-bold">STOPPED BUT DATE MISSING</span>
+                                        }
+                                        else
+                                        {
+                                            @FDate(loan.DateInterestWastStoped)
+                                        }
+                                    </td>
+                                </tr>
+                                <tr><td class="k">Stop Comment</td><td class="v">@Txt(loan.InterestStoppedComment)</td></tr>
 
-                                </table>
+                            </table>
                             </div>
                         </div>
 
