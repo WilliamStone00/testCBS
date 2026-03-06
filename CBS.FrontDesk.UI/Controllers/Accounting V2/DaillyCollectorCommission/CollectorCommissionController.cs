@@ -478,7 +478,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
                             Stakeholder = s.Stakeholder,
                             Percentage = s.Percentage,
                             Amount = s.Amount
-                        }).ToList()
+                        }).ToList(), 
                 };
 
                 // ======= Persist via service/repository =======
