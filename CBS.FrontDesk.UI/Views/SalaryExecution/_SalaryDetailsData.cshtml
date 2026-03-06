@@ -88,7 +88,7 @@
         margin-bottom: 0.5rem;
     }
 
-    .card-text {
+    .card-texts {
         font-size: 1.5rem !important;
         font-weight: 700 !important;
         margin-bottom: 0;
@@ -187,7 +187,7 @@
                                 </div>
                                 <h5 class="card-title text-primary mb-0">@GlobalSalaryExecution.TotalMembers</h5>
                             </div>
-                            <p class="card-text fw-bold text-dark ms-4 ps-1">
+                            <p class="card-texts fw-bold text-dark ms-4 ps-1">
                                 @Model.DashboardViewModel.TotalMembers.ToString("N0")
                             </p>
                         </div>
@@ -206,7 +206,7 @@
                                 </div>
                                 <h5 class="card-title text-primary mb-0">Gross Salary</h5>
                             </div>
-                            <p class="card-text fw-bold text-dark ms-4 ps-1">
+                            <p class="card-texts fw-bold text-dark ms-4 ps-1">
                                 @Model.DashboardViewModel.TotalSalary.ToString("N0")
                             </p>
                         </div>
@@ -225,7 +225,7 @@
                                 </div>
                                 <h5 class="card-title text-warning mb-0">@GlobalSalaryExecution.TotalCharges</h5>
                             </div>
-                            <p class="card-text fw-bold text-dark ms-4 ps-1">
+                            <p class="card-texts fw-bold text-dark ms-4 ps-1">
                                 @Model.DashboardViewModel.TotalCharges.ToString("N1")
                             </p>
                         </div>
@@ -244,7 +244,7 @@
                                 </div>
                                 <h5 class="card-title text-success mb-0">@GlobalSalaryExecution.TotalNetSalary</h5>
                             </div>
-                            <p class="card-text fw-bold text-dark ms-4 ps-1">
+                            <p class="card-texts fw-bold text-dark ms-4 ps-1">
                                 @Model.DashboardViewModel.TotalNetSalary.ToString("N1")
                             </p>
                         </div>
@@ -263,7 +263,7 @@
                                 </div>
                                 <h5 class="card-title text-info mb-0">@GlobalSalaryExecution.TotalSavings</h5>
                             </div>
-                            <p class="card-text fw-bold text-dark ms-4 ps-1">
+                            <p class="card-texts fw-bold text-dark ms-4 ps-1">
                                 @Model.DashboardViewModel.TotalSavings.ToString("N1")
                             </p>
                         </div>
@@ -282,7 +282,7 @@
                                 </div>
                                 <h5 class="card-title text-warning mb-0">Total Deposit</h5>
                             </div>
-                            <p class="card-text fw-bold text-dark ms-4 ps-1">
+                            <p class="card-texts fw-bold text-dark ms-4 ps-1">
                                 @Model.DashboardViewModel.TotalDeposits.ToString("N1")
                             </p>
                         </div>
@@ -301,7 +301,7 @@
                                 </div>
                                 <h5 class="card-title text-info mb-0">@GlobalSalaryExecution.TotalShares</h5>
                             </div>
-                            <p class="card-text fw-bold text-dark ms-4 ps-1">
+                            <p class="card-texts fw-bold text-dark ms-4 ps-1">
                                 @Model.DashboardViewModel.TotalShares.ToString("N1")
                             </p>
                         </div>
@@ -320,7 +320,7 @@
                                 </div>
                                 <h5 class="card-title text-success mb-0">@GlobalSalaryExecution.TotalPreferenceShares</h5>
                             </div>
-                            <p class="card-text fw-bold text-dark ms-4 ps-1">
+                            <p class="card-texts fw-bold text-dark ms-4 ps-1">
                                 @Model.DashboardViewModel.TotalPreferenceShares.ToString("N1")
                             </p>
                         </div>
@@ -337,7 +337,7 @@
                                 </div>
                                 <h5 class="card-title mb-0" style="color: #836af9;">Total Capital</h5>
                             </div>
-                            <p class="card-text fw-bold text-dark ms-4 ps-1">
+                            <p class="card-texts fw-bold text-dark ms-4 ps-1">
                                 @Model.DashboardViewModel.TotalCapital.ToString("N1")
                             </p>
                         </div>
@@ -356,7 +356,7 @@
                                 </div>
                                 <h5 class="card-title mb-0" style="color: #836af9;">@GlobalSalaryExecution.TotalLoanInterest</h5>
                             </div>
-                            <p class="card-text fw-bold text-dark ms-4 ps-1">
+                            <p class="card-texts fw-bold text-dark ms-4 ps-1">
                                 @Model.DashboardViewModel.TotalLoanInterest.ToString("N1")
                             </p>
                         </div>
@@ -376,7 +376,7 @@
                                 </div>
                                 <h5 class="card-title text-warning mb-0">Total VAT</h5>
                             </div>
-                            <p class="card-text fw-bold text-dark ms-4 ps-1">
+                            <p class="card-texts fw-bold text-dark ms-4 ps-1">
                                 @Model.DashboardViewModel.TotalVAT.ToString("N1")
                             </p>
                         </div>
@@ -395,7 +395,7 @@
                                 </div>
                                 <h5 class="card-title text-success mb-0">@GlobalSalaryExecution.TotalLoanRepayment</h5>
                             </div>
-                            <p class="card-text fw-bold text-dark ms-4 ps-1">
+                            <p class="card-texts fw-bold text-dark ms-4 ps-1">
                                 @Model.DashboardViewModel.TotalLoanRepayment.ToString("N1")
                             </p>
                         </div>
@@ -449,16 +449,16 @@
                             <th>#</th>
                             <th>@GlobalSalaryExecution.Matricule (Account Number)</th>
                             <th>@GlobalSalaryExecution.Name</th>
-                            <th>@GlobalSalaryExecution.Salary (Gross Amount)</th> <!-- Changed to Gross Amount -->
-                            <th>@GlobalSalaryExecution.SOrder (Standing Amount)</th> <!-- Standing Order Amount -->
+                            <th>S.G Amount</th> <!-- Changed to Gross Amount -->
+                            <th>S.O Amount)</th> <!-- Standing Order Amount -->
                             <th>@GlobalSalaryExecution.Savings</th>
                             <th>@GlobalSalaryExecution.Deposit</th>
-                            <th>@GlobalSalaryExecution.NSalary (Net Salary)</th> <!-- Net Salary -->
+                            <th>@GlobalSalaryExecution.NSalary</th> <!-- Net Salary -->
                             <th>@GlobalSalaryExecution.Shares</th>
-                            <th>@GlobalSalaryExecution.L_Rep (Total Repayment)</th> <!-- Total Loan Repayment -->
-                            <th>L_CAP (Total Capital)</th> <!-- Total Loan Capital (NEW) -->
-                            <th>@GlobalSalaryExecution.L_INT (Total Interest)</th> <!-- Total Loan Interest -->
-                            <th>@GlobalSalaryExecution.L_VAT (Total VAT)</th> <!-- Total VAT -->
+                            <th>T.L Repayment</th> <!-- Total Loan Repayment -->
+                            <th>T.L Capital </th> <!-- Total Loan Capital (NEW) -->
+                            <th>T.L  Interest</th> <!-- Total Loan Interest -->
+                            <th>Total VAT</th> <!-- Total VAT -->
                             <th>@GlobalSalaryExecution.Charges</th>
                             <th>@GlobalShared.Status</th>
                         </tr>

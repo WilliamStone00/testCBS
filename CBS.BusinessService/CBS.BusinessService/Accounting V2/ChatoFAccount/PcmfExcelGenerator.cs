@@ -136,7 +136,7 @@ namespace CBS.BusinessService.Accounting_V2.ChatoFAccount
         {
             // Headers exactly as requested: Account, Name En, Name Fr, Nature, Post Code
             string[] headers = {
-                "Account", "Name En", "Name Fr", "Nature", "code post"
+                "Account", "code post","Name En", "Name Fr", "Nature"
             };
 
             // Add headers
@@ -157,17 +157,19 @@ namespace CBS.BusinessService.Accounting_V2.ChatoFAccount
                 // Column 1: Account (using account.Name)
                 worksheet.Cells[dataRow, 1].Value = account.Code;
 
-                // Column 2: Name En
-                worksheet.Cells[dataRow, 2].Value = account.NameEn;
+                // Column 2: Post Code
+                worksheet.Cells[dataRow, 2].Value = account.PostCode;
 
-                // Column 3: Name Fr
-                worksheet.Cells[dataRow, 3].Value = account.NameFr;
+                // Column 3: Name En
+                worksheet.Cells[dataRow, 3].Value = account.NameEn;
 
-                // Column 4: Nature (with dropdown values)
-                worksheet.Cells[dataRow, 4].Value = GetNatureDisplayValue(account.Nature);
+                // Column 4: Name Fr
+                worksheet.Cells[dataRow, 4].Value = account.NameFr;
 
-                // Column 5: Post Code
-                worksheet.Cells[dataRow, 5].Value = account.PostCode;
+                // Column 5: Nature (with dropdown values)
+                worksheet.Cells[dataRow, 5].Value = GetNatureDisplayValue(account.Nature);
+
+                
 
                 // Add borders (5 columns)
                 for (int col = 1; col <= 5; col++)
