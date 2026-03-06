@@ -45,7 +45,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             var fileUpload = await _salaryExecutionServices.GetFileUpload(fileUploadid);
             var dashboardViewModel= _salaryExecutionServices.GetDashboardSummary(salaryExtractDtos.ToList());
             var stringValues = await _individualProfileServices.GetMemberByCustomerTypeDropDown()
-; return View(new ExecuteSalaryCarrier { SalaryExtractes=salaryExtractDtos.ToList(), FileUpload=fileUpload, DashboardViewModel=dashboardViewModel, StringValues=stringValues.ToList() });
+; return View(new ExecuteSalaryCarrier { SalaryPaymentExtractes = salaryExtractDtos.ToList(), FileUpload=fileUpload, DashboardViewModel=dashboardViewModel, StringValues=stringValues.ToList() });
         }
 
        
