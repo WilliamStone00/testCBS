@@ -116,7 +116,7 @@ function loadLoanData() {
                 <ul class="dropdown-menu" aria-labelledby="actionDropdown${row.Id}">
                    
                     <li>
-                        <a class="dropdown-item" href="/Loan/Details?KEY=${row.Id}" target="_blank">
+                        <a class="dropdown-item" href="/MembersFSeries/LoanDetails?loanId=${row.Id}" target="_blank">
                             <i class="mdi mdi-file-document-outline text-info me-1"></i> Detail
                         </a>
                     </li>

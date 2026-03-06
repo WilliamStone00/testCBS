@@ -171,7 +171,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeCl
                 };
                 await loader();
 
-                return View("_InternalChequeRequest", model);
+                return View("InternalChequeRequest", model);
             }
             catch (Exception ex)
             {

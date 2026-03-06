@@ -31,6 +31,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.Reporting.FlatBaseE
         public decimal TotalNetPresentAsts { get; set; }
         public decimal TotalLiabEquityNetLastYear { get; set; }
         public string PrintedBy { get; set; }
+      
 
 
         //income statement 

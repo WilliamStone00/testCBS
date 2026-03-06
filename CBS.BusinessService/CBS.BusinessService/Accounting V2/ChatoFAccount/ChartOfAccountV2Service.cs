@@ -2,6 +2,7 @@
 using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.BranchAccount;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.HoPcmfAccount;
+using CBS.FrontDesk.Data.Entity.Accounting_V2.PendingAccount;
 using CBS.FrontDesk.Data.Entity.AccountingV2.SharedMonth;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem;
 using CBS.FrontDesk.Data.Entity.DataTable;
@@ -563,7 +564,7 @@ namespace CBS.BusinessService.Accounting_V2
                 throw new ArgumentNullException(nameof(model.File), "Please select a file to upload.");
 
             // ✅ API endpoint for Shared Month upload
-            var endpoint = APICallHelper.SharedMonthUpload;
+            var endpoint = APICallHelper.UploadchartofAccountFile;
 
             // 🚀 Upload only the file
             var result = await _apiHelper.UploadCOAFileAsync<
@@ -574,6 +575,35 @@ namespace CBS.BusinessService.Accounting_V2
 
             return result;
         }
+
+
+        public async Task<ExecutionMessages> CreateAsync(CreatePcmfRequest model)
+        {
+            try
+            {
+
+                // string formattedUrl = string.Format(APICallHelper.pendingupdatebyid, Id);
+                var response = await _apiHelper.PostAsync<ServiceResponse<PcmfResponseDto>>(APICallHelper.AddAccountCreationRequestPcmf, model);
+
+                if (response.IsSuccess)
+                {
+                    GetExecutionMessages(response.ApiResponseData.Data, true, model.NameEn, MessagesResults.Success,
+                    ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData?.Message);
+                }
+                else
+                {
+                    GetExecutionMessages(model, false, model.NameEn, MessagesResults.Failed,
+                        ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Failed.ToString(), null, response.ApiResponseData?.Message ?? response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                GetExecutionMessages(model, false, model.NameEn, MessagesResults.Error,
+                    ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message);
+            }
+            return ExecutionMessage;
+        }
+
 
     }
 

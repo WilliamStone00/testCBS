@@ -1,7 +1,15 @@
 ﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.ReportingV2.ReportLineMapping.ReportLineMapping
+@using CBS.FrontDesk.Data.Entity.AccountingV2.ReportingV2.ReportLineMapping
+@using Newtonsoft.Json
 
 @{
     bool isUpdate = !string.IsNullOrEmpty(Model.Id);
+    Layout = null;
+
+    // Serialize ViewBag data safely
+    var reportLinesJson = ViewBag.ReportLines != null
+        ? JsonConvert.SerializeObject(ViewBag.ReportLines)
+        : "[]";
 }
 
 <!-- Header Section -->
@@ -25,112 +33,636 @@
     </div>
 </div>
 
-<!-- Tips Section -->
-<div class="card mb-3 shadow-sm">
-    <h6 class="card-header d-flex justify-content-between align-items-center bg-light text-info">
-        <span><i class="mdi mdi-lightbulb-outline me-2"></i> Tips for Configuring Report Line Mappings</span>
-        <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMappingTips">
-            <i class="mdi mdi-chevron-down"></i>
-        </button>
-    </h6>
-
-    <div id="collapseMappingTips" class="collapse">
-        <div class="card-body">
-            <ul class="mb-0">
-
-                <li><i class="mdi mdi-format-list-numbered text-primary me-2"></i>
-                    <strong>Report Line:</strong> Select the corresponding line to which the mapping applies (via RefCode).
-                </li>
-
-                <li><i class="mdi mdi-vector-line text-success me-2"></i>
-                    <strong>Match Type:</strong> Defines how accounts are matched (AccountRange, Prefix, Exact, ProductCode, etc.).
-                </li>
-
-                <li><i class="mdi mdi-arrow-collapse-vertical text-warning me-2"></i>
-                    <strong>From / To Value:</strong> Used for ranges (e.g., 100000–199999). Leave <em>ToValue</em> empty for exact matches.
-                </li>
-
-                <li><i class="mdi mdi-swap-horizontal-bold text-info me-2"></i>
-                    <strong>Side:</strong> Specify whether the rule applies to DEBIT, CREDIT, or BOTH sides.
-                </li>
-
-                <li><i class="mdi mdi-math-log text-secondary me-2"></i>
-                    <strong>Sign:</strong> Controls how the amount impacts the report (1 = positive, -1 = subtract).
-                </li>
-
-                <li><i class="mdi mdi-link-outline text-danger me-2"></i>
-                    <strong>Include Liaison:</strong> Enable this if the mapping should also consider liaison accounts.
-                </li>
-            </ul>
-        </div>
-    </div>
-</div>
-
-
-<!-- FORM -->
+<!-- Main Form -->
 @using (Html.BeginForm(isUpdate ? "Update" : "Create", "ReportLineMapping", FormMethod.Post,
-new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+    new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);", id = "reportLineMappingForm" }))
 {
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.AccountName)
+    <input type="hidden" id="selectedRefCode" value="" />
+
     <div class="card shadow-sm">
+        <!-- Header -->
+        <div class="card-header bg-white py-3">
+            <h5 class="mb-0 text-primary">
+                <i class="mdi @(isUpdate ? "mdi-pencil-box" : "mdi-plus-box") me-2"></i>
+                @(isUpdate ? "Edit Mapping Configuration" : "New Mapping Configuration")
+            </h5>
+        </div>
+
+        <!-- Body -->
         <div class="card-body">
+            <!-- COBAC Selection Section -->
+            <div class="mb-4">
+                <h6 class="text-secondary fw-semibold mb-3">
+                    <i class="mdi mdi-database me-2"></i>COBAC Report Line Selection
+                </h6>
 
-            @Html.HiddenFor(model => model.Id)
+                <div class="row g-3">
+                    <div class="col-md-12">
+                        @Html.LabelFor(m => m.MainSection, "Financial Statement Section", new { @class = "form-label fw-semibold" })
+                        @Html.DropDownListFor(m => m.MainSection,
+                            (IEnumerable<SelectListItem>)ViewBag.MainSections,
+                            "Select section",
+                            new { @class = "form-select select2", required = "required", id = "mainSectionSelect" })
+                        @Html.ValidationMessageFor(m => m.MainSection, "", new { @class = "text-danger small" })
+                    </div>
 
-            <!-- 🔽 Report Lines Dropdown -->
-            <div class="mb-3">
-                @Html.Label("LineId", "Select Report Line RefCode", new { @class = "form-label fw-semibold" })
-                <select id="LineId" name="LineId" class="form-control">
-                    <option value="">-- Select a report Line --</option>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Sub Section</label>
+                        <select id="subSectionSelect" class="form-select select2" disabled>
+                            <option value="">Select main section first</option>
+                        </select>
+                        <div class="form-text">Optional - filter by category group</div>
+                    </div>
 
-                    @foreach (var item in (IEnumerable<CBS.FrontDesk.Data.Entity.AccountingV2.ReportingV2.ReportLine.ReportLine>)ViewBag.ReportLines)
-                    {
-                        <option value="@item.Id" @(Model.LineId == item.Id ? "selected" : "")>
-                            @item.RefCode
-                        </option>
-                    }
-                </select>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Report Line <span class="text-danger">*</span></label>
+                        <select name="LineId" id="LineId" class="form-select select2" required>
+                            <option value="">Select report line</option>
+                        </select>
+                        <div class="form-text">Select the target COBAC report line</div>
+                    </div>
+                </div>
             </div>
 
-            <div class="mb-3">
-                @Html.LabelFor(m => m.MatchType, "Match Type", new { @class = "form-label fw-semibold" })
-                @Html.TextBoxFor(m => m.MatchType, new { @class = "form-control", placeholder = "e.g., AccountRange" })
+            <!-- Selected Line Preview -->
+            <div class="alert alert-info d-none align-items-center" id="selectedLinePreview" role="alert">
+                <i class="mdi mdi-information-outline me-2"></i>
+                <span id="selectedLineRef" class="fw-semibold"></span>:
+                <span id="selectedLineName"></span>
             </div>
 
-            <div class="mb-3">
-                @Html.LabelFor(m => m.FromValue, "From Value", new { @class = "form-label fw-semibold" })
-                @Html.TextBoxFor(m => m.FromValue, new { @class = "form-control", placeholder = "Start value" })
+            <hr/>
+
+            <!-- Match Configuration Section -->
+            <div class="mb-4">
+                <h6 class="text-secondary fw-semibold mb-6">
+                    <i class="mdi mdi-compare me-2"></i>Match Configuration
+                </h6>
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        @Html.LabelFor(m => m.MatchType, new { @class = "form-label fw-semibold" })
+                        @Html.DropDownListFor(m => m.MatchType,
+                            new SelectList(Enum.GetValues(typeof(ReportMatchType)).Cast<ReportMatchType>()
+                                .Select(e => new { Value = (short)e, Text = e.ToString() }), "Value", "Text", (short)Model.MatchType),
+                            "Select match type",
+                            new { @class = "form-select select2", id = "MatchType" })
+                        <div class="form-text">Determines how accounts are matched</div>
+                    </div>
+
+                    <div class="col-md-6" id="valueFieldContainer">
+                        @if (Model.MatchType == ReportMatchType.AccountCode)
+                        {
+                            <label class="form-label fw-semibold">Account Code <span class="text-danger">*</span></label>
+                            <select name="AccountCode" id="AccountCode" class="form-select select2">
+                                <option value="">Select account code</option>
+                                @if (ViewBag.AffiliateAccounts != null)
+                                {
+                                    foreach (var item in ViewBag.AffiliateAccounts)
+                                    {
+                                        <option value="@item.AccountCode" @(Model.AccountCode == item.AccountCode ? "selected" : "")>
+                                            @item.AccountCode - @item.AccountName
+                                        </option>
+                                    }
+                                }
+                            </select>
+                            <div class="form-text">Select the exact account code to map</div>
+                        }
+                        else if (Model.MatchType == ReportMatchType.CodePoste)
+                        {
+                            @Html.LabelFor(m => m.CodePoste, new { @class = "form-label fw-semibold" })
+                            @Html.TextBoxFor(m => m.CodePoste, new
+                            {
+                                @class = "form-control",
+                                placeholder = "e.g., EP01, RP02, etc."
+                            })
+                            @Html.ValidationMessageFor(m => m.CodePoste, "", new { @class = "text-danger small" })
+                            <div class="form-text">Enter the position code for mapping</div>
+                        }
+                        else
+                        {
+                            <label class="form-label fw-semibold">Value <span class="text-danger">*</span></label>
+                            <select class="form-select select2" disabled>
+                                <option>Select match type first</option>
+                            </select>
+                        }
+                    </div>
+                </div>
             </div>
 
-            <div class="mb-3">
-                @Html.LabelFor(m => m.ToValue, "To Value", new { @class = "form-label fw-semibold" })
-                @Html.TextBoxFor(m => m.ToValue, new { @class = "form-control", placeholder = "End value" })
-            </div>
+            <!-- Mapping Options Section -->
+            <div>
+                <h6 class="text-secondary fw-semibold mb-3">
+                    <i class="mdi mdi-tune me-2"></i>Mapping Options
+                </h6>
 
-            <div class="mb-3">
-                @Html.LabelFor(m => m.Side, "Side", new { @class = "form-label fw-semibold" })
-                @Html.DropDownListFor(m => m.Side,
-                    new SelectList(new List<string> { "DEBIT", "CREDIT", "BOTH" }),
-                    "Select side",
-                    new { @class = "form-select" })
+                <div class="row g-3">
+                    <div class="col-md-12">
+                        @Html.LabelFor(m => m.Side, new { @class = "form-label fw-semibold" })
+                        @Html.DropDownListFor(m => m.Side,
+                            new SelectList(Enum.GetValues(typeof(EntrySide)).Cast<EntrySide>()
+                                .Select(e => new { Value = (short)e, Text = e.ToString() }), "Value", "Text", (short)Model.Side),
+                            "Select side",
+                            new { @class = "form-select select2" })
+                        <div class="form-text">Debit, Credit, or Both</div>
+                    </div>
+                </div>
             </div>
+        </div>
 
-            <div class="mb-3">
-                @Html.LabelFor(m => m.Sign, "Sign", new { @class = "form-label fw-semibold" })
-                @Html.TextBoxFor(m => m.Sign, new { @class = "form-control", type = "number" })
-            </div>
-
-            <div class="mb-3 form-check">
-                @Html.CheckBoxFor(m => m.IncludeLiaison, new { @class = "form-check-input" })
-                @Html.LabelFor(m => m.IncludeLiaison, "Include Liaison", new { @class = "form-check-label fw-semibold" })
-            </div>
-
-            <div class="text-end">
-                <button type="submit" class="btn btn-success">
-                    <i class="mdi @(isUpdate ? "mdi-pencil" : "mdi-content-save-outline") me-1"></i>
+        <!-- Footer -->
+        <div class="card-footer bg-white border-top py-3">
+            <div class="d-flex justify-content-end gap-2">
+                @*<button type="button" class="btn btn-outline-secondary" onclick="closeModal()">
+                        <i class="mdi mdi-close me-1"></i>Cancel
+                    </button>*@
+                <button type="submit" class="btn btn-primary">
+                    <i class="mdi @(isUpdate ? "mdi-pencil" : "mdi-content-save") me-1"></i>
                     @(isUpdate ? "Update Mapping" : "Save Mapping")
                 </button>
-            </div>
 
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="mdi mdi-close-circle-outline me-1"></i> Close
+                </button>
+
+            </div>
         </div>
     </div>
 }
+
+<!-- Styles -->
+<style>
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .badge {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .card {
+        border-radius: 0.75rem;
+    }
+
+    .form-label {
+        font-size: 0.875rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .border-bottom {
+        border-bottom: 2px solid #dee2e6 !important;
+    }
+
+    /* Make selects look consistent */
+    select.form-control, input.form-control {
+        height: 38px;
+    }
+
+    /* Select2 custom styles */
+    .select2-container--default .select2-selection--single {
+        height: 38px;
+        border: 1px solid #ced4da;
+        border-radius: 0.375rem;
+    }
+
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: 36px;
+            padding-left: 12px;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 36px;
+        }
+
+    .select2-dropdown {
+        border: 1px solid #ced4da;
+        border-radius: 0.375rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+</style>
+
+<!-- JavaScript for dynamic functionality -->
+
+<script>
+        $(document).ready(function() {
+            console.log('Document ready - Initializing report line mapping script');
+
+            // Parse the serialized report lines
+            var reportLines = @Html.Raw(reportLinesJson);
+            var isUpdate = @JsonConvert.SerializeObject(isUpdate);
+
+            console.log('Report lines loaded:', reportLines ? reportLines.length : 0, 'lines');
+            console.log('Is update mode:', isUpdate);
+            console.log('Model data:', {
+                Id: '@Model.Id',
+                LineId: '@Model.LineId',
+                MatchType: '@((short)Model.MatchType)',
+                AccountCode: '@Model.AccountCode'
+            });
+
+            // Main section change handler
+            $('#mainSectionSelect').on('change', function() {
+                var mainSection = $(this).val();
+                console.log('Main section changed to:', mainSection);
+
+                var subSelect = $('#subSectionSelect');
+
+                if (!mainSection) {
+                    console.log('No main section selected - resetting sub section and line');
+                    subSelect.prop('disabled', true).html('<option value="">-- First select main section --</option>');
+                    $('#LineId').empty().append('<option value="">-- Select Report Line --</option>').prop('disabled', true);
+
+                    // Reinitialize Select2 after changing options
+                    if (subSelect.data('select2')) {
+                        console.log('Destroying Select2 for sub section');
+                        subSelect.select2('destroy');
+                    }
+                    console.log('Initializing Select2 for disabled sub section');
+                    subSelect.select2({
+                        dropdownParent: $('#reportModalBody'),
+                        width: '100%',
+                        minimumResultsForSearch: 10
+                    });
+                    return;
+                }
+
+                console.log('Loading sub sections for main section:', mainSection);
+                subSelect.prop('disabled', false).html('<option value="">Loading...</option>');
+
+                // Destroy and reinitialize Select2 for loading state
+                if (subSelect.data('select2')) {
+                    console.log('Destroying Select2 before loading state');
+                    subSelect.select2('destroy');
+                }
+                console.log('Initializing Select2 for loading state');
+                subSelect.select2({
+                    dropdownParent: $('#reportModalBody'),
+                    width: '100%',
+                    minimumResultsForSearch: 10
+                });
+
+                $.ajax({
+                    url: '@Url.Action("GetSubSections", "ReportLineMapping")',
+                    data: { mainSection: mainSection },
+                    success: function(data) {
+                        console.log('Sub sections loaded:', data);
+                        var options = '<option value="">-- Select Sub Section (Optional) --</option>';
+                        $.each(data, function(index, item) {
+                            options += '<option value="' + item.Value + '">' + item.Text + '</option>';
+                        });
+                        console.log('Setting sub section options, count:', data.length);
+                        subSelect.html(options);
+
+                        // Reinitialize Select2 with new options
+                        if (subSelect.data('select2')) {
+                            console.log('Destroying Select2 before updating with new options');
+                            subSelect.select2('destroy');
+                        }
+                        console.log('Initializing Select2 with new options');
+                        subSelect.select2({
+                            dropdownParent: $('#reportModalBody'),
+                            width: '100%',
+                            minimumResultsForSearch: 10
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error loading sub sections:', {status: status, error: error, response: xhr.responseText});
+                        subSelect.html('<option value="">-- Error loading sections --</option>');
+                        if (subSelect.data('select2')) {
+                            subSelect.select2('destroy');
+                        }
+                        subSelect.select2({
+                            dropdownParent: $('#reportModalBody'),
+                            width: '100%',
+                            minimumResultsForSearch: 10
+                        });
+                    }
+                });
+            });
+
+            // Sub section change handler
+            $('#subSectionSelect').on('change', function() {
+                var subSection = $(this).val();
+                console.log('Sub section changed to:', subSection);
+                loadCodePosteItems();
+            });
+
+            function loadCodePosteItems() {
+                var mainSection = $('#mainSectionSelect').val();
+                var subSection = $('#subSectionSelect').val();
+                var lineSelect = $('#LineId');
+
+                console.log('Loading code poste items with params:', {mainSection: mainSection, subSection: subSection});
+
+                if (!mainSection) {
+                    console.log('No main section selected - skipping load');
+                    return;
+                }
+
+                $.ajax({
+                    url: '@Url.Action("GetCodePosteItems", "ReportLineMapping")',
+                    data: {
+                        mainSection: mainSection,
+                        subSection: subSection
+                    },
+                    success: function(data) {
+                        console.log('Code poste items loaded:', data);
+                        console.log('Number of items:', data.length);
+
+                        lineSelect.empty();
+                        lineSelect.append('<option value="">-- Select Report Line --</option>');
+
+                        $.each(data, function(index, item) {
+                            lineSelect.append('<option value="' + item.Value + '">' + item.Text + '</option>');
+                        });
+
+                        lineSelect.prop('disabled', false);
+                        console.log('Line select populated with', data.length, 'items');
+
+                        // Reinitialize Select2 with new options
+                        if (lineSelect.data('select2')) {
+                            console.log('Destroying Select2 for line select');
+                            lineSelect.select2('destroy');
+                        }
+                        console.log('Initializing Select2 for line select');
+                        lineSelect.select2({
+                            dropdownParent: $('#reportModalBody'),
+                            width: '100%',
+                            minimumResultsForSearch: 10
+                        });
+
+                        @if (isUpdate && !string.IsNullOrEmpty(Model.LineId))
+                        {
+                            <text>
+                            console.log('Setting line ID value to:', '@Model.LineId');
+                            setTimeout(function() {
+                                var lineId = '@Model.LineId';
+                                if (lineId) {
+                                    console.log('Setting line select value to:', lineId);
+                                    lineSelect.val(lineId).trigger('change');
+                                }
+                            }, 100);
+                            </text>
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error loading code poste items:', {status: status, error: error, response: xhr.responseText});
+                        lineSelect.html('<option value="">-- Error loading lines --</option>');
+                        if (lineSelect.data('select2')) {
+                            lineSelect.select2('destroy');
+                        }
+                        lineSelect.select2({
+                            dropdownParent: $('#reportModalBody'),
+                            width: '100%',
+                            minimumResultsForSearch: 10
+                        });
+                    }
+                });
+            }
+
+        // Line selection change - show preview
+        $('#LineId').on('change', function() {
+            var selected = $(this).find(':selected');
+            var text = selected.text();
+            var value = selected.val();
+
+            console.log('Line selection changed:', {value: value, text: text});
+
+            if (value) {
+                var refCode = text.split(' - ')[0];
+                var name = text.substring(text.indexOf(' - ') + 3);
+
+                console.log('Parsed line data:', {refCode: refCode, name: name});
+
+                $('#selectedLinePreview').removeClass('d-none');
+                $('#selectedLineRef').text(refCode);
+                $('#selectedLineName').text(name);
+                $('#selectedRefCode').val(refCode);
+            } else {
+                console.log('No line selected - hiding preview');
+                $('#selectedLinePreview').addClass('d-none');
+                $('#selectedRefCode').val('');
+            }
+        });
+
+            // Match Type change handler
+            $('#MatchType').on('change', function() {
+                var matchType = parseInt($(this).val());
+                console.log('Match type changed to:', matchType);
+
+                var container = $('#valueFieldContainer');
+
+                if (!matchType) {
+                    console.log('No match type selected - showing disabled dropdown');
+                    container.html(`
+                        <label class="form-label fw-semibold">Value <span class="text-danger">*</span></label>
+                        <select class="form-control select2" disabled>
+                            <option>-- Select match type first --</option>
+                        </select>
+                    `);
+
+                    // Initialize Select2 for the disabled select
+                    console.log('Initializing Select2 for disabled match type field');
+                    container.find('.select2').select2({
+                        dropdownParent: $('#reportModalBody'),
+                        width: '100%'
+                    });
+                    return;
+                }
+
+                if (matchType === @((short)ReportMatchType.AccountCode)) {
+                    console.log('Loading Account Code dropdown');
+                    var html = `
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">
+                                Account Code <span class="text-danger">*</span>
+                            </label>
+
+                            <select name="AccountCode" id="AccountCode" class="form-control select2">
+                                <option value="">-- Select Account Code --</option>
+                                @if (ViewBag.AffiliateAccounts != null)
+                                {
+                                    foreach (var item in ViewBag.AffiliateAccounts)
+                                    {
+                                        <text>
+                                            <option value="@item.Value">@item.Text</option>
+                                        </text>
+                                    }
+                                }
+                            </select>
+
+                            <small class="text-muted">
+                                Select the exact account code to map
+                            </small>
+                        </div>
+                    `;
+
+                    container.html(html);
+                    console.log('Account Code HTML inserted, initializing Select2');
+
+                    // Initialize Select2 for the new dropdown
+                    $('#AccountCode').select2({
+                        dropdownParent: $('#reportModalBody'),
+                        width: '100%',
+                        minimumResultsForSearch: 10
+                    });
+
+                    console.log('Account Code Select2 initialized');
+                }
+                else if (matchType === @((short)ReportMatchType.CodePoste)) {
+                    console.log('Loading Code Poste input field');
+                    var html = `
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">
+                                Code Poste <span class="text-danger">*</span>
+                            </label>
+
+                            <input type="text"
+                                   name="CodePoste"
+                                   id="CodePoste"
+                                   class="form-control"
+                                   placeholder="Enter code poste (e.g., EP01, RP02, etc.)" />
+
+                            <small class="text-muted">
+                                Enter the position code for mapping
+                            </small>
+                        </div>
+                    `;
+
+                    container.html(html);
+                    console.log('Code Poste input field inserted');
+                }
+            });
+
+        // Handle edit mode initialization
+            @if (isUpdate)
+            {
+                <text>
+                console.log('Edit mode - initializing with existing data');
+
+                if ('@Model.LineId') {
+                    console.log('Fetching report line mapping for ID:', '@Model.Id');
+                    $.ajax({
+                        url: '@Url.Action("GetReportLineMapping", "ReportLineMapping")',
+                        data: { Key: '@Model.Id' },
+                        success: function(data) {
+                            console.log('Report line mapping data received:', data);
+                            if (data && data.LineId) {
+                                console.log('Searching for matching report line:', data.LineId);
+                                $.each(reportLines, function(index, line) {
+                                    if (line.Id === data.LineId) {
+                                        console.log('Found matching line:', line);
+                                        var ref = line.RefCode;
+                                        var prefix = ref.substring(0, 2);
+                                        console.log('Line prefix:', prefix);
+
+                                        if (prefix === 'EP') {
+                                            console.log('Setting main section to assets');
+                                            $('#mainSectionSelect').val('assets').trigger('change');
+                                        } else if (prefix === 'RP') {
+                                            console.log('Setting main section to liabilities');
+                                            $('#mainSectionSelect').val('liabilities').trigger('change');
+                                        } else if (prefix === 'ZP') {
+                                            console.log('Setting main section to expenditure');
+                                            $('#mainSectionSelect').val('expenditure').trigger('change');
+                                        } else if (prefix === 'LP') {
+                                            console.log('Setting main section to income');
+                                            $('#mainSectionSelect').val('income').trigger('change');
+                                        }
+
+                                        setTimeout(function() {
+                                            console.log('Setting line ID value to:', data.LineId);
+                                            $('#LineId').val(data.LineId).trigger('change');
+                                        }, 500);
+                                        return false;
+                                    }
+                                });
+                            } else {
+                                console.log('No report line mapping data found');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error fetching report line mapping:', {status: status, error: error, response: xhr.responseText});
+                        }
+                    });
+                }
+
+                if ('@((short)Model.MatchType)' !== '0') {
+                    console.log('Setting match type to:', '@((short)Model.MatchType)');
+                    setTimeout(function() {
+                        $('#MatchType').val('@((short)Model.MatchType)').trigger('change');
+                        console.log('Match type set and triggered');
+
+                        // For Account Code, set the value after dropdown loads
+                        if ('@((short)Model.MatchType)' === '@((short)ReportMatchType.AccountCode)' && '@Model.AccountCode') {
+                            console.log('Setting Account Code to:', '@Model.AccountCode');
+                            setTimeout(function() {
+                                $('#AccountCode').val('@Model.AccountCode').trigger('change');
+                                console.log('Account Code set');
+                            }, 300);
+                        }
+                    }, 300);
+                }
+                </text>
+            }
+
+            // Form validation
+            $('#reportLineMappingForm').on('submit', function(e) {
+                console.log('Form submission validation started');
+
+                if (!$('#LineId').val()) {
+                    e.preventDefault();
+                    console.log('Validation failed: No report line selected');
+                    toastr.error('Please select a report line');
+                    return false;
+                }
+
+                var matchType = parseInt($('#MatchType').val());
+                console.log('Match type value:', matchType);
+
+                if (!matchType) {
+                    e.preventDefault();
+                    console.log('Validation failed: No match type selected');
+                    toastr.error('Please select a match type');
+                    return false;
+                }
+
+                if (matchType === @((short)ReportMatchType.AccountCode)) {
+                    var accountCode = $('#AccountCode').val();
+                    console.log('Account Code value:', accountCode);
+                    if (!accountCode) {
+                        e.preventDefault();
+                        console.log('Validation failed: No account code selected');
+                        toastr.error('Please select an account code');
+                        return false;
+                    }
+                } else if (matchType === @((short)ReportMatchType.CodePoste)) {
+                    var codePoste = $('#CodePoste').val();
+                    console.log('Code Poste value:', codePoste);
+                    if (!codePoste) {
+                        e.preventDefault();
+                        console.log('Validation failed: No code poste entered');
+                        toastr.error('Please enter a code poste');
+                        return false;
+                    }
+                }
+
+                console.log('Form validation passed');
+                return true;
+            });
+        });
+
+        function closeModal() {
+            console.log('Closing modal');
+            $('#modalContainer').modal('hide');
+        }
+    </script>
+    
+
+

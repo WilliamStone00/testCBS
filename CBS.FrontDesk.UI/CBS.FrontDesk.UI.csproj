@@ -476,6 +476,18 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MembersFSeries.xsd</DependentUpon>
     </Compile>
+    <Compile Include="AppFiles\Reporting\IPSReports\InsurableSavings.cs">
+      <DependentUpon>InsurableSavings.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AppFiles\Reporting\IPSReports\InsurableLoan.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>InsurableLoan.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="AppFiles\Reporting\IPSReports\InternalProtectionSchema.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -7712,6 +7724,14 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>CashDeskRessource.Designer.cs</LastGenOutput>
     </Content>
+    <EmbeddedResource Include="AppFiles\Reporting\IPSReports\InsurableSavings.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>InsurableSavings.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\IPSReports\InsurableLoan.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>InsurableLoan.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\IPSReports\InternalProtectionSchema.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>InternalProtectionSchema.cs</LastGenOutput>
@@ -10725,7 +10745,6 @@
     <Content Include="Views\ChequeCancellation\_CancellationRequestDetails.cshtml" />
     <Content Include="Views\ChequeRequest\_CustomerSearch.cshtml" />
     <Content Include="Views\ChequeCancellation\_VerificationForm.cshtml" />
-    <Content Include="Views\ChequeClearance\_DiscountModal.cshtml" />
     <Content Include="Views\LossManagement\_CheckbookDetails.cshtml" />
     <Content Include="Views\LossManagement\_CheckLeafDetails.cshtml" />
     <Content Include="Views\LossManagement\_Header.cshtml" />
@@ -11001,7 +11020,7 @@
     <Content Include="Views\FeeConfig\_FeeConfigDataTable.cshtml" />
     <Content Include="Views\Country\Create.cshtml" />
     <Content Include="Views\ChequeClearance\_chequeDetails.cshtml" />
-    <Content Include="Views\ChequeClearance\_InternalChequeRequest.cshtml" />
+    <Content Include="Views\ChequeClearance\InternalChequeRequest.cshtml" />
     <Content Include="Views\ChequeClearance\ImageUpload.cshtml" />
     <Content Include="Views\SalaryUpload\ReexecuteSalaries.cshtml" />
     <Content Include="Views\SalaryUpload\ReexecuteSalaryFile.cshtml" />
@@ -11037,6 +11056,9 @@
     <Content Include="Views\DailyCollectorCommissionConfig\_CommissionConfigDataTable.cshtml" />
     <Content Include="Views\DailyCollectorCommissionConfig\List.cshtml" />
     <Content Include="Views\DailyCollectorCommissionConfig\_CommissionConfigDetails.cshtml" />
+    <Content Include="Views\ChartOfAccountV2\_CreatePcmf.cshtml" />
+    <Content Include="Views\ChartOfAccountV2\_CreatChildPcmf.cshtml" />
+    <Content Include="Views\MembersFSeries\Loanerror.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

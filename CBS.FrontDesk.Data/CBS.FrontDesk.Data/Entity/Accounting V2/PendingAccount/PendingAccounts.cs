@@ -111,6 +111,10 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.PendingAccount
         public string NameEnOld { get; set; }
         public string NameFrOld { get; set; }
 
+        public string Nature { get; set; }
+
+        public string PostCode { get; set; }
+
         public bool PostingAllowed { get; set; }
         public bool RequiresMapping { get; set; } = false;
         public string Notes { get; set; }

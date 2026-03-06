@@ -8847,6 +8847,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Old Account Number.
+        /// </summary>
+        internal static string Old_Account_Number {
+            get {
+                return ResourceManager.GetString("Old_Account_Number", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Old Names.
+        /// </summary>
+        internal static string Old_Names {
+            get {
+                return ResourceManager.GetString("Old_Names", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Old values.
         /// </summary>
         internal static string Old_values {

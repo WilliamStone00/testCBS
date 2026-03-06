@@ -288,7 +288,7 @@ window.ClearanceSubmitAjax = function (form) {
 
     alertify.confirm(
         "Confirmation",
-        "Are you sure you want to approve this journal entry?",
+        "Are you sure you want to submit the request?",
 
         // ✅ OK
         function () {
@@ -313,19 +313,39 @@ window.ClearanceSubmitAjax = function (form) {
 
                     if (res?.success) {
 
-                        alertify.success("✅ Clearance submitted successfully.");
+                        appalert("✅ Clearance submitted successfully.", 1, 1);
 
                         setTimeout(function () {
-                            window.location.href =
-                                res.uploadUrl ||
-                                '@Url.Action("ImageUpload","ChequeClearance")';
-                        }, 1000);
+
+                            alertify.confirm(
+                                "Next Step",
+                                "Clearance ID: <b>" + res.clearanceId + "</b><br/><br/>Do you want to upload an image or go to the list?",
+
+                                // Upload Image
+                                function () {
+                                    window.location.href =
+                                        '@Url.Action("ImageUpload","ChequeClearance")?clearanceId=' + res.clearanceId;
+                                },
+
+                                // Go to List
+                                function () {
+                                    window.location.href =
+                                        '@Url.Action("Index","ChequeClearance")';
+                                }
+
+                            ).set({
+                                labels: {
+                                    ok: "Upload Image",
+                                    cancel: "Go to List"
+                                }
+                            });
+
+                        }, 800);
 
                     } else {
                         appalert(res?.message || "❌ Failed to submit clearance request.", 2, 1);
                     }
                 },
-
                 error: function (xhr) {
                     if (xhr.status === 401)
                         window.location.href = '/Authentication/Login';

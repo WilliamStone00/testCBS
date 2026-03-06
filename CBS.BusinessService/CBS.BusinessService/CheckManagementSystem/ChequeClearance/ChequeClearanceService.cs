@@ -201,7 +201,7 @@ namespace CBS.BusinessService.CheckManagementSystem.ChequeClearance
                   ExecutionProcessOption.NoFileWasSelected, SystemMessageStatus.Failed.ToString(), null,
               null);
                 }
-                documentRequest.Id = "CLR574384137304312";
+                //documentRequest.Id = "CLR574384137304312";
 
 
                 var url = $"/api/v1/clearance/{documentRequest.Id}/document";

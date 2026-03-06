@@ -8,9 +8,9 @@
             <div class="row mt-2 gy-4">
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(m => m.Group.GroupTypeId, new SelectList(ViewBag.GroupTypes, "GroupTypeId", "GroupTypeName"), "---"+ @GlobalGroup.SelectGroupType+"---", new { @class = "form-control select2" })
+                        @Html.DropDownListFor(m => m.Group.GroupTypeId, new SelectList(ViewBag.GroupTypes, "GroupTypeId", "GroupTypeName"), "--- @*@GlobalGroup.*@SelectGroupType + ---", new { @class = "form-control select2" })
                         @Html.ValidationMessageFor(m => m.Group.GroupTypeId, "", new { @class = "text-danger" })
-                        <label>@GlobalGroup.SelectGroupType</label>
+                        <label>@*@GlobalGroup.*@ SelectGroupType</label>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -34,11 +34,57 @@
                         <label>@GlobalGroup.TaxpayerNumber</label>
                     </div>
                 </div>
-               
+
                 <div class="col-12">
                     <div class="form-check">
                         @Html.CheckBoxFor(m => m.Group.Active, new { @class = "form-check-input" })
-                        <label class="form-check-label" for="isActive">@GlobalGroup.ActiveStatus</label>
+                        <label class="form-check-label" for="isActive">@*@GlobalGroup.*@ ActiveStatus</label>
+                    </div>
+                </div>
+
+
+                
+
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(m => m.Group.CustomerStatus,
+                            ViewBag.MemberStatuses as List<SelectListItem>,
+                            "--- Select Member Status ---",
+                            new { @class = "form-control select2", required = "required" })
+                        @Html.ValidationMessageFor(m => m.Group.CustomerStatus, "", new { @class = "text-danger" })
+                        <label>Select Member Status</label>
+                    </div>
+                </div>
+
+                <!-- Politically Exposed Checkbox -->
+                <div class="col-md-6 d-flex align-items-center">
+                    <div class="form-check mt-3">
+                        @Html.CheckBoxFor(model => model.Group.IsPoliticaExposed,
+                            new { @class = "form-check-input" })
+                        @Html.LabelFor(model => model.Group.IsPoliticaExposed,
+                            "Select Exposed Status",
+                            new { @class = "form-check-label ms-2" })
+                    </div>
+                </div>
+                <div id="pepDetails" class="row g-4">
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            @Html.DropDownListFor(m => m.Group.PoliticaExposedQuestion,
+                                ViewBag.politicalstatuses as List<SelectListItem>,
+                                "--- Select  status ---",
+                                new { @class = "form-control select2" })
+
+                            @Html.ValidationMessageFor(m => m.Group.PoliticaExposedQuestion, "", new { @class = "text-danger" })
+                            <label>Polictical question</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.Group.PoliticaExposedAnswer, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Group.PoliticaExposedAnswer, "", new { @class = "text-danger" })
+                            <label>Political Response</label>
+                        </div>
                     </div>
                 </div>
             </div>
