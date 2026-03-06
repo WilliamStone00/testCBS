@@ -87,7 +87,7 @@ namespace CBS.BusinessService.Accounts
         }
 
         
-        public DashboardViewModel GetDashboardSummary(List<SalaryExtractDto> salaryExtracts)
+        public DashboardViewModel GetDashboardSummary(List<SalaryPaymentDto> salaryExtracts)
         {
             // Retrieve salary extracts from the service or database
 
@@ -104,6 +104,8 @@ namespace CBS.BusinessService.Accounts
             var totalShares = salaryExtracts.Sum(s => s.Shares);
             var totalLoanInterest = salaryExtracts.Sum(s => s.LoanInterest);
             var totalStandingOrderAmount = salaryExtracts.Sum(s => s.StandingOrderAmount); // New KPI for Standing Order Amount
+            var totalCapital = salaryExtracts.Sum(s => s.LoanCapital); // New KPI for Standing Order Amount
+            var totalVAT = salaryExtracts.Sum(s => s.VAT); // New KPI for Standing Order Amount
 
             // Map the summary data to a view model
             var model = new DashboardViewModel
@@ -118,8 +120,10 @@ namespace CBS.BusinessService.Accounts
                 TotalPreferenceShares = totalPreferenceShares,
                 TotalDeposits = totalDeposits,
                 TotalShares = totalShares,
-                TotalLoanInterest = totalLoanInterest,
-                TotalStandingOrderAmount = totalStandingOrderAmount // Pass the Standing Order Amount to the view
+               TotalLoanInterest = totalLoanInterest,
+                TotalStandingOrderAmount = totalStandingOrderAmount,
+                TotalCapital  = totalCapital,
+                TotalVAT = totalVAT
             };
 
             return model;
@@ -226,7 +230,7 @@ namespace CBS.BusinessService.Accounts
         }
 
 
-        public async Task<IEnumerable<SalaryExtractDto>> GetAExecutedSalaryFileByFileUploadId(string fileId)
+        public async Task<IEnumerable<SalaryPaymentDto>> GetAExecutedSalaryFileByFileUploadId(string fileId)
         {
             try
             {
@@ -242,8 +246,8 @@ namespace CBS.BusinessService.Accounts
                 }
                 var queryString = ToQueryString(allStandingOrdersQuery);
                 var fullUrl = $"{APICallHelper.GetExecutedAnalyzedSalary}?{queryString}";
-                var response = await _transactionApiHelper.GetAsync<ResponseObject<List<SalaryExtractDto>>>(fullUrl);
-                var data = new List<SalaryExtractDto>();
+                var response = await _transactionApiHelper.GetAsync<ResponseObject<List<SalaryPaymentDto>>>(fullUrl);
+                var data = new List<SalaryPaymentDto>();
                 if (response.ApiResponseData != null)
                 {
                     data = response.ApiResponseData.Data;

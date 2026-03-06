@@ -188,7 +188,12 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script>
+
+       
         $(document).ready(function () {
+
+
+            
             LoadDT("myDataTable", 0);
 
 
@@ -344,8 +349,32 @@
             });
 
 
+            $(document).ready(function () {
 
-            
+                var table = $("#myDataTable").DataTable();
+
+                // Hide columns by default (order preserved)
+                var hiddenColumns = [5, 6, 7, 8, 10, 11, 12];
+
+                hiddenColumns.forEach(function (colIndex) {
+                    table.column(colIndex).visible(false);
+                });
+
+                // Toggle columns
+                $(".toggle-col").on("change", function () {
+
+                    var column = table.column($(this).data("col"));
+
+                    column.visible(!column.visible());
+                });
+
+            });
+
+            hiddenColumns.forEach(function (colIndex) {
+                table.column(colIndex).visible(false);
+                $('.toggle-col[data-col="' + colIndex + '"]').prop("checked", false);
+            });
+           
 
 
         });

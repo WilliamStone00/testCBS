@@ -49,7 +49,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             var salaryExtractDtos = await _salaryExecutionServices.GetAExecutedSalaryFileByFileUploadId(fileUploadid);
             var fileUpload = await _salaryExecutionServices.GetFileUpload(fileUploadid);
             var dashboardViewModel= _salaryExecutionServices.GetDashboardSummary(salaryExtractDtos.ToList());
-            return View(new ExecuteSalaryCarrier { SalaryExtractes=salaryExtractDtos.ToList(), FileUpload=fileUpload, DashboardViewModel=dashboardViewModel});
+            return View(new ExecuteSalaryCarrier { SalaryPaymentExtractes = salaryExtractDtos.ToList(), FileUpload=fileUpload, DashboardViewModel=dashboardViewModel});
         }
 
         public async Task<ActionResult> PISalaryDetail(string fileUploadid)
@@ -58,7 +58,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             var fileUpload = await _salaryExecutionServices.GetFileUpload(fileUploadid);
             var dashboardViewModel = _salaryExecutionServices.GetDashboardSummary(salaryExtractDtos.ToList());
             var stringValues = await _individualProfileServices.GetMemberByCustomerTypeDropDown()
-; return View(new ExecuteSalaryCarrier { SalaryExtractes=salaryExtractDtos.ToList(), FileUpload=fileUpload, DashboardViewModel=dashboardViewModel, StringValues=stringValues.ToList() });
+; return View(new ExecuteSalaryCarrier { SalaryPaymentExtractes = salaryExtractDtos.ToList(), FileUpload = fileUpload, DashboardViewModel = dashboardViewModel, StringValues = stringValues.ToList() });
         }
 
 
